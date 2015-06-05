@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use Lang;
 
 /**
  * Members quota classes db table class
  */
-class ToolsTableSessionClassGroup extends \JTable
+class SessionClassGroup extends \JTable
 {
 	/**
 	 * Constructor

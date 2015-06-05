@@ -356,8 +356,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-				$TA = new ToolAuthor($this->database);
-				$objV = new ToolVersion($this->database);
+				$TA = new \Components\Tools\Tables\Author($this->database);
+				$objV = new \Components\Tools\Tables\Version($this->database);
 
 				if ($this->model->isTool())
 				{

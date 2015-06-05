@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use Lang;
+use Date;
+use Log;
 
 /**
  * Table class for a tool version
  */
-class ToolVersion extends  JTable
+class Version extends \JTable
 {
 	/**
 	 * Short description for '__construct'
@@ -237,7 +240,7 @@ class ToolVersion extends  JTable
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function load_version ($toolid=NULL, $version='dev')
+	public function load_version($toolid=NULL, $version='dev')
 	{
 		if ($toolid === NULL)
 		{
@@ -433,7 +436,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
-		$objA = new ToolAuthor($this->_db);
+		$objA = new \Components\Tools\Tables\Author($this->_db);
 
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
@@ -467,7 +470,7 @@ class ToolVersion extends  JTable
 				}
 				else
 				{
-					$rid = ToolsModelTool::getResourceId($version->toolid);
+					$rid = \Components\Tools\Models\Tool::getResourceId($version->toolid);
 					$version->authors = $objA->getToolAuthors('dev', $rid);
 				}
 			}
@@ -658,7 +661,7 @@ class ToolVersion extends  JTable
 	 */
 	public function validToolReg(&$tool, &$err, $id, $config, $checker=0, $result=1)
 	{
-		$tgObj = new ToolGroup($this->_db);
+		$tgObj = new \Components\Tools\Tables\Group($this->_db);
 
 		//  check if toolname exists in tool table
 		$query  = "SELECT t.id ";
@@ -812,7 +815,7 @@ class ToolVersion extends  JTable
 	 */
 	public function validVersion($toolname, $newversion, &$error, $required=1, $result=1)
 	{
-		$toolhelper = new ToolsHelperUtils();
+		$toolhelper = new \Components\Tools\Helpers\Utils();
 
 		if ($required && !$newversion)
 		{ // was left blank
@@ -854,7 +857,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getToolname($instance)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$query  = "SELECT toolname FROM #__tool_version WHERE instance=" . $this->_db->Quote($instance) . " LIMIT 1";
 		$this->_db->setQuery($query);
 		$toolname = $this->_db->loadResult();
@@ -876,7 +879,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getCurrentVersionProperty($toolname, $property)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$query  = "SELECT " . $property . " FROM #__tool_version  WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -893,7 +896,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getDevVersionProperty($toolname, $property)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$query  = "SELECT " . $property . " FROM #__tool_version WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

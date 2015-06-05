@@ -95,7 +95,7 @@ class Resource extends Object
 
 			if (in_array($table, $tables))
 			{
-				$tv = new \ToolVersion($this->_db);
+				$tv = new \Components\Tools\Tables\Version($this->_db);
 				//$tv->getToolVersions('', $alltools, $this->resource->alias);
 
 				if ($this->revisions()) //$alltools)
@@ -1075,7 +1075,7 @@ class Resource extends Object
 			$this->revisions = array();
 
 			$alltools = array();
-			$tv = new \ToolVersion($this->_db);
+			$tv = new \Components\Tools\Tables\Version($this->_db);
 			$tv->getToolVersions('', $alltools, $this->resource->alias);
 
 			if ($alltools)

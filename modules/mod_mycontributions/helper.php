@@ -81,7 +81,7 @@ class Helper extends Module
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 		// Create a Tool object
-		$rows = \ToolsModelTool::getTools($filters, false);
+		$rows = \Components\Tools\Models\Tool::getTools($filters, false);
 		$limit = 100000;
 
 		if ($rows)
@@ -89,7 +89,7 @@ class Helper extends Module
 			for ($i=0; $i < count($rows); $i++)
 			{
 				// What is resource id?
-				$rid = \ToolsModelTool::getResourceId($rows[$i]->id);
+				$rid = \Components\Tools\Models\Tool::getResourceId($rows[$i]->id);
 				$rows[$i]->rid = $rid;
 
 				// Get questions, wishes and tickets on published tools

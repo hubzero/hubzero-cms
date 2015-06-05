@@ -28,13 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Tools\Admin\Controllers;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.job.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.session.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.view.php');
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php');
+use Components\Tools\Helpers\Utils;
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Event;
+use Lang;
+use App;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'view.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
@@ -42,7 +51,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php')
 /**
  * Controller class for tool sessions
  */
-class ToolsControllerSessions extends \Hubzero\Component\AdminController
+class Sessions extends AdminController
 {
 	/**
 	 * Display a list of hosts
@@ -98,9 +107,9 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
-		$model = new MwSession($mwdb);
+		$model = new \Components\Tools\Tables\Session($mwdb);
 
 		$this->view->total = $model->getAllCount($this->view->filters);
 
@@ -123,11 +132,11 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = Request::getVar('id', array());
 
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		if (count($ids) > 0)
 		{
-			$row = new MwSession($mwdb);
+			$row = new \Components\Tools\Tables\Session($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
@@ -176,8 +185,8 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	public function middleware($comm, &$output)
 	{
 		$retval = true; // Assume success.
-		$output = new stdClass();
-		$cmd = "/bin/sh " . PATH_CORE . "/components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
+		$output = new \stdClass();
+		$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
@@ -258,7 +267,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
-		$obj = new ToolsTableSessionClass($this->database);
+		$obj = new \Components\Tools\Tables\SessionClass($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -320,7 +329,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new ToolsTableSessionClass($this->database);
+		$this->view->row = new \Components\Tools\Tables\SessionClass($this->database);
 		$this->view->row->load($id);
 
 		// Set any errors
@@ -361,7 +370,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new ToolsTableSessionClass($this->database);
+		$row = new \Components\Tools\Tables\SessionClass($this->database);
 		$row->load($fields['id']);
 
 		$old = $row->jobs;
@@ -386,7 +395,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		// If changing, update members referencing this class
 		if ($old != $row->jobs)
 		{
-			$prefs = new ToolsTablePreferences($this->database);
+			$prefs = new \Components\Tools\Tables\Preferences($this->database);
 			$prefs->updateUsersByClassId($row->id);
 		}
 
@@ -426,7 +435,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 			{
 				$id = intval($id);
 
-				$row = new ToolsTableSessionClass($this->database);
+				$row = new \Components\Tools\Tables\SessionClass($this->database);
 				$row->load($id);
 
 				if ($row->alias == 'default')
@@ -444,7 +453,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				// Remove the record
 				$row->delete($id);
 
-				$prefs = new ToolsTablePreferences($this->database);
+				$prefs = new \Components\Tools\Tables\Preferences($this->database);
 				$prefs->restoreDefaultClass($id);
 			}
 		}

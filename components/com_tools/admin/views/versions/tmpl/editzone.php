@@ -37,8 +37,8 @@ Html::behavior('framework');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-$mwdb  = ToolsHelperUtils::getMWDBO();
-$zones = with(new MwZones($mwdb))->find('all');
+$mwdb  = \Components\Tools\Helpers\Utils::getMWDBO();
+$zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
 ?>
 
 <script>

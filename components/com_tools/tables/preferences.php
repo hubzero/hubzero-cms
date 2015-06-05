@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
 
 /**
  * Table for storing user middleware preferences
  */
-class ToolsTablePreferences extends JTable
+class Preferences extends \JTable
 {
 	/**
 	 * Constructor
@@ -267,7 +266,7 @@ class ToolsTablePreferences extends JTable
 	{
 		include_once(__DIR__ . DS . 'sessionclass.php');
 
-		$class = new ToolsTableSessionClass($this->_db);
+		$class = new \Components\Tools\Tables\SessionClass($this->_db);
 		$class->load($id);
 
 		if (!$class->id)
@@ -301,7 +300,7 @@ class ToolsTablePreferences extends JTable
 	{
 		include_once(__DIR__ . DS . 'sessionclass.php');
 
-		$class = new ToolsTableSessionClass($this->_db);
+		$class = new SessionClass($this->_db);
 		$class->load(array('alias' => 'default'));
 
 		if (!$class->id)

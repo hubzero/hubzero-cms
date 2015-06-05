@@ -28,15 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models;
 
-include_once(__DIR__ . '/../helpers/version.php');
+use Components\Tools\Helpers;
+use Component;
+use Lang;
+use User;
+use Log;
+
+include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'version.php');
 
 /**
  * Hubzero class for tools
  */
-class ToolsModelTool
+class Tool
 {
 	/**
 	 * Description for 'id'
@@ -204,9 +209,9 @@ class ToolsModelTool
 	 */
 	public function getToolNames()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$db->setQuery("SELECT toolname FROM #__tool;");
+		$db->setQuery("SELECT toolname FROM `#__tool`;");
 		return $db->loadResultArray();
 	}
 
@@ -293,7 +298,7 @@ class ToolsModelTool
 	 */
 	public function _mysql_create()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -382,7 +387,7 @@ class ToolsModelTool
 	 */
 	private function _mysql_read()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		$lazyloading = false;
 
 		if (empty($db))
@@ -486,9 +491,9 @@ class ToolsModelTool
 	 */
 	function _mysql_update($all = false)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$query = "UPDATE #__tool SET ";
+		$query = "UPDATE `#__tool` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -590,7 +595,7 @@ class ToolsModelTool
 
 					$order ++;
 				}
-				\Log::debug($query);
+				Log::debug($query);
 				$db->setQuery($query);
 
 				if (!$db->query())
@@ -700,7 +705,7 @@ class ToolsModelTool
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($db))
 		{
@@ -709,7 +714,7 @@ class ToolsModelTool
 
 		if (!isset($this->id))
 		{
-			$db->setQuery("SELECT id FROM #__tool WHERE toolname" . $db->Quote($this->toolname) . ";");
+			$db->setQuery("SELECT id FROM `#__tool` WHERE toolname" . $db->Quote($this->toolname) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -719,14 +724,14 @@ class ToolsModelTool
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__tool WHERE id= " . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__tool` WHERE id= " . $db->Quote($this->id) . ";");
 
 		if (!$db->query())
 		{
 			return false;
 		}
 
-		$db->setQuery("UPDATE #__tool_version SET toolid=NULL WHERE toolid=" . $db->Quote($this->id) . ";");
+		$db->setQuery("UPDATE `#__tool_version` SET toolid=NULL WHERE toolid=" . $db->Quote($this->id) . ";");
 
 		$db->query();
 
@@ -782,7 +787,7 @@ class ToolsModelTool
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db =  JFactory::getDBO();
+				$db = \JFactory::getDBO();
 
 				if (is_object($db))
 				{
@@ -1006,7 +1011,7 @@ class ToolsModelTool
 	 */
 	public function getCurrentVersion()
 	{
-		return ToolsHelperVersion::getCurrentToolVersion($this->id);
+		return Helpers\Version::getCurrentToolVersion($this->id);
 	}
 
 	/**
@@ -1018,7 +1023,7 @@ class ToolsModelTool
 	 */
 	public function getDevelopmentVersion()
 	{
-		return ToolsHelperVersion::getDevelopmentToolVersion($this->id);
+		return Helpers\Version::getDevelopmentToolVersion($this->id);
 	}
 
 	/**
@@ -1031,7 +1036,7 @@ class ToolsModelTool
 	 */
 	public function getRevision($revision = 'dev')
 	{
-		return ToolsHelperVersion::getToolRevision($this->id, $revision);
+		return Helpers\Version::getToolRevision($this->id, $revision);
 	}
 
 	/**
@@ -1043,10 +1048,9 @@ class ToolsModelTool
 	 */
 	public function getDevelopmentGroup()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$query = "SELECT cn FROM #__tool_groups WHERE toolid=" .
-			$db->Quote($this->id) . " AND role='1';";
+		$query = "SELECT cn FROM `#__tool_groups` WHERE toolid=" . $db->Quote($this->id) . " AND role='1';";
 
 		$db->setQuery($query);
 
@@ -1070,7 +1074,7 @@ class ToolsModelTool
 	 */
 	public function unpublishVersion($instance)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($this->toolname))
 		{
@@ -1095,7 +1099,7 @@ class ToolsModelTool
 			return false;
 		}
 
-		$hzvt = ToolsModelVersion::getInstance($result);
+		$hzvt = Version::getInstance($result);
 
 		if (empty($hzvt))
 		{
@@ -1116,14 +1120,14 @@ class ToolsModelTool
 	 */
 	public function unpublishAllVersions()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($this->toolname))
 		{
 			return false;
 		}
 
-		$query = "SELECT id FROM #__tool_version AS v WHERE v.toolname=" .
+		$query = "SELECT id FROM `#__tool_version` AS v WHERE v.toolname=" .
 			$db->Quote($this->toolname) . " v.state=1 ORDER BY v.revision DESC LIMIT 1";
 
 		$db->setQuery($query);
@@ -1137,7 +1141,7 @@ class ToolsModelTool
 
 		foreach ((array) $result as $v)
 		{
-			$hzvt = ToolsModelVersion::getInstance($v);
+			$hzvt = Version::getInstance($v);
 
 			if (empty($hzvt))
 			{
@@ -1227,7 +1231,7 @@ class ToolsModelTool
 	 */
 	protected static function buildQuerySearch($filters = array(), $admin = false)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (empty($filters['search']))
 		{
@@ -1296,7 +1300,7 @@ class ToolsModelTool
 	 */
 	static function getToolCount($filters = array(), $admin = false)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT count(DISTINCT t.toolname) FROM #__tool AS t ";
 		$query .= "WHERE 1=1 ";
@@ -1318,7 +1322,7 @@ class ToolsModelTool
 	 */
 	static function getToolSummaries($filters = array(), $admin = false)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered," .
 			" t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v " .
@@ -1346,9 +1350,9 @@ class ToolsModelTool
 	{
 		// id  instance  version revision state
 
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM #__tool_version AS v " .
+		$query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM `#__tool_version` AS v " .
 			" WHERE v.toolid=" . $db->Quote($this->id);
 		$query .= self::buildQuerySort($filters, $admin) . self::buildQueryLimit($filters, $admin);
 		$query .= ";";
@@ -1371,9 +1375,9 @@ class ToolsModelTool
 			return false;
 		}
 
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$sql = "SELECT f.toolname FROM #__tool as f " . "JOIN #__tool_groups AS g ON " .
+		$sql = "SELECT f.toolname FROM `#__tool` as f " . "JOIN #__tool_groups AS g ON " .
 			" f.id=g.toolid AND g.role=1 " . "JOIN #__xgroups AS xg ON g.cn=xg.cn " .
 			"JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND uidNumber='$uid' ";
 
@@ -1393,7 +1397,7 @@ class ToolsModelTool
 	 */
 	public static function getResourceId($toolname = null, $id = null)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (is_numeric($toolname) && empty($id))
 		{
@@ -1436,8 +1440,7 @@ class ToolsModelTool
 			$clause = " $clause1 AND $clause2 ";
 		}
 
-		$query = 'SELECT r.id FROM #__tool as t LEFT JOIN #__resources as r ON ' .
-			' r.alias = t.toolname WHERE ' . "$clause ;";
+		$query = 'SELECT r.id FROM `#__tool` as t LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE ' . "$clause ;";
 
 		$db->setQuery($query);
 
@@ -1456,9 +1459,9 @@ class ToolsModelTool
 	 */
 	public static function validate(&$tool, &$err, $id)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$query = "SELECT t.id FROM #__tool AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
+		$query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
 
 		if ($id)
 		{
@@ -1486,7 +1489,7 @@ class ToolsModelTool
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
 
-		$query = "SELECT t.id FROM #__tool AS t WHERE LOWER(t.title)=LOWER(" . $db->Quote($tool['title']) . ") ";
+		$query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.title)=LOWER(" . $db->Quote($tool['title']) . ") ";
 
 		if ($id)
 		{
@@ -1597,7 +1600,7 @@ class ToolsModelTool
 	 */
 	public static function validateVersion($newversion, &$err, $id)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$err = '';
 
@@ -1611,12 +1614,12 @@ class ToolsModelTool
 		}
 		else
 		{
-			$query = "SELECT v.id FROM #__tool AS t, #__tool_version AS v WHERE v.toolid=t.id AND t.id=" . $db->Quote($id) . " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") AND v.state!='3' LIMIT 1;";
+			$query = "SELECT v.id FROM `#__tool` AS t, `#__tool_version` AS v WHERE v.toolid=t.id AND t.id=" . $db->Quote($id) . " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") AND v.state!='3' LIMIT 1;";
 
 			$db->setQuery($query);
 
 			$result = $db->loadResult();
-			\Log::debug("validateVersion($newversion,$id) = $result");
+			Log::debug("validateVersion($newversion,$id) = $result");
 			if (!empty($result))
 			{
 				$err = Lang::txt('COM_TOOLS_ERR_VERSION_EXISTS');
@@ -1670,9 +1673,9 @@ class ToolsModelTool
 	 */
 	public static function getMyTools()
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
-				FROM #__resources AS r, #__tool_version AS v
+				FROM `#__resources` AS r, `#__tool_version` AS v
 				WHERE r.published=1
 				AND r.type=7
 				AND r.standalone=1
@@ -1695,12 +1698,12 @@ class ToolsModelTool
 	 */
 	public static function getToolId($toolname=NULL)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		if ($toolname=== NULL)
 		{
 			return false;
 		}
-		$db->setQuery('SELECT id FROM #__tool WHERE toolname="' . $db->Quote($toolname) . '" LIMIT 1');
+		$db->setQuery('SELECT id FROM `#__tool` WHERE toolname="' . $db->Quote($toolname) . '" LIMIT 1');
 		return $db->loadResult();
 	}
 
@@ -1714,11 +1717,11 @@ class ToolsModelTool
 	 */
 	public static function getToolDevelopers($toolid)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
-		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
-		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
+		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
+		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
+		$query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
 		$query .= "WHERE g.toolid = '" . $toolid . "' AND g.role=1 ";
 
 		$db->setQuery($query);
@@ -1736,7 +1739,7 @@ class ToolsModelTool
 	 */
 	public static function getToolGroups($toolid, $groups = array())
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
@@ -1761,7 +1764,7 @@ class ToolsModelTool
 	 */
 	public static function getToolGroupsRestriction($toolid, $instance)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query  = "SELECT tv.toolname, tg.cn ";
 		$query .= "FROM #__tool_groups AS tg, #__tool_version AS tv ";
@@ -1782,7 +1785,7 @@ class ToolsModelTool
 	 */
 	public static function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		if ($toolid=== NULL or $ticketid=== NULL)
 		{
 			return false;
@@ -1806,12 +1809,12 @@ class ToolsModelTool
 	 */
 	public static function getTicketId($toolid=NULL)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		if ($toolid=== NULL)
 		{
 			return false;
 		}
-		$db->setQuery('SELECT ticketid FROM #__tool WHERE id="' . $toolid . '"');
+		$db->setQuery('SELECT ticketid FROM `#__tool` WHERE id="' . $toolid . '"');
 		return $db->loadResult();
 	}
 
@@ -1881,7 +1884,7 @@ class ToolsModelTool
 	 */
 	public static function getTools($filters=array(), $admin=false)
 	{
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		$filter = self::xbuildQuery($filters, $admin);
 
 		$sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"

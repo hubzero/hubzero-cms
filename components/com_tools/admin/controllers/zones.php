@@ -28,17 +28,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Admin\Controllers;
 
+use Components\Tools\Models\Middleware;
+use Components\Tools\Helpers\Utils;
+use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
+use Filesystem;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Administrative tools controller for zones
  */
-class ToolsControllerZones extends \Hubzero\Component\AdminController
+class Zones extends AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -108,7 +117,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware
-		$model = new ToolsModelMiddleware();
+		$model = new Middleware();
 
 		$this->view->total = $model->zones('count', $this->view->filters);
 
@@ -135,16 +144,16 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
-		$mw = new ToolsModelMiddleware($mwdb);
+		$mw = new Middleware($mwdb);
 
 		if (!is_object($row))
 		{
 			// Incoming
 			$id = Request::getInt('id', 0);
 
-			$row = new MiddlewareModelZone($id);
+			$row = new Middleware\Zone($id);
 		}
 
 		$this->view->row = $row;
@@ -181,11 +190,11 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 		$params = Request::getVar('zoneparams', array(), 'post');
-		$row    = new MiddlewareModelZone($fields['id']);
+		$row    = new Middleware\Zone($fields['id']);
 
 		$fields['params'] = json_encode($params);
 
-		$row = new MiddlewareModelZone($fields['id']);
+		$row = new Middleware\Zone($fields['id']);
 		if (!$row->bind($fields))
 		{
 			Notify::error($row->getError());
@@ -199,13 +208,13 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			return $this->editTask($row);
 		}
 
-		/*$vl = new MwZoneLocations($mwdb);
+		/*$vl = new \Components\Tools\Tables\ZoneLocations($mwdb);
 		$vl->deleteByZone($row->id);
 
 		$locations = Request::getVar('locations', array(), 'post');
 		foreach ($locations as $location)
 		{
-			$vl = new MwZoneLocations($mwdb);
+			$vl = new \Components\Tools\Tables\ZoneLocations($mwdb);
 			$vl->zone_id = $row->id;
 			$vl->location = $location;
 			if (!$vl->check())
@@ -254,9 +263,9 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
-		$row = new MwZones($mwdb);
+		$row = new \Components\Tools\Tables\Zones($mwdb);
 		if ($row->load($id))
 		{
 			$row->state = $state;
@@ -284,18 +293,18 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = Request::getVar('id', array());
 
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		if (count($ids) > 0)
 		{
-			$row = new MwZones($mwdb);
+			$row = new \Components\Tools\Tables\Zones($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
 				if (!$row->delete(intval($id)))
 				{
-					throw new Exception($row->getError(), false);
+					throw new \Exception($row->getError(), 500);
 				}
 			}
 		}
@@ -323,13 +332,13 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
-		$row  = new MwZones($mwdb);
+		$mwdb = Utils::getMWDBO();
+		$row  = new \Components\Tools\Tables\Zones($mwdb);
 
 		if ($row->load($id[0]))
 		{
 			// Get rid of the current default
-			$default = new MwZones($mwdb);
+			$default = new \Components\Tools\Tables\Zones($mwdb);
 			$default->load(['is_default' => 1]);
 			$default->is_default = 0;
 			if (!$default->store())
@@ -366,7 +375,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$zone = MiddlewareModelZone::getInstance($id);
+		$zone = Middleware\Zone::getInstance($id);
 
 		// Build the path
 		$path = $zone->logo('path');
@@ -527,7 +536,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$zone = MiddlewareModelZone::getInstance($id);
+		$zone = Middleware\Zone::getInstance($id);
 
 		// Build the path
 		$path = $zone->logo('path');
@@ -616,7 +625,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$zone = MiddlewareModelZone::getInstance($id);
+		$zone = Middleware\Zone::getInstance($id);
 
 		// Build the path
 		$path = $zone->logo('path');
@@ -686,7 +695,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$zone = MiddlewareModelZone::getInstance($id);
+		$zone = Middleware\Zone::getInstance($id);
 
 		// Build the file path
 		$path = $zone->logo('path');
@@ -730,7 +739,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = $id ?: Request::getInt('id', 0);
 
-		$this->view->zone = MiddlewareModelZone::getInstance($id);
+		$this->view->zone = Middleware\Zone::getInstance($id);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

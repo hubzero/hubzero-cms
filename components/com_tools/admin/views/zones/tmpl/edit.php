@@ -256,7 +256,7 @@ function submitbutton(pressbutton)
 									<td><span id="img-height"><?php echo $height; ?></span> px</td>
 								</tr>
 								<tr>
-									<td><input type="hidden" name="currentfile" id="currentfile" value="<?php echo $file; ?>" /></td>
+									<td><input type="hidden" name="currentfile" id="currentfile" value="<?php echo $pic; ?>" /></td>
 									<td><a id="img-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('DELETE'); ?> ]</a></td>
 								</tr>
 							</tbody>

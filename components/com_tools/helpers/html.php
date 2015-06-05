@@ -28,13 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Helpers;
+
+use Filesystem;
+use Config;
+use User;
+use Date;
+use Lang;
 
 /**
  * Tools helper class for misc. HTML
  */
-class ToolsHelperHtml
+class Html
 {
 	/**
 	 * Short description for 'error'
@@ -45,7 +50,7 @@ class ToolsHelperHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function error( $msg, $tag='p' )
+	public static function error($msg, $tag='p')
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -557,21 +562,21 @@ class ToolsHelperHtml
 		$html .= "\t\t".' <li>'.Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
 
 		for ($i=0, $n=count($stages); $i < $n; $i++)
-			{
-				$html .= "\t\t".' <li';
+		{
+			$html .= "\t\t".' <li';
 
-				if (strtolower($active_stage) == strtolower($stages[$i])) {
-					$html .= ' class="active"';
+			if (strtolower($active_stage) == strtolower($stages[$i])) {
+				$html .= ' class="active"';
 
-				}
-				else if (count($key) == 0 or $i > $key[0]) {
-					$html .= ' class="future"';
-				}
-
-				$html .= '>';
-				$html .= $stages[$i];
-				$html .= '</li>'."\n";
 			}
+			else if (count($key) == 0 or $i > $key[0]) {
+				$html .= ' class="future"';
+			}
+
+			$html .= '>';
+			$html .= $stages[$i];
+			$html .= '</li>'."\n";
+		}
 		$html .= "\t\t".'</ol>'."\n";
 		$html .= "\t\t".'<div class="clear"></div>'."\n";
 

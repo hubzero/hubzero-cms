@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 Html::behavior('modal');
 
-$mwdb = ToolsHelperUtils::getMWDBO();
+$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function($){
@@ -66,7 +66,7 @@ $k = 0;
 foreach ($this->rows as $row)
 {
 	// Grab the zone name
-	$zone = new MwZones($mwdb);
+	$zone = new \Components\Tools\Tables\Zones($mwdb);
 	$zone->load($row->zone_id);
 ?>
 			<tr class="<?php echo "row$k"; ?>">

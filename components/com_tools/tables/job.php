@@ -22,14 +22,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
+namespace Components\Tools\Tables;
 
 /**
  * Table class for middleware jobs
  */
-class MwJob extends JTable
+class Job extends \JTable
 {
 	/**
 	 * Constructor

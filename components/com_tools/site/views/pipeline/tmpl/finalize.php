@@ -26,11 +26,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // get tool access text
-$toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']);
+$toolaccess = \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']);
 // get source code access text
-$codeaccess = ToolsHelperHtml::getCodeAccess($this->status['code']);
+$codeaccess = \Components\Tools\Helpers\Html::getCodeAccess($this->status['code']);
 // get wiki access text
-$wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
+$wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($this->status['wiki']);
 
 $this->css('pipeline.css')
      ->js('pipeline.js');
@@ -47,7 +47,7 @@ $this->css('pipeline.css')
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<?php ToolsHelperHtml::writeApproval('Approve'); ?>
+	<?php \Components\Tools\Helpers\Html::writeApproval('Approve'); ?>
 
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -61,7 +61,7 @@ $this->css('pipeline.css')
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 					<input type="hidden" name="task" value="finalizeversion" />
-					<input type="hidden" name="newstate" value="<?php echo ToolsHelperHtml::getStatusNum('Approved') ?>" />
+					<input type="hidden" name="newstate" value="<?php echo \Components\Tools\Helpers\Html::getStatusNum('Approved') ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->status['toolid'] ?>" />
 					<input type="hidden" name="app" value="<?php echo $this->status['toolname'] ?>" />
 					<div>
@@ -74,8 +74,8 @@ $this->css('pipeline.css')
 						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE'); ?>: </span><span class="desc"> <?php echo $codeaccess; ?></span></p>
 						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: </span><span class="desc"> <?php echo $wikiaccess; ?></span></p>
 						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_SCREEN_SIZE'); ?>: </span><span class="desc"> <?php echo $this->status['vncGeometry']; ?></span></p>
-						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_DEVELOPERS'); ?>: </span><span class="desc"> <?php echo ToolsHelperHtml::getDevTeam($this->status['developers']); ?></span></p>
-						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_AUTHORS'); ?>: </span><span class="desc"> <?php echo ToolsHelperHtml::getDevTeam($this->status['authors']); ?></span></p>
+						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_DEVELOPERS'); ?>: </span><span class="desc"> <?php echo \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']); ?></span></p>
+						<p><span class="heading"><?php echo Lang::txt('COM_TOOLS_AUTHORS'); ?>: </span><span class="desc"> <?php echo \Components\Tools\Helpers\Html::getDevTeam($this->status['authors']); ?></span></p>
 						<p><a href="<?php echo Route::url('index.php?option=com_resources&alias=' . $this->status['toolname'] . '&rev=dev'); ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW_RES_PAGE'); ?></a></p>
 					</div>
 				</div>

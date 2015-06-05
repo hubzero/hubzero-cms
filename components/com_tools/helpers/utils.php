@@ -28,13 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Helpers;
+
+use Exception;
+use Component;
+use Request;
+use User;
+use Lang;
+use App;
 
 /**
  * Contains functions used by multiple Session/Tool modules
  */
-class ToolsHelperUtils
+class Utils
 {
 	/**
 	 * Return a middleware database object
@@ -47,10 +53,10 @@ class ToolsHelperUtils
 
 		if (!is_object($instance))
 		{
-			$config = Component::params('com_tools');
+			$config  = Component::params('com_tools');
 			$enabled = $config->get('mw_on');
 
-			if (!$enabled && !JFactory::getapplication()->isAdmin())
+			if (!$enabled && !App::isAdmin())
 			{
 				return null;
 			}
@@ -67,14 +73,14 @@ class ToolsHelperUtils
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == ''))
 			{
-				$instance = JFactory::getDBO();
+				$instance = \JFactory::getDBO();
 			}
 			else
 			{
-				$instance = JDatabase::getInstance($options);
+				$instance = \JDatabase::getInstance($options);
 				if ($instance instanceof Exception)
 				{
-					$instance = JFactory::getDBO();
+					$instance = \JFactory::getDBO();
 				}
 			}
 		}
@@ -139,7 +145,7 @@ class ToolsHelperUtils
 	public static function createHomeDirectory($username)
 	{
 		$command = "create_userhome '{$username}'";
-		$cmd = "/bin/sh components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
+		$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
@@ -206,10 +212,8 @@ class ToolsHelperUtils
 		{
 			return(0);
 		}
-		else
-		{
-			return(1);
-		}
+
+		return(1);
 	}
 
 	/**
@@ -222,7 +226,7 @@ class ToolsHelperUtils
 	 */
 	public static function getLicenses($database)
 	{
-		$database->setQuery("SELECT text, name, title FROM #__tool_licenses ORDER BY ordering ASC");
+		$database->setQuery("SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC");
 		return $database->loadObjectList();
 	}
 
@@ -322,21 +326,20 @@ class ToolsHelperUtils
 	public static function getToolAccess($tool, $login = '')
 	{
 		//include tool models
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'group.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
 
 		//instantiate objects
 		$access = new stdClass();
-		$database = JFactory::getDBO();
-		$xlog     = JFactory::getLogger();
+		$database = \JFactory::getDBO();
 
 		// Ensure we have a tool
 		if (!$tool)
 		{
 			$access->valid = 0;
 			$access->error->message = 'No tool provided.';
-			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
+			\Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return $access;
 		}
 
@@ -348,13 +351,13 @@ class ToolsHelperUtils
 			{
 				$access->valid = 0;
 				$access->error->message = 'Unable to grant tool access to user, no user was found.';
-				$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null user check");
+				\Log::debug("mw::_getToolAccess($tool,$login) FAILED null user check");
 				return $access;
 			}
 		}
 
 		//load tool version
-		$toolVersion = new ToolVersion($database);
+		$toolVersion = new \Components\Tools\Tables\Version($database);
 		$toolVersion->loadFromInstance($tool);
 		if (empty($toolVersion))
 		{
@@ -365,7 +368,7 @@ class ToolsHelperUtils
 		}
 
 		//load the tool groups
-		$toolGroup = new ToolGroup($database);
+		$toolGroup = new \Components\Tools\Tables\Group($database);
 		$query = "SELECT * FROM " . $toolGroup->getTableName() . " WHERE toolid=" . $toolVersion->toolid;
 		$database->setQuery($query);
 		$toolgroups = $database->loadObjectList();
@@ -408,10 +411,10 @@ class ToolsHelperUtils
 		}
 
 		//get access settings
-		$exportAllowed = ToolsHelperUtils::getToolExportAccess($toolVersion->exportControl);
+		$exportAllowed = \Components\Tools\Helpers\Utils::getToolExportAccess($toolVersion->exportControl);
 		$isToolPublished = ($toolVersion->state == 1);
 		$isToolDev = ($toolVersion->state == 3);
-		$isToolGroupControlled = ($toolVersion->toolaccess == '@GROUP');
+		$isGroupControlled = ($toolVersion->toolaccess == '@GROUP');
 
 		//check for dev tools
 		if ($isToolDev)
@@ -421,7 +424,7 @@ class ToolsHelperUtils
 			{
 				$access->valid = 0;
 				$access->error->message = 'The development version of this tool may only be accessed by members of it\'s development group.';
-				$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
+				\Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
 			}
 			else
 			{
@@ -432,14 +435,14 @@ class ToolsHelperUtils
 		else if ($isToolPublished)
 		{
 			//are we checking for a group controlled tool
-			if ($isToolGroupControlled)
+			if ($isGroupControlled)
 			{
 				//if were not in the group that controls it and not admin we must deny
 				if (!$ingroup && !$admin)
 				{
 					$access->valid = 0;
 					$access->error->message = 'This tool may only be accessed by members of it\'s access control groups.';
-					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
+					\Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
 				}
 				else
 				{
@@ -452,7 +455,7 @@ class ToolsHelperUtils
 				{
 					$access->valid = 0;
 					$access->error->message = 'Export Access Denied';
-					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+					\Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
 				}
 				else
 				{
@@ -465,7 +468,7 @@ class ToolsHelperUtils
 		{
 			$access->valid = 0;
 			$access->error->message = 'This tool version is not published.';
-			$xlog->debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
+			\Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
 		}
 
 		//return access
@@ -484,7 +487,7 @@ class ToolsHelperUtils
 	{
 		//instaniate objects
 		$export_access = new stdClass;
-		$xlog = JFactory::getLogger();
+
 		$ip = Request::ip();
 
 		//get the export control level
@@ -498,7 +501,7 @@ class ToolsHelperUtils
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your unknown current location due to export/license restrictions.';
-			$xlog->debug("mw::_getToolExportControl($export_control) FAILED location export control check");
+			\Log::debug("mw::_getToolExportControl($export_control) FAILED location export control check");
 			return $export_access;
 		}
 
@@ -507,7 +510,7 @@ class ToolsHelperUtils
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
-			$xlog->debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
+			\Log::debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
 			return $export_access;
 		}
 
@@ -519,7 +522,7 @@ class ToolsHelperUtils
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
-					$xlog->debug("mw::_getToolExportControl($export_control) FAILED US export control check");
+					\Log::debug("mw::_getToolExportControl($export_control) FAILED US export control check");
 					return $export_access;
 				}
 			break;
@@ -529,7 +532,7 @@ class ToolsHelperUtils
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
-					$xlog->debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
+					\Log::debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
 					return $export_access;
 				}
 			break;
@@ -539,7 +542,7 @@ class ToolsHelperUtils
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';
-					$xlog->debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
+					\Log::debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
 					return $export_access;
 				}
 			break;
@@ -561,14 +564,14 @@ class ToolsHelperUtils
 	public static function recordToolUsage($tool, $userid = '')
 	{
 		//include needed files
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'recent.php');
 
 		//instantiate needed objects
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		//load tool version
-		$toolVersion = new ToolVersion($database);
+		$toolVersion = new \Components\Tools\Tables\Version($database);
 		$toolVersion->loadFromName($tool);
 
 		//make sure we have a user id
@@ -578,7 +581,7 @@ class ToolsHelperUtils
 		}
 
 		//get recent tools
-		$recentTool = new ToolRecent($database);
+		$recentTool = new \Components\Tools\Tables\Recent($database);
 		$rows = $recentTool->getRecords($userid);
 
 		//check to see if any recently used tools are this one
@@ -646,8 +649,10 @@ class ToolsHelperUtils
 	public static function middleware($comm, &$output)
 	{
 		$retval = true; // Assume success.
-		$output = new stdClass();
-		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw $comm 2>&1 </dev/null";
+
+		$comm = escapeshellcmd($comm);
+
+		$cmd = "/bin/sh ". dirname(__DIR__) . "/scripts/mw $comm 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
@@ -656,59 +661,72 @@ class ToolsHelperUtils
 		{
 			// Uh-oh. Something went wrong...
 			$retval = false;
+			$this->setError($results[0]);
 		}
 
 		if (is_array($results))
 		{
-			// HTML
-			// Print out the applet tags or the error message, as the case may be.
-			foreach ($results as $line)
-			{
-				$line = trim($line);
+			$results = implode('', $results);
+		}
+		$results = trim($results);
 
-				// If it's a new session, catch the session number...
-				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess))
+		try
+		{
+			$output = @json_decode($results);
+
+			if ($output === null && json_last_error() !== JSON_ERROR_NONE)
+			{
+				throw new \Exception(Lang::txt('COM_TOOLS_ERROR_BAD_DATA'));
+			}
+		}
+		catch (\Exception $e)
+		{
+			$output = new stdClass();
+
+			// If it's a new session, catch the session number...
+			if ($retval && preg_match("/^Session is ([0-9]+)/", $results, $sess))
+			{
+				$retval = $sess[1];
+				$output->session = $sess[1];
+			}
+			else
+			{
+				$patterns = array(
+					'id' => 'applet id=(["\'])(?:(?=(\\?))\2.)*?\1',
+					'code' => 'code=(["\'])(?:(?=(\\?))\2.)*?\1',
+					'archive' => 'archive=(["\'])(?:(?=(\\?))\2.)*?\1',
+					'class' => 'class=(["\'])(?:(?=(\\?))\2.)*?\1',
+					'height' => 'height=\"(\d+)\"',
+					'width' => 'width=\"(\d+)\"',
+					'height' => 'height=\"(\d+)\"',
+					'port' => '<param name=\"PORT\" value=\"?(\d+)\"?>',
+					'host' => '<param name=\"HOST\" value=\"?([^>]+)\"?>',
+					'encpassword' => '<param name=\"ENCPASSWORD\" value=\"?([^>]+)\"?>',
+					'name' => '<param name=\"name\" value=\"?([^>]+)\"?>',
+					'connect' => '<param name=\"CONNECT\" value=\"?([^>]+)\"?>',
+					'encoding' => '<param name=\"ENCODING\" value=\"?([^>]+)\"?>',
+					'show_local_cursor' => '<param name=\"ShowLocalCursor\" value=\"?([^>]+)\"?>',
+					'trust_all_vnc_certs' => '<param name=\"trustAllVncCerts\" value=\"?([^>]+)\"?>',
+					'offer_relogin' => '<param name=\"Offer relogin\" value=\"?([^>]+)\"?>',
+					'disable_ssl' => '<param name=\"DisableSSL\" value=\"?([^>]+)\"?>',
+					'permissions' => '<param name=\"permissions\" value=\"?([^>]+)\"?>',
+					'view_only' => '<param name=\"View Only\" value=\"?([^>]+)\"?>',
+					'show_controls' => '<param name=\"Show Controls\" value=\"?([^>]+)\"?>',
+					'debug' => '<param name=\"Debug\" value=\"?([^>]+)\"?>'
+				);
+				foreach ($patterns as $key => $pattern)
 				{
-					$retval = $sess[1];
-					$output->session = $sess[1];
-				}
-				else
-				{
-					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
+					if (preg_match("/$pattern/i", $results, $param))
 					{
-						$output->width = trim($param[1], '"');
-					}
-					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
-					{
-						$output->height = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
-					{
-						$output->port = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->password = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->connect = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->encoding = trim($param[1], '"');
+						$output->$key = trim($param[1], '"');
 					}
 				}
 			}
 		}
-		else
+
+		if ($output == null || (is_object($output) && count(get_object_vars($output)) <= 0))
 		{
-			// JSON
-			$output = json_decode($results);
-			if ($output == null)
-			{
-				$retval = false;
-			}
+			$retval = false;
 		}
 
 		return $retval;

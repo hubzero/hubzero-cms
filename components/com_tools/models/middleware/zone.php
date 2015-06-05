@@ -28,23 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models\Middleware;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.zones.php');
+use Hubzero\Base\ItemList;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php');
 require_once(__DIR__ . DS . 'location.php');
 
 /**
  * Middleware zone mdel
  */
-class MiddlewareModelZone extends MiddlewareModelBase
+class Zone extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'MwZones';
+	protected $_tbl_name = '\\Components\\Tools\\Tables\\Zones';
 
 	/**
 	 * \Hubzero\ItemList
@@ -89,7 +90,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 	 */
 	public function locations($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new MwZoneLocations($this->_db);
+		$tbl = new \Components\Tools\Tables\ZoneLocations($this->_db);
 
 		if (!isset($filters['zone_id']))
 		{
@@ -109,20 +110,20 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['locations.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['locations.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new MiddlewareModelLocation($result);
+							$results[$key] = new Location($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['locations.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['locations.list'] = new ItemList($results);
 				}
 				return $this->_cache['locations.list'];
 			break;
@@ -161,7 +162,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			$path .= '/' . $file;
 			if (file_exists($path))
 			{
-				$path = Route::url('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file);
+				$path = \Route::url('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file);
 			}
 			return $path;
 		}
@@ -201,7 +202,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 				// Remove picture
 				if (!\Filesystem::delete($this->logo('path') . DS . $file))
 				{
-					$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
+					$this->setError(\Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 				}
 			}
 		}

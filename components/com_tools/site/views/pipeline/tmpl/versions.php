@@ -44,11 +44,11 @@ $this->css('pipeline.css')
 	($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
 	$statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
 
-	$newstate = ($this->action == 'edit') ? $this->status['state']: ToolsHelperHtml::getStatusNum('Approved') ;
+	$newstate = ($this->action == 'edit') ? $this->status['state']: \Components\Tools\Helpers\Html::getStatusNum('Approved') ;
 	$submitlabel = ($this->action == 'edit') ? Lang::txt('COM_TOOLS_SAVE') : Lang::txt('COM_TOOLS_USE_THIS_VERSION');
 	if ($this->action == 'confirm')
 	{
-		ToolsHelperHtml::writeApproval(Lang::txt('COM_TOOLS_CONFIRM_VERSION'));
+		\Components\Tools\Helpers\Html::writeApproval(Lang::txt('COM_TOOLS_CONFIRM_VERSION'));
 	}
 
 	$rconfig = Component::params( 'com_resources' );
@@ -60,7 +60,7 @@ $this->css('pipeline.css')
 				<p class="error"><?php echo $this->error; ?></p>
 			<?php } ?>
 
-			<?php if ($this->action != 'dev' && $this->status['state'] != ToolsHelperHtml::getStatusNum('Published')) { ?>
+			<?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
 				<?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
 					<h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT'): Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
 				<?php } else if ($this->action == 'new' && $this->status['toolname']) { // new version is required ?>
@@ -101,11 +101,11 @@ $this->css('pipeline.css')
 					foreach ($this->versions as $t)
 					{
 						// get tool access text
-						$toolaccess = ToolsHelperHtml::getToolAccess($t->toolaccess, $this->status['membergroups']);
+						$toolaccess = \Components\Tools\Helpers\Html::getToolAccess($t->toolaccess, $this->status['membergroups']);
 						// get source code access text
-						$codeaccess = ToolsHelperHtml::getCodeAccess($t->codeaccess);
+						$codeaccess = \Components\Tools\Helpers\Html::getCodeAccess($t->codeaccess);
 						// get wiki access text
-						$wikiaccess = ToolsHelperHtml::getWikiAccess($t->wikiaccess);
+						$wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
 						$handle = ($t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '' ;
 
@@ -149,7 +149,7 @@ $this->css('pipeline.css')
 							<div id="confdiv_<?php echo $i; ?>" class="vmanage">
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span><span class="desc"><?php echo $t->title; ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span><span class="desc"><?php echo $t->description; ?></span></p>
-								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo ToolsHelperHtml::getDevTeam($t->authors); ?></span></p>
+								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span><span class="desc"><?php echo $codeaccess; ?></span></p>
 								<?php if ($handle) { echo ' <p><span class="heading">'.Lang::txt('COM_TOOLS_DOI').': </span><span class="desc"><a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a></span></p>'; } ?>

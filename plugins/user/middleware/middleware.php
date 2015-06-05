@@ -132,7 +132,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
-				$row = new ToolsTablePreferences($db);
+				$row = new \Components\Tools\Tables\Preferences($db);
 
 				// Check for an existing quota record
 				$db->setQuery("SELECT * FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);

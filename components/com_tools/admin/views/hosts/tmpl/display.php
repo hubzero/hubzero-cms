@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 <?php
 if ($this->rows)
 {
-	$db = ToolsHelperUtils::getMWDBO();
+	$db = \Components\Tools\Helpers\Utils::getMWDBO();
 
 	$i = 0;
 	foreach ($this->rows as $row)

@@ -410,7 +410,7 @@ class Helper extends Module
 					{
 						include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-						$tv = new \ToolVersion($this->database);
+						$tv = new \Components\Tools\Tables\Version($this->database);
 
 						$versionid = $tv->getVersionIdFromResource($row->id, 'current');
 

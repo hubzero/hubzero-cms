@@ -32,8 +32,6 @@
 namespace Modules\MySessions;
 
 use Hubzero\Module\Module;
-use ToolsHelperUtils;
-use MwSession;
 use Component;
 use User;
 
@@ -50,9 +48,9 @@ class Helper extends Module
 	 */
 	private function _setTimeout($sess)
 	{
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$ms->load($sess);
 		$ms->timeout = 1209600;
 		$ms->store();
@@ -66,9 +64,9 @@ class Helper extends Module
 	 */
 	private function _getTimeout($sess)
 	{
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$remaining = $ms->getTimeout();
 
 		$tl = 'unknown';
@@ -99,13 +97,19 @@ class Helper extends Module
 	{
 		// Include mw libraries
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'job.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'view.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'viewperm.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'session.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
 
 		// Get database object
 		$this->database = \JFactory::getDBO();
 
 		// Get a connection to the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Get tool paras
 		$this->toolsConfig = Component::params('com_tools');
@@ -130,7 +134,7 @@ class Helper extends Module
 		}
 
 		// Get sessions
-		$session = new MwSession($mwdb);
+		$session = new \Components\Tools\Tables\Session($mwdb);
 		$this->sessions = $session->getRecords(User::get('username'), '', false);
 
 		// Output module

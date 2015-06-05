@@ -28,13 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Document;
+use Pathway;
+use Filesystem;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Tools controller class for managing user disk storage
  */
-class ToolsControllerStorage extends \Hubzero\Component\SiteController
+class Storage extends SiteController
 {
 	/**
 	 * Execute a task
@@ -273,7 +282,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 		bcscale(6);
 
-		$du = ToolsHelperUtils::getDiskUsage(User::get('username'));
+		$du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
 		if (isset($du['space']))
 		{
 			if ($type == 'hard')
@@ -328,7 +337,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 		$msgs = Request::getInt('msgs', 0);
 
-		$du = ToolsHelperUtils::getDiskUsage(User::get('username'));
+		$du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
 		if (count($du) <=1)
 		{
 			// error

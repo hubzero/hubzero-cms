@@ -70,7 +70,7 @@ $this->css('pipeline.css')
 	<?php
 		if ($this->action == 'confirm')
 		{
-			ToolsHelperHtml::writeApproval('Confirm license');
+			\Components\Tools\Helpers\Html::writeApproval('Confirm license');
 		}
 		//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;
 	?>
@@ -82,7 +82,7 @@ $this->css('pipeline.css')
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>" method="post" id="licenseForm" name="licenseForm">
 				<fieldset class="versionfield">
 					<label><?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>:</label>
-					<?php echo ToolsHelperHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
+					<?php echo \Components\Tools\Helpers\Html::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
 					<span id="choice-icon">&nbsp;</span>
 					<div id="closed-source">
 						<h4><?php echo Lang::txt('COM_TOOLS_LICENSE_ARE_YOU_SURE'); ?></h4>
@@ -94,7 +94,7 @@ $this->css('pipeline.css')
 					<div id="open-source">
 						<div id="lic">
 							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEMPLATE'); ?>:</label>
-							<?php echo ToolsHelperHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
+							<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 						</div>
 						<div class="licinput" >
 							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEXT'); ?><span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>

@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tools/assets/css/resource.css
+ * @file        components/com_tools/site/assets/css/resource.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -36,7 +36,7 @@
 		font-weight: normal;
 	}
 	#steps li.intermediate {
-		background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
 		padding: 0 1em 0 1em;
 		margin: 0;
 	}
@@ -50,7 +50,7 @@
 		color: #bd6416;
 		background: #fff;
 		font-weight: bold;
-		background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
 	}
 	#steps li.future {
 		color: #b1c1b3;
@@ -121,7 +121,7 @@
 
 	#displays_0,
 	.devversion {
-		background: url("/components/com_tools/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
+		background: url("/components/com_tools/site/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
 	}
 	p.devversion,
 	p.currentversion {

@@ -28,15 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Helpers;
 
-include_once(__DIR__ . '/../models/version.php');
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'version.php');
 
 /**
  * Tool version helper class
  */
-class ToolsHelperVersion
+class Version
 {
 	/**
 	 * Short description for 'iterate'
@@ -52,7 +51,7 @@ class ToolsHelperVersion
 
 		if (true)
 		{
-			$query = "SELECT instance FROM #__tool_version;";
+			$query = "SELECT instance FROM `#__tool_version`;";
 
 			$db->setQuery($query);
 
@@ -63,7 +62,7 @@ class ToolsHelperVersion
 				return false;
 			}
 
-			foreach($result as $row)
+			foreach ($result as $row)
 			{
 				call_user_func($func, $row);
 			}
@@ -104,7 +103,7 @@ class ToolsHelperVersion
 			return false;
 		}
 
-		return ToolsModelVersion::getInstance($result);
+		return \Components\Tools\Models\Version::getInstance($result);
 	}
 
 	/**
@@ -139,7 +138,7 @@ class ToolsHelperVersion
 			return false;
 		}
 
-		return ToolsModelVersion::getInstance($result);
+		return \Components\Tools\Models\Version::getInstance($result);
 	}
 
 	/**
@@ -207,6 +206,6 @@ class ToolsHelperVersion
 			return false;
 		}
 
-		return ToolsModelVersion::getInstance($result);
+		return \Components\Tools\Models\Version::getInstance($result);
 	}
 }

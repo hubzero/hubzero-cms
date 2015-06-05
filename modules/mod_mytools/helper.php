@@ -31,9 +31,6 @@
 namespace Modules\MyTools;
 
 use Hubzero\Module\Module;
-use ToolsModelVersion;
-use ToolsModelTool;
-use RecentTool;
 use Component;
 use Request;
 use Route;
@@ -65,7 +62,7 @@ class Helper extends Module
 			$tools = array();
 
 			// Check if the list is empty or not
-			if (!empty($lst))
+			if (empty($lst))
 			{
 				return $tools;
 			}
@@ -84,12 +81,12 @@ class Helper extends Module
 
 				$items[] = $item;
 			}
-			$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
+			$tools = \Components\Tools\Models\Version::getVersionInfo('', 'current', $items, '');
 		}
 		else
 		{
 			// Get all available tools
-			$tools = ToolsModelTool::getMyTools();
+			$tools = \Components\Tools\Models\Tool::getMyTools();
 		}
 
 		$toolnames = array();
@@ -236,7 +233,13 @@ class Helper extends Module
 	public function display()
 	{
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'job.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'view.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'viewperm.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'session.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
 		include_once(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
 
 		$params = $this->params;
@@ -279,7 +282,7 @@ class Helper extends Module
 		else
 		{
 			// Get a list of recent tools
-			$rt = new RecentTool($database);
+			$rt = new \Components\Tools\Tables\Recent($database);
 			$rows = $rt->getRecords(User::get('id'));
 
 			$recent = array();

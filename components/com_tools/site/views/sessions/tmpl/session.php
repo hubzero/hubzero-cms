@@ -47,7 +47,7 @@ foreach ($this->shares as $share)
 include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 $database = JFactory::getDBO();
-$preferences = new ToolsTablePreferences($database);
+$preferences = new \Components\Tools\Tables\Preferences($database);
 $preferences->loadByUser(User::get('id'));
 
 $declared = Request::getWord('viewer');

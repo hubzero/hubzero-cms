@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use Components\Tools\Helpers\Utils;
+use Hubzero\User\Profile;
+use Lang;
 
 /**
  * Table class for tool authors
  */
-class ToolAuthor extends  JTable
+class Author extends \JTable
 {
 	/**
 	 * Constructor
@@ -161,8 +164,8 @@ class ToolAuthor extends  JTable
 			$query .= "FROM #__tool_authors as a  ";
 			if ($version == 'current' && $toolname)
 			{
-				$objV = new ToolVersion($this->_db);
-				$rev = $objV->getCurrentVersionProperty ($toolname, 'revision');
+				$objV = new Version($this->_db);
+				$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
 				if ($rev)
 				{
 					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND a.revision=" . $this->_db->Quote($rev);
@@ -218,11 +221,11 @@ class ToolAuthor extends  JTable
 
 		if ($authors)
 		{
-			$authors = ToolsHelperUtils::transform($authors, 'uidNumber');
+			$authors = Utils::transform($authors, 'uidNumber');
 		}
 
 		$dev_authors = $this->getToolAuthors('dev', $rid);
-		$dev_authors = ToolsHelperUtils::transform($dev_authors, 'uidNumber');
+		$dev_authors = Utils::transform($dev_authors, 'uidNumber');
 
 		if ($dev_authors && $version == 'dev')
 		{
@@ -268,7 +271,7 @@ class ToolAuthor extends  JTable
 				$rc->loadAssociation($authid, $rid, 'resources');
 				if (!$rc->authorid)
 				{
-					$xprofile = new \Hubzero\User\Profile();
+					$xprofile = new Profile();
 					$xprofile->load($authid);
 
 					// New record
@@ -303,7 +306,7 @@ class ToolAuthor extends  JTable
 				}
 				else
 				{
-					$xprofile = new \Hubzero\User\Profile();
+					$xprofile = new Profile();
 					$xprofile->load($authid);
 
 					$name         = $xprofile->get('name');
@@ -332,7 +335,7 @@ class ToolAuthor extends  JTable
 	 */
 	private function _author_check($id)
 	{
-		$xprofile = \Hubzero\User\Profile::getInstance($id);
+		$xprofile = Profile::getInstance($id);
 		if ($xprofile->get('givenName') == ''
 		 && $xprofile->get('middleName') == ''
 		 && $xprofile->get('surname') == '')

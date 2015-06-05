@@ -166,7 +166,7 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 					$row->state_changed = ($row->state_changed != '0000-00-00 00:00:00') ? $row->state_changed : $row->registered;
 					$row->title .= ($row->version) ? ' v' . $row->version : '';
 
-					ToolsHelperHtml::getStatusName($row->state, $status);
+					\Components\Tools\Helpers\Html::getStatusName($row->state, $status);
 				?>
 					<tr class="<?php echo strtolower($status); if (!$this->admin) { echo (' user-submitted'); } ?>">
 						<th>
@@ -193,11 +193,11 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 								<?php echo Lang::txt('COM_TOOLS_' . $status); ?>
 							</a><br />
 							<span class="entry-details">
-								<span class="entry-time"><?php echo ToolsHelperHtml::timeAgo($row->state_changed) . ' ' . Lang::txt('COM_TOOLS_AGO'); ?></span>
+								<span class="entry-time"><?php echo \Components\Tools\Helpers\Html::timeAgo($row->state_changed) . ' ' . Lang::txt('COM_TOOLS_AGO'); ?></span>
 							</span>
 						</td>
-						<td style="white-space: nowrap;" <?php if (!ToolsHelperHtml::toolEstablished($row->state)) { echo ' class="disabled_links" ';} ?>>
-						<?php if (!ToolsHelperHtml::toolActive($row->state)) { ?>
+						<td style="white-space: nowrap;" <?php if (!\Components\Tools\Helpers\Html::toolEstablished($row->state)) { echo ' class="disabled_links" ';} ?>>
+						<?php if (!\Components\Tools\Helpers\Html::toolActive($row->state)) { ?>
 							<span class="entry-page">
 								<?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
 							</span>

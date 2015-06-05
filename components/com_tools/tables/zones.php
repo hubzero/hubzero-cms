@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use Lang;
 
 /**
  * Middleware zones table class
  */
-class MwZones extends JTable
+class Zones extends \JTable
 {
 	/**
 	 * Constructor
@@ -99,7 +100,7 @@ class MwZones extends JTable
 			$this->$k = $oid;
 		}
 
-		$location = new MwZoneLocations($this->_db);
+		$location = new ZoneLocations($this->_db);
 		if (!$location->deleteByZone($oid))
 		{
 			$this->setError($location->getError());

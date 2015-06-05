@@ -28,25 +28,31 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models\Middleware;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.job.php');
+use Components\Tools\Helpers\Utils;
+use Hubzero\Base\ItemList;
+use Hubzero\User\Group;
+use User;
+use Lang;
+
+$base = dirname(dirname(__DIR__));
+require_once($base . DS . 'tables' . DS . 'session.php');
+require_once($base . DS . 'tables' . DS . 'view.php');
+require_once($base . DS . 'tables' . DS . 'viewperm.php');
+require_once($base . DS . 'tables' . DS . 'job.php');
 
 /**
  * Middleware model for a tool session
  */
-class MiddlewareModelSession extends MiddlewareModelBase
+class Session extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'MwSession';
+	protected $_tbl_name = '\\Components\\Tools\\Tables\\Session';
 
 	/**
 	 * \Hubzero\ItemList
@@ -67,7 +73,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	 */
 	public function __construct($oid=null, $authorized=null)
 	{
-		$this->_db = \ToolsHelperUtils::getMWDBO();
+		$this->_db = Utils::getMWDBO();
 
 		if ($this->_tbl_name)
 		{
@@ -77,9 +83,9 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -163,7 +169,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	 */
 	public function shared($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new MwViewperm($this->_db);
+		$tbl = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
 
 		if (!isset($filters['sessnum']))
 		{
@@ -183,20 +189,20 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['shared.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['shared.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->loadViewperm($filters['sessnum']))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new MiddlewareModelLocation($result);
+							$results[$key] = new Location($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['shared.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['shared.list'] = new ItemList($results);
 				}
 				return $this->_cache['shared.list'];
 			break;
@@ -232,7 +238,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 		if ($group)
 		{
-			$hg = \Hubzero\User\Group::getInstance($group);
+			$hg = Group::getInstance($group);
 			$members = $hg->get('members');
 
 			// merge group members with any passed in username field
@@ -272,7 +278,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			}
 
 			//load current view perm
-			$mwViewperm = new MwViewperm($this->_db);
+			$mwViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
 			$currentViewPerm = $mwViewperm->loadViewperm($sess, $zuser->get('username'));
 
 			// If there are no matching entries in viewperm, add a new entry,
@@ -320,7 +326,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	 */
 	public function unshare($with=null)
 	{
-		$mv = new MwViewperm($this->_db);
+		$mv = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
 		if (!$mv->deleteViewperm($this->get('sessnum'), $with))
 		{
 			$this->setError($mv->getError());

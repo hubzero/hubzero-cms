@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models;
+
+use Log;
 
 /**
  * Tool version instance
  */
-class ToolsModelVersion
+class Version
 {
 	/**
 	 * Description for 'id'
@@ -272,14 +273,32 @@ class ToolsModelVersion
 	 *
 	 * @var array
 	 */
-	static $_propertyattrmap = array('title'=>'cn', 'description'=>'description',
-		'version'=>'version', 'revision'=>'revision', 'released'=>'publishDate',
-		'unpublished'=>'unpublishDate', 'exportControl'=>'exportControl',
-		'vnc_geometry'=>'vncGeometry', 'vnc_depth'=>'vncDepth', 'vnc_timeout'=>'vncTimeout',
-		'vnc_command'=>'vncCommand', 'mw'=>'defaultMiddleware', 'priority'=>'priority',
-		'alias'=>'alias', 'hostreq'=>'vncHostReq', 'member'=>'member',
-		'owner'=>'owner', 'state'=>'state', 'codeaccess'=>'sourcePublic', 'toolaccess'=>'public',
-		'wikiaccess'=>'projectPublic', 'author'=>'author', 'middleware'=>'middleware', 'params'=>'params');
+	static $_propertyattrmap = array(
+		'title'=>'cn',
+		'description'=>'description',
+		'version'=>'version',
+		'revision'=>'revision',
+		'released'=>'publishDate',
+		'unpublished'=>'unpublishDate',
+		'exportControl'=>'exportControl',
+		'vnc_geometry'=>'vncGeometry',
+		'vnc_depth'=>'vncDepth',
+		'vnc_timeout'=>'vncTimeout',
+		'vnc_command'=>'vncCommand',
+		'mw'=>'defaultMiddleware',
+		'priority'=>'priority',
+		'alias'=>'alias',
+		'hostreq'=>'vncHostReq',
+		'member'=>'member',
+		'owner'=>'owner',
+		'state'=>'state',
+		'codeaccess'=>'sourcePublic',
+		'toolaccess'=>'public',
+		'wikiaccess'=>'projectPublic',
+		'author'=>'author',
+		'middleware'=>'middleware',
+		'params'=>'params'
+	);
 
 	/**
 	 * Description for '_updatedkeys'
@@ -289,9 +308,7 @@ class ToolsModelVersion
 	private $_updatedkeys = array();
 
 	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
+	 * Constructor
 	 *
 	 * @return	 void
 	 */
@@ -343,8 +360,7 @@ class ToolsModelVersion
 	 */
 	private function logDebug($msg)
 	{
-		$xlog = \JFactory::getLogger();
-		$xlog->debug($msg);
+		Log::debug($msg);
 	}
 
 	/**
@@ -390,8 +406,7 @@ class ToolsModelVersion
 			}
 			else
 			{
-				$where_clause = "toolname=" . $db->Quote($this->toolname) . " AND toolid=" .
-					$db->Quote($this->toolid);
+				$where_clause = "toolname=" . $db->Quote($this->toolname) . " AND toolid=" . $db->Quote($this->toolid);
 			}
 		}
 
@@ -691,9 +706,8 @@ class ToolsModelVersion
 	private function _mysql_update($all = false)
 	{
 		$db = \JFactory::getDBO();
-		$xlog = \JFactory::getLogger();
 
-		$xlog->debug('_mysql_update() start');
+		Log::debug('_mysql_update() start');
 		$query = "UPDATE #__tool_version SET ";
 
 		$classvars = get_class_vars(__CLASS__);
@@ -916,7 +930,7 @@ class ToolsModelVersion
 
 			if (!$db->query())
 			{
-				$xlog->debug('_mysql_update_failed');
+				Log::debug('_mysql_update_failed');
 				return false;
 			}
 		}
@@ -946,9 +960,7 @@ class ToolsModelVersion
 	 */
 	public function update()
 	{
-		$xlog = \JFactory::getLogger();
-
-		$xlog->debug("update");
+		Log::debug("update");
 
 		$result = true;
 
@@ -1039,8 +1051,6 @@ class ToolsModelVersion
 	 */
 	public function delete()
 	{
-		$xlog = \JFactory::getLogger();
-
 		$result = true;
 
 		if (true)
@@ -1066,8 +1076,6 @@ class ToolsModelVersion
 	 */
 	public function __get($property = null)
 	{
-		$xlog = \JFactory::getLogger();
-
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
 			if (empty($property))

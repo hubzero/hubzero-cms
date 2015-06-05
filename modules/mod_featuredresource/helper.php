@@ -32,7 +32,6 @@
 namespace Modules\Featuredresource;
 
 use Hubzero\Module\Module;
-use ToolVersion;
 use Component;
 use User;
 use JFactory;
@@ -106,7 +105,7 @@ class Helper extends Module
 			{
 				include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-				$tv = new ToolVersion($database);
+				$tv = new \Components\Tools\Tables\Version($database);
 
 				$versionid = $tv->getVersionIdFromResource($id, 'current');
 

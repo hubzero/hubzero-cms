@@ -28,8 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Document;
+use Pathway;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
@@ -40,7 +49,7 @@ include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
+class Screenshots extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -77,7 +86,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// get tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
@@ -88,7 +97,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Get version id
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
 		if ($vid == NULL)
@@ -167,7 +176,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$row->load($pid);
 
 		// Get version id
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
 		if ($vid == NULL)
@@ -287,7 +296,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$row->load($pid);
 
 		// Get version id
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
 		if ($vid == NULL)
@@ -399,7 +408,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Get version id
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
 		if ($vid == NULL)
@@ -416,7 +425,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$files = $row->getFiles($pid, $vid);
 		if (count($files) > 0)
 		{
-			$files = ToolsHelperUtils::transform($files, 'filename');
+			$files = \Components\Tools\Helpers\Utils::transform($files, 'filename');
 			foreach ($files as $f)
 			{
 				if ($f == $file['name'])
@@ -616,12 +625,12 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->_authorize();
 
 		// Get version id
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$to   = $objV->getVersionIdFromResource($rid, $version);
 		$from = $objV->getVersionIdFromResource($rid, $from);
 
 		// get tool id
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$toolid = $obj->getToolIdFromResource($rid);
 
 		if ($from == 0 or $to == 0 or $rid == 0)
@@ -787,7 +796,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$resource->load($rid);
 
 		// Get version id
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$vid = $objV->getVersionIdFromResource($rid, $version);
 
 		// Do we have a published tool?
@@ -903,7 +912,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	private function _checkAccess($toolid, $allowAdmins=1, $allowAuthors=false)
 	{
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// allow to view if admin
 		if ($this->config->get('access-manage-component') && $allowAdmins)

@@ -1270,7 +1270,7 @@ class Resources extends SiteController
 			 or (!$revision && $this->model->resource->published != 1))
 			{
 				// Check if the user has access to the tool
-				$objT = new Tool($this->database);
+				$objT = new \Components\Tools\Tables\Tool($this->database);
 				$toolid = $objT->getToolId($this->model->resource->alias);
 				if (!$this->_checkToolaccess($toolid))
 				{
@@ -2148,7 +2148,7 @@ class Resources extends SiteController
 		}
 
 		// Load the tool version
-		$tv = new \ToolVersion($this->database);
+		$tv = new \Components\Tools\Tables\Version($this->database);
 		$tv->loadFromInstance($tool);
 
 		// Concat tarball name for this version
@@ -2222,7 +2222,7 @@ class Resources extends SiteController
 		if ($tool)
 		{
 			// Load the tool version
-			$row = new \ToolVersion($this->database);
+			$row = new \Components\Tools\Tables\Version($this->database);
 			$row->loadFromInstance($tool);
 		}
 		else
@@ -2727,7 +2727,7 @@ class Resources extends SiteController
 		}
 
 		// Create a Tool object
-		$obj = new \Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		// check if user in tool dev team
 		$developers = $obj->getToolDevelopers($toolid);
 		if ($developers)

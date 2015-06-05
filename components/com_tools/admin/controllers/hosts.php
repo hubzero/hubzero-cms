@@ -28,17 +28,25 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Tools\Admin\Controllers;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.zones.php');
+use Components\Tools\Helpers\Utils;
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use App;
+
+include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'host.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php');
 
 /**
  * Tools controller class for hosts
  */
-class ToolsControllerHosts extends \Hubzero\Component\AdminController
+class Hosts extends AdminController
 {
 	/**
 	 * Execute a task
@@ -102,15 +110,15 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
-		$model = new MwHost($mwdb);
+		$model = new \Components\Tools\Tables\Host($mwdb);
 
 		$this->view->total = $model->getCount($this->view->filters);
 
 		$this->view->rows = $model->getRecords($this->view->filters);
 
-		$ht = new MwHosttype($mwdb);
+		$ht = new \Components\Tools\Tables\Hosttype($mwdb);
 
 		$this->view->hosttypes = $ht->getRecords();
 
@@ -207,7 +215,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		if (!is_object($row))
 		{
@@ -218,16 +226,16 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			// clean at least some of it. See RFC 1034 for valid character set info
 			$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
-			$row = new MwHost($mwdb);
+			$row = new \Components\Tools\Tables\Host($mwdb);
 			$row->load($hostname);
 		}
 
 		$this->view->row = $row;
 
-		$ht = new MwHosttype($mwdb);
+		$ht = new \Components\Tools\Tables\Hosttype($mwdb);
 		$this->view->hosttypes = $ht->getRecords();
 
-		$v = new MwZones($mwdb);
+		$v = new \Components\Tools\Tables\Zones($mwdb);
 		$this->view->zones = $v->find('list');
 
 		//make sure we have a hostname
@@ -267,12 +275,12 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		Request::checkToken() or exit('Invalid Token');
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = new MwHost($mwdb);
+		$row = new \Components\Tools\Tables\Host($mwdb);
 		if (!$row->bind($fields))
 		{
 			Notify::error($row->getError());
@@ -300,7 +308,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$row->provisions = 0;
 
 		// Get the middleware database
-		$ht = new MwHosttype($mwdb);
+		$ht = new \Components\Tools\Tables\Hosttype($mwdb);
 		if ($rows = $ht->getRecords())
 		{
 			for ($i=0; $i < count($rows); $i++)
@@ -360,7 +368,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";" .
 				" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
@@ -388,11 +396,11 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = Request::getVar('id', array());
 
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		if (count($ids) > 0)
 		{
-			$row = new MwHost($mwdb);
+			$row = new \Components\Tools\Tables\Host($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
@@ -400,7 +408,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 				$id = preg_replace("/[^A-Za-z0-9-.]/", '', $id);
 				if (!$row->delete($id))
 				{
-					throw new Exception($row->getError(), 500);
+					throw new \Exception($row->getError(), 500);
 				}
 			}
 		}

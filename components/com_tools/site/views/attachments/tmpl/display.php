@@ -43,7 +43,7 @@ if (!$this->allowupload) { ?>
 <?php } ?>
 
 <?php $this->allowupload = true; ?>
-	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<label for="upload">
 				<input type="file" class="option" name="upload" id="upload" />
@@ -128,7 +128,7 @@ if ($this->children)
 		$out .= '  <td width="100%">';
 		if ($this->allowupload)
 		{
-			$out .= '<span'.$liclass.' item:name id:'.$child->id.'" data-id="' . $child->id . '">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.Route::url('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$child->title.'">'.ContribtoolHtml::getFileAttribs($url, $base).'</a>)</span>';
+			$out .= '<span'.$liclass.' item:name id:'.$child->id.'" data-id="' . $child->id . '">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.Route::url('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$child->title.'">'.\Components\Tools\Helpers\Html::getFileAttribs($url, $base).'</a>)</span>';
 		}
 		else
 		{

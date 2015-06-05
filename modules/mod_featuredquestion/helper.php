@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\Featuredresource;
+namespace Modules\Featuredquestion;
 
 use Hubzero\Module\Module;
 use Components\Answers\Tables\Question;

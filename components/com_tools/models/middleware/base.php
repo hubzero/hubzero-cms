@@ -28,10 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Tools\Models\Middleware;
+
+use Components\Tools\Helpers\Utils;
+use Hubzero\Base\Model;
+use Lang;
+
 /**
  * Abstract model class
  */
-class MiddlewareModelBase extends \Hubzero\Base\Model
+class Base extends Model
 {
 	/**
 	 * Registry
@@ -48,7 +54,7 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \ToolsHelperUtils::getMWDBO();
+		$this->_db = Utils::getMWDBO();
 
 		if ($this->_tbl_name)
 		{
@@ -58,9 +64,9 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))

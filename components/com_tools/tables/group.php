@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use Lang;
+use User;
 
 /**
  * Table class for tool/group mapping
  */
-class ToolGroup extends  JTable
+class Group extends \JTable
 {
 	/**
 	 * Constructor
@@ -102,13 +104,13 @@ class ToolGroup extends  JTable
 			return false;
 		}
 
-		$members = ToolsHelperUtils::transform($members, 'uidNumber');
+		$members = \Components\Tools\Helpers\Utils::transform($members, 'uidNumber');
 		$group = new \Hubzero\User\Group();
 
 		if (\Hubzero\User\Group::exists($devgroup))
 		{
 			$group->read($devgroup);
-			$existing_members = ToolsHelperUtils::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
+			$existing_members = \Components\Tools\Helpers\Utils::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$group->set('members', $existing_members);
 			$group->set('managers', $existing_managers);
 		}
@@ -154,9 +156,9 @@ class ToolGroup extends  JTable
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
-		$membergroups = ToolsModelTool::getToolGroups($toolid);
-		$membergroups = ToolsHelperUtils::transform($membergroups, 'cn');
-		$newgroups = ToolsHelperUtils::transform($newgroups, 'cn');
+		$membergroups = \Components\Tools\Models\Tool::getToolGroups($toolid);
+		$membergroups = \Components\Tools\Helpers\Utils::transform($membergroups, 'cn');
+		$newgroups = \Components\Tools\Helpers\Utils::transform($newgroups, 'cn');
 		$to_delete = array_diff($membergroups, $newgroups);
 
 		if (count($to_delete) > 0 && $editversion != 'current')
@@ -195,7 +197,7 @@ class ToolGroup extends  JTable
 	 */
 	public function writeMemberGroups($new, $id, $database, &$err='')
 	{
-		$toolhelper = new ToolsHelperUtils();
+		$toolhelper = new \Components\Tools\Helpers\Utils();
 
 		$groups    = is_array($new) ? $new : $toolhelper->makeArray($new);
 		$grouplist = array();
@@ -244,7 +246,7 @@ class ToolGroup extends  JTable
 	 */
 	public function writeTeam($new, $id, $database, &$err='')
 	{
-		$toolhelper = new ToolsHelperUtils();
+		$toolhelper = new \Components\Tools\Helpers\Utils();
 
 		$members  = is_array($new) ? $new : $toolhelper->makeArray($new);
 		$teamlist = array();

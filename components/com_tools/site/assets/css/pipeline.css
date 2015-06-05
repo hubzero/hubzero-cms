@@ -21,37 +21,37 @@
 		background: #ffe;
 	}
 	.tools tbody tr.registered th {
-		background: url("/components/com_tools/assets/img/contribute/application.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application.png") right 15px no-repeat;
 	}
 	.tools tbody tr.created th {
-		background: url("/components/com_tools/assets/img/contribute/application_created.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application_created.png") right 15px no-repeat;
 	}
 	.tools tbody tr.uploaded th {
-		background: url("/components/com_tools/assets/img/contribute/application_uploaded.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application_uploaded.png") right 15px no-repeat;
 	}
 	.tools tbody tr.installed th {
-		background: url("/components/com_tools/assets/img/contribute/application_installed.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application_installed.png") right 15px no-repeat;
 	}
 	.tools tbody tr.updated th {
-		background: url("/components/com_tools/assets/img/contribute/application_updated.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application_updated.png") right 15px no-repeat;
 	}
 	.tools tbody tr.approved th {
-		background: url("/components/com_tools/assets/img/contribute/application.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application.png") right 15px no-repeat;
 	}
 	.tools tbody tr.approved {
 		background: #f7fef4;
 	}
 	.tools tbody tr.published th {
-		background: url("/components/com_tools/assets/img/contribute/application.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application.png") right 15px no-repeat;
 	}
 	.tools tbody tr.published {
 		background: #f0f9ff;
 	}
 	.tools tbody tr.retired th {
-		background: url("/components/com_tools/assets/img/contribute/application_retired.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application_retired.png") right 15px no-repeat;
 	}
 	.tools tbody tr.abandoned th {
-		background: url("/components/com_tools/assets/img/contribute/application_abandoned.png") right 15px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/application_abandoned.png") right 15px no-repeat;
 	}
 	.tools tbody tr.abandoned {
 		background: #fff6f4;
@@ -83,19 +83,19 @@
 	}
 	#whatsnext ul li.complete, 
 	#todolist span.complete { 
-		background: url("/components/com_tools/assets/img/contribute/bullets/task_complete.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/bullets/task_complete.gif") 0 0 no-repeat;
 		color: #6a0;
 	}
 	#whatsnext ul li.incomplete, 
 	#todolist span.incomplete { 
-		background: url("/components/com_tools/assets/img/contribute/bullets/task_incomplete.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/bullets/task_incomplete.gif") 0 0 no-repeat;
 	}
 	#whatsnext ul li.todo { 
-		background: url("/components/com_tools/assets/img/contribute/bullets/orangepointer.gif") 0 0.2em no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/bullets/orangepointer.gif") 0 0.2em no-repeat;
 	}
 	#whatsnext ul li.todo_disabled { 
 		color:#999999;
-		background: url("/components/com_tools/assets/img/contribute/bullets/greypointer.gif") 0 0.2em no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/bullets/greypointer.gif") 0 0.2em no-repeat;
 	}
 	#whatsnext ul li.todo_disabled a, 
 	#whatsnext ul li.todo_disabled a:hover, 
@@ -108,7 +108,7 @@
 	#whatsnext ul li {
 		padding: 0 0 0 20px;
 		margin: 0 0 1em 0;
-		background: url("/components/com_tools/assets/img/contribute/bullets/arrow.png") 0 0.2em no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/bullets/arrow.png") 0 0.2em no-repeat;
 	}
 
 /* Tool Status */
@@ -259,11 +259,11 @@
 		margin: 0 -2px 0 0;
 	}
 	span.showcontrols a.expand { 
-		background: url("/components/com_tools/assets/img/contribute/showcontrols.gif") -3px 3px no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/showcontrols.gif") -3px 3px no-repeat;
 		border: 0;
 	}
 	span.showcontrols a.collapse { 
-		background:  url("/components/com_tools/assets/img/contribute/showcontrols.gif") -1px -12px no-repeat;
+		background:  url("/components/com_tools/site/assets/img/contribute/showcontrols.gif") -1px -12px no-repeat;
 		padding: 0.2em 0.2em 0.2em 0.5em;
 		border: 0;
 	}
@@ -271,7 +271,7 @@
 		color: #999;
 	}
 	.conf { 
-		background: transparent url("/components/com_tools/assets/img/contribute/configure.gif") 0 0 no-repeat;
+		background: transparent url("/components/com_tools/site/assets/img/contribute/configure.gif") 0 0 no-repeat;
 		padding: 0.2em 0.6em 0.2em 0.6em;
 		border: none;
 		margin-left: 1em;
@@ -289,21 +289,21 @@
 	}
 	
 	.item_q a {
-		background: url("/components/com_tools/assets/img/contribute/qanda.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/qanda.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
 	.item_w a {
-		background: url("/components/com_tools/assets/img/contribute/wishlist.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/wishlist.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
 	.item_s a {
-		background: url("/components/com_tools/assets/img/contribute/warning.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/warning.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
 
 /* Tool Summary */
 	.highpriority { 
-		background: transparent url("/components/com_tools/assets/img/contribute/high_priority.gif") 2em 0.3em no-repeat;
+		background: transparent url("/components/com_tools/site/assets/img/contribute/high_priority.gif") 2em 0.3em no-repeat;
 		width: 15px;
 		height: 15px;
 	}
@@ -372,7 +372,7 @@
 
 /* Versioning */
 	.toolpublished {
-		background: url("/components/com_tools/assets/img/contribute/check.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/check.gif") 0 0 no-repeat;
 		display: block;
 		width: 15px;
 		height: 15px;
@@ -380,7 +380,7 @@
 		padding: 0;
 	}
 	.toolunpublished {
-		background: url("/components/com_tools/assets/img/contribute/minus.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/minus.gif") 0 0 no-repeat;
 		display: block;
 		width: 15px;
 		height: 15px;
@@ -418,7 +418,7 @@
 	}
 	#displays_0, 
 	.devversion {
-		background: url("/components/com_tools/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
+		background: url("/components/com_tools/site/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
 	}
 	.devversion, 
 	.currentversion {
@@ -472,7 +472,7 @@
 		font-weight: normal;
 	}
 	#steps li.intermediate { 
-		background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
 		padding: 0 1em 0 1em;
 		margin: 0;
 	}
@@ -486,7 +486,7 @@
 		color: #bd6416;
 		background: #fff;
 		font-weight: bold;
-		background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+		background: url("/components/com_tools/site/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
 	}
 	#steps li.future { 
 		color: #b1c1b3;
@@ -541,10 +541,10 @@
 		width: 100%;
 	}
 	.opensource {
-		background: url("/components/com_tools/assets/img/happyface.png") 0 0 no-repeat;	
+		background: url("/components/com_tools/site/assets/img/happyface.png") 0 0 no-repeat;	
 	}
 	.closedsource { 
-		background: url("/components/com_tools/assets/img/sadface.png") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/sadface.png") 0 0 no-repeat;
 	}
 	.opensource, 
 	.closedsource { 
@@ -565,10 +565,10 @@
 		position: absolute;
 	}
 	#choice-icon.opensource {
-		background: url("/components/com_tools/assets/img/happyface_sm.png") 0 0 no-repeat;	
+		background: url("/components/com_tools/site/assets/img/happyface_sm.png") 0 0 no-repeat;	
 	}
 	#choice-icon.closedsource {
-		background: url("/components/com_tools/assets/img/sadface_sm.png") 0 0 no-repeat;	
+		background: url("/components/com_tools/site/assets/img/sadface_sm.png") 0 0 no-repeat;	
 	}
 	.why-open {
 		padding: 0.5em 1em 1em 1em;

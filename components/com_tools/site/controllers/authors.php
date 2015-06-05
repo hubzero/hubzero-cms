@@ -28,8 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
@@ -42,7 +49,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helper
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerAuthors extends \Hubzero\Component\SiteController
+class Authors extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -158,7 +165,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 				{
 					$cid = strtolower($cid);
 					// Find the user's account info
-					$uid = JUserHelper::getUserId($cid);
+					$uid = \JUserHelper::getUserId($cid);
 					if (!$uid)
 					{
 						$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
@@ -409,10 +416,10 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$obj = new Tool($this->database);
+			$obj = new \Components\Tools\Tables\Tool($this->database);
 			$toolname = $obj->getToolnameFromResource($id);
 
-			$objV = new ToolVersion($this->database);
+			$objV = new \Components\Tools\Tables\Version($this->database);
 			$revision = $objV->getCurrentVersionProperty($toolname, 'revision');
 
 			$helper->getToolAuthors($toolname, $revision);

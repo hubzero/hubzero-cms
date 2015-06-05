@@ -28,22 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-/**
- * Tools Model for Tools Component
- */
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+namespace Components\Tools\Models;
 
 jimport('joomla.application.component.model');
 
 /**
  * Tools Model
  */
-class ToolsModelTools extends JModel
+class Tools extends \JModel
 {
 	/**
 	 * Get application tools
@@ -76,7 +68,7 @@ class ToolsModelTools extends JModel
 			{
 				$aliases = implode("','", $result);
 
-				$database = JFactory::getDBO();
+				$database = \JFactory::getDBO();
 
 				$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state
 							FROM #__tool as t, #__tool_version as v

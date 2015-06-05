@@ -28,15 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Controller class for tools (default)
  */
-class ToolsControllerZones extends \Hubzero\Component\SiteController
+class Zones extends SiteController
 {
 	/**
 	 * Page Not found
@@ -114,7 +120,7 @@ class ToolsControllerZones extends \Hubzero\Component\SiteController
 			return $this->notFoundTask();
 		}
 
-		$zone = new MiddlewareModelZone(Request::getInt('id', 0));
+		$zone = new \Components\Tools\Models\Middleware\Zone(Request::getInt('id', 0));
 		if (!$zone->exists())
 		{
 			echo 'zone: ' . $zone->get('id'); die();

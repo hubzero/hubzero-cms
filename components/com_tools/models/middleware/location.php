@@ -28,23 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models\Middleware;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'zone.locations.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zonelocations.php');
 require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Middleware zone location model
  */
-class MiddlewareModelLocation extends MiddlewareModelBase
+class Location extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'MwZoneLocations';
+	protected $_tbl_name = '\\Components\\Tools\\Tables\\ZoneLocations';
 
 	/**
 	 * Returns a reference to a zone location model

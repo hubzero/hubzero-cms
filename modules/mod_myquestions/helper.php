@@ -160,7 +160,7 @@ class Helper extends Module
 				$filters['mine'] = 0;
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
-				$TA = new \ToolAuthor($database);
+				$TA = new \Components\Tools\Tables\Author($database);
 				$tools = $TA->getToolContributions(User::get('id'));
 				if ($tools)
 				{

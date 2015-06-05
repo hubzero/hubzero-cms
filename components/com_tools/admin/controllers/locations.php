@@ -28,15 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Admin\Controllers;
+
+use Components\Tools\Helpers\Utils;
+use Components\Tools\Models\Middleware;
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
 
 /**
  * Administrative tools controller for zone locations
  */
-class ToolsControllerLocations extends \Hubzero\Component\AdminController
+class Locations extends AdminController
 {
 	/**
 	 * Execute a task
@@ -109,7 +118,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		}
 
 		// Get the middleware database
-		$this->view->zone = new MiddlewareModelZone($this->view->filters['zone']);
+		$this->view->zone = new Middleware\Zone($this->view->filters['zone']);
 
 		$this->view->total = $this->view->zone->locations('count', $this->view->filters);
 
@@ -135,16 +144,16 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
-		$mw = new ToolsModelMiddleware($mwdb);
+		$mw = new Middleware($mwdb);
 
 		if (!is_object($row))
 		{
 			// Incoming
 			$id = Request::getInt('id', 0);
 
-			$row = new MiddlewareModelLocation($id);
+			$row = new Middleware\Location($id);
 		}
 
 		$this->view->row = $row;
@@ -182,7 +191,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 		$tmpl   = Request::getVar('tmpl', '');
 
-		$row = new MiddlewareModelLocation($fields['id']);
+		$row = new Middleware\Location($fields['id']);
 		if (!$row->bind($fields))
 		{
 			Notify::error($row->getError());
@@ -243,7 +252,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$row = new MiddlewareModelLocation($id);
+		$row = new Middleware\Location($id);
 		if ($row->exists())
 		{
 			$row->set('state', $state);
@@ -281,11 +290,11 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
-				$row = new MiddlewareModelLocation(intval($id));
+				$row = new Middleware\Location(intval($id));
 
 				if (!$row->delete())
 				{
-					throw new Exception($row->getError(), 500);
+					throw new \Exception($row->getError(), 500);
 				}
 			}
 		}

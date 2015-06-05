@@ -28,8 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Filesystem;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'contribute.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
@@ -41,7 +50,7 @@ include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helper
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerAttachments extends \Hubzero\Component\SiteController
+class Attachments extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -165,7 +174,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// get tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
@@ -325,7 +334,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// get tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
@@ -507,7 +516,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 	private function _checkAccess($toolid, $allowAuthors=false)
 	{
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// allow to view if admin
 		if ($this->config->get('access-manage-component'))

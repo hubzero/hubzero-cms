@@ -148,7 +148,7 @@ $base = rtrim(Request::base(true), '/');
 	<div class="session-storage">
 		<span><?php echo Lang::txt('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo Route::url('index.php?option=com_tools&task=storage'); ?>"><?php echo Lang::txt('MOD_MYSESSIONS_MANAGE'); ?></a>)</span>
 		<?php
-			$diskUsage = ToolsHelperUtils::getDiskUsage(User::get('username'));
+			$diskUsage = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
 			if (!is_array($diskUsage) || !isset($diskUsage['space']))
 			{
 				echo '<p class="error">' . Lang::txt('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . '</p></div>';

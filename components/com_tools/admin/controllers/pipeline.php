@@ -29,13 +29,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Admin\Controllers;
+
+use Components\Tools\Models\Tool;
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use App;
 
 /**
  * Tools controller class
  */
-class ToolsControllerPipeline extends \Hubzero\Component\AdminController
+class Pipeline extends AdminController
 {
 	/**
 	 * Execute a task
@@ -101,10 +109,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get a record count
-		$this->view->total = ToolsModelTool::getToolCount($this->view->filters, true);
+		$this->view->total = Tool::getToolCount($this->view->filters, true);
 
 		// Get records
-		$this->view->rows = ToolsModelTool::getToolSummaries($this->view->filters, true);
+		$this->view->rows = Tool::getToolSummaries($this->view->filters, true);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -136,7 +144,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		if (!is_object($row))
 		{
-			$row = ToolsModelTool::getInstance($id);
+			$row = Tool::getInstance($id);
 		}
 
 		$this->view->row = $row;
@@ -176,7 +184,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$row = ToolsModelTool::getInstance(intval($fields['id']));
+		$row = Tool::getInstance(intval($fields['id']));
 		if (!$row)
 		{
 			Request::setVar('id', $fields['id']);
@@ -227,15 +235,15 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		// Initiate extended database classes
 		$resource = new \Components\Resources\Tables\Resource($this->database);
-		$objDOI = new \Components\Resources\Tables\Doi($this->database);
-		$objV = new ToolVersion($this->database);
-		$objA = new ToolAuthor($this->database);
+		$objDOI   = new \Components\Resources\Tables\Doi($this->database);
+		$objV     = new \Components\Tools\Tables\Version($this->database);
+		$objA     = new \Components\Tools\Tables\Author($this->database);
 
 		$live_site = rtrim(Request::base(),'/');
 		$sitename = Config::get('sitename');
 
 		// Get config
-		$config = Component::params($this->_option);
+		$config = \Component::params($this->_option);
 
 		// Get all tool publications without new DOI
 		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL ");
@@ -272,7 +280,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 				if ($results)
 				{
-					$title = $results[0]->title ? $results[0]->title : $resource->title;
+					$title   = $results[0]->title ? $results[0]->title : $resource->title;
 					$pubyear = $results[0]->released ? trim(Date::of($results[0]->released)->toLocal($yearFormat)) : date('Y');
 				}
 				else
@@ -288,7 +296,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				$metadata['pubYear']   = $pubyear;
 
 				// Get authors
-				$objA = new ToolAuthor($this->database);
+				$objA = new \Components\Tools\Tables\Author($this->database);
 				$authors = $objA->getAuthorsDOI($row->rid);
 
 				// Register DOI

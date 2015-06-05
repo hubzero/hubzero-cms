@@ -589,7 +589,7 @@ class Questions extends SiteController
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
-			$TA = new \ToolAuthor($this->database);
+			$TA = new \Components\Tools\Tables\Author($this->database);
 			$tools = $TA->getToolContributions(User::get('id'));
 			$mytooltags = array();
 			if ($tools)
@@ -919,8 +919,8 @@ class Questions extends SiteController
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-				$TA = new \ToolAuthor($this->database);
-				$objV = new \ToolVersion($this->database);
+				$TA = new \Components\Tools\Tables\Author($this->database);
+				$objV = new \Components\Tools\Tables\Version($this->database);
 
 				foreach ($tags as $tag)
 				{

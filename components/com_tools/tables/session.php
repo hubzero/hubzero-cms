@@ -22,14 +22,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
+namespace Components\Tools\Tables;
 
 /**
  * Table class for middleware sessions
  */
-class MwSession extends JTable
+class Session extends \JTable
 {
 	/**
 	 * Constructor
@@ -97,7 +95,7 @@ class MwSession extends JTable
 			return false;
 		}
 
-		$mv = new MwViewperm($this->_db);
+		$mv = new Viewperm($this->_db);
 
 		if ($authorized === 'admin')
 		{
@@ -136,7 +134,7 @@ class MwSession extends JTable
 			return false;
 		}
 
-		$mv = new MwViewperm($this->_db);
+		$mv = new Viewperm($this->_db);
 
 		if ($authorized === 'admin')
 		{
@@ -184,7 +182,7 @@ class MwSession extends JTable
 			$a = "AND s.appname='$appname'";
 		}
 
-		$mv = new MwViewperm($this->_db);
+		$mv = new Viewperm($this->_db);
 
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum
@@ -220,7 +218,7 @@ class MwSession extends JTable
 			$a = "AND s.appname=" . $this->_db->Quote($appname);
 		}
 
-		$mv = new MwViewperm($this->_db);
+		$mv = new Viewperm($this->_db);
 
 		if ($authorized === 'admin')
 		{
@@ -260,8 +258,8 @@ class MwSession extends JTable
 			return false;
 		}
 
-		$mv = new MwView($this->_db);
-		$mj = new MwJob($this->_db);
+		$mv = new View($this->_db);
+		$mj = new Job($this->_db);
 
 		$query = "SELECT timeout-TIME_TO_SEC(TIMEDIFF(NOW(), accesstime)) AS remaining
 			FROM $this->_tbl AS s
@@ -282,7 +280,7 @@ class MwSession extends JTable
 	 */
 	public function buildQuery($filters)
 	{
-		$mv = new MwViewperm($this->_db);
+		$mv = new Viewperm($this->_db);
 
 		if (isset($filters['count']) && $filters['count'])
 		{

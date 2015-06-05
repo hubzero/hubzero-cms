@@ -28,22 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models;
 
-/**
- * Zones Model for Tools Component
- */
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+use Components\Tools\Helpers\Utils;
 
 jimport('joomla.application.component.model');
 
 /**
- * Tools Model
+ * Zones Model for Tools Component
  */
-class ToolsModelZones extends JModel
+class Zones extends \JModel
 {
 	/**
 	 * Get execution zones list
@@ -52,11 +46,9 @@ class ToolsModelZones extends JModel
 	 */
 	public function getExecutionZones()
 	{
-		// Get the middleware database
-                $mwdb = ToolsHelperUtils::getMWDBO();
+		$query = "SELECT zone FROM `zones`";
 
-		$query = "SELECT zone FROM zones";
-
+		$mwdb = Utils::getMWDBO();
 		$mwdb->setQuery($query);
 
 		return $mwdb->loadList();

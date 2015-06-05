@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use User;
+use Lang;
 
 /**
  * Tools table for a Tool
  */
-class Tool extends JTable
+class Tool extends \JTable
 {
 	/**
 	 * Constructor
@@ -524,8 +526,8 @@ class Tool extends JTable
 		$toolinfo = $this->getToolInfo(intval($toolid));
 		if ($toolinfo)
 		{
-			$objV = new ToolVersion($this->_db);
-			$objA = new ToolAuthor($this->_db);
+			$objV = new Version($this->_db);
+			$objA = new Author($this->_db);
 			$version = $objV->getVersionInfo(0, $version, $toolinfo[0]->toolname);
 			$developers = $this->getToolDevelopers($toolid);
 			$authors = $objA->getToolAuthors($version, $toolinfo[0]->rid, $toolinfo[0]->toolname);
@@ -554,7 +556,7 @@ class Tool extends JTable
 	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option)
 	{
 		// Create a Version object
-		$objV = new ToolVersion($this->_db);
+		$objV = new Version($this->_db);
 
 		// Get the component parameters
 		$this->config = Component::params($option);

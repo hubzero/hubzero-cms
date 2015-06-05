@@ -28,8 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Filesystem;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use Log;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
@@ -38,7 +47,7 @@ include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerAdmin extends \Hubzero\Component\SiteController
+class Admin extends SiteController
 {
 	private $_toolid = 0;
 	private $_admin = 0;
@@ -127,7 +136,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
 		if (($alias = Request::getVar('app', '')))
@@ -201,7 +210,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
 		if (($alias = Request::getVar('app', '')))
@@ -245,7 +254,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			else
 			{
 				// Update the revision number
-				$hztv = ToolsHelperVersion::getDevelopmentToolVersion($this->_toolid);
+				$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->_toolid);
 				$hztv->revision = intval($rev[1]);
 				if (!$hztv->update())
 				{
@@ -289,7 +298,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
 		if (($alias = Request::getVar('app', '')))
@@ -318,7 +327,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool Version object
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 
 		// Unpublish all previous versions
 		if (!$objV->unpublish($this->_toolid))
@@ -364,7 +373,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Do we have an alias?
 		if (($alias = Request::getVar('app', '')))
@@ -399,7 +408,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// get config
 
 		// Create a Tool Version object
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$objV->getToolVersions(
 			$this->_toolid,
 			$tools,
@@ -438,7 +447,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		Log::debug("publish(): checkpoint 2:$result, check revision");
 
 		// check if version is valid
-		if (!ToolsModelTool::validateVersion($status['version'], $error_v, $this->_toolid))
+		if (!\Components\Tools\Models\Tool::validateVersion($status['version'], $error_v, $this->_toolid))
 		{
 			$result = false;
 			$this->setError($error_v);
@@ -495,7 +504,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				);
 
 				// Get authors
-				$objA = new ToolAuthor($this->database);
+				$objA = new \Components\Tools\Tables\Author($this->database);
 				$authors = $objA->getAuthorsDOI($status['resourceid']);
 
 				// Register DOI
@@ -534,7 +543,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		{
 			$invokedir = rtrim($this->config->get('invokescript_dir', DS . 'apps'), "\\/");
 
-			$hzt = ToolsModelTool::getInstance($this->_toolid);
+			$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 			$hztv_cur = $hzt->getCurrentVersion();
 			$hztv_dev = $hzt->getDevelopmentVersion();
 
@@ -556,7 +565,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				'@D1'    => 'd1'
 			);
 
-			$new_hztv = ToolsModelVersion::createInstance($status['toolname'], $newtool);
+			$new_hztv = \Components\Tools\Models\Version::createInstance($status['toolname'], $newtool);
 			$new_hztv->toolname      = $status['toolname'];
 			$new_hztv->instance      = $newtool;
 			$new_hztv->toolid        = $this->_toolid;
@@ -591,7 +600,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$this->_setTracAccess($new_hztv->toolname, $new_hztv->codeaccess, $new_hztv->wikiaccess);
 
 				// update tool entry
-				$hzt = ToolsModelTool::getInstance($this->_toolid);
+				$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 				$hzt->add('version', $new_hztv->instance);
 				$hzt->update();
 
@@ -626,7 +635,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$currentid = $new_hztv->id;
 
 				// save authors for this version
-				$objA = new ToolAuthor($this->database);
+				$objA = new \Components\Tools\Tables\Author($this->database);
 				if ($objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname']))
 				{
 					$this->setMessage(Lang::txt('COM_TOOLS_AUTHORS_SAVED'));
@@ -707,7 +716,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		Log::debug("finalizeTool(): checkpoint 2");
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if (count($status) > 0)

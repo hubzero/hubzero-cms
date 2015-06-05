@@ -28,8 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Filesystem;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
@@ -41,7 +49,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helper
 /**
  * Methods for listing and managing files and folders
  */
-class ToolsControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Upload a file or create a new folder
@@ -249,7 +257,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		if (is_dir($this->view->path))
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new DirectoryIterator($this->view->path);
+			$dirIterator = new \DirectoryIterator($this->view->path);
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())
@@ -333,7 +341,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		if (is_dir($path))
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new DirectoryIterator($path);
+			$dirIterator = new \DirectoryIterator($path);
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())

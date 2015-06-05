@@ -98,7 +98,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$tv = new ToolVersion($database);
+			$tv = new \Components\Tools\Tables\Version($database);
 			$rows = $tv->getVersions($model->resource->alias);
 
 			// Instantiate a view

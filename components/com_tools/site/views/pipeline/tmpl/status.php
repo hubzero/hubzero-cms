@@ -33,8 +33,8 @@ $project_path = $this->config->get('project_path', '/tools/');
 $dev_suffix   = $this->config->get('dev_suffix', '_dev');
 
 // get status name
-ToolsHelperHtml::getStatusName($this->status['state'], $state);
-ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
+\Components\Tools\Helpers\Html::getStatusName($this->status['state'], $state);
+\Components\Tools\Helpers\Html::getStatusClass($this->status['state'], $this->statusClass);
 
 $this->css('pipeline.css')
      ->js('pipeline.js');
@@ -52,7 +52,7 @@ $this->css('pipeline.css')
 
 <section class="main section">
 	<?php
-	if (ToolsHelperHtml::toolActive($this->status['state']))
+	if (\Components\Tools\Helpers\Html::toolActive($this->status['state']))
 	{
 		$states = array(
 			Lang::txt('COM_TOOLS_REGISTERED'),
@@ -105,7 +105,7 @@ $this->css('pipeline.css')
 
 	<div class="toolinfo_note">
 		<?php if ($this->msg) { echo '<p class="passed">'.$this->msg.'</p>'; } ?>
-		<?php if (ToolsHelperHtml::getNumofTools($this->status)) { echo '<p>'.ToolsHelperHtml::getNumofTools($this->status).'.</p>'; }?>
+		<?php if (\Components\Tools\Helpers\Html::getNumofTools($this->status)) { echo '<p>'.\Components\Tools\Helpers\Html::getNumofTools($this->status).'.</p>'; }?>
 	</div><!-- / .toolinfo_note -->
 
 	<div class="grid">
@@ -116,7 +116,7 @@ $this->css('pipeline.css')
 						<tr>
 							<th colspan="2" class="toolinfo_hed">
 								<?php echo Lang::txt('COM_TOOLS_TOOL_INFO'); ?>
-							<?php if (ToolsHelperHtml::toolActive($this->status['state'])) { ?>
+							<?php if (\Components\Tools\Helpers\Html::toolActive($this->status['state'])) { ?>
 								<a class="edit button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_EDIT_TIPS'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT'); ?></a>
 							<?php } ?>
 							</th>
@@ -128,7 +128,7 @@ $this->css('pipeline.css')
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_VERSION'); ?></th>
 							<td><?php echo ($this->status['version']) ? Lang::txt('COM_TOOLS_THIS_VERSION').' '.$this->status['version']: Lang::txt('COM_TOOLS_THIS_VERSION').': '.Lang::txt('COM_TOOLS_NO_LABEL');
-								if (!$this->status['published'] or ($this->status['version']!=$this->status['currentversion'] && ToolsHelperHtml::toolActive($this->status['state']))) { echo ' ('.Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT').')';  }
+								if (!$this->status['published'] or ($this->status['version']!=$this->status['currentversion'] && \Components\Tools\Helpers\Html::toolActive($this->status['state']))) { echo ' ('.Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT').')';  }
 								if ($this->status['published']) { echo ' [<a class="tool-versions" href="'.Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app='.$this->status['toolname']).'">'.strtolower(Lang::txt('COM_TOOLS_ALL_VERSIONS')).'</a>]'; }  ?>
 							</td>
 						</tr>
@@ -149,23 +149,23 @@ $this->css('pipeline.css')
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_TOOL_EXEC'); ?></th>
-							<td><?php echo ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']); ?></td>
+							<td><?php echo \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']); ?></td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE'); ?></th>
-							<td><?php echo ToolsHelperHtml::getCodeAccess($this->status['code']); ?>
-							<?php if ( ToolsHelperHtml::toolActive($this->status['state']) && ToolsHelperHtml::toolWIP($this->status['state'])) { ?>
+							<td><?php echo \Components\Tools\Helpers\Html::getCodeAccess($this->status['code']); ?>
+							<?php if ( \Components\Tools\Helpers\Html::toolActive($this->status['state']) && \Components\Tools\Helpers\Html::toolWIP($this->status['state'])) { ?>
 								[<a class="license-tool" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_CHANGE_LICENSE'); ?></a>]
 							<?php } ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_PROJECT_AREA'); ?></th>
-							<td><?php echo ToolsHelperHtml::getWikiAccess($this->status['wiki']); ?></td>
+							<td><?php echo \Components\Tools\Helpers\Html::getWikiAccess($this->status['wiki']); ?></td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?></th>
-							<td><?php echo ToolsHelperHtml::getDevTeam($this->status['developers']); ?></td>
+							<td><?php echo \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']); ?></td>
 						</tr>
 						<tr>
 							<th colspan="2" class="toolinfo_hed"><?php echo Lang::txt('COM_TOOLS_DEVELOPER_TOOLS');?></th>
@@ -185,7 +185,7 @@ $this->css('pipeline.css')
 									<li class="timeline"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></span></li>
 								<?php } ?>
 									<li class="message"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_SEND_MESSAGE').' '.Lang::txt('COM_TOOLS_TO');?> <?php echo ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN'); ?>" class="showmsg"><?php echo Lang::txt('COM_TOOLS_MESSAGE');?></a></li>
-								<?php if ($this->status['published']!=1 && ToolsHelperHtml::toolActive($this->status['state'])) {  // show cancel option only for tools under development ?>
+								<?php if ($this->status['published']!=1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development ?>
 									<li class="canceltool"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_CANCEL_TIPS');?>" class="showcancel"><?php echo Lang::txt('COM_TOOLS_CANCEL');?></a></li>
 	 							<?php } ?>
 								</ul>
@@ -310,7 +310,7 @@ $this->css('pipeline.css')
 				$hubShortURL = str_replace('https://', '', Request::base()); //$hubShortURL;
 
 				// get tool access text
-				$toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']);
+				$toolaccess = \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']);
 				$live_site = rtrim(Request::base(),'/');
 				$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
 
@@ -332,7 +332,7 @@ $this->css('pipeline.css')
 				?>
 					<p>
 						<?php echo Lang::txt('COM_TOOLS_TEAM_WILL_CREATE'); ?> <a class="developer-site" href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS');?>.
-						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST'); ?>.
+						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo \Components\Tools\Helpers\Html::timeAgo($this->status['changed']); ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST'); ?>.
 						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 24 <?php echo Lang::txt('COM_TOOLS_HOURS'); ?>
 					</p>
 					<h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -436,7 +436,7 @@ $this->css('pipeline.css')
 				?>
 					<p>
 						<?php echo ucfirst(Lang::txt('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>.
-						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>.
+						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo \Components\Tools\Helpers\Html::timeAgo($this->status['changed']); ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>.
 						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo Lang::txt('COM_TOOLS_DAYS'); ?>.
 					</p>
 					<h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -551,7 +551,7 @@ $this->css('pipeline.css')
 				?>
 					<p>
 						<?php echo ucfirst(Lang::txt('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>.
-						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>.
+						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo \Components\Tools\Helpers\Html::timeAgo($this->status['changed']); ?> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>.
 						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo Lang::txt('COM_TOOLS_DAYS'); ?>.
 					</p>
 					<h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -588,7 +588,7 @@ $this->css('pipeline.css')
 					case 6:
 				?>
 					<p>
-						<?php echo ucfirst(Lang::txt('COM_TOOLS_THE')).' '.$sitename.' '.Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN').' '.ToolsHelperHtml::timeAgo($this->status['changed']).' '.Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_SINCE').'  '.Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess; ?>.
+						<?php echo ucfirst(Lang::txt('COM_TOOLS_THE')).' '.$sitename.' '.Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN').' '.\Components\Tools\Helpers\Html::timeAgo($this->status['changed']).' '.Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_SINCE').'  '.Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess; ?>.
 					</p>
 					<p>
 						<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_PLS_CLICK'); ?> <?php echo $sitename; ?>: <br />

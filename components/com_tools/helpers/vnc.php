@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Tools\Helpers;
+
 /*
  * This file was ported to PHP from the d3des.c file provided
  * with RealVNC 4.1.3. The code has been simplified for the 
@@ -66,7 +68,7 @@
  * (GEnie : OUTER; CIS : [71755,204]) Graven Imagery, 1992.
  */
 
-class ToolsHelperVnc
+class Vnc
 {
 	public static function encrypt($data, $return_string = true)
 	{
@@ -526,15 +528,15 @@ class ToolsHelperVnc
 		$right &= 0xffffffff;
 
 		return array( 
-		    ($right>>24)&0xFF, // safe rshift, top 24 bits not used
-		    ($right>>16)&0xFF, // safe rshift, top 16 bits not used
-		    ($right>>8)&0xFF,  // safe rshift, top 8 bits not used
-		    $right&0xFF,
-		    ($leftt >> 24)&0xFF, // safe rshift, top 24 bits not used
-		    ($leftt >> 16)&0xFF, // safe rshift, top 16 bits not used
-		    ($leftt >> 8)&0xFF,  // safe rshift, top 8 bits not used
-		    $leftt & 0xFF
-		    );
+			($right>>24)&0xFF, // safe rshift, top 24 bits not used
+			($right>>16)&0xFF, // safe rshift, top 16 bits not used
+			($right>>8)&0xFF,  // safe rshift, top 8 bits not used
+			$right&0xFF,
+			($leftt >> 24)&0xFF, // safe rshift, top 24 bits not used
+			($leftt >> 16)&0xFF, // safe rshift, top 16 bits not used
+			($leftt >> 8)&0xFF,  // safe rshift, top 8 bits not used
+			$leftt & 0xFF
+		);
 	}
 
 	/* Validation sets:
@@ -551,13 +553,16 @@ class ToolsHelperVnc
 function genrandpassword()
 {
 	$len = mt_rand(0,8);
-	$password = ""; // "\0\0\0\0\0\0\0\0";
-	for($i=0; $i<$len; $i++)
+	$password = ''; // "\0\0\0\0\0\0\0\0";
+
+	for ($i=0; $i<$len; $i++)
 	{
 		$c = mt_rand(32,255);
 
 		if ($c == ord("'"))
+		{
 			$c = ord('a');
+		}
 
 		$password .= chr($c);
 

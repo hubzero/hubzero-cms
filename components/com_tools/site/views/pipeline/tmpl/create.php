@@ -131,27 +131,27 @@ $this->css('pipeline.css')
 
 				<label for="t_exec">
 					<?php echo Lang::txt('COM_TOOLS_TOOL_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
-					<?php echo ToolsHelperHtml::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
+					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
 				</label>
 
 				<div id="groupname" <?php echo ($this->defaults['exec']=='@GROUP') ? 'style="display:block"': 'style="display:none"'; ?>>
-					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo ToolsHelperHtml::getGroups($this->defaults['membergroups'], $this->id); ?>" />
+					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
 				</div>
 
 				<label for="t_code">
 					<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
-					<?php echo ToolsHelperHtml::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
+					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
 				</label>
 
 				<label for="t_wiki">
 					<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
-					<?php echo ToolsHelperHtml::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
+					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
 				</label>
 
 				<label for="t_team">
 					<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
-					<input type="text" name="tool[developers]" id="t_team" value="<?php echo ToolsHelperHtml::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
+					<input type="text" name="tool[developers]" id="t_team" value="<?php echo \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
 					<p class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></p>
 				</label>
 

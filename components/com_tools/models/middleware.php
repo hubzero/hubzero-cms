@@ -28,8 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Models;
+
+use Components\Tools\Models\Middleware\Session;
+use Components\Tools\Models\Middleware\Zone;
+use Components\Tools\Helpers\Utils;
+use Hubzero\Geocode\Geocode;
+use Hubzero\Base\ItemList;
+use Hubzero\Base\Object;
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
 require_once(__DIR__ . DS . 'middleware' . DS . 'zone.php');
@@ -38,7 +44,7 @@ require_once(__DIR__ . DS . 'middleware' . DS . 'session.php');
 /**
  * Tools middleware model
  */
-class ToolsModelMiddleware extends \Hubzero\Base\Object
+class Middleware extends Object
 {
 	/**
 	 * \Hubzero\ItemList
@@ -68,14 +74,12 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	 */
 	public function __construct($db=null)
 	{
-		if ($db instanceof JDatabase)
+		if (!($db instanceof \JDatabase))
 		{
-			$this->_db = $db;
+			$db = Utils::getMWDBO();
 		}
-		else
-		{
-			$this->_db = ToolsHelperUtils::getMWDBO();
-		}
+
+		$this->_db = $db;
 	}
 
 	/**
@@ -89,7 +93,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 		if (!isset($this->_cache['session'])
 		 || ($sessnum !== null && (int) $this->_cache['session']->get('sessnum') != $sessnum))
 		{
-			$this->_cache['session'] = MiddlewareModelSession::getInstance($sessnum, $permissions);
+			$this->_cache['session'] = Session::getInstance($sessnum, $permissions);
 		}
 
 		return $this->_cache['session'];
@@ -128,7 +132,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 			if (is_null($this->_cache['zones.one']))
 			{
 				// Get current offering
-				$this->_cache['zones.one'] = new MiddlewareModelZone($id);
+				$this->_cache['zones.one'] = new Zone($id);
 			}
 		}
 		// Return current offering
@@ -149,7 +153,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	{
 		if (!$ip)
 		{
-			return new MiddlewareModelZone();
+			return new Zone();
 		}
 
 		// Find by IP
@@ -167,10 +171,10 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 		// Find by region
 
 		// Find by country
-		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
+		$country = Geocode::ipcountry($ip);
 		if (!$country)
 		{
-			return new MiddlewareModelZone();
+			return new Zone();
 		}
 
 		$zones = $this->zones('list', array('state' => 'up', 'id' => $allowed, 'countrySHORT' => $country), true);
@@ -183,10 +187,10 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 		}
 
 		// Find by continent
-		$continent = \Hubzero\Geocode\Geocode::getContinentByCountry($country);
+		$continent = Geocode::getContinentByCountry($country);
 		if (!$continent)
 		{
-			return new MiddlewareModelZone();
+			return new Zone();
 		}
 
 		$zones = $this->zones('list', array('state' => 'up', 'id' => $allowed, 'continent' => $continent), true);
@@ -198,7 +202,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 			}
 		}
 
-		return new MiddlewareModelZone();
+		return new Zone();
 	}
 
 	/**
@@ -210,7 +214,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	 */
 	public function zones($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new MwZones($this->_db);
+		$tbl = new \Components\Tools\Tables\Zones($this->_db);
 
 		switch (strtolower($rtrn))
 		{
@@ -225,20 +229,20 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['zones.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['zones.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new MiddlewareModelZone($result);
+							$results[$key] = new Zone($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['zones.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['zones.list'] = new ItemList($results);
 				}
 				return $this->_cache['zones.list'];
 			break;
@@ -256,7 +260,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = Component::params('com_tools');
+			$this->_config = \Component::params('com_tools');
 		}
 
 		if ($key)

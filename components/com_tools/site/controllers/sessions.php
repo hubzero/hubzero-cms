@@ -28,8 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Document;
+use Pathway;
+use stdClass;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'vnc.php');
@@ -37,7 +47,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'vnc.php');
 /**
  * Tools controller class for simulation sessions
  */
-class ToolsControllerSessions extends \Hubzero\Component\SiteController
+class Sessions extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -246,10 +256,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Get the user's sessions
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$sessions = $ms->getRecords(User::get('username'), '', false);
 
 		$this->view->sessions = $sessions;
@@ -479,7 +489,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Get the parent toolname (appname without any revision number "_r423")
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-		$tv = new ToolVersion($this->database);
+		$tv = new \Components\Tools\Tables\Version($this->database);
 
 		switch ($app->version)
 		{
@@ -548,21 +558,21 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$this->_recordUsage($app->toolname, User::get('id'));
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running.
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$jobs = $ms->getCount(User::get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
 
-		$preferences = new ToolsTablePreferences($this->database);
+		$preferences = new \Components\Tools\Tables\Preferences($this->database);
 		$preferences->loadByUser(User::get('id'));
 		if (!$preferences || !$preferences->id)
 		{
 			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
-			$scls = new ToolsTableSessionClass($this->database);
+			$scls = new \Components\Tools\Tables\SessionClass($this->database);
 			$default = $scls->find('one', array('alias' => 'default'));
 			$preferences->user_id  = User::get('id');
 			$preferences->class_id = $default->id;
@@ -634,7 +644,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$app->zone_id = 0;
 		if ($this->config->get('zones'))
 		{
-			$middleware = new ToolsModelMiddleware();
+			$middleware = new \Components\Tools\Models\Middleware();
 
 			$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
 			$middleware->set('allowed', $this->database->loadResultArray());
@@ -707,13 +717,13 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$middleware = new ToolsModelMiddleware();
+		$middleware = new \Components\Tools\Models\Middleware();
 
 		// Incoming
 		$id = Request::getInt('sess', 0);
 
 		// Try loading the session
-		//$session = MiddlewareModelSession::getInstance($id, $this->config->get('access-manage-session'));
+		//$session = \Components\Tools\Models\Middleware\Session::getInstance($id, $this->config->get('access-manage-session'));
 		$session = $middleware->session($id, $this->config->get('access-manage-session'));
 
 		// Double-check that the user can view this session.
@@ -768,7 +778,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$new_id = !empty($output->session) ? $output->session : '';
 
 		// Load the new session and transfer some data
-		//$reinvoked = MiddlewareModelSession::getInstance($new_id, $this->config->get('access-manage-session'));
+		//$reinvoked = \Components\Tools\Models\Middleware\Session::getInstance($new_id, $this->config->get('access-manage-session'));
 		$reinvoked = $middleware->session($new_id, $this->config->get('access-manage-session'));
 		$reinvoked->set('sessname', $session->get('sessname'));
 		$reinvoked->set('params', $params);
@@ -801,7 +811,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Incoming
 		$sess     = Request::getVar('sess', '');
@@ -847,7 +857,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Double-check that the user can access this session.
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$row = $ms->checkSession($sess, User::get('username'));
 
 		// Ensure we found an active session
@@ -865,7 +875,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			$readonly = 'No';
 		}
 
-		$mv = new MwViewperm($mwdb);
+		$mv = new \Components\Tools\Tables\Viewperm($mwdb);
 		$rows = $mv->loadViewperm($sess, $owner);
 		if (count($rows) != 1)
 		{
@@ -890,7 +900,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			}
 
 			//load current view perm
-			$mwViewperm = new MwViewperm($mwdb);
+			$mwViewperm = new \Components\Tools\Tables\Viewperm($mwdb);
 			$currentViewPerm = $mwViewperm->loadViewperm($sess, $zuser->get('username'));
 
 			// If there are no matching entries in viewperm, add a new entry,
@@ -946,7 +956,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Needed objects
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Incoming
 		$sess = Request::getVar('sess', '');
@@ -956,7 +966,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// If a username is given, check that the user owns this session.
 		if ($user != '')
 		{
-			$ms = new MwSession($mwdb);
+			$ms = new \Components\Tools\Tables\Session($mwdb);
 			$ms->load($sess, User::get('username'));
 
 			if (!$ms->sesstoken)
@@ -972,7 +982,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Delete the viewperm
-		$mv = new MwViewperm($mwdb);
+		$mv = new \Components\Tools\Tables\Viewperm($mwdb);
 		$mv->deleteViewperm($sess, $user);
 
 		if ($user == User::get('username'))
@@ -1026,9 +1036,9 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$app->ip = Request::ip(); //Request::getVar('REMOTE_ADDR', '', 'server');
 
 		// Double-check that the user can view this session.
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$row = $ms->loadSession($app->sess, $this->config->get('access-manage-session'));
 
 		if (!is_object($row) || !$row->appname)
@@ -1037,11 +1047,11 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$this->view->middleware = new ToolsModelMiddleware();
+		$this->view->middleware = new \Components\Tools\Models\Middleware();
 		//$session = $this->view->middleware->session($app->sess);
 
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-		$tv = new ToolVersion($this->database);
+		$tv = new \Components\Tools\Tables\Version($this->database);
 		$tv->loadFromInstance($row->appname);
 		$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
 		$this->view->middleware->set('allowed', $this->database->loadResultArray());
@@ -1056,7 +1066,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Get parent tool name - to write correct links
-		//$tv = new ToolVersion($this->database);
+		//$tv = new \Components\Tools\Tables\Version($this->database);
 		$parent_toolname = $tv->getToolname($row->appname);
 		$toolname = ($parent_toolname) ? $parent_toolname : $row->appname;
 
@@ -1229,7 +1239,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if (!isset ($output->password) && !empty($output->encpassword))
 		{
 			$decpassword = pack("H*", $output->encpassword);
-			$output->password = ToolsHelperVnc::decrypt($decpassword);
+			$output->password = \Components\Tools\Helpers\Vnc::decrypt($decpassword);
 		}
 
 		if (!isset ($output->token) && !empty($output->connect))
@@ -1277,6 +1287,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Set the layout
 		$sublayout = strtolower(Request::getWord('layout', ''));
+		$sublayout = ($sublayout == 'display' ? '' : $sublayout);
 		$this->view->setLayout('session' . ($sublayout ? '_' . $sublayout : ''));
 
 		// Set the page title
@@ -1326,10 +1337,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($app->sess)
 		{
 			// Get the middleware database
-			$mwdb = ToolsHelperUtils::getMWDBO();
+			$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 			// Load the viewperm
-			$ms = new MwViewperm($mwdb);
+			$ms = new \Components\Tools\Tables\Viewperm($mwdb);
 			$this->view->shares = $ms->loadViewperm($app->sess);
 		}
 
@@ -1373,9 +1384,9 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Double-check that the user owns this session.
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		if ($this->config->get('access-admin-session'))
 		{
 			$ms->load($sess);
@@ -1455,7 +1466,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		bcscale(6);
 
-		$du = ToolsHelperUtils::getDiskUsage(User::get('username'));
+		$du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
 		if (isset($du['space']))
 		{
 			if (strtolower($type) == 'hard')
@@ -1503,14 +1514,14 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 	 */
 	public function renameTask()
 	{
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		$id = Request::getInt('id', 0);
 		$name = trim(Request::getVar('name', ''));
 
 		if ($id && $name)
 		{
-			$ms = new MwSession($mwdb);
+			$ms = new \Components\Tools\Tables\Session($mwdb);
 			$ms->load($id);
 			$ms->sessname = $name;
 			$ms->store();
@@ -1531,7 +1542,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 	{
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
 
-		$tool = new ToolVersion($this->database);
+		$tool = new \Components\Tools\Tables\Version($this->database);
 		$tool->loadFromName($app);
 
 		$created = Date::toSql();
@@ -1539,7 +1550,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Get a list of all their recent tools
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'recent.php');
 
-		$rt = new ToolRecent($this->database);
+		$rt = new \Components\Tools\Tables\Recent($this->database);
 		$rows = $rt->getRecords($uid);
 
 		$thisapp = 0;
@@ -1603,7 +1614,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		$comm = escapeshellcmd($comm);
 
-		$cmd = "/bin/sh components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
+		$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
@@ -1630,7 +1641,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				throw new \Exception(Lang::txt('COM_TOOLS_ERROR_BAD_DATA'));
 			}
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			$output = new stdClass();
 
@@ -1814,7 +1825,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$tv = new ToolVersion($this->database);
+		$tv = new \Components\Tools\Tables\Version($this->database);
 
 		$tv->loadFromInstance($tool);
 
@@ -1824,7 +1835,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			return false;
 		}
 
-		$tg = new ToolGroup($this->database);
+		$tg = new \Components\Tools\Tables\Group($this->database);
 		$this->database->setQuery("SELECT * FROM " . $tg->getTableName() . " WHERE toolid=" . $tv->toolid);
 		$toolgroups = $this->database->loadObjectList();
 		if (empty($toolgroups))

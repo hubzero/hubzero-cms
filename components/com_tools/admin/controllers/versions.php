@@ -29,18 +29,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Tools\Models\Version\Zone;
+use Components\Tools\Models\Version;
+use Components\Tools\Models\Tool;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use App;
 
 require_once dirname(dirname(dirname(__FILE__))) . DS . 'models' . DS . 'version' . DS . 'zone.php';
 require_once dirname(dirname(dirname(__FILE__))) . DS . 'tables' . DS . 'mw.zones.php';
 
-use Components\Tools\Models\Version\Zone;
-
 /**
  * Tools controller class for tool versions
  */
-class ToolsControllerVersions extends \Hubzero\Component\AdminController
+class Versions extends AdminController
 {
 	/**
 	 * Execute a task
@@ -98,9 +106,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$this->view->tool = ToolsModelTool::getInstance($this->view->filters['id']);
+		$this->view->tool  = Tool::getInstance($this->view->filters['id']);
 		$this->view->total = count($this->view->tool->version);
-		$this->view->rows = $this->view->tool->getToolVersionSummaries($this->view->filters, true);
+		$this->view->rows  = $this->view->tool->getToolVersionSummaries($this->view->filters, true);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -132,11 +140,11 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 			return $this->cancelTask();
 		}
 
-		$this->view->parent = ToolsModelTool::getInstance($id);
+		$this->view->parent = Tool::getInstance($id);
 
 		if (!is_object($row))
 		{
-			$row = ToolsModelVersion::getInstance($version);
+			$row = Version::getInstance($version);
 		}
 		$this->view->row = $row;
 
@@ -176,7 +184,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$row = ToolsModelVersion::getInstance(intval($fields['version']));
+		$row = Version::getInstance(intval($fields['version']));
 		if (!$row)
 		{
 			Request::setVar('id', $fields['id']);
@@ -249,12 +257,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		$this->view->version = $version;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -297,12 +302,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -363,7 +365,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		}
 
 		App::redirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0), false),
 			Lang::txt('COM_TOOLS_ITEM_DELETED')
 		);
 	}

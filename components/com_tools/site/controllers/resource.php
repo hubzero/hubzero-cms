@@ -28,8 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Document;
+use Pathway;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Tool classes
@@ -52,7 +61,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helper
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerResource extends \Hubzero\Component\SiteController
+class Resource extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -83,7 +92,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$step    = Request::getInt('step', 1);
 
 		// Load the tool
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$this->_toolid = $obj->getToolId($alias);
 
 		if (!$this->_toolid)
@@ -125,9 +134,9 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 				$nextstep--;
 			}
 
-			$hztv = ToolsHelperVersion::getToolRevision($this->_toolid, $version);
+			$hztv = \Components\Tools\Helpers\Version::getToolRevision($this->_toolid, $version);
 
-			$objV = new ToolVersion($this->database);
+			$objV = new \Components\Tools\Tables\Version($this->database);
 			if (!$objV->bind($_POST))
 			{
 				$this->setError($objV->getError());
@@ -235,11 +244,11 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		// Group access
 		//$accesses = array('Public', 'Registered', 'Special', 'Protected', 'Private');
 		//$lists = array();
-		//$lists['access'] = ToolsHelperHtml::selectAccess($accesses, $row->access);
+		//$lists['access'] = \Components\Tools\Helpers\Html::selectAccess($accesses, $row->access);
 		//$groups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 
 		// get authors
-		$objA = new ToolAuthor($this->database);
+		$objA = new \Components\Tools\Tables\Author($this->database);
 		$authors = ($version == 'current') ? $objA->getToolAuthors($version, $row->id, $status['toolname']) : array();
 
 		// Tags
@@ -512,7 +521,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$rid     = Request::getInt('rid', 0);
 
 		// Load the tool
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$this->_toolid = $obj->getToolId($alias);
 
 		if (!$this->_toolid)
@@ -569,7 +578,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		}
 
 		// Get updated version
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 
 		$thistool = $objV->getVersionInfo('', $version, $resource->alias, '');
 		$thistool = $thistool ? $thistool[0] : '';
@@ -675,7 +684,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 	private function _checkAccess($toolid, $allowAdmins=1, $allowAuthors=false)
 	{
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// allow to view if admin
 		if ($this->config->get('access-manage-component') && $allowAdmins)

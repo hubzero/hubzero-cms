@@ -28,8 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Filesystem;
+use Document;
+use Pathway;
+use Component;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
@@ -54,7 +64,7 @@ include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 /**
  * Controller class for contributing a tool
  */
-class ToolsControllerPipeline extends \Hubzero\Component\SiteController
+class Pipeline extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -118,7 +128,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->filters['start'] = Request::getInt('limitstart', 0);
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// Record count
 		$this->view->total = $obj->getToolCount($this->view->filters, $this->config->get('access-admin-component'));
@@ -164,7 +174,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -300,7 +310,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -338,7 +348,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool Version object
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 		$objV->getToolVersions($this->_toolid, $versions, '');
 
 		// Set the page title
@@ -347,7 +357,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		Document::setTitle($this->view->title);
 
-		$hzt = ToolsModelTool::getInstance($this->_toolid);
+		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 		$hztv_dev = $hzt->getRevision('development');
 		$hztv_current = $hzt->getRevision('current');
 
@@ -357,8 +367,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			'version'         => $hztv_dev->version,
 			'state'           => $hzt->state,
 			'toolname'        => $hzt->toolname,
-			'membergroups'    => ToolsModelTool::getToolGroups($this->_toolid),
-			'resourceid'      => ToolsModelTool::getResourceId($this->_toolid),
+			'membergroups'    => \Components\Tools\Models\Tool::getToolGroups($this->_toolid),
+			'resourceid'      => \Components\Tools\Models\Tool::getResourceId($this->_toolid),
 			'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
 			'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : '')
 		);
@@ -410,7 +420,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -494,7 +504,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -606,7 +616,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			);
 		}
 
-		$hztv = ToolsHelperVersion::getDevelopmentToolVersion($id);
+		$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($id);
 
 		$this->license_choice = array(
 			'text'      => Request::getVar('license', ''),
@@ -670,7 +680,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Open source
-		if (ToolsModelTool::validateLicense($this->license_choice, $hztv->codeaccess, $error))
+		if (\Components\Tools\Models\Tool::validateLicense($this->license_choice, $hztv->codeaccess, $error))
 		{
 			// code for saving license
 			$hztv->license = strip_tags($this->license_choice['text']);
@@ -791,7 +801,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -949,10 +959,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$oldstatus   = array();
 
 		// Create a Tool Version object
-		$objV = new ToolVersion($this->database);
+		$objV = new \Components\Tools\Tables\Version($this->database);
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		if ($id)
 		{
@@ -964,7 +974,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if (!ToolsModelTool::validate($tool, $err, $id))
+		if (!\Components\Tools\Models\Tool::validate($tool, $err, $id))
 		{
 			// display form with errors
 			//$title = Lang::txt(strtoupper($this->_option)).': '.Lang::txt('COM_TOOLS_EDIT_TOOL');
@@ -1003,7 +1013,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// save tool info
 		if (!$id)  // new tool
 		{
-			$hzt = ToolsModelTool::createInstance($tool['toolname']);
+			$hzt = \Components\Tools\Models\Tool::createInstance($tool['toolname']);
 			$hzt->toolname      = $tool['toolname'];
 			$hzt->title         = $tool['title'];
 			$hzt->published     = 0;
@@ -1015,7 +1025,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$hzt = ToolsModelTool::getInstance($id);
+			$hzt = \Components\Tools\Models\Tool::getInstance($id);
 		}
 
 		// get tool id for newly registered tool
@@ -1040,7 +1050,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if ($hztv === false)
 			{
 				Log::debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
-				$hztv = ToolsModelVersion::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
+				$hztv = \Components\Tools\Models\Version::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
 
 				$oldstatus = $hztv->toArray();
 				$oldstatus['toolstate']    = $hzt->state;
@@ -1173,7 +1183,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// create resource page
-		$rid = ToolsModelTool::getResourceId($hzt->toolname,$hzt->id);
+		$rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname,$hzt->id);
 
 		if (empty($rid))
 		{
@@ -1183,7 +1193,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 			$rid = $resource->createPage($this->_toolid, $tool);
 			// save authors by default
-			//$objA = new ToolAuthor($this->database);
+			//$objA = new \Components\Tools\Tables\Author($this->database);
 			//if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname']); }
 			if (!$id)
 			{
@@ -1241,7 +1251,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Create a Tool object
 		if (empty($toolinfo))
 		{
-			$obj = new Tool($this->database);
+			$obj = new \Components\Tools\Tables\Tool($this->database);
 			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev');
 		}
 
@@ -1283,7 +1293,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -1316,18 +1326,18 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		$error = '';
 
-		$hzt = ToolsModelTool::getInstance($this->_toolid);
+		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
 		if ($newstate && !intval($newstate))
 		{
-			$newstate = ToolsHelperHtml::getStatusNum($newstate);
+			$newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
 		}
 
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
 		$oldstatus['toolstate'] = $hzt->state;
 
-		if (ToolsModelTool::validateVersion($newversion, $error, $hzt->id))
+		if (\Components\Tools\Models\Tool::validateVersion($newversion, $error, $hzt->id))
 		{
 			$this->_error = $error;
 			$hztv->version = $newversion;
@@ -1378,7 +1388,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -1426,7 +1436,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -1450,7 +1460,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		//$newversion  = Request::getVar('newversion', '');
 		$editversion = Request::getVar('editversion', 'dev');
 
-		$hzt = ToolsModelTool::getInstance($this->_toolid);
+		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
@@ -1458,7 +1468,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if ($newstate && !intval($newstate))
 		{
-			$newstate = ToolsHelperHtml::getStatusNum($newstate);
+			$newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
 		}
 
 		$hzt->state = $newstate;
@@ -1492,7 +1502,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -1523,7 +1533,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$newversion  = Request::getVar('newversion', '');
 		$editversion = Request::getVar('editversion', 'dev');
 
-		$hzt = ToolsModelTool::getInstance($this->_toolid);
+		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
@@ -1531,14 +1541,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if ($newstate && !intval($newstate))
 		{
-			$newstate = ToolsHelperHtml::getStatusNum($newstate);
+			$newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
 		}
 
 		if (intval($newstate) && $newstate != $oldstatus['toolstate'])
 		{
 			Log::debug(__FUNCTION__ . "() state changing");
 
-			if ($newstate == ToolsHelperHtml::getStatusNum('Approved') && ToolsModelTool::validateVersion($oldstatus['version'], $error, $hzt->id))
+			if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved') && \Components\Tools\Models\Tool::validateVersion($oldstatus['version'], $error, $hzt->id))
 			{
 				$this->_error = $error;
 				Log::debug(__FUNCTION__ . "() state changing to approved, action confirm");
@@ -1547,7 +1557,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$this->versionsTask();
 				return;
 			}
-			else if ($newstate == ToolsHelperHtml::getStatusNum('Approved'))
+			else if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved'))
 			{
 				$this->_error = $error;
 				Log::debug(__FUNCTION__ . "() state changing to approved, action new");
@@ -1556,7 +1566,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$this->versionsTask();
 				return;
 			}
-			else if ($newstate == ToolsHelperHtml::getStatusNum('Published'))
+			else if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Published'))
 			{
 				Log::debug(__FUNCTION__ . "() state changing to published");
 				$hzt->published = '1';
@@ -1564,14 +1574,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$this->_error = $error;
 
 			// update dev screenshots of a published tool changes status
-			if ($oldstatus['state'] == ToolsHelperHtml::getStatusNum('Published'))
+			if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Published'))
 			{
 				// Create a Tool Version object
-				$objV = new ToolVersion($this->database);
+				$objV = new \Components\Tools\Tables\Version($this->database);
 
 				Log::debug(__FUNCTION__ . "() state changing away from  published");
 				// Get version ids
-				$rid = ToolsModelTool::getResourceId($hzt->toolname,$hzt->id);
+				$rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname,$hzt->id);
 
 				$to   = $objV->getVersionIdFromResource($rid, 'dev');
 				$from = $objV->getVersionIdFromResource($rid, 'current');
@@ -1640,7 +1650,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if (($alias = Request::getVar('app', '')))
 			{
 				// Create a Tool object
-				$obj = new Tool($this->database);
+				$obj = new \Components\Tools\Tables\Tool($this->database);
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
@@ -1658,10 +1668,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if ($newstate && !intval($newstate))
 		{
-			$newstate = ToolsHelperHtml::getStatusNum($newstate);
+			$newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
 		}
 
-		$hzt = ToolsModelTool::getInstance($this->_toolid);
+		$hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 
 		if ($comment)
 		{
@@ -1690,7 +1700,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$headline = '';
 
 		// Get tool information
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 		$obj->getToolStatus($toolid, $this->_option, $status, 'dev');
 
 		if (empty($status) && !empty($toolinfo))
@@ -1941,8 +1951,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				$rowc->changelog()->changed(
 					Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'),
-					ToolsHelperHtml::getDevTeam($oldstuff['developers']),
-					ToolsHelperHtml::getDevTeam($newstuff['developers'])
+					\Components\Tools\Helpers\Html::getDevTeam($oldstuff['developers']),
+					\Components\Tools\Helpers\Html::getDevTeam($newstuff['developers'])
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'));
@@ -1960,8 +1970,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				$rowc->changelog()->changed(
 					Lang::txt('COM_TOOLS_PRIORITY'),
-					ToolsHelperHtml::getPriority($oldstuff['priority']),
-					ToolsHelperHtml::getPriority($newstuff['priority'])
+					\Components\Tools\Helpers\Html::getPriority($oldstuff['priority']),
+					\Components\Tools\Helpers\Html::getPriority($newstuff['priority'])
 				);
 				$email = 0; // do not send email about priority changes
 			}
@@ -1969,8 +1979,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				$rowc->changelog()->changed(
 					Lang::txt('COM_TOOLS_STATUS'),
-					ToolsHelperHtml::getStatusName($oldstuff['toolstate'], $oldstate),
-					ToolsHelperHtml::getStatusName($newstuff['toolstate'], $newstate)
+					\Components\Tools\Helpers\Html::getStatusName($oldstuff['toolstate'], $oldstate),
+					\Components\Tools\Helpers\Html::getStatusName($newstuff['toolstate'], $newstate)
 				);
 				$summary = Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . $newstate;
 				$email   = 1; // send email about status changes
@@ -2024,7 +2034,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	protected function _updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $toolinfo=array())
 	{
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		$summary = '';
 
@@ -2091,7 +2101,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					$rowc->changelog()->changed(
 						Lang::txt('COM_TOOLS_ALLOWED_GROUPS'),
 						'',
-						ToolsHelperHtml::getGroups($newstuff['membergroups'])
+						\Components\Tools\Helpers\Html::getGroups($newstuff['membergroups'])
 					);
 				}
 				$summary .= $summary == '' ? '' : ', ';
@@ -2131,8 +2141,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				$rowc->changelog()->changed(
 					Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'),
-					ToolsHelperHtml::getDevTeam($oldstuff['developers']),
-					ToolsHelperHtml::getDevTeam($newstuff['developers'])
+					\Components\Tools\Helpers\Html::getDevTeam($oldstuff['developers']),
+					\Components\Tools\Helpers\Html::getDevTeam($newstuff['developers'])
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'));
@@ -2150,8 +2160,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				$rowc->changelog()->changed(
 					Lang::txt('COM_TOOLS_PRIORITY'),
-					ToolsHelperHtml::getPriority($oldstuff['priority']),
-					ToolsHelperHtml::getPriority($newstuff['priority'])
+					\Components\Tools\Helpers\Html::getPriority($oldstuff['priority']),
+					\Components\Tools\Helpers\Html::getPriority($newstuff['priority'])
 				);
 				$email = 0; // do not send email about priority changes
 			}
@@ -2159,8 +2169,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				$rowc->changelog()->changed(
 					Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM'),
-					ToolsHelperHtml::getStatusName($oldstuff['state'], $oldstate),
-					ToolsHelperHtml::getStatusName($newstuff['state'], $newstate)
+					\Components\Tools\Helpers\Html::getStatusName($oldstuff['state'], $oldstate),
+					\Components\Tools\Helpers\Html::getStatusName($newstuff['state'], $newstate)
 				);
 				$summary = Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . $newstate;
 				$email = 1; // send email about status changes
@@ -2232,7 +2242,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$row->tag('tool:' . $tool['toolname'], User::get('id'));
 
 				// store ticket id
-				$obj = new Tool($this->database);
+				$obj = new \Components\Tools\Tables\Tool($this->database);
 				$obj->saveTicketId($toolid, $row->get('id'));
 
 				// make a record
@@ -2257,7 +2267,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// do we have an alias?
 		if ($this->_toolid == 0)
@@ -2283,7 +2293,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			App::abort(404, Lang::txt('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
 			return;
 		}
-		if ($status['state'] == ToolsHelperHtml::getStatusNum('Abandoned'))
+		if ($status['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned'))
 		{
 			App::abort(404, Lang::txt('COM_TOOLS_ERR_ALREADY_CANCELLED'));
 			return;
@@ -2301,7 +2311,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$resource->updatePage($status['resourceid'], $status, '4');
 
 		// change tool status to 'abandoned' and priority to 'lowest'
-		$obj->updateTool($this->_toolid, ToolsHelperHtml::getStatusNum('Abandoned') , 5);
+		$obj->updateTool($this->_toolid, \Components\Tools\Helpers\Html::getStatusNum('Abandoned') , 5);
 
 		// add comment to ticket
 		$this->_updateTicket($this->_toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
@@ -2392,7 +2402,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	private function _checkAccess($toolid, $allowAdmins=1, $allowAuthors=false)
 	{
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Components\Tools\Tables\Tool($this->database);
 
 		// allow to view if admin
 		if ($this->config->get('access-manage-component') && $allowAdmins)

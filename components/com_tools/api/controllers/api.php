@@ -123,7 +123,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$format = Request::getVar('format', 'json');
 
 		//get list of tools
-		$tools = ToolsModelTool::getMyTools();
+		$tools = \Components\Tools\Models\Tool::getMyTools();
 
 		//get the supported tag
 		$rconfig = Component::params('com_resources');
@@ -228,12 +228,12 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 		$ts = new \Components\Resources\Tables\Screenshot($database);
-		$tv = new ToolVersion($database);
+		$tv = new \Components\Tools\Tables\Version($database);
 		$vid = $tv->getVersionIdFromResource($tool_info->id, $version);
 		$shots = $ts->getScreenshots($tool_info->id, $vid);
 
 		//get base path
-		$path = ToolsHelperUtils::getResourcePath($tool_info->created, $tool_info->id, $vid);
+		$path = \Components\Tools\Helpers\Utils::getResourcePath($tool_info->created, $tool_info->id, $vid);
 
 		//add full path to screenshot
 		$s = array();
@@ -299,7 +299,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate middleware database object
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get any request vars
 		$type      = Request::getVar('type', 'png');
@@ -325,7 +325,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//load session
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		$sess = $ms->loadSession($sessionid);
 
 		//check to make sure we have a sessions dir
@@ -419,7 +419,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$database = JFactory::getDBO();
 
 		//load the tool version
-		$tv = new ToolVersion($database);
+		$tv = new \Components\Tools\Tables\Version($database);
 		switch ($app->version)
 		{
 			case 1:
@@ -468,7 +468,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//get tool access
-		$toolAccess = ToolsHelperUtils::getToolAccess($app->name, $result->get('username'));
+		$toolAccess = \Components\Tools\Helpers\Utils::getToolAccess($app->name, $result->get('username'));
 
 		//do we have access
 		if ($toolAccess->valid != 1)
@@ -478,24 +478,24 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Log the launch attempt
-		ToolsHelperUtils::recordToolUsage($app->toolname, $result->get('id'));
+		\Components\Tools\Helpers\Utils::recordToolUsage($app->toolname, $result->get('id'));
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running.
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		$jobs = $ms->getCount($result->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
 
-		$preferences = new ToolsTablePreferences($database);
+		$preferences = new \Components\Tools\Tables\Preferences($database);
 		$preferences->loadByUser($result->get('uidNumber'));
 		if (!$preferences || !$preferences->id)
 		{
 			include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
-			$scls = new ToolsTableSessionClass($this->database);
+			$scls = new \Components\Tools\Tables\SessionClass($this->database);
 			$default = $scls->find('one', array('alias' => 'default'));
 			$preferences->user_id  = $result->get('uidNumber');
 			$preferences->class_id = $default->id;
@@ -518,7 +518,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		Event::trigger('mw.onBeforeSessionInvoke', array($app->toolname, $app->version));
 
 		// We've passed all checks so let's actually start the session
-		$status = ToolsHelperUtils::middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
+		$status = \Components\Tools\Helpers\Utils::middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
 
 		//make sure we got a valid session back from the middleware
 		if (!isset($output->session))
@@ -614,7 +614,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$database = JFactory::getDBO();
 
 		// Load the tool version
-		$tv = new ToolVersion($database);
+		$tv = new \Components\Tools\Tables\Version($database);
 		switch ($app->version)
 		{
 			case 1:
@@ -663,7 +663,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get tool access
-		$toolAccess = ToolsHelperUtils::getToolAccess($app->name, $profile->get('username'));
+		$toolAccess = \Components\Tools\Helpers\Utils::getToolAccess($app->name, $profile->get('username'));
 
 		// Do we have access
 		if ($toolAccess->valid != 1)
@@ -673,19 +673,19 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Log the launch attempt
-		ToolsHelperUtils::recordToolUsage($app->toolname, $profile->get('id'));
+		\Components\Tools\Helpers\Utils::recordToolUsage($app->toolname, $profile->get('id'));
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		$jobs = $ms->getCount($profile->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
-		$preferences = new ToolsTablePreferences($database);
+		$preferences = new \Components\Tools\Tables\Preferences($database);
 		$preferences->loadByUser($profile->get('uidNumber'));
 		if (!$preferences || !$preferences->id)
 		{
@@ -730,7 +730,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 				// Try to create their home directory
 				require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 
-				if (!ToolsHelperUtils::createHomeDirectory($profile->get('username')))
+				if (!\Components\Tools\Helpers\Utils::createHomeDirectory($profile->get('username')))
 				{
 					$this->setMessage(array('success' => false, 'message' => 'Failed to create user home directory'), 500, 'Server Error');
 					return;
@@ -769,7 +769,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$params  = 'file(execute):' . $homeDir . DS . 'data' . DS . '.queued_drivers' . $inst;
 		$encoded = ' params=' . rawurlencode($params) . ' ';
 		$command = 'start user=' . $profile->get('username') . " ip={$app->ip} app={$app->name} version={$app->version}" . $encoded;
-		$status  = ToolsHelperUtils::middleware($command, $output);
+		$status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
 		$this->setMessage(array('success' => true, 'session' => $output->session), 200, 'OK');
 	}
@@ -792,12 +792,12 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($profile === false) return $this->not_found();
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
 		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
 		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		if (!$ms->checkSession($session))
 		{
 			$this->setMessage(array('success' => false, 'message' => 'You can only check the status of your sessions.'), 401, 'Not authorized');
@@ -863,12 +863,12 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($profile === false) return $this->not_found();
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
 		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
 		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		if (!$ms->checkSession($session))
 		{
 			$this->setMessage(array('success' => false, 'message' => 'You can only check the status of your sessions.'), 401, 'Not authorized');
@@ -918,7 +918,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//instantiate db objects
 		$database = JFactory::getDBO();
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
 		$sessionid = Request::getVar('sessionid', '');
@@ -938,7 +938,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$app->ip   = $ip;
 
 		//load the session
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		$row = $ms->loadSession($app->sess);
 
 		//if we didnt find a session
@@ -957,7 +957,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//load tool version
-		$tv = new ToolVersion($database);
+		$tv = new \Components\Tools\Tables\Version($database);
 		$parent_toolname = $tv->getToolname($row->appname);
 		$toolname = ($parent_toolname) ? $parent_toolname : $row->appname;
 		$tv->loadFromInstance($row->appname);
@@ -977,7 +977,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		Event::trigger('mw.onBeforeSessionStart', array($toolname, $tv->revision));
 
 		// Call the view command
-		$status = ToolsHelperUtils::middleware($command, $output);
+		$status = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
 		// Trigger any events that need to be called after session start
 		Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
@@ -1018,7 +1018,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
 
 		//instantiate middleware database object
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
 		$sessionid = Request::getVar('sessionid', '');
@@ -1032,7 +1032,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//load the session we are trying to stop
-		$ms = new MwSession($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
 		$ms->load($sessionid, $result->get("username"));
 
 		//check to make sure session exists and it belongs to the user
@@ -1049,7 +1049,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		Event::trigger('mw.onBeforeSessionStop', array($ms->appname));
 
 		//run command to stop session
-		$status = ToolsHelperUtils::middleware("stop $sessionid", $out);
+		$status = \Components\Tools\Helpers\Utils::middleware("stop $sessionid", $out);
 
 		// Trigger any events that need to be called after session stop
 		Event::trigger('mw.onAfterSessionStop', array($ms->appname));
@@ -1083,7 +1083,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate middleware database object
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
 		$sessionid = Request::getVar('sessionid', '');
@@ -1097,7 +1097,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Delete the viewperm
-		$mv = new MwViewperm($mwdb);
+		$mv = new \Components\Tools\Models\Middleware\Viewperm($mwdb);
 		$mv->deleteViewperm($sessionid, $result->get("username"));
 
 		//make sure we didnt have error disconnecting
@@ -1131,7 +1131,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get storage quota
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		$disk_usage = ToolsHelperUtils::getDiskUsage($result->get('username'));
+		$disk_usage = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
 
 		//get the tools storage path
 		$com_tools_params = Component::params('com_tools');

@@ -28,15 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Tables;
+
+use Lang;
 
 /**
  * Short description for 'Hosttype'
  *
  * Long description (if any) ...
  */
-class MwHosttype extends JTable
+class Hosttype extends \JTable
 {
 	/**
 	 * Constructor

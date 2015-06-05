@@ -28,15 +28,23 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Tools\Admin\Controllers;
+
+use Components\Tools\Helpers\Utils;
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php');
 
 /**
  * Tools controller for host types
  */
-class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
+class Hosttypes extends AdminController
 {
 	/**
 	 * Execute a task
@@ -89,9 +97,9 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
-		$model = new MwHosttype($mwdb);
+		$model = new \Components\Tools\Tables\Hosttype($mwdb);
 
 		$this->view->total = $model->getCount($this->view->filters);
 
@@ -133,9 +141,9 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 			// Incoming
 			$item = Request::getVar('item', '', 'get');
 
-			$mwdb = ToolsHelperUtils::getMWDBO();
+			$mwdb = Utils::getMWDBO();
 
-			$row = new MwHosttype($mwdb);
+			$row = new \Components\Tools\Tables\Hosttype($mwdb);
 			$row->load($item);
 		}
 
@@ -176,7 +184,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$refs = 0;
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 		$mwdb->setQuery("SELECT count(*) AS count FROM host WHERE provisions & " . $mwdb->Quote($value) . " != 0");
 		$elts = $mwdb->loadObjectList();
 		if ($elts)
@@ -199,11 +207,11 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		Request::checkToken() or exit('Invalid Token');
 
 		// Get the middleware database
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = new MwHosttype($mwdb);
+		$row = new \Components\Tools\Tables\Hosttype($mwdb);
 		if (!$row->bind($fields))
 		{
 			$this->setMessage($row->getError(), 'error');
@@ -286,18 +294,18 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = Request::getVar('id', array());
 
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = Utils::getMWDBO();
 
 		if (count($ids) > 0)
 		{
-			$row = new MwHosttype($mwdb);
+			$row = new \Components\Tools\Tables\Hosttype($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
 				if (!$row->delete($id))
 				{
-					throw new Exception($row->getError(), 500);
+					throw new \Exception($row->getError(), 500);
 				}
 			}
 		}

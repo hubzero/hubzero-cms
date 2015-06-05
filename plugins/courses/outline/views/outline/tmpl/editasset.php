@@ -57,7 +57,7 @@ endforeach;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
-$tools     = ToolsModelTool::getMyTools();
+$tools     = \Components\Tools\Models\Tool::getMyTools();
 $config    = Component::params('com_courses');
 $tool_path = $config->get('tool_path');
 ?>

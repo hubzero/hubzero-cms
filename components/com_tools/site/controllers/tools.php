@@ -28,13 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Document;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Controller class for tools (default)
  */
-class ToolsControllerTools extends \Hubzero\Component\SiteController
+class Tools extends SiteController
 {
 	/**
 	 * Execute a task
@@ -110,7 +118,7 @@ class ToolsControllerTools extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tools.php');
-		$model = new ToolsModelTools();
+		$model = new \Components\Tools\Models\Tools();
 
 		// Get the tool list
 		$this->view->apps = $model->getApplicationTools();

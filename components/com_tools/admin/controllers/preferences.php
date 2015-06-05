@@ -28,8 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use Html;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php');
@@ -38,7 +46,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup
 /**
  * Manage member quotas
  */
-class ToolsControllerPreferences extends \Hubzero\Component\AdminController
+class Preferences extends AdminController
 {
 	/**
 	 * Display member quotas
@@ -88,13 +96,13 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 			)
 		);
 
-		$obj = new ToolsTablePreferences($this->database);
+		$obj = new \Components\Tools\Tables\Preferences($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
 		$this->view->rows  = $obj->find('list', $this->view->filters);
 
-		$classes = new ToolsTableSessionClass($this->database);
+		$classes = new \Components\Tools\Tables\SessionClass($this->database);
 		$this->view->classes = $classes->find('list');
 		$this->view->config  = $this->config;
 
@@ -140,14 +148,14 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$row = new ToolsTablePreferences($this->database);
+			$row = new \Components\Tools\Tables\Preferences($this->database);
 			$row->load($id);
 		}
 
 		$this->view->row = $row;
 
 		// Build classes select option
-		$quotaClass = new ToolsTableSessionClass($this->database);
+		$quotaClass = new \Components\Tools\Tables\SessionClass($this->database);
 		$classes    = $quotaClass->find('list');
 		$selected   = '';
 		$options[]  = Html::select('option', '0', Lang::txt('COM_TOOLS_USER_PREFS_CUSTOM'), 'value', 'text');
@@ -200,11 +208,11 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new ToolsTablePreferences($this->database);
+		$row = new \Components\Tools\Tables\Preferences($this->database);
 
 		if ($fields['class_id'])
 		{
-			$class = new ToolsTableSessionClass($this->database);
+			$class = new \Components\Tools\Tables\SessionClass($this->database);
 			$class->load($fields['class_id']);
 
 			if ($class->id)
@@ -213,7 +221,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$user = User::getInstance($fields['user_id']);
+		$user = \User::getInstance($fields['user_id']);
 
 		if (!is_object($user) || !$user->get('id'))
 		{
@@ -266,10 +274,10 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 			{
 				$id = intval($id);
 
-				$row = new ToolsTablePreferences($this->database);
+				$row = new \Components\Tools\Tables\Preferences($this->database);
 				$row->load($id);
 
-				$class = new ToolsTableSessionClass($this->database);
+				$class = new \Components\Tools\Tables\SessionClass($this->database);
 				$class->load(array('alias' => 'default'));
 
 				if (!$class->id)
@@ -314,7 +322,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 	{
 		$class_id = Request::getInt('class_id');
 
-		$class = new ToolsTableSessionClass($this->database);
+		$class = new \Components\Tools\Tables\SessionClass($this->database);
 		$class->load($class_id);
 
 		$return = array(

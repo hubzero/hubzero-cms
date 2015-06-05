@@ -25,10 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$open 					= ($this->code == '@OPEN') ? 1 : 0 ;
-$this->codeaccess 		= ($this->code == '@OPEN') ? 'open' : 'closed';
-$newstate   			= ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
-//$this->statuspath 		= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
+$open             = ($this->code == '@OPEN') ? 1 : 0 ;
+$this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
+$newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
+//$this->statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
 
 $codeChoices = array(
 	'@OPEN' => 'open source (anyone can access code)',
@@ -69,7 +69,7 @@ $this->css('pipeline.css')
 	<?php } ?>
 	<?php
 		if ($this->action == 'confirm') {
-			ContribtoolHtml::writeApproval('Confirm license');
+			\Components\Tools\Helpers\Html::writeApproval('Confirm license');
 		}
 		//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;
 	?>
@@ -81,7 +81,7 @@ $this->css('pipeline.css')
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license'); ?>" method="post" id="versionForm" name="versionForm">
 				<fieldset class="versionfield">
 					<label><?php echo Lang::txt('CODE_ACCESS'); ?>:</label>
-					<?php echo ContribtoolHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
+					<?php echo \Components\Tools\Helpers\Html::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
 
 					<div id="lic_cl"><?php echo Lang::txt('LICENSE'); ?>:</div>
 					<div class="licinput" >
@@ -106,7 +106,7 @@ $this->css('pipeline.css')
 					</div>
 					<div id="lic">
 						<label><?php echo Lang::txt('LICENSE_TEMPLATE'); ?>:</label>
-						<?php echo ContribtoolHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
 					</div>
 					<div id="legendnotes">
 						<p>
