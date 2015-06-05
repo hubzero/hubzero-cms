@@ -156,7 +156,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		if (App::get('session')->get('registration.incomplete'))
 		{
-			$xreg = new MembersModelRegistration();
+			$xreg = new \Components\Members\Models\Registration();
 
 			$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			if (is_object($xprofile))
@@ -281,12 +281,12 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$fields->setErrors(array());
 
 		//load the user profile
-		$registration = new MembersModelRegistration();
+		$registration = new \Components\Members\Models\Registration();
 		$registration->loadProfile($profile);
 
 		//add tags to the registration object
 		$database = JFactory::getDBO();
-		$mt = new MembersModelTags($profile->get('uidNumber'));
+		$mt = new \Components\Members\Models\Tags($profile->get('uidNumber'));
 		$registration->_registration['tags'] = $mt->render('string');
 
 		//add bio to the registration object
@@ -345,7 +345,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		//get member addresses
 		$database = JFactory::getDBO();
-		$this->view->address = new MembersAddress($database);
+		$this->view->address = new \Components\Members\Tables\Address($database);
 		$this->view->address->load($this->view->addressId);
 
 		//are we passing back the vars from save
@@ -377,7 +377,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		//set up objects
 		$database = JFactory::getDBO();
-		$membersAddress = new MembersAddress($database);
+		$membersAddress = new \Components\Members\Tables\Address($database);
 
 		//create object from vars
 		$addressObj = new stdClass;
@@ -422,7 +422,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		//set up objects
 		$database = JFactory::getDBO();
-		$membersAddress = new MembersAddress($database);
+		$membersAddress = new \Components\Members\Tables\Address($database);
 
 		//load address object
 		$membersAddress->load($addressId);

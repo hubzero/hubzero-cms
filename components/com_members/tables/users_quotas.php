@@ -28,15 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Tables;
+
+use Lang;
+use User;
 
 require_once __DIR__ . DS . 'quotas_log.php';
 
 /**
  * Users quotas
  */
-class UsersQuotas extends JTable
+class UsersQuotas extends \JTable
 {
 	/**
 	 * Constructor
@@ -122,7 +124,7 @@ class UsersQuotas extends JTable
 				return false;
 			}
 
-			$log = new MembersQuotasLog($this->_db);
+			$log = new QuotasLog($this->_db);
 			$log->set('object_type', 'user');
 			$log->set('object_id'  , $this->id);
 			$log->set('name'       , $username);
@@ -255,7 +257,7 @@ class UsersQuotas extends JTable
 	 */
 	public function updateUsersByClassId($id)
 	{
-		$class = new MembersQuotasClasses($this->_db);
+		$class = new QuotasClasses($this->_db);
 		$class->load($id);
 
 		if (!$class->id)
@@ -290,7 +292,7 @@ class UsersQuotas extends JTable
 	 */
 	public function restoreDefaultClass($id)
 	{
-		$class = new MembersQuotasClasses($this->_db);
+		$class = new QuotasClasses($this->_db);
 		$class->load(array('alias' => 'default'));
 
 		if (!$class->id)
@@ -329,7 +331,7 @@ class UsersQuotas extends JTable
 	 */
 	public function setDefaultClass($users)
 	{
-		$class = new MembersQuotasClasses($this->_db);
+		$class = new QuotasClasses($this->_db);
 		$class->load(array('alias' => 'default'));
 
 		if (!$class->id)

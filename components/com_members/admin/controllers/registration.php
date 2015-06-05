@@ -77,7 +77,7 @@ class Registration extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		$settings = Request::getVar('settings', array(), 'post');
 

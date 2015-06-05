@@ -80,7 +80,7 @@ class PasswordRules extends AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get password rules object
-		$prObj = new \MembersPasswordRules($this->database);
+		$prObj = new \Components\Members\Tables\PasswordRules($this->database);
 
 		// Get count
 		$this->view->total = $prObj->getCount($this->view->filters);
@@ -142,7 +142,7 @@ class PasswordRules extends AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new \MembersPasswordRules($this->database);
+		$this->view->row = new \Components\Members\Tables\PasswordRules($this->database);
 		$this->view->row->load($id);
 
 		$this->view->rules_list = $this->rulesList($this->view->row->rule);
@@ -178,13 +178,13 @@ class PasswordRules extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming password rule edits
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \MembersPasswordRules($this->database);
+		$row = new \Components\Members\Tables\PasswordRules($this->database);
 
 		// Try to save
 		if (!$row->save($fields))
@@ -215,7 +215,7 @@ class PasswordRules extends AdminController
 	public function orderupTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		$this->orderTask(1);
 
@@ -234,7 +234,7 @@ class PasswordRules extends AdminController
 	public function orderdownTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		$this->orderTask(0);
 
@@ -259,7 +259,7 @@ class PasswordRules extends AdminController
 		$id  = $cid[0];
 		$inc = ($up) ? -1 : 1;
 
-		$row = new \MembersPasswordRules($this->database);
+		$row = new \Components\Members\Tables\PasswordRules($this->database);
 		$row->load($id);
 		$row->move($inc);
 	}
@@ -272,7 +272,7 @@ class PasswordRules extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Get the id's
 		$cid = Request::getVar('id', array(0), 'post', 'array');
@@ -284,7 +284,7 @@ class PasswordRules extends AdminController
 		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
 		// Get password rules object
-		$row = new \MembersPasswordRules($this->database);
+		$row = new \Components\Members\Tables\PasswordRules($this->database);
 
 		// Update ordering values
 		for ($i=0; $i < $total; $i++)
@@ -325,7 +325,7 @@ class PasswordRules extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the billboard
-			$row = new \MembersPasswordRules($this->database);
+			$row = new \Components\Members\Tables\PasswordRules($this->database);
 			$row->load($id);
 
 			$enabled = ($row->enabled) ? 0 : 1;
@@ -353,7 +353,7 @@ class PasswordRules extends AdminController
 	public function restore_default_contentTask()
 	{
 		// Get the object
-		$obj = new \MembersPasswordRules($this->database);
+		$obj = new \Components\Members\Tables\PasswordRules($this->database);
 
 		// Do the restore (set flag = 1 to force restore)
 		$obj->defaultContent(1);
@@ -373,7 +373,7 @@ class PasswordRules extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -390,7 +390,7 @@ class PasswordRules extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new \MembersPasswordRules($this->database);
+				$row = new \Components\Members\Tables\PasswordRules($this->database);
 
 				// Remove the record
 				$row->delete($id);

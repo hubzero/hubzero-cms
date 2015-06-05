@@ -28,14 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Members\Helpers;
 
 /**
  * Helper class for registration.
  * Use primarily for input validation.
  */
-class MembersHelperUtility
+class Utility
 {
 	/**
 	 * Validate organization type
@@ -250,7 +249,7 @@ class MembersHelperUtility
 	 */
 	public static function isActiveCode($code)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT `uidNumber` FROM `#__xprofiles` WHERE emailConfirmed = ".$db->quote('-'.$code)." LIMIT 1";
 		$db->setQuery($query);

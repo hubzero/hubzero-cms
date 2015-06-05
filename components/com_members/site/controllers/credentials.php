@@ -28,15 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Site\Controllers;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'token.php';
+use Hubzero\Component\SiteController;
+use Exception;
+use Request;
+use Session;
+use Config;
+use Route;
+use Lang;
+use User;
+use App;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'token.php';
 
 /**
  * Members controller class for profiles
  */
-class MembersControllerCredentials extends \Hubzero\Component\SiteController
+class Credentials extends SiteController
 {
 	/**
 	 * Displays the username recovery form
@@ -179,7 +188,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure it looks like a valid username
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
-		if (!MembersHelperUtility::validlogin($username))
+		if (!\\Components\Members\Helpers\Utility::validlogin($username))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
@@ -204,7 +213,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Get the user object
-		$user  = $user->first();
+		$user = $user->first();
 		$user = User::getInstance($user->id);
 
 		// Make sure the user isn't blocked
@@ -241,8 +250,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Set the confirmation token
-		$token       = App::hash(JUserHelper::genRandomPassword());
-		$salt        = JUserHelper::getSalt('crypt-md5');
+		$token       = App::hash(\JUserHelper::genRandomPassword());
+		$salt        = \JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token.$salt).':'.$salt;
 
 		// Save the token
@@ -255,7 +264,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		));
 
 		$eview->config  = Config::getRoot();
-		$eview->baseUrl = rtrim(Request::base(), DS);
+		$eview->baseUrl = rtrim(Request::base(), '/');
 		$eview->user    = $user;
 		$eview->token   = $token;
 		$eview->return  = Route::url('index.php?option=' . $this->_option . '&task=verify');
@@ -353,7 +362,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		$salt      = $parts[1];
-		$testcrypt = JUserHelper::getCryptedPassword($token, $salt);
+		$testcrypt = \JUserHelper::getCryptedPassword($token, $salt);
 
 		// Verify the token
 		if (!($crypt == $testcrypt))
@@ -428,7 +437,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Check the token and user id
 		if (empty($token) || empty($id))
 		{
-			throw new JException(Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'), 403);
+			throw new Exception(Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'), 403);
 		}
 
 		// Get the user object
@@ -462,7 +471,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 
 		if (\Hubzero\User\Helper::isXDomainUser($user->id))
 		{
-			throw new JException(Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_LINKED_ACCOUNT'), 403);
+			throw new Exception(Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_LINKED_ACCOUNT'), 403);
 		}
 
 		$password_rules = \Hubzero\Password\Rule::getRules();
@@ -492,7 +501,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		{
 			$error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_DONT_MATCH');
 		}
-		elseif (!MembersHelperUtility::validpassword($password1))
+		elseif (!\Components\Members\Helpers\Utility::validpassword($password1))
 		{
 			$error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_INVALID');
 		}
@@ -595,11 +604,11 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	 **/
 	private function setTitle()
 	{
-		Document::setTitle(
+		\Document::setTitle(
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task))
 		);
 
-		Pathway::append(
+		\Pathway::append(
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);

@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Site;
 
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'profile.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'association.php');
@@ -43,7 +42,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'profiles';
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'MembersController' . ucfirst(strtolower($controllerName));
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();

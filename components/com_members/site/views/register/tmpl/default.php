@@ -446,7 +446,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 					$database = JFactory::getDBO();
-					$rot = new MembersTableOrganizationType($database);
+					$rot = new \Components\Members\Tables\OrganizationType($database);
 					$types = $rot->find('list');
 					?>
 					<label for="orgtype"<?php echo $fieldclass; ?>>
@@ -470,7 +470,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
 					$database = JFactory::getDBO();
-					$xo = new MembersTableOrganization($database);
+					$xo = new \Components\Members\Tables\Organization($database);
 					$orgs = $xo->find('list');
 
 					foreach ($orgs as $org)

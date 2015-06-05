@@ -103,7 +103,7 @@ $this->css()
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey]['countryresident']) .'</td>'."\n";
 
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey][0]['ip']) .'</td>'."\n";
-					$html .= "\t\t\t".'<td class="textual-data">'. MembersHtml::valformat($users[$userkey][0]['idle'], 3) .'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">'. \Components\Members\Helpers\Html::valformat($users[$userkey][0]['idle'], 3) .'</td>'."\n";
 					$html .= "\t\t".'</tr>'."\n";
 				}
 			} else {
@@ -146,7 +146,7 @@ $this->css()
 				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
 				$html .= "\t\t\t".'<td class="textual-data">'.Lang::txt('COM_MEMBERS_ACTIVITY_GUEST').'</td>'."\n";
 				$html .= "\t\t\t".'<td class="textual-data">'.$this->escape($guest['ip']).'</td>'."\n";
-				$html .= "\t\t\t".'<td class="textual-data">'.MembersHtml::valformat($guest['idle'], 3).'</td>'."\n";
+				$html .= "\t\t\t".'<td class="textual-data">'.\Components\Members\Helpers\Html::valformat($guest['idle'], 3).'</td>'."\n";
 				$html .= "\t\t".'</tr>'."\n";
 			}
 		} else {

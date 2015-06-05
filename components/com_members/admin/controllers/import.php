@@ -130,7 +130,7 @@ class Import extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get the import object
-		if (!($row instanceof \Members\Models\Import))
+		if (!($row instanceof \Components\Members\Models\Import))
 		{
 			// get request vars
 			$id = Request::getVar('id', array(0));
@@ -139,7 +139,7 @@ class Import extends AdminController
 				$id = (isset($id[0]) ? $id[0] : 0);
 			}
 
-			$row = new \Members\Models\Import($id);
+			$row = new \Components\Members\Models\Import($id);
 		}
 
 		$this->view->import = $row;
@@ -190,7 +190,7 @@ class Import extends AdminController
 	public function saveTask($redirect=true)
 	{
 		// check token
-		Session::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid token');
 
 		// Get request vars
 		$import = Request::getVar('import', array());
@@ -200,7 +200,7 @@ class Import extends AdminController
 		$file   = Request::getVar('file', array(), 'FILES');
 
 		// Create import model object
-		$this->import = new \Members\Models\Import(isset($import['id']) ? $import['id'] : null);
+		$this->import = new \Components\Members\Models\Import(isset($import['id']) ? $import['id'] : null);
 
 		// Set our hooks
 		$this->import->set('hooks', json_encode($hooks));
@@ -212,7 +212,7 @@ class Import extends AdminController
 		$iparams = new \Hubzero\Config\Registry($this->import->get('params'));
 
 		// Bind incoming params
-		$iparams->loadArray($params);
+		$iparams->parse($params);
 
 		// Set params on import object
 		$this->import->set('params', $iparams->toString());
@@ -315,7 +315,7 @@ class Import extends AdminController
 	public function removeTask()
 	{
 		// check token
-		Session::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid token');
 
 		// get request vars
 		$ids = Request::getVar('id', array());
@@ -325,7 +325,7 @@ class Import extends AdminController
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
-			if (!$resourceImport = new \Members\Models\Import($id))
+			if (!$resourceImport = new \Components\Members\Models\Import($id))
 			{
 				continue;
 			}
@@ -376,7 +376,7 @@ class Import extends AdminController
 		$this->view->dryRun = $dryRun;
 
 		// Create import model object
-		$this->view->import = new \Members\Models\Import($id);
+		$this->view->import = new \Components\Members\Models\Import($id);
 
 		if (!$this->view->import->exists())
 		{
@@ -403,7 +403,7 @@ class Import extends AdminController
 	public function doRunTask()
 	{
 		// Check token
-		//Session::checkToken() or die('Invalid Token');
+		//Session::checkToken() or die('Invalid token');
 
 		// Start of import
 		$start = microtime(true);
@@ -415,7 +415,7 @@ class Import extends AdminController
 		$dryRun = Request::getBool('dryrun', 0);
 
 		// Create import model object
-		$import = new \Members\Models\Import($id);
+		$import = new \Components\Members\Models\Import($id);
 
 		// Make import importer
 		$importImporter = \Hubzero\Content\Importer::getInstance();
@@ -463,7 +463,7 @@ class Import extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// create import model object
-		$import = new \Members\Models\Import($id);
+		$import = new \Components\Members\Models\Import($id);
 
 		// get the lastest run
 		$run = $import->runs('current');
@@ -595,7 +595,7 @@ class Import extends AdminController
 	 */
 	public function sampleTask()
 	{
-		$profile = new \MembersProfile($this->database);
+		$profile = new \Components\Members\Tables\Profile($this->database);
 
 		$skip = array('gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword', 'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber');
 

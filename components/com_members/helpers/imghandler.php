@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Helpers;
+
+use Hubzero\Base\Object;
+use Filesystem;
+use Lang;
 
 /**
  * Image manipulation class
  */
-class MembersImgHandler extends \Hubzero\Base\Object
+class ImgHandler extends Object
 {
 	/**
 	 * Description for 'path'

@@ -54,7 +54,7 @@ $this->css('register')
 	<?php } ?>
 		<fieldset>
 			<h3><?php echo Lang::txt('Correct Email Address'); ?></h3>
-			<label<?php if (!$this->email || !MembersHelperUtility::validemail($this->email)) { echo' class="fieldWithErrors"'; } ?>>
+			<label<?php if (!$this->email || !\Components\Members\Helpers\Utility::validemail($this->email)) { echo' class="fieldWithErrors"'; } ?>>
 				<?php echo Lang::txt('Valid E-mail:'); ?>
 				<input name="email" id="email" type="text" size="51" value="<?php echo $this->escape($this->email); ?>" />
 			</label>

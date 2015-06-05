@@ -72,7 +72,7 @@ class Helper extends Module
 			$filters['contributions'] = $min;
 		}
 
-		$mp = new MembersProfile($database);
+		$mp = new \Components\Members\Tables\Profile($database);
 
 		$rows = $mp->getRecords($filters, false);
 		if (count($rows) > 0)

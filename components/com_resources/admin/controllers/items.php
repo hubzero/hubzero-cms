@@ -736,14 +736,14 @@ class Items extends AdminController
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 			// Get all contributors
-			$mp = new \MembersProfile($this->database);
+			$mp = new \Components\Members\Tables\Profile($this->database);
 			$members = null; //$mp->getRecords(array('sortby'=>'surname DESC','limit'=>'all','search'=>'','show'=>''), true);
 
 			// Get all contributors linked to this resource
 			$authnames = array();
 			if ($this->view->row->id)
 			{
-				$ma = new \MembersAssociation($this->database);
+				$ma = new \Components\Members\Tables\Association($this->database);
 				$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
 						FROM " . $ma->getTableName() . " AS a
 						LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid

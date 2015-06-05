@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Tables;
+
+use Lang;
+use User;
 
 /**
  * Members quota classes db table class
  */
-class MembersQuotasClasses extends JTable
+class QuotasClasses extends \JTable
 {
 	/**
 	 * Constructor
@@ -98,7 +100,7 @@ class MembersQuotasClasses extends JTable
 
 		if ($result)
 		{
-			$log = new MembersQuotasLog($this->_db);
+			$log = new QuotasLog($this->_db);
 			$log->set('object_type', 'class');
 			$log->set('object_id'  , $this->id);
 			$log->set('name'       , $this->alias);
@@ -128,7 +130,7 @@ class MembersQuotasClasses extends JTable
 
 		if ($result)
 		{
-			$log = new MembersQuotasLog($this->_db);
+			$log = new QuotasLog($this->_db);
 			$log->set('object_type', 'class');
 			$log->set('object_id'  , $this->id);
 			$log->set('name'       , $this->alias);
@@ -225,7 +227,7 @@ class MembersQuotasClasses extends JTable
 		{
 			require_once __DIR__ . '/quotas_classes_groups.php';
 
-			$qcGroups = new MembersQuotasClassesGroups($this->_db);
+			$qcGroups = new QuotasClassesGroups($this->_db);
 			foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
 			{
 				$groups[] = $group->group_id;
@@ -251,7 +253,7 @@ class MembersQuotasClasses extends JTable
 
 		require_once __DIR__ . '/quotas_classes_groups.php';
 
-		$qcGroups = new MembersQuotasClassesGroups($this->_db);
+		$qcGroups = new QuotasClassesGroups($this->_db);
 		$qcGroups->class_id = $this->id;
 
 		// Clear old records

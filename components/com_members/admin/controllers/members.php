@@ -113,7 +113,7 @@ class Members extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new \MembersProfile($this->database);
+		$obj = new \Components\Members\Tables\Profile($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getRecordCount($this->view->filters, true);
@@ -157,7 +157,7 @@ class Members extends AdminController
 	public function newTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming profile edits
 		$p = Request::getVar('profile', array(), 'post', 'none', 2);
@@ -299,7 +299,7 @@ class Members extends AdminController
 		// Get the user's interests (tags)
 		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 
-		$mt = new \MembersModelTags($id);
+		$mt = new \Components\Members\Models\Tags($id);
 		$this->view->tags = $mt->render('string');
 
 		// Set any errors
@@ -333,7 +333,7 @@ class Members extends AdminController
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming user ID
 		$id = Request::getInt('id', 0, 'post');
@@ -398,7 +398,7 @@ class Members extends AdminController
 		}
 		else
 		{
-			$confirm = \MembersHelperUtility::genemailconfirm();
+			$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 
@@ -550,7 +550,7 @@ class Members extends AdminController
 		// Process tags
 		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 
-		$mt = new \MembersModelTags($id);
+		$mt = new \Components\Members\Models\Tags($id);
 		$mt->setTags($tags, $id);
 
 		// Make sure certain changes make it back to the Joomla user table
@@ -585,7 +585,7 @@ class Members extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming
 		$ids = Request::getVar('ids', array());
@@ -610,7 +610,7 @@ class Members extends AdminController
 				}
 
 				// Remove any contribution associations
-				$assoc = new \MembersAssociation($this->database);
+				$assoc = new \Components\Members\Tables\Association($this->database);
 				$assoc->authorid = $id;
 				$assoc->deleteAssociations();
 
@@ -656,7 +656,7 @@ class Members extends AdminController
 	public function stateTask($state=1)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid token');
 
 		// Incoming user ID
 		$ids = Request::getVar('id', array());
@@ -685,7 +685,7 @@ class Members extends AdminController
 			}
 			else
 			{
-				$confirm = \MembersHelperUtility::genemailconfirm();
+				$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 				$profile->set('emailConfirmed', $confirm);
 			}
 

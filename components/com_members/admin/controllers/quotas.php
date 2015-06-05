@@ -94,13 +94,13 @@ class Quotas extends AdminController
 			)
 		);
 
-		$obj = new \UsersQuotas($this->database);
+		$obj = new \Components\Members\Tables\UsersQuotas($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
 		$this->view->rows  = $obj->getRecords($this->view->filters, true);
 
-		$classes = new \MembersQuotasClasses($this->database);
+		$classes = new \Components\Members\Tables\QuotasClasses($this->database);
 		$this->view->classes = $classes->getRecords();
 
 		$this->view->config = $this->config;
@@ -142,11 +142,11 @@ class Quotas extends AdminController
 			}
 		}
 
-		$quotas = new \UsersQuotas($this->database);
+		$quotas = new \Components\Members\Tables\UsersQuotas($this->database);
 		$this->view->row = $quotas->getRecord($id);
 
 		// Build classes select option
-		$quotaClass = new \MembersQuotasClasses($this->database);
+		$quotaClass = new \Components\Members\Tables\QuotasClasses($this->database);
 		$classes    = $quotaClass->getRecords();
 		$selected   = '';
 		$options[]  = Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text');
@@ -195,17 +195,17 @@ class Quotas extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \UsersQuotas($this->database);
+		$row = new \Components\Members\Tables\UsersQuotas($this->database);
 
 		if ($fields['class_id'])
 		{
-			$class = new \MembersQuotasClasses($this->database);
+			$class = new \Components\Members\Tables\QuotasClasses($this->database);
 			$class->load($fields['class_id']);
 
 			if ($class->id)
@@ -260,7 +260,7 @@ class Quotas extends AdminController
 	public function restoreDefaultTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -269,7 +269,7 @@ class Quotas extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$quotas = new \UsersQuotas($this->database);
+			$quotas = new \Components\Members\Tables\UsersQuotas($this->database);
 			if (!$quotas->setDefaultClass($ids))
 			{
 				// Output message and redirect
@@ -315,7 +315,7 @@ class Quotas extends AdminController
 			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
-		$obj = new \MembersQuotasClasses($this->database);
+		$obj = new \Components\Members\Tables\QuotasClasses($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
@@ -367,14 +367,14 @@ class Quotas extends AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new \MembersQuotasClasses($this->database);
+		$this->view->row = new \Components\Members\Tables\QuotasClasses($this->database);
 		$this->view->row->load($id);
 
-		$quotas = new \UsersQuotas($this->database);
+		$quotas = new \Components\Members\Tables\UsersQuotas($this->database);
 		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
 
 		/*$this->view->groups = array();
-		$qcGroups = new \MembersQuotasClassesGroups($this->database);
+		$qcGroups = new \Components\Members\Tables\QuotasClassesGroups($this->database);
 		foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
 		{
 			$this->view->groups[] = $group->group_id
@@ -412,13 +412,13 @@ class Quotas extends AdminController
 	public function saveClassTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \MembersQuotasClasses($this->database);
+		$row = new \Components\Members\Tables\QuotasClasses($this->database);
 
 		// Try to save
 		if (!$row->save($fields))
@@ -463,7 +463,7 @@ class Quotas extends AdminController
 	public function deleteClassTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -477,7 +477,7 @@ class Quotas extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new \MembersQuotasClasses($this->database);
+				$row = new \Components\Members\Tables\QuotasClasses($this->database);
 				$row->load($id);
 
 				if ($row->alias == 'default')
@@ -496,7 +496,7 @@ class Quotas extends AdminController
 				$row->delete($id);
 
 				// Restore all members of this class to default
-				$quota = new \UsersQuotas($this->database);
+				$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 				$quota->restoreDefaultClass($id);
 			}
 		}
@@ -538,7 +538,7 @@ class Quotas extends AdminController
 	{
 		$class_id = Request::getInt('class_id');
 
-		$class = new \MembersQuotasClasses($this->database);
+		$class = new \Components\Members\Tables\QuotasClasses($this->database);
 		$class->load($class_id);
 
 		$return = array(
@@ -564,7 +564,7 @@ class Quotas extends AdminController
 			$id = Request::getInt('id');
 		}
 
-		$quota = new \UsersQuotas($this->database);
+		$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 		$quota->load($id);
 		$username = User::getInstance($quota->user_id)->get('username');
 
@@ -686,7 +686,7 @@ class Quotas extends AdminController
 			switch ($args[0])
 			{
 				case 'class':
-					$class = new \MembersQuotasClasses($this->database);
+					$class = new \Components\Members\Tables\QuotasClasses($this->database);
 					$class->load(array('alias' => $args[1]));
 
 					if ($class->id && !$overwrite)
@@ -718,7 +718,7 @@ class Quotas extends AdminController
 						$user_id = $user->get('id');
 					}
 
-					$class = new \MembersQuotasClasses($this->database);
+					$class = new \Components\Members\Tables\QuotasClasses($this->database);
 					$class->load(array('alias' => $args[2]));
 
 					if (!$class->id)
@@ -726,7 +726,7 @@ class Quotas extends AdminController
 						continue;
 					}
 
-					$quota = new \UsersQuotas($this->database);
+					$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 					$quota->load(array('user_id' => $user_id));
 
 					if ($quota->id && !$overwrite)
@@ -770,7 +770,7 @@ class Quotas extends AdminController
 		if (count($results) > 0)
 		{
 			$updates = 0;
-			$class = new \MembersQuotasClasses($this->database);
+			$class = new \Components\Members\Tables\QuotasClasses($this->database);
 			$class->load(array('alias' => 'default'));
 
 			if (!$class->id)
@@ -786,7 +786,7 @@ class Quotas extends AdminController
 
 			foreach ($results as $r)
 			{
-				$quota = new \UsersQuotas($this->database);
+				$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 				$quota->load(array('user_id' => $r->id));
 
 				if ($quota->id)

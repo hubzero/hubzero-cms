@@ -28,28 +28,29 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Models;
+
+use Hubzero\Database\Relational;
 
 /**
  * Members password reset token database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Token extends \Hubzero\Database\Relational
+class Token extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $namespace = 'xprofiles';
 
 	/**
 	 * Automatically fillable fields
 	 *
 	 * @var array
-	 **/
+	 */
 	public $initiate = array(
 		'created'
 	);

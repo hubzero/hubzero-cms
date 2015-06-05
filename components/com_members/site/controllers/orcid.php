@@ -28,13 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Exception;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Members controller class for ORCIDs
  */
-class MembersControllerOrcid extends \Hubzero\Component\SiteController
+class Orcid extends SiteController
 {
 	/**
 	 * A list of ORCID services that can be used
@@ -327,7 +334,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	public function createTask()
 	{
-		$output = new stdClass();
+		$output = new \stdClass();
 		$output->success = 1;
 		$output->orcid   = '';
 		$output->message = '';

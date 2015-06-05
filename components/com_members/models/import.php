@@ -28,9 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Members\Models;
+namespace Components\Members\Models;
 
-use Members\Models\Import\Record;
+use Components\Members\Models\Import\Record;
 use Hubzero\Content\Importer;
 use stdClass;
 

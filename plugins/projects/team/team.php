@@ -470,7 +470,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Instantiate a new registration object
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 
 		// Owner names not supplied
 		if (!$members && !$groups)

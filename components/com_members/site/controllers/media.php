@@ -28,13 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Filesystem;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Members controller class for media
  */
-class MembersControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Execute a task
@@ -336,8 +343,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -360,7 +366,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$ih = new MembersImgHandler();
+			$ih = new \Components\Members\Helpers\ImgHandler();
 
 			if ($curfile != '')
 			{
@@ -461,7 +467,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$ih = new MembersImgHandler();
+			$ih = new \Components\Members\Helpers\ImgHandler();
 
 			// Attempt to delete the file
 			if (!Filesystem::delete($path . DS . $file))

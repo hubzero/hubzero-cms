@@ -28,15 +28,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Component;
+use Pathway;
+use Session;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
 
 /**
  * Controller class for member registration
  */
-class MembersControllerRegister extends \Hubzero\Component\SiteController
+class Register extends SiteController
 {
 	/**
 	 * Determine task and execute it
@@ -104,7 +115,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Instantiate a new registration object
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 
 		if (Request::getVar('edit', '', 'post'))
 		{
@@ -337,7 +348,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Instantiate a new registration object
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 
 		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 
@@ -478,7 +489,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				Session::set('user', $suser);
 
 				// Get the session object
-				$table =  JTable::getInstance('session');
+				$table = \JTable::getInstance('session');
 				$table->load(Session::getId());
 				$table->username = $xprofile->get('username');
 				$table->update();
@@ -626,12 +637,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate a new registration object
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 
 		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			Request::checkToken() or exit('Invalid Token');
+			Request::checkToken() or exit('Invalid token');
 
 			// Load POSTed data
 			$xregistration->loadPost();
@@ -641,7 +652,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				// Get required system objects
 				$user      = clone(User::getRoot());
-				$authorize = JFactory::getACL();
+				$authorize = \JFactory::getACL();
 
 				// If user registration is not allowed, show 403 not authorized.
 				if ($usersConfig->get('allowUserRegistration') == '0')
@@ -758,7 +769,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 					// add member interests
 					$interests = $xregistration->get('interests');
-					$mt = new MembersModelTags($xprofile->get('uidNumber'));
+					$mt = new \Components\Members\Models\Tags($xprofile->get('uidNumber'));
 					if (!empty($interests))
 					{
 						$mt->setTags($interests, $xprofile->get('uidNumber'));
@@ -853,7 +864,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						// Send mail
 						if (!$message->send())
 						{
-							Log::error('Members admin notification email failed: ' . Lang::txt('Failed to mail %s', $hubMonitorEmail));
+							\Log::error('Members admin notification email failed: ' . Lang::txt('Failed to mail %s', $hubMonitorEmail));
 						}
 					}
 
@@ -1003,7 +1014,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Get the registration object
 		if (!is_object($xregistration))
 		{
-			$this->view->xregistration = new MembersModelRegistration();
+			$this->view->xregistration = new \Components\Members\Models\Registration();
 		}
 		else
 		{
@@ -1078,14 +1089,18 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		/*
-		if ($this->view->registrationEmail == REG_REQUIRED || $this->view->registrationEmail == REG_OPTIONAL) {
-			if (!empty($this->view->xregistration->email)) {
+		if ($this->view->registrationEmail == REG_REQUIRED || $this->view->registrationEmail == REG_OPTIONAL)
+		{
+			if (!empty($this->view->xregistration->email))
+			{
 				$this->view->registration['email'] = $this->view->xregistration->_encoded['email'];
 			}
 		}
 
-		if ($this->view->registrationConfirmEmail == REG_REQUIRED || $this->view->registrationConfirmEmail == REG_OPTIONAL) {
-			if (!empty($this->view->xregistration->_encoded['email'])) {
+		if ($this->view->registrationConfirmEmail == REG_REQUIRED || $this->view->registrationConfirmEmail == REG_OPTIONAL)
+		{
+			if (!empty($this->view->xregistration->_encoded['email']))
+			{
 				$this->view->registration['confirmEmail'] = $this->view->xregistration->_encoded['email'];
 			}
 		}
@@ -1114,7 +1129,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$username = Request::getVar('user', '', 'post');
 
 		// Instantiate a new registration object
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 
 		// Score the password
 		$score = $xregistration->scorePassword($password, $username);
@@ -1164,7 +1179,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$username = Request::getVar('userlogin', '', 'get');
 
 		// Instantiate a new registration object
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 
 		// Check the username
 		$usernamechecked = $xregistration->checkusername($username);
@@ -1208,7 +1223,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if (($email_confirmed != 1) && ($email_confirmed != 3))
 		{
-			$confirm = MembersHelperUtility::genemailconfirm();
+			$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
 			$xprofile = new \Hubzero\User\Profile();
 			$xprofile->load($login);
@@ -1323,7 +1338,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_EMAIL'));
 			}
-			if ($pemail && MembersHelperUtility::validemail($pemail) /*&& ($newemail != $email)*/)
+			if ($pemail && \Components\Members\Helpers\Utility::validemail($pemail) /*&& ($newemail != $email)*/)
 			{
 				// Check if the email address was actually changed
 				if ($pemail == $email)
@@ -1361,7 +1376,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					{
 						// No errors
 						// Attempt to send a new confirmation code
-						$confirm = MembersHelperUtility::genemailconfirm();
+						$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
 						$xprofile = new \Hubzero\User\Profile();
 						$xprofile->load($login);
@@ -1464,7 +1479,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if (($email_confirmed == 1) || ($email_confirmed == 3))
 		{
 			// The current user is confirmed - check to see if the incoming code is valid at all
-			if (MembersHelperUtility::isActiveCode($code))
+			if (\Components\Members\Helpers\Utility::isActiveCode($code))
 			{
 				$this->setError('login mismatch');
 
@@ -1641,7 +1656,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			$title = Lang::txt('COM_MEMBERS_REGISTER');
 		}
-		Document::setTitle($title);
+		\Document::setTitle($title);
 	}
 
 	/**
@@ -1657,7 +1672,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			if (Request::getVar('cookie', '', 'get') != 'no')
 			{
-				$uri = JURI::getInstance();
+				$uri = \JURI::getInstance();
 				$uri->setVar('cookie', 'no');
 
 				App::redirect($uri->toString());
@@ -1668,7 +1683,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 		else if (Request::getVar('cookie', '', 'get') == 'no')
 		{
-			$uri = JURI::getInstance();
+			$uri = \JURI::getInstance();
 			$uri->delVar('cookie');
 
 			App::redirect($uri->toString());

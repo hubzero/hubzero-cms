@@ -122,7 +122,7 @@ $this->css('introduction.css', 'system')
 			<div class="grid">
 <?php
 	$db = JFactory::getDBO();
-	$c = new MembersProfile($db);
+	$c = new \Components\Members\Tables\Profile($db);
 
 	$filters = array(
 		'limit'  => 4,

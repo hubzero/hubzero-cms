@@ -158,7 +158,7 @@ class Helper extends Module
 					$filters['contributions'] = trim($this->params->get('min_contributions'));
 					$filters['show'] = trim($this->params->get('show'));
 
-					$mp = new \MembersProfile($this->database);
+					$mp = new \Components\Members\Tables\Profile($this->database);
 
 					// Get records
 					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);

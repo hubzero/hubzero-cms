@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Members\Models\Import;
+namespace Components\Members\Models\Import;
 
 use Exception;
 use stdClass;
@@ -38,8 +38,6 @@ use Config;
 use Lang;
 use User;
 use Date;
-use JFactory;
-use JParameter;
 
 include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php';
 include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php';
@@ -73,12 +71,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		$this->_mode    = $mode;
 
 		// Core objects
-		$this->_database = JFactory::getDBO();
+		$this->_database = \JFactory::getDBO();
 		$this->_user     = User::getRoot();
 
 		// Create objects
 		$this->record = new stdClass;
-		$this->record->entry = new \MembersProfile($this->_database);
+		$this->record->entry = new \Components\Members\Tables\Profile($this->_database);
 		$this->_profile = new \Hubzero\User\Profile();
 		$this->record->tags  = array();
 
@@ -128,7 +126,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			return $this;
 		}
 
-		$xregistration = new \MembersModelRegistration();
+		$xregistration = new \Components\Members\Models\Registration();
 		$xregistration->loadProfile($this->_profile);
 
 		// Check that required fields were filled in properly
@@ -322,7 +320,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$newUsertype = $usersConfig->get('new_usertype');
 			if (!$newUsertype)
 			{
-				$db = JFactory::getDbo();
+				$db = \JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->select('id')
 					->from('#__usergroups')
@@ -454,7 +452,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	private function _saveTagsData()
 	{
 		// save tags
-		$tags = new \MembersModelTags($this->_profile->get('uidNumber'));
+		$tags = new \Components\Members\Models\Tags($this->_profile->get('uidNumber'));
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
 	}
 }

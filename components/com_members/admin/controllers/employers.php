@@ -98,7 +98,7 @@ class Employers extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new \MembersTableOrganizationType($this->database);
+		$obj = new \Components\Members\Tables\OrganizationType($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -113,7 +113,7 @@ class Employers extends AdminController
 	/**
 	 * Edit an employer type
 	 *
-	 * @param   mixed  $model  MembersTableOrganizationType
+	 * @param   mixed  $model  \Components\Members\Tables\OrganizationType
 	 * @return  void
 	 */
 	public function editTask($model=null)
@@ -132,7 +132,7 @@ class Employers extends AdminController
 			}
 
 			// Initiate database class and load info
-			$model = new \MembersTableOrganizationType($this->database);
+			$model = new \Components\Members\Tables\OrganizationType($this->database);
 			$model->load($id);
 		}
 
@@ -159,10 +159,10 @@ class Employers extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Load the tag object and bind the incoming data to it
-		$model = new \MembersTableOrganizationType($this->database);
+		$model = new \Components\Members\Tables\OrganizationType($this->database);
 
 		if (!$model->bind($_POST))
 		{
@@ -206,7 +206,7 @@ class Employers extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken() or exit('Invalid token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -215,7 +215,7 @@ class Employers extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$orgtype = new \MembersTableOrganizationType($this->database);
+			$orgtype = new \Components\Members\Tables\OrganizationType($this->database);
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)

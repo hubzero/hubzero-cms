@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Tables;
 
 /**
  * Password rules class
  */
-class MembersPasswordRules extends JTable
+class PasswordRules extends \JTable
 {
 	/**
 	 * Constructor
@@ -218,7 +217,7 @@ class MembersPasswordRules extends JTable
 		);
 
 		// Get a few config values from joomla
-		$app    = JFactory::getApplication();
+		$app    = \JFactory::getApplication();
 		$schema = $app->getCfg('db');
 		$prefix = $app->getCfg('dbprefix');
 

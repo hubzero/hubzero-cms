@@ -295,7 +295,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//get list of organizations from db
 							include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
 
-							$xo = new MembersTableOrganization($database);
+							$xo = new \Components\Members\Tables\Organization($database);
 							$orgs = $xo->find('list');
 
 							$organization_alt = '';
@@ -325,7 +325,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_ORGANIZATION') . $organizations . '</label><label>' . Lang::txt('PLG_MEMBERS_PROFILE_ENTER_ORG_BELOW') . $organizations_text . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[org]', $this->params->get('access_org'), 'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[org]', $this->params->get('access_org'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -363,7 +363,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//get organization types from db
 							include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 
-							$xot = new MembersTableOrganizationType($database);
+							$xot = new \Components\Members\Tables\OrganizationType($database);
 							$orgtypes = $xot->find('list');
 
 							//output value
@@ -395,7 +395,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE') . $organization_types . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -430,8 +430,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="section-content">
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'); ?></div>
 						<div class="value">
-							<a class="email" href="mailto:<?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
-								<?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>
+							<a class="email" href="mailto:<?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
+								<?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>
 							</a>
 						</div>
 						<br class="clear" />
@@ -446,7 +446,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="'.$this->escape($this->profile->get('email')).'" /></label>'
 												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="'.$this->escape($this->profile->get('email')).'" /></label>'
 												. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -511,7 +511,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</div>
 			</div>
 			<p>' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -574,7 +574,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE') . '<input type="text" class="input-text" name="web" id="profile-url" value="'.$this->escape($this->profile->get('url')).'" /></label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -631,7 +631,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_TELEPHONE') . ' <input type="text" class="input-text" name="phone" id="profile-phone" value="'.$this->escape($this->profile->get('phone')) .'" /></label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[phone]',$this->params->get('access_phone'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[phone]',$this->params->get('access_phone'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -654,7 +654,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<?php
 					// Get member addresses
 					$db = JFactory::getDBO();
-					$membersAddress = new MembersAddress($db);
+					$membersAddress = new \Components\Members\Tables\Address($db);
 					$addresses = $membersAddress->getAddressesForMember($this->profile->get("uidNumber"));
 
 					$cls = '';
@@ -698,7 +698,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label for="profile_address">' . Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />' . $addAddressLink . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[address]', $this->params->get('access_address'), 'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[address]', $this->params->get('access_address'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -759,7 +759,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						     ->set('profile', $this->profile)
 						     ->set('isUser', $isUser)
 						     ->set('inputs', '<label for="profile_bio">' . Lang::txt('PLG_MEMBERS_PROFILE_BIOGRAPHY') . $bio . '</label>')
-						     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>')
+						     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>')
 						     ->display();
 					?>
 				</div>
@@ -781,7 +781,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<?php
 					$cls = '';
 
-					$mt = new MembersModelTags($this->profile->get('uidNumber'));
+					$mt = new \Components\Members\Models\Tags($this->profile->get('uidNumber'));
 					$tags = $mt->render();
 					$tag_string = $mt->render('string');
 
@@ -825,7 +825,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_INTERESTS') . $interests . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[tags]',$this->params->get('access_tags'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[tags]',$this->params->get('access_tags'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -927,7 +927,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label class="side-by-side" for="123">' . Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OF_USA') . $citizenship . '</label>'
 												. '<label class="side-by-side no-padding-right" for="corigin">'.Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OR_RESIDENT') . $countries . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryorigin]', $this->params->get('access_countryorigin'), 'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[countryorigin]', $this->params->get('access_countryorigin'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -1028,7 +1028,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label class="side-by-side" for="456">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship . '</label>'
 												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN') . $countries . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -1069,7 +1069,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_GENDER'); ?></div>
 						<div class="value">
 							<?php
-								$gender = MembersHtml::propercase_singleresponse($this->profile->get('gender'));
+								$gender = \Components\Members\Helpers\Html::propercase_singleresponse($this->profile->get('gender'));
 								echo ($gender != 'n/a') ? $gender : Lang::txt('PLG_MEMBERS_PROFILE_GENDER_ENTER');
 							?>
 						</div>
@@ -1098,7 +1098,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_GENDER') . $sex . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[gender]',$this->params->get('access_gender'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[gender]',$this->params->get('access_gender'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -1141,7 +1141,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY'); ?></div>
 						<div class="value">
 							<?php
-								$disability = MembersHtml::propercase_multiresponse($this->profile->get('disability'));
+								$disability = \Components\Members\Helpers\Html::propercase_multiresponse($this->profile->get('disability'));
 								echo ($disability != 'n/a') ? $disability : Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_ENTER');
 							?>
 						</div>
@@ -1238,7 +1238,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label for="disability-input">' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY') . $disability_html . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -1281,7 +1281,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC'); ?></div>
 						<div class="value">
 							<?php
-								$hispanic = MembersHtml::propercase_multiresponse($this->profile->get('hispanic'));
+								$hispanic = \Components\Members\Helpers\Html::propercase_multiresponse($this->profile->get('hispanic'));
 								echo ($hispanic != 'n/a') ? $hispanic : Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_ENTER');
 							?>
 						</div>
@@ -1366,7 +1366,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label for="hispanic-input">' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC') . $hispanic_html . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -1409,7 +1409,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_RACE'); ?></div>
 						<div class="value">
 							<?php
-								$race = MembersHtml::propercase_multiresponse($this->profile->get('race'));
+								$race = \Components\Members\Helpers\Html::propercase_multiresponse($this->profile->get('race'));
 								echo ($race != 'n/a') ? $race : Lang::txt('PLG_MEMBERS_PROFILE_RACE_ENTER');
 							?>
 						</div>
@@ -1473,7 +1473,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<label for="race-input">' . Lang::txt('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -1553,7 +1553,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', $optin_html)
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>

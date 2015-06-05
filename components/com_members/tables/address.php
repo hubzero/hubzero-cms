@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Tables;
+
+use Lang;
 
 /**
  * Table class for member addresses
  */
-class MembersAddress extends JTable
+class Address extends \JTable
 {
 	/**
 	 * Object constructor to set table and key field
@@ -56,7 +57,7 @@ class MembersAddress extends JTable
 	{
 		if (!isset($this->uidNumber) || $this->uidNumber == '')
 		{
-			$this->setError( Lang::txt('You must supply a user id.') );
+			$this->setError(Lang::txt('You must supply a user id.'));
 			return false;
 		}
 

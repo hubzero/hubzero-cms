@@ -28,10 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Members\Models;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php');
+use Components\Members\Tables;
+use Components\Members\Helpers;
+use Request;
+use User;
+
+include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php');
 
 /**
  * Description for ''REG_HIDE''
@@ -76,9 +80,8 @@ define('PASS_SCORE_STRONG', 68);
 /**
  * Model class for a registration
  */
-class MembersModelRegistration
+class Registration
 {
-
 	/**
 	 * Description for '_registration'
 	 *
@@ -458,14 +461,14 @@ class MembersModelRegistration
 		}
 
 		//get user tags
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php' );
-		$database = JFactory::getDBO();
-		$mt = new MembersModelTags($xprofile->get('uidNumber'));
+		require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
+		$database = \JFactory::getDBO();
+		$mt = new Tags($xprofile->get('uidNumber'));
 		$tag_string = $mt->render('string');
 
 		//get member addresses
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
-		$membersAddress = new MembersAddress($database);
+		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'address.php');
+		$membersAddress = new Tables\Address($database);
 		$addresses = $membersAddress->getAddressesForMember($xprofile->get("uidNumber"));
 
 		$this->set('countryresident', $xprofile->get('countryresident'));
@@ -609,10 +612,10 @@ class MembersModelRegistration
 			break;
 		}
 
-		$hconfig = Component::params('com_members');
+		$hconfig = \Component::params('com_members');
 
 		$default    = str_pad($default, 4, '-');
-		$configured  = $hconfig->get($name);
+		$configured = $hconfig->get($name);
 		if (empty($configured))
 		{
 			$configured = $default;
@@ -647,7 +650,7 @@ class MembersModelRegistration
 	public function getEmailId($email)
 	{
 		// Initialize some variables
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = 'SELECT id FROM `#__users` WHERE email = ' . $db->Quote($email);
 		$db->setQuery($query, 0, 1);
@@ -755,7 +758,7 @@ class MembersModelRegistration
 		if ($registrationUsername != REG_HIDE)
 		{
 			$allowNumericFirstCharacter = ($task == 'update') ? true : false;
-			if (!empty($login) && !MembersHelperUtility::validlogin($login, $allowNumericFirstCharacter) )
+			if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter) )
 			{
 				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
 			}
@@ -765,7 +768,7 @@ class MembersModelRegistration
 		{
 			jimport('joomla.user.helper');
 
-			$uid = JUserHelper::getUserId($login);
+			$uid = \JUserHelper::getUserId($login);
 
 			if ($uid && $uid != $id)
 			{
@@ -782,7 +785,7 @@ class MembersModelRegistration
 			if (!empty($puser) && $uid && $uid != $puser['uid'])
 			{
 				// log error and display error to user
-				\JFactory::getLogger()->error('System username/userid does not match DB username/password for user: ' . $uid);
+				\Log::error('System username/userid does not match DB username/password for user: ' . $uid);
 				$this->_invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
 			}
 		}
@@ -801,7 +804,7 @@ class MembersModelRegistration
 		{
 			if (!empty($registration['password']))
 			{
-				$result = MembersHelperUtility::valid_password($registration['password']);
+				$result = Helpers\Utility::valid_password($registration['password']);
 
 				if ($result)
 					$this->_invalid['password'] = $result;
@@ -896,7 +899,7 @@ class MembersModelRegistration
 
 		if ($registrationFullname != REG_HIDE)
 		{
-			if (!empty($registration['name']) && !MembersHelperUtility::validname($registration['name']) )
+			if (!empty($registration['name']) && !Helpers\Utility::validname($registration['name']) )
 			{
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
 			}
@@ -917,17 +920,17 @@ class MembersModelRegistration
 			{
 				$this->_missing['email'] = 'Valid Email';
 			}
-			elseif (!MembersHelperUtility::validemail($email))
+			elseif (!Helpers\Utility::validemail($email))
 			{
 				$this->_invalid['email'] = 'Invalid email address. Please correct and try again.';
 			}
 			else
 			{
-				$usersConfig =  Component::params( 'com_users' );
+				$usersConfig = \Component::params( 'com_users' );
 				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
 
 				// Check if the email is already in use
-				$db = JFactory::getDBO();
+				$db = \JFactory::getDBO();
 				$query = "SELECT `id` FROM `#__users` WHERE `email` = " . $db->quote($email) . " AND `id` != " . (int)$id;
 				$db->setQuery($query);
 				$xid = intval($db->loadResult());
@@ -954,7 +957,7 @@ class MembersModelRegistration
 							// We also need to catch existing users who might try to change their
 							// email to an existing email address on the hub. For that, we need to
 							// check and see if their email address is changing with this save.
-							$db = JFactory::getDBO();
+							$db = \JFactory::getDBO();
 							$query = "SELECT `email` FROM `#__users` WHERE `id` = " . (int)$id;
 							$db->setQuery($query);
 							$currentEmail = $db->loadResult();
@@ -1002,7 +1005,7 @@ class MembersModelRegistration
 		if ($registrationURL != REG_HIDE)
 		{
 			$registration['web'] = trim($registration['web']);
-			if (!empty($registration['web']) && (strstr($registration['web'], ' ') || !MembersHelperUtility::validurl($registration['web'])))
+			if (!empty($registration['web']) && (strstr($registration['web'], ' ') || !Helpers\Utility::validurl($registration['web'])))
 			{
 				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
 			}
@@ -1019,7 +1022,7 @@ class MembersModelRegistration
 
 		if ($registrationORCID != REG_HIDE)
 		{
-			if (!empty($registration['orcid']) && !MembersHelperUtility::validorcid($registration['orcid']))
+			if (!empty($registration['orcid']) && !Helpers\Utility::validorcid($registration['orcid']))
 			{
 				$this->_invalid['orcid'] = 'Invalid ORCID. It should be in the form of XXXX-XXXX-XXXX-XXXX.';
 			}
@@ -1036,7 +1039,7 @@ class MembersModelRegistration
 
 		if ($registrationPhone != REG_HIDE)
 		{
-			if (!empty($registration['phone']) && !MembersHelperUtility::validphone($registration['phone']))
+			if (!empty($registration['phone']) && !Helpers\Utility::validphone($registration['phone']))
 			{
 				$this->_invalid['phone'] = 'Invalid phone number. You may be using characters that are not allowed.';
 			}
@@ -1055,7 +1058,7 @@ class MembersModelRegistration
 		if ($registrationEmployment != REG_HIDE)
 			if (empty($registration['orgtype']))
 			{
-				//if (!MembersHelperUtility::validateOrgType($registration['orgtype']) )
+				//if (!Helpers\Utility::validateOrgType($registration['orgtype']) )
 					$this->_invalid['orgtype'] = 'Invalid employment status. Please make a new selection.';
 			}
 		*/
@@ -1071,11 +1074,11 @@ class MembersModelRegistration
 
 		if ($registrationOrganization != REG_HIDE)
 		{
-			if (!empty($registration['org']) && !MembersHelperUtility::validtext($registration['org']))
+			if (!empty($registration['org']) && !Helpers\Utility::validtext($registration['org']))
 			{
 				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
 			}
-			elseif (!empty($registration['orgtext']) && !MembersHelperUtility::validtext($registration['orgtext']))
+			elseif (!empty($registration['orgtext']) && !Helpers\Utility::validtext($registration['orgtext']))
 			{
 				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
 			}
@@ -1092,7 +1095,7 @@ class MembersModelRegistration
 
 		if ($registrationCitizenship != REG_HIDE)
 		{
-			if (!empty($registration['countryorigin']) && !MembersHelperUtility::validtext($registration['countryorigin']))
+			if (!empty($registration['countryorigin']) && !Helpers\Utility::validtext($registration['countryorigin']))
 			{
 				$this->_invalid['countryorigin'] = 'Invalid country of origin. You may be using characters that are not allowed.';
 			}
@@ -1109,7 +1112,7 @@ class MembersModelRegistration
 
 		if ($registrationResidency != REG_HIDE)
 		{
-			if (!empty($registration['countryresident']) && !MembersHelperUtility::validtext($registration['countryresident']))
+			if (!empty($registration['countryresident']) && !Helpers\Utility::validtext($registration['countryresident']))
 			{
 				$this->_invalid['countryresident'] = 'Invalid country of residency. You may be using characters that are not allowed.';
 			}
@@ -1126,7 +1129,7 @@ class MembersModelRegistration
 
 		if ($registrationSex != REG_HIDE)
 		{
-			if (!empty($registration['sex']) && !MembersHelperUtility::validtext($registration['sex']))
+			if (!empty($registration['sex']) && !Helpers\Utility::validtext($registration['sex']))
 			{
 				$this->_invalid['sex'] = 'Invalid gender selection.';
 			}
@@ -1192,7 +1195,7 @@ class MembersModelRegistration
 		/*
 		if ($registrationRace != REG_HIDE)
 		{
-			if (!empty($registration['race']) || !MembersHelperUtility::validtext($registration['race']))
+			if (!empty($registration['race']) || !Helpers\Utility::validtext($registration['race']))
 			{
 				$this->_invalid['race'] = 'Invalid racial selection.';
 			}
@@ -1211,9 +1214,9 @@ class MembersModelRegistration
 		/*
 		if ($registrationInterests != REG_HIDE)
 		{
-			if (!empty($registration['edulevel']) && !MembersHelperUtility::validtext($registration['edulevel']))
+			if (!empty($registration['edulevel']) && !Helpers\Utility::validtext($registration['edulevel']))
 				$this->_invalid['interests'] = 'Invalid interest selection.';
-			if (!empty($registration['role']) && !MembersHelperUtility::validtext($registration['role']))
+			if (!empty($registration['role']) && !Helpers\Utility::validtext($registration['role']))
 				$this->_invalid['interests'] = 'Invalid interest selection.';
 		}
 		*/
@@ -1229,11 +1232,11 @@ class MembersModelRegistration
 
 		if ($registrationReason != REG_HIDE)
 		{
-			if (!empty($registration['reason']) && !MembersHelperUtility::validtext($registration['reason']))
+			if (!empty($registration['reason']) && !Helpers\Utility::validtext($registration['reason']))
 			{
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
-			if (!empty($registration['reasontxt']) && !MembersHelperUtility::validtext($registration['reasontxt']))
+			if (!empty($registration['reasontxt']) && !Helpers\Utility::validtext($registration['reasontxt']))
 			{
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
@@ -1402,14 +1405,14 @@ class MembersModelRegistration
 		}
 
 		// check the general validity
-		if (!MembersHelperUtility::validlogin($username))
+		if (!Helpers\Utility::validlogin($username))
 		{
 			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';
 			return $ret;
 		}
 
 		// Initialize database
-		$db =  JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = 'SELECT id FROM `#__users` WHERE username = ' . $db->Quote( $username );
 		$db->setQuery($query);
@@ -1457,7 +1460,7 @@ class MembersModelRegistration
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
 		$logincheck = self::checkusername($login);
-		if (MembersHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')
+		if (Helpers\Utility::validlogin($login) && $logincheck['status'] == 'ok')
 		{
 			return $login;
 		}
@@ -1470,7 +1473,7 @@ class MembersModelRegistration
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
 		$logincheck = self::checkusername($login);
-		if (MembersHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')
+		if (Helpers\Utility::validlogin($login) && $logincheck['status'] == 'ok')
 		{
 			return $login;
 		}
@@ -1483,7 +1486,7 @@ class MembersModelRegistration
 
 			$login = substr($local, 0, $loginMaxLen - $numberLen) . $i;
 			$logincheck = self::checkusername($login);
-			if (MembersHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')
+			if (Helpers\Utility::validlogin($login) && $logincheck['status'] == 'ok')
 			{
 				return $login;
 			}

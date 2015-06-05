@@ -148,7 +148,7 @@ function submitbutton(pressbutton)
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 
 					$database = JFactory::getDBO();
-					$rot = new MembersTableOrganizationType($database);
+					$rot = new \Components\Members\Tables\OrganizationType($database);
 					if ($types = $rot->find('list'))
 					{
 						foreach ($types as $orgtype)

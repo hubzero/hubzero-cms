@@ -28,17 +28,28 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Site\Controllers;
 
 use Hubzero\Session\Helper as SessionHelper;
+use Hubzero\Component\SiteController;
+use Component;
+use Document;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use Cache;
+use Lang;
+use User;
+use Date;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
 
 /**
  * Members controller class for profiles
  */
-class MembersControllerProfiles extends \Hubzero\Component\SiteController
+class Profiles extends SiteController
 {
 	/**
 	 * Execute a task
@@ -78,11 +89,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		require_once JPATH_BASE . '/components/com_members/tables/incremental/awards.php';
-		require_once JPATH_BASE . '/components/com_members/tables/incremental/groups.php';
-		require_once JPATH_BASE . '/components/com_members/tables/incremental/options.php';
+		require_once dirname(dirname(__DIR__)) . '/tables/incremental/awards.php';
+		require_once dirname(dirname(__DIR__)) . '/tables/incremental/groups.php';
+		require_once dirname(dirname(__DIR__)) . '/tables/incremental/options.php';
 
-		$ia = new ModIncrementalRegistrationAwards($profile);
+		$ia = new \ModIncrementalRegistrationAwards($profile);
 		$ia->optOut();
 
 		App::redirect(
@@ -231,7 +242,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// formats names in the autocompleter
 		if (!\Hubzero\Utility\Validate::email($originalQuery) && str_word_count($originalQuery) >= 2)
 		{
-		        $originalQuery = ucwords($originalQuery);
+			$originalQuery = ucwords($originalQuery);
 		}
 
 
@@ -368,7 +379,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->filters['emailConfirmed'] = true;
 
 		// Initiate a contributor object
-		$c = new MembersProfile($this->database);
+		$c = new \Components\Members\Tables\Profile($this->database);
 
 		if (!($stats = Cache::get('members.stats')))
 		{
@@ -390,11 +401,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
 
 		//get newly registered members (past day)
-		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
+		//$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
 		$this->view->past_day_members = $stats->past_day_members; //$this->database->loadResult();
 
 		//get newly registered members (past month)
-		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
+		//$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
 		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
 
 		$this->view->registration = new \Hubzero\Base\Object();
@@ -420,9 +431,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function stats()
 	{
-		$c = new MembersProfile($this->database);
+		$c = new \Components\Members\Tables\Profile($this->database);
 
-		$stats = new stdClass;
+		$stats = new \stdClass;
 
 		// Get record count of ALL members
 		$stats->total_members = $c->getCount(array('show' => ''), true);
@@ -431,11 +442,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$stats->total_public_members = $c->getCount(array('show' => '', 'authorized' => false), false);
 
 		//get newly registered members (past day)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
+		$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
 		$stats->past_day_members = $this->database->loadResult();
 
 		//get newly registered members (past month)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
+		$this->database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
 		$stats->past_month_members = $this->database->loadResult();
 
 		return $stats;
@@ -1118,20 +1129,19 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Output the view
 		$this->view->resource = null;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * Show a form for editing a profile
 	 *
-	 * @param      object $xregistration MembersModelRegistration
+	 * @param      object $xregistration \Components\Members\Models\Registration
 	 * @param      object $profile       \Hubzero\User\Profile
 	 * @return     void
 	 */
@@ -1206,7 +1216,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Get the user's interests (tags)
-		$mt = new MembersModelTags($id);
+		$mt = new \Components\Members\Models\Tags($id);
 		$this->view->tags = $mt->render('string');
 
 		// Add to the pathway
@@ -1223,7 +1233,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Note: if we already have one then we just came from $this->save()
 		if (!is_object($xregistration))
 		{
-			$xregistration = new MembersModelRegistration();
+			$xregistration = new \Components\Members\Models\Registration();
 		}
 		$this->view->xregistration = $xregistration;
 
@@ -1255,12 +1265,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->profile = $profile;
 		$this->view->registration = $registration;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -1391,8 +1398,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			Request::setVar('interests', $tags, 'post');
 		}
 
-		// Instantiate a new MembersModelRegistration
-		$xregistration = new MembersModelRegistration();
+		// Instantiate a new \Components\Members\Models\Registration
+		$xregistration = new \Components\Members\Models\Registration();
 		$xregistration->loadPOST();
 
 		// Push the posted data to the profile
@@ -1405,7 +1412,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			if ($oldemail != $xregistration->_registration['email'])
 			{
 				// Get a new confirmation code
-				$confirm = MembersHelperUtility::genemailconfirm();
+				$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
 				$profile->set('emailConfirmed', $confirm);
 			}
@@ -1525,7 +1532,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Process tags
 		if (isset($tags) && in_array('interests', $field_to_check))
 		{
-			$mt = new MembersModelTags($id);
+			$mt = new \Components\Members\Models\Tags($id);
 			$mt->setTags($tags, $id);
 		}
 
@@ -1585,8 +1592,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		//if were declinging the terms we want to logout user and tell the javascript
 		if ($declineTOU)
 		{
-			$application = JFactory::getApplication();
-			$application->logout();
+			App::get('auth')->logout();
 			echo json_encode(array('loggedout' => true));
 			return;
 		}
@@ -1691,7 +1697,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			// Save the changes
 			if (!$profile->update())
 			{
-				Notify::warning($profile->getError());
+				\Notify::warning($profile->getError());
 				return false;
 			}
 		}
