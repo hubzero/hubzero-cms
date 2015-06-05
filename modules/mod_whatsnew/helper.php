@@ -231,7 +231,7 @@ class Helper extends Module
 		if ($this->tagged)
 		{
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-			$mt = new MembersModelTags(User::get('id'));
+			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$tags = $mt->tags();
 
 			$this->tags = $tags;

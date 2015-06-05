@@ -34,6 +34,7 @@ use Components\Collections\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\User\Group;
 use Hubzero\Utility\String;
+use Request;
 use User;
 use Lang;
 

@@ -133,7 +133,7 @@ class Application extends JModelForm
 			$myRules = $rules->getData();
 			$hasSuperAdmin = $myRules['core.admin']->allow($myGroups);
 			if (!$hasSuperAdmin) {
-				$this->setError(\Lang::txt('COM_CONFIG_ERROR_REMOVING_SUPER_ADMIN'));
+				$this->setError(Lang::txt('COM_CONFIG_ERROR_REMOVING_SUPER_ADMIN'));
 				return false;
 			}
 
@@ -149,7 +149,7 @@ class Application extends JModelForm
 			}
 			else
 			{
-				$this->setError(\Lang::txt('COM_CONFIG_ERROR_ROOT_ASSET_NOT_FOUND'));
+				$this->setError(Lang::txt('COM_CONFIG_ERROR_ROOT_ASSET_NOT_FOUND'));
 				return false;
 			}
 			unset($data['rules']);
@@ -192,7 +192,7 @@ class Application extends JModelForm
 		// Escape the offline message if present.
 		if (isset($data['offline_message']))
 		{
-			$data['offline_message'] = JFilterOutput::ampReplace($data['offline_message']);
+			$data['offline_message'] = \Hubzero\Utility\String::ampReplace($data['offline_message']);
 		}
 
 		// Purge the database session table if we are changing to the database handler.

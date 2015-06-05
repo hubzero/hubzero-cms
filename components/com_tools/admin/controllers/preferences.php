@@ -30,6 +30,7 @@
 
 namespace Components\Tools\Admin\Controllers;
 
+use Components\Tools\Tables;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
@@ -96,13 +97,13 @@ class Preferences extends AdminController
 			)
 		);
 
-		$obj = new \Components\Tools\Tables\Preferences($this->database);
+		$obj = new Tables\Preferences($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
 		$this->view->rows  = $obj->find('list', $this->view->filters);
 
-		$classes = new \Components\Tools\Tables\SessionClass($this->database);
+		$classes = new Tables\SessionClass($this->database);
 		$this->view->classes = $classes->find('list');
 		$this->view->config  = $this->config;
 
@@ -148,14 +149,14 @@ class Preferences extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$row = new \Components\Tools\Tables\Preferences($this->database);
+			$row = new Tables\Preferences($this->database);
 			$row->load($id);
 		}
 
 		$this->view->row = $row;
 
 		// Build classes select option
-		$quotaClass = new \Components\Tools\Tables\SessionClass($this->database);
+		$quotaClass = new Tables\SessionClass($this->database);
 		$classes    = $quotaClass->find('list');
 		$selected   = '';
 		$options[]  = Html::select('option', '0', Lang::txt('COM_TOOLS_USER_PREFS_CUSTOM'), 'value', 'text');
@@ -208,11 +209,11 @@ class Preferences extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \Components\Tools\Tables\Preferences($this->database);
+		$row = new Tables\Preferences($this->database);
 
 		if ($fields['class_id'])
 		{
-			$class = new \Components\Tools\Tables\SessionClass($this->database);
+			$class = new Tables\SessionClass($this->database);
 			$class->load($fields['class_id']);
 
 			if ($class->id)
@@ -274,10 +275,10 @@ class Preferences extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new \Components\Tools\Tables\Preferences($this->database);
+				$row = new Tables\Preferences($this->database);
 				$row->load($id);
 
-				$class = new \Components\Tools\Tables\SessionClass($this->database);
+				$class = new Tables\SessionClass($this->database);
 				$class->load(array('alias' => 'default'));
 
 				if (!$class->id)
@@ -322,7 +323,7 @@ class Preferences extends AdminController
 	{
 		$class_id = Request::getInt('class_id');
 
-		$class = new \Components\Tools\Tables\SessionClass($this->database);
+		$class = new Tables\SessionClass($this->database);
 		$class->load($class_id);
 
 		$return = array(

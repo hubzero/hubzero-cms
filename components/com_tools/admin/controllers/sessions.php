@@ -31,6 +31,7 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Helpers\Utils;
+use Components\Tools\Tables;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
@@ -109,7 +110,7 @@ class Sessions extends AdminController
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
-		$model = new \Components\Tools\Tables\Session($mwdb);
+		$model = new Tables\Session($mwdb);
 
 		$this->view->total = $model->getAllCount($this->view->filters);
 
@@ -136,7 +137,7 @@ class Sessions extends AdminController
 
 		if (count($ids) > 0)
 		{
-			$row = new \Components\Tools\Tables\Session($mwdb);
+			$row = new Tables\Session($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)
@@ -267,7 +268,7 @@ class Sessions extends AdminController
 			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
-		$obj = new \Components\Tools\Tables\SessionClass($this->database);
+		$obj = new Tables\SessionClass($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -329,7 +330,7 @@ class Sessions extends AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new \Components\Tools\Tables\SessionClass($this->database);
+		$this->view->row = new Tables\SessionClass($this->database);
 		$this->view->row->load($id);
 
 		// Set any errors
@@ -370,7 +371,7 @@ class Sessions extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \Components\Tools\Tables\SessionClass($this->database);
+		$row = new Tables\SessionClass($this->database);
 		$row->load($fields['id']);
 
 		$old = $row->jobs;
@@ -395,7 +396,7 @@ class Sessions extends AdminController
 		// If changing, update members referencing this class
 		if ($old != $row->jobs)
 		{
-			$prefs = new \Components\Tools\Tables\Preferences($this->database);
+			$prefs = new Tables\Preferences($this->database);
 			$prefs->updateUsersByClassId($row->id);
 		}
 
@@ -435,7 +436,7 @@ class Sessions extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new \Components\Tools\Tables\SessionClass($this->database);
+				$row = new Tables\SessionClass($this->database);
 				$row->load($id);
 
 				if ($row->alias == 'default')
@@ -453,7 +454,7 @@ class Sessions extends AdminController
 				// Remove the record
 				$row->delete($id);
 
-				$prefs = new \Components\Tools\Tables\Preferences($this->database);
+				$prefs = new Tables\Preferences($this->database);
 				$prefs->restoreDefaultClass($id);
 			}
 		}

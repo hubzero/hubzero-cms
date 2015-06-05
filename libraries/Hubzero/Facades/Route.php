@@ -56,10 +56,10 @@ class Route extends Facade
 	 *                            -1: Make URI unsecure using the global unsecure site URI.
 	 * @return  The translated humanly readible URL.
 	 */
-	public static function url($url, $xhtml = true, $ssl = null)
+	/*public static function url($url, $xhtml = true, $ssl = null)
 	{
 		return \JRoute::_($url, $xhtml, $ssl);
-	}
+	}*/
 
 	/**
 	 * Get the router for a specific client

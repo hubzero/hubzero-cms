@@ -40,7 +40,7 @@ trait ErrorBag
 	/**
 	 * An array of error messages or Exception objects.
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_errors = array();
 
@@ -48,7 +48,7 @@ trait ErrorBag
 	 * Get the most recent error message.
 	 *
 	 * @param   integer  $i         Option error index.
-	 * @param   boolean  $toString  Indicates if JError objects should return their error message.
+	 * @param   boolean  $toString  Indicates if error objects should return their error message.
 	 * @return  string   Error message
 	 */
 	public function getError($i = null, $toString = true)
@@ -81,7 +81,7 @@ trait ErrorBag
 	/**
 	 * Return all errors, if any.
 	 *
-	 * @return  array  Array of error messages or JErrors.
+	 * @return  array  Array of error messages
 	 */
 	public function getErrors()
 	{

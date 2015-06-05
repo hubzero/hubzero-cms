@@ -45,7 +45,7 @@ else
 	$linktype = $item->title;
 }
 $flink = $item->flink;
-$flink = JFilterOutput::ampReplace(htmlspecialchars($flink));
+$flink = \Hubzero\Utility\String::ampReplace(htmlspecialchars($flink));
 
 switch ($item->browserNav) :
 	default:

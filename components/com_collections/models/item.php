@@ -36,6 +36,7 @@ use Hubzero\Item\Comment;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 use Filesystem;
+use Request;
 use Date;
 use User;
 use Lang;

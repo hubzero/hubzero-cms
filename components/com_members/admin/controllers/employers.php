@@ -31,6 +31,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Members\Tables\OrganizationType;
 use Request;
 use Config;
 use Route;
@@ -98,7 +99,7 @@ class Employers extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new \Components\Members\Tables\OrganizationType($this->database);
+		$obj = new OrganizationType($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -132,7 +133,7 @@ class Employers extends AdminController
 			}
 
 			// Initiate database class and load info
-			$model = new \Components\Members\Tables\OrganizationType($this->database);
+			$model = new OrganizationType($this->database);
 			$model->load($id);
 		}
 
@@ -162,7 +163,7 @@ class Employers extends AdminController
 		Request::checkToken() or exit('Invalid token');
 
 		// Load the tag object and bind the incoming data to it
-		$model = new \Components\Members\Tables\OrganizationType($this->database);
+		$model = new OrganizationType($this->database);
 
 		if (!$model->bind($_POST))
 		{
@@ -215,7 +216,7 @@ class Employers extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$orgtype = new \Components\Members\Tables\OrganizationType($this->database);
+			$orgtype = new OrganizationType($this->database);
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)

@@ -31,6 +31,7 @@
 namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Helpers\Utils;
+use Components\Tools\Tables;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
@@ -112,13 +113,13 @@ class Hosts extends AdminController
 		// Get the middleware database
 		$mwdb = Utils::getMWDBO();
 
-		$model = new \Components\Tools\Tables\Host($mwdb);
+		$model = new Tables\Host($mwdb);
 
 		$this->view->total = $model->getCount($this->view->filters);
 
 		$this->view->rows = $model->getRecords($this->view->filters);
 
-		$ht = new \Components\Tools\Tables\Hosttype($mwdb);
+		$ht = new Tables\Hosttype($mwdb);
 
 		$this->view->hosttypes = $ht->getRecords();
 
@@ -226,16 +227,16 @@ class Hosts extends AdminController
 			// clean at least some of it. See RFC 1034 for valid character set info
 			$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
-			$row = new \Components\Tools\Tables\Host($mwdb);
+			$row = new Tables\Host($mwdb);
 			$row->load($hostname);
 		}
 
 		$this->view->row = $row;
 
-		$ht = new \Components\Tools\Tables\Hosttype($mwdb);
+		$ht = new Tables\Hosttype($mwdb);
 		$this->view->hosttypes = $ht->getRecords();
 
-		$v = new \Components\Tools\Tables\Zones($mwdb);
+		$v = new Tables\Zones($mwdb);
 		$this->view->zones = $v->find('list');
 
 		//make sure we have a hostname
@@ -280,7 +281,7 @@ class Hosts extends AdminController
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = new \Components\Tools\Tables\Host($mwdb);
+		$row = new Tables\Host($mwdb);
 		if (!$row->bind($fields))
 		{
 			Notify::error($row->getError());
@@ -308,7 +309,7 @@ class Hosts extends AdminController
 		$row->provisions = 0;
 
 		// Get the middleware database
-		$ht = new \Components\Tools\Tables\Hosttype($mwdb);
+		$ht = new Tables\Hosttype($mwdb);
 		if ($rows = $ht->getRecords())
 		{
 			for ($i=0; $i < count($rows); $i++)
@@ -400,7 +401,7 @@ class Hosts extends AdminController
 
 		if (count($ids) > 0)
 		{
-			$row = new \Components\Tools\Tables\Host($mwdb);
+			$row = new Tables\Host($mwdb);
 
 			// Loop through each ID
 			foreach ($ids as $id)

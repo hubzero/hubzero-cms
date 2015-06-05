@@ -32,6 +32,7 @@ namespace Modules\MyTickets;
 
 use Hubzero\Module\Module;
 use Hubzero\User\Profile;
+use User;
 
 /**
  * Module class for displaying a user's support tickets

@@ -31,6 +31,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Bank\MarketHistory;
 use Notify;
 use Request;
 use Config;
@@ -205,12 +206,9 @@ class Points extends AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -224,7 +222,7 @@ class Points extends AdminController
 	 */
 	public function editTask()
 	{
-		if (($uid = Request::getInt('uid', 0)))
+		if ($uid = Request::getInt('uid', 0))
 		{
 			$this->view->row = new \Hubzero\Bank\Account($this->database);
 			$this->view->row->load_uid($uid);
@@ -285,8 +283,8 @@ class Points extends AdminController
 			return;
 		}
 
-		$row->uid = intval($row->uid);
-		$row->balance = intval($row->balance);
+		$row->uid      = intval($row->uid);
+		$row->balance  = intval($row->balance);
 		$row->earnings = intval($row->earnings);
 
 		if (isset($_POST['amount']) && intval($_POST['amount'])>0 && intval($_POST['amount']))
@@ -458,7 +456,7 @@ class Points extends AdminController
 		$when = Date::toSql();
 
 		// make sure this function was not already run
-		$MH = new \Hubzero\Bank\MarketHistory($this->database);
+		$MH = new MarketHistory($this->database);
 		$duplicate = $MH->getRecord($ref, $action, $category, '', $data['description']);
 
 		if ($data['amount'] && $data['description'] && $data['users'])
@@ -489,7 +487,7 @@ class Points extends AdminController
 				}
 
 				// Save log
-				$MH = new \Hubzero\Bank\MarketHistory($this->database);
+				$MH = new MarketHistory($this->database);
 				$data['itemid']       = $log['ref'];
 				$data['date']         = Date::toSql();
 				$data['market_value'] = $data['amount'];
@@ -553,7 +551,7 @@ class Points extends AdminController
 		$resmsg = 'Royalties on Resources for '.$curyear.' were distributed successfully.';
 
 		// Make sure we distribute royalties only once/ month
-		$MH = new \Hubzero\Bank\MarketHistory($this->database);
+		$MH = new MarketHistory($this->database);
 		$royaltyAnswers = $MH->getRecord('', $action, 'answers', $curyear, $this->_message);
 		$royaltyReviews = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
@@ -568,7 +566,7 @@ class Points extends AdminController
 			require_once(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
 		}
 
-		$AE = new \AnswersEconomy($this->database);
+		$AE = new \Components\Answers\Helpers\Economy($this->database);
 		$accumulated = 0;
 
 		// Get Royalties on Answers
@@ -587,7 +585,7 @@ class Points extends AdminController
 				// make a record of royalty payment
 				if (intval($accumulated) > 0)
 				{
-					$MH = new \Hubzero\Bank\MarketHistory($this->database);
+					$MH = new MarketHistory($this->database);
 					$data['itemid']       = $ref;
 					$data['date']         = Date::toSql();
 					$data['market_value'] = $accumulated;
@@ -620,7 +618,7 @@ class Points extends AdminController
 		if (!$royaltyReviews)
 		{
 			// get eligible
-			$RE = new ReviewsEconomy($this->database);
+			$RE = new \Components\Resources\Helpers\Economy\Reviews($this->database);
 			$reviews = $RE->getReviews();
 
 			// do we have ratings on reviews enabled?
@@ -646,7 +644,7 @@ class Points extends AdminController
 			// make a record of royalty payment
 			if (intval($accumulated) > 0)
 			{
-				$MH = new \Hubzero\Bank\MarketHistory($this->database);
+				$MH = new MarketHistory($this->database);
 				$data['itemid']       = $ref;
 				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
@@ -674,7 +672,7 @@ class Points extends AdminController
 		if (!$royaltyResources)
 		{
 			// get eligible
-			$ResE = new ResourcesEconomy($this->database);
+			$ResE = new \Components\Resources\Helpers\Economy\Reviews($this->database);
 			$cons = $ResE->getCons();
 
 			$accumulated = 0;
@@ -696,7 +694,7 @@ class Points extends AdminController
 			// make a record of royalty payment
 			if (intval($accumulated) > 0)
 			{
-				$MH = new \Hubzero\Bank\MarketHistory($this->database);
+				$MH = new MarketHistory($this->database);
 				$data['itemid']       = $ref;
 				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;

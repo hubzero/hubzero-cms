@@ -30,7 +30,10 @@
 
 namespace Components\Members\Admin\Controllers;
 
+use Components\Members\Helpers;
 use Hubzero\Component\AdminController;
+use Hubzero\Utility\Validate;
+use Hubzero\User\Profile;
 use Filesystem;
 use Request;
 use Config;
@@ -177,7 +180,7 @@ class Members extends AdminController
 		}
 
 		// check that username & password are filled
-		if (!\Hubzero\Utility\Validate::username($p['username']))
+		if (!Validate::username($p['username']))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
 			$this->addTask();
@@ -185,7 +188,7 @@ class Members extends AdminController
 		}
 
 		// check email is valid
-		if (!\Hubzero\Utility\Validate::email($p['email']))
+		if (!Validate::email($p['email']))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
 			$this->addTask();
@@ -209,7 +212,7 @@ class Members extends AdminController
 		$user->set('password_clear', '');
 
 		// Attempt to get the new user
-		$profile = \Hubzero\User\Profile::getInstance($user->get('id'));
+		$profile = Profile::getInstance($user->get('id'));
 		$result  = is_object($profile);
 
 		// Did we successfully create an account?
@@ -275,7 +278,7 @@ class Members extends AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->profile = new \Hubzero\User\Profile();
+		$this->view->profile = new Profile();
 		$this->view->profile->load($id);
 
 		$this->view->password = \Hubzero\User\Password::getInstance($id);
@@ -349,7 +352,7 @@ class Members extends AdminController
 		$p = Request::getVar('profile', array(), 'post', 'none', 2);
 
 		// Load the profile
-		$profile = new \Hubzero\User\Profile();
+		$profile = new Profile();
 		$profile->load($id);
 
 		// Set the new info
@@ -398,7 +401,7 @@ class Members extends AdminController
 		}
 		else
 		{
-			$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
+			$confirm = Helpers\Utility::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 
@@ -615,7 +618,7 @@ class Members extends AdminController
 				$assoc->deleteAssociations();
 
 				// Remove the profile
-				$profile = new \Hubzero\User\Profile();
+				$profile = new Profile();
 				$profile->load($id);
 				$profile->delete();
 			}
@@ -676,7 +679,7 @@ class Members extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the profile
-			$profile = new \Hubzero\User\Profile();
+			$profile = new Profile();
 			$profile->load(intval($id));
 
 			if ($state)
@@ -685,7 +688,7 @@ class Members extends AdminController
 			}
 			else
 			{
-				$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
+				$confirm = Helpers\Utility::genemailconfirm();
 				$profile->set('emailConfirmed', $confirm);
 			}
 
@@ -742,7 +745,7 @@ class Members extends AdminController
 		if (count($rows) > 0)
 		{
 			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
-			$default = \Hubzero\User\Profile\Helper::thumbit($default);
+			$default = Profile\Helper::thumbit($default);
 			foreach ($rows as $row)
 			{
 				$picture = $default;
@@ -754,9 +757,9 @@ class Members extends AdminController
 				if ($row->public && $row->picture)
 				{
 					$thumb  = $base . DS . trim($this->config->get('webpath', '/site/members'), DS);
-					$thumb .= DS . \Hubzero\User\Profile\Helper::niceidformat($row->uidNumber);
+					$thumb .= DS . Profile\Helper::niceidformat($row->uidNumber);
 					$thumb .= DS . ltrim($row->picture, DS);
-					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
+					$thumb = Profile\Helper::thumbit($thumb);
 
 					if (file_exists(PATH_APP . $thumb))
 					{
@@ -794,7 +797,7 @@ class Members extends AdminController
 		}
 
 		//Load member profile
-		$member = \Hubzero\User\Profile::getInstance($id);
+		$member = Profile::getInstance($id);
 
 		// check to make sure we have member profile
 		if (!$member)
@@ -803,7 +806,7 @@ class Members extends AdminController
 		}
 
 		$file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
-		$file .= DS . \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber'));
+		$file .= DS . Profile\Helper::niceidformat($member->get('uidNumber'));
 		$file .= DS . Request::getVar('image', $member->get('picture'));
 
 		// Ensure the file exist

@@ -31,6 +31,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Message;
 use Notify;
 use Request;
 use Config;
@@ -82,7 +83,7 @@ class Messages extends AdminController
 			)
 		);
 
-		$obj = new \Hubzero\Message\Component($this->database);
+		$obj = new Message\Component($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
@@ -129,7 +130,7 @@ class Messages extends AdminController
 			}
 
 			// Initiate database class and load info
-			$row = new \Hubzero\Message\Component($this->database);
+			$row = new Message\Component($this->database);
 			$row->load($id);
 		}
 
@@ -171,7 +172,7 @@ class Messages extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \Hubzero\Message\Component($this->database);
+		$row = new Message\Component($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError(), 'error');
@@ -226,14 +227,14 @@ class Messages extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$notify = new \Hubzero\Message\Notify($this->database);
+			$notify = new Message\Notify($this->database);
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
 				$id = intval($id);
 
-				$row = new \Hubzero\Message\Component($this->database);
+				$row = new Message\Component($this->database);
 				$row->load($id);
 
 				// Remove any associations

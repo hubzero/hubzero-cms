@@ -743,4 +743,22 @@ class String
 
 		return false;
 	}
+
+		/**
+	 * Replaces &amp; with & for XHTML compliance
+	 *
+	 * @param   string  $text  Text to process
+	 * @return  string  Processed string.
+	 */
+	public static function ampReplace($text)
+	{
+		$text = str_replace('&&', '*--*', $text);
+		$text = str_replace('&#', '*-*', $text);
+		$text = str_replace('&amp;', '&', $text);
+		$text = preg_replace('|&(?![\w]+;)|', '&amp;', $text);
+		$text = str_replace('*-*', '&#', $text);
+		$text = str_replace('*--*', '&&', $text);
+
+		return $text;
+	}
 }

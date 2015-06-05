@@ -78,7 +78,7 @@ class PasswordBlacklist extends AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get password rules object
-		$pbObj = new \Components\Members\Tables\PasswordBlacklist($this->database);
+		$pbObj = new Tables\PasswordBlacklist($this->database);
 
 		$this->view->pw_blacklist = $pbObj->getRecords($this->view->filters);
 
@@ -130,7 +130,7 @@ class PasswordBlacklist extends AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new \Components\Members\Tables\PasswordBlacklist($this->database);
+		$this->view->row = new Tables\PasswordBlacklist($this->database);
 		$this->view->row->load($id);
 
 		// Set any errors
@@ -170,7 +170,7 @@ class PasswordBlacklist extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new \Components\Members\Tables\PasswordBlacklist($this->database);
+		$row = new Tables\PasswordBlacklist($this->database);
 
 		// Try to save
 		if (!$row->save($fields))
@@ -220,7 +220,7 @@ class PasswordBlacklist extends AdminController
 			{
 				$id = intval($id);
 
-				$row = new \Components\Members\Tables\PasswordBlacklist($this->database);
+				$row = new Tables\PasswordBlacklist($this->database);
 
 				// Remove the record
 				$row->delete($id);

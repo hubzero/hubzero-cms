@@ -38,7 +38,7 @@ use ArrayAccess;
  *
  *
  */
-class Repository extends \JRegistry implements ArrayAccess
+class Repository extends Registry implements ArrayAccess
 {
 	/**
 	 * The current client type (admin, site, api, etc).

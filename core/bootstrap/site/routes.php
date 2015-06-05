@@ -48,7 +48,7 @@ $router->rules('build')->append('content', function ($uri)
 	{
 		if ($option = $uri->getVar('option'))
 		{
-			$item  = $menu->getItem($this->getVar('Itemid'));
+			$item  = $menu->getItem($uri->getVar('Itemid'));
 			if (isset($item) && $item->component == $option)
 			{
 				$uri->setVar('Itemid', $item->id);
@@ -56,12 +56,12 @@ $router->rules('build')->append('content', function ($uri)
 		}
 		else
 		{
-			if ($option = $this->getVar('option'))
+			if ($option = \App::get('router')->get('option'))
 			{
 				$uri->setVar('option', $option);
 			}
 
-			if ($itemid = $this->getVar('Itemid'))
+			if ($itemid = \App::get('router')->get('Itemid'))
 			{
 				$uri->setVar('Itemid', $itemid);
 			}
@@ -166,10 +166,10 @@ $router->rules('build')->append('component', function ($uri)
 		return $uri;
 	}
 
-	/*if (!isset($query['option']))
+	if (!isset($query['option']))
 	{
 		$query['option'] = 'com_content';
-	}*/
+	}
 
 	$query['option'] = \App::get('component')->canonical($query['option']);
 
@@ -281,7 +281,7 @@ $router->rules('build')->append('groups', function ($uri)
 |
 | Remove the base URI path. This will strip everything up to the bas
 */
-$router->rules('build')->append('groups', function ($uri)
+$router->rules('build')->append('limit', function ($uri)
 {
 	if ($limitstart = $uri->getVar('limitstart'))
 	{

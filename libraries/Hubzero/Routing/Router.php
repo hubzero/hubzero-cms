@@ -110,6 +110,13 @@ class Router
 		// 'http', then we need to do a quick string manipulation to switch schemes.
 		if ((int) $ssl)
 		{
+			/*static $prefix;
+
+			if (!$prefix)
+			{
+				$prefix = \App::get('request');
+			}*/
+
 			// Determine which scheme we want.
 			$scheme = ((int) $ssl === 1) ? 'https' : 'http';
 
@@ -120,7 +127,7 @@ class Router
 			}
 
 			// Build the URL.
-			$url = $scheme . '://' . $prefix . $url;
+			$url = $scheme . '://' . $this->prefix . $url;
 		}
 
 		if ($xhtml)

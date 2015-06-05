@@ -725,7 +725,7 @@ class Format
 		if ($citation->eprint)
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . \JFilterOutput::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+			$html .= '<a href="' . String::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $html;

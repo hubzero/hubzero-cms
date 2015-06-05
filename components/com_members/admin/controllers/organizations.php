@@ -31,6 +31,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Members\Tables\Organization;
 use Notify;
 use Request;
 use Config;
@@ -86,7 +87,7 @@ class Organizations extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new \Components\Members\Tables\Organization($this->database);
+		$obj = new Organization($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -136,7 +137,7 @@ class Organizations extends AdminController
 			}
 
 			// Initiate database class and load info
-			$model = new \Components\Members\Tables\Organization($this->database);
+			$model = new Organization($this->database);
 			$model->load($id);
 		}
 
@@ -175,7 +176,7 @@ class Organizations extends AdminController
 		Request::checkToken() or exit('Invalid token');
 
 		// Load the tag object and bind the incoming data to it
-		$model = new \Components\Members\Tables\Organization($this->database);
+		$model = new Organization($this->database);
 
 		if (!$model->bind($_POST))
 		{
@@ -235,7 +236,7 @@ class Organizations extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$model = new \Components\Members\Tables\Organization($this->database);
+			$model = new Organization($this->database);
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
