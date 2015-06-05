@@ -28,17 +28,28 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use \Components\Members\Helpers\Permissions;
+namespace Components\Members\Admin\Controllers;
+
+use Components\Members\Helpers\Permissions;
+use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Config;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once (PATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'import.php');
+include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'import.php');
 
 /**
  * Member importer
  */
-class MembersControllerImport extends \Hubzero\Component\AdminController
+class Import extends AdminController
 {
 	/**
 	 * Determine task and execute it
@@ -119,7 +130,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get the import object
-		if (!($row instanceof Members\Models\Import))
+		if (!($row instanceof \Members\Models\Import))
 		{
 			// get request vars
 			$id = Request::getVar('id', array(0));
@@ -584,7 +595,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function sampleTask()
 	{
-		$profile = new MembersProfile($this->database);
+		$profile = new \MembersProfile($this->database);
 
 		$skip = array('gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword', 'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber');
 

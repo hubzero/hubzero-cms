@@ -28,13 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Notify;
+use Request;
+use Config;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Members controller class for user points
  */
-class MembersControllerPoints extends \Hubzero\Component\AdminController
+class Points extends AdminController
 {
 	/**
 	 * Display an overview of point earnings
@@ -559,7 +568,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			require_once(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
 		}
 
-		$AE = new AnswersEconomy($this->database);
+		$AE = new \AnswersEconomy($this->database);
 		$accumulated = 0;
 
 		// Get Royalties on Answers

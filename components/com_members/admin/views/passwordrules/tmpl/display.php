@@ -98,11 +98,12 @@ function submitbutton(pressbutton)
 				<td colspan="6">
 					<?php
 					// Initiate paging
-					echo $this->pagination(
+					$pageNav = $this->pagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
 					);
+					echo $pageNav->render();
 					?>
 				</td>
 			</tr>

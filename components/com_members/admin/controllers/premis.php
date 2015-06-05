@@ -28,13 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Import PREMIS redistration dump files
  */
-class MembersControllerPremis extends \Hubzero\Component\AdminController
+class Premis extends AdminController
 {
 	/**
 	 * Display all employer types
@@ -153,7 +160,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 					$courses['add'] = $data[6];
 					$courses['drop'] = $data[7];
 
-					$return = MembersHelperPremis::doRegistration($user, $courses);
+					$return = \MembersHelperPremis::doRegistration($user, $courses);
 					if ($return['status'] == 'ok')
 					{
 						$line['msg'] = $return['message'];

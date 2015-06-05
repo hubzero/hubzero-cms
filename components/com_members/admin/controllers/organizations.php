@@ -28,15 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Notify;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'organization.php');
 
 /**
  * Manage organizations for registration
  */
-class MembersControllerOrganizations extends \Hubzero\Component\AdminController
+class Organizations extends AdminController
 {
 	/**
 	 * Display all organizations
@@ -79,7 +86,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new MembersTableOrganization($this->database);
+		$obj = new \MembersTableOrganization($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -129,7 +136,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 			}
 
 			// Initiate database class and load info
-			$model = new MembersTableOrganization($this->database);
+			$model = new \MembersTableOrganization($this->database);
 			$model->load($id);
 		}
 
@@ -168,7 +175,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		Request::checkToken() or exit('Invalid Token');
 
 		// Load the tag object and bind the incoming data to it
-		$model = new MembersTableOrganization($this->database);
+		$model = new \MembersTableOrganization($this->database);
 
 		if (!$model->bind($_POST))
 		{
@@ -228,7 +235,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$model = new MembersTableOrganization($this->database);
+			$model = new \MembersTableOrganization($this->database);
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)

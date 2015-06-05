@@ -28,13 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Notify;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage messaging settings
  */
-class MembersControllerMessages extends \Hubzero\Component\AdminController
+class Messages extends AdminController
 {
 	/**
 	 * Display a list of messaging settings

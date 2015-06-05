@@ -28,13 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Event;
+use User;
+use Html;
+use Lang;
+use App;
 
 /**
  * Manage resource types
  */
-class MembersControllerPlugins extends \Hubzero\Component\AdminController
+class Plugins extends AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -152,7 +161,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			. ' GROUP BY p.extension_id'
 			. $orderby;
 
-		$this->database->setQuery($query, $this->view->pagination->limitstart, $this->view->pagination->limit);
+		$this->database->setQuery($query, $this->view->filters['start'], $this->view->filters['limit']);
 		$this->view->rows = $this->database->loadObjectList();
 		if ($this->database->getErrorNum())
 		{
@@ -179,7 +188,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$this->view->manage = Event::trigger('members.onCanManage');
 
 		$this->view->client = $this->client;
-		$this->view->states = Html::grid('state', $this->view->filters['state']);
+		$this->view->states = Html::grid('states'); //, $this->view->filters['state']);
 		$this->view->user   = User::getRoot();
 
 		// Set any errors
@@ -307,7 +316,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 
 		if (count($id) == 1)
 		{
-			$row = JTable::getInstance('extension');
+			$row = \JTable::getInstance('extension');
 			$row->checkin($id[0]);
 		}
 
@@ -364,7 +373,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			$where = "client_id = 0";
 		}
 
-		$row = JTable::getInstance('extension');
+		$row = \JTable::getInstance('extension');
 		$row->load($uid);
 		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
 
@@ -419,7 +428,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		// Load the object
-		$row = JTable::getInstance('extension');
+		$row = \JTable::getInstance('extension');
 		$row->load($cid[0]);
 
 		// Set the access
@@ -470,7 +479,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$order = Request::getVar('order', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
-		$row = JTable::getInstance('extension');
+		$row = \JTable::getInstance('extension');
 
 		$conditions = array();
 

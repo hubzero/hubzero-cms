@@ -28,13 +28,23 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Html;
+use User;
+use Lang;
+use App;
 
 /**
  * Manage member quotas
  */
-class MembersControllerQuotas extends \Hubzero\Component\AdminController
+class Quotas extends AdminController
 {
 	/**
 	 * Display member quotas
@@ -84,13 +94,13 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			)
 		);
 
-		$obj = new UsersQuotas($this->database);
+		$obj = new \UsersQuotas($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
 		$this->view->rows  = $obj->getRecords($this->view->filters, true);
 
-		$classes = new MembersQuotasClasses($this->database);
+		$classes = new \MembersQuotasClasses($this->database);
 		$this->view->classes = $classes->getRecords();
 
 		$this->view->config = $this->config;
@@ -132,11 +142,11 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$quotas = new UsersQuotas($this->database);
+		$quotas = new \UsersQuotas($this->database);
 		$this->view->row = $quotas->getRecord($id);
 
 		// Build classes select option
-		$quotaClass = new MembersQuotasClasses($this->database);
+		$quotaClass = new \MembersQuotasClasses($this->database);
 		$classes    = $quotaClass->getRecords();
 		$selected   = '';
 		$options[]  = Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text');
@@ -191,11 +201,11 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new UsersQuotas($this->database);
+		$row = new \UsersQuotas($this->database);
 
 		if ($fields['class_id'])
 		{
-			$class = new MembersQuotasClasses($this->database);
+			$class = new \MembersQuotasClasses($this->database);
 			$class->load($fields['class_id']);
 
 			if ($class->id)
@@ -259,7 +269,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$quotas = new UsersQuotas($this->database);
+			$quotas = new \UsersQuotas($this->database);
 			if (!$quotas->setDefaultClass($ids))
 			{
 				// Output message and redirect
@@ -305,7 +315,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
-		$obj = new MembersQuotasClasses($this->database);
+		$obj = new \MembersQuotasClasses($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
@@ -357,14 +367,14 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new MembersQuotasClasses($this->database);
+		$this->view->row = new \MembersQuotasClasses($this->database);
 		$this->view->row->load($id);
 
-		$quotas = new UsersQuotas($this->database);
+		$quotas = new \UsersQuotas($this->database);
 		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
 
 		/*$this->view->groups = array();
-		$qcGroups = new MembersQuotasClassesGroups($this->database);
+		$qcGroups = new \MembersQuotasClassesGroups($this->database);
 		foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
 		{
 			$this->view->groups[] = $group->group_id
@@ -408,7 +418,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new MembersQuotasClasses($this->database);
+		$row = new \MembersQuotasClasses($this->database);
 
 		// Try to save
 		if (!$row->save($fields))
@@ -467,7 +477,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			{
 				$id = intval($id);
 
-				$row = new MembersQuotasClasses($this->database);
+				$row = new \MembersQuotasClasses($this->database);
 				$row->load($id);
 
 				if ($row->alias == 'default')
@@ -486,7 +496,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				$row->delete($id);
 
 				// Restore all members of this class to default
-				$quota = new UsersQuotas($this->database);
+				$quota = new \UsersQuotas($this->database);
 				$quota->restoreDefaultClass($id);
 			}
 		}
@@ -528,7 +538,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	{
 		$class_id = Request::getInt('class_id');
 
-		$class = new MembersQuotasClasses($this->database);
+		$class = new \MembersQuotasClasses($this->database);
 		$class->load($class_id);
 
 		$return = array(
@@ -554,14 +564,14 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			$id = Request::getInt('id');
 		}
 
-		$quota = new UsersQuotas($this->database);
+		$quota = new \UsersQuotas($this->database);
 		$quota->load($id);
 		$username = User::getInstance($quota->user_id)->get('username');
 
 		$info = array();
 		$success = false;
 
-		$config = Component::params('com_tools');
+		$config = \Component::params('com_tools');
 		$host = $config->get('storagehost');
 
 		if ($username && $host)
@@ -676,7 +686,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			switch ($args[0])
 			{
 				case 'class':
-					$class = new MembersQuotasClasses($this->database);
+					$class = new \MembersQuotasClasses($this->database);
 					$class->load(array('alias' => $args[1]));
 
 					if ($class->id && !$overwrite)
@@ -708,7 +718,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 						$user_id = $user->get('id');
 					}
 
-					$class = new MembersQuotasClasses($this->database);
+					$class = new \MembersQuotasClasses($this->database);
 					$class->load(array('alias' => $args[2]));
 
 					if (!$class->id)
@@ -716,7 +726,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 						continue;
 					}
 
-					$quota = new UsersQuotas($this->database);
+					$quota = new \UsersQuotas($this->database);
 					$quota->load(array('user_id' => $user_id));
 
 					if ($quota->id && !$overwrite)
@@ -760,7 +770,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		if (count($results) > 0)
 		{
 			$updates = 0;
-			$class = new MembersQuotasClasses($this->database);
+			$class = new \MembersQuotasClasses($this->database);
 			$class->load(array('alias' => 'default'));
 
 			if (!$class->id)
@@ -776,7 +786,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 			foreach ($results as $r)
 			{
-				$quota = new UsersQuotas($this->database);
+				$quota = new \UsersQuotas($this->database);
 				$quota->load(array('user_id' => $r->id));
 
 				if ($quota->id)

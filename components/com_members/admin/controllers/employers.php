@@ -28,15 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'organizationtype.php');
 
 /**
  * Manage employer types for registration
  */
-class MembersControllerEmployers extends \Hubzero\Component\AdminController
+class Employers extends AdminController
 {
 	/**
 	 * Execute a task
@@ -92,7 +98,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new MembersTableOrganizationType($this->database);
+		$obj = new \MembersTableOrganizationType($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -126,7 +132,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 			}
 
 			// Initiate database class and load info
-			$model = new MembersTableOrganizationType($this->database);
+			$model = new \MembersTableOrganizationType($this->database);
 			$model->load($id);
 		}
 
@@ -156,7 +162,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		Request::checkToken() or exit('Invalid Token');
 
 		// Load the tag object and bind the incoming data to it
-		$model = new MembersTableOrganizationType($this->database);
+		$model = new \MembersTableOrganizationType($this->database);
 
 		if (!$model->bind($_POST))
 		{
@@ -179,7 +185,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		Notify::success(Lang::txt('COM_MEMBERS_ORGTYPE_SAVED'));
+		\Notify::success(Lang::txt('COM_MEMBERS_ORGTYPE_SAVED'));
 
 		if ($this->_task == 'apply')
 		{
@@ -209,7 +215,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$orgtype = new MembersTableOrganizationType($this->database);
+			$orgtype = new \MembersTableOrganizationType($this->database);
 
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)

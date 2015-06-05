@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin;
 
 if (!\User::authorise('core.manage', 'com_members'))
 {
@@ -113,7 +112,7 @@ if ($canDo->get('core.admin'))
 }
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'MembersController' . ucfirst($controllerName);
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();

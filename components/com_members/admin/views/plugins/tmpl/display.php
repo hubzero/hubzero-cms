@@ -113,9 +113,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	//$link = Route::url( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
 	$link = 'index.php?option=com_plugins&amp;task=plugin.edit&amp;extension_id=' . $row->id . '&amp;component=' . $row->folder;
 
-	$access 	= Html::grid('access', $row, $i);
+	$access 	= $row->groupname;//Html::grid('access', $row, $i);
 	//$checked 	= Html::grid('checkedout', $row, $i);
-	$published 	= Html::grid('published', $row, $i);
+	$published 	= $row->published; //Html::grid('published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
 

@@ -28,13 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage files for a member
  */
-class MembersControllerMedia extends \Hubzero\Component\AdminController
+class Media extends AdminController
 {
 	/**
 	 * Upload a file
@@ -148,7 +154,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// update profile
-		$profile = Hubzero\User\Profile::getInstance($id);
+		$profile = \Hubzero\User\Profile::getInstance($id);
 		$profile->set('picture', 'profile.png');
 		if (!$profile->update())
 		{
@@ -201,7 +207,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$ih = new MembersImgHandler();
+			$ih = new \MembersImgHandler();
 
 			// Attempt to delete the file
 			if (!Filesystem::delete($path . DS . $file))
@@ -233,7 +239,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			}
 
 			// Instantiate a profile, change some info and save
-			$profile = Hubzero\User\Profile::getInstance($id);
+			$profile = \Hubzero\User\Profile::getInstance($id);
 			$profile->set('picture', '');
 			if (!$profile->update())
 			{

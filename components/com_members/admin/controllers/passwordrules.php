@@ -28,13 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Notify;
+use Request;
+use Config;
+use Route;
+use Html;
+use Lang;
+use App;
 
 /**
  * Manage members password rules
  */
-class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
+class PasswordRules extends AdminController
 {
 	/**
 	 * Display a list of password rules
@@ -71,9 +79,8 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-
 		// Get password rules object
-		$prObj = new MembersPasswordRules($this->database);
+		$prObj = new \MembersPasswordRules($this->database);
 
 		// Get count
 		$this->view->total = $prObj->getCount($this->view->filters);
@@ -135,7 +142,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new MembersPasswordRules($this->database);
+		$this->view->row = new \MembersPasswordRules($this->database);
 		$this->view->row->load($id);
 
 		$this->view->rules_list = $this->rulesList($this->view->row->rule);
@@ -177,7 +184,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new MembersPasswordRules($this->database);
+		$row = new \MembersPasswordRules($this->database);
 
 		// Try to save
 		if (!$row->save($fields))
@@ -252,7 +259,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$id  = $cid[0];
 		$inc = ($up) ? -1 : 1;
 
-		$row = new MembersPasswordRules($this->database);
+		$row = new \MembersPasswordRules($this->database);
 		$row->load($id);
 		$row->move($inc);
 	}
@@ -277,7 +284,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
 		// Get password rules object
-		$row = new MembersPasswordRules($this->database);
+		$row = new \MembersPasswordRules($this->database);
 
 		// Update ordering values
 		for ($i=0; $i < $total; $i++)
@@ -318,7 +325,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the billboard
-			$row = new MembersPasswordRules($this->database);
+			$row = new \MembersPasswordRules($this->database);
 			$row->load($id);
 
 			$enabled = ($row->enabled) ? 0 : 1;
@@ -346,7 +353,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function restore_default_contentTask()
 	{
 		// Get the object
-		$obj = new MembersPasswordRules($this->database);
+		$obj = new \MembersPasswordRules($this->database);
 
 		// Do the restore (set flag = 1 to force restore)
 		$obj->defaultContent(1);
@@ -383,7 +390,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 			{
 				$id = intval($id);
 
-				$row = new MembersPasswordRules($this->database);
+				$row = new \MembersPasswordRules($this->database);
 
 				// Remove the record
 				$row->delete($id);

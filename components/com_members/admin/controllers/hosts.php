@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Request;
+use Lang;
 
 /**
  * Manage host entries for a member
  */
-class MembersControllerHosts extends \Hubzero\Component\AdminController
+class Hosts extends AdminController
 {
 	/**
 	 * Add a host entry for a member

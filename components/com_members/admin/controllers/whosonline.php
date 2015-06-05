@@ -28,15 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
 
+use Hubzero\Component\AdminController;
 use Hubzero\Session\Helper as SessionHelper;
 
 /**
  * Manage members password blacklist
  */
-class MembersControllerWhosOnline extends \Hubzero\Component\AdminController
+class WhosOnline extends AdminController
 {
 	/**
 	 * Display whose online

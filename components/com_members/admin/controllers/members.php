@@ -28,15 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Config;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
 
 /**
  * Manage site members
  */
-class MembersControllerMembers extends \Hubzero\Component\AdminController
+class Members extends AdminController
 {
 	/**
 	 * Display a list of site members
@@ -104,7 +113,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$obj = new MembersProfile($this->database);
+		$obj = new \MembersProfile($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getRecordCount($this->view->filters, true);
@@ -130,7 +139,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			Notify::error($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -154,11 +163,11 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$p = Request::getVar('profile', array(), 'post', 'none', 2);
 
 		// Initialize new usertype setting
-		$usersConfig = Component::params('com_users');
+		$usersConfig = \Component::params('com_users');
 		$newUsertype = $usersConfig->get('new_usertype');
 		if (!$newUsertype)
 		{
-			$db = JFactory::getDbo();
+			$db = \JFactory::getDbo();
 			$query = $db->getQuery(true)
 				->select('id')
 				->from('#__usergroups')
@@ -290,7 +299,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Get the user's interests (tags)
 		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 
-		$mt = new MembersModelTags($id);
+		$mt = new \MembersModelTags($id);
 		$this->view->tags = $mt->render('string');
 
 		// Set any errors
@@ -389,7 +398,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$confirm = MembersHelperUtility::genemailconfirm();
+			$confirm = \MembersHelperUtility::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 
@@ -541,7 +550,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Process tags
 		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 
-		$mt = new MembersModelTags($id);
+		$mt = new \MembersModelTags($id);
 		$mt->setTags($tags, $id);
 
 		// Make sure certain changes make it back to the Joomla user table
@@ -601,7 +610,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				}
 
 				// Remove any contribution associations
-				$assoc = new MembersAssociation($this->database);
+				$assoc = new \MembersAssociation($this->database);
 				$assoc->authorid = $id;
 				$assoc->deleteAssociations();
 
@@ -676,7 +685,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				$confirm = MembersHelperUtility::genemailconfirm();
+				$confirm = \MembersHelperUtility::genemailconfirm();
 				$profile->set('emailConfirmed', $confirm);
 			}
 

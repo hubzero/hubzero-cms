@@ -28,13 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage members password blacklist
  */
-class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminController
+class PasswordBlacklist extends AdminController
 {
 	/**
 	 * Display password blacklist
@@ -72,7 +78,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get password rules object
-		$pbObj = new MembersPasswordBlacklist($this->database);
+		$pbObj = new \MembersPasswordBlacklist($this->database);
 
 		$this->view->pw_blacklist = $pbObj->getRecords($this->view->filters);
 
@@ -124,7 +130,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		}
 
 		// Initiate database class and load info
-		$this->view->row = new MembersPasswordBlacklist($this->database);
+		$this->view->row = new \MembersPasswordBlacklist($this->database);
 		$this->view->row->load($id);
 
 		// Set any errors
@@ -164,7 +170,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Load the profile
-		$row = new MembersPasswordBlacklist($this->database);
+		$row = new \MembersPasswordBlacklist($this->database);
 
 		// Try to save
 		if (!$row->save($fields))
@@ -214,7 +220,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 			{
 				$id = intval($id);
 
-				$row = new MembersPasswordBlacklist($this->database);
+				$row = new \MembersPasswordBlacklist($this->database);
 
 				// Remove the record
 				$row->delete($id);

@@ -28,8 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Route;
+use Lang;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'awards.php';
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'groups.php';
@@ -38,7 +42,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS
 /**
  * Controller class for incremental registration
  */
-class MembersControllerIncremental extends \Hubzero\Component\AdminController
+class Incremental extends AdminController
 {
 	/**
 	 * Display settings

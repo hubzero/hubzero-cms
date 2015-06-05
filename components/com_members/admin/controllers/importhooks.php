@@ -28,13 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Config;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Members controlelr class for import hooks
  */
-class MembersControllerImportHooks extends \Hubzero\Component\AdminController
+class ImportHooks extends AdminController
 {
 	/**
 	 * Execute a task
@@ -191,7 +200,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 			$this->hook->store();
 		}
 
-		Notify::success(Lang::txt('COM_MEMBERS_IMPORTHOOK_CREATED'));
+		\Notify::success(Lang::txt('COM_MEMBERS_IMPORTHOOK_CREATED'));
 
 		// Inform user & redirect
 		if ($this->_task == 'apply')
@@ -298,7 +307,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 		// if we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
-			\Filesystem::makeDirectory($uploadPath, 0775);
+			Filesystem::makeDirectory($uploadPath, 0775);
 		}
 
 		// all set

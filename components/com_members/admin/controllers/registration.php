@@ -28,15 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Members\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'extension.php');
 
 /**
  * Controller class for registration configuration
  */
-class MembersControllerRegistration extends \Hubzero\Component\AdminController
+class Registration extends AdminController
 {
 	/**
 	 * Display configurations for registration
@@ -45,7 +51,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$config = new JForm('com_members.registration');
+		$config = new \JForm('com_members.registration');
 		$config->loadFile(dirname(dirname(__DIR__)) . DS . 'config' . DS . 'config.xml', true, '/config');
 		$config->bind($this->config->toArray());
 
@@ -87,7 +93,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 
 		$arr = array();
 
-		$component = new JTableExtension($this->database);
+		$component = new \JTableExtension($this->database);
 		$component->load($component->find(array('element' => $this->_option, 'type' => 'component')));
 
 		$params = new \Hubzero\Config\Registry($component->params);
