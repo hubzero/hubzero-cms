@@ -287,7 +287,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				}
 				else
 				{
-					$status = ($this->get('open') ? JText::_('COM_SUPPORT_TICKET_STATUS_NEW') : JText::_('COM_SUPPORT_TICKET_STATUS_RESOLVED'));
+					$status = ($this->get('open') ? JText::_('COM_SUPPORT_TICKET_STATUS_NEW') : JText::_('COM_SUPPORT_TICKET_STATUS_CLOSED'));
 				}
 			break;
 
