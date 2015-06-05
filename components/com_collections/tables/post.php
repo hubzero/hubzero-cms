@@ -96,7 +96,7 @@ class Post extends \JTable
 			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 
-			if (!$this->ordering)
+			if (array_key_exists('ordering', $this->getFields()) && !$this->ordering)
 			{
 				$this->_db->setQuery("SELECT MAX(ordering)+1 FROM $this->_tbl WHERE collection_id=" . $this->_db->Quote($this->collection_id));
 
