@@ -192,7 +192,7 @@ class Version
 			else
 			{
 				$query = "SELECT instance FROM #__tool_version AS v, #__tool AS t WHERE t.toolname=" .
-				   	$db->Quote($toolid) . " AND v.toolid=" .  $db->Quote($toolid) . " AND v.state<>'3' AND " .
+					$db->Quote($toolid) . " AND v.toolid=" .  $db->Quote($toolid) . " AND v.state<>'3' AND " .
 					" v.revision=" . $db->Quote($revision) . "  LIMIT 1";
 			}
 		}

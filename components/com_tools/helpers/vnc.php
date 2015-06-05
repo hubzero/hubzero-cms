@@ -87,8 +87,7 @@ class Vnc
 		}
 		else
 		{
-			return pack('C8', $result[0], $result[1], $result[2], $result[3],
-			    $result[4], $result[5], $result[6], $result[7]);
+			return pack('C8', $result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6], $result[7]);
 		}
 	}
 
@@ -109,69 +108,65 @@ class Vnc
 		}
 		else
 		{
-			return pack('C8', $result[0], $result[1], $result[2], $result[3],
-			    $result[4], $result[5], $result[6], $result[7]);
+			return pack('C8', $result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6], $result[7]);
 		}
 	}
 
 	private static function crypt($block, $key, $edf)
 	{
-		$block = array_pad($block,8,0);
+		$block = array_pad($block, 8, 0);
 
-		$bytebit = array(
-			  1,   2,   4,   8, 
-			 16,  32,  64, 128
-			);
+		$bytebit = array(1, 2, 4, 8, 16, 32, 64, 128);
 
 		$bigbyte = array(
-		    0x00800000, 0x00400000,	0x00200000, 0x00100000,
-		    0x00080000, 0x00040000,	0x00020000, 0x00010000,
-		    0x00008000, 0x00004000,	0x00002000, 0x00001000,
-		    0x00000800, 0x00000400,	0x00000200, 0x00000100,
-		    0x00000080, 0x00000040,	0x00000020, 0x00000010,
-		    0x00000008, 0x00000004,	0x00000002, 0x00000001
-		    );
+			0x00800000, 0x00400000,	0x00200000, 0x00100000,
+			0x00080000, 0x00040000,	0x00020000, 0x00010000,
+			0x00008000, 0x00004000,	0x00002000, 0x00001000,
+			0x00000800, 0x00000400,	0x00000200, 0x00000100,
+			0x00000080, 0x00000040,	0x00000020, 0x00000010,
+			0x00000008, 0x00000004,	0x00000002, 0x00000001
+		);
 
 		/* Use the key schedule specified in the Standard (ANSI X3.92-1981). */
 
 		$pc1 = array(
-		    56, 48, 40, 32, 
-		    24, 16,  8,  0, 
-		    57, 49, 41, 33, 
-		    25, 17,  9,  1, 
-		    58, 50, 42, 34, 
-		    26, 18, 10,  2, 
-		    59, 51, 43, 35,
-		    62, 54, 46, 38, 
-		    30, 22, 14,  6, 
-		    61, 53, 45, 37, 
-		    29, 21, 13,  5, 
-		    60, 52, 44, 36, 
-		    28, 20, 12,  4, 
-		    27, 19, 11,  3
+			56, 48, 40, 32,
+			24, 16,  8,  0,
+			57, 49, 41, 33,
+			25, 17,  9,  1,
+			58, 50, 42, 34,
+			26, 18, 10,  2,
+			59, 51, 43, 35,
+			62, 54, 46, 38,
+			30, 22, 14,  6,
+			61, 53, 45, 37,
+			29, 21, 13,  5,
+			60, 52, 44, 36,
+			28, 20, 12,  4,
+			27, 19, 11,  3
 		);
 
-		$totrot = array( 
-		     1,  2, 4,  6,
-		     8, 10, 12, 14,
-		    15, 17, 19, 21,
-		    23, 25, 27, 28
-		    );
+		$totrot = array(
+			1,  2, 4,  6,
+			8, 10, 12, 14,
+			15, 17, 19, 21,
+			23, 25, 27, 28
+		);
 
 		$pc2 = array(
-		    13, 16, 10, 23,  
-		     0,  4,  2, 27, 
-		    14,  5, 20,  9,
-		    22, 18, 11,  3, 
-		    25,  7, 15,  6, 
-		    26, 19, 12,  1,
-		    40, 51, 30, 36, 
-		    46, 54, 29, 39, 
-		    50, 44, 32, 47,
-		    43, 48, 38, 55, 
-		    33, 52, 45, 41, 
-		    49, 35, 28, 31
-		    );
+			13, 16, 10, 23,
+			0,  4,  2, 27,
+			14,  5, 20,  9,
+			22, 18, 11,  3,
+			25,  7, 15,  6,
+			26, 19, 12,  1,
+			40, 51, 30, 36,
+			46, 54, 29, 39,
+			50, 44, 32, 47,
+			43, 48, 38, 55,
+			33, 52, 45, 41,
+			49, 35, 28, 31
+		);
 
 		$SP1 = array(
 			0x01010400, 0x00000000, 0x00010000, 0x01010404,
@@ -190,7 +185,7 @@ class Vnc
 			0x01000004, 0x00000404, 0x00010404, 0x01010400,
 			0x00000404, 0x01000400, 0x01000400, 0x00000000,
 			0x00010004, 0x00010400, 0x00000000, 0x01010004
-			);
+		);
 
 		$SP2 = array(
 			0x80108020, 0x80008000, 0x00008000, 0x00108020,
@@ -209,7 +204,7 @@ class Vnc
 			0x00100020, 0x80008020, 0x80000020, 0x00100020,
 			0x00108000, 0x00000000, 0x80008000, 0x00008020,
 			0x80000000, 0x80100020, 0x80108020, 0x00108000
-			);
+		);
 
 		$SP3 = array(
 			0x00000208, 0x08020200, 0x00000000, 0x08020008,
@@ -228,7 +223,7 @@ class Vnc
 			0x00000008, 0x00020208, 0x00020200, 0x08000008,
 			0x08020000, 0x08000208, 0x00000208, 0x08020000,
 			0x00020208, 0x00000008, 0x08020008, 0x00020200
-			);
+		);
 
 		$SP4 = array(
 			0x00802001, 0x00002081, 0x00002081, 0x00000080,
@@ -247,7 +242,7 @@ class Vnc
 			0x00800001, 0x00002001, 0x00802080, 0x00800081,
 			0x00002001, 0x00002080, 0x00800000, 0x00802001,
 			0x00000080, 0x00800000, 0x00002000, 0x00802080
-			);
+		);
 
 		$SP5 = array(
 			0x00000100, 0x02080100, 0x02080000, 0x42000100,
@@ -266,7 +261,7 @@ class Vnc
 			0x02080000, 0x00000000, 0x40080000, 0x42000000,
 			0x00080100, 0x02000100, 0x40000100, 0x00080000,
 			0x00000000, 0x40080000, 0x02080100, 0x40000100
-			);
+		);
 
 		$SP6 = array(
 			0x20000010, 0x20400000, 0x00004000, 0x20404010,
@@ -285,7 +280,7 @@ class Vnc
 			0x00000010, 0x00004000, 0x20400000, 0x00404010,
 			0x00004000, 0x00400010, 0x20004010, 0x00000000,
 			0x20404000, 0x20000000, 0x00400010, 0x20004010
-			);
+		);
 
 		$SP7 = array( 
 			0x00200000, 0x04200002, 0x04000802, 0x00000000,
@@ -304,7 +299,7 @@ class Vnc
 			0x00200800, 0x00000000, 0x00000002, 0x04200802,
 			0x00000000, 0x00200802, 0x04200000, 0x00000800,
 			0x04000002, 0x04000800, 0x00000800, 0x00200002
-			);
+		);
 
 		$SP8 = array(
 			0x10001040, 0x00001000, 0x00040000, 0x10041040,
@@ -323,7 +318,7 @@ class Vnc
 			0x10040000, 0x10001000, 0x10001040, 0x00000000,
 			0x10041040, 0x00041000, 0x00041000, 0x00001040,
 			0x00001040, 0x00040040, 0x10000000, 0x10041000
-			);
+		);
 
 
 		/*
@@ -332,10 +327,10 @@ class Vnc
 			int edf;
 		*/
 
-	  	$pc1m = array_pad(array(),56,0);
-	  	$pcr = array_pad(array(),56,0);
+		$pc1m = array_pad(array(),56,0);
+		$pcr = array_pad(array(),56,0);
 		$kn = array_pad(array(),32,0);
-	  
+
 		for ($j =0; $j < 56; $j++)
 		{
 			$l = $pc1[$j];
@@ -351,7 +346,7 @@ class Vnc
 			}
 		}
 
-		for($i = 0; $i < 16; $i++)
+		for ($i = 0; $i < 16; $i++)
 		{
 			if ($edf)
 			{
@@ -366,7 +361,7 @@ class Vnc
 
 			$kn[$m] = $kn[$n] = 0;
 
-			for($j = 0; $j < 28; $j++)
+			for ($j = 0; $j < 28; $j++)
 			{
 				$l = $j + $totrot[$i];
 
@@ -380,7 +375,7 @@ class Vnc
 				}
 			}
 
-			for($j = 28; $j < 56; $j++)
+			for ($j = 28; $j < 56; $j++)
 			{
 				$l = $j + $totrot[$i];
 
@@ -394,7 +389,7 @@ class Vnc
 				}
 			}
 
-			for($j = 0; $j < 24; $j++)
+			for ($j = 0; $j < 24; $j++)
 			{
 				if ($pcr[$pc2[$j]])
 				{
@@ -418,7 +413,7 @@ class Vnc
 
 		$keys = array();
 
-		for($i = 0; $i < 32; $i = $i + 2)
+		for ($i = 0; $i < 32; $i = $i + 2)
 		{
 			$raw0 = $kn[$i];
 			$raw1 = $kn[$i+1];
@@ -468,18 +463,18 @@ class Vnc
 		$right ^= $work;
 		$leftt = (($leftt << 1) | (($leftt >> 31) & 1)) & 0xffffffff; // safe rshift, top 31 bits masked out
 
-		for($i = 0; $i < 32; $i = $i + 4)
+		for ($i = 0; $i < 32; $i = $i + 4)
 		{
 			$work  = ($right << 28) | (($right >> 4)&0x0fffffff); // possibly UNSAFE rshift
 
 			$work ^= $keys[$i];
-			$fval  = $SP7[ $work		 & 0x3f];
+			$fval  = $SP7[$work & 0x3f];
 			$fval |= $SP5[($work >>  8) & 0x3f]; // safe rshift, top 8 bits not used
 			$fval |= $SP3[($work >> 16) & 0x3f]; // safe rshift, top 16 bits not used
 			$fval |= $SP1[($work >> 24) & 0x3f]; // safe rshift, top 24 bits not used
 
 			$work  = $right ^ $keys[$i+1];
-			$fval |= $SP8[ $work		 & 0x3f];
+			$fval |= $SP8[$work & 0x3f];
 			$fval |= $SP6[($work >>  8) & 0x3f]; // safe rshift, top 8 bits not used
 			$fval |= $SP4[($work >> 16) & 0x3f]; // safe rshift, top 16 bits not used
 			$fval |= $SP2[($work >> 24) & 0x3f]; // safe rshift, top 24 bits not used
@@ -487,13 +482,13 @@ class Vnc
 
 			$work  = ($leftt << 28) | (($leftt >> 4)&0x0fffffff); // possibly UNSAFE rshift
 			$work ^= $keys[$i+2];
-			$fval  = $SP7[ $work		 & 0x3f];
+			$fval  = $SP7[$work & 0x3f];
 			$fval |= $SP5[($work >>  8) & 0x3f]; // safe rshift, top 8 bits not used
 			$fval |= $SP3[($work >> 16) & 0x3f]; // safe rshift, top 16 bits not used
 			$fval |= $SP1[($work >> 24) & 0x3f]; // safe rshift, top 24 bits not used
 
 			$work  = $leftt ^ $keys[$i+3];
-			$fval |= $SP8[ $work		 & 0x3f];
+			$fval |= $SP8[$work & 0x3f];
 			$fval |= $SP6[($work >>  8) & 0x3f]; // safe rshift, top 8 bits not used
 			$fval |= $SP4[($work >> 16) & 0x3f]; // safe rshift, top 16 bits not used
 			$fval |= $SP2[($work >> 24) & 0x3f]; // safe rshift, top 24 bits not used
@@ -527,7 +522,7 @@ class Vnc
 		$leftt &= 0xffffffff;
 		$right &= 0xffffffff;
 
-		return array( 
+		return array(
 			($right>>24)&0xFF, // safe rshift, top 24 bits not used
 			($right>>16)&0xFF, // safe rshift, top 16 bits not used
 			($right>>8)&0xFF,  // safe rshift, top 8 bits not used
@@ -540,13 +535,13 @@ class Vnc
 	}
 
 	/* Validation sets:
- 	*
- 	* Single-length key, single-length plaintext -
- 	* Key	  : 0123 4567 89ab cdef
- 	* Plain  : 0123 4567 89ab cde7
- 	* Cipher : c957 4425 6a5e d31d
- 	*
- 	* d3des V5.0a rwo 9208.07 18:44 Graven Imagery
+	*
+	* Single-length key, single-length plaintext -
+	* Key	  : 0123 4567 89ab cdef
+	* Plain  : 0123 4567 89ab cde7
+	* Cipher : c957 4425 6a5e d31d
+	*
+	* d3des V5.0a rwo 9208.07 18:44 Graven Imagery
 	 **********************************************************************/
 }
 
