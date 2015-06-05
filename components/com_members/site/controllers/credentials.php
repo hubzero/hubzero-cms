@@ -188,7 +188,7 @@ class Credentials extends SiteController
 		// Make sure it looks like a valid username
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
-		if (!\\Components\Members\Helpers\Utility::validlogin($username))
+		if (!\Components\Members\Helpers\Utility::validlogin($username))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
