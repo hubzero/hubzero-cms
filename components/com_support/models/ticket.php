@@ -299,7 +299,7 @@ class Ticket extends Model
 				}
 				else
 				{
-					$status = ($this->get('open') ? Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW') : Lang::txt('COM_SUPPORT_TICKET_STATUS_RESOLVED'));
+					$status = ($this->get('open') ? Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW') : Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED'));
 				}
 			break;
 
