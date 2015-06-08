@@ -1,9 +1,31 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_plugins
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
@@ -14,12 +36,37 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
+$state = $this->get('State');
+$canDo = \Components\Plugins\Admin\Helpers\Plugins::getActions();
+
+Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGINS'), 'plugin');
+
+if ($canDo->get('core.edit'))
+{
+	Toolbar::editList('edit');
+}
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::divider();
+	Toolbar::publish('publish', 'JTOOLBAR_ENABLE', true);
+	Toolbar::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
+	Toolbar::divider();
+	Toolbar::checkin('checkin');
+}
+if ($canDo->get('core.admin'))
+{
+	Toolbar::divider();
+	Toolbar::preferences('com_plugins');
+}
+Toolbar::divider();
+Toolbar::help('plugins');
+
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $canOrder  = User::authorise('core.edit.state', 'com_plugins');
 $saveOrder = $listOrder == 'ordering';
 ?>
-<form action="<?php echo Route::url('index.php?option=com_plugins&view=plugins'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_plugins'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
@@ -31,12 +78,12 @@ $saveOrder = $listOrder == 'ordering';
 		<div class="filter-select fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', PluginsHelper::stateOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo Html::select('options', \Components\Plugins\Admin\Helpers\Plugins::stateOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 
 			<select name="filter_folder" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER');?></option>
-				<?php echo Html::select('options', PluginsHelper::folderOptions(), 'value', 'text', $this->state->get('filter.folder'));?>
+				<?php echo Html::select('options', \Components\Plugins\Admin\Helpers\Plugins::folderOptions(), 'value', 'text', $this->state->get('filter.folder'));?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
@@ -99,27 +146,27 @@ $saveOrder = $listOrder == 'ordering';
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'plugins.', $canCheckin); ?>
+						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo Route::url('index.php?option=com_plugins&task=plugin.edit&extension_id='.(int) $item->extension_id); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_plugins&task=edit&extension_id='.(int) $item->extension_id); ?>">
 							<?php echo $item->name; ?></a>
 					<?php else : ?>
 							<?php echo $item->name; ?>
 					<?php endif; ?>
 				</td>
 				<td class="center">
-					<?php echo Html::grid('published', $item->enabled, $i, 'plugins.', $canChange); ?>
+					<?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
 				</td>
 				<td class="priority-2 order">
 					<?php if ($canChange) : ?>
 						<?php if ($saveOrder) :?>
 							<?php if ($listDirn == 'asc') : ?>
-								<span><?php echo $this->pagination->orderUpIcon($i, (@$this->items[$i-1]->folder == $item->folder), 'plugins.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->folder == $item->folder), 'plugins.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderUpIcon($i, (@$this->items[$i-1]->folder == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->folder == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 							<?php elseif ($listDirn == 'desc') : ?>
-								<span><?php echo $this->pagination->orderUpIcon($i, (@$this->items[$i-1]->folder == $item->folder), 'plugins.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->folder == $item->folder), 'plugins.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderUpIcon($i, (@$this->items[$i-1]->folder == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->folder == $item->folder), 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>

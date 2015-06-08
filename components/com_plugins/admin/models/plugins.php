@@ -1,29 +1,51 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Plugins\Admin\Models;
+
+use Component;
+use Request;
+use Lang;
 
 jimport('joomla.application.component.modellist');
 
 /**
  * Methods supporting a list of plugin records.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_plugins
- * @since		1.6
  */
-class PluginsModelPlugins extends JModelList
+class Plugins extends \JModelList
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
@@ -52,27 +74,26 @@ class PluginsModelPlugins extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @param   string  $ordering
+	 * @param   string  $direction
+	 * @return  void
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
-
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$search = Request::getState($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
+		$accessId = Request::getState($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 
-		$state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$state = Request::getState($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $state);
 
-		$folder = $this->getUserStateFromRequest($this->context.'.filter.folder', 'filter_folder', null, 'cmd');
+		$folder = Request::getState($this->context.'.filter.folder', 'filter_folder', null, 'cmd');
 		$this->setState('filter.folder', $folder);
 
-		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
+		$language = Request::getState($this->context.'.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
@@ -90,18 +111,17 @@ class PluginsModelPlugins extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string	A prefix for the store id.
-	 *
-	 * @return	string	A store id.
+	 * @param   string  $id  A prefix for the store id.
+	 * @return  string  A store id.
 	 */
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.search');
-		$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
-		$id	.= ':'.$this->getState('filter.folder');
-		$id	.= ':'.$this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.access');
+		$id	.= ':' . $this->getState('filter.state');
+		$id	.= ':' . $this->getState('filter.folder');
+		$id	.= ':' . $this->getState('filter.language');
 
 		return parent::getStoreId($id);
 	}
@@ -109,20 +129,22 @@ class PluginsModelPlugins extends JModelList
 	/**
 	 * Returns an object list
 	 *
-	 * @param	string The query
-	 * @param	int Offset
-	 * @param	int The number of records
-	 * @return	array
+	 * @param   string   $query       The query
+	 * @param   integer  $limitstart  Offset
+	 * @param   integer  $limit       The number of records
+	 * @return  array
 	 */
 	protected function _getList($query, $limitstart=0, $limit=0)
 	{
-		$search = $this->getState('filter.search');
+		$search   = $this->getState('filter.search');
 		$ordering = $this->getState('list.ordering', 'ordering');
 		if ($ordering == 'name' || (!empty($search) && stripos($search, 'id:') !== 0))
 		{
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
+
 			$this->translate($result);
+
 			if (!empty($search))
 			{
 				foreach ($result as $i=>$item)
@@ -168,31 +190,34 @@ class PluginsModelPlugins extends JModelList
 	/**
 	 * Translate a list of objects
 	 *
-	 * @param	array The array of objects
-	 * @return	array The array of translated objects
+	 * @param   array  $items  The array of objects
+	 * @return  array  The array of translated objects
 	 */
 	protected function translate(&$items)
 	{
 		$lang = Lang::getRoot();
 		foreach ($items as &$item)
 		{
-			$source = JPATH_PLUGINS . '/' . $item->folder . '/' . $item->element;
+			$source    = DS . 'plugins' . DS . $item->folder . DS . $item->element;
 			$extension = 'plg_' . $item->folder . '_' . $item->element;
-				$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, null, false, true)
-			||	$lang->load($extension . '.sys', $source, null, false, true);
+
+			$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, null, false, true) ||
+			$lang->load($extension . '.sys', PATH_APP . $source, null, false, true) ||
+			$lang->load($extension . '.sys', PATH_CORE . $source, null, false, true);
+
 			$item->name = Lang::txt($item->name);
 		}
 	}
 	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery
+	 * @return  object
 	 */
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
@@ -204,7 +229,7 @@ class PluginsModelPlugins extends JModelList
 		);
 		$query->from($db->quoteName('#__extensions').' AS a');
 
-		$query->where($db->quoteName('type').' = '.$db->quote('plugin'));
+		$query->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
 
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
@@ -217,14 +242,14 @@ class PluginsModelPlugins extends JModelList
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
 		{
-			$query->where('a.access = '.(int) $access);
+			$query->where('a.access = ' . (int) $access);
 		}
 
 		// Filter by published state
 		$published = $this->getState('filter.state');
 		if (is_numeric($published))
 		{
-			$query->where('a.enabled = '.(int) $published);
+			$query->where('a.enabled = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
@@ -237,14 +262,14 @@ class PluginsModelPlugins extends JModelList
 		// Filter by folder.
 		if ($folder = $this->getState('filter.folder'))
 		{
-			$query->where('a.folder = '.$db->quote($folder));
+			$query->where('a.folder = ' . $db->quote($folder));
 		}
 
 		// Filter by search in id
 		$search = $this->getState('filter.search');
 		if (!empty($search) && stripos($search, 'id:') === 0)
 		{
-			$query->where('a.extension_id = '.(int) substr($search, 3));
+			$query->where('a.extension_id = ' . (int) substr($search, 3));
 		}
 
 		return $query;

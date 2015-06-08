@@ -1,22 +1,51 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Plugins\Admin\Models;
+
+use Hubzero\Utility\Arr;
+use Hubzero\Config\Registry;
+use Exception;
+use Filesystem;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 jimport('joomla.application.component.modeladmin');
 
 /**
  * Plugin model.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_plugins
- * @since		1.6
  */
-class PluginsModelPlugin extends JModelAdmin
+class Plugin extends \JModelAdmin
 {
 	/**
 	 * @var		string	The help screen key for the module.
@@ -33,24 +62,25 @@ class PluginsModelPlugin extends JModelAdmin
 	protected $_cache;
 
 	/**
-	 * @var		string	The event to trigger after saving the data.
-	 * @since	1.6
+	 * The event to trigger after saving the data.
+	 *
+	 * @var  string
 	 */
 	protected $event_after_save = 'onExtensionAfterSave';
 
 	/**
-	 * @var		string	The event to trigger after before the data.
-	 * @since	1.6
+	 * The event to trigger after before the data.
+	 *
+	 * @var  string
 	 */
 	protected $event_before_save = 'onExtensionBeforeSave';
 
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  object   A JForm object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -63,17 +93,18 @@ class PluginsModelPlugin extends JModelAdmin
 		}
 		else
 		{
-			$folder  = \Hubzero\Utility\Arr::getValue($data, 'folder', '', 'cmd');
-			$element = \Hubzero\Utility\Arr::getValue($data, 'element', '', 'cmd');
+			$folder  = Arr::getValue($data, 'folder', '', 'cmd');
+			$element = Arr::getValue($data, 'element', '', 'cmd');
 		}
 
 		// These variables are used to add data from the plugin XML files.
-		$this->setState('item.folder',	$folder);
-		$this->setState('item.element',	$element);
+		$this->setState('item.folder',  $folder);
+		$this->setState('item.element', $element);
 
 		// Get the form.
 		$form = $this->loadForm('com_plugins.plugin', 'plugin', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -96,8 +127,7 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
+	 * @return  mixed  The data for the form.
 	 */
 	protected function loadFormData()
 	{
@@ -115,9 +145,8 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * Method to get a single record.
 	 *
-	 * @param	integer	The id of the primary key.
-	 *
-	 * @return	mixed	Object on success, false on failure.
+	 * @param   integer  $pk  The id of the primary key.
+	 * @return  mixed    Object on success, false on failure.
 	 */
 	public function getItem($pk = null)
 	{
@@ -143,18 +172,25 @@ class PluginsModelPlugin extends JModelAdmin
 
 			// Convert to the Object before adding other data.
 			$properties = $table->getProperties(1);
-			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
+			$this->_cache[$pk] = Arr::toObject($properties, '\\Hubzero\\Base\\Object');
 
 			// Convert the params field to an array.
-			$registry = new \Hubzero\Config\Registry($table->params);
+			$registry = new Registry($table->params);
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the plugin XML.
-			$path = Filesystem::cleanPath(JPATH_PLUGINS.'/'.$table->folder.'/'.$table->element.'/'.$table->element.'.xml');
+			$path = array(
+				'app'  => Filesystem::cleanPath(PATH_APP . DS . 'plugins' . $table->folder . DS . $table->element . DS . $table->element . '.xml'),
+				'core' => Filesystem::cleanPath(PATH_CORE . DS . 'plugins' . $table->folder . DS . $table->element . DS . $table->element . '.xml')
+			);
 
-			if (file_exists($path))
+			if (file_exists($path['app']))
 			{
-				$this->_cache[$pk]->xml = JFactory::getXML($path);
+				$this->_cache[$pk]->xml = \JFactory::getXML($path['app']);
+			}
+			else if (file_exists($path['core']))
+			{
+				$this->_cache[$pk]->xml = \JFactory::getXML($path['core']);
 			}
 			else
 			{
@@ -168,14 +204,14 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
+	 * @param   type    $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 * @return  object  A database object
 	*/
 	public function getTable($type = 'Extension', $prefix = 'JTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return \JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -183,8 +219,7 @@ class PluginsModelPlugin extends JModelAdmin
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
 	 */
 	protected function populateState()
 	{
@@ -197,22 +232,21 @@ class PluginsModelPlugin extends JModelAdmin
 	}
 
 	/**
-	 * @param	object	A form object.
-	 * @param	mixed	The data expected for the form.
-	 * @return	mixed	True if successful.
-	 * @throws	Exception if there is an error in the form event.
-	 * @since	1.6
+	 * @param   object  $form   A form object.
+	 * @param   mixed   $data   The data expected for the form.
+	 * @return  mixed   $group  True if successful.
+	 * @throws  Exception if there is an error in the form event.
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	protected function preprocessForm(\JForm $form, $data, $group = 'content')
 	{
 		// Initialise variables.
 		$folder  = $this->getState('item.folder');
 		$element = $this->getState('item.element');
 		$lang    = Lang::getRoot();
-		$client  = JApplicationHelper::getClientInfo(0);
+		$client  = \JApplicationHelper::getClientInfo(0);
 
 		// Load the core and/or local language sys file(s) for the ordering field.
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = 'SELECT element' .
 				' FROM #__extensions' .
 				' WHERE (type =' .$db->Quote('plugin'). 'AND folder='. $db->Quote($folder) . ')';
@@ -221,21 +255,22 @@ class PluginsModelPlugin extends JModelAdmin
 
 		foreach ($elements as $elementa)
 		{
-				$lang->load('plg_'.$folder.'_'.$elementa.'.sys', JPATH_ADMINISTRATOR, null, false, true)
-			||	$lang->load('plg_'.$folder.'_'.$elementa.'.sys', JPATH_PLUGINS.'/'.$folder.'/'.$elementa, null, false, true);
+			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', JPATH_ADMINISTRATOR, null, false, true) ||
+			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', PATH_APP . '/plugins/' . $folder . '/' . $elementa, null, false, true) ||
+			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', PATH_CORE . '/plugins/' . $folder . '/' . $elementa, null, false, true);
 		}
 
 		if (empty($folder) || empty($element))
 		{
-			App::redirect(Route::url('index.php?option=com_plugins&view=plugins', false));
+			App::redirect(Route::url('index.php?option=com_plugins', false));
 		}
 
-		// Try 1.6 format: /plugins/folder/element/element.xml
-		$formFile = Filesystem::cleanPath(JPATH_PLUGINS.'/'.$folder.'/'.$element.'/'.$element.'.xml');
+		// Try app: /plugins/folder/element/element.xml
+		$formFile = Filesystem::cleanPath(PATH_APP . '/plugins/'.$folder.'/'.$element.'/'.$element.'.xml');
 		if (!file_exists($formFile))
 		{
-			// Try 1.5 format: /plugins/folder/element/element.xml
-			$formFile = Filesystem::cleanPath(JPATH_PLUGINS.'/'.$folder.'/'.$element.'.xml');
+			// Try core
+			$formFile = Filesystem::cleanPath(PATH_CORE . '/plugins/'.$folder.'/'.$element.'/'.$element.'.xml');
 			if (!file_exists($formFile))
 			{
 				throw new Exception(Lang::txt('COM_PLUGINS_ERROR_FILE_NOT_FOUND', $element.'.xml'));
@@ -244,9 +279,9 @@ class PluginsModelPlugin extends JModelAdmin
 		}
 
 		// Load the core and/or local language file(s).
-		$lang->load('plg_'.$folder.'_'.$element, JPATH_ADMINISTRATOR, null, false, true)
-		|| $lang->load('plg_'.$folder.'_'.$element, JPATH_PLUGINS.'/'.$folder.'/'.$element, null, false, true);
-
+		$lang->load('plg_'.$folder.'_'.$element, JPATH_ADMINISTRATOR, null, false, true) ||
+		$lang->load('plg_'.$folder.'_'.$element, PATH_APP . '/plugins/' . $folder . '/' . $elementa, null, false, true) ||
+		$lang->load('plg_'.$folder.'_'.$element, PATH_CORE . '/plugins/' . $folder . '/' . $elementa, null, false, true);
 
 		if (file_exists($formFile))
 		{
@@ -281,9 +316,8 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * A protected method to get a set of ordering conditions.
 	 *
-	 * @param	object	A record object.
-	 * @return	array	An array of conditions to add to add to ordering queries.
-	 * @since	1.6
+	 * @param   object  $table  A record object.
+	 * @return  array   An array of conditions to add to add to ordering queries.
 	 */
 	protected function getReorderConditions($table)
 	{
@@ -296,14 +330,13 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * Override method to save the form data.
 	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
+	 * @param   array    $data  The form data.
+	 * @return  boolean  True on success.
 	 */
 	public function save($data)
 	{
 		// Load the extension plugin group.
-		Plugin::import('extension');
+		\Plugin::import('extension');
 
 		// Setup type
 		$data['type'] = 'plugin';
@@ -314,8 +347,7 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * Get the necessary data to load an item help screen.
 	 *
-	 * @return	object	An object with key, url, and local properties for loading the item help screen.
-	 * @since	1.6
+	 * @return  object  An object with key, url, and local properties for loading the item help screen.
 	 */
 	public function getHelp()
 	{
@@ -325,7 +357,9 @@ class PluginsModelPlugin extends JModelAdmin
 	/**
 	 * Custom clean cache method, plugins are cached in 2 places for different clients
 	 *
-	 * @since	1.6
+	 * @param   string   $group
+	 * @param   integer  $client_id
+	 * @return  void
 	 */
 	protected function cleanCache($group = null, $client_id = 0)
 	{
