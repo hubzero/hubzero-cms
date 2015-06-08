@@ -1,26 +1,44 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Models;
+
+use Lang;
 
 // Import library dependencies
 jimport('joomla.application.component.modellist');
 
 /**
  * Extension Manager Abstract Extension Model
- *
- * @abstract
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @since		1.5
  */
-class InstallerModel extends JModelList
+class Extension extends \JModelList
 {
 	/**
 	 * Constructor.
@@ -126,22 +144,25 @@ class InstallerModel extends JModelList
 			}
 			$item->author_info = @$item->authorEmail .'<br />'. @$item->authorUrl;
 			$item->client = $item->client_id ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
+
 			$path = $item->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE;
+
 			switch ($item->type)
 			{
 				case 'component':
 					$extension = $item->element;
-					$source = JPATH_SITE . '/components/' . $extension . '/admin';
-						$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true)
-					||	$lang->load("$extension.sys", $source, null, false, true);
+					$source = PATH_APP . '/components/' . $extension . '/admin';
+
+					$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true) ||
+					$lang->load("$extension.sys", $source, null, false, true);
 				break;
 				case 'file':
 					$extension = 'files_' . $item->element;
-						$lang->load("$extension.sys", JPATH_SITE, null, false, true);
+					$lang->load("$extension.sys", JPATH_SITE, null, false, true);
 				break;
 				case 'library':
 					$extension = 'lib_' . $item->element;
-						$lang->load("$extension.sys", JPATH_SITE, null, false, true);
+					$lang->load("$extension.sys", JPATH_SITE, null, false, true);
 				break;
 				case 'module':
 					$extension = $item->element;
@@ -156,20 +177,24 @@ class InstallerModel extends JModelList
 				case 'plugin':
 					$extension = 'plg_' . $item->folder . '_' . $item->element;
 					$source = JPATH_PLUGINS . '/' . $item->folder . '/' . $item->element;
-						$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true)
-					||	$lang->load("$extension.sys", $source, null, false, true);
+
+					$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true) ||
+					$lang->load("$extension.sys", $source, null, false, true);
 				break;
 				case 'template':
 					$extension = 'tpl_' . $item->element;
 					$source = $path . '/templates/' . $item->element;
-						$lang->load("$extension.sys", $path, null, false, true)
-					||	$lang->load("$extension.sys", $source, null, false, true);
+
+					$lang->load("$extension.sys", $path, null, false, true) ||
+					$lang->load("$extension.sys", $source, null, false, true);
 				break;
 			}
+
 			if (!in_array($item->type, array('language', 'template', 'library')))
 			{
 				$item->name = Lang::txt($item->name);
 			}
+
 			settype($item->description, 'string');
 			if (!in_array($item->type, array('language')))
 			{

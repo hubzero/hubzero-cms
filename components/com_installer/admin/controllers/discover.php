@@ -1,52 +1,117 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License, see LICENSE.php
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Installer\Admin\Models;
+use Route;
+use App;
+
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'discover.php');
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
+ * Controller for discovering extensions
  */
-class InstallerControllerDiscover extends JControllerLegacy
+class Discover extends AdminController
 {
+	/**
+	 * Display a list of uninstalled extensions
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$model = new Models\Discover();
+
+		$this->view->ftp = \JClientHelper::setCredentialsFromRequest('ftp');
+
+		$this->view->state      = $model->getState();
+		$this->view->items      = $model->getItems();
+		$this->view->pagination = $model->getPagination();
+
+		$showMessage = false;
+		if (is_object($this->view->state))
+		{
+			$message1    = $this->view->state->get('message');
+			$message2    = $this->view->state->get('extension_message');
+			$showMessage = ($message1 || $message2);
+		}
+		$this->view->showMessage = $showMessage;
+
+		$this->view->display();
+	}
+
 	/**
 	 * Refreshes the cache of discovered extensions.
 	 *
-	 * @since	1.6
+	 * @return  void
 	 */
-	public function refresh()
+	public function refreshTask()
 	{
-		$model = $this->getModel('discover');
+		$model = new Models\Discover();
 		$model->discover();
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=discover', false));
+
+		App::redirect(
+			Route::url('index.php?option=com_installer&view=discover', false)
+		);
 	}
 
 	/**
 	 * Install a discovered extension.
 	 *
-	 * @since	1.6
+	 * @return  void
 	 */
-	public function install()
+	public function installTask()
 	{
-		$model = $this->getModel('discover');
+		$model = new Models\Discover();
 		$model->discover_install();
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=discover', false));
+
+		App::redirect(
+			Route::url('index.php?option=com_installer&view=discover', false)
+		);
 	}
 
 	/**
 	 * Clean out the discovered extension cache.
 	 *
-	 * @since	1.6
+	 * @return  void
 	 */
-	public function purge()
+	public function purgeTask()
 	{
-		$model = $this->getModel('discover');
+		$model = new Models\Discover();
 		$model->purge();
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=discover', false), $model->_message);
+
+		App::redirect(
+			Route::url('index.php?option=com_installer&view=discover', false),
+			$model->_message
+		);
 	}
 }

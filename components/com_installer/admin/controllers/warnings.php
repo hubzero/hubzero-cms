@@ -28,17 +28,41 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Controllers;
 
-?>
-<fieldset id="filter-bar">
-	<div class="filter-search fltlft">
-		<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_INSTALLER_LANGUAGES_FILTER_SEARCH_DESC'); ?>" />
+use Hubzero\Component\AdminController;
+use Components\Installer\Admin\Models;
 
-		<button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-	</div>
-</fieldset>
-<div class="clr"></div>
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'warnings.php');
+
+/**
+ * Controller for discovering extensions
+ */
+class Warnings extends AdminController
+{
+	/**
+	 * Display a list of uninstalled extensions
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$model = new Models\Warnings();
+
+		$this->view->ftp = \JClientHelper::setCredentialsFromRequest('ftp');
+
+		$this->view->messages = $model->getItems();
+		$this->view->state    = $model->getState();
+
+		$showMessage = false;
+		if (is_object($this->view->state))
+		{
+			$message1    = $this->view->state->get('message');
+			$message2    = $this->view->state->get('extension_message');
+			$showMessage = ($message1 || $message2);
+		}
+		$this->view->showMessage = $showMessage;
+
+		$this->view->display();
+	}
+}

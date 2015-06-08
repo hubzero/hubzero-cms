@@ -1,32 +1,104 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License, see LICENSE.php
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Installer\Admin\Models;
+use Request;
+use Notify;
+use Lang;
+use Html;
+use App;
+
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'manage.php');
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
+ * Controller for managing extensions
  */
-class InstallerControllerManage extends JControllerLegacy
+class Manage extends AdminController
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @return  void
 	 */
-	public function __construct($config = array())
+	public function execute()
 	{
-		parent::__construct($config);
-
 		$this->registerTask('unpublish', 'publish');
 		$this->registerTask('publish', 'publish');
+
+		parent::execute();
+	}
+
+	/**
+	 * Display a list of uninstalled extensions
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$model = new Models\Manage();
+
+		$this->view->state      = $model->getState();
+		$this->view->items      = $model->getItems();
+		$this->view->pagination = $model->getPagination();
+		$this->view->form       = $model->getForm();
+
+		// Check for errors.
+		if (count($errors = $model->getErrors()))
+		{
+			App::abort(500, implode("\n", $errors));
+		}
+
+		//Check if there are no matching items
+		if (!count($this->items))
+		{
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_MANAGE_NOEXTENSION'));
+		}
+
+		$this->view->ftp = \JClientHelper::setCredentialsFromRequest('ftp');
+
+		$showMessage = false;
+		if (is_object($this->view->state))
+		{
+			$message1    = $this->view->state->get('message');
+			$message2    = $this->view->state->get('extension_message');
+			$showMessage = ($message1 || $message2);
+		}
+		$this->view->showMessage = $showMessage;
+
+		// Include the component HTML helpers.
+		Html::addIncludePath(dirname(__DIR__) . '/helpers/html');
+
+		$this->view->display();
 	}
 
 	/**
@@ -34,7 +106,7 @@ class InstallerControllerManage extends JControllerLegacy
 	 *
 	 * @since	1.6
 	 */
-	public function publish()
+	public function publishTask()
 	{
 		// Check for request forgeries.
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
@@ -52,7 +124,7 @@ class InstallerControllerManage extends JControllerLegacy
 		else
 		{
 			// Get the model.
-			$model = $this->getModel('manage');
+			$model = new Models\Manage();
 
 			// Change the state of the records.
 			if (!$model->publish($ids, $value))
@@ -69,11 +141,11 @@ class InstallerControllerManage extends JControllerLegacy
 				{
 					$ntext = 'COM_INSTALLER_N_EXTENSIONS_UNPUBLISHED';
 				}
-				$this->setMessage(Lang::txts($ntext, count($ids)));
+				Notify::success(Lang::txts($ntext, count($ids)));
 			}
 		}
 
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=manage', false));
+		App::redirect(Route::url('index.php?option=com_installer&view=manage', false));
 	}
 
 	/**
@@ -82,17 +154,17 @@ class InstallerControllerManage extends JControllerLegacy
 	 * @return	void
 	 * @since	1.5
 	 */
-	public function remove()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$eid   = Request::getVar('cid', array(), '', 'array');
-		$model = $this->getModel('manage');
+		$model = new Models\Manage();
 
 		\Hubzero\Utility\Arr::toInteger($eid, array());
 		$result = $model->remove($eid);
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=manage', false));
+		App::edirect(Route::url('index.php?option=com_installer&view=manage', false));
 	}
 
 	/**
@@ -102,17 +174,50 @@ class InstallerControllerManage extends JControllerLegacy
 	 *
 	 * @since	1.6
 	 */
-	public function refresh()
+	public function refreshTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$uid   = Request::getVar('cid', array(), '', 'array');
-		$model = $this->getModel('manage');
+		$model = new Models\Manage();
 
 		\Hubzero\Utility\Arr::toInteger($uid, array());
 		$result = $model->refresh($uid);
 
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=manage', false));
+		App::redirect(Route::url('index.php?option=com_installer&view=manage', false));
+	}
+
+	/**
+	 * Creates the content for the tooltip which shows compatibility information
+	 *
+	 * @var  string  $system_data  System_data information
+	 *
+	 * @since  2.5.28
+	 *
+	 * @return  string  Content for tooltip
+	 */
+	protected function createCompatibilityInfo($system_data)
+	{
+		$system_data = json_decode($system_data);
+
+		if (empty($system_data->compatibility))
+		{
+			return '';
+		}
+
+		$compatibility = $system_data->compatibility;
+
+		$info = Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_INSTALLED',
+					$compatibility->installed->version,
+					implode(', ', $compatibility->installed->value)
+				)
+				. '<br/>'
+				. Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
+					$compatibility->available->version,
+					implode(', ', $compatibility->available->value)
+				);
+
+		return $info;
 	}
 }

@@ -1,21 +1,47 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Models;
+
+use Filesystem;
+use Request;
+use Config;
+use Notify;
+use User;
+use Lang;
+use App;
 
 /**
  * Extension Manager Install Model
- *
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @since		1.5
  */
-class InstallerModelInstall extends JModelLegacy
+class Install extends \JModelLegacy
 {
 	/**
 	 * @var object JTable object
@@ -44,15 +70,14 @@ class InstallerModelInstall extends JModelLegacy
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$this->setState('message', User::getState('com_installer.message'));
+		$this->setState('extension_message', User::getState('com_installer.extension_message'));
 
-		$this->setState('message', $app->getUserState('com_installer.message'));
-		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
-		$app->setUserState('com_installer.message', '');
-		$app->setUserState('com_installer.extension_message', '');
+		User::setState('com_installer.message', '');
+		User::setState('com_installer.extension_message', '');
 
 		// Recall the 'Install from Directory' path.
-		$path = $app->getUserStateFromRequest($this->_context . '.install_directory', 'install_directory', $app->getCfg('tmp_path'));
+		$path = Request::getState($this->_context . '.install_directory', 'install_directory', Config::get('tmp_path'));
 		$this->setState('install.directory', $path);
 		parent::populateState();
 	}
@@ -68,7 +93,7 @@ class InstallerModelInstall extends JModelLegacy
 		$this->setState('action', 'install');
 
 		// Set FTP credentials, if given.
-		JClientHelper::setCredentialsFromRequest('ftp');
+		\JClientHelper::setCredentialsFromRequest('ftp');
 		$app = JFactory::getApplication();
 
 		switch (Request::getWord('installtype'))
@@ -101,30 +126,29 @@ class InstallerModelInstall extends JModelLegacy
 		}
 
 		// Get an installer instance
-		$installer = JInstaller::getInstance();
+		$installer = \JInstaller::getInstance();
 
 		// Install the package
 		if (!$installer->install($package['dir']))
 		{
 			// There was an error installing the package
-			$msg = Lang::txt('COM_INSTALLER_INSTALL_ERROR', Lang::txt('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+			Notify::error(Lang::txt('COM_INSTALLER_INSTALL_ERROR', Lang::txt('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type']))));
 			$result = false;
 		}
 		else
 		{
 			// Package installed sucessfully
-			$msg = Lang::txt('COM_INSTALLER_INSTALL_SUCCESS', Lang::txt('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type'])));
+			Notify::success(Lang::txt('COM_INSTALLER_INSTALL_SUCCESS', Lang::txt('COM_INSTALLER_TYPE_TYPE_'.strtoupper($package['type']))));
 			$result = true;
 		}
 
 		// Set some model state values
-		$app = JFactory::getApplication();
-		$app->enqueueMessage($msg);
 		$this->setState('name', $installer->get('name'));
 		$this->setState('result', $result);
-		$app->setUserState('com_installer.message', $installer->message);
-		$app->setUserState('com_installer.extension_message', $installer->get('extension_message'));
-		$app->setUserState('com_installer.redirect_url', $installer->get('redirect_url'));
+
+		User::setState('com_installer.message', $installer->message);
+		User::setState('com_installer.extension_message', $installer->get('extension_message'));
+		User::setState('com_installer.redirect_url', $installer->get('redirect_url'));
 
 		// Cleanup the install files
 		if (!is_file($package['packagefile']))
@@ -132,8 +156,7 @@ class InstallerModelInstall extends JModelLegacy
 			$package['packagefile'] = Config::get('tmp_path') . '/' . $package['packagefile'];
 		}
 
-		JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
-
+		\JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
 
 		return $result;
 	}
@@ -184,7 +207,7 @@ class InstallerModelInstall extends JModelLegacy
 		$uploaded = Filesystem::upload($tmp_src, $tmp_dest);
 
 		// Unpack the downloaded package file
-		$package = JInstallerHelper::unpack($tmp_dest);
+		$package = \JInstallerHelper::unpack($tmp_dest);
 
 		return $package;
 	}
@@ -209,7 +232,7 @@ class InstallerModelInstall extends JModelLegacy
 		}
 
 		// Detect the package type
-		$type = JInstallerHelper::detectType($p_dir);
+		$type = \JInstallerHelper::detectType($p_dir);
 
 		// Did you give us a valid package?
 		if (!$type)
@@ -234,9 +257,6 @@ class InstallerModelInstall extends JModelLegacy
 	 */
 	protected function _getPackageFromUrl()
 	{
-		// Get a database connector
-		$db = JFactory::getDbo();
-
 		// Get the URL of the package to install
 		$url = Request::getString('install_url');
 
@@ -248,7 +268,7 @@ class InstallerModelInstall extends JModelLegacy
 		}
 
 		// Download the package at the URL given
-		$p_file = JInstallerHelper::downloadPackage($url);
+		$p_file = \JInstallerHelper::downloadPackage($url);
 
 		// Was the package downloaded?
 		if (!$p_file)
@@ -260,7 +280,7 @@ class InstallerModelInstall extends JModelLegacy
 		$tmp_dest = Config::get('tmp_path');
 
 		// Unpack the downloaded package file
-		$package = JInstallerHelper::unpack($tmp_dest . '/' . $p_file);
+		$package = \JInstallerHelper::unpack($tmp_dest . '/' . $p_file);
 
 		return $package;
 	}

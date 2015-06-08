@@ -1,36 +1,58 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Models;
+
+use Request;
+use Notify;
+use Lang;
+use App;
 
 // Import library dependencies
-require_once dirname(__FILE__) . '/extension.php';
+require_once __DIR__ . DS . 'extension.php';
 
 /**
  * Installer Manage Model
- *
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @since		1.5
  */
-class InstallerModelManage extends InstallerModel
+class Manage extends Extension
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'name',
 				'client_id',
@@ -54,28 +76,29 @@ class InstallerModelManage extends InstallerModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication();
 		$filters = Request::getVar('filters');
 		if (empty($filters))
 		{
-			$data = $app->getUserState($this->context.'.data');
+			$data = User::getState($this->context . '.data');
 			$filters = $data['filters'];
 		}
 		else
 		{
-			$app->setUserState($this->context.'.data', array('filters'=>$filters));
+			User::setState($this->context . '.data', array('filters' => $filters));
 		}
 
-		$this->setState('message', $app->getUserState('com_installer.message'));
-		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
-		$app->setUserState('com_installer.message', '');
-		$app->setUserState('com_installer.extension_message', '');
+		$this->setState('message', User::getState('com_installer.message'));
+		$this->setState('extension_message', User::getState('com_installer.extension_message'));
+
+		User::setState('com_installer.message', '');
+		User::setState('com_installer.extension_message', '');
 
 		$this->setState('filter.search', isset($filters['search']) ? $filters['search'] : '');
 		$this->setState('filter.status', isset($filters['status']) ? $filters['status'] : '');
 		$this->setState('filter.type', isset($filters['type']) ? $filters['type'] : '');
 		$this->setState('filter.group', isset($filters['group']) ? $filters['group'] : '');
 		$this->setState('filter.client_id', isset($filters['client_id']) ? $filters['client_id'] : '');
+
 		parent::populateState('name', 'asc');
 	}
 
@@ -100,18 +123,18 @@ class InstallerModelManage extends InstallerModel
 			}
 
 			// Get a database connector
-			$db = JFactory::getDBO();
+			$db = \JFactory::getDBO();
 
 			// Get a table object for the extension type
-			$table = JTable::getInstance('Extension');
-			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_templates/tables');
+			$table = \JTable::getInstance('Extension');
+			\JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_templates/tables');
 			// Enable the extension in the table and store it in the database
 			foreach ($eid as $i=>$id)
 			{
 				$table->load($id);
 				if ($table->type == 'template')
 				{
-					$style = JTable::getInstance('Style', 'TemplatesTable');
+					$style = \JTable::getInstance('Style', 'TemplatesTable');
 					if ($style->load(array('template' => $table->element, 'client_id' => $table->client_id, 'home'=>1)))
 					{
 						App::abort(403, Lang::txt('COM_INSTALLER_ERROR_DISABLE_DEFAULT_TEMPLATE_NOT_PERMITTED'));
@@ -158,11 +181,11 @@ class InstallerModelManage extends InstallerModel
 		}
 
 		// Get a database connector
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		// Get an installer object for the extension type
-		$installer = JInstaller::getInstance();
-		$row = JTable::getInstance('extension');
+		$installer = \JInstaller::getInstance();
+		$row = \JTable::getInstance('extension');
 		$result = 0;
 
 		// Uninstall the chosen extensions
@@ -185,7 +208,6 @@ class InstallerModelManage extends InstallerModel
 		// Initialise variables.
 		if (User::authorise('core.delete', 'com_installer'))
 		{
-
 			// Initialise variables.
 			$failed = array();
 
@@ -197,11 +219,11 @@ class InstallerModelManage extends InstallerModel
 			}
 
 			// Get a database connector
-			$db = JFactory::getDBO();
+			$db = \JFactory::getDBO();
 
 			// Get an installer object for the extension type
-			$installer = JInstaller::getInstance();
-			$row = JTable::getInstance('extension');
+			$installer = \JInstaller::getInstance();
+			$row = \JTable::getInstance('extension');
 
 			// Uninstall the chosen extensions
 			foreach ($eid as $id)
@@ -234,21 +256,22 @@ class InstallerModelManage extends InstallerModel
 			if (count($failed))
 			{
 				// There was an error in uninstalling the package
-				$msg = Lang::txt('COM_INSTALLER_UNINSTALL_ERROR', $rowtype);
+				Notify::error(Lang::txt('COM_INSTALLER_UNINSTALL_ERROR', $rowtype));
 				$result = false;
 			}
 			else
 			{
 				// Package uninstalled sucessfully
-				$msg = Lang::txt('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype);
+				Notify::success(Lang::txt('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype));
 				$result = true;
 			}
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($msg);
+
 			$this->setState('action', 'remove');
 			$this->setState('name', $installer->get('name'));
-			$app->setUserState('com_installer.message', $installer->message);
-			$app->setUserState('com_installer.extension_message', $installer->get('extension_message'));
+
+			User::setState('com_installer.message', $installer->message);
+			User::setState('com_installer.extension_message', $installer->get('extension_message'));
+
 			return $result;
 		}
 		else
@@ -267,10 +290,11 @@ class InstallerModelManage extends InstallerModel
 	protected function getListQuery()
 	{
 		$status = $this->getState('filter.status');
-		$type = $this->getState('filter.type');
+		$type   = $this->getState('filter.type');
 		$client = $this->getState('filter.client_id');
-		$group = $this->getState('filter.group');
-		$query = JFactory::getDBO()->getQuery(true);
+		$group  = $this->getState('filter.group');
+
+		$query = \JFactory::getDBO()->getQuery(true);
 		$query->select('*');
 		$query->select('2*protected+(1-protected)*enabled as status');
 		$query->from('#__extensions');
@@ -321,10 +345,9 @@ class InstallerModelManage extends InstallerModel
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$app = JFactory::getApplication();
-		JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-		JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-		$form = JForm::getInstance('com_installer.manage', 'manage', array('load_data' => $loadData));
+		\JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
+		\JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
+		$form = \JForm::getInstance('com_installer.manage', 'manage', array('load_data' => $loadData));
 
 		// Check for an error.
 		if ($form == false)
@@ -353,7 +376,7 @@ class InstallerModelManage extends InstallerModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_installer.manage.data', array());
+		$data = User::getState('com_installer.manage.data', array());
 
 		return $data;
 	}

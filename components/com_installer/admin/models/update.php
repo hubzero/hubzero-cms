@@ -1,13 +1,39 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Models;
+
+use Config;
+use Lang;
+use User;
+use App;
 
 // Import library dependencies
 jimport('joomla.application.component.modellist');
@@ -18,7 +44,7 @@ jimport('joomla.updater.update');
  * @subpackage	com_installer
  * @since		1.6
  */
-class InstallerModelUpdate extends JModelList
+class Update extends \JModelList
 {
 	/**
 	 * Constructor.
@@ -54,11 +80,12 @@ class InstallerModelUpdate extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication('administrator');
-		$this->setState('message', $app->getUserState('com_installer.message'));
-		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
-		$app->setUserState('com_installer.message', '');
-		$app->setUserState('com_installer.extension_message', '');
+		$this->setState('message', User::getState('com_installer.message'));
+		$this->setState('extension_message', User::getState('com_installer.extension_message'));
+
+		User::setState('com_installer.message', '');
+		User::setState('com_installer.extension_message', '');
+
 		parent::populateState('name', 'asc');
 	}
 
@@ -100,7 +127,7 @@ class InstallerModelUpdate extends JModelList
 	 */
 	public function findUpdates($eid=0, $cache_timeout = 0)
 	{
-		$updater = JUpdater::getInstance();
+		$updater = \JUpdater::getInstance();
 		$results = $updater->findUpdates($eid, $cache_timeout);
 		return true;
 	}
@@ -113,7 +140,7 @@ class InstallerModelUpdate extends JModelList
 	 */
 	public function purge()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		// Note: TRUNCATE is a DDL operation
 		// This may or may not mean depending on your database
 		$db->setQuery('TRUNCATE TABLE #__updates');
@@ -144,7 +171,7 @@ class InstallerModelUpdate extends JModelList
 	 */
 	public function enableSites()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		$db->setQuery('UPDATE #__update_sites SET enabled = 1 WHERE enabled = 0');
 		if ($db->Query())
 		{
@@ -174,8 +201,8 @@ class InstallerModelUpdate extends JModelList
 		$result = true;
 		foreach ($uids as $uid)
 		{
-			$update = new JUpdate();
-			$instance = JTable::getInstance('update');
+			$update = new \JUpdate();
+			$instance = \JTable::getInstance('update');
 			$instance->load($uid);
 			$update->loadFromXML($instance->detailsurl);
 			// install sets state and enqueues messages
@@ -202,7 +229,6 @@ class InstallerModelUpdate extends JModelList
 	 */
 	private function install($update)
 	{
-		$app = JFactory::getApplication();
 		if (isset($update->get('downloadurl')->_data))
 		{
 			$url = trim($update->downloadurl->_data);
@@ -228,7 +254,7 @@ class InstallerModelUpdate extends JModelList
 		$package = JInstallerHelper::unpack($tmp_dest . '/' . $p_file);
 
 		// Get an installer instance
-		$installer = JInstaller::getInstance();
+		$installer = \JInstaller::getInstance();
 		$update->set('type', $package['type']);
 
 		// Install the package

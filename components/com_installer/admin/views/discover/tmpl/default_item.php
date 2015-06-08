@@ -1,10 +1,31 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @since		1.6
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
@@ -13,8 +34,7 @@ defined('_JEXEC') or die;
 <tr class="<?php echo "row".$this->item->index % 2; ?>" <?php echo $this->item->style; ?>>
 	<td><?php echo $this->pagination->getRowOffset($this->item->index); ?></td>
 	<td>
-			<input type="checkbox" id="cb<?php echo $this->item->index;?>" name="eid[]" value="<?php echo $this->item->extension_id; ?>" onclick="Joomla.isChecked(this.checked);" <?php echo $this->item->cbd; ?> />
-<!--		<input type="checkbox" id="cb<?php echo $this->item->index;?>" name="eid" value="<?php echo $this->item->extension_id; ?>" onclick="Joomla.isChecked(this.checked);" <?php echo $this->item->cbd; ?> />-->
+		<input type="checkbox" id="cb<?php echo $this->item->index;?>" name="eid[]" value="<?php echo $this->item->extension_id; ?>" onclick="Joomla.isChecked(this.checked);" <?php echo $this->item->cbd; ?> />
 		<span class="bold"><?php echo $this->item->name; ?></span>
 	</td>
 	<td>
@@ -24,7 +44,7 @@ defined('_JEXEC') or die;
 		<?php if (!$this->item->element) : ?>
 		<strong>X</strong>
 		<?php else : ?>
-		<a href="index.php?option=com_installer&amp;type=manage&amp;task=<?php echo $this->item->task; ?>&amp;eid[]=<?php echo $this->item->extension_id; ?>&amp;limitstart=<?php echo $this->pagination->limitstart; ?>&amp;<?php echo JSession::getFormToken();?>=1"><?php echo Html::asset('image', 'images/'.$this->item->img, $this->item->alt, array('title' => $this->item->action)); ?></a>
+		<a href="<?php echo Route::url('index.php?option=com_installer&type=manage&task=' . $this->item->task . '&eid[]=' . $this->item->extension_id . '&limitstart=' .$this->pagination->limitstart . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Html::asset('image', 'images/'.$this->item->img, $this->item->alt, array('title' => $this->item->action)); ?></a>
 		<?php endif; ?>
 	</td>
 	<td class="center"><?php echo @$this->item->folder != '' ? $this->item->folder : 'N/A'; ?></td>

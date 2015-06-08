@@ -1,26 +1,49 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Models;
+
+use Hubzero\Config\Registry;
+use Exception;
+use Component;
+use User;
+use Lang;
 
 // Import library dependencies
-JLoader::register('InstallerModel', dirname(__FILE__) . '/extension.php');
-JLoader::register('joomlaInstallerScript', JPATH_ADMINISTRATOR . '/components/com_admin/script.php');
+include_once(__DIR__ . DS . 'extension.php');
+include_once(PATH_CORE . '/components/com_admin/admin/script.php');
 
 /**
- * Installer Manage Model
- *
- * @package		Joomla.Administrator
- * @subpackage	com_installer
- * @since		1.6
+ * Installer Database Model
  */
-class InstallerModelDatabase extends InstallerModel
+class Database extends Extension
 {
 	protected $_context = 'com_installer.discover';
 
@@ -33,11 +56,13 @@ class InstallerModelDatabase extends InstallerModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-		$this->setState('message', $app->getUserState('com_installer.message'));
-		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
-		$app->setUserState('com_installer.message', '');
-		$app->setUserState('com_installer.extension_message', '');
+		$app = \JFactory::getApplication();
+		$this->setState('message', User::getState('com_installer.message'));
+		$this->setState('extension_message', User::getState('com_installer.extension_message'));
+
+		User::setState('com_installer.message', '');
+		User::setState('com_installer.extension_message', '');
+
 		parent::populateState('name', 'asc');
 	}
 
@@ -51,7 +76,7 @@ class InstallerModelDatabase extends InstallerModel
 		$changeSet->fix();
 		$this->fixSchemaVersion($changeSet);
 		$this->fixUpdateVersion();
-		$installer = new joomlaInstallerScript();
+		$installer = new \joomlaInstallerScript();
 		$installer->deleteUnexistingFiles();
 		$this->fixDefaultTextFilters();
 	}
@@ -64,8 +89,8 @@ class InstallerModelDatabase extends InstallerModel
 	 */
 	public function getItems()
 	{
-		$folder = JPATH_ADMINISTRATOR . '/components/com_admin/sql/updates/';
-		$changeSet = JSchemaChangeset::getInstance(JFactory::getDbo(), $folder);
+		$folder = JPATH_ADMINISTRATOR . '/components/com_admin/amdin/sql/updates/';
+		$changeSet = \JSchemaChangeset::getInstance(\JFactory::getDbo(), $folder);
 		return $changeSet;
 	}
 
@@ -83,7 +108,7 @@ class InstallerModelDatabase extends InstallerModel
 
 	public function getSchemaVersion()
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('version_id')->from($db->qn('#__schemas'))
 			->where('extension_id = 700');
@@ -107,7 +132,7 @@ class InstallerModelDatabase extends InstallerModel
 	{
 		// Get correct schema version -- last file in array
 		$schema = $changeSet->getSchema();
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$result = false;
 
 		// Check value. If ok, don't do update
@@ -147,9 +172,10 @@ class InstallerModelDatabase extends InstallerModel
 
 	public function getUpdateVersion()
 	{
-		$table = JTable::getInstance('Extension');
+		$table = \JTable::getInstance('Extension');
 		$table->load('700');
-		$cache = new \Hubzero\Config\Registry($table->manifest_cache);
+
+		$cache = new Registry($table->manifest_cache);
 		return $cache->get('version');
 	}
 
@@ -160,11 +186,13 @@ class InstallerModelDatabase extends InstallerModel
 	 */
 	public function fixUpdateVersion()
 	{
-		$table = JTable::getInstance('Extension');
+		$table = \JTable::getInstance('Extension');
 		$table->load('700');
-		$cache = new \Hubzero\Config\Registry($table->manifest_cache);
+
+		$cache = new Registry($table->manifest_cache);
 		$updateVersion =  $cache->get('version');
-		$cmsVersion = new JVersion();
+
+		$cmsVersion = new \JVersion();
 		if ($updateVersion == $cmsVersion->getShortVersion())
 		{
 			return $updateVersion;
@@ -192,7 +220,7 @@ class InstallerModelDatabase extends InstallerModel
 	 */
 	public function getDefaultTextFilters()
 	{
-		$table = JTable::getInstance('Extension');
+		$table = \JTable::getInstance('Extension');
 		$table->load($table->find(array('name' => 'com_config')));
 		return $table->params;
 	}
@@ -204,7 +232,7 @@ class InstallerModelDatabase extends InstallerModel
 	 */
 	public function fixDefaultTextFilters()
 	{
-		$table = JTable::getInstance('Extension');
+		$table = \JTable::getInstance('Extension');
 		$table->load($table->find(array('name' => 'com_config')));
 
 		// Check for empty $config and non-empty content filters
@@ -214,7 +242,7 @@ class InstallerModelDatabase extends InstallerModel
 			$contentParams = Component::params('com_content');
 			if ($contentParams->get('filters'))
 			{
-				$newParams = new \Hubzero\Config\Registry();
+				$newParams = new Registry();
 				$newParams->set('filters', $contentParams->get('filters'));
 				$table->params = (string) $newParams;
 				$table->store();

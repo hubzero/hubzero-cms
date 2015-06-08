@@ -1,25 +1,90 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_installer
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License, see LICENSE.php
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die;
+namespace Components\Installer\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Installer\Admin\Models;
+use Component;
+use Request;
+use Notify;
+use Route;
+use Lang;
+use App;
+
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'languages.php');
 
 /**
  * Languages Installer Controller
  */
-class InstallerControllerLanguages extends JControllerLegacy
+class Languages extends AdminController
 {
+	/**
+	 * Display a list of uninstalled extensions
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$model = new Models\Languages();
+
+		$this->view->ftp = \JClientHelper::setCredentialsFromRequest('ftp');
+
+		$this->view->state      = $model->getState();
+		$this->view->items      = $model->getItems();
+		$this->view->pagination = $model->getPagination();
+
+		// Check for errors.
+		if (count($errors = $model->getErrors()))
+		{
+			App::abort(500, implode("\n", $errors));
+		}
+
+		$showMessage = false;
+		if (is_object($this->view->state))
+		{
+			$message1    = $this->view->state->get('message');
+			$message2    = $this->view->state->get('extension_message');
+			$showMessage = ($message1 || $message2);
+		}
+		$this->view->showMessage = $showMessage;
+
+		$this->view->display();
+	}
+
 	/**
 	 * Finds new Languages.
 	 *
 	 * @return  void
 	 */
-	public function find()
+	public function findTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
@@ -29,10 +94,10 @@ class InstallerControllerLanguages extends JControllerLegacy
 		$cache_timeout = 3600 * $cache_timeout;
 
 		// Find updates
-		$model = $this->getModel('languages');
+		$model = new Models\Languages();
 		$model->findLanguages($cache_timeout);
 
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=languages', false));
+		App::redirect(Route::url('index.php?option=com_installer&view=languages', false));
 
 	}
 
@@ -41,17 +106,17 @@ class InstallerControllerLanguages extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	public function purge()
+	public function purgeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Purge updates
-		$model = $this->getModel('update');
+		$model = new Models\Languages();
 		$model->purge();
 		$model->enableSites();
 
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=languages', false), $model->_message);
+		App::redirect(Route::url('index.php?option=com_installer&view=languages', false), $model->_message);
 	}
 
 	/**
@@ -59,9 +124,9 @@ class InstallerControllerLanguages extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	public function install()
+	public function installTask()
 	{
-		$model = $this->getModel('languages');
+		$model = new Models\Languages();
 
 		// Get array of selected languages
 		$lids = Request::getVar('cid', array(), '', 'array');
@@ -78,6 +143,6 @@ class InstallerControllerLanguages extends JControllerLegacy
 			$model->install($lids);
 		}
 
-		$this->setRedirect(Route::url('index.php?option=com_installer&view=languages', false));
+		App::redirect(Route::url('index.php?option=com_installer&view=languages', false));
 	}
 }
