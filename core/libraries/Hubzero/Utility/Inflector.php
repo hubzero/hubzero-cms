@@ -89,7 +89,7 @@ class Inflector
 		'/(n)ews$/i'             => '\1\2ews',
 		'/([^us])s$/i'           => '\1',
 	);
-	
+
 	/**
 	 * Gets the plural version of the given word
 	 *
@@ -124,7 +124,7 @@ class Inflector
 
 		return $result;
 	}
-	
+
 	/**
 	 * Checks if the given word has a plural version.
 	 *

@@ -72,7 +72,7 @@ abstract class Service extends Object implements DetectorInterface
 	 * @param   string  $data  Content to test
 	 * @return  bool    True if the comment is spam, false if not
 	 */
-	public function detect($data = null) 
+	public function detect($data = null)
 	{
 		$data = $data ?: $this->getValue();
 
