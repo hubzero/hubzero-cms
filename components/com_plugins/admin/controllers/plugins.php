@@ -197,8 +197,6 @@ class Plugins extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		var_dump(Session::checkToken());
-		
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
@@ -224,25 +222,6 @@ class Plugins extends AdminController
 
 		// Populate the row id from the session.
 		$data[$key] = $recordId;
-
-		// The save2copy task needs to be handled slightly differently.
-		/*if ($task == 'save2copy')
-		{
-			// Check-in the original row.
-			if ($checkin && $model->checkin($data[$key]) === false)
-			{
-				// Check-in failed. Go back to the item and display a notice.
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false),
-					Lang::txt('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()),
-					'error'
-				);
-			}
-
-			// Reset the ID and then treat the request as for Apply.
-			$data[$key] = 0;
-			$task = 'apply';
-		}*/
 
 		// Access check.
 		if (!$this->allowSave($data, $key))
@@ -343,18 +322,6 @@ class Plugins extends AdminController
 					Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $key), false)
 				);
 				break;
-
-			/*case 'save2new':
-				// Clear the record id and data from the session.
-				$this->releaseEditId($context, $recordId);
-
-				User::setState($context . '.data', null);
-
-				// Redirect back to the edit screen.
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend(null, $key), false)
-				);
-				break;*/
 
 			default:
 				// Clear the record id and data from the session.
