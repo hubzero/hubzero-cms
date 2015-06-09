@@ -34,6 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Perform logout (handled via JS)
 	 *
 	 * @return  void
@@ -133,15 +140,15 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			$client->authenticate($code);
 
 			// Add the access token to the session
-			$jsession = App::get('session');
-			$jsession->set('google.token', $client->getAccessToken());
+			$session = App::get('session');
+			$session->set('google.token', $client->getAccessToken());
 		}
 		else
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return),
-				'To log in via Google, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE', Config::get('sitename')),
 				'error'
 			);
 		}
@@ -225,7 +232,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_GOOGLE_UNKNOWN_USER');
 				return;
 			}
 
@@ -277,7 +284,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		else
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_GOOGLE_AUTHENTICATION_FAILED');
 		}
 	}
 
@@ -322,7 +329,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 				// This google account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This google account appears to already be linked to a hub account',
+					Lang::txt('PLG_AUTHENTICATION_GOOGLE_ACCOUNT_ALREADY_LINKED'),
 					'error'
 				);
 			}
@@ -340,7 +347,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel...
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'To log in via Google, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE', Config::get('sitename')),
 				'error'
 			);
 		}
