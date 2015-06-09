@@ -58,7 +58,7 @@ class RateLimitService extends Middleware
 
 			// create and return new rate limiter
 			return new RateLimiter($storage, $config);
-		});
+		};
 	}
 
 	/**
