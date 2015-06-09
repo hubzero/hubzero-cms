@@ -54,6 +54,13 @@ class Js extends AbstractHelper
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
+		if (substr($asset, 0, strlen('http')) == 'http'
+		 || substr($asset, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addScript($asset);
+			return $this->getView();
+		}
+
 		// Adding style declarations
 		if ($extension === true || strstr($asset, '(') || strstr($asset, ';'))
 		{

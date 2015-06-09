@@ -604,6 +604,13 @@ class SiteController extends Object implements ControllerInterface
 	{
 		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
 
+		if (substr($stylesheet, 0, strlen('http')) == 'http'
+		 || substr($stylesheet, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addStylesheet($stylesheet);
+			return $this;
+		}
+
 		// Adding style declarations
 		if ($component === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
@@ -651,6 +658,13 @@ class SiteController extends Object implements ControllerInterface
 	public function js($script = '', $component = null)
 	{
 		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
+
+		if (substr($script, 0, strlen('http')) == 'http'
+		 || substr($script, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addScript($script);
+			return $this;
+		}
 
 		// Adding script declaration
 		if ($component === true || strstr($script, '(') || strstr($script, ';'))

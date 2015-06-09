@@ -54,6 +54,13 @@ class Css extends AbstractHelper
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
+		if (substr($stylesheet, 0, strlen('http')) == 'http'
+		 || substr($stylesheet, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			return $this->getView();
+		}
+
 		// Adding style declarations
 		if ($extension === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{

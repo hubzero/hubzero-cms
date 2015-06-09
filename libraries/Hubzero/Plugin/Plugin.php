@@ -219,6 +219,13 @@ class Plugin extends \JPlugin
 		$folder  = $folder  ?: $this->_type;
 		$element = $element ?: $this->_name;
 
+		if (substr($stylesheet, 0, strlen('http')) == 'http'
+		 || substr($stylesheet, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addStylesheet($stylesheet);
+			return $this;
+		}
+
 		// Adding style declarations
 		if ($folder === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
@@ -269,6 +276,13 @@ class Plugin extends \JPlugin
 	{
 		$folder  = $folder  ?: $this->_type;
 		$element = $element ?: $this->_name;
+
+		if (substr($script, 0, strlen('http')) == 'http'
+		 || substr($script, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addScript($script);
+			return $this;
+		}
 
 		// Adding script declaration
 		if ($folder === true || strstr($script, '(') || strstr($script, ';'))

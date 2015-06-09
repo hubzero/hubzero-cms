@@ -148,6 +148,13 @@ class Module extends Object
 			$module = $this->module->module;
 		}
 
+		if (substr($stylesheet, 0, strlen('http')) == 'http'
+		 || substr($stylesheet, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addStylesheet($stylesheet);
+			return $this;
+		}
+
 		if ($module === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
 			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
@@ -194,6 +201,13 @@ class Module extends Object
 		if (!$module)
 		{
 			$module = $this->module->module;
+		}
+
+		if (substr($script, 0, strlen('http')) == 'http'
+		 || substr($script, 0, strlen('://')) == '://')
+		{
+			\JFactory::getDocument()->addScript($script);
+			return $this;
 		}
 
 		if ($module === true || strstr($script, '(') || strstr($script, ';'))
