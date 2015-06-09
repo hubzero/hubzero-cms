@@ -105,6 +105,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->total = $hubzeroAnnouncement->count($view->filters);
 		$view->rows  = $hubzeroAnnouncement->find($view->filters);
 
+		//pass thru permissions for CRUD
+		$view->isManager = $group->isManager(User::get('id'));
+
 		//display list of announcements
 		return $view->loadTemplate();
 	}

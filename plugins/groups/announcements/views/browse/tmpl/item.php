@@ -98,7 +98,7 @@ if ($closed == 'closed' && $this->showClose == true)
 			</dd>
 		<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
 			<dd class="entry-options">
-				<?php if (User::get('id') == $this->announcement->get('created_by')) : ?>
+				<?php if (User::get('id') == $this->announcement->get('created_by') || $this->isManager == true) : ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->announcement->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
 						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 					</a>
