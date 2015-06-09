@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$user = $this->get('juser');
+$group = $this->get('group');
+
 // Default to unpublished
 $class = 'unpublished';
 
@@ -98,7 +101,7 @@ if ($closed == 'closed' && $this->showClose == true)
 			</dd>
 		<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
 			<dd class="entry-options">
-				<?php if ($this->juser->get('id') == $this->announcement->get('created_by')) : ?>
+				<?php if ($user->get('id') == $this->announcement->get('created_by') || $group->isManager($user->get('id'))) : ?>
 					<a class="icon-edit edit" href="<?php echo JRoute::_($this->announcement->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
 						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 					</a>
