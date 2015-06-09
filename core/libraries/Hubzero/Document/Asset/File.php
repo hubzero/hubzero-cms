@@ -143,6 +143,14 @@ class File extends Object
 			}
 		}
 
+		if (substr($this->name, 0, strlen('http')) == 'http'
+		 || substr($this->name, 0, strlen('://')) == '://')
+		{
+			$this->kind = 'external';
+			$this->paths['source'] = $this->name;
+			$this->paths['target'] = $this->name;
+		}
+
 		$this->directory = $this->dir($this->name, $this->type());
 	}
 
@@ -222,6 +230,16 @@ class File extends Object
 	public function isDeclaration()
 	{
 		return $this->declaration;
+	}
+
+	/**
+	 * Is the asset external to the site?
+	 *
+	 * @return  boolean
+	 */
+	public function isExternal()
+	{
+		return $this->kind == 'external';
 	}
 
 	/**
@@ -380,6 +398,11 @@ class File extends Object
 	 */
 	public function exists()
 	{
+		if ($this->isExternal())
+		{
+			return true;
+		}
+
 		if ($this->declaration && $this->name)
 		{
 			return true;
@@ -404,6 +427,11 @@ class File extends Object
 		$output = $this->targetPath();
 
 		if (!$output)
+		{
+			return $output;
+		}
+
+		if ($this->isExternal())
 		{
 			return $output;
 		}
