@@ -140,7 +140,7 @@ class ObjectExpander extends Middleware
 			// convert single object dates
 			$content = $this->convertExpandKeysInObjects($expandKeys, $content);
 		}
-		
+
 		// set the response content to modified content
 		$response->setContent(json_encode($content));
 

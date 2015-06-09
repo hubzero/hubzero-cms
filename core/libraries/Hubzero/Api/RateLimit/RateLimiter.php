@@ -145,8 +145,8 @@ class RateLimiter
 
 		// create initial limit record
 		return $this->storage->createRateLimitData(
-			$applicationId, 
-			$userId, 
+			$applicationId,
+			$userId,
 			$ipAddress,
 			$limitShort,
 			$limitLong,

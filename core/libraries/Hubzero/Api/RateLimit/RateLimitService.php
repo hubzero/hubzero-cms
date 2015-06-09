@@ -87,13 +87,13 @@ class RateLimitService extends Middleware
 		if ($rateLimitData->exceeded_long || $rateLimitData->exceeded_short)
 		{
 			// set response error
-			$response->setError('Too Many Requests', 429, [
-				[
-					"error"             => "rate_limit_exceeded",
-					"error_description" => "You have exceeded your rate limit allowance. Please see rate limit headers for details."
-				]
-			]);
-			
+			$response->setError('Too Many Requests', 429, array(
+				array(
+					'error'             => 'rate_limit_exceeded',
+					'error_description' => 'You have exceeded your rate limit allowance. Please see rate limit headers for details.'
+				)
+			));
+
 			// use different values for long
 			if ($rateLimitData->exceeded_long)
 			{
