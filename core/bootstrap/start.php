@@ -31,9 +31,8 @@
 |
 */
 
-//error_reporting(-1);
 error_reporting(-1);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 /*
 |--------------------------------------------------------------------------
@@ -103,12 +102,17 @@ if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $ap
 |--------------------------------------------------------------------------
 |
 | Register all of the core pieces of the framework including session, 
-| caching, and more.
+| caching, and more. First, we'll load the core bootstrap list of services
+| and then we'll give the app a chance to modify that list.
 |
 */
 
 $providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
-$services = file_exists($providers) ? require $providers : array();
+$services  = file_exists($providers) ? require $providers : array();
+
+$providers = PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
+$services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
+
 foreach ($services as $service)
 {
 	$app->register($service);
@@ -120,28 +124,18 @@ foreach ($services as $service)
 |--------------------------------------------------------------------------
 |
 | The alias loader is responsible for lazy loading the class aliases setup
-| for the application.
+| for the application.  First, we'll load the core bootstrap list of
+| aliases and then we'll give the app a chance to modify that list.
 |
 */
 
-$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
+$facades = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
+$aliases = file_exists($facades) ? require $facades : array();
 
-$app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
+$facades = PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
+$aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
 
-/*
-|--------------------------------------------------------------------------
-| Load The Application Routes
-|--------------------------------------------------------------------------
-|
-| The Application routing rules are kept separate from the application
-| starting just to keep the file a little cleaner. We'll go ahead and load
-| in all of the routing rules now.
-|
-*/
-
-//$routes = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'routes.php';
-
-//if (file_exists($routes)) require $routes;
+$app->registerBaseFacades($aliases);
 
 /*
 |--------------------------------------------------------------------------

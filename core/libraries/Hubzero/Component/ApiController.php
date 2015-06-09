@@ -39,32 +39,60 @@ use Hubzero\Http\Response;
 class ApiController implements ControllerInterface
 {
 	/**
+	 * Methods needing Auth
+	 * 
+	 * @var  array
+	 */
+	public $authenticated   = array('all');
+
+	/**
+	 * Methods skipping Auth
+	 * 
+	 * @var  array
+	 */
+	public $unauthenticated = array();
+
+	/**
+	 * Methods needing rate limiting
+	 * 
+	 * @var  array
+	 */
+	public $rateLimited     = array();
+
+	/**
+	 * Methods skipping rate limiting
+	 * 
+	 * @var  array
+	 */
+	public $notRateLimited  = array('all');
+
+	/**
 	 * Description for '_response'
 	 *
-	 * @var unknown
+	 * @var  object
 	 */
-	protected $_response = null;
+	public $_response = null;
 
 	/**
 	 * Description for '_request'
 	 *
-	 * @var unknown
+	 * @var  object
 	 */
-	protected $_request = null;
+	public $_request = null;
 
 	/**
 	 * Description for '_provider'
 	 *
-	 * @var unknown
+	 * @var  object
 	 */
-	protected $_provider = null;
+	public $_provider = null;
 
 	/**
 	 * Description for '_segments'
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	protected $segments = array();
+	public $segments = array();
 
 	/**
 	 * Determines task being called and attempts to execute it
@@ -85,12 +113,10 @@ class ApiController implements ControllerInterface
 	}
 
 	/**
-	 * Short description for 'setRequest'
+	 * Set the request object
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $request Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $request
+	 * @return  void
 	 */
 	function setRequest(Request $request)
 	{
@@ -98,93 +124,87 @@ class ApiController implements ControllerInterface
 	}
 
 	/**
-	 * Short description for 'getRequest'
+	 * Get the request object
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  object
 	 */
-	function getRequest()
+	public function getRequest()
 	{
 		return $this->_request;
 	}
 
 	/**
-	 * Short description for 'setResponse'
+	 * Set the response object
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $response Parameter description (if any) ...
-	 * @return     void
+	 * @param   objet  $response
+	 * @return  void
 	 */
-	function setResponse(Response $response)
+	public function setResponse(Response $response)
 	{
 		$this->_response = $response;
 	}
 
 	/**
-	 * Short description for 'getResponse'
+	 * Get the response object
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  object
 	 */
-	function getResponse()
+	public function getResponse()
 	{
 		return $this->_response;
 	}
 
 	/**
-	 * Short description for 'setProvider'
+	 * Set the provider
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $provider Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $provider
+	 * @return  void
 	 */
-	function setProvider($provider)
+	public function setProvider($provider)
 	{
 		$this->_provider = $provider;
 	}
 
 	/**
-	 * Short description for 'getProvider'
+	 * Get provider
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  object
 	 */
-	function getProvider()
+	public function getProvider()
 	{
 		return $this->_provider;
 	}
 
 	/**
-	 * Short description for 'setRouteSegments'
+	 * Set the list of route segments
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $segments Parameter description (if any) ...
-	 * @return     void
+	 * @param   array  $segments
+	 * @return  void
 	 */
-	function setRouteSegments($segments)
+	public function setRouteSegments($segments)
 	{
 		$this->segments = $segments;
 	}
 
 	/**
-	 * Short description for 'getRouteSegments'
+	 * Get the list of route segments
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @return  array
 	 */
-	function getRouteSegments()
+	public function getRouteSegments()
 	{
 		return $this->segments;
 	}
 
-	function setMessage($message = null, $status = null, $reason = null)
+	/**
+	 * Set response content
+	 *
+	 * @param   string   $message
+	 * @param   integer  $status
+	 * @param   string   $reason
+	 * @return  void
+	 */
+	public function setMessage($message = null, $status = null, $reason = null)
 	{
 		//$this->_response->setMessage($message, $status, $reason);
 		//$this->_response->setContent($this->finalizeContent($message));
@@ -192,19 +212,25 @@ class ApiController implements ControllerInterface
 		$this->_response->setStatusCode($status ? $status : 200);
 	}
 
-	function setMessageType($format)
+	/**
+	 * Set response format
+	 *
+	 * @param   string   $format
+	 * @return  void
+	 */
+	public function setMessageType($format)
 	{
 		//$this->_response->setResponseProvides($format);
 		static $types = array(
-			'xml' => 'application/xml',
-			'html' => 'text/html',
+			'xml'   => 'application/xml',
+			'html'  => 'text/html',
 			'xhtml' => 'application/xhtml+xml',
-			'json' => 'application/json',
-			'text' => 'text/plain',
-			'txt' => 'text/plain',
+			'json'  => 'application/json',
+			'text'  => 'text/plain',
+			'txt'   => 'text/plain',
 			'plain' => 'text/plain',
+			'php'   => 'application/php',
 			'php_serialized' => 'application/vnd.php.serialized',
-			'php' => 'application/php',
 		);
 
 		$this->_response->headers->set('Content-Type', $types[$format]);
