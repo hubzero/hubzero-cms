@@ -1,0 +1,88 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_developer/assts/css/developer.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_developer CSS
+	-- -- -- -- -- -- --
+
+*/
+
+.icon-docs:before {
+	content: '\f02d';
+}
+.icon-app:before {
+	content: '\f0c2';
+}
+.icon-back:before {
+	content: '\f08a';
+}
+.icon-code:before {
+	content: '\f121';
+}
+.icon-settings:before {
+	content: '\2699';
+}
+.icon-go:before {
+	content: '\203A';
+}
+
+section.full .subject {
+	padding: 0;
+}
+.section > .subject > p,
+.section > .subject > h3 {
+	margin-top: 0;
+}
+
+/* Tables */
+table th,
+table td {
+	padding: 1em;
+	border-right: 1px solid #dadada;
+	vertical-align: middle;
+}
+table tr th:last-child,
+table tr td:last-child {
+	border-right: 0;
+}
+
+/* Aside */
+.aside ul {
+	margin: 0;
+}
+.aside ul li:last-child {
+	border-bottom: 1px solid #dadada;
+}
+.aside ul ul li:last-child {
+	border-bottom: 0;
+}
+
+/* Submenu */
+.sub-menu .with-count {
+	padding-right: 8px;
+}
+.sub-menu .count {
+	background: #ccc;
+	padding: 1px 5px;
+	margin-left: 5px;
+	border-radius: 2px;
+}
+nav.sub-menu-cont {
+	border-bottom: 1px solid #bababa;
+	background: #e1e1e1;
+}
+nav.sub-menu-cont .sub-menu {
+	border: none;
+}
+.sub-menu.left {
+	float: left;
+}
+.sub-menu.right {
+	float: right
+}

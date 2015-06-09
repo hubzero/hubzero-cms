@@ -1,0 +1,177 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_developer/assts/css/applications.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_developer CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Applications List */
+.applications,
+.tokens {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background: #fff;
+	border: 2px solid #e9e9e9;
+	border-top: none;
+}
+.applications li,
+.tokens li {
+	padding: 20px 20px 20px 80px;
+	margin: 0;
+	position: relative;
+	border-bottom: 1px solid #e9e9e9;
+}
+.applications li:last-child,
+.tokens li:last-child {
+	border-bottom: 0;
+}
+.applications li:before,
+.tokens li:before {
+	content: '\f0c2';
+	font-family: "Fontcons";
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	font-size: 48px;
+	line-height: 1;
+	color: #ccc;
+}
+.authorized-applications li:after {
+	content: '\f023';
+	font-family: "Fontcons";
+	position: absolute;
+	top: 38px;
+	left: 34px;
+	font-size: 16px;
+	line-height: 1;
+	color: #aaa;
+}
+.applications li h4,
+.tokens li h4 {
+	margin: 0;
+}
+.applications .meta,
+.tokens .meta {
+	margin: 5px 0;
+}
+.applications .meta dd,
+.tokens .meta dd {
+	display: inline-block;
+	font-size: 11px;
+	line-height: 13px;
+	color: #aaa;
+}
+.applications .meta dd:first-child,
+.tokens .meta dd:first-child {
+	margin-left: 0;
+}
+.applications li p,
+.tokens li p {
+	color: #777;
+	margin: 0;
+}
+.applications .empty,
+.tokens .empty {
+	padding: 50px 30px;
+	text-align: center;
+	font-size: 24px;
+	line-height: 30px;
+	color: #ccc;
+}
+.applications .empty:before,
+.applications .empty:after,
+.tokens .empty:before,
+.tokens .empty:after {
+	display: none;
+}
+.authorized-applications .revoke,
+.tokens .revoke {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+/*
+	View application 
+ */
+.application table.metadata,
+.application table.metadata td {
+	background: #FFF;
+	border: 1px solid #ccc;
+}
+.application table.metadata th,
+.application table.metadata td {
+	padding: 10px;
+}
+.application table.metadata code {
+	display: block;
+	font-size: 14px;
+	background: #efefef;
+}
+.application table.metadata code + code {
+	margin-top: 5px;
+}
+
+/* Team Listing */
+.team-listing,
+#hubForm .team-listing {
+	margin: 0;
+	padding: 0;	
+}
+.team-listing li,
+#hubForm .team-listing li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	margin: 5px 0;
+	padding: 5px 0;
+	padding-left: 5px;
+	border-bottom: 1px solid #efefef;
+	position: relative;
+}
+.team-listing li:last-child,
+#hubForm .team-listing li:last-child {
+	border-bottom: 0;
+}
+#hubForm .team-listing li.me {
+	border: 1px solid #5890ff;
+}
+.team-listing li a {
+	border: none;
+}
+.team-listing li a.remove {
+	position: absolute;
+	top: 15px;
+	right: 0;
+}
+.team-listing.compact li {
+	margin: 0 5px 5px 0;
+	float: left;
+	padding: 0;
+}
+.team-listing.compact a {
+	display: block;
+	border-radius: 2px;
+	border: 3px solid #ddd;
+}
+.team-listing.compact .me a {
+	border-color: #5890ff;
+}
+.team-listing.compact a span,
+.team-listing.compact a.remove {
+	display: none;
+}
+
+.revoke-all {
+	font-size: 11px;
+	float: right;
+}

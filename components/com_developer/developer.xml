@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.5">
+	<name>Developer</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Developer</description>
+	<files>
+		<filename>developer.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_developer.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>Developer</menu>
+		<files>
+			<filename>install.sql</filename>
+			<filename>developer.php</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+		</files>
+	</administration>
+</extension>

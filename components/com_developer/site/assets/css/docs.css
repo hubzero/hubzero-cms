@@ -1,0 +1,143 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_developer/assts/css/docs.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_developer CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Version selector */
+#content-header-extra .dropdown-menu {
+	right: 0;
+	left: auto;
+	min-width: 50px;
+}
+#content-header-extra .dropdown-menu li {
+	display: block;
+	width: auto;
+	margin-left: 0;
+	border-bottom: 1px solid #eee;
+}
+#content-header-extra .dropdown-menu li a {
+	padding: 0.4em 1.5em;
+}
+
+pre code {
+	background: transparent;
+	border: none;
+	padding: 0;
+	font-size: inherit;
+}
+/* Doc Sections
+.doc-section-header {
+	margin-top: 0;
+	background: #4183C4;
+	color: #fff;
+	border-bottom: 1px solid #ddd;
+	padding: 10px 10px 5px 10px;
+}
+.doc-section-emphasis {
+	font-size: 1.3em;
+	line-height: 1.5em;
+	padding: 0 15px;
+}
+.doc-section {
+	padding: 0 15px;
+	margin-bottom: 50px;
+}
+.doc-section pre {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font-size: 13px;
+	line-height: 18px;
+}
+.doc-section code {
+	background: #FFF;
+	padding: 8px;
+	font-size: 14px;
+	display: block;
+}
+.doc-section p code,
+.doc-section table code {
+	display: inline-block;
+	padding: 0px 4px;
+	font-size: 11.5px;
+} 
+.doc-section table {
+	border: 1px solid #CCC;
+}
+.doc-section .required {
+	color: #B50600;
+	font-weight: bold;
+}
+.doc-section h4 {
+	margin-top: 2em;
+	font-size: 1.2em;
+} */
+
+
+
+/* Table of contents */
+.toc {
+	position: relative;
+	border: 1px solid #4183C4;;
+	background: #f0f0f0;
+}
+.toc .toc-header {
+	position: relative;
+	margin: 0px;
+	color: #666;
+	border-bottom: 1px solid #ddd;
+	font-size: 16px;
+	padding: 8px 8px 8px 28px;
+	background: #FFF;
+	outline: none;
+}
+.toc .toc-header:hover {
+	cursor: pointer
+}
+.toc .toc-header:before {
+	content: '\f0da';
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	font-size: 12px;
+	width: 10px;
+	height: 10px;
+	color: #aaa;
+	font-family: 'Fontcons';
+}
+.toc .ui-state-active:before {
+	content: '\f0d7';
+}
+.toc .toc-content {
+	padding: 8px;
+	border-bottom: 1px solid #ddd;
+}
+
+.toc .label,
+.toc .divider {
+	padding: 8px !important;
+	background: #4183C4;
+	color: #FFF;
+	cursor: default !important;
+}
+.toc .divider {
+	background: #FFF;
+	color: #4183C4;
+	font-size: 0.9em;
+	text-transform: uppercase;
+	padding: 4px 8px !important;
+}
+.toc .label:before,
+.toc .divider:before {
+	content: '';
+}
