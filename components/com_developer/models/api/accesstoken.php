@@ -92,7 +92,7 @@ class AccessToken extends Model
 			'access_token' => $accessToken,
 			'limit'        => 1
 		));
-		
+
 		return (!empty($token)) ? new self($token[0]) : null;
 	}
 

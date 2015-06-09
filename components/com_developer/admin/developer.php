@@ -31,7 +31,7 @@
 namespace Components\Developer\Admin;
 
 // permissions check
-if (!\User::authorise('core.manage', 'com_developer')) 
+if (!\User::authorise('core.manage', 'com_developer'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }

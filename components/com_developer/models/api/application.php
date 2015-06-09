@@ -245,7 +245,7 @@ class Application extends Model
 
 		// delete authorization codes
 		$this->revokeAuthorizationCodes();
-		
+
 		// set the application state
 		$this->set('state', 2);
 		if (!$this->store(false))

@@ -80,7 +80,7 @@ class Generator
 		// generate output
 		if ($force || !$this->cache())
 		{
-			$this->generate(); 
+			$this->generate();
 		}
 
 		// option to switch formats
@@ -263,7 +263,7 @@ class Generator
 			// but put in error
 			if (!$phpdoc->getShortDescription())
 			{
-				$this->output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method->getName(), $file); 
+				$this->output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method->getName(), $file);
 				continue;
 			}
 

@@ -58,7 +58,7 @@ class AuthorizationCode extends Model
 			'authorization_code' => $code,
 			'limit'              => 1
 		));
-		
+
 		return (!empty($codes)) ? new self($codes[0]) : null;
 	}
 

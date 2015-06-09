@@ -60,7 +60,7 @@ class Application extends \JTable
 	{
 		// verify name
 		$this->name = trim($this->name);
-		if ($this->name == '') 
+		if ($this->name == '')
 		{
 			$this->setError(Lang::txt('COM_DEVELOPER_API_APPLICATION_MISSING_NAME'));
 			return false;
@@ -68,7 +68,7 @@ class Application extends \JTable
 
 		// verify description
 		$this->description = trim($this->description);
-		if ($this->description == '') 
+		if ($this->description == '')
 		{
 			$this->setError(Lang::txt('COM_DEVELOPER_API_APPLICATION_MISSING_DESCRIPTION'));
 			return false;
@@ -78,7 +78,7 @@ class Application extends \JTable
 		$uris = array_map('trim', explode(PHP_EOL, $this->redirect_uri));
 
 		// must have one
-		if (empty($uris)) 
+		if (empty($uris))
 		{
 			$this->setError(Lang::txt('COM_DEVELOPER_API_APPLICATION_MISSING_REDIRECT_URI'));
 			return false;
@@ -105,7 +105,7 @@ class Application extends \JTable
 		$this->redirect_uri = implode(' ', $uris);
 
 		// if we dont have a created by add one
-		if (!$this->created_by) 
+		if (!$this->created_by)
 		{
 			$this->created_by = User::get('id');
 		}
