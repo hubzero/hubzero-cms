@@ -63,7 +63,7 @@ class Router extends Base
 			unset($query['id']);
 		}
 
-		if (!empty($query['task']) && $query['task'] != 'view') 
+		if (!empty($query['task']) && $query['task'] != 'view')
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
