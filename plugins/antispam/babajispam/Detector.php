@@ -166,6 +166,6 @@ class Detector implements DetectorInterface
 	 */
 	public function message()
 	{
-		return $this->message
+		return $this->message;
 	}
 }
