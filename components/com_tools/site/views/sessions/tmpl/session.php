@@ -85,6 +85,8 @@ if (!$this->app->sess) {
 		</p>
 	<?php endif; ?>
 
+	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
+
 	<div id="app-wrap">
 		<div id="app-header">
 			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
@@ -198,45 +200,47 @@ if (!$this->app->sess) {
 			}
 			?>
 		</div><!-- #app-footer -->
-	<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
-		<div id="app-zone">
-			<div class="grid">
-				<div class="col span6">
-					<p class="zone-identity">
-						<?php if ($logo = $this->zone->logo()) { ?>
-							<img src="<?php echo $logo; ?>" alt="" />
-						<?php } ?>
-					</p>
-					<p>
-						<?php echo $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
-					</p>
-				</div><!-- / .col span6 -->
-				<div class="col span6 omega">
-					<form name="share" id="app-zone" method="post" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
-						<p><?php echo Lang::txt('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
-						<p><label for="field-zone">
-							<?php echo Lang::txt('COM_TOOLS_ZONE_RELAUNCH'); ?>
-							<select name="zone" id="field-zone">
-								<option value=""><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
-								<?php
-								foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
-								{
-									if ($zone->get('id') == $this->zone->get('id'))
-									{
-										continue;
-									}
-								?>
-								<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
+		<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
+			<div id="app-zone">
+				<div class="grid">
+					<div class="col span6">
+						<p class="zone-identity">
+							<?php if ($logo = $this->zone->logo()) { ?>
+								<img src="<?php echo $logo; ?>" alt="" />
 							<?php } ?>
-							</select>
-						</label>
-						<input type="submit" value="Go" /></p>
-					</form>
-				</div><!-- / .col span6 omega -->
-			</div><!-- .grid -->
-		</div><!-- #app-zone -->
-	<?php } ?>
+						</p>
+						<p>
+							<?php echo $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
+						</p>
+					</div><!-- / .col span6 -->
+					<div class="col span6 omega">
+						<form name="share" id="app-zone" method="post" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
+							<p><?php echo Lang::txt('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
+							<p><label for="field-zone">
+								<?php echo Lang::txt('COM_TOOLS_ZONE_RELAUNCH'); ?>
+								<select name="zone" id="field-zone">
+									<option value=""><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
+									<?php
+									foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
+									{
+										if ($zone->get('id') == $this->zone->get('id'))
+										{
+											continue;
+										}
+									?>
+									<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
+								<?php } ?>
+								</select>
+							</label>
+							<input type="submit" value="Go" /></p>
+						</form>
+					</div><!-- / .col span6 omega -->
+				</div><!-- .grid -->
+			</div><!-- #app-zone -->
+		<?php } ?>
 	</div><!-- #app-wrap -->
+
+	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewAfter', array($this->app, $this->output, $readOnly))); ?>
 
 	<?php
 	// Are we on an iPad?
