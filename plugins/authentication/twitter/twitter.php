@@ -37,6 +37,14 @@ require_once(join(DS, array( PATH_CORE, 'libraries', 'twitteroauth', 'twitteroau
 class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 {
 	/**
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Perform logout (not currently used)
 	 *
 	 * @return  void
@@ -83,7 +91,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return),
-				'To log in via Twitter, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
 			return;
@@ -181,7 +189,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_TWITTER_UNKNOWN_USER');
 				return;
 			}
 
@@ -229,7 +237,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		else
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_TWITTER_AUTHENTICATION_FAILED');
 		}
 	}
 
@@ -277,7 +285,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 				// This twitter account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This Twitter account appears to already be linked to a hub account',
+					Lang::txt('PLG_AUTHENTICATION_TWITTER_ACCOUNT_ALREADY_LINKED'),
 					'error'
 				);
 				return;
@@ -294,7 +302,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'To link the current account with your Twitter account, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
 				'error'
 			);
 			return;

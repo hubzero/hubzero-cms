@@ -37,6 +37,14 @@ require_once(join(DS, array(PATH_CORE, 'libraries', 'simplelinkedin-php', 'linke
 class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 {
 	/**
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Perform logout (not currently used)
 	 *
 	 * @return  void
@@ -127,7 +135,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return),
-				'To log in via LinkedIn, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_LINKEDIN_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
 		}
@@ -150,7 +158,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		}
 		else
 		{
-			return new Exception(Lang::txt('Something went wrong here...'), 500);
+			return new Exception(Lang::txt('PLG_AUTHENTICATION_LINKEDIN_ERROR'), 500);
 		}
 	}
 
@@ -197,7 +205,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		}
 
 		// Are the already logged on?
-		return new Exception(Lang::txt('Something went wrong here...'), 500);
+		return new Exception(Lang::txt('PLG_AUTHENTICATION_LINKEDIN_ERROR'), 500);
 	}
 
 	/**
@@ -259,7 +267,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_LINKEDIN_UNKNOWN_USER');
 				return;
 			}
 
@@ -311,7 +319,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		else // no authorization
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_LINKEDIN_AUTHENTICATION_FAILED');
 		}
 	}
 
@@ -337,7 +345,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'To log in via LinkedIn, you must authorize the ' . App::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_LINKEDIN_MUST_AUTHORIZE_TO_LOGIN', App::get('sitename')),
 				'error'
 			);
 		}
@@ -386,7 +394,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 				// This linkedin account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This linkedin account appears to already be linked to a hub account',
+					Lang::txt('PLG_AUTHENTICATION_LINKEDIN_ACCOUNT_ALREADY_LINKED'),
 					'error'
 				);
 			}
@@ -403,7 +411,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'To log in via LinkedIn, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_LINKEDIN_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
 				'error'
 			);
 		}

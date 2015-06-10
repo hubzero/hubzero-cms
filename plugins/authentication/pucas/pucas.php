@@ -40,6 +40,14 @@ require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php');
 class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 {
 	/**
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Actions to perform when logging out a user session
 	 *
 	 * @return  void
@@ -200,7 +208,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		}
 		catch (CAS_AuthenticationException $e)
 		{
-			throw new Exception("CAS ticket has expired", 400);
+			throw new Exception(Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_EXPIRED_TICKET'), 400);
 		}
 
 		$return = (isset($options['return'])) ? $options['return'] : '';
@@ -214,7 +222,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_PUCAS_UNKNOWN_USER');
 				return;
 			}
 
@@ -275,7 +283,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		else
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_PUCAS_AUTHENTICATION_FAILED');
 		}
 	}
 
@@ -308,7 +316,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				// This purdue cas account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This Purdue Career Account appears to already be linked to a hub account',
+					Lang::txt('PLG_AUTHENTICATION_PUCAS_ACCOUNT_ALREADY_LINKED'),
 					'error'
 				);
 			}
@@ -325,7 +333,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'There was an error linking your Purdue Career Account, please try again later.',
+				Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_LINKING'),
 				'error'
 			);
 		}

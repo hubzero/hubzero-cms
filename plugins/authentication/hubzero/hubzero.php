@@ -37,6 +37,14 @@ defined('_JEXEC') or die('Restricted access');
 class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
 	 * @param   array    $credentials  Array holding the user credentials
@@ -68,7 +76,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		if (empty($credentials['password']))
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Empty passwords are not allowed.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_ERROR_EMPTY_PASS');
 			return false;
 		}
 
@@ -100,7 +108,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		if (is_array($result) && count($result) > 1)
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = "We're unable to identify your account via email.  Please login using your username.";
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_UNKNOWN_USER');
 			return false;
 		}
 		elseif (is_array($result) && isset($result[0]))
@@ -147,13 +155,13 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Username and password do not match or you do not have an account yet.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
 			}
 		}
 		else
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
 		}
 	}
 }

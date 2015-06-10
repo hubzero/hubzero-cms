@@ -148,7 +148,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return),
-				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE', Config::get('sitename')),
+				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
 		}
@@ -347,7 +347,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel...
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE', Config::get('sitename')),
+				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
 				'error'
 			);
 		}

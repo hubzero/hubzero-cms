@@ -34,6 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 {
 	/**
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Perform logout (not currently used)
 	 *
 	 * @return  void
@@ -53,8 +61,8 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	public function status()
 	{
 		// Get the hub url
-		$service    = trim(Request::base(), DS);
-		$channelUrl = $service . DS . 'channel.phtml';
+		$service    = trim(Request::base(), '/');
+		$channelUrl = $service . '/channel.phtml';
 
 		// This can only currently be done using the Facebook JS API
 		// (at least relying solely on the native methods provided by the language's specific API)
@@ -121,7 +129,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return),
-				'To log in via Facebook, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_FACEBOOK_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
 		}
@@ -210,7 +218,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			{
 				// Error message?
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage());
 				return;
 			}
 
@@ -221,7 +229,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_UNKNOWN_USER');
 				return;
 			}
 
@@ -273,7 +281,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		else
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_AUTHENTICATION_FAILED');
 		}
 	}
 
@@ -324,7 +332,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			{
 				// Error message?
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage());
 				return;
 			}
 
@@ -336,7 +344,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				// This facebook account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This facebook account appears to already be linked to a hub account',
+					Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ACCOUNT_ALREADY_LINKED'),
 					'error'
 				);
 			}
@@ -353,7 +361,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'To link the current account with your Facebook account, you must authorize the ' . Config::get('sitename') . ' app.',
+				Lang::txt('PLG_AUTHENTICATION_FACEBOOK_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
 				'error'
 			);
 		}
@@ -403,7 +411,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	private static function getReturnUrl($return=null, $encode=false)
 	{
 		// Get the hub url
-		$service = trim(Request::base(), DS);
+		$service = trim(Request::base(), '/');
 
 		if (empty($service))
 		{

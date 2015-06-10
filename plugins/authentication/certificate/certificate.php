@@ -37,6 +37,14 @@ defined('_JEXEC') or die('Restricted access');
 class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Actions to perform when logging out a user session
 	 *
 	 * @return  void
@@ -154,7 +162,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_UNKNOWN_USER');
 				return;
 			}
 
@@ -209,7 +217,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = 'Username and password do not match or you do not have an account yet.';
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_AUTHENTICATION_FAILED');
 		}
 	}
 
@@ -235,7 +243,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 				// This certificate account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-					'This certificate appears to already be linked to a hub account',
+					Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_ACCOUNT_ALREADY_LINKED'),
 					'error'
 				);
 			}
@@ -252,7 +260,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
-				'There was an error linking your certificate, please try again later.',
+				Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_ERROR_LINKING_CERT'),
 				'error'
 			);
 		}

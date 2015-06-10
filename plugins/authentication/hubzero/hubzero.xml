@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 @package        hubzero-cms
-@file           plugins/authentication/facebook/facebook.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/authentication/hubzero/hubzero.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,30 +28,30 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="authentication">
 	<name>Authentication - HUBzero</name>
-	<author>Nicholas J. Kisseberth</author>
-	<copyright>Copyright 2012 Purdue University. All rights reserved.</copyright>
+	<author>HUBzero</author>
+	<copyright>Copyright 2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<authorEmail>nkissebe@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.7</version>
-	<description>Handles HUBzero default user authentication</description>
+	<description>PLG_AUTHENTICATION_HUBZERO_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="hubzero">hubzero.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="remember_me_default" type="list" default="0" label="Remember me default state" description="Select whether or not remember me option is checked by default">
-					<option value="0">Unckecked</option>
-					<option value="1">Checked</option>
+				<field name="remember_me_default" type="list" default="0" label="PLG_AUTHENTICATION_HUBZERO_PARAM_REMEMBER_LABEL" description="PLG_AUTHENTICATION_HUBZERO_PARAM_REMEMBER_DESC">
+					<option value="0">PLG_AUTHENTICATION_HUBZERO_PARAM_REMEMBER_UNCHECKED</option>
+					<option value="1">PLG_AUTHENTICATION_HUBZERO_PARAM_REMEMBER_CHECKED</option>
 				</field>
-				<field name="display_name" type="text" size="32" label="Display name" description="Text to display on the site when referencing this plugin" default="" />
-				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_HUBZERO_PARAM_NAME_LABEL" description="PLG_AUTHENTICATION_HUBZERO_PARAM_NAME_DESC" default="" />
+				<field name="site_login"  type="radio" label="PLG_AUTHENTICATION_HUBZERO_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_HUBZERO_PARAM_SITELOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="admin_login"  type="radio" label="Admin login" default="1" description="Enable this plugin for backend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="admin_login"  type="radio" label="PLG_AUTHENTICATION_HUBZERO_PARAM_ADMINLOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_HUBZERO_PARAM_ADMINLOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

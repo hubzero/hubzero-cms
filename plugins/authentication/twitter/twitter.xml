@@ -28,30 +28,30 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="authentication">
 	<name>Authentication - Twitter</name>
-	<author>Sam Wilson</author>
+	<author>HUBzero</author>
 	<creationDate>May 2013</creationDate>
-	<copyright>Copyright (C) 2008-2010 Purdue University.</copyright>
+	<copyright>Copyright (C) 2008-2015 Purdue University.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>hubzero@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>
 	<version>1.7</version>
-	<description>Handles user authentication against Twitter</description>
+	<description>PLG_AUTHENTICATION_TWITTER_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="twitter.php">twitter.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="app_id"       type="text" size="20" label="Consumer Key"    description="Your Hub's Twitter App consumer key" />
-				<field name="app_secret"   type="text" size="32" label="Consumer Secret" description="Consumer Secret provided when your hub is registered on Twitter" />
-				<field name="display_name" type="text" size="32" label="Display name"    description="Text to display on the site when referencing this plugin" default="Twitter" />
-				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="app_id"       type="text" size="20" label="PLG_AUTHENTICATION_TWITTER_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_TWITTER_PARAM_KEY_DESC" />
+				<field name="app_secret"   type="text" size="32" label="PLG_AUTHENTICATION_TWITTER_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_TWITTER_PARAM_SECRET_DESC" />
+				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_TWITTER_PARAM_NAME_LABEL"   description="PLG_AUTHENTICATION_TWITTER_PARAM_NAME_DESC" default="Twitter" />
+				<field name="site_login"   type="radio" label="PLG_AUTHENTICATION_TWITTER_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_TWITTER_PARAM_SITELOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="admin_login"  type="radio" label="Admin login" default="0" description="Enable this plugin for backend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="admin_login"  type="radio" label="PLG_AUTHENTICATION_TWITTER_PARAM_ADMINLOGIN_LABEL" default="0" description="PLG_AUTHENTICATION_TWITTER_PARAM_ADMINLOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

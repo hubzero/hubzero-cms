@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 @package        hubzero-cms
-@file           plugins/authentication/pucas.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/authentication/pucas/pucas.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,39 +28,39 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="authentication">
 	<name>Authentication - Purdue University CAS</name>
-	<author>Nicholas J. Kisseberth</author>
+	<author>HUBzero</author>
 	<creationDate>February 2008</creationDate>
-	<copyright>Copyright (C) 2008-2010 Purdue University.</copyright>
+	<copyright>Copyright (C) 2008-2015 Purdue University.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.5</version>
-	<description>Handles user authentication against Purdue's CAS</description>
+	<description>PLG_AUTHENTICATION_PUCAS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="pucas">pucas.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="domain" type="text" size="20" default="Purdue Career Account (CAS)" label="Domain" description="Domain name" />
-				<field name="display_name" type="text" size="32" label="Display name" description="Text to display on the site when referencing this plugin" default="Purdue Career" />
-				<field name="auto_logoff" type="radio" default="0" label="End CAS Session Automatically?" description="Prompt user with choice to end Purdue CAS session, or perform this action automatically">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="domain" type="text" size="20" default="PLG_AUTHENTICATION_PUCAS_PARAM_DOMAIN_LABEL" label="Domain" description="PLG_AUTHENTICATION_PUCAS_PARAM_DOMAIN_DESC" />
+				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_PUCAS_PARAM_NAME_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_NAME_DESC" default="Purdue Career" />
+				<field name="auto_logoff" type="radio" default="0" label="PLG_AUTHENTICATION_PUCAS_PARAM_AUTOLOGOFF_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_AUTOLOGOFF_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="boilerkey_required" type="list" default="none" label="Require BoilerKey?" description="Force users to present password hardened with BoilerKey two factor authentication.">
-					<option value="none">None</option>
-					<option value="administrator">Administrator</option>
-					<option value="site">Site</option>
-					<option value="both">Both</option>
+				<field name="boilerkey_required" type="list" default="none" label="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_DESC">
+					<option value="none">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_NONE</option>
+					<option value="administrator">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_ADMIN</option>
+					<option value="site">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_SITE</option>
+					<option value="both">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_BOTH</option>
 				</field>
-				<field name="boilerkey_timeout" type="text" size="4" default="15" label="BoilerKey Timeout" description="Time allowed since last successful BoilerKey authentication (in minutes)" />
-				<field name="debug_location" type="text" size="50" default="/var/log/apache2/php/phpCAS.log" label="Debug location" description="Location where debugging log will be sent (only applicable when site debug is enabled)." />
-				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="boilerkey_timeout" type="text" size="4" default="15" label="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_TIMEOUT_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_TIMEOUT_DESC" />
+				<field name="debug_location" type="text" size="50" default="/var/log/apache2/php/phpCAS.log" label="PLG_AUTHENTICATION_PUCAS_PARAM_DEBUG_LOCATION_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_DEBUG_LOCATION_DESC" />
+				<field name="site_login"  type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_PUCAS_PARAM_SITELOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="admin_login"  type="radio" label="Admin login" default="0" description="Enable this plugin for backend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="admin_login"  type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_ADMINLOGIN_LABEL" default="0" description="PLG_AUTHENTICATION_PUCAS_PARAM_ADMINLOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

@@ -2,10 +2,10 @@
 <!--
 @package        hubzero-cms
 @file           plugins/authentication/linkedin/linkedin.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,30 +28,30 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="authentication">
 	<name>Authentication - LinkedIn</name>
-	<author>Sam Wilson</author>
+	<author>HUBzero</author>
 	<creationDate>March 2012</creationDate>
-	<copyright>Copyright (C) 2008-2010 Purdue University.</copyright>
+	<copyright>Copyright (C) 2008-2015 Purdue University.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>hubzero@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>
 	<version>1.7</version>
-	<description>Handles user authentication against LinkedIn</description>
+	<description>PLG_AUTHENTICATION_LINKEDIN_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="linkedin.php">linkedin.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="api_key"      type="text" size="32" label="API Key"         description="Your Hub's LinkedIn App ID/Key" />
-				<field name="app_secret"   type="text" size="32" label="Consumer Secret" description="Consumer Secret provided when your hub is registered on LinkedIn" />
-				<field name="display_name" type="text" size="32" label="Display name"    description="Text to display on the site when referencing this plugin" default="LinkedIn" />
-				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="api_key"      type="text" size="32" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_LINKEDIN_PARAM_KEY_DESC" />
+				<field name="app_secret"   type="text" size="32" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_SECRET_DESC" />
+				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_NAME_LABEL"   description="PLG_AUTHENTICATION_LINKEDIN_PARAM_NAME_DESC" default="LinkedIn" />
+				<field name="site_login"  type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_SITELOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="admin_login"  type="radio" label="Admin login" default="0" description="Enable this plugin for backend authentication">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="admin_login"  type="radio" label="PLG_AUTHENTICATION_LINKEDIN_PARAM_ADMINLOGIN_LABEL" default="0" description="PLG_AUTHENTICATION_LINKEDIN_PARAM_ADMINLOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
 			</fieldset>
 		</fields>
