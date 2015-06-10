@@ -174,21 +174,21 @@ class plgContentBabajispam extends JPlugin
 
 		$keywords = array("ßåßå", "Vå§hïkåråñ", "Lðvê", "§þê¢ïålï§†", "þrðßlêm", "Mµ†hkårñï", "jï", "Pℝℴℬℒℰℳ)","mðhïñï", "vå§hïkåråñ",
 				"vå§hïKÄRÄñ", "mårrïågê", "§ðlµ", "†ïðñ§", "Äll", "vððÐðð", "ßLåÇk", "MåGïÇ",
-				"/Black\-{0,1}Magic/i","Haryana","Ambala" );
+				"/Black\-{0,1}Magic/i","Haryana","Ambala", "ĹŐVĔ", "MÁŔŔĨĔĞĔ", "ŚPĔČĨÁĹĨŚŤ", "ßÁßÁĴĨ" );
 
 		foreach ($keywords as $k)
 		{
-			if ( (($k[0] == "/") && preg_match($k, $context)) || (($k[0] != "/") && strpos($context,$k) !== false))
+			if ( (($k[0] == "/") && preg_match($k, $context)) || (($k[0] != "/") && stripos($context,$k) !== false))
 			{
 				$spam += 10;
 				$reason |= 16;
 			}
-			if ( (($k[0] == "/") && preg_match($k, $email)) || (($k[0] != "/") && strpos($email,$k) !== false))
+			if ( (($k[0] == "/") && preg_match($k, $email)) || (($k[0] != "/") && stripos($email,$k) !== false))
 			{
 				$spam += 10;
 				$reason |= 32;
 			}
-			if ( (($k[0] == "/") && preg_match($k, $username)) || (($k[0] != "/") && strpos($username,$k) !== false))
+			if ( (($k[0] == "/") && preg_match($k, $username)) || (($k[0] != "/") && stripos($username,$k) !== false))
 			{
 				$spam += 10;
 				$reason |= 64;
@@ -215,7 +215,7 @@ class plgContentBabajispam extends JPlugin
 
 		$data = array(
 			'service' => $this->_name,
-			'is_spam' => ($spam > 60),
+			'is_spam' => ($spam >= 60),
 			'reason' => $reasons
 		);
 
