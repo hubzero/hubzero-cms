@@ -83,7 +83,14 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check content
-		$result = $service->check($content);
+		$data = array(
+			'name'     => User::get('name'),
+			'email'    => User::get('email'),
+			'username' => User::get('username'),
+			'id'       => User::get('id'),
+			'text'     => $content
+		);
+		$result = $service->check($data);
 
 		// If the content was detected as spam...
 		if ($result->isSpam())

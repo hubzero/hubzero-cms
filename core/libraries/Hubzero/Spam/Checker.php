@@ -130,7 +130,7 @@ class Checker
 
 		if ($this->logging)
 		{
-			$this->log($result->isSpam(), md5($data['text']));
+			$this->log($result->isSpam(), $data);
 		}
 
 		return $result;
@@ -208,6 +208,7 @@ class Checker
 			'name'       => null,
 			'email'      => null,
 			'username'   => null,
+			'id'         => null,
 			'text'       => null,
 			'ip'         => $this->getIp(),
 			'user_agent' => $this->getUserAgent()
@@ -276,10 +277,10 @@ class Checker
 	 * Log results of the check
 	 *
 	 * @param   string  $isSpam  Spam detection result
-	 * @param   string  $hash    MD5 hash of content
+	 * @param   array   $data    Data being checked
 	 * @return  void
 	 */
-	protected function log($isSpam, $hash)
+	protected function log($isSpam, $data)
 	{
 		if (!\App::has('log.spam'))
 		{
@@ -295,16 +296,16 @@ class Checker
 		$from = $request->getVar('REQUEST_URI', $fallback, 'server');
 		$from = $from ?: $fallback;
 
-		$data = array(
+		$info = array(
 			($isSpam ? 'spam' : 'ham'),
-			$this->getIp(),
-			\User::get('id'),
-			\User::get('username'),
-			$hash,
+			$data['ip'],
+			$data['id'],
+			$data['username'],
+			md5($data['text']),
 			$from
 		);
 
 		$logger = \App::get('log.spam');
-		$logger->info(implode(' ', $data));
+		$logger->info(implode(' ', $info));
 	}
 }
