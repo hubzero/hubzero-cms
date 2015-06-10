@@ -58,10 +58,16 @@ $this->view('_submenu')->display();
 						<?php
 						foreach ($this->results as $result)
 						{
+							if (strstr($result['service'], '\\'))
+							{
+								$parts = explode('\\', $result['service']);
+								$result['service'] = (isset($parts[2]) ? $parts[2] : $result['service']);
+							}
 							?>
 							<tr>
 								<th><?php echo $result['service']; ?></th>
 								<td><?php echo ($result['is_spam'] ? '<span style="color:red">spam</span>' : '<span style="color:green">ham</span>'); ?></td>
+								<td><?php echo ($result['message'] ? '<span class="detector-message">' . $result['message'] . '</span>' : ''); ?></td>
 							</tr>
 							<?php
 						}
