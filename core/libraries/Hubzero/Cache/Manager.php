@@ -88,11 +88,17 @@ class Manager
 
 		if (is_null($config))
 		{
-			throw new InvalidArgumentException("Cache config is not defined.");
+			throw new InvalidArgumentException('Cache config is not defined.');
 		}
 
-		$config['hash'] = md5($this->app['config']->get('secret'));
-		$config['cachebase'] = JPATH_CACHE;
+		if (!isset($config['hash']))
+		{
+			$config['hash']      = $this->app->hash('');
+		}
+		if (!isset($config['cachebase']))
+		{
+			$config['cachebase'] = PATH_APP . 'app' . DS . 'cache' . DS . (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
+		}
 
 		if (isset($this->customCreators[$name]))
 		{

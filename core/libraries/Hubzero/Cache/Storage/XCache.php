@@ -31,6 +31,7 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Cache\Auditor;
 
 /**
  * XCache storage for Cache manager
@@ -169,5 +170,46 @@ class XCache extends None
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get all cached data
+	 *
+	 * This requires the php.ini setting xcache.admin.enable_auth = Off.
+	 *
+	 * @return  array
+	 */
+	public function all()
+	{
+		$hash = $this->options['hash'];
+
+		$allinfo = xcache_list(XC_TYPE_VAR, 0);
+
+		$data = array();
+
+		foreach ($allinfo['cache_list'] as $key)
+		{
+			$namearr = explode('-', $key['name']);
+
+			if ($namearr !== false && $namearr[0] == $secret && $namearr[1] == 'cache')
+			{
+				$group = $namearr[2];
+
+				if (!isset($data[$group]))
+				{
+					$item = new Auditor($group);
+				}
+				else
+				{
+					$item = $data[$group];
+				}
+
+				$item->tally($key['size'] / 1024);
+
+				$data[$group] = $item;
+			}
+		}
+
+		return $data;
 	}
 }

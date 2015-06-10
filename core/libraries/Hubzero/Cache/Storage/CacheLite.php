@@ -31,6 +31,7 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Cache\Auditor;
 
 /**
  * CacheLite storage for Cache manager
@@ -292,6 +293,46 @@ class CacheLite extends None
 		$success = ($success1 && $result);
 
 		return $success;
+	}
+
+	/**
+	 * Get all cached data
+	 *
+	 * @return  array
+	 */
+	public function all()
+	{
+		$path = $this->directory;
+
+		$data = array();
+
+		$dirIterator = new \DirectoryIterator($path);
+		foreach ($dirIterator as $folder)
+		{
+			if ($folder->isDot() || !$folder->isDir())
+			{
+				continue;
+			}
+
+			$name = $folder->getFilename();
+
+			$item = new Auditor($name);
+
+			$files = new \DirectoryIterator($path . DS . $name);
+			foreach ($files as $file)
+			{
+				if ($folder->isDot() || $folder->isDir())
+				{
+					continue;
+				}
+
+				$item->tally(filesize($path . '/' . $name . '/' . $file->getFilename()) / 1024);
+			}
+
+			$data[$name] = $item;
+		}
+
+		return $data;
 	}
 
 	/**

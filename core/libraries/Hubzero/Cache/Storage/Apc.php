@@ -31,6 +31,7 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Cache\Auditor;
 
 /**
  * APC storage for Cache manager
@@ -194,5 +195,47 @@ class Apc extends None
 				$this->apcu ? apcu_fetch($key['info']) : apc_fetch($key['info']);
 			}
 		}
+	}
+
+	/**
+	 * Get all cached data
+	 *
+	 * @return  array
+	 */
+	public function all()
+	{
+		$allinfo = $this->apcu ? apcu_cache_info() : apc_cache_info('user');
+
+		$keys = $allinfo['cache_list'];
+
+		$hash = $this->options['hash'];
+
+		$data = array();
+
+		foreach ($keys as $key)
+		{
+			$name    = $key['info'];
+			$namearr = explode('-', $name);
+
+			if ($namearr !== false && $namearr[0] == $secret && $namearr[1] == 'cache')
+			{
+				$group = $namearr[2];
+
+				if (!isset($data[$group]))
+				{
+					$item = new Auditor($group);
+				}
+				else
+				{
+					$item = $data[$group];
+				}
+
+				$item->tally($key['mem_size'] / 1024);
+
+				$data[$group] = $item;
+			}
+		}
+
+		return $data;
 	}
 }

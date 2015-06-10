@@ -170,6 +170,16 @@ class None implements StorageInterface
 	}
 
 	/**
+	 * Get all cached data
+	 *
+	 * @return  array
+	 */
+	public function all()
+	{
+		return array();
+	}
+
+	/**
 	 * Get a cache_id string from an id/group pair
 	 *
 	 * @param   string  $id  The cache data id

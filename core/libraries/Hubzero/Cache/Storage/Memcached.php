@@ -31,6 +31,7 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Cache\Auditor;
 
 /**
  * MemcacheD storage for Cache manager
@@ -239,5 +240,51 @@ class Memcached extends None
 			}
 		}
 		$this->engine->replace($hash . '-index', $index, 0);
+	}
+
+	/**
+	 * Get all cached data
+	 *
+	 * @return  array
+	 */
+	public function all()
+	{
+		$hash  = $this->options['hash'];
+
+		$index = $this->engine->get($hash . '-index');
+		if ($index === false)
+		{
+			$index = array();
+		}
+
+		foreach ($index as $key)
+		{
+			if (empty($key))
+			{
+				continue;
+			}
+
+			$namearr = explode('-', $key->name);
+
+			if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache')
+			{
+				$group = $namearr[2];
+
+				if (!isset($data[$group]))
+				{
+					$item = new Auditor($group);
+				}
+				else
+				{
+					$item = $data[$group];
+				}
+
+				$item->tally($key->size / 1024);
+
+				$data[$group] = $item;
+			}
+		}
+
+		return $data;
 	}
 }

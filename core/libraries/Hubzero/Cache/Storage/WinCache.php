@@ -31,6 +31,7 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Cache\Auditor;
 
 /**
  * WinCache storage for Cache manager
@@ -181,5 +182,51 @@ class WinCache extends None
 				wincache_ucache_get($key['key_name']);
 			}
 		}
+	}
+
+	/**
+	 * Get all cached data
+	 *
+	 * @return  array
+	 */
+	public function all()
+	{
+		$hash = $this->options['hash'];
+
+		$allinfo = wincache_ucache_info();
+
+		$data = array();
+
+		foreach ($allinfo['cache_entries'] as $key)
+		{
+			$name    = $key['key_name'];
+			$namearr = explode('-', $name);
+
+			if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache')
+			{
+				$group = $namearr[2];
+				if (!isset($data[$group]))
+				{
+					$item = new Auditor($group);
+				}
+				else
+				{
+					$item = $data[$group];
+				}
+				if (isset($key['value_size']))
+				{
+					$item->tally($key['value_size'] / 1024);
+				}
+				else
+				{
+					// Dummy, WINCACHE version is too low.
+					$item->tally(1);
+				}
+
+				$data[$group] = $item;
+			}
+		}
+
+		return $data;
 	}
 }

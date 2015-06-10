@@ -31,6 +31,7 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Cache\Auditor;
 
 /**
  * Eaccelerator storage for Cache manager
@@ -190,5 +191,46 @@ class Eaccelerator extends None
 	public function gc()
 	{
 		return eaccelerator_gc();
+	}
+
+	/**
+	 * Get all cached data
+	 *
+	 * @return  array
+	 */
+	public function getAll()
+	{
+		$keys = eaccelerator_list_keys();
+
+		$hash = $this->options['hash'];
+
+		$data = array();
+
+		foreach ($keys as $key)
+		{
+			/* Trim leading ":" to work around list_keys namespace bug in eAcc. This will still work when bug is fixed */
+			$name    = ltrim($key['name'], ':');
+			$namearr = explode('-', $name);
+
+			if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache')
+			{
+				$group = $namearr[2];
+
+				if (!isset($data[$group]))
+				{
+					$item = new Auditor($group);
+				}
+				else
+				{
+					$item = $data[$group];
+				}
+
+				$item->tally($key['size'] / 1024);
+
+				$data[$group] = $item;
+			}
+		}
+
+		return $data;
 	}
 }
