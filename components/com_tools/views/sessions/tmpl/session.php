@@ -31,11 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$juser = JFactory::getUser();
+
 //is this a share session thats read-only
 $readOnly = false;
 foreach ($this->shares as $share)
 {
-	if (User::get('username') == $share->viewuser)
+	if ($juser->get('username') == $share->viewuser)
 	{
 		if (strtolower($share->readonly) == 'yes')
 		{
@@ -44,30 +46,34 @@ foreach ($this->shares as $share)
 	}
 }
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'preferences.php');
 
 $database = JFactory::getDBO();
-$preferences = new \Components\Tools\Tables\Preferences($database);
-$preferences->loadByUser(User::get('id'));
+$preferences = new ToolsTablePreferences($database);
+$preferences->loadByUser($juser->get('id'));
 
-$declared = Request::getWord('viewer');
+$declared = JRequest::getWord('viewer');
 if ($declared)
 {
-	if (Request::getInt('preferred', 0))
+	if (JRequest::getInt('preferred', 0))
 	{
-		$preferences->set('user_id', User::get('id'));
+		$preferences->set('user_id', $juser->get('id'));
 		$preferences->param()->set('viewer', $declared);
 		$preferences->store();
 	}
 }
 else if ($declared = $preferences->param('viewer'))
 {
-	Request::setVar('viewer', $declared);
+	JRequest::setVar('viewer', $declared);
 }
 
+JPluginHelper::importPlugin('mw');
+JPluginHelper::importPlugin('tools');
+$dispatcher = JDispatcher::getInstance();
+
 // We actually need to do this first so we know what viewer is the active one.
-$output  = Event::trigger('tools.onToolSessionView', array($this->app, $this->output, $readOnly));
-$plugins = Event::trigger('tools.onToolSessionIdentify');
+$output  = $dispatcher->trigger('onToolSessionView', array($this->app, $this->output, $readOnly));
+$plugins = $dispatcher->trigger('onToolSessionIdentify');
 
 $this->css('tools.css')
      ->js('sessions.js');
@@ -81,11 +87,11 @@ if (!$this->app->sess) {
 
 	<?php if ($readOnly) : ?>
 		<p class="warning readonly-warning">
-			<?php echo Lang::txt('COM_TOOLS_WARNING_SESSION_READ_ONLY'); ?>
+			<?php echo JText::_('COM_TOOLS_WARNING_SESSION_READ_ONLY'); ?>
 		</p>
 	<?php endif; ?>
 
-	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
+	<?php echo implode("\n", $dispatcher->trigger('onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
 
 	<div id="app-wrap">
 		<div id="app-header">
@@ -93,27 +99,27 @@ if (!$this->app->sess) {
 			<?php if ($this->app->sess) { ?>
 				<ul class="app-toolbar" id="session-options">
 					<li>
-						<a id="app-btn-keep" class="keep" href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>">
-							<span><?php echo Lang::txt('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
+						<a id="app-btn-keep" class="keep" href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">
+							<span><?php echo JText::_('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
 						</a>
 					</li>
 					<?php if ($this->app->owns) { ?>
 						<li>
-							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
-								<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
+							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
+								<span><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></span>
 							</a>
 						</li>
 					<?php } else { ?>
 						<li>
-							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
-								<span><?php echo Lang::txt('COM_TOOLS_STOP_SHARING'); ?></span>
+							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
+								<span><?php echo JText::_('COM_TOOLS_STOP_SHARING'); ?></span>
 							</a>
 						</li>
 					<?php } ?>
 					<?php if (count($plugins) > 1) { ?>
 						<li>
-							<a id="app-btn-options" class="options" href="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
-								<span><?php echo Lang::txt('COM_TOOLS_SESSION_OPTIONS'); ?></span>
+							<a id="app-btn-options" class="options" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+								<span><?php echo JText::_('COM_TOOLS_SESSION_OPTIONS'); ?></span>
 							</a>
 						</li>
 					<?php } ?>
@@ -122,16 +128,16 @@ if (!$this->app->sess) {
 		</div><!-- #app-header -->
 		<?php if (count($plugins) > 1) { ?>
 			<div id="app-options">
-				<form method="get" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+				<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 					<fieldset>
 						<?php
-						$viewer = ($declared ? $declared : $this->output->rendered); //Session::get('tool_viewer'));
+						$viewer = ($declared ? $declared : $this->output->rendered); //JFactory::getSession()->get('tool_viewer'));
 						?>
-						<?php echo Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')); ?>
+						<?php echo JText::sprintf('COM_TOOLS_SESSION_USING_VIEWER', JText::_('PLG_TOOLS_' . $viewer . '_TITLE')); ?>
 
 						<span class="input-wrap">
 							<label for="app-viewer">
-								<?php echo Lang::txt('COM_TOOLS_SESSION_VIEWER_CHANGE'); ?>
+								<?php echo JText::_('COM_TOOLS_SESSION_VIEWER_CHANGE'); ?>
 							</label>
 							<select name="viewer" id="app-viewer">
 								<?php foreach ($plugins as $plugin) {
@@ -145,12 +151,12 @@ if (!$this->app->sess) {
 						<span class="input-wrap">
 							<input type="checkbox" name="preferred" id="app-viewer-preferred" value="1" />
 							<label for="app-viewer-preferred">
-								<?php echo Lang::txt('Use for future sessions.'); ?>
+								<?php echo JText::_('Use for future sessions.'); ?>
 							</label>
 						</span>
 
 						<span class="input-wrap">
-							<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_APPLY'); ?>" />
+							<input type="submit" value="<?php echo JText::_('COM_TOOLS_APPLY'); ?>" />
 						</span>
 						<input type="hidden" name="sess" value="<?php echo $this->app->sess; ?>" />
 					</fieldset>
@@ -160,7 +166,7 @@ if (!$this->app->sess) {
 		<div id="app-content" tabindex="1" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
 			<noscript>
 				<p class="warning">
-					<?php echo Lang::txt('COM_TOOLS_ERROR_NOSCRIPT'); ?>
+					<?php echo JText::_('COM_TOOLS_ERROR_NOSCRIPT'); ?>
 				</p>
 			</noscript>
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
@@ -169,7 +175,7 @@ if (!$this->app->sess) {
 			$output = implode("\n", $output);
 			if (!trim($output))
 			{
-				$output = '<p class="error">' . Lang::txt('COM_TOOLS_ERROR_NOVIEWER') . '</p>';
+				$output = '<p class="error">' . JText::_('COM_TOOLS_ERROR_NOVIEWER') . '</p>';
 			}
 			echo $output;
 			?>
@@ -200,47 +206,47 @@ if (!$this->app->sess) {
 			}
 			?>
 		</div><!-- #app-footer -->
-		<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
-			<div id="app-zone">
-				<div class="grid">
-					<div class="col span6">
-						<p class="zone-identity">
-							<?php if ($logo = $this->zone->logo()) { ?>
-								<img src="<?php echo $logo; ?>" alt="" />
-							<?php } ?>
-						</p>
-						<p>
-							<?php echo $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
-						</p>
-					</div><!-- / .col span6 -->
-					<div class="col span6 omega">
-						<form name="share" id="app-zone" method="post" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
-							<p><?php echo Lang::txt('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
-							<p><label for="field-zone">
-								<?php echo Lang::txt('COM_TOOLS_ZONE_RELAUNCH'); ?>
-								<select name="zone" id="field-zone">
-									<option value=""><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
-									<?php
-									foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
+	<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
+		<div id="app-zone">
+			<div class="grid">
+				<div class="col span6">
+					<p class="zone-identity">
+						<?php if ($logo = $this->zone->logo()) { ?>
+							<img src="<?php echo $logo; ?>" alt="" />
+						<?php } ?>
+					</p>
+					<p>
+						<?php echo $this->zone->get('description', JText::sprintf('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
+					</p>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<form name="share" id="app-zone" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
+						<p><?php echo JText::_('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
+						<p><label for="field-zone">
+							<?php echo JText::_('COM_TOOLS_ZONE_RELAUNCH'); ?>
+							<select name="zone" id="field-zone">
+								<option value=""><?php echo JText::_('COM_TOOLS_SELECT'); ?></option>
+								<?php
+								foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
+								{
+									if ($zone->get('id') == $this->zone->get('id'))
 									{
-										if ($zone->get('id') == $this->zone->get('id'))
-										{
-											continue;
-										}
-									?>
-									<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
-								<?php } ?>
-								</select>
-							</label>
-							<input type="submit" value="Go" /></p>
-						</form>
-					</div><!-- / .col span6 omega -->
-				</div><!-- .grid -->
-			</div><!-- #app-zone -->
-		<?php } ?>
+										continue;
+									}
+								?>
+								<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
+							<?php } ?>
+							</select>
+						</label>
+						<input type="submit" value="Go" /></p>
+					</form>
+				</div><!-- / .col span6 omega -->
+			</div><!-- .grid -->
+		</div><!-- #app-zone -->
+	<?php } ?>
 	</div><!-- #app-wrap -->
 
-	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewAfter', array($this->app, $this->output, $readOnly))); ?>
+	<?php echo implode("\n", $dispatcher->trigger('onToolSessionViewAfter', array($this->app, $this->output, $readOnly))); ?>
 
 	<?php
 	// Are we on an iPad?
@@ -249,49 +255,50 @@ if (!$this->app->sess) {
 	if ($isiPad && $this->config->get('launch_ipad', 0) && $this->config->get('launch_ipad_app'))
 	{
 		?>
-		<p class="tablet-app"><a class="btn icon-tablet" href="<?php echo $this->config->get('launch_ipad_app'); ?>://tools/session/<?php echo $this->app->sess; ?>"><?php echo Lang::txt('Launch in iPad app'); ?></a></p>
+		<p class="tablet-app"><a class="btn icon-tablet" href="<?php echo $this->config->get('launch_ipad_app'); ?>://tools/session/<?php echo $this->app->sess; ?>"><?php echo JText::_('Launch in iPad app'); ?></a></p>
 		<?php
 	}
 	?>
 
 	<div class="clear share-divider"></div>
 <?php if ($this->config->get('shareable', 0)) { ?>
-	<form name="share" id="app-share" method="post" action="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+	<form name="share" id="app-share" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 		<div class="grid">
 		<?php if (is_object($this->app->owns)) : ?>
 			<div class="col span8">
 				<p class="share-member-photo" id="shareform">
 					<?php
 					$jxuser = new \Hubzero\User\Profile();
-					$jxuser->load(User::get('id'));
+					$jxuser->load($juser->get('id'));
 					?>
 					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 				</p>
 				<fieldset>
-					<legend><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION'); ?></legend>
+					<legend><?php echo JText::_('COM_TOOLS_SHARE_SESSION'); ?></legend>
 
 					<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 					<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 					<input type="hidden" name="task" value="share" />
 					<input type="hidden" name="sess" value="<?php echo $this->escape($this->app->sess); ?>" />
 					<input type="hidden" name="app" value="<?php echo $this->escape($this->toolname); ?>" />
-					<input type="hidden" name="return" value="<?php echo base64_encode(Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess)); ?>" />
+					<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess)); ?>" />
 
 					<label for="field-username">
-						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH'); ?>
+						<?php echo JText::_('COM_TOOLS_SHARE_SESSION_WITH'); ?>
 						<?php
-						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'username', 'acmembers')));
+						JPluginHelper::importPlugin('hubzero');
+						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'acmembers')));
 						if (count($mc) > 0) {
-							echo '<span class="hint">'.Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE').'</span>'.$mc[0];
+							echo '<span class="hint">'.JText::_('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE').'</span>'.$mc[0];
 						} else { ?>
-							<span class="hint"><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_HINT'); ?></span>
+							<span class="hint"><?php echo JText::_('COM_TOOLS_SHARE_SESSION_HINT'); ?></span>
 							<input type="text" name="username" id="field-username" value="" />
 						<?php } ?>
 					</label>
 					<label for="group">
-						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH_GROUP'); ?>
+						<?php echo JText::_('COM_TOOLS_SHARE_SESSION_WITH_GROUP'); ?>
 						<select name="group" id="group">
-							<option value=""><?php echo Lang::txt('- Select Group &mdash;'); ?></option>
+							<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
 							<?php if (!empty($this->mygroups)) { foreach ($this->mygroups as $group) : ?>
 								<option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
 							<?php endforeach; } ?>
@@ -299,16 +306,16 @@ if (!$this->app->sess) {
 					</label>
 					<label for="field-readonly" id="readonly-label">
 						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
-						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
+						<?php echo JText::_('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
 					</label>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_SHARE'); ?>" id="share-btn" />
+						<input type="submit" value="<?php echo JText::_('COM_TOOLS_SHARE'); ?>" id="share-btn" />
 					</p>
 
 					<div class="sidenote">
 						<p>
-							<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_NOTES'); ?>
+							<?php echo JText::_('COM_TOOLS_SHARE_SESSION_NOTES'); ?>
 						</p>
 					</div>
 				</fieldset>
@@ -319,7 +326,7 @@ if (!$this->app->sess) {
 					<thead>
 						<tr>
 							<th<?php if (count($this->shares) > 1) { ?> colspan="3"<?php } ?>>
-								<?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_WITH'); ?>
+								<?php echo JText::_('COM_TOOLS_SESSION_SHARED_WITH'); ?>
 							</th>
 						</tr>
 					</thead>
@@ -327,13 +334,13 @@ if (!$this->app->sess) {
 				<?php if (count($this->shares) <= 1) { ?>
 						<tr>
 							<td>
-								<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_NONE'); ?>
+								<?php echo JText::_('COM_TOOLS_SHARE_SESSION_NONE'); ?>
 							</td>
 						</tr>
 				<?php } else {
 					foreach ($this->shares as $row)
 					{
-						if ($row->viewuser != User::get('username'))
+						if ($row->viewuser != $juser->get('username'))
 						{
 							$user = \Hubzero\User\Profile::getInstance($row->viewuser);
 
@@ -347,7 +354,7 @@ if (!$this->app->sess) {
 								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo Route::url('index.php?option=com_members&id='.$id); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_members&id='.$id); ?>">
 									<?php echo $this->escape(stripslashes($user->get('name'))); ?>
 								</a><br />
 								<span class="entry-details">
@@ -357,10 +364,10 @@ if (!$this->app->sess) {
 							<td class="entry-actions">
 								<?php if (is_object($this->app->owns)) : ?>
 									<?php if (strtolower($row->readonly) == 'yes') : ?>
-										<span class="readonly"><?php echo Lang::txt('COM_TOOLS_SESSION_READ_ONLY'); ?></span>
+										<span class="readonly"><?php echo JText::_('COM_TOOLS_SESSION_READ_ONLY'); ?></span>
 									<?php endif; ?>
-									<a class="entry-remove" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?>">
-										<span><?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
+									<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?>">
+										<span><?php echo JText::_('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
 									</a>
 								<?php endif; ?>
 							</td>
@@ -379,12 +386,12 @@ if (!$this->app->sess) {
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>
-	<p id="app-manager"><?php echo Lang::txt('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
+	<p id="app-manager"><?php echo JText::sprintf('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
 <?php } ?>
 
 	<?php
-	$output = Event::trigger(
-		'mw.onSessionView',
+	$output = $dispatcher->trigger(
+		'onSessionView',
 		array(
 			$this->option,
 			$this->toolname,
@@ -396,7 +403,7 @@ if (!$this->app->sess) {
 	{
 		?>
 		<div id="app-info">
-			<h2><?php echo Lang::txt('COM_TOOLS_SESSION_APP_INFO'); ?></h2>
+			<h2><?php echo JText::_('COM_TOOLS_SESSION_APP_INFO'); ?></h2>
 			<div id="app-info-content">
 				<?php
 				foreach ($output as $out)
