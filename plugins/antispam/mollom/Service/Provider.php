@@ -119,17 +119,17 @@ class Provider extends AbstractService
 	}
 
 	/**
-	 * Tests for spam.
+	 * Run content through spam detection
 	 *
-	 * @param    string $value Conent to test
-	 * @return   bool True if the comment is spam, false if not
+	 * @param   array  $data
+	 * @return  bool
 	 */
-	public function isSpam($value = null)
+	public function detect($data)
 	{
-		if ($value)
-		{
-			$this->setValue($value);
-		}
+		$this->setValue($data['text']);
+		$this->set('user_name', $data['name']);
+		$this->set('user_ip', $data['ip']);
+		$this->set('user_email', $data['email']);
 
 		if (!$this->getValue())
 		{

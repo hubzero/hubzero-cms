@@ -38,6 +38,13 @@ use Hubzero\Base\Object;
 abstract class Service extends Object implements DetectorInterface
 {
 	/**
+	 * Message to report
+	 *
+	 * @var  string
+	 */
+	protected $message = '';
+
+	/**
 	 * The value to be validated
 	 *
 	 * @var mixed
@@ -64,18 +71,17 @@ abstract class Service extends Object implements DetectorInterface
 	{
 		$this->_value  = $value;
 		$this->_errors = array();
+		$this->message = '';
 	}
 
 	/**
-	 * Tests for spam.
+	 * Run content through spam detection
 	 *
-	 * @param   string  $data  Content to test
-	 * @return  bool    True if the comment is spam, false if not
+	 * @param   array  $data
+	 * @return  bool
 	 */
-	public function detect($data = null)
+	public function detect($data)
 	{
-		$data = $data ?: $this->getValue();
-
 		return false;
 	}
 
@@ -88,8 +94,6 @@ abstract class Service extends Object implements DetectorInterface
 	 */
 	public function learn($data, $isSpam)
 	{
-		$data = $data ?: $this->getValue();
-
 		if (!$data)
 		{
 			return false;
@@ -107,8 +111,16 @@ abstract class Service extends Object implements DetectorInterface
 	 */
 	public function forget($data, $isSpam)
 	{
-		$data = $data ?: $this->getValue();
-
 		return true;
+	}
+
+	/**
+	 * Return any message the service may have
+	 *
+	 * @return  string
+	 */
+	public function message()
+	{
+		return $this->message;
 	}
 }

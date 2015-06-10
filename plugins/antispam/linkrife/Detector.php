@@ -72,6 +72,13 @@ class Detector implements DetectorInterface
 	protected $linkValidation = 0;
 
 	/**
+	 * Message
+	 *
+	 * @var  string
+	 */
+	protected $message = '';
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $options
@@ -93,6 +100,8 @@ class Detector implements DetectorInterface
 		{
 			$this->setLinkValidation($options['linkValidation']);
 		}
+
+		$this->message = '';
 	}
 
 	/**
@@ -234,6 +243,7 @@ class Detector implements DetectorInterface
 		{
 			// If the link count is more than the maximum allowed
 			// the string is automatically considered spam..
+			$this->message = 'Exceeded maximum links allowed.';
 			return true;
 		}
 
@@ -243,6 +253,7 @@ class Detector implements DetectorInterface
 			{
 				if ($this->isBlacklisted($match))
 				{
+					$this->message = 'Detected blacklisted link.';
 					return true;
 				}
 			}
@@ -251,6 +262,20 @@ class Detector implements DetectorInterface
 		// Get the ratio of words to link
 		$ratio = floor(($linkCount / $wordCount) * 100);
 
-		return $ratio >= $this->maxRatio;
+		if ($ratio >= $this->maxRatio)
+		{
+			$this->message = 'Exceeded link-to-text ratio.';
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * {@inheritDocs}
+	 */
+	public function message()
+	{
+		return $this->message;
 	}
 }

@@ -70,6 +70,13 @@ class Detector implements DetectorInterface
 	protected $db = null;
 
 	/**
+	 * Message
+	 *
+	 * @var  string
+	 */
+	protected $message = '';
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $options
@@ -88,6 +95,8 @@ class Detector implements DetectorInterface
 		}
 
 		$this->setDbo($options['db']);
+
+		$this->message = '';
 	}
 
 	/**
@@ -195,5 +204,13 @@ class Detector implements DetectorInterface
 		}
 
 		return (bool) preg_match($this->regex, $text);
+	}
+
+	/**
+	 * {@inheritDocs}
+	 */
+	public function message()
+	{
+		return $this->message;
 	}
 }

@@ -97,7 +97,9 @@ class Checker
 	 */
 	public function check($data)
 	{
-		$failure = 0;
+		$failure  = 0;
+		$messages = array();
+
 		if (is_string($data))
 		{
 			$data = array('text' => $data);
@@ -113,13 +115,18 @@ class Checker
 			{
 				$spam = true;
 
+				if ($detector->message())
+				{
+					$messages[] = $detector->message();
+				}
+
 				$failure++;
 			}
 
-			$this->mark($id, $spam);
+			$this->mark($id, $spam, $detector->message());
 		}
 
-		$result = new Result($failure > 0);
+		$result = new Result($failure > 0, $messages);
 
 		if ($this->logging)
 		{
@@ -200,6 +207,7 @@ class Checker
 		$data = array_merge(array(
 			'name'       => null,
 			'email'      => null,
+			'username'   => null,
 			'text'       => null,
 			'ip'         => $this->getIp(),
 			'user_agent' => $this->getUserAgent()
@@ -248,16 +256,19 @@ class Checker
 	}
 
 	/**
-	 * Gets the name of a class (w. Namespaces removed)
+	 * Report the results of a spam detector 
 	 *
-	 * @param   mixed   $class  String (class name) or object
+	 * @param   string   $name     NAme of the detector
+	 * @param   boolean  $value    If spam or not
+	 * @param   string   $message  Message set by detector
 	 * @return  string
 	 */
-	protected function mark($name, $value)
+	protected function mark($name, $value, $message = null)
 	{
 		$this->report[] = array(
 			'service' => $name,
 			'is_spam' => $value,
+			'message' => $message
 		);
 	}
 

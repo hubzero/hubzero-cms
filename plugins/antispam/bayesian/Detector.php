@@ -77,6 +77,13 @@ class Detector implements DetectorInterface
 	protected $db = null;
 
 	/**
+	 * Message
+	 *
+	 * @var  string
+	 */
+	protected $message = '';
+
+	/**
 	 * Constructor
 	 *
 	 * @param   mixed  $properties
@@ -95,6 +102,8 @@ class Detector implements DetectorInterface
 		}
 
 		$this->setDbo($options['db']);
+
+		$this->message = '';
 	}
 
 	/**
@@ -478,5 +487,13 @@ class Detector implements DetectorInterface
 		$tbl->good_count = (int)$tbl->good_count + (int)$good_count;
 		$tbl->bad_count  = (int)$tbl->bad_count + (int)$bad_count;
 		$tbl->store();
+	}
+
+	/**
+	 * {@inheritDocs}
+	 */
+	public function message()
+	{
+		return $this->message;
 	}
 }

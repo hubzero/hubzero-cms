@@ -282,19 +282,16 @@ class Provider extends AbstractService
 	}
 
 	/**
-	 *	Tests for spam.
-	 *	Uses the web service provided by {@link http://www.akismet.com Akismet} to see whether or not the submitted comment is spam.  Returns a boolean value.
+	 * Tests for spam.
+	 * Uses the web service provided by {@link http://www.akismet.com Akismet} to see whether or not the submitted comment is spam.  Returns a boolean value.
 	 *
-	 * @param    string  $data  Conent to test
-	 * @return   bool    True if the comment is spam, false if not
+	 * @param    array  $data  Content to test
+	 * @return   bool   True if the comment is spam, false if not
 	 * @throws   Will throw an exception if the API key passed to the constructor is invalid.
 	 */
-	public function detect($data = null)
+	public function detect($data)
 	{
-		if ($data)
-		{
-			$this->setValue($data);
-		}
+		$this->setValue($data['text']);
 
 		if (!$this->getValue())
 		{
