@@ -180,8 +180,8 @@ class Plugin extends \JModelAdmin
 
 			// Get the plugin XML.
 			$path = array(
-				'app'  => Filesystem::cleanPath(PATH_APP . DS . 'plugins' . $table->folder . DS . $table->element . DS . $table->element . '.xml'),
-				'core' => Filesystem::cleanPath(PATH_CORE . DS . 'plugins' . $table->folder . DS . $table->element . DS . $table->element . '.xml')
+				'app'  => Filesystem::cleanPath(PATH_APP . DS . 'plugins' . DS . $table->folder . DS . $table->element . DS . $table->element . '.xml'),
+				'core' => Filesystem::cleanPath(PATH_CORE . DS . 'plugins' . DS . $table->folder . DS . $table->element . DS . $table->element . '.xml')
 			);
 
 			if (file_exists($path['app']))
@@ -280,8 +280,8 @@ class Plugin extends \JModelAdmin
 
 		// Load the core and/or local language file(s).
 		$lang->load('plg_'.$folder.'_'.$element, JPATH_ADMINISTRATOR, null, false, true) ||
-		$lang->load('plg_'.$folder.'_'.$element, PATH_APP . '/plugins/' . $folder . '/' . $elementa, null, false, true) ||
-		$lang->load('plg_'.$folder.'_'.$element, PATH_CORE . '/plugins/' . $folder . '/' . $elementa, null, false, true);
+		$lang->load('plg_'.$folder.'_'.$element, PATH_APP . '/plugins/' . $folder . '/' . $element, null, false, true) ||
+		$lang->load('plg_'.$folder.'_'.$element, PATH_CORE . '/plugins/' . $folder . '/' . $element, null, false, true);
 
 		if (file_exists($formFile))
 		{
