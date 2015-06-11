@@ -293,11 +293,11 @@ class MenusModelMenutypes extends JModelLegacy
 		foreach ($layouts as $layout)
 		{
 			// Ignore private layouts.
-			if (strpos(JFile::getName($layout), '_') === false)
+			if (strpos(basename($layout), '_') === false)
 			{
 				$file = $layout;
 				// Get the layout name.
-				$layoutNames[] = Filesystem::name(JFile::getName($layout));
+				$layoutNames[] = Filesystem::name(basename($layout));
 			}
 		}
 
@@ -310,7 +310,7 @@ class MenusModelMenutypes extends JModelLegacy
 		{
 			if (Filesystem::exists($folder . '/html/' . $component . '/' . $view))
 			{
-				$template = JFile::getName($folder);
+				$template = basename($folder);
 					$lang->load('tpl_' . $template . '.sys', JPATH_SITE, null, false, true)
 				||	$lang->load('tpl_' . $template . '.sys', JPATH_SITE . '/templates/' . $template, null, false, true);
 
@@ -320,14 +320,14 @@ class MenusModelMenutypes extends JModelLegacy
 				{
 					$file = $layout;
 					// Get the layout name.
-					$templateLayoutName = Filesystem::name(JFile::getName($layout));
+					$templateLayoutName = Filesystem::name(basename($layout));
 
 					// add to the list only if it is not a standard layout
 					if (array_search($templateLayoutName, $layoutNames) === false)
 					{
 						$layouts[] = $layout;
 						// Set template name array so we can get the right template for the layout
-						$templateName[$layout] = JFile::getName($folder);
+						$templateName[$layout] = basename($folder);
 					}
 				}
 			}
@@ -337,10 +337,11 @@ class MenusModelMenutypes extends JModelLegacy
 		foreach ($layouts as $layout)
 		{
 			// Ignore private layouts.
-			if (strpos(JFile::getName($layout), '_') === false) {
+			if (strpos(basename($layout), '_') === false)
+			{
 				$file = $layout;
 				// Get the layout name.
-				$layout = Filesystem::name(JFile::getName($layout));
+				$layout = Filesystem::name(basename($layout));
 
 				// Create the menu option for the layout.
 				$o = new \Hubzero\Base\Object;

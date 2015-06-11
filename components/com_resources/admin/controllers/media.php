@@ -162,7 +162,7 @@ class Media extends AdminController
 						}
 
 						//remove ._ files
-						$dotFiles = \JFolder::files($path, '._[^\s]*', true, true);
+						$dotFiles = \Filesystem::files($path, '._[^\s]*', true, true);
 						foreach ($dotFiles as $dotFile)
 						{
 							\Filesystem::delete($dotFile);

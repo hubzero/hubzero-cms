@@ -32,6 +32,12 @@ namespace Components\Projects\Helpers;
 
 use Exception;
 use Hubzero\Base\Object;
+use Filesystem;
+use Component;
+use Config;
+use Event;
+use Lang;
+use Date;
 
 /**
  * Html helper class
@@ -347,32 +353,32 @@ class Html extends Object
 	public static function getEmoIcons()
 	{
 		$icons = array(
-				':)'    =>  'happy',
-				':-)'   =>  'grin',
-				':D'    =>  'laugh',
-				':d'    =>  'laugh',
-				';)'    =>  'wink',
-				':P'    =>  'tongue',
-				':-P'   =>  'tongue',
-				':-p'   =>  'tongue',
-				':p'    =>  'tongue',
-				':('    =>  'unhappy',
-				':\'('	=>	'cry',
-				':o'    =>  'surprised',
-				':O'    =>  'surprised',
-				':0'    =>  'surprised',
-				':|'    =>  'displeased',
-				':-|'   =>  'displeased',
-				':/'    =>  'displeased',
-				'8|'    =>  'sunglasses',
-				'O:)'   =>  'saint',
-				'>:O'   =>  'angry',
-				':-/'   =>  'surprised',
-				'l-)'   =>  'sleep',
-				'(y)'   =>  'thumbsup',
-				'^_^'   =>  'squint',
-				'-_-'   =>  'squint',
-				'3:)'   =>  'devil'
+			':)'    =>  'happy',
+			':-)'   =>  'grin',
+			':D'    =>  'laugh',
+			':d'    =>  'laugh',
+			';)'    =>  'wink',
+			':P'    =>  'tongue',
+			':-P'   =>  'tongue',
+			':-p'   =>  'tongue',
+			':p'    =>  'tongue',
+			':('    =>  'unhappy',
+			':\'('  =>  'cry',
+			':o'    =>  'surprised',
+			':O'    =>  'surprised',
+			':0'    =>  'surprised',
+			':|'    =>  'displeased',
+			':-|'   =>  'displeased',
+			':/'    =>  'displeased',
+			'8|'    =>  'sunglasses',
+			'O:)'   =>  'saint',
+			'>:O'   =>  'angry',
+			':-/'   =>  'surprised',
+			'l-)'   =>  'sleep',
+			'(y)'   =>  'thumbsup',
+			'^_^'   =>  'squint',
+			'-_-'   =>  'squint',
+			'3:)'   =>  'devil'
 		);
 
 		return $icons;
@@ -421,7 +427,7 @@ class Html extends Object
 	 */
 	public static function createThumbName( $image = null, $tn = '_thumb', $ext = 'png' )
 	{
-		return \JFile::stripExt($image) . $tn . '.' . $ext;
+		return Filesystem::name($image) . $tn . '.' . $ext;
 	}
 
 	/**

@@ -157,7 +157,7 @@ foreach ($presentation->subtitles as $k => $subtitle)
 }
 
 //get all local subtitles
-$localSubtitles = JFolder::files(PATH_APP . DS . $content_folder, '.srt|.SRT');
+$localSubtitles = Filesystem::files(PATH_APP . DS . $content_folder, '.srt|.SRT');
 
 // add local subtitles too
 foreach ($localSubtitles as $k => $subtitle)

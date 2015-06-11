@@ -890,7 +890,7 @@ class Create extends SiteController
 		// if we have a temp dir, move it to permanent location
 		if (is_dir($oldPath))
 		{
-			\JFolder::move($oldPath, $newPath);
+			\Filesystem::move($oldPath, $newPath);
 
 			$old = DS . $session->get('resources_temp_id') . DS;
 			$new = DS . $row->id . DS;

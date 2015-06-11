@@ -61,20 +61,20 @@ class LanguagesModelStrings extends JModelLegacy
 		// Parse common language directory
 		if (Filesystem::exists($path))
 		{
-			$files = JFolder::files($path, $language.'.*ini$', false, true);
+			$files = Filesystem::files($path, $language.'.*ini$', false, true);
 		}
 
 		// Parse language directories of components
-		$files = array_merge($files, JFolder::files($base.'/components', $language.'.*ini$', 3, true));
+		$files = array_merge($files, Filesystem::files($base.'/components', $language.'.*ini$', 3, true));
 
 		// Parse language directories of modules
-		$files = array_merge($files, JFolder::files($base.'/modules', $language.'.*ini$', 3, true));
+		$files = array_merge($files, Filesystem::files($base.'/modules', $language.'.*ini$', 3, true));
 
 		// Parse language directories of templates
-		$files = array_merge($files, JFolder::files($base.'/templates', $language.'.*ini$', 3, true));
+		$files = array_merge($files, Filesystem::files($base.'/templates', $language.'.*ini$', 3, true));
 
 		// Parse language directories of plugins
-		$files = array_merge($files, JFolder::files(JPATH_PLUGINS, $language.'.*ini$', 3, true));
+		$files = array_merge($files, Filesystem::files(JPATH_PLUGINS, $language.'.*ini$', 3, true));
 
 		// Parse all found ini files and add the strings to the database cache
 		foreach ($files as $file)

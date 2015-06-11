@@ -985,7 +985,7 @@ class Items extends AdminController
 			$newpath = Utilities::buildUploadPath($path . DS . $dir_id);
 
 			// Attempt to rename the temp directory
-			$result = \JFolder::move($tmppath, $newpath);
+			$result = \Filesystem::move($tmppath, $newpath);
 			if ($result !== true)
 			{
 				$this->setError($result);

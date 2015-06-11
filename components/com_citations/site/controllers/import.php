@@ -686,7 +686,7 @@ class Import extends SiteController
 
 		if (is_dir($p))
 		{
-			$tmp = \JFolder::files($p);
+			$tmp = \Filesystem::files($p);
 
 			if ($tmp)
 			{

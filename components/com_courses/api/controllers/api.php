@@ -788,7 +788,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				$tool_alias = Request::getCmd('tool_alias');
 				$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
 				$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
-				$file       = \JFolder::files(PATH_APP . $asset_path);
+				$file       = \Filesystem::files(PATH_APP . $asset_path);
 
 				// We're assuming there's only one file there...
 				if (isset($file[0]) && !empty($file[0]))

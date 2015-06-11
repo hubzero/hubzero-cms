@@ -1058,8 +1058,7 @@ class Html
 	 */
 	public static function createThumbName( $image=null, $tn='_thumb', $ext = 'png' )
 	{
-		jimport('joomla.filesystem.file');
-		return \JFile::stripExt($image) . $tn . '.' . $ext;
+		return \Filesystem::name($image) . $tn . '.' . $ext;
 	}
 
 	/**

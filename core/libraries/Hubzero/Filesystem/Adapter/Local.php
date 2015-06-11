@@ -229,7 +229,8 @@ class Local implements AdapterInterface
 	 */
 	public function name($path)
 	{
-		return pathinfo($path, PATHINFO_FILENAME);
+		return preg_replace('#\.[^.]*$#', '', $path);
+		//return pathinfo($path, PATHINFO_FILENAME);
 	}
 
 	/**
@@ -237,7 +238,10 @@ class Local implements AdapterInterface
 	 */
 	public function extension($path)
 	{
-		return pathinfo($path, PATHINFO_EXTENSION);
+		$dot = strrpos($path, '.') + 1;
+
+		return substr($path, $dot);
+		//return pathinfo($path, PATHINFO_EXTENSION);
 	}
 
 	/**

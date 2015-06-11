@@ -35,12 +35,10 @@ use JAccessRules;
 use JAccess;
 use JFactory;
 use JConfig;
-use JError;
 use JPath;
 use Lang;
 use JTable;
 use Hubzero\Config\Registry;
-use JFile;
 use JClientHelper;
 use JFilterOutput;
 

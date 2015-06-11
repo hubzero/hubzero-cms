@@ -2274,7 +2274,7 @@ class Tickets extends SiteController
 			$tmpPath = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $tmp;
 			if (is_dir($tmpPath))
 			{
-				if (!\JFolder::move($tmpPath, $path))
+				if (!\Filesystem::move($tmpPath, $path))
 				{
 					$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'));
 					throw new Exception(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'), 500);

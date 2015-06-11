@@ -757,7 +757,7 @@ class Resources extends SiteController
 
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
 		//$manifest_path_json = PATH_APP . $path . DS . 'presentation.json';
-		$manifests = \JFolder::files(PATH_APP . DS . $path, '.json');
+		$manifests = \Filesystem::files(PATH_APP . DS . $path, '.json');
 		$manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
 		$manifest_path_xml  = PATH_APP . $path . DS . 'presentation.xml';
 
@@ -790,7 +790,7 @@ class Resources extends SiteController
 		else
 		{
 			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-			$media = \JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
+			$media = \Filesystem::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
 			$ext = array();
 			foreach ($media as $m)
 			{
@@ -806,7 +806,7 @@ class Resources extends SiteController
 
 			//make sure if any slides are video we have three formats of video and backup image for mobile
 			$slide_path = $media_path . DS . 'slides';
-			$slides = \JFolder::files($slide_path, '', false, false);
+			$slides = \Filesystem::files($slide_path, '', false, false);
 
 			//array to hold slides with video clips
 			$slide_video = array();
@@ -1045,7 +1045,7 @@ class Resources extends SiteController
 		$path = $path ? $path : Html::build_path($resource->created, $resource->id, '');
 
 		//get manifests
-		$manifests = \JFolder::files(PATH_APP . DS . $base . $path, '.json');
+		$manifests = \Filesystem::files(PATH_APP . DS . $base . $path, '.json');
 
 		//return path to manifest if we have one
 		return (count($manifests) > 0) ? $base . $path . DS . $manifests[0] : array();
@@ -1095,7 +1095,7 @@ class Resources extends SiteController
 		$manifest->presentation->subtitles = array();
 
 		//get the videos
-		$videos = \JFolder::files(PATH_APP . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+		$videos = \Filesystem::files(PATH_APP . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 
 		//add each video to manifest
 		foreach ($videos as $k => $video)
@@ -1113,7 +1113,7 @@ class Resources extends SiteController
 		}
 
 		//get the subs
-		$subtitles = \JFolder::files(PATH_APP . DS . $base . $path, '.srt|.SRT');
+		$subtitles = \Filesystem::files(PATH_APP . DS . $base . $path, '.srt|.SRT');
 
 		//add each subtitle to manifest
 		foreach ($subtitles as $k => $subtitle)
