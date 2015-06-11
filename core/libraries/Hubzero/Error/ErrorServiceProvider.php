@@ -97,7 +97,7 @@ class ErrorServiceProvider extends ServiceProvider
 				break;
 
 			default:
-				error_reporting($config->error_reporting);
+				error_reporting($this->app['config']->get('error_reporting'));
 				ini_set('display_errors', 1);
 				break;
 		}
