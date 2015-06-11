@@ -7,28 +7,17 @@
 defined('_JEXEC') or die;
 
 /**
- * Joomla! udpate notification plugin
- *
- * @package		Joomla.Plugin
- * @subpackage	Quickicon.Joomla
- * @since		2.5
+ * Extensions udpate notification plugin
  */
 class plgQuickiconExtensionupdate extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
 	 *
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 *
-	 * @since       2.5
+	 * @var boolean
 	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Returns an icon definition for an icon which looks for extensions updates
@@ -56,8 +45,8 @@ class plgQuickiconExtensionupdate extends \Hubzero\Plugin\Plugin
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_UPDATEFOUND', true).'", "ERROR": "'.
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_ERROR', true)."\"};\n";
 
-		Document::addScriptDeclaration($script);
-		Document::addScript(Request::base().'../media/plg_quickicon_extensionupdate/extensionupdatecheck.js');
+		$this->js($script);
+		$this->js('extensionupdatecheck.js');
 
 		return array(array(
 			'link' => 'index.php?option=com_installer&view=update',
