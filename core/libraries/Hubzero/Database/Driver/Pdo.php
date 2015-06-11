@@ -705,12 +705,20 @@ class Pdo extends Driver
 	/**
 	 * Gets a new query for the current driver
 	 *
+	 * @param  bool $legacy whether or not to return new query builder or legacy builder
 	 * @return Query
 	 * @since  2.0.0
 	 */
-	public function getQuery()
+	public function getQuery($legacy=false)
 	{
-		return new Query;
+		if ($legacy)
+		{
+			return new JDatabaseQueryPDOMySQL($this);
+		}
+		else
+		{
+			return new Query;
+		}
 	}
 
 	/**
