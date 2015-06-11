@@ -238,12 +238,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
 			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
-			$quota = new UsersQuotas($this->database);
+			$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 			$quota->load(array('user_id' => $xuser->get('id')));
 
 			if (!$quota->id)
 			{
-				$class = new MembersQuotasClasses($this->database);
+				$class = new \Components\Members\Tables\QuotasClasses($this->database);
 				$class->load(array('alias'=>'default'));
 
 				if ($class->id)
@@ -260,7 +260,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			else if ($quota->class_id)
 			{
 				// Here, we're checking to make sure their class matches their actual quota values
-				$class = new MembersQuotasClasses($this->database);
+				$class = new \Components\Members\Tables\QuotasClasses($this->database);
 				$class->load($quota->class_id);
 
 				if ($quota->get('soft_blocks') != $class->get('soft_blocks')
@@ -469,12 +469,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
 			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
-			$quota = new UsersQuotas($this->database);
+			$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 			$quota->load(array('user_id'=>$user['id']));
 
 			if (!$quota->id)
 			{
-				$class = new MembersQuotasClasses($this->database);
+				$class = new \Components\Members\Tables\QuotasClasses($this->database);
 				$class->load(array('alias'=>'default'));
 
 				if ($class->id)
