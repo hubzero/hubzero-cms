@@ -37,6 +37,7 @@ use Hubzero\Notification\Handler;
 use Hubzero\Notification\Storage\Cookie;
 use Request;
 use Plugin;
+use Notify;
 use App;
 
 /**
@@ -174,6 +175,10 @@ class Login extends AdminController
 			$lang = preg_replace('/[^A-Z-]/i', '', Request::getCmd('lang'));
 
 			User::setState('application.lang', $lang);
+		}
+		else
+		{
+			Notify::error($result->getMessage());
 		}
 
 		App::redirect($return);
