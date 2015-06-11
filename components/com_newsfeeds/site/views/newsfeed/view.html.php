@@ -155,7 +155,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 
 		//  get RSS parsed object
 		$rssDoc = App::get('feed.parser');
-		$rssDoc->set_feed_url($newsfeed->link)
+		$rssDoc->set_feed_url($newsfeed->link);
 		$rssDoc->set_cache_duration($newsfeed->cache_time);
 		$rssDoc->init();
 

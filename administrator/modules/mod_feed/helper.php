@@ -95,7 +95,7 @@ class Helper extends Module
 		}
 
 		$rssDoc = \App::get('feed.parser');
-		$rssDoc->set_feed_url($rssurl)
+		$rssDoc->set_feed_url($rssurl);
 		$rssDoc->set_cache_duration($cache_time);
 		$rssDoc->init();
 
