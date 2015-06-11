@@ -32,7 +32,6 @@
 namespace Modules\Feed;
 
 use Hubzero\Module\Module;
-use JFactory;
 use stdClass;
 use Lang;
 
@@ -62,7 +61,10 @@ class Helper extends Module
 			$cache_time = $this->params->get('cache_time', 15) / 60;
 		}
 
-		$rssDoc = JFactory::getFeedParser($rssurl, $cache_time);
+		$rssDoc = \App::get('feed.parser');
+		$rssDoc->set_feed_url($rssurl)
+		$rssDoc->set_cache_duration($cache_time);
+		$rssDoc->init();
 
 		$feed = new stdClass;
 

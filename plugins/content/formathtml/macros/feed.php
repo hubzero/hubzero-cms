@@ -75,8 +75,7 @@ class Feed extends Macro
 		$class = $this->_getFeedClass($args);
 
 		// get feed
-		jimport('simplepie.simplepie');
-		$feed = new \SimplePie(null, PATH_APP . DS . 'app' . DS . 'cache' . DS . 'site', 0);
+		$feed = \App::get('feed.parser');
 		$feed->set_feed_url($url);
 		$feed->init();
 

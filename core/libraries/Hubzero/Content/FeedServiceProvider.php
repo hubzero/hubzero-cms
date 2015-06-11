@@ -24,24 +24,38 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return array(
-	'Hubzero\Component\ComponentServiceProvider',
-	'Hubzero\Error\ErrorServiceProvider',
-	'Hubzero\Session\SessionServiceProvider',
-	'Hubzero\Auth\AuthServiceProvider',
-	'Hubzero\Document\DocumentServiceProvider',
-	'Hubzero\Html\ToolbarServiceProvider',
-	'Hubzero\Module\ModuleServiceProvider',
-	'Hubzero\Notification\NotificationServiceProvider',
-	'Hubzero\Template\TemplateServiceProvider',
-	'Hubzero\Cache\CacheServiceProvider',
-	'Hubzero\Html\EditorServiceProvider',
-	'Hubzero\Html\BuilderServiceProvider',
-	'Hubzero\Mail\MailerServiceProvider',
-	'Hubzero\Menu\MenuServiceProvider',
-	'Hubzero\Content\FeedServiceProvider',
-);
+namespace Hubzero\Content;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Feed Reader service provider
+ */
+class FeedServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['feed.parser'] = function($app)
+		{
+			$cache  = PATH_APP . DS . 'app' . DS . 'cache';
+			$cache .= DS . (isset($app['client']->alias) ? $app['client']->alias : $app['client']->name);
+
+			include_once(PATH_CORE . DS . 'core' . DS . 'libraries' . DS . 'simplepie' . DS . 'simplepie.php');
+
+			$reader = new \SimplePie(null, $cache, $app['config']->get('cachetime', 15));
+			$reader->enable_cache(false);
+			$reader->force_feed(true);
+
+			return $reader;
+		};
+	}
+}

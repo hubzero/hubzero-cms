@@ -143,7 +143,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		}
 
 		// Get the current menu item
-		$menus  = \App::get('menu');
+		$menus  = App::get('menu');
 		$menu   = $menus->getActive();
 		$params = JFactory::getApplication()->getParams();
 
@@ -154,7 +154,12 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$params->merge($temp);
 
 		//  get RSS parsed object
-		$rssDoc = JFactory::getFeedParser($newsfeed->link, $newsfeed->cache_time);
+		$rssDoc = App::get('feed.parser');
+		$rssDoc->set_feed_url($newsfeed->link)
+		$rssDoc->set_cache_duration($newsfeed->cache_time);
+		$rssDoc->init();
+
+		$rssDoc = App::get('feed.parser');
 
 		if ($rssDoc == false)
 		{
