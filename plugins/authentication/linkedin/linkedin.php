@@ -32,7 +32,7 @@
 defined('_JEXEC') or die();
 
 // Include LinkedIn php library
-require_once(join(DS, array(PATH_CORE, 'libraries', 'simplelinkedin-php', 'linkedin_3.2.0.class.php')));
+require_once PATH_CORE . DS . 'core' . DS . 'libraries' . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
 
 class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 {

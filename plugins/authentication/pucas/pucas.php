@@ -32,7 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php');
+require_once PATH_CORE . DS . 'core' . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php';
 
 /**
  * Authentication Plugin class for PUCAS
