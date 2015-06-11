@@ -30,9 +30,6 @@
 
 namespace Hubzero\Error\Exception;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 class OutOfRangeException extends \OutOfRangeException
 {
 }

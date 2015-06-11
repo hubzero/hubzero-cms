@@ -34,7 +34,7 @@ namespace Hubzero\Error\Exception;
  * 'Not authorized' Exception.
  * Defaults to 403 code.
  */
-class NotFoundException extends \Exception
+class NotAuthorizedException extends \Exception
 {
 	/**
 	 * Constructor
