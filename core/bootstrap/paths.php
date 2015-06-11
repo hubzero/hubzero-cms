@@ -67,6 +67,6 @@ define('JPATH_LIBRARIES',       PATH_CORE . '/core/libraries');
 define('JPATH_PLUGINS',         PATH_CORE . '/plugins');
 define('JPATH_INSTALLATION',    PATH_CORE . '/installation');
 define('JPATH_THEMES',          JPATH_BASE . '/templates');
-define('JPATH_CACHE',           JPATH_BASE . '/cache');
+define('JPATH_CACHE',           PATH_APP . '/cache');
 define('JPATH_MANIFESTS',       PATH_CORE . '/core/manifests');
 define('JPATH_API',             PATH_ROOT . '/api');

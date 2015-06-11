@@ -537,9 +537,19 @@ class Assets
 	public static function getSystemStylesheet($elements = null)
 	{
 		// Path to system cache
-		$cachedir = PATH_APP . DS . 'cache';
+		$client   = (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name);
+
+		$cachedir = PATH_APP . DS . 'app' . DS . 'cache' . DS . $client;
+		if (!self::app('filesystem')->exists(PATH_APP . DS . 'app' . DS . 'cache' . DS . $client))
+		{
+			if (!self::app('filesystem')->makeDirectory(PATH_APP . DS . 'app' . DS . 'cache' . DS . $client))
+			{
+				return '';
+			}
+		}
+
 		// Path to system CSS
-		$thispath = PATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
+		$thispath = PATH_CORE . DS . 'media' . DS . 'system' . DS . 'css';
 
 		$env = self::app('config')->get('application_env', 'production');
 
@@ -554,11 +564,11 @@ class Assets
 			// If debugging is turned off and a cache file exist
 			if ($env == 'production' && file_exists($output))
 			{
-				$output =  DS . 'cache' . DS . $primary. '.css?v=' . filemtime($output);
+				$output =  DS . 'app' . DS . 'cache' . DS . $client . DS . $primary . '.css?v=' . filemtime($output);
 			}
 			else
 			{
-				$lesspath = PATH_ROOT . DS . 'media' . DS . 'system' . DS . 'less';
+				$lesspath = PATH_CORE . DS . 'media' . DS . 'system' . DS . 'less';
 
 				if (!class_exists('lessc'))
 				{
@@ -573,7 +583,7 @@ class Assets
 				}
 
 				// Are there any template overrides?
-				$template  = PATH_ROOT . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
+				$template  = PATH_CORE . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
 				if (file_exists($template . DS . $primary . '.less'))
@@ -651,15 +661,15 @@ class Assets
 				if (!is_array($cache) || $newCache['updated'] > $cache['updated'])
 				{
 					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
-					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(Request::base(true), DS) . '/media/system/', $newCache['compiled']);
+					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(Request::base(true), '/') . '/media/system/', $newCache['compiled']);
 					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
 				}
-				$output =  rtrim(Request::root(true), '/') . DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
+				$output =  rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
 			}
 		}
 		catch (Exception $e)
 		{
-			//echo "fatal error: " . $e->getMessage(); die();
+			echo "fatal error: " . $e->getMessage(); die();
 
 			// Anything passed?
 			if (!$elements)
@@ -745,7 +755,7 @@ class Assets
 					'$1'*/
 				);
 				$contents = preg_replace($patterns, $replacements, $contents);
-				$contents = str_replace("url('/media/system/", "url('" . rtrim(Request::base(true), DS) . "/media/system/", $contents);
+				$contents = str_replace("url('/media/system/", "url('" . rtrim(Request::base(true), '/') . "/media/system/", $contents);
 
 				if ($fp = fopen($cachedir . DS . $cachefile, 'wb'))
 				{
@@ -754,7 +764,7 @@ class Assets
 				}
 			}
 
-			$output = rtrim(Request::base(true), DS) . DS . 'cache' . DS . $cachefile;
+			$output = rtrim(Request::base(true), '/') . '/app/cache/' . $client . '/' . $cachefile;
 		}
 
 		return $output;

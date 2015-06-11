@@ -32,6 +32,7 @@ namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Cache\Auditor;
+use DirectoryIterator;
 
 /**
  * File storage for Cache manager
@@ -62,6 +63,11 @@ class File extends None
 
 		$this->directory = $this->cleanPath($this->options['cachebase']);
 
+		if (!is_dir($this->directory))
+		{
+			mkdir($this->directory, 0775);
+		}
+
 		if (!is_dir($this->directory) || !is_readable($this->directory) || !is_writable($this->directory))
 		{
 			throw new RuntimeException('Cache path should be directory with available read/write access.');
@@ -76,7 +82,7 @@ class File extends None
 	public static function isAvailable()
 	{
 		$conf = new \Hubzero\Config\Repository('site');
-		return is_writable($conf->get('cache_path', JPATH_CACHE));
+		return is_writable($conf->get('cache_path', PATH_APP . '/cache'));
 	}
 
 	/**
@@ -219,6 +225,7 @@ class File extends None
 	public function clean($group = null)
 	{
 		$path = $this->directory . ($group ? DS . $group : '');
+		$root = ($path == $this->directory);
 
 		if (is_dir($path))
 		{
@@ -226,10 +233,22 @@ class File extends None
 
 			foreach (new DirectoryIterator($path) as $file)
 			{
-				if (!$file->isDot() && !in_array(strtolower($file->getFilename()), $skip))
+				if (!$root || (!$file->isDot() && !in_array(strtolower($file->getFilename()), $skip)))
 				{
-					unlink($file->getPathname());
+					if ($file->isDir())
+					{
+						//$this->clean(($group ? $group . DS : '') . $file->getFilename());
+					}
+					else
+					{
+						unlink($file->getPathname());
+					}
 				}
+			}
+
+			if (!$root)
+			{
+				@rmdir($path);
 			}
 		}
 	}
@@ -284,10 +303,11 @@ class File extends None
 	public function all()
 	{
 		$path = $this->directory;
+		$skip = array('.svn', 'cvs', '.ds_store', '__macosx', 'index.html');
 
 		$data = array();
 
-		$dirIterator = new \DirectoryIterator($path);
+		$dirIterator = new DirectoryIterator($path);
 		foreach ($dirIterator as $folder)
 		{
 			if ($folder->isDot() || !$folder->isDir())
@@ -299,10 +319,10 @@ class File extends None
 
 			$item = new Auditor($name);
 
-			$files = new \DirectoryIterator($path . DS . $name);
+			$files = new DirectoryIterator($path . DS . $name);
 			foreach ($files as $file)
 			{
-				if ($folder->isDot() || $folder->isDir())
+				if ($file->isDot() || $file->isDir() || in_array(strtolower($file->getFilename()), $skip))
 				{
 					continue;
 				}

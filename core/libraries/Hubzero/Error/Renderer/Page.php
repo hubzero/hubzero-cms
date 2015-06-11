@@ -131,7 +131,7 @@ class Page implements RendererInterface
 		catch (Exception $e)
 		{
 			// Try to set a 500 header if they haven't already been sent
-			if (!headers_sent())
+			/*if (!headers_sent())
 			{
 				header('HTTP/1.1 500 Internal Server Error');
 			}
@@ -144,29 +144,34 @@ class Page implements RendererInterface
 
 				if (is_array($backtrace))
 				{
-					$j = 0;
+					$backtrace = array_reverse($backtrace);
+
 					for ($i = count($backtrace) - 1; $i >= 0; $i--)
 					{
-						$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';
-						$response .= $backtrace[$i]['function'] . '();';
-
-						if (isset($backtrace[$i]['file']))
+						if (isset($backtrace[$i]['class']))
 						{
-							$response .= $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'];
+							$response .= "\n[$i] " . sprintf("%s %s %s()", $backtrace[$i]['class'], $backtrace[$i]['type'], $backtrace[$i]['function']);
 						}
 						else
 						{
-							$response .= '...';
+							$response .= "\n[$i] " . sprintf("%s()", $backtrace[$i]['function']);
 						}
 
-						$response .= "\n\n";
-
-						$j++;
+						if (isset($backtrace[$i]['file']))
+						{
+							$response .= sprintf(' @ %s:%d', str_replace(PATH_ROOT, '', $backtrace[$i]['file']), $backtrace[$i]['line']);
+						}
 					}
 				}
 			}
 
-			exit('Error displaying the error page: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine() . "\n\n" . $response);
+			$response = 'Error displaying the error page: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine() . "\n\n" . $response;
+
+			echo (php_sapi_name() == 'cli') ? $response : nl2br($response);
+
+			exit();*/
+			$plain = new Plain($this->debug);
+			$plain->render($e);
 		}
 	}
 }

@@ -306,11 +306,10 @@ class Sanitize
 		$config->set('Attr.EnableID', true);
 		$config->set('HTML.AllowedCommentsRegexp', '/./');
 
-		$path = JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier';
+		$path = PATH_APP . DS . 'app' . DS . 'cache' . DS . (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name) . DS . 'htmlpurifier';
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\App::get('filesystem')->makeDirectory($path))
 			{
 				$path = '';
 			}
@@ -330,7 +329,7 @@ class Sanitize
 		}
 
 		// allow style tags
-		$def = $config->getHTMLDefinition(true);
+		$def  = $config->getHTMLDefinition(true);
 		$form = $def->addElement('style', 'Block', 'Flow', 'Common', array());
 
 		// Add usemap attribute to img tag

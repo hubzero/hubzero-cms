@@ -2,31 +2,23 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
+/*
+|--------------------------------------------------------------------------
+| Set PHP INI values
+|--------------------------------------------------------------------------
+|
+| Here we will set some of PHP's INI values to make things run a little
+| smoother.
+|
+*/
+
+@ini_set('magic_quotes_runtime', 0);
+@ini_set('zend.ze1_compatibility_mode', 0);
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +85,8 @@ if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $ap
 */
 
 $providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'cli' .  DS . 'services.php';
-$services = file_exists($providers) ? require $providers : [];
+$services  = file_exists($providers) ? require $providers : array();
+
 foreach ($services as $service)
 {
 	$app->register($service);
@@ -109,8 +102,20 @@ foreach ($services as $service)
 |
 */
 
-$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'cli' .  DS . 'aliases.php';
+$facades = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'cli' .  DS . 'aliases.php';
+$aliases = file_exists($facades) ? require $facades : array();
 
-$app->registerBaseFacades(file_exists($aliases) ? require $aliases : []);
+$app->registerBaseFacades($aliases);
+
+/*
+|--------------------------------------------------------------------------
+| Return The Application
+|--------------------------------------------------------------------------
+|
+| This script returns the application instance. The instance is given to
+| the calling script so we can separate the building of the instances
+| from the actual running of the application and sending responses.
+|
+*/
 
 return $app;

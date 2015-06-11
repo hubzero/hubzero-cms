@@ -42,9 +42,6 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		// Initialise variables.
-		$app  = JFactory::getApplication();
-
 		// Get view related request variables.
 		$print = Request::getBool('print');
 
@@ -77,7 +74,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$item->parent_slug = $item->category_alias ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
 
 		// check if cache directory is writeable
-		$cacheDir = JPATH_CACHE . '/';
+		$cacheDir = PATH_APP . '/cache/site';
 
 		if (!is_writable($cacheDir))
 		{
@@ -148,7 +145,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		// Get the current menu item
 		$menus  = \App::get('menu');
 		$menu   = $menus->getActive();
-		$params = $app->getParams();
+		$params = JFactory::getApplication()->getParams();
 
 		// Get the newsfeed
 		$newsfeed = $item;
@@ -216,17 +213,18 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= \App::get('menu');
-		$title		= null;
+		$menus = \App::get('menu');
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
-		if ($menu) {
+		if ($menu)
+		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
-		else {
+		else
+		{
 			$this->params->def('page_heading', Lang::txt('COM_NEWSFEEDS_DEFAULT_PAGE_TITLE'));
 		}
 
@@ -238,7 +236,8 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		if ($menu && ($menu->query['option'] != 'com_newsfeeds' || $menu->query['view'] != 'newsfeed' || $id != $this->item->id))
 		{
 			// If this is not a single newsfeed menu item, set the page title to the newsfeed title
-			if ($this->item->name) {
+			if ($this->item->name)
+			{
 				$title = $this->item->name;
 			}
 
@@ -256,16 +255,20 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 			}
 		}
 
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = Config::get('sitename');
 		}
-		elseif (Config::get('sitename_pagetitles', 0) == 1) {
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
 			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif (Config::get('sitename_pagetitles', 0) == 2) {
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
 			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = $this->item->name;
 		}
 		$this->document->setTitle($title);
@@ -293,18 +296,21 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 
-		if (Config::get('MetaTitle') == '1') {
+		if (Config::get('MetaTitle') == '1')
+		{
 			$this->document->setMetaData('title', $this->item->name);
 		}
 
-		if (Config::get('MetaAuthor') == '1') {
+		if (Config::get('MetaAuthor') == '1')
+		{
 			$this->document->setMetaData('author', $this->item->author);
 		}
 
 		$mdata = $this->item->metadata->toArray();
 		foreach ($mdata as $k => $v)
 		{
-			if ($v) {
+			if ($v)
+			{
 				$this->document->setMetadata($k, $v);
 			}
 		}

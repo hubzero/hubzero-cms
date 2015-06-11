@@ -51,7 +51,7 @@ class Helper extends Module
 		$rssrtl = $this->params->get('rssrtl', 0);
 
 		//check if cache diretory is writable as cache files will be created for the feed
-		$cacheDir = JPATH_CACHE;
+		$cacheDir = PATH_APP . '/cache/admin';
 		if (!is_writable($cacheDir))
 		{
 			echo '<div class="error">';

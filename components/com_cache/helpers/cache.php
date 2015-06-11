@@ -30,6 +30,7 @@
 
 namespace Components\Cache\Helpers;
 
+use Hubzero\Base\ClientManager;
 use stdClass;
 use Submenu;
 use Route;
@@ -47,19 +48,19 @@ class Cache
 	 */
 	static function getClientOptions()
 	{
-		$site = new stdClass;
-		$site->value = 0;
-		$site->text = Lang::txt('JSITE');
+		$items = array();
 
-		$admin = new stdClass;
-		$admin->value = 1;
-		$admin->text = Lang::txt('JADMINISTRATOR');
+		foreach (ClientManager::client() as $client)
+		{
+			$item = new stdClass;
+			$item->value = $client->id;
+			$item->text  = $client->name;
+
+			$items[] = $item;
+		}
 
 		// Build the filter options.
-		return array(
-			$site,
-			$admin
-		);
+		return $items;
 	}
 
 	/**

@@ -72,7 +72,7 @@ class Cache extends \JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$clientId = Request::getState($this->context . '.filter.client_id', 'filter_client_id', 0, 'int');
-		$this->setState('clientId', $clientId == 1 ? 1 : 0);
+		$this->setState('clientId', $clientId); // == 1 ? 1 : 0);
 
 		$client = \Hubzero\Base\ClientManager::client($clientId);
 		$this->setState('client', $client);
@@ -91,7 +91,7 @@ class Cache extends \JModelList
 		if (empty($this->_data))
 		{
 			$cache = $this->getCache();
-			$data  = $cache->getAll();
+			$data  = $cache->all();
 
 			if ($data != false)
 			{
@@ -130,14 +130,15 @@ class Cache extends \JModelList
 	 */
 	public function getCache()
 	{
-		$options = array(
-			'defaultgroup' => '',
-			'storage'      => \Config::get('cache_handler', ''),
-			'caching'      => true,
-			'cachebase'    => ($this->getState('clientId') == 1) ? JPATH_ADMINISTRATOR . '/cache' : \Config::get('cache_path', JPATH_SITE . '/cache')
-		);
+		$handler = \App::get('config')->get('cache_handler');
+		$client  = \Hubzero\Base\ClientManager::client($this->getState('clientId'));
 
-		$cache = \JCache::getInstance('', $options);
+		\App::get('config')->set($handler, array(
+			'cachebase' => PATH_APP . '/app/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->getState('clientId') == 1 ? 'admin' : 'site')
+		));
+
+		$cache = new \Hubzero\Cache\Manager(\App::getRoot());
+		$cache->storage($handler);
 
 		return $cache;
 	}
