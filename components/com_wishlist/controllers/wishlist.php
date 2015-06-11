@@ -171,10 +171,12 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function wishlistTask()
 	{
+		$params = JFactory::getApplication()->getParams();
+
 		// Incoming
-		$id     = JRequest::getInt('id', 0);
-		$refid  = JRequest::getInt('rid', 1);
-		$cat   	= JRequest::getVar('category', 'general');
+		$id     = JRequest::getInt('id', $params->get('id', 0));
+		$refid  = JRequest::getInt('rid', $params->get('rid', 1));
+		$cat   	= JRequest::getVar('category', $params->get('category', 'general'));
 		$saved  = JRequest::getInt('saved', 0);
 
 		// are we viewing this from within a plugin?
