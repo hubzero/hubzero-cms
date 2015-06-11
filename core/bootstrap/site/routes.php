@@ -351,7 +351,7 @@ $router->rules('parse')->append('menu', function ($uri)
 		// If route is empty AND option is set in the query, assume it's non-sef url, and parse appropriately
 		if (isset($query['option'])) // || isset($query['Itemid']))
 		{
-			return; // $uri; //$query;
+			return true;
 		}
 
 		$item = $menu->getDefault(\App::get('language')->getTag());
