@@ -34,4 +34,4 @@ JHtml::_('behavior.formvalidation');
 			<p class="submit"><button type="submit" class="validate"><?php echo JText::_('Submit'); ?></button></p>
 			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->
