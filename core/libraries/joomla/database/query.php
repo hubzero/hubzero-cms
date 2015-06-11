@@ -279,11 +279,11 @@ abstract class JDatabaseQuery
 	/**
 	 * Class constructor.
 	 *
-	 * @param   JDatabase  $db  The database connector resource.
+	 * @param   JDatabase|\Hubzero\Database\Driver  $db  The database connector resource.
 	 *
 	 * @since   11.1
 	 */
-	public function __construct(JDatabase $db = null)
+	public function __construct($db = null)
 	{
 		$this->db = $db;
 	}
@@ -629,7 +629,7 @@ abstract class JDatabaseQuery
 	 */
 	public function dateFormat()
 	{
-		if (!($this->db instanceof JDatabase))
+		if (!($this->db instanceof JDatabase) && !($this->db instanceof \Hubzero\Database\Driver))
 		{
 			throw new JDatabaseException('JLIB_DATABASE_ERROR_INVALID_DB_OBJECT');
 		}
@@ -697,7 +697,7 @@ abstract class JDatabaseQuery
 	 */
 	public function escape($text, $extra = false)
 	{
-		if (!($this->db instanceof JDatabase))
+		if (!($this->db instanceof JDatabase) && !($this->db instanceof \Hubzero\Database\Driver))
 		{
 			throw new JDatabaseException('JLIB_DATABASE_ERROR_INVALID_DB_OBJECT');
 		}
@@ -911,7 +911,7 @@ abstract class JDatabaseQuery
 	 */
 	public function nullDate($quoted = true)
 	{
-		if (!($this->db instanceof JDatabase))
+		if (!($this->db instanceof JDatabase) && !($this->db instanceof \Hubzero\Database\Driver))
 		{
 			throw new JDatabaseException('JLIB_DATABASE_ERROR_INVALID_DB_OBJECT');
 		}
@@ -994,7 +994,7 @@ abstract class JDatabaseQuery
 	 */
 	public function quote($text, $escape = true)
 	{
-		if (!($this->db instanceof JDatabase))
+		if (!($this->db instanceof JDatabase) && !($this->db instanceof \Hubzero\Database\Driver))
 		{
 			throw new JDatabaseException('JLIB_DATABASE_ERROR_INVALID_DB_OBJECT');
 		}
@@ -1024,7 +1024,7 @@ abstract class JDatabaseQuery
 	 */
 	public function quoteName($name)
 	{
-		if (!($this->db instanceof JDatabase))
+		if (!($this->db instanceof JDatabase) && !($this->db instanceof \Hubzero\Database\Driver))
 		{
 			throw new JDatabaseException('JLIB_DATABASE_ERROR_INVALID_DB_OBJECT');
 		}

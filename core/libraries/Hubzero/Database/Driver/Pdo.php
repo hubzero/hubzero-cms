@@ -713,7 +713,7 @@ class Pdo extends Driver
 	{
 		if ($legacy)
 		{
-			return new JDatabaseQueryPDOMySQL($this);
+			return new \JDatabaseQueryPDOMySQL($this);
 		}
 		else
 		{
