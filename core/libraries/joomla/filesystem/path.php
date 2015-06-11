@@ -239,7 +239,7 @@ class JPath
 
 		$tmp = md5(JUserHelper::genRandomPassword(16));
 		$ssp = ini_get('session.save_path');
-		$jtp = JPATH_SITE . '/tmp';
+		$jtp = JPATH_SITE . (class_exists('\\App') ? '/app' : '') . '/tmp';
 
 		// Try to find a writable directory
 		$dir = is_writable('/tmp') ? '/tmp' : false;

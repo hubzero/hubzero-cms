@@ -81,7 +81,61 @@ class Repository extends Registry implements ArrayAccess
 			exit();
 		}
 
-		parent::__construct(new \JConfig);
+		$config = new \JConfig;
+
+		if (isset($config->tmp_path))
+		{
+			if (substr($config->tmp_path, strlen(PATH_ROOT)) == DS . 'tmp')
+			{
+				$config->tmp_path = PATH_APP . DS . 'app' . substr($config->tmp_path, strlen(PATH_ROOT));
+			}
+		}
+
+		if (isset($config->log_path))
+		{
+			if (substr($config->log_path, strlen(PATH_ROOT)) == DS . 'logs')
+			{
+				$config->log_path = PATH_APP . DS . 'app' . substr($config->log_path, strlen(PATH_ROOT));
+			}
+		}
+
+		parent::__construct($config);
+	}
+
+	/**
+	 * Parse data and bind to this
+	 *
+	 * @param   mixed  $data
+	 * @return  bool
+	 * @deprecated  Implemented purely for legacy compatibility
+	 */
+	public function loadObject($data)
+	{
+		return $this->parse($data);
+	}
+
+	/**
+	 * Parse data and bind to this
+	 *
+	 * @param   mixed  $data
+	 * @return  bool
+	 * @deprecated  Implemented purely for legacy compatibility
+	 */
+	public function loadString($data)
+	{
+		return $this->parse($data);
+	}
+
+	/**
+	 * Parse data and bind to this
+	 *
+	 * @param   mixed  $data
+	 * @return  bool
+	 * @deprecated  Implemented purely for legacy compatibility
+	 */
+	public function loadArray($data)
+	{
+		return $this->parse($data);
 	}
 
 	/**

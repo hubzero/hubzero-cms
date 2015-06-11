@@ -36,6 +36,7 @@ use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Helpers;
 use Request;
+use Config;
 use Notify;
 use Route;
 use Lang;
@@ -499,7 +500,7 @@ class Pages extends AdminController
 		}
 
 		// create file for page
-		$file    = PATH_APP . DS . 'tmp' . DS . 'group_page_' . $page->get('id') . '.php';
+		$file    = Config::get('tmp_path') . DS . 'group_page_' . $page->get('id') . '.php';
 		$content = $currentVersion->get('content');
 		file_put_contents($file, $content);
 

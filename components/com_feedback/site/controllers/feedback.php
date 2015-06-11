@@ -41,6 +41,7 @@ use Filesystem;
 use Component;
 use Pathway;
 use Request;
+use Config;
 use Route;
 use Lang;
 use User;
@@ -530,7 +531,7 @@ class Feedback extends SiteController
 	 */
 	protected function tmpPath()
 	{
-		return PATH_APP . DS . 'tmp' . DS . 'feedback';
+		return Config::get('tmp_path') . DS . 'feedback';
 	}
 }
 

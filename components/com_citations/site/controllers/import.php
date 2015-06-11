@@ -710,7 +710,7 @@ class Import extends SiteController
 	 */
 	protected function getTmpPath()
 	{
-		return PATH_APP . DS . 'tmp' . DS . 'citations';
+		return Config::get('tmp_path') . DS . 'citations';
 	}
 
 	/**

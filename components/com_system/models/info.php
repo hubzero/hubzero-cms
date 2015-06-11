@@ -248,11 +248,11 @@ class Info extends \JModelLegacy
 
 			$this->_addDirectory('templates', JPATH_SITE . '/templates');
 			$this->_addDirectory('configuration.php', JPATH_CONFIGURATION . '/configuration.php');
-			$this->_addDirectory('cache', PATH_APP . '/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
-			$this->_addDirectory('administrator/cache', PATH_APP . '/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
+			$this->_addDirectory('cache', PATH_APP . '/app/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
+			$this->_addDirectory('administrator/cache', PATH_APP . '/app/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 
-			$this->_addDirectory(Config::get('log_path', PATH_APP . '/log'), Config::get('log_path', PATH_APP . '/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
-			$this->_addDirectory(Config::get('tmp_path', PATH_APP . '/tmp'), Config::get('tmp_path', PATH_APP . '/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
+			$this->_addDirectory(Config::get('log_path', PATH_APP . '/app/log'), Config::get('log_path', PATH_APP . '/app/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
+			$this->_addDirectory(Config::get('tmp_path', PATH_APP . '/app/tmp'), Config::get('tmp_path', PATH_APP . '/app/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
 		}
 		return $this->directories;
 	}

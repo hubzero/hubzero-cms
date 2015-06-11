@@ -33,6 +33,7 @@ namespace Components\Newsletter\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Image\Mozify;
 use Request;
+use Config;
 
 /**
  * Newsletter tools Controller
@@ -74,7 +75,7 @@ class Tools extends AdminController
 		$mosaicSize = Request::getInt('mosaic-size', 5, 'post');
 
 		//temp upload path
-		$uploadPath = PATH_APP . DS . 'tmp' . DS . 'newsletter' . DS . 'mozify';
+		$uploadPath = Config::get('tmp_path') . DS . 'newsletter' . DS . 'mozify';
 
 		//url regex
 		$UrlPtn = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
