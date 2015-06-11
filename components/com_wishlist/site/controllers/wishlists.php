@@ -189,10 +189,12 @@ class Wishlists extends SiteController
 	 */
 	public function wishlistTask()
 	{
+		$params = App::get('menu.params');
+
 		// Incoming
-		$id     = Request::getInt('id', 0);
-		$refid  = Request::getInt('rid', 1);
-		$cat   	= Request::getVar('category', 'general');
+		$id     = Request::getInt('id', $params->get('id', 0));
+		$refid  = Request::getInt('rid', $params->get('rid', 1));
+		$cat   	= Request::getVar('category', $params->get('category', 'general'));
 		$saved  = Request::getInt('saved', 0);
 
 		// are we viewing this from within a plugin?
