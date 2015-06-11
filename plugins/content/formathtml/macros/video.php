@@ -244,8 +244,7 @@ class Video extends Macro
 		// Local
 		if ($type == 'local')
 		{
-			jimport('joomla.filesystem.file');
-			$ext = strtolower(\JFile::getExt($video_url));
+			$ext = strtolower(\Filesystem::extension($video_url));
 
 			\Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 			\Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
@@ -508,7 +507,7 @@ class Video extends Macro
 		}
 		$type = 'File';
 		$this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
-		if (in_array(strtolower(\JFile::getExt($file)), $this->imgs))
+		if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs))
 		{
 			if (\Request::getVar('format') == 'pdf')
 			{

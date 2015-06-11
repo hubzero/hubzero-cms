@@ -218,9 +218,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		// Does the file exist?
 		if ($ret)
 		{
-			jimport('joomla.filesystem.file');
-
-			if (!in_array(strtolower(\JFile::getExt($file)), $this->imgs))
+			if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs))
 			{
 				return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
 			}

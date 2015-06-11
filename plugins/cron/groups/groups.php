@@ -71,9 +71,6 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 	 */
 	public function cleanGroupFolders(\Components\Cron\Models\Job $job)
 	{
-		// include needed libraries
-		jimport('joomla.filesystem.folder');
-
 		// get group params
 		$groupParameters = Component::params('com_groups');
 
@@ -81,7 +78,7 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 		$groupUploadPath = ltrim($groupParameters->get('uploadpath', '/site/groups'), DS);
 
 		// get group folders
-		$groupFolders = JFolder::folders(PATH_APP . DS . $groupUploadPath);
+		$groupFolders = Filesystem::directories(PATH_APP . DS . $groupUploadPath);
 
 		// loop through each group folder
 		foreach ($groupFolders as $groupFolder)
@@ -93,7 +90,7 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 			if (!is_object($hubzeroGroup))
 			{
 				// delete folder
-				JFolder::delete(PATH_APP . DS . $groupUploadPath . DS . $groupFolder);
+				Filesystem::delete(PATH_APP . DS . $groupUploadPath . DS . $groupFolder);
 			}
 		}
 

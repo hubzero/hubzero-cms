@@ -550,8 +550,7 @@ class Comment extends Model
 
 				if (!is_dir($uploadDir))
 				{
-					jimport('joomla.filesystem.folder');
-					if (!\JFolder::create($uploadDir))
+					if (!\Filesystem::makeDirectory($uploadDir))
 					{
 						$this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
@@ -571,8 +570,7 @@ class Comment extends Model
 					}
 					$uploadPath = $uploadDir . DS . $fileName;
 
-					jimport('joomla.filesystem.file');
-					if (!\JFile::upload($fileTemp, $uploadPath))
+					if (!\Filesystem::upload($fileTemp, $uploadPath))
 					{
 						$this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_ERROR_MOVING_FILE'));
 					}

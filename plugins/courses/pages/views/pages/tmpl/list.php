@@ -86,13 +86,11 @@ if (!$no_html) { ?>
 				<?php
 				if ($this->docs)
 				{
-					jimport('joomla.filesystem.file');
-
 					$page = Request::getVar('page', '');
 
 					foreach ($this->docs as $path => $name)
 					{
-						$ext = JFile::getExt($name);
+						$ext = Filesystem::extension($name);
 						$type = (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')) ? 'Image' : 'File');
 				?>
 					<tr class="row-group start">

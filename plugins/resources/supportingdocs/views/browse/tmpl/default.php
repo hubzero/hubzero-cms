@@ -50,14 +50,13 @@ else
 	<?php if ($children) { ?>
 		<ul>
 			<?php
-			jimport('joomla.filesystem.file');
 			$linkAction = 0;
 			$base = $this->model->params->get('uploadpath');
 			foreach ($children as $child)
 			{
 				if ($child->access == 0 || ($child->access == 1 && !User::isGuest()))
 				{
-					$ftype = JFile::getExt($child->path);
+					$ftype = Filesystem::extension($child->path);
 					if (substr($child->path, 0, 4) == 'http')
 					{
 						$ftype = 'html';

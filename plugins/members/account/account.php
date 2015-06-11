@@ -712,10 +712,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function _uploadKey()
 	{
-		// Import a few things
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		// Webdav path
 		$base = DS . 'webdav' . DS . 'home';
 		$user = DS . $this->member->get('username');
@@ -780,10 +776,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function readKey()
 	{
-		// Import a few things
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		// Webdav path
 		$base = DS . 'webdav' . DS . 'home';
 		$user = DS . $this->member->get('username');

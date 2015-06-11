@@ -2514,8 +2514,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('PLG_COURSES_DISCUSSIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -2523,13 +2522,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(JFile::getExt($file['name']));
+		$ext = strtolower(Filesystem::extension($file['name']));
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_UPLOADING'));
 			return;

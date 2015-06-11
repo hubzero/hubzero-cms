@@ -303,7 +303,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 			$path = str_replace(Request::base(true), '', $path);
 			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
+			$path = '/' . trim($path, '/');
 
 			$blog = '/groups/' . $this->group->get('cn') . '/forum';
 
@@ -1604,8 +1604,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('PLG_GROUPS_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -1613,13 +1612,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(JFile::getExt($file['name']));
+		$ext = strtolower(Filesystem::extension($file['name']));
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_FORUM_ERROR_UPLOADING'));
 			return;

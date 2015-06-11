@@ -50,8 +50,7 @@ $path = $base_path . DS . \Hubzero\Utility\String::pad($this->seeker->uid);
 
 if (!is_dir(PATH_APP . $path))
 {
-	jimport('joomla.filesystem.folder');
-	if (!JFolder::create(PATH_APP . $path))
+	if (!Filesystem::makeDirectory(PATH_APP . $path))
 	{
 		$path = '';
 	}

@@ -409,8 +409,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				ob_clean();
 				header('Content-type: text/plain');
@@ -449,9 +448,8 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -533,8 +531,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
 				return $this->_files();
@@ -542,13 +539,12 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
 		}
@@ -661,8 +657,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_DELETE_FILE'));
 				if ($no_html)

@@ -182,7 +182,6 @@ class FileMacro extends WikiMacro
 		// Does the file exist?
 		if ($ret)
 		{
-			jimport('joomla.filesystem.file');
 			//$attr['desc'] = htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8');
 
 			// Return HTML
@@ -478,7 +477,7 @@ class FileMacro extends WikiMacro
 			$link .= $scope . DS;
 		}
 		$type = 'File';
-		if (in_array(strtolower(JFile::getExt($file)), $this->imgs))
+		if (in_array(strtolower(Filesystem::extension($file)), $this->imgs))
 		{
 			if (Request::getVar('format') == 'pdf')
 			{
@@ -500,7 +499,7 @@ class FileMacro extends WikiMacro
 	 */
 	private function _embed($file, $attr=array())
 	{
-		$ext = strtolower(JFile::getExt($file));
+		$ext = strtolower(Filesystem::extension($file));
 
 		switch ($ext)
 		{

@@ -91,8 +91,6 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 		$old = time() - ($days * 24 * 60 * 60);
 
-		jimport('joomla.filesystem.file');
-
 		$dirIterator = new DirectoryIterator($path);
 		foreach ($dirIterator as $file)
 		{
@@ -109,7 +107,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 
 			if (abs($name) < $old)
 			{
-				JFolder::delete($file->getPathname());
+				Filesystem::delete($file->getPathname());
 			}
 		}
 	}
