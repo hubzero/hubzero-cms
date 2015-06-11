@@ -15,9 +15,11 @@ class Migration20150330174214ComTools extends Base
 	 **/
 	public function up()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		if (!$mwdb = $this->getMWDBO())
+		{
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
+		}
 
 		if ($mwdb->tableExists('zones'))
 		{
@@ -35,9 +37,11 @@ class Migration20150330174214ComTools extends Base
 	 **/
 	public function down()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		if (!$mwdb = $this->getMWDBO())
+		{
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
+		}
 
 		if ($mwdb->tableExists('zones'))
 		{

@@ -2021,7 +2021,7 @@ class Tickets extends SiteController
 		if ($sess = Request::getVar('sesstoken', ''))
 		{
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-			$mwdb = \ToolsHelperUtils::getMWDBO();
+			$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 			// retrieve the username and IP from session with this session token
 			$query = "SELECT * FROM session WHERE session.sesstoken=" . $this->database->quote($sess) . " LIMIT 1";

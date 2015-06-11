@@ -53,11 +53,22 @@ class Migration20140609160011ComFeedback extends Base
 			$this->db->setQuery($query);
 			if ($results = $this->db->loadObjectList())
 			{
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php');
+				$path = PATH_ROOT . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php';
+				if (!file_exists($path))
+				{
+					$path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php';
+				}
+				include_once($path);
+
+				$tbl = '\\Components\\Feedback\\Tables\\Quote';
+				if (class_exists('FeedbackQuotes'))
+				{
+					$tbl = 'FeedbackQuotes';
+				}
 
 				foreach ($results as $result)
 				{
-					$tbl = new FeedbackQuotes($this->db);
+					$tbl = new $tbl($this->db);
 					$tbl->id = $result->fid;
 					$tbl->user_id = $result->userid;
 					$tbl->fullname = $result->fullname;

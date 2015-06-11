@@ -12,14 +12,10 @@ class Migration20140108233319ComGroups extends Base
 {
 	public function up()
 	{
-		// import needed libraries
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		$old = umask(0);
 
 		// define base path
-		$base = JPATH_ROOT . DS . 'site' . DS . 'groups';
+		$base = PATH_APP . DS . 'site' . DS . 'groups';
 
 		// make sure we have a directory
 		if (!is_dir($base))
@@ -28,7 +24,7 @@ class Migration20140108233319ComGroups extends Base
 		}
 
 		// get group folders
-		$groupFolders = \JFolder::folders( $base, '.', false, true );
+		$groupFolders = \App::get('filesystem')->directories($base, '.', false, true);
 
 		// make sure we have one!
 		if (count($groupFolders) < 1)
@@ -42,10 +38,10 @@ class Migration20140108233319ComGroups extends Base
 			$groupUploadFolder = $groupFolder . DS . 'uploads';
 
 			// make sure we havent already moved files
-			if (!is_dir( $groupUploadFolder ))
+			if (!is_dir($groupUploadFolder))
 			{
 				// create uploads folder
-				if (!\JFolder::create( $groupUploadFolder ))
+				if (!\App::get('filesystem')->makeDirectory($groupUploadFolder))
 				{
 					$this->setError('Failed to create uploads folder. Try running again with elevated privileges', 'warning');
 					return false;
@@ -53,14 +49,14 @@ class Migration20140108233319ComGroups extends Base
 			}
 
 			//get group files
-			$groupFiles = \JFolder::files( $groupFolder );
+			$groupFiles = \App::get('filesystem')->files($groupFolder);
 
 			// move each group file
 			foreach ($groupFiles as $groupFile)
 			{
 				$from = $groupFolder . DS . $groupFile;
 				$to   = $groupUploadFolder . DS . $groupFile;
-				if (!\JFile::move( $from, $to ))
+				if (!\App::get('filesystem')->move($from, $to))
 				{
 					$this->setError('Failed to move files to uploads folder. Try running again with elevated privileges', 'warning');
 					return false;

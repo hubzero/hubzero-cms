@@ -20,7 +20,7 @@ class Migration20140716182939Core extends Base
 			$query = "ALTER TABLE `#__migrations` ADD `scope` VARCHAR(255) NOT NULL DEFAULT '' AFTER `file`";
 			$this->db->setQuery($query);
 			$this->db->query();
-			$query = "UPDATE `#__migrations` SET `scope` = " . $this->db->quote(JPATH_ROOT . DS . 'migrations');
+			$query = "UPDATE `#__migrations` SET `scope` = " . $this->db->quote(PATH_ROOT . DS . 'migrations');
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -30,7 +30,7 @@ class Migration20140716182939Core extends Base
 			$query = "ALTER TABLE `migrations` ADD `scope` VARCHAR(255) NOT NULL DEFAULT '' AFTER `file`";
 			$this->db->setQuery($query);
 			$this->db->query();
-			$query = "UPDATE `migrations` SET `scope` = " . $this->db->quote(JPATH_ROOT . DS . 'migrations');
+			$query = "UPDATE `migrations` SET `scope` = " . $this->db->quote(PATH_ROOT . DS . 'migrations');
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

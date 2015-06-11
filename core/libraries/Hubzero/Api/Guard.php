@@ -166,7 +166,7 @@ class Guard
 				require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 
 				// instantiate middleware database
-				$mwdb = \ToolsHelperUtils::getMWDBO();
+				$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 				// attempt to load session from db
 				$query = "SELECT * FROM `session` WHERE `sessnum`= " . $mwdb->quote($toolSessionId) . " AND `sesstoken`=" . $mwdb->quote($toolSessionToken);

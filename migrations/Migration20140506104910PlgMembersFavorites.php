@@ -25,7 +25,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 			$this->db->setQuery($query);
 			if ($results = $this->db->loadObjectList())
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 				$objs  = array();
 				$usrs  = array();

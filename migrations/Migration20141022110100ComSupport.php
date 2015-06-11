@@ -20,10 +20,10 @@ class Migration20141022110100ComSupport extends Base
 			$this->db->setQuery("SELECT id, report FROM `#__support_tickets` WHERE `created` < '2013-01-01 00:00:00' AND `report` LIKE '%\\\\\'%' AND `type`=0 AND `open`=1");
 			if ($records = $this->db->loadObjectList())
 			{
-				$path = JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php';
+				$path = PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php';
 				if (!file_exists($path))
 				{
-					$path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php';
+					$path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php';
 				}
 				include_once($path);
 

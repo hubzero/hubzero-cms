@@ -16,12 +16,11 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 	public function up()
 	{
 		// include com_wishlist files
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
-		$database = JFactory::getDBO();
-		$wishlist = new Wishlist($database);
-		$wish     = new Wish($database);
+		$wishlist = new Wishlist($this->db);
+		$wish     = new Wish($this->db);
 
 		// Get records
 		$lists = $wishlist->getRecords(array(

@@ -25,7 +25,7 @@ class Migration20130702181838ComWiki extends Base
 		$this->db->setQuery($query);
 		$result = $this->db->loadObject();
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
 
 		if ($result)
 		{

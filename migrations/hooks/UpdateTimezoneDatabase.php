@@ -27,7 +27,7 @@ class UpdateTimezoneDatabase extends Base
 		$my_mtime    = 0;
 		$my_filename = null;
 		$zoneinfo    = '/usr/share/zoneinfo';
-		$tz_dat_file = JPATH_ROOT . DS . 'site' . DS . 'protected' . DS . 'timezone.dat';
+		$tz_dat_file = PATH_APP . DS . 'site' . DS . 'protected' . DS . 'timezone.dat';
 
 		$files = array_diff(scandir($zoneinfo), array('.', '..'));
 

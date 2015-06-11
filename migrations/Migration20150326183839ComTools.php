@@ -70,11 +70,11 @@ class Migration20150326183839ComTools extends Base
 			$this->db->setQuery($query);
 			if ($rows = $this->db->loadObjectList())
 			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 				foreach ($rows as $row)
 				{
-					$preferences = new ToolsTablePreferences($this->db);
+					$preferences = new \Components\Tools\Tables\Preferences($this->db);
 					$preferences->loadByUser($row->uidNumber);
 					$preferences->user_id  = $row->uidNumber;
 					$preferences->class_id = 0;

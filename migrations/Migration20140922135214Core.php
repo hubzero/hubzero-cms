@@ -17,7 +17,7 @@ class Migration20140922135214Core extends Base
 	{
 		if ($this->db->tableExists('#__migrations') && $this->db->tableHasField('#__migrations', 'scope'))
 		{
-			$query = "UPDATE `#__migrations` SET `scope` = REPLACE(`scope`, " . $this->db->quote(JPATH_ROOT . DS) . ", '')";
+			$query = "UPDATE `#__migrations` SET `scope` = REPLACE(`scope`, " . $this->db->quote(PATH_ROOT . DS) . ", '')";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

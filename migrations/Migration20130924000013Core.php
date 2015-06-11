@@ -17,9 +17,9 @@ class Migration20130924000013Core extends Base
 	{
 		// Change config offset from '0' to 'UTC'!
 		// @FIXME: should we actually set this based on offset, or assume 0?
-		$configuration = file_get_contents(JPATH_ROOT . DS . 'configuration.php');
+		$configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
 		$configuration = preg_replace('/(var \$offset[\s]*=[\s]*[\'"]*)([\-0-9]+)([\'"]*)/', '$1UTC$3', $configuration);
-		file_put_contents(JPATH_ROOT . DS . 'configuration.php', $configuration);
+		file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
 
 		$query = "ALTER TABLE `#__core_log_searches` ENGINE = MYISAM;\n";
 		$this->db->setQuery($query);

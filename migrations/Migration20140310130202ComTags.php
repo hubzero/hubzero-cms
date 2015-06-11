@@ -22,7 +22,7 @@ class Migration20140310130202ComTags extends Base
 			$this->db->setQuery($query);
 			if ($results = $this->db->loadObjectList())
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 				$cls = '\\Components\\Tags\\Models\\Tag';
 				// [!] - Backwards compatibility

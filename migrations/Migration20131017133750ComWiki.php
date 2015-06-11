@@ -27,19 +27,19 @@ class Migration20131017133750ComWiki extends Base
 
 		if ($result)
 		{
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php';
 
-			$cls = 'WikiPage';
+			$cls  = 'WikiPage';
 			$cls2 = 'WikiPageRevision';
 			if (class_exists('WikiTablePage'))
 			{
-				$cls = 'WikiTablePage';
+				$cls  = 'WikiTablePage';
 				$cls2 = 'WikiTableRevision';
 			}
 			else if (class_exists('\\Components\\Wiki\\Tables\\Page'))
 			{
-				$cls = '\\Components\\Wiki\\Tables\\Page';
+				$cls  = '\\Components\\Wiki\\Tables\\Page';
 				$cls2 = '\\Components\\Wiki\\Tables\\Revision';
 			}
 

@@ -15,14 +15,10 @@ class Migration20140805223444PlgGroupsBlog extends Base
 	 **/
 	public function up()
 	{
-		// Import needed libraries
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		$old = umask(0);
 
 		// Define base path
-		$base = JPATH_ROOT . DS . 'site' . DS . 'groups';
+		$base = PATH_APP . DS . 'site' . DS . 'groups';
 
 		// Nake sure we have a directory
 		if (!is_dir($base))
@@ -31,7 +27,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
 		}
 
 		// Get group folders
-		$groupFolders = \JFolder::folders($base, '.', false, true);
+		$groupFolders = \App::get('filesystem')->directories($base, '.', false, true);
 
 		// Make sure we have one!
 		if (count($groupFolders) < 1)
@@ -55,7 +51,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
 			if (!is_dir($newBlogUploadFolder))
 			{
 				// create uploads folder
-				if (!\JFolder::create($newBlogUploadFolder))
+				if (!\App::get('filesystem')->makeDirectory($newBlogUploadFolder))
 				{
 					$this->setError('Failed to create blog uploads folder. Try running again with elevated privileges.', 'warning');
 					return false;
@@ -63,14 +59,14 @@ class Migration20140805223444PlgGroupsBlog extends Base
 			}
 
 			// Get group files
-			$blogFiles = \JFolder::files($currentBlogUploadFolder);
+			$blogFiles = \App::get('filesystem')->files($currentBlogUploadFolder);
 
 			// Move each group file
 			foreach ($blogFiles as $blogFile)
 			{
 				$from = $currentBlogUploadFolder . DS . $blogFile;
 				$to   = $newBlogUploadFolder . DS . $blogFile;
-				if (!\JFile::move( $from, $to ))
+				if (!\App::get('filesystem')->move($from, $to))
 				{
 					$this->setError('Failed to move files to blog uploads folder. Try running again with elevated privileges.', 'warning');
 					return false;
@@ -80,9 +76,9 @@ class Migration20140805223444PlgGroupsBlog extends Base
 			$res = false;
 			try
 			{
-				$res = \JFolder::delete($currentBlogUploadFolder);
+				$res = \App::get('filesystem')->delete($currentBlogUploadFolder);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				$this->setError('Folder deletion succeeded but failed to write to logs.', 'info');
 			}

@@ -195,7 +195,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$db = JFactory::getDBO();
 
 		// Get Middleware DB connection
-		$mwdb = ToolsHelperUtils::getMWDBO();
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Get com_tools params
 		$mconfig = Component::params( 'com_tools' );
@@ -208,10 +208,10 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		// Get request vars
 		$format = Request::getVar('format', 'json');
-		$order = Request::getVar('order', 'id_asc' );
+		$order  = Request::getVar('order', 'id_asc' );
 
 		// Get my sessions
-		$ms = new MwSession( $mwdb );
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$sessions = $ms->getRecords( $result->get("username"), '', false );
 
 		// Run middleware command to create screenshots
@@ -477,7 +477,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		if ($result === false) return $this->not_found();
 
 		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
-		$du = ToolsHelperUtils::getDiskUsage($result->get('username'));
+		$du = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
 		if (count($du) <=1)
 		{
 			// Error

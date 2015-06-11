@@ -726,26 +726,26 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$homeDir = $this->member->get('homeDirectory');
 
 		// First, make sure webdav is there and that the necessary folders are there
-		if (!JFolder::exists($base))
+		if (!Filesystem::exists($base))
 		{
 			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
 			return;
 		}
-		if (!JFolder::exists($homeDir))
+		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
 			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 
-			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
+			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{
 				App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
 				return;
 			}
 		}
-		if (!JFolder::exists($base . $user . $ssh))
+		if (!Filesystem::exists($base . $user . $ssh))
 		{
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!JFolder::create($base . $user . $ssh, 0700))
+			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700))
 			{
 				App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
 				return;
@@ -756,7 +756,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$content = Request::getVar('keytext', '');
 
 		// Write to the file
-		if (!JFile::write($base . $user . $ssh . $auth, $content) && $content != '')
+		if (!Filesystem::write($base . $user . $ssh . $auth, $content) && $content != '')
 		{
 			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
 			return;
@@ -796,35 +796,35 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$key = '';
 
 		// First, make sure webdav is there and that the necessary folders are there
-		if (!JFolder::exists($base))
+		if (!Filesystem::exists($base))
 		{
 			// Not sure what to do here
 			return $key = false;
 		}
-		if (!JFolder::exists($homeDir))
+		if (!Filesystem::exists($homeDir))
 		{
 			// Try to create their home directory
 			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 
-			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
+			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
 			{
 				return $key = false;
 			}
 		}
-		if (!JFolder::exists($base . $user . $ssh))
+		if (!Filesystem::exists($base . $user . $ssh))
 		{
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!JFolder::create($base . $user . $ssh, 0700))
+			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700))
 			{
 				return $key = false;
 			}
 		}
-		if (!JFile::exists($base . $user . $ssh . $auth))
+		if (!Filesystem::exists($base . $user . $ssh . $auth))
 		{
 			// Try to create their authorized keys file
 			$content = ''; // J25 passes param by reference so couldn't use constant below
-			JFile::write($base . $user . $ssh . $auth, $content);
-			if (!JFile::exists($base . $user . $ssh . $auth))
+			Filesystem::write($base . $user . $ssh . $auth, $content);
+			if (!Filesystem::exists($base . $user . $ssh . $auth))
 			{
 				return $key = false;
 			}
@@ -838,7 +838,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Read the file contents
-		$key = JFile::read($base . $user . $ssh . $auth);
+		$key = Filesystem::read($base . $user . $ssh . $auth);
 
 		return $key;
 	}

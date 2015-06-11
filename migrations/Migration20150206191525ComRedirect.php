@@ -21,7 +21,7 @@ class Migration20150206191525ComRedirect extends Base
 			$this->db->setQuery($query);
 			if ($links = $this->db->loadObjectList())
 			{
-				include_once(JPATH_ROOT . '/administrator/components/com_redirect/tables/link.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'tables' . DS . 'link.php');
 
 				foreach ($links as $link)
 				{
