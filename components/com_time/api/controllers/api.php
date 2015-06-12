@@ -630,7 +630,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 	private function authorize()
 	{
 		// Get the user id
-		$user_id = \JFactory::getApplication()->getAuthn('user_id');
+		$user_id = App::get('authn')['user_id'];
 
 		if (!is_numeric($user_id))
 		{
