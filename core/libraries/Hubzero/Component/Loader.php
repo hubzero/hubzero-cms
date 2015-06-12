@@ -163,7 +163,7 @@ class Loader
 		// Load template language files.
 		$lang = $this->app['language'];
 		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true);
-		if ($this->app->has('template']))
+		if ($this->app->has('template'))
 		{
 			$template = $this->app['template']->template;
 			$lang->load('tpl_' . $template, JPATH_THEMES . DS . $template, null, false, true);
