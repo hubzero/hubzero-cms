@@ -118,7 +118,7 @@ class Loader
 			$result->path = '';
 
 			$paths = array(
-				PATH_APP . DS . 'components' . DS . $result->option,
+				PATH_APP . DS . 'app' . DS . 'components' . DS . $result->option,
 				PATH_CORE . DS . 'components' . DS . $result->option
 			);
 
@@ -187,7 +187,14 @@ class Loader
 		$client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
 
 		// Get component path
-		if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
+		if (is_dir(PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . $client))
+		{
+			// Set path and constants for combined components
+			define('JPATH_COMPONENT', PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . $client);
+			define('JPATH_COMPONENT_SITE', PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . 'site');
+			define('JPATH_COMPONENT_ADMINISTRATOR', PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . 'admin');
+		}
+		else if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
 		{
 			// Set path and constants for combined components
 			define('JPATH_COMPONENT', JPATH_SITE . DS . 'components' . DS . $option . DS . $client);
@@ -327,7 +334,7 @@ class Loader
 			return self::$components[$option];
 		}
 
-		$db = \JFactory::getDbo();
+		$db = \JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('extension_id AS id, element AS "option", params, enabled');
 		$query->from('#__extensions');
