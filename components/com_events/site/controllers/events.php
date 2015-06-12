@@ -1759,6 +1759,11 @@ class Events extends SiteController
 			return;
 		}
 
+
+		// good ol' form validation
+		Request::checkToken() or die('Invalid Token');
+		Request::checkHoneypot() or die('Invalid Field Data Detected. Please try again.');
+
 		$offset = $this->offset;
 
 		// Incoming

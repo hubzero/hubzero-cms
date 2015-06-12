@@ -161,6 +161,8 @@ $this->css()
 			</a>
 		</p>
 
+		<?php echo Html::input('token'); ?>
+		<?php echo Html::input('honeypot'); ?>
 		<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
