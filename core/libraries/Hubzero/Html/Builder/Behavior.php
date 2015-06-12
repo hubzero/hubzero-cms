@@ -365,7 +365,7 @@ class Behavior
 
 		$options = Behavior::getJSObject($opt);*/
 
-		App::get('document')->addScriptDeclaration(
+		\App::get('document')->addScriptDeclaration(
 			"jQuery(document).ready(function($){
 				$('" . $selector . "').tooltip({
 					track: true,
@@ -449,7 +449,7 @@ class Behavior
 		$opt['onHide']			= (isset($params['onHide'])) ? $params['onHide'] : null;
 		);*/
 
-		if (!empty($params) || App::isAdmin())
+		if (!empty($params) || \App::isAdmin())
 		{
 			$opt = array('arrows' => false);
 			$opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
@@ -718,28 +718,17 @@ class Behavior
 
 		$terms = str_replace('"', '\"', $terms);
 
-		/*App::get('document')->addScriptDeclaration("
-			window.addEvent('domready', function () {
-				var start = document.id('" . $start . "');
-				var end = document.id('" . $end . "');
-				if (!start || !end || !Joomla.Highlighter) {
-					return true;
-				}
-				highlighter = new Joomla.Highlighter({
-					startElement: start,
-					endElement: end,
-					className: '" . $className . "',
-					onlyWords: false,
-					tag: '" . $tag . "'
-				}).highlight([\"" . implode('","', $terms) . "\"]);
-				start.dispose();
-				end.dispose();
-			});
-		");*/
+		$options = "{
+			/*startElement: start,
+			endElement: end,*/
+			className: '" . $className . "',
+			wordsOnly: false,
+			element: '" . $tag . "'
+		}";
 
 		App::get('document')->addScriptDeclaration("
 			jQuery(document).ready(function($){
-				$('body').highlight([\"" . implode('","', $terms) . "\"]);
+				$('body').highlight([\"" . implode('","', $terms) . "\"], " . $options . ");
 			});
 		");
 
@@ -756,13 +745,17 @@ class Behavior
 	 */
 	public static function noframes($location = 'top.location.href')
 	{
+		// Only load once
 		if (isset(self::$loaded[__METHOD__]))
 		{
 			return;
 		}
 
+		// Include MooTools framework
 		self::framework();
 
+		//$js = "window.addEvent('domready', function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
+		//	" else {top.location = self.location; }});";
 		$js = "jQuery(document).ready(function($){
 			if (top == self) {
 				document.documentElement.style.display = 'block';
@@ -774,7 +767,7 @@ class Behavior
 		$document->addStyleDeclaration('html { display:none }');
 		$document->addScriptDeclaration($js);
 
-		App::get('response')->headers->set('X-Frame-Options', 'SAMEORIGIN');
+		\JResponse::setHeader('X-Frame-Options', 'SAMEORIGIN');
 
 		self::$loaded[__METHOD__] = true;
 	}
