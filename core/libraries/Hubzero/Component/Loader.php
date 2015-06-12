@@ -161,11 +161,13 @@ class Loader
 	public function render($option, $params = array())
 	{
 		// Load template language files.
-		$template = $this->app['template']->template;
-
 		$lang = $this->app['language'];
-		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true) ||
-		$lang->load('tpl_' . $template, JPATH_THEMES . DS . $template, null, false, true);
+		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true);
+		if ($this->app->has('template']))
+		{
+			$template = $this->app['template']->template;
+			$lang->load('tpl_' . $template, JPATH_THEMES . DS . $template, null, false, true)
+		}
 
 		if (empty($option))
 		{
