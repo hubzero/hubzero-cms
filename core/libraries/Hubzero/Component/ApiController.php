@@ -233,7 +233,7 @@ class ApiController implements ControllerInterface
 			'php_serialized' => 'application/vnd.php.serialized',
 		);
 
-		$this->_response->headers->set('Content-Type', $types[$format]);
+		$this->_response->headers->set('Content-Type', (isset($types[$format]) ? $types[$format] : $format));
 	}
 }
 
