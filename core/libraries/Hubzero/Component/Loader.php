@@ -166,7 +166,7 @@ class Loader
 		if ($this->app->has('template']))
 		{
 			$template = $this->app['template']->template;
-			$lang->load('tpl_' . $template, JPATH_THEMES . DS . $template, null, false, true)
+			$lang->load('tpl_' . $template, JPATH_THEMES . DS . $template, null, false, true);
 		}
 
 		if (empty($option))
