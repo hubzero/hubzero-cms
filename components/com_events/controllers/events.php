@@ -1748,6 +1748,10 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// good ol' form validation
+		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkHoneypot() or die('Invalid Field Data Detected. Please try again.');
+
 		$offset = $this->offset;
 
 		// Incoming
