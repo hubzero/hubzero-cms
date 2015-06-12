@@ -90,7 +90,7 @@ class Migration
 	 *
 	 * @var array
 	 **/
-	private $last_run = array('up'=>null, 'down'=>null);
+	private $last_run = array('up' => null, 'down' => null);
 
 	/**
 	 * Array of callbacks
@@ -131,7 +131,7 @@ class Migration
 		// Try to determine the document root if none provided
 		if (is_null($docroot))
 		{
-			$this->docroot = JPATH_ROOT;
+			$this->docroot = PATH_CORE . DS . 'core';
 		}
 		else
 		{
@@ -159,8 +159,9 @@ class Migration
 			{
 				// Scope could potentially be with or without document root
 				$scopes = array(
+					$this->db->quote('migrations'),
 					$this->db->quote($this->docroot . DS . 'migrations'),
-					$this->db->quote(str_replace(JPATH_ROOT . DS, '', $this->docroot . DS . 'migrations'))
+					$this->db->quote(str_replace(PATH_ROOT . DS, '', $this->docroot . DS . 'migrations'))
 				);
 
 				$scope = ' AND (`scope` = ' . implode(' OR `scope` = ', $scopes) . ')';
@@ -223,10 +224,10 @@ class Migration
 		}
 		else
 		{
-			if (file_exists(JPATH_ROOT . '/configuration.php'))
+			if (file_exists(PATH_ROOT . '/configuration.php'))
 			{
 				// If there's one in the provided doc root, use that
-				require_once JPATH_ROOT . '/configuration.php';
+				require_once PATH_ROOT . '/configuration.php';
 			}
 			else
 			{
@@ -493,7 +494,7 @@ class Migration
 				}
 				elseif ($logOnly)
 				{
-					$this->recordMigration($file, str_replace(JPATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
+					$this->recordMigration($file, str_replace(PATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
 					$this->log("Marking as run: {$direction}() in {$file}", 'success');
 				}
 			}
@@ -562,7 +563,7 @@ class Migration
 							}
 						}
 
-						$this->recordMigration($file, str_replace(JPATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
+						$this->recordMigration($file, str_replace(PATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
 						$this->log("Completed {$direction}() in {$file}", 'success');
 					}
 					catch (\PDOException $e)
@@ -741,7 +742,7 @@ class Migration
 	/**
 	 * Set ignore callbacks to false
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function honorCallbacks()
 	{
@@ -751,9 +752,9 @@ class Migration
 	/**
 	 * Logging mechanism
 	 *
-	 * @param $message - message to log
-	 * @param $type    - message type, can be one predefined values from output class (not specified will default to 'normal' text)
-	 * @return log messages
+	 * @param   string  $message  message to log
+	 * @param   string  $type     message type, can be one predefined values from output class (not specified will default to 'normal' text)
+	 * @return  void
 	 **/
 	public function log($message, $type=null)
 	{
@@ -768,7 +769,8 @@ class Migration
 	/**
 	 * Set the table name used for internal logging of migrations
 	 *
-	 * @return void
+	 * @param   string  $tbl_name
+	 * @return  void
 	 **/
 	public function setTableName($tbl_name)
 	{
@@ -778,9 +780,9 @@ class Migration
 	/**
 	 * Register a callback
 	 *
-	 * @param  (string)  $name - callback name
-	 * @param  (closure) $callback - function to run
-	 * @return void
+	 * @param   (string)   $name - callback name
+	 * @param   (closure)  $callback - function to run
+	 * @return  void
 	 **/
 	public function registerCallback($name, $callback)
 	{
@@ -790,7 +792,8 @@ class Migration
 	/**
 	 * Attempt to create needed migrations table
 	 *
-	 * @return bool
+	 * @param   object  $db
+	 * @return  bool
 	 **/
 	private function createMigrationsTable($db)
 	{
