@@ -70,14 +70,14 @@ $this->css($css);
 	<tbody>
 		<tr>
 			<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-				<?php echo $this->config->get('sitename'); ?>
+				<?php echo Config::get('sitename'); ?>
 			</td>
 			<td class="mobilehide" width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 				<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 					<a href="<?php echo $this->baseUrl; ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $this->baseUrl; ?></a>
 				</span>
 				<br />
-				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $this->config->get('MetaDesc'); ?></span>
+				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
 			</td>
 			<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
 				Accounts
