@@ -99,18 +99,16 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
-
 		// Only if debugging or language debug is enabled
 		if (Config::get('debug') || Config::get('debug_lang'))
 		{
-			Document::addStyleSheet($base . '/media/cms/css/debug.css?v=' . filemtime(PATH_CORE . '/media/cms/css/debug.css'));
+			$this->css('debug.css');
 		}
 
-		// [!] HUBZERO - Add CSS diagnostics
+		// Add CSS diagnostics
 		if (Config::get('debug') && $this->params->get('css', 0) && is_file(JPATH_SITE . '/media/system/css/diagnostics.css'))
 		{
-			Document::addStyleSheet($base . '/media/system/css/diagnostics.css?v=' . filemtime(PATH_CORE . '/media/system/css/diagnostics.css'));
+			$this->css('diagnostics.css');
 		}
 	}
 

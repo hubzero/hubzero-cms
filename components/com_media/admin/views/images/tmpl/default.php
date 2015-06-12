@@ -15,7 +15,7 @@ var image_base_path = '<?php $params = Component::params('com_media');
 echo $params->get('image_path', 'images');?>/';
 </script>
 <h2 class="modal-title"><?php echo Lang::txt('COM_MEDIA'); ?></h2>
-<form action="index.php?option=com_media&amp;asset=<?php echo Request::getCmd('asset');?>&amp;author=<?php echo Request::getCmd('author');?>" id="imageForm" method="post" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=com_media&asset=' . Request::getCmd('asset') . '&author=' . Request::getCmd('author'));?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo Html::asset('image', 'media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
 	</div>
@@ -31,7 +31,7 @@ echo $params->get('image_path', 'images');?>/';
 		</div>
 	</fieldset>
 
-	<iframe id="imageframe" name="imageframe" src="index.php?option=com_media&amp;view=imagesList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo Request::getCmd('asset');?>&amp;author=<?php echo Request::getCmd('author');?>"></iframe>
+	<iframe id="imageframe" name="imageframe" src="<?php echo Route::url('index.php?option=com_media&view=imagesList&tmpl=component&folder=' . $this->state->folder . '&asset=' . Request::getCmd('asset') . '&author=' . Request::getCmd('author'));?>"></iframe>
 
 	<fieldset>
 		<table class="properties">

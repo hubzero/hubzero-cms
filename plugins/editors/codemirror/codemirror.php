@@ -29,9 +29,13 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	public function onInit()
 	{
 		Html::behavior('framework');
+
 		$uncompressed = Config::get('debug') ? '-uncompressed' : '';
-		Html::asset('script', $this->_basePath . 'js/codemirror'.$uncompressed.'.js', false, false, false, false);
-		Html::asset('stylesheet', $this->_basePath . 'css/codemirror.css');
+
+		//Html::asset('script', $this->_basePath . 'js/codemirror'.$uncompressed.'.js', false, false, false, false);
+		//Html::asset('stylesheet', $this->_basePath . 'css/codemirror.css');
+		$this->js('codemirror'.$uncompressed.'.js');
+		$this->css('codemirror.css');
 
 		return '';
 	}
@@ -99,19 +103,18 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the editor area.
 	 *
-	 * @param	string	$name		The control name.
-	 * @param	string	$html		The contents of the text area.
-	 * @param	string	$width		The width of the text area (px or %).
-	 * @param	string	$height		The height of the text area (px or %).
-	 * @param	int		$col		The number of columns for the textarea.
-	 * @param	int		$row		The number of rows for the textarea.
-	 * @param	boolean	$buttons	True and the editor buttons will be displayed.
-	 * @param	string	$id			An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
-	 * @param	string	$asset
-	 * @param	object	$author
-	 * @param	array	$params		Associative array of editor parameters.
-	 *
-	 * @return string HTML
+	 * @param   string   $name     The control name.
+	 * @param   string   $html     The contents of the text area.
+	 * @param   string   $width    The width of the text area (px or %).
+	 * @param   string   $height   The height of the text area (px or %).
+	 * @param   int      $col      The number of columns for the textarea.
+	 * @param   int      $row      The number of rows for the textarea.
+	 * @param   boolean  $buttons  True and the editor buttons will be displayed.
+	 * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
+	 * @param   string   $asset
+	 * @param   object   $author
+	 * @param   array    $params   Associative array of editor parameters.
+	 * @return  string HTML
 	 */
 	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{

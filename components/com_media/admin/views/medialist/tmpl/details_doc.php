@@ -16,7 +16,11 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 		<tr>
 			<td>
 				<a title="<?php echo $this->_tmp_doc->name; ?>">
-					<?php  echo Html::asset('image', $this->_tmp_doc->icon_16, $this->_tmp_doc->title, null, true, true) ? Html::asset('image', $this->_tmp_doc->icon_16, $this->_tmp_doc->title, array('width' => 16, 'height' => 16), true) : Html::asset('image', 'media/con_info.png', $this->_tmp_doc->title, array('width' => 16, 'height' => 16), true);?>
+					<?php if (file_exists(PATH_CORE . '/components/com_media/admin/assets/images/' . $this->_tmp_doc->icon_16)) { ?>
+						<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/<?php echo $this->_tmp_doc->icon_16; ?>" alt="<?php echo $this->_tmp_doc->title; ?>" width="16" height="16" />
+					<?php } else { ?>
+						<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/con_info.png" alt="<?php echo $this->_tmp_doc->name; ?>" width="16" height="16" />
+					<?php } ?>
 				</a>
 			</td>
 			<td class="description"  title="<?php echo $this->_tmp_doc->name; ?>">
@@ -30,7 +34,9 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 			</td>
 		<?php if (User::authorise('core.delete', 'com_media')):?>
 			<td>
-				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_doc->name); ?>" rel="<?php echo $this->_tmp_doc->name; ?>"><?php echo Html::asset('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16, 'border' => 0), true);?></a>
+				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_doc->name); ?>" rel="<?php echo $this->_tmp_doc->name; ?>">
+					<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/remove.png" alt="<?php echo Lang::txt('JACTION_DELETE'); ?>" height="16" width"16" />
+				</a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_doc->name; ?>" />
 			</td>
 		<?php endif;?>

@@ -45,9 +45,13 @@ class LanguagesViewOverride extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		Document::addStyleSheet(Request::root().'media/overrider/css/overrider.css');
 		Html::behavior('framework');
-		Document::addScript(Request::root().'media/overrider/js/overrider.js');
+
+		\Hubzero\Document\Assets::addComponentStylesheet('com_languages', 'overrider.css');
+		\Hubzero\Document\Assets::addComponentScript('com_languages', 'overrider.js');
+
+		//Document::addStyleSheet(Request::root().'media/overrider/css/overrider.css');
+		//Document::addScript(Request::root().'media/overrider/js/overrider.js');
 
 		$this->form  = $this->get('Form');
 		$this->item  = $this->get('Item');

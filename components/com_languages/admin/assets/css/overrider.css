@@ -6,9 +6,9 @@
  */
 
 .overrider-spinner {
-	background-image:url(../../system/images/modal/spinner.gif);
-	background-repeat:no-repeat;
-	background-position:center;
+	background-image: url("../img/spinner.gif");
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 #refresh-status{

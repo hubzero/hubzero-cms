@@ -18,12 +18,15 @@ class MediaViewImages extends JViewLegacy
 	function display($tpl = null)
 	{
 		Html::behavior('framework', true);
-		Html::asset('script', 'media/popup-imagemanager.js', true, true);
-		Html::asset('stylesheet', 'media/popup-imagemanager.css', array(), true);
+		//Html::asset('script', 'media/popup-imagemanager.js', true, true);
+		//Html::asset('stylesheet', 'media/popup-imagemanager.css', array(), true);
+		\Hubzero\Document\Assets::addComponentScript('com_media', 'popup-imagemanager.js');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'popup-imagemanager.css');
 
 		if (Lang::isRTL())
 		{
-			Html::asset('stylesheet', 'media/popup-imagemanager_rtl.css', array(), true);
+			//Html::asset('stylesheet', 'media/popup-imagemanager_rtl.css', array(), true);
+			\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'popup-imagemanager_rtl.css');
 		}
 
 		// Display form for FTP credentials?

@@ -12,14 +12,15 @@ defined('_JEXEC') or die;
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
-					<a href="index.php?option=com_media&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
-						<?php echo Html::asset('image', 'media/folderup_32.png', '..', array('width' => 32, 'height' => 32), true); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
+						<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/folderup_32.png" alt=".." height="32" width"32" />
+					</a>
 				</div>
 			</div>
 			<div class="controls">
 				<span>&#160;</span>
 			</div>
 			<div class="imginfoBorder">
-				<a href="index.php?option=com_media&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">..</a>
+				<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">..</a>
 			</div>
 		</div>

@@ -17,12 +17,19 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
 					<a style="display: block; width: 100%; height: 100%" title="<?php echo $this->_tmp_doc->name; ?>" >
-						<?php echo Html::asset('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->name, null, true, true) ? Html::asset('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->title, NULL, true) : Html::asset('image', 'media/con_info.png', $this->_tmp_doc->name, NULL, true) ; ?></a>
+						<?php if (file_exists(PATH_CORE . '/components/com_media/admin/assets/images/' . $this->_tmp_doc->icon_32)) { ?>
+							<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/<?php echo $this->_tmp_doc->icon_32; ?>" alt="<?php echo $this->_tmp_doc->title; ?>" />
+						<?php } else { ?>
+							<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/con_info.png" alt="<?php echo $this->_tmp_doc->name; ?>" />
+						<?php } ?>
+					</a>
 				</div>
 			</div>
 			<div class="controls">
 			<?php if (User::authorise('core.delete', 'com_media')):?>
-				<a class="delete-item" target="_top" href="index.php?option=com_media&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_doc->name; ?>" rel="<?php echo $this->_tmp_doc->name; ?>"><?php echo Html::asset('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
+				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_doc->name); ?>" rel="<?php echo $this->_tmp_doc->name; ?>">
+					<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/remove.png" alt="<?php echo Lang::txt('JACTION_DELETE'); ?>" height="16" width"16" />
+				</a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_doc->name; ?>" />
 			<?php endif;?>
 			</div>

@@ -25,9 +25,11 @@ class MediaViewMediaList extends JViewLegacy
 
 		Html::behavior('framework', true);
 
-		Document::addStyleSheet('../media/media/css/medialist-'.$style.'.css');
+		//Document::addStyleSheet('../media/media/css/medialist-'.$style.'.css');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'medialist-'.$style.'.css');
 		if (Lang::isRTL()) :
-			Document::addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
+			//Document::addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
+			\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'medialist-'.$style.'_rtl.css');
 		endif;
 
 		Document::addScriptDeclaration("

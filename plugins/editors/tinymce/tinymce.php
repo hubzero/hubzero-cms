@@ -8,44 +8,29 @@ defined('_JEXEC') or die;
 
 /**
  * TinyMCE Editor Plugin
- *
- * @package		Joomla.Plugin
- * @subpackage	Editors.tinymce
- * @since		1.5
  */
 class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Base path for editor files
+	 * Affects constructor behavior.
+	 * If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
 	 */
-	protected $_basePath = 'media/editors/tinymce/jscripts/tiny_mce';
+	protected $_autoloadLanguage = true;
 
 	/**
-	 * Constructor
-	 *
-	 * @param  object  $subject  The object to observe
-	 * @param  array   $config   An array that holds the plugin configuration
-	 *
-	 * @since       1.5
+	 * Base path for editor files
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
+	protected $_basePath = 'plugins/editors/tinymce/assets/jscripts/tiny_mce';
 
 	/**
 	 * Initialises the Editor.
 	 *
 	 * @return  string  JavaScript Initialization string
-	 *
-	 * @since 1.5
 	 */
 	public function onInit()
 	{
-		$app      = JFactory::getApplication();
-		$language = JFactory::getLanguage();
-
 		$mode  = (int) $this->params->get('mode', 1);
 		$theme = array('simple', 'advanced', 'advanced');
 		$skin  = $this->params->get('skin', '0');
@@ -95,17 +80,18 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		$query->from('#__template_styles');
 		$query->where('client_id=0 AND home=1');
 
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$template = $db->loadResult();
 
 		$content_css = '';
 
-		$templates_path = JPATH_SITE . '/templates';
+		$templates_path = PATH_ROOT . '/templates';
+
 		// loading of css file for 'styles' dropdown
-		if ( $content_css_custom )
+		if ($content_css_custom)
 		{
 			// If URL, just pass it to $content_css
-			if (strpos( $content_css_custom, 'http' ) !==false)
+			if (strpos($content_css_custom, 'http') !==false)
 			{
 				$content_css = 'content_css : "'. $content_css_custom .'",';
 			}
@@ -495,7 +481,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		{
 			case 0: /* Simple mode*/
 				$load = "\t<script type=\"text/javascript\" src=\"".
-						JURI::root().$this->_basePath.
+						Request::root().$this->_basePath.
 						"/tiny_mce.js\"></script>\n";
 
 				$return = $load .
@@ -592,7 +578,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 					remove_script_host : false,
 					document_base_url : \"". Request::root() ."\",
 					//Templates
-					template_external_list_url :  \"". Request::root() ."media/editors/tinymce/templates/template_list.js\",
+					template_external_list_url :  \"". Request::root() ."plugins/editors/tinymce/assets/templates/template_list.js\",
 					// Layout
 					$content_css
 					// Advanced theme
@@ -627,7 +613,6 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 * TinyMCE WYSIWYG Editor - get the editor content
 	 *
 	 * @param  string  The name of the editor
-	 *
 	 * @return string
 	 */
 	public function onGetContent($editor)
@@ -639,7 +624,6 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 * TinyMCE WYSIWYG Editor - set the editor content
 	 *
 	 * @param   string  The name of the editor
-	 *
 	 * @return  string
 	 */
 	public function onSetContent($editor, $html)
@@ -651,7 +635,6 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 * TinyMCE WYSIWYG Editor - copy editor content to form field
 	 *
 	 * @param   string  The name of the editor
-	 *
 	 * @return  string
 	 */
 	public function onSave($editor)
@@ -660,7 +643,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 *
+	 * @param   string  $name
 	 * @return  boolean
 	 */
 	public function onGetInsertMethod($name)
@@ -705,7 +688,6 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 * @param   int      The number of rows for the editor area.
 	 * @param   boolean  True and the editor buttons will be displayed.
 	 * @param   string   An optional ID for the textarea. If not supplied the name is used.
-	 *
 	 * @return  string
 	 */
 	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null)
@@ -757,16 +739,12 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		{
 			$results = $this->_subject->getButtons($name, $buttons, $asset, $author);
 
-			/*
-			 * This will allow plugins to attach buttons or change the behavior on the fly using AJAX
-			 */
+			// This will allow plugins to attach buttons or change the behavior on the fly using AJAX
 			$return .= "\n<div id=\"editor-xtd-buttons\">\n";
 
 			foreach ($results as $button)
 			{
-				/*
-				 * Results should be an object
-				 */
+				// Results should be an object
 				if ($button->get('name'))
 				{
 					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
@@ -791,8 +769,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	 */
 	private function _toogleButton($name)
 	{
-		$return  = '';
-		$return .= "\n<div class=\"toggle-editor\">\n";
+		$return  = "\n<div class=\"toggle-editor\">\n";
 		$return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"".Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR').'">'.Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR')."</a></div></div>";
 		$return .= "</div>\n";
 

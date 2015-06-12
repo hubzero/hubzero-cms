@@ -10,7 +10,8 @@
 defined('_JEXEC') or die;
 ?>
 <div class="item">
-	<a href="index.php?option=com_media&amp;view=imagesList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo Request::getCmd('asset');?>&amp;author=<?php echo Request::getCmd('author');?>">
-		<?php echo Html::asset('image', 'media/folder.gif', $this->_tmp_folder->name, array('height' => 80, 'width' => 80), true); ?>
-		<span><?php echo $this->_tmp_folder->name; ?></span></a>
+	<a href="<?php echo Route::url('index.php?option=com_media&view=imagesList&tmpl=component&folder=' . $this->_tmp_folder->path_relative . '&asset=' . Request::getCmd('asset') . '&author=' . Request::getCmd('author')); ?>">
+		<img src="<?php echo Request::root(); ?>/components/com_media/admin/assets/images/folder.gif" alt="<?php echo $this->_tmp_folder->name; ?>" height="80" width"80" />
+		<span><?php echo $this->_tmp_folder->name; ?></span>
+	</a>
 </div>
