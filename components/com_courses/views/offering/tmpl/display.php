@@ -82,19 +82,20 @@ if (!$no_html && $tmpl != 'component') :
 		<div id="page_container">
 <?php endif; ?>
 
-<?php if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
-			<div id="offering-introduction">
-				<div class="instructions">
-					<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_REQUIRED'); ?></p>
-				</div><!-- / .instructions -->
-				<div class="questions">
-					<p><strong><?php echo JText::_('COM_COURSES_HOW_TO_ENROLL'); ?></strong></p>
-					<p><?php echo JText::sprintf('COM_COURSES_HOW_TO_ENROLL_EXPLANATION', JRoute::_($this->course->link())); ?></p>
-					<p><strong><?php echo JText::_('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
-					<p><?php echo JText::sprintf('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
-				</div><!-- / .post-type -->
-			</div><!-- / #collection-introduction -->
-<?php } else if ($this->course->offering()->section()->expired() && !$sparams->get('preview', 0)) { ?>
+<?php if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) {
+	$view = new \Hubzero\Plugin\View(array(
+		'folder'  => 'courses',
+		'element' => 'outline',
+		'name'    => 'shared',
+		'layout'  => '_not_enrolled'
+	));
+
+	$view->set('course', $this->course)
+	     ->set('option', 'com_courses')
+	     ->set('message', JText::_('COM_COURSES_ENROLLMENT_REQUIRED'));
+
+	echo $view;
+} else if ($this->course->offering()->section()->expired() && !$sparams->get('preview', 0)) { ?>
 			<div id="offering-introduction">
 				<div class="instructions">
 					<p class="warning"><?php echo JText::_('COM_COURSES_SECTION_EXPIRED'); ?></p>
