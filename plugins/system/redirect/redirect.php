@@ -26,8 +26,11 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		// Set the error handler for E_ERROR to be the class handleError method.
-		set_exception_handler(array('plgSystemRedirect', 'handleError'));
+		if (App::isSite())
+		{
+			// Set the error handler for E_ERROR to be the class handleError method.
+			set_exception_handler(array('plgSystemRedirect', 'handleError'));
+		}
 	}
 
 	/**
