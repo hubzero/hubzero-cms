@@ -37,7 +37,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/media.php';
 require_once JPATH_COMPONENT.'/controller.php';
 
 // Make sure the user is authorized to view this page
-$app JFactory::getApplication();
+$app = JFactory::getApplication();
 $cmd = Request::getCmd('task', null);
 
 if (strpos($cmd, '.') != false)
