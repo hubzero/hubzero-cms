@@ -25,7 +25,7 @@ class JHtmlIcon
 
 		if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'system/new.png', Lang::txt('JNEW'), NULL, true);
+			$text = Html::asset('image', 'new.png', Lang::txt('JNEW'), NULL, true);
 		}
 		else
 		{
@@ -51,7 +51,7 @@ class JHtmlIcon
 
 		if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'system/emailButton.png', Lang::txt('JGLOBAL_EMAIL'), NULL, true);
+			$text = Html::asset('image', 'emailButton.png', Lang::txt('JGLOBAL_EMAIL'), NULL, true);
 		}
 		else
 		{
@@ -101,7 +101,7 @@ class JHtmlIcon
 		if (property_exists($article, 'checked_out') && property_exists($article, 'checked_out_time') && $article->checked_out > 0 && $article->checked_out != User::get('id'))
 		{
 			$checkoutUser = User::getInstance($article->checked_out);
-			$button  = Html::asset('image', 'system/checked_out.png', NULL, NULL, true);
+			$button  = Html::asset('image', 'checked_out.png', NULL, NULL, true);
 			$date    = Date::of($article->checked_out_time)->toLocal();
 			$tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT').' :: '.Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name).' <br /> '.$date;
 			return '<span class="hasTip" title="'.htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8').'">'.$button.'</span>';
@@ -113,7 +113,7 @@ class JHtmlIcon
 		{
 			$icon = 'edit_unpublished.png';
 		}
-		$text = Html::asset('image', 'system/'.$icon, Lang::txt('JGLOBAL_EDIT'), NULL, true);
+		$text = Html::asset('image', $icon, Lang::txt('JGLOBAL_EDIT'), NULL, true);
 
 		if ($article->state == 0)
 		{
@@ -148,7 +148,7 @@ class JHtmlIcon
 		// checks template image directory for image, if non found default are loaded
 		if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'system/printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
+			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
 		}
 		else
 		{
@@ -167,7 +167,7 @@ class JHtmlIcon
 		// checks template image directory for image, if non found default are loaded
 		if ($params->get('show_icons'))
 		{
-			$text = Html::asset('image', 'system/printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
+			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
 		}
 		else
 		{

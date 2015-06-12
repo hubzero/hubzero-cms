@@ -224,7 +224,7 @@ function getMonthName($month)
 				     ->js('flot/jquery.flot.pie.min.js', 'system')
 				     ->js('flot/jquery.flot.resize.js', 'system');
 			?>
-			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;

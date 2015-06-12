@@ -74,7 +74,7 @@
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
-		/*behavior: url(/media/system/css/boxsizing.htc);*/
+		/*behavior: url(/core/assets/css/boxsizing.htc);*/
 		float: left;
 		margin-right: 3.225806451612903%;
 		*margin-right: 3.172043010752688%;

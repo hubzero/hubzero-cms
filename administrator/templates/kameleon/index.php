@@ -68,7 +68,7 @@ $browser = new \Hubzero\Browser\Detector();
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/media/system/js/jquery.uniform.min.js"></script>
+		<script type="text/javascript" src="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/core/assets/js/jquery.uniform.min.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js"></script>
 

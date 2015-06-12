@@ -60,11 +60,11 @@ tooltip: true,
 
 ?>
 
-<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.min.js"></script>
-<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
-<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo Request::base(true); ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+<script src="<?php echo Request::base(true); ?>/core/assets/js/flot/jquery.flot.min.js"></script>
+<script src="<?php echo Request::base(true); ?>/core/assets/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo Request::base(true); ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<?php echo Request::base(true); ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo Request::base(true); ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <header id="content-header" class="reports">
 	<h2><?php echo $this->title; ?></h2>

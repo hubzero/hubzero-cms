@@ -75,7 +75,7 @@ class plgSystemJquery extends \Hubzero\Plugin\Plugin
 
 		if ($this->params->get('noconflict' . $client))
 		{
-			App::addScript(Request::root(true) . '/media/system/js/jquery.noconflict.js');
+			Document::addScript(Request::root(true) . '/core/assets/js/jquery.noconflict.js');
 		}
 	}
 }

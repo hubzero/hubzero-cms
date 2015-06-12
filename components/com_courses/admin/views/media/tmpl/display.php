@@ -77,7 +77,7 @@ function goUpDir()
 			</table>
 		</div>
 
-		<script type="text/javascript" src="../media/system/js/jquery.fileuploader.js"></script>
+		<script type="text/javascript" src="../core/assets/js/jquery.fileuploader.js"></script>
 		<script type="text/javascript">
 		jQuery(document).ready(function($){
 			if ($("#ajax-uploader").length) {

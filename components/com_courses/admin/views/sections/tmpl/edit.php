@@ -309,7 +309,7 @@ jQuery(document).ready(function($){
 								</tbody>
 							</table>
 
-							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.fileuploader.js"></script>
+							<script type="text/javascript" src="<?php echo $base; ?>/core/assets/js/jquery.fileuploader.js"></script>
 							<script type="text/javascript">
 							String.prototype.nohtml = function () {
 								if (this.indexOf('?') == -1) {

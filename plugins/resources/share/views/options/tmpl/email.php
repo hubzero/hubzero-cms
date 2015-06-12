@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Request::base(true); ?>/templates/<?php echo App::get('template')->template; ?>/css/main.css" />
 
-		<script type="text/javascript" src="<?php echo Request::base(true); ?>/media/system/js/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo Request::base(true); ?>/core/assets/js/jquery.js"></script>
 	</head>
 	<body id="small-page">
 	</body>

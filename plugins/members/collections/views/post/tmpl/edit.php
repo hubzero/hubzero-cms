@@ -85,7 +85,7 @@ $this->css()
 									</label>
 								</noscript>
 							</div>
-							<script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script>
+							<script src="<?php echo $jbase; ?>/core/assets/js/jquery.fileuploader.js"></script>
 							<script src="<?php echo $jbase; ?>/plugins/members/collections/assets/js/fileupload.js"></script>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">

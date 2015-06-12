@@ -330,8 +330,8 @@ class joomlaInstallerScript
 			'/libraries/joomla/form/formrule.php',
 			'/libraries/joomla/utilities/garbagecron.txt',
 			'/libraries/phpmailer/language/phpmailer.lang-en.php',
-			'/media/system/css/modal_msie.css',
-			'/media/system/images/modal/closebox.gif',
+			'/core/assets/css/modal_msie.css',
+			'/core/assets/images/modal/closebox.gif',
 			'/components/com_admin/admin/sql/updates/sqlsrv/2.5.2-2012-03-05.sql',
 			'/components/com_admin/admin/sql/updates/sqlsrv/2.5.3-2012-03-13.sql',
 			'/components/com_admin/admin/sql/updates/sqlsrv/index.html',
@@ -379,12 +379,12 @@ class joomlaInstallerScript
 			'/media/com_finder/images/calendar.png',
 			'/media/com_finder/images/mime/index.html',
 			'/media/com_finder/images/mime/pdf.png',
-			'/media/system/js/swf-uncompressed.js',
-			'/media/system/js/swf.js',
-			'/media/system/js/uploader-uncompressed.js',
-			'/media/system/js/uploader.js',
-			'/media/system/swf/index.html',
-			'/media/system/swf/uploader.swf',
+			'/core/assets/js/swf-uncompressed.js',
+			'/core/assets/js/swf.js',
+			'/core/assets/js/uploader-uncompressed.js',
+			'/core/assets/js/uploader.js',
+			'/core/assets/swf/index.html',
+			'/core/assets/swf/uploader.swf',
 		);
 
 		// TODO There is an issue while deleting folders using the ftp mode
@@ -396,7 +396,7 @@ class joomlaInstallerScript
 			'/administrator/components/com_admin/sql/updates/sqlsrv',
 			'/media/com_finder/images/mime',
 			'/media/com_finder/images',
-			'/media/system/swf/',
+			'/core/assets/swf/',
 		);
 
 		foreach ($files as $file) {

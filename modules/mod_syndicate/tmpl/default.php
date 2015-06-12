@@ -32,7 +32,7 @@
 defined('_JEXEC') or die;
 ?>
 <a href="<?php echo $link ?>" class="syndicate-module<?php echo $moduleclass_sfx; ?>">
-	<?php echo Html::asset('image', 'system/livemarks.png', 'feed-image', NULL, true); ?>
+	<?php echo Html::asset('image', 'assets/livemarks.png', 'feed-image', NULL, true); ?>
 	<?php if ($params->get('display_text', 1)) : ?>
 		<span>
 		<?php if (str_replace(' ', '', $text) != '') : ?>

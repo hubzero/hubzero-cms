@@ -2,7 +2,7 @@
  * default development theme for jQRangeSlider
  * Using fam fam icon set from Mark James, http://www.famfamfam.com/lab/icons/silk/ (Creative Commons Attribution 2.5 License)
  */
-@import url("/media/system/css/jquery.ui.css");
+@import url("/core/assets/css/jquery.ui.css");
 
 .ui-rangeSlider{
 	height:22px;

@@ -6,10 +6,10 @@
  */
 @charset "UTF-8";
 
-@import url("/media/system/css/reset.css");
-@import url("/media/system/css/columns.css");
-@import url("/media/system/css/fontcons.css");
-@import url("/media/system/css/notifications.css");
+@import url("/core/assets/css/reset.css");
+@import url("/core/assets/css/columns.css");
+@import url("/core/assets/css/fontcons.css");
+@import url("/core/assets/css/notifications.css");
 
 /* Defaults */
 	blockquote,

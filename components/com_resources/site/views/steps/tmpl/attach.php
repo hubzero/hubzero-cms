@@ -77,7 +77,7 @@ $this->css('create.css')
 						<div class="col span-half">
 							<div id="ajax-uploader" data-action="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;task=save&amp;pid=<?php echo $this->id; ?>" data-list="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;pid=<?php echo $this->id; ?>">
 							</div>
-							<script src="<?php echo $base; ?>/media/system/js/jquery.fileuploader.js"></script>
+							<script src="<?php echo $base; ?>/core/assets/js/jquery.fileuploader.js"></script>
 							<script src="<?php echo $base; ?>/components/com_resources/site/assets/js/fileupload.js"></script>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">

@@ -38,7 +38,7 @@
 /* System Standard Messages */
 #system-message > .message > ul {
 	background-color: #C3D2E5;
-	background-image: url(../images/notice-info.png);
+	background-image: url("../images/notice-info.png");
 }
 
 /* System Error Messages */
@@ -50,20 +50,20 @@
 
 #system-message > .error > ul {
 	background-color: #E6C0C0;
-	background-image: url(../images/notice-alert.png);
+	background-image: url("../images/notice-alert.png");
 	border-color: #DE7A7B;
 }
 
 /* System Warning Messages */
 #system-message > .warning > ul {
 	background-color: #E6C8A6;
-	background-image: url(../images/notice-note.png);
+	background-image: url("../images/notice-note.png");
 	border-color: #FFBB00;
 }
 
 /* System Notice Messages */
 #system-message > .notice > ul {
 	background-color: #EFE7B8;
-	background-image: url(../images/notice-note.png);
+	background-image: url("../images/notice-note.png");
 	border-color: #F0DC7E;
 }

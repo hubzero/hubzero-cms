@@ -38,7 +38,7 @@ Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script.png');
 $this->js('import');
 $this->css('import');
 ?>
-<script src="../media/system/js/handlebars.js"></script>
+<script src="../core/assets/js/handlebars.js"></script>
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {

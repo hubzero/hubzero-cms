@@ -302,9 +302,9 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 
-			<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
-			<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
-			<script type="text/javascript" src="/media/system/js/jquery.ui.js"></script>  -->
+			<!-- <script type="text/javascript" src="/core/assets/js/jquery.js"></script>
+			<script type="text/javascript" src="/core/assets/js/jquery.noconflict.js"></script>
+			<script type="text/javascript" src="/core/assets/js/jquery.ui.js"></script>  -->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;

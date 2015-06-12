@@ -43,7 +43,7 @@ class Asset
 	 *
 	 * @param   string   $folder          folder name to search into (images, css, js, ...)
 	 * @param   string   $file            path to file
-	 * @param   boolean  $relative        path to file is relative to /media folder
+	 * @param   boolean  $relative        path to file is relative to /core folder
 	 * @param   boolean  $detect_browser  detect browser to include specific browser files
 	 * @param   boolean  $detect_debug    detect debug to include compressed files if debug is on
 	 * @return  array    files to be included
@@ -128,15 +128,15 @@ class Asset
 									list($element, $file) = explode('/', $file, 2);
 
 									// Try to deal with plugins group in the media folder
-									if (file_exists(JPATH_ROOT . "/media/$extension/$element/$folder/$file"))
+									if (file_exists(PATH_ROOT . "/core/$extension/$element/$folder/$file"))
 									{
-										$includes[] = $root . "/media/$extension/$element/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/$extension/$element/$folder/$file");
+										$includes[] = $root . "/core/$extension/$element/$folder/$file" . '?v=' . filemtime(PATH_ROOT . "/core/$extension/$element/$folder/$file");
 										break;
 									}
 									// Try to deal with classical file in a a media subfolder called element
-									elseif (file_exists(JPATH_ROOT . "/media/$extension/$folder/$element/$file"))
+									elseif (file_exists(PATH_ROOT . "/core/$extension/$folder/$element/$file"))
 									{
-										$includes[] = $root . "/media/$extension/$folder/$element/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/$extension/$folder/$element/$file");
+										$includes[] = $root . "/core/$extension/$folder/$element/$file" . '?v=' . filemtime(PATH_ROOT . "/core/$extension/$folder/$element/$file");
 										break;
 									}
 									// Try to deal with system files in the template folder
@@ -146,16 +146,16 @@ class Asset
 										break;
 									}
 									// Try to deal with system files in the media folder
-									elseif (file_exists(JPATH_ROOT . "/media/system/$folder/$element/$file"))
+									elseif (file_exists(PATH_ROOT . "/core/assets/$folder/$element/$file"))
 									{
-										$includes[] = $root . "/media/system/$folder/$element/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/system/$folder/$element/$file");
+										$includes[] = $root . "/core/assets/$folder/$element/$file" . '?v=' . filemtime(PATH_ROOT . "/core/assets/$folder/$element/$file");
 										break;
 									}
 								}
 								// Try to deals in the extension media folder
-								elseif (file_exists(JPATH_ROOT . "/media/$extension/$folder/$file"))
+								elseif (file_exists(PATH_ROOT . "/core/$extension/$folder/$file"))
 								{
-									$includes[] = $root . "/media/$extension/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/$extension/$folder/$file");
+									$includes[] = $root . "/core/$extension/$folder/$file" . '?v=' . filemtime(PATH_ROOT . "/core/$extension/$folder/$file");
 									break;
 								}
 								// Try to deal with system files in the template folder
@@ -165,16 +165,16 @@ class Asset
 									break;
 								}
 								// Try to deal with system files in the media folder
-								elseif (file_exists(JPATH_ROOT . "/media/system/$folder/$file"))
+								elseif (file_exists(PATH_ROOT . "/core/assets/$folder/$file"))
 								{
-									$includes[] = $root . "/media/system/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/system/$folder/$file");
+									$includes[] = $root . "/core/assets/$folder/$file" . '?v=' . filemtime(PATH_ROOT . "/core/assets/$folder/$file");
 									break;
 								}
 							}
 							// Try to deal with system files in the media folder
-							elseif (file_exists(JPATH_ROOT . "/media/system/$folder/$file"))
+							elseif (file_exists(PATH_ROOT . "/core/assets/$folder/$file"))
 							{
-								$includes[] = $root . "/media/system/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/system/$folder/$file");
+								$includes[] = $root . "/core/assets/$folder/$file" . '?v=' . filemtime(PATH_ROOT . "/core/assets/$folder/$file");
 								break;
 							}
 						}
@@ -245,7 +245,7 @@ class Asset
 	 *
 	 * @param   string   $file            path to file
 	 * @param   array    $attribs         attributes to be added to the stylesheet
-	 * @param   boolean  $relative        path to file is relative to /media folder
+	 * @param   boolean  $relative        path to file is relative to /core folder
 	 * @param   boolean  $path_only       return the path to the file only
 	 * @param   boolean  $detect_browser  detect browser to include specific browser css files
 	 *                                    will try to include file, file_*browser*, file_*browser*_*major*, file_*browser*_*major*_*minor*
@@ -311,7 +311,7 @@ class Asset
 	 *
 	 * @param   string   $file            path to file
 	 * @param   boolean  $framework       load the JS framework
-	 * @param   boolean  $relative        path to file is relative to /media folder
+	 * @param   boolean  $relative        path to file is relative to /core folder
 	 * @param   boolean  $path_only       return the path to the file only
 	 * @param   boolean  $detect_browser  detect browser to include specific browser js files
 	 * @param   boolean  $detect_debug    detect debug to search for compressed files if debug is on

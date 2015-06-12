@@ -513,7 +513,7 @@ class Assets
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
-		$paths[] = DS . 'media' . DS . 'system' . DS . $dir . DS . $image;
+		$paths[] = DS . 'core' . DS . 'assets' . DS . $dir . DS . $image;
 
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
@@ -549,7 +549,7 @@ class Assets
 		}
 
 		// Path to system CSS
-		$thispath = PATH_CORE . DS . 'media' . DS . 'system' . DS . 'css';
+		$thispath = PATH_CORE . DS . 'core' . DS . 'assets' . DS . 'css';
 
 		$env = self::app('config')->get('application_env', 'production');
 
@@ -568,7 +568,7 @@ class Assets
 			}
 			else
 			{
-				$lesspath = PATH_CORE . DS . 'media' . DS . 'system' . DS . 'less';
+				$lesspath = PATH_CORE . DS . 'core' . DS . 'assets' . DS . 'less';
 
 				if (!class_exists('lessc'))
 				{
@@ -661,7 +661,7 @@ class Assets
 				if (!is_array($cache) || $newCache['updated'] > $cache['updated'])
 				{
 					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
-					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(Request::base(true), '/') . '/media/system/', $newCache['compiled']);
+					$newCache['compiled'] = str_replace(array("'/media/system/", "'/core/assets/"), "'" . rtrim(Request::base(true), '/') . '/core/assets/', $newCache['compiled']);
 					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
 				}
 				$output =  rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
@@ -755,7 +755,7 @@ class Assets
 					'$1'*/
 				);
 				$contents = preg_replace($patterns, $replacements, $contents);
-				$contents = str_replace("url('/media/system/", "url('" . rtrim(Request::base(true), '/') . "/media/system/", $contents);
+				$contents = str_replace(array("url('/media/system/", "url('/core/assets/"), "url('" . rtrim(Request::base(true), '/') . "/core/assets/", $contents);
 
 				if ($fp = fopen($cachedir . DS . $cachefile, 'wb'))
 				{

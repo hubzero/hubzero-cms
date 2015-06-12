@@ -202,5 +202,5 @@
 	}
 	.columns,
 	.grid .col {
-		*behavior: url(/media/system/css/boxsizing.htc);
+		*behavior: url("/core/assets/css/boxsizing.htc");
 	}

@@ -74,6 +74,7 @@ tooltip: true,
 	defaultTheme: false
 }";
 
+$base = rtrim(Request::base(true), '/');
 ?>
 <div id="plg-header">
 <?php if ($this->project->isProvisioned() ) { ?>
@@ -92,11 +93,11 @@ tooltip: true,
 <?php if (!$this->pub->exists() && $this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES'); ?>.</p>
 <?php } ?>
-<script src="/media/system/js/flot/jquery.flot.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.pie.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <?php
 	foreach ($this->pubstats as $stat)
@@ -149,18 +150,18 @@ tooltip: true,
 
 								function showTooltip(x,y,contents, append)
 								{
-								      $('<div>' + contents + append +'\ </div>').css({
-								            position: 'absolute',
-								            display: 'none',
-								            top: y,
-								            left: x,
-								            'border-style': 'solid',
-								            'border-color': '#CCC',
-											'font-size': '0.8em',
-								            color: '#CCC',
-								            padding: '0 2px'
-								      }).appendTo("body").fadeIn(200);
-								 }
+									$('<div>' + contents + append +'\ </div>').css({
+										position: 'absolute',
+										display: 'none',
+										top: y,
+										left: x,
+										'border-style': 'solid',
+										'border-color': '#CCC',
+										'font-size': '0.8em',
+										color: '#CCC',
+										padding: '0 2px'
+									}).appendTo("body").fadeIn(200);
+								}
 
 								function showLabels(graph, points, append)
 								{
@@ -176,16 +177,16 @@ tooltip: true,
 											if (points[k].data[m][0] != null && points[k].data[m][1] != null)
 											{
 
-										  		if (k == 0)
+												if (k == 0)
 												{
-											  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+													showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 														graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10, points[k].data[m][1], append);
-										  		}
+												}
 												else
 												{
-											 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+													showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 														graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45, points[k].data[m][1], append);
-										  		}
+												}
 											}
 										}
 									}
@@ -196,11 +197,11 @@ tooltip: true,
 											[2, <?php echo $stat->lastmonth_views; ?>],
 											[3, <?php echo $stat->thismonth_views; ?>]];
 
-								var ph 			= $('#view-<?php echo $stat->publication_id; ?>');
-								var xticks 		= [<?php echo $xticks; ?>];
-								var fillCol 	= "#f8e7b3";
-								var yTickSize 	= <?php echo $yTickSize; ?>;
-								var tipContent 	= '%y';
+								var ph         = $('#view-<?php echo $stat->publication_id; ?>');
+								var xticks     = [<?php echo $xticks; ?>];
+								var fillCol    = "#f8e7b3";
+								var yTickSize  = <?php echo $yTickSize; ?>;
+								var tipContent = '%y';
 
 								if (ph)
 								{
@@ -235,11 +236,11 @@ tooltip: true,
 										[2, <?php echo $stat->lastmonth_primary; ?>],
 										[3, <?php echo $stat->thismonth_primary; ?>]];
 
-							var ph 			= $('#access-<?php echo $stat->publication_id; ?>');
-							var xticks 		= [<?php echo $xticks; ?>];
-							var fillCol 	= "#cdf0c1";
-							var yTickSize 	= <?php echo $yTickSize; ?>;
-							var tipContent 	= '%y';
+							var ph         = $('#access-<?php echo $stat->publication_id; ?>');
+							var xticks     = [<?php echo $xticks; ?>];
+							var fillCol    = "#cdf0c1";
+							var yTickSize  = <?php echo $yTickSize; ?>;
+							var tipContent = '%y';
 
 							if (ph)
 							{

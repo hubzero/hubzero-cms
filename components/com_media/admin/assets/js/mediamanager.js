@@ -38,7 +38,7 @@
 					window.frames[target].location.href = node.attr('href');
 				}
 			});
-			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../media/system/images/mootree.gif', onClick:
+			/*this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../core/assets/images/mootree.gif', onClick:
 					function(node){
 						target = node.data.target != null ? node.data.target : '_self';
 

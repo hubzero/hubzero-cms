@@ -74,7 +74,7 @@ $flavor = $this->params->get('flavor', false);
 		<link rel="stylesheet" href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/css/main.css" />
 
 		<!-- Scripts -->
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/vendor/modernizr-2.6.2.min.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/vendor/skrollr.min.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/main.js"></script>

@@ -107,7 +107,7 @@
 		border-radius: 0.27em;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 		/*z-index: 1;*/
-		background-image: url("/media/system/images/light-stripes.png");
+		background-image: url("/core/assets/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
 											color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent),
 											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)),
@@ -296,31 +296,31 @@
 	}
 	html.firefox3 .help,
 	html.firefox3 #system-message dd.help { 
-		background-image: url("/media/system/images/help.png");
+		background-image: url("/core/assets/images/help.png");
 		background-position: 10px 10px;
 		background-repeat: no-repeat;
 	}
 	html.firefox3 .info,
 	html.firefox3 #system-message dd.info { 
-		background-image: url("/media/system/images/information.png");
+		background-image: url("/core/assets/images/information.png");
 		background-position: 10px 10px;
 		background-repeat: no-repeat;
 	}
 	html.firefox3 .warning,
 	html.firefox3 #system-message dd.warning { 
-		background-image: url("/media/system/images/warning.png");
+		background-image: url("/core/assets/images/warning.png");
 		background-position: 10px 10px;
 		background-repeat: no-repeat;
 	}
 	html.firefox3 .error,
 	html.firefox3 #system-message dd.error { 
-		background-image: url("/media/system/images/error.png");
+		background-image: url("/core/assets/images/error.png");
 		background-position: 10px 10px;
 		background-repeat: no-repeat;
 	}
 	html.firefox3 .passed,
 	html.firefox3 #system-message dd.passed { 
-		background-image: url("/media/system/images/accept.png");
+		background-image: url("/core/assets/images/accept.png");
 		background-position: 10px 10px;
 		background-repeat: no-repeat;
 	}

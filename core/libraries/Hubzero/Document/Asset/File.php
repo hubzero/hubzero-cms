@@ -283,8 +283,8 @@ class File extends Object
 			}
 			else
 			{
-				$paths = array();
-				$base  = JPATH_SITE;
+				$paths  = array();
+				$base   = PATH_ROOT;
 				$client = 'site';
 
 				if ($this->extensionType() == 'plugins')
@@ -294,7 +294,7 @@ class File extends Object
 				}
 				else if ($this->extensionType() == 'system')
 				{
-					$base .= DS . 'media' . DS . $this->extensionType();
+					$base .= DS . 'core' . DS . 'assets';
 					$paths[] = $base . DS . $this->directory . DS . $this->file();
 				}
 				else
@@ -438,7 +438,7 @@ class File extends Object
 
 		if ($this->extensionType() == 'system')
 		{
-			$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(JPATH_ROOT));
+			$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
 		}
 		else
 		{
@@ -448,7 +448,7 @@ class File extends Object
 			}
 			else
 			{
-				$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(JPATH_SITE));
+				$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
 			}
 		}
 

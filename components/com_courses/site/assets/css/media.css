@@ -5,7 +5,7 @@
  * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-@import url("/media/system/css/fontcons.css");
+@import url("/core/assets/css/fontcons.css");
 
 	iframe {
 		border: 1px solid #ccc;

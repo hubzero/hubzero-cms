@@ -23,136 +23,104 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\Billboards;
+namespace Modules\BreadCrumbs;
 
 use Hubzero\Module\Module;
-use Component;
-use Components\Billboards\Models\Billboard;
-
-require_once PATH_CORE . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
+use Route;
+use Lang;
+use Html;
+use stdClass;
 
 /**
- * Module helper class, used to query for billboards and contains the display method
+ * Module class for displaying breadcrumbs
  */
 class Helper extends Module
 {
 	/**
-	 * Tracker for number of instances
+	 * Display module contents
 	 *
-	 * @var integer
-	 */
-	public static $multiple_instances = 0;
-
-	/**
-	 * Get the list of billboads in the selected collection
-	 *
-	 * @return array
-	 */
-	private function getList()
-	{
-		// Get the correct billboards collection to display from the parameters
-		$collection = (int) $this->params->get('collection', 1);
-
-		// Grab all the buildboards associated with the selected collection
-		// Make sure we only grab published billboards
-		$rows = Billboard::whereEquals('published', 1)
-		                 ->whereEquals('collection_id', $collection)
-		                 ->order('ordering', 'asc')
-		                 ->rows();
-
-		return $rows;
-	}
-
-	/**
-	 * Display method
-	 *
-	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function
-	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function display()
 	{
-		// Check if we have multiple instances of the module running
-		// If so, we only want to push the CSS and JS to the template once
-		if (!self::$multiple_instances)
+		// Legacy support in case old view overrides reference
+		// $params instead of $this->params
+		$params = $this->params;
+
+		// Get the breadcrumbs
+		$list   = $this->getList();
+		$count  = count($list);
+
+		// Set the default separator
+		$separator = $this->setSeparator($this->params->get('separator'));
+		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx'));
+
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
+	}
+
+	/**
+	 * Get the list of crumbs
+	 *
+	 * @return  array
+	 */
+	public function getList()
+	{
+		$items = \Pathway::items();
+
+		$count = count($items);
+
+		// Don't use $items here as it references JPathway properties directly
+		$crumbs = array();
+		for ($i = 0; $i < $count; $i ++)
 		{
-			// Push some CSS to the template
-			$this->css();
-			$this->js();
-		}
-		self::$multiple_instances++;
-
-		// Get the billboard slides
-		$this->slides = $this->getList();
-
-		// Get some parameters
-		$transition       = $this->params->get('transition', 'scrollHorz');
-		$random           = $this->params->get('random', 0);
-		$timeout          = $this->params->get('timeout', 5) * 1000;
-		$speed            = $this->params->get('speed', 1) * 1000;
-		$this->collection = $this->params->get('collection', 1);
-		$this->pager      = $this->params->get('pager', 'pager');
-
-		// Add the CSS to the template for each billboard
-		foreach ($this->slides as $slide)
-		{
-			$background = $slide->background_img ? "background-image: url('{$slide->background_img}');" : '';
-			$padding    = $slide->padding        ? "padding: {$slide->padding};"                        : '';
-
-			$css =
-				"#{$slide->alias} {
-					$background
-					}
-				#{$slide->alias} p {
-					$padding
-					}";
-			$this->css($css);
-			$this->css($slide->css);
+			$crumbs[$i] = new stdClass();
+			$crumbs[$i]->name = stripslashes(htmlspecialchars($items[$i]->name, ENT_COMPAT, 'UTF-8'));
+			$crumbs[$i]->link = Route::url($items[$i]->link);
 		}
 
-		// Add the CSS to give the pager a unique ID per billboard collection
-		// We need this to manage multiple buildboard pagers potentially moving at different speeds
-		// @TODO: there should be a better way of doing this
-		if ($this->pager != 'null')
+		if ($this->params->get('showHome', 1))
 		{
-			$js_pager    = "'#{$this->pager}{$this->collection}'";
-			$this->pager = $this->pager . $this->collection;
-			$pager =
-				".slider #{$this->pager} a.activeSlide {
-					opacity:1.0;
-					}";
-			$this->css($pager);
+			$item = new stdClass();
+			$item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
+			$item->link = Route::url('index.php?Itemid=' . \App::get('menu')->getDefault()->id);
+
+			array_unshift($crumbs, $item);
+		}
+
+		return $crumbs;
+	}
+
+	/**
+	 * Set the breadcrumbs separator for the breadcrumbs display.
+	 *
+	 * @param   string  $custom  Custom xhtml complient string to separate the items of the breadcrumbs
+	 * @return  string  Separator string
+	 */
+	public function setSeparator($custom = null)
+	{
+		// If a custom separator has not been provided we try to load a template
+		// specific one first, and if that is not present we load the default separator
+		if ($custom == null)
+		{
+			if (Lang::isRTL())
+			{
+				$_separator = Html::asset('image', 'assets/arrow_rtl.png', NULL, NULL, true);
+			}
+			else
+			{
+				$_separator = Html::asset('image', 'assets/arrow.png', NULL, NULL, true);
+			}
 		}
 		else
 		{
-			$js_pager = $this->pager;
+			$_separator = htmlspecialchars($custom);
 		}
 
-		// Add the javascript ready function with variables based on this specific billboard
-		// Pause: true - means the billbaord stops scrolling on hover
-		$js = '
-			var $jQ = jQuery.noConflict();
-
-			$jQ(document).ready(function() {
-				$jQ(\'#' . $this->collection . '\').cycle({
-					fx: "' . $transition . '",
-					timeout: ' . $timeout .',
-					pager: ' . $js_pager . ',
-					speed: ' . $speed . ',
-					random: ' . $random . ',
-					cleartypeNoBg: true,
-					slideResize: 0,
-					pause: true
-				});
-			});';
-
-		$this->js($js);
-
-		require $this->getLayoutPath();
+		return $_separator;
 	}
 }

@@ -63,7 +63,7 @@ abstract class JHtmlBehavior
 		// or plugins may have already pushed.
 		if ($type == 'core')
 		{
-			self::_pushScriptTo(0, JURI::root(true) . '/media/system/js/jquery.js');
+			self::_pushScriptTo(0, JURI::root(true) . '/core/assets/js/jquery.js');
 			if (JFactory::getApplication()->isAdmin())
 			{
 				JHtml::_('script', 'system/core.js', false, true);
@@ -71,7 +71,7 @@ abstract class JHtmlBehavior
 		}
 		else
 		{
-			self::_pushScriptTo(1, JURI::root(true) . '/media/system/js/jquery.ui.js');
+			self::_pushScriptTo(1, JURI::root(true) . '/core/assets/js/jquery.ui.js');
 			//JHtml::_('stylesheet', 'system/jquery.ui.css', array(), true);
 		}
 		self::$loaded[__METHOD__][$type] = true;

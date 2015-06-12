@@ -473,6 +473,12 @@ abstract class JHtml
 	 */
 	public static function image($file, $alt, $attribs = null, $relative = false, $path_only = false)
 	{
+		// [!] - HUBzero
+		if (class_exists('\\App'))
+		{
+			\App::get('html.builder')->asset('image', $file, $alt, $attribs, $relative, $path_only);
+		}
+
 		if (is_array($attribs))
 		{
 			$attribs = JArrayHelper::toString($attribs);
@@ -539,6 +545,12 @@ abstract class JHtml
 	 */
 	public static function stylesheet($file, $attribs = array(), $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
+		// [!] - HUBzero
+		if (class_exists('\\App'))
+		{
+			\App::get('html.builder')->asset('stylesheet', $file, $attribs, $relative, $path_only, $detect_browser, $detect_debug);
+		}
+
 		// Need to adjust for the change in API from 1.5 to 1.6.
 		// Function stylesheet($filename, $path = 'media/system/css/', $attribs = array())
 		if (is_string($attribs))
@@ -601,6 +613,12 @@ abstract class JHtml
 	 */
 	public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
+		// [!] - HUBzero
+		if (class_exists('\\App'))
+		{
+			\App::get('html.builder')->asset('script', $file, $framework, $relative, $path_only, $detect_browser, $detect_debug);
+		}
+
 		// Need to adjust for the change in API from 1.5 to 1.6.
 		// function script($filename, $path = 'media/system/js/', $mootools = true)
 		if (is_string($framework))

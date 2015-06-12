@@ -77,11 +77,11 @@ tooltip: true,
 <?php if ($this->pubstats) {
 ?>
 
-<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
-<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
-<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <?php if ($this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_MEMBERS_IMPACT_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_MEMBERS_IMPACT_TIMES'); ?>.</p>
@@ -137,18 +137,18 @@ tooltip: true,
 
 								function showTooltip(x,y,contents, append)
 								{
-								      $('<div>' + contents + append +'\ </div>').css({
-								            position: 'absolute',
-								            display: 'none',
-								            top: y,
-								            left: x,
-								            'border-style': 'solid',
-								            'border-color': '#CCC',
-											'font-size': '0.8em',
-								            color: '#CCC',
-								            padding: '0 2px'
-								      }).appendTo("body").fadeIn(200);
-								 }
+									$('<div>' + contents + append +'\ </div>').css({
+										position: 'absolute',
+										display: 'none',
+										top: y,
+										left: x,
+										'border-style': 'solid',
+										'border-color': '#CCC',
+										'font-size': '0.8em',
+										color: '#CCC',
+										padding: '0 2px'
+									}).appendTo("body").fadeIn(200);
+								}
 
 								function showLabels(graph, points, append)
 								{
@@ -187,10 +187,10 @@ tooltip: true,
 											[3, <?php echo $stat->thismonth_views; ?>]];
 
 								var ph = $('#view-<?php echo $stat->publication_id; ?>');
-								var xticks 		= [<?php echo $xticks; ?>];
-								var fillCol 	= "#f8e7b3";
-								var yTickSize 	= <?php echo $yTickSize; ?>;
-								var tipContent 	= '%y';
+								var xticks     = [<?php echo $xticks; ?>];
+								var fillCol    = "#f8e7b3";
+								var yTickSize  = <?php echo $yTickSize; ?>;
+								var tipContent = '%y';
 
 								if (ph)
 								{

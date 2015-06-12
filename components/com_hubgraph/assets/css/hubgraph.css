@@ -77,11 +77,11 @@
 
 @font-face {
 	font-family: 'Fontcons';
-	src: url('/media/system/css/fonts/fontcons-webfont.eot');
-	src: url('/media/system/css/fonts/fontcons-webfont.eot?#iefix') format('embedded-opentype'), 
-		url('/media/system/css/fonts/fontcons-webfont.woff') format('woff'), 
-		url('/media/system/css/fonts/fontcons-webfont.ttf') format('truetype'),
-		url('/media/system/css/fonts/fontcons-webfont.svg#FontconsRegular') format('svg');
+	src: url('/core/assets/css/fonts/fontcons-webfont.eot');
+	src: url('/core/assets/css/fonts/fontcons-webfont.eot?#iefix') format('embedded-opentype'), 
+		url('/core/assets/css/fonts/fontcons-webfont.woff') format('woff'), 
+		url('/core/assets/css/fonts/fontcons-webfont.ttf') format('truetype'),
+		url('/core/assets/css/fonts/fontcons-webfont.svg#FontconsRegular') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

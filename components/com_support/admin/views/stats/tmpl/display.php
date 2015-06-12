@@ -186,11 +186,11 @@ $base = rtrim($base, '/');
 					$openeddata = implode(',', $o);
 				}
 			?>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
-			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.resize.js"></script>
-			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.min.js"></script>
+			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.tooltip.min.js"></script>
+			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
+			<script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
+			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;

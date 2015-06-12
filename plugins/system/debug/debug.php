@@ -106,7 +106,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add CSS diagnostics
-		if (Config::get('debug') && $this->params->get('css', 0) && is_file(JPATH_SITE . '/media/system/css/diagnostics.css'))
+		if (Config::get('debug') && $this->params->get('css', 0))
 		{
 			$this->css('diagnostics.css');
 		}
