@@ -49,7 +49,11 @@ class Assets
 	 */
 	protected static function app($key)
 	{
-		return \App::get($key);
+		if (\App::has($key))
+		{
+			return \App::get($key);
+		}
+		return null;
 	}
 
 	/**
@@ -80,7 +84,10 @@ class Assets
 			return false;
 		}
 
-		$ext = strtolower(self::app('filesystem')->extension($image));
+		$dot = strrpos($image, '.') + 1;
+
+		$ext = substr($image, $dot);
+		$ext = strtolower($ext);
 		if (!in_array($ext, array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'bmp')))
 		{
 			return false;
@@ -109,7 +116,10 @@ class Assets
 
 		$root = self::base();
 
-		self::app('document')->addStyleSheet(rtrim(Request::base(true), '/') . $stylesheet . '?v=' . filemtime($root . $stylesheet));
+		if ($document = self::app('document'))
+		{
+			$document->addStyleSheet(rtrim(Request::base(true), '/') . $stylesheet . '?v=' . filemtime($root . $stylesheet));
+		}
 	}
 
 	/**
@@ -132,7 +142,10 @@ class Assets
 
 		$root = self::base();
 
-		self::app('document')->addScript(rtrim(Request::base(true), '/') . $script . '?v=' . filemtime($root . $script));
+		if ($document = self::app('document'))
+		{
+			$document->addScript(rtrim(Request::base(true), '/') . $script . '?v=' . filemtime($root . $script));
+		}
 	}
 
 	/**
@@ -162,7 +175,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addStyleSheet($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addStyleSheet($asset->link());
+			}
 		}
 	}
 
@@ -193,7 +209,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addScript($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addScript($asset->link());
+			}
 		}
 	}
 
@@ -215,7 +234,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addStyleSheet($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addStyleSheet($asset->link());
+			}
 		}
 	}
 
@@ -237,7 +259,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addScript($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addScript($asset->link());
+			}
 		}
 	}
 
@@ -259,7 +284,11 @@ class Assets
 			return $image;
 		}
 
-		$template = self::app('template')->template;
+		$template = 'system';
+		if ($t = self::app('template'))
+		{
+			$template = self::app('template')->template;
+		}
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'images' . DS . $image;
@@ -290,7 +319,11 @@ class Assets
 	 */
 	public static function getComponentStylesheet($component, $stylesheet, $dir = 'css')
 	{
-		$template = self::app('template')->template;
+		$template = 'system';
+		if ($t = self::app('template'))
+		{
+			$template = self::app('template')->template;
+		}
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
@@ -328,7 +361,11 @@ class Assets
 			return $image;
 		}
 
-		$template = self::app('template')->template;
+		$template = 'system';
+		if ($t = self::app('template'))
+		{
+			$template = self::app('template')->template;
+		}
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . 'images' . DS . $image;
@@ -367,7 +404,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addStyleSheet($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addStyleSheet($asset->link());
+			}
 		}
 	}
 
@@ -390,7 +430,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addScript($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addScript($asset->link());
+			}
 		}
 	}
 
@@ -413,7 +456,11 @@ class Assets
 			return $image;
 		}
 
-		$template = self::app('template')->template;
+		$template = 'system';
+		if ($t = self::app('template'))
+		{
+			$template = self::app('template')->template;
+		}
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . 'images' . DS . $image;
@@ -465,7 +512,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addStyleSheet($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addStyleSheet($asset->link());
+			}
 		}
 	}
 
@@ -489,7 +539,10 @@ class Assets
 
 		if ($asset->exists())
 		{
-			self::app('document')->addScript($asset->link());
+			if ($document = self::app('document'))
+			{
+				$document->addScript($asset->link());
+			}
 		}
 	}
 
@@ -509,7 +562,11 @@ class Assets
 			return $image;
 		}
 
-		$template = self::app('template')->template;
+		$template = 'system';
+		if ($t = self::app('template'))
+		{
+			$template = self::app('template')->template;
+		}
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
