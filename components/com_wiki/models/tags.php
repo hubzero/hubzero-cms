@@ -32,7 +32,7 @@ namespace Components\Wiki\Models;
 
 use Components\Tags\Models\Cloud;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Wiki Tagging class
