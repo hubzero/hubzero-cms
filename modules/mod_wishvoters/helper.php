@@ -32,6 +32,7 @@ namespace Modules\WishVoters;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Tables\Wishlist;
+use Component;
 use Request;
 use Lang;
 
@@ -49,7 +50,7 @@ class Helper extends Module
 	{
 		$database = \JFactory::getDBO();
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		include_once(Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php');
 
 		$objWishlist = new Wishlist($database);
 

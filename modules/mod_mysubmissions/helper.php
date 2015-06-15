@@ -31,6 +31,7 @@
 namespace Modules\MySubmissions;
 
 use Hubzero\Module\Module;
+use Component;
 use User;
 
 /**
@@ -147,8 +148,8 @@ class Helper extends Module
 			return false;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
 
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
 
@@ -166,9 +167,9 @@ class Helper extends Module
 
 		if ($this->rows)
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once(Component::path('com_resources') . DS . 'tables' . DS . 'assoc.php');
+			include_once(Component::path('com_resources') . DS . 'tables' . DS . 'contributor.php');
+			include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
 		}
 
 		require $this->getLayoutPath();

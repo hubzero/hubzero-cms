@@ -32,7 +32,6 @@ namespace Modules\Featuredblog;
 
 use Hubzero\Module\Module;
 use Components\Blog\Tables\Entry;
-use JFactory;
 
 /**
  * Module class for displaying a random, featured blog entry
@@ -62,9 +61,9 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once(\Component::path('com_blog') . DS . 'models' . DS . 'entry.php');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$this->row = null;
 

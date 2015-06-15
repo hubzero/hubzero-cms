@@ -31,6 +31,7 @@
 namespace Modules\MyContributions;
 
 use Hubzero\Module\Module;
+use Component;
 use User;
 
 /**
@@ -77,8 +78,8 @@ class Helper extends Module
 		$filters['sortby'] = 'f.published DESC';
 		$filters['filterby'] = 'all';
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'tool.php');
+		require_once(Component::path('com_tools') . DS . 'models' . DS . 'tool.php');
 
 		// Create a Tool object
 		$rows = \Components\Tools\Models\Tool::getTools($filters, false);
@@ -98,8 +99,8 @@ class Helper extends Module
 					if ($show_questions)
 					{
 						// Get open questions
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+						require_once(Component::path('com_answers') . DS . 'tables' . DS . 'question.php');
+						require_once(Component::path('com_answers') . DS . 'tables' . DS . 'response.php');
 						$aq = new \Components\Answers\Tables\Question($database);
 
 						$filters = array(
@@ -131,9 +132,9 @@ class Helper extends Module
 					if ($show_wishes)
 					{
 						// Get open wishes
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+						require_once(Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
+						require_once(Component::path('com_wishlist') . DS . 'tables' . DS . 'wish.php');
+						require_once(Component::path('com_wishlist') . DS . 'tables' . DS . 'wishlist.php');
 
 						$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
 						$objWish = new \Components\Wishlist\Tables\Wish($database);

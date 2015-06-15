@@ -57,7 +57,7 @@ class Helper extends Module
 			return;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once(\Component::path('com_collections') . DS . 'models' . DS . 'archive.php');
 
 		$this->model = new Archive('member', User::get('id'));
 

@@ -33,7 +33,7 @@ namespace Modules\PollTitle;
 
 use Hubzero\Module\Module;
 use Components\Poll\Tables\Poll;
-use JFactory;
+use Component;
 
 /**
  * Module class for displaying the latest poll's title
@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_poll' . DS . 'models' . DS . 'poll.php');
+		require_once(Component::path('com_poll') . DS . 'models' . DS . 'poll.php');
 
 		$model = new Poll();
 

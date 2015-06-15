@@ -58,8 +58,8 @@ class Helper extends Module
 		$config = Component::params('com_projects');
 
 		// Load classes
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(Component::path('com_projects') . DS . 'tables' . DS . 'project.php');
+		require_once(Component::path('com_projects') . DS . 'helpers' . DS . 'html.php');
 
 		// Set filters
 		$filters = array(

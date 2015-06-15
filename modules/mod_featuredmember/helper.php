@@ -36,7 +36,6 @@ use Hubzero\Config\Registry;
 use MembersProfile;
 use Component;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying featured members
@@ -50,10 +49,10 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+		include_once(Component::path('com_members') . DS . 'tables' . DS . 'profile.php');
+		include_once(Component::path('com_members') . DS . 'tables' . DS . 'association.php');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$this->row = null;
 		$this->profile = null;
 

@@ -67,13 +67,13 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
+		include_once(Component::path('com_members') . DS . 'tables' . DS . 'profile.php');
+		include_once(Component::path('com_members') . DS . 'tables' . DS . 'association.php');
+		include_once(Component::path('com_answers') . DS . 'tables' . DS . 'question.php');
+		include_once(Component::path('com_answers') . DS . 'tables' . DS . 'response.php');
+		include_once(Component::path('com_blog') . DS . 'tables' . DS . 'entry.php');
+		include_once(Component::path('com_blog') . DS . 'tables' . DS . 'comment.php');
 
 		$this->database = \JFactory::getDBO();
 
@@ -408,7 +408,7 @@ class Helper extends Module
 
 					if ($row->type == 7)
 					{
-						include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+						include_once(Component::path('com_tools') . DS . 'tables' . DS . 'version.php');
 
 						$tv = new \Components\Tools\Tables\Version($this->database);
 

@@ -95,7 +95,7 @@ class Helper extends Module
 	{
 		$database = \JFactory::getDBO();
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+		require_once(Component::path('com_members') . DS . 'models' . DS . 'tags.php');
 
 		// Get tags of interest
 		$mt = new \MembersModelTags(User::get('id'));
@@ -123,11 +123,11 @@ class Helper extends Module
 		$database = \JFactory::getDBO();
 
 		// Get some classes we need
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
+		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
+		require_once(Component::path('com_answers') . DS . 'tables' . DS . 'response.php');
+		require_once(Component::path('com_answers') . DS . 'tables' . DS . 'log.php');
+		require_once(Component::path('com_answers') . DS . 'tables' . DS . 'questionslog.php');
+		require_once(Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php');
 
 		$aq = new \Components\Answers\Tables\Question($database);
 		if ($this->banking)
@@ -158,7 +158,7 @@ class Helper extends Module
 
 			case 'assigned':
 				$filters['mine'] = 0;
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(Component::path('com_tools') . DS . 'tables' . DS . 'author.php');
 
 				$TA = new \Components\Tools\Tables\Author($database);
 				$tools = $TA->getToolContributions(User::get('id'));

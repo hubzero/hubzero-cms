@@ -33,6 +33,7 @@ namespace Modules\LatestDiscussions;
 use Hubzero\Module\Module;
 use Components\Forum\Models\Manager;
 use Hubzero\User\Group;
+use Component;
 use User;
 
 /**
@@ -53,7 +54,7 @@ class Helper extends Module
 		$this->limit = $this->params->get('limit', 5);
 		$this->charlimit = $this->params->get('charlimit', 100);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
+		include_once(Component::path('com_forum') . DS . 'models' . DS . 'manager.php');
 
 		$forum = new Manager();
 

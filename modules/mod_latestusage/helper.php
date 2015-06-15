@@ -46,7 +46,7 @@ class Helper extends Module
 	{
 		$database = \JFactory::getDBO();
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_usage' . DS . 'helpers' . DS . 'helper.php');
+		include_once(\Component::path('com_usage') . DS . 'helpers' . DS . 'helper.php');
 		$udb = \Components\Usage\Helpers\Helper::getUDBO();
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));

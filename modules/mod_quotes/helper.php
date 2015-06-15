@@ -49,7 +49,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
+		require_once(Component::path('com_feedback') . DS . 'tables' . DS . 'quote.php');
 
 		$this->database = \JFactory::getDBO();
 

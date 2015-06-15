@@ -34,6 +34,7 @@ namespace Modules\WhatsNew;
 use Hubzero\Module\Module;
 use Components\Whatsnew\Helpers\Period;
 use MembersModelTags;
+use Component;
 use Request;
 use Event;
 use Route;
@@ -122,7 +123,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
+		include_once(Component::path('com_whatsnew') . DS . 'helpers' . DS . 'period.php');
 		$live_site = rtrim(Request::base(), '/');
 
 		// Get some initial parameters
@@ -230,7 +231,7 @@ class Helper extends Module
 
 		if ($this->tagged)
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			include_once(Component::path('com_members') . DS . 'models' . DS . 'tags.php');
 			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$tags = $mt->tags();
 

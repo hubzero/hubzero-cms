@@ -32,6 +32,7 @@ namespace Modules\PopularQuestions;
 
 use Hubzero\Module\Module;
 use Components\Answers\Models\Question;
+use Component;
 use Request;
 use Date;
 
@@ -90,7 +91,7 @@ class Helper extends Module
 
 		if ($this->rows)
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+			require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
 
 			foreach ($this->rows as $k => $row)
 			{

@@ -96,14 +96,14 @@ class Helper extends Module
 	public function display()
 	{
 		// Include mw libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'job.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'view.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'viewperm.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'session.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
+		include_once(Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'job.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'view.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'viewperm.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'session.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'host.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'recent.php');
 
 		// Get database object
 		$this->database = \JFactory::getDBO();

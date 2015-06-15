@@ -32,6 +32,7 @@ namespace Modules\FindResources;
 
 use Hubzero\Module\Module;
 use Components\Tags\Tables\Tag;
+use Component;
 
 /**
  * Module class for displaying ways to find resources
@@ -45,8 +46,8 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		require_once(Component::path('com_tags') . DS . 'helpers' . DS . 'handler.php');
+		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
 
 		$database = \JFactory::getDBO();
 

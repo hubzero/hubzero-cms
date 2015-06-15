@@ -32,7 +32,6 @@ namespace Modules\PopularFaq;
 
 use Hubzero\Module\Module;
 use Components\Kb\Models\Archive;
-use JFactory;
 
 /**
  * Module class for displaying popular KB articles
@@ -46,7 +45,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'archive.php');
+		require_once(\Component::path('com_kb') . DS . 'models' . DS . 'archive.php');
 
 		$a = new Archive();
 		$this->rows = $a->articles(

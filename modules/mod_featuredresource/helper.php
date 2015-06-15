@@ -34,7 +34,6 @@ namespace Modules\Featuredresource;
 use Hubzero\Module\Module;
 use Component;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying a random featured resource
@@ -55,9 +54,9 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		//Get the admin configured settings
 		$filters = array(
@@ -96,14 +95,14 @@ class Helper extends Module
 			// Resource
 			$id = $row->id;
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+			include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'html.php');
 
 			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
 			$path = \Components\Resources\Helpers\Html::build_path($row->created, $row->id, $path);
 
 			if ($row->type == 7)
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				include_once(Component::path('com_tools') . DS . 'tables' . DS . 'version.php');
 
 				$tv = new \Components\Tools\Tables\Version($database);
 

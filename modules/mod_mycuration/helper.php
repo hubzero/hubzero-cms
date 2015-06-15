@@ -50,8 +50,8 @@ class Helper extends Module
 		$config   = Component::params('com_publications');
 
 		// Get some classes we need
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'master.type.php');
+		require_once(Component::path('com_publications') . DS . 'tables' . DS . 'publication.php');
+		require_once(Component::path('com_publications') . DS . 'tables' . DS . 'master.type.php');
 
 		$this->moduleclass = $this->params->get('moduleclass');
 

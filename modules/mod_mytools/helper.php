@@ -50,7 +50,7 @@ class Helper extends Module
 	 */
 	private function _getToollist($lst=NULL)
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+		require_once(Component::path('com_tools') . DS . 'models' . DS . 'tool.php');
 
 		$toollist = array();
 
@@ -232,14 +232,14 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'job.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'view.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'viewperm.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'session.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
+		include_once(Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'job.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'view.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'viewperm.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'session.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'host.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php');
+		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'recent.php');
 		include_once(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
 
 		$params = $this->params;
@@ -265,7 +265,7 @@ class Helper extends Module
 		$database = \JFactory::getDBO();
 		if ($this->supportedtag)
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
 			$this->rt = new \Components\Resources\Helpers\Tags(0);
 			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}

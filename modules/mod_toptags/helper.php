@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+		require_once(\Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 
 		$database = \JFactory::getDBO();
 

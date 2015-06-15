@@ -33,7 +33,6 @@ namespace Modules\Featuredquestion;
 use Hubzero\Module\Module;
 use Components\Answers\Tables\Question;
 use Component;
-use JFactory;
 
 /**
  * Module class for displaying a random featured question
@@ -47,9 +46,9 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$row = null;
 
 		// randomly choose one
