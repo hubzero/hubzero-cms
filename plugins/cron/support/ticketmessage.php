@@ -1,9 +1,6 @@
 <?php
 /**
- * @package    hubzero-cms
- * @author     Shawn Rice <zooley@purdue.edu>
- * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
- * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
  *
@@ -24,13 +21,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-defined('JPATH_PLATFORM') or die;
+
+namespace Hubzero\Html\Parameter\Element;
+
+use Hubzero\Html\Parameter\Element;
 
 /**
  * Renders a list of support ticket messages
  */
-class JElementTicketmessage extends JElement
+class Ticketmessage extends Element
 {
 	/**
 	 * Element name
@@ -42,16 +47,16 @@ class JElementTicketmessage extends JElement
 	/**
 	 * Fetch the element
 	 *
-	 * @param   string       $name          Element name
-	 * @param   string       $value         Element value
-	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
-	 * @param   string       $control_name  Control name
+	 * @param   string  $name          Element name
+	 * @param   string  $value         Element value
+	 * @param   object  &$node         XMLElement node object containing the settings for the element
+	 * @param   string  $control_name  Control name
 	 * @return  string
 	 * @since   1.3.1
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 
 		$html = array();
 
