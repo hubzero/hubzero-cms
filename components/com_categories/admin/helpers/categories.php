@@ -42,7 +42,7 @@ class CategoriesHelper
 
 		// Try to find the component helper.
 		$eName = str_replace('com_', '', $component);
-		$file  = Filesystem::cleanPath(JPATH_ADMINISTRATOR.'/components/'.$component.'/helpers/'.$eName.'.php');
+		$file  = Filesystem::cleanPath(PATH_CORE.'/components/'.$component.'/admin/helpers/'.$eName.'.php');
 
 		if (file_exists($file)) {
 			require_once $file;
@@ -58,7 +58,7 @@ class CategoriesHelper
 					// loading language file from the administrator/language directory then
 					// loading language file from the administrator/components/*extension*/language directory
 					$lang->load($component, JPATH_BASE, null, false, true)
-					|| $lang->load($component, Filesystem::cleanPath(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true);
+					|| $lang->load($component, Filesystem::cleanPath(PATH_CORE . '/components/' . $component . '/admin'), null, false, true);
 
 					call_user_func(array($cName, 'addSubmenu'), 'categories'.(isset($section)?'.'.$section:''));
 				}

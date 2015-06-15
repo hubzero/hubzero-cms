@@ -27,14 +27,14 @@ if (!$asset or
 define('COM_MEDIA_BASE', PATH_CORE.'/'.$params->get('image_path', 'images'));
 define('COM_MEDIA_BASEURL', Request::root().'/'.$params->get('image_path', 'images'));
 
-	Lang::load('com_media', JPATH_ADMINISTRATOR, null, false, true)
-||	Lang::load('com_media', JPATH_SITE, null, false, true);
+	Lang::load('com_media', dirname(__DIR__) . '/admin', null, false, true)
+||	Lang::load('com_media', __DIR__, null, false, true);
 
 // Load the admin HTML view
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/media.php';
+require_once dirname(__DIR__) . '/admin/helpers/media.php';
 
 // Require the base controller
-require_once JPATH_COMPONENT.'/controller.php';
+require_once __DIR__.'/controller.php';
 
 // Make sure the user is authorized to view this page
 $app = JFactory::getApplication();
@@ -46,8 +46,8 @@ if (strpos($cmd, '.') != false)
 	list($controllerName, $task) = explode('.', $cmd);
 
 	// Define the controller name and path
-	$controllerName	= strtolower($controllerName);
-	$controllerPath	= JPATH_COMPONENT_ADMINISTRATOR.'/controllers/'.$controllerName.'.php';
+	$controllerName = strtolower($controllerName);
+	$controllerPath = dirname(__DIR__) . '/admin/controllers/'.$controllerName.'.php';
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
 	if (file_exists($controllerPath))

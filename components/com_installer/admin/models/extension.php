@@ -153,16 +153,17 @@ class Extension extends \JModelList
 					$extension = $item->element;
 					$source = PATH_APP . '/components/' . $extension . '/admin';
 
-					$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true) ||
+					$lang->load("$extension.sys", PATH_APP, null, false, true) ||
 					$lang->load("$extension.sys", $source, null, false, true);
 				break;
 				case 'file':
 					$extension = 'files_' . $item->element;
-					$lang->load("$extension.sys", JPATH_SITE, null, false, true);
+					$lang->load("$extension.sys", PATH_APP, null, false, true);
 				break;
 				case 'library':
 					$extension = 'lib_' . $item->element;
-					$lang->load("$extension.sys", JPATH_SITE, null, false, true);
+					$lang->load("$extension.sys", PATH_APP, null, false, true) ||
+					$lang->load("$extension.sys", PATH_CORE, null, false, true);
 				break;
 				case 'module':
 					$extension = $item->element;
@@ -172,13 +173,14 @@ class Extension extends \JModelList
 				break;
 				case 'package':
 					$extension = $item->element;
-						$lang->load("$extension.sys", JPATH_SITE, null, false, true);
+					$lang->load("$extension.sys", PATH_APP, null, false, true) ||
+					$lang->load("$extension.sys", PATH_CORE, null, false, true);
 				break;
 				case 'plugin':
 					$extension = 'plg_' . $item->folder . '_' . $item->element;
-					$source = JPATH_PLUGINS . '/' . $item->folder . '/' . $item->element;
+					$source = PATH_CORE . '/plugins/' . $item->folder . '/' . $item->element;
 
-					$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true) ||
+					$lang->load("$extension.sys", PATH_APP, null, false, true) ||
 					$lang->load("$extension.sys", $source, null, false, true);
 				break;
 				case 'template':

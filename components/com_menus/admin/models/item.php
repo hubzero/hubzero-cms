@@ -668,12 +668,14 @@ class MenusModelItem extends JModelAdmin
 				if (isset($args['option'])) {
 					// Load the language file for the component.
 					$lang = Lang::getRoot();
-						$lang->load($args['option'], JPATH_ADMINISTRATOR, null, false, true)
-					||	$lang->load($args['option'], JPATH_ADMINISTRATOR . '/components/' . $args['option'], null, false, true);
+						$lang->load($args['option'], PATH_APP, null, false, true)
+					||	$lang->load($args['option'], PATH_APP . '/components/' . $args['option'] . '/admin', null, false, true)
+					||	$lang->load($args['option'], PATH_CORE . '/components/' . $args['option'] . '/admin', null, false, true);
 
 					// Determine the component id.
-					$component = JComponentHelper::getComponent($args['option']);
-					if (isset($component->id)) {
+					$component = Component::load($args['option']);
+					if (isset($component->id))
+					{
 						$table->component_id = $component->id;
 					}
 				}
@@ -870,7 +872,7 @@ class MenusModelItem extends JModelAdmin
 			if (isset($args['option'])) {
 				// The option determines the base path to work with.
 				$option = $args['option'];
-				$base	= JPATH_SITE.'/components/'.$option.'/site';
+				$base   = PATH_CORE.'/components/'.$option.'/site';
 			}
 
 			// Confirm a view is defined.
@@ -989,10 +991,12 @@ class MenusModelItem extends JModelAdmin
 
 		// Now load the component params.
 		// TODO: Work out why 'fixing' this breaks JForm
-		if ($isNew = false) {
-			$path = JPath::clean(JPATH_ADMINISTRATOR.'/components/'.$option.'/config.xml');
+		if ($isNew = false)
+		{
+			$path = JPath::clean(PATH_CORE.'/components/'.$option.'/config/config.xml');
 		}
-		else {
+		else
+		{
 			$path='null';
 		}
 

@@ -80,7 +80,7 @@ class CategoriesViewCategories extends JViewLegacy
 
 		// Need to load the menu language file as mod_menu hasn't been loaded yet.
 			Lang::load($component, JPATH_BASE, null, false, true)
-		||	Lang::load($component, JPATH_ADMINISTRATOR . '/components/' . $component, null, false, true);
+		||	Lang::load($component, PATH_CORE . '/components/' . $component . '/admin', null, false, true);
 
 		// Load the category helper.
 		require_once JPATH_COMPONENT.'/helpers/categories.php';

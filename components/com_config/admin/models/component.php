@@ -70,7 +70,7 @@ class Component extends \JModelForm
 		// Set an alternative path for the configuration file.
 		if ($path = Request::getString('path'))
 		{
-			$path = Filesystem::cleanPath(JPATH_SITE . '/' . $path);
+			$path = Filesystem::cleanPath(PATH_ROOT . '/' . $path);
 			\Hubzero\Filesystem\Util::checkCheck($path);
 			$this->setState('component.path', $path);
 		}
@@ -94,9 +94,9 @@ class Component extends \JModelForm
 		else
 		{
 			// Add the search path for the admin component config.xml file.
-			\JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . $this->getState('component.option'));
+			\JForm::addFormPath(PATH_CORE . '/components/' . $this->getState('component.option'));
 		}
-		\JForm::addFormPath(JPATH_SITE . '/components/' . $this->getState('component.option') . '/config');
+		\JForm::addFormPath(PATH_CORE . '/components/' . $this->getState('component.option') . '/config');
 
 		// Get the form.
 		$form = $this->loadForm(
@@ -128,7 +128,7 @@ class Component extends \JModelForm
 
 		// Load common and local language files.
 		Lang::load($option, JPATH_BASE, null, false, true)
-		|| Lang::load($option, JPATH_SITE . "/components/$option/admin", null, false, true)
+		|| Lang::load($option, PATH_CORE . "/components/$option/admin", null, false, true)
 		|| Lang::load($option, JPATH_BASE . "/components/$option", null, false, true);
 
 		return \Component::load($option);

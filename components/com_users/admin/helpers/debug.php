@@ -45,9 +45,9 @@ class UsersHelperDebug
 			{
 				// Load language
 				$extension = $item->value;
-				$source    = JPATH_SITE . '/components/' . $extension . '/admin';
-					$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true)
-				||	$lang->load("$extension.sys", $source, null, false, true);
+				$source    = PATH_CORE . '/components/' . $extension . '/admin';
+				$lang->load("$extension.sys", PATH_APP, null, false, true) ||
+				$lang->load("$extension.sys", $source, null, false, true);
 
 				// Translate component name
 				$item->text = Lang::txt($item->text);
@@ -89,7 +89,7 @@ class UsersHelperDebug
 		// Use default actions from configuration if no component selected or component doesn't have actions
 		if (empty($actions))
 		{
-			$filename = JPATH_SITE . '/components/com_config/admin/models/forms/application.xml';
+			$filename = PATH_CORE . '/components/com_config/admin/models/forms/application.xml';
 
 			if (is_file($filename))
 			{
@@ -121,10 +121,10 @@ class UsersHelperDebug
 				// Load language
 				$lang      = Lang::getRoot();
 				$extension = 'com_config';
-				$source    = JPATH_SITE . '/components/' . $extension . '/admin';
+				$source    = PATH_CORE . '/components/' . $extension . '/admin';
 
-					$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true)
-				||	$lang->load("$extension.sys", $source, null, false, true);
+				$lang->load("$extension.sys", PATH_APP, null, false, true) ||
+				$lang->load("$extension.sys", $source, null, false, true);
 			}
 		}
 

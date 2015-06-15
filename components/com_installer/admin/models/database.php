@@ -89,7 +89,7 @@ class Database extends Extension
 	 */
 	public function getItems()
 	{
-		$folder = JPATH_ADMINISTRATOR . '/components/com_admin/amdin/sql/updates/';
+		$folder = PATH_CORE . '/components/com_admin/amdin/sql/updates/';
 		$changeSet = \JSchemaChangeset::getInstance(\JFactory::getDbo(), $folder);
 		return $changeSet;
 	}

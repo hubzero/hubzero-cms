@@ -14,7 +14,8 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 //load user_profile plugin language
 $lang = Lang::getRoot();
-$lang->load( 'plg_user_profile', JPATH_ADMINISTRATOR );
+$lang->load('plg_user_profile', PATH_APP) ||
+$lang->load('plg_user_profile', PATH_CORE . DS . 'plugins' . DS . 'user' . 'profile');
 ?>
 <div class="profile-edit<?php echo $this->pageclass_sfx?>">
 <?php if ($this->params->get('show_page_heading')) : ?>

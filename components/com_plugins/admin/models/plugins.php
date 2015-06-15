@@ -201,7 +201,7 @@ class Plugins extends \JModelList
 			$source    = DS . 'plugins' . DS . $item->folder . DS . $item->element;
 			$extension = 'plg_' . $item->folder . '_' . $item->element;
 
-			$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, null, false, true) ||
+			$lang->load($extension . '.sys', PATH_APP, null, false, true) ||
 			$lang->load($extension . '.sys', PATH_APP . $source, null, false, true) ||
 			$lang->load($extension . '.sys', PATH_CORE . $source, null, false, true);
 

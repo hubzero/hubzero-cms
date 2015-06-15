@@ -46,7 +46,7 @@ abstract class JHtmlUsers
 			$version = new JVersion();
 			$jver = explode( '.', $version->getShortVersion() );
 
-			$pathToXml = JPATH_ADMINISTRATOR.'/help/helpsites.xml';
+			$pathToXml = PATH_CORE.'/help/helpsites.xml';
 
 			$text = $value;
 			if (!empty($pathToXml) && $xml = JFactory::getXML($pathToXml))
@@ -103,18 +103,21 @@ abstract class JHtmlUsers
 		}
 		else
 		{
-			$path = JLanguage::getLanguagePath(JPATH_ADMINISTRATOR, $value);
+			$path = Lang::getLanguagePath(PATH_APP, $value);
 			$file = "$value.xml";
 
 			$result = null;
-			if (is_file("$path/$file")) {
-				$result = JLanguage::parseXMLLanguageFile("$path/$file");
+			if (is_file("$path/$file"))
+			{
+				$result = Lang::parseXMLLanguageFile("$path/$file");
 			}
 
-			if ($result) {
+			if ($result)
+			{
 				return htmlspecialchars($result['name']);
 			}
-			else {
+			else
+			{
 				return self::value('');
 			}
 		}
@@ -128,18 +131,21 @@ abstract class JHtmlUsers
 		}
 		else
 		{
-			$path = JLanguage::getLanguagePath(JPATH_SITE, $value);
+			$path = Lang::getLanguagePath(PATH_CORE, $value);
 			$file = "$value.xml";
 
 			$result = null;
-			if (is_file("$path/$file")) {
-				$result = JLanguage::parseXMLLanguageFile("$path/$file");
+			if (is_file("$path/$file"))
+			{
+				$result = Lang::parseXMLLanguageFile("$path/$file");
 			}
 
-			if ($result) {
+			if ($result)
+			{
 				return htmlspecialchars($result['name']);
 			}
-			else {
+			else
+			{
 				return self::value('');
 			}
 		}
@@ -164,8 +170,8 @@ abstract class JHtmlUsers
 			$title = $db->loadResult();
 			if ($title)
 			{
-					$lang->load("plg_editors_$value.sys", JPATH_ADMINISTRATOR, null, false, true)
-				||	$lang->load("plg_editors_$value.sys", JPATH_PLUGINS . '/editors/' . $value, null, false, true);
+				$lang->load("plg_editors_$value.sys", PATH_APP, null, false, true) ||
+				$lang->load("plg_editors_$value.sys", PATH_CORE . '/plugins/editors/' . $value, null, false, true);
 				$lang->load($title.'.sys');
 				return Lang::txt($title);
 			}
@@ -175,5 +181,4 @@ abstract class JHtmlUsers
 			}
 		}
 	}
-
 }

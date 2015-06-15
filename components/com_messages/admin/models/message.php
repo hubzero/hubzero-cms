@@ -295,8 +295,10 @@ class MessagesModelMessage extends JModelAdmin
 			$toUser = \User::getInstance($table->user_id_to);
 			$debug = \Config::get('debug_lang');
 			$default_language = \Component::params('com_languages')->get('administrator');
+
 			$lang = JLanguage::getInstance($toUser->getParam('admin_language', $default_language), $debug);
-			$lang->load('com_messages', JPATH_ADMINISTRATOR);
+			$lang->load('com_messages', PATH_APP) ||
+			$lang->load('com_messages', PATH_CORE . '/components/com_messages/admin');
 
 			$siteURL  = \Request::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $table->message_id;
 			$sitename = \Config::get('sitename');

@@ -255,7 +255,7 @@ class Plugin extends \JModelAdmin
 
 		foreach ($elements as $elementa)
 		{
-			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', JPATH_ADMINISTRATOR, null, false, true) ||
+			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', PATH_APP, null, false, true) ||
 			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', PATH_APP . '/plugins/' . $folder . '/' . $elementa, null, false, true) ||
 			$lang->load('plg_'.$folder.'_'.$elementa.'.sys', PATH_CORE . '/plugins/' . $folder . '/' . $elementa, null, false, true);
 		}
@@ -279,7 +279,7 @@ class Plugin extends \JModelAdmin
 		}
 
 		// Load the core and/or local language file(s).
-		$lang->load('plg_'.$folder.'_'.$element, JPATH_ADMINISTRATOR, null, false, true) ||
+		$lang->load('plg_'.$folder.'_'.$element, PATH_APP, null, false, true) ||
 		$lang->load('plg_'.$folder.'_'.$element, PATH_APP . '/plugins/' . $folder . '/' . $element, null, false, true) ||
 		$lang->load('plg_'.$folder.'_'.$element, PATH_CORE . '/plugins/' . $folder . '/' . $element, null, false, true);
 

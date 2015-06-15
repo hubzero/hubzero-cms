@@ -168,9 +168,9 @@ class Help extends AdminController
 						// Load the core file then
 						// Load extension-local file.
 						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false)
-						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false)
+						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', null, false, false)
 						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
-						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
+						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', $lang->getDefault(), false, false);
 					}
 					$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 				}
@@ -213,23 +213,13 @@ class Help extends AdminController
 		}
 
 		// Path to help pages
-		$helpPagesPath  = PATH_CORE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
-		$helpPagesPath2 = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . Lang::getTag();
+		$path  = PATH_CORE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
 
 		// Make sure directory exists
 		$pages = array();
 
 		// Get help pages for this component
-		if (is_dir($helpPagesPath))
-		{
-			$path = $helpPagesPath;
-		}
-		else if (is_dir($helpPagesPath2))
-		{
-			$path = $helpPagesPath2;
-		}
-
-		$pages = \Filesystem::files($path , '.phtml');
+		$pages = \Filesystem::files($path, '.phtml');
 
 		// Return pages
 		return array(

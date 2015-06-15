@@ -174,12 +174,12 @@ class Plugins extends AdminController
 		{
 			foreach ($this->view->rows as &$item)
 			{
-				$source = JPATH_PLUGINS . '/' . $item->folder . '/' . $item->element;
+				$source = '/plugins/' . $item->folder . '/' . $item->element;
 				$extension = 'plg_' . $item->folder . '_' . $item->element;
-					$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, null, false, false)
-				||	$lang->load($extension . '.sys', $source, null, false, false)
-				||	$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-				||	$lang->load($extension . '.sys', $source, $lang->getDefault(), false, false);
+					$lang->load($extension . '.sys', PATH_APP . $source, null, false, false)
+				||	$lang->load($extension . '.sys', PATH_CORE . $source, null, false, false)
+				||	$lang->load($extension . '.sys', PATH_APP . $source, $lang->getDefault(), false, false)
+				||	$lang->load($extension . '.sys', PATH_CORE . $source, $lang->getDefault(), false, false);
 				$item->name = Lang::txt($item->name);
 			}
 		}

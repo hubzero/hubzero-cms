@@ -73,8 +73,8 @@ class MenusModelMenutypes extends JModelLegacy
 
 						if (isset($option->request['option']))
 						{
-								$lang->load($option->request['option'] . '.sys', JPATH_ADMINISTRATOR, null, false, true)
-							||	$lang->load($option->request['option'] . '.sys', JPATH_ADMINISTRATOR. '/components/'.$option->request['option'], null, false, true);
+								$lang->load($option->request['option'] . '.sys', PATH_APP, null, false, true)
+							||	$lang->load($option->request['option'] . '.sys', PATH_CORE. '/components/'.$option->request['option'].'/admin', null, false, true);
 						}
 					}
 				}
@@ -89,7 +89,7 @@ class MenusModelMenutypes extends JModelLegacy
 		// Initialise variables.
 		$options = array();
 
-		$mainXML = JPATH_SITE.'/components/'.$component.'/metadata.xml';
+		$mainXML = PATH_CORE.'/components/'.$component.'/metadata.xml';
 
 		if (is_file($mainXML)) {
 			$options = $this->getTypeOptionsFromXML($mainXML, $component);
@@ -180,8 +180,8 @@ class MenusModelMenutypes extends JModelLegacy
 		$options = array();
 
 		// Get the views for this component.
-		$path = JPATH_SITE.'/components/'.$component.'/views';
-		$path2 = JPATH_SITE.'/components/'.$component.'/site/views';
+		$path  = PATH_CORE.'/components/'.$component.'/views';
+		$path2 = PATH_CORE.'/components/'.$component.'/site/views';
 
 		if (Filesystem::exists($path))
 		{
@@ -274,8 +274,8 @@ class MenusModelMenutypes extends JModelLegacy
 		$lang = Lang::getRoot();
 
 		// Get the layouts from the view folder.
-		$path = JPATH_SITE.'/components/'.$component.'/views/'.$view.'/tmpl';
-		$path2 = JPATH_SITE.'/components/'.$component.'/site/views/'.$view.'/tmpl';
+		$path  = PATH_CORE.'/components/'.$component.'/views/'.$view.'/tmpl';
+		$path2 = PATH_CORE.'/components/'.$component.'/site/views/'.$view.'/tmpl';
 		if (Filesystem::exists($path))
 		{
 			$layouts = array_merge($layouts, Filesystem::files($path, '.xml$', false, true));
