@@ -66,7 +66,7 @@ class Project extends Model
 	protected $_context = 'com_projects.project.about';
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -181,7 +181,7 @@ class Project extends Model
 		require_once(__DIR__ . DS . 'repo.php');
 		if (!isset($this->_repo))
 		{
-			$this->_repo = new Repo ($this, 'local');
+			$this->_repo = new Repo($this, 'local');
 		}
 
 		return $this->_repo;
@@ -268,7 +268,7 @@ class Project extends Model
 			$this->_member = $this->_tblOwner && $this->_tblOwner->status != 2 ? $this->_tblOwner : false;
 			if ($this->_member)
 			{
-				$this->_member->params = new \JParameter($this->_member->params);
+				$this->_member->params = new \Hubzero\Html\Parameter($this->_member->params);
 			}
 		}
 
@@ -1159,7 +1159,7 @@ class Project extends Model
 		{
 			$this->_type = new Tables\Type($this->_db);
 			$this->_type->load($this->get('type'));
-			$this->_type->_params = new \JParameter( $this->_type->params );
+			$this->_type->_params = new \Hubzero\Html\Parameter($this->_type->params);
 		}
 
 		return $this->_type;

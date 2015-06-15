@@ -147,7 +147,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 			<?php
-			$params = new JParameter($this->row->get('params'), PATH_CORE . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
+			$params = new \Hubzero\Html\Parameter($this->row->get('params'), PATH_CORE . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
 			echo $params->render();
 			?>
 			</div>

@@ -46,7 +46,7 @@ class View extends Model
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolView';
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */

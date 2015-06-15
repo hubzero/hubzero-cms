@@ -62,7 +62,7 @@ $privacyTxt = $this->row->isPublic()
 if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 {
 	// Get project params
-	$params = new JParameter( $this->row->get('params') );
+	$params = new \Hubzero\Config\Registry( $this->row->get('params') );
 
 	if ($this->filters['reviewer'] == 'sensitive')
 	{

@@ -99,14 +99,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 						'layout'  => 'seeker'
 					)
 				);
-				$params = new JParameter( $plugin->params );
+				$params = new \Hubzero\Config\Registry($plugin->params);
 
 				$view->seeker   = $seeker;
-				$view->emp   	= $emp;
+				$view->emp      = $emp;
 				$view->option   = 'com_members';
-				$view->admin   	= $admin;
+				$view->admin    = $admin;
 				$view->params   = $params;
-				$view->list   	= 1;
+				$view->list     = 1;
 				echo $view->loadTemplate();
 				?>
 				</li>

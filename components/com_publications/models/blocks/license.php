@@ -324,7 +324,7 @@ class License extends Base
 		$status 	 = new \Components\Publications\Models\Status();
 
 		// Get version params
-		$pubParams = new \JParameter( $pub->params );
+		$pubParams = new \Hubzero\Config\Registry( $pub->params );
 
 		$status->status = 1;
 

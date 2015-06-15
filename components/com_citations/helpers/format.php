@@ -178,7 +178,7 @@ class Format
 	 * @param   object   $citation       Citation object
 	 * @param   string   $highlight      String that we want to highlight
 	 * @param   boolean  $include_coins  Include COINs?
-	 * @param   object   $config         JParameter
+	 * @param   object   $config         Registry
 	 * @param   boolean  $coins_only     Only output COINs?
 	 * @return  string   Formatted citation
 	 */
@@ -500,8 +500,8 @@ class Format
 	 * Citation links and badges
 	 *
 	 * @param   object  $citation  Citation record
-	 * @param   object  $database  JDatabase
-	 * @param   object  $config    JParameter
+	 * @param   object  $database  Database
+	 * @param   object  $config    Registry
 	 * @param   array   $openurl   Data to append
 	 * @return  string
 	 */

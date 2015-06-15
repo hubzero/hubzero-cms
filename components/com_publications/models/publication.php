@@ -547,7 +547,7 @@ class Publication extends Object
 		if (empty($this->_project))
 		{
 			$this->_project = new \Components\Projects\Models\Project($this->publication->project_id);
-			$this->_project->_params = new \JParameter( $this->_project->params );
+			$this->_project->_params = new \Hubzero\Config\Registry( $this->_project->params );
 		}
 
 		return $this->_project;
@@ -580,7 +580,7 @@ class Publication extends Object
 		{
 			$this->_type = new Tables\MasterType($this->_db);
 			$this->_type->load($this->publication->master_type);
-			$this->_type->_params = new \JParameter( $this->_type->params );
+			$this->_type->_params = new \Hubzero\Config\Registry( $this->_type->params );
 		}
 
 		return $this->_type;
@@ -732,7 +732,7 @@ class Publication extends Object
 		{
 			$this->_category = new Tables\Category( $this->_db );
 			$this->_category->load($this->publication->category);
-			$this->_category->_params = new \JParameter( $this->_category->params );
+			$this->_category->_params = new \Hubzero\Config\Registry( $this->_category->params );
 		}
 
 		return $this->_category;

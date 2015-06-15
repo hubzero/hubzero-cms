@@ -70,12 +70,12 @@ class UsersViewLogout extends JViewLegacy
 		}
 		else
 		{
-			$params = new JParameter( '' );
+			$params = new \Hubzero\Config\Registry('');
 			$template = App::get('template')->template;
 			$inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
 			if (file_exists($inifile))
 			{
-				$params->loadINI( file_get_contents($inifile) );
+				$params->parse(file_get_contents($inifile));
 			}
 
 			$params->def('page_title', Lang::txt( 'Logout' ));

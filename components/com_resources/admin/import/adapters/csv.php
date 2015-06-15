@@ -104,7 +104,7 @@ class Csv implements \Components\Resources\Import\Interfaces\Adapter
 		$iterator = new \Components\Resources\Import\Iterators\Csv($import->getDatapath(), $this->delimiter);
 
 		// get the import params
-		$options = new \JParameter($import->get('params'));
+		$options = new \Hubzero\Config\Registry($import->get('params'));
 
 		// get the mode
 		$mode = $import->get('mode', 'UPDATE');
@@ -122,7 +122,7 @@ class Csv implements \Components\Resources\Import\Interfaces\Adapter
 			$record = $this->map($record, $callbacks['postparse'], $dryRun);
 
 			// convert to resource objects
-			$resource = new \Components\Resources\Models\Import\record($record, $options->toArray(), $mode);
+			$resource = new \Components\Resources\Models\Import\Record($record, $options->toArray(), $mode);
 
 			// do we have a post map callback ?
 			$resource = $this->map($resource, $callbacks['postmap'], $dryRun);

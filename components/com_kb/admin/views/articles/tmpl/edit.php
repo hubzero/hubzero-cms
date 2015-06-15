@@ -223,9 +223,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform paramlist">
 			<legend><span><?php echo Lang::txt('COM_KB_PARAMETERS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<?php echo $this->params->render(); ?>
-			</div>
+			<?php echo $this->params->render(); ?>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

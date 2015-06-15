@@ -31,6 +31,7 @@
 namespace Components\Kb\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Html\Parameter;
 use Components\Kb\Models\Archive;
 use Components\Kb\Models\Article;
 use Components\Kb\Tables;
@@ -197,7 +198,7 @@ class Articles extends AdminController
 			$this->view->row->set('created', Date::toSql());
 		}
 
-		$this->view->params = new \JParameter(
+		$this->view->params = new Parameter(
 			$this->view->row->get('params'),
 			dirname(dirname(__DIR__)) . DS . 'kb.xml'
 		);

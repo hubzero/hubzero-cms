@@ -257,7 +257,7 @@ jQuery(document).ready(function($){
 							$out = null;
 							if ($event['params'])
 							{
-								$param = new JParameter(
+								$param = new \Hubzero\Html\Parameter(
 									(is_object($data) ? $data->toString() : $data),
 									PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . DS . $plugin->element . '.xml'
 								);

@@ -44,7 +44,7 @@ $params = Component::params("com_groups");
 $displaySystemUsers = $params->get('display_system_users', 'no');
 
 //get this groups params
-$gparams = new JParameter($this->group->get('params'));
+$gparams = new \Hubzero\Config\Registry($this->group->get('params'));
 $displaySystemUsers = $gparams->get('display_system_users', $displaySystemUsers);
 
 //get the group members

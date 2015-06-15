@@ -46,7 +46,7 @@ class Status extends Model
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolStatus';
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */

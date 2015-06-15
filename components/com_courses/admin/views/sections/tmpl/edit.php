@@ -397,7 +397,7 @@ jQuery(document).ready(function($){
 
 						foreach ($plugins as $plugin)
 						{
-							$param = new JParameter(
+							$param = new \Hubzero\Html\Parameter(
 								(is_object($data) ? $data->toString() : $data),
 								PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 							);

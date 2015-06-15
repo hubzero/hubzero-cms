@@ -46,7 +46,7 @@ class Instance extends Model
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolInstance';
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */

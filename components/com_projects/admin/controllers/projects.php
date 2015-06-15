@@ -142,7 +142,7 @@ class Projects extends AdminController
 
 			for ($i=0, $n=count( $rows ); $i < $n; $i++)
 			{
-				$params = new \JParameter( $rows[$i]->params );
+				$params = new \Hubzero\Config\Registry( $rows[$i]->params );
 				$quota = $params->get('quota', 0);
 				if (($this->view->filters['quota'] == 'premium' && $quota < $this->view->premiumQuota )
 					|| ($this->view->filters['quota'] == 'regular' && $quota > $this->view->defaultQuota))

@@ -284,7 +284,7 @@ class Groups extends Base
 		}
 
 		// Get the group params
-		$this->view->gparams = new \JParameter($this->view->group->get('params'));
+		$this->view->gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 
 		// Check authorization
 		$this->view->authorized = Helpers\View::authorize($this->view->group);

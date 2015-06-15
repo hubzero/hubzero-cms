@@ -486,8 +486,7 @@ class Events extends AdminController
 		{
 			//email is reaquired
 			$params['show_email'] = 1;
-			$p = new \JParameter(null);
-			$p->loadArray($params);
+			$p = new \Hubzero\Config\Registry($params);
 			$row->params = $p->toString();
 		}
 

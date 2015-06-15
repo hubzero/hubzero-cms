@@ -52,14 +52,14 @@ class Conditions extends Object
 	use Escapable;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
 	public $database;
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */

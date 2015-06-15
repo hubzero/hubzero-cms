@@ -114,7 +114,7 @@ $showAbstract = $config->get('citation_rollover', 'no');
 $showAbstract = ($showAbstract == "yes") ? 1 : 0;
 
 //are we showing this citations abstract
-$params = new JParameter($citation->params);
+$params = new \Hubzero\Config\Registry($citation->params);
 $showThisAbstract = $params->get('rollover', $showAbstract);
 
 //get tags and badges

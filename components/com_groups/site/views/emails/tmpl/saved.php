@@ -484,7 +484,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 																<tr>
 																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
-																			$gparams = new JParameter($this->group->get('params'));
+																			$gparams = new \Hubzero\Config\Registry($this->group->get('params'));
 																			if ($gparams->get('page_comments') == 2)
 																			{
 																				echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK');
@@ -512,7 +512,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 																<tr>
 																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
-																			$gparams = new JParameter($this->group->get('params'));
+																			$gparams = new \Hubzero\Config\Registry($this->group->get('params'));
 																			if ($gparams->get('page_author') == 1)
 																			{
 																				echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES');

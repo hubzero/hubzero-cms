@@ -149,7 +149,7 @@ function submitbutton(pressbutton)
 					$tags  = $cloud->render('cloud');
 					$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';
 
-					$params = new JParameter( $row->params );
+					$params = new \Hubzero\Config\Registry( $row->params );
 					$quota  = $params->get('quota', $this->defaultQuota);
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 				?>

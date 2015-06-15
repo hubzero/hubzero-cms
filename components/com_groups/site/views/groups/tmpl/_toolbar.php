@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // get group params
-$params = new JParameter($this->group->get('params'));
+$params = new \Hubzero\Config\Registry($this->group->get('params'));
 
 //is membership control managed on group?
 $membership_control = $params->get('membership_control', 1);

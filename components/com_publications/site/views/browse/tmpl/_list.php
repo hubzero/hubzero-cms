@@ -48,7 +48,7 @@ foreach ($this->results as $line)
 
 	// Get parameters
 	$params = clone($this->config);
-	$rparams = new JParameter( $line->params );
+	$rparams = new \Hubzero\Config\Registry( $line->params );
 	$params->merge( $rparams );
 
 	// Set the display date

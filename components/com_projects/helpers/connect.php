@@ -39,14 +39,13 @@ use Google_Service_Oauth2;
 use Google_Http_Request;
 use Hubzero\Base\Object;
 
-require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
-		. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
+require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
 
 /**
  * Projects Connect helper class
  */
-class Connect extends Object {
-
+class Connect extends Object
+{
 	/**
 	 * Project
 	 *
@@ -2134,8 +2133,8 @@ class Connect extends Object {
 	{
 		$uid = $uid ? $uid : $this->_uid;
 		$objO = $this->model->table('Owner');
-		$objO->loadOwner ($this->model->get('id'), $uid);
-		$params = new \JParameter( $objO->params );
+		$objO->loadOwner($this->model->get('id'), $uid);
+		$params = new \Hubzero\Config\Registry( $objO->params );
 		return $params->get($param);
 	}
 
@@ -2153,7 +2152,7 @@ class Connect extends Object {
 		$uid = $uid ? $uid : $this->_uid;
 
 		$objO = $this->model->table('Owner');
-		$objO->saveParam (
+		$objO->saveParam(
 			$this->model->get('id'),
 			$uid,
 			$param,

@@ -35,12 +35,12 @@ $database = JFactory::getDBO();
 $html = '';
 
 // Get parameters
-$rparams = new JParameter($this->resource->params);
+$rparams = new \Hubzero\Config\Registry($this->resource->params);
 $params = $this->config;
 $params->merge($rparams);
 
 // Get attributes
-$attribs = new JParameter($this->resource->attribs);
+$attribs = new \Hubzero\Config\Registry($this->resource->attribs);
 
 // Get the resource's children
 $helper = new \Components\Resources\Helpers\Helper($this->resource->id, $database);

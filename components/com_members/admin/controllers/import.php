@@ -145,7 +145,7 @@ class Import extends AdminController
 		$this->view->import = $row;
 
 		// import params
-		$this->view->params = new \JParameter($this->view->import->get('params'));
+		$this->view->params = new \Hubzero\Config\Registry($this->view->import->get('params'));
 
 		// get all files in import filespace
 		if ($this->view->import->exists())

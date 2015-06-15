@@ -64,7 +64,7 @@ class Todo extends Model
 	private $_entries = null;
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */

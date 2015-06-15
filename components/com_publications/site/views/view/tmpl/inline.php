@@ -42,7 +42,7 @@ $oWidth = '780';
 $oHeight= '480';
 
 // Get some attributes
-$attribs    = new JParameter($this->primary->attribs);
+$attribs    = new \Hubzero\Config\Registry($this->primary->attribs);
 $width      = $attribs->get( 'width', '' );
 $height     = $attribs->get( 'height', '' );
 $attributes = $attribs->get('attributes', '');

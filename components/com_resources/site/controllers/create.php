@@ -1355,7 +1355,7 @@ class Create extends SiteController
 			}
 
 			// set license
-			$params = new \JParameter($resource->params);
+			$params = new \Hubzero\Config\Registry($resource->params);
 			$params->set('license', $license);
 			$resource->params = $params->toString();
 		}

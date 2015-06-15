@@ -186,7 +186,7 @@ class Doi extends \JTable
 	 * Register a DOI
 	 *
 	 * @param   array   $authors   Authors of a resource
-	 * @param   object  $config    JParameter
+	 * @param   object  $config    Parameter
 	 * @param   array   $metadata  Metadata
 	 * @param   string  &$doierr   Container for error messages
 	 * @return  mixed   False if error, string on success

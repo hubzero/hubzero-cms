@@ -43,7 +43,7 @@ $xprofilem = \Hubzero\User\Profile::getInstance($this->row->modified_by);
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 
-$params = new JParameter($this->row->params, PATH_CORE . DS . 'components' . DS . $this->option . DS . 'events.xml');
+$params = new \Hubzero\Html\Parameter($this->row->params, PATH_CORE . DS . 'components' . DS . $this->option . DS . 'events.xml');
 ?>
 <script type="text/javascript" src="../components/<?php echo $this->option; ?>/site/assets/js/calendar.rc4.js"></script>
 <script type="text/javascript">

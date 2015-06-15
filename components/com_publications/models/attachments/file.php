@@ -737,7 +737,7 @@ class File extends Base
 		if (!$suffix && $params)
 		{
 			// Get file attachment params
-			$fParams = new \JParameter( $params );
+			$fParams = new \Hubzero\Config\Registry( $params );
 			$suffix  = $fParams->get('suffix');
 		}
 		// Do we transfer file with subdirectories?
@@ -1412,7 +1412,7 @@ class File extends Base
 							. '&el=' . $view->elementId . '&a=' . $att->id . '&download=1' ));
 
 		// Is attachment (image) also publication thumbnail
-		$params = new \JParameter( $att->params );
+		$params = new \Hubzero\Config\Registry( $att->params );
 		$data->set('pubThumb', $params->get('pubThumb', NULL));
 		$data->set('suffix', $params->get('suffix', NULL));
 

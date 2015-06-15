@@ -46,7 +46,7 @@ class Log extends Model
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolLog';
 
 	/**
-	 * JParameter
+	 * Registry
 	 *
 	 * @var object
 	 */

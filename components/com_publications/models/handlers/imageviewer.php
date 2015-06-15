@@ -339,7 +339,7 @@ class ImageViewer extends Base
 			$title 		= $attach->title ? $attach->title : $attConfigs->title;
 			$title 		= $title ? $title : basename($attach->path);
 
-			$params = new \JParameter( $attach->params );
+			$params = new \Hubzero\Config\Registry( $attach->params );
 
 			$html .= '<li>';
 			$html .= ' <a rel="lightbox" href="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . basename($fpath) . '">';
@@ -463,7 +463,7 @@ class ImageViewer extends Base
 			if (!$suffix && $params)
 			{
 				// Get file attachment params
-				$fParams = new \JParameter( $params );
+				$fParams = new \Hubzero\Config\Registry( $params );
 				$suffix  = $fParams->get('suffix');
 			}
 

@@ -203,7 +203,7 @@ if ($label == "none") {
 											echo $formatted; ?>
 										<?php
 											//get this citations rollover param
-											$params = new JParameter($cite->params);
+											$params = new \Hubzero\Config\Registry($cite->params);
 											$citation_rollover = $params->get('rollover', $rollover);
 										?>
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
