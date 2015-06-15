@@ -220,7 +220,7 @@ HUB.Groups = {
 
 				if(this.value == "")
 				{
-					logo = '<img src="/components/com_groups/assets/img/group_default_logo.png" />';
+					logo = '<img src="/components/com_groups/site/assets/img/group_default_logo.png" />';
 				}
 				else
 				{

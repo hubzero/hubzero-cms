@@ -40,7 +40,7 @@ class JHtmlIcon
 
 	static function email($article, $params, $attribs = array())
 	{
-		require_once PATH_CORE . '/components/com_mailto/helpers/mailto.php';
+		require_once PATH_CORE . '/components/com_mailto/site/helpers/mailto.php';
 
 		$base     = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
 		$template = App::get('template')->template;

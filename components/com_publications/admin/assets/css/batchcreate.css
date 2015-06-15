@@ -1,10 +1,10 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/components/com_publicatons/assets/css/batchcreate.css
+ * @file        components/com_publicatons/admin/assets/css/batchcreate.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-	
+
 .batchupload {
 	margin-top: 2em;
 }

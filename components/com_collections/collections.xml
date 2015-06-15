@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package		hubzero-cms
-@file		   administrator/components/com_kb/kb.xml
-@copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
-@license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+@package        hubzero-cms
+@file           components/com_collections/collections.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
 Copyright 2005-2011 Purdue University. All rights reserved.
 

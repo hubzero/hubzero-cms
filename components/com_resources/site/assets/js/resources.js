@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_resources/assets/js/resources.js
+ * @file        components/com_resources/site/assets/js/resources.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */

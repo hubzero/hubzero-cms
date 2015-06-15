@@ -354,7 +354,7 @@
 	#member-stats-graph:hover {
 		background: #555;
 		border: 1px solid #333;
-		cursor: url("/components/com_members/assets/img/zoom_in.png"), move;
+		cursor: url("/components/com_members/site/assets/img/zoom_in.png"), move;
 	}
 	#member-stats-graph:hover:after {
 		color: #FFF;

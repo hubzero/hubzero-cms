@@ -18,7 +18,7 @@ jQuery(function(jq)
 				if (mi)
 					mi.remove();
 				var text = $('<input id="maininput-actags" class="maininput" type="text" autocomplete="off" />');
-				text.autocomplete({ source: 'index.php?option=com_tags&controller=relationships&task=suggest&limit=50' });	
+				text.autocomplete({ source: 'index.php?option=com_tags&controller=relationships&task=suggest&limit=50' });
 
 				par.append(text);
 				text.focus();
@@ -91,7 +91,7 @@ jQuery(function(jq)
 	{
 		$('#graph, #labels, #labeled, #parents, #children').empty();
 		$('#metadata-cont').css('display', 'none');
-		$('#graph').css('background', 'url(\'/administrator/components/com_tags/assets/img/throbber.gif\') no-repeat top left');
+		$('#graph').css('background', 'url(\'/components/com_tags/admin/assets/img/throbber.gif\') no-repeat top left');
 
 		var vis = d3.select("#graph")
 			.append("svg:svg")
@@ -176,7 +176,7 @@ jQuery(function(jq)
 	{
 		$('#graph, #labels, #labeled, #parents, #children').empty();
 		$('#metadata-cont').css('display', 'none');
-		$('#graph').css('background', 'url(\'/administrator/components/com_tags/assets/img/throbber.gif\') no-repeat top left');
+		$('#graph').css('background', 'url(\'/components/com_tags/admin/assets/img/throbber.gif\') no-repeat top left');
 
 		var vis = d3.select("#graph")
 			.append("svg:svg")

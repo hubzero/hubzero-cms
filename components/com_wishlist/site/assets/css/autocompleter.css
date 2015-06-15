@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_wishlist/autocompleter.css
+ * @file        components/com_wishlist/site/assets/css/autocompleter.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -9,7 +9,7 @@
 	div.autocompleter-loading {
 		float: left;
 		clear: right;
-		background:	#fff url("/components/com_wishlist/assets/img/spinner.gif") no-repeat center;
+		background:	#fff url("/components/com_wishlist/site/assets/img/spinner.gif") no-repeat center;
 		width: 20px;
 		height: 16px;
 	}
@@ -47,7 +47,7 @@
 
 	#as-notify {
 		z-index: 65557;
-		background: #FFFDEF url("/components/com_wishlist/assets/img/save-large.png") 50% 50% no-repeat;
+		background: #FFFDEF url("/components/com_wishlist/site/assets/img/save-large.png") 50% 50% no-repeat;
 		text-indent: -55em;
 		overflow: hidden;
 		position: fixed;

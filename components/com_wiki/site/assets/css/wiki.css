@@ -786,7 +786,7 @@
 		border: 2px solid #eee;
 		padding: 1em;
 		margin: 1em 1em 0 0;
-		background: url("/components/com_wiki/assets/img/draft.gif");
+		background: url("/components/com_wiki/site/assets/img/draft.gif");
 	}
 /* Admonitions */
 	div.admon-caution,
@@ -1082,7 +1082,7 @@
 		text-align: center;
 		vertical-align: middle;
 		background-color: #fff;
-		background-image: url("/components/com_wiki/assets/img/checkered.png");
+		background-image: url("/components/com_wiki/site/assets/img/checkered.png");
 		background-image: -webkit-linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5 100%),
 						  -webkit-linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5 100%);
 		background-image: -moz-linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5 100%),

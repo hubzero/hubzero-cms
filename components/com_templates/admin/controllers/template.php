@@ -6,7 +6,7 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('InstallerModelInstall', JPATH_ADMINISTRATOR . '/components/com_installer/models/install.php');
+JLoader::register('InstallerModelInstall', PATH_CORE . '/components/com_installer/models/install.php');
 
 /**
  * Template style controller class.

@@ -2,7 +2,7 @@
 
 <!--
 @package    hubzero-cms
-@file       administrator/components/com_wiki/wiki.xml
+@file       components/com_wiki/wiki.xml
 @copyright  Copyright 2005-2011 Purdue University. All rights reserved.
 @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Wiki</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
@@ -85,4 +85,4 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="static">COM_WIKI_MODE_STATIC</option>
 		</param>
 	</params>
-</install>
+</extension>

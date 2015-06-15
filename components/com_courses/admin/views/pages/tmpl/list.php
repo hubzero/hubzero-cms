@@ -107,14 +107,14 @@ for ($i=0; $i<count($folders); $i++)
 ?>
 					<tr>
 						<td style="width:16px;">
-							<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/folder.png" alt="<?php echo $folderName; ?>" width="16" height="16" />
+							<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/admin/assets/img/folder.png" alt="<?php echo $folderName; ?>" width="16" height="16" />
 						</td>
 						<td>
 							<?php echo $folderName; ?>
 						</td>
 						<td style="width:16px;">
 							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo DS . $folders[$folderName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;course=<?php echo $this->course_id; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('DELETE'); ?>">
-								<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('DELETE'); ?>" />
+								<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>
@@ -130,14 +130,14 @@ for ($i=0; $i<count($folders); $i++)
 				?>
 					<tr>
 						<?php /*<td style="width:16px;">
-							<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/file.png" alt="<?php echo $docName; ?>" width="16" height="16" />
+							<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/admin/assets/img/file.png" alt="<?php echo $docName; ?>" width="16" height="16" />
 						</td>*/ ?>
 						<td>
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td style="width:16px;">
 							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('DELETE'); ?>">
-								<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('DELETE'); ?>" />
+								<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>

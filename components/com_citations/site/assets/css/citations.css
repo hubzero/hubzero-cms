@@ -550,7 +550,7 @@
 		padding:0 0 0 15px;
 		list-style:none;
 		overflow:hidden;
-		background:url('/components/com_resources/assets/img/childlink.gif') 0 0 no-repeat;
+		background:url('/components/com_citations/site/assets/img/childlink.gif') 0 0 no-repeat;
 	}
 	.content-header-extra .secondary li {
 		margin:3px 5px 0 5px;

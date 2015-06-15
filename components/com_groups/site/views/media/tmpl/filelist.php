@@ -158,7 +158,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 					<div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW'); ?></div>
 					<div class="preview">
 						<?php if ($isImage) : ?>
-							<img src="/components/com_groups/assets/img/loading.gif" data-src="<?php echo $downloadPath; ?>" />
+							<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/assets/img/loading.gif" data-src="<?php echo $downloadPath; ?>" />
 						<?php else : ?>
 							<p><strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE'); ?></strong></p>
 						<?php endif; ?>

@@ -191,7 +191,7 @@ X-RateLimit-Reset: 1392321600</code></pre>
 	"gidNumber"   : "12345",
 	"description" : "Test Group",
 	"public_desc" : "Test Group Description",
-	"logo"        : "/components/com_groups/assets/img/group_default_logo.png",
+	"logo"        : "/components/com_groups/site/assets/img/group_default_logo.png",
 	"created"     : "2015-01-29T19:58:07Z",
 	"created_by"  : {
 		"uidNumber"    : "1000",

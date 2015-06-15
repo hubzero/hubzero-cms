@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php } else { ?>
 			<tr>
 				<td colspan="4">
-					<img src="<?php echo '../components/' . $this->option . '/assets/img/nophoto.gif'; ?>" alt="<?php echo Lang::txt('COM_STORE_NO_PICTURE'); ?>" />
+					<img src="<?php echo '../components/' . $this->option . '/site/assets/img/nophoto.gif'; ?>" alt="<?php echo Lang::txt('COM_STORE_NO_PICTURE'); ?>" />
 					<input type="hidden" name="currentfile" value="" />
 				</td>
 			</tr>

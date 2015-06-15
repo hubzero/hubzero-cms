@@ -206,7 +206,7 @@ class Profiles extends SiteController
 		$json = array();
 		if (count($rows) > 0)
 		{
-			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
+			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
 			$default = \Hubzero\User\Profile\Helper::thumbit($default);
 			foreach ($rows as $row)
 			{

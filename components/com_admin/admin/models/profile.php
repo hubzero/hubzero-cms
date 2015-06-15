@@ -7,7 +7,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-require_once JPATH_ADMINISTRATOR.'/components/com_users/models/user.php';
+require_once PATH_CORE.'/components/com_users/admin/models/user.php';
 
 /**
  * User model.

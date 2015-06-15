@@ -111,7 +111,7 @@ window.onload = passparam;
 <?php } else { ?>
 			<tr>
 				<td colspan="4">
-					<img src="<?php echo '..' . DS . ltrim($this->config->get('defaultpic', '/components/com_feedback/assets/img/contributor.gif')); ?>" alt="<?php echo Lang::txt('NO_MEMBER_PICTURE'); ?>" />
+					<img src="<?php echo '..' . DS . ltrim($this->config->get('defaultpic', '/components/com_feedback/site/assets/img/contributor.gif')); ?>" alt="<?php echo Lang::txt('NO_MEMBER_PICTURE'); ?>" />
 					<input type="hidden" name="currentfile" value="" />
 				</td>
 			</tr>

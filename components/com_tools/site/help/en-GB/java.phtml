@@ -31,70 +31,69 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
+<article>
+	<h1>Java</h1>
 
-<h1>Java</h1>
-<ol>
-	<li>
-		<a href="#needjava">Why do I need Java?</a>
-	</li>
-	<li>
-		<a href="#javaerror">Help! I'm getting a Java error!</a>
-	</li>
-	<li>
-		<a href="#signedapplet">Signed Applet</a>
-	</li>
-	<li>
-		<a href="#troubleshooting">Troubleshooting</a>
-	</li>
-</ol>
+	<nav>
+		<ol>
+			<li>
+				<a href="#needjava">Why do I need Java?</a>
+			</li>
+			<li>
+				<a href="#javaerror">Help! I'm getting a Java error!</a>
+			</li>
+			<li>
+				<a href="#signedapplet">Signed Applet</a>
+			</li>
+			<li>
+				<a href="#troubleshooting">Troubleshooting</a>
+			</li>
+		</ol>
+	</nav>
 
-<a name="needjava"></a>
-<h3>Why do I need Java?</h3>
-<p>In order to access the simulation tools, you must have Java version 1.4 or later installed on your machine and enabled in your web browser. Note that Java is not the same as Javascript. Visit the Java website to verify which version of Java is <a target="_blank" href="http://www.java.com/en/download/installed.jsp">installed</a> on your browser. You can also <a target="_blank" href="http://www.java.com/en/download/manual.jsp">upgrade</a> to the latest release of Java. If you do not have access to install plug-ins, please contact your system administrator about installing or upgrading your Java.</p>
+	<section id="needjava">
+		<h3>Why do I need Java?</h3>
+		<p>In order to access the simulation tools, you must have Java version 1.4 or later installed on your machine and enabled in your web browser. Note that Java is not the same as Javascript. Visit the Java website to verify which version of Java is <a target="_blank" href="http://www.java.com/en/download/installed.jsp">installed</a> on your browser. You can also <a target="_blank" href="http://www.java.com/en/download/manual.jsp">upgrade</a> to the latest release of Java. If you do not have access to install plug-ins, please contact your system administrator about installing or upgrading your Java.</p>
 
-<h4>Enabling Java</h4>
-<p>Even if Java is installed, you must enable its use within your browser. To do so, check your preferences menu. The option is called Enable Java and is found within the "Content" or "Advanced" menus.</p>
+		<h4>Enabling Java</h4>
+		<p>Even if Java is installed, you must enable its use within your browser. To do so, check your preferences menu. The option is called Enable Java and is found within the "Content" or "Advanced" menus.</p>
 
-<h4>Known Issues</h4>
-<ul>
-	<li>
-		<strong>KDE Konqueror</strong><br />
-		To enable Java in the KDE Konqueror browser, make sure that the Java preferences are enabled and that Use KIO is checked. In the box that specifies the path to the java executable, simply typing java often works better than the full path to the executable.
-	</li>
-	<li>
-		<strong>Java 1.6.0 Update 03 and 04</strong>
-		Some people experience problems that result from using newer web browsers like Firefox 2.0.0.11 with Java version 1.6.0 Update 03 or 1.6.0 Update 04. Often, switching to an earlier version of Java (e.g. 1.6.0 Update 02) solves these problems.
-	</li>
-</ul>
-
-<hr />
-
-<a name="javaerror"></a>
-<h3>Help! I'm getting a Java error!</h3>
-<p>Users may experience a Java error on Mac OS X if they are using Java version 1.3 and below. Please ensure your Java install is up to date.<br />
-NOTE! For gecko browsers (Mozilla, Firefox, Camino), the following may be the source of the error:</p>
-<blockquote>Mozilla will only use JRE 1.3.1, even if a later JRE is installed [Bug 197813]. To use a newer JRE, you will need to install the Java Embedding Plugin for Mac OS X. This plugin is beta quality software, and may have bugs and cause problems. Read the Readme before installing it.</blockquote>
-<p>Java for Windows, Mac OS, Solaris, and Linux can be downloaded here. Instructions for installation may also be found at that site.</p>
-
-<hr />
-
-<a name="signedapplet"></a>
-<h3>Signed Applet</h3>
-<p>If you are behind a network firewall that requires you to use a web proxy with your browser, your Java environment will also need to use a proxy to connect to tool sessions. The default security manager for Java stipulates that an applet can make network connections only to the web server from which it was originally loaded. Connecting to a proxy requires additional privileges—even though the ultimate connection through the proxy is to the originating web server.</p>
-<p>In order to empower an applet with additional privileges, it must be signed. This is a process by which a cryptographic identity is added to the applet to prove the identity of its author. The first time you load a particular signed applet, your Java virtual machine will show you a dialog similar to the following:</p>
-<p>This dialog shows that the applet was authored by Purdue University and is confirmed by Thawte Consulting (a certificate authority that most JVM's trust). If you trust the author of this applet, you can select "Yes" to load the applet.</p>
-<p>A signed applet can have many privileges. It can access your general window system, your computer's peripherals, and your local file system. The hub VNC applet uses additional privileges only to connect to your web proxy. The applet contains no code to perform any kind of additional access to your computer's local resources.</p>
-
-<hr />
-
-<a name="troubleshooting"></a>
-<h3>Troubleshooting</h3>
-<p>There are two common reasons why you may not be able to view an application.</p>
-<ul>
-	<li>
-		<strong>The tool is internally misconfigured.</strong> If you can look at your <a target="_blank" href="/members/myaccount">My HUB page</a> and see that the tool you just started does not appear in the list of running sessions, it exited before it could be viewed. You should <a target="_blank" href="/support/ticket/new">report this as a problem.</a>
-	</li>
-	<li>
-		<strong>The Java interpreter won't start or is misconfigured.</strong> If you've been able to view applications in previous times with the same browser, usually you can solve this problem by restarting your browser. Make sure that all instances of the browser (e.g. multiple windows) are stopped in order to properly stop and restart the Java environment.
-	</li>
-</ul>
+		<h4>Known Issues</h4>
+		<ul>
+			<li>
+				<strong>KDE Konqueror</strong><br />
+				To enable Java in the KDE Konqueror browser, make sure that the Java preferences are enabled and that Use KIO is checked. In the box that specifies the path to the java executable, simply typing java often works better than the full path to the executable.
+			</li>
+			<li>
+				<strong>Java 1.6.0 Update 03 and 04</strong>
+				Some people experience problems that result from using newer web browsers like Firefox 2.0.0.11 with Java version 1.6.0 Update 03 or 1.6.0 Update 04. Often, switching to an earlier version of Java (e.g. 1.6.0 Update 02) solves these problems.
+			</li>
+		</ul>
+	</section>
+	<section id="javaerror">
+		<h3>Help! I'm getting a Java error!</h3>
+		<p>Users may experience a Java error on Mac OS X if they are using Java version 1.3 and below. Please ensure your Java install is up to date.<br />
+		NOTE! For gecko browsers (Mozilla, Firefox, Camino), the following may be the source of the error:</p>
+		<blockquote>Mozilla will only use JRE 1.3.1, even if a later JRE is installed [Bug 197813]. To use a newer JRE, you will need to install the Java Embedding Plugin for Mac OS X. This plugin is beta quality software, and may have bugs and cause problems. Read the Readme before installing it.</blockquote>
+		<p>Java for Windows, Mac OS, Solaris, and Linux can be downloaded here. Instructions for installation may also be found at that site.</p>
+	</section>
+	<section id="signedapplet">
+		<h3>Signed Applet</h3>
+		<p>If you are behind a network firewall that requires you to use a web proxy with your browser, your Java environment will also need to use a proxy to connect to tool sessions. The default security manager for Java stipulates that an applet can make network connections only to the web server from which it was originally loaded. Connecting to a proxy requires additional privileges—even though the ultimate connection through the proxy is to the originating web server.</p>
+		<p>In order to empower an applet with additional privileges, it must be signed. This is a process by which a cryptographic identity is added to the applet to prove the identity of its author. The first time you load a particular signed applet, your Java virtual machine will show you a dialog similar to the following:</p>
+		<p>This dialog shows that the applet was authored by Purdue University and is confirmed by Thawte Consulting (a certificate authority that most JVM's trust). If you trust the author of this applet, you can select "Yes" to load the applet.</p>
+		<p>A signed applet can have many privileges. It can access your general window system, your computer's peripherals, and your local file system. The hub VNC applet uses additional privileges only to connect to your web proxy. The applet contains no code to perform any kind of additional access to your computer's local resources.</p>
+	</section>
+	<section id="troubleshooting">
+		<h3>Troubleshooting</h3>
+		<p>There are two common reasons why you may not be able to view an application.</p>
+		<ul>
+			<li>
+				<strong>The tool is internally misconfigured.</strong> If you can look at your <a target="_blank" href="/members/myaccount">My HUB page</a> and see that the tool you just started does not appear in the list of running sessions, it exited before it could be viewed. You should <a target="_blank" href="/support/ticket/new">report this as a problem.</a>
+			</li>
+			<li>
+				<strong>The Java interpreter won't start or is misconfigured.</strong> If you've been able to view applications in previous times with the same browser, usually you can solve this problem by restarting your browser. Make sure that all instances of the browser (e.g. multiple windows) are stopped in order to properly stop and restart the Java environment.
+			</li>
+		</ul>
+	</section>
+</article>

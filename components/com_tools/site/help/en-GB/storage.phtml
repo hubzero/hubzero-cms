@@ -31,65 +31,68 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
+<article>
+	<h1>Tool Storage</h1>
 
-<h1>Tool Storage</h1>
+	<nav>
+		<ol>
+			<li>
+				<a href="#webdav">How to use WebDAV to access your HUB storage</a>
+			</li>
+		</ol>
+	</nav>
 
-<ol>
-	<li>
-		<a href="#webdav">How to use WebDAV to access your HUB storage</a>
-	</li>
-</ol>
-
-
-<a name="webdav"></a>
-<h2>How to use WebDAV to access your HUB storage</h2>
-<p>WebDAV is the Distributed Authoring and Versioning extension to the standard HTTP/HTTPS web protocol. It allows a client to browse a remote filesystem, usually with a graphical browser that makes it appear that your files are on your desktop. You may access your nanoHUB storage using only the secure version of this service (HTTPS). We do not support HTTP. Most modern computer platforms support HTTPS transport for WebDAV with either small adjustments or freely available software.</p>
-
-
-<h3>Linux/Unix</h3>
-<p>If you use the KDE graphical desktop environment, you can access your hub storage with the Konqueror browser by typing the special URL webdavs://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/ into the Location field of the browser. It will prompt you for your hub login and password. Thereafter, you traverse your home directory by clicking on folders and you can drag and drop files to your desktop.</p>
-<p><a target="_blank" href="http://www.webdav.org/cadaver/">Cadaver</a> is a text-mode WebDAV browser. It can be used if it is compiled with SSL support. Invoke it with the command cadaver https://webdav.HUBADDRESS/ and it will prompt you for your hub login and password. You can then use it in a manner similar to FTP.
-If you are using Linux, you can use the <a target="_blank" href="http://dav.sourceforge.net/">davfs</a> kernel module to mount your hub storage area as a local filesystem.</p>
+	<section id="webdav">
+		<h2>How to use WebDAV to access your HUB storage</h2>
+		<p>WebDAV is the Distributed Authoring and Versioning extension to the standard HTTP/HTTPS web protocol. It allows a client to browse a remote filesystem, usually with a graphical browser that makes it appear that your files are on your desktop. You may access your nanoHUB storage using only the secure version of this service (HTTPS). We do not support HTTP. Most modern computer platforms support HTTPS transport for WebDAV with either small adjustments or freely available software.</p>
 
 
-<h3>Mac OSX</h3>
-<p>MacOS versions 10.4 and higher support HTTPS transport for WebDAV using the Finder. To access your nanoHUB directory, select the Go menu in the Finder and choose "Connect to Network Server". Enter the URL http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav into the address field. You will be prompted for your nanoHUB login and password.
-MacOS versions lower than 10.4 do not have support for HTTPS, but a free client exists. Download Goliath and install it on your system. Invoke it and use http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav as the address to connect to. Note that you may also use Goliath on newer MacOS platforms as well.</p>
+		<h3>Linux/Unix</h3>
+		<p>If you use the KDE graphical desktop environment, you can access your hub storage with the Konqueror browser by typing the special URL webdavs://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/ into the Location field of the browser. It will prompt you for your hub login and password. Thereafter, you traverse your home directory by clicking on folders and you can drag and drop files to your desktop.</p>
+		<p><a target="_blank" href="http://www.webdav.org/cadaver/">Cadaver</a> is a text-mode WebDAV browser. It can be used if it is compiled with SSL support. Invoke it with the command cadaver https://webdav.HUBADDRESS/ and it will prompt you for your hub login and password. You can then use it in a manner similar to FTP.
+		If you are using Linux, you can use the <a target="_blank" href="http://dav.sourceforge.net/">davfs</a> kernel module to mount your hub storage area as a local filesystem.</p>
 
 
-<h3>Windows</h3>
-<p>Windows XP systems have native support for accessing WebDAV storage via HTTPS, but it may be disabled by default depending on how your OS was configured. Try these instructions first, and then check the next set of instructions to enable WebDAV. To access your hub storage,</p>
-<ul>
-	<li>Double-click on the desktop icon called "My Network Places".</li>
-	<li>This will invoke a dialog box where you can select "Add Network Place". This will invoke a wizard that you can step through.</li>
-	<li>Select the "Choose another network location" function.</li>
-	<li>The wizard will then ask you for the "Internet or Network Address." In the box, type https://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/</li>
-	<li>Specify the name that you would like to have associated with this storage space. An icon will be created for the hub storage folder. When you double-click on it to open it, you will be prompted for your hub login and password.</li>
-</ul>
+		<h3>Mac OSX</h3>
+		<p>MacOS versions 10.4 and higher support HTTPS transport for WebDAV using the Finder. To access your nanoHUB directory, select the Go menu in the Finder and choose "Connect to Network Server". Enter the URL http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav into the address field. You will be prompted for your nanoHUB login and password.
+		MacOS versions lower than 10.4 do not have support for HTTPS, but a free client exists. Download Goliath and install it on your system. Invoke it and use http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav as the address to connect to. Note that you may also use Goliath on newer MacOS platforms as well.</p>
 
 
-<h4>Enabling WebDAV in Windows XP</h4>
-<p>If the steps above do not work, for Windows XP, or you cannot find the named options, your OS may have WebDAV turned off by default. Do the following additional steps and then try to add network storage again.</p>
-<ul>
-	<li>Open Windows Explorer</li>
-	<li>Go to the "Tools" menu and select "Folder Options"</li>
-	<li>Select the radio button "Use Windows classic folders" under "Tasks".</li>
-</ul>
+		<h3>Windows</h3>
+		<p>Windows XP systems have native support for accessing WebDAV storage via HTTPS, but it may be disabled by default depending on how your OS was configured. Try these instructions first, and then check the next set of instructions to enable WebDAV. To access your hub storage,</p>
+		<ul>
+			<li>Double-click on the desktop icon called "My Network Places".</li>
+			<li>This will invoke a dialog box where you can select "Add Network Place". This will invoke a wizard that you can step through.</li>
+			<li>Select the "Choose another network location" function.</li>
+			<li>The wizard will then ask you for the "Internet or Network Address." In the box, type https://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/</li>
+			<li>Specify the name that you would like to have associated with this storage space. An icon will be created for the hub storage folder. When you double-click on it to open it, you will be prompted for your hub login and password.</li>
+		</ul>
 
 
-<h4>Login case sensitivity</h4>
-<p>Some users of Windows WebDAV clients have reported problems that occur when they use uppercase characters for their login. Always type your login using all lowercase characters.</p>
+		<h4>Enabling WebDAV in Windows XP</h4>
+		<p>If the steps above do not work, for Windows XP, or you cannot find the named options, your OS may have WebDAV turned off by default. Do the following additional steps and then try to add network storage again.</p>
+		<ul>
+			<li>Open Windows Explorer</li>
+			<li>Go to the "Tools" menu and select "Folder Options"</li>
+			<li>Select the radio button "Use Windows classic folders" under "Tasks".</li>
+		</ul>
 
 
-<h4>Windows 2003 users cannot access secure WebDAV</h4>
-<p>There is no support for secure WebDAV transport in Windows 2003. Various workarounds have been suggested, but it appears the easiest action to take is to simply upgrade the OS.</p>
+		<h4>Login case sensitivity</h4>
+		<p>Some users of Windows WebDAV clients have reported problems that occur when they use uppercase characters for their login. Always type your login using all lowercase characters.</p>
 
 
-<h4>Windows Vista users cannot access secure WebDAV</h4>
-<p>A default and up to date installation of Windows Vista has no support for secure WebDAV. You'll need to install the following <a target="_blank" href="http://support.microsoft.com/kb/907306">patch</a>.</p>
+		<h4>Windows 2003 users cannot access secure WebDAV</h4>
+		<p>There is no support for secure WebDAV transport in Windows 2003. Various workarounds have been suggested, but it appears the easiest action to take is to simply upgrade the OS.</p>
 
 
-<h4>Windows XP users cannot change credentials for WebDAV authentication.</h4>
-<p>To clear previously entered authentication data from the credential cache, use the following menu selection:
-Start -> Settings -> Control Panel -> User Accounts -> Change an Account
-Then select the User account for which you wish to clear the stored password. Click on 'Manage My Network Passwords', highlight the mapped drive or WebDAV account and click 'Remove'.</p>
+		<h4>Windows Vista users cannot access secure WebDAV</h4>
+		<p>A default and up to date installation of Windows Vista has no support for secure WebDAV. You'll need to install the following <a target="_blank" href="http://support.microsoft.com/kb/907306">patch</a>.</p>
+
+
+		<h4>Windows XP users cannot change credentials for WebDAV authentication.</h4>
+		<p>To clear previously entered authentication data from the credential cache, use the following menu selection:
+		Start -> Settings -> Control Panel -> User Accounts -> Change an Account
+		Then select the User account for which you wish to clear the stored password. Click on 'Manage My Network Passwords', highlight the mapped drive or WebDAV account and click 'Remove'.</p>
+	</section>
+</article>

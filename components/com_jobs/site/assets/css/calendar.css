@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_jobs/assets/css/calendar.css
+ * @file        components/com_jobs/site/assets/css/calendar.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -19,7 +19,7 @@
 	}
 
 	button.calendar {
-		background: url("/components/com_jobs/assets/img/calendar-icon.gif");
+		background: url("/components/com_jobs/site/assets/img/calendar-icon.gif");
 		border: 0;
 		cursor: pointer;
 		/*float: left;*/display: inline;
@@ -33,7 +33,7 @@
 	}
 
 	div.calendar {
-		background: url("/components/com_jobs/assets/img/calendar.png");
+		background: url("/components/com_jobs/site/assets/img/calendar.png");
 		height: 195px;
 		padding: 0 6px;
 		text-align: center;
@@ -67,11 +67,11 @@
 		border: none;
 	}
 	div.calendar caption a.prev {
-		background-image: url("/components/com_jobs/assets/img/calendar-prev.gif");
+		background-image: url("/components/com_jobs/site/assets/img/calendar-prev.gif");
 		left: 0;
 	}
 	div.calendar caption a.next {
-		background-image: url("/components/com_jobs/assets/img/calendar-next.gif");
+		background-image: url("/components/com_jobs/site/assets/img/calendar-next.gif");
 		right: 0;
 	}
 	div.calendar caption a:hover {
@@ -115,7 +115,7 @@
 	}
 	div.calendar th { height: 14px; line-height: 11px;}
 	div.calendar td {
-		background: url("/components/com_jobs/assets/img/calendar-td.gif");
+		background: url("/components/com_jobs/site/assets/img/calendar-td.gif");
 		color: #FFF;
 		font-size: 11px;
 	}
@@ -123,20 +123,20 @@
 		color: #999;
 	}
 	div.calendar td.valid {
-		background: url("/components/com_jobs/assets/img/calendar-valid.gif");
+		background: url("/components/com_jobs/site/assets/img/calendar-valid.gif");
 		color: #0597DB;
 		cursor: pointer;
 	}
 	div.calendar td.hilite {
-		background: url("/components/com_jobs/assets/img/calendar-hilite.gif");
+		background: url("/components/com_jobs/site/assets/img/calendar-hilite.gif");
 	}
 	div.calendar td.inactive {
-		background: url("/components/com_jobs/assets/img/calendar-td.gif") 0 100%;
+		background: url("/components/com_jobs/site/assets/img/calendar-td.gif") 0 100%;
 		color: #FFF;
 	}
 	div.calendar td.active,
 	div.calendar td.hover {
-		background: url("/components/com_jobs/assets/img/calendar-valid.gif") 0 100%;
+		background: url("/components/com_jobs/site/assets/img/calendar-valid.gif") 0 100%;
 		color: #FFF;
 		cursor: pointer;
 	}

@@ -7,7 +7,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JLoader::register('MenusHelper', JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
+JLoader::register('MenusHelper', dirname(__DIR__) . '/menus.php');
 
 /**
  * @package		Joomla.Administrator

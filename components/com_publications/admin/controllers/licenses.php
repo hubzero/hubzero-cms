@@ -187,7 +187,7 @@ class Licenses extends AdminController
 		$row->agreement 	= Request::getInt('agreement', 0, 'post');
 		$row->apps_only 	= Request::getInt('apps_only', 0, 'post');
 		$row->active 		= Request::getInt('active', 0, 'post');
-		$row->icon			= $row->icon ? $row->icon : '/components/com_publications/images/logos/license.gif';
+		$row->icon			= $row->icon ? $row->icon : '/components/com_publications/site/assets/img/logos/license.gif';
 
 		if (!$row->id)
 		{

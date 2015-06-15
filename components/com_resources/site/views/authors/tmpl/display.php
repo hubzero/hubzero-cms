@@ -92,14 +92,14 @@ if ($this->contributors) {
 	$n = count( $this->contributors );
 
 ?>
-	<form action="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
+	<form action="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="task" value="update" />
 
-		<table class="list" summary="<?php echo Lang::txt('A list of authors on this resource'); ?>">
+		<table class="list">
 			<tfoot>
 				<td>
 					<span class="caption">
@@ -151,21 +151,21 @@ if ($this->contributors) {
 					</td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
-					    echo '<a href="/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+						echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 					} else {
-					    echo '&nbsp;';
+						echo '&nbsp;';
 					}
 					?></td>
 					<td class="d"><?php
 					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+						echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 					} else {
-					    echo '&nbsp;';
+						echo '&nbsp;';
 					}
 					?></td>
 					<td class="t">
-						<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
-							<span><img src="/components/<?php echo $this->option; ?>/site/assets/img/trash.gif" alt="<?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?>" /></span>
+						<a class="icon-delete delete" href="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
+							<span><?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?></span>
 						</a>
 					</td>
 				</tr>

@@ -197,7 +197,7 @@ jQuery(function($) {
 
 	// load on scroll
 	var throbber = new Image();
-	throbber.src = '/components/com_search/assets/hubgraph/throbber.gif';
+	throbber.src = '/components/com_search/site/assets/hubgraph/throbber.gif';
 	throbber = $(throbber).addClass('throbber');
 
 	var pageList = $('.pages'),
@@ -231,10 +231,10 @@ jQuery(function($) {
 	var activateRelated = function() {
 		$('.related').on('click', function (evt) {
 			var el = $(evt.target),
-				throbber = $('<img src="/components/com_search/assets/hubgraph/throbber.gif" class="throbber related" />');
+				throbber = $('<img src="/components/com_search/site/assets/hubgraph/throbber.gif" class="throbber related" />');
 
 			el.replaceWith(throbber);
-	
+
 			$.get('/search?task=getRelated&domain=' + encodeURIComponent(el.data('domain')) + '&id=' + encodeURIComponent(el.data('id')), function(res) {
 				if (!res || !res.length) {
 					throbber.replaceWith('<p>No related results were found.</p>');

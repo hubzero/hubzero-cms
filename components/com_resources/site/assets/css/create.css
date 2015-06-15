@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_contribute/contribute.css
+ * @file        components/com_resources/site/assets/css/contribute.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -96,7 +96,7 @@
 	.com_resources .container-block h4 {
 		margin: 0 -15px 1em -15px;
 		padding: 0.5em 0.7em;
-		background: #f8f8f8 url("/components/com_resources/assets/img/light-stripes.png");
+		background: #f8f8f8 url("../img/light-stripes.png");
 		border-bottom: 2px solid #e9e9e9;
 		font-size: 135%;
 	}
@@ -379,9 +379,7 @@
 		border-radius: 3px;
 		font-size: 1.5em;
 	}
-	/*.asset-uploader:hover {
-		border: 3px solid #333;
-	}*/
+
 	.asset-uploader {
 		margin-top: 5em;
 		position: relative;
@@ -408,13 +406,9 @@
 		display: block;
 		position: absolute;
 		top: -0.2em;
-		left: -1.1em;
-		left: -0.2em;
 		font-family: "Fontcons";
-		content: "\f08c"; /*"\f046";*/
 		font-size: 1.5em;
 		line-height: 1;
-		
 		content: "\f016";
 		left: 0;
 	}
@@ -427,7 +421,6 @@
 	.qq-upload-button:hover,
 	.qq-upload-drop-area:hover,
 	.qq-upload-drop-area-active {
-		/*background: #fdfce4;*/
 		border: 3px solid #333;
 		color: #333;
 		cursor: pointer;

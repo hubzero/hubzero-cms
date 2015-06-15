@@ -55,7 +55,7 @@ var HUB = {};
 });*/
 </script>
 
-<script type="text/javascript" src="../components/<?php echo $this->option; ?>/js/events.js"></script>
+<script type="text/javascript" src="../components/<?php echo $this->option; ?>/site/assets/js/events.js"></script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">

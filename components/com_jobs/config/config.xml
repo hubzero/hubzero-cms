@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_jobs/config.xml
+@file           components/com_jobs/config.xml
 @copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 

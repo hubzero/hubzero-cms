@@ -226,7 +226,7 @@ HUB.Courses = {
 				
 				if(this.value == "")
 				{
-					logo = '<img src="/components/com_courses/assets/img/course_default_logo.png" />';
+					logo = '<img src="/components/com_courses/site/assets/img/course_default_logo.png" />';
 				}
 				else 
 				{

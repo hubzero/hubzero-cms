@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_events/events.xml
+@file           components/com_events/events.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,14 +27,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Events</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description></description>
 	<files>
-	   	<filename>calendar.css</filename>
+		<filename>calendar.css</filename>
 		<filename>controller.php</filename>
 		<filename>events.category.php</filename>
 		<filename>events.css</filename>
@@ -63,9 +63,9 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>events.config.php</filename>
 	</files>
 	<install>
-	    <sql>
-	        <file charset="utf8" driver="mysql">install.sql</file>
-		 </sql>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
 	</install>
 	<uninstall>
 	</uninstall>
@@ -73,11 +73,11 @@ HUBzero is a registered trademark of Purdue University.
 	<uninstallfile>uninstall.events.php</uninstallfile>
 	<administration>
 		<menu>Events</menu>
-			<submenu>
-				<menu>Manage Events</menu>
-				<menu task="cats">Manage Events Categories</menu>
-				<menu task="configure">Edit Config</menu>
-			</submenu>
+		<submenu>
+			<menu>Manage Events</menu>
+			<menu task="cats">Manage Events Categories</menu>
+			<menu task="configure">Edit Config</menu>
+		</submenu>
 		<files>
 			<filename>admin.controller.php</filename>
 			<filename>admin.events.php</filename>
@@ -89,9 +89,9 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>images/help_ques.gif</filename>
 			<filename>images/help_ques_inact.gif</filename>
 		</files>
-                <languages folder="admin">
-                        <language tag="en-GB">en-GB.com_events.ini</language>
-                </languages>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_events.ini</language>
+		</languages>
 	</administration>
 	<languages>
 		<language tag="en-GB">en-GB.com_events.ini</language>
@@ -171,5 +171,5 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
 		</param>
 	</params>
-</install>
+</extension>
 

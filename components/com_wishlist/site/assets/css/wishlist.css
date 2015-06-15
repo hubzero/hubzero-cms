@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_wishlist/assets/css/wishlist.css
+ * @file        components/com_wishlist/site/assets/css/wishlist.css
  * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -288,7 +288,7 @@
 		padding: 0.5em;
 		text-align: center;
 		border: 5px solid #fff; 
-		background: #fff url("/components/com_wishlist/assets/img/light-stripes.png");
+		background: #fff url("/components/com_wishlist/site/assets/img/light-stripes.png");
 	}
 	.wish-status .accepted {
 		color: #F1C037;
@@ -364,7 +364,7 @@
 	}
 	.wish-priority caption {
 		font-size: 115%;
-		background: #FFFDEF url("/components/com_wishlist/assets/img/light-stripes.png");
+		background: #FFFDEF url("/components/com_wishlist/site/assets/img/light-stripes.png");
 		border: 2px solid #EFEAC2;
 		border-bottom: 1px solid #eee;
 		margin-right: -2px; /* Fix 2px issue */

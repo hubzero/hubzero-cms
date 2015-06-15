@@ -87,7 +87,7 @@ $this->css()
 			<input type="hidden" name="task" value="browsetags" />
 		</fieldset>
 
-		<div id="tagbrowser">
+		<div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/components/com_resources/site/assets/img/loading.gif">
 			<p class="info"><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
 
 			<div id="level-1">
@@ -124,7 +124,7 @@ $this->css()
 		{
 			$database = JFactory::getDBO();
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+			include_once(Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 
 			$tag = new \Components\Tags\Tables\Tag($database);
 			$tag->loadTag($this->supportedtag);

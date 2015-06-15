@@ -1261,7 +1261,6 @@ class Html
 	 */
 	public static function getFileAttribs($path, $base_path='', $fsize=0)
 	{
-		//$path = '/www/myhub/components';
 		// Return nothing if no path provided
 		if (!$path)
 		{

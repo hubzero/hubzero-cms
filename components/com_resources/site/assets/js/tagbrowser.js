@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_resources/tagbrowser.js
+ * @file        components/com_resources/site/assets/js/tagbrowser.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -155,18 +155,19 @@ HUB.TagBrowser = {
 	initialize: function() {
 		var com = this,
 			$ = this.jQuery,
-			imgpath = '/components/com_resources/assets/img/loading.gif';
+			browser = $('#tagbrowser'),
+			imgpath = browser.attr('data-loader');
 
-		if ($('#tagbrowser').length <= 0) {
+		if (browser.length <= 0) {
 			return;
 		}
 
-		var input = $('#preinput').val();
+		var input  = $('#preinput').val();
 		var input2 = $('#preinput2').val();
-		var type = $('#pretype').val();
-		var id = $('#id').val();
+		var type   = $('#pretype').val();
+		var id     = $('#id').val();
 
-		$('#tagbrowser').show();
+		browser.show();
 		$('#tbh2').show();
 		$('#viewalltools').hide();
 

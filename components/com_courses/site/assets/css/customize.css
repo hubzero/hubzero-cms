@@ -60,7 +60,7 @@
 	#logo { 
 		height: 208px; 
 		width: 273px; 
-		background: url('/components/com_courses/assets/img/course_logo_preview.png') no-repeat 50% 50%; 
+		background: url('/components/com_courses/site/assets/img/course_logo_preview.png') no-repeat 50% 50%; 
 	}
 	#logo_picked { 
 		margin: 15px 0 0 15px; 
@@ -112,7 +112,7 @@
 		list-style: none;
 		margin: 0px;
 		padding: 10px;
-		background: #efefef url('/components/com_courses/assets/img/course_menu_preview.jpg') repeat-y top right;
+		background: #efefef url('/components/com_courses/site/assets/img/course_menu_preview.jpg') repeat-y top right;
 	}	
 	.preview #access img {
 		width:auto;

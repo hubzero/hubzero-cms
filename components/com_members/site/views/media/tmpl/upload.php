@@ -63,7 +63,7 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 	<form action="index.php" method="post" enctype="multipart/form-data">
 		<h2>Upload a New Profile Picture</h2>
 		<div id="ajax-upload-left">
-			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $picture->name; ?>" data-default-pic="<?php echo $this->config->get('defaultpic', '/components/com_members/assets/img/profile.gif'); ?>" />
+			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $picture->name; ?>" data-default-pic="<?php echo $this->config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'); ?>" />
 			<?php if ($this->profile->get("picture") != '') : ?>
 			<a href="#" id="remove-picture">[Remove Picture]</a>
 			<?php endif; ?>

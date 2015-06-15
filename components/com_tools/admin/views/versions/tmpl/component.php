@@ -83,7 +83,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeZone&id=' . $row->id . '&version=' . $this->version . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>">
-						<span><img src="/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('[ x ]'); ?>" /></span>
+						<span><?php echo Lang::txt('X'); ?></span>
 					</a>
 				</td>
 			</tr>

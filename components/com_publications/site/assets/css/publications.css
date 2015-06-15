@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_publications/assets/css/publications.css
+ * @file        components/com_publications/site/assets/css/publications.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -1616,7 +1616,7 @@
 		background-size: cover;
 	    background-repeat: no-repeat;
 		overflow: hidden;
-		background-image: url('/components/com_publications/assets/img/master.png');
+		background-image: url('/components/com_publications/site/assets/img/master.png');
 	}
 	.launcher-inside-wrap {
 		padding: 1.5em 2.5em;

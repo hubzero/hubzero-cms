@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_answers/vote.css
+ * @file        components/com_answers/site/assets/css/vote.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -19,20 +19,20 @@
 		padding-right: 2em;
 		margin: 0; 
 		width: 75%;
-		display: block;	
+		display: block;
 	}
 	.thumbsvote {
-		float: right; 
+		float: right;
 		padding-left: 1em;
-		padding-right: -1em; 
+		padding-right: -1em;
 		margin: -2em 0 0 0;
 		color: #666666;
 		display: block;
 	}
-	.gooditem a, 
-	.gooditem span, 
+	.gooditem a,
+	.gooditem span,
 	.gooditem span.dis {
-		background: url("/components/com_answers/assets/img/thumbup.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/site/assets/img/thumbup.gif") 0 0 no-repeat;
 		padding: 1px 0 8px 1.3em;
 		margin:0 0 0 0.2em;
 		color: #666;
@@ -40,9 +40,9 @@
 		font-size: inherit;
 		border: none;
 	}
-	.baditem a, 
+	.baditem a,
 	.baditem span {
-		background: url("/components/com_answers/assets/img/thumbdown.gif") 0 0 no-repeat;
+		background: url("/components/com_answers/site/assets/img/thumbdown.gif") 0 0 no-repeat;
 		padding: 1px 0 8px 1.3em;
 		margin:0 0 0 0.2em;
 		color: #666;
@@ -51,9 +51,9 @@
 		line-height: 2em;
 		border: none;
 	}
-	.baditem a:hover, 
+	.baditem a:hover,
 	.baditem span,
-	.gooditem a:hover, 
+	.gooditem a:hover,
 	.gooditem span {
 		background-position: 0 -32px;
 	}

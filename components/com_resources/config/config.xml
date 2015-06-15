@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_resources/config.xml
+@file           components/com_resources/config.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<fieldset name="basic">
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/assets/img/resource_thumb.gif" label="COM_RESOURCES_DEFAULTPIC_LABEL" description="COM_RESOURCES_DEFAULTPIC_DESC" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/site/assets/img/resource_thumb.gif" label="COM_RESOURCES_DEFAULTPIC_LABEL" description="COM_RESOURCES_DEFAULTPIC_DESC" />
 		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="COM_RESOURCES_TAGSTOOL_LABEL" description="COM_RESOURCES_TAGSTOOL_DESC" />
 		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="COM_RESOURCES_TAGSOTHR_LABEL" description="COM_RESOURCES_TAGSOTHR_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />

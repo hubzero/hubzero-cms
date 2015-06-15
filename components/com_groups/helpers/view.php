@@ -622,8 +622,8 @@ class View
 		// bootstrap Jdocument
 		// add custom error template as component buffer
 		$document = App::get('document');
-		$document->addStylesheet('/media/cms/css/debug.css');
-		$document->addStylesheet('/components/com_groups/assets/css/groups.css');
+		$document->addStylesheet('/core/assets/css/debug.css');
+		$document->addStylesheet('/components/com_groups/site/assets/css/groups.css');
 		$document->setBuffer($errorTemplate, array('type'=>'component', 'name' => ''));
 		$fullTemplate = $document->render(false, array('template' => 'hubbasic2013', 'file'=>'group.php'));
 

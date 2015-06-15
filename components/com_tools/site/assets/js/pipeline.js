@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_ToolsPipeline/ToolsPipeline.js
+ * @file        components/com_tools/site/assets/js/pipeline.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -254,7 +254,7 @@ HUB.ToolsPipeline = {
 					}
 				
 					$(HUB.ToolsPipeline.loader).html('');
-					$('<p><img src="/components/com_tools/assets/img/ajax-loader.gif" />' + actiontxt + '</p>').appendTo($(HUB.ToolsPipeline.loader));
+					$('<p><img src="/components/com_tools/site/assets/img/ajax-loader.gif" />' + actiontxt + '</p>').appendTo($(HUB.ToolsPipeline.loader));
 
 					HUB.ToolsPipeline.show(HUB.ToolsPipeline.loader);
 					HUB.ToolsPipeline.hide(HUB.ToolsPipeline.success);

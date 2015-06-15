@@ -156,7 +156,7 @@ HUB.Video = {
 			});
 		} else {
 			
-			flowplayer("video-flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
+			flowplayer("video-flowplayer", {src: "/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
 				plugins: { controls: null },
 				clip: { scaling: 'fit' },
 				onStart: function() {

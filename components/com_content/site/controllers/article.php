@@ -280,7 +280,7 @@ class ContentControllerArticle extends JControllerForm
 	public function save($key = null, $urlVar = 'a_id')
 	{
 		// Load the backend helper for filtering.
-		require_once JPATH_ADMINISTRATOR.'/components/com_content/helpers/content.php';
+		require_once PATH_CORE.'/components/com_content/admin/helpers/content.php';
 
 		$result = parent::save($key, $urlVar);
 

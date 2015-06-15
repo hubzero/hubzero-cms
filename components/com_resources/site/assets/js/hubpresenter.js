@@ -161,16 +161,16 @@ HUB.Presenter = {
 					throw "For some reason the player stalled while trying to load the media. Verify the media location.";
 				}
 			});
-		} else {               
+		} else {
 			//flash fallback stuff
-			if(audio) {
-				flowplayer("flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
+			if (audio) {
+				flowplayer("flowplayer", {src: "/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
 					clip: {
 						duration: flash_audio_duration
-					}, 
-				   	plugins: {                                             
-					   controls: null
-					}, 
+					},
+					plugins: {
+						controls: null
+					},
 					onStart: function() {
 						HUB.Presenter.doneLoading();
 						HUB.Presenter.flashSyncSlides();
@@ -183,10 +183,10 @@ HUB.Presenter = {
 					}
 				});
 			} else {
-				flowplayer("flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
-				   	plugins: {                                             
-					   controls: null
-					}, 
+				flowplayer("flowplayer", {src: "/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
+					plugins: {
+						controls: null
+					},
 					onStart: function() {
 						HUB.Presenter.doneLoading();
 						HUB.Presenter.syncVolume();
@@ -198,7 +198,7 @@ HUB.Presenter = {
 						HUB.Presenter.replay();
 					}
 				});
-			}   
+			}
 			
 		}
 	},
@@ -207,11 +207,11 @@ HUB.Presenter = {
 	
 	slidePlayer: function() 
 	{
-	 	flowplayer(".flowplayer_slide", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
-			 plugins: {                                             
-			   controls: null
+		flowplayer(".flowplayer_slide", {src: "/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
+			plugins: {
+				controls: null
 			}
-		}); 
+		});
 	},
 	
 	//-----
@@ -296,35 +296,35 @@ HUB.Presenter = {
 			current = HUB.Presenter.getCurrent(),
 			duration = HUB.Presenter.getDuration(),
 			total_progress = (current * 100) / duration;
-		                     
+
 		//set the progress
 		HUB.Presenter.setProgress( current );
-		
+
 		//sync native video/audio control bar with custom control bar
 		HUB.Presenter.playPause();
-		
+
 		//update the slide list progress bar
 		HUB.Presenter.slideListProgressUpdate( HUB.Presenter.activeSlide );
-		
+
 		//projess bar set position
 		jQ('#progress-bar').slider( "value", total_progress );
-		
+
 		//loop through all slides and get max slide based on current time
 		jQ('#slides ul li').each(function( index, element ) {
 			var slide = jQ(element),
 				time = slide.attr('time'),
 				id = slide.attr('id').substr(6,7);
-			
+
 			if(current >= time) {
 				cur_slide.id = id;
 				cur_slide.time = time;
 				cur_slide.type = slide.children().first().get(0).tagName;
 			}
 		});
-		
+
 		//get the next slide after the current max
 		next_slide.id = parseInt(cur_slide.id) + 1;
-		
+
 		//get the next slides time and if doesnt exist set to arbitrary high value
 		if( jQ('#slide_' + next_slide.id).length ) {
 			next_slide.time = jQ('#slide_' + next_slide.id).attr('time');
@@ -369,18 +369,17 @@ HUB.Presenter = {
 	//-----
 	
 	flashSyncSlides: function() 
-	{                                                                  
+	{
 		var flashSyncSlides = setInterval(function() {
 			HUB.Presenter.syncSlides();
 			HUB.Presenter.updateMediaTracking();
 		}, 1000);
 	},
-	     
-	
+
 	//----------------------------------------
 	//	Slide List
 	//----------------------------------------
-	
+
 	slideList: function()
 	{
 		//show the list of slides
@@ -400,12 +399,12 @@ HUB.Presenter = {
 			var id = this.id.substr(5,6),
 				time = jQ('#slide_' + id ).attr('time'),
 				timeadjust = parseFloat(time) + HUB.Presenter.tolerance;
-				
+
 			//seek the video
 			HUB.Presenter.seek( timeadjust );
 			e.preventDefault();
 		});
-		
+
 		//are we mousing over the list items
 		jQ('#list_items').bind({
 			mouseenter: function() {
@@ -416,33 +415,33 @@ HUB.Presenter = {
 			}
 		});
 	},
-	
+
 	//-----
-	
+
 	slideListProgressBar: function( list_item )
 	{
 		var min, max, next, time, text_time, pos;
-		
+
 		//get the next list item
 		next = jQ("#list_" + list_item).next().attr("id")
-		
+
 		//get the min time
 		min = jQ("#slide_" + list_item).attr("time");
-		
+
 		//get the max time
 		if( !jQ("#list_" + list_item).next().length ) {
 			max = HUB.Presenter.getDuration();
 		} else {
 	 		max = jQ("#slide_" + next.substr(5)).attr("time");
 		}
-		
+
 		//hide all list sliders and progress bars
 		jQ(".list-slider").css("display","none");
 		jQ(".list-progress").css("display","none");
-		
+
 		//show the list progres bar and progress 
 		jQ("#list_" + list_item + " .list-slider, #list_" + list_item + " .list-progress").css("display", "block");
-	
+
 		//create the list item slider
 		jQ("#list-slider-" + list_item).slider({
 			step: .1,
@@ -463,9 +462,9 @@ HUB.Presenter = {
 			}
 		});
 	},
-	
+
 	//-----
-	
+
 	slideListProgressUpdate: function( active )
 	{
 		var start, end, next, slide_progress, time;
@@ -500,14 +499,13 @@ HUB.Presenter = {
 			jQ(".list-progress").text( time );
 		}
 	},
-	
-	
+
 	//----------------------------------------
 	//	Control Bar
 	//----------------------------------------
-	
+
 	controlBar: function()
-	{                 
+	{
 		//hide the control bar
 		var timeout, hideControlBarMobile;
 		
@@ -527,25 +525,25 @@ HUB.Presenter = {
 		jQ('#previous').bind('click', function(e) {
 			HUB.Presenter.previousSlide();
 			e.preventDefault();
-		});                     
-		
+		});
+
 		//if we have audio only dont display switch button
 		if(audio || flash) {
 			jQ("#switch").css("display","none");
-		}    
-		
+		}
+
 		//swith video and slides
 		jQ("#switch").bind('click', function(e) {
 			HUB.Presenter.switchVideo();
 			e.preventDefault();
 		});
-		
+
 		// link video
 		jQ('#link').bind('hover', function(e) {
 			e.preventDefault();
 			HUB.Presenter.linkVideo();
 		});
-		
+
 		// change speed
 		jQ('#speed').on('change', function(e){
 			var player = HUB.Presenter.getPlayer(),
@@ -669,14 +667,14 @@ HUB.Presenter = {
 				jQ('.preview').toggleClass('visible');
 			});
 	},
-	      
+
 	//-----
-	
+
 	playPause: function( clicking )
-	{    
-		var paused = HUB.Presenter.isPaused(), 
-			player = HUB.Presenter.getPlayer();         
-	            	
+	{
+		var paused = HUB.Presenter.isPaused(),
+			player = HUB.Presenter.getPlayer();
+
 		if( paused ) {
 			jQ("#play-pause").removeClass('playing').addClass('paused');
 			jQ('#presenter-content').addClass('paused');
@@ -687,7 +685,7 @@ HUB.Presenter = {
 			jQ('#presenter-content').removeClass('paused');
 			if( clicking )
 				player.pause();
-		}  
+		}
 
 		// pause play slide videos
 		jQ('.slidevideo').each(function(index, element)
@@ -706,25 +704,25 @@ HUB.Presenter = {
 			}
 		});
 	},
-	
+
 	//-----
-	
+
 	nextSlide: function()
 	{
 		var active = HUB.Presenter.activeSlide,
 			next = parseInt(active) + 1;
-		
+
 		//if we have a next slide to move to, seek to that slide
 		if( jQ('#slide_' + next ).length ) {
 			var next_slide_time = jQ("#slide_" + next).attr("time"),
 				time_adjust = parseFloat(next_slide_time) + HUB.Presenter.tolerance;
-			
+
 			HUB.Presenter.seek( time_adjust );
 		}
 	},
-	
+
 	//-----
-	
+
 	previousSlide: function()
 	{
 		var active = HUB.Presenter.activeSlide,
@@ -745,7 +743,7 @@ HUB.Presenter = {
 	},
 
 	//-----
-	
+
 	switchVideo: function() 
 	{
 		var player = HUB.Presenter.getPlayer(),
@@ -895,7 +893,7 @@ HUB.Presenter = {
 			
 			//remove the volume bar as volume is controlled but the device
 			jQ("#volume-bar").css("display","none");
-			jQ("#volume-icon").css("display","none");	
+			jQ("#volume-icon").css("display","none");
 			
 			//display the two finger tip
 			//jQ("#twofinger").css("display","block"); 
@@ -911,7 +909,7 @@ HUB.Presenter = {
 				
 				//when play button is clicked hide button and play clip
 				jQ('#mobile-play-audio').bind('click', function(e) {
-					jQ(this).fadeOut("slow");                                 
+					jQ(this).fadeOut("slow");
 					jQ('#player').get(0).play(); 
 					e.preventDefault();
 				});

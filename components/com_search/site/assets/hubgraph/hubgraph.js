@@ -1,6 +1,6 @@
 jQuery(function($) {
 	var throbber = new Image();
-	throbber.src = '/components/com_search/assets/hubgraph/throbber.gif';
+	throbber.src = '/components/com_search/site/assets/hubgraph/throbber.gif';
 
 	var request = {
 		'tagString': '',
@@ -363,14 +363,14 @@ jQuery(function($) {
 					.attr("x2", function(d) { return normX(d.target.x); })
 					.attr("y2", function(d) { return normY(d.target.y); });
 			};
-		
+
 			force
 				.nodes(json.nodes)
 				.links(json.links)
 				.on("tick", tick)
 				.start();
 		}
-		catch (ex) {	
+		catch (ex) {
 			// doesn't work in some browsers. no big deal though, just show restore the original list
 			cont.replaceWith(tagEl);
 		}

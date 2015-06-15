@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_feedback/config.xml
+@file           components/com_feedback/config.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<fieldset name="basic">
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_feedback/assets/img/contributor.gif" label="COM_FEEDBACK_CONFIG_DEFAULT_PICTURE_LABEL" description="COM_FEEDBACK_CONFIG_DEFAULT_PICTURE_DESC" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_feedback/site/assets/img/contributor.gif" label="COM_FEEDBACK_CONFIG_DEFAULT_PICTURE_LABEL" description="COM_FEEDBACK_CONFIG_DEFAULT_PICTURE_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="uploadpath" type="text" menu="hide" default="/site/quotes" label="COM_FEEDBACK_CONFIG_UPLOAD_PATH_LABEL" description="COM_FEEDBACK_CONFIG_UPLOAD_PATH_DESC" />
 		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_FEEDBACK_CONFIG_UPLOAD_MAX_LABEL" description="COM_FEEDBACK_CONFIG_UPLOAD_MAX_DESC" />
