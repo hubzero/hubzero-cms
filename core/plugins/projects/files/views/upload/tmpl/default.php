@@ -79,9 +79,9 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 							</ul>
 						</div>
 					</div>
-					<script src="/plugins/projects/files/assets/js/jquery.fileuploader.js"></script>
-					<script src="/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
-					<script src="/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
+					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.fileuploader.js"></script>
+					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
+					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
 		<?php } else { ?>
 				<label class="addnew">
 					<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />

@@ -34,7 +34,7 @@ $this->css('enroll');
 <form class="authy" action="<?php echo Request::current(); ?>" method="POST">
 	<div class="title">Authy</div>
 	<div class="img-wrap">
-		<img class="logo" src="/plugins/authfactors/authy/assets/img/authy_logo.svg" alt="authy logo" />
+		<img class="logo" src="/core/plugins/authfactors/authy/assets/img/authy_logo.svg" alt="authy logo" />
 	</div>
 
 	<div class="grouping">

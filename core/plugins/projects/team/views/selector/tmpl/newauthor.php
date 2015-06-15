@@ -35,7 +35,7 @@ if (count($this->authors) > 0)
 }
 
 ?>
-<script src="/plugins/projects/team/assets/js/selector.js"></script>
+<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/team/assets/js/selector.js"></script>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?> </h3>
 		<form id="add-author" class="add-author" method="post" action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">

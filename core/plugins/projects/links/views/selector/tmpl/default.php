@@ -62,7 +62,7 @@ $newCiteUrl = Route::url( $this->publication->link('editversionid') . '&active=l
 ?>
 <div id="abox-content-wrap">
 	<div id="abox-content" class="url-select">
-	<script src="/plugins/projects/links/assets/js/selector.js"></script>
+	<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/links/assets/js/selector.js"></script>
 		<h3><?php echo $title; ?> 	<span class="abox-controls">
 				<a class="btn btn-success active" id="b-save"><?php echo $btnLabel; ?></a>
 				<?php if ($this->ajax) { ?>
@@ -103,7 +103,7 @@ $newCiteUrl = Route::url( $this->publication->link('editversionid') . '&active=l
 				</div>
 		</form>
 		<?php if ($this->block == 'citations') {
-			$config 	  = Component::params( 'com_citations' );
+			$config       = Component::params( 'com_citations' );
 			$allow_import = $config->get('citation_import', 1);
 			if ($allow_import) { ?>
 			<p class="and_or centeralign">OR</p>

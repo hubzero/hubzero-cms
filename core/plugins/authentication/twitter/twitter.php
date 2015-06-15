@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include php library
-require_once PATH_CORE . DS . 'core' . DS . 'libraries' . DS . 'twitteroauth' . DS . 'twitteroauth.php';
+require_once PATH_CORE . DS . 'libraries' . DS . 'twitteroauth' . DS . 'twitteroauth.php';
 
 class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 {

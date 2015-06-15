@@ -37,9 +37,9 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 
 ?>
 <div id="abox-content" class="citation-edit">
-<script src="/plugins/projects/links/assets/js/selector.js"></script>
+<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/links/assets/js/selector.js"></script>
 <h3><?php echo $this->row->id ? Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_EDIT_CITATION') : Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ADD_CITATION'); ?>
-	    <span class="abox-controls">
+		<span class="abox-controls">
 			<a class="btn btn-success active" id="b-add"><?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_CITATION'); ?></a>
 			<?php if ($this->ajax) { ?>
 			<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_LINKS_CANCEL'); ?></a>

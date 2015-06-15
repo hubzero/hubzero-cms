@@ -39,7 +39,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	/**
 	 * Base path for editor files
 	 */
-	protected $_basePath = 'plugins/editors/ckeditor/assets/';
+	protected $_basePath = 'core/plugins/editors/ckeditor/assets/';
 
 	/**
 	 * Method to handle the onInitEditor event.
@@ -307,7 +307,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		$config->bodyClass                     = 'ckeditor-body';
 		$config->contentsCss                   = array();
 		$config->templates                     = array('hubzero');
-		$config->templates_files               = array('/plugins/editors/ckeditor/assets/templates/hub.js');
+		$config->templates_files               = array('/core/plugins/editors/ckeditor/assets/templates/hub.js');
 		$config->templates_replaceContent      = false;
 		$config->filebrowserBrowseUrl          = '';
 		$config->filebrowserImageBrowseUrl     = '';

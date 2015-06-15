@@ -955,7 +955,7 @@ HUB.Plugins.Autocomplete = {
 		styles.rel = 'stylesheet';
 		styles.href = plgAutocompleterCss; //$('#plgAutocompleterCss').val();
 		if (!styles.href) {
-			styles.href = '/plugins/hubzero/autocompleter/autocompleter.css';
+			styles.href = '/core/plugins/hubzero/autocompleter/autocompleter.css';
 		}
 		head.appendChild(styles);
 

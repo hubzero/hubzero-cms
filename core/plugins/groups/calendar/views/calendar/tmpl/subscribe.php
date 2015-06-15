@@ -65,7 +65,7 @@ foreach ($this->calendars as $calendar)
 
 			<label>
 				<input type="checkbox" value="0" checked="checked" />
-				<img src="<?php echo Request::base(true); ?>/plugins/groups/calendar/assets/img/swatch-gray.png" />
+				<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" />
 				<?php echo Lang::txt('Uncategorized Events'); ?>
 			</label>
 
@@ -82,9 +82,9 @@ foreach ($this->calendars as $calendar)
 				<label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
 					<input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->get('id'); ?>" />
 					<?php if ($calendar->get('color')) : ?>
-						<img src="<?php echo Request::base(true); ?>/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
+						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
 					<?php else : ?>
-						<img src="<?php echo Request::base(true); ?>/plugins/groups/calendar/assets/img/swatch-gray.png" />
+						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" />
 					<?php endif; ?>
 					<?php echo $calendar->get('title'); ?>
 					<?php

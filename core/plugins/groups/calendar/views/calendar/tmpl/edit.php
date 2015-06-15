@@ -84,7 +84,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							<option value=""><?php echo Lang::txt('- Select Calendar for Event &mdash;'); ?></option>
 							<?php foreach ($this->calendars as $calendar) : ?>
 								<?php $sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : ''; ?>
-								<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
+								<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
 							<?php endforeach; ?>
 						</select>
 

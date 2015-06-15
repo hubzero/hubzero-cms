@@ -139,27 +139,27 @@
 	.qq-upload-file {
 	}
 	.qq-upload-icon {
-		background: url("/plugins/projects/files/assets/img/page_white.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white.gif") 0 0 no-repeat;
 		padding: 0.2em;
 		padding-left: 20px;
 	}
 	.type-image {
-		background: url("/plugins/projects/files/assets/img/page_white_picture.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white_picture.gif") 0 0 no-repeat;
 	}
 	.type-text {
-		background: url("/plugins/projects/files/assets/img/page_white_text.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white_text.gif") 0 0 no-repeat;
 	}
 	.type-video {
-		background: url("/plugins/projects/files/assets/img/page_white_dvd.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white_dvd.gif") 0 0 no-repeat;
 	}
 	.type-archive {
-		background: url("/plugins/projects/files/assets/img/page_white_compressed.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white_compressed.gif") 0 0 no-repeat;
 	}
 	.type-pdf {
-		background: url("/plugins/projects/files/assets/img/page_white_acrobat.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white_acrobat.gif") 0 0 no-repeat;
 	}
 	.type-office {
-		background: url("/plugins/projects/files/assets/img/page_white_office.gif") 0 0 no-repeat;
+		background: url("/core/plugins/projects/files/assets/img/page_white_office.gif") 0 0 no-repeat;
 	}
 	.qq-upload-size, .qq-upload-ext, .qq-upload-status {
 		color: #CCC;

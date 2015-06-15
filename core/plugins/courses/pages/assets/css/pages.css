@@ -179,7 +179,7 @@
 	}
 
 	.course_pages .embedded-plugin {
-		background: url("/plugins/courses/pages/assets/img/checkered.png");
+		background: url("/core/plugins/courses/pages/assets/img/checkered.png");
 		text-align: center;
 		vertical-align: middle;
 	}

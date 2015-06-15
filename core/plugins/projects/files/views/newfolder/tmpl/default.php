@@ -44,7 +44,7 @@ else
 			<input type="hidden" name="action" value="savedir" />
 			<label>
 				<span class="block">&nbsp;</span>
-				<img src="/plugins/projects/files/assets/img/folder.gif" alt="" />
+				<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/img/folder.gif" alt="" />
 				<input type="text" name="newdir" maxlength="100" value="untitled" />
 			</label>
 			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />

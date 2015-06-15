@@ -70,9 +70,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<td><?php echo $calendar->get('title'); ?></td>
 					<td>
 						<?php if ($calendar->get('color')): ?>
-							<img src="<?php echo Request::base(true); ?>/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
+							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
 						<?php else: ?>
-							<img src="<?php echo Request::base(true); ?>/plugins/groups/calendar/assets/img/swatch-gray.png" />
+							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" />
 						<?php endif; ?>
 					</td>
 					<td>

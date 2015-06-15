@@ -296,7 +296,7 @@
 
 /* Message AJAX */
 #sbox-content .hub-mail {
-	background: url("/plugins/members/messages/assets/img/mail_bg.png") repeat 0 0;
+	background: url("/core/plugins/members/messages/assets/img/mail_bg.png") repeat 0 0;
 	padding: 10px;
 	width: auto;
 	min-height: 380px;

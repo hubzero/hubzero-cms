@@ -50,9 +50,9 @@ class JFormFieldInstitutions extends JFormField
 {
 	protected function getInput()
 	{
-		Document::addScript('/plugins/authentication/shibboleth/assets/js/admin.js');
-		Document::addStyleSheet('/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
-		Document::addStyleSheet('/plugins/authentication/shibboleth/assets/css/admin.css');
+		Document::addScript('/core/plugins/authentication/shibboleth/assets/js/admin.js');
+		Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
+		Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/admin.css');
 
 		$html = array();
 		$a = function($str)

@@ -106,8 +106,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
 
 		// Model
 		$this->model = new \Components\Projects\Models\Project();

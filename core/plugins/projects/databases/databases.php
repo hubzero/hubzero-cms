@@ -31,10 +31,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'tables' . DS . 'database.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'tables' . DS . 'database.version.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'database.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'database.version.php');
 
 /**
  * Projects - Databases plugin
@@ -295,17 +293,17 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			Document::addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
 			Document::addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
 
-			Document::addScript('/plugins/projects/databases/res/main.js');
-			Document::addStyleSheet('/plugins/projects/databases/res/main.css');
+			Document::addScript('/core/plugins/projects/databases/res/main.js');
+			Document::addStyleSheet('/core/plugins/projects/databases/res/main.css');
 
 			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.js'))
 			{
-				Document::addScript('/plugins/projects/databases/res/ds.' . $action . '.js');
+				Document::addScript('/core/plugins/projects/databases/res/ds.' . $action . '.js');
 			}
 
 			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.css'))
 			{
-				Document::addStyleSheet('/plugins/projects/databases/res/ds.' . $action . '.css');
+				Document::addStyleSheet('/core/plugins/projects/databases/res/ds.' . $action . '.css');
 			}
 
 			return $this->$act_func();

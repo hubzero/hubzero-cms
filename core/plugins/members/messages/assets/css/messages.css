@@ -215,7 +215,7 @@
 		top: 100px;
 		left: -20px;
 		color: transparent;
-		background: url("/plugins/members/messages/images/preview-arrow.png") no-repeat 0 0;
+		background: url("/core/plugins/members/messages/images/preview-arrow.png") no-repeat 0 0;
 		width: 20px;
 		height: 20px;
 	}

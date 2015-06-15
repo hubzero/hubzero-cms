@@ -50,7 +50,7 @@ if ($attachments)
 ?>
 <div id="abox-content-wrap">
 	<div id="abox-content">
-	<script src="/plugins/projects/publications/assets/js/selector.js"></script>
+	<script src="/core/plugins/projects/publications/assets/js/selector.js"></script>
 		<h3><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR'); ?> 	<span class="abox-controls">
 				<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
 				<?php if ($this->ajax) { ?>

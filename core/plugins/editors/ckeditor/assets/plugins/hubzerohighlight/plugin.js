@@ -16,7 +16,7 @@
 				// add css for mark elements
 				if (editor.mode != 'source')
 				{
-					this.document.appendStyleSheet('/media/editors/ckeditor/plugins/hubzerohighlight/plugin.css');
+					this.document.appendStyleSheet('/media/editors/ckeditor/core/plugins/hubzerohighlight/plugin.css');
 				}
 			});
 
@@ -28,7 +28,7 @@
 					// add css for mark elements
 					if (editor.mode != 'source')
 					{
-						this.document.appendStyleSheet('/media/editors/ckeditor/plugins/hubzerohighlight/plugin.css');
+						this.document.appendStyleSheet('/media/editors/ckeditor/core/plugins/hubzerohighlight/plugin.css');
 					}
 				}
 			});
@@ -41,7 +41,7 @@
 					// add css for mark elements
 					if (editor.mode != 'source')
 					{
-						this.document.appendStyleSheet('/media/editors/ckeditor/plugins/hubzerohighlight/plugin.css');
+						this.document.appendStyleSheet('/media/editors/ckeditor/core/plugins/hubzerohighlight/plugin.css');
 					}
 				}
 			});

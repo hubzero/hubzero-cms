@@ -2139,7 +2139,7 @@ function initWykiwyg() {
 			toggle: true,
 			resize: true,
 			xhtml: true,
-			cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
+			cssfile: '/core/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
 		});
 
 		wykiwygs.push(edtr);

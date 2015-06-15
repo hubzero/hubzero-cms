@@ -47,7 +47,7 @@ else
 
 	$base = rtrim(Request::base(true), '/');
 
-	$img = $base . '/plugins/tools/novnc/assets/novnc/images';
+	$img = $base . '/core/plugins/tools/novnc/assets/novnc/images';
 ?>
 	<div id="noVNC-control-bar" class="hidden">
 		<!--noVNC Mobile Device only Buttons-->

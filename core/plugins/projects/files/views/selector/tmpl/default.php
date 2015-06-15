@@ -166,7 +166,7 @@ if ($this->items)
 }
 
 ?>
-<script src="/plugins/projects/files/assets/js/fileselector.js"></script>
+<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileselector.js"></script>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR'); ?> 	<span class="abox-controls">
 		<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
