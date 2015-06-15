@@ -1,0 +1,70 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_wishlist/site/assets/css/autocompleter.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Autocompleter */
+	div.autocompleter-loading {
+		float: left;
+		clear: right;
+		background:	#fff url("/core/components/com_wishlist/site/assets/img/spinner.gif") no-repeat center;
+		width: 20px;
+		height: 16px;
+	}
+
+	ul.autocompleter-choices {
+		position: absolute;
+		margin: 0;
+		padding: 0;
+		list-style:	none;
+		border:	1px solid #333;
+		background-color: #fff;
+		border-right-color: #ddd;
+		border-bottom-color: #ddd;
+		text-align:	left;
+		z-index: 50;
+	}
+	ul.autocompleter-choices li {
+		position: relative;
+		padding: 0.1em 1.5em 0.1em 1em;
+		margin: 0;
+		cursor:	pointer;
+		font-weight: normal;
+		font-size: 1em;
+	}
+	ul.autocompleter-choices li.autocompleter-selected {
+		background-color: #444;
+		color: #fff;
+	}
+	ul.autocompleter-choices span.autocompleter-queried {
+		font-weight: bold;
+	}
+	ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
+		color: #9FCFFF;
+	}
+
+	#as-notify {
+		z-index: 65557;
+		background: #FFFDEF url("/core/components/com_wishlist/site/assets/img/save-large.png") 50% 50% no-repeat;
+		text-indent: -55em;
+		overflow: hidden;
+		position: fixed;
+		width: 24px;
+		margin: 0;
+		padding: 15px;
+		left: 25px;
+		top: 100px;
+		border: 1px solid #EFEAC2;
+		color: #CC6633;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;	
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+	}
+
+/* IE 7 hacks */
+	html>body #hubForm {
+		*position: inherit;
+	}

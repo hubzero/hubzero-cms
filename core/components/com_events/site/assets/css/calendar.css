@@ -1,0 +1,142 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_events/events.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	calendar CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	input.calendar,
+	select.calendar {
+		width: 99px;
+	}
+
+	button.calendar {
+		background: url("/core/components/com_events/site/assets/img/calendar-icon.gif");
+		border: 0;
+		cursor: pointer;
+		/*float: left;*/display: inline;
+		height: 20px;
+		margin-right: 6px;
+		width: 20px;
+	}
+	button.calendar:hover,
+	button.calendar.active {
+		background-position: 0 20px;
+	}
+
+	div.calendar {
+		background: url("/core/components/com_events/site/assets/img/calendar.png");
+		height: 195px;
+		padding: 0 6px;
+		text-align: center;
+		width: 147px;
+	}
+	div.calendar div {
+		background: none !important;
+		cursor: move;
+		height: 185px;
+		overflow: hidden;
+		padding-top: 10px;
+		position: relative;
+		width: 147px;
+	}
+	div.calendar caption {
+		color: #333;
+		font: normal 12px/16px Helvetica, Arial, sans-serif;
+		padding-top: 6px;
+		text-align: center;
+		width: 100%;
+	}
+	div.calendar caption a {
+		cursor: pointer;
+		display: block;
+		height: 12px;
+		overflow: hidden;
+		position: absolute;
+		text-indent: -100px;
+		top: 17px;
+		width: 11px;
+		border: none;
+	}
+	div.calendar caption a.prev {
+		background-image: url("/core/components/com_events/site/assets/img/calendar-prev.gif");
+		left: 0;
+	}
+	div.calendar caption a.next {
+		background-image: url("/core/components/com_events/site/assets/img/calendar-next.gif");
+		right: 0;
+	}
+	div.calendar caption a:hover {
+		background-position: 0 12px;
+		border: none;
+	}
+	div.calendar caption span {
+		height: 25px;
+		position: relative;
+		text-align: center;
+	}
+	div.calendar caption span.month {
+		padding-right: 8px;
+	}
+	div.calendar caption span.month:after {
+		content: ',';
+	}
+
+	div.calendar table {
+		background: #FFF;
+		border: 0;
+		border-collapse: collapse;
+		border-spacing: 0;
+		cursor: default;
+		margin: 0 auto;
+		overflow: hidden;
+		width: 147px;
+		padding: 0;
+	}
+	div.calendar td,
+	div.calendar th {
+		border: 0;
+		color: #0597DB;
+		font: normal 11px Helvetica, Arial, sans-serif;
+		height: 21px;
+		text-align: center;
+		width: 21px;
+		padding: 0;
+		line-height: 22px;
+		overflow: hidden;
+	}
+	div.calendar th { height: 14px; line-height: 11px;}
+	div.calendar td {
+		background: url("/core/components/com_events/site/assets/img/calendar-td.gif");
+		color: #FFF;
+		font-size: 11px;
+	}
+	div.calendar td.invalid {
+		color: #999;
+	}
+	div.calendar td.valid {
+		background: url("/core/components/com_events/site/assets/img/calendar-valid.gif");
+		color: #0597DB;
+		cursor: pointer;
+	}
+	div.calendar td.hilite {
+		background: url("/core/components/com_events/site/assets/img/calendar-hilite.gif");
+	}
+	div.calendar td.inactive {
+		background: url("/core/components/com_events/site/assets/img/calendar-td.gif") 0 100%;
+		color: #FFF;
+	}
+	div.calendar td.active,
+	div.calendar td.hover {
+		background: url("/core/components/com_events/site/assets/img/calendar-valid.gif") 0 100%;
+		color: #FFF;
+		cursor: pointer;
+	}

@@ -1,0 +1,636 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_wishlist/site/assets/css/wishlist.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_wishlist CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.aside .container .tags li {
+		background: transparent;
+		padding: 0;
+		border: none;
+	}
+	.icon-wish:before {
+		content: "\f078";
+		font-family: "Fontcons";
+	}
+
+/* Entries (list) */
+	ul.answers,
+	ul.wishs {
+		list-style: none;
+		margin: 1em 0;
+	}
+	.answers li,
+	.wishs li {
+		background-image: none;
+		padding: 0px 0.4em;
+	}
+	ul.answers li,
+	ul.wishs li {
+		padding: 0;
+		margin: 0.3em 0;
+	}
+	.entries .list-footer li {
+		background-image: none;
+	}
+/* Entries (table) */
+	.entry-details a {
+		color: #666;
+		border-bottom: 1px dotted #666;
+	}
+	.entry-details a:hover {
+		color: #000;
+		border-bottom: 1px solid #333;
+	}
+
+	.entry-comments a:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+
+	.ideas .entry-id {
+		display: block;
+		overflow: hidden;
+		width: 1.7em;
+		height: 1.7em;
+		margin: .5em 0 0 0;
+		text-align: center;
+	}
+	.ideas .entry-id:before {
+		content: "\f078";
+		font-family: "Fontcons";
+		font-size: 1.7em;
+		line-height: 1;
+		margin-right: 1em;
+		color: #aaa;
+		font-weight: normal;
+	}
+	/* Accepted */
+	.ideas tbody tr.accepted {
+		background: #ffe;
+	}
+	.ideas tbody tr.accepted .entry-id:before {
+		content: "\f078";
+	}
+	/* Granted */
+	.ideas tbody tr.granted .entry-id:before {
+		content: "\2714";
+		font-size: 1.2em;
+	}
+	.ideas tbody tr.granted {
+		background: #f7fef4;
+	}
+	/* Rejected */
+	.ideas tbody tr.rejected .entry-id:before {
+		content: "\2716";
+		font-size: 1.2em;
+	}
+	.ideas tbody tr.rejected {
+		background: #fff6f4;
+	}
+	/* Flagged */
+	.ideas tbody tr.flagged .entry-id:before {
+		content: "\2691";
+		font-size: 1.2em;
+	}
+	/* Withdrawn */
+	.ideas tbody tr.withdrawn {
+		background: #f1f1f1;
+	}
+	.ideas tbody tr.withdrawn .entry-id:before {
+		content: "\2298";
+		font-size: 1.2em;
+	}
+	/* Private */
+	.ideas tbody tr.private {
+		background-image: none;
+	}
+	.ideas tbody tr.private .entry-id:before {
+		content: "\f023";
+		font-size: 1.2em;
+	}
+	.entries tbody td.voting,
+	.voting {
+		text-align: right;
+		white-space: nowrap;
+	}
+	p.voting {
+		float: right;
+		min-width: 10em;
+		margin: 0.7em 0 0.7em 0;
+		padding: 0;
+	}
+	.container-block .entry-details {
+		padding: 0.7em 0 0.7em 0;
+	}
+	.entry-popularity {
+		display: none;
+	}
+	.rankit,
+	.ideas .ranking span {
+		text-transform: uppercase;
+		font-size: xx-small;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+	.ideas .ranking .accepted {
+		color: #f1c037;
+	}
+	.ideas .ranking .granted {
+		color: #7AAB69;
+	}
+	.ideas .ranking .flagged,
+	.ideas .ranking .rejected {
+		color: #CC0000;
+	}
+	.ideas .ranking .withdrawn {
+		color: #bbb;
+	}
+/* Priority */
+	.priority-level-base {
+		display: block;
+		margin: 0;
+		padding: 0;
+		height: 3px; 
+		background-color: #ddd;
+		width: 5.5em;
+	}
+	.priority-level {
+		display: block;
+		margin: 0;
+		padding: 0;
+		height: 3px; 
+		background-color: #aaa;
+	}
+	.priority-level span {
+		display: none;
+	}
+
+/* Submenu styling */
+	.filter-options {
+		width: 60%;
+	}
+
+/* Rewards */
+	.ideas tbody td.reward {
+		text-align: right;
+	}
+	.entry-reward {
+		white-space: nowrap;
+		color: #999;
+		font-size: 85%;
+	}
+	.entry-reward a {
+		color: #999;
+	}
+	.entry-reward a span {
+		display: none;
+	}
+	.entry-reward a.no-bonus:after,
+	.entry-reward a.bonus:after {
+		width: 20px;
+		height: 30px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		margin-left: 0.2em;
+		content: "\f006";
+		position: absolute;
+		color: #dbb349;
+	}
+	.entry-reward span.bonus-inactive:before {
+		color: #CCC;
+	}
+/* Wish */
+	/* Options */
+	.wish-options {
+		list-style: none;
+		margin: 0 0 1.5em 70px;
+		padding: 0;
+	}
+
+	.wish .wish-options li {
+		list-style: none;
+		display: inline;
+		margin-right: 2em;
+	}
+	.wish .entry-subject {
+		font-weight: bold;
+	}
+
+	.changestatus,
+	.transfer,
+	.makeprivate,
+	.editwish,
+	.abuse,
+	.reply {
+		background: none;
+		padding-left: 0;
+	}
+	small.fontcon-before,
+	.changestatus:before,
+	.transfer:before,
+	.makeprivate:before,
+	.editwish:before,
+	.abuse:before,
+	.reply:before,
+	.delete:before,
+	.edit:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+	}
+	.changestatus:before {
+		content: "\f08d";
+	}
+	.transfer:before {
+		content: "\2194";
+	}
+	.makeprivate:before {
+		content: "\f06e";
+	}
+	.editwish:before {
+		content: "\270E";
+	}
+	.abuse:before {
+		content: "\2298";
+	}
+	.reply:before {
+		content: "\f08a";
+	}
+	.delete:before {
+		content: "\f014";
+	}
+	.edit:before {
+		content: "\270E";
+	}
+	/* Status */
+	.wish-status {
+		margin: 0;
+		padding: 0;
+	}
+	.wish-status .accepted,
+	.wish-status .rejected,
+	.wish-status .pending,
+	.wish-status .granted {
+		margin: 0;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 1.2em;
+		padding: 0.5em;
+		text-align: center;
+		border: 5px solid #fff; 
+		background: #fff url("/core/components/com_wishlist/site/assets/img/light-stripes.png");
+	}
+	.wish-status .accepted {
+		color: #F1C037;
+		border-color: #F1C037;
+		background-color: #ffe;
+	}
+	.wish-status .accepted a {
+		color: #F1C037;
+	}
+	.wish-status .rejected {
+		color: #c00;
+		border-color: #EFCCC2; 
+		background-color: #FFF2EF;
+	}
+	.wish-status .rejected a {
+		color: #c00;
+	}
+	.wish-status .pending {
+		color: #aaa;
+		border-color: #ccc;
+		background-color: #eee;
+	}
+	.wish-status .pending a {
+		color: #aaa;
+	}
+	.wish-status .granted {
+		color: #7AAB69;
+		border-color: #CDDECA;
+		background-color: #F3FDF0;
+	}
+	.wish-status .granted a {
+		color: #7AAB69;
+	}
+	/* Voting */
+	.wish .entry-voting {
+		float:right; 
+	}
+	.wish-bonus {
+		margin: 1em 0;
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+		padding: 1em 0 1em 0;
+		line-height: 2em;
+	}
+	.wish-bonus p {
+		font-size:x-small;
+		color: #999;
+		text-transform: uppercase;
+	}
+	.wish-point-value {
+		color: #000;
+		font-weight:bold;
+		text-transform: lowercase;
+		font-size: inherit;	
+		padding: 0;
+	}
+	.wish-bonus p.wish-point-info {
+		display:block;
+		margin-top:1em;
+		margin-right:2em;
+		font-style:italic;
+		font-weight: bold;
+		line-height:1.2em;
+		text-transform: none;
+	}
+	/* Priority */
+	.wish-priority {
+		border: 2px solid #EFEAC2;
+		border-top: none;
+		background-color: #fff;
+		margin: 0;
+		padding: 0;
+	}
+	.wish-priority caption {
+		font-size: 115%;
+		background: #FFFDEF url("/core/components/com_wishlist/site/assets/img/light-stripes.png");
+		border: 2px solid #EFEAC2;
+		border-bottom: 1px solid #eee;
+		margin-right: -2px; /* Fix 2px issue */
+	}
+	.wish-priority caption span {
+		color: #aaa;
+	}
+	.wish-priority thead th {
+		text-align: left;
+		font-size: 85%;
+		background: #fbfbf6;
+		color: #999;
+	}
+	.wish-priority tbody td {
+		text-align: left;
+		border-bottom: 1px solid #eee;
+		padding: 10px;
+	}
+	.wish-priority tbody th {
+		text-align: right;
+		font-weight: bold;
+		border-bottom: 1px solid #eee;
+	}
+	.wish .container {
+		margin-left: 70px;
+		border-color: #FFFDEF;
+	}
+/* Comments */
+	/* Header */
+	h3.comments-title {
+		position: relative;
+	}
+	h3.comments-title .feed {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		position: absolute;
+		top: 5px;
+		right: 0px;
+		margin: 0;
+		padding: 0;
+	}
+
+	/* Form */
+	.edit-form {
+		margin: 0 0 0 70px;
+		padding: 0;
+	}
+	.edit-form fieldset {
+		border: 10px solid #eeecf9;
+		background-color: #f9f8fd;
+		margin: 0;
+		padding: 0 1em 0em 1em;
+		text-align: left;
+		color: #777;
+	}
+	.edit-form label {
+		padding-top: 1em;
+		position: relative;
+		display: block;
+	}
+	.edit-form label span {
+
+	}
+	.edit-form .sidenote {
+		border: 1px solid #eeecf9;
+		padding: 0 1em;
+		margin: 0 -1em 0 -1em;
+		color: #aaa;
+		background-color: #f3f2fb;
+	}
+	.edit-form h4 {
+		margin: 1em 0;
+	}
+	.edit-form fieldset fieldset {
+		border: 1px solid #eeecf9;
+		margin: 1em 0;
+		padding: 0 1em 1em 1em;
+		text-align: left;
+	}
+	.edit-form .secondary_option {
+		margin-left: 2em;
+	}
+
+	.warning .btn {
+		color: #333 !important;
+		border-bottom: 1px solid #AAA;
+	}
+	.warning .btn:hover {
+		color: #111 !important;
+		border-bottom: 1px solid #AAA;
+	}
+	.warning .say_yes,
+	.warning .say_no {
+		margin-right: 1em;
+	}
+
+	#hubForm .submit a {
+		margin-left: 2em;
+	}
+
+	#planform {
+		margin: 0;
+		padding: 0;
+	}
+	#planform fieldset {
+		margin: 0;
+		text-align: left;
+		color: #777;
+		position: relative;
+		background-color: #fff;
+		border: 1px solid #c3b7ff;
+		padding: .61803399em 1.61803399em 0 1.61803399em;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+	}
+	#planform fieldset:before,
+	#planform fieldset:after {
+		content: "";
+		position: absolute;
+		bottom: -15px;
+		left: 50px;
+		border-width: 15px 0 0 15px;
+		border-style: solid;
+		border-color: #fff transparent; 
+		display: block; 
+		width: 0;
+	}
+	#planform fieldset:before {
+		top: 10px; 
+		left: -20px;
+		bottom:auto;
+		border-width: 10px;
+		border-color: transparent #c3b7ff transparent transparent;
+	}
+	#planform fieldset:after {
+		top: 10px; 
+		left: -18px;
+		bottom: auto;
+		border-width: 10px;
+		border-color: transparent #fff transparent transparent; 
+	}
+	#planform fieldset fieldset {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+		border-color: #d9d9d9;
+		padding: .61803399em;
+	}
+	#planform fieldset fieldset:before,
+	#planform fieldset fieldset:after {
+		display: none;
+	}
+	#planform p.plan-member-photo {
+		float: left;
+		margin: 0;
+		padding: 0 20px 0 0;
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+		position: relative;
+	}
+	#planform .sidenote {
+		border: 1px solid #edf0e8;
+		padding: 0 1em;
+		margin: 0 -1em 0 -1em;
+		color: #aaa;
+		background-color: #edf0e8;
+	}
+	#planform .required,
+	#planform .optional {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 80%;
+	}
+	#planform .required {
+		color: #AD6456;
+	}
+	#planform .optional {
+		color: #888;
+	}
+	#planform label {
+		padding-top: 1em;
+		position: relative;
+		display: block;
+	}
+	#planform .grouping {
+		position: relative;
+		margin-left: -3em;
+		padding: 0 0 1.5em 5em;
+		overflow: hidden;
+		top: 1em;
+		left: 1.5em;
+	}
+	#planform .grouping label {
+		padding: 0;
+		float: left;
+		width: 50%;
+	}
+	#planform .grouping label:first-child {
+		margin: 0 2em 0 -3.5em;
+	}
+	#planform .grouping label span {
+		top: 0;
+	}
+	#planform input, 
+	#planform select, 
+	#planform textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}
+	#planform .submit {
+		clear: both;
+		margin: -1.5em 0 1em 0;
+		padding: 0;
+		text-align: right;
+	}
+	#planform .submit input,
+	#planform .option {
+		width: auto;
+	}
+	#planform fieldset fieldset label {
+		display: inline;
+	}
+	#planform fieldset fieldset span,
+	#planform fieldset fieldset #nodue-label {
+		margin-right: 1em;
+	}
+	#planform .sidenote {
+		padding: .61803399em 1.61803399em;
+		color: #aaa;
+		margin: .61803399em -1.61803399em 0 -1.61803399em;
+		background: #fafafa;
+	}
+	#planform .submit {
+		margin: 1em 0 1em 0;
+	}
+	.nav_wishlist:before {
+		font-family: "Fontcons";
+		content: "\f078";
+	}
+	#publish_up-label input {
+		display: block;
+	}
+	.due,
+	.overdue {
+		float: right;
+		background: #fefae2;
+		border: 2px solid #e6d6c0;
+		padding: 0 0.5em;
+	}
+	.due a,
+	.overdue a {
+		color: orange;
+		border: none;
+	}
+	.overdue a {
+		color: red;
+	}

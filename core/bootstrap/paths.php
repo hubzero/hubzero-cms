@@ -35,7 +35,7 @@ if (!defined('PATH_ROOT'))
 
 if (!defined('PATH_APP'))
 {
-	define('PATH_APP', PATH_ROOT);  //  . '/app'
+	define('PATH_APP', PATH_ROOT);  // . '/app'
 }
 
 /*
@@ -50,7 +50,7 @@ if (!defined('PATH_APP'))
 |
 */
 
-define('PATH_CORE', PATH_ROOT);  // . '/core'
+define('PATH_CORE', PATH_ROOT . DIRECTORY_SEPARATOR . 'core');
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ define('PATH_CORE', PATH_ROOT);  // . '/core'
 |
 */
 
-define('PATH_PUBLIC', PATH_APP);  //  . '/public'
+define('PATH_PUBLIC', PATH_APP);  // . '/public';
 
 /*
 |--------------------------------------------------------------------------
@@ -82,10 +82,10 @@ define('JPATH_ROOT',            PATH_ROOT);
 define('JPATH_SITE',            PATH_ROOT);
 define('JPATH_CONFIGURATION',   PATH_ROOT);
 define('JPATH_ADMINISTRATOR',   PATH_ROOT . '/administrator');
-define('JPATH_LIBRARIES',       PATH_CORE . '/core/libraries');
+define('JPATH_LIBRARIES',       PATH_CORE . '/libraries');
 define('JPATH_PLUGINS',         PATH_CORE . '/plugins');
-define('JPATH_INSTALLATION',    PATH_CORE . '/installation');
+define('JPATH_INSTALLATION',    PATH_ROOT . '/installation');
 define('JPATH_THEMES',          JPATH_BASE . '/templates');
 define('JPATH_CACHE',           PATH_APP . '/cache');
-define('JPATH_MANIFESTS',       PATH_CORE . '/core/manifests');
+define('JPATH_MANIFESTS',       PATH_CORE . '/manifests');
 define('JPATH_API',             PATH_ROOT . '/api');

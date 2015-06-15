@@ -1,0 +1,177 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_jobs/site/assets/css/calendar.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	calendar CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	input.calendar,
+	select.calendar {
+		width: 99px;
+	}
+
+	button.calendar {
+		background: url("/core/components/com_jobs/site/assets/img/calendar-icon.gif");
+		border: 0;
+		cursor: pointer;
+		/*float: left;*/display: inline;
+		height: 20px;
+		margin-right: 6px;
+		width: 20px;
+	}
+	button.calendar:hover,
+	button.calendar.active {
+		background-position: 0 20px;
+	}
+
+	div.calendar {
+		background: url("/core/components/com_jobs/site/assets/img/calendar.png");
+		height: 195px;
+		padding: 0 6px;
+		text-align: center;
+		width: 147px;
+	}
+	div.calendar div {
+		background: none !important;
+		cursor: move;
+		height: 185px;
+		overflow: hidden;
+		padding-top: 10px;
+		position: relative;
+		width: 147px;
+	}
+	div.calendar caption {
+		color: #333;
+		font: normal 12px/16px Helvetica, Arial, sans-serif;
+		padding-top: 6px;
+		text-align: center;
+		width: 100%;
+	}
+	div.calendar caption a {
+		cursor: pointer;
+		display: block;
+		height: 12px;
+		overflow: hidden;
+		position: absolute;
+		text-indent: -100px;
+		top: 17px;
+		width: 11px;
+		border: none;
+	}
+	div.calendar caption a.prev {
+		background-image: url("/core/components/com_jobs/site/assets/img/calendar-prev.gif");
+		left: 0;
+	}
+	div.calendar caption a.next {
+		background-image: url("/core/components/com_jobs/site/assets/img/calendar-next.gif");
+		right: 0;
+	}
+	div.calendar caption a:hover {
+		background-position: 0 12px;
+		border: none;
+	}
+	div.calendar caption span {
+		height: 25px;
+		position: relative;
+		text-align: center;
+	}
+	div.calendar caption span.month {
+		padding-right: 8px;
+	}
+	div.calendar caption span.month:after {
+		content: ',';
+	}
+
+	div.calendar table {
+		background: #FFF;
+		border: 0;
+		border-collapse: collapse;
+		border-spacing: 0;
+		cursor: default;
+		margin: 0 auto;
+		overflow: hidden;
+		width: 147px;
+		padding: 0;
+	}
+	div.calendar td,
+	div.calendar th {
+		border: 0;
+		color: #0597DB;
+		font: normal 11px Helvetica, Arial, sans-serif;
+		height: 21px;
+		text-align: center;
+		width: 21px;
+		padding: 0;
+		line-height: 22px;
+		overflow: hidden;
+	}
+	div.calendar th { height: 14px; line-height: 11px;}
+	div.calendar td {
+		background: url("/core/components/com_jobs/site/assets/img/calendar-td.gif");
+		color: #FFF;
+		font-size: 11px;
+	}
+	div.calendar td.invalid {
+		color: #999;
+	}
+	div.calendar td.valid {
+		background: url("/core/components/com_jobs/site/assets/img/calendar-valid.gif");
+		color: #0597DB;
+		cursor: pointer;
+	}
+	div.calendar td.hilite {
+		background: url("/core/components/com_jobs/site/assets/img/calendar-hilite.gif");
+	}
+	div.calendar td.inactive {
+		background: url("/core/components/com_jobs/site/assets/img/calendar-td.gif") 0 100%;
+		color: #FFF;
+	}
+	div.calendar td.active,
+	div.calendar td.hover {
+		background: url("/core/components/com_jobs/site/assets/img/calendar-valid.gif") 0 100%;
+		color: #FFF;
+		cursor: pointer;
+	}
+	
+	/* JQuery calendar (datepicker)
+	--------------------------------------------- */	
+		#ui-datepicker-div {
+			background: #fef8e6;
+			border: 2px solid #fddb72;
+		}
+		#ui-datepicker-div table {
+			border: none;
+		}
+		#ui-datepicker-div a {
+			border: none;
+		}
+		.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; }
+		.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; background: #fddb72; color: #000; }
+		.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+		.ui-datepicker .ui-datepicker-prev { left:2px; font-size: 85%; }
+		.ui-datepicker .ui-datepicker-next { right:10px; font-size: 85%; }
+		.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+		.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+		.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+		.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+		.ui-datepicker select.ui-datepicker-month, 
+		.ui-datepicker select.ui-datepicker-year { width: 49%;}
+		.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+		.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+		.ui-datepicker td { border: 0; padding: 1px; text-align: center; }
+		.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: center; text-decoration: none; }
+		.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+		.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+		.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+		
+		.ui-datepicker .ui-state-active {
+			background: orange;
+		}

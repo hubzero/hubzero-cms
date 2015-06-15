@@ -1,0 +1,805 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_contribtool/contribtool.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Enries */
+	/* Status */
+	.tools tbody tr th .entry-id:before {
+		content: "";
+		display: none;
+	}
+	.tools tbody tr th .entry-id {
+		display: none;
+	}
+	.tools tbody tr.uploaded,
+	.tools tbody tr.updated,
+	.tools tbody tr.approved,
+	.tools tbody tr.registered {
+		background: #ffe;
+	}
+	.tools tbody tr.registered th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application.png") right 15px no-repeat;
+	}
+	.tools tbody tr.created th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application_created.png") right 15px no-repeat;
+	}
+	.tools tbody tr.uploaded th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application_uploaded.png") right 15px no-repeat;
+	}
+	.tools tbody tr.installed th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application_installed.png") right 15px no-repeat;
+	}
+	.tools tbody tr.updated th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application_updated.png") right 15px no-repeat;
+	}
+	.tools tbody tr.approved th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application.png") right 15px no-repeat;
+	}
+	.tools tbody tr.approved {
+		background: #f7fef4;
+	}
+	.tools tbody tr.published th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application.png") right 15px no-repeat;
+	}
+	.tools tbody tr.published {
+		background: #f0f9ff;
+	}
+	.tools tbody tr.retired th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application_retired.png") right 15px no-repeat;
+	}
+	.tools tbody tr.abandoned th {
+		background: url("/core/components/com_tools/site/assets/img/contribute/application_abandoned.png") right 15px no-repeat;
+	}
+	.tools tbody tr.abandoned {
+		background: #fff6f4;
+	}
+	.container-block .entry-details {
+		padding: 0.7em 0 0.7em 0;
+	}
+
+/* Contribtool */
+	#whatsnext { 
+		padding: 0;
+		margin: 0 0 1em;
+	}
+	#whatsnext ul, 
+	ul.youroptions { 
+		margin: 1em 0 1em 1em;
+		padding: 0 0 0 0;
+		list-style: none;
+	}
+	#whatsnext a, 
+	#whatsnext a:hover { 
+		padding: 0;
+		margin: 0;
+		position: relative;		
+	}
+	#whatsnext ul li {
+		padding: 0 0 0 20px;
+		margin: 0 0 1em 0;
+	}
+	#whatsnext ul li.complete, 
+	#todolist span.complete { 
+		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/task_complete.gif") 0 0 no-repeat;
+		color: #6a0;
+	}
+	#whatsnext ul li.incomplete, 
+	#todolist span.incomplete { 
+		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/task_incomplete.gif") 0 0 no-repeat;
+	}
+	#whatsnext ul li.todo { 
+		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/orangepointer.gif") 0 0.2em no-repeat;
+	}
+	#whatsnext ul li.todo_disabled { 
+		color:#999999;
+		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/greypointer.gif") 0 0.2em no-repeat;
+	}
+	#whatsnext ul li.todo_disabled a, 
+	#whatsnext ul li.todo_disabled a:hover, 
+	a.optiondisabled, 
+	a.optiondisabled:hover  { 
+		color:#999;
+		border-bottom: 1px solid #999999;
+	}
+	ul.youroptions li, 
+	#whatsnext ul li {
+		padding: 0 0 0 20px;
+		margin: 0 0 1em 0;
+		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/arrow.png") 0 0.2em no-repeat;
+	}
+
+/* Tool Status */
+	#ctCancel { 
+		display: none;
+		padding: 1em 1.5em 0.5em 1.5em;
+		white-space: normal !important;
+	}
+	#ctComment { 
+		display: none;
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		margin: 1.5em;
+		background: #f0ece7;
+		border: 1px solid #dbd5ce;
+	}
+	#ctComment h4 { 
+		padding: 0.5em 0 0.5em 0;
+		margin: 0;
+	}
+	#ctComment fieldset { 
+		padding: 0.3em 0 0.3em 0;
+		margin: 0;
+	}
+	#ctComment form { 
+		padding: 0;
+		margin: 0;
+	}
+	#ctComment .hidemsg { 
+		margin-left: 1.5em;
+	}
+	.closebox { 
+		float: right;
+		position: relative;
+		margin: -0.2em 0.5em -4em 0.5em;
+	}
+	.hidemsg { 
+		color: #999;
+		font-size: 130%;
+		border: none;
+	}
+	#commentarea {
+		padding: 0;
+	}
+	#comment {
+		width: 200px;
+	}
+	.cancel_warning { 
+		display: block;
+	}
+	.boundary { 
+		padding: 0 1em 0 1em;
+	}
+
+/* Admin actions */
+	#admintools h4, 
+	.admintitle {
+		padding-top: 1.5em;
+	}
+	.adminactions {
+		list-style: none;
+		margin: 0;
+		padding: 0 0 0 1em;
+		line-height: 2em;
+	}
+	.adminactions li {
+		display: inline;
+		padding: 0 0.5em 0 0.2em;
+		background: none;
+	}
+	.adminactions li a, 
+	.adminactions li a:hover, 
+	.adminactions li span {
+		padding: 0.2em 0;
+		border: none;
+		font-size: x-small;
+		background: none;
+	}
+	.adminactions li a:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #CCC; 
+		margin-right: 0.2em;
+		font-weight: normal;
+	}
+	.history {
+		padding: 0 !important;
+		background: none !important;
+	}
+	.history:before {
+		display: none;
+	}
+	.adminactions li.history a:before {
+		content: "\f017";	
+	}
+	.adminactions li.wiki a:before {
+		content: "\f059";	
+	}
+	.adminactions li.sourcecode a:before {
+		content: "\f121";	
+	}
+	.adminactions li.timeline a:before {
+		content: "\f056";	
+	}
+	.adminactions li.message a:before {
+		content: "\f075";	
+	}
+	.adminactions li.canceltool a:before {
+		content: "\2716";	
+	}
+	.adminactions li#createtool a:before {
+		content: "\f0c2";	
+	}
+	.adminactions li#installtool a:before {
+		content: "\f0c3";	
+	}
+	.adminactions li#publishtool a:before {
+		content: "\2714";	
+	}
+	.adminactions li#retiretool a:before {
+		content: "\f0ab";	
+	}
+	span.showcontrols {
+		padding: 0.2em 0 0.2em 0.2em;
+		margin: 0;
+		border: none;
+	}
+	#ctSending {
+		padding: 0.5em 1.5em 0.5em 1.5em;
+	}
+	#ctSending p {
+		color:#666666;
+	}
+	#ctSending img {
+		vertical-align:middle;
+		padding-right:0.5em;
+	}
+	#ctSuccess {
+		padding: 0.5em 1.5em 0.5em 1.5em;
+	}
+	
+	span.showcontrols a { 
+		display: inline;
+		border: none;
+		padding: 0.2em 0.2em 0.2em 0.2em;
+		margin: 0 -2px 0 0;
+	}
+	span.showcontrols a.expand { 
+		background: url("/core/components/com_tools/site/assets/img/contribute/showcontrols.gif") -3px 3px no-repeat;
+		border: 0;
+	}
+	span.showcontrols a.collapse { 
+		background:  url("/core/components/com_tools/site/assets/img/contribute/showcontrols.gif") -1px -12px no-repeat;
+		padding: 0.2em 0.2em 0.2em 0.5em;
+		border: 0;
+	}
+	.disabled { 
+		color: #999;
+	}
+	.conf { 
+		background: transparent url("/core/components/com_tools/site/assets/img/contribute/configure.gif") 0 0 no-repeat;
+		padding: 0.2em 0.6em 0.2em 0.6em;
+		border: none;
+		margin-left: 1em;
+	}
+	.conf:hover { 
+		background-position: 0 -17px;
+		border: none;
+	}
+	
+	.ticketinfo h4 {
+		margin: 1.5em 0 1em 1.4em;
+	}
+	.ticketinfo .adminlabel {
+		width: 150px;
+	}
+	
+	.item_q a {
+		background: url("/core/components/com_tools/site/assets/img/contribute/qanda.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	.item_w a {
+		background: url("/core/components/com_tools/site/assets/img/contribute/wishlist.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+	.item_s a {
+		background: url("/core/components/com_tools/site/assets/img/contribute/warning.gif") 0 0 no-repeat;
+		padding-left: 17px;
+	}
+
+/* Tool Summary */
+	.highpriority { 
+		background: transparent url("/core/components/com_tools/site/assets/img/contribute/high_priority.gif") 2em 0.3em no-repeat;
+		width: 15px;
+		height: 15px;
+	}
+	.disabled_links {
+		color: #666;
+	}
+	td.showstatus a, a.showstatus, 
+	#tktlist tbody tr.published a.showstatus, 
+	#tktlist tbody tr.published_user a.showstatus,
+	#tktlist tbody tr.abandoned a.showstatus,
+	#tktlist tbody tr.retired a.showstatus,
+	#tktlist tbody tr.retired_user a.showstatus, 
+	#tktlist a {
+		border: 0;
+	}
+	#tktlist tbody tr.abandoned,
+	#tktlist tbody tr.abandoned:hover,
+	#tktlist tbody tr.retired,
+	#tktlist tbody tr.retired:hover,
+	#tktlist tbody tr.retired_user,
+	#tktlist tbody tr.retired_user:hover { 
+		background: #eeeeee;
+		color: #999 
+	}
+	#tktlist tbody tr.abandoned a,
+	#tktlist tbody tr.retired a,
+	#tktlist tbody tr.retired_user a { 
+		color: #999;
+		border-bottom: 1px solid #ccc;
+	}
+	#tktlist tbody tr.published,
+	#tktlist tbody tr.published:hover,
+	#tktlist tbody tr.published_user,
+	#tktlist tbody tr.published_user:hover {
+		background: #f0f9ff;
+	}
+	#tktlist tbody tr.published a,
+	#tktlist tbody tr.published_user a { 
+		color: #469;
+		border-bottom: 1px solid #C4CDEB;
+	}
+	#tktlist tbody tr.registered,
+	#tktlist tbody tr.registered:hover,
+	#tktlist tbody tr.updated,
+	#tktlist tbody tr.updated:hover,
+	#tktlist tbody tr.uploaded,
+	#tktlist tbody tr.uploaded:hover,
+	#tktlist tbody tr.approved,
+	#tktlist tbody tr.approved:hover,
+	#tktlist tbody tr.created_user,
+	#tktlist tbody tr.created_user:hover,
+	#tktlist tbody tr.installed_user,
+	#tktlist tbody tr.installed_user:hover,
+	table.mycontrib tr.created_user,
+	table.mycontrib tr.installed_user,
+	table.mycontrib tr.draft,
+	table.mycontrib tr.installed_user td.tool,
+	table.mycontrib tr.created_user td.tool { 
+		background-color: #fed;
+	}
+	table.mycontrib tr.created_user td,
+	table.mycontrib tr.installed_user td,
+	table.mycontrib tr.draft td {
+		border-bottom: 1px solid #ddd;
+	}
+
+/* Versioning */
+	.toolpublished {
+		background: url("/core/components/com_tools/site/assets/img/contribute/check.gif") 0 0 no-repeat;
+		display: block;
+		width: 15px;
+		height: 15px;
+		margin: 0 0 0 2em;
+		padding: 0;
+	}
+	.toolunpublished {
+		background: url("/core/components/com_tools/site/assets/img/contribute/minus.gif") 0 0 no-repeat;
+		display: block;
+		width: 15px;
+		height: 15px;
+		margin: 0 0 0 2em;
+		padding: 0;
+	}
+	
+	.vmanage { 
+		padding: 0 0 1.5em 0;
+	}
+	.vmanage select { 
+		float: right;
+	}
+	.vnotice { 
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		margin: 0.5em 1.5em 0 1.5em;
+		background: #f0ece7;
+		border: 1px solid #dbd5ce;
+	}
+	.vline {
+		line-height: 0.8em;
+	}
+	
+	.versionfield { 
+		padding: 1em;
+		background: #f0ece7;
+		border: 1px solid #dbd5ce;
+		margin: 0.5em 0 0.5em 0;
+	}
+	
+	.vbutton {
+		float: right;
+		position: relative;
+		margin-right: 2em;
+	}
+	#displays_0, 
+	.devversion {
+		background: url("/core/components/com_tools/site/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
+	}
+	.devversion, 
+	.currentversion {
+		padding: 1em;
+		margin: 0;
+	}
+	p.currentversion {
+		border-bottom: 1px solid #72d0eb;
+		background: #f0f9ff;
+	}
+	.config { 
+		border: none;
+		border-bottom: 2px solid #ccc;
+		padding-bottom: 1em;
+	}
+	.config h4,
+	.controls h4 { 
+		margin: 0.5em 0 0 0;
+	}
+	.config p,
+	.controls p { 
+		margin: 0.5em 0 0 0;
+	}
+	.config span.heading, 
+	span.heading { 
+		color: #5d715c;
+		font-weight: bold;
+		margin-right: 0.5em;
+	}
+	.config span.desc, 
+	span.desc { 
+		color: #666;
+		width: 200px;
+	}
+
+/* Steps */
+	#steps { 
+		border-bottom: 1px solid #ccc;
+		padding: 0 0 0.5em 0;
+		list-style: none;
+		margin: 1em 0 2em 0;
+		position: relative;
+	}
+	#steps li {
+		margin: 0 1em 0 0;
+		padding: 0 0 0.6em 0;
+		display: inline;
+		border: none;
+		color: #666;
+		font-size: 1em;
+		font-weight: normal;
+	}
+	#steps li.intermediate { 
+		background: url("/core/components/com_tools/site/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
+		padding: 0 1em 0 1em;
+		margin: 0;
+	}
+	#steps li.prev { 
+		color: #333;
+		background: #fff;
+		font-weight: bold;
+		margin: 0;
+	}
+	#steps li.active { 
+		color: #bd6416;
+		background: #fff;
+		font-weight: bold;
+		background: url("/core/components/com_tools/site/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+	}
+	#steps li.future { 
+		color: #b1c1b3;
+	}
+	#steps li.steps_hed { 
+		font-size: x-small;
+		text-transform: uppercase;
+	}
+
+/* Newly added */
+	.licensetxt {
+		white-space: pre-wrap;
+		_white-space: pre;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		height: 300px;
+		overflow: scroll;
+	}
+	.com_contribtool .columns .wiki { 
+		padding-left: 0;
+		background: none;
+	}
+	.licinput {
+		margin-top: 2em;
+	}
+	.licinput textarea {
+		width:100%;
+	}
+	#legendnotes p {
+		font-size: 85%;
+		padding: 1em;
+		border: 1px solid #CCC;
+		background: #f6f6f6;
+	}
+	.hidden {
+		display: none;
+	}
+	
+/* License screen: Open/closed source */
+	#closed-source {
+		padding: 1em 0;
+	}
+	#closed-source h4 {
+		margin-top: 1.5em;
+		font-size: 1.1em;
+	}
+	#closed-source label {
+		padding: 0;
+		margin: 2em 0 0 0;
+	}
+	#closed-source textarea {
+		width: 100%;
+	}
+	.opensource {
+		background: url("/core/components/com_tools/site/assets/img/happyface.png") 0 0 no-repeat;	
+	}
+	.closedsource { 
+		background: url("/core/components/com_tools/site/assets/img/sadface.png") 0 0 no-repeat;
+	}
+	.opensource, 
+	.closedsource { 
+		text-align: left;
+		padding: 0 0 1em 5.5em;
+	}
+	.required {
+		float: right;
+		color: red;
+		font-size: 85%;
+		text-transform: uppercase;
+	}
+	#choice-icon {
+		width: 24px;
+		height: 24px;
+		display: inline-block;
+		margin-left: 180px;
+		position: absolute;
+	}
+	#choice-icon.opensource {
+		background: url("/core/components/com_tools/site/assets/img/happyface_sm.png") 0 0 no-repeat;	
+	}
+	#choice-icon.closedsource {
+		background: url("/core/components/com_tools/site/assets/img/sadface_sm.png") 0 0 no-repeat;	
+	}
+	.why-open {
+		padding: 0.5em 1em 1em 1em;
+		border: 1px solid #d6ebd9;
+		background: #f5fff6;
+		margin: 0 0 2em 0;
+	}
+
+/* Tool edit form */
+	form#toolForm tr { 
+		background: #eee;
+	}
+	form#toolForm tr:hover { 
+		background: #e4e4e4;
+	}
+	.submitform { 
+		display:block;
+		margin: 0.5em 0 1.5em 0;
+	}
+	#hubForm p.hint { 
+		margin-bottom: 0;
+		margin-top: 0.5em;
+		padding: 0;
+		color: #a8a8a8;
+	} 
+	#hubForm .sameline { 
+		display: inline;
+		width: 10%;
+	}
+	div.subject { 
+		background: none;
+		border: none;
+		margin-left: 0;
+		margin-top: 0;
+		padding-left: 0;
+	}
+	div.subject legend { 
+		font-size: 120%;
+		color: #333333;
+		font-weight: bold;
+	}
+	.section .expanded {
+		width: 40%;
+	}
+	.section .contracted {
+		width: 55%;
+	}
+
+/* Tool Info */
+	.toolinfo {
+		border: 1px solid #b1a997;
+		color: #59554c;
+		background: #f9f7f1;
+		padding: 0.5em;
+		position: relative;
+	}
+	.toolinfo table th, .toolinfo table td {
+		border: none;
+		width: auto;
+	}
+	.toolinfo_abandoned {
+		border: 1px solid #ccc;
+		color: #666;
+		background: #eee;
+	}
+	.toolinfo_closed {
+		border: 1px solid #ccc;
+		color: #666;
+		background: #f0f9ff;
+	}
+	.state_hed  { 
+		color: #bd6416;
+	}
+	.toolinfo_note { 
+		color: #666;
+		padding: 0;
+		margin: 1em 0 0 0;
+	}
+	.toolinfo table ul { 
+		list-style: none;
+		position: relative;
+	}
+	#toolstatus th { 
+		color: #999;
+		font-size: 90%;
+	}
+	#toolstatus th.toolinfo_hed {
+		font-weight: bold;
+		color: #333333;
+		font-size: 110%;
+	}
+	#toolstatus span.admin_label, 
+	.admin_label {
+		display: block;
+		margin: 0 0 1.5em 0;
+	}
+
+/* Misc */
+	.nextaction { 
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	#tktlist tbody tr:hover {
+		background: #f6f0e8;
+	}
+	.hide { 
+		display: none;
+	}
+	.shifted { 
+		position: absolute;
+		left: 200px;
+		margin: 0 0 2em 0;
+		font-size: 1em;
+	}
+	#lic { 
+		padding: 1.5em 0 0.5em 0;
+		margin: 0 0 2em 0;
+	}
+	#lic_cl { 
+		margin: 2em 0 1em 0;
+	}
+	
+	span.actionlink {
+		color: #999;
+		text-transform: uppercase;
+		font-size: 0.8em;
+		border-bottom: 1px solid #e2e2e2;
+		font-weight: normal;
+		margin-left: 1.5em;
+	}
+	.actionlink a {
+		color:#0097c3;
+	}
+	.actionlink a:hover { 
+		border: none;
+		color: #666;
+	}
+	#license_preview { 
+		height: 200px;
+		width: 90%;
+		overflow: scroll;
+		color: #666;
+		border: 1px solid #999;
+		background-color: #e2e2e2;
+		padding: 0.5em;
+	}
+	.moveon { 
+		text-align: center;
+		padding-top: 1em;
+	}
+	#hubForm ul { 
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#primary-document a {
+		display: block;
+		*display: inline;
+		zoom: 1;
+		width: 7em;
+		vertical-align: baseline;
+		margin: 0 2px;
+		outline: none;
+		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
+		font-weight: bold;
+		line-height: 1.8em;
+		padding: 0.35em 1.2em 0.35em 1.2em;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		-webkit-border-radius: .25em; 
+		-moz-border-radius: .25em;
+		-ms-border-radius: .25em;
+		-o-border-radius: .25em;
+		border-radius: .25em;
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-ms-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		color: #fff;
+		border: solid 1px #333;
+		background: #333;
+		background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#000000));
+		background: -webkit-linear-gradient(#666666, #000000);
+		background: -moz-linear-gradient(center top, #666666 0%, #000000 100%);
+		background: -moz-gradient(center top, #666666 0%, #000000 100%);
+		background: -o-linear-gradient(#666666, #000000);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#000000);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#000000)";
+	}
+	#primary-document a:hover,
+	#primary-document a:active {
+		padding: 0.35em 1.2em 0.35em 1.2em;
+		margin: 0 2px;
+		text-decoration: none;
+		color: #fef4e9;
+		border: solid 1px #da7c0c;
+		background: #f78d1d;
+		background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+		background: -webkit-linear-gradient(#faa51a, #f47a20);
+		background: -moz-linear-gradient(center top, #faa51a 0%, #f47a20 100%);
+		background: -moz-gradient(center top, #faa51a 0%, #f47a20 100%);
+		background: -o-linear-gradient(#faa51a, #f47a20);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a,endColorstr=#f47a20);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a, endColorstr=#f47a20)";
+	}
+	#whatsnext #primary-document a {
+		width: auto;
+		white-space: nowrap;
+	}
+	/*#primary-document a:before {
+		content: "\f003";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}*/
+/*---------------------------------------------------------------
+	My Contributions Module
+---------------------------------------------------------------*/
+	table.mycontrib { 
+		padding: 0;
+		margin: 0 0 0.5em 0;
+	}
+	.contribauthor {
+		color: #666;
+		display: block;
+	}
+	span.tstatus { 
+		float: right;
+	}
+	span.ttitle { 
+		float: left;
+	}

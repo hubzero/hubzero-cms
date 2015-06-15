@@ -1,4 +1,4 @@
-@import url("/components/com_courses/site/assets/css/course.css");
+@import url("/core/components/com_courses/site/assets/css/course.css");
 
 .com_courses section.section .aside:before {
 	right: 329px;

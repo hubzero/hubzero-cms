@@ -279,44 +279,46 @@ class File extends Object
 			// If loading from an absolute path
 			if ($this->directory == '/')
 			{
-				$this->paths['source'] = PATH_APP . DS . $this->directory . $this->file();
+				$this->paths['source'] = PATH_ROOT . DS . $this->directory . $this->file();
 			}
 			else
 			{
 				$paths  = array();
-				$base   = PATH_ROOT;
-				$client = 'site';
 
-				if ($this->extensionType() == 'plugins')
+				$basea  = PATH_APP . DS . 'app' . DS;
+				$basec  = PATH_CORE . DS;
+
+				$client = (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name);
+
+				switch ($this->extensionType())
 				{
-					$parts = explode('_', $this->extensionName());
-					$base .= DS . $this->extensionType() . DS . $parts[1] . DS . $parts[2];
-				}
-				else if ($this->extensionType() == 'system')
-				{
-					$base .= DS . 'core' . DS . 'assets';
-					$paths[] = $base . DS . $this->directory . DS . $this->file();
-				}
-				else
-				{
-					if (\App::isAdmin())
-					{
-						$base = JPATH_ADMINISTRATOR;
-						$client = 'admin';
-					}
-					$base .= DS . $this->extensionType() . DS . $this->extensionName();
+					case 'plugins':
+						$parts = explode('_', $this->extensionName());
+						$path = $this->extensionType() . DS . $parts[1] . DS . $parts[2] . DS;
+					break;
+
+					case 'components':
+						$path = $this->extensionType() . DS . $this->extensionName() . DS . $client . DS;
+					break;
+
+					case 'modules':
+						$basec  = JPATH_BASE . DS;
+						$path = $this->extensionType() . DS . $this->extensionName() . DS;
+					break;
+
+					case 'system':
+					case 'core':
+						$path = '';
+					break;
 				}
 
-				if ($this->extensionType() == 'components')
-				{
-					$paths[] = PATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . $client . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
-				}
-				if ($this->extensionType() == 'modules')
-				{
-					$paths[] = PATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
-				}
-				$paths[] = $base . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
-				$paths[] = $base . DS . $this->file();
+				// App
+				$paths[] = $basea . $path . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+				$paths[] = $basea . $path . ($this->directory ? $this->directory . DS : '') . $this->file();
+
+				// Core
+				$paths[] = $basec . $path . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+				$paths[] = $basec . $path . ($this->directory ? $this->directory . DS : '') . $this->file();
 
 				// Run through each path until we find one that works
 				foreach ($paths as $path)

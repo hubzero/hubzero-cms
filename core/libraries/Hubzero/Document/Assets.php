@@ -606,7 +606,7 @@ class Assets
 		}
 
 		// Path to system CSS
-		$thispath = PATH_CORE . DS . 'core' . DS . 'assets' . DS . 'css';
+		$thispath = PATH_CORE . DS . 'assets' . DS . 'css';
 
 		$env = self::app('config')->get('application_env', 'production');
 
@@ -625,7 +625,7 @@ class Assets
 			}
 			else
 			{
-				$lesspath = PATH_CORE . DS . 'core' . DS . 'assets' . DS . 'less';
+				$lesspath = PATH_CORE . DS . 'assets' . DS . 'less';
 
 				if (!class_exists('lessc'))
 				{
@@ -640,7 +640,7 @@ class Assets
 				}
 
 				// Are there any template overrides?
-				$template  = PATH_CORE . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
+				$template  = PATH_ROOT . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
 				if (file_exists($template . DS . $primary . '.less'))

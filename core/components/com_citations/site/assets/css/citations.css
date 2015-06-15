@@ -1,0 +1,641 @@
+/**
+ * @package	 hubzero-cms
+ * @file		components/com_citations/citations.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_citations CSS
+	-- -- -- -- -- -- --
+
+*/
+ 
+/* Intro */
+	#introduction:after {
+		content: "\275D";
+	}
+	/* [!] HACKS - IE 7 and older */
+	#introduction {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#x275D;</small>');
+	}
+	#content-header-extra {
+		width: auto;
+	}
+	
+/* CSS bar graph */
+	.com_citations .graph { 
+		position: relative; /* IE is dumb */
+	}
+	.com_citations .graph .bar { 
+		display: block;
+		position: relative;
+		background: #B1D632; 
+		text-align: center; 
+		color: #333; 
+		height: 2em; 
+		line-height: 2em;
+	}
+	.com_citations .graph .bar span {
+		position: absolute;
+		left: 1em;
+	}
+	.com_citations .graph .color1 {
+		background: #B1D632;
+	}
+	.com_citations .graph .color2 {
+		background: #BBADFF;
+	}
+	.com_citations .graph .color3 {
+		background: #DAB7D7;
+	}
+	.com_citations .graph .color4 {
+		background: #FFB430;
+	}
+	.com_citations .graph .color5 {
+		background: #E2998B;
+	}
+
+	.citations {
+		border-collapse:separate;
+		margin-top: 10px;
+	}
+	.citations thead th {
+		background: #f5f5f5;
+	}
+	.citations thead th.batch {
+		padding: 0;
+		text-align: center;
+		vertical-align: middle;
+		width: 30px;
+		border-right: 1px solid #efefef;
+	}
+	.citations tbody tr td.batch {
+		padding: 10px 0 0 0;
+		text-align: center;
+	}
+	.citations tbody tr td {
+		border-bottom: 1px solid #efefef;
+		padding: 10px 0;
+	}
+	.citations tbody tr td.col-edit {
+		padding: 10px;
+	}
+	.citations tbody tr:nth-child(odd) td {
+		border-bottom: none;
+	}
+
+/* Citations Label */
+	.citations .citation-label {
+		min-width: 30px;
+	}
+	.citations .citation-label .type {
+		font-weight: bold;
+		text-transform: uppercase;
+		text-align: center;
+		float: left;
+	}
+	.citations .citation-label .number {
+		font-weight: bold;
+		float: left;
+		padding-right: 20px;
+		color: #000;
+	}
+	.citations .both-label {
+		width: 150px;
+	}
+	.citations .type-label {
+		width: 150px;
+	}
+	.citations .type-label .type {
+		width: 100%;
+	}
+	.citations .number-label .number {
+		padding-right: 0;
+	}
+	.citations span.citation-title {
+		border-bottom: 1px dotted #777;
+	}
+
+/* Citation Notes */
+	.citations .citation-container {
+		display: block;
+		position: relative;
+	}
+	.citations .citation-notes {
+		position: absolute;
+		display: none;
+		z-index: 610;
+		top: auto;
+		bottom: 60px;
+		left: 0;
+		border: 3px solid #000;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+		border-radius: 5px;
+		-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		-ms-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		-o-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		width: 500px;
+	}
+	.citations .citation-notes.bottom {
+		top: 60px;
+		bottom: auto;
+	}
+	.citations .citation-notes p.sponsor {
+		padding: 5px 10px;
+		background: #f2f0f8;
+		border-bottom: 1px solid #CCC;
+		font-size: 11px;
+	}
+	.citations .citation-notes p {
+		padding: 10px;
+		background: #FFFFFF;
+		margin: 0;
+		color: #555;
+		overflow-y: scroll;
+		max-height: 300px;
+	}
+	.citations .citation-notes:before {
+		content: ".";
+		position: absolute;
+		bottom: -13px;
+		left: 45%;
+		color: transparent;
+		border-top: 5px solid #000;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid transparent;
+		width: 0;
+		height: 0;
+	}
+	.citations .citation-notes.bottom:before {
+		top: -13px;
+		border-top: 5px solid transparent;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid #000;
+	}
+
+/* Citation Details */
+	.citations tbody tr td.citation-details {
+		padding-left: 10px;
+	}
+	.citation-details span {
+		color: #fff;
+		margin: 0 0.5em;
+	}
+	.citation-details .badges {
+		float: right;
+	}
+
+/* Citation Badges */
+	label.badges ul li.bit-input {
+		border: none;
+		background: transparent;
+	}
+	label.badges ul li.bit-box {
+		border: 1px solid #634024; 
+		background: #8e6e59;
+		color: #FFF;
+		position: relative;
+	}
+	label.badges ul li.bit-box a.closebutton,
+	label.badges ul li.bit-box a.closebutton:hover {
+		background-position: 0 100%;
+		border-bottom: none;
+	}
+
+/* Citation Tags */
+	.tags {
+		margin-top: 15px;
+	}
+	.tags li {
+		padding: 0;
+		border: none;
+	}
+
+/* Citations Import */
+	#steps {
+		margin: 20px 0 0 0;
+		list-style: none;
+		overflow: hidden;
+	}
+	#steps li {
+		float: left;
+		margin: 0;
+	}
+	#steps li a {
+		display: block;
+		padding: 10px;
+		background: #efefef;
+		border: 1px solid #ccc;
+		color: #ccc;
+		font-size: 24px;
+		font-weight: bold;
+		line-height: 24px;
+		margin-right: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+		border-radius: 5px;
+		min-width: 150px;
+	}
+	#steps li a span {
+		display: block;
+		font-size: 12px;
+		line-height: 18px;
+		font-weight: normal;
+	}
+	#steps li a.active {
+		background: #ee8c00;
+		color: #FFF;
+	}
+	#steps li a.passed {
+		background: #a1cb99;
+		color: #e1f0de;
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-left: 60px;
+	}
+
+/* Upload List */
+	.upload-list {
+		margin-top: 20px;
+		border: 1px solid #CCC;
+		border-collapse: separate;
+	}
+
+/* Table Head */
+	.upload-list thead th {
+		background: #efefef;
+		font-size: 14px;
+		color: #000;
+	}
+	.upload-list thead th:nth-child(odd),
+	.upload-list tbody td:nth-child(odd) {
+		border-right: 1px solid #CCC;
+		width: 2%;
+	}
+
+/* Table Body */
+	.upload-list tbody tr:nth-child(even) {
+		background: #f5f5f5;
+	}
+	.upload-list tbody tr:hover {
+		background-color: #fff7db;
+	}
+	.upload-list tbody tr.active {
+		background: #fff7db;
+	}
+	.upload-list tbody tr:nth-child(even).active {
+		background: #fcf0c5;
+	}
+	.upload-list tbody tr.active .click-more {
+		color: #000;
+	}
+
+/* Citation Title */
+	.upload-list .citation-title {
+		font-weight: bold;
+		color: #777;
+	}
+	.upload-list .citation-title:hover {
+		cursor: pointer;
+	}
+
+/* Click More */
+	.upload-list tbody tr .click-more {
+		visibility: hidden;
+		padding-left: 20px;
+		text-transform: uppercase;
+		color: #ccc;
+		font-size: 0.85em;
+		font-weight: bold;
+	}
+	.upload-list tbody tr:hover .click-more {
+		visibility: visible;
+	}
+
+/* Citation Details */
+	.upload-list .citation-details {
+		border: 1px solid #ccc;
+		background-color: #fff;
+		border-collapse: separate;
+		padding: 0;
+		text-indent: 0;
+		margin: 1% 0;
+		font-size: 0.9em;
+	}
+	.upload-list .citation-details thead th {
+		border-right: none;
+		font-size: 0.9em;
+	}
+	.upload-list .citation-details .key {
+		text-transform: uppercase;
+		font-weight: bold;
+		color: #444;
+		width: 15%;
+	}
+	.upload-list .citation-details tbody tr:nth-child(even):hover {
+		background: #f5f5f5;
+	} 
+	.upload-list .citation-details tbody tr:hover {
+		background-color: transparent;
+	}
+
+/* Users attention required box */
+	.require-action thead th {
+		color: #F00;
+		background: #fdeaea;
+	}
+	.require-action .citation-details thead th {
+		color: #444;
+		background: #efefef;
+	}
+	.require-action .citation-details tbody td {
+		border-bottom: 1px solid #ccc;
+	}
+	.require-action .citation-details th.options {
+		background: #444;
+		color: #fff;
+		font-weight: normal;
+		font-size: 1em;
+	}
+	.require-action .citation-details th.options label {
+		margin-right: 15px;
+	}
+
+/* Difference Table */	
+	.require-action .citation-differences,
+	.require-action .citation-differences tbody td {
+		border: none;
+		padding: 0;
+	}
+	.require-action .citation-differences tbody tr {
+		background: transparent;
+	}
+	.require-action .citation-details .citation-differences tbody tr:hover {
+		background: transparent;
+	}
+	.require-action .citation-differences tbody td:nth-child(odd) {
+		width: 10%;
+		padding-right: 1%;
+		text-align: right;
+	}
+	.require-action .citation-differences tbody td span {
+		margin: 0;
+		color: #555;
+	}
+	.require-action .citation-differences .insert {
+		border: 1px solid #DAE6DA;
+		background: #F2FFF2;
+		color: #360;
+		text-decoration: underline;
+	}
+	.require-action .citation-differences .delete {
+		border: 1px solid #EFCCC2; 
+		background: #FFF2EF;
+		color: #CC0000;
+		padding: 0;
+		text-decoration: line-through;
+	}
+
+	/*#hubForm.add-citation .group {
+		padding: 0 0 0 5em;
+	}
+	#hubForm.add-citation .threeup {
+		padding-left: 0;
+	}
+	#hubForm.add-citation .group label {
+		padding-bottom: 1.5em;
+	}*/
+	
+	.withBatchDownload .aside {
+		padding-top: 150px !important;
+	}
+	#download-batch {
+		position:absolute;
+		top:30px;
+		right:0;
+		padding:1em;
+		width:185px;
+		margin:0 30px 0 0;
+	}
+	
+	form .hint {
+		font-size:0.85em;
+		color:#999;
+		}
+	form .aside input.half {
+		width:44%;
+		}
+		
+		
+	#content-header {
+		overflow:hidden;
+	}
+	.content-header-left {
+		float:left;
+		width:60%;
+	}
+	#content-header .content-header-left h2 {
+		padding:30px 30px 10px 30px;
+	}
+	#citation-sponsors {
+		margin:20px 0 0 0;
+	}
+	#citation-sponsors h3 {
+		margin:0.5em 0 1em 0;
+	}
+	.citation-sponsor {
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	.citation-sponsor li {
+		margin:0 0 10px 0;
+		padding:0;
+		width:100%;
+	}
+	.citation-sponsor li a {
+		display:block;
+		border:none;
+		text-align:center;
+		background:#FFF;
+		border-radius:5px;
+		padding:25px 0;
+	}
+	.citation-sponsor li a:hover {
+		background:#f4f4f4;
+	}
+	.citation-sponsor li a img {
+		max-width:80%;
+		max-height:80%;
+		vertical-align:middle;
+	}
+	.citation-author {
+		padding:0 0 15px 30px;
+		color:#aaa;
+	}
+	.citation-author span {
+		color:#444;
+	}
+	.citation-abstract {
+		padding:0 0 20px 30px;
+		color:#555;
+	}
+	.content-header-extra {
+		float:right;
+		margin:30px 30px 30px 0;
+		width:250px;
+	}
+	.content-header-extra .primary {
+		display: block;
+		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+		vertical-align: baseline;
+		margin: 0 2px;
+		outline: none;
+		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
+		font-weight: bold;
+		line-height: 1.8em;
+		padding: 0.35em 0.2em 0.35em 0.2em;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		-webkit-border-radius: .25em; 
+		-moz-border-radius: .25em;
+		-ms-border-radius: .25em;
+		-o-border-radius: .25em;
+		border-radius: .25em;
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-ms-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		-o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		color: #fff;
+		border: solid 1px #333;
+		background: #333;
+		background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#000000));
+		background: -webkit-linear-gradient(#666666, #000000);
+		background: -moz-linear-gradient(center top, #666666 0%, #000000 100%);
+		background: -moz-gradient(center top, #666666 0%, #000000 100%);
+		background: -o-linear-gradient(#666666, #000000);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#000000);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#000000)";
+	}
+	.content-header-extra .primary:hover,
+	.content-header-extra .primary:active {
+		text-decoration: none;
+		color: #fef4e9;
+		border: solid 1px #da7c0c;
+		background: #f78d1d;
+		background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+		background: -webkit-linear-gradient(#faa51a, #f47a20);
+		background: -moz-linear-gradient(center top, #faa51a 0%, #f47a20 100%);
+		background: -moz-gradient(center top, #faa51a 0%, #f47a20 100%);
+		background: -o-linear-gradient(#faa51a, #f47a20);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a,endColorstr=#f47a20);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a, endColorstr=#f47a20)";
+	}
+	.content-header-extra .secondary {
+		margin:5px 0 0 10px;
+		padding:0 0 0 15px;
+		list-style:none;
+		overflow:hidden;
+		background:url('/core/components/com_citations/site/assets/img/childlink.gif') 0 0 no-repeat;
+	}
+	.content-header-extra .secondary li {
+		margin:3px 5px 0 5px;
+		padding:0;
+		float:left;
+	}
+	.content-header-extra .secondary li a {
+		font-size:0.85em;
+		line-height:0.85em;
+	}
+	.content-header-extra .secondary li.spacer {
+		color:#aaa;
+		font-size:0.8em;
+		margin:3px 2px 0 2px;
+	}
+	.main.citation-section {
+		padding-top:0;
+	}
+	.citation-section .section:nth-of-type(1) {
+		padding-top:0;
+	}
+	.citation-section .section:nth-of-type(1) h3 {
+		display:none;
+	}
+	
+	/* Citation Meta Data Table */
+	table.citation {
+		border-bottom:none;
+	}
+	table.citation th,
+	table.citation td {
+		padding-bottom: 15px;
+	}
+	table.citation th {
+		text-align: right;
+		color: #999;
+		white-space: nowrap;
+		border-bottom:none;
+		font-weight:normal;
+		width:200px;
+	}
+	table.citation td {
+		border-bottom:none;
+		padding-right: 1.5em;
+	}
+	table.citation .tags {
+		margin-top:0;
+	}
+	table.citation .badges a,
+	.citation-details .badges a,
+	.citation-details .badges a:hover {
+		background-color:#8e6e59 !important;
+		color:#FFF !important;
+	}
+	table.citation .badges a:before,
+	.citation-details .badges a:before,
+	.citation-details .badges a:hover:before {
+		border-color: transparent #8e6e59 transparent transparent !important;
+	}
+	table.citation ul {
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	table.citation ul li:first-child {
+		margin:0;
+	}
+	.eprint:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+		content:'\f016';
+		color:#9D261D;
+	}
+	.locate:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+		content:'\f002';
+	}
+	.citation-citation {
+		margin:0 0 30px 30px;
+		padding:20px;
+		background:#efefef;
+		box-shadow:inset 0 0 5px #aaa;
+		border-radius:5px;
+	}
+	.citation-citation .download {
+		margin:10px 0 0 0;
+	}

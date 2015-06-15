@@ -34,7 +34,6 @@ use Hubzero\Events\DispatcherInterface;
 use Hubzero\Events\LoaderInterface;
 use Hubzero\Config\Registry;
 use Exception;
-use Event;
 use User;
 use Lang;
 
@@ -182,7 +181,7 @@ class Loader implements LoaderInterface
 			// Makes sure we have an event dispatcher
 			if (!($dispatcher instanceof DispatcherInterface))
 			{
-				$dispatcher = Event::getRoot();
+				$dispatcher = \App::get('dispatcher');
 			}
 
 			// Get the specified plugin(s).
@@ -222,39 +221,43 @@ class Loader implements LoaderInterface
 		$plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
 		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
 
-		$path = PATH_CORE . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php';
-		//$path2 = PATH_APP . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php';
+		$p = array(
+			'app'  => PATH_APP . DS . 'app' . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php',
+			'core' => PATH_CORE . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php'
+		);
 
-		if (!isset($paths[$path]))
+		foreach ($p as $path)
 		{
-			if (!file_exists($path))
-			{
-				$paths[$path] = false;
-				return;
-			}
-
 			if (!isset($paths[$path]))
 			{
-				require_once $path;
-			}
-
-			$paths[$path] = true;
-
-			if ($autocreate)
-			{
-				// Makes sure we have an event dispatcher
-				if (!($dispatcher instanceof DispatcherInterface))
+				if (!file_exists($path))
 				{
-					//$dispatcher = Event::getRoot();
-					$dispatcher = new \JDispatcher();
+					$paths[$path] = false;
+					continue;
 				}
 
-				$className = 'plg' . $plugin->type . $plugin->name;
-
-				if (class_exists($className))
+				if (!isset($paths[$path]))
 				{
-					// Instantiate and register the plugin.
-					return new $className($dispatcher, (array) $plugin);
+					require_once $path;
+				}
+
+				$paths[$path] = true;
+
+				if ($autocreate)
+				{
+					// Makes sure we have an event dispatcher
+					if (!($dispatcher instanceof DispatcherInterface))
+					{
+						$dispatcher = new \JDispatcher();
+					}
+
+					$className = 'plg' . $plugin->type . $plugin->name;
+
+					if (class_exists($className))
+					{
+						// Instantiate and register the plugin.
+						return new $className($dispatcher, (array) $plugin);
+					}
 				}
 			}
 		}
@@ -316,6 +319,6 @@ class Loader implements LoaderInterface
 	 */
 	public function language($extension, $basePath = PATH_CORE)
 	{
-		return Lang::load(strtolower($extension), $basePath);
+		return \App::get('language')->load(strtolower($extension), $basePath);
 	}
 }

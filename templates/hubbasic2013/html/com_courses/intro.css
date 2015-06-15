@@ -5,7 +5,7 @@
  * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-@import url("../../../../components/com_courses/site/assets/css/intro.css");
+@import url("../../../../core/components/com_courses/site/assets/css/intro.css");
 
 	.data-entry {
 		padding: 0;

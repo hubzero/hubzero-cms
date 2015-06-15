@@ -240,7 +240,7 @@ class Helper extends Module
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'host.php');
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php');
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'recent.php');
-		include_once(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
+		include_once(__DIR__ . DS . 'app.php');
 
 		$params = $this->params;
 

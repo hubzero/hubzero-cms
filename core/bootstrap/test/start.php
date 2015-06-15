@@ -140,7 +140,7 @@ $app['config'] = new \Hubzero\Config\Repository($client);
 |
 */
 
-$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
+$providers = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
 $services = file_exists($providers) ? require $providers : array();
 foreach ($services as $service)
 {
@@ -157,7 +157,7 @@ foreach ($services as $service)
 |
 */
 
-$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
+$aliases = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 
 $app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
 

@@ -157,11 +157,11 @@ class Helper extends Module
 					{
 						// Load the core file then
 						// Load extension-local file.
-						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false) // [ROOT]/administrator
-						|| $lang->load($component->element . '.sys', JPATH_SITE . '/components/' . $component->element . '/admin', null, false, false) // [ROOT]/components/[COMPONENT]/admin
-						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false) // [ROOT]/administrator/components/[COMPONENT]
-						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
-						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
+						$lang->load($component->element . '.sys', PATH_APP, null, false, false) // [ROOT]/administrator
+						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', null, false, false) // [ROOT]/components/[COMPONENT]/admin
+						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element, null, false, false) // [ROOT]/administrator/components/[COMPONENT]
+						|| $lang->load($component->element . '.sys', PATH_APP, $lang->getDefault(), false, false)
+						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', $lang->getDefault(), false, false);
 					}
 					$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 				}
