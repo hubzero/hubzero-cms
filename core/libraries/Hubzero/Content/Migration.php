@@ -30,9 +30,6 @@
 
 namespace Hubzero\Content;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
 * HUBzero Database migrations class
 *
@@ -123,8 +120,8 @@ class Migration
 	/**
 	 * Constructor
 	 *
-	 * @param $docroot - default null, which should then resolve to hub docroot
-	 * @return void
+	 * @param   object  $docroot  defaults to null, which should then resolve to hub docroot
+	 * @return  void
 	 **/
 	public function __construct($docroot=null, $db=null)
 	{
@@ -157,7 +154,10 @@ class Migration
 
 			if ($this->db->tableHasField($this->get('tbl_name'), 'scope'))
 			{
-				// Scope could potentially be with or without document root
+				// Scope could potentially be one of the following:
+				//  * migrations (this is legacy)
+				//  * core/migrations (this is current)
+				//  * /docroot/core/migrations
 				$scopes = array(
 					$this->db->quote('migrations'),
 					$this->db->quote($this->docroot . DS . 'migrations'),
@@ -194,8 +194,8 @@ class Migration
 	/**
 	 * Getter for class private variables
 	 *
-	 * @param $var - var to retrieve
-	 * @return class var
+	 * @param   string  $var  the var to retrieve
+	 * @return  mixed
 	 **/
 	public function get($var)
 	{
@@ -212,7 +212,7 @@ class Migration
 	/**
 	 * Setup database connect, test, return object
 	 *
-	 * @return database object
+	 * @return  object
 	 **/
 	public function getDBO()
 	{
@@ -283,9 +283,9 @@ class Migration
 	/**
 	 * Find all migration scripts
 	 *
-	 * @param $extension - only look for migrations for this extension
-	 * @param $file      - specific file to run
-	 * @return array of file paths
+	 * @param   string  $extension  only look for migrations for this extension
+	 * @param   string  $file       the specific file to run
+	 * @return  array
 	 **/
 	public function find($extension=null, $file=null)
 	{
@@ -337,12 +337,12 @@ class Migration
 	/**
 	 * Migrate up/down on all files gathered via 'find'
 	 *
-	 * @param $direction   - direction to migrate (up or down)
-	 * @param $force       - run the update, even if the database says it's already been run
-	 * @param $dryrun      - run the udpate, but only display what would be changed, wihthout actually doing anything
-	 * @param $ignoreDates - run the update on all files found lacking entries in the db, not just those after the last run date
-	 * @param $logOnly     - run the update, and mark as run, but don't actually run sql (usefully to mark changes that had already been made manually)
-	 * @return bool - success
+	 * @param   string  $direction    direction to migrate (up or down)
+	 * @param   bool    $force        run the update, even if the database says it's already been run
+	 * @param   bool    $dryrun       run the udpate, but only display what would be changed, wihthout actually doing anything
+	 * @param   bool    $ignoreDates  run the update on all files found lacking entries in the db, not just those after the last run date
+	 * @param   bool    $logOnly      run the update, and mark as run, but don't actually run sql (usefully to mark changes that had already been made manually)
+	 * @return  bool
 	 **/
 	public function migrate($direction='up', $force=false, $dryrun=false, $ignoreDates=false, $logOnly=false)
 	{
@@ -607,8 +607,8 @@ class Migration
 	/**
 	 * Fire migration pre/post hooks
 	 *
-	 * @param  (string) $timing - which hooks to fire
-	 * @return void
+	 * @param   string  $timing  which hooks to fire
+	 * @return  void
 	 **/
 	private function fireHooks($timing)
 	{
@@ -671,11 +671,11 @@ class Migration
 	/**
 	 * Record migration in migrations table
 	 *
-	 * @param $file  - path to file being recorded
-	 * @param $scope - folder of migration
-	 * @param $hash  - hash of file
-	 * @param $direction - up or down
-	 * @return void
+	 * @param   string  $file       the path to file being recorded
+	 * @param   string  $scope      the folder of migration
+	 * @param   string  $hash       the hash of file
+	 * @param   string  $direction  up or down
+	 * @return  bool
 	 **/
 	public function recordMigration($file, $scope, $hash, $direction)
 	{
@@ -710,7 +710,7 @@ class Migration
 	/**
 	 * Return migration run history
 	 *
-	 * @return (array)
+	 * @return  array
 	 **/
 	public function history()
 	{
@@ -732,7 +732,7 @@ class Migration
 	/**
 	 * Set ignore callbacks to true
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function ignoreCallbacks()
 	{
@@ -780,8 +780,8 @@ class Migration
 	/**
 	 * Register a callback
 	 *
-	 * @param   (string)   $name - callback name
-	 * @param   (closure)  $callback - function to run
+	 * @param   string   $name      the callback name
+	 * @param   closure  $callback  the function to run
 	 * @return  void
 	 **/
 	public function registerCallback($name, $callback)
@@ -792,7 +792,7 @@ class Migration
 	/**
 	 * Attempt to create needed migrations table
 	 *
-	 * @param   object  $db
+	 * @param   object  $db  the database connection object
 	 * @return  bool
 	 **/
 	private function createMigrationsTable($db)
