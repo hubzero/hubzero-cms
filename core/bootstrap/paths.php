@@ -9,6 +9,21 @@
 
 /*
 |--------------------------------------------------------------------------
+| Root Path
+|--------------------------------------------------------------------------
+|
+| Typically this will be defined before we even get to this file. But,
+| for now, we need to define it here.
+|
+*/
+
+if (!defined('PATH_ROOT'))
+{
+	define('PATH_ROOT', dirname(dirname(__DIR__)));
+}
+
+/*
+|--------------------------------------------------------------------------
 | Application Directory Path
 |--------------------------------------------------------------------------
 |
@@ -59,6 +74,10 @@ define('PATH_PUBLIC', PATH_APP);  //  . '/public'
 |
 */
 
+if (!defined('JPATH_BASE'))
+{
+	define('JPATH_BASE', PATH_ROOT);
+}
 define('JPATH_ROOT',            PATH_ROOT);
 define('JPATH_SITE',            PATH_ROOT);
 define('JPATH_CONFIGURATION',   PATH_ROOT);
