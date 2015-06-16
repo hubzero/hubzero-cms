@@ -56,7 +56,7 @@
 	}
 	.ecalendar caption a,
 	.datenav a {
-		background: transparent url("/components/com_events/site/assets/img/calendar-next.png") no-repeat;
+		background: transparent url("/core/components/com_events/site/assets/img/calendar-next.png") no-repeat;
 		margin-right: 1em;
 		padding: 15px 0 0 15px;
 		overflow: hidden;
@@ -67,7 +67,7 @@
 	}
 	.ecalendar caption a:first-child,
 	.datenav a:first-child {
-		background-image: url("/components/com_events/site/assets/img/calendar-previous.png");
+		background-image: url("/core/components/com_events/site/assets/img/calendar-previous.png");
 	}
 	.ecalendar caption a:hover,
 	.datenav a:hover {

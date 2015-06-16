@@ -55,7 +55,7 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 		var dt = '".$date."';
 		var plotdt = '".substr($date,0,7)."';
 		if (GBrowserIsCompatible()) {
-    		map = new GMap2(document.getElementById('map_canvas'));
+			map = new GMap2(document.getElementById('map_canvas'));
 			// map.addControl(new GLargeMapControl());
 			map.addControl(new GSmallMapControl());
 			// map.setCenter(new GLatLng(25.4091, -28.8592), 3, G_PHYSICAL_MAP);
@@ -65,50 +65,50 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 			map.setCenter(new GLatLng(35,-113), 5, G_HYBRID_MAP);
 
 			var icon1 = new GIcon();
-   			icon1.image = '/components/".$option."/maps/images/org.png';
-    		icon1.iconSize = new GSize(40, 40);
-    		icon1.iconAnchor = new GPoint(20, 20);
+			icon1.image = '/components/".$option."/maps/images/org.png';
+			icon1.iconSize = new GSize(40, 40);
+			icon1.iconAnchor = new GPoint(20, 20);
 			marker1 = new GMarker(new GLatLng('40.4427','-86.9237'),icon1);
-    		map.addOverlay(marker1);
+			map.addOverlay(marker1);
 			getMarkers(dt);
 			var label = new ELabel(new GLatLng(-52.7,11.0),'".substr($date,0,7)."','style1');
-      		map.addOverlay(label);
+			map.addOverlay(label);
 
-        	// plot overlay
+			// plot overlay
 			//var plt = 'plots/'+plotdt+'-14-u1.gif';
 			//var boundaries = new GLatLngBounds(new GLatLng(-52.7,-168.1), new GLatLng(-3.02,-90.96));
-        	//var oldmap = new GGroundOverlay(plt, boundaries);
-        	//map.addOverlay(oldmap);
+			//var oldmap = new GGroundOverlay(plt, boundaries);
+			//map.addOverlay(oldmap);
 
 			// var polyline = new GPolyline([new GLatLng(-60.0, -110),new GLatLng(-10, -110)], '#0000ff', 320);
 			// map.addOverlay(polyline);
 			// var polyline = new GPolyline([new GLatLng(-40.0, -160),new GLatLng(-40.0, -10)], '#ff0000', 248);
 			// map.addOverlay(polyline);
-   		}
+		}
 	}
 
 
-	function getMarkers(dt){
-    	//var urlstr='/components/".$option."/maps/read_us_location.php?period='+dt;
-        var urlstr='".$dataurl."&period='+dt;
+	function getMarkers(dt) {
+		//var urlstr='/components/".$option."/maps/read_us_location.php?period='+dt;
+		var urlstr='".$dataurl."&period='+dt;
 		var request = GXmlHttp.create();
-        request.open('GET', urlstr , true); // request XML from PHP with AJAX call
-        request.onreadystatechange = function () {
-            if (request.readyState == 4) {
-                var xmlDoc = request.responseXML;
-                locations = xmlDoc.documentElement.getElementsByTagName('marker');
-                markers = [];
-                if (locations.length){
-            		for (var i = 0; i < locations.length; i++) { // cycle thru locations
+		request.open('GET', urlstr , true); // request XML from PHP with AJAX call
+		request.onreadystatechange = function () {
+			if (request.readyState == 4) {
+				var xmlDoc = request.responseXML;
+				locations = xmlDoc.documentElement.getElementsByTagName('marker');
+				markers = [];
+				if (locations.length) {
+					for (var i = 0; i < locations.length; i++) { // cycle thru locations
 						var icon = new GIcon();
-                		icon.image = '/components/".$option."/maps/images/1.png';
-            			icon.iconSize = new GSize(20, 34);
-            			icon.iconAnchor = new GPoint(10, 34);
-            			markers[i] = new GMarker(new GLatLng(locations[i].getAttribute('lat'),locations[i].getAttribute('lng')),icon);
-            			map.addOverlay(markers[i]);
-            		}
-        		}
-        	}
+						icon.image = '/components/".$option."/maps/images/1.png';
+						icon.iconSize = new GSize(20, 34);
+						icon.iconAnchor = new GPoint(10, 34);
+						markers[i] = new GMarker(new GLatLng(locations[i].getAttribute('lat'),locations[i].getAttribute('lng')),icon);
+						map.addOverlay(markers[i]);
+					}
+				}
+			}
 		}
 		request.send(null);
 	}

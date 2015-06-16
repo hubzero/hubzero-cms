@@ -691,7 +691,7 @@ if ($results)
 				function updateTables(yyyy, mm) {
 					var dt = yyyy + '/' + mm + '/01';
 
-					$.getJSON(dataurl + yyyy + '-' + mm, function(series){
+					$.getJSON(dataurl + yyyy + '-' + mm, function(series) {
 						if (!orgData[dt]) {
 							orgData[dt] = series.orgs[dt];
 						}
@@ -1002,13 +1002,13 @@ if ($results)
 							);
 						});
 
-						$('a.dataset').on('click', function(e){
+						$('a.dataset').on('click', function(e) {
 							e.preventDefault();
 
 							$('a.dataset').removeClass('active');
 							$(this).addClass('active');
 
-							$.getJSON($(this).attr('href'), function(data){
+							$.getJSON($(this).attr('href'), function(data) {
 								var runs = [], users = [], runstop = 0, userstop = 0;
 
 								for (var i=0; i<data.points.length; i++)

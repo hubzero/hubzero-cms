@@ -40,7 +40,7 @@ class Block extends Object
 	* @var string
 	*/
 	protected $_name = null;
-	
+
 	/**
 	* Block manifest
 	*
@@ -57,13 +57,13 @@ class Block extends Object
 	* @var object
 	*/
 	protected $_parent = null;
-	
+
 	/**
 	 * Constructor
 	 *
 	 * @access protected
 	 */
-	public function __construct($parent = null) 
+	public function __construct($parent = null)
 	{
 		$this->_parent = $parent;
 	}
@@ -74,24 +74,24 @@ class Block extends Object
 	* @access public
 	* @return string type of the parameter
 	*/
-	public function getName() 
+	public function getName()
 	{
 		return $this->_name;
 	}
-	
+
 	/**
 	* Get property
 	*
 	* @access public
 	* @return string type of the parameter
 	*/
-	public function getProperty( $name ) 
+	public function getProperty($name)
 	{
 		if (isset($this->$name))
 		{
 			return $this->$name;
 		}
-		
+
 		return false;
 	}
 }

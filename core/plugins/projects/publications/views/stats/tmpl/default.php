@@ -172,7 +172,7 @@ $base = rtrim(Request::base(true), '/');
 
 									for (var k = 0; k < points.length; k++)
 									{
-										for(var m = 0; m < points[k].data.length; m++)
+										for (var m = 0; m < points[k].data.length; m++)
 										{
 											if (points[k].data[m][0] != null && points[k].data[m][1] != null)
 											{

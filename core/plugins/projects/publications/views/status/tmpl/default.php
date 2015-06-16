@@ -28,14 +28,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Build our citation object
 if ($this->pub->version->get('doi'))
 {
-	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
+	include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
-	$cite 		 	= new stdClass();
-	$cite->title 	= $this->pub->get('title');
-	$date 			= ($this->pub->published()) ? $this->pub->published() : $this->pub->submitted();
-	$cite->year  	= Date::of($date)->toLocal('Y');
+	$cite = new stdClass();
+	$cite->title    = $this->pub->get('title');
+	$date = ($this->pub->published()) ? $this->pub->published() : $this->pub->submitted();
+	$cite->year     = Date::of($date)->toLocal('Y');
 	$cite->location = '';
-	$cite->date 	= '';
+	$cite->date     = '';
 	$cite->type     = '';
 	$cite->author   = $this->pub->getUnlinkedContributors();
 	$cite->doi      = $this->pub->get('doi');
@@ -111,8 +111,7 @@ if ($revertAllowed && $this->pub->accepted())
 		<div class="two columns first" id="c-selector">
 		 	<div class="c-inner">
 		<?php } ?>
-				<h4><?php echo $this->pub->title . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION')
-					. ' ' . $this->pub->get('version_label') . ' (' . $status . ')</span>'; ?>
+				<h4><?php echo $this->pub->title . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->pub->get('version_label') . ' (' . $status . ')</span>'; ?>
 				</h4>
 				<table class="tbl-panel">
 					<tbody>
@@ -325,7 +324,7 @@ if ($revertAllowed && $this->pub->accepted())
 </form>
 <?php // We need this to make CKEditor checker work ?>
 <script>
-jQuery(document).ready(function($){
+jQuery(document).ready(function($) {
 	HUB.ProjectPublicationsDraft.initialize();
 });
 </script>

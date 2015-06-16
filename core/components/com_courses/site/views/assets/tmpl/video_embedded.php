@@ -139,7 +139,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 								if (tmp < 1) {
 									tmp = '00';
-								} else if(tmp < 10) {
+								} else if (tmp < 10) {
 									tmp = '0' + tmp;
 								}
 

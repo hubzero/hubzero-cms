@@ -5,15 +5,15 @@ require_once 'PayPalAPIInterfaceService.php';
 /**
  * AUTO GENERATED code for PayPalAPIInterfaceService
  */
-class PayPalAPIInterfaceServiceService extends PPBaseService {
-
+class PayPalAPIInterfaceServiceService extends PPBaseService
+{
 	// Service Version
 	private static $SERVICE_VERSION = "94.0";
 
 	// Service Name
 	private static $SERVICE_NAME = "PayPalAPIInterfaceService";
 
-    // SDK Name
+	// SDK Name
 	private static $SDK_NAME = "buttonmanager-php-sdk";
 
 	// SDK Version

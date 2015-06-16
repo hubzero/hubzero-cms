@@ -42,7 +42,7 @@ $this->css('jquery.colpick.css', 'system')
      ->js('jquery.colpick.js', 'system');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);

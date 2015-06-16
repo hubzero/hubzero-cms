@@ -124,12 +124,8 @@ $this->css($css);
 					<?php if ($this->xprofile->get('orginization')) : ?>
 						/ <?php echo $this->xprofile->get('orginization'); ?>
 					<?php endif; ?>
-
 					has requested the new account <b><?php echo $this->xprofile->get('username'); ?></b>
-
-					(<?php echo $this->xprofile->get('email'); ?>) 
-
-					on <?php echo $this->sitename; ?>.
+					(<?php echo $this->xprofile->get('email'); ?>) on <?php echo $this->sitename; ?>.
 				</p>
 
 				<p>

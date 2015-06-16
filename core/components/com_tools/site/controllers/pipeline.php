@@ -1194,7 +1194,7 @@ class Pipeline extends SiteController
 			$rid = $resource->createPage($this->_toolid, $tool);
 			// save authors by default
 			//$objA = new \Components\Tools\Tables\Author($this->database);
-			//if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname']); }
+			//if (!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname']); }
 			if (!$id)
 			{
 				require_once(__DIR__ . DS . 'authors.php');

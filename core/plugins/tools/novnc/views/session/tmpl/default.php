@@ -178,18 +178,18 @@ else
 			if (!resizeAttached) {
 				resizeAttached = true;
 				//Setup a handler to track window resizes
-				$(window).resize(function(e){
+				$(window).resize(function(e) {
 					if (resizeTimeout) {
 						clearTimeout(resizeTimeout);
 					}
 					//Do the resize in a timeout incase we are dragging slowly to avoid bombarding the server
-					resizeTimeout = setTimeout(function(){
+					resizeTimeout = setTimeout(function() {
 						doResize($('#noVNC_canvas').attr('width'), $('#noVNC_canvas').attr('height'));
 					}, 1000);
 				});
 
 				// Setup handler for tracking window focus events (delayed resize if not focused)
-				$(window).focus(function(){
+				$(window).focus(function() {
 					$(window).resize();
 				});
 
@@ -237,7 +237,7 @@ else
 			return r;
 		}
 
-		jQuery(document).ready(function($){
+		jQuery(document).ready(function($) {
 			// Inititate session title editing
 			$('#session-title.editable').editable('index.php?option=com_tools&controller=sessions&task=rename&no_html=1&id=' + $('#session-title').attr('rel'), {
 				id   : 'title',

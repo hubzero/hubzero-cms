@@ -131,7 +131,7 @@ class SliderMacro extends WikiMacro
 		Document::addStyleSheet('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css');
 		Document::addScript('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js');
 		Document::addScriptDeclaration('
-			jQuery(document).ready(function($){
+			jQuery(document).ready(function($) {
 				$("#slider_' . $id . '").cycle({
 					fx: \'scrollHorz\',
 					speed: 450,

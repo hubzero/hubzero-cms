@@ -34,9 +34,9 @@ class Hidden extends Base
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Hidden';
+	protected $_name = 'Hidden';
 
 	/**
 	 * Return any options this element may have
@@ -88,7 +88,7 @@ class Hidden extends Base
 	 * @param   string  $name          Name of the field
 	 * @return  string  HTML
 	 */
-	public function fetchTooltip($label, $description, &$element, $control_name='', $name='') 
+	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		return '';
 	}

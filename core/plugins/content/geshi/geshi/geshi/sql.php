@@ -57,112 +57,110 @@ defined('_JEXEC') or die;
  ************************************************************************************/
 
 $language_data = array (
-    'LANG_NAME' => 'SQL',
-    'COMMENT_SINGLE' => array(1 =>'--'),
-    'COMMENT_MULTI' => array('/*' => '*/'),
-    'CASE_KEYWORDS' => 1,
-    'QUOTEMARKS' => array("'", '"', '`'),
-    'ESCAPE_CHAR' => '\\',
-    'KEYWORDS' => array(
-        1 => array(
-            'ADD', 'ALL', 'ALTER', 'AND', 'AS', 'ASC', 'AUTO_INCREMENT',
-            'BEFORE', 'BEGIN', 'BETWEEN', 'BIGINT', 'BINARY', 'BLOB', 'BOOLEAN', 'BOTH', 'BY',
-            'CALL', 'CASE', 'CAST', 'CEIL', 'CEILING', 'CHANGE', 'CHAR', 'CHAR_LENGTH', 'CHARACTER',
-            'CHARACTER_LENGTH', 'CHECK', 'CLOB', 'COALESCE', 'COLLATE', 'COLUMN', 'COLUMNS',
-            'CONNECT', 'CONSTRAINT', 'CONVERT', 'COUNT', 'CREATE', 'CROSS', 'CURRENT',
-            'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'CURRENT_USER',
-            'DATA', 'DATABASE', 'DATABASES', 'DATE', 'DAY', 'DEC', 'DECIMAL', 'DECLARE',
-            'DEFAULT', 'DELAYED', 'DELETE', 'DESC', 'DESCRIBE', 'DISTINCT', 'DOUBLE',
-            'DOMAIN', 'DROP',
-            'ELSE', 'ENCLOSED', 'END', 'ESCAPED', 'EXCEPT', 'EXEC', 'EXECUTE', 'EXISTS', 'EXP',
-            'EXPLAIN', 'EXTRACT',
-            'FALSE', 'FIELD', 'FIELDS', 'FILTER', 'FIRST', 'FLOAT', 'FLOOR', 'FLUSH', 'FOR',
-            'FOREIGN', 'FROM', 'FULL', 'FUNCTION',
-            'GET', 'GROUP', 'GROUPING', 'GO', 'GOTO', 'GRANT', 'GRANTED',
-            'HAVING', 'HOUR',
-            'IDENTIFIED', 'IDENTITY', 'IF', 'IGNORE', 'IN', 'INCREMENT', 'INDEX', 'INFILE', 'INNER',
-            'INOUT', 'INPUT', 'INSERT', 'INT', 'INTEGER', 'INTERSECT', 'INTERSECTION', 'INTERVAL',
-            'INTO', 'IS',
-            'JOIN',
-            'KEY', 'KEYS', 'KILL',
-            'LANGUAGE', 'LARGE', 'LAST', 'LEADING', 'LEFT', 'LENGTH', 'LIKE', 'LIMIT', 'LINES', 'LOAD',
-            'LOCAL', 'LOCK', 'LOW_PRIORITY', 'LOWER',
-            'MATCH', 'MAX', 'MERGE', 'MIN', 'MINUTE', 'MOD', 'MODIFIES', 'MODIFY', 'MONTH',
-            'NATIONAL', 'NATURAL', 'NCHAR', 'NEW', 'NEXT', 'NEXTVAL', 'NONE', 'NOT',
-            'NULL', 'NULLABLE', 'NULLIF', 'NULLS', 'NUMBER', 'NUMERIC',
-            'OF', 'OLD', 'ON', 'ONLY', 'OPEN', 'OPTIMIZE', 'OPTION',
-            'OPTIONALLY', 'OR', 'ORDER', 'OUT', 'OUTER', 'OUTFILE', 'OVER',
-            'POSITION', 'POWER', 'PRECISION', 'PREPARE', 'PRIMARY', 'PROCEDURAL', 'PROCEDURE',
-            'READ', 'REAL', 'REF', 'REFERENCES', 'REFERENCING', 'REGEXP', 'RENAME', 'REPLACE',
-            'RESULT', 'RETURN', 'RETURNS', 'REVOKE', 'RIGHT', 'RLIKE', 'ROLLBACK', 'ROW',
-            'ROW_NUMBER', 'ROWS', 'RESTRICT', 'ROLE', 'ROUTINE', 'ROW_COUNT',
-            'SAVEPOINT', 'SEARCH', 'SECOND', 'SECTION', 'SELECT', 'SELF', 'SEQUENCE',
-            'SESSION', 'SET', 'SETVAL', 'SHOW', 'SIMILAR', 'SIZE', 'SMALLINT', 'SOME',
-            'SONAME', 'SOURCE', 'SPACE', 'SQL', 'SQRT', 'START', 'STATUS',
-            'STRAIGHT_JOIN', 'STRUCTURE', 'STYLE', 'SUBSTRING', 'SUM',
-            'TABLE', 'TABLE_NAME', 'TABLES', 'TERMINATED', 'TEMPORARY', 'THEN', 'TIME',
-            'TIMESTAMP', 'TO', 'TRAILING', 'TRANSACTION', 'TRIGGER', 'TRIM', 'TRUE', 'TRUNCATE',
-            'TRUSTED', 'TYPE',
-            'UNDER', 'UNION', 'UNIQUE', 'UNKNOWN', 'UNLOCK', 'UNSIGNED',
-            'UPDATE', 'UPPER', 'USE', 'USER', 'USING',
-            'VALUE', 'VALUES', 'VARCHAR', 'VARIABLES', 'VARYING', 'VIEW',
-            'WHEN', 'WHERE', 'WITH', 'WITHIN', 'WITHOUT', 'WORK', 'WRITE',
-            'XOR',
-            'YEAR',
-            'ZEROFILL'
-            )
-        ),
-    'SYMBOLS' => array(
-        '(', ')', '=', '<', '>', '|', ',', '.', '+', '-', '*', '/'
-        ),
-    'CASE_SENSITIVE' => array(
-        GESHI_COMMENTS => false,
-        1 => false
-        ),
-    'STYLES' => array(
-        'KEYWORDS' => array(
-            1 => 'color: #993333; font-weight: bold;'
-            ),
-        'COMMENTS' => array(
-            1 => 'color: #808080; font-style: italic;',
-            //2 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
-            ),
-        'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
-            ),
-        'BRACKETS' => array(
-            0 => 'color: #66cc66;'
-            ),
-        'STRINGS' => array(
-            0 => 'color: #ff0000;'
-            ),
-        'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
-            ),
-        'METHODS' => array(
-            ),
-        'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
-            ),
-        'SCRIPT' => array(
-            ),
-        'REGEXPS' => array(
-            )
-        ),
-    'URLS' => array(
-        1 => ''
-        ),
-    'OOLANG' => false,
-    'OBJECT_SPLITTERS' => array(
-        ),
-    'REGEXPS' => array(
-        ),
-    'STRICT_MODE_APPLIES' => GESHI_NEVER,
-    'SCRIPT_DELIMITERS' => array(
-        ),
-    'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+	'LANG_NAME' => 'SQL',
+	'COMMENT_SINGLE' => array(1 =>'--'),
+	'COMMENT_MULTI' => array('/*' => '*/'),
+	'CASE_KEYWORDS' => 1,
+	'QUOTEMARKS' => array("'", '"', '`'),
+	'ESCAPE_CHAR' => '\\',
+	'KEYWORDS' => array(
+		1 => array(
+			'ADD', 'ALL', 'ALTER', 'AND', 'AS', 'ASC', 'AUTO_INCREMENT',
+			'BEFORE', 'BEGIN', 'BETWEEN', 'BIGINT', 'BINARY', 'BLOB', 'BOOLEAN', 'BOTH', 'BY',
+			'CALL', 'CASE', 'CAST', 'CEIL', 'CEILING', 'CHANGE', 'CHAR', 'CHAR_LENGTH', 'CHARACTER',
+			'CHARACTER_LENGTH', 'CHECK', 'CLOB', 'COALESCE', 'COLLATE', 'COLUMN', 'COLUMNS',
+			'CONNECT', 'CONSTRAINT', 'CONVERT', 'COUNT', 'CREATE', 'CROSS', 'CURRENT',
+			'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'CURRENT_USER',
+			'DATA', 'DATABASE', 'DATABASES', 'DATE', 'DAY', 'DEC', 'DECIMAL', 'DECLARE',
+			'DEFAULT', 'DELAYED', 'DELETE', 'DESC', 'DESCRIBE', 'DISTINCT', 'DOUBLE',
+			'DOMAIN', 'DROP',
+			'ELSE', 'ENCLOSED', 'END', 'ESCAPED', 'EXCEPT', 'EXEC', 'EXECUTE', 'EXISTS', 'EXP',
+			'EXPLAIN', 'EXTRACT',
+			'FALSE', 'FIELD', 'FIELDS', 'FILTER', 'FIRST', 'FLOAT', 'FLOOR', 'FLUSH', 'FOR',
+			'FOREIGN', 'FROM', 'FULL', 'FUNCTION',
+			'GET', 'GROUP', 'GROUPING', 'GO', 'GOTO', 'GRANT', 'GRANTED',
+			'HAVING', 'HOUR',
+			'IDENTIFIED', 'IDENTITY', 'IF', 'IGNORE', 'IN', 'INCREMENT', 'INDEX', 'INFILE', 'INNER',
+			'INOUT', 'INPUT', 'INSERT', 'INT', 'INTEGER', 'INTERSECT', 'INTERSECTION', 'INTERVAL',
+			'INTO', 'IS',
+			'JOIN',
+			'KEY', 'KEYS', 'KILL',
+			'LANGUAGE', 'LARGE', 'LAST', 'LEADING', 'LEFT', 'LENGTH', 'LIKE', 'LIMIT', 'LINES', 'LOAD',
+			'LOCAL', 'LOCK', 'LOW_PRIORITY', 'LOWER',
+			'MATCH', 'MAX', 'MERGE', 'MIN', 'MINUTE', 'MOD', 'MODIFIES', 'MODIFY', 'MONTH',
+			'NATIONAL', 'NATURAL', 'NCHAR', 'NEW', 'NEXT', 'NEXTVAL', 'NONE', 'NOT',
+			'NULL', 'NULLABLE', 'NULLIF', 'NULLS', 'NUMBER', 'NUMERIC',
+			'OF', 'OLD', 'ON', 'ONLY', 'OPEN', 'OPTIMIZE', 'OPTION',
+			'OPTIONALLY', 'OR', 'ORDER', 'OUT', 'OUTER', 'OUTFILE', 'OVER',
+			'POSITION', 'POWER', 'PRECISION', 'PREPARE', 'PRIMARY', 'PROCEDURAL', 'PROCEDURE',
+			'READ', 'REAL', 'REF', 'REFERENCES', 'REFERENCING', 'REGEXP', 'RENAME', 'REPLACE',
+			'RESULT', 'RETURN', 'RETURNS', 'REVOKE', 'RIGHT', 'RLIKE', 'ROLLBACK', 'ROW',
+			'ROW_NUMBER', 'ROWS', 'RESTRICT', 'ROLE', 'ROUTINE', 'ROW_COUNT',
+			'SAVEPOINT', 'SEARCH', 'SECOND', 'SECTION', 'SELECT', 'SELF', 'SEQUENCE',
+			'SESSION', 'SET', 'SETVAL', 'SHOW', 'SIMILAR', 'SIZE', 'SMALLINT', 'SOME',
+			'SONAME', 'SOURCE', 'SPACE', 'SQL', 'SQRT', 'START', 'STATUS',
+			'STRAIGHT_JOIN', 'STRUCTURE', 'STYLE', 'SUBSTRING', 'SUM',
+			'TABLE', 'TABLE_NAME', 'TABLES', 'TERMINATED', 'TEMPORARY', 'THEN', 'TIME',
+			'TIMESTAMP', 'TO', 'TRAILING', 'TRANSACTION', 'TRIGGER', 'TRIM', 'TRUE', 'TRUNCATE',
+			'TRUSTED', 'TYPE',
+			'UNDER', 'UNION', 'UNIQUE', 'UNKNOWN', 'UNLOCK', 'UNSIGNED',
+			'UPDATE', 'UPPER', 'USE', 'USER', 'USING',
+			'VALUE', 'VALUES', 'VARCHAR', 'VARIABLES', 'VARYING', 'VIEW',
+			'WHEN', 'WHERE', 'WITH', 'WITHIN', 'WITHOUT', 'WORK', 'WRITE',
+			'XOR',
+			'YEAR',
+			'ZEROFILL'
+			)
+		),
+	'SYMBOLS' => array(
+		'(', ')', '=', '<', '>', '|', ',', '.', '+', '-', '*', '/'
+		),
+	'CASE_SENSITIVE' => array(
+		GESHI_COMMENTS => false,
+		1 => false
+		),
+	'STYLES' => array(
+		'KEYWORDS' => array(
+			1 => 'color: #993333; font-weight: bold;'
+			),
+		'COMMENTS' => array(
+			1 => 'color: #808080; font-style: italic;',
+			//2 => 'color: #808080; font-style: italic;',
+			'MULTI' => 'color: #808080; font-style: italic;'
+			),
+		'ESCAPE_CHAR' => array(
+			0 => 'color: #000099; font-weight: bold;'
+			),
+		'BRACKETS' => array(
+			0 => 'color: #66cc66;'
+			),
+		'STRINGS' => array(
+			0 => 'color: #ff0000;'
+			),
+		'NUMBERS' => array(
+			0 => 'color: #cc66cc;'
+			),
+		'METHODS' => array(
+			),
+		'SYMBOLS' => array(
+			0 => 'color: #66cc66;'
+			),
+		'SCRIPT' => array(
+			),
+		'REGEXPS' => array(
+			)
+		),
+	'URLS' => array(
+		1 => ''
+		),
+	'OOLANG' => false,
+	'OBJECT_SPLITTERS' => array(
+		),
+	'REGEXPS' => array(
+		),
+	'STRICT_MODE_APPLIES' => GESHI_NEVER,
+	'SCRIPT_DELIMITERS' => array(
+		),
+	'HIGHLIGHT_STRICT_BLOCK' => array(
+		)
 );
-
-?>

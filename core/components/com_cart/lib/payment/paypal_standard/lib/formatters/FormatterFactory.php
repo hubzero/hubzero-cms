@@ -2,9 +2,12 @@
 require_once 'PPNVPFormatter.php';
 require_once 'PPSOAPFormatter.php';
 
-class FormatterFactory {
-	public static function factory($bindingType) {
-		switch ($bindingType) {
+class FormatterFactory
+{
+	public static function factory($bindingType)
+	{
+		switch ($bindingType)
+		{
 			case 'NV':
 				return new PPNVPFormatter();
 				break;

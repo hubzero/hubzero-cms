@@ -403,7 +403,7 @@ function submitbutton(pressbutton)
 										dataType: "html",
 										cache: false,
 										success: function ( html ) {
-											if(html.length > 0 && password.val() != '')
+											if (html.length > 0 && password.val() != '')
 											{
 												$('.passrules').html(html);
 											}

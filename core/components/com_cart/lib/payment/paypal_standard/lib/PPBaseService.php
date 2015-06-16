@@ -1,37 +1,45 @@
 <?php
 require_once 'PPAPIService.php';
 
-
-class PPBaseService {
-
+class PPBaseService
+{
 	private $serviceName;
 	private $serviceBinding;
 	private $handlers;
 
-   /*
-    * Setters and getters for Third party authentication (Permission Services)
-    */
+	/*
+	* Setters and getters for Third party authentication (Permission Services)
+	*/
 	protected $accessToken;
 	protected $tokenSecret;
 	protected $lastRequest;
 	protected $lastResponse;
 
-    public function getLastRequest() {
+	public function getLastRequest()
+	{
 		return $this->lastRequest;
 	}
-    public function setLastRequest($lastRqst) {
+
+	public function setLastRequest($lastRqst)
+	{
 		$this->lastRequest = $lastRqst;
 	}
-    public function getLastResponse() {
+
+	public function getLastResponse()
+	{
 		return $this->lastResponse;
 	}
-    public function setLastResponse($lastRspns) {
+
+	public function setLastResponse($lastRspns)
+	{
 		$this->lastResponse = $lastRspns;
 	}
 
-	public function getAccessToken() {
+	public function getAccessToken()
+	{
 		return $this->accessToken;
 	}
+
 	/**
 	 * @deprecated
 	 * For using third party token permissions, 
@@ -45,12 +53,16 @@ class PPBaseService {
 	 * $service->SomeOperation($reqObject, $cred); 
 	 *</pre>	 
 	 */
- 	public function setAccessToken($accessToken) {
+	public function setAccessToken($accessToken)
+	{
 		$this->accessToken = $accessToken;
 	}
-	public function getTokenSecret() {
+
+	public function getTokenSecret()
+	{
 		return $this->tokenSecret;
 	}
+
 	/**
 	 * @deprecated
 	 * For using third party token permissions, 
@@ -64,17 +76,20 @@ class PPBaseService {
 	 * $service->SomeOperation($reqObject, $cred); 
 	 *</pre>	 
 	 */
-	public function setTokenSecret($tokenSecret) {
+	public function setTokenSecret($tokenSecret)
+	{
 		$this->tokenSecret = $tokenSecret;
 	}
 
-	public function __construct($serviceName, $serviceBinding, $handlers=array()) {
+	public function __construct($serviceName, $serviceBinding, $handlers=array())
+	{
 		$this->serviceName = $serviceName;
 		$this->serviceBinding = $serviceBinding;
 		$this->handlers = $handlers;
 	}
 
-	public function getServiceName() {
+	public function getServiceName()
+	{
 		return $this->serviceName;
 	}
 
@@ -86,11 +101,10 @@ class PPBaseService {
 	 * 		a username configured in sdk_config.ini or a ICredential object
 	 *      created dynamically 		
 	 */
-	public function call($port, $method, $requestObject, $apiCredential = null) {		
-		$service = new PPAPIService($port, $this->serviceName, 
-				$this->serviceBinding, $this->handlers);		
-		$ret = $service->makeRequest($method, $requestObject, $apiCredential,
-				$this->accessToken, $this->tokenSecret);
+	public function call($port, $method, $requestObject, $apiCredential = null)
+	{
+		$service = new PPAPIService($port, $this->serviceName, $this->serviceBinding, $this->handlers);
+		$ret = $service->makeRequest($method, $requestObject, $apiCredential, $this->accessToken, $this->tokenSecret);
 		$this->lastRequest = $ret['request'];
 		$this->lastResponse = $ret['response'];
 		return $this->lastResponse;

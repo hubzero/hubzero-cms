@@ -39,8 +39,8 @@ if (!$no_html)
 }
 
 $assets = $this->item->assets();
-if ($assets->total() > 0) 
-{ 
+if ($assets->total() > 0)
+{
 	$i = 0;
 	foreach ($assets as $asset)
 	{

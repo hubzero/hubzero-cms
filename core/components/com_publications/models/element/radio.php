@@ -34,10 +34,9 @@ class Radio extends Base
 	/**
 	* Element name
 	*
-	* @access	protected
-	* @var		string
+	* @var string
 	*/
-	protected	$_name = 'Radio boxes';
+	protected $_name = 'Radio boxes';
 
 	/**
 	 * Return any options this element may have
@@ -71,7 +70,7 @@ class Radio extends Base
 		$html[] = '<fieldset>';
 
 		$output = '<legend id="'.$control_name.$name.'-lgd"';
-		if (isset($element->description) && $element->description) 
+		if (isset($element->description) && $element->description)
 		{
 			$output .= ' class="hasTip" title="'.Lang::txt($label).'::'.Lang::txt($element->description).'">';
 		} 

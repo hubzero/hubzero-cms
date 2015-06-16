@@ -50,11 +50,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// map.setCenter(new GLatLng(".$lat.",".$lng."), ".$zoom.", G_SATELLITE_MAP);
 			map.setCenter(new GLatLng(<?php echo $lat; ?>,<?php echo $long; ?>), <?php echo $zoom; ?>, G_HYBRID_MAP);
 			GEvent.addListener(map, 'click', function(overlay, point) {
-				if (overlay){     // marker clicked
+				if (overlay) {     // marker clicked
 					overlay.openInfoWindowHtml(overlay.infowindow);   // open InfoWindow
 				} else if (point) {
 
-				}      // background clicked
+				} // background clicked
 			});
 			getMarkers();
 		}
@@ -83,7 +83,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						icon.iconSize = new GSize(18, 30);
 						icon.iconAnchor = new GPoint(9, 30);
 						icon.infoWindowAnchor = new GPoint(9, 15);
-           				markers[i] = new GMarker(new GLatLng(locations[i].getAttribute('lat'),locations[i].getAttribute('lng')),icon);
+						markers[i] = new GMarker(new GLatLng(locations[i].getAttribute('lat'),locations[i].getAttribute('lng')),icon);
 						var lat = locations[i].getAttribute('lat');
 						var lng = locations[i].getAttribute('lng');
 						var info = locations[i].getAttribute('info');
@@ -93,7 +93,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						info = info.replace(/_bb_/g,'</b>');
 						markers[i].infowindow = info.replace(/_br_/g,'<br/>');
 						map.addOverlay(markers[i]);
-						if (lat==<?php echo $lat; ?> && lng==<?php echo $long; ?>){
+						if (lat==<?php echo $lat; ?> && lng==<?php echo $long; ?>) {
 							GEvent.trigger(markers[i], 'click');
 						}
 					}

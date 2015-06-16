@@ -544,7 +544,7 @@ class Screenshots extends SiteController
 		$im = imagecreatetruecolor($av, $ah);
 		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif($im, $save_dir . $save_name))
+			if (imagegif ($im, $save_dir . $save_name))
 			{
 				return true;
 			}
@@ -572,7 +572,7 @@ class Screenshots extends SiteController
 
 		switch ($gis[2])
 		{
-			case '1': $imorig = imagecreatefromgif($tmpname);  break;
+			case '1': $imorig = imagecreatefromgif ($tmpname);  break;
 			case '2': $imorig = imagecreatefromjpeg($tmpname); break;
 			case '3': $imorig = imagecreatefrompng($tmpname);  break;
 			case '4': $imorig = imagecreatefromwbmp($tmpname); break;
@@ -599,7 +599,7 @@ class Screenshots extends SiteController
 		$im = imagecreatetruecolor($av, $ah);
 		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif($im, $save_dir . $save_name))
+			if (imagegif ($im, $save_dir . $save_name))
 			{
 				return true;
 			}

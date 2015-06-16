@@ -1204,9 +1204,9 @@ class Citations extends SiteController
 		switch ($image_details['extension'])
 		{
 			case 'gif':
-				$image_resource = imagecreatefromgif($image);
+				$image_resource = imagecreatefromgif ($image);
 				header('Content-Type: image/gif');
-				imagegif($image_resource);
+				imagegif ($image_resource);
 				break;
 			case 'jpg':
 			case 'jpeg':

@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 
 	if (pressbutton == 'restore_default_content') {
 		var mes = confirm('<?php echo Lang::txt('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM'); ?>');
-		if(!mes) {
+		if (!mes) {
 			return false;
 		}
 		submitform( pressbutton );

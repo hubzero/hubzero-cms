@@ -68,7 +68,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	    		var xmlDoc = request.responseXML;
         		locations = xmlDoc.documentElement.getElementsByTagName("location");
         		markers = [];
-        		if (locations.length){
+        		if (locations.length) {
 		    		for (var i = 0; i < locations.length; i++) { // cycle thru locations
 						// var bot = locations[i].getAttribute("bot");
 						// var user = locations[i].getAttribute("user");

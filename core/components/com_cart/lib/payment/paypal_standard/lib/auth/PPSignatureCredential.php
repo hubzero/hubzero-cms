@@ -7,8 +7,8 @@ require_once dirname(__FILE__) . '/../PPConfigManager.php';
 /**
  * API signature (3-token) based credentials
  */
-class PPSignatureCredential extends IPPCredential {
-
+class PPSignatureCredential extends IPPCredential
+{
 	/**
 	 * API username
 	 * @var string

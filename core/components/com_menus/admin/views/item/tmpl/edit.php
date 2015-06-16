@@ -22,7 +22,7 @@ Html::behavior('modal');
 	Joomla.submitbutton = function(task, type)
 	{
 		if (task == 'item.setType' || task == 'item.setMenuType') {
-			if(task == 'item.setType') {
+			if (task == 'item.setType') {
 				$('#item-form').find('input[name="jform[type]"]').val(type);
 				$('#fieldtype').val('type');
 			} else {

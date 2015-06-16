@@ -214,7 +214,7 @@ class Helper
 	 *
 	 * @return 	void
 	 */
-	public static function mailingOpenTrackerGif()
+	public static function mailingOpenTrackerGif ()
 	{
 		//create fake image to output
 		$im = imagecreatetruecolor(1, 1);
@@ -222,7 +222,7 @@ class Helper
 		imagecolortransparent($im, $red);
 		imagefilledrectangle($im, 0, 0, 99, 99, 0xFF0000);
 		header('Content-Type: image/gif');
-		imagegif($im);
+		imagegif ($im);
 		imagedestroy($im);
 	}
 

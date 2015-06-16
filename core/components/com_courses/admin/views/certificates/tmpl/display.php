@@ -163,9 +163,9 @@ jQuery(window).load(function() {
 	var isDrag = false;
 	var mx, my; // mouse coordinates
 
-	 // when set to true, the canvas will redraw everything
-	 // invalidate() just sets this to false right now
-	 // we want to call invalidate() whenever we make a change
+	// when set to true, the canvas will redraw everything
+	// invalidate() just sets this to false right now
+	// we want to call invalidate() whenever we make a change
 	var canvasValid = false;
 
 	// The node (if any) being selected.
@@ -408,7 +408,7 @@ jQuery(window).load(function() {
 	var counter = images.length;  // initialize the counter
 
 	images.each(function(i, el) {
-		if( this.complete ) {
+		if ( this.complete ) {
 			imageLoaded.call( this );
 		} else {
 			$(this).one('load', imageLoaded);
@@ -417,7 +417,7 @@ jQuery(window).load(function() {
 	init();
 });
 
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 

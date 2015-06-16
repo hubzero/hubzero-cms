@@ -80,7 +80,7 @@ class Detector implements DetectorInterface
 		// This is the payload of babaji spam so gets you right on the edge of
 		// of being marked spam. Pretty much any other rule hit should
 		// trigger marking this as spam.
-		if (preg_match("/(^|[^\d])(([\s\-\+]*\d[\s\-\+]*){11,12})([^\d\-\+]|$)/", $context))
+		if (preg_match("/(^|[^\d])(([\s\-\+]*\d[\s\-\+]*) {11,12})([^\d\-\+]|$)/", $context))
 		{
 			$spam += 50;
 			$reason |= 1;

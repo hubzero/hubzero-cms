@@ -171,8 +171,8 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		// script to actually make ckeditor
 		$script  = '<script type="text/javascript">';
 		$script .= 'if (typeof(jQuery) !== "undefined") {';
-		$script .= 'jQuery(document).ready(function(){ jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
-		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function(){}, '.$config.'); });';
+		$script .= 'jQuery(document).ready(function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
+		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
 		$script .= '}';
 		$script .= '</script>';
 

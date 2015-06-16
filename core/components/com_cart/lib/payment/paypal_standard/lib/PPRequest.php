@@ -3,22 +3,22 @@
  * Encapsulates API request information
  *
  */
-class PPrequest {
-	
+class PPrequest
+{
 	/**
 	 * Request Object
 	 *
 	 * @var object
 	 */
 	private $requestObject;
-	
+
 	/**
 	 * Optional credentials associated with
 	 * the request
 	 * @var ICredential
 	 */
 	private $credential;
-		
+
 	/**
 	 * Transport binding for this request.
 	 * Can be NVP, SOAP etc
@@ -32,41 +32,49 @@ class PPrequest {
 	 * @var array
 	 */
 	private $bindingInfo = array();
-	
-	public function __construct($requestObject, $bindingType) {
+
+	public function __construct($requestObject, $bindingType)
+	{
 		$this->requestObject = $requestObject;
 		$this->bindingType = $bindingType;
 	}
 
-	public function getRequestObject() {
+	public function getRequestObject()
+	{
 		return $this->requestObject;
 	}
-	
-	public function getBindingType() {
+
+	public function getBindingType()
+	{
 		return $this->bindingType;
 	}
-	
-	public function getBindingInfo($name=NULL) {
-		if(isset($name)) {
+
+	public function getBindingInfo($name=NULL)
+	{
+		if (isset($name))
+		{
 			return $this->bindingInfo[$name];
 		}
 		return $this->bindingInfo;
 	}
-	
+
 	/**
 	 * 
 	 * @param string $name
 	 * @param mixed $value
 	 */
-	public function addBindingInfo($name, $value) {
+	public function addBindingInfo($name, $value)
+	{
 		$this->bindingInfo[$name] = $value;
 	}
-	
-	public function setCredential($credential) {
+
+	public function setCredential($credential)
+	{
 		$this->credential = $credential;
 	}
-	
-	public function getCredential() {
+
+	public function getCredential()
+	{
 		return $this->credential;
 	}
 }

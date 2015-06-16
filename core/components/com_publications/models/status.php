@@ -32,27 +32,26 @@ use Hubzero\Base\Object;
 class Status extends Object
 {
 	/**
-	 *  Int(1) 
+	 * Int(1)
 	 * 1 = requirement satisfied
 	 * 0 = requirement not satisfied
 	 * 2 = requirement partially satisfied (incomplete)
 	 * 3 = not available
 	 */
-	var $status						= NULL;
-		
+	var $status = NULL;
+
 	/**
 	 * Status message
 	 */
-	var $message					= NULL;
-		
+	var $message = NULL;
+
 	/**
 	 * For nested blocks
 	 */
-	var $elements					= NULL;
-	
+	var $elements = NULL;
+
 	/**
 	 * Time of last status update
 	 */
-	var $lastupdate					= NULL;
-	
+	var $lastupdate = NULL;
 }

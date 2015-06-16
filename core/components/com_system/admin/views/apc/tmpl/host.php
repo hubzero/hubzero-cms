@@ -47,7 +47,7 @@ $time = $this->time;
 jQuery(document).ready(function($){
 	$('#clearcache').on('click', function(e) {
 		var mes = confirm('<?php echo Lang::txt('COM_SYSTEM_APC_CONFIRM'); ?>');
-		if(!mes) {
+		if (!mes) {
 			e.preventDefault();
 		}
 		return res;

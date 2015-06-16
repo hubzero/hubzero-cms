@@ -595,7 +595,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 									for ($px=min($left,$width-1); $px>$left-12 && $px>=0; $px-=1)
 									{
 										$color = imagecolorat($img, $px, $py) & 0xff;
-										if ($color+$opacity < 190){
+										if ($color+$opacity < 190) {
 											if ($shift > $left-$px)
 											{
 												$shift = $left-$px;

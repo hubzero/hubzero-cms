@@ -1,5 +1,6 @@
 <?php
-interface IPPHandler {
+interface IPPHandler
+{
 	/**
 	 * 
 	 * @param PPHttpConfig $httpConfig

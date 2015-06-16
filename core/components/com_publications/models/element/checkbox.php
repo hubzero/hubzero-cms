@@ -34,9 +34,9 @@ class Checkbox extends Base
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Checkboxes';
+	protected $_name = 'Checkboxes';
 
 	/**
 	 * Return any options this element may have

@@ -149,7 +149,7 @@ abstract class Inflect
 		return $string;
 	}
 
-	public static function pluralize_if($count, $string)
+	public static function pluralize_if ($count, $string)
 	{
 		return $count == 1
 			? "1 $string"

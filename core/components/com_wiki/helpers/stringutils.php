@@ -216,7 +216,7 @@ class StringUtils
 
 		// Explode, then put the replaced separators back in
 		$items = explode($separator, $cleaned);
-		foreach($items as $i => $str)
+		foreach ($items as $i => $str)
 		{
 			$items[$i] = str_replace($placeholder, $separator, $str);
 		}

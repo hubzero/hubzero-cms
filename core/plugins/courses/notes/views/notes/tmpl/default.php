@@ -102,12 +102,12 @@ $base = $this->offering->link();
 	</div>
 	<?php } ?>
 	<script type="text/javascript">
-	jQuery(document).ready(function(jQuery){
+	jQuery(document).ready(function(jQuery) {
 		var $ = jQuery;
 
 		var url = "<?php echo Request::base(true) . '/' . $this->offering->link() . '&active=notes&no_html=1&note='; ?>";
 
-		$('#page_content textarea').each(function(i, el){
+		$('#page_content textarea').each(function(i, el) {
 			$(el).on('keyup', function (e) {
 				var id  = $(this).parent().parent().attr('data-id'),
 					txt = $(this).val();

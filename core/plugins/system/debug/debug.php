@@ -318,7 +318,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		$html .= "<script type=\"text/javascript\">
 		if (!document.getElementsByClassName) {
-			document.getElementsByClassName = (function(){
+			document.getElementsByClassName = (function() {
 				function traverse (node, callback) {
 					callback(node);
 					for (var i=0;i < node.childNodes.length; i++) {
@@ -327,7 +327,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 				}
 				return function (name) {
 					var result = [];
-					traverse(document.body,function(node){
+					traverse(document.body,function(node) {
 						if (node.className && (' ' + node.className + ' ').indexOf(' ' + name + ' ') > -1) {
 							result.push(node);
 						}
@@ -475,7 +475,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			_mouseDown: function(e) {
 				e = e || window.event;
 
-				this.elem.onselectstart=function(){return false};
+				this.elem.onselectstart=function() {return false};
 
 				this._event_docMouseMove = this._docMouseMove.bindD(this);
 				this._event_docMouseUp = this._docMouseUp.bindD(this);

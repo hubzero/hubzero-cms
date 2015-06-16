@@ -81,7 +81,7 @@ class Router extends Base
 
 		if (empty($segments))
 		{
-	    	return $vars;
+			return $vars;
 		}
 
 		if (isset($segments[0]))
@@ -97,7 +97,7 @@ class Router extends Base
 			}
 			else
 			{
-				switch( $segments[0] )
+				switch ($segments[0])
 				{
 					case 'track':
 						$vars['task'] = 'track';

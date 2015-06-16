@@ -197,7 +197,7 @@ foreach ($this->rows as $row)
 		case 'invitee':
 		case 'inviteemail':
 	?>
-					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invitation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
 					</a>
 				</td>
@@ -212,7 +212,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 				<td>
-					<a class="state unpublish" onclick="javascript:if(confirm('Deny membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deny&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deny&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
 					</a>
 	<?php
@@ -235,7 +235,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 				<td>
-					<a class="state trash" onclick="javascript:if(confirm('Cancel membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
 					</a>
 	<?php

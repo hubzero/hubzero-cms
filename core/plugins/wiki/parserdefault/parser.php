@@ -1280,7 +1280,7 @@ class WikiParser
 	private function cleanXss($string)
 	{
 		// Strip out any KL_PHP, script, style, HTML comments
-		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $string);
+		$string = preg_replace('/{kl_php}(.*?) {\/kl_php}/s', '', $string);
 		$string = preg_replace("'<style[^>]*>.*?</style>'si", '', $string);
 		$string = preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
 		$string = preg_replace('/<!--.+?-->/', '', $string);
@@ -1927,8 +1927,8 @@ class WikiParser
 			$h = str_repeat('=', $i);
 
 			$patterns = array(
-				"/^(.*){$h}(.+){$h}\s\#(.*)\\s*$/m",    // === Header #myheader ===
-				"/^(.*){$h}(.+){$h}\\s*$/m"             // === Header ===
+				"/^(.*) {$h}(.+) {$h}\s\#(.*)\\s*$/m",    // === Header #myheader ===
+				"/^(.*) {$h}(.+) {$h}\\s*$/m"             // === Header ===
 			);
 			$replace  = array(
 				"\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4",  // <h3 id="myheader">Header</h3>

@@ -7,12 +7,14 @@ class PPConnectionException extends Exception
 	 */
 	private $url;
 
-	public function __construct($url, $message, $code = 0) {		
+	public function __construct($url, $message, $code = 0)
+	{
 		parent::__construct($message, $code);
-		$this->url = $url;		
+		$this->url = $url;
 	}
-	
-	public function getUrl() {
+
+	public function getUrl()
+	{
 		return $this->url;
 	}
 }

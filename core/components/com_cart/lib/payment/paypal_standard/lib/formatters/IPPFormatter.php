@@ -7,8 +7,8 @@
  * class that implements this interface
  *
  */
-interface IPPFormatter {
-	
+interface IPPFormatter
+{
 	/**
 	 * 
 	 * @param PPRequest $request The request to format
@@ -16,6 +16,6 @@ interface IPPFormatter {
 	 *   to be passed in 
 	 */
 	public function toString($request, $options=array());
-	
+
 	public function toObject($string, $options=array());
 }

@@ -36,7 +36,7 @@ Toolbar::editList();
 Toolbar::deleteList();
 ?>
 <script type="text/javascript">
-/*function submitbutton(pressbutton) 
+/*function submitbutton(pressbutton)
 {
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);

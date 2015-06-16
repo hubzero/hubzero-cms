@@ -92,7 +92,7 @@ class Router extends Base
 
 		if (isset($segments[0]))
 		{
-			switch($segments[0])
+			switch ($segments[0])
 			{
 				case 'RetrieveNewPosts':
 					$vars['controller'] = 'posts';

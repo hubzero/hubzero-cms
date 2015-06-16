@@ -94,7 +94,7 @@ class Vote extends \JTable
 		$this->_db->setQuery(
 			"SELECT vote FROM `$this->_tbl` 
 			WHERE object_id=" . $this->_db->Quote($object_id) . " 
-			AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ") 
+			AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")
 			AND type=" . $this->_db->Quote($type)
 		);
 		return $this->_db->loadResult();

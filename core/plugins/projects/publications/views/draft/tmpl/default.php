@@ -45,12 +45,12 @@ echo $this->pub->_curationModel->drawStatusBar();
 ?>
 <div id="pub-body">
 	<?php echo $blockcontent; ?>
- </div>
+</div>
 <p class="rightfloat">
 	<a href="<?php echo Route::url($this->pub->link('version')); ?>" class="public-page" rel="external" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 </p>
 <script>
-jQuery(document).ready(function($){
+jQuery(document).ready(function($) {
 	HUB.ProjectPublicationsDraft.initialize();
 });
 </script>

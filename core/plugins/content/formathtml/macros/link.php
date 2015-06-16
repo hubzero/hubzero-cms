@@ -87,7 +87,7 @@ Examples:
 		$cls = 'wiki';
 
 		// Parse arguments
-        // We expect the 1st argument to be a filename
+		// We expect the 1st argument to be a filename
 		$args  = explode(' ', $content);
 		$href  = array_shift($args);
 		$title = (count($args) > 0) ? implode(' ', $args) : $href;

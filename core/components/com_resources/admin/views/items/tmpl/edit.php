@@ -127,7 +127,7 @@ function doFileoptions()
 				//var filepath = fform.elements['listdir'];
 				var slctdfiles = fform.slctdfile;
 				if (slctdfiles.length > 1) {
-					for(var i = 0; i < slctdfiles.length; i++)
+					for (var i = 0; i < slctdfiles.length; i++)
 					{
 						if (slctdfiles[i].checked) {
 							var filepath = slctdfiles[i].value;

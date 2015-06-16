@@ -95,7 +95,7 @@ class NewsletterControllerMailing extends SiteController
 		}
 
 		//create image to ouput
-		Helper::mailingOpenTrackerGif();
+		Helper::mailingOpenTrackerGif ();
 		exit();
 	}
 

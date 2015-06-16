@@ -6,8 +6,8 @@ require_once 'IPPThirdPartyAuthorization.php';
  * Represents the older subject based "third party authorization"
  * New apps can use the more flexible token based authorization
  */
-class PPSubjectAuthorization implements IPPThirdPartyAuthorization {
-
+class PPSubjectAuthorization implements IPPThirdPartyAuthorization
+{
 	/**
 	 * Paypal emailid of the party who has granted API rights
 	 * to the API caller. Your API username must have been 
@@ -16,12 +16,14 @@ class PPSubjectAuthorization implements IPPThirdPartyAuthorization {
 	 * @var string
 	 */
 	private $subject;
-	
-	public function __construct($subject) {
+
+	public function __construct($subject)
+	{
 		$this->subject = $subject;
 	}
-	
-	public function getSubject() {
+
+	public function getSubject()
+	{
 		return $this->subject;
 	}
 }
