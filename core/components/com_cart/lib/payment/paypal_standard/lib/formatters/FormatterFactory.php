@@ -15,7 +15,7 @@ class FormatterFactory
 				return new PPSOAPFormatter();
 				break;
 			default:
-				throw new InvalidArgumentException("Invalid value for bindingType. You passed $bindingType");	
+				throw new InvalidArgumentException("Invalid value for bindingType. You passed $bindingType");
 		}
 	}
 }

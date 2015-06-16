@@ -44,6 +44,4 @@ foreach ($this->licenses as $license)
 }
 $html .= '</select>' . "\n";
 
-echo $html; 
-
-?>
+echo $html;

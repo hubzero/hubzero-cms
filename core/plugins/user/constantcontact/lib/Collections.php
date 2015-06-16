@@ -370,7 +370,8 @@ class CampaignsCollection extends Collection
 	 * @param string $status - draft, running, sent, scheduled
 	 * @return array  - array of campaigns a link to the next page if one exists
 	 */
-	public function getCampaignsByStatus($status, $page = null) {
+	public function getCampaignsByStatus($status, $page = null)
+	{
 		$statusList = array('sent', 'draft', 'running', 'scheduled');
 		$status = strtolower($status);
 		$campaignsCollection = array('campaigns' => array(), 'nextLink' => '');
@@ -395,7 +396,8 @@ class CampaignsCollection extends Collection
 	 * @param string $scheduleTime - Date/Time for the email to be delivered
 	 * @return bool - true if success, else false
 	 */
-	public function scheduleCampaign(Campaign $Campaign, $time) {
+	public function scheduleCampaign(Campaign $Campaign, $time)
+	{
 		$Schedule = new Schedule();
 		$Schedule->campaign = $Campaign;
 		$Schedule->time = $time;
@@ -410,11 +412,18 @@ class CampaignsCollection extends Collection
 	 * @param Campaign $Campaign - Email to obtain schedule for
 	 * @return bool|Schedule - Returns schedule if found, else false
 	 */
-	public function getSchedule(Campaign $Campaign) {
+	public function getSchedule(Campaign $Campaign)
+	{
 		$response = $this->CTCTRequest->makeRequest($this->CTCTRequest->baseUri.$Campaign->link.'/schedules', 'GET');
 		$parsedResponse = simplexml_load_string($response['xml']);
-		if ($parsedResponse->entry) {return new Schedule(Schedule::createStruct($parsedResponse->entry));}
-		else{ return false; }
+		if ($parsedResponse->entry)
+		{
+			return new Schedule(Schedule::createStruct($parsedResponse->entry));
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -422,7 +431,8 @@ class CampaignsCollection extends Collection
 	 * @param Campaign $Campaign - Campaign to delete schedule for
 	 * @return bool - true is successful, else false
 	 */
-	public function deleteSchedule(Campaign $Campaign) {
+	public function deleteSchedule(Campaign $Campaign)
+	{
 		$response = $this->CTCTRequest->makeRequest($this->CTCTRequest->baseUri.$Campaign->link.'/schedules/1', 'DELETE');
 		if ($response['info']['http_code'] == 204) { return true; }
 		else{ return false; }
@@ -433,7 +443,8 @@ class CampaignsCollection extends Collection
 	 * @param string $eventType - Sends, Forwards, Bounces, OptOuts, Opens
 	 * @return array - Found CampaignEvents
 	 */
-	public function getCampaignEvents($url, $eventType) {
+	public function getCampaignEvents($url, $eventType)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$parsedResponse = simplexml_load_string($response['xml']);
 		$events = array();
@@ -448,7 +459,8 @@ class CampaignsCollection extends Collection
 	 * @param string $url - url to a campaign
 	 * @return bool - true is successful, else false
 	 */
-	public function deleteCampaign($url) {
+	public function deleteCampaign($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'DELETE');
 		return ($response['info']['http_code'] == 204) ? true : false;
 	}
@@ -459,7 +471,8 @@ class CampaignsCollection extends Collection
 	 * @param Campaign $Campaign
 	 * @return Campaign
 	 */
-	public function addCampaign(Campaign $Campaign) {
+	public function addCampaign(Campaign $Campaign)
+	{
 		$campaignXml = $Campaign->createXml();
 		$response = $this->CTCTRequest->makeRequest($this->uri, 'POST', $campaignXml);
 		$parsedResponse = simplexml_load_string($response['xml']);
@@ -476,7 +489,8 @@ class LibraryCollection extends Collection
 	 * LibraryCollection constructor
 	 * @param  $CTCTRequest
 	 */
-	public function __construct($CTCTRequest) {
+	public function __construct($CTCTRequest)
+	{
 		parent::__construct($CTCTRequest, '/ws/customers/'.$CTCTRequest->username.'/library');
 	}
 
@@ -485,7 +499,8 @@ class LibraryCollection extends Collection
 	 * @param string $name - Folder name
 	 * @return Folder
 	 */
-	public function addFolder(Folder $Folder) {
+	public function addFolder(Folder $Folder)
+	{
 		$listXml = $Folder->createXml();
 		$response = $this->CTCTRequest->makeRequest($this->uri.'/folders', 'POST', $listXml);
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
@@ -497,7 +512,8 @@ class LibraryCollection extends Collection
 	 * @param string $page - url to a page of folders, default is first page
 	 * @return array - Folder objects and a link to the next page if one exists
 	 */
-	public function getFolders($page=null) {
+	public function getFolders($page=null)
+	{
 		$page = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri.'/folders';
 		$foldersCollection = array('folders' => array(), 'nextLink' => '');
 		$response = $this->CTCTRequest->makeRequest($page, 'GET');
@@ -514,7 +530,8 @@ class LibraryCollection extends Collection
 	 * @param string $url - url to a page of images, default is first page
 	 * @return array - image objects and a link to the next page if one exists
 	 */
-	public function getImagesFromFolder($url) {
+	public function getImagesFromFolder($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$imageCollection = array();
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
@@ -529,7 +546,8 @@ class LibraryCollection extends Collection
 	 * @param string $url - url to an image
 	 * @return Image
 	 */
-	public function getImageDetails($url) {
+	public function getImageDetails($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, 'http://www.w3.org/2005/Atom');
 		$image = new Image(Image::createStruct($parsedResponse));
@@ -541,7 +559,8 @@ class LibraryCollection extends Collection
 	 * @param string $url - url to an image
 	 * @return bool - true if successful, else false
 	 */
-	public function deleteImage($url) {
+	public function deleteImage($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'DELETE');
 		return ($response['info']['http_code'] == 204) ? true : false;
 	}
@@ -551,7 +570,8 @@ class LibraryCollection extends Collection
 	 * @param string $url - url to a folder
 	 * @return bool - true if successful, else false
 	 */
-	public function deleteImagesFromFolder($url) {
+	public function deleteImagesFromFolder($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'DELETE');
 		return ($response['info']['http_code'] == 204) ? true : false;
 	}
@@ -563,7 +583,8 @@ class LibraryCollection extends Collection
 	 * @param  $folderUrl - url of a folder to upload an image to
 	 * @return Image
 	 */
-	public function uploadImage($imageLocation, $folderUrl) {
+	public function uploadImage($imageLocation, $folderUrl)
+	{
 		$imageName = substr(strrchr($imageLocation, '\\'), 1);
 		if ($imageName == false) { $imageName = $imageLocation; }
 		$imageFormat = substr(strrchr($imageName, '.'), 1);
@@ -629,7 +650,8 @@ class SettingsCollection extends Collection
 	 * SettingsCollection constructor
 	 * @param  $CTCTRequest
 	 */
-	public function __construct($CTCTRequest) {
+	public function __construct($CTCTRequest)
+	{
 		parent::__construct($CTCTRequest, '/ws/customers/'.$CTCTRequest->username.'/settings');
 	}
 
@@ -638,7 +660,8 @@ class SettingsCollection extends Collection
 	 * @param string  $page - page of verified emails, default is first page
 	 * @return array - page of verified addresses and a link to the next page if one exists
 	 */
-	public function getAddresses($page=null) {
+	public function getAddresses($page=null)
+	{
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri.'/emailaddresses';
 		$addressCollection = array('addresses' => array(), 'nextLink' => '');
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
@@ -660,7 +683,8 @@ class EventsCollection extends Collection
 	 * EventsCollection constructor
 	 * @param CTCTRequest $CTCTRequest
 	 */
-	public function __construct($CTCTRequest) {
+	public function __construct($CTCTRequest)
+	{
 		parent::__construct($CTCTRequest, '/ws/customers/'.$CTCTRequest->username.'/events');
 	}
 
@@ -669,7 +693,8 @@ class EventsCollection extends Collection
 	 * @param string $page - url to a page of events, default is first page
 	 * @return array - Event objects and link to the next page if one exists
 	 */
-	public function getEvents($page=null) {
+	public function getEvents($page=null)
+	{
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri;
 		$eventsCollection = array('events' => array(), 'nextLink' => '');
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
@@ -686,7 +711,8 @@ class EventsCollection extends Collection
 	 * @param string $url - url to an Event
 	 * @return Event
 	 */
-	public function getEventDetails($url) {
+	public function getEventDetails($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
 		return new Event(Event::createStruct($parsedResponse));
@@ -697,7 +723,8 @@ class EventsCollection extends Collection
 	 * @param  $url - url to an event
 	 * @return array - Registrants and a link to the next page if one exists
 	 */
-	public function getRegistrants($url) {
+	public function getRegistrants($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$registrantsArr = array('registrants' => array(), 'nextLink' => '');
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
@@ -713,7 +740,8 @@ class EventsCollection extends Collection
 	 * @param string $url - url to a Regitrant
 	 * @return Registrant
 	 */
-	public function getRegistrantDetails($url) {
+	public function getRegistrantDetails($url)
+	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
 		return new Registrant(Registrant::createStruct($parsedResponse));

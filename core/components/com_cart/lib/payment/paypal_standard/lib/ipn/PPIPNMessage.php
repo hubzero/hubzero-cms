@@ -17,7 +17,7 @@ class PPIPNMessage
 	 *
 	 */
 	private $isIpnVerified;
-	
+
 	/**
 	 * 
 	 * @var array

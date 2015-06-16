@@ -38,8 +38,8 @@ $txtlabel = '';
 $this->audience = !empty($this->audience[0]) ? $this->audience[0] : $this->audience;
 $hideEmpty = isset($this->hideEmpty) ? $this->hideEmpty : true;
 
-if ($this->audience) { 
-
+if ($this->audience)
+{
 	for ($i = 0, $n = $this->numlevels; $i <= $n; $i++)
 	{
 		$lb = 'label' . $i;

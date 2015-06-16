@@ -35,90 +35,89 @@ class Metadata extends Object
 	 *  Object title
 	 */
 	var $title						= NULL;
-		
+
 	/**
 	 * Object abstract
 	 */
 	var $abstract					= NULL;
-	
+
 	/**
 	 * Object description
 	 */
 	var $description				= NULL;
-	
+
 	/**
 	 * Object dc type
 	 */
 	var $type						= NULL;
-	
+
 	/**
 	 * URL to resource
 	 */
 	var $url						= NULL;
-	
+
 	/**
 	 * URL to resource
 	 */
 	var $doi						= NULL;
-	
+
 	/**
 	 * Publisher
 	 */
 	var $publisher					= NULL;
-	
+
 	/**
 	 * Journal
 	 */
 	var $journal					= NULL;
-	
+
 	/**
 	 * Subject
 	 */
 	var $subject					= NULL;
-	
+
 	/**
 	 * Language
 	 */
 	var $language					= NULL;
-	
+
 	/**
 	 * Format
 	 */
 	var $format						= NULL;
-	
+
 	/**
 	 * Date
 	 */
 	var $date						= NULL;
-	
+
 	/**
 	 * Date
 	 */
 	var $issued						= NULL;
-	
+
 	/**
 	 * Volume
 	 */
 	var $volume						= NULL;
-	
+
 	/**
 	 * Issue
 	 */
 	var $issue						= NULL;
-	
+
 	/**
 	 * Page
 	 */
 	var $page						= NULL;
-		
+
 	/**
 	 * ISBN
 	 */
 	var $isbn						= NULL;
-	
+
 	/**
 	 * Author
 	 */
 	var $author						= NULL;
-		
 }

@@ -23,7 +23,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 		parent::__construct(self::$SERVICE_NAME, 'SOAP', array('PPMerchantServiceHandler'));
 	}
 
-	private function setStandardParams(AbstractRequestType $request) {
+	private function setStandardParams(AbstractRequestType $request)
+	{
 		if ($request->Version == NULL) {
 			$request->Version = self::$SERVICE_VERSION;
 		}
@@ -38,7 +39,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMCreateButtonResponseType
 	 * @throws APIException
 	 */
-	public function BMCreateButton($bMCreateButtonReq, $apiCredential = NULL) {
+	public function BMCreateButton($bMCreateButtonReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMCreateButtonReq->BMCreateButtonRequest);
 		$ret = new BMCreateButtonResponseType();
 		$resp = $this->call('PayPalAPI', 'BMCreateButton', $bMCreateButtonReq, $apiCredential);
@@ -56,7 +58,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMUpdateButtonResponseType
 	 * @throws APIException
 	 */
-	public function BMUpdateButton($bMUpdateButtonReq, $apiCredential = NULL) {
+	public function BMUpdateButton($bMUpdateButtonReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMUpdateButtonReq->BMUpdateButtonRequest);
 		$ret = new BMUpdateButtonResponseType();
 		$resp = $this->call('PayPalAPI', 'BMUpdateButton', $bMUpdateButtonReq, $apiCredential);
@@ -74,7 +77,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMManageButtonStatusResponseType
 	 * @throws APIException
 	 */
-	public function BMManageButtonStatus($bMManageButtonStatusReq, $apiCredential = NULL) {
+	public function BMManageButtonStatus($bMManageButtonStatusReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMManageButtonStatusReq->BMManageButtonStatusRequest);
 		$ret = new BMManageButtonStatusResponseType();
 		$resp = $this->call('PayPalAPI', 'BMManageButtonStatus', $bMManageButtonStatusReq, $apiCredential);
@@ -92,7 +96,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMGetButtonDetailsResponseType
 	 * @throws APIException
 	 */
-	public function BMGetButtonDetails($bMGetButtonDetailsReq, $apiCredential = NULL) {
+	public function BMGetButtonDetails($bMGetButtonDetailsReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMGetButtonDetailsReq->BMGetButtonDetailsRequest);
 		$ret = new BMGetButtonDetailsResponseType();
 		$resp = $this->call('PayPalAPI', 'BMGetButtonDetails', $bMGetButtonDetailsReq, $apiCredential);
@@ -110,7 +115,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMSetInventoryResponseType
 	 * @throws APIException
 	 */
-	public function BMSetInventory($bMSetInventoryReq, $apiCredential = NULL) {
+	public function BMSetInventory($bMSetInventoryReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMSetInventoryReq->BMSetInventoryRequest);
 		$ret = new BMSetInventoryResponseType();
 		$resp = $this->call('PayPalAPI', 'BMSetInventory', $bMSetInventoryReq, $apiCredential);
@@ -128,7 +134,8 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMGetInventoryResponseType
 	 * @throws APIException
 	 */
-	public function BMGetInventory($bMGetInventoryReq, $apiCredential = NULL) {
+	public function BMGetInventory($bMGetInventoryReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMGetInventoryReq->BMGetInventoryRequest);
 		$ret = new BMGetInventoryResponseType();
 		$resp = $this->call('PayPalAPI', 'BMGetInventory', $bMGetInventoryReq, $apiCredential);
@@ -146,12 +153,12 @@ class PayPalAPIInterfaceServiceService extends PPBaseService
 	 * @return BMButtonSearchResponseType
 	 * @throws APIException
 	 */
-	public function BMButtonSearch($bMButtonSearchReq, $apiCredential = NULL) {
+	public function BMButtonSearch($bMButtonSearchReq, $apiCredential = NULL)
+	{
 		$this->setStandardParams($bMButtonSearchReq->BMButtonSearchRequest);
 		$ret = new BMButtonSearchResponseType();
 		$resp = $this->call('PayPalAPI', 'BMButtonSearch', $bMButtonSearchReq, $apiCredential);
 		$ret->init(PPUtils::xmlToArray($resp));
 		return $ret;
 	}
-
 }

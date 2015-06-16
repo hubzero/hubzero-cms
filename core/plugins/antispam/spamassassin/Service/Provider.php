@@ -4,12 +4,12 @@
  *
  * Copyright 2005-2013 Purdue University. All rights reserved.
  *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * This file is part of: The HUBzero(R)Platform for Scientific Collaboration
  *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * The HUBzero(R)Platform for Scientific Collaboration (HUBzero)is free
  * software: you can redistribute it and/or modify it under the terms of
  * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
+ * Foundation, either version 3 of the License, or (at your option)any
  * later version.
  *
  * HUBzero is distributed in the hope that it will be useful,
@@ -74,29 +74,29 @@ class Provider extends AbstractService
 
 		$params = array();
 
-		if (!is_file(__DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php'))
+		if (!is_file(__DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))). '.php'))
 		{
 			throw new Exception(\Lang::txt('Client type of "%s" not found.', $this->get('client')));
 		}
 
-		require_once __DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php';
+		require_once __DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))). '.php';
 
-		if ($this->get('client') == 'remote')
+		if ($this->get('client')== 'remote')
 		{
-			foreach (array('server', 'verbose') as $option)
+			foreach (array('server', 'verbose')as $option)
 			{
-				if ($this->get($option) !== null)
+				if ($this->get($option)!== null)
 				{
 					$params[$option] = $this->get($option);
 				}
 			}
 			$client = new Client\Remote($params);
 		}
-		else if ($this->get('client') == 'local')
+		else if ($this->get('client')== 'local')
 		{
-			foreach (array('socketPath', 'hostname', 'user', 'protocolVersion') as $option)
+			foreach (array('socketPath', 'hostname', 'user', 'protocolVersion')as $option)
 			{
-				if ($this->get($option) !== null)
+				if ($this->get($option)!== null)
 				{
 					$params[$option] = $this->get($option);
 				}

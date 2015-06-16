@@ -57,11 +57,11 @@ class DatabaseVersion extends \JTable
 	{
 		if ($dbname === NULL)
 		{
-		 	return false;
+			return false;
 		}
 
 		$query = "SELECT MAX(version) as version FROM $this->_tbl
-		 			WHERE database_name=" . $this->_db->Quote($dbname);
+					WHERE database_name=" . $this->_db->Quote($dbname);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();

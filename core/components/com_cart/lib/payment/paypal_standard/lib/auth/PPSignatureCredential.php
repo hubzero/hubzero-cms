@@ -35,15 +35,16 @@ class PPSignatureCredential extends IPPCredential
 	 */
 	protected $applicationId;
 
-	public function __construct($userName, $password, $signature) {
+	public function __construct($userName, $password, $signature)
+	{
 		$this->userName = trim($userName);
 		$this->password = trim($password);
 		$this->signature = trim($signature);
 		$this->validate();
 	}
 
-	public function validate() {
-
+	public function validate()
+	{
 		if (empty($this->userName)) {
 			throw new PPMissingCredentialException("username cannot be empty");
 		}
@@ -53,20 +54,25 @@ class PPSignatureCredential extends IPPCredential
 		// Signature can be empty if using 3-rd party auth tokens from permissions API
 	}
 
-	public function getUserName() {
+	public function getUserName()
+	{
 		return $this->userName;
 	}
-	public function getPassword() {
+	public function getPassword()
+	{
 		return $this->password;
 	}
-	public function getSignature() {
+	public function getSignature()
+	{
 		return $this->signature;
 	}
 
-	public function setApplicationId($applicationId) {
+	public function setApplicationId($applicationId)
+	{
 		$this->applicationId = trim($applicationId);
 	}
-	public function getApplicationId() {
+	public function getApplicationId()
+	{
 		return $this->applicationId;
 	}
 }

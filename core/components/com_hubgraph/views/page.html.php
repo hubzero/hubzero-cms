@@ -159,8 +159,8 @@ class GenericRenderer
 			if (isset($this->item[$k]) && trim($this->item[$k]))
 			{
 				$rv[] = array(
-					'<td>', 
-					$this->item[$k], $nums ? ', '.str_replace(', (', '(', implode(', ', $nums)) : NULL,  
+					'<td>',
+					$this->item[$k], $nums ? ', '.str_replace(', (', '(', implode(', ', $nums)) : NULL,
 					'</td>'
 				);
 				break;
@@ -221,7 +221,7 @@ class GenericRenderer
 			$this->language(),
 			$this->doi(),
 			'</tr></table>',
-			$this->tags(), 
+			$this->tags(),
 			$this->related()
 		);
 	}

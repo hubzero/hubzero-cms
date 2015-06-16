@@ -4,12 +4,12 @@
  *
  * Copyright 2005-2013 Purdue University. All rights reserved.
  *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * This file is part of: The HUBzero(R)Platform for Scientific Collaboration
  *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * The HUBzero(R)Platform for Scientific Collaboration (HUBzero)is free
  * software: you can redistribute it and/or modify it under the terms of
  * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
+ * Foundation, either version 3 of the License, or (at your option)any
  * later version.
  *
  * HUBzero is distributed in the hope that it will be useful,
@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_JEXEC')or die;
 
 /**
  * Spam Assassin antispam Plugin
@@ -70,9 +70,9 @@ class plgAntispamAkismet extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAntispamTrain($content, $isSpam)
 	{
-		if (!$content) return;
+		if (!$content)return;
 
-		if (!$this->params->get('learn', 0)) return;
+		if (!$this->params->get('learn', 0))return;
 
 		include_once(__DIR__ . DS . 'Service' . DS . 'Provider.php');
 

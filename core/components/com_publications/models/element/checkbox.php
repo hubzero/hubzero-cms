@@ -85,11 +85,11 @@ class Checkbox extends Base
 		$html[] = '<fieldset>';
 
 		$output = '<legend id="'.$control_name.$name.'-lgd"';
-		if (isset($element->description) && $element->description) 
+		if (isset($element->description) && $element->description)
 		{
 			$output .= ' class="hasTip" title="'.Lang::txt($label).'::'.Lang::txt($element->description).'">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}
@@ -118,11 +118,11 @@ class Checkbox extends Base
 				} else {
 					$sel .= ($option->value == $value ? ' checked="checked"' : '');
 				}
-				
+
 				$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
 				$html[] = '<input class="option" type="checkbox" name="' . $control_name . '[' . $name . '][]" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
 				$html[] = Lang::txt($option->label) . '</label>';
-				
+
 				$k++;
 			}
 		}

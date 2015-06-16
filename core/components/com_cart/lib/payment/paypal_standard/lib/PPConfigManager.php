@@ -14,7 +14,8 @@ class PPConfigManager
 	 */
 	private static $instance;
 
-	private function __construct(){
+	private function __construct()
+	{
 		if (defined('PP_CONFIG_PATH'))
 		{
 			$configFile = constant('PP_CONFIG_PATH') . '/sdk_config.ini';

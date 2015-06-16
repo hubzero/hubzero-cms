@@ -73,8 +73,8 @@ class Radio extends Base
 		if (isset($element->description) && $element->description)
 		{
 			$output .= ' class="hasTip" title="'.Lang::txt($label).'::'.Lang::txt($element->description).'">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}

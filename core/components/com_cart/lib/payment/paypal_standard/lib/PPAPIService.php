@@ -20,7 +20,8 @@ class PPAPIService
 	private $handlers = array();
 	private $serviceBinding;
 
-	public function __construct($port, $serviceName, $serviceBinding, $handlers=array()) {
+	public function __construct($port, $serviceName, $serviceBinding, $handlers=array())
+	{
 		$this->serviceName = $serviceName;
 		$config = PPConfigManager::getInstance();
 		if ($port!= null)
@@ -32,22 +33,24 @@ class PPAPIService
 		{
 			$this->endpoint = $config->get('service.EndPoint');
 		}
-		
+
 		$this->logger = new PPLoggingManager(__CLASS__);
 		$this->handlers = $handlers;
 		$this->serviceBinding = $serviceBinding;
 	}
 
-	public function setServiceName($serviceName) {
+	public function setServiceName($serviceName)
+	{
 		$this->serviceName = $serviceName;
 	}
 
-	public function addHandler($handler) {
+	public function addHandler($handler)
+	{
 		$this->handlers[] = $handler;
 	}
 
-	public function makeRequest($apiMethod, $params, $apiUsername = null, $accessToken = null, $tokenSecret = null) {
-
+	public function makeRequest($apiMethod, $params, $apiUsername = null, $accessToken = null, $tokenSecret = null)
+	{
 		$config = PPConfigManager::getInstance();
 		if (is_string($apiUsername) || is_null($apiUsername)) {
 			// $apiUsername is optional, if null the default account in config file is taken
@@ -82,7 +85,8 @@ class PPAPIService
 		return array('request' => $payload, 'response' => $response);
 	}
 
-	private function runHandlers($httpConfig, $request) {
+	private function runHandlers($httpConfig, $request)
+	{
 		$handler = new PPAuthenticationHandler();
 		$handler->handle($httpConfig, $request);
 		foreach ($this->handlers as $handlerClass) {
@@ -90,5 +94,4 @@ class PPAPIService
 			$handler->handle($httpConfig, $request);
 		}
 	}
-
 }

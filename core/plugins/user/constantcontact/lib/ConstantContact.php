@@ -66,7 +66,8 @@ class ConstantContact
 	 * @param ContactList $item - ContactList object
 	 * @return ContactList
 	 */
-	public function getListDetails(ContactList $List) {
+	public function getListDetails(ContactList $List)
+	{
 		$ListsCollection = new ListsCollection($this->CTCTRequest);
 		return $ListsCollection->getListDetails($this->CTCTRequest->baseUri.$List->link);
 	}
@@ -76,7 +77,8 @@ class ConstantContact
 	 * @param ContactList $List - ContactList object
 	 * @return ContactList
 	 */
-	public function addList(ContactList $List) {
+	public function addList(ContactList $List)
+	{
 		$ListsCollection = new ListsCollection($this->CTCTRequest);
 		return $ListsCollection->addList($List);
 	}
@@ -86,7 +88,8 @@ class ConstantContact
 	 * @param ContactList $List - ContactList object
 	 * @return bool
 	 */
-	public function deleteList(ContactList $List) {
+	public function deleteList(ContactList $List)
+	{
 		$ListsCollection = new ListsCollection($this->CTCTRequest);
 		return $ListsCollection->deleteList($this->CTCTRequest->baseUri.$List->link);
 	}
@@ -96,7 +99,8 @@ class ConstantContact
 	 * @param ContactList $List - ContactList object
 	 * @return bool
 	 */
-	public function updateList(ContactList $List) {
+	public function updateList(ContactList $List)
+	{
 		$ListsCollection = new ListsCollection($this->CTCTRequest);
 		return $ListsCollection->updateList($List);
 	}
@@ -106,7 +110,8 @@ class ConstantContact
 	 * @param Contact $Contact  - Contact Object
 	 * @return Contact
 	 */
-	public function addContact(Contact $Contact) {
+	public function addContact(Contact $Contact)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		return $ContactsCollection->addContact($Contact);
 	}
@@ -116,9 +121,10 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' returned from a previous getContacts() call
 	 * @return array - Up to 50 Contacts and a link to the next page if one exists
 	 */
-	public function getContacts($page=null) {
+	public function getContacts($page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
-		return $ContactsCollection->getContacts($page);                
+		return $ContactsCollection->getContacts($page);
 	}
 
 	/**
@@ -126,7 +132,8 @@ class ConstantContact
 	 * @param Contact $Contact - Contact object
 	 * @return Contact
 	 */
-	public function getContactDetails(Contact $Contact) {
+	public function getContactDetails(Contact $Contact)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		return $ContactsCollection->getContactDetails($this->CTCTRequest->baseUri.$Contact->link);
 	}
@@ -137,7 +144,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactOpens call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getContactOpens(Contact $Contact, $page=null) {
+	public function getContactOpens(Contact $Contact, $page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Contact->link.'/events/opens';
 		return $ContactsCollection->getContactEvents($url, 'OpenEvent');
@@ -149,7 +157,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactClicks call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getContactClicks(Contact $Contact, $page=null) {
+	public function getContactClicks(Contact $Contact, $page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Contact->link.'/events/clicks';
 		return $ContactsCollection->getContactEvents($url, 'ClickEvent');
@@ -161,7 +170,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactForwards call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getContactForwards(Contact $Contact, $page=null) {
+	public function getContactForwards(Contact $Contact, $page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Contact->link.'/events/forwards';
 		return $ContactsCollection->getContactEvents($url, 'ForwardEvent');
@@ -173,7 +183,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactBounces call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getContactBounces(Contact $Contact, $page=null) {
+	public function getContactBounces(Contact $Contact, $page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Contact->link.'/events/bounces';
 		return $ContactsCollection->getContactEvents($url, 'BounceEvent');
@@ -185,7 +196,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactOptOuts call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getContactOptOuts(Contact $Contact, $page=null) {
+	public function getContactOptOuts(Contact $Contact, $page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Contact->link.'/events/optouts';
 		return $ContactsCollection->getContactEvents($url, 'OptoutEvent');
@@ -197,7 +209,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactSends call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getContactSends(Contact $Contact, $page=null) {
+	public function getContactSends(Contact $Contact, $page=null)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Contact->link.'/events/sends';
 		return $ContactsCollection->getContactEvents($url, 'SentEvent');
@@ -208,7 +221,8 @@ class ConstantContact
 	 * @param Contact $Contact - Contact object
 	 * @return Contact
 	 */
-	public function updateContact(Contact $Contact) {
+	public function updateContact(Contact $Contact)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		return $ContactsCollection->updateContact($Contact);
 	}
@@ -218,7 +232,8 @@ class ConstantContact
 	 * @param Contact $Contact - Contact
 	 * @return bool
 	 */
-	public function deleteContact(Contact $Contact) {
+	public function deleteContact(Contact $Contact)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		return $ContactsCollection->deleteContact($this->CTCTRequest->baseUri.$Contact->link);
 	}
@@ -229,11 +244,17 @@ class ConstantContact
 	 * @param array $emailAddress - array of email addresses to search for
 	 * @return - array of found contacts, otherwise returns false
 	 */
-	public function searchContactsByEmail($emailAddress) {
+	public function searchContactsByEmail($emailAddress)
+	{
 		$ext = '';
-		if (is_string($emailAddress)) {$ext = '?email='.$emailAddress;}
-		if (is_array($emailAddress)) {
-			for ($i=0; $i<count($emailAddress); $i++) {
+		if (is_string($emailAddress))
+		{
+			$ext = '?email='.$emailAddress;
+		}
+		if (is_array($emailAddress))
+		{
+			for ($i=0; $i<count($emailAddress); $i++)
+			{
 				$ext .= ($i==0) ? '?email='.$emailAddress[$i] : '&email='.$emailAddress[$i];
 			}
 		}
@@ -247,7 +268,8 @@ class ConstantContact
 	 * @param  string $date - Last updated date to search from
 	 * @return array - Up to 50 contacts and a link to the next page if one exists
 	 */
-	public function searchContactsByLastUpdate(ContactList $List, $date) {
+	public function searchContactsByLastUpdate(ContactList $List, $date)
+	{
 		$ContactsCollection = new ContactsCollection($this->CTCTRequest);
 		return $ContactsCollection->searchContactsByLastUpdate($List, $date);
 	}
@@ -257,7 +279,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' returned from a previous getLists() call
 	 * @return array - Up to 50 Campaigns and a link to the next page if one exists
 	 */
-	public function getCampaigns($page=null) {
+	public function getCampaigns($page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->getCampaigns($page);
 	}
@@ -268,7 +291,8 @@ class ConstantContact
 	 * @return Campaign Object of Campaign of given ID
 	 */
 	
-	public function getCampaignByID($ID) {
+	public function getCampaignByID($ID)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->getCampaignDetails($this->CTCTRequest->baseUri."/ws/customers/". $this->CTCTRequest->username . "/campaigns/" . $ID);
 	}
@@ -277,7 +301,8 @@ class ConstantContact
 	 * Get full details for a Campaign
 	 * @param Campaign $item - Campaign object
 	 */
-	public function getCampaignDetails(Campaign $Campaign) {
+	public function getCampaignDetails(Campaign $Campaign)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->getCampaignDetails($this->CTCTRequest->baseUri.$Campaign->link);
 	}
@@ -288,7 +313,8 @@ class ConstantContact
 	 * @param string  $eventType - Sends, Forwards,  Bounces, OptOuts, Opens
 	 * @return array
 	 */
-	public function getCampaignEvents(Campaign $Campaign, $eventType) {
+	public function getCampaignEvents(Campaign $Campaign, $eventType)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->getCampaignEvents($Campaign, $eventType);
 	}
@@ -299,7 +325,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactOpens call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getCampaignOpens(Campaign $Campaign, $page=null) {
+	public function getCampaignOpens(Campaign $Campaign, $page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Campaign->link.'/events/opens';
 		return $CampaignsCollection->getCampaignEvents($url, 'OpenEvent');
@@ -311,7 +338,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactForwards call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getCampaignForwards(Campaign $Campaign, $page=null) {
+	public function getCampaignForwards(Campaign $Campaign, $page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Campaign->link.'/events/forwards';
 		return $CampaignsCollection->getCampaignEvents($url, 'ForwardEvent');
@@ -323,7 +351,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactBounces call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getCampaignBounces(Campaign $Campaign, $page=null) {
+	public function getCampaignBounces(Campaign $Campaign, $page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Campaign->link.'/events/bounces';
 		return $CampaignsCollection->getCampaignEvents($url, 'BounceEvent');
@@ -335,7 +364,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactOptOuts call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getCampaignOptOuts(Campaign $Campaign, $page=null) {
+	public function getCampaignOptOuts(Campaign $Campaign, $page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Campaign->link.'/events/optouts';
 		return $CampaignsCollection->getCampaignEvents($url, 'OptoutEvent');
@@ -347,7 +377,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' from previous getContactSends call
 	 * @return array - Up to 50 CampaignEvents and a link to the next page if one exists
 	 */
-	public function getCampaignSends(Campaign $Campaign, $page=null) {
+	public function getCampaignSends(Campaign $Campaign, $page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->CTCTRequest->baseUri.$Campaign->link.'/events/sends';
 		return $CampaignsCollection->getCampaignEvents($url, 'SentEvent');
@@ -358,7 +389,8 @@ class ConstantContact
 	 * @param string $status - status of campaign to search for (sent, draft, running, scheduled)
 	 * @return array - Up to 50 Campaigns and a link to the next page if one exists 
 	 */
-	public function getCampaignsByStatus($status, $page=null) {
+	public function getCampaignsByStatus($status, $page=null)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->getCampaignsByStatus($status, $page);
 	}
@@ -369,7 +401,8 @@ class ConstantContact
 	 * @param string $time - Date/Time for email to be sent
 	 * @return bool - true if successful, else false
 	 */
-	public function scheduleCampaign(Campaign $Campaign, $time) {
+	public function scheduleCampaign(Campaign $Campaign, $time)
+	{
 		$CampaignCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignCollection->scheduleCampaign($Campaign, $time);
 	}
@@ -379,7 +412,8 @@ class ConstantContact
 	 * @param Campaign $Campaign - Campaign to get a schedule for
 	 * @return bool|Schedule - returns Schedule if found, else false
 	 */
-	public function getCampaignSchedule(Campaign $Campaign) {
+	public function getCampaignSchedule(Campaign $Campaign)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->getSchedule($Campaign);
 	}
@@ -389,7 +423,8 @@ class ConstantContact
 	 * @param Campaign $Campaign - Campaign to delete schedule for
 	 * @return bool - true if successful, else false
 	 */
-	public function deleteCampaignSchedule(Campaign $Campaign) {
+	public function deleteCampaignSchedule(Campaign $Campaign)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->deleteSchedule($Campaign);
 	}
@@ -398,7 +433,8 @@ class ConstantContact
 	 * Delete an email Campaign
 	 * @param Campaign $Campaign - Campaign object
 	 */
-	public function deleteCampaign(Campaign $Campaign) {
+	public function deleteCampaign(Campaign $Campaign)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->deleteCampaign($this->CTCTRequest->baseUri.$Campaign->link);
 	}
@@ -409,7 +445,8 @@ class ConstantContact
 	 * @param VerifiedAddress $replyEmail - OPTIONAL: reply email if different than fromEmail
 	 * @return Campaign
 	 */
-	public function addCampaign(Campaign $Campaign, VerifiedAddress $fromEmail, VerifiedAddress $replyEmail = null) {
+	public function addCampaign(Campaign $Campaign, VerifiedAddress $fromEmail, VerifiedAddress $replyEmail = null)
+	{
 		$replyEmail = ($replyEmail) ? $replyEmail : $fromEmail;
 		$Campaign->fromAddress = $fromEmail;
 		$Campaign->replyAddress = $replyEmail;
@@ -422,7 +459,8 @@ class ConstantContact
 	 * @param Campaign $Campaign - Campaign to update
 	 * @return
 	 */
-	public function updateCampaign(Campaign $Campaign) {
+	public function updateCampaign(Campaign $Campaign)
+	{
 		$CampaignsCollection = new CampaignsCollection($this->CTCTRequest);
 		return $CampaignsCollection->updateCampaign($Campaign);
 	}
@@ -431,7 +469,8 @@ class ConstantContact
 	 * @param  Folder $Folder - Folder object
 	 * @return Folder - Folder object
 	 */
-	public function addFolder(Folder $Folder) {
+	public function addFolder(Folder $Folder)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->addFolder($Folder);
 	}
@@ -441,7 +480,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' returned from a previous getFolders() call
 	 * @return array - Up to 50 Folders and a link to the next page if one exists
 	 */
-	public function getFolders($page=null) {
+	public function getFolders($page=null)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->getFolders($page);
 	}
@@ -451,7 +491,8 @@ class ConstantContact
 	 * @param mixed $folder - Folder object
 	 * @return array - All images contained within the folder
 	 */
-	public function getImagesFromFolder($folder) {
+	public function getImagesFromFolder($Folder)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->getImagesFromFolder($this->CTCTRequest->baseUri.$folder->link.'/images');
 	}
@@ -461,7 +502,8 @@ class ConstantContact
 	 * @param Image  $image - image object
 	 * @return Image - Image object
 	 */
-	public function getImageDetails(Image $Image) {
+	public function getImageDetails(Image $Image)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->getImageDetails($this->CTCTRequest->baseUri.$Image->link);
 	}
@@ -471,7 +513,8 @@ class ConstantContact
 	 * @param Folder $folder - Folder to upload image to
 	 * @return Image - created Image object
 	 */
-	public function uploadImage($imageLocation, Folder $Folder) {
+	public function uploadImage($imageLocation, Folder $Folder)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->uploadImage($imageLocation, $this->CTCTRequest->baseUri.$Folder->link);
 	}
@@ -481,7 +524,8 @@ class ConstantContact
 	 * @param Image $Image - Image object
 	 * @return bool - true if successful, else false
 	 */
-	public function deleteImage(Image $Image) {
+	public function deleteImage(Image $Image)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->deleteImage($this->CTCTRequest->baseUri.$Image->link);
 	}
@@ -491,7 +535,8 @@ class ConstantContact
 	 * @param Folder $Folder - Folder object
 	 * @return bool - true if successful, else false
 	 */
-	public function deleteImagesFromFolder(Folder $Folder) {
+	public function deleteImagesFromFolder(Folder $Folder)
+	{
 		$LibraryCollection = new LibraryCollection($this->CTCTRequest);
 		return $LibraryCollection->deleteImagesFromFolder($this->CTCTRequest->baseUri.$Folder->link.'/images');
 	}
@@ -500,7 +545,8 @@ class ConstantContact
 	 * Get a list of verified email addresses in the account
 	 * @return array - Up to 50 Verified addresses and a link to the next page if one exists
 	 */
-	public function getVerifiedAddresses($page=null) {
+	public function getVerifiedAddresses($page=null)
+	{
 		$SettingsCollection = new SettingsCollection($this->CTCTRequest);
 		return $SettingsCollection->getAddresses($page);
 	}
@@ -510,7 +556,8 @@ class ConstantContact
 	 * @param string $page - optional 'nextLink' returned from a previous getEvents() call
 	 * @return array - Up to 50 Images and a link to the next page if one exists
 	 */
-	public function getEvents($page=null) {
+	public function getEvents($page=null)
+	{
 		$EventsCollection = new EventsCollection($this->CTCTRequest);
 		return $EventsCollection->getEvents($page);
 	}
@@ -520,7 +567,8 @@ class ConstantContact
 	 * @param  Event Event - Event object to get details for
 	 * @return Event
 	 */
-	public function getEventDetails(Event $Event) {
+	public function getEventDetails(Event $Event)
+	{
 		$EventsCollection = new EventsCollection($this->CTCTRequest);
 		return $EventsCollection->getEventDetails($this->CTCTRequest->baseUri.$Event->link);
 	}
@@ -530,7 +578,8 @@ class ConstantContact
 	 * @param Event $Event - Event Object
 	 * @return array - up to 50 registrants and a link to the next page if one exists
 	 */
-	public function getRegistrants(Event $Event, $page = null) {
+	public function getRegistrants(Event $Event, $page = null)
+	{
 		$EventsCollection = new EventsCollection($this->CTCTRequest);
 		if ($page !== null)
 		{
@@ -544,7 +593,8 @@ class ConstantContact
 	 * @param Registrant $Registrant - Registrant Object
 	 * @return Registrant
 	 */
-	public function getRegistrantDetails(Registrant $Registrant) {
+	public function getRegistrantDetails(Registrant $Registrant)
+	{
 		$EventsCollection = new EventsCollection($this->CTCTRequest);
 		return $EventsCollection->getRegistrantDetails($this->CTCTRequest->baseUri.$Registrant->link);
 	}
@@ -554,9 +604,9 @@ class ConstantContact
 	 * @param string $postString - urlencoded string of data
 	 * @return bool
 	 */
-	public function bulkAddContacts($postString) {
+	public function bulkAddContacts($postString)
+	{
 		$ActivitiesCollection = new ActivitiesCollection($this->CTCTRequest);
 		return $ActivitiesCollection->bulkAddContacts($postString);
-
 	}
 }

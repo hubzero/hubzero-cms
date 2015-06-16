@@ -64,15 +64,15 @@ if (!empty($this->notifications))
 					}
 
 					if (!strstr($this->productImg[0], 'noimage'))
-                    {
-                        echo '<a href="' . $this->productImg[0] . '"';
-                        echo ' rel="lightbox">';
-                    }
-                    echo '<img src="' . $this->productImg[0] . '" />';
-                    if (!strstr($this->productImg[0], 'noimage'))
-                    {
-                        echo '</a>';
-                    }
+					{
+						echo '<a href="' . $this->productImg[0] . '"';
+						echo ' rel="lightbox">';
+					}
+					echo '<img src="' . $this->productImg[0] . '" />';
+					if (!strstr($this->productImg[0], 'noimage'))
+					{
+						echo '</a>';
+					}
 
 					if (!empty($this->productImg))
 					{

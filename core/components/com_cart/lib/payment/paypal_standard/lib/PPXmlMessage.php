@@ -151,7 +151,7 @@ abstract class PPXmlMessage
 			{
 				$arrayCtr[$element['name']] = isset($arrayCtr[$element['name']]) ? ($arrayCtr[$element['name']]+1) : 0;
 				$element['num'] = $arrayCtr[$element['name']];
-			} 
+			}
 			if (!empty($element["attributes"]) && is_array($element["attributes"]))
 			{
 				foreach ($element["attributes"] as $key => $val)

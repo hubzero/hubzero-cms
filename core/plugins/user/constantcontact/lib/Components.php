@@ -6,14 +6,20 @@ abstract class CCObject
 	 * @params array $params - object property names to reference for validation before HTTP requests
 	 * @return void
 	 */
-	protected function validate(Array $params) {
-		try {
-			foreach ($params as $field) {
-				if (empty($this->$field)) {
+	protected function validate(Array $params)
+	{
+		try
+		{
+			foreach ($params as $field)
+			{
+				if (empty($this->$field))
+				{
 					throw new CTCTException("Constant Contact ".get_class($this)." Error: '".$field."' was required but not supplied");
 				}
 			}
-		} catch (CTCTException $e) {
+		}
+		catch (CTCTException $e)
+		{
 			$e->generateError();
 		}
 	}
@@ -36,7 +42,8 @@ class ContactList extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->contactCount = (isset($params['contactCount'])) ? $params['contactCount'] : '';
 		$this->displayOnSignup = (isset($params['displayOnSignup'])) ? $params['displayOnSignup'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : 'data:,';
@@ -53,7 +60,8 @@ class ContactList extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($parsedReturn) {
+	public static function createStruct($parsedReturn)
+	{
 		$list['link'] = (string) $parsedReturn->link->Attributes()->href;
 		$list['id'] = (string) $parsedReturn->id;
 		$list['optInDefault'] = (string) $parsedReturn->content->ContactList->OptInDefault;
@@ -68,7 +76,8 @@ class ContactList extends CCObject
 	 * Create XML Representation of the object
 	 * @return SimpleXMLElement
 	 */
-	public function createXml() {
+	public function createXml()
+	{
 		$this->validate(array('name', 'id'));
 		$xml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns='http://www.w3.org/2005/Atom'></entry>";
 		$xml = simplexml_load_string($xml_string);
@@ -86,7 +95,8 @@ class ContactList extends CCObject
 		return $xml->asXML();
 	}
 
-	public static function createMemberStruct($parsedResponse) {
+	public static function createMemberStruct($parsedResponse)
+	{
 		$contact['link'] = (string) $parsedResponse->link->Attributes()->href;
 		$contact['id'] = (string) $parsedResponse->id;
 		$contact['updated'] = (string) $parsedResponse->updated;
@@ -147,7 +157,8 @@ class Contact extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : 'data:,';
 		$this->updated = (isset($params['updated'])) ? $params['updated'] : '';
@@ -191,14 +202,24 @@ class Contact extends CCObject
 		$this->contactLists = (isset($params['contactLists'])) ? $params['contactLists']: '';
 		$this->confirmed = (isset($params['confirmed'])) ? $params['confirmed']: '';
 		$this->optInSource = (isset($params['optInSource'])) ? $params['optInSource']: 'ACTION_BY_CUSTOMER';
-	   if (!empty($params['lists'])) {
-			if (is_string($params['lists'])) {$this->lists[] = $params['lists'];}
-			else{
-				foreach ($params['lists'] as $list) {
+		if (!empty($params['lists']))
+		{
+			if (is_string($params['lists']))
+			{
+				$this->lists[] = $params['lists'];
+			}
+			else
+			{
+				foreach ($params['lists'] as $list)
+				{
 					$this->lists[] = $list;
 				}
 			}
-		} else {$this->lists = array(); }
+		}
+		else
+		{
+			$this->lists = array();
+		}
 	}
 
 	/**
@@ -207,7 +228,8 @@ class Contact extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($parsedReturn) {
+	public static function createStruct($parsedReturn)
+	{
 		$contact['link'] = (string) $parsedReturn->link->Attributes()->href;
 		$contact['id'] = (string) $parsedReturn->id;
 		$contact['updated'] = (string) $parsedReturn->updated;
@@ -248,8 +270,10 @@ class Contact extends CCObject
 		$contact['emailType'] = (string) $parsedReturn->content->Contact->EmailType;
 		$contact['status'] = (string) $parsedReturn->content->Contact->Status;
 
-		if ($parsedReturn->content->Contact->ContactLists) {
-			foreach ($parsedReturn->content->Contact->ContactLists->ContactList as $list) {
+		if ($parsedReturn->content->Contact->ContactLists)
+		{
+			foreach ($parsedReturn->content->Contact->ContactLists->ContactList as $list)
+			{
 				$myVar = $list;
 				$contact['lists'][] = (string) $list->Attributes()->id;
 			}
@@ -261,7 +285,8 @@ class Contact extends CCObject
 	 * Create XML Representation of the object
 	 * @return SimpleXMLElement
 	 */
-	public function createXml() {
+	public function createXml()
+	{
 		$this->validate(array('emailAddress', 'lists'));
 		$update_date = '2008-07-23T14:21:06.407Z';
 		$xml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns='http://www.w3.org/2005/Atom'></entry>";
@@ -378,7 +403,8 @@ class Campaign extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params=array()) {
+	public function __construct($params=array())
+	{
 		$this->name = (isset($params['name'])) ? $params['name'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : 'data:,';
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
@@ -433,7 +459,8 @@ class Campaign extends CCObject
 	 * Create XML Representation of the object
 	 * @return SimpleXMLElement
 	 */
-	public function createXml() {
+	public function createXml()
+	{
 		$this->validate(array('emailContentFormat', 'textVersionContent', 'name', 'subject', 'id'));
 		$xml = simplexml_load_string("<?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' />");
 		$link = $xml->addChild("link");
@@ -530,7 +557,8 @@ class Campaign extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createOverviewStruct($parsedReturn) {
+	public static function createOverviewStruct($parsedReturn)
+	{
 		$campaign = array();
 		$campaign['link'] = (string) $parsedReturn->link->Attributes()->href;
 		$campaign['id'] = (string) $parsedReturn->id;
@@ -546,7 +574,8 @@ class Campaign extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($parsedReturn) {
+	public static function createStruct($parsedReturn)
+	{
 		$campaign = array();
 		$campaign['link'] = (string) $parsedReturn->link->Attributes()->href;
 		$campaign['id'] = (string) $parsedReturn->id;
@@ -628,7 +657,8 @@ class Folder extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->name = (isset($params['name'])) ? $params['name'] : '';
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : '';
@@ -640,7 +670,8 @@ class Folder extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($parsedReturn) {
+	public static function createStruct($parsedReturn)
+	{
 		$folder['link'] = (string) $parsedReturn->link->Attributes()->href;
 		$folder['id'] = (string) $parsedReturn->id;
 		$folder['name'] = (string) $parsedReturn->title;
@@ -651,7 +682,8 @@ class Folder extends CCObject
 	 * Create XML Representation of the object
 	 * @return SimpleXMLElement
 	 */
-	public function createXml() {
+	public function createXml()
+	{
 		$this->validate(array('name'));
 		$xml = simplexml_load_string("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><atom:entry xmlns:atom='http://www.w3.org/2005/Atom'/>");
 		$content = $xml->addChild("content");
@@ -681,7 +713,8 @@ class Image extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->name = (isset($params['name'])) ? $params['name'] : '';
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : '';
@@ -702,7 +735,8 @@ class Image extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($parsedReturn) {
+	public static function createStruct($parsedReturn)
+	{
 		$image['link'] = (string) $parsedReturn->link->Attributes()->href;
 		$image['id'] = (string) $parsedReturn->id;
 		$image['name'] = (string) $parsedReturn->title;
@@ -723,7 +757,8 @@ class Image extends CCObject
 	 * Create XML Representation of the object
 	 * @return SimpleXMLElement
 	 */
-	public function createXml() {
+	public function createXml()
+	{
 		$this->validate(array('name', 'id'));
 		$xml = simplexml_load_string("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><atom:entry xmlns:atom='http://www.w3.org/2005/Atom'/>");
 		$entry = $xml->asXML();
@@ -744,7 +779,8 @@ class VerifiedAddress extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->email = (isset($params['email'])) ? $params['email'] : '';
 		$this->status = (isset($params['status'])) ? $params['status'] : '';
 		$this->verifiedTime = (isset($params['verifiedTime'])) ? $params['verifiedTime'] : '';
@@ -759,7 +795,8 @@ class VerifiedAddress extends CCObject
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($parsedResponse) {
+	public static function createStruct($parsedResponse)
+	{
 		$address['email'] = (string) $parsedResponse->content->Email->EmailAddress;
 		$address['status'] = (string) $parsedResponse->content->Email->Status;
 		$address['verifiedTime'] = (string) $parsedResponse->content->Email->VerifiedTime;
@@ -782,7 +819,8 @@ class EventFee
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params=array()) {
+	public function __construct($params=array())
+	{
 		$this->label = (isset($params['label'])) ? $params['label'] : '';
 		$this->fee = (isset($params['fee'])) ? $params['fee'] : '';
 		$this->earlyFee = (isset($params['earlyFee'])) ? $params['earlyFee'] : '';
@@ -796,7 +834,8 @@ class EventFee
 	 * @param  SimpleXMLElement $parsedReturn - parsed XML
 	 * @return
 	 */
-	public static function createStruct($fee) {
+	public static function createStruct($fee)
+	{
 		$eventFee['label'] = (string) $fee->Label;
 		$eventFee['fee'] = (string) $fee->Fee;
 		$eventFee['earlyFee'] = (string) $fee->EarlyFee;
@@ -832,7 +871,8 @@ class Registrant extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->title = (isset($params['title'])) ? $params['title'] : '';
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : '';
@@ -861,7 +901,8 @@ class Registrant extends CCObject
 	 * @param SimpleXMLElement $parsedResponse - XML of registrant
 	 * @return
 	 */
-	public static function createStruct($parsedResponse) {
+	public static function createStruct($parsedResponse)
+	{
 		$reg['title'] = (string) $parsedResponse->title;
 		$reg['updated'] = (string) $parsedResponse->updated;
 		$reg['link'] = (string) $parsedResponse->link->Attributes()->href;
@@ -910,7 +951,8 @@ class Cost
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->count = (isset($params['count'])) ? $params['count'] : '';
 		$this->feeType = (isset($params['feeType'])) ? $params['feeType'] : '';
 		$this->rate = (isset($params['rate'])) ? $params['rate'] : '';
@@ -923,7 +965,8 @@ class Cost
 	 * @param array $params - Array representing an event Cost
 	 * @return array
 	 */
-	public static function createStruct($params = array()) {
+	public static function createStruct($params = array())
+	{
 		$cost['count'] = (string) $params->Count;
 		$cost['feeType'] = (string) $params->FeeType;
 		$cost['rate'] = (string) $params->Rate;
@@ -941,7 +984,8 @@ class CustomField
 	 * @param string $question - registration question
 	 * @param array $answers -  answers for question
 	 */
-	public function __construct($question, $answers = array()) {
+	public function __construct($question, $answers = array())
+	{
 		$this->question = $question;
 		$this->answers = $answers;
 	}
@@ -952,7 +996,8 @@ class CustomField
 	 * @param SimpleXMLElement $parsedXml
 	 * @return CustomField
 	 */
-	public static function createFromXml($parsedXml) {
+	public static function createFromXml($parsedXml)
+	{
 		$quest = (string) $parsedXml->Question;
 		$answers = array();
 		foreach ($parsedXml->Answers->Answer as $ans) {
@@ -979,7 +1024,8 @@ class RegistrantInformation
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->label = (isset($params['label'])) ? $params['label'] : '';
 		$this->addr1 = (isset($params['addr1'])) ? $params['addr1'] : '';
 		$this->addr2 = (isset($params['addr2'])) ? $params['addr2'] : '';
@@ -998,7 +1044,8 @@ class RegistrantInformation
 	 * @param SimpleXMLElement $regInfoXml - XML of registrant information
 	 * @return array
 	 */
-	public static function createStruct($regInfoXml) {
+	public static function createStruct($regInfoXml)
+	{
 		$info['label'] = (string) $regInfoXml->Label;
 		$info['addr1'] = (string) $regInfoXml->Address1;
 		$info['addr2'] = (string) $regInfoXml->Address2;
@@ -1021,7 +1068,8 @@ class PersonalInformation extends RegistrantInformation
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		parent::__construct($params);
 		$this->cellPhone = (isset($params['cellPhone'])) ? $params['cellPhone'] : '';
 	}
@@ -1032,7 +1080,8 @@ class PersonalInformation extends RegistrantInformation
 	 * @param SimpleXMLElement $regInfoXml - XML of registrant information
 	 * @return array
 	 */
-	public static function createStruct($personalXml) {
+	public static function createStruct($personalXml)
+	{
 		$info = parent::createStruct($personalXml);
 		$info['cellPhone'] = (string) $personalXml->CellPhone;
 		return $info;
@@ -1052,7 +1101,8 @@ class BusinessInformation extends RegistrantInformation
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		parent::__construct();
 		$this->fax = (isset($params['fax'])) ? $params['fax'] : '';
 		$this->website = (isset($params['website'])) ? $params['website'] : '';
@@ -1068,7 +1118,8 @@ class BusinessInformation extends RegistrantInformation
 	 * @param SimpleXMLElement $businessXml - XML of business information
 	 * @return array
 	 */
-	public static function createStruct($businessXml) {
+	public static function createStruct($businessXml)
+	{
 		$info = parent::createStruct($businessXml);
 		$info['fax'] = (string) $businessXml->Fax;
 		$info['website'] = (string) $businessXml->Website;
@@ -1095,7 +1146,8 @@ class EventLocation
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->location = (isset($params['location'])) ? $params['location'] : '';
 		$this->addr1 = (isset($params['addr1'])) ? $params['addr1'] : '';
 		$this->addr2 = (isset($params['addr2'])) ? $params['addr2'] : '';
@@ -1135,7 +1187,8 @@ class Event extends CCObject
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->title = (isset($params['title'])) ? $params['title'] : '';
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
 		$this->name = (isset($params['name'])) ? $params['name'] : '';
@@ -1165,7 +1218,8 @@ class Event extends CCObject
 	 * @param SimpleXMLElement $parsedResponse - XML of an event
 	 * @return array
 	 */
-	public static function createStruct($parsedResponse) {
+	public static function createStruct($parsedResponse)
+	{
 		$event['link'] = (string) $parsedResponse->link->Attributes()->href;
 		$event['updated'] = (string) $parsedResponse->updated;
 		$event['id'] = (string) $parsedResponse->id;
@@ -1236,7 +1290,8 @@ class PayPalPayment extends PaymentOption
 	 * Constructor
 	 * @param string $paypalAddress - Paypal email address
 	 */
-	public function __construct($paypalAddress) {
+	public function __construct($paypalAddress)
+	{
 		$this->type = "PAYPAL";
 		$this->payPalEmail = $paypalAddress;
 	}
@@ -1249,7 +1304,8 @@ class DoorPayment extends PaymentOption
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->type = "DOOR";
 	}
 }
@@ -1269,7 +1325,8 @@ class CheckPayment extends PaymentOption
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params=array()) {
+	public function __construct($params=array())
+	{
 		$this->type = "CHECK";
 		$this->addr1 = ($params['addr1']) ? $params['addr1'] : '';
 		$this->addr2 = ($params['addr2']) ? $params['addr2'] : '';
@@ -1286,7 +1343,8 @@ class CheckPayment extends PaymentOption
 	 * @param SimpleXMLElement $parsedReturn - XML of a check payment
 	 * @return array
 	 */
-	public static function createStruct($parsedReturn) {
+	public static function createStruct($parsedReturn)
+	{
 		$paymentAddr['addr1'] = (string) $parsedReturn->PaymentAddress->Address1;
 		$paymentAddr['addr2'] = (string) $parsedReturn->PaymentAddress->Address2;
 		$paymentAddr['addr3'] = (string) $parsedReturn->PaymentAddress->Address3;
@@ -1312,7 +1370,8 @@ class RegistrationType
 	 * Constructor
 	 * @param array $params - associative array of properties/values
 	 */
-	public function __construct($params=array()) {
+	public function __construct($params=array())
+	{
 		$this->name = (isset($params['name'])) ? $params['name'] : '';
 		$this->registrationLimit = (isset($params['registrationLimit'])) ? $params['registrationLimit'] : '';
 		$this->registrationClosedManually = (isset($params['registrationClosedManually'])) ? $params['registrationClosedManually'] : '';
@@ -1327,14 +1386,16 @@ class RegistrationType
 	 * @param SimpleXMLElement $parsedResponse - XML of a registration type
 	 * @return array
 	 */
-	public static function createStruct($parsedResponse) {
+	public static function createStruct($parsedResponse)
+	{
 		$registrationType['name'] = (string) $parsedResponse->Name;
 		$registrationType['registrationLimit'] = (string) $parsedResponse->RegistrationLimitCount;
 		$registrationType['registrationClosedManually'] = (string) $parsedResponse->RegistrationClosedManually;
 		$registrationType['guestLimit'] = (string) $parsedResponse->GuestLimit;
 		$registrationType['ticketing'] = (string) $parsedResponse->Ticketing;
 		$registrationType['eventFees'] = array();
-		foreach ($parsedResponse->EventFees->EventFee as $fee) {
+		foreach ($parsedResponse->EventFees->EventFee as $fee)
+		{
 			$eventFee = new EventFee(EventFee::createStruct($fee));
 			$registrationType['eventFees'][] = $eventFee;
 		}
@@ -1354,7 +1415,8 @@ class CampaignEvent
 	public $campaignLink;
 	public $eventTime;
 
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->id = (isset($params['id'])) ? $params['id'] : '';
 		$this->title = (isset($params['title'])) ? $params['title'] : '';
 		$this->updated = (isset($params['updated'])) ? $params['updated'] : '';
@@ -1366,7 +1428,8 @@ class CampaignEvent
 		$this->eventTime = (isset($params['eventTime'])) ? $params['eventTime'] : '';
 	}
 
-	public static function createStruct($parsedResponse, $nodeTitle) {
+	public static function createStruct($parsedResponse, $nodeTitle)
+	{
 		$event['id'] = (string) $parsedResponse->id;
 		$event['title'] = (string) $parsedResponse->title;
 		$event['updated'] = (string) $parsedResponse->updated;
@@ -1388,7 +1451,8 @@ class Schedule extends CCObject
 	public $time;
 	public $campaign;
 
-	public function __construct($params = array()) {
+	public function __construct($params = array())
+	{
 		$this->link = (isset($params['link'])) ? $params['link'] : '';
 		$this->id = (isset($params['id'])) ? $params['id'] : '';
 		$this->updated = (isset($params['updated'])) ? $params['updated'] : '';
@@ -1396,7 +1460,8 @@ class Schedule extends CCObject
 		$this->campaign = (isset($params['campaign'])) ? $params['campaign'] : '';
 	}
 
-	public function createXml() {
+	public function createXml()
+	{
 		$this->validate(array('time'));
 		$xml = simplexml_load_string("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><entry xmlns='http://www.w3.org/2005/Atom'/>");
 		$linkNode = $xml->addChild("link");
@@ -1415,7 +1480,8 @@ class Schedule extends CCObject
 		return $xml->asXML();
 	}
 
-	public static function createStruct($parsedResponse) {
+	public static function createStruct($parsedResponse)
+	{
 		$schedule['link'] = (string) $parsedResponse->link->Attributes()->href;
 		$schedule['id'] = (string) $parsedResponse->id;
 		$schedule['updated'] = (string) $parsedResponse->updated;
@@ -1432,16 +1498,26 @@ class Utility
 	 * @param mixed $item
 	 * @return string
 	 */
-	public static function findUrl($item) {
+	public static function findUrl($item)
+	{
 		$return = null;
-		 try {
-			if (is_string($item)) {$return = $item;}
-			elseif (is_object($item)) {$return = 'https://api.constantcontact.com'.$item->link;}
-			if ($return == null) { throw new CTCTException('Constant Contact Error: Unable to determine which url to access');}
-		 } catch (CTCTException $e) {
+		try {
+			if (is_string($item))
+			{
+				$return = $item;
+			}
+			elseif (is_object($item))
+			{
+				$return = 'https://api.constantcontact.com'.$item->link;
+			}
+			if ($return == null)
+			{
+				throw new CTCTException('Constant Contact Error: Unable to determine which url to access');
+			}
+		} catch (CTCTException $e) {
 			$e->generateError();
-		 }
-		  return $return;
+		}
+		return $return;
 	}
 
 	/**
@@ -1450,7 +1526,8 @@ class Utility
 	 * @param SimpleXMLElement $item
 	 * @return string - valid nextlink to be used, else false if none could be found
 	 */
-	public static function findNextLink($item) {
+	public static function findNextLink($item)
+	{
 		$nextLink = $item->xpath("//*[@rel='next']");
 		return ($nextLink) ? (string) $nextLink[0]->Attributes()->href : false;
 	}
@@ -1458,16 +1535,19 @@ class Utility
 
 class CTCTException extends Exception
 {
-	public function __construct($message, $code = 0, Exception $previous = null) {
+	public function __construct($message, $code = 0, Exception $previous = null)
+	{
 		parent::__construct($message, $code);
 	}
 
-	public function generateError($msgPrefix=null) {
+	public function generateError($msgPrefix=null)
+	{
 		$this->logError($this->message);
 		echo $msgPrefix.' '.$this->getMessage().'<br />';
 	}
 
-	private function logError($errorText, $file="error.log") {
+	private function logError($errorText, $file="error.log")
+	{
 		date_default_timezone_set('America/New_York');
 		$message = "Constant Contact Exception -- ".date("F j, Y, g:i:sa")."\n".$errorText."\n";
 		$message .= "Stack Trace: ".$this->getTraceAsString()."\n";

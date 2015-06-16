@@ -59,8 +59,8 @@ class PPCertificateCredential extends IPPCredential
 		$this->validate();
 	}
 
-	public function validate() {
-		
+	public function validate()
+	{
 		if (empty($this->userName)) {
 			throw new PPMissingCredentialException("username cannot be empty");
 		}
@@ -72,15 +72,18 @@ class PPCertificateCredential extends IPPCredential
 		}
 	}
 
-	public function getUserName() {
+	public function getUserName()
+	{
 		return $this->userName;
 	}
 
-	public function getPassword() {
+	public function getPassword()
+	{
 		return $this->password;
 	}
 
-	public function getCertificatePath() {
+	public function getCertificatePath()
+	{
 		if (realpath($this->certificatePath)) {
 			return realpath($this->certificatePath);
 		} else if (defined('PP_CONFIG_PATH')) {
@@ -90,15 +93,18 @@ class PPCertificateCredential extends IPPCredential
 		}
 	}
 
-	public function getCertificatePassPhrase() {
+	public function getCertificatePassPhrase()
+	{
 		return $this->certificatePassPhrase;
 	}
 
-	public function setApplicationId($applicationId) {
+	public function setApplicationId($applicationId)
+	{
 		$this->applicationId = trim($applicationId);
 	}
 
-	public function getApplicationId() {
+	public function getApplicationId()
+	{
 		return $this->applicationId;
 	}
 }

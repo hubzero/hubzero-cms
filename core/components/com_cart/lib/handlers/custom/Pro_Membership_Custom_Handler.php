@@ -29,30 +29,30 @@
 
 class Pro_Membership_Custom_Handler extends Custom_Handler
 {
-    /**
-     * Constructor
-     *
-     * @param 	void
-     * @return 	void
-     */
-    public function __construct($item, $crtId)
-    {
-        parent::__construct($item, $crtId);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	void
+	 * @return 	void
+	 */
+	public function __construct($item, $crtId)
+	{
+		parent::__construct($item, $crtId);
+	}
 
-    public function handle()
-    {
-        // Get user ID for the cart
-        require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
-        $userId = CartModelCart::getCartUser($this->crtId);
+	public function handle()
+	{
+		// Get user ID for the cart
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+		$userId = CartModelCart::getCartUser($this->crtId);
 
-        // Get number of points to add
-        if (!empty($this->item['meta']['addPoints']) && is_numeric($this->item['meta']['addPoints']))
-        {
-            // Update points account
-            $db = JFactory::getDBO();
-            $BTL = new \Hubzero\Bank\Teller($db, $userId);
-            $BTL->deposit($this->item['meta']['addPoints'], 'PRO Membership Bonus', 'PRO', $this->item['info']->sId);
-        }
-    }
+		// Get number of points to add
+		if (!empty($this->item['meta']['addPoints']) && is_numeric($this->item['meta']['addPoints']))
+		{
+			// Update points account
+			$db = JFactory::getDBO();
+			$BTL = new \Hubzero\Bank\Teller($db, $userId);
+			$BTL->deposit($this->item['meta']['addPoints'], 'PRO Membership Bonus', 'PRO', $this->item['info']->sId);
+		}
+	}
 }

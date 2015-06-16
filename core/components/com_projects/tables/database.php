@@ -83,10 +83,10 @@ class Database extends \JTable
 	{
 		if ($projectid == NULL)
 		{
-		 	return false;
+			return false;
 		}
 
-		$count  		= isset($filters['count']) ? $filters['count'] : 0;
+		$count  = isset($filters['count']) ? $filters['count'] : 0;
 
 		$query  = "SELECT ";
 		$query .= $count ? " COUNT(*) " : "*";
@@ -109,7 +109,7 @@ class Database extends \JTable
 	{
 		if ($projectid == NULL || $id == NULL)
 		{
-		 	return false;
+			return false;
 		}
 
 		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $this->_db->Quote($projectid);
@@ -128,7 +128,7 @@ class Database extends \JTable
 	{
 		if ($projectid == NULL)
 		{
-		 	return false;
+			return false;
 		}
 
 		$query = "SELECT db.id, db.project, db.database_name, db.title, db.source_file,
@@ -151,7 +151,7 @@ class Database extends \JTable
 	{
 		if ($projectid == NULL)
 		{
-		 	return false;
+			return false;
 		}
 
 		$query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file

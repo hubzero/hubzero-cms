@@ -48,7 +48,7 @@ class Local
 	 */
 	public function __construct(array $params)
 	{
-		foreach ($params as $param => $value) 
+		foreach ($params as $param => $value)
 		{
 			$this->$param = $value;
 		}
@@ -59,7 +59,7 @@ class Local
 	 */
 	protected function getSocket()
 	{
-		if (!empty($this->socketPath)) 
+		if (!empty($this->socketPath))
 		{
 			$socket = fsockopen('unix://' . $this->socketPath, NULL, $errno, $errstr);
 		} 
@@ -68,7 +68,7 @@ class Local
 			$socket = fsockopen($this->hostname, $this->port, $errno, $errstr);
 		}
 
-		if (!$socket) 
+		if (!$socket)
 		{
 			throw new Exception(
 				"Could not connect to SpamAssassin: {$errstr}", $errno
@@ -91,9 +91,9 @@ class Local
 		$message      .= "\r\n";
 		$contentLength = strlen($message);
 
-		if (!empty($this->maxSize)) 
+		if (!empty($this->maxSize))
 		{
-			if ($contentLength > $this->maxSize) 
+			if ($contentLength > $this->maxSize)
 			{
 				throw new Exception(
 					"Message exceeds the maximum allowed size of {$this->maxSize} kbytes"
@@ -104,20 +104,20 @@ class Local
 		$cmd  = $cmd . ' SPAMC/' . $this->protocolVersion . "\r\n";
 		$cmd .= "Content-length: {$contentLength}\r\n";
 
-		if ($this->enableZlib && function_exists('gzcompress')) 
+		if ($this->enableZlib && function_exists('gzcompress'))
 		{
 			$cmd .= "Compress: zlib\r\n";
 			$message = gzcompress($message);
 		}
 
-		if (!empty($this->user)) 
+		if (!empty($this->user))
 		{
 			$cmd .= 'User: ' . $this->user . "\r\n";
 		}
 
-		if (!empty($additionalHeaders)) 
+		if (!empty($additionalHeaders))
 		{
-			foreach ($additionalHeaders as $headerName => $val) 
+			foreach ($additionalHeaders as $headerName => $val)
 			{
 				$cmd .= $headerName . ': ' . $val . "\r\n";
 			}
@@ -129,7 +129,7 @@ class Local
 
 		$this->write($socket, $cmd);
 
-		list($headers, $message) = $this->read($socket);
+		list($headers, $message)= $this->read($socket);
 
 		return $this->parseOutput($headers, $message);
 	}
@@ -157,17 +157,17 @@ class Local
 		$headers = '';
 		$message = '';
 
-		while (true) 
+		while (true)
 		{
 			$buffer   = fgets($socket, 128);
 			$headers .= $buffer;
-			if ($buffer == "\r\n" || feof($socket)) 
+			if ($buffer == "\r\n" || feof($socket))
 			{
 				break;
 			}
 		}
 
-		while (!feof($socket)) 
+		while (!feof($socket))
 		{
 			$message .= fgets($socket, 128);
 		}
@@ -194,13 +194,13 @@ class Local
 		 * SPAMD/1.5 0 EX_OK
 		 * SPAMD/1.5 68 service unavailable: TELL commands have not been enabled
 		 */
-		if (preg_match('/SPAMD\/(\d\.\d) (\d+) (.*)/', $header, $matches)) 
+		if (preg_match('/SPAMD\/(\d\.\d)(\d+)(.*)/', $header, $matches))
 		{
 			$result->protocolVersion = $matches[1];
 			$result->responseCode    = $matches[2];
 			$result->responseMessage = $matches[3];
 
-			if ($result->responseCode != 0) 
+			if ($result->responseCode != 0)
 			{
 				throw new Exception(
 					$result->responseMessage,
@@ -213,23 +213,23 @@ class Local
 			throw new Exception('Could not parse response header');
 		}
 
-		if (preg_match('/Content-length: (\d+)/', $header, $matches)) 
+		if (preg_match('/Content-length: (\d+)/', $header, $matches))
 		{
 			$result->contentLength = $matches[1];
 		}
 
 		if (preg_match(
-			'/Spam: (True|False|Yes|No) ; (\S+) \/ (\S+)/',
+			'/Spam: (True|False|Yes|No); (\S+)\/ (\S+)/',
 			$header,
 			$matches
-		)) 
+		))
 		{
-			($matches[1] == 'True' || $matches[1] == 'Yes') ?
+			($matches[1] == 'True' || $matches[1] == 'Yes')?
 				$result->isSpam = true :
 				$result->isSpam = false;
 
-			$result->score    = (float) $matches[2];
-			$result->thresold = (float) $matches[3];
+			$result->score    = (float)$matches[2];
+			$result->thresold = (float)$matches[3];
 		} 
 		else 
 		{
@@ -240,22 +240,22 @@ class Local
 			 * processed message headers.
 			*/
 			if (preg_match(
-				  '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d) required=(\d+\.\d)/',
+				  '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
 				  $header . $message,
-				  $matches)) 
+				  $matches))
 			{
 
-				($matches[1] == 'Yes') ? 
+				($matches[1] == 'Yes')? 
 					$result->isSpam = true :
 					$result->isSpam = false;
 
-				$result->score    = (float) $matches[2];
-				$result->thresold = (float) $matches[3];
+				$result->score    = (float)$matches[2];
+				$result->thresold = (float)$matches[3];
 			}
 		}
 
 		/* Used for report/revoke/learn */
-		if (preg_match('/DidSet: (\S+)/', $header, $matches)) 
+		if (preg_match('/DidSet: (\S+)/', $header, $matches))
 		{
 			$result->didSet = true;
 		} 
@@ -265,7 +265,7 @@ class Local
 		}
 
 		/* Used for report/revoke/learn */
-		if (preg_match('/DidRemove: (\S+)/', $header, $matches)) 
+		if (preg_match('/DidRemove: (\S+)/', $header, $matches))
 		{
 			$result->didRemove = true;
 		} 
@@ -290,9 +290,9 @@ class Local
 		$socket = $this->getSocket();
 
 		$this->write($socket, "PING SPAMC/{$this->protocolVersion}\r\n\r\n");
-		list($headers, $message) = $this->read($socket);
+		list($headers, $message)= $this->read($socket);
 
-		if (strpos($headers, "PONG") === false) 
+		if (strpos($headers, "PONG")=== false)
 		{
 			return false;
 		}
@@ -337,7 +337,7 @@ class Local
 	}
 
 	/**
-	 * Shortcut to check() method that returns a boolean
+	 * Shortcut to check()method that returns a boolean
 	 * 
 	 * @param  string $message Raw email message
 	 * @return boolean Whether message is spam or not
@@ -348,7 +348,7 @@ class Local
 	}
 
 	/**
-	 * Shortcut to check() method that returns a float score
+	 * Shortcut to check()method that returns a float score
 	 * 
 	 * @param  string $message Raw email message
 	 * @return float Spam Score of the Message
@@ -379,7 +379,7 @@ class Local
 	{
 		$result = $this->exec('SYMBOLS', $message);
 
-		if (empty($result->message)) 
+		if (empty($result->message))
 		{
 			return array();
 		}
@@ -398,26 +398,26 @@ class Local
 	 */
 	public function learn($message, $learnType = self::LEARN_SPAM)
 	{
-		if (!in_array($learnType, $this->learnTypes)) 
+		if (!in_array($learnType, $this->learnTypes))
 		{
 			throw new Exception("Invalid learn type ($learnType)");
 		}
 
-		if ($learnType == self::LEARN_SPAM) 
+		if ($learnType == self::LEARN_SPAM)
 		{
 			$additionalHeaders = array(
 				'Message-class' => 'spam',
 				'Set'           => 'local'
 			);
 		} 
-		else if ($learnType == self::LEARN_HAM) 
+		else if ($learnType == self::LEARN_HAM)
 		{
 			$additionalHeaders = array(
 				'Message-class' => 'ham',
 				'Set'           => 'local'
 			);
 		} 
-		else if ($learnType == self::LEARN_FORGET) 
+		else if ($learnType == self::LEARN_FORGET)
 		{
 			$additionalHeaders = array(
 				'Remove' => 'local'
@@ -426,7 +426,7 @@ class Local
 
 		$result = $this->exec('TELL', $message, $additionalHeaders);
 
-		if ($learnType == self::LEARN_SPAM || $learnType == self::LEARN_HAM) 
+		if ($learnType == self::LEARN_SPAM || $learnType == self::LEARN_HAM)
 		{
 			return $result->didSet;
 		} 
