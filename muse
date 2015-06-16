@@ -43,7 +43,7 @@ define('DS', DIRECTORY_SEPARATOR);
 |
 */
 
-define('JPATH_BASE', dirname(__DIR__));
+define('JPATH_BASE', __DIR__);
 
 require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
 
