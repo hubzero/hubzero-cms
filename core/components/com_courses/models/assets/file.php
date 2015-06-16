@@ -37,7 +37,7 @@ use Request;
 /**
 * Default file asset handler class
 */
-class File extends AssetHandler
+class File extends Handler
 {
 	/**
 	 * Class info
@@ -112,7 +112,7 @@ class File extends AssetHandler
 		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'file';
 		$this->asset['url']        = $file;
 		$this->asset['created']    = Date::toSql();
-		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
+		$this->asset['created_by'] = App::get('authn')['user_id'];
 		$this->asset['course_id']  = Request::getInt('course_id', 0);
 
 		// Save the asset
@@ -143,7 +143,7 @@ class File extends AssetHandler
 		// Make sure upload directory exists and is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!Filesystem::makeDirectory($uploadDirectory))
+			if (!Filesystem::makeDirectory($uploadDirectory, 0755, true))
 			{
 				return array('error' => 'Server error. Unable to create upload directory');
 			}

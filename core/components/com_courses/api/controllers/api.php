@@ -29,6 +29,7 @@
  */
 
 use Components\Courses\Tables;
+use Components\Courses\Models\Assets\Handler;
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -193,7 +194,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		{
 			$unit->set('offering_id', Request::getInt('offering_id', 0));
 			$unit->set('created', \Date::toSql());
-			$unit->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
+			$unit->set('created_by', App::get('authn')['user_id']);
 		}
 
 		// Save the unit
@@ -215,7 +216,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 			// Get the courses config
 			$config = Component::params('com_courses');
-			$asset_groups = explode(',', $config->getValue('default_asset_groups', 'Lectures, Homework, Exam'));
+			$asset_groups = explode(',', $config->get('default_asset_groups', 'Lectures, Homework, Exam'));
 			array_map('trim', $asset_groups);
 
 			foreach ($asset_groups as $key)
@@ -228,7 +229,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				$assetGroup->set('unit_id', $unit->get('id'));
 				$assetGroup->set('parent', 0);
 				$assetGroup->set('created', \Date::toSql());
-				$assetGroup->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
+				$assetGroup->set('created_by', App::get('authn')['user_id']);
 
 				// Save the asset group
 				if (!$assetGroup->store())
@@ -251,7 +252,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
 
 		// Need to return the content of the prerequisites view (not sure of a better way to do this at the moment)
-		$view = new \Hubzero\Plugin\View(array(
+		// @FIXME: need to handle this another way...shouldn't be loading up views from API!
+		/*$view = new \Hubzero\Plugin\View(array(
 			'folder'  => 'courses',
 			'element' => 'outline',
 			'name'    => 'outline',
@@ -261,12 +263,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$view->set('scope', 'unit')
 		     ->set('scope_id', $unit->get('id'))
 		     ->set('section_id', $this->course->offering()->section()->get('id'))
-		     ->set('items', clone($this->course->offering()->units()));
-
-		ob_start();
-		$view->display();
-		$prerequisites = ob_get_contents();
-		ob_end_clean();
+		     ->set('items', clone($this->course->offering()->units()));*/
 
 		// Return message
 		$this->setMessage(
@@ -278,7 +275,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				'course_alias'   => $this->course->get('alias'),
 				'offering_alias' => $this->offering_alias,
 				'section_id'     => (isset($section_id) ? $section_id : $this->course->offering()->section()->get('id')),
-				'prerequisites'  => $prerequisites
+				'prerequisites'  => ''//$view->loadTemplate()
 			),
 			$status['code'],
 			$status['text']
@@ -345,7 +342,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$assetGroup->set('unit_id', Request::getInt('unit_id', 0));
 			$assetGroup->set('parent', Request::getInt('parent', 0));
 			$assetGroup->set('created', \Date::toSql());
-			$assetGroup->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
+			$assetGroup->set('created_by', App::get('authn')['user_id']);
 		}
 
 		if (($params = Request::getVar('params', false, 'post')) || !$id)
@@ -475,8 +472,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$ext  = strtolower(array_pop($exts));
 
 		// Initiate our file handler
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
-		$assetHandler = new AssetHandler($this->db, $ext);
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'handler.php');
+		$assetHandler = new Handler($this->db, $ext);
 
 		// Get the handlers
 		$handlers = $assetHandler->getHandlers();
@@ -540,11 +537,11 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate our file handler
-		require_once(dirname(dirname(__DIR__)). DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
-		$assetHandler = new AssetHandler($this->db, $ext);
+		require_once(dirname(dirname(__DIR__)). DS . 'models' . DS . 'assets' . DS . 'handler.php');
+		$assetHandler = new Handler($this->db, $ext);
 
 		// Create the new asset
-		$return = $assetHandler->doCreate(Request::getWord('handler', null));
+		$return = $assetHandler->doCreate(Request::getVar('handler', null));
 
 		// Check for errors in response
 		if (array_key_exists('error', $return))
@@ -583,8 +580,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate our file handler
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
-		$assetHandler = new AssetHandler($this->db);
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'handler.php');
+		$assetHandler = new Handler($this->db);
 
 		// Edit the asset
 		$return = $assetHandler->doEdit($asset_id);
@@ -626,8 +623,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate our file handler
-		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
-		$assetHandler = new AssetHandler($this->db);
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'handler.php');
+		$assetHandler = new Handler($this->db);
 
 		// Edit the asset
 		$return = $assetHandler->preview($asset_id);
@@ -842,7 +839,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$asset->set('state', 0);
 			$asset->set('course_id', Request::getInt('course_id', 0));
 			$asset->set('created', \Date::toSql());
-			$asset->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
+			$asset->set('created_by', App::get('authn')['user_id']);
 		}
 
 		// Save the asset
@@ -1501,7 +1498,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// Set the responce type
 		$this->setMessageType($this->format);
 
-		$user_id = \JFactory::getApplication()->getAuthn('user_id');
+		$user_id = App::get('authn')['user_id'];
 
 		if (!$user_id || !is_numeric($user_id))
 		{
@@ -1657,7 +1654,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$consumerKey = $postdata['oauth_consumer_key'];
 
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$user = \Hubzero\User\Profile::getInstance($userid);
 		//make sure we have a user
 		if ($user === false)
@@ -1731,7 +1728,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	private function authorize()
 	{
 		// Get the user id
-		$user_id = \JFactory::getApplication()->getAuthn('user_id');
+		$user_id = App::get('authn')['user_id'];
 
 		$authorized           = array();
 		$authorized['view']   = false;

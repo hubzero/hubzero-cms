@@ -87,7 +87,7 @@ class Asset extends Base
 	 * @param   mixed $oid Integer, array, or object
 	 * @return  void
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null)
 	{
 		parent::__construct($oid);
 

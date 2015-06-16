@@ -30,8 +30,8 @@
 
 namespace Components\Courses\Models\Assets;
 
+use Components\Courses\Models\PdfForm;
 use Request;
-use PdfForm;
 
 /**
 * Form (exam) Asset handler class

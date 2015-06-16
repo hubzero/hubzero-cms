@@ -41,7 +41,7 @@ use stdClass;
 /**
  * Subtitle Asset handler class
  */
-class Subtitle extends AssetHandler
+class Subtitle extends Handler
 {
 	/**
 	 * Class info
@@ -228,7 +228,7 @@ class Subtitle extends AssetHandler
 		$this->asset['subtype']    = 'file';
 		$this->asset['url']        = $info['filename'] . '.txt';
 		$this->asset['created']    = Date::toSql();
-		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
+		$this->asset['created_by'] = App::get('authn')['user_id'];
 		$this->asset['course_id']  = $course_id;
 
 		// Save the asset

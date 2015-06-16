@@ -28,15 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models\Assets;
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+use Components\Courses\Tables;
 
 /**
 * Content based asset handler (i.e. things like notes, wiki, html, etc...)
 */
-class ContentAssetHandler extends AssetHandler
+class Content extends Handler
 {
 	/**
 	 * Class info
@@ -78,7 +77,7 @@ class ContentAssetHandler extends AssetHandler
 		$asset->set('graded',       ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
 		$asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
 		$asset->set('created',      \Date::toSql());
-		$asset->set('created_by',   \JFactory::getApplication()->getAuthn('user_id'));
+		$asset->set('created_by',   App::get('authn')['user_id']);
 		$asset->set('course_id',    Request::getInt('course_id', 0));
 		$asset->set('state',        0);
 

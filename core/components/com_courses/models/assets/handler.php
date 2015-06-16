@@ -36,7 +36,7 @@ use Components\Courses\Models\Asset;
 /**
 * Courses asset handler
 */
-class AssetHandler
+class Handler
 {
 	/**
 	 * Array to hold our handler objects
