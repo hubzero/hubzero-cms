@@ -37,10 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class modYoutubeHelper extends \Hubzero\Module\Module
 {
 	/**
-	 * Display module contents
-	 *
-	 * @return     void
-	 */
+		* Display module contents
+		*
+		* @return     void
+		*/
 	public function display()
 	{
 		//get the document
@@ -67,6 +67,9 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 		//get the username/playlist/search term
 		$content = $this->params->get('q');
 
+		//get the user's api key
+		$google_api_browser_key = $this->params->get('google_api_browser_key');
+
 		//build the youtube url based on the type
 		switch ($type)
 		{
@@ -74,7 +77,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 				$youtube_url .= 'playlists/' . $content . '?v=2';
 			break;
 			case 'users':
-				$youtube_url .= 'users/' . $content . '/uploads?v=2';
+				$youtube_url .= 'users/' . $content . '/uploads?v=2 ';
 			break;
 			case 'videos':
 				$youtube_url .= 'videos?q=' . $content . '&v=2';
@@ -114,6 +117,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 			$this->js("
 				jQuery(document).ready(function($){
 					var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
+						google_api_browser_key: '" . $google_api_browser_key . "',
 						type: '" . $type . "',
 						search: '" . $content . "',
 						count: " . $num_videos . ",
@@ -255,12 +259,12 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 	}
 
 	/**
-	 * Get feed info
-	 *
-	 * @param      string  $url
-	 * @param      object  $params
-	 * @return     object
-	 */
+		* Get feed info
+		*
+		* @param      string  $url
+		* @param      object  $params
+		* @return     object
+		*/
 	private function _feed($url, $params)
 	{
 		// var to hold feed
@@ -309,11 +313,11 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 	}
 
 	/**
-	 * Format a time
-	 *
-	 * @param      integer $seconds Time to format
-	 * @return     string
-	 */
+		* Format a time
+		*
+		* @param      integer $seconds Time to format
+		* @return     string
+		*/
 	private function _formatTime($seconds)
 	{
 		$minutes = floor($seconds / 60);

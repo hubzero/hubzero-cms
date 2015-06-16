@@ -42,6 +42,8 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="google_api_browser_key" type="text" default="" label="Google API Key for Browser Applications (Required)" description="A Google API Key is required to operate this module.  Instructions on obtaining a Google API key for browser applications can be found here: https://developers.google.com/youtube/registering_an_application" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="lazy" type="radio" default="1" label="Lazy Loading" description="Use javascript to dynamically load the Youtube feed to the page. Displays no content without javascript. Otherwise use normal PHP method and using caching to improve performance.">
@@ -50,7 +52,7 @@ HUBzero is a registered trademark of Purdue University.
 				</field>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="type" type="list" default="user" label="Youtube Feed Type" description="Select the type of Youtube Feed (Playlist, User Channel, or by Search Term)">
-					<option value="playlists">Playlist</option>
+					<option value="playlistItems">Playlist</option>
 					<option value="users">User Channel</option>
 					<option value="videos">Video Search</option>
 				</field>

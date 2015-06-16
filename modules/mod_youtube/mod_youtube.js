@@ -5,8 +5,9 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
  Author:
- -----------------		
+ -----------------
  Christopher Smoak <csmoak@purdue.edu>
+ Zach Weidner <zach.weidner@gmail.com>
 
  Created:
  -----------------
@@ -32,10 +33,11 @@ var youtube_feed = 0;
 	$.fn.youtube = function(options) {
 		//options set by call to class
 		var settings = $.extend( {
-		    type: "playlist",
+			type: "playlistItems",
 			search: "",
 			count: 3,
 			random: false,
+			google_api_browser_key: "",
 			details: {
 				showLogo: true,
 				altLogo: "",
@@ -44,53 +46,53 @@ var youtube_feed = 0;
 				showDesc: true,
 				altDesc: "",
 				showLink: true,
-				altLink: ""
+				altLink: "",
 			}
 		}, options);
-		
+
+		if (settings.google_api_browser_key == "") {
+			throw("No Google API key specified, please see mod_youtube configuration.");
+		}
+		console.log(settings.google_api_browser_key);
 		//base Youtube API URL
-		var youtube_base_url = "https://gdata.youtube.com/feeds/api/";
+		var url = "https://www.googleapis.com/youtube/v3/";
 
 		//querystring for Youtube API Call
-		var youtube_querystring = "?v=2&alt=json-in-script&callback=?"; //{CALLBACK}";
+		var youtube_querystring = "&key=" + settings.google_api_browser_key; 
 
 		return this.each(function(i, widget) {
 			//incriment the feed count
 			youtube_feed++;
 
-			//append the type of feed we want to load to base url
-			var url  = youtube_base_url + settings.type;
-
 			//build url based on type
-			if (settings.type == 'videos') {
-				url += youtube_querystring.replace("{CALLBACK}", "YoutubeCallback" + youtube_feed);
-				url += "&q=" + settings.search;
-			} else {
-				url += "/" + settings.search;
-				if (settings.type == 'users') url += "/uploads"; 
-				url += youtube_querystring.replace("{CALLBACK}", "YoutubeCallback" + youtube_feed);
+			switch(settings.type)
+			{
+				case 'playlistItems':
+					url += "playlistItems?part=snippet&playlistId=" + settings.search + youtube_querystring;
+					break;
+				case 'users':
+					url += "search?part=snippet&q=" + settings.search + youtube_querystring;
+					break;
+				case 'videos':
+					url += "search?part=snippet&q=" + settings.search + youtube_querystring;
+					break;
 			}
-
-			//push the script to the bottom of the head element
-			/*var script = Asset.javascript(url, {
-				id: 'youtube_script_' + youtube_feed
-			});
-
-			//create a callback function for each youtube feed
-			window['YoutubeCallback' + youtube_feed] = function( json ) {
-				youtube.Format(json);
-			}.bind(this);*/
 
 			$.getJSON(url, {}, function(data) {
 				$(widget).html(Format(data));
 			});
 		});
 
-		//format json data into tweets
 		function Format( json ) {
 			var html = "",
-				feed = json.feed,
-				videos = feed.entry;
+				feed = json,
+				videos = feed.items;
+			if (settings.type == "playlistItems") {
+				url = "https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=" + settings.search + "&key=" + settings.google_api_browser_key;
+				$.getJSON(url, {}, function(data) {
+				  feed.snippet = data.items[0].snippet;
+				});
+			}
 
 			//if we want random
 			if (settings.random) {
@@ -102,18 +104,31 @@ var youtube_feed = 0;
 
 			//build html
 			html += "<ul>";
+			var displayed_count = 0;
 			$.each(videos, function(i, item) {
-				if (i >= settings.count) {
+				if (displayed_count >= settings.count || (item.kind == "youtube#searchResult" && item.id.kind != "youtube#video")) {
 					html += "";
 				} else {
-					var title = item['title']['$t'];
-					var id = item.media$group.yt$videoid.$t; //item['id']['$t'];
-					var thumb = item.media$group.media$thumbnail[0].url;
+					displayed_count++;
+					var title = item.snippet.title;
+					var thumb = item.snippet.thumbnails.default.url;
+					if (settings.type == 'playlistItems') {
+						var id = item.snippet.resourceId.videoId;
+					} else {
+						var id = item.id.videoId;
+					}
 					
+					//run another api call for each video to retrieve the duration of each video
+					url = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=" + id + "&key=" + settings.google_api_browser_key;
+
+					$.getJSON(url, {}, function(data) {
+						$("#yt" + id).html(Duration(data.items[0].contentDetails.duration));
+					});
+
 					html += "<li>";
 					html += "<a class=\"entry-thumb\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\"><img src=\"" + thumb.replace('http://','https://') + "\" alt=\"" + title + "\" width=\"80\" /></a>";
 					html += "<a class=\"entry-title\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\">" + title + "</a>";
-					html += "<br /><span class=\"entry-duration\">" + Duration(item.media$group.yt$duration.seconds) + "</span>";
+					html += "<br /><span class=\"entry-duration\" id=yt" + id + "></span>";
 					html += "</li>";
 				}
 			});
@@ -124,12 +139,13 @@ var youtube_feed = 0;
 
 			return html;
 		}
-		
+
 		function FeedDetails( feed ) {
 			var topHTML = "";
 			var title, description, logo;
 			var details = settings.details;
 
+return "";
 			//if we have no details return nothing
 			if(!details)
 				return "";
@@ -145,7 +161,7 @@ var youtube_feed = 0;
 			if(details.altDesc && details.altDesc != "") {
 				description = details.altDesc;
 			} else {
-				description = (feed.media$group && feed.media$group.media$description) ? feed.media$group.media$description.$t : '';
+//				description = (feed.media$group && feed.media$group.media$description) ? feed.media$group.media$description.$t : '';
 			}
 
 			//set the logo based on if we have an alternative image
@@ -189,7 +205,7 @@ var youtube_feed = 0;
 			} else {
 				switch(settings.type)
 				{
-					case 'playlists':
+					case 'playlistItems':
 						link = "http://www.youtube.com/view_play_list?p=" + settings.search;
 						break;
 					case 'users':
@@ -210,11 +226,27 @@ var youtube_feed = 0;
 			return bottomHTML;
 		}
 
-		function Duration(seconds) {
-			minutes = Math.floor(seconds/60); 	
-			seconds = seconds % 60;
+		function Duration(ptms) {
+			//function to convert the PT#H#M#S time format to a #:#:# string
+			hours = ptms.match(/([\d]+)H/);
+			minutes = ptms.match(/([\d]+)M/);
+			seconds = ptms.match(/([\d]+)S/);
+
+			if (hours != null) {
+				hours =  hours[1];
+			}
+			if (minutes != null) {
+				minutes =  minutes[1];
+			}
+			if (seconds != null) {
+				seconds =  seconds[1];
+			}
+			
 			if(seconds < 10) {
 				seconds = "0" + seconds;
+			}
+			if(minutes < 10 && hours != "") {
+				minutes = "0" + minutes;
 			}
 			return "<span>" + minutes + ":" + seconds + "</span>";
 		}
