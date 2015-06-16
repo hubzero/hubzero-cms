@@ -41,15 +41,6 @@ require_once($componentBase . 'site' . DS . 'controllers' . DS .  'map.php' );
 require_once($componentBase . 'tables' . DS . 'markers.php');
 require_once($componentBase . 'tables' . DS . 'tags.php');
 
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_jobs'. DS . 'tables' . DS .'job.php' );
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'models' . DS . 'job.php' );
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php' );
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php' );
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php' );
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'event.php' );
-require_once( PATH_ROOT . DS . 'components' . DS .'com_events' . DS .'helpers' . DS .'date.php' );
-include_once( PATH_ROOT . DS . 'components' . DS.'com_members' . DS .'tables' . DS .'organizationtype.php' );
-
 $controllerName = \Request::getCmd('controller', 'map');
 if (!file_exists($componentBase . DS . 'site' . 'controllers' . DS . $controllerName . '.php'))
 {
