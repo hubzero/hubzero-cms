@@ -24,6 +24,7 @@
 .header {
 	background: #F9F9F9;
 	border-top: 1px solid #CCCCCC;
+	border-left: 1px solid #CCCCCC;
 	padding-left: 25px;
 	overflow: hidden;
 }
@@ -527,7 +528,7 @@ ul {
 	padding: 10px;
 	border: 1px dotted #AAA;
 
-	background-image: url("/media/system/images/light-stripes.png");
+	background-image: url("/core/assets/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
 	background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
 	background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
@@ -703,7 +704,7 @@ ul {
 	margin-top: -10px;
 }
 .asset-group .unpublished {
-	background-image: url("/media/system/images/light-stripes.png");
+	background-image: url("/core/assets/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
 	background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
 	background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
@@ -861,7 +862,7 @@ ul {
 	font-weight: bold;
 	zoom: 1;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-	background-image: url("/media/system/images/light-stripes.png");
+	background-image: url("/core/assets/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)), color-stop(.75, rgba(255, 255, 255, .065)), color-stop(.75, transparent), to(transparent));
 	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
 	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
@@ -940,7 +941,7 @@ ul {
 .bar {
 	height: 20px;
 	width: 0;
-	background-image: url('/media/system/images/upload-ui/progressbar.gif');
+	background-image: url('/core/assets/images/upload-ui/progressbar.gif');
 
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;

@@ -922,7 +922,7 @@ HUB.CoursesOutline = {
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<a id="handler-item-' + counter + '-' + value.classname + '" class="dialog-button">';
+									message += '<a id="handler-item-' + counter + '-' + value.classname.replace(/\\/g, '') + '" class="dialog-button">';
 									message += value.message;
 									message += '</a>';
 									message += '</li>';
@@ -934,7 +934,7 @@ HUB.CoursesOutline = {
 
 								// Bind click events to the message buttons
 								$.each(json.handlers, function ( index, value ) {
-									targetName = '#handler-item-' + counter + '-' + value.classname;
+									targetName = '#handler-item-' + counter + '-' + value.classname.replace(/\\/g, '');
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
 											'option',
