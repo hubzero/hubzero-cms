@@ -33,4 +33,5 @@ return [
 	'Hubzero\Api\ResponseServiceProvider',
 	'Hubzero\Api\AuthServiceProvider',
 	'Hubzero\Api\ComponentServiceProvider',
+	'Hubzero\Menu\MenuServiceProvider',
 ];

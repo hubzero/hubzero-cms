@@ -39,7 +39,7 @@
 $router->rules('build')->append('content', function ($uri)
 {
 	// Set URI defaults
-	$menu = \App::get('menu');
+	$menu = \App::get('menu.manager')->menu('site');
 
 	// Get the itemid form the URI
 	$itemid = $uri->getVar('Itemid');
@@ -185,7 +185,7 @@ $router->rules('build')->append('component', function ($uri)
 
 	if (isset($query['Itemid']) && !empty($query['Itemid']))
 	{
-		$menu = \App::get('menu');
+		$menu = \App::get('menu.manager')->menu('site');
 		$item = $menu->getItem($query['Itemid']);
 		if (is_object($item) && $query['option'] == $item->component)
 		{
@@ -489,7 +489,7 @@ $router->rules('parse')->append('content', function ($uri)
 	$vars  = array();
 
 	//$view  = 'article';
-	$menu  = \App::get('menu');
+	$menu  = \App::get('menu.manager')->menu('site');
 	$item  = $menu->getActive();
 	$db    = \JFactory::getDBO();
 	$segments = explode('/', $uri->getPath());

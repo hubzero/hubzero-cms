@@ -45,11 +45,14 @@ class MenuServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		$this->app['menu.manager'] = function($app)
+		{
+			return $manager = new Manager();
+		};
+
 		$this->app['menu'] = function($app)
 		{
-			$manager = new Manager();
-
-			return $manager->menu($app['client']->name);
+			return $app['menu.manager']->menu($app['client']->name);
 		};
 
 		$this->app['menu.params'] = function($app)

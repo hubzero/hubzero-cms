@@ -43,7 +43,7 @@
 $router->rules('build')->append('content', function ($uri)
 {
 	// Set URI defaults
-	$menu = \App::get('menu');
+	$menu = \App::get('menu.manager')->menu('site');
 
 	// Get the itemid form the URI
 	$itemid = $uri->getVar('Itemid');
