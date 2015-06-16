@@ -69,6 +69,7 @@ class Image extends File
 
 		// Preserve the original file extension
 		$this->ext = strtolower(\App::get('filesystem')->extension($name));
+
 	}
 
 	/**
@@ -78,6 +79,6 @@ class Image extends File
 	 */
 	public function file()
 	{
-		return $this->name . '.' . $this->ext;
+		return $this->name;
 	}
 }
