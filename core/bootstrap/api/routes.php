@@ -241,15 +241,16 @@ $router->rules('parse')->append('component', function ($uri)
 		return true;
 	}
 
+	// @FIXME: update when api routes come online
 	if ($router = \App::get('component')->router($component, 'site'))
 	{
-		if ($vars = $router->parse($segments))
+		/*if ($vars = $router->parse($segments))
 		{
 			foreach ($vars as $key => $var)
 			{
 				$uri->setVar($key, $var);
 			}
-		}
+		}*/
 
 		return true;
 	}
