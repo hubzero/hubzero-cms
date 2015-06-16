@@ -613,7 +613,7 @@ abstract class JTable extends JObject
 		else
 		{
 			$stored = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-			\Event::trigger($this->getTableName() . '.new', ['table' => $this]);
+			\Event::trigger($this->getTableName() . '_new', ['table' => $this]);
 		}
 
 		// If the store failed return false.

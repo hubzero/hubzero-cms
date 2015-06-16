@@ -101,7 +101,7 @@ class Asset extends \JTable
 				$table       = $event->getArgument('table');
 				$table->path = $table->course_id . '/' . $table->id;
 				$table->store();
-			}, $this->getTableName() . '.new');
+			}, $this->getTableName() . '_new');
 		}
 
 		return parent::store($updateNulls);
