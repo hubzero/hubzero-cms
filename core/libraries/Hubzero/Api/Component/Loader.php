@@ -71,9 +71,9 @@ class Loader extends Base
 		if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
 		{
 			// Set path and constants for combined components
-			define('JPATH_COMPONENT', JPATH_SITE . DS . 'components' . DS . $option . DS . $client);
-			define('JPATH_COMPONENT_SITE', JPATH_SITE . DS . 'components' . DS . $option . DS . 'site');
-			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_SITE . DS . 'components' . DS . $option . DS . 'admin');
+			define('JPATH_COMPONENT', PATH_CORE . DS . 'components' . DS . $option . DS . $client);
+			define('JPATH_COMPONENT_SITE', PATH_CORE . DS . 'components' . DS . $option . DS . 'site');
+			define('JPATH_COMPONENT_ADMINISTRATOR', PATH_CORE . DS . 'components' . DS . $option . DS . 'admin');
 		}
 		else
 		{
