@@ -65,7 +65,7 @@ class RouterServiceProvider extends Middleware
 
 			foreach ($this->app['router']->parse($request->getUri()) as $key => $val)
 			{
-				$request->setVar($key, $val);
+				$request->setVar($key, $val, 'get');
 			}
 
 			$this->app['dispatcher']->trigger('system.onAfterRoute');
