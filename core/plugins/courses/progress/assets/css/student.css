@@ -90,16 +90,16 @@
 	margin-left: -25px;
 }
 .progress-timeline .start .person {
-	background: url('/components/com_courses/site/assets/img/person.png') -152px -50px no-repeat;
+	background: url('/core/components/com_courses/site/assets/img/person.png') -152px -50px no-repeat;
 }
 .progress-timeline .end .person {
-	background: url('/components/com_courses/site/assets/img/person.png') -92px -138px no-repeat;
+	background: url('/core/components/com_courses/site/assets/img/person.png') -92px -138px no-repeat;
 }
 .progress-timeline .end.finished .person {
-	background: url('/components/com_courses/site/assets/img/person.png') -92px -50px no-repeat;
+	background: url('/core/components/com_courses/site/assets/img/person.png') -92px -50px no-repeat;
 }
 .progress-timeline .current .person {
-	background: url('/components/com_courses/site/assets/img/person.png') -11px -50px no-repeat;
+	background: url('/core/components/com_courses/site/assets/img/person.png') -11px -50px no-repeat;
 	width: 65px;
 	margin-left: -30px;
 }

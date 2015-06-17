@@ -225,10 +225,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 					'thumb'     => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
 					'full'      => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
 					'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
-										? Date::of(strtotime($m->get('enrolled')))->format('M j, Y')
+										? Date::of($m->get('enrolled'))->format('M j, Y')
 										: 'unknown'),
 					'lastvisit' => ((User::getInstance($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
-										? Date::of(strtotime(Date::of($m->get('user_id'))->get('lastvisitDate')))->format('M j, Y')
+										? Date::of(User::getInstance($m->get('user_id'))->get('lastvisitDate'))->format('M j, Y')
 										: 'never')
 				);
 			}

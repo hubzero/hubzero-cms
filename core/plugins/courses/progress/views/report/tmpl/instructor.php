@@ -269,7 +269,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 <div class="main-container">
 	<div id="message-container"></div>
 	<div class="loading">
-		<img src="<?php echo Request::base(true); ?>/components/com_courses/site/assets/img/loading-light.gif" />
+		<img src="<?php echo Request::base(true); ?>/core/components/com_courses/site/assets/img/loading-light.gif" />
 	</div>
 
 	<div class="controls-wrap">
