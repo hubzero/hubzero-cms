@@ -63,8 +63,6 @@ class Loader extends Base
 		$this->app->set('scope', $option);
 
 		// Build the component path.
-		$file   = substr($option, 4);
-
 		$client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
 
 		// Get component path
@@ -97,7 +95,7 @@ class Loader extends Base
 		// If component is disabled throw error
 		if (!$this->isEnabled($option) || !file_exists($path))
 		{
-			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND') . $path);
+			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
 		}
 
 		// Load common and local language files.

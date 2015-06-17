@@ -215,12 +215,15 @@ $router->rules('parse')->append('version', function ($uri)
 	if (isset($segments[0]) && $segments[0] == 'api')
 	{
 		$prefix = array_shift($segments);
+		$uri->setPath(implode('/', $segments));
 	}
 
 	// Version from segments. ex: /v1.0/component
 	if (isset($segments[0]) && preg_match('/v([0-9]{1,2}\.[0-9x]{1,2}|[0-9x]{1,2})/', $segments[0], $matches))
 	{
-		$version = $matches[1];
+		$version = array_shift($segments);
+		$version = trim($version, 'v');
+		$uri->setPath(implode('/', $segments));
 	}
 
 	// Does the accept header have version identifier?

@@ -59,7 +59,6 @@ class AuthServiceProvider extends Middleware
 	 */
 	public function handle(Request $request)
 	{
-		return $this->next($request);
 		$response = $this->next($request);
 
 		// If CLI then we have to gather all query, post and header values
