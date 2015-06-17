@@ -1392,7 +1392,7 @@ class Repo extends Object
 			$pubconfig = Component::params( 'com_publications' );
 			$base_path = DS . trim($pubconfig->get('webpath'), DS);
 
-			chdir(PATH_CORE . $base_path);
+			chdir(PATH_APP . $base_path);
 			exec('du -sk ', $out);
 			$used = 0;
 
