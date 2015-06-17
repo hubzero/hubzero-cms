@@ -32,6 +32,7 @@ namespace Hubzero\Error;
 
 use Hubzero\Error\Renderer\Page;
 use Hubzero\Error\Renderer\Plain;
+use Hubzero\Error\Renderer\Api;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -49,14 +50,9 @@ class ErrorServiceProvider extends ServiceProvider
 		$this->app['error'] = function($app)
 		{
 			$handler = new Handler(
-				new Plain($app['config']->get('debug')), //new Page($app['document'], $app['template']->template, $app['config']->get('debug')),
+				new Plain($app['config']->get('debug')),
 				$app['config']->get('debug')
 			);
-
-			/*if ($handler->runningInConsole())
-			{
-				$handler->setRenderer(new Plain($app['config']->get('debug')));
-			}*/
 
 			return $handler;
 		};
@@ -112,9 +108,16 @@ class ErrorServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		if (!$this->app->runningInConsole() && $this->app->has('document'))
+		if (!$this->app->runningInConsole())
 		{
-			$this->app['error']->setRenderer(new Page($this->app['document'], $this->app['template']->template, $this->app['config']->get('debug')));
+			if ($this->app->isAdmin() || $this->app->isSite())
+			{
+				$this->app['error']->setRenderer(new Page($this->app['document'], $this->app['template']->template, $this->app['config']->get('debug')));
+			}
+			else if ($this->app->isApi())
+			{
+				$this->app['error']->setRenderer(new Api($this->app['response'], $this->app['config']->get('debug')));
+			}
 		}
 	}
 }

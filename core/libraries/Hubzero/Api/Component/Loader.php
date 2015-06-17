@@ -68,7 +68,14 @@ class Loader extends Base
 		$client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
 
 		// Get component path
-		if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
+		if (is_dir(PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . $client))
+		{
+			// Set path and constants for combined components
+			define('JPATH_COMPONENT', PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . $client);
+			define('JPATH_COMPONENT_SITE', PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . 'site');
+			define('JPATH_COMPONENT_ADMINISTRATOR', PATH_APP . DS . 'app' . DS . 'components' . DS . $option . DS . 'admin');
+		}
+		else if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
 		{
 			// Set path and constants for combined components
 			define('JPATH_COMPONENT', PATH_CORE . DS . 'components' . DS . $option . DS . $client);
@@ -83,31 +90,32 @@ class Loader extends Base
 			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . DS . 'components' . DS . $option);
 		}
 
-		$path = JPATH_COMPONENT . DS . 'controllers' . DS . 'api.php';
+		$controller = $this->app['request']->getCmd('controller', 'api') . 'v' . str_replace('.', '_', $this->app['request']->getVar('version', '1.0'));
+
+		$path = JPATH_COMPONENT . DS . 'controllers' . DS . $controller . '.php';
 
 		// If component is disabled throw error
 		if (!$this->isEnabled($option) || !file_exists($path))
 		{
-			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
+			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND') . $path);
 		}
 
 		// Load common and local language files.
 		$lang->load($option, JPATH_COMPONENT, null, false, true) ||
 		$lang->load($option, JPATH_BASE, null, false, true);
 
-		include($path);
+		require_once $path;
 
 		// Handle template preview outlining.
-		$contents = null;
-
-		// Execute the component.
-		$contents = $this->execute($file);
+		$controller = '\\Components\\' . ucfirst(substr($option, 4)) . '\\Api\\Controllers\\' . ucfirst($controller);
+		$action = new $controller(\App::get('response'));
+		$action->execute();
 
 		// Revert the scope
 		$this->app->forget('scope');
 		$this->app->set('scope', $scope);
 
-		return $contents;
+		return true;
 	}
 
 	/**
@@ -118,35 +126,6 @@ class Loader extends Base
 	 */
 	protected function execute($path)
 	{
-		$classname = ucfirst($path) . 'ControllerApi';
-
-/*foreach (debug_backtrace() as $line)
-{
-	echo $line['file'] . ':' . $line['line'] . '<br />';
-}*/
-		if (class_exists($classname))
-		{
-			$segments = $this->app['request']->segments();
-			if (count($segments) > 1 && $segments[0] == 'api')
-			{
-				$prefix = array_shift($segments);
-			}
-			$component = array_shift($segments);
-
-			$controller = new $classname();
-			$controller->setRequest($this->app['request']);
-			$controller->setResponse($this->app['response']);
-			$controller->setProvider($this->app['provider']);
-			$controller->setRouteSegments($segments);
-
-			ob_start();
-			$controller->execute();
-			$contents = ob_get_contents();
-			ob_end_clean();
-
-			return $contents;
-		}
-
 		return '';
 	}
 }

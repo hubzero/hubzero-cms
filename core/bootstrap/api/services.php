@@ -28,10 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return [
+return array(
 	'Hubzero\Session\SessionServiceProvider',
+	'Hubzero\Error\ErrorServiceProvider',
 	'Hubzero\Api\ResponseServiceProvider',
 	'Hubzero\Api\AuthServiceProvider',
 	'Hubzero\Api\ComponentServiceProvider',
 	'Hubzero\Menu\MenuServiceProvider',
-];
+	//'Hubzero\Api\RateLimit\RateLimitService',
+	//'Hubzero\Api\Response\JsonpCallable',
+	//'Hubzero\Api\Response\DateFormatter',
+	//'Hubzero\Api\Response\ObjectExpander',
+);

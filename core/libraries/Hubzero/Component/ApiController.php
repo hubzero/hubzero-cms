@@ -30,14 +30,75 @@
 
 namespace Hubzero\Component;
 
-use Hubzero\Http\Request;
+use Hubzero\Component\Exception\InvalidTaskException;
+use Hubzero\Component\Exception\InvalidControllerException;
 use Hubzero\Http\Response;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Base API controller for components to extend.
  */
 class ApiController implements ControllerInterface
 {
+	/**
+	 * The name of the component derived from the controller class name
+	 *
+	 * @var  string
+	 */
+	protected $_name = NULL;
+
+	/**
+	 * Container for storing overloaded data
+	 *
+	 * @var	 array
+	 */
+	protected $_data = array();
+
+	/**
+	 * The task the component is to perform
+	 *
+	 * @var	 string
+	 */
+	protected $_task = NULL;
+
+	/**
+	 * A list of executable tasks
+	 *
+	 * @var  array
+	 */
+	protected $_taskMap = array(
+		'__default' => 'index'
+	);
+
+	/**
+	 * The name of the task to be executed
+	 *
+	 * @param string
+	 */
+	protected $_doTask = null;
+
+	/**
+	 * The name of this controller
+	 *
+	 * @param string
+	 */
+	protected $_controller = null;
+
+	/**
+	 * The name of this component
+	 *
+	 * @param string
+	 */
+	protected $_option = null;
+
+	/**
+	 * Response object
+	 * 
+	 * @var  object
+	 */
+	public $response = null;
+
 	/**
 	 * Methods needing Auth
 	 * 
@@ -67,133 +128,136 @@ class ApiController implements ControllerInterface
 	public $notRateLimited  = array('all');
 
 	/**
-	 * Description for '_response'
+	 * Constructor
 	 *
-	 * @var  object
+	 * @param   array  $config  Optional configurations to be used
+	 * @return  void
 	 */
-	public $_response = null;
+	public function __construct(Response $response, $config=array())
+	{
+		$this->response = $response;
+
+		// Get the reflection info
+		$r = new ReflectionClass($this);
+
+		// Is it namespaced?
+		if ($r->inNamespace())
+		{
+			// It is! This makes things easy.
+			$this->_controller = strtolower($r->getShortName());
+		}
+
+		// Set the name
+		if (empty($this->_name))
+		{
+			if (isset($config['name']))
+			{
+				$this->_name = $config['name'];
+			}
+			else
+			{
+				$segments = null;
+				$cls = $r->getName();
+
+				// If matching the pattern of ComponentControllerName
+				if (preg_match('/(.*)Controller(.*)/i', $cls, $segments))
+				{
+					$this->_controller = isset($segments[2]) ? strtolower($segments[2]) : null;
+				}
+				// Uh-oh!
+				else
+				{
+					throw new InvalidControllerException(\App::get('language')->txt('Controller::__construct() : Can\'t get or parse class name.'), 500);
+				}
+
+				$this->_name = strtolower($segments[1]);
+			}
+		}
+
+		// Set the component name
+		$this->_option = 'com_' . $this->_name;
+
+		// Determine the methods to exclude from the base class.
+		$xMethods = get_class_methods('\\Hubzero\\Component\\ApiController');
+
+		// Get all the public methods of this class
+		foreach ($r->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+		{
+			$name = $method->getName();
+
+			// Ensure task isn't in the exclude list and ends in 'Task'
+			if ((!in_array($name, $xMethods) || $name == 'indexTask')
+			 && substr(strtolower($name), -4) == 'task')
+			{
+				// Remove the 'Task' suffix
+				$name = substr($name, 0, -4);
+				// Auto register the methods as tasks.
+				$this->_taskMap[strtolower($name)] = $name;
+			}
+		}
+	}
 
 	/**
-	 * Description for '_request'
+	 * Register (map) a task to a method in the class.
 	 *
-	 * @var  object
+	 * @param   string  $task    The task.
+	 * @param   string  $method  The name of the method in the derived class to perform for this task.
+	 * @return  void
 	 */
-	public $_request = null;
+	public function registerTask($task, $method)
+	{
+		if (in_array(strtolower($method), $this->_taskMap))
+		{
+			$this->_taskMap[strtolower($task)] = $method;
+		}
+
+		return $this;
+	}
 
 	/**
-	 * Description for '_provider'
+	 * Unregister (unmap) a task in the class.
 	 *
-	 * @var  object
+	 * @param   string  $task  The task.
+	 * @return  object  This object to support chaining.
 	 */
-	public $_provider = null;
+	public function unregisterTask($task)
+	{
+		unset($this->_taskMap[strtolower($task)]);
 
-	/**
-	 * Description for '_segments'
-	 *
-	 * @var  array
-	 */
-	public $segments = array();
+		return $this;
+	}
 
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$response = new \stdClass();
-		$response->error->code    = 500;
-		$response->error->message = \Lang::txt('Component must implement the execute() method.');
+		// Incoming task
+		$this->_task = strtolower(\App::get('request')->getCmd('task', ''));
 
-		$this->getResponse()
-		     ->setErrorMessage($response->error->code, $response->error->message);
+		// Check if the task is in the taskMap
+		if (isset($this->_taskMap[$this->_task]))
+		{
+			$doTask = $this->_taskMap[$this->_task];
+		}
+		// Check if the default task is set
+		elseif (isset($this->_taskMap['__default']))
+		{
+			$doTask = $this->_taskMap['__default'];
+		}
+		// Raise an error (hopefully, this shouldn't happen)
+		else
+		{
+			throw new InvalidTaskException(\App::get('language')->txt('The requested task "%s" was not found.', $this->_task), 404);
+		}
 
-		$this->setMessageType(\Request::getWord('format', 'json'));
-		$this->setMessage($response);
-	}
+		// Record the actual task being fired
+		$doTask .= 'Task';
 
-	/**
-	 * Set the request object
-	 *
-	 * @param   object  $request
-	 * @return  void
-	 */
-	function setRequest(Request $request)
-	{
-		$this->_request = $request;
-	}
-
-	/**
-	 * Get the request object
-	 *
-	 * @return  object
-	 */
-	public function getRequest()
-	{
-		return $this->_request;
-	}
-
-	/**
-	 * Set the response object
-	 *
-	 * @param   objet  $response
-	 * @return  void
-	 */
-	public function setResponse(Response $response)
-	{
-		$this->_response = $response;
-	}
-
-	/**
-	 * Get the response object
-	 *
-	 * @return  object
-	 */
-	public function getResponse()
-	{
-		return $this->_response;
-	}
-
-	/**
-	 * Set the provider
-	 *
-	 * @param   object  $provider
-	 * @return  void
-	 */
-	public function setProvider($provider)
-	{
-		$this->_provider = $provider;
-	}
-
-	/**
-	 * Get provider
-	 *
-	 * @return  object
-	 */
-	public function getProvider()
-	{
-		return $this->_provider;
-	}
-
-	/**
-	 * Set the list of route segments
-	 *
-	 * @param   array  $segments
-	 * @return  void
-	 */
-	public function setRouteSegments($segments)
-	{
-		$this->segments = $segments;
-	}
-
-	/**
-	 * Get the list of route segments
-	 *
-	 * @return  array
-	 */
-	public function getRouteSegments()
-	{
-		return $this->segments;
+		// Call the task
+		$this->$doTask();
 	}
 
 	/**
@@ -204,36 +268,10 @@ class ApiController implements ControllerInterface
 	 * @param   string   $reason
 	 * @return  void
 	 */
-	public function setMessage($message = null, $status = null, $reason = null)
+	public function send($message = null, $status = null, $reason = null)
 	{
-		//$this->_response->setMessage($message, $status, $reason);
-		//$this->_response->setContent($this->finalizeContent($message));
-		$this->_response->setContent($message);
-		$this->_response->setStatusCode($status ? $status : 200);
-	}
-
-	/**
-	 * Set response format
-	 *
-	 * @param   string   $format
-	 * @return  void
-	 */
-	public function setMessageType($format)
-	{
-		//$this->_response->setResponseProvides($format);
-		static $types = array(
-			'xml'   => 'application/xml',
-			'html'  => 'text/html',
-			'xhtml' => 'application/xhtml+xml',
-			'json'  => 'application/json',
-			'text'  => 'text/plain',
-			'txt'   => 'text/plain',
-			'plain' => 'text/plain',
-			'php'   => 'application/php',
-			'php_serialized' => 'application/vnd.php.serialized',
-		);
-
-		$this->_response->headers->set('Content-Type', (isset($types[$format]) ? $types[$format] : $format));
+		$this->response->setContent($message);
+		$this->response->setStatusCode($status ? $status : 200);
 	}
 }
 

@@ -63,6 +63,19 @@ class Guard
 	 * @param   array   $options      Array holding user options.
 	 * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
 	 */
+	public function token()
+	{
+		return '';
+	}
+
+	/**
+	 * Finds out if a set of login credentials are valid by asking all observing
+	 * objects to run their respective authentication routines.
+	 *
+	 * @param   array   $credentials  Array holding the user credentials.
+	 * @param   array   $options      Array holding user options.
+	 * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
+	 */
 	public function authenticate($params = array())
 	{
 		$response = array();

@@ -71,7 +71,6 @@ class Application extends Container
 		'Hubzero\Debug\ProfilerServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
-
 		'Hubzero\Filesystem\FilesystemServiceProvider',
 	);
 
@@ -91,7 +90,6 @@ class Application extends Container
 		'Lang'       => 'Hubzero\Facades\Lang',
 		'Log'        => 'Hubzero\Facades\Log',
 		'Date'       => 'Hubzero\Facades\Date',
-
 		'Plugin'     => 'Hubzero\Facades\Plugin',
 		'Filesystem' => 'Hubzero\Facades\Filesystem',
 	);

@@ -70,7 +70,7 @@ class RateLimitService extends Middleware
 	public function handle(Request $request)
 	{
 		// get authentication
-		$token = Auth::token();
+		$token = $this->app['auth']->token();
 
 		// rate limit application/user id and get data
 		$rateLimitData = $this->app['ratelimiter']->rateLimit($token['application_id'], $token['uidNumber']);
@@ -87,12 +87,13 @@ class RateLimitService extends Middleware
 		if ($rateLimitData->exceeded_long || $rateLimitData->exceeded_short)
 		{
 			// set response error
-			$response->setError('Too Many Requests', 429, array(
+			/*$response->setError('Too Many Requests', 429, array(
 				array(
 					'error'             => 'rate_limit_exceeded',
 					'error_description' => 'You have exceeded your rate limit allowance. Please see rate limit headers for details.'
 				)
-			));
+			));*/
+			throw new \Exception('You have exceeded your rate limit allowance. Please see rate limit headers for details.', 429);
 
 			// use different values for long
 			if ($rateLimitData->exceeded_long)

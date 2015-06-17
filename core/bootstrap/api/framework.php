@@ -40,8 +40,6 @@ if (function_exists('xdebug_disable'))
 	xdebug_disable();
 }
 
-//ini_set('magic_quotes_runtime','0');
-//ini_set('zend.ze1_compatibility_mode', '0');
 ini_set('zlib.output_compression','0');
 ini_set('output_handler','');
 ini_set('implicit_flush','0');
@@ -55,19 +53,10 @@ require_once JPATH_ROOT . '/core/bootstrap/autoload.php';
 
 JLoader::import('cms.version.version');
 
-$jversion = new JVersion;
-define('JVERSION', $jversion->getShortVersion());
-unset($jversion);
-
-define('JPROFILE', 0);
+//$jversion = new JVersion;
+//define('JVERSION', $jversion->getShortVersion());
+//unset($jversion);
 
 JLoader::import('joomla.error.error');
 JLoader::import('joomla.factory');
 JLoader::import('joomla.base.object');
-
-// Force library to be in JError legacy mode
-/*JError::$legacy = true;
-JError::setErrorHandling(E_ERROR, 'ignore');
-JError::setErrorHandling(E_WARNING, 'ignore');
-JError::setErrorHandling(E_NOTICE, 'ignore');*/
-

@@ -55,5 +55,7 @@ abstract class ServiceProvider
 	 *
 	 * @return void
 	 */
-	abstract public function register();
+	public function register()
+	{
+	}
 }

@@ -61,5 +61,22 @@ class ResponseServiceProvider extends ServiceProvider
 	{
 		$this->app['config']->set('debug', 0);
 		$this->app['config']->set('debug_lang', 0);
+
+		static $types = array(
+			'xml'   => 'application/xml',
+			'html'  => 'text/html',
+			'xhtml' => 'application/xhtml+xml',
+			'json'  => 'application/json',
+			'text'  => 'text/plain',
+			'txt'   => 'text/plain',
+			'plain' => 'text/plain',
+			'php'   => 'application/php',
+			'php_serialized' => 'application/vnd.php.serialized',
+		);
+
+		$format = $this->app['request']->getWord('format', 'json');
+		$format = (isset($types[$format]) ? $format : 'json');
+
+		$this->app['response']->headers->set('Content-Type', $types[$format]);
 	}
 }
