@@ -72,19 +72,40 @@ class Router extends Base
 	{
 		$vars = array();
 
+		$vars['controller'] = 'entries';
+
 		if (isset($segments[0]))
 		{
-			$vars['controller'] = $segments[0];
-			$vars['task'] = 'show';
-		}
-		else
-		{
-			$vars['controller'] = 'entries';
-		}
+			//  /blog
+			//  /blog/list
+			//  /blog/##
+			//  /blog/##/comments
+			//  /blog/##/comments/##
+			if (is_numeric($segments[0]))
+			{
+				$vars['id'] = $segments[0];
+				if (\App::get('request')->method() == 'GET')
+				{
+					$vars['task'] = 'read';
+				}
+			}
+			else
+			{
+				$vars['task'] = $segments[0];
+			}
 
-		if (isset($segments[1]))
-		{
-			$vars['task'] = $segments[1];
+			if (isset($segments[1]))
+			{
+				if ($segments[1] == 'comments')
+				{
+					$vars['controller'] = $segments[1];
+					$vars['task'] = 'list';
+				}
+				else
+				{
+					$vars['task'] = $segments[1];
+				}
+			}
 		}
 
 		return $vars;

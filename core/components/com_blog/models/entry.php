@@ -710,5 +710,28 @@ class Entry extends Model
 
 		return parent::delete();
 	}
+
+	/**
+	 * Transforms a namespace to an object
+	 *
+	 * @return  object   An an object holding the namespace data
+	 */
+	public function toObject()
+	{
+		$data = new \stdClass;
+
+		$properties = $this->_tbl->getProperties();
+		foreach ($properties as $key => $value)
+		{
+			if ($key && substr($key, 0, 1) != '_')
+			{
+				$data->$key = $this->get($key);
+			}
+		}
+
+		$data->params = $this->params->toObject();
+
+		return $data;
+	}
 }
 

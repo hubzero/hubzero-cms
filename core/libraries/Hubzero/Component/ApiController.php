@@ -237,18 +237,24 @@ class ApiController implements ControllerInterface
 		// Incoming task
 		$this->_task = strtolower(\App::get('request')->getCmd('task', ''));
 
+		$doTask = null;
+
+		// Check if the default task is set
+		if (!$this->_task)
+		{
+			if (isset($this->_taskMap['__default']))
+			{
+				$doTask = $this->_taskMap['__default'];
+			}
+		}
 		// Check if the task is in the taskMap
-		if (isset($this->_taskMap[$this->_task]))
+		else if (isset($this->_taskMap[$this->_task]))
 		{
 			$doTask = $this->_taskMap[$this->_task];
 		}
-		// Check if the default task is set
-		elseif (isset($this->_taskMap['__default']))
-		{
-			$doTask = $this->_taskMap['__default'];
-		}
+
 		// Raise an error (hopefully, this shouldn't happen)
-		else
+		if (!$doTask)
 		{
 			throw new InvalidTaskException(\App::get('language')->txt('The requested task "%s" was not found.', $this->_task), 404);
 		}
@@ -258,6 +264,15 @@ class ApiController implements ControllerInterface
 
 		// Call the task
 		$this->$doTask();
+	}
+
+	/**
+	 * Check that the user is authenticated
+	 *
+	 * @return  void
+	 */
+	public function requiresAuthentication()
+	{
 	}
 
 	/**
