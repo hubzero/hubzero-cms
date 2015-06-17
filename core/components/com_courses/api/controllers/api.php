@@ -376,7 +376,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 			if ($params)
 			{
-				$p->loadArray($params);
+				$p->parse($params);
 			}
 
 			$assetGroup->set('params', $p->toString());

@@ -129,7 +129,7 @@ class Asset extends Base
 				$key = str_replace('_', ' ', $parts[0]);
 				$key = ucwords($key);
 				$key = str_replace(' ', '', $key);
-				$tbl = "Tables\{$key}";
+				$tbl = "Components\\Courses\\Tables\\{$key}";
 				$tbl = new $tbl($this->_db);
 				$aux = array();
 				foreach (self::$_aux_tablekeys[$parts[0]] as $item)
@@ -224,7 +224,7 @@ class Asset extends Base
 				$key = str_replace('_', ' ', $key);
 				$key = ucwords($key);
 				$key = str_replace(' ', '', $key);
-				$tbl = "Tables\{$key}";
+				$tbl = "Components\\Courses\\Tables\\{$key}";
 				$tbl = new $tbl($this->_db);
 
 				if ($v == 'delete')
