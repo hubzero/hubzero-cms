@@ -26,9 +26,9 @@
 * HUBzero is a registered trademark of Purdue University.
 */
 
+$this->js('https://maps.googleapis.com/maps/api/js?v=3.exp');
 $this->js("geosearch.jquery.js");
 $this->js('oms.min.js');
-$this->js('https://maps.googleapis.com/maps/api/js?v=3.exp');
 
 ?>
 <style>

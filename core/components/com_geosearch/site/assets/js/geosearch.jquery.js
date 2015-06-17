@@ -53,12 +53,14 @@ HUB.Geosearch = {
 
 		map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 		//bounds = new google.maps.LatLngBounds();
-		//infoWindow = new google.maps.InfoWindow();
+		infoWindow = new google.maps.InfoWindow();
 		oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied:true});
 
 		// create info windows
 		oms.addListener('click', function(marker, event) {
-			  infoWindow.setContent(marker.html);
+			console.log(marker);
+			  //infoWindow.setContent(marker.html);
+			  infoWindow.setContent('test test hello!');
 			  infoWindow.open(map, marker);
 		});
 
@@ -78,7 +80,7 @@ HUB.Geosearch = {
 			resources.push(this.value);
 		});
 
-		// umm get the markers
+		//get the markers
 		$.post("index.php?option=com_geosearch&task=getmarkers",
 		{
 			resources: resources
@@ -94,16 +96,16 @@ HUB.Geosearch = {
 				switch(marker.scope)
 				{
 					case "member":
-						var icon = "/components/com_geosearch/assets/img/icn_member.png";
+						var icon = "/core/components/com_geosearch/site/assets/img/icn_member.png";
 						break;
 					case "event":
-						var icon = "/components/com_geosearch/assets/img/icn_event.png";
+						var icon = "/core/components/com_geosearch/site/assets/img/icn_event.png";
 						break;
 					case "job":
-						var icon = "/components/com_geosearch/assets/img/icn_job.png";
+						var icon = "/core/components/com_geosearch/site/assets/img/icn_job.png";
 						break;
 					case "org":
-						var icon = "/components/com_geosearch/assets/img/icn_org.png";
+						var icon = "/core/components/com_geosearch/site/assets/img/icn_org.png";
 					break;
 				}
 
