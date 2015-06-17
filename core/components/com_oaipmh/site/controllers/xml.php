@@ -44,7 +44,7 @@ class Xml extends SiteController
 	/**
 	 * Pull records and build the XML
 	 *
-	 * return  void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -60,7 +60,7 @@ class Xml extends SiteController
 
 		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', \Request::base())), '/');
 
-		$service = new Service($metadata);
+		$service = new Service($metadata, rtrim(Request::base(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
 		$service->set('metadataPrefix', $metadata)
 				->set('repositoryName', $this->config->get('repository_name', \Config::get('sitename')))
 				->set('baseURL', $hubname)
@@ -124,5 +124,19 @@ class Xml extends SiteController
 		Document::setType('xml');
 
 		echo $service;
+	}
+
+	/**
+	 * Output an XSL template
+	 *
+	 * @return  void
+	 */
+	public function stylesheetTask()
+	{
+		Document::setType('xml');
+
+		$this->view
+			->setLayout(Request::getVar('stylesheet', 'stylesheet'))
+			->display();
 	}
 }

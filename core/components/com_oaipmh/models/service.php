@@ -95,15 +95,20 @@ class Service extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $schema    Schema to use
-	 * @param   object  $db        Optional database connection
-	 * @param   string  $version   XML Version
-	 * @param   string  $encoding  XML Encoding
+	 * @param   string  $schema      Schema to use
+	 * @param   string  $stylesheet  Optional stylesheet to link to
+	 * @param   object  $db          Optional database connection
+	 * @param   string  $version     XML Version
+	 * @param   string  $encoding    XML Encoding
 	 * @return  void
 	 */
-	public function __construct($schema=null, $db=null, $version = '1.0', $encoding = 'utf-8')
+	public function __construct($schema=null, $stylesheet=null, $db=null, $version = '1.0', $encoding = 'utf-8')
 	{
 		$this->response = new Response($version, $encoding);
+		if ($stylesheet)
+		{
+			$this->response->stylesheet((string) $stylesheet);
+		}
 		$this->response
 			->element('OAI-PMH')
 				->attr('xmlns', 'http://www.openarchives.org/OAI/2.0/')

@@ -71,6 +71,18 @@ class Response extends Element
 	}
 
 	/**
+	 * @param   string  $styles
+	 * @return  object
+	 */
+	public function stylesheet($styles)
+	{
+		$xslt = $this->dom->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="' . $styles . '"');
+		$this->dom->appendChild($xslt);
+
+		return $this;
+	}
+
+	/**
 	 * @param   string   $filename
 	 * @param   boolean  $formatOutput
 	 * @return  boolean
