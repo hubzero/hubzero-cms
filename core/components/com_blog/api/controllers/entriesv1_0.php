@@ -126,7 +126,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"name":          "sort_Dir",
 	 * 		"description":   "Direction to sort results by.",
 	 * 		"required":      false,
-	 * 		"default":       ""
+	 * 		"default":       "desc"
 	 * 		"allowedValues": "asc, desc"
 	 * }
 	 * @return  void
