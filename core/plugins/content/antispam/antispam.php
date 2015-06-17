@@ -50,7 +50,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
-		if (App::isAdmin() || User::authorise('core.manage', Request::getCmd('option')))
+		if (!App::isSite())
 		{
 			return;
 		}
