@@ -112,7 +112,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load classes
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'project.php');
 
 		// Model
@@ -208,7 +208,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	public function onAfterStoreGroup($group)
 	{
 		// Load classes
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'project.php');
 
 		// Model
