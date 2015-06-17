@@ -770,7 +770,7 @@ class Section extends Base
 	{
 		if (!isset($this->_badge))
 		{
-			$this->_badge = SectionBadge::loadBySectionId($this->get('id'));
+			$this->_badge = Section\Badge::loadBySectionId($this->get('id'));
 		}
 
 		return $this->_badge;
