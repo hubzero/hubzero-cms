@@ -90,7 +90,7 @@
 		position: relative;
 		border-top: 1px solid #ddd;
 	}
-	#course-outline .unit:after {
+	#course-outline .unit-content-available:before {
 		content: "";
 		display: block;
 		width: 22px;
@@ -108,7 +108,7 @@
 		left: -13px;
 		top: 20px;
 	}
-	#course-outline .unit:hover:after {
+	#course-outline .unit-content-available:hover:before {
 		border-color: #333;
 	}
 	#course-outline h3 {
@@ -118,7 +118,7 @@
 		color: #666;
 		font-style: normal;
 		margin: 0;
-		overflow: hidden;
+		overflow: visible;
 		cursor: pointer;
 		position: relative;
 	}
@@ -405,15 +405,16 @@
 	}
 	#course-outline .unit-fill-inner {
 		background: blue;
+		display: block;
 	}
 	#course-outline .unit-fill-inner.complete:before {
 		position: absolute;
 		content: "\2714";
 		font-family: "Fontcons";
 		color: #FFF;
-		top: -20px;
-		left: 5px;
-		font-size: 12px;
+		top: -6px;
+		left: 4px;
+		font-size: 10px;
 	}
 	#course-outline .advertise-enroll {
 		text-align: center;
