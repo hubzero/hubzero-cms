@@ -122,7 +122,7 @@ class Groups extends Base
 		{
 			//get users tags
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-			$mt = new \MembersModelTags($profile->get("uidNumber"));
+			$mt = new \Components\Members\Models\Tags($profile->get("uidNumber"));
 			$mytags = $mt->render('string');
 
 			//get users groups

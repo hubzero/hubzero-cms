@@ -1458,7 +1458,7 @@ class Group extends Object
 	public function getLogo($what='')
 	{
 		//default logo
-		$default_logo = DS . 'components' . DS . 'com_groups' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
+		$default_logo = DS . 'core' . DS . 'components' . DS . 'com_groups' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
 
 		//logo link - links to group overview page
 		$link = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
