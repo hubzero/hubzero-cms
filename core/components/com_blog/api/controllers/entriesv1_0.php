@@ -28,69 +28,29 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+namespace Components\Blog\Api\Controllers;
+
+use Hubzero\Component\ApiController;
+use stdClass;
+use Request;
+use Lang;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
 
 /**
- * API controller class for support tickets
+ * API controller class for blog entries
  */
-class BlogControllerApi extends \Hubzero\Component\ApiController
+class Entriesv1_0 extends ApiController
 {
-	/**
-	 * Execute a request
-	 *
-	 * @return    void
-	 */
-	public function execute()
-	{
-		//\JLoader::import('joomla.environment.request');
-		//\JLoader::import('joomla.application.component.helper');
-
-		$this->config   = Component::params('com_blog');
-		$this->database = \JFactory::getDBO();
-
-		switch ($this->segments[0])
-		{
-			case 'search':  $this->archiveTask();  break;
-			case 'archive': $this->archiveTask();  break;
-
-			default:
-				$this->serviceTask();
-			break;
-		}
-	}
-
-	/**
-	 * Method to report errors. creates error node for response body as well
-	 *
-	 * @param	$code		Error Code
-	 * @param	$message	Error Message
-	 * @param	$format		Error Response Format
-	 *
-	 * @return     void
-	 */
-	private function errorMessage($code, $message, $format = 'json')
-	{
-		//build error code and message
-		$object = new stdClass();
-		$object->error->code    = $code;
-		$object->error->message = $message;
-
-		//set http status code and reason
-		$this->getResponse()
-		     ->setErrorMessage($object->error->code, $object->error->message);
-
-		//add error to message body
-		$this->setMessageType(Request::getWord('format', $format));
-		$this->setMessage($object);
-	}
-
 	/**
 	 * Displays a available options and parameters the API
 	 * for this comonent offers.
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /blog
 	 * @return  void
 	 */
-	private function serviceTask()
+	public function indexTask()
 	{
 		$response = new stdClass();
 		$response->component = 'blog';
@@ -129,19 +89,50 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(Request::getWord('format', 'json'));
-		$this->setMessage($response);
+		$this->send($response);
 	}
 
 	/**
-	 * Displays a list of tags
+	 * Displays a list of entries
 	 *
-	 * @return    void
+	 * @apiMethod GET
+	 * @apiUri    /blog/entries
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "search",
+	 * 		"description":   "A word or phrase to search for.",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort",
+	 * 		"description":   "Field to sort results by.",
+	 * 		"required":      false,
+	 *      "default":       "created"
+	 * 		"allowedValues": "created, title, alias, id, publish_up, publish_down, state"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort_Dir",
+	 * 		"description":   "Direction to sort results by.",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * 		"allowedValues": "asc, desc"
+	 * }
+	 * @return  void
 	 */
-	private function archiveTask()
+	public function showTask()
 	{
-		$this->setMessageType(Request::getWord('format', 'json'));
-
 		$model = new \Components\Blog\Models\Archive('site');
 
 		$filters = array(
@@ -179,6 +170,6 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 
 		$response->success = true;
 
-		$this->setMessage($response);
+		$this->send($response);
 	}
 }
