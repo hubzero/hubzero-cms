@@ -764,7 +764,7 @@ class Create extends SiteController
 		$row->modified_by  = User::get('id');
 		$row->access       = ($row->access ?: 0);
 
-		$row->fulltxt   = trim($row->fulltxt);
+		$row->fulltxt   = trim(preg_replace('/\\\/', "%5C", $row->fulltxt));
 		$row->introtext = String::truncate(strip_tags($row->fulltxt), 500);
 		//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
