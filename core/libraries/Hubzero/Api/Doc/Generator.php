@@ -106,12 +106,13 @@ class Generator
 	 */
 	private function cache()
 	{
+		return false;
 		// get developer params to get cache expiration
 		$developerParams = \App::get('component')->params('com_developer');
 		$cacheExpiration = $developerParams->get('doc_expiration', 720);
 
 		// cache file
-		$cacheFile = PATH_APP . DS . 'cache' . DS . 'api' . DS . 'documentation.json';
+		$cacheFile = PATH_APP . DS . 'app' . DS . 'cache' . DS . 'api' . DS . 'documentation.json';
 
 		// check if we have a cache file 
 		if (file_exists($cacheFile))
@@ -174,7 +175,7 @@ class Generator
 			$component = str_replace('com_', '', array_pop($pieces));
 
 			// add all matching files to section
-			$this->sections[$component] = glob($path . DS . 'controllers' . DS . '*' . DS . '*.php');
+			$this->sections[$component] = glob($path . DS . 'controllers' . DS . '*.php');
 		}
 	}
 
@@ -187,7 +188,7 @@ class Generator
 	private function processComponentSections($sections)
 	{
 		// var to hold output
-		$output = [];
+		$output = array();
 
 		// loop through each component grouping
 		foreach ($sections as $component => $files)
@@ -218,7 +219,7 @@ class Generator
 	private function processFile($file)
 	{
 		// var to hold output
-		$output = [];
+		$output = array();
 
 		// include file
 		require_once $file;
@@ -237,6 +238,11 @@ class Generator
 
 		// push version to versions array
 		$this->output['versions']['available'][] = $version;
+
+		if (!class_exists($className))
+		{
+			return $output;
+		}
 
 		// create reflection class of file
 		$classReflector = new ReflectionClass($className);
@@ -268,18 +274,18 @@ class Generator
 			}
 
 			// create endpoint data array
-			$endpoint = [
+			$endpoint = array(
 				'name'        => $phpdoc->getShortDescription(),
 				'description' => $phpdoc->getLongDescription()->getContents(),
 				'method'      => '',
 				'uri'         => '',
-				'parameters'  => [],
-				'_metadata'   => [
+				'parameters'  => array(),
+				'_metadata'   => array(
 					'component' => $component,
 					'version'   => $version,
 					'method'    => $method->getName()
-				]
-			];
+				)
+			);
 
 			// loop through each tag
 			foreach ($phpdoc->getTags() as $tag)
@@ -326,20 +332,24 @@ class Generator
 	{
 		// replace some values in file path to get what we need
 		$file = str_replace(
-			array(PATH_CORE . DS . 'components' . DS . 'com_', '.php', 'controllers'),
-			array('', '', 'controller'),
+			array(PATH_CORE . DS . 'components' . DS . 'com_', '.php'),
+			array('', ''),
 			$file
 		);
 
 		// split by "/"
 		$parts = explode(DS, $file);
+		array_unshift($parts, 'components');
 
 		// do we want to return as parts?
 		if ($returnAsParts)
 		{
-			$parts['component']  = $parts[0];
+			$parts['namespace']  = $parts[0];
+			$parts['component']  = $parts[1];
+			$parts['client']     = $parts[2];
 			$parts['controller'] = $parts[3];
-			$parts['version']    = $parts[4];
+			$b = explode('v', $parts[3]);
+			$parts['version']    = end($b);//$parts[4];
 			return $parts;
 		}
 
@@ -347,6 +357,6 @@ class Generator
 		$parts = array_map('ucfirst', $parts);
 
 		// put all the pieces back together
-		return str_replace('.', '_', implode('', $parts));
+		return str_replace('.', '_', implode('\\', $parts));
 	}
 }

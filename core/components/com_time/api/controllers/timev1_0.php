@@ -542,7 +542,7 @@ class Timev1_0 extends ApiController
 	 * @return  void
 	 * @throws  Exception
 	 */
-	private function requiresAuthentication()
+	protected function requiresAuthentication()
 	{
 		if (!App::get('authn')['user_id'])
 		{

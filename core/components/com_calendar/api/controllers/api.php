@@ -30,7 +30,7 @@
 /**
  * API controller class for events
  */
-class EventsControllerApi extends \Hubzero\Component\ApiController
+class CalendarControllerApi extends \Hubzero\Component\ApiController
 {
 	/**
 	 * Execute a request

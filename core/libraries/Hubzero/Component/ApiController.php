@@ -271,7 +271,7 @@ class ApiController implements ControllerInterface
 	 *
 	 * @return  void
 	 */
-	public function requiresAuthentication()
+	protected function requiresAuthentication()
 	{
 	}
 
