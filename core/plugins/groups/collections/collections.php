@@ -445,6 +445,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-manage-collection'))
 		{
 			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+			if (in_array(User::get('id'), $this->group->get('members')))
+			{
+				$view->filters['access'] = array(0, 1, 4);
+			}
 			$count['access'] = $view->filters['access'];
 		}
 
@@ -499,6 +503,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-manage-collection'))
 		{
 			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+			if (in_array(User::get('id'), $this->group->get('members')))
+			{
+				$view->filters['access'] = array(0, 1, 4);
+			}
 			$count['access'] = $view->filters['access'];
 		}
 
@@ -573,6 +581,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-manage-collection'))
 		{
 			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+			if (in_array(User::get('id'), $this->group->get('members')))
+			{
+				$view->filters['access'] = array(0, 1, 4);
+			}
 			$count['access'] = $view->filters['access'];
 		}
 		if ($this->authorized)
@@ -758,6 +770,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-manage-collection'))
 		{
 			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+			if (in_array(User::get('id'), $this->group->get('members')))
+			{
+				$view->filters['access'] = array(0, 1, 4);
+			}
 			$count['access'] = $view->filters['access'];
 		}
 		if ($this->authorized)
@@ -1485,14 +1501,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'collection',
-				'layout'  => 'edit'
-			)
-		);
+		$view = $this->view('edit', 'collection');
 
 		$view->name       = $this->_name;
 		$view->option     = $this->option;
