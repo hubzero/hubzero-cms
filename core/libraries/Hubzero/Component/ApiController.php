@@ -35,6 +35,7 @@ use Hubzero\Component\Exception\InvalidControllerException;
 use Hubzero\Http\Response;
 use ReflectionClass;
 use ReflectionMethod;
+use stdClass;
 
 /**
  * Base API controller for components to extend.
@@ -159,8 +160,13 @@ class ApiController implements ControllerInterface
 				$segments = null;
 				$cls = $r->getName();
 
+				// If namespaced...
+				if (strstr($cls, '\\'))
+				{
+					$segments = explode('\\', $cls);
+				}
 				// If matching the pattern of ComponentControllerName
-				if (preg_match('/(.*)Controller(.*)/i', $cls, $segments))
+				else if (preg_match('/(.*)Controller(.*)/i', $cls, $segments))
 				{
 					$this->_controller = isset($segments[2]) ? strtolower($segments[2]) : null;
 				}
@@ -287,6 +293,110 @@ class ApiController implements ControllerInterface
 	{
 		$this->response->setContent($message);
 		$this->response->setStatusCode($status ? $status : 200);
+	}
+
+	/**
+	 * Displays available options and parameters this component offers.
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /
+	 * @return    void
+	 */
+	public function indexTask()
+	{
+		// var to hold output
+		$output = new stdClass();
+		$output->component = substr($this->_option, 4);
+		$bits = explode('v', get_class($this));
+		$output->version   = str_replace('_', '.', end($bits));
+		$output->tasks     = array();
+		$output->errors    = array();
+
+		// create reflection class of file
+		$classReflector = new ReflectionClass($this);
+
+		// loop through each method and process doc
+		foreach ($classReflector->getMethods() as $method)
+		{
+			// create docblock object & make sure we have something
+			$phpdoc = new \phpDocumentor\Reflection\DocBlock($method);
+
+			// skip constructor
+			if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), array('registerTask', 'unregisterTask')))
+			{
+				continue;
+			}
+
+			// skip method in the parent class (already processed), 
+			/*if ($className != $method->getDeclaringClass()->getName())
+			{
+				//continue;
+			}*/
+
+			// skip if we dont have a short desc
+			// but put in error
+			if (!$phpdoc->getShortDescription())
+			{
+				$output->errors[] = sprintf('Missing docblock for method "%s" in "%s"', $method->getName(), str_replace(PATH_ROOT, '', $classReflector->getFileName()));
+				continue;
+			}
+
+			// create endpoint data array
+			$endpoint = array(
+				'name'        => substr($method->getName(), 0, -4),
+				'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), // $phpdoc->getLongDescription()->getContents()
+				'method'      => '',
+				'uri'         => '',
+				'parameters'  => array()/*,
+				'_metadata'   => array(
+					'component' => $output->component,
+					'version'   => $output->version,
+					'method'    => $method->getName()
+				)*/
+			);
+
+			// loop through each tag
+			foreach ($phpdoc->getTags() as $tag)
+			{
+				// get tag name and content
+				$name    = strtolower(str_replace('api', '', $tag->getName()));
+				$content = $tag->getContent();
+
+				// handle parameters separately
+				// json decode param input
+				if ($name == 'parameter')
+				{
+					$parameter = json_decode($content);
+
+					if (json_last_error() != JSON_ERROR_NONE)
+					{
+						$output->errors[] = sprintf('Unable to parse parameter info for method "%s" in "%s"', $method->getName(), str_replace(PATH_ROOT, '', $classReflector->getFileName()));
+						continue;
+					}
+
+					$endpoint['parameters'][] = (array) $parameter;
+					continue;
+				}
+
+				if ($name == 'uri' && $method->getName() == 'indexTask')
+				{
+					$content .= $output->component;
+				}
+
+				// add data to endpoint data
+				$endpoint[$name] = $content;
+			}
+
+			// add endpoint to output
+			$output->tasks[] = $endpoint;
+		}
+
+		if (count($output->errors) <= 0)
+		{
+			unset($output->errors);
+		}
+
+		$this->send($output);
 	}
 }
 
