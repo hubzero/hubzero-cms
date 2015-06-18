@@ -57,9 +57,8 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 	true
 );
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-
-if (\PluginsHelper::getActions()->get('core.manage'))
+require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
+if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_WIKI_PLUGINS'),

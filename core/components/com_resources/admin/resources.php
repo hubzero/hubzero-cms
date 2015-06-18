@@ -95,9 +95,8 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	\Route::url('index.php?option=' . $option . '&controller=roles'),
 	$controllerName == 'roles'
 );
-require_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-$canDo = \PluginsHelper::getActions();
-if ($canDo->get('core.manage'))
+require_once(dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
+if (\Components\Plugins\Admin\Helpers\Plugins::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_RESOURCES_PLUGINS'),
