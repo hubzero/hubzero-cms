@@ -175,19 +175,19 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 
 		<?php if ($this->collections->total() > 0) { ?>
 			<label for="post-collection_id">
-				<?php echo JText::_('Select collection'); ?>
+				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 				<select name="post[collection_id]" id="post-collection_id">
 				<?php foreach ($this->collections as $collection) { ?>
 					<option value="<?php echo $this->escape($collection->get('id')); ?>"<?php if ($this->collection->get('id') == $collection->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
 				<?php } ?>
 				</select>
-				<span class="hint"><?php echo JText::_('Select from the list of collections you have access to.'); ?></span>
+				<span class="hint"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>
 			</label>
 		<?php } else { ?>
 			<label for="post-collection_title">
-				<?php echo JText::_('Create collection'); ?>
+				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 				<input type="text" name="collection_title" id="post-collection_title" value="" />
-				<span class="hint"><?php echo JText::_('Create a collection for this post to go in.'); ?></span>
+				<span class="hint"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION_HINT'); ?></span>
 			</label>
 		<?php } ?>
 
