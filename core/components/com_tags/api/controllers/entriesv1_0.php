@@ -58,77 +58,68 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Documents available API tasks and their options
-	 *
-	 * @return  void
-	 */
-	public function indexTask()
-	{
-		$response = new stdClass();
-		$response->component = 'tags';
-		$response->tasks = array(
-			'tags' => array(
-				'description' => Lang::txt('Get a list of tags.'),
-				'parameters'  => array(
-					'search' => array(
-						'description' => Lang::txt('A word or phrase to search for.'),
-						'type'        => 'string',
-						'default'     => 'null'
-					),
-					'scope' => array(
-						'description' => Lang::txt('Object type to retrieve tags for (ex: resource, answer, etc).'),
-						'type'        => 'string',
-						'default'     => 'null',
-						'requires'    => 'scope_id'
-					),
-					'scope_id' => array(
-						'description' => Lang::txt('ID of object to retrieve tags for.'),
-						'type'        => 'integer',
-						'default'     => 'null',
-						'requires'    => 'scope'
-					),
-					'sort' => array(
-						'description' => Lang::txt('Sorting to be applied to the records.'),
-						'type'        => 'string',
-						'default'     => 'date',
-						'accepts'     => array('raw_tag', 'id')
-					),
-					'sortDir' => array(
-						'description' => Lang::txt('Direction to sort records by.'),
-						'type'        => 'string',
-						'default'     => 'desc',
-						'accepts'     => array('asc', 'desc')
-					),
-					'limit' => array(
-						'description' => Lang::txt('Number of result to return.'),
-						'type'        => 'integer',
-						'default'     => '25'
-					),
-					'limitstart' => array(
-						'description' => Lang::txt('Number of where to start returning results.'),
-						'type'        => 'integer',
-						'default'     => '0'
-					),
-				),
-			),
-			'tag' => array(
-				'description' => Lang::txt('Get information for a tag.'),
-				'parameters'  => array(
-					'tag' => array(
-						'description' => Lang::txt('The tag to retrieve information for.'),
-						'type'        => 'string',
-						'default'     => 'null'
-					),
-				),
-			),
-		);
-
-		$this->send($response);
-	}
-
-	/**
 	 * Displays a list of tags
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tags/list
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "search",
+	 * 		"description":   "A word or phrase to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort",
+	 * 		"description":   "Field to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "raw_tag",
+	 * 		"allowedValues": "created, id, tag, raw_tag"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort_Dir",
+	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "desc",
+	 * 		"allowedValues": "asc, desc"
+	 * }
+	  * @apiParameter {
+	 * 		"name":          "scope",
+	 * 		"description":   "Object scope (ex: group, resource, etc.)",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       null
+	 * }
+	  * @apiParameter {
+	 * 		"name":          "scope_id",
+	 * 		"description":   "Object scope ID. Typically a Resource ID, Group ID, etc.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	  * @apiParameter {
+	 * 		"name":          "taggerid",
+	 * 		"description":   "ID of user that tagged items.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
 	 * @return  void
 	 */
 	public function listTask()

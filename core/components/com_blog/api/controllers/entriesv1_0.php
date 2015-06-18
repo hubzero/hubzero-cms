@@ -48,90 +48,45 @@ require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
 class Entriesv1_0 extends ApiController
 {
 	/**
-	 * Displays a available options and parameters the API
-	 * for this comonent offers.
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /blog
-	 * @return  void
-	 */
-	public function indexTask()
-	{
-		$response = new stdClass();
-		$response->component = 'blog';
-		$response->tasks = array(
-			'archive' => array(
-				'description' => Lang::txt('Get a list of categories for a specific section.'),
-				'parameters'  => array(
-					'sort' => array(
-						'description' => Lang::txt('Field to sort results by.'),
-						'type'        => 'string',
-						'default'     => 'created',
-						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
-					),
-					'sort_Dir' => array(
-						'description' => Lang::txt('Direction to sort results by.'),
-						'type'        => 'string',
-						'default'     => 'desc',
-						'accepts'     => array('asc', 'desc')
-					),
-					'search' => array(
-						'description' => Lang::txt('A word or phrase to search for.'),
-						'type'        => 'string',
-						'default'     => 'null'
-					),
-					'limit' => array(
-						'description' => Lang::txt('Number of result to return.'),
-						'type'        => 'integer',
-						'default'     => '25'
-					),
-					'limitstart' => array(
-						'description' => Lang::txt('Number of where to start returning results.'),
-						'type'        => 'integer',
-						'default'     => '0'
-					),
-				),
-			),
-		);
-
-		$this->send($response);
-	}
-
-	/**
 	 * Displays a list of entries
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /blog/entries
+	 * @apiUri    /blog/list
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       25
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "start",
 	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       0
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "search",
 	 * 		"description":   "A word or phrase to search for.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
 	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "sort",
 	 * 		"description":   "Field to sort results by.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
-	 *      "default":       "created"
+	 *      "default":       "created",
 	 * 		"allowedValues": "created, title, alias, id, publish_up, publish_down, state"
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "sort_Dir",
 	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "desc"
+	 * 		"default":       "desc",
 	 * 		"allowedValues": "asc, desc"
 	 * }
 	 * @return  void
@@ -223,7 +178,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     now
+	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "crated_by",
@@ -234,7 +189,7 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "state",
-	 * 		"description": "Published state",
+	 * 		"description": "Published state (0 = unpublished, 1 = published)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
 	 * 		"default":     0
@@ -244,7 +199,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"description": "Access level (0 = public, 1 = registered users, 4 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     0 (public)
+	 * 		"default":     0
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "allow_comments",
@@ -258,7 +213,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"description": "Publish start timestamp (YYYY-MM-DD HH:mm:ss)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     now
+	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "publish_down",
@@ -403,10 +358,10 @@ class Entriesv1_0 extends ApiController
 	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     now
+	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "crated_by",
+	 * 		"name":        "created_by",
 	 * 		"description": "User ID of entry creator",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
@@ -414,7 +369,7 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "state",
-	 * 		"description": "Published state",
+	 * 		"description": "Published state (0 = unpublished, 1 = published)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
 	 * 		"default":     0
@@ -424,7 +379,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"description": "Access level (0 = public, 1 = registered users, 4 = private)",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     0 (public)
+	 * 		"default":     0
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "allow_comments",
@@ -438,7 +393,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"description": "Publish start timestamp (YYYY-MM-DD HH:mm:ss)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     now
+	 * 		"default":     "now"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "publish_down",
