@@ -16,8 +16,13 @@
 	#sbox-content fieldset {
 		width: auto;
 	}
+	#queryForm fieldset {
+		width: auto;
+		display: block;
+	}
 	#queryForm fieldset.wrapper {
 		padding: 1em;
+		max-width: 100%;
 	}
 	#queryForm h3 {
 		margin: 0;
