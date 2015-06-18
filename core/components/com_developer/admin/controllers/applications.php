@@ -258,7 +258,7 @@ class Applications extends AdminController
 			}
 
 			// new team member object
-			$teamMember = new DeveloperModelApiApplicationTeamMember(array(
+			$teamMember = new Models\Api\Application\Team\Member(array(
 				'uidNumber'      => $uidNumber,
 				'application_id' => $row->get('id')
 			));
