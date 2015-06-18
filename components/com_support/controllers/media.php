@@ -65,7 +65,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		$sizeLimit = $this->config->get('maxAllowed', 40000000);
 
 		// get the file
-		if (isset($_GET['qqfile']))
+		if (isset($_GET['qqfile']) && isset($_SERVER["CONTENT_LENGTH"])) // make sure we actually have a file
 		{
 			$stream = true;
 			$file = $_GET['qqfile'];
