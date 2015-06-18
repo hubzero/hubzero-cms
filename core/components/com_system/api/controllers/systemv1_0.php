@@ -28,69 +28,30 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  */
+
+namespace Components\System\Api\Controllers;
+
+use Hubzero\Component\ApiController;
 use Components\Update\Helpers\Cli;
+use stdClass;
+use Date;
+use Request;
+use Lang;
+use Component;
+use Config;
+use Event;
 
 /**
- * API controller class for forum posts
+ * API controller class for system tasks
  */
-class SystemControllerApi extends \Hubzero\Component\ApiController
+class Systemv1_0 extends ApiController
 {
-	/**
-	 * Execute a request
-	 *
-	 * @return    void
-	 */
-	public function execute()
-	{
-		//JLoader::import('joomla.environment.request');
-		//JLoader::import('joomla.application.component.helper');
-
-		$this->config = Component::params('com_system');
-		$this->database = JFactory::getDBO();
-
-		switch ($this->segments[0])
-		{
-			case 'info':               $this->infoTask();               break;
-			case 'overview':           $this->infoTask();               break;
-			case 'getSessionLifetime': $this->getSessionLifetimeTask(); break;
-			default:
-				$this->serviceTask();
-			break;
-		}
-	}
-
-	/**
-	 * Displays a available options and parameters the API
-	 * for this comonent offers.
-	 *
-	 * @return  void
-	 */
-	private function serviceTask()
-	{
-		$response = new stdClass();
-		$response->component = 'system';
-		$response->tasks = array(
-			'info' => array(
-				'description' => Lang::txt('Get an overview of a hub\'s status.'),
-				'parameters'  => array(
-					'values'      => Lang::txt('The verbosity of information returned.'),
-					'type'        => 'string',
-					'default'     => 'all',
-					'accepts'     => array('all', 'short', 'comma-separated list of keys [cms, php, dbversion, dbcollation, phpversion, server, last_commit]')
-				),
-			),
-		);
-
-		$this->setMessageType(Request::getWord('format', 'json'));
-		$this->setMessage($response);
-	}
-
 	/**
 	 * Displays ticket stats
 	 *
 	 * @return    void
 	 */
-	private function infoTask()
+	public function infoTask()
 	{
 		$this->setMessageType(Request::getWord('format', 'json'));
 
@@ -123,8 +84,8 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		$response->system = array(
 			'cms'         => App::version(),
 			'php'         => php_uname(),
-			'dbversion'   => $this->database->getVersion(),
-			'dbcollation' => $this->database->getCollation(),
+			'dbversion'   => App::get('db')->getVersion(),
+			'dbcollation' => App::get('db')->getCollation(),
 			'phpversion'  => phpversion(),
 			'server'      => $sf,
 			'last_update' => null, //$commit,
@@ -214,21 +175,18 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			}
 		}
 
-		$this->setMessage($response);
+		$this->send($response);
 	}
 
 	/**
-	 * Get session lifetime, in minutes
+	 * Grabs the session lifetime, in minutes
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /system/getSessionLifetime
 	 * @return    void
 	 */
-	private function getSessionLifetimeTask()
+	public function getSessionLifetimeTask()
 	{
-		$this->setMessageType(Request::getWord('format', 'json'));
-
-		$response   = array();
-		$response[] = Config::get('lifetime');
-
-		$this->setMessage($response);
+		$this->send([Config::get('lifetime')]);
 	}
 }
