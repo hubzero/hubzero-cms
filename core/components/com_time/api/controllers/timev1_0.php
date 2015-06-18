@@ -60,29 +60,60 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . 
 class Timev1_0 extends ApiController
 {
 	/**
-	 * Displays the available options and parameters that the API for this comonent offers
+	 * Lists all applicable time records
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /blog
-	 * @return    void
-	 */
-	public function indexTask()
-	{
-		$response = new stdClass();
-		$response->component = 'time';
-		$response->tasks     = [];
-
-		$this->send($response);
-	}
-
-	//--------------------------
-	// Records functions
-	//--------------------------
-
-	/**
-	 * Get time records
-	 *
-	 * @return void
+	 * @apiUri    /time/indexRecords
+	 * @apiParameter {
+	 * 		"name":        "tid",
+	 * 		"description": "Task id by which to limit records",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "startdate",
+	 * 		"description": "Beginning date threshold",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "enddate",
+	 * 		"description": "Ending date threshold",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "limit",
+	 * 		"description": "Maximim number of records to return",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     20
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "start",
+	 * 		"description": "Record index to start at (for pagination)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "orderby",
+	 * 		"description": "Field by which to order results",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "id"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "orderdir",
+	 * 		"description": "Direction by which to order results",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "asc"
+	 * }
+	 * @return  void
 	 */
 	public function indexRecordsTask()
 	{
@@ -127,9 +158,46 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Save a time record
+	 * Saves a new time records
 	 *
-	 * @return void
+	 * @apiMethod POST
+	 * @apiUri    /time/saveRecord
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Record id",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "task_id",
+	 * 		"description": "Task ID of record",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "date",
+	 * 		"description": "Start date/time of record",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "description",
+	 * 		"description": "Record description",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "time",
+	 * 		"description": "Duration of record",
+	 * 		"type":        "float",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	 * @return  void
 	 */
 	public function saveRecordTask()
 	{
@@ -143,7 +211,7 @@ class Timev1_0 extends ApiController
 		$r['date']        = Date::of(Request::getVar('date'))->toSql();
 		$r['description'] = Request::getVar('description');
 		$r['time']        = Request::getVar('time');
-		$r['user_id']     = JFactory::getApplication()->getAuthn('user_id');
+		$r['user_id']     = App::get('authn')['user_id'];
 		$r['end']         = date('Y-m-d H:i:s', (strtotime($r['date']) + ($r['time']*3600)));
 
 		// Create object and store content
@@ -159,14 +227,54 @@ class Timev1_0 extends ApiController
 		$this->send('Record successfully created', 201);
 	}
 
-	//--------------------------
-	// Tasks functions
-	//--------------------------
-
 	/**
-	 * Get time tasks
+	 * Lists all applicable tasks
 	 *
-	 * @return void
+	 * @apiMethod GET
+	 * @apiUri    /time/indexTasks
+	 * @apiParameter {
+	 * 		"name":        "hid",
+	 * 		"description": "Hub id",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "pactive",
+	 * 		"description": "Task active status",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "limit",
+	 * 		"description": "Maximim number of tasks to return",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     20
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "start",
+	 * 		"description": "Task index to start at (for pagination)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "orderby",
+	 * 		"description": "Field by which to order results",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "id"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "orderdir",
+	 * 		"description": "Direction by which to order results",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "asc"
+	 * }
+	 * @return  void
 	 */
 	public function indexTasksTask()
 	{
@@ -206,13 +314,46 @@ class Timev1_0 extends ApiController
 		$this->send($response);
 	}
 
-	//--------------------------
-	// Hubs functions
-	//--------------------------
-
 	/**
-	 * Get time hubs
+	 * Lists all applicable hubs
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /time/indexHubs
+	 * @apiParameter {
+	 * 		"name":        "active",
+	 * 		"description": "Hub active status",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "limit",
+	 * 		"description": "Maximim number of hubs to return",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     20
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "start",
+	 * 		"description": "Hub index to start at (for pagination)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "orderby",
+	 * 		"description": "Field by which to order results",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "id"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "orderdir",
+	 * 		"description": "Direction by which to order results",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "asc"
+	 * }
 	 * @return  void
 	 */
 	public function indexHubsTask()
@@ -250,8 +391,17 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Get single hub
+	 * Shows a single hub
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /time/showHub
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Hub ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
 	 * @return  void
 	 */
 	public function showHubTask()
@@ -292,13 +442,46 @@ class Timev1_0 extends ApiController
 		$this->send($response);
 	}
 
-	//--------------------------
-	// Miscellaneous
-	//--------------------------
-
 	/**
-	 * Save hub contact function
+	 * Saves a hub contact
 	 *
+	 * @apiMethod POST
+	 * @apiUri    /time/saveContact
+	 * @apiParameter {
+	 * 		"name":        "name",
+	 * 		"description": "Contact name",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "phone",
+	 * 		"description": "Contact phone",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "email",
+	 * 		"description": "Contact email",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "role",
+	 * 		"description": "Contact role",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "hid",
+	 * 		"description": "Hub id to which the contact belongs",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
 	 * @return  void
 	 */
 	public function saveContactTask()
@@ -327,39 +510,24 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Get the list of users in the 'time' group
+	 * Retrieves possible unique values based on table and column
 	 *
-	 * @return  void
-	 */
-	public function indexTimeUsersTask()
-	{
-		// Require authentication and authorization
-		$this->requiresAuthentication();
-		$this->authorizeOrFail();
-
-		// Get group members query
-		$query  = "SELECT u.id, u.name";
-		$query .= " FROM #__xgroups_members AS m";
-		$query .= " LEFT JOIN #__xgroups AS g ON m.gidNumber = g.gidNumber";
-		$query .= " LEFT JOIN #__users AS u ON u.id = m.uidNumber";
-		$query .= " WHERE g.cn = 'time'";
-		$query .= " ORDER BY u.name ASC";
-
-		// Set the query
-		App::get('db')->setQuery($query);
-		$users = App::get('db')->loadObjectList();
-
-		// Create object with users property
-		$response = new stdClass();
-		$response->users = $users;
-
-		// Return object
-		$this->send($response);
-	}
-
-	/**
-	 * Method for getting possible unique values based on table and column
-	 *
+	 * @apiMethod GET
+	 * @apiUri    /time/getValues
+	 * @apiParameter {
+	 * 		"name":        "table",
+	 * 		"description": "Table name of interest",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "column",
+	 * 		"description": "Table column of interest",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     ""
+	 * }
 	 * @return  void
 	 */
 	public function getValuesTask()
@@ -402,9 +570,11 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Get time records for the logged in user for today
+	 * Grabs time records for the logged in user for today
 	 *
-	 * @return  void
+	 * @apiMethod GET
+	 * @apiUri    /time/today
+	 * @return    void
 	 */
 	public function todayTask()
 	{
@@ -438,9 +608,11 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Get the records per day this week
+	 * Grabs the records per day this week for the current user
 	 *
-	 * @return void
+	 * @apiMethod GET
+	 * @apiUri    /time/week
+	 * @return    void
 	 */
 	public function weekTask()
 	{
@@ -469,9 +641,46 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Save a time record, updating it if it already exists
+	 * Saves a new time records, updating it if it alread exists
 	 *
-	 * @return void
+	 * @apiMethod POST
+	 * @apiUri    /time/postRecord
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Record id",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "task_id",
+	 * 		"description": "Task ID of record",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "start",
+	 * 		"description": "Start date/time of record",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "end",
+	 * 		"description": "End date/time of record",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "description",
+	 * 		"description": "Record description",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return  void
 	 */
 	public function postRecordTask()
 	{
@@ -518,7 +727,23 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Helper function to check ensure appropriate authorization
+	 * Checks authentication
+	 *
+	 * @FIXME: this will go away when new OAuth is enabled and parent class has auth check method
+	 *
+	 * @return  void
+	 * @throws  Exception
+	 */
+	protected function requiresAuthentication()
+	{
+		if (!App::get('authn')['user_id'])
+		{
+			App::abort(404, 'Not Found');
+		}
+	}
+
+	/**
+	 * Checks to ensure appropriate authorization
 	 *
 	 * @return  bool
 	 * @throws  Exception
@@ -534,19 +759,5 @@ class Timev1_0 extends ApiController
 		}
 
 		return true;
-	}
-
-	/**
-	 * Check authentication
-	 *
-	 * @return  void
-	 * @throws  Exception
-	 */
-	protected function requiresAuthentication()
-	{
-		if (!App::get('authn')['user_id'])
-		{
-			App::abort(404, 'Not Found');
-		}
 	}
 }
