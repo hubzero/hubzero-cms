@@ -659,5 +659,40 @@ class Tag extends Model
 
 		return true;
 	}
+
+	/**
+	 * Return model as simplified object
+	 *
+	 * @return  object
+	 */
+	public function toObject()
+	{
+		$data = new \stdClass;
+
+		$properties = $this->_tbl->getProperties();
+		foreach ($properties as $key => $value)
+		{
+			if ($key && substr($key, 0, 1) != '_')
+			{
+				$data->$key = $this->get($key);
+			}
+		}
+
+		$data->uri         = str_replace('/api', '', rtrim(\Request::base(), '/') . '/' . ltrim(\Route::url($this->link()), '/'));
+		$data->objects     = $this->objects('count');
+		$data->substitutes = array();
+
+		foreach ($this->substitutes('list') as $sub)
+		{
+			$obj = new stdClass;
+			$obj->id    = $sub->get('id');
+			$obj->tag   = $sub->get('tag');
+			$obj->title = $sub->get('raw_tag');
+
+			$data->substitutes[] = $obj;
+		}
+
+		return $data;
+	}
 }
 
