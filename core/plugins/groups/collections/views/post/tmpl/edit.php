@@ -60,7 +60,6 @@ if (!$dir)
 
 $jbase = rtrim(Request::base(true), '/');
 ?>
-
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -175,19 +174,19 @@ $jbase = rtrim(Request::base(true), '/');
 
 		<?php if ($this->collections->total() > 0) { ?>
 			<label for="post-collection_id">
-				<?php echo Lang::txt('Select collection'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 				<select name="post[collection_id]" id="post-collection_id">
 				<?php foreach ($this->collections as $collection) { ?>
 					<option value="<?php echo $this->escape($collection->get('id')); ?>"<?php if ($this->collection->get('id') == $collection->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
 				<?php } ?>
 				</select>
-				<span class="hint"><?php echo Lang::txt('Select from the list of collections you have access to.'); ?></span>
+				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>
 			</label>
 		<?php } else { ?>
 			<label for="post-collection_title">
-				<?php echo Lang::txt('Create collection'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 				<input type="text" name="collection_title" id="post-collection_title" value="" />
-				<span class="hint"><?php echo Lang::txt('Create a collection for this post to go in.'); ?></span>
+				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION_HINT'); ?></span>
 			</label>
 		<?php } ?>
 
@@ -195,7 +194,7 @@ $jbase = rtrim(Request::base(true), '/');
 			</div>
 			<div class="col span6 omega">
 				<label>
-					<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
+					<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?>
 					<?php echo $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags'); ?>
 					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
 				</label>
