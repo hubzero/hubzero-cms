@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,99 +23,79 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Chris Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
+namespace Components\Whatsnew\Api\Controllers;
+
+use Components\Whatsnew\Helpers\Period;
+use Hubzero\Component\ApiController;
+use stdClass;
+use Request;
+use Event;
+use Lang;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'period.php');
 
 /**
  * API controller class for What's New
  */
-class WhatsnewControllerApi extends \Hubzero\Component\ApiController
+class Entriesv1_0 extends ApiController
 {
 	/**
-	 * Execute a request
+	 * Displays a list of new content
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /whatsnew/list
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "period",
+	 * 		"description":   "Time period to return results for.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "year"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "category",
+	 * 		"description":   "Category to filter by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "sort_Dir",
+	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "desc",
+	 * 		"allowedValues": "asc, desc"
+	 * }
 	 * @return  void
 	 */
-	public function execute()
+	public function listTask()
 	{
-		//JLoader::import('joomla.environment.request');
-		//JLoader::import('joomla.application.component.helper');
-
-		switch ($this->segments[0])
-		{
-			case 'index': $this->index(); break;
-			default:      $this->service();
-		}
-	}
-
-	/**
-	 * Documents available API tasks and their options
-	 *
-	 * @return  void
-	 */
-	private function service()
-	{
-		$response = new stdClass();
-		$response->component = 'whatsnew';
-		$response->tasks = array(
-			'index' => array(
-				'description' => Lang::txt('Get a list of new content.'),
-				'parameters'  => array(
-					'period' => array(
-						'description' => Lang::txt('Time period to search for records.'),
-						'type'        => 'string',
-						'default'     => 'year',
-						'accepts'     => array('year', 'quarter', 'month', 'week')
-					),
-					'order' => array(
-						'description' => Lang::txt('Direction to sort results by.'),
-						'type'        => 'string',
-						'default'     => 'desc',
-						'accepts'     => array('asc', 'desc')
-					),
-					'limit' => array(
-						'description' => Lang::txt('Number of result to return.'),
-						'type'        => 'integer',
-						'default'     => '25'
-					),
-					'limitstart' => array(
-						'description' => Lang::txt('Number of where to start returning results.'),
-						'type'        => 'integer',
-						'default'     => '0'
-					),
-				),
-			),
-		);
-
-		$this->setMessageType(Request::getWord('format', 'json'));
-		$this->setMessage($response);
-	}
-
-	/**
-	 * Generates a list of new content
-	 *
-	 * @return  void
-	 */
-	protected function index()
-	{
-		// get the userid
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-
-		// if we dont have a user return nothing
-		if ($userid == null)
-		{
-			return $this->not_found();
-		}
-
 		// get the request vars
-		$period     = Request::getVar("period", "year");
-		$category   = Request::getVar("category", "all");
-		$limit      = Request::getVar("limit", 25);
-		$limitstart = Request::getVar("limitstart", 0);
-		$content    = Request::getVar("content", 0);
-		$order      = Request::getVar("order", "desc");
+		$period     = Request::getVar('period', 'year');
+		$category   = Request::getVar('category', 'all');
+		$limit      = Request::getInt('limit', 25);
+		$limitstart = Request::getInt('limitstart', 0);
+		$content    = Request::getVar('content', 0);
+		$order      = Request::getVar('sort_Dir', 'desc');
 
 		// get the search areas
 		$areas = array();
@@ -143,11 +123,10 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//parse the period
-		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'period.php');
-		$p = new Components\Whatsnew\Helpers\Period($period);
+		$p = new Period($period);
 
-		$results = $dispatcher->trigger(
-			'onWhatsnew',
+		$results = Event::trigger(
+			'whatsnew.onWhatsnew',
 			array(
 				$p,
 				999,
@@ -200,11 +179,11 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 			$count++;
 		}
 
-		$obj = new stdClass();
-		$obj->whatsnew = $w;
+		$response = new stdClass();
+		$response->total = $count;
+		$response->whatsnew = $w;
 
-		$this->setMessageType("application/json");
-		$this->setMessage($obj);
+		$this->send($response);
 	}
 
 	/**
