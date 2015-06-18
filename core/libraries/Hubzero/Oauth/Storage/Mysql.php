@@ -302,7 +302,7 @@ class Mysql implements AccessTokenInterface,
 	{
 		// auth model
 		$model = new \Components\Developer\Models\Api\AuthorizationCode();
-		
+
 		// fetch by code
 		if (!$authorizationCode = $model->loadByCode($code))
 		{
@@ -347,7 +347,7 @@ class Mysql implements AccessTokenInterface,
 		{
 			$username = $this->getUsernameFromEmail($username);
 		}
-		
+
 		// load profile object, make sure its valid
 		if (!$profile = Profile::getInstance($username))
 		{
@@ -555,7 +555,7 @@ class Mysql implements AccessTokenInterface,
 		{
 			return false;
 		}
-	
+
 		// check users IP against the session execution host IP
 		if (\App::get('request')->ip() != gethostbyname($session->exechost))
 		{

@@ -98,14 +98,14 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
 		if (!$sessionId = $this->storage->getSessionIdFromCookie())
 		{
 			$response->setError(401, 'session_authentication_invalid', 'Unable to find a valid session id.');
-			return false; 
+			return false;
 		}
 
 		// get user for session id
 		if (!$userId = $this->storage->getUserIdFromSessionId($sessionId))
 		{
 			$response->setError(401, 'session_authentication_invalid', 'Unable to authenticate via active session.');
-			return false; 
+			return false;
 		}
 
 		// store our session & user id
