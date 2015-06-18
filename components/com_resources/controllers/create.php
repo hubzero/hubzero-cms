@@ -762,9 +762,9 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->modified_by  = $this->juser->get('id');
 		$row->access       = ($row->access ?: 0);
 
-		$row->fulltxt   = trim($row->fulltxt);
+		//instead of letting slashes through, change them to %5C so they are not stripped by stripslashes()
+		$row->fulltxt   = trim(preg_replace('/\\\/', "%5C", $row->fulltxt));
 		$row->introtext = \Hubzero\Utility\String::truncate(strip_tags($row->fulltxt), 500);
-		//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = new ResourcesType($this->database);
@@ -841,7 +841,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		if (trim($row->fulltxt))
 		{
 			$row->fulltxt   = ResourcesHtml::stripStyles($row->fulltxt);
-			$row->fulltxt   = $this->_txtClean($row->fulltxt);
+			//$row->fulltxt   = $this->_txtClean($row->fulltxt);
 			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 			$row->footertext = $this->_txtClean($row->footertext);
 		}
