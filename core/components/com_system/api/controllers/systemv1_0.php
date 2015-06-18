@@ -53,8 +53,6 @@ class Systemv1_0 extends ApiController
 	 */
 	public function infoTask()
 	{
-		$this->setMessageType(Request::getWord('format', 'json'));
-
 		$values = Request::getVar('values', 'all');
 
 		$response = new stdClass;
