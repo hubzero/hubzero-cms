@@ -268,16 +268,56 @@ class Orcid extends SiteController
 			$callbackPrefix = "HUB.Members.Profile.";
 		}
 
-		$root = $this->_fetchXml($first_name, $last_name, $email);
+		/*
+		 * Separeted into three requests for better results
+		 */
 
-		if (!empty($root))
+		// get results based on first name
+		if (isset($first_name))
 		{
-			$records = $this->_parseTree($root);
+			$root = $this->_fetchXml($first_name, NULL, NULL);
+
+			if (!empty($root))
+			{
+				$fnames = $this->_parseTree($root);
+			}
 		}
 		else
 		{
-			$records = array();
+			$fnames = array();
 		}
+
+		// get results based on last name
+		if (isset($last_name))
+		{
+			$root = $this->_fetchXml(NULL, $last_name, NULL);
+			if (!empty($root))
+			{
+				$lnames = $this->_parseTree($root);
+			}
+		}
+		else
+		{
+			$lnames = array();
+		}
+
+		// get results based on email
+		if (isset($email))
+		{
+			$root = $this->_fetchXml(NULL, NULL, $email);
+
+			if (!empty($root))
+			{
+				$emails = $this->_parseTree($root);
+			}
+		}
+		else
+		{
+			$emails = array();
+		}
+
+		// combine
+		$records = array_merge($fnames, $lnames, $emails);
 
 		ob_end_clean();
 		ob_start();
