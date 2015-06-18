@@ -30,8 +30,6 @@
 
 namespace Hubzero\Oauth;
 
-use JRegistry;
-use ApiConfig;
 use OAuth2\Server as OAuth2Server;
 use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Hubzero\Oauth\GrantType\RefreshToken as RefreshTokenGrantType;

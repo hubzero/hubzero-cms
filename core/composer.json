@@ -75,7 +75,8 @@
         "guzzlehttp/guzzle": "5.2.*",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
-        "phpdocumentor/reflection-docblock": "2.0.4"
+        "phpdocumentor/reflection-docblock": "2.0.4",
+        "bshaffer/oauth2-server-php": "v1.4"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },

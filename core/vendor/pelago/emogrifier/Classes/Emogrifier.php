@@ -6,6 +6,8 @@ namespace Pelago;
  *
  * For more information, please see the README.md file.
  *
+ * @version 0.1.1
+ *
  * @author Cameron Brooks
  * @author Jaime Prado
  * @author Roman Ožana <ozana@omdesign.cz>
@@ -122,20 +124,12 @@ class Emogrifier
     private $isStyleBlocksParsingEnabled = true;
 
     /**
-     * This attribute applies to the case where you want to preserve your original text encoding.
-     *
-     * By default, emogrifier translates your text into HTML entities for two reasons:
-     *
-     * 1. Because of client incompatibilities, it is better practice to send out HTML entities
-     *    rather than unicode over email.
-     *
-     * 2. It translates any illegal XML characters that DOMDocument cannot work with.
-     *
-     * If you would like to preserve your original encoding, set this attribute to true.
+     * Determines whether elements with the `display: none` property are
+     * removed from the DOM.
      *
      * @var bool
      */
-    public $preserveEncoding = false;
+    private $shouldKeepInvisibleNodes = true;
 
     /**
      * The constructor.
@@ -289,32 +283,13 @@ class Emogrifier
             $this->fillStyleAttributesWithMergedStyles();
         }
 
-        // This removes styles from your email that contain display:none.
-        // We need to look for display:none, but we need to do a case-insensitive search. Since DOMDocument only
-        // supports XPath 1.0, lower-case() isn't available to us. We've thus far only set attributes to lowercase,
-        // not attribute values. Consequently, we need to translate() the letters that would be in 'NONE' ("NOE")
-        // to lowercase.
-        $nodesWithStyleDisplayNone = $xpath->query(
-            '//*[contains(translate(translate(@style," ",""),"NOE","noe"),"display:none")]'
-        );
-        // The checks on parentNode and is_callable below ensure that if we've deleted the parent node,
-        // we don't try to call removeChild on a nonexistent child node
-        if ($nodesWithStyleDisplayNone->length > 0) {
-            /** @var \DOMNode $node */
-            foreach ($nodesWithStyleDisplayNone as $node) {
-                if ($node->parentNode && is_callable(array($node->parentNode,'removeChild'))) {
-                    $node->parentNode->removeChild($node);
-                }
-            }
+        if ($this->shouldKeepInvisibleNodes) {
+            $this->removeInvisibleNodes($xpath);
         }
 
         $this->copyCssWithMediaToStyleNode($cssParts, $xmlDocument);
 
-        if ($this->preserveEncoding) {
-            return mb_convert_encoding($xmlDocument->saveHTML(), self::ENCODING, 'HTML-ENTITIES');
-        } else {
-            return $xmlDocument->saveHTML();
-        }
+        return mb_convert_encoding($xmlDocument->saveHTML(), self::ENCODING, 'HTML-ENTITIES');
     }
 
     /**
@@ -335,6 +310,16 @@ class Emogrifier
     public function disableStyleBlocksParsing()
     {
         $this->isStyleBlocksParsingEnabled = false;
+    }
+
+    /**
+     * Disables the removal of elements with `display: none` properties.
+     *
+     * @return void
+     */
+    public function disableInvisibleNodeRemoval()
+    {
+        $this->shouldKeepInvisibleNodes = false;
     }
 
     /**
@@ -415,6 +400,36 @@ class Emogrifier
         $key = array_search($tagName, $this->unprocessableHtmlTags, true);
         if ($key !== false) {
             unset($this->unprocessableHtmlTags[$key]);
+        }
+    }
+
+     /**
+      * This removes styles from your email that contain display:none.
+      * We need to look for display:none, but we need to do a case-insensitive search. Since DOMDocument only
+      * supports XPath 1.0, lower-case() isn't available to us. We've thus far only set attributes to lowercase,
+      * not attribute values. Consequently, we need to translate() the letters that would be in 'NONE' ("NOE")
+      * to lowercase.
+      *
+      * @param \DOMXPath $xpath
+      *
+      * @return void
+      */
+    private function removeInvisibleNodes(\DOMXPath $xpath)
+    {
+        $nodesWithStyleDisplayNone = $xpath->query(
+            '//*[contains(translate(translate(@style," ",""),"NOE","noe"),"display:none")]'
+        );
+        if ($nodesWithStyleDisplayNone->length === 0) {
+            return;
+        }
+
+        // The checks on parentNode and is_callable below ensure that if we've deleted the parent node,
+        // we don't try to call removeChild on a nonexistent child node
+        /** @var \DOMNode $node */
+        foreach ($nodesWithStyleDisplayNone as $node) {
+            if ($node->parentNode && is_callable(array($node->parentNode, 'removeChild'))) {
+                $node->parentNode->removeChild($node);
+            }
         }
     }
 
