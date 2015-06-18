@@ -78,7 +78,7 @@ class CalendarControllerApi extends \Hubzero\Component\ApiController
 	 *
 	 * @return  void
 	 */
-	private function indexTask()
+	public function indexTask()
 	{
 		// get the userid
 		$userid = \JFactory::getApplication()->getAuthn('user_id');
