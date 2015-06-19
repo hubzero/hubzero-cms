@@ -46,6 +46,8 @@ foreach ($this->rows as $row)
 		$adminUserCount++;
 	}
 }
+
+$editAuthorized = User::authorize('com_users', 'manage')
 ?>
 
 <div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">
@@ -84,9 +86,9 @@ foreach ($this->rows as $row)
 									$user = User::getInstance($row->username);
 
 									// Display link if we are authorized
-									if ($editAuthorized = User::authorize('com_users', 'manage'))
+									if ($editAuthorized)
 									{
-										echo '<a href="' . Route::url('index.php?option=com_users&task=edit&cid[]='. $row->userid) . '" title="' . Lang::txt('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
+										echo '<a href="' . Route::url('index.php?option=com_users&task=user.edit&id='. $row->userid) . '" title="' . Lang::txt('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
 									}
 									else
 									{
