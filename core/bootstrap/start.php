@@ -91,10 +91,7 @@ $app['app'] = $app;
 |
 */
 
-$app['config'] = new \Hubzero\Config\Repository(
-	new \Hubzero\Config\FileLoader(PATH_APP . DS . 'app' . DS . 'config'),
-	$client
-);
+$app['config'] = new \Hubzero\Config\Repository($client);
 
 if (!defined('JDEBUG'))   define('JDEBUG',   $app['config']->get('debug'));
 if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $app['config']->get('profile'));

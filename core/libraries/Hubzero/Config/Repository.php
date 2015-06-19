@@ -56,8 +56,12 @@ class Repository extends Registry
 	 * @param   string  $client
 	 * @return  void
 	 */
-	public function __construct($loader, $client)
+	public function __construct($client, $loader = null)
 	{
+		if (!$loader)
+		{
+			$loader = new \Hubzero\Config\FileLoader(PATH_APP . DS . 'app' . DS . 'config');
+		}
 		$this->loader = $loader;
 		$this->client = $client;
 
