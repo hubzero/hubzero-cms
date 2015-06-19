@@ -32,6 +32,7 @@ namespace Components\Developer\Site\Controllers;
 
 use Components\Developer\Models;
 use Hubzero\Component\SiteController;
+use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Exception;
 use OAuth2;
 use Lang;
@@ -56,7 +57,7 @@ class Oauth extends SiteController
 	public function __construct()
 	{
 		// create our oauth server
-		$this->server = new \Hubzero\Oauth\Server();
+		$this->server = new \Hubzero\Oauth\Server(new MysqlStorage);
 
 		// do the rest of setup
 		$this->disableDefaultTask();
