@@ -57,12 +57,14 @@ jQuery(document).ready(function($) {
 	var sessionTimeout = 120 * 60,
 		lastCheck      = new Date().getTime();
 
-	// Get the session lifetime
-	$.ajax({
-		url  : '/api/system/getSessionLifetime',
-		type : 'GET'
-	}).done(function ( data ) {
-		sessionTimeout = data * 60;
+	Hubzero.initApi(function () {
+		// Get the session lifetime
+		$.ajax({
+			url  : '/api/system/getSessionLifetime',
+			type : 'GET'
+		}).done(function ( data ) {
+			sessionTimeout = data * 60;
+		});
 	});
 
 	// Add session tracking (is there a better way?)

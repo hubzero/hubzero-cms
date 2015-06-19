@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = $this->course->offering()->link();
 
+HTML::behavior('core');
+
 ?>
 
 <div class="header">
