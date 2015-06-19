@@ -727,22 +727,6 @@ class Timev1_0 extends ApiController
 	}
 
 	/**
-	 * Checks authentication
-	 *
-	 * @FIXME: this will go away when new OAuth is enabled and parent class has auth check method
-	 *
-	 * @return  void
-	 * @throws  Exception
-	 */
-	protected function requiresAuthentication()
-	{
-		if (!App::get('authn')['user_id'])
-		{
-			App::abort(404, 'Not Found');
-		}
-	}
-
-	/**
 	 * Checks to ensure appropriate authorization
 	 *
 	 * @return  bool
