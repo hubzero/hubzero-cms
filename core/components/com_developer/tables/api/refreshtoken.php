@@ -33,7 +33,7 @@ namespace Components\Developer\Tables\Api;
 /**
  * Developer refresh token table class
  */
-class DeveloperTableApiRefreshToken extends \JTable
+class RefreshToken extends \JTable
 {
 	/**
 	 * Constructor

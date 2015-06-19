@@ -342,7 +342,7 @@ class Applications extends SiteController
 			}
 
 			// new team member object
-			$teamMember = new Models\Api\ApplicationTeamMember(array(
+			$teamMember = new Models\Api\Application\Team\Member(array(
 				'uidNumber'      => $uidNumber,
 				'application_id' => $model->get('id')
 			));
