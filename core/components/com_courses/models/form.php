@@ -296,7 +296,7 @@ class PdfForm
 			$secret     = \Config::get('secret');
 			$token      = hash('sha256', $session_id . ':' . $secret);
 			$path       = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&token='.$token;
-			$path      .= (isset($version_dir)) ? '&version=' . $version_dir : '';
+			$path      .= (isset($version_dir)) ? '&form_version=' . $version_dir : '';
 			$fun($path, ++$idx);
 		}
 	}

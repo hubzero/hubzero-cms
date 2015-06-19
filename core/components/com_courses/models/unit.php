@@ -171,11 +171,11 @@ class Unit extends Base
 			$tbl = new Tables\SectionDate($this->_db);
 			$tbl->load($this->get('id'), 'unit', $this->get('section_id'));
 
-			if (!$this->_tbl->{'__publish_up'})
+			if (!$this->_tbl->get('__publish_up', null))
 			{
 				$this->set('publish_up', $tbl->get('publish_up', ''));
 			}
-			if (!$this->_tbl->{'__publish_down'})
+			if (!$this->_tbl->get('__publish_down', null))
 			{
 				$this->set('publish_down', $tbl->get('publish_down', ''));
 			}
