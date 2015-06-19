@@ -46,6 +46,8 @@ foreach ($this->rows as $row)
 		$adminUserCount++;
 	}
 }
+
+$editAuthorized = $this->juser->authorize('com_users', 'manage');
 ?>
 
 <div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">
@@ -80,17 +82,13 @@ foreach ($this->rows as $row)
 						<tr>
 							<td>
 								<?php
-									//are we authorized to edit users
-									$editAuthorized = $this->juser->authorize('com_users', 'manage');
-
 									//get user object
 									$juser = JUser::getInstance($row->username);
 
 									//display link if we are authorized
 									if ($editAuthorized)
 									{
-										$editLink = 'index.php?option=com_users&amp;task=edit&amp;cid[]='. $row->userid;
-										echo '<a href="' . $editLink . '" title="' . JText::_('Edit User') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
+										echo '<a href="' . JRoute::_('index.php?option=com_users&task=user.edit&id='. $row->userid) . '" title="' . JText::_('Edit User') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
 									}
 									else
 									{
