@@ -60,34 +60,34 @@ $loggeduser = User::getRoot();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="10%">
+				<th class="nowrap priority-3">
 					<?php echo Html::grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="5%">
+				<th class="nowrap">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_ENABLED', 'a.block', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="5%">
+				<th class="nowrap">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_APPROVED', 'a.approved', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="10%">
+				<th class="nowrap priority-3">
 					<?php echo Lang::txt('COM_USERS_HEADING_GROUPS'); ?>
 				</th>
-				<th class="nowrap" width="15%">
+				<th class="nowrap priority-5">
 					<?php echo Html::grid('sort', 'JGLOBAL_EMAIL', 'a.email', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="10%">
+				<th class="nowrap priority-6">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_LAST_VISIT_DATE', 'a.lastvisitDate', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="10%">
+				<th class="nowrap priority-6">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_REGISTRATION_DATE', 'a.registerDate', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="3%">
+				<th class="nowrap priority-5">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -135,7 +135,7 @@ $loggeduser = User::getRoot();
 						</a>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-3">
 					<?php echo $this->escape($item->username); ?>
 				</td>
 				<td class="center">
@@ -156,27 +156,27 @@ $loggeduser = User::getRoot();
 						<?php echo Html::grid('boolean', $i, $item->approved, null, null); ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-3">
 					<?php if (substr_count($item->group_names, "\n") > 1) : ?>
 						<span class="hasTip" title="<?php echo Lang::txt('COM_USERS_HEADING_GROUPS').'::'.nl2br($item->group_names); ?>"><?php echo Lang::txt('COM_USERS_USERS_MULTIPLE_GROUPS'); ?></span>
 					<?php else : ?>
 						<?php echo nl2br($item->group_names); ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-5">
 					<?php echo $this->escape($item->email); ?>
 				</td>
-				<td class="center">
+				<td class="center priority-6">
 					<?php if ($item->lastvisitDate!='0000-00-00 00:00:00'):?>
 						<?php echo Date::of($item->lastvisitDate)->toLocal('Y-m-d H:i:s'); ?>
 					<?php else:?>
 						<?php echo Lang::txt('JNEVER'); ?>
 					<?php endif;?>
 				</td>
-				<td class="center">
+				<td class="center priority-6">
 					<?php echo Date::of($item->registerDate)->toLocal('Y-m-d H:i:s'); ?>
 				</td>
-				<td class="center">
+				<td class="center priority-5">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>

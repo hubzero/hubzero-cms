@@ -42,25 +42,25 @@ $canEdit = User::authorise('core.edit', 'com_users');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
 					<?php echo Html::grid('sort', 'COM_USERS_USER_HEADING', 'u.name', $listDirn, $listOrder); ?>
 				</th>
-				<th  class="left">
+				<th class="left">
 					<?php echo Html::grid('sort', 'COM_USERS_SUBJECT_HEADING', 'a.subject', $listDirn, $listOrder); ?>
 				</th>
-				<th width="20%">
+				<th class="priority-5">
 					<?php echo Html::grid('sort', 'COM_USERS_CATEGORY_HEADING', 'c.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th class="priority-3">
 					<?php echo Html::grid('sort',  'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th>
 					<?php echo Html::grid('sort', 'COM_USERS_REVIEW_HEADING', 'a.review_time', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th class="nowrap priority-6">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -97,13 +97,13 @@ $canEdit = User::authorise('core.edit', 'com_users');
 						<?php echo Lang::txt('COM_USERS_EMPTY_SUBJECT'); ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-5">
 					<?php if ($item->catid && $item->cparams->get('image')) : ?>
-					<?php echo Html::users('image', $item->cparams->get('image')); ?>
+						<?php echo Html::users('image', $item->cparams->get('image')); ?>
 					<?php endif; ?>
 					<?php echo $this->escape($item->category_title); ?>
 				</td>
-				<td class="center">
+				<td class="center priority-4">
 					<?php echo Html::grid('published', $item->state, $i, 'notes.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<td class="center">
@@ -113,7 +113,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 						<?php echo Lang::txt('COM_USERS_EMPTY_REVIEW'); ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-6">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>

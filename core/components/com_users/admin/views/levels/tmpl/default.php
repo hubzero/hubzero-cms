@@ -36,29 +36,26 @@ $saveOrder	= $listOrder == 'a.ordering';
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+				</th>
+				<th class="priority-3">
+					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
 				</th>
 				<th class="left">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_LEVEL_NAME', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th>
 					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'levels.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="5%">
-					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
-				</th>
-				<th width="40%">
-					&#160;
-				</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="15">
+				<td colspan="4">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
@@ -66,14 +63,17 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<tbody>
 		<?php $count = count($this->items); ?>
 		<?php foreach ($this->items as $i => $item) :
-			$ordering	= ($listOrder == 'a.ordering');
-			$canCreate	= $user->authorise('core.create',		'com_users');
-			$canEdit	= $user->authorise('core.edit',			'com_users');
-			$canChange	= $user->authorise('core.edit.state',	'com_users');
+			$ordering  = ($listOrder == 'a.ordering');
+			$canCreate = $user->authorise('core.create',     'com_users');
+			$canEdit   = $user->authorise('core.edit',       'com_users');
+			$canChange = $user->authorise('core.edit.state', 'com_users');
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php echo Html::grid('id', $i, $item->id); ?>
+				</td>
+				<td class="center priority-3">
+					<?php echo (int) $item->id; ?>
 				</td>
 				<td>
 					<?php if ($canEdit) : ?>
@@ -99,12 +99,6 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<?php else : ?>
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>
-				</td>
-				<td class="center">
-					<?php echo (int) $item->id; ?>
-				</td>
-				<td>
-					&#160;
 				</td>
 			</tr>
 		<?php endforeach; ?>

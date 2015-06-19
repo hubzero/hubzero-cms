@@ -58,17 +58,17 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+				</th>
+				<th class="priority-4">
+					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
 				</th>
 				<th class="left">
 					<?php echo Lang::txt('COM_USERS_HEADING_GROUP_TITLE'); ?>
 				</th>
-				<th width="10%">
+				<th class="priority-3">
 					<?php echo Lang::txt('COM_USERS_HEADING_USERS_IN_GROUP'); ?>
-				</th>
-				<th width="5%">
-					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
 				</th>
 			</tr>
 		</thead>
@@ -96,6 +96,9 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 						<?php echo Html::grid('id', $i, $item->id); ?>
 					<?php endif; ?>
 				</td>
+				<td class="center priority-4">
+					<?php echo (int) $item->id; ?>
+				</td>
 				<td>
 					<?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->level) ?>
 					<?php if ($canEdit) : ?>
@@ -110,11 +113,8 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 						</a>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-3">
 					<?php echo $item->user_count ? $item->user_count : ''; ?>
-				</td>
-				<td class="center">
-					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>
