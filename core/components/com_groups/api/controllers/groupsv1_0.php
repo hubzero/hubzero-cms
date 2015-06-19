@@ -465,7 +465,7 @@ class Groupsv1_0 extends ApiController
 		);
 
 		// make sure we have a valid policy
-		if (!in_array($joinPolicy, $policies) 
+		if (!in_array($joinPolicy, $policies)
 			&& !in_array($joinPolicy, array_keys($policies)))
 		{
 			$errors[] = array(
