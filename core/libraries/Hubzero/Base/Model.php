@@ -603,6 +603,30 @@ abstract class Model extends Object
 	}
 
 	/**
+	 * Method to return model values in array format
+	 * 
+	 * @param  boolean $verbose Include prefixed "__" vars in output
+	 * @return array            Array of model values.
+	 */
+	public function toArray($verbose = false)
+	{
+		$output = $this->_tbl->getProperties();
+
+		if ($verbose)
+		{
+			foreach ($this->_tbl as $key => $value)
+			{
+				if (substr($key, 0, 2) == '__')
+				{
+					$output[substr($key, 2)] = $value;
+				}
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Dynamically handle error additions.
 	 *
 	 * @param   string  $method
