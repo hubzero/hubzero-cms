@@ -31,7 +31,10 @@
 namespace Hubzero\Api;
 
 use Hubzero\Container\Container;
+use Hubzero\Oauth\Server;
+use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Exception;
+use Event;
 
 /**
  * Authentication class, provides an interface for the authentication system
@@ -39,7 +42,14 @@ use Exception;
 class Guard
 {
 	/**
-	 * The application implementation.
+	 * The oauth token data
+	 *
+	 * @var array
+	 **/
+	private $token = null;
+
+	/**
+	 * The application implementation
 	 *
 	 * @var  object
 	 */
@@ -56,153 +66,51 @@ class Guard
 	}
 
 	/**
-	 * Finds out if a set of login credentials are valid by asking all observing
-	 * objects to run their respective authentication routines.
+	 * Grabs and returns the oauth token data
 	 *
-	 * @param   array   $credentials  Array holding the user credentials.
-	 * @param   array   $options      Array holding user options.
-	 * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
+	 * @return  array
 	 */
 	public function token()
 	{
-		return '';
+		return $this->token;
 	}
 
 	/**
-	 * Finds out if a set of login credentials are valid by asking all observing
-	 * objects to run their respective authentication routines.
+	 * Validates incoming request via OAuth2 specification
 	 *
-	 * @param   array   $credentials  Array holding the user credentials.
-	 * @param   array   $options      Array holding user options.
-	 * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
+	 * @param   array  $params   Oauth server request parameters
+	 * @param   array  $options  OAuth server configuration options
+	 * @return  array
 	 */
-	public function authenticate($params = array())
+	public function authenticate($params = array(), $options = array())
 	{
-		$response = array();
+		// Placeholder response
+		$response = ['user_id' => null];
 
-		// If request has a Basic Auth header Oauth will throw an exception if the header doesn't
-		// conform to the OAuth protocol. We catch that (or any other)  exception and proceed as 
-		// if there was no oauth data.
-		//
-		// @TODO A better approach might be to inspect the Basic Auth header and see if it even
-		// looks like OAuth was being attempted and throw an Oauth compliant error if it was.
-		try
+		// Fire before auth event
+		Event::trigger('before_auth');
+
+		// Load oauth server
+		$oauthServer   = new Server(new MysqlStorage, $options);
+		$oauthRequest  = \OAuth2\Request::createFromGlobals();
+		$oauthResponse = new \OAuth2\Response();
+
+		// Validate request via oauth
+		$oauthServer->verifyResourceRequest($oauthRequest, $oauthResponse);
+
+		// Store our token locally 
+		$this->token = $oauthServer->getAccessTokenData($oauthRequest);
+
+		// See if we have a valid user
+		if (isset($this->token['uidNumber']))
 		{
-			$oauthp = new \Hubzero\Oauth\Provider($params);
-
-			$oauthp->setRequestTokenPath('/api/oauth/request_token');
-			$oauthp->setAccessTokenPath('/api/oauth/access_token');
-			$oauthp->setAuthorizePath('/api/oauth/authorize');
-
-			$result = $oauthp->validateRequest($this->app['request']->current(true), $this->app['request']->method());
-
-			if (is_array($result))
-			{
-				//$this->response->setResponseProvides('application/x-www-form-urlencoded');
-				//$this->response->setMessage($result['message'], $result['status'], $result['reason']);
-				$this->app['response']->setContent($result['message']);
-				$this->app['response']->setStatusCode($result['status']);
-				return false;
-			}
-
-			$this->app['provider'] = $oauthp;
-
-			$response['oauth_token']  = $oauthp->getToken();
-			$response['consumer_key'] = $oauthp->getConsumerKey();
-		}
-		catch (Exception $e)
-		{
-			$result = false;
+			$response['user_id'] = $this->token['uidNumber'];
 		}
 
-		$response['user_id'] = null;
+		// Fire after auth event
+		Event::trigger('after_auth');
 
-		if (isset($response['oauth_token']) && $response['oauth_token'])
-		{
-			$data = $oauthp->getTokenData();
-
-			if (!empty($data->user_id))
-			{
-				$response['user_id'] = $data->user_id;
-			}
-
-			$response['session_id'] = null;
-
-			$this->app['session']->set('user', new \JUser($data->user_id));
-		}
-		// Well, let's try to authenticate it with a session instead
-		else
-		{
-			$session_name = md5($this->app->hash('site'));
-			$session_id = null;
-
-			if (!empty($_COOKIE[$session_name]))
-			{
-				$session_id = $_COOKIE[$session_name];
-			}
-
-			$response['session_id'] = $session_id;
-			$response['user_id'] = null;
-
-			if (!empty($session_id))
-			{
-				$db = \JFactory::getDBO();
-				$timeout = $this->app['config']->get('timeout');
-				$query = "SELECT userid FROM `#__session` WHERE session_id=" . $db->Quote($session_id) . "AND time + " . (int) $timeout . " <= NOW() AND client_id = 0;";
-
-				$db->setQuery($query);
-
-				$user_id = $db->loadResult();
-
-				if (!empty($user_id))
-				{
-					$response['user_id'] = $user_id;
-				}
-			}
-
-			// tool session authentication
-			$toolSessionId    = $this->app['request']->getInt('sessionnum', null, 'POST');
-			$toolSessionToken = $this->app['request']->getCmd('sessiontoken', null, 'POST');
-
-			// use request headers as backup method to post vars
-			if (!$toolSessionId && !$toolSessionToken)
-			{
-				$headers          = apache_request_headers();
-				$toolSessionId    = (isset($headers['sessionnum']))   ? $headers['sessionnum']   : null;
-				$toolSessionToken = (isset($headers['sessiontoken'])) ? $headers['sessiontoken'] : null;
-			}
-
-			// if we have a session id & token lets use those to authenticate
-			if ($toolSessionId && $toolSessionToken)
-			{
-				// include neede libs
-				require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
-
-				// instantiate middleware database
-				$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
-
-				// attempt to load session from db
-				$query = "SELECT * FROM `session` WHERE `sessnum`= " . $mwdb->quote($toolSessionId) . " AND `sesstoken`=" . $mwdb->quote($toolSessionToken);
-				$mwdb->setQuery($query);
-
-				// only continue if a valid session was found
-				if ($session = $mwdb->loadObject())
-				{
-					// check users IP against the session execution host IP
-					if ($this->app['request']->ip() == gethostbyname($session->exechost))
-					{
-						$profile = \Hubzero\User\Profile::getInstance($session->username);
-						$response['user_id'] = $profile->get('uidNumber');
-					}
-				}
-			}
-		}
-
-		if (!$this->app->has('provider'))
-		{
-			$this->app['provider'] = null;
-		}
-
+		// Return the response
 		return $response;
 	}
 }
