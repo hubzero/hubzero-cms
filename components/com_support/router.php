@@ -179,9 +179,11 @@ function supportParseRoute($segments)
 		case 'tickets':
 			if (isset($segments[1]))
 			{
-				$vars['task'] = 'feed';
-				$vars['no_html'] = 1;
-				$_GET['no_html'] = 1;
+				if (is_numeric($segments[1]))
+				{
+					$vars['task'] = 'ticket';
+					$vars['id'] = $segments[1];
+				}
 			}
 			else
 			{
