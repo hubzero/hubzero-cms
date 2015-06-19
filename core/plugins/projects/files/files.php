@@ -1952,6 +1952,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$items)
 		{
 			$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
+			$view->loadTemplate();
 			return;
 		}
 		else
@@ -1971,6 +1972,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (empty($file))
 		{
 			$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
+			$view->loadTemplate();
 			return;
 		}
 
@@ -1979,9 +1981,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$outputDir = DS . $imagePath . DS . strtolower($this->model->get('alias')) . DS . 'compiled';
 
 		// Make sure output dir exists
-		if (!is_dir( PATH_APP . DS . $outputDir ))
+		if (!is_dir( PATH_APP . $outputDir ))
 		{
-			if (!Filesystem::makeDirectory( PATH_APP . DS . $outputDir ))
+			if (!Filesystem::makeDirectory( PATH_APP . $outputDir ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -2030,7 +2032,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
 			// Get data
-			$data = $this->_connect->sendHttpRequest(
+			$view->data = $this->_connect->sendHttpRequest(
 				$this->_remoteService,
 				$this->model->get('owned_by_user'),
 				$url
@@ -2038,7 +2040,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif ($file->exists())
 		{
-			$data = $file->contents();
+			$view->data = $file->isImage() ? NULL : $file->contents();
 		}
 		else
 		{
@@ -2046,15 +2048,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// LaTeX file?
-		if ($tex && !empty($data))
+		if ($tex && !empty($view->data))
 		{
 			// Clean up data from Windows characters - important!
-			$data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data);
+			$view->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $view->data);
 
 			// Compile and get path to PDF
 			$contentFile = $compiler->compileTex(
 				$file->get('fullPath'),
-				$data,
+				$view->data,
 				$texPath,
 				PATH_APP . $outputDir, 1, $tempBase
 			);
@@ -2063,7 +2065,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$logFile = $tempBase . '.log';
 			if (file_exists(PATH_APP . $outputDir . DS . $logFile ))
 			{
-				$log = Filesystem::read(PATH_APP . $outputDir . DS . $logFile);
+				$view->log = Filesystem::read(PATH_APP . $outputDir . DS . $logFile);
 			}
 
 			if (!$contentFile)
@@ -2071,16 +2073,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_TEX_FAILED'));
 			}
 		}
-		elseif ($file->get('converted') && !empty($data))
+		elseif ($file->get('converted') && !empty($view->data))
 		{
 			$tempBase = \Components\Projects\Helpers\Google::getImportFilename($file->get('name'), $cExt);
 
 			// Write content to temp file
-			$this->_connect->fetchFile($data, $tempBase, PATH_APP . $outputDir);
+			$this->_connect->fetchFile($view->data, $tempBase, PATH_APP . $outputDir);
 			$contentFile = $tempBase;
 		}
 		// Local file
-		elseif (!$this->getError() && !empty($data))
+		elseif (!$this->getError())
 		{
 			// Make sure we can handle preview of this type of file
 			if ($file->get('ext') == 'pdf' || $file->isImage() || !$file->isBinary())
@@ -2216,9 +2218,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$view->file 		= $file;
 		$view->outputDir	= $outputDir;
-		$view->log			= $log;
 		$view->embed		= $contentFile;
-		$view->data			= $data;
 		$view->cType		= $cType;
 		$view->subdir 		= $this->subdir;
 		$view->option 		= $this->_option;

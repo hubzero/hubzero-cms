@@ -79,6 +79,11 @@
 	#abox-content {
 		min-height: 200px;
 	}
+	#abox-content pre {
+		border: none;
+		background: white;
+		padding: 1em 2em;
+	}
 	#drop-files {
 		border: 1px solid #CCC;
 		padding: 1em;

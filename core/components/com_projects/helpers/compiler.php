@@ -149,7 +149,7 @@ class Compiler extends Object
 		fclose($fp);
 
 		chdir($cacheFolder);
-		$command = $texpath . DS . 'pdflatex -output-directory=' . $outputDir . ' -interaction=batchmode ' . $texFile . '.tex';
+		$command = $texpath . DS . 'pdflatex -output-directory=' . $outputDir . ' -interaction=batchmode ' . escapeshellarg($texFile . '.tex');
 		exec($command, $out);
 
 		// Remove temp tex copy

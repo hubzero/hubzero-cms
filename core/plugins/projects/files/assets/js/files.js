@@ -578,7 +578,14 @@ HUB.ProjectFiles = {
 				var href = $(item).attr('href');
 				if (href.search('no_html=1') == -1)
 				{
-					href = href + '?no_html=1';
+					if (href.indexOf('?') == -1)
+					{
+						href = href + '?no_html=1';
+					}
+					else
+					{
+						href = href + '&no_html=1';
+					}
 				}
 				if (href.search('&ajax=1') == -1) {
 					href = href + '&ajax=1';
@@ -621,17 +628,6 @@ HUB.ProjectFiles = {
 						}
 					}
 
-					// Add case and subdir
-					var subdir  = $('#subdir') ? $('#subdir').val() : '';
-					var fcase   = $('#case') ? $('#case').val() : '';
-
-					if (subdir) {
-						$(item).attr('href', $(item).attr('href') +	'&subdir=' + subdir);
-					}
-					if (fcase) {
-						$(item).attr('href', $(item).attr('href') +	'&case=' + fcase);
-					}
-
 					if (aid == 'a-share')
 					{
 						converted = 2;
@@ -646,14 +642,6 @@ HUB.ProjectFiles = {
 					if (aid == 'a-compile' || aid == 'a-upload')
 					{
 						bWidth = 800;
-					}
-
-					// Show more options
-					if (aid == 'a-more')
-					{
-						HUB.ProjectFiles.showExtraOptions($(item).attr('href'));
-						e.stopPropagation();
-						return;
 					}
 
 					// make AJAX call

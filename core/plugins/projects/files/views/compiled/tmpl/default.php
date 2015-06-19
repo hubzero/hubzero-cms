@@ -34,10 +34,10 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 if ($this->getError()) { ?>
 	<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILED_PREVIEW'); ?></h3>
 	<?php
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo ('<p class="witherror">' . $this->getError() . '</p>');
 
 	echo '<div class="witherror"><pre>';
-	if ($this->log)
+	if (!empty($this->log))
 	{
 		echo $this->log;
 	}
@@ -70,8 +70,7 @@ if (!$this->getError()) {
 	?>
 </ul>
 <?php } ?>
-<?php if ($this->data && $this->cType != 'application/pdf') {
-
+<?php if (!empty($this->data) && $this->cType != 'application/pdf') {
 	// Clean up data from Windows characters - important!
 	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
 ?>
