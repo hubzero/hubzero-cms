@@ -392,6 +392,12 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 					$until = JFactory::getDate($incomingEvent['RRULE']['UNTIL']);
 					$rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
 				}
+
+				//by day
+				if (isset($incomingEvent['RRULE']['BYDAY']))
+				{
+					$rrule .= ';BYDAY=' . $incomingEvent['RRULE']['BYDAY'];
+				}
 			}
 
 			// handle all day events
