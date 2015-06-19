@@ -28,99 +28,50 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-class ToolsControllerApi extends \Hubzero\Component\ApiController
+namespace Components\Tools\Api\Controllers;
+
+use Hubzero\Component\ApiController;
+use Hubzero\Utility\Date;
+use Exception;
+use Component;
+use stdClass;
+use Request;
+use Lang;
+use User;
+
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tool.php';
+
+/**
+ * API controller class for tool sessions
+ */
+class Sessionsv1_0 extends ApiController
 {
-	public function execute()
-	{
-		//JLoader::import('joomla.environment.request');
-		//JLoader::import('joomla.application.component.helper');
-
-		//include tool utils
-		include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
-		include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php';
-
-		// Get the format type for the request
-		$this->format = Request::getVar('format', 'application/json');
-
-		switch ($this->segments[0])
-		{
-			case 'index':		$this->index();				break;
-			case 'info':		$this->info();				break;
-			case 'screenshot':	$this->screenshot();		break;
-			case 'screenshots':	$this->screenshots();		break;
-			case 'invoke':		$this->invoke();			break;
-			case 'view':		$this->view();				break;
-			case 'stop':		$this->stop();				break;
-			case 'unshare':		$this->unshare();			break;
-
-			case 'run':         $this->run();               break;
-			case 'status':      $this->status();            break;
-			case 'output':      $this->output();            break;
-
-			case 'storage':		$this->storage();			break;
-			case 'purge':		$this->purge();				break;
-
-			default:			$this->index();
-		}
-	}
-
-	/**
-	 * Short description for 'not_found'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	private function not_found()
-	{
-		$response = $this->getResponse();
-		$response->setErrorMessage(404,'Not Found');
-	}
-
-	/**
-	 * Method to report errors. creates error node for response body as well
-	 *
-	 * @param	$code		Error Code
-	 * @param	$message	Error Message
-	 * @param	$format		Error Response Format
-	 *
-	 * @return     void
-	 */
-	private function errorMessage($code, $message, $format = 'json')
-	{
-		//build error code and message
-		$object = new stdClass();
-		$object->error->code = $code;
-		$object->error->message = $message;
-
-		//set http status code and reason
-		$response = $this->getResponse();
-		$response->setErrorMessage($object->error->code, $object->error->message);
-
-		//add error to message body
-		$this->setMessageType($format);
-		$this->setMessage($object);
-	}
-
 	/**
 	 * Method to get list of tools
 	 *
-	 * @return     void
+	 * @apiMethod GET
+	 * @apiUri    /tools/list
+	 * @apiParameter {
+	 * 		"name":          "user_id",
+	 * 		"description":   "Member identifier",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       0
+	 * }
+	 * @return    void
 	 */
-	private function index()
+	public function listTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = Request::getInt('user_id', 0);
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
 		//if ($result === false) return $this->not_found();
 
 		//instantiate database object
-		$database = JFactory::getDBO();
-
-		//get any request vars
-		$format = Request::getVar('format', 'json');
+		$database = \JFactory::getDBO();
 
 		//get list of tools
 		$tools = \Components\Tools\Models\Tool::getMyTools();
@@ -130,7 +81,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		//get supportedtag usage
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
 		$resource_tags = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
@@ -154,37 +105,42 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//encode and return result
 		$object = new stdClass();
 		$object->tools = array_values($t);
-		$this->setMessageType($format);
-		$this->setMessage($object);
+
+		$this->send($object);
 	}
 
 	/**
 	 * Method to get tool information
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{tool}
+	 * @apiParameter {
+	 * 		"name":          "tool",
+	 * 		"description":   "Tool identifier",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "version",
+	 * 		"description":   "Tool version",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       "current"
+	 * }
 	 * @return     void
 	 */
-	private function info()
+	public function infoTask()
 	{
-		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$database = \JFactory::getDBO();
 
-		//make sure we have a user
-		if ($result === false) return $this->not_found();
-
-		//instantiate database object
-		$database = JFactory::getDBO();
-
-		//get request vars
 		$tool    = Request::getVar('tool', '');
 		$version = Request::getVar('version', 'current');
-		$format  = Request::getVar('format', 'json');
 
 		//we need a tool to continue
 		if ($tool == '')
 		{
-			$this->errorMessage(400, 'Tool Alias Required.');
-			return;
+			throw new Exception(Lang::txt('Tool Alias Required.'), 400);
 		}
 
 		//poll database for tool matching alias
@@ -204,8 +160,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//veryify we have result
 		if ($tool_info == null)
 		{
-			$this->errorMessage(404, 'No Tool Found Matching the Alias: "' . $tool . '"');
-			return;
+			throw new Exception(Lang::txt('No Tool Found Matching the Alias: "%s"', $tool), 404);
 		}
 
 		//add tool alias to tool info from db
@@ -219,17 +174,17 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		//get supportedtag usage
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');
 		$this->rt = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'screenshot.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
 		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new \Components\Tools\Tables\Version($database);
-		$vid = $tv->getVersionIdFromResource($tool_info->id, $version);
+		$vid   = $tv->getVersionIdFromResource($tool_info->id, $version);
 		$shots = $ts->getScreenshots($tool_info->id, $vid);
 
 		//get base path
@@ -243,60 +198,83 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 		$tool_info->screenshots = $s;
 
-		//return result
 		$object = new stdClass();
 		$object->tool = $tool_info;
-		$this->setMessageType($format);
-		$this->setMessage($object);
+
+		$this->send($object);
 	}
 
 	/**
 	 * Method to take session screenshots for user
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/screenshots/{user_id}
+	 * @apiParameter {
+	 * 		"name":          "user_id",
+	 * 		"description":   "Member identifier",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       0
+	 * }
 	 * @return     void
 	 */
-	private function screenshots()
+	public function screenshotsTask()
 	{
-		// get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = Request::getInt('user_id', 0);
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		// make sure we have a user
-		if ($result === false)	return $this->not_found();
-
-		// request params
-		$format = Request::getVar('format', 'json');
+		if ($result === false)
+		{
+			throw new Exception(Lang::txt('COM_TOOLS_ERROR_USER_NOT_FOUND'), 404);
+		}
 
 		// take new screenshots for user
-		$cmd = "/bin/sh ". PATH_CORE . "/components/com_tools/scripts/mw screenshot " . $result->get('username') . " 2>&1 </dev/null";
+		$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $result->get('username') . " 2>&1 </dev/null";
 		exec($cmd, $results, $status);
 
 		// object to return
 		$object = new stdClass();
 		$object->screenshots_taken = true;
 
-		// set format & return
-		$this->setMessageType($format);
-		$this->setMessage($object);
+		$this->send($object);
 	}
 
 	/**
 	 * Method to return session screenshot
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{sessionid}/screenshot
+	 * @apiParameter {
+	 * 		"name":          "sessionid",
+	 * 		"description":   "Tool session identifier",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "type",
+	 * 		"description":   "Image format",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "png",
+	 * 		"allowedValues": "png, jpg, jpeg, gif"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "notfound",
+	 * 		"description":   "Not found",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
 	 * @return     void
 	 */
-	private function screenshot()
+	public function screenshotTask()
 	{
-		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		$this->requiresAuthentication();
 
-		//make sure we have a user
-		if ($result === false) return $this->not_found();
-
-		//mw session lib
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'mw.session.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -305,7 +283,6 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$type      = Request::getVar('type', 'png');
 		$sessionid = Request::getVar('sessionid', '');
 		$notFound  = Request::getVar('notfound', 0);
-		$format    = Request::getVar('format', 'json');
 
 		$image_type = IMAGETYPE_PNG;
 		if ($type == 'jpeg' || $type == 'jpg')
@@ -320,8 +297,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//check to make sure we have a valid sessionid
 		if ($sessionid == '' || !is_numeric($sessionid))
 		{
-			$this->errorMessage(401, 'No session ID Specified.');
-			return;
+			throw new Exception(Lang::txt('No session ID Specified.'), 401);
 		}
 
 		//load session
@@ -335,8 +311,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			clearstatcache();
 			if (!is_dir($home_directory))
 			{
-				$this->errorMessage(404, 'Unable to find users sessions directory. - ' . $home_directory);
-				return;
+				throw new Exception(Lang::txt('Unable to find users sessions directory: %s', $home_directory), 404);
 			}
 		}
 
@@ -345,8 +320,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$directories = glob($home_directory, GLOB_BRACE);
 		if (empty($directories))
 		{
-			$this->errorMessage(404, "No Session directory with the ID: " . $sessionid);
-			return;
+			throw new Exception(Lang::txt('No Session directory with the ID: %s', $sessionid), 404);
 		}
 		else
 		{
@@ -360,18 +334,16 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		{
 			if ($notFound)
 			{
-				$screenshot = PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
+				$screenshot = dirname(dirname(__DIR__)) . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
 			}
 			else
 			{
-				$this->errorMessage(404,'No screenshot Found.');
-				return;
+				throw new Exception(Lang::txt('No screenshot Found.'), 404);
 			}
 		}
 
 		//load image and serve up
 		$image = new \Hubzero\Image\Processor($screenshot);
-		$this->setMessageType('image/' . $type);
 		$image->setImageType($image_type);
 		$image->display();
 	}
@@ -380,12 +352,14 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Method to invoke new tools session
 	 *
-	 * @return     void
+	 * @apiMethod GET
+	 * @apiUri    /tools/{tool}/invoke
+	 * @return    void
 	 */
-	private function invoke()
+	public function invokeTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -394,7 +368,6 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//get request vars
 		$tool_name    = Request::getVar('app', '');
 		$tool_version = Request::getVar('version', 'default');
-		$format       = Request::getVar('format', 'json');
 
 		//build application object
 		$app = new stdClass;
@@ -410,13 +383,12 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//include needed tool libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 
 		//create database object
-		JLoader::import("joomla.database.table");
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		//load the tool version
 		$tv = new \Components\Tools\Tables\Version($database);
@@ -463,8 +435,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//make sure we have a valid tool
 		if ($app->title == '' || $app->toolname == '')
 		{
-			$this->errorMessage(400, 'The tool "' . $tool_name . '" does not exist on the HUB.');
-			return;
+			throw new Exception(Lang::txt('The tool "%s" does not exist on the HUB.', $tool_name), 400);
 		}
 
 		//get tool access
@@ -473,8 +444,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//do we have access
 		if ($toolAccess->valid != 1)
 		{
-			$this->errorMessage(400, $toolAccess->error->message);
-			return;
+			throw new Exception($toolAccess->error->message, 400);
 		}
 
 		// Log the launch attempt
@@ -507,8 +477,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//can we open another session
 		if ($remain <= 0)
 		{
-			$this->errorMessage(401, 'You are using all (' . $jobs . ') your available job slots.');
-			return;
+			throw new Exception(Lang::txt('You are using all (%s) your available job slots.', $jobs), 401);
 		}
 
 		// Get plugins
@@ -523,8 +492,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//make sure we got a valid session back from the middleware
 		if (!isset($output->session))
 		{
-			$this->errorMessage(500, 'There was a issue while trying to start the tool session. Please try again later.');
-			return;
+			throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);
 		}
 
 		//set session output
@@ -548,8 +516,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$ms->sessname = $app->caption;
 		if (!$ms->store())
 		{
-			$this->errorMessage(500, 'There was a issue while trying to start the tool session. Please try again later.');
-			return;
+			throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);
 		}
 
 		//add tool title to output
@@ -562,8 +529,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//return result
 		if ($status)
 		{
-			$this->setMessageType($format);
-			$this->setMessage($output);
+			$this->send($output);
 		}
 	}
 
@@ -573,15 +539,14 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 	 * This is more than just invoking a tool. We're expecting a driver file to pass to the
 	 * tool to be picked up and automatically run by rappture.
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{tool}/run
 	 * @return void
 	 */
-	private function run()
+	public function runTask()
 	{
-		// Set message format
-		$this->setMessageType($this->format);
-
 		// Get the user_id and attempt to load user profile
-		$userid  = JFactory::getApplication()->getAuthn('user_id');
+		$userid  = \JFactory::getApplication()->getAuthn('user_id');
 		$profile = \Hubzero\User\Profile::getInstance($userid);
 
 		// Make sure we have a user
@@ -600,18 +565,16 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		// Check to make sure we have an app to invoke
 		if (!$app->name)
 		{
-			$this->setMessage(array('success' => false, 'message' => 'A valid app name must be provided'), 404, 'Not Found');
-			return;
+			throw new Exception(Lang::txt('A valid app name must be provided'), 404);
 		}
 
 		// Include needed tool libraries
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
 		// Create database object
-		JLoader::import("joomla.database.table");
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		// Load the tool version
 		$tv = new \Components\Tools\Tables\Version($database);
@@ -658,8 +621,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		// Make sure we have a valid tool
 		if ($app->title == '' || $app->toolname == '')
 		{
-			$this->errorMessage(404, 'The tool "' . $tool_name . '" does not exist on the HUB.');
-			return;
+			throw new Exception(Lang::txt('The tool "%s" does not exist on the HUB.', $tool_name), 404);
 		}
 
 		// Get tool access
@@ -668,8 +630,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		// Do we have access
 		if ($toolAccess->valid != 1)
 		{
-			$this->errorMessage(404, $toolAccess->error->message);
-			return;
+			throw new Exception($toolAccess->error->message, 500);
 		}
 
 		// Log the launch attempt
@@ -679,11 +640,11 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$jobs = $ms->getCount($profile->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php');
 
 		$preferences = new \Components\Tools\Tables\Preferences($database);
 		$preferences->loadByUser($profile->get('uidNumber'));
@@ -700,12 +661,11 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//can we open another session
 		if ($remain <= 0)
 		{
-			$this->errorMessage(401, 'You are using all (' . $jobs . ') your available job slots.');
-			return;
+			throw new Exception(Lang::txt('You are using all (%s) your available job slots.', $jobs), 401);
 		}
 
 		// Check for an incoming driver file
-		if ($driver = Request::getVar('xml', false, 'post', 'none', JREQUEST_ALLOWRAW))
+		if ($driver = Request::getVar('xml', false, 'post', 'none', 2))
 		{
 			// Build a path to where the driver file will go through webdav
 			$base = DS . 'webdav' . DS . 'home';
@@ -720,48 +680,42 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			// First, make sure webdav is there and that the necessary folders are there
 			if (!\Filesystem::exists($base))
 			{
-				$this->setMessage(array('success' => false, 'message' => 'Home directories are unavailable'), 500, 'Server Error');
-				return;
+				throw new Exception(Lang::txt('Home directories are unavailable'), 500);
 			}
 
 			// Now see if the user has a home directory yet
 			if (!\Filesystem::exists($homeDir))
 			{
 				// Try to create their home directory
-				require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+				require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php');
 
 				if (!\Components\Tools\Helpers\Utils::createHomeDirectory($profile->get('username')))
 				{
-					$this->setMessage(array('success' => false, 'message' => 'Failed to create user home directory'), 500, 'Server Error');
-					return;
+					throw new Exception(Lang::txt('Failed to create user home directory'), 500);
 				}
 			}
 
 			// Check for, and create if needed a session data directory
 			if (!\Filesystem::exists($base . $user . $data) && !\Filesystem::makeDirectory($base . $user . $data, 0700))
 			{
-				$this->setMessage(array('success' => false, 'message' => 'Failed to create data directory'), 500, 'Server Error');
-				return;
+				throw new Exception(Lang::txt('Failed to create data directory'), 500);
 			}
 
 			// Check for, and create if needed a queued drivers directory
 			if (!\Filesystem::exists($base . $user . $data . $drvr) && !\Filesystem::makeDirectory($base . $user . $data . $drvr, 0700))
 			{
-				$this->setMessage(array('success' => false, 'message' => 'Failed to create drivers directory'), 500, 'Server Error');
-				return;
+				throw new Exception(Lang::txt('Failed to create drivers directory'), 500);
 			}
 
 			// Write the driver file out
 			if (!\Filesystem::write($base . $user . $data . $drvr . $inst, $driver))
 			{
-				$this->setMessage(array('success' => false, 'message' => 'Failed to create driver file'), 500, 'Server Error');
-				return;
+				throw new Exception(Lang::txt('Failed to create driver file'), 500);
 			}
 		}
 		else
 		{
-			$this->setMessage(array('success' => false, 'message' => 'No driver file provided'), 404, 'Not Found');
-			return;
+			throw new Exception(Lang::txt('No driver file provided'), 404);
 		}
 
 		// Now build params path that will be included with tool execution
@@ -771,19 +725,21 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$command = 'start user=' . $profile->get('username') . " ip={$app->ip} app={$app->name} version={$app->version}" . $encoded;
 		$status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
-		$this->setMessage(array('success' => true, 'session' => $output->session), 200, 'OK');
+		$this->send(array(
+			'success' => true,
+			'session' => $output->session
+		));
 	}
 
 	/**
 	 * Gets the status of the session identified
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{session}/status
 	 * @return void
 	 **/
-	private function status()
+	public function statusTask()
 	{
-		// Set message format
-		$this->setMessageType($this->format);
-
 		// Get profile instance and session number
 		$profile = \Hubzero\User\Profile::getInstance(JFactory::getApplication()->getAuthn('user_id'));
 		$session = Request::getInt('session_num', 0);
@@ -795,13 +751,12 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		if (!$ms->checkSession($session))
 		{
-			$this->setMessage(array('success' => false, 'message' => 'You can only check the status of your sessions.'), 401, 'Not authorized');
-			return;
+			throw new Exception(Lang::txt('You can only check the status of your sessions.'), 401);
 		}
 
 		// Check for specific sesssion entry, either sesssion# or session#-expired
@@ -814,8 +769,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 			if (!is_dir($dir))
 			{
-				$this->setMessage(array('success' => false, 'message' => 'No session directory found.'), 404, 'Not found');
-				return;
+				throw new Exception(Lang::txt('No session directory found.'), 404);
 			}
 		}
 
@@ -823,8 +777,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$statusFile = $dir . DS . 'rappture.status';
 		if (!is_file($statusFile))
 		{
-			$this->setMessage(array('success' => false, 'message' => 'No status file found.'), 404, 'Not found');
-			return;
+			throw new Exception(Lang::txt('No status file found.'), 404);
 		}
 
 		// Read the file
@@ -840,96 +793,102 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			$runFile = (isset($matches[1])) ? $matches[1] : '';
 		}
 
-		$this->setMessage(array('success' => true, 'status' => $parsed, 'finished' => $finished, 'run_file' => $runFile), 200, 'OK');
+		$this->send(array(
+			'success'  => true,
+			'status'   => $parsed,
+			'finished' => $finished,
+			'run_file' => $runFile
+		));
 	}
 
 	/**
 	 * Grabs the output from a tool session
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{session}/output
 	 * @return void
-	 * @author 
-	 **/
-	private function output()
+	 */
+	public function outputTask()
 	{
-		// Set message format
-		$this->setMessageType($this->format);
+		$this->requiresAuthentication();
 
-		// Get profile instance and session number
-		$profile = \Hubzero\User\Profile::getInstance(JFactory::getApplication()->getAuthn('user_id'));
-		$session = Request::getInt('session_num', 0);
+		$session = Request::getInt('session', 0);
 		$runFile = Request::getVar('run_file', false);
 
-		// Require authorization
-		if ($profile === false) return $this->not_found();
+		if (!$session)
+		{
+			throw new Exception(Lang::txt('Session not found.'), 404);
+		}
 
 		// Get the middleware database
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
+
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		if (!$ms->checkSession($session))
 		{
-			$this->setMessage(array('success' => false, 'message' => 'You can only check the status of your sessions.'), 401, 'Not authorized');
-			return;
+			throw new Exception(Lang::txt('You can only check the status of your sessions.'), 401);
 		}
 
 		// Check for specific sesssion entry
-		$dir = DS . 'webdav' . DS . 'home' . DS . $profile->get('username') . DS . 'data' . DS .'results' . DS . $session;
+		$dir = DS . 'webdav' . DS . 'home' . DS . User::get('username') . DS . 'data' . DS .'results' . DS . $session;
 
 		if (!is_dir($dir))
 		{
-			$this->setMessage(array('success' => false, 'message' => 'No results directory found.'), 404, 'Not found');
-			return;
+			throw new Exception(Lang::txt('No results directory found.'), 404);
 		}
 
 		$outputFile = $dir . DS . $runFile;
 
 		if (!is_file($outputFile))
 		{
-			$this->setMessage(array('success' => false, 'message' => 'No run file found.'), 404, 'Not found');
-			return;
+			throw new Exception(Lang::txt('No run file found.'), 404);
 		}
 
 		$output = file_get_contents($outputFile);
 
-		$this->setMessage(array('success' => true, 'output' => $output), 200, 'OK');
+		$this->send(array(
+			'success' => true,
+			'output'  => $output
+		));
 	}
 
 	/**
 	 * Method to view tool session
 	 *
-	 * @return     void
+	 * @apiMethod GET
+	 * @apiUri    /tools/{session}
+	 * @return    void
 	 */
-	private function view()
+	public function readTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
 
 		//include needed tool libs
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 
 		//instantiate db objects
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
 		$sessionid = Request::getVar('sessionid', '');
-		$format    = Request::getVar('format', 'json');
 		$ip        = Request::ip();
 
 		//make sure we have the session
 		if (!$sessionid)
 		{
-			$this->errorMessage(400, 'Session ID Needed');
-			return;
+			throw new Exception(Lang::txt('Session ID Needed'), 400);
 		}
 
 		//create app object
@@ -944,8 +903,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//if we didnt find a session
 		if (!is_object($row) || !$row->appname)
 		{
-			$this->errorMessage(400, 'Session Doesn\'t Exist.');
-			return;
+			throw new Exception(Lang::txt('Session Doesn\'t Exist.'), 404);
 		}
 
 		//get the version
@@ -994,41 +952,39 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//return result
 		if ($status)
 		{
-			$this->setMessageType($format);
-			$this->setMessage($output);
+			$this->send($output);
 		}
 	}
-
 
 	/**
 	 * Method to stop tool session
 	 *
-	 * @return     void
+	 * @apiMethod DELETE
+	 * @apiUri    /tools/{session}
+	 * @return    void
 	 */
-	private function stop()
+	public function deleteTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
 
 		//include needed libraries
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.session.php');
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
 		$sessionid = Request::getVar('sessionid', '');
-		$format    = Request::getVar('format', 'json');
 
 		//make sure we have the session
 		if (!$sessionid)
 		{
-			$this->errorMessage(400, 'Missing session ID.');
-			return;
+			throw new Exception('Missing session ID.', 400);
 		}
 
 		//load the session we are trying to stop
@@ -1038,8 +994,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//check to make sure session exists and it belongs to the user
 		if (!$ms->username || $ms->username != $result->get("username"))
 		{
-			$this->errorMessage(400, 'Session Doesn\'t Exist or Does Not Belong to User');
-			return;
+			throw new Exception('Session Doesn\'t Exist or Does Not Belong to User', 400);
 		}
 
 		//get middleware plugins
@@ -1058,9 +1013,13 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($status == 1)
 		{
 			$object = new stdClass();
-			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => Date::toSql());
-			$this->setMessageType($format);
-			$this->setMessage($object);
+			$object->session = array(
+				'session' => $sessionid,
+				'status'  => 'stopped',
+				'stopped' => with(new Date)->toSql()
+			);
+
+			$this->send($object);
 		}
 	}
 
@@ -1068,58 +1027,67 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Method to disconnect from shared tool session
 	 *
-	 * @return     void
+	 * @apiMethod GET
+	 * @apiUri    /tools/{session}/unshare
+	 * @return    void
 	 */
-	private function unshare()
+	public function unshareTask()
 	{
+		$this->requiresAuthentication();
+
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false) return $this->not_found();
 
 		//include needed libraries
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
 		$sessionid = Request::getVar('sessionid', '');
-		$format    = Request::getVar('format', 'json');
 
 		//check to make sure we have session id
 		if (!$sessionid)
 		{
-			$this->errorMessage(400, 'Missing session ID.');
-			return;
+			throw new Exception(Lang::txt('Missing session ID.'), 404);
 		}
 
 		// Delete the viewperm
 		$mv = new \Components\Tools\Models\Middleware\Viewperm($mwdb);
-		$mv->deleteViewperm($sessionid, $result->get("username"));
+		$mv->deleteViewperm($sessionid, $result->get('username'));
 
 		//make sure we didnt have error disconnecting
 		if (!$mv->getError())
 		{
 			$object = new stdClass();
-			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => Date::toSql());
-			$this->setMessageType($format);
-			$this->setMessage($object);
+			$object->session = array(
+				'session'      => $sessionid,
+				'status'       => 'disconnected',
+				'disconnected' => with(new Date)->toSql()
+			);
+
+			$this->send($object);
 		}
 	}
-
 
 	/**
 	 * Method to return users storage results
 	 *
-	 * @return     void
+	 * @apiMethod GET
+	 * @apiUri    /tools/{user_id}
+	 * @return    void
 	 */
-	private function storage()
+	public function storageTask()
 	{
+		$this->requiresAuthentication();
+
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -1127,10 +1095,9 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get request vars
 		$type   = Request::getVar('type', 'soft');
-		$format = Request::getVar('format', 'json');
 
 		//get storage quota
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php');
 		$disk_usage = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
 
 		//get the tools storage path
@@ -1144,20 +1111,24 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//return result
 		$object = new stdClass();
 		$object->storage = array('quota' => $disk_usage, 'files' => $files);
-		$this->setMessageType($format);
-		$this->setMessage($object);
+
+		$this->send($object);
 	}
 
 
 	/**
 	 * Method to purge users storage
 	 *
-	 * @return     void
+	 * @apiMethod DELETE
+	 * @apiUri    /tools/{user_id}
+	 * @return    void
 	 */
-	private function purge()
+	public function purgeTask()
 	{
+		$this->requiresAuthentication();
+
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -1165,7 +1136,6 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get request vars
 		$degree = Request::getVar('degree', '');
-		$format = Request::getVar('format', 'json');
 
 		//get the hubs storage host
 		$tool_params = Component::params('com_tools');
@@ -1174,8 +1144,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//check to make sure we have a storage host
 		if ($storage_host == '')
 		{
-			$this->errorMessage(500, 'Unable to find storage host.');
-			return;
+			throw new Exception(Lang::txt('Unable to find storage host.'), 500);
 		}
 
 		//list of acceptable purge degrees
@@ -1190,8 +1159,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//check to make sure we have a degree
 		if ($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
 		{
-			$this->errorMessage(401, 'No purge level supplied.');
-			return;
+			throw new Exception(Lang::txt('No purge level supplied.'), 401);
 		}
 
 		//var to hold purge info
@@ -1200,7 +1168,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//open stream to purge files
 		if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30))
 		{
-			die("$error_str ($error_num)");
+			throw new Exception("$error_str ($error_num)", 500);
 		}
 		else
 		{
@@ -1221,8 +1189,8 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			//return result
 			$object = new stdClass();
 			$object->purge = array('degree' => $accepted_degrees[$degree], 'success' => 1);
-			$this->setMessageType($format);
-			$this->setMessage($object);
+
+			$this->send($object);
 		}
 	}
 }

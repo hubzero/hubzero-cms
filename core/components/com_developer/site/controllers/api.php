@@ -62,7 +62,7 @@ class Api extends SiteController
 		$this->_buildPathway();
 
 		// generate documentation
-		$generator = new \Hubzero\Api\Doc\Generator();
+		$generator = new \Hubzero\Api\Doc\Generator(!\Config::get('debug'));
 		$this->view->documentation = $generator->output('array');
 
 		// render view
@@ -82,7 +82,7 @@ class Api extends SiteController
 		$active = Request::getVar('active', '');
 
 		// generate documentation
-		$generator = new \Hubzero\Api\Doc\Generator();
+		$generator = new \Hubzero\Api\Doc\Generator(!\Config::get('debug'));
 		$documentation = $generator->output('array');
 
 		if (!isset($documentation['sections'][$active]))

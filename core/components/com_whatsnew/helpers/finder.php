@@ -58,7 +58,7 @@ class Finder
 
 		// get the results
 		$config = array($p, $limit, 0, $areas);
-		$results = $dispatcher->trigger('onWhatsNew', $config);
+		$results = \Event::trigger('onWhatsNew', $config);
 
 		$new = array();
 		$i = 0;

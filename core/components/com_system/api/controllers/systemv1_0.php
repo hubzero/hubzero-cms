@@ -34,12 +34,12 @@ namespace Components\System\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Update\Helpers\Cli;
 use stdClass;
-use Date;
-use Request;
-use Lang;
 use Component;
+use Request;
 use Config;
 use Event;
+use Lang;
+use Date;
 
 /**
  * API controller class for system tasks
@@ -47,8 +47,18 @@ use Event;
 class Systemv1_0 extends ApiController
 {
 	/**
-	 * Displays ticket stats
+	 * Display system information
 	 *
+	 * @apiMethod GET
+	 * @apiUri    /system/info
+	 * @apiParameter {
+	 * 		"name":          "values",
+	 * 		"description":   "Amount of data to return",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "all",
+	 * 		"allowedValues": "all, short"
+	 * }
 	 * @return    void
 	 */
 	public function infoTask()

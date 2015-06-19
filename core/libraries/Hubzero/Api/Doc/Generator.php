@@ -39,33 +39,44 @@ use phpDocumentor\Reflection\DocBlock;
 class Generator
 {
 	/**
+	 * Cache results?
+	 * 
+	 * @var  bool
+	 */
+	private $cache = true;
+
+	/**
 	 * Var to hold sections
 	 * 
 	 * @var  array
 	 */
-	private $sections = [];
+	private $sections = array();
 
 	/**
 	 * Var to hold output
 	 * 
 	 * @var  array
 	 */
-	private $output = [];
+	private $output = array();
 
 	/**
 	 * Create sections from component api controllers
 	 *
+	 * @param   bool  $cache  Cache results?
 	 * @return  void
 	 */
-	public function __construct()
+	public function __construct($cache = true)
 	{
 		// create all needed keys in output
-		$this->output = [
-			'sections' => [],
-			'versions' => ['max' => '', 'available' => []],
-			'errors'   => [],
-			'files'    => []
-		];
+		$this->output = array(
+			'sections' => array(),
+			'versions' => array(
+				'max'       => '',
+				'available' => array()
+			),
+			'errors'   => array(),
+			'files'    => array()
+		);
 	}
 
 	/**
@@ -106,7 +117,11 @@ class Generator
 	 */
 	private function cache()
 	{
-		return false;
+		if (!$this->cache)
+		{
+			return false;
+		}
+
 		// get developer params to get cache expiration
 		$developerParams = \App::get('component')->params('com_developer');
 		$cacheExpiration = $developerParams->get('doc_expiration', 720);
