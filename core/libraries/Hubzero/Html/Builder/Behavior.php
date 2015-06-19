@@ -233,6 +233,23 @@ class Behavior
 	}
 
 	/**
+	 * Add HUBzero core js resources
+	 *
+	 * @return  void
+	 */
+	public static function core()
+	{
+		if (isset(self::$loaded[__METHOD__]))
+		{
+			return;
+		}
+
+		Asset::script('assets/hubzero.js', true, true);
+
+		self::$loaded[__METHOD__] = true;
+	}
+
+	/**
 	 * Add unobtrusive javascript support for charts
 	 *
 	 * @return  void
