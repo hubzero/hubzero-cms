@@ -55,7 +55,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	public static function render()
 	{
 		// Load language
-		Lang::load('plg_time_summary', JPATH_ADMINISTRATOR);
+		Lang::load('plg_time_summary', __DIR__);
 
 		// Create view
 		$view = new \Hubzero\Plugin\View(

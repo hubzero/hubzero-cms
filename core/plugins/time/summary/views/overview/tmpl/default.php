@@ -42,6 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
+HTML::behavior('core');
+
 $base = 'index.php?option=com_time&controller=reports';
 ?>
 
