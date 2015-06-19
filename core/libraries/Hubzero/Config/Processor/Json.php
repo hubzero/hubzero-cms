@@ -30,6 +30,7 @@
 
 namespace Hubzero\Config\Processor;
 
+use Hubzero\Config\Exception\ParseException;
 use Hubzero\Config\Processor as Base;
 
 /**
@@ -37,6 +38,46 @@ use Hubzero\Config\Processor as Base;
  */
 class Json extends Base
 {
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getSupportedExtensions()
+	{
+		return array('json');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Loads a JSON file as an array
+	 *
+	 * @throws  ParseException If there is an error parsing the JSON file
+	 */
+	public function parse($path)
+	{
+		$data = json_decode(file_get_contents($path), true);
+
+		if (function_exists('json_last_error_msg'))
+		{
+			$error_message = json_last_error_msg();
+		}
+		else
+		{
+			$error_message  = 'Syntax error';
+		}
+
+		if (json_last_error() !== JSON_ERROR_NONE)
+		{
+			$error = array(
+				'message' => $error_message,
+				'type'    => json_last_error(),
+				'file'    => $path,
+			);
+			throw new ParseException($error);
+		}
+
+		return $data;
+	}
+
 	/**
 	 * Try to determine if the data can be parsed
 	 *

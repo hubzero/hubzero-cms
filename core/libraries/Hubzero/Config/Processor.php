@@ -109,6 +109,27 @@ abstract class Processor
 	}
 
 	/**
+	 * Returns an array of allowed file extensions for this parser
+	 *
+	 * @return  array
+	 */
+	public function getSupportedExtensions()
+	{
+		return array();
+	}
+
+	/**
+	 * Parses a file from `$path` and gets its contents as an array
+	 *
+	 * @param   string  $path
+	 * @return  array
+	 */
+	public function parse($path)
+	{
+		return array();
+	}
+
+	/**
 	 * Try to determine if the data can be parsed
 	 *
 	 * @param   string   $data

@@ -30,16 +30,49 @@
 
 namespace Hubzero\Config\Processor;
 
+use Hubzero\Config\Exception\ParseException;
 use Hubzero\Config\Processor as Base;
 use Symfony\Component\Yaml\Yaml as SymfonyYaml;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Hubzero\Error\Exception\RuntimeException;
+use Exception;
 
 /**
  * YAML Processor
  */
 class Yaml extends Base
 {
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getSupportedExtensions()
+	{
+		return array('yaml', 'yml');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Loads a YAML/YML file as an array
+	 *
+	 * @throws  ParseException If If there is an error parsing the YAML file
+	 */
+	public function parse($path)
+	{
+		try
+		{
+			$data = YamlParser::parse(file_get_contents($path));
+		}
+		catch (Exception $exception)
+		{
+			throw new ParseException(
+				array(
+					'message'   => 'Error parsing YAML',
+					'exception' => $exception,
+				)
+			);
+		}
+
+		return $data;
+	}
+
 	/**
 	 * Try to determine if the data can be parsed
 	 *
@@ -55,7 +88,7 @@ class Yaml extends Base
 			// Parse config string
 			$parsed = SymfonyYaml::parse($data);
 		}
-		catch (ParseException $e)
+		catch (Exception $e)
 		{
 			// Throw an exception Hubzero knows how to catch
 			return false;
@@ -128,10 +161,15 @@ class Yaml extends Base
 			// Parse config string
 			$parsed = SymfonyYaml::parse($data);
 		}
-		catch (ParseException $e)
+		catch (Exception $e)
 		{
 			// Throw an exception Hubzero knows how to catch
-			throw new RuntimeException("Failed to parse provided Yaml content.");
+			throw new ParseException(
+				array(
+					'message'   => 'Error parsing YAML',
+					'exception' => $exception,
+				)
+			);
 		}
 
 		return $parsed;

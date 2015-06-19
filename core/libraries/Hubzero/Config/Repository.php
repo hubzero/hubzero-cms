@@ -30,15 +30,10 @@
 
 namespace Hubzero\Config;
 
-use Closure;
-use ArrayAccess;
-
 /**
  * Repository class
- *
- *
  */
-class Repository extends Registry implements ArrayAccess
+class Repository extends Registry
 {
 	/**
 	 * The current client type (admin, site, api, etc).
@@ -48,151 +43,115 @@ class Repository extends Registry implements ArrayAccess
 	protected $client;
 
 	/**
+	 * The loader implementation.
+	 *
+	 * @var  object
+	 */
+	protected $loader;
+
+	/**
 	 * Create a new configuration repository.
+	 *
+	 * @param   object  $loader
+	 * @param   string  $client
+	 * @return  void
+	 */
+	public function __construct($loader, $client)
+	{
+		$this->loader = $loader;
+		$this->client = $client;
+
+		$items = $this->load($this->client);
+
+		parent::__construct($items);
+	}
+
+	/**
+	 * Parse data and bind to this
+	 *
+	 * @param   mixed  $data
+	 * @return  bool
+	 * @deprecated  Implemented purely for legacy compatibility
+	 */
+	/*public function loadObject($data)
+	{
+		return $this->parse($data);
+	}*/
+
+	/**
+	 * Parse data and bind to this
+	 *
+	 * @param   mixed  $data
+	 * @return  bool
+	 * @deprecated  Implemented purely for legacy compatibility
+	 */
+	/*public function loadString($data)
+	{
+		return $this->parse($data);
+	}*/
+
+	/**
+	 * Parse data and bind to this
+	 *
+	 * @param   mixed  $data
+	 * @return  bool
+	 * @deprecated  Implemented purely for legacy compatibility
+	 */
+	/*public function loadArray($data)
+	{
+		return $this->parse($data);
+	}*/
+
+	/**
+	 * Load the configuration for a specified client.
 	 *
 	 * @param   string  $client
 	 * @return  void
 	 */
-	public function __construct($client)
+	public function load($client)
 	{
-		$this->client = $client;
-
-		// Installation check, and check on removal of the install directory.
-		if (!file_exists(PATH_APP . DS . 'configuration.php')
-		 || (filesize(PATH_APP . DS . 'configuration.php') < 10))
-		{
-			if (file_exists(JPATH_INSTALLATION . DS . 'index.php'))
-			{
-				header('Location: ' . substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'index.php')) . 'installation/index.php');
-				exit;
-			}
-			else
-			{
-				echo 'No configuration file found and no installation code available. Exiting...';
-				exit;
-			}
-		}
-
-		require_once PATH_APP . DS . 'configuration.php';
-
-		if (!class_exists('\\JConfig'))
-		{
-			echo 'Invalid configuration file. Exiting...';
-			exit();
-		}
-
-		$config = new \JConfig;
-
-		if (isset($config->tmp_path))
-		{
-			if (substr($config->tmp_path, strlen(PATH_ROOT)) == DS . 'tmp')
-			{
-				$config->tmp_path = PATH_APP . DS . 'app' . substr($config->tmp_path, strlen(PATH_ROOT));
-			}
-		}
-
-		if (isset($config->log_path))
-		{
-			if (substr($config->log_path, strlen(PATH_ROOT)) == DS . 'logs')
-			{
-				$config->log_path = PATH_APP . DS . 'app' . substr($config->log_path, strlen(PATH_ROOT));
-			}
-		}
-
-		parent::__construct($config);
+		return $this->loader->load($client);
 	}
 
 	/**
-	 * Parse data and bind to this
+	 * Get the loader implementation.
 	 *
-	 * @param   mixed  $data
-	 * @return  bool
-	 * @deprecated  Implemented purely for legacy compatibility
+	 * @return  object
 	 */
-	public function loadObject($data)
+	public function getLoader()
 	{
-		return $this->parse($data);
+		return $this->loader;
 	}
 
 	/**
-	 * Parse data and bind to this
+	 * Set the loader implementation.
 	 *
-	 * @param   mixed  $data
-	 * @return  bool
-	 * @deprecated  Implemented purely for legacy compatibility
-	 */
-	public function loadString($data)
-	{
-		return $this->parse($data);
-	}
-
-	/**
-	 * Parse data and bind to this
-	 *
-	 * @param   mixed  $data
-	 * @return  bool
-	 * @deprecated  Implemented purely for legacy compatibility
-	 */
-	public function loadArray($data)
-	{
-		return $this->parse($data);
-	}
-
-	/**
-	 * Determine if the given configuration value exists.
-	 *
-	 * @param   string  $key
-	 * @return  bool
-	 */
-	public function has($key)
-	{
-		$default = microtime(true);
-
-		return $this->get($key, $default) !== $default;
-	}
-
-	/**
-	 * Determine if the given configuration option exists.
-	 *
-	 * @param   string  $key
-	 * @return  bool
-	 */
-	public function offsetExists($key)
-	{
-		return $this->has($key);
-	}
-
-	/**
-	 * Get a configuration option.
-	 *
-	 * @param   string  $key
-	 * @return  mixed
-	 */
-	public function offsetGet($key)
-	{
-		return $this->get($key);
-	}
-
-	/**
-	 * Set a configuration option.
-	 *
-	 * @param   string  $key
-	 * @param   mixed   $value
+	 * @param   object $loader
 	 * @return  void
 	 */
-	public function offsetSet($key, $value)
+	public function setLoader($loader)
 	{
-		$this->set($key, $value);
+		$this->loader = $loader;
 	}
 
 	/**
-	 * Unset a configuration option.
+	 * Set the current configuration client.
 	 *
-	 * @param   string  $key
+	 * @param   string  $client
 	 * @return  void
 	 */
-	public function offsetUnset($key)
+	public function setClient($client)
 	{
-		$this->set($key, null);
+		$this->client = (string) $client;
+	}
+
+	/**
+	 * Get the current configuration client.
+	 *
+	 * @return  string
+	 */
+	public function getClient()
+	{
+		return $this->client;
 	}
 }
