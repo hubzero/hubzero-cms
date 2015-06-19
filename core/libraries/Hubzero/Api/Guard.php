@@ -105,6 +105,7 @@ class Guard
 		if (isset($this->token['uidNumber']))
 		{
 			$response['user_id'] = $this->token['uidNumber'];
+			$this->app['session']->set('user', new \JUser($response['user_id']));
 		}
 
 		// Fire after auth event
