@@ -45,6 +45,8 @@ $this->css()
      ->css('records')
      ->js('records')
      ->js('time');
+
+HTML::behavior('core');
 ?>
 
 <header id="content-header">

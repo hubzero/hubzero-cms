@@ -46,6 +46,8 @@ $this->css()
 \Hubzero\Document\Assets::addSystemScript('moment.min');
 \Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
 
+HTML::behavior('core');
+
 $utc   = Date::of('now');
 $now   = Date::of($utc)->toLocal(Lang::txt('g:00a'));
 $then  = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('g:00a'));

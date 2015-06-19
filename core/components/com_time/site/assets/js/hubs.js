@@ -210,5 +210,5 @@ HUB.Plugins.TimeHubs = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Plugins.TimeHubs.initialize();
+	Hubzero.initApi(HUB.Plugins.TimeHubs.initialize);
 });

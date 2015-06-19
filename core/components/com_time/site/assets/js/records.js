@@ -152,5 +152,5 @@ HUB.Plugins.TimeRecords = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Plugins.TimeRecords.initialize();
+	Hubzero.initApi(HUB.Plugins.TimeRecords.initialize);
 });

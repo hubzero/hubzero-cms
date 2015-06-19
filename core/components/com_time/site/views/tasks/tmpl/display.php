@@ -46,6 +46,8 @@ $app = JFactory::getApplication();
 $sortcol = $this->tasks->orderBy;
 $dir     = $this->tasks->orderDir;
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
+
+HTML::behavior('core');
 ?>
 
 <header id="content-header">

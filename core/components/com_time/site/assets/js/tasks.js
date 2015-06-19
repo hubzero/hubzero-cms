@@ -96,5 +96,5 @@ HUB.Plugins.TimeTasks = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Plugins.TimeTasks.initialize();
+	Hubzero.initApi(HUB.Plugins.TimeTasks.initialize);
 });

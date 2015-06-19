@@ -39,6 +39,8 @@ $this->css()
      ->css('jquery.ui.css', 'system')
      ->js('records');
 
+HTML::behavior('core');
+
 // Set some ordering variables
 $sortcol = $this->records->orderBy;
 $dir     = $this->records->orderDir;

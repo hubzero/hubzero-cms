@@ -39,6 +39,8 @@ $this->css()
      ->css('hubs')
      ->js('hubs')
      ->js('time');
+
+HTML::behavior('core');
 ?>
 
 <div id="dialog-confirm"></div>
