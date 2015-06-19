@@ -279,6 +279,10 @@ class ApiController implements ControllerInterface
 	 */
 	protected function requiresAuthentication()
 	{
+		if (!\App::get('authn')['user_id'])
+		{
+			\App::abort(404, 'Not Found');
+		}
 	}
 
 	/**
