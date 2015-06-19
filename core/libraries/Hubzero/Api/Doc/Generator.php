@@ -221,22 +221,16 @@ class Generator
 		// var to hold output
 		$output = array();
 
-		// include file
 		require_once $file;
 
-		// get file class name
 		$className = $this->parseClassFromFile($file);
-
-		// component
 		$component = $this->parseClassFromFile($file, true)['component'];
+		$version   = $this->parseClassFromFile($file, true)['version'];
 
-		// get file version
-		$version = $this->parseClassFromFile($file, true)['version'];
-
-		// push file to files array
+		// Push file to files array
 		$this->output['files'][] = $file;
 
-		// push version to versions array
+		// Push version to versions array
 		$this->output['versions']['available'][] = $version;
 
 		if (!class_exists($className))
@@ -244,28 +238,26 @@ class Generator
 			return $output;
 		}
 
-		// create reflection class of file
 		$classReflector = new ReflectionClass($className);
 
-		// loop through each method and process doc
 		foreach ($classReflector->getMethods() as $method)
 		{
-			// create docblock object & make sure we have something
+			// Create docblock object & make sure we have something
 			$phpdoc = new DocBlock($method);
 
-			// skip constructor
-			if ($method->getName() == '__construct')
+			// Skip methods we don't want processed
+			if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), array('registerTask', 'unregisterTask')))
 			{
 				continue;
 			}
 
-			// skip  method in the parent class (already processed), 
+			// Skip method in the parent class (already processed), 
 			if ($className != $method->getDeclaringClass()->getName())
 			{
 				//continue;
 			}
 
-			// skip if we dont have a short desc
+			// Skip if we dont have a short desc
 			// but put in error
 			if (!$phpdoc->getShortDescription())
 			{
@@ -273,10 +265,10 @@ class Generator
 				continue;
 			}
 
-			// create endpoint data array
+			// Create endpoint data array
 			$endpoint = array(
-				'name'        => $phpdoc->getShortDescription(),
-				'description' => $phpdoc->getLongDescription()->getContents(),
+				'name'        => substr($method->getName(), 0, -4),
+				'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), // $phpdoc->getLongDescription()->getContents()
 				'method'      => '',
 				'uri'         => '',
 				'parameters'  => array(),
@@ -287,14 +279,13 @@ class Generator
 				)
 			);
 
-			// loop through each tag
+			// Loop through each tag
 			foreach ($phpdoc->getTags() as $tag)
 			{
-				// get tag name and content
 				$name    = strtolower(str_replace('api', '', $tag->getName()));
 				$content = $tag->getContent();
 
-				// handle parameters separately
+				// Handle parameters separately
 				// json decode param input
 				if ($name == 'parameter')
 				{
@@ -310,12 +301,25 @@ class Generator
 					continue;
 				}
 
-				// add data to endpoint data
+				if ($name == 'uri' && $method->getName() == 'indexTask')
+				{
+					$content .= $component;
+				}
+
+				// Add data to endpoint data
 				$endpoint[$name] = $content;
 			}
 
-			// add endpoint to output
-			$output[] = $endpoint;
+			// Add endpoint to output
+			// We always want indexTask to be first in the list
+			if ($method->getName() == 'indexTask')
+			{
+				array_unshift($output, $endpoint);
+			}
+			else
+			{
+				$output[] = $endpoint;
+			}
 		}
 
 		return $output;

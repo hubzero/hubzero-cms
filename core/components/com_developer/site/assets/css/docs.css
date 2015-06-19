@@ -85,7 +85,7 @@ pre code {
 
 
 
-/* Table of contents */
+/* Table of contents
 .toc {
 	position: relative;
 	border: 1px solid #4183C4;;
@@ -140,4 +140,12 @@ pre code {
 .toc .label:before,
 .toc .divider:before {
 	content: '';
+}*/
+
+.toc li ul {
+	display: none;
+}
+
+.toc .active ul {
+	display: block;
 }

@@ -37,8 +37,7 @@ $url = 'https://' . $host . '/api';
 
 // include needed css
 $this->css('docs')
-     ->css()
-     ->js();
+     ->css();
 
 // add highlight lib
 //Document::addStyleSheet('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css');
@@ -81,118 +80,27 @@ $activeVersion = Request::getVar('version', reset($versions));
 </header>
 
 <section class="section api docs">
-	<div class="grid">
-		<div class="col span9">
-			
+	<div class="section-inner">
+		<aside class="aside">
 			<?php 
-				echo $this->view('_docs_overview')
-						  ->set('url', $url)
-						  ->set('base', $base)
-						  ->display();
-
-				echo $this->view('_docs_oauth')
-						  ->set('url', $url)
-						  ->display();
+			$this->view('_menu')
+				 ->set('documentation', $this->documentation)
+				 ->set('active', '')
+				 ->set('version', $activeVersion)
+				 ->display();
 			?>
+		</aside>
+		<div class="subject">
+			<?php 
+			$this->view('_docs_overview')
+				 ->set('url', $url)
+				 ->set('base', $base)
+				 ->display();
 
-			<?php foreach ($this->documentation['sections'] as $component => $endpoints) : ?>
-				<h2 class="doc-section-header" id="<?php echo $component; ?>">
-					<?php echo ucfirst($component); ?>
-				</h2>
-				<?php foreach ($endpoints as $endpoint) : ?>
-					<?php
-						$key = implode('-', $endpoint['_metadata']);
-
-						if ($endpoint['_metadata']['version'] != $activeVersion)
-						{
-							continue;
-						}
-
-					?>
-					<div class="doc-section endpoint" id="<?php echo $key; ?>">
-						<h3><?php echo $endpoint['name']; ?></h3>
-						<p><?php echo $endpoint['description']; ?></p>
-						<pre><code class="http"><?php echo $endpoint['method']; ?> <?php echo $endpoint['uri']; ?></code></pre>
-						
-						<?php if (count($endpoint['parameters']) > 0) : ?>
-							<h4><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETERS'); ?></h4>
-							<table>
-								<thead>
-									<tr>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach ($endpoint['parameters'] as $param) : ?>
-										<tr>
-											<td><?php echo $param['name']; ?></td>
-											<td><?php echo (isset($param['type'])) ? $param['type'] : ' '; ?></td>
-											<td>
-												<?php echo ($param['required']) ? '<span class="required">Required</span>.' : ''; ?> 
-												<?php echo $param['description']; ?>
-												<br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?>: <code class="nohighlight"><?php echo ($param['default']) ? $param['default'] : 'null'; ?></code>
-												<?php if (isset($param['allowedValues'])) : ?>
-													<br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?>: <code class="nohighlight"><?php echo $param['allowedValues']; ?></code>
-												<?php endif; ?>
-											</td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						<?php endif; ?>
-					</div>
-				<?php endforeach; ?>
-			<?php endforeach; ?>
-		</div>
-
-		<div class="col span3 omega">
-			<div class="toc">
-				<h3 class="toc-header label"><?php echo Lang::txt('Table of Contents'); ?></h3>
-				<h3 class="toc-header" data-section="overview" data-index="0"><?php echo Lang::txt('Overview'); ?></h3>
-				<div class="toc-content">
-					<ul>
-						<li><a href="#overview-schema"><?php echo Lang::txt('Schema'); ?></a></li>
-						<li><a href="#overview-errormessages"><?php echo Lang::txt('Error Messages'); ?></a></li>
-						<li><a href="#overview-httpverbs"><?php echo Lang::txt('HTTP Verbs'); ?></a></li>
-						<li><a href="#overview-versioning"><?php echo Lang::txt('Versioning'); ?></a></li>
-						<li><a href="#overview-ratelimiting"><?php echo Lang::txt('Rate Limiting'); ?></a></li>
-						<li><a href="#overview-jsonp"><?php echo Lang::txt('JSON-P'); ?></a></li>
-						<li><a href="#overview-expanding"><?php echo Lang::txt('Expanding Objects'); ?></a></li>
-					</ul>
-				</div>
-				<h3 class="toc-header" data-section="oauth" data-index="1"><?php echo Lang::txt('Authentication (OAuth2)'); ?></h3>
-				<div class="toc-content">
-					<ul>
-						<li><a href="#oauth-authorizationcode"><?php echo Lang::txt('Web Application Flow'); ?></a></li>
-						<li><a href="#oauth-usercredentials"><?php echo Lang::txt('User Credentials Flow'); ?></a></li>
-						<li><a href="#oauth-refreshtoken"><?php echo Lang::txt('Refresh Token Flow'); ?></a></li>
-						<li><a href="#oauth-sessiontoken"><?php echo Lang::txt('Session Token Flow'); ?></a></li>
-						<li><a href="#oauth-toolsessiontoken"><?php echo Lang::txt('Tool Session Token Flow'); ?></a></li>
-						<li><a href="#oauth-authenticating"><?php echo Lang::txt('Using the Token'); ?></a></li>
-					</ul>
-				</div>
-
-				<h3 class="toc-header divider"><?php echo Lang::txt('API Endpoints'); ?></h3>
-				<?php $i = 2; foreach ($this->documentation['sections'] as $component => $endpoints) :?>
-					<h3 class="toc-header" data-section="<?php echo $component; ?>" data-index="<?php echo $i; ?>"><?php echo ucfirst($component); ?></h3>
-					<div class="toc-content">
-						<ul>
-							<?php foreach ($endpoints as $endpoint) : ?>
-								<?php
-									$key = implode('-', $endpoint['_metadata']);
-									if ($endpoint['_metadata']['version'] != $activeVersion)
-									{
-										continue;
-									}
-								?>
-								<li><a href="#<?php echo $key; ?>"><?php echo $endpoint['name']; ?></a></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				<?php endforeach; $i++; ?>
-			</div>
+			$this->view('_docs_oauth')
+				 ->set('url', $url)
+				 ->display();
+			?>
 		</div>
 	</div>
 </section>

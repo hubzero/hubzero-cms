@@ -70,6 +70,34 @@ class Api extends SiteController
 	}
 
 	/**
+	 * Endpoint Documentation
+	 * 
+	 * @return  void
+	 */
+	public function endpointTask()
+	{
+		// build pathway
+		$this->_buildPathway();
+
+		$active = Request::getVar('active', '');
+
+		// generate documentation
+		$generator = new \Hubzero\Api\Doc\Generator();
+		$documentation = $generator->output('array');
+
+		if (!isset($documentation['sections'][$active]))
+		{
+			throw new \Exception(Lang::txt('Endpoint not found'), 404);
+		}
+
+		$this->view->active = $active;
+		$this->view->documentation = $documentation;
+
+		// render view
+		$this->view->display();
+	}
+
+	/**
 	 * Console 
 	 * 
 	 * @return  void

@@ -160,6 +160,14 @@ class Router extends Base
 		{
 			$vars['version'] = $segments[2];
 		}
+		if (isset($vars['task']) && $vars['task'] == 'endpoint' && isset($segments[2]))
+		{
+			$vars['active'] = $segments[2];
+			if (isset($segments[3]))
+			{
+				$vars['version'] = $segments[3];
+			}
+		}
 
 		return $vars;
 	}
