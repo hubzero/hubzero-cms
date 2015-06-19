@@ -64,21 +64,29 @@ pre code {
 	padding: 8px;
 	font-size: 14px;
 	display: block;
-}
+}*/
 .doc-section p code,
 .doc-section table code {
 	display: inline-block;
-	padding: 0px 4px;
-	font-size: 11.5px;
+	padding: 0 0.4em;
+	font-size: 0.85em;
 } 
 .doc-section table {
 	border: 1px solid #CCC;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.doc-section caption {
+	border: 1px solid #CCC;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: none;
+	background: rgba(0, 0, 0, 0.05);
+	font-weight: bold;
 }
 .doc-section .required {
 	color: #B50600;
 	font-weight: bold;
 }
-.doc-section h4 {
+/*.doc-section h4 {
 	margin-top: 2em;
 	font-size: 1.2em;
 } */

@@ -48,7 +48,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
 class Collectionsv1_0 extends ApiController
 {
 	/**
-	 * Displays a list of collections
+	 * Display a list of collections
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /collections/list
@@ -131,7 +131,7 @@ class Collectionsv1_0 extends ApiController
 	}
 
 	/**
-	 * Create an entry
+	 * Create a collection
 	 *
 	 * @apiMethod POST
 	 * @apiUri    /collections
@@ -255,7 +255,7 @@ class Collectionsv1_0 extends ApiController
 	}
 
 	/**
-	 * Retrieve an entry
+	 * Retrieve a collection
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /collections/{id}
@@ -286,7 +286,7 @@ class Collectionsv1_0 extends ApiController
 	}
 
 	/**
-	 * Update an entry
+	 * Update a collection
 	 *
 	 * @apiMethod PUT
 	 * @apiUri    /collections/{id}
@@ -416,7 +416,7 @@ class Collectionsv1_0 extends ApiController
 	}
 
 	/**
-	 * Delete an entry
+	 * Delete a collection
 	 *
 	 * @apiMethod DELETE
 	 * @apiUri    /collections/{id}

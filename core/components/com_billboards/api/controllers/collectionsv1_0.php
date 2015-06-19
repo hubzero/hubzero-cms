@@ -28,92 +28,72 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Billboards\Api\Controllers;
+
 use Components\Billboards\Models\Collection;
 use Components\Billboards\Models\Billboard;
+use Hubzero\Component\ApiController;
+use Request;
 
-JLoader::import('Hubzero.Api.Controller');
-
-require_once PATH_CORE . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'collection.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'collection.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'billboard.php';
 
 /**
- * Billboards api controller
+ * Billboards collections API controller
  */
-class BillboardsControllerApi extends \Hubzero\Component\ApiController
+class Collectionsv1_0 extends ApiController
 {
-	/**
-	 * Default execute task, handling task execution
-	 *
-	 * @return void
-	 */
-	public function execute()
-	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
-
-		switch ($this->segments[0])
-		{
-			case 'index':       $this->index();      break;
-			case 'collection':  $this->collection(); break;
-			default:            $this->index();
-		}
-	}
-
-	/**
-	 * Default not found task, throwing a 404
-	 *
-	 * @return void
-	 */
-	private function not_found()
-	{
-		$response = $this->getResponse();
-		$response->setErrorMessage(404, 'Not Found');
-	}
-
 	/**
 	 * Lists an index of existing billboard collections
 	 *
-	 * @return void
+	 * @apiMethod GET
+	 * @apiUri    /billboards/list
+	 * @apiParameter {
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
+	 * @return  void
 	 */
-	private function index()
+	public function listTask()
 	{
-		// If we dont have a user, return an error
-		if (JFactory::getApplication()->getAuthn('user_id') == null)
-		{
-			return $this->not_found();
-		}
-
 		// Get the request vars
-		$limit      = Request::getVar("limit", 25);
-		$limitstart = Request::getVar("limitstart", 0);
+		$limit      = Request::getVar('limit', 25);
+		$limitstart = Request::getVar('limitstart', 0);
 
 		// Load up the entries
 		$collections = Collection::start($limitstart)->limit($limit)->rows();
 
-		$this->setMessageType("application/json");
-		$this->setMessage(array('collections' => $collections->toArray()));
+		$this->send(array('collections' => $collections->toArray()));
 	}
 
 	/**
 	 * Lists all billboards for a given collection
 	 *
-	 * @return void
+	 * @apiMethod GET
+	 * @apiUri    /billboards/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Collection identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	 * @return  void
 	 */
-	private function collection()
+	public function readTask()
 	{
-		// If we dont have a user, return an error
-		if (JFactory::getApplication()->getAuthn('user_id') == null)
-		{
-			return $this->not_found();
-		}
-
 		// Get the collection id
-		$collection = 0;
-		if (isset($this->segments[1]))
-		{
-			$collection = $this->segments[1];
-		}
-		$collection = Request::getVar("collection", $collection);
+		$collection = Request::getInt('id', 0);
 
 		// Load up the collection
 		$collection = Collection::oneOrNew($collection);
@@ -121,7 +101,7 @@ class BillboardsControllerApi extends \Hubzero\Component\ApiController
 		// Make sure we found a collection
 		if ($collection->isNew())
 		{
-			return $this->not_found();
+			throw new Exception(Lang::txt('Collection not found'), 404);
 		}
 
 		$billboards = $collection->billboards()
@@ -154,7 +134,6 @@ class BillboardsControllerApi extends \Hubzero\Component\ApiController
 			'billboards' => $billboards->toArray()
 		);
 
-		$this->setMessageType("application/json");
-		$this->setMessage(array('collection' => $collection));
+		$this->send(array('collection' => $collection));
 	}
 }

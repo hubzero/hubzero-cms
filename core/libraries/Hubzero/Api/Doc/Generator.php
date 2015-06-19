@@ -246,7 +246,7 @@ class Generator
 			$phpdoc = new DocBlock($method);
 
 			// Skip methods we don't want processed
-			if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), array('registerTask', 'unregisterTask')))
+			if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), array('registerTask', 'unregisterTask', 'indexTask')))
 			{
 				continue;
 			}
@@ -267,8 +267,10 @@ class Generator
 
 			// Create endpoint data array
 			$endpoint = array(
-				'name'        => substr($method->getName(), 0, -4),
-				'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), // $phpdoc->getLongDescription()->getContents()
+				//'name'        => substr($method->getName(), 0, -4),
+				//'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), // $phpdoc->getLongDescription()->getContents()
+				'name'        => $phpdoc->getShortDescription(),
+				'description' => $phpdoc->getLongDescription()->getContents(),
 				'method'      => '',
 				'uri'         => '',
 				'parameters'  => array(),

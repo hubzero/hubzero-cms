@@ -62,7 +62,7 @@ class Postsv1_0 extends ApiController
 	}
 
 	/**
-	 * Displays a list of posts for a collection
+	 * Display posts for a collection
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /collections/{id}/posts
@@ -181,7 +181,7 @@ class Postsv1_0 extends ApiController
 	}
 
 	/**
-	 * Create an entry
+	 * Create a post
 	 *
 	 * @apiMethod POST
 	 * @apiUri    /collections/{id}/posts
@@ -305,7 +305,7 @@ class Postsv1_0 extends ApiController
 	}
 
 	/**
-	 * Retrieve an entry
+	 * Retrieve a post
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /collections/{id}/posts/{id}
@@ -333,7 +333,7 @@ class Postsv1_0 extends ApiController
 	}
 
 	/**
-	 * Update an entry
+	 * Update a post
 	 *
 	 * @apiMethod PUT
 	 * @apiUri    /collections/{id}/posts/{id}
@@ -455,7 +455,7 @@ class Postsv1_0 extends ApiController
 	}
 
 	/**
-	 * Delete an entry
+	 * Delete a post
 	 *
 	 * @apiMethod DELETE
 	 * @apiUri    /collections/{id}/posts/{id}

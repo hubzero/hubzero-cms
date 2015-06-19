@@ -48,7 +48,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
 class Entriesv1_0 extends ApiController
 {
 	/**
-	 * Displays a list of entries
+	 * Display a list of entries
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /blog/list

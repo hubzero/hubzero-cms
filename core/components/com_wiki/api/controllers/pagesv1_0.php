@@ -49,7 +49,7 @@ require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php');
 class Pagesv1_0 extends ApiController
 {
 	/**
-	 * Displays a list of new content
+	 * Display a list of pages
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /wiki/list
@@ -103,7 +103,7 @@ class Pagesv1_0 extends ApiController
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('search', ''),
 			'sort'       => Request::getWord('sort', 'title'),
-			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC')),
+			'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'ASC')),
 			'state'      => array(0, 1),
 			'group'      => Request::getVar('group_cn', '')
 		);

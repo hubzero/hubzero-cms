@@ -48,55 +48,10 @@ require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php');
 class Questionsv1_0 extends ApiController
 {
 	/**
-	 * Documents available API tasks and their options
+	 * Display a list of questions
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /answers
-	 * @return    void
-	 */
-	public function indexTask()
-	{
-		$response = new stdClass();
-		$response->component = 'answers';
-		$response->tasks = array(
-			'questions' => array(
-				'description' => Lang::txt('Get a list of questions.'),
-				'parameters'  => array(
-					'search' => array(
-						'description' => Lang::txt('A word or phrase to search for.'),
-						'type'        => 'string',
-						'default'     => 'null'
-					),
-					'filterby' => array(
-						'description' => Lang::txt('Filter results by question status.'),
-						'type'        => 'string',
-						'default'     => 'all',
-						'accepts'     => array('all', 'open', 'closed')
-					),
-					'sort' => array(
-						'description' => Lang::txt('Sorting to be applied to the records.'),
-						'type'        => 'string',
-						'default'     => 'date',
-						'accepts'     => array('created', 'helpful', 'reward', 'state')
-					),
-					'sort_Dir' => array(
-						'description' => Lang::txt('Direction to sort records by.'),
-						'type'        => 'string',
-						'default'     => 'desc',
-						'accepts'     => array('asc', 'desc')
-					),
-				),
-			),
-		);
-
-		$this->send($response);
-	}
-
-	/**
-	 * Displays a list of questions
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /answers/questions
+	 * @apiUri    /answers/questions/list
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
@@ -131,7 +86,7 @@ class Questionsv1_0 extends ApiController
 	 * }
 	 * @return    void
 	 */
-	public function showTask()
+	public function listTask()
 	{
 		$database = \JFactory::getDBO();
 		$model = new \Components\Answers\Tables\Question($database);
@@ -179,6 +134,69 @@ class Questionsv1_0 extends ApiController
 	 *
 	 * @apiMethod POST
 	 * @apiUri    /answers/questions
+	 * @apiParameter {
+	 * 		"name":        "email",
+	 * 		"description": "Notify user of responses",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "anonymous",
+	 * 		"description": "List author as anonymous or not",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "subject",
+	 * 		"description": "Short, one-line question",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "question",
+	 * 		"description": "Longer, detailed question",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "created",
+	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     "now"
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "crated_by",
+	 * 		"description": "User ID of entry creator",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "state",
+	 * 		"description": "Published state (0 = unpublished, 1 = published)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "reward",
+	 * 		"description": "Reward points",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tags",
+	 * 		"description": "Comma-separated list of tags",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
 	 * @return    void
 	 */
 	public function createTask()
@@ -224,10 +242,108 @@ class Questionsv1_0 extends ApiController
 	}
 
 	/**
+	 * Retrieve a question
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /answers/questions/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Question identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
+	 * @return    void
+	 */
+	public function readTask()
+	{
+		$id = Request::getInt('id', 0);
+
+		$row = new Question($id);
+
+		if (!$row->exists())
+		{
+			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
+		}
+
+		$this->send($row);
+	}
+
+	/**
 	 * Update a question
 	 *
 	 * @apiMethod PUT
 	 * @apiUri    /answers/questions/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Question identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "email",
+	 * 		"description": "Notify user of responses",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "anonymous",
+	 * 		"description": "List author as anonymous or not",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "subject",
+	 * 		"description": "Short, one-line question",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "question",
+	 * 		"description": "Longer, detailed question",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "created",
+	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "crated_by",
+	 * 		"description": "User ID of entry creator",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "state",
+	 * 		"description": "Published state (0 = unpublished, 1 = published)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "reward",
+	 * 		"description": "Reward points",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tags",
+	 * 		"description": "Comma-separated list of tags",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
 	 * @return    void
 	 */
 	public function updateTask()
@@ -236,15 +352,15 @@ class Questionsv1_0 extends ApiController
 
 		$fields = array(
 			'id'         => Request::getInt('id', 0, 'post'),
-			'email'      => Request::getInt('email', 0, 'post'),
-			'anonymous'  => Request::getInt('anonymous', 0, 'post'),
-			'subject'    => Request::getVar('subject', null, 'post', 'none', 2),
-			'question'   => Request::getVar('question', null, 'post', 'none', 2),
-			'created'    => Request::getVar('created', new Date('now'), 'post'),
-			'created_by' => Request::getInt('created_by', 0, 'post'),
-			'state'      => Request::getInt('state', 0, 'post'),
-			'reward'     => Request::getInt('reward', 0, 'post'),
-			'tags'       => Request::getVar('tags', null, 'post')
+			'email'      => Request::getInt('email', null),
+			'anonymous'  => Request::getInt('anonymous', null),
+			'subject'    => Request::getVar('subject', null, '', 'none', 2),
+			'question'   => Request::getVar('question', null, '', 'none', 2),
+			'created'    => Request::getVar('created', null),
+			'created_by' => Request::getInt('created_by', null),
+			'state'      => Request::getInt('state', null),
+			'reward'     => Request::getInt('reward', null),
+			'tags'       => Request::getVar('tags', null)
 		);
 
 		$row = new Question($fields['id']);
@@ -283,6 +399,13 @@ class Questionsv1_0 extends ApiController
 	 *
 	 * @apiMethod DELETE
 	 * @apiUri    /answers/questions/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Question identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     0
+	 * }
 	 * @return    void
 	 */
 	public function deleteTask()
