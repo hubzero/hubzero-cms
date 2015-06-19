@@ -45,7 +45,7 @@ $base    = 'index.php?option=com_time&controller=reports';
 
 // If no incoming fields vars selected, we'll assume we should show all
 $all  = true;
-foreach (Request::get('GET') as $key => $value)
+foreach (Request::query() as $key => $value)
 {
 	if (strpos($key, 'fields-') !== false)
 	{

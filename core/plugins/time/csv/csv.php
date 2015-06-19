@@ -56,7 +56,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 	public static function render()
 	{
 		// Load language
-		Lang::load('plg_time_csv', JPATH_ADMINISTRATOR);
+		Lang::load('plg_time_csv', __DIR__);
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -82,7 +82,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 
 		// Pass permissions to view
 		$view->permissions = new Permissions('com_time');
-		$view->records     = $records->including('task.hub', 'user');
+		$view->records     = $records->including('task.hub', 'user')->rows();
 
 		return $view->loadTemplate();
 	}
