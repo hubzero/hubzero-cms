@@ -136,7 +136,7 @@ class Plugin extends Object
 	 * @param   string   $basePath   The basepath to use
 	 * @return  boolean  True, if the file has successfully loaded.
 	 */
-	public function loadLanguage($extension = '', $basePath = JPATH_ADMINISTRATOR)
+	public function loadLanguage($extension = '', $basePath = PATH_APP)
 	{
 		if (empty($extension))
 		{
@@ -145,8 +145,8 @@ class Plugin extends Object
 
 		$lang = \App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+			|| $lang->load(strtolower($extension), PATH_APP . DS . 'app' . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
 	}
 
 	/**
