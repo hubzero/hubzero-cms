@@ -118,7 +118,7 @@ class ModulesModelSelect extends JModelList
 		// and load language support.
 		foreach ($items as &$item)
 		{
-			$path = Filesystem::normalizePath($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
+			$path = Filesystem::cleanPath($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
 			if (file_exists($path))
 			{
 				$item->xml = simplexml_load_file($path);
