@@ -31,7 +31,6 @@
 namespace Modules\Submenu;
 
 use Hubzero\Module\Module;
-use JToolBar;
 
 /**
  * Module class for rendering a submenu
@@ -45,8 +44,13 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin() || !class_exists('\\Submenu'))
+		{
+			return;
+		}
+
 		// Initialise variables.
-		$list = Submenu::getItems();
+		$list = \Submenu::getItems();
 
 		if (!is_array($list) || !count($list))
 		{

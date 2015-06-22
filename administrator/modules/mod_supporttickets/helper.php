@@ -33,6 +33,7 @@ namespace Modules\Supporttickets;
 use Components\Support\Tables\Query;
 use Components\Support\Tables\Ticket;
 use Hubzero\Module\Module;
+use Component;
 use stdClass;
 use Request;
 use Config;
@@ -49,8 +50,13 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
+		include_once(Component::path('com_support') . DS . 'tables' . DS . 'query.php');
+		include_once(Component::path('com_support') . DS . 'tables' . DS . 'ticket.php');
 
 		$database = \JFactory::getDBO();
 

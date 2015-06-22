@@ -44,8 +44,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \JFactory::getDBO();
+		if (!\App::isAdmin())
+		{
+			return;
+		}
 
+		$database = \JFactory::getDBO();
 		$database->setQuery("SELECT * FROM `#__users` WHERE `approved` = 0");
 		$this->unapproved = $database->loadObjectList();
 

@@ -28,9 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
-
 if (isset($this->title) && !empty($this->title)):
 	echo $this->title;
 endif;

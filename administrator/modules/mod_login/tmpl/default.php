@@ -28,9 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
-
 $this->css('login')
      ->css('providers', 'com_users')
      ->js('login');

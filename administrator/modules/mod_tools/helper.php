@@ -44,6 +44,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$this->total      = 0;
 		$this->registered = 0;
 		$this->created    = 0;

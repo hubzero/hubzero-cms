@@ -28,8 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die('Restricted access');
-
 $this->css();
 
 //get whos online summary

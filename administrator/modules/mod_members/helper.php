@@ -44,6 +44,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$database = \JFactory::getDBO();
 
 		$database->setQuery("SELECT count(u.id) FROM `#__users` AS u, `#__xprofiles` AS m WHERE m.uidNumber=u.id AND m.emailConfirmed < -1");

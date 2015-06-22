@@ -31,6 +31,7 @@
 namespace Modules\Groups;
 
 use Hubzero\Module\Module;
+use Hubzero\Utility\Date;
 
 /**
  * Module class for com_groups data
@@ -44,6 +45,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$type = $this->params->get('type', '1');
 
 		switch ($type)
@@ -74,7 +80,7 @@ class Helper extends Module
 		}
 
 		// Last 24 hours
-		$lastDay = date('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
+		$lastDay = with(new Date('now'))->subtract('1 Day')->toSql(); //gmdate('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
 
 		$database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $database->loadResult();

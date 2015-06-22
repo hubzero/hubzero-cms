@@ -32,6 +32,7 @@ namespace Modules\Wishlist;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Models\Wishlist;
+use Component;
 
 /**
  * Module class for com_wishlist data
@@ -45,7 +46,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
+		include_once(Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php');
 
 		$wishlist = intval($this->params->get('wishlist', 0));
 		if (!$wishlist)

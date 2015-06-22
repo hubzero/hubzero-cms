@@ -28,9 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
-
 $shownew = (boolean) $params->get('shownew', 1);
 $user = User::getRoot();
 $lang = Lang::getRoot();

@@ -48,6 +48,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$mosConfig_bankAccounts = 0;
 		$database = \JFactory::getDBO();
 

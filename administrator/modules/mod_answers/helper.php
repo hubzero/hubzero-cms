@@ -41,10 +41,15 @@ class Helper extends Module
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$database = \JFactory::getDBO();
 
 		$queries = array(

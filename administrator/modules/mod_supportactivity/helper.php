@@ -31,6 +31,7 @@
 namespace Modules\SupportActivity;
 
 use Hubzero\Module\Module;
+use Request;
 
 /**
  * Module class for an activity feed
@@ -44,10 +45,15 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$database = \JFactory::getDBO();
 
 		$where = "";
-		if ($start = \Request::getVar('start', ''))
+		if ($start = Request::getVar('start', ''))
 		{
 			$where = "WHERE a.created > " . $database->quote($start);
 		}
@@ -61,7 +67,7 @@ class Helper extends Module
 		$database->setQuery($query);
 		$this->results = $database->loadObjectList();
 
-		$this->feed = \Request::getInt('feedactivity', 0);
+		$this->feed = Request::getInt('feedactivity', 0);
 
 		if ($this->feed == 1)
 		{

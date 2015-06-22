@@ -47,6 +47,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		\JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/admin/models', 'ContentModel');
 
 		jimport('joomla.application.categories');

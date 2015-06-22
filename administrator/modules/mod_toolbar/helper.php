@@ -44,6 +44,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		// Get the toolbar.
 		$toolbar = \Toolbar::render('toolbar');
 

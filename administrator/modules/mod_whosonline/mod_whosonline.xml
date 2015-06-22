@@ -1,23 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module">
-	<name>Show Online Users</name>
-	<author>Christopher Smoak</author>
+
+<!--
+@package        hubzero-cms
+@file           administrator/modules/mod_whosonline/whosonline.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2014 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension type="module" version="1.5" client="administrator">
+	<name>mod_whosonline</name>
+	<author>HUBzero</author>
 	<creationDate>January 2005</creationDate>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>https://hubzero.org</authorUrl>
 	<version>1.0.0</version>
-	<description>This module shows a list of the currently logged in users</description>
+	<description>MOD_WHOSONLINE_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_whosonline">mod_whosonline.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" default="25" label="Display Limit" description="Number of people to display in module." />
+				<field name="display_limit" type="text" default="25" label="MOD_WHOSONLINE_LIMIT_LABEL" description="MOD_WHOSONLINE_LIMIT_DESC" />
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

@@ -56,6 +56,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$buttons = self::getButtons($this->params);
 
 		include_once __DIR__ . DS . 'icons.php';
@@ -218,9 +223,7 @@ class Helper extends Module
 		{
 			return Lang::txt($key);
 		}
-		else
-		{
-			return $module->title;
-		}
+
+		return $module->title;
 	}
 }

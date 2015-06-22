@@ -45,6 +45,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		// get active sessions (users online)
 		$this->rows = SessionHelper::getAllSessions(array(
 			'guest'    => 0,

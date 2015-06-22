@@ -48,6 +48,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		$return  = self::getReturnURI();
 		$freturn = base64_encode('index.php?' . Request::getQueryString());
 

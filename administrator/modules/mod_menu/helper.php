@@ -49,6 +49,11 @@ class Helper extends Module
 	 */
 	public function display()
 	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
 		// Include the module helper classes.
 		if (!class_exists('\\Modules\\Menu\\Tree'))
 		{
