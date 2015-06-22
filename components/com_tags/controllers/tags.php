@@ -167,7 +167,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		);
 		if (!in_array($this->view->filters['sort'], array('date', 'title')))
 		{
-			throw new Exception(JText::sprintf('Invalid sort value of "%s".', $this->view->filters))
+			throw new Exception(JText::sprintf('Invalid sort value of "%s".', $this->view->filters), 404);
 		}
 
 		// Get the active category
