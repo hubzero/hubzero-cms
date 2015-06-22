@@ -29,6 +29,7 @@
 
 namespace Components\Events\Api\Controllers;
 
+use Components\Events\Tables\Event as CalendarEvent;
 use Hubzero\Component\ApiController;
 use stdClass;
 use Request;
@@ -84,4 +85,42 @@ class Eventsv1_0 extends ApiController
 
 		$this->send($object);
 	}
+
+	/**
+	 * Get user profile info
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /events/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Event identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return  void
+	 */
+	public function readTask()
+	{
+		$eventID = Request::getInt('id', 0);
+
+		// load up the events
+		$database = \JFactory::getDBO();
+		$query = "SELECT * FROM `#__events` as e
+					/* WHERE publish_up <= UTC_TIMESTAMP() */
+					WHERE state=1
+					AND approved=1
+					AND scope='event'
+					AND id={$eventID}";
+
+		$database->setQuery($query);
+		$rows = $database->loadObjectList();
+
+		// return results
+		$object = new stdClass();
+		$object->events = $rows;
+
+		$this->send($object);
+	}
+
 }
