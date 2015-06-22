@@ -1389,20 +1389,18 @@ class Relational implements \IteratorAggregate
 	 * Retrieves a one to one model relationship
 	 *
 	 * @param  string $model the name of the primary model
-	 * @param  string|null $thisKey the local key on the model
 	 * @param  string|null $childKey the child key that point to the local key
+	 * @param  string|null $thisKey the local key on the model
 	 * @return \Hubzero\Database\Relationship\OneToOne
 	 * @since  1.3.2
 	 **/
-	public function oneToOne($model, $thisKey=null, $childKey=null)
+	public function oneToOne($model, $childKey=null, $thisKey=null)
 	{
-		$child = $this->resolve($model);
-
 		// Default the keys if not set
-		$thisKey  = $thisKey  ?: strtolower($child->getModelName()) . '_id';
-		$childKey = $childKey ?: $this->getPrimaryKey();
+		$thisKey  = $thisKey  ?: $this->getPrimaryKey();
+		$childKey = $childKey ?: strtolower($this->getModelName()) . '_id';
 
-		return new OneToOne($this, $child, $thisKey, $childKey);
+		return new OneToOne($this, $this->resolve($model), $thisKey, $childKey);
 	}
 
 	/**
@@ -1454,18 +1452,18 @@ class Relational implements \IteratorAggregate
 	 * Retrieves a belongs to one model relationship
 	 *
 	 * @param  string $model the name of the model to relate to the current one
-	 * @param  string|null $parentKey the parent key used to associate the model to its parent
 	 * @param  string|null $thisKey the local key used to associate the many back to the model
+	 * @param  string|null $parentKey the parent key used to associate the model to its parent
 	 * @return \Hubzero\Database\Relationship\BelongsToOne
 	 * @since  1.3.2
 	 **/
-	public function belongsToOne($model, $parentKey=null, $thisKey=null)
+	public function belongsToOne($model, $thisKey=null, $parentKey=null)
 	{
 		$parent = $this->resolve($model);
 
 		// Default the keys if not set
-		$parentKey = $parentKey ?: $this->getPrimaryKey();
 		$thisKey   = $thisKey   ?: strtolower($parent->getModelName()) . '_id';
+		$parentKey = $parentKey ?: $this->getPrimaryKey();
 
 		return new BelongsToOne($this, $parent, $thisKey, $parentKey);
 	}
