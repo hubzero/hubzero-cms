@@ -54,6 +54,13 @@ class Translator extends Object
 	protected static $languages = array();
 
 	/**
+	 * Application client
+	 *
+	 * @var  string
+	 */
+	protected $client = 'site';
+
+	/**
 	 * Debug language, If true, highlights if string isn't found.
 	 *
 	 * @var  boolean
@@ -186,7 +193,7 @@ class Translator extends Object
 	 * @param   boolean  $debug  Indicates if language debugging is enabled.
 	 * @return  void
 	 */
-	public function __construct($lang = null, $debug = false)
+	public function __construct($lang = null, $debug = false, $client = 'site')
 	{
 		$this->strings = array();
 
@@ -195,10 +202,11 @@ class Translator extends Object
 			$lang = $this->default;
 		}
 
+		$this->client = $client;
 		$this->setLanguage($lang);
 		$this->setDebug($debug);
 
-		$filename = JPATH_BASE . "/language/overrides/$lang.override.ini";
+		$filename = PATH_APP . DS . 'app' . "/bootstrap/$client/language/overrides/$lang.override.ini";
 
 		if (file_exists($filename) && $contents = $this->parse($filename))
 		{
@@ -216,19 +224,9 @@ class Translator extends Object
 		$class = str_replace('-', '_', $lang . 'Localise');
 		$paths = array();
 
-		if (defined('JPATH_SITE'))
-		{
-			// Note: Manual indexing to enforce load order.
-			$paths[0] = JPATH_SITE . "/language/overrides/$lang.localise.php";
-			$paths[2] = JPATH_SITE . "/language/$lang/$lang.localise.php";
-		}
-
-		if (defined('JPATH_ADMINISTRATOR'))
-		{
-			// Note: Manual indexing to enforce load order.
-			$paths[1] = JPATH_ADMINISTRATOR . "/language/overrides/$lang.localise.php";
-			$paths[3] = JPATH_ADMINISTRATOR . "/language/$lang/$lang.localise.php";
-		}
+		$paths[0] = PATH_APP . DS . 'app' . "/bootstrap/$client/language/overrides/$lang.localise.php";
+		$paths[1] = PATH_APP . DS . 'app' . "/bootstrap/$client/language/$lang/$lang.localise.php";
+		$paths[2] = PATH_CORE . "/bootstrap/$client/language/$lang/$lang.localise.php";
 
 		ksort($paths);
 		$path = reset($paths);
@@ -282,7 +280,7 @@ class Translator extends Object
 			}
 		}
 
-		$this->load();
+		$this->load('', PATH_APP) || $this->load('', PATH_CORE);
 	}
 
 	/**
@@ -335,7 +333,6 @@ class Translator extends Object
 		if (isset($this->strings[$key]))
 		{
 			$string = $this->debug ? '**' . $this->strings[$key] . '**' : $this->strings[$key];
-			//$string = $this->debug ? "&bull;" . trim($this->strings[$key], '"') . "&bull;" : trim($this->strings[$key], '"');
 
 			// Store debug information
 			if ($this->debug)
@@ -479,10 +476,8 @@ class Translator extends Object
 		{
 			return call_user_func($this->ignoredSearchWordsCallback);
 		}
-		else
-		{
-			return array();
-		}
+
+		return array();
 	}
 
 	/**
@@ -519,10 +514,8 @@ class Translator extends Object
 		{
 			return call_user_func($this->lowerLimitSearchWordCallback);
 		}
-		else
-		{
-			return 3;
-		}
+
+		return 3;
 	}
 
 	/**
@@ -559,10 +552,8 @@ class Translator extends Object
 		{
 			return call_user_func($this->upperLimitSearchWordCallback);
 		}
-		else
-		{
-			return 20;
-		}
+
+		return 20;
 	}
 
 	/**
@@ -599,10 +590,8 @@ class Translator extends Object
 		{
 			return call_user_func($this->searchDisplayedCharactersNumberCallback);
 		}
-		else
-		{
-			return 200;
-		}
+
+		return 200;
 	}
 
 	/**
@@ -638,7 +627,7 @@ class Translator extends Object
 	 * @param   string  $basePath  Optional path to check.
 	 * @return  boolean  True if the language exists.
 	 */
-	public static function exists($lang, $basePath = JPATH_BASE)
+	public static function exists($lang, $basePath = PATH_APP)
 	{
 		static $paths = array();
 
@@ -672,11 +661,11 @@ class Translator extends Object
 	 * @param   boolean  $default    Flag that force the default language to be loaded if the current does not exist.
 	 * @return  boolean  True if the file has successfully loaded.
 	 */
-	public function load($extension = 'joomla', $basePath = JPATH_BASE, $lang = null, $reload = false, $default = true)
+	public function load($extension = 'hubzero', $basePath = PATH_APP, $lang = null, $reload = false, $default = true)
 	{
 		// Load the default language first if we're not debugging and a non-default language is requested to be loaded
 		// with $default set to true
-		if (!\Config::get('debug_lang') && ($lang != $this->default) && $default)
+		if (!\App::get('config')->get('debug_lang') && ($lang != $this->default) && $default)
 		{
 			$this->load($extension, $basePath, $this->default, false, true);
 		}
@@ -686,9 +675,14 @@ class Translator extends Object
 			$lang = $this->lang;
 		}
 
+		if ($basePath == PATH_APP || $basePath == PATH_CORE)
+		{
+			$basePath .= ($basePath == PATH_APP ? DS . 'app' : '') . DS . 'bootstrap' . DS . $this->client;
+		}
+
 		$path = self::getLanguagePath($basePath, $lang);
 
-		$internal = $extension == 'joomla' || $extension == '';
+		$internal = $extension == 'hubzero' || $extension == '';
 		$filename = $internal ? $lang : $lang . '.' . $extension;
 		$filename = "$path/$filename.ini";
 
@@ -721,20 +715,6 @@ class Translator extends Object
 					$result = $this->loadLanguage($filename, $extension, false);
 				}
 			}
-
-			// Load overrides
-			// Only load overrides if the original file was loaded
-			/*if ($result)
-			{
-				$basePath = JPATH_SITE . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate();
-
-				$pathOverride = self::getLanguagePath($basePath, $lang);
-				$filenameOverride = ($extension == 'joomla') ? $lang : $lang . '.' . $extension;
-				$filenameOverride = $pathOverride . DS . $filenameOverride . '.ini';
-
-				// Load the language file
-				$resultOverride = $this->loadLanguage($filenameOverride, $extension);
-			}*/
 		}
 
 		return $result;
@@ -950,10 +930,8 @@ class Translator extends Object
 
 			return null;
 		}
-		else
-		{
-			return $this->paths;
-		}
+
+		return $this->paths;
 	}
 
 	/**
@@ -1075,7 +1053,7 @@ class Translator extends Object
 	 */
 	public static function getMetadata($lang)
 	{
-		$path = self::getLanguagePath(JPATH_ROOT, $lang);
+		$path = self::getLanguagePath(PATH_ROOT, $lang);
 		$file = $lang . '.xml';
 
 		$result = null;
@@ -1099,7 +1077,7 @@ class Translator extends Object
 	 * @param   string  $basePath  The basepath to use
 	 * @return  array   key/value pair with the language file and real name.
 	 */
-	public static function getKnownLanguages($basePath = JPATH_BASE)
+	public static function getKnownLanguages($basePath = PATH_APP)
 	{
 		$dir = self::getLanguagePath($basePath);
 		$knownLanguages = self::parseLanguageFiles($dir);
@@ -1114,7 +1092,7 @@ class Translator extends Object
 	 * @param   string  $language  The language tag.
 	 * @return  string  language related path or null.
 	 */
-	public static function getLanguagePath($basePath = JPATH_BASE, $language = null)
+	public static function getLanguagePath($basePath = PATH_APP, $language = null)
 	{
 		$dir = $basePath . DS . 'language';
 
@@ -1325,7 +1303,7 @@ class Translator extends Object
 			if (\App::get('client')->id == 2)
 			{
 				$languages[$key] = array();
-				$knownLangs = self::getKnownLanguages(JPATH_BASE);
+				$knownLangs = self::getKnownLanguages(PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $this->client);
 				foreach ($knownLangs as $metadata)
 				{
 					// Take off 3 letters iso code languages as they can't match browsers' languages and default them to en
@@ -1375,12 +1353,12 @@ class Translator extends Object
 	 * @param   array    $installed       An array of arrays (text, value, selected)
 	 * @return  array    List of system languages
 	 */
-	public static function getList($actualLanguage, $basePath = JPATH_BASE, $caching = false, $installed = false)
+	public static function getList($actualLanguage, $basePath = PATH_APP, $caching = false, $installed = false)
 	{
 		$list = array();
 
-		// Cache activation
 		$langs = self::getKnownLanguages($basePath);
+
 		if ($installed)
 		{
 			$db = \JFactory::getDBO();
@@ -1390,8 +1368,9 @@ class Translator extends Object
 			$query->where('type=' . $db->quote('language'));
 			$query->where('state=0');
 			$query->where('enabled=1');
-			$query->where('client_id=' . ($basePath == JPATH_ADMINISTRATOR ? 1 : 0));
+			$query->where('client_id=' . \App::get('client')->id);
 			$db->setQuery($query);
+
 			$installed_languages = $db->loadObjectList('element');
 		}
 
@@ -1400,13 +1379,13 @@ class Translator extends Object
 			if (!$installed || array_key_exists($lang, $installed_languages))
 			{
 				$option = array();
-
-				$option['text'] = $metadata['name'];
+				$option['text']  = $metadata['name'];
 				$option['value'] = $lang;
 				if ($lang == $actualLanguage)
 				{
 					$option['selected'] = 'selected="selected"';
 				}
+
 				$list[] = $option;
 			}
 		}

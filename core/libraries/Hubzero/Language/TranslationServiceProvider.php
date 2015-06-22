@@ -49,7 +49,7 @@ class TranslationServiceProvider extends ServiceProvider
 			$locale = $app['config']->get('locale', 'en-GB');
 			$debug  = $app['config']->get('debug_lang', false);
 
-			return new Translator($locale, $debug);
+			return new Translator($locale, $debug, $app['client']->name);
 		};
 
 		$this->app['language.filter'] = false;
@@ -126,7 +126,9 @@ class TranslationServiceProvider extends ServiceProvider
 			$translator->setLanguage($language);
 		}
 
-		$translator->load('lib_joomla', JPATH_BASE, null, false, true) ||
-		$translator->load('lib_joomla', JPATH_ADMINISTRATOR, null, false, true);
+		$boot = DS . 'bootstrap' . DS . \App::get('client')->name;
+
+		$translator->load('lib_joomla', PATH_APP . DS . 'app' . $boot, null, false, true) ||
+		$translator->load('lib_joomla', PATH_CORE . $boot, null, false, true);
 	}
 }
