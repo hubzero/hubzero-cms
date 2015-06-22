@@ -110,7 +110,7 @@ class Helper
 		// We need to do this here as it may be needed by the Gravatar service
 		if (!$dffull)
 		{
-			$dffull = DS . 'components/com_members/site/assets/img/profile.gif'; //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
+			$dffull = DS . 'core/components/com_members/site/assets/img/profile.gif'; //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
 		}
 		if (!$dfthumb)
 		{
