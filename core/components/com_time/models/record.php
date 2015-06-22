@@ -75,14 +75,14 @@ class Record extends Relational
 	}
 
 	/**
-	 * Defines a one to one relationship between record and hub user
+	 * Defines a belongs to one relationship between record and hub user
 	 *
-	 * @return \Hubzero\Database\Relationship\oneToOne
+	 * @return \Hubzero\Database\Relationship\BelongsToOne
 	 * @since  1.3.2
 	 **/
 	public function user()
 	{
-		return $this->oneToOne('Hubzero\User\User');
+		return $this->belongsToOne('Hubzero\User\User');
 	}
 
 	/**

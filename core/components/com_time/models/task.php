@@ -87,25 +87,25 @@ class Task extends Relational
 	}
 
 	/**
-	 * Defines a one to one relationship between task and liaison
+	 * Defines a belongs to one relationship between task and liaison
 	 *
-	 * @return \Hubzero\Database\Relationship\oneToOne
+	 * @return \Hubzero\Database\Relationship\BelongsToOne
 	 * @since  1.3.2
 	 **/
 	public function liaison()
 	{
-		return $this->oneToOne('Hubzero\User\User', 'liaison_id');
+		return $this->belongsToOne('Hubzero\User\User', 'liaison_id');
 	}
 
 	/**
-	 * Defines a one to one relationship between task and assignee
+	 * Defines a belongs to one relationship between task and assignee
 	 *
-	 * @return \Hubzero\Database\Relationship\oneToOne
+	 * @return \Hubzero\Database\Relationship\BelongsToOne
 	 * @since  1.3.2
 	 **/
 	public function assignee()
 	{
-		return $this->oneToOne('Hubzero\User\User', 'assignee_id');
+		return $this->belongsToOne('Hubzero\User\User', 'assignee_id');
 	}
 
 	/**

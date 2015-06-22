@@ -59,13 +59,13 @@ class Liaison extends Relational
 	protected $namespace = 'time';
 
 	/**
-	 * Defines a one to one relationship between time proxies and hub user
+	 * Defines a belongs to one relationship between time proxies and hub user
 	 *
-	 * @return \Hubzero\Database\Relationship\oneToOne
+	 * @return \Hubzero\Database\Relationship\BelongsToOne
 	 * @since  1.3.2
 	 **/
 	public function user()
 	{
-		return $this->oneToOne('Hubzero\User\User');
+		return $this->belongsToOne('Hubzero\User\User');
 	}
 }
