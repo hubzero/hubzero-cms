@@ -320,6 +320,12 @@ class Profilesv1_0 extends ApiController
 			)
 		);
 
+		/* Is this correct ? */
+		//corrects image path, API application breaks Route::url() in the Helper::getMemberPhoto() method.
+		$profile['picture']['thumb'] = str_replace('/api', '', $profile['picture']['thumb']);
+		$profile['picture']['full'] = str_replace('/api', '', $profile['picture']['full']);
+
+
 		// Encode and return result
 		$object = new stdClass();
 		$object->profile = $profile;
