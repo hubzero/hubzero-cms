@@ -181,7 +181,7 @@ class Calendar extends Model
 							// get the repeating & pass start date
 							$rule = new \Recurr\Rule($result->repeating_rule, $start);
 
-							// define constraint that date must be between event publish_up & end 
+							// define constraint that date must be between event publish_up & end
 							$constraint  = new \Recurr\Transformer\Constraint\BetweenConstraint($start, $end);
 
 							// create transformmer & generate occurances
@@ -404,6 +404,12 @@ class Calendar extends Model
 					}
 					$until = Date::of($incomingEvent['RRULE']['UNTIL']);
 					$rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
+				}
+
+				//by day
+				if (isset($incomingEvent['RRULE']['BYDAY']))
+				{
+					$rrule .= ';BYDAY=' . $incomingEvent['RRULE']['BYDAY'];
 				}
 			}
 
