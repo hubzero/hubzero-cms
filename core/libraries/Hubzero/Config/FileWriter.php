@@ -135,7 +135,7 @@ class FileWriter
 
 		if (!is_dir($path))
 		{
-			if (!mkdir($path, 0755))
+			if (!mkdir($path, 0640))
 			{
 				return false;
 			}

@@ -116,6 +116,8 @@ class FileLoader
 		catch (\Exception $e)
 		{
 			$loader = new Legacy();
+			//$loader->split();
+
 			$data = $loader->toArray();
 		}
 

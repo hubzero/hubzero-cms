@@ -105,7 +105,7 @@ class Legacy extends Registry
 			'ftp_pass',
 			'ftp_root'
 		),
-		array(
+		'mail' => array(
 			'mailer',
 			'mailfrom',
 			'fromname',
@@ -117,7 +117,7 @@ class Legacy extends Registry
 			'smtpsecure',
 			'sendmail'
 		),
-		array(
+		'meta' => array(
 			'MetaAuthor',
 			'MetaTitle',
 			'MetaDesc',
@@ -125,13 +125,13 @@ class Legacy extends Registry
 			'MetaRights',
 			'MetaVersion'
 		),
-		array(
+		'offline' => array(
 			'display_offline_message',
 			'offline_image',
 			'offline_message',
 			'offline'
 		),
-		array(
+		'session' => array(
 			'session_handler',
 			'lifetime',
 			'cookiesubdomains',

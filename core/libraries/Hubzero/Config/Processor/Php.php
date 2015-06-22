@@ -95,30 +95,74 @@ class Php extends Base
 	 * @param   array   $params  Parameters used by the formatter
 	 * @return  string  Config class formatted string
 	 */
-	public function objectToString($object, $params = array())
+	public function objectToString($object, $options = array())
 	{
+		$format = 'object';
+		if (isset($options['format']) && $options['format'])
+		{
+			$format = $options['format'];
+		}
+
 		// Build the object variables string
 		$vars = '';
 		foreach (get_object_vars($object) as $k => $v)
 		{
 			if (is_scalar($v))
 			{
-				$vars .= "\tvar $" . $k . " = '" . addcslashes($v, '\\\'') . "';\n";
+				switch ($format)
+				{
+					case 'object':
+						$vars .= "\tvar $" . $k . " = '" . addcslashes($v, '\\\'') . "';\n";
+					break;
+					case 'array':
+						$vars .= "\t'" . $k . "' => '" . addcslashes($v, '\\\'') . "',\n";
+					break;
+				}
 			}
 			elseif (is_array($v) || is_object($v))
 			{
-				$vars .= "\tvar $" . $k . " = " . $this->getArrayString((array) $v) . ";\n";
+				switch ($format)
+				{
+					case 'object':
+						$vars .= "\tvar $" . $k . " = " . $this->getArrayString((array) $v) . ";\n";
+					break;
+					case 'array':
+						$vars .= "\t'" . $k . "' => " . $this->getArrayString((array) $v) . ",\n";
+					break;
+				}
+			}
+			elseif (is_null($v))
+			{
+				switch ($format)
+				{
+					case 'object':
+						$vars .= "\tvar $" . $k . " = '';\n";
+					break;
+					case 'array':
+						$vars .= "\t'" . $k . "' => '',\n";
+					break;
+				}
 			}
 		}
 
 		$str  = "<?php\n";
-		$str .= "class " . $params['class'] . "\n";
-		$str .= "{\n";
-		$str .= $vars;
-		$str .= "}";
+		switch ($format)
+		{
+			case 'object':
+				$str .= "class " . $options['class'] . "\n";
+				$str .= "{\n";
+				$str .= $vars;
+				$str .= "}";
+			break;
+			case 'array':
+				$str .= "return array(\n";
+				$str .= $vars;
+				$str .= ");";
+			break;
+		}
 
 		// Use the closing tag if it not set to false in parameters.
-		if (!isset($params['closingtag']) || $params['closingtag'] !== false)
+		if (isset($options['closingtag']) && $options['closingtag'])
 		{
 			$str .= "\n?>";
 		}
