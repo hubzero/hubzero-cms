@@ -85,9 +85,17 @@ class Router extends Base
 			//  /projects/##/files/get
 			//  /projects/##/files/delete
 			//  /projects/##/files/makedirectory
+			//  /projects/##/team
+			//  /projects/##/team/list
 			if (isset($segments[1]) && $segments[1] == 'files')
 			{
 				$vars['controller'] = 'files';
+				$vars['id']         = $segments[0];
+				$vars['task']       = isset($segments[2]) ? $segments[2] : 'list';
+			}
+			elseif (isset($segments[1]) && $segments[1] == 'team')
+			{
+				$vars['controller'] = 'team';
 				$vars['id']         = $segments[0];
 				$vars['task']       = isset($segments[2]) ? $segments[2] : 'list';
 			}

@@ -76,7 +76,7 @@ class Filesv1_0 extends ApiController
 
 		// Check authorization
 		if ((in_array($this->_task, $contentTasks) && !$this->model->access('content'))
-			|| !$this->model->access('view'))
+			|| !$this->model->access('member'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
 		}
