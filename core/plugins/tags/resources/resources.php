@@ -54,8 +54,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
+		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
 	}
 
 	/**
@@ -256,7 +256,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'date':    $query .= 'publish_up DESC';               break;
 					case 'title':   $query .= 'title ASC, publish_up DESC';    break;
 					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
 					case 'ranking': $query .= "ranking DESC";                  break;
@@ -264,6 +263,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 					case 'users':
 					case 'usage':   $query .= "users DESC";                    break;
 					case 'jobs':    $query .= "jobs DESC";                     break;
+					case 'date':
+					default: $query .= 'publish_up DESC';               break;
 				}
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all')
@@ -290,8 +291,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php');
+		include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php');
 
 		if ($row->alias)
 		{

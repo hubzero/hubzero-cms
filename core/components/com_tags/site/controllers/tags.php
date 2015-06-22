@@ -171,6 +171,10 @@ class Tags extends SiteController
 			'start' => Request::getInt('limitstart', 0),
 			'sort'  => Request::getVar('sort', 'date')
 		);
+		if (!in_array($this->view->filters['sort'], array('date', 'title')))
+		{
+			throw new Exception(Lang::txt('Invalid sort value of "%s".', $this->view->filters), 404);
+		}
 
 		// Get the active category
 		$area = Request::getString('area', '');
