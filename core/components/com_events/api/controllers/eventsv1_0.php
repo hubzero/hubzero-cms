@@ -29,7 +29,6 @@
 
 namespace Components\Events\Api\Controllers;
 
-use Components\Events\Tables\Event as CalendarEvent;
 use Hubzero\Component\ApiController;
 use stdClass;
 use Request;
@@ -103,6 +102,7 @@ class Eventsv1_0 extends ApiController
 	public function readTask()
 	{
 		$eventID = Request::getInt('id', 0);
+		$nicedate = Request::getInt('niceDate', 0);
 
 		// load up the events
 		$database = \JFactory::getDBO();
@@ -114,11 +114,21 @@ class Eventsv1_0 extends ApiController
 					AND id={$eventID}";
 
 		$database->setQuery($query);
-		$rows = $database->loadObjectList();
+		$row = $database->loadAssoc();
+
+		//format the date
+		if ($nicedate)
+		{
+			$start = strtotime($row['publish_up']);
+			$row['publish_up'] = date('M j, Y g:ia T', $start);
+
+			$end = strtotime($row['publish_down']);
+			$row['publish_down'] = date('M j, Y g:ia T', $end);
+		}
 
 		// return results
 		$object = new stdClass();
-		$object->events = $rows;
+		$object->event = $row;
 
 		$this->send($object);
 	}
