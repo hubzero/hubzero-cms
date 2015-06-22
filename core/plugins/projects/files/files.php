@@ -835,7 +835,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set params
 		$params = array(
 			'subdir'  => $this->subdir,
-			'dir'     => trim(urldecode(Request::getVar('dir', '')), DS),
+			'item'    => trim(urldecode(Request::getVar('dir', '')), DS),
 			'path'    => $this->_path
 		);
 
