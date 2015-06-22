@@ -59,6 +59,9 @@ class Filesv1_0 extends ApiController
 		$this->registerTask('insert', 'save');
 		$this->_task = Request::getWord('task', 'list');
 
+		// Load component language file
+		Lang::load('com_projects') || Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+
 		// Incoming
 		$id = Request::getVar('id', '');
 
@@ -69,9 +72,11 @@ class Filesv1_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 		}
+		$contentTasks = array('insert', 'update', 'delete', 'move', 'rename');
 
 		// Check authorization
-		if (($this->_task == 'insert' && !$this->model->access('content')) || !$this->model->access('view'))
+		if ((in_array($this->_task, $contentTasks) && !$this->model->access('content'))
+			|| !$this->model->access('view'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
 		}
@@ -89,7 +94,7 @@ class Filesv1_0 extends ApiController
 	 * Get a list of project files
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/list
+	 * @apiUri    /projects/{id}/files
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
@@ -144,6 +149,142 @@ class Filesv1_0 extends ApiController
 		);
 		$response->count   = count($files);
 		$response->results = $this->_parseResults($files);
+
+		if ($this->model->repo()->getError())
+		{
+			$response->error = $this->model->repo()->getError();
+		}
+
+		$this->send($response);
+	}
+
+	/**
+	 * Get file(s) metadata
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /projects/{id}/files/get
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "asset",
+	 * 		"description":   "Array of file/folder paths to get metadata for.",
+	 * 		"type":          "array",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "subdir",
+	 * 		"description":   "Directory path within project repo, if not already included in the asset file path.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @return  void
+	 */
+	public function getTask()
+	{
+		// Incoming
+		$files = Request::getVar( 'asset', array() );
+
+		if (empty($files))
+		{
+			throw new Exception(Lang::txt('No asset path given'), 404);
+		}
+
+		$response = new stdClass;
+		$files = $this->model->repo()->filelist(array(
+			'subdir'           => Request::getVar('subdir', '', 'post'),
+			'files'            => $files,
+			'showFullMetadata' => true,
+			'getParents'       => true,
+			'getChildren'      => true
+			)
+		);
+		$response->results = $this->_parseResults($files);
+		$this->send($response);
+	}
+
+	/**
+	 * Delete file or folder from project
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /projects/{id}/files/delete
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "asset",
+	 * 		"description":   "Array of file paths.",
+	 * 		"type":          "array",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "folder",
+	 * 		"description":   "Array of folder paths.",
+	 * 		"type":          "array",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "subdir",
+	 * 		"description":   "Directory path within project repo, if not already included in the asset file path.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @return  void
+	 */
+	public function deleteTask()
+	{
+		// Incoming
+		$items = $this->_sortIncoming();
+
+		if (empty($items))
+		{
+			throw new Exception(Lang::txt('No asset/folder path(s) given'), 404);
+		}
+
+		$response = new stdClass;
+		$deleted  = 0;
+
+		foreach ($items as $element)
+		{
+			foreach ($element as $type => $item)
+			{
+				// Get type and item name
+				break;
+			}
+
+			$params = array(
+				'type' => $type,
+				'item' => $item
+			);
+
+			if ($this->model->repo()->deleteItem($params))
+			{
+				$deleted++;
+			}
+		}
+		$response->total   = count($items);
+		$response->deleted = $deleted;
+
+		if ($this->model->repo()->getError())
+		{
+			$response->error = $this->model->repo()->getError();
+		}
+
 		$this->send($response);
 	}
 
@@ -151,7 +292,7 @@ class Filesv1_0 extends ApiController
 	 * Insert/update a project file
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/list
+	 * @apiUri    /projects/{id}/files/insert OR /projects/{id}/files/update
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
@@ -178,10 +319,19 @@ class Filesv1_0 extends ApiController
 	 */
 	public function saveTask()
 	{
+		// Incoming
+		$dataPath = Request::getVar( 'data_path', '', 'POST' );
+
+		if (empty($dataPath))
+		{
+			throw new Exception(Lang::txt('No data path given'), 404);
+		}
+
 		// Insert file
+		$response = new stdClass;
 		$response->results     = $this->model->repo()->insert(
 			array(
-				'dataPath'    => Request::getVar( 'data_path', '' ),
+				'dataPath'    => $dataPath,
 				'allowReplace'=> $this->_task == 'insert' ? false : true,
 				'update'      => $this->_task == 'insert' ? false : true,
 				'subdir'      => Request::getVar('subdir', '')
@@ -221,6 +371,10 @@ class Filesv1_0 extends ApiController
 
 			$response->results = $parsedResults;
 		}
+		elseif ($this->model->repo()->getError())
+		{
+			$response->error = $this->model->repo()->getError();
+		}
 
 		$this->send($response);
 	}
@@ -246,5 +400,49 @@ class Filesv1_0 extends ApiController
 		}
 
 		return array();
+	}
+
+	/**
+	 * Sort incoming file/folder data
+	 *
+	 * @return     array
+	 */
+	protected function _sortIncoming()
+	{
+		// Incoming
+		$checked = Request::getVar( 'asset', array() );
+		$folders = Request::getVar( 'folder', array() );
+
+		$combined = array();
+		if (!empty($checked))
+		{
+			foreach ($checked as $ch)
+			{
+				if (trim($ch) != '')
+				{
+					$combined[] = array('file' => urldecode($ch));
+				}
+			}
+		}
+		elseif ($file = Request::getVar( 'asset', ''))
+		{
+			$combined[] = array('file' => urldecode($file));
+		}
+		if (!empty($folders))
+		{
+			foreach ($folders as $f)
+			{
+				if (trim($f) != '')
+				{
+					$combined[] = array('folder' => urldecode($f));
+				}
+			}
+		}
+		elseif ($folder = Request::getVar( 'folder', ''))
+		{
+			$combined[] = array('folder' => urldecode($folder));
+		}
+
+		return $combined;
 	}
 }

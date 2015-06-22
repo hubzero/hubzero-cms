@@ -389,7 +389,7 @@ class Repo extends Object
 		{
 			return true;
 		}
-		elseif ($type == 'folder' && $this->call('deleteDirectory', $params))
+		elseif ($type == 'folder' && $this->deleteDirectory($params))
 		{
 			return true;
 		}
@@ -406,18 +406,23 @@ class Repo extends Object
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$dir       = isset($params['dir']) ? $params['dir'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$type      = 'folder';
 
-		$localDirPath = $dirPath ? $dirPath . DS . $dir : $dir;
-
-		if (!$dir || $dir == '.' || !$this->dirExists($localDirPath))
+		$file = isset($params['file']) ? $params['file'] : NULL;
+		if (!($file instanceof Models\File))
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
-			return false;
+			// File object
+			$params['file'] = $this->getMetadata($item, $type, $params);
 		}
 
-		// File object
-		$params['file'] = $this->getMetadata($dir, 'folder', $params);
+		$localDirPath = $dirPath ? $dirPath . DS . $item : $item;
+
+		if (!$item || $item == '.' || !$this->dirExists($localDirPath))
+		{
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
+			return false;
+		}
 
 		// Adapter call
 		if ($this->call('deleteDirectory', $params))

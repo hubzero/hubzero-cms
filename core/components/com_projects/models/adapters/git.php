@@ -141,9 +141,10 @@ class Git extends Models\Adapter
 			$folders[] = $dirPath;
 		}
 
-		// Go through items and ween out
+		// Go through items and get what we need
 		foreach ($files as $item)
 		{
+			$item = urldecode($item);
 			if (trim($item) == '')
 			{
 				continue;
@@ -188,7 +189,7 @@ class Git extends Models\Adapter
 						{
 							continue;
 						}
-						$items[$file->get('name')]   = $file;
+						$items[$file->get('name')] = $file;
 
 						// Collect info for sorting
 						switch ($sortby)
@@ -251,7 +252,7 @@ class Git extends Models\Adapter
 			// Add to list
 			if (empty($items[$file->get('name')]))
 			{
-				$items[$file->get('name')]   = $file;
+				$items[$file->get('name')] = $file;
 
 				// Collect info for sorting
 				switch ($sortby)
@@ -536,7 +537,7 @@ class Git extends Models\Adapter
 		$author   = isset($params['author']) ? $params['author'] : NULL;
 		$date     = isset($params['date']) ? $params['date'] : NULL;
 
-		if (!($file instanceof Models\File) || $file->get('type') != 'file')
+		if (!($file instanceof Models\File) || $file->get('type') != 'file' || !$file->exists())
 		{
 			return false;
 		}

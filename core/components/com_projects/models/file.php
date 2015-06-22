@@ -124,7 +124,6 @@ class File extends Object
 		return $this->_data;
 	}
 
-
 	/**
 	 * Check if file exists
 	 *
@@ -142,7 +141,6 @@ class File extends Object
 	 */
 	public function defaults()
 	{
-		$this->set('type', 'file');
 		$this->set('name', basename($this->get('localPath')));
 
 		// Directory path within repo
@@ -151,7 +149,15 @@ class File extends Object
 			$this->set('dirname', dirname($this->get('localPath')));
 		}
 
-		$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
+		if ($this->exists() && is_dir($this->get('fullPath')))
+		{
+			$this->set('type', 'folder');
+		}
+		else
+		{
+			$this->set('type', 'file');
+			$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
+		}
 	}
 
 	/**
@@ -351,7 +357,7 @@ class File extends Object
 	 */
 	public function setMimeType()
 	{
-		if (!$this->get('mimeType') && $this->get('type') == 'file')
+		if (!$this->get('mimeType'))
 		{
 			$this->set('mimeType', Filesystem::mimetype($this->get('fullPath')));
 		}
