@@ -72,7 +72,7 @@ class Filesv1_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 		}
-		$contentTasks = array('insert', 'update', 'delete', 'move', 'rename');
+		$contentTasks = array('insert', 'update', 'delete', 'move', 'rename', 'makedirectory');
 
 		// Check authorization
 		if ((in_array($this->_task, $contentTasks) && !$this->model->access('content'))
@@ -211,6 +211,63 @@ class Filesv1_0 extends ApiController
 	}
 
 	/**
+	 * Create a folder in project local repo
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /projects/{id}/files/makedirectory
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "directory",
+	 * 		"description":   "Directory path",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "subdir",
+	 * 		"description":   "Directory path within project repo, if not already included in the asset file path.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @return  void
+	 */
+	public function makedirectoryTask()
+	{
+		$directory = trim(Request::getVar('directory', ''));
+
+		if (empty($directory))
+		{
+			throw new Exception(Lang::txt('No directory path given'), 404);
+		}
+		$response = new stdClass;
+
+		// Set params
+		$params = array(
+			'subdir' => Request::getVar('subdir', '', 'post'),
+			'newDir' => urldecode($directory)
+		);
+
+		if ($this->model->repo()->makeDirectory($params))
+		{
+			$response->success = 1;
+		}
+		if ($this->model->repo()->getError())
+		{
+			$response->error = $this->model->repo()->getError();
+		}
+
+		$this->send($response);
+	}
+
+	/**
 	 * Delete file or folder from project
 	 *
 	 * @apiMethod GET
@@ -233,7 +290,7 @@ class Filesv1_0 extends ApiController
 	 * 		"name":          "folder",
 	 * 		"description":   "Array of folder paths.",
 	 * 		"type":          "array",
-	 * 		"required":      true,
+	 * 		"required":      false,
 	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
@@ -268,8 +325,9 @@ class Filesv1_0 extends ApiController
 			}
 
 			$params = array(
-				'type' => $type,
-				'item' => $item
+				'type'   => $type,
+				'item'   => $item,
+				'subdir' => Request::getVar('subdir', '', 'post')
 			);
 
 			if ($this->model->repo()->deleteItem($params))

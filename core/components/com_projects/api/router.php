@@ -82,6 +82,9 @@ class Router extends Base
 			//  /projects/##/files/list
 			//  /projects/##/files/insert
 			//  /projects/##/files/update
+			//  /projects/##/files/get
+			//  /projects/##/files/delete
+			//  /projects/##/files/makedirectory
 			if (isset($segments[1]) && $segments[1] == 'files')
 			{
 				$vars['controller'] = 'files';
