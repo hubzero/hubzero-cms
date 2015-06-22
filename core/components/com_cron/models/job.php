@@ -290,9 +290,10 @@ class Job extends Model
 	/**
 	 * Return data about this job, icluding profile info as an array
 	 *
+	 * @param   boolean  $vebose
 	 * @return  array
 	 */
-	public function toArray()
+	public function toArray($verbose = false)
 	{
 		$buffer = $this->profile();
 
