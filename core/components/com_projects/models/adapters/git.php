@@ -404,6 +404,22 @@ class Git extends Models\Adapter
 	}
 
 	/**
+	 * Get changes for sync
+	 *
+	 * @return     array
+	 */
+	public function getChanges($params = array())
+	{
+		$localPath    = isset($params['localPath']) ? $params['localPath'] : NULL;
+		$fromLocal    = isset($params['fromLocal']) ? $params['fromLocal'] : NULL;
+		$localDir     = isset($params['localDir']) ? $params['localDir'] : NULL;
+		$localRenames = isset($params['localRenames']) ? $params['localRenames'] : NULL;
+		$connections  = isset($params['connections']) ? $params['connections'] : NULL;
+
+		return $this->_git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections);
+	}
+
+	/**
 	 * Get last file revision
 	 *
 	 * @return  boolean
@@ -431,6 +447,8 @@ class Git extends Models\Adapter
 		$fromFile = isset($params['fromFile']) ? $params['fromFile'] : NULL;
 		$toFile   = isset($params['toFile']) ? $params['toFile'] : NULL;
 		$type     = isset($params['type']) ? $params['type'] : 'file';
+		$author   = isset($params['author']) ? $params['author'] : NULL;
+		$date     = isset($params['date']) ? $params['date'] : NULL;
 
 		if (!($fromFile instanceof Models\File) || !($toFile instanceof Models\File))
 		{
@@ -438,7 +456,7 @@ class Git extends Models\Adapter
 		}
 
 		$this->_git->gitMove($fromFile->get('localPath'), $toFile->get('localPath'), $type, $commitMsg);
-		$this->_git->gitCommit($commitMsg);
+		$this->_git->gitCommit($commitMsg, $author, $date);
 
 		return true;
 	}
@@ -480,7 +498,9 @@ class Git extends Models\Adapter
 	 */
 	public function deleteDirectory ($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file     = isset($params['file']) ? $params['file'] : NULL;
+		$author   = isset($params['author']) ? $params['author'] : NULL;
+		$date     = isset($params['date']) ? $params['date'] : NULL;
 
 		if (!($file instanceof Models\File) || $file->get('type') != 'folder')
 		{
@@ -489,7 +509,7 @@ class Git extends Models\Adapter
 
 		// Delete from Git
 		$this->_git->gitDelete($file->get('localPath'), 'folder', $commitMsg);
-		$this->_git->gitCommit($commitMsg);
+		$this->_git->gitCommit($commitMsg, $author, $date);
 
 		if (!$this->get('remote') && file_exists($file->get('fullPath')))
 		{
@@ -512,7 +532,9 @@ class Git extends Models\Adapter
 	 */
 	public function deleteFile ($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
+		$file     = isset($params['file']) ? $params['file'] : NULL;
+		$author   = isset($params['author']) ? $params['author'] : NULL;
+		$date     = isset($params['date']) ? $params['date'] : NULL;
 
 		if (!($file instanceof Models\File) || $file->get('type') != 'file')
 		{
@@ -521,7 +543,7 @@ class Git extends Models\Adapter
 
 		// Delete from Git
 		$this->_git->gitDelete($file->get('localPath'), 'file', $commitMsg);
-		$this->_git->gitCommit($commitMsg);
+		$this->_git->gitCommit($commitMsg, $author, $date);
 
 		// Untracked?
 		if (!$this->get('remote') && file_exists($file->get('fullPath')))
@@ -611,8 +633,10 @@ class Git extends Models\Adapter
 	 */
 	public function restore ($params = array())
 	{
-		$file = isset($params['file']) ? $params['file'] : NULL;
-		$hash = isset($params['version']) ? $params['version'] : NULL;
+		$file     = isset($params['file']) ? $params['file'] : NULL;
+		$hash     = isset($params['version']) ? $params['version'] : NULL;
+		$author   = isset($params['author']) ? $params['author'] : NULL;
+		$date     = isset($params['date']) ? $params['date'] : NULL;
 
 		if (!$this->isGit())
 		{
@@ -631,7 +655,7 @@ class Git extends Models\Adapter
 		{
 			// Git add & commit
 			$this->_git->gitAdd($file->get('localPath'), $commitMsg, $new = false);
-			$this->_git->gitCommit($commitMsg);
+			$this->_git->gitCommit($commitMsg, $author, $date);
 		}
 
 		return true;

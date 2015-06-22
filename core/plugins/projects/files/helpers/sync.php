@@ -97,32 +97,14 @@ class Sync extends \Hubzero\Base\Object
 			return false;
 		}
 
-		if (!isset($this->_git))
-		{
-			$this->_git = new \Components\Projects\Helpers\Git($this->_path);
-		}
-
-		// Clean up status
-		$this->writeToFile('');
-
 		// Record sync status
 		$this->writeToFile(ucfirst($service) . ' '. Lang::txt('PLG_PROJECTS_FILES_SYNC_STARTED') );
 
-		// Get time of last sync
+		// Get time of previous sync
 		$synced = $this->model->params->get($service . '_sync', 1);
 
-		// Get disk usage
-		$diskUsage = $this->model->repo()->call('getDiskUsage',
-			$params = array(
-				'working' => true,
-				'history' => $this->params->get('disk_usage')
-			)
-		);
-
-		$quota 	   = $this->model->params->get('quota')
-					? $this->model->params->get('quota')
-					: \Components\Projects\Helpers\Html::convertSize( floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
-		$avail 	   = $quota - $diskUsage;
+		// Check for available space
+		$avail = $this->model->repo()->getAvailableDiskSpace();
 
 		// Last synced remote/local change
 		$lastRemoteChange = $this->model->params->get($service . '_last_remote_change', NULL);
@@ -132,30 +114,30 @@ class Sync extends \Hubzero\Base\Object
 		$lastSyncId = $this->model->params->get($service . '_sync_id', NULL);
 		$prevSyncId = $this->model->params->get($service . '_prev_sync_id', NULL);
 
-		// User ID of project owner
-		$projectOwner = $this->model->get('owned_by_user');
-
 		// Are we syncing project home directory or other?
 		$localDir   = $this->_connect->getConfigParam($service, 'local_dir');
 		$localDir   = $localDir == '#home' ? '' : $localDir;
-
 		$localPath  = $this->_path;
 		$localPath .= $localDir ? DS . $localDir : '';
 
 		// Record sync status
 		$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_ESTABLISH_REMOTE_CONNECT') );
 
+		// User ID of project owner
+		$projectOwner = $this->model->get('owned_by_user');
+
 		// Get service API - always project owner!
 		$this->_connect->getAPI($service, $projectOwner);
 
-		// Collector arrays
+		// Collectors
 		$locals 		= array();
 		$remotes 		= array();
+		$localRenames   = array();
 		$localFolders 	= array();
 		$remoteFolders 	= array();
-		$failed			= array();
 		$deletes		= array();
 		$timedRemotes	= array();
+		$newRemotes     = array();
 
 		// Sync start time
 		$startTime =  date('c');
@@ -188,13 +170,17 @@ class Sync extends \Hubzero\Base\Object
 		// Record sync status
 		$this->writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_COLLECT_LOCAL') );
 
-		// Collector for local renames
-		$localRenames = array();
-
 		$fromLocal = ($synced == $lastLocalChange || !$lastLocalChange) ? $synced : $lastLocalChange;
 
 		// Get all local changes since last sync
-		$locals = $this->_git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections );
+		$params = array(
+			'localPath'    => $localPath,
+			'fromLocal'    => $fromLocal,
+			'localDir'     => $localDir,
+			'localRenames' => $localRenames,
+			'connections'  => $connections
+		);
+		$locals = $this->model->repo()->getChanges($params);
 
 		// Record sync status
 		$this->writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_COLLECT_REMOTE') );
@@ -235,11 +221,12 @@ class Sync extends \Hubzero\Base\Object
 				? 'No changes brought in by Changes feed' . "\n"
 				: 'Changes feed has ' . count($remotes) . ' changes' . "\n";
 
+		// Time to get timed remotes from
 		$from = ($synced == $lastRemoteChange || !$lastRemoteChange)
 				? date("c", strtotime($synced) - (1)) : date("c", strtotime($lastRemoteChange));
 
 		// Get changes via List feed (to make sure we get ALL changes)
-		// We need this because Changes feed is not 100% reliable
+		// We need this because Changes feed is not 100% reliable :(
 		if ( $newSyncId > $lastSyncId)
 		{
 			$timedRemotes = $this->_connect->getRemoteItems($service, $projectOwner, $from, $connections);
@@ -262,7 +249,6 @@ class Sync extends \Hubzero\Base\Object
 					? 'Using exclusively timed changes ' . "\n"
 					: 'Mixing in timed changes ' . "\n";
 
-				//$remotes = array_merge($timedRemotes, $remotes);
 				$remotes = $timedRemotes + $remotes;
 			}
 		}
@@ -271,6 +257,7 @@ class Sync extends \Hubzero\Base\Object
 			$output .= 'No timed changes since ' . $from . "\n";
 		}
 
+		// Catch any errors we ran into so far
 		if ($this->_connect->getError())
 		{
 			$this->writeToFile( '' );
@@ -279,14 +266,8 @@ class Sync extends \Hubzero\Base\Object
 			return false;
 		}
 
-		// Collector arrays for processed files
-		$processedLocal 	= array();
-		$processedRemote 	= array();
-		$conflicts			= array();
-
 		// Record sync status
 		$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_EXPORTING_LOCAL'));
-
 		$output .= 'Local changes:' . "\n";
 
 		// Go through local changes
@@ -295,7 +276,8 @@ class Sync extends \Hubzero\Base\Object
 			$lChange = NULL;
 			foreach ($locals as $filename => $local)
 			{
-				$output .= ' * Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
+				$output .= ' * Local change ' . $filename . ' - ' . $local['status']
+						. ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
 
 				// Get latest change
 				$lChange = $local['time'] > $lChange ? $local['time'] : $lChange;
@@ -316,11 +298,11 @@ class Sync extends \Hubzero\Base\Object
 				// Check against individual item sync time (to avoid repeat sync)
 				if ($local['synced'] && ($local['synced']  > $local['modified']))
 				{
-					$output .= '## item in sync: '. $filename . ' local: '
+					$output .= '## item in sync: ' . $filename . ' local: '
 						. $local['modified'] . ' synced: ' . $local['synced'] . "\n";
-					$processedLocal[$filename] = $local;
 					continue;
 				}
+
 				// Record sync status
 				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' '
 					. \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
@@ -337,7 +319,6 @@ class Sync extends \Hubzero\Base\Object
 						);
 
 						$output .= '>> renamed ' . $local['rename'] . ' to ' . $filename . "\n";
-						$processedLocal[$filename] = $local;
 
 						if ($local['type'] == 'folder')
 						{
@@ -365,7 +346,6 @@ class Sync extends \Hubzero\Base\Object
 
 							$output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id '
 								. $parentId . ')' . "\n";
-							$processedLocal[$filename] = $local;
 
 							if ($local['type'] == 'folder')
 							{
@@ -381,8 +361,7 @@ class Sync extends \Hubzero\Base\Object
 				if ($match && (($match['time'] - strtotime($from)) > 0))
 				{
 					// skip - remote change prevails
-					$output .= '== local and remote change match (choosing remote over local): '. $filename . "\n";
-					$conflicts[$filename] = $local['remoteid'];
+					$output .= '== local and remote change match (choosing remote over local): ' . $filename . "\n";
 				}
 				else
 				{
@@ -422,7 +401,12 @@ class Sync extends \Hubzero\Base\Object
 						if ($deleted)
 						{
 							$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
-							$objRFile->deleteRecord( $this->model->get('id'), $service, $local['remoteid'], $filename);
+							$objRFile->deleteRecord(
+								$this->model->get('id'),
+								$service,
+								$local['remoteid'],
+								$filename
+							);
 						}
 					}
 					else
@@ -430,7 +414,7 @@ class Sync extends \Hubzero\Base\Object
 						// Not updating converted files via sync
 						if ($local['converted'] == 1)
 						{
-							$output .= '## skipped locally changed converted file: '. $filename . "\n";
+							$output .= '## skipped locally changed converted file: ' . $filename . "\n";
 						}
 						else
 						{
@@ -477,7 +461,6 @@ class Sync extends \Hubzero\Base\Object
 					}
 				}
 
-				$processedLocal[$filename] = $local;
 				$lastLocalChange = $lChange ? date('c', $lChange + 1) : NULL;
 			}
 		}
@@ -485,8 +468,6 @@ class Sync extends \Hubzero\Base\Object
 		{
 			$output .= 'No local changes since last sync' . "\n";
 		}
-
-		$newRemotes   = array();
 
 		// Record sync status
 		$this->writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_REFRESHING_REMOTE') );
@@ -525,7 +506,8 @@ class Sync extends \Hubzero\Base\Object
 				// Generate local thumbnail
 				if ($nR['thumb'])
 				{
-					$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
+					$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB')
+						. ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
 
 					$this->_connect->generateThumbnail(
 						$service,
@@ -574,17 +556,13 @@ class Sync extends \Hubzero\Base\Object
 				if ($match && (($match['modified'] > $remote['modified']) > 0))
 				{
 					// skip
-					$output .= '== local and remote change match, but remote is older, picking local: '. $filename . "\n";
-					$conflicts[$filename] = $local['remoteid'];
+					$output .= '== local and remote change match, but remote is older, picking local: ' . $filename . "\n";
 					continue;
 				}
 
-				$updated 	= 0;
-				$deleted   	= 0;
-
 				// Get change author for Git
 				$email = 'sync@sync.org';
-				$name = utf8_decode($remote['author']);
+				$name  = utf8_decode($remote['author']);
 				if ($connected && isset($connected[$name]))
 				{
 					$email = $connected[$name];
@@ -594,7 +572,7 @@ class Sync extends \Hubzero\Base\Object
 					// Email from profile?
 					$email = $objO->getProfileEmail($name, $this->model->get('id'));
 				}
-				$author = $this->_git->getGitAuthor($name, $email);
+				$author = escapeshellarg($name . ' <' . $email . '> ');
 
 				// Change acting user to whoever did the remote change
 				$uid = $objO->getProfileId( $email, $this->model->get('id'));
@@ -603,69 +581,70 @@ class Sync extends \Hubzero\Base\Object
 					$this->_uid = $uid;
 				}
 
+				$updated = 0;
+				$deleted = 0;
+
 				// Set Git author date (GIT_AUTHOR_DATE)
 				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
 
 				// Record sync status
-				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
+				$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING')
+					. ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30));
 
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
 				if ($remote['status'] != 'D' && $local_dir && !is_dir( $this->_path . DS . $local_dir ))
 				{
-					if (Filesystem::makeDirectory( $this->_path . DS . $local_dir ))
+					// Set params
+					$params = array(
+						'newDir' => $this->_path . DS . $local_dir,
+						'author' => $author
+					);
+					$created = $this->model->repo()->makeDirectory( $params );
+					if (!$created)
 					{
-						$created = $this->_git->makeEmptyFolder($local_dir, false);
-						$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-							. '  ' . escapeshellarg($local_dir);
-						$this->_git->gitCommit($commitMsg, $author, $cDate);
-					}
-					else
-					{
-						// Error
-						$output .= '[error] failed to provision local directory for: '. $filename . "\n";
-						$failed[] = $filename;
+						$output .= '[error] failed to provision local directory for: ' . $filename . "\n";
 						continue;
 					}
 				}
 
-				// Send remote change to local (whether or not there is local change)
+				// Send remote change to local
 				// Remote version always prevails
 				if ($remote['status'] == 'D')
 				{
 					if (file_exists($this->_path . DS . $filename))
 					{
-						// Delete in Git
-						$deleted = $this->_git->gitDelete($filename, $remote['type'], $commitMsg);
-						if ($deleted)
+						// Params for repo call
+						$params = array(
+							'item'   => $filename,
+							'type'   => $remote['type'],
+							'author' => $author,
+							'date'   => $cDate
+						);
+						// Delete local file or directory
+						if ($deleted = $this->model->repo()->deleteItem($params))
 						{
-							$this->_git->gitCommit($commitMsg, $author, $cDate);
-
-							// Delete local file or directory
-							$output .= '-- deleted from local: '. $filename . "\n";
-						}
-						else
-						{
-							// Error
-							$output .= '[error] failed to delete from local: '. $filename . "\n";
-							$failed[] = $filename;
-							continue;
+							$output .= '-- deleted from local: ' . $filename . "\n";
 						}
 					}
 					else
 					{
 						// skip (deleted non-synced file)
 						$output .= $remote['converted'] == 1
-									? '-- deleted converted: '. $filename . "\n"
-									: '## skipped deleted non-synced item: '. $filename . "\n";
+									? '-- deleted converted: ' . $filename . "\n"
+									: '## skipped deleted non-synced item: ' . $filename . "\n";
 						$deleted = 1;
 					}
 
 					// Delete connection record if exists
-					if ($deleted)
+					if (!empty($deleted))
 					{
 						$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
-						$objRFile->deleteRecord( $this->model->get('id'), $service, $remote['remoteid']);
+						$objRFile->deleteRecord(
+							$this->model->get('id'),
+							$service,
+							$remote['remoteid']
+						);
 					}
 				}
 				elseif ($remote['status'] == 'R' || $remote['status'] == 'W')
@@ -673,26 +652,44 @@ class Sync extends \Hubzero\Base\Object
 					// Rename/move in Git
 					if (file_exists($this->_path . DS . $remote['rename']))
 					{
-						$output .= '>> rename from: '. $remote['rename'] . ' to ' . $filename . "\n";
+						$output .= '>> rename from: ' . $remote['rename'] . ' to ' . $filename . "\n";
 
-						if ($this->_git->gitMove($remote['rename'], $filename, $remote['type'], $commitMsg))
+						// Rename
+						if ($remote['status'] == 'R')
 						{
-							$this->_git->gitCommit($commitMsg, $author, $cDate);
-							$output .= '>> renamed/moved item locally: '. $filename . "\n";
-							$updated = 1;
+							// Params for repo call
+							$params = array(
+								'from'   => $remote['rename'],
+								'to'     => $filename,
+								'type'   => $remote['type'],
+								'author' => $author,
+								'date'   => $cDate
+							);
+							if ($updated = $this->model->repo()->rename($params))
+							{
+								$output .= '>> renamed item locally: ' . $filename . "\n";
+							}
 						}
-						else
+						// Move
+						elseif ($remote['status'] == 'W')
 						{
-							// Error
-							$output .= '[error] failed to rename/move item locally: '. $filename . "\n";
-							$failed[] = $filename;
-							continue;
+							// Params for repo call
+							$target = dirname($filename) == '.' ? '' : dirname($filename);
+							$params = array(
+								'item'      => $remote['rename'],
+								'targetDir' => $target,
+								'type'      => $remote['type']
+							);
+							if ($updated = $this->model->repo()->moveItem($params))
+							{
+								$output .= '>> moved item locally: ' . $filename . "\n";
+							}
 						}
 					}
 
 					if ($remote['converted'] == 1)
 					{
-						$output .= '>> renamed/moved item locally converted: '. $filename . "\n";
+						$output .= '>> renamed/moved item locally converted: ' . $filename . "\n";
 						$updated = 1;
 					}
 				}
@@ -701,7 +698,7 @@ class Sync extends \Hubzero\Base\Object
 					if ($remote['converted'] == 1)
 					{
 						// Not updating converted files via sync
-						$output .= '## skipped converted remotely changed file: '. $filename . "\n";
+						$output .= '## skipped converted remotely changed file: ' . $filename . "\n";
 						$updated = 1;
 					}
 					elseif (file_exists($this->_path . DS . $filename))
@@ -737,21 +734,20 @@ class Sync extends \Hubzero\Base\Object
 									);
 
 									$output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
-									$output .= '++ sent update from remote to local: '. $filename . "\n";
+									$output .= '++ sent update from remote to local: ' . $filename . "\n";
 									$updated = 1;
 								}
 								else
 								{
 									// Error
-									$output .= '[error] failed to update local file with remote change: '. $filename . "\n";
-									$failed[] = $filename;
+									$output .= '[error] failed to update local file with remote change: ' . $filename . "\n";
 									continue;
 								}
 							}
 						}
 						else
 						{
-							$output .= '## skipped folder in sync: '. $filename . "\n";
+							$output .= '## skipped folder in sync: ' . $filename . "\n";
 							$updated = 1;
 						}
 					}
@@ -760,20 +756,21 @@ class Sync extends \Hubzero\Base\Object
 						// Add item from remote to local (new)
 						if ($remote['type'] == 'folder')
 						{
-							if (Filesystem::makeDirectory( $this->_path . DS . $filename, 0755, true, true ))
+							// Set params
+							$params = array(
+								'newDir' => $this->_path . DS . $filename,
+								'author' => $author
+							);
+
+							if ($created = $this->model->repo()->makeDirectory( $params ))
 							{
-								$created = $this->_git->makeEmptyFolder($filename, false);
-								$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-									. '  ' . escapeshellarg($filename);
-								$this->_git->gitCommit($commitMsg, $author, $cDate);
-								$output .= '++ created local folder: '. $filename . "\n";
+								$output .= '++ created local folder: ' . $filename . "\n";
 								$updated = 1;
 							}
 							else
 							{
 								// error
-								$output .= '[error] failed to create local folder: '. $filename . "\n";
-								$failed[] = $filename;
+								$output .= '[error] failed to create local folder: ' . $filename . "\n";
 								continue;
 							}
 						}
@@ -784,9 +781,8 @@ class Sync extends \Hubzero\Base\Object
 							if ($checkAvail <= 0)
 							{
 								// Error
-								$output .= '[error] not enough space for '. $filename . ' (' . $remote['fileSize']
+								$output .= '[error] not enough space for ' . $filename . ' (' . $remote['fileSize']
 										. ' bytes) avail space:' . $checkAvail . "\n";
-								$failed[] = $filename;
 								continue;
 							}
 							else
@@ -803,18 +799,21 @@ class Sync extends \Hubzero\Base\Object
 								$this->_path . DS . $remote['local_path'])
 							)
 							{
-								// Git add & commit
-								$this->_git->gitAdd($filename, $commitMsg);
-								$this->_git->gitCommit($commitMsg, $author, $cDate);
+								// Checkin into repo
+								$this->model->repo()->call('checkin', array(
+									'file'   => $this->model->repo()->getMetadata($filename, 'file', array()),
+									'author' => $author,
+									'date'   => $cDate
+									)
+								);
 
-								$output .= '++ added new file to local: '. $filename . "\n";
+								$output .= '++ added new file to local: ' . $filename . "\n";
 								$updated = 1;
 							}
 							else
 							{
 								// Error
-								$output .= '[error] failed to add new local file: '. $filename . "\n";
-								$failed[] = $filename;
+								$output .= '[error] failed to add new local file: ' . $filename . "\n";
 								continue;
 							}
 						}
@@ -822,7 +821,7 @@ class Sync extends \Hubzero\Base\Object
 				}
 
 				// Update connection record
-				if ($updated)
+				if (!empty($updated))
 				{
 					$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 					$objRFile->updateSyncRecord(
@@ -842,8 +841,6 @@ class Sync extends \Hubzero\Base\Object
 							$this->model->config(), $this->model->get('alias'));
 					}
 				}
-
-				$processedRemote[$filename] = $remote;
 			}
 		}
 		else
@@ -886,9 +883,6 @@ class Sync extends \Hubzero\Base\Object
 
 		// Debug output
 		$this->writeToFile($output, $this->_logPath . DS . 'sync.' . Date::of('now')->format('Y-m') . '.log', true);
-
-		// Record sync status
-		$this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE_UPDATE_VIEW') );
 
 		// Unlock sync
 		$this->lockSync($service, true);

@@ -595,21 +595,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Get used space
-		$dirsize  = $this->repo->call('getDiskUsage',
-			$params = array(
-				'history' => $this->params->get('disk_usage')
-			)
-		);
-
-		// Get quota
-		$quota 		 = $this->model->params->get('quota');
-		$view->quota = $quota
-			? $quota
-			: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
-		$view->url = Route::url($this->model->link('files'));
-
-		$view->unused 		= $view->quota - $dirsize;
+		$view->url          = Route::url($this->model->link('files'));
+		$view->unused 		= $this->model->repo()->getAvailableDiskSpace();
 		$view->option 		= $this->_option;
 		$view->model 		= $this->model;
 		$view->repo			= $this->repo;
@@ -655,22 +642,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$url  = Route::url($url);
 		}
 
-		// Get quota
-		$quota = $this->model->exists() ? $this->model->params->get('quota') : \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
-
-		// Get used space
-		$dirsize = $this->repo->exists() ? $this->repo->call('getDiskUsage', $params = array('history' => $this->params->get('disk_usage'))) : 0;
-
 		// Set params
 		$params = array(
 			'subdir'      => $this->subdir,
-		//	'dataPath'    => Request::getVar('data_path', ''),
 			'expand'      => Request::getInt('expand_zip', 0),
 			'ajaxUpload'  => $ajaxUpload,
-			'path'        => $this->_path,
-			'quota'       => $quota,
-			'dirsize'     => $dirsize,
-			'sizelimit'   => $this->params->get('maxUpload', '104857600')
+			'path'        => $this->_path
 		);
 
 		// Upload file
@@ -1086,7 +1063,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			'type'    => Request::getVar( 'type', 'file')
 		);
 
-		// Create
+		// Rename
 		$success = $this->repo->rename($params);
 		if ($success)
 		{
@@ -2657,10 +2634,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		$view->total  = $this->repo->count();
-		$quota 		  = $model->params->get('quota');
-		$view->quota  = $quota
-			? $quota
-			: \Components\Projects\Helpers\Html::convertSize( floatval($model->config()->get('defaultQuota', '1')), 'GB', 'b');
+		$view->quota  = $model->params->get('quota', \Components\Projects\Helpers\Html::convertSize( floatval($model->config()->get('defaultQuota', '1')), 'GB', 'b'));
 
 		$view->by 		= $by;
 		$view->model 	= $model;

@@ -359,7 +359,7 @@ class Git extends Object
 			$out = $this->callGit(' mv ' . escapeshellarg($from)
 				. ' ' . escapeshellarg($where) . ' -f');
 
-			$commitMsg .= 'Moved folder '.escapeshellarg($from) .' to ' . escapeshellarg($where) . "\n";
+			$commitMsg .= 'Moved folder ' . escapeshellarg($from) . ' to ' . escapeshellarg($where) . "\n";
 			$moved++;
 		}
 		elseif ($type == 'file' && $from != '' && $from != $where  && file_exists($this->_path . DS . $from))
@@ -368,7 +368,7 @@ class Git extends Object
 			$out = $this->callGit(' mv ' . escapeshellarg($from)
 				. ' ' . escapeshellarg($where) . ' -f');
 
-			$commitMsg .= 'Moved file '.escapeshellarg($from) .' to ' . escapeshellarg($where) . "\n";
+			$commitMsg .= 'Moved file ' . escapeshellarg($from) . ' to ' . escapeshellarg($where) . "\n";
 			$moved++;
 		}
 

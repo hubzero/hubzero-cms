@@ -178,28 +178,13 @@ class Filesv1_0 extends ApiController
 	 */
 	public function saveTask()
 	{
-		// Project plugin params
-		$fileParams = Plugin::params('projects', 'files');
-
-		// Get used space
-		$dirsize = $this->model->repo()->call(
-			'getDiskUsage',
-			$params = array('history' => $fileParams->get('disk_usage'))
-		);
-
-		// Get disk quota
-		$quota = $this->model->params->get('quota', Helpers\Html::convertSize(floatval($this->model->config('defaultQuota', '1')), 'GB', 'b'));
-
 		// Insert file
 		$response->results     = $this->model->repo()->insert(
 			array(
 				'dataPath'    => Request::getVar( 'data_path', '' ),
 				'allowReplace'=> $this->_task == 'insert' ? false : true,
 				'update'      => $this->_task == 'insert' ? false : true,
-				'subdir'      => Request::getVar('subdir', ''),
-				'quota'       => $quota,
-				'dirsize'     => $dirsize,
-				'sizelimit'   => $fileParams->get('maxUpload', '104857600')
+				'subdir'      => Request::getVar('subdir', '')
 			)
 		);
 

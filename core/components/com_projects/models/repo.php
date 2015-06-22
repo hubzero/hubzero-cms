@@ -240,6 +240,17 @@ class Repo extends Object
 	}
 
 	/**
+	 * Get changes for sync
+	 *
+	 * @param      array	$params
+	 * @return     array
+	 */
+	public function getChanges($params)
+	{
+		return $this->call('getChanges', $params);
+	}
+
+	/**
 	 * Is local repo?
 	 *
 	 * @return  boolean
@@ -844,10 +855,7 @@ class Repo extends Object
 		$dataPath    = isset($params['dataPath']) ? $params['dataPath'] : NULL;
 		$path        = isset($params['path']) ? $params['path'] : $this->get('path');
 		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$sizeLimit   = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
-		$quota       = isset($params['quota']) ? $params['quota'] : '104857600';
-		$dirsize     = isset($params['dirsize']) ? $params['dirsize'] : 0;
-		$available   = $quota - $dirsize;
+		$available   = $this->getAvailableDiskSpace();
 
 		// Collector
 		$results = array(
@@ -974,8 +982,6 @@ class Repo extends Object
 	{
 		$path         = isset($params['path']) ? $params['path'] : $this->get('path');
 		$dirPath      = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$sizeLimit    = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
-		$quota        = isset($params['quota']) ? $params['quota'] : '104857600';
 		$dirsize      = isset($params['dirsize']) ? $params['dirsize'] : 0;
 		$caller       = isset($params['caller']) ? $params['caller'] : NULL;
 		$allowReplace = isset($params['allowReplace']) ? $params['allowReplace'] : true;
@@ -1046,7 +1052,7 @@ class Repo extends Object
 		}
 
 		// Run some checks
-		if (!$this->_check($dataPath, NULL, filesize($dataPath), $available, $sizeLimit))
+		if (!$this->_check($dataPath, NULL, filesize($dataPath), $available))
 		{
 			return false;
 		}
@@ -1096,7 +1102,6 @@ class Repo extends Object
 	protected function _upload($file, $tmp_name, $target, $size, &$available, $params)
 	{
 		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$sizeLimit   = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
 		$expand      = isset($params['expand']) ? $params['expand'] : false;
 
 		$file        = Helpers\Html::makeSafeFile($file);
@@ -1114,7 +1119,7 @@ class Repo extends Object
 		else
 		{
 			// Run some checks
-			if (!$this->_check($file, $tmp_name, $size, $available, $sizeLimit))
+			if (!$this->_check($file, $tmp_name, $size, $available))
 			{
 				return false;
 			}
@@ -1302,13 +1307,19 @@ class Repo extends Object
 	 *
 	 * @return  boolean
 	 */
-	protected function _check($file, $tmp_name, $size, &$available, $sizeLimit = 0)
+	protected function _check($file, $tmp_name, $size, &$available)
 	{
+		if (!isset($this->_sizeLimit))
+		{
+			$pParams = Plugin::params( 'projects', 'files' );
+			$this->_sizeLimit = $pParams->get('maxUpload', '104857600');
+		}
+
 		// Check against upload size limit
-		if (intval($sizeLimit) && $size > intval($sizeLimit))
+		if (intval($this->_sizeLimit) && $size > intval($this->_sizeLimit))
 		{
 			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
-				. \Hubzero\Utility\Number::formatBytes($sizeLimit) . '. '
+				. \Hubzero\Utility\Number::formatBytes($this->_sizeLimit) . '. '
 				. Lang::txt('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
 			return false;
 		}
@@ -1608,5 +1619,35 @@ class Repo extends Object
 	{
 		$ext = Helpers\Html::getFileExtension($file);
 		return in_array($ext, array('tar', 'gz')) ? true : false;
+	}
+
+	/**
+	 * Get available disk space
+	 *
+	 * @return integer
+	 */
+	public function getAvailableDiskSpace()
+	{
+		$pParams = Plugin::params( 'projects', 'files' );
+		$projectParams = $this->get('project')->params;
+		$quota = $this->get('project')->config()->get('defaultQuota', '1');
+
+		// Get disk usage
+		$diskUsage = $this->call('getDiskUsage',
+			$params = array(
+				'working' => true,
+				'history' => $pParams->get('disk_usage')
+			)
+		);
+
+		// Get quota
+		if (!isset($this->_quota))
+		{
+			$this->_quota = $projectParams->get('quota')
+						? $projectParams->get('quota')
+						: Helpers\Html::convertSize( floatval($quota), 'GB', 'b');
+		}
+
+		return $this->_quota - $diskUsage;
 	}
 }

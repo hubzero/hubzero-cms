@@ -795,7 +795,7 @@ class Google extends Object
 					if (preg_match("/.folder/", $doc['mimeType']))
 					{
 						// Recurse
-						self::getFolderChange($items, $doc['id'], $remotes,	 $deletes, $fpath, $connections, $duplicates );
+						self::getFolderChange($items, $doc['id'], $remotes, $deletes, $fpath, $connections, $duplicates);
 					}
 				}
 			}
