@@ -58,9 +58,48 @@ HUB.Geosearch = {
 
 		// create info windows
 		oms.addListener('click', function(marker, event) {
-			console.log(marker);
-			  //infoWindow.setContent(marker.html);
-			  infoWindow.setContent('test test hello!');
+
+			$.ajax({
+				url: "/api/events/" + marker.scope_id,
+				data: { nicedate : 1}
+			})
+			.done(function( data ) {
+
+				var html = '';
+				switch (marker.scope)
+				{
+					case "member":
+						break;
+					case "event":
+						// get the data for the popup view
+						var title = data.event.title;
+						var content = data.event.content;
+						var start =  data.event.publish_up;
+						var end = data.event.publish_down;
+						var location = data.event.adresse_info;
+						var link = "/events/event/" + data.event.id;
+
+						//contruct the popup view
+						html += '<div class="event-popup">'; // classes for styling, because CSS
+						html += '<h1>'+title+'</h1>';
+						html += '<p class="date">'+start+' - '+ end + '</p>';
+						html += '<p class="location">'+location+'</p>';
+						html += '<p>'+content+'</p>';
+						html += '<a href="'+link+'"><span class="link">Event Details</p></span>';
+						html += '</div>';
+					break;
+					case "job":
+						break;
+					case "org":
+					break;
+				}
+				console.log(data.event);
+
+				infoWindow.setContent(html);
+			});
+
+ 			 //infoWindow.setContent(marker.html);
+
 			  infoWindow.open(map, marker);
 		});
 
@@ -114,7 +153,9 @@ HUB.Geosearch = {
 				var point = new google.maps.Marker({
 				position: mlatlng,
 				map: map,
-				icon:icon
+				icon:icon,
+				scope: marker.scope,
+				scope_id: marker.scope_id
 				//title: name,
 				});
 

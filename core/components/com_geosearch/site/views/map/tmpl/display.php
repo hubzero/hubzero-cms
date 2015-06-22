@@ -38,6 +38,27 @@ min-height: 500px;
 margin: 0 0 2em 0;
 padding: 2em 2em 2em 2em;
 }
+
+.event-popup h1{
+	font-size: 14pt;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+
+.event-popup p.date {
+	font-size: 10pt;
+	margin-top:0;
+	margin-bottom:0;
+	font-style: normal;
+}
+
+.event-popup p.location{
+	font-size: 10pt;
+	margin-top: 0;
+	font-style: normal;
+}
+
+
 </style>
 
 <div id="content-header" class="full">
