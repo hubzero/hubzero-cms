@@ -246,6 +246,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			'tag'    => trim(JRequest::getVar('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array()
 		);
+		if (!in_array($this->view->filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
+		{
+			throw new Exception(JText::_('Invalid sort value of "%s" used.', $this->view->filters['sortby']), 404);
+		}
 
 		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')
 		{
