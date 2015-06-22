@@ -17,7 +17,7 @@ Hubzero.initApi = function ( callback )
 {
 	// Get session token for oauth calls
 	$.ajax({
-		url      : '/developer/oauth/token',
+		url      : '/api/developer/oauth/token',
 		data     : 'grant_type=session',
 		dataType : 'json',
 		type     : 'POST',
