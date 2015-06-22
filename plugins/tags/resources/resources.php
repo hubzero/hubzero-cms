@@ -258,7 +258,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'date':    $query .= 'publish_up DESC';               break;
 					case 'title':   $query .= 'title ASC, publish_up DESC';    break;
 					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
 					case 'ranking': $query .= "ranking DESC";                  break;
@@ -266,6 +265,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 					case 'users':
 					case 'usage':   $query .= "users DESC";                    break;
 					case 'jobs':    $query .= "jobs DESC";                     break;
+					case 'date':
+					default: $query .= 'publish_up DESC';               break;
 				}
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all')

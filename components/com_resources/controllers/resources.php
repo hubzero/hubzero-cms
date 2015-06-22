@@ -248,7 +248,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		);
 		if (!in_array($this->view->filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
-			throw new Exception(JText::_('Invalid sort value of "%s" used.', $this->view->filters['sortby']), 404);
+			throw new Exception(JText::sprintf('Invalid sort value of "%s".', $this->view->filters['sortby']), 404);
 		}
 
 		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')

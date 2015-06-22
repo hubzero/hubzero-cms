@@ -752,7 +752,6 @@ class ResourcesResource extends JTable
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
 				{
-					case 'date':    $query .= 'publish_up DESC';               break;
 					case 'title':   $query .= 'title ASC, publish_up';         break;
 					case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
 					case 'ranking': $query .= "ranking DESC";                  break;
@@ -760,6 +759,8 @@ class ResourcesResource extends JTable
 					case 'users':
 					case 'usage':   $query .= "users DESC";              break;
 					case 'jobs':   $query .= "jobs DESC";              break;
+					case 'date':
+					default: $query .= 'publish_up DESC';               break;
 				}
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all')

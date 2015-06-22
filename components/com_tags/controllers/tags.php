@@ -165,6 +165,10 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			'start' => JRequest::getInt('limitstart', 0),
 			'sort'  => JRequest::getVar('sort', 'date')
 		);
+		if (!in_array($this->view->filters['sort'], array('date', 'title')))
+		{
+			throw new Exception(JText::sprintf('Invalid sort value of "%s".', $this->view->filters))
+		}
 
 		// Get the active category
 		$area = JRequest::getString('area', '');
