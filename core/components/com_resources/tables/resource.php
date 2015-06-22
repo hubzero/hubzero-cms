@@ -396,14 +396,15 @@ class Resource extends \JTable
 		{
 			switch ($filters['sortby'])
 			{
-				case 'date':
-				case 'date_published':   $query .= 'publish_up DESC';      break;
 				case 'date_created':    $query .= 'created DESC';          break;
 				case 'date_modified':    $query .= 'modified DESC';        break;
 				case 'title':   $query .= 'title ASC, publish_up';         break;
 				case 'rating':  $query .= "rating DESC, times_rated DESC"; break;
 				case 'ranking': $query .= "ranking DESC";                  break;
 				case 'random':  $query .= "RAND()";                        break;
+				case 'date':
+				case 'date_published':
+				default: $query .= 'publish_up DESC';      break;
 			}
 		}
 

@@ -241,6 +241,10 @@ class Resources extends SiteController
 			'tag'    => trim(Request::getVar('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array()
 		);
+		if (!in_array($this->view->filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
+		{
+			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $this->view->filters['sortby']));
+		}
 
 		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')
 		{
