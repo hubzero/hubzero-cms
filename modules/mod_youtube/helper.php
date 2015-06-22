@@ -67,6 +67,9 @@ class Helper extends Module
 		//get the username/playlist/search term
 		$content = $this->params->get('q');
 
+		//get the user's api key
+		$google_api_browser_key = $this->params->get('google_api_browser_key');
+
 		//build the youtube url based on the type
 		switch ($type)
 		{
@@ -114,6 +117,7 @@ class Helper extends Module
 			$this->js("
 				jQuery(document).ready(function($){
 					var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
+						google_api_browser_key: '" . $google_api_browser_key . "',
 						type: '" . $type . "',
 						search: '" . $content . "',
 						count: " . $num_videos . ",
