@@ -46,6 +46,101 @@ class Legacy extends Registry
 	protected $path;
 
 	/**
+	 * The current client type (admin, site, api, etc).
+	 *
+	 * @var  string
+	 */
+	protected $map = array(
+		'app' => array(
+			'application_env',
+			'editor',
+			'list_limit',
+			'helpurl',
+			'debug',
+			'debug_lang',
+			'sef',
+			'sef_rewrite',
+			'sef_suffix',
+			'sef_groups',
+			'feed_limit',
+			'feed_email',
+			'secret',
+			'gzip',
+			'error_reporting',
+			'api_server',
+			'xmlrpc_server',
+			'log_path',
+			'tmp_path',
+			'live_site',
+			'force_ssl',
+			'offset',
+			'sitename',
+			'sitename_pagetitles',
+			'robots',
+			'unicodeslugs',
+			'captcha',
+			'access'
+		),
+		'cache' => array(
+			'caching',
+			'cachetime',
+			'cache_handler',
+			'memcache_settings'
+		),
+		'database' => array(
+			'dbtype',
+			'host',
+			'user',
+			'password',
+			'db',
+			'dbcharset',
+			'dbcollation',
+			'dbprefix'
+		),
+		'ftp' => array(
+			'ftp_enabled',
+			'ftp_host',
+			'ftp_port',
+			'ftp_user',
+			'ftp_pass',
+			'ftp_root'
+		),
+		array(
+			'mailer',
+			'mailfrom',
+			'fromname',
+			'smtpauth',
+			'smtphost',
+			'smtpport',
+			'smtpuser',
+			'smtppass',
+			'smtpsecure',
+			'sendmail'
+		),
+		array(
+			'MetaAuthor',
+			'MetaTitle',
+			'MetaDesc',
+			'MetaKeys',
+			'MetaRights',
+			'MetaVersion'
+		),
+		array(
+			'display_offline_message',
+			'offline_image',
+			'offline_message',
+			'offline'
+		),
+		array(
+			'session_handler',
+			'lifetime',
+			'cookiesubdomains',
+			'cookie_path',
+			'cookie_domain'
+		)
+	);
+
+	/**
 	 * Create a new configuration repository.
 	 *
 	 * @param   string  $path
@@ -105,5 +200,34 @@ class Legacy extends Registry
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Split the config file into new format
+	 *
+	 * @param   string  $format
+	 * @param   string  $path
+	 * @return  void
+	 */
+	public function split($format, $path)
+	{
+		$format = $format ?: 'php';
+		$path   = $path   ?: PATH_APP . DS . 'app' . DS . 'config';
+
+		$writer = new \Hubzero\Config\FileWriter(
+			$format,
+			$path
+		);
+
+		foreach ($this->map as $group => $values)
+		{
+			$contents = array();
+			foreach ($values as $key)
+			{
+				$contents[$key] = $this->get($key);
+			}
+
+			$writer->write($contents, $group);
+		}
 	}
 }
