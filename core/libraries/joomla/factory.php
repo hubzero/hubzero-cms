@@ -561,7 +561,7 @@ abstract class JFactory
 			//Store the locale for future reference
 			$mainLocale = $locale;
 
-			if ($mainLocale !== false)
+			if ($mainLocale && $mainLocale !== false)
 			{
 				$classname = str_replace('-', '_', $mainLocale) . 'Date';
 
