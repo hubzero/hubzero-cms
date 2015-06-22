@@ -186,7 +186,13 @@ class Citation extends \JTable
 				$tags = array($filter['tag']);
 			}
 
-			$query .= " AND tago.tbl='citations' AND tag.tag IN ('" . implode("','", $tags) . "')";
+			//prevent SQL injection
+			foreach ($tags as &$tag)
+			{
+				$tag = $this->_db->quote($tag);
+			}
+
+			$query .= " AND tago.tbl='citations' AND tag.tag IN (" . implode(",", $tags) . ")";
 		}
 
 		//type filter
