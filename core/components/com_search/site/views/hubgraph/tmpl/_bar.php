@@ -27,7 +27,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('JPATH_BASE') or die();
+defined('_HZEXEC_') or die();
+
 ?>
 <div class="search-bar">
 	<input type="text" name="terms" class="terms" autocomplete="off" value="<?php echo str_replace('"', '&quot;', $this->req->getTerms()) ?>" />
