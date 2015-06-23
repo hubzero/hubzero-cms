@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// no direct access
+defined('_HZEXEC_') or die();
 ?>
 <div id="youtube_feed_<?php echo $this->id; ?>" class="youtube_<?php echo $this->params->get('layout') . ' ' . $this->params->get('moduleclass_sfx'); ?>">
 	<?php if ($this->lazy) { ?>
@@ -39,4 +39,3 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->html; ?>
 	<?php } ?>
 </div>
-

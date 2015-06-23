@@ -28,9 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-$this->css();
-//Html::behavior('chart', 'resize');
+defined('_HZEXEC_') or die();
 
+$this->css();
+
+//Html::behavior('chart', 'resize');
 Html::behavior('chart');
 ?>
 <div class="<?php echo $this->module->module; ?>">

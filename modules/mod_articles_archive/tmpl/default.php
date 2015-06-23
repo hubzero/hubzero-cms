@@ -28,10 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
-?>
-<?php if (!empty($list)) :?>
+defined('_HZEXEC_') or die;
+
+if (!empty($list)) :?>
 	<ul class="archive-module<?php echo $moduleclass_sfx; ?>">
 		<?php foreach ($list as $item) : ?>
 			<li>
@@ -41,4 +40,4 @@ defined('_JEXEC') or die;
 			</li>
 		<?php endforeach; ?>
 	</ul>
-<?php endif; ?>
+<?php endif;

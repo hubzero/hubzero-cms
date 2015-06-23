@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+defined('_HZEXEC_') or die();
+
 if (!empty($version)):
 	echo '<p class="cms-version">' . $version . '</p>';
 endif;

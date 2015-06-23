@@ -28,9 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-
-// no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 
 foreach ($list as $item) : ?>
 	<li <?php if ($_SERVER['PHP_SELF'] == Route::url(ContentHelperRoute::getCategoryRoute($item->id))) echo ' class="active"';?>>

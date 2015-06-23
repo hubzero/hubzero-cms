@@ -28,9 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+defined('_HZEXEC_') or die();
+
 $html = \Modules\QuickIcon\Icons::buttons($buttons);
-?>
-<?php if (!empty($html)): ?>
+
+if (!empty($html)): ?>
 	<?php $this->css(); ?>
 	<div class="cpanel <?php echo $this->module->module; ?>"><?php echo $html; ?></div>
-<?php endif;?>
+<?php endif;

@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <dl class="stats-module<?php echo $moduleclass_sfx ?>">
 <?php foreach ($list as $item) : ?>

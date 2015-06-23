@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <a href="<?php echo $link ?>" class="syndicate-module<?php echo $moduleclass_sfx; ?>">
 	<?php echo Html::asset('image', 'assets/livemarks.png', 'feed-image', NULL, true); ?>

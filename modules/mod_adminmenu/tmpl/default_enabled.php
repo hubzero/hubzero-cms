@@ -30,6 +30,8 @@
 
 use Modules\AdminMenu\Node;
 
+defined('_HZEXEC_') or die;
+
 $shownew = (boolean) $params->get('shownew', 1);
 $user = User::getRoot();
 $lang = Lang::getRoot();

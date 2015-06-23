@@ -30,7 +30,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <footer class="footer<?php echo $moduleclass_sfx; ?>">
 	<div class="footer1<?php echo $moduleclass_sfx; ?>"><?php echo $lineone; ?></div>

@@ -26,8 +26,8 @@
  * HUBzero is a registered trademark of Purdue University.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// no direct access
+defined('_HZEXEC_') or die();
 
 $c = 0;
 ?>

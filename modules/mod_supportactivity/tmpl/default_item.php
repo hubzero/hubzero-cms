@@ -27,6 +27,8 @@
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
+defined('_HZEXEC_') or die();
 ?>
 				<li data-parent="activity-list<?php echo $this->module->id; ?>" data-time="<?php echo $result->created; ?>" class="<?php echo $this->escape($result->category); ?>">
 					<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=edit&id=' . $result->ticket . ($result->id ? '#c' . $result->id : '')); ?>">

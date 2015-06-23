@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <ul class="latestnews<?php echo $moduleclass_sfx; ?>">
 	<?php foreach ($list as $item): ?>

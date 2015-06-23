@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <?php if (!empty($names)): ?>
 	<ul class="latestusers<?php echo $moduleclass_sfx ?>">

@@ -30,7 +30,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <ul class="relateditems<?php echo $moduleclass_sfx; ?>">
 	<?php foreach ($list as $item): ?>

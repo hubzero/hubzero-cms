@@ -30,7 +30,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <div class="random-image<?php echo $moduleclass_sfx; ?>">
 	<?php if ($link) : ?>

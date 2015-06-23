@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 
 $item_heading = $params->get('item_heading', 'h4');
 ?>

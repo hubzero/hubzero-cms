@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+defined('_HZEXEC_') or die();
+
 if (isset($this->title) && !empty($this->title)):
 	echo $this->title;
 endif;

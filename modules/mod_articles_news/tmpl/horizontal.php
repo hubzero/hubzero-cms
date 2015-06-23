@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 
 <ul class="newsflash-horiz<?php echo $params->get('moduleclass_sfx'); ?>">

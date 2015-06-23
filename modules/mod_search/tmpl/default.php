@@ -30,7 +30,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform" <?php if ($moduleclass_sfx) { echo ' class="' . $moduleclass_sfx . '"'; } ?>>
 	<fieldset>

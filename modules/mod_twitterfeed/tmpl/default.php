@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 // Get tweet count
 $count = $this->params->get('tweetcount', 5);

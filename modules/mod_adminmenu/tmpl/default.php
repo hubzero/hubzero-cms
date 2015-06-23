@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+defined('_HZEXEC_') or die;
+
 require $this->getLayoutPath($enabled ? 'default_enabled' : 'default_disabled');
 
 $menu->renderMenu('menu', $enabled ? '' : 'disabled');
