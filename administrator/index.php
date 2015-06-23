@@ -15,7 +15,7 @@
 | Set flag that this is a parent file.
 |
 */
-define('_JEXEC', 1);
+define('_HZEXEC_', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
 /*

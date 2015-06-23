@@ -74,6 +74,10 @@ define('PATH_PUBLIC', PATH_APP);  // . '/public';
 |
 */
 
+if (!defined('_JEXEC'))
+{
+	define('_JEXEC', 1);
+}
 if (!defined('JPATH_BASE'))
 {
 	define('JPATH_BASE', PATH_ROOT);

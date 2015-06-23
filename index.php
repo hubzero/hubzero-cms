@@ -15,7 +15,7 @@
 | Set flag that this is a parent file.
 |
 */
-define('_JEXEC', 1);
+define('_HZEXEC_', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
 /*
@@ -28,9 +28,9 @@ define('DS', DIRECTORY_SEPARATOR);
 |
 */
 
-define('JPATH_BASE', __DIR__);
+define('PATH_ROOT', __DIR__);
 
-require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
 
 /*
 |--------------------------------------------------------------------------
