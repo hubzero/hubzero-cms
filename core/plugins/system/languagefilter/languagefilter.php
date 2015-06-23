@@ -5,7 +5,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 
 JLoader::register('MenusHelper', PATH_CORE . '/components/com_menus/admin/helpers/menus.php');
 JLoader::register('MultilangstatusHelper', PATH_CORE . '/components/com_languages/admin/helpers/multilangstatus.php');

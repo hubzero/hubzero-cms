@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 
 /**
  * Plugin that loads module positions within content

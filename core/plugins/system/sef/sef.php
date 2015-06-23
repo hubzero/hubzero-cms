@@ -5,7 +5,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 
 /**
  * Joomla! SEF Plugin

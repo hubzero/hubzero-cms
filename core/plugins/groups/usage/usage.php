@@ -23,7 +23,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 /**
  * Groups Plugin class for usage

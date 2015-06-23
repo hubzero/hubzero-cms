@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 
 /**
  * Antispam plugin for a basic Bayesian filter

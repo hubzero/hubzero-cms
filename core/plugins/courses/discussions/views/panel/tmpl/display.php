@@ -1,5 +1,5 @@
 <?php
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_HZEXEC_') or die();
 
 $this->js();
 

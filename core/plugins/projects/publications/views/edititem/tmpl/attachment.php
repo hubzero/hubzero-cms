@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die();
 
 $title 		 = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL');
 $placeholder = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');

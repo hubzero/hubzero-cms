@@ -23,7 +23,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 ?>
 
 <div id="system-message-container">

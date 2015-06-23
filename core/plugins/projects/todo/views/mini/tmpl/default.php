@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die();
 ?>
 <div class="sidebox<?php if (count($this->items) == 0) { echo ' suggestions'; } ?>">
 		<h4><a href="<?php echo Route::url($this->model->link('todo')); ?>" class="hlink" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_TODO')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_TAB_TODO')); ?></a>

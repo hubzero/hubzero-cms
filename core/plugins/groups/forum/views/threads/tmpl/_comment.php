@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));

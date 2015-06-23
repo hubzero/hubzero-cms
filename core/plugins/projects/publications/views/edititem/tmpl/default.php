@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die();
 $default_title = ($this->type == 'file') ? basename($this->item) : $this->item;
 
 $name    = \Components\Projects\Helpers\Html::shortenFileName(basename($this->item), 70);
