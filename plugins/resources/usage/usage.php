@@ -137,7 +137,12 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			$action = JRequest::getVar('action', '');
 			if ($action == 'top')
 			{
-				$this->getTopValues($model->resource->id, JRequest::getVar('datetime', '0000-00-00 00:00:00'));
+				$dtm = JRequest::getVar('datetime', '0000-00-00 00:00:00');
+				if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $dtm))
+				{
+					$dtm = '0000-00-00 00:00:00';
+				}
+				$this->getTopValues($model->resource->id, $dtm);
 				return;
 			}
 			if ($action == 'overview')
