@@ -78,7 +78,7 @@ class Projectsv1_0 extends ApiController
 	 * 		"description":   "Direction to sort results by.",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "desc",
+	 * 		"default":       "asc",
 	 * 		"allowedValues": "asc, desc"
 	 * }
 	 * @apiParameter {
@@ -86,7 +86,7 @@ class Projectsv1_0 extends ApiController
 	 * 		"description":   "Receive verbose output for project status, team member role and privacy.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       "desc",
+	 * 		"default":       "0",
 	 * 		"allowedValues": "0, 1"
 	 * }
 	 * @return  void
@@ -123,9 +123,10 @@ class Projectsv1_0 extends ApiController
 				$obj->id            = $entry->get('id');
 				$obj->alias         = $entry->get('alias');
 				$obj->title         = $entry->get('title');
+				$obj->description   = $entry->get('about');
 				$obj->state         = $entry->get('state');
 				$obj->inSetup       = $entry->inSetup();
-				$obj->author        = $entry->owner('name');
+				$obj->owner         = $entry->owner('name');
 				$obj->created       = $entry->get('created');
 				$obj->userRole      = $entry->member()->role;
 				$obj->thumbUrl      = str_replace('/api', '', $base . '/'
@@ -188,5 +189,68 @@ class Projectsv1_0 extends ApiController
 
 		$this->send($response);
 	}
-}
 
+	/**
+	 * Get project info (if user is in project)
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /projects/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return  void
+	 */
+	public function getTask()
+	{
+		// Incoming
+		$id = Request::getVar('id', '');
+
+		$this->model = new Project($id);
+
+		// Project did not load?
+		if (!$this->model->exists())
+		{
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
+		}
+
+		// Check authorization
+		if (!$this->model->access('member') && !$this->model->isPublic())
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
+		}
+
+		$base = rtrim(Request::base(), '/');
+
+		$obj = new stdClass;
+		$obj->id            = $this->model->get('id');
+		$obj->alias         = $this->model->get('alias');
+		$obj->title         = $this->model->get('title');
+		$obj->description   = $this->model->get('about');
+		$obj->private       = $this->model->get('private');
+		$obj->owner         = $this->model->owner('name');
+		$obj->created       = $this->model->get('created');
+		$obj->groupOwnerId  = $this->model->groupOwner('id');
+		$obj->userOwnerId   = $this->model->owner('id');
+		$obj->uri           = str_replace('/api', '', $base . '/'
+							. ltrim(Route::url($this->model->link()), '/'));
+		$obj->thumbUrl      = str_replace('/api', '', $base . '/'
+							. ltrim(Route::url($this->model->link('thumb')), '/'));
+
+		if ($this->model->access('member'))
+		{
+			$obj->provisioned   = $this->model->isProvisioned();
+			$obj->state         = $this->model->get('state');
+			$obj->inSetup       = $this->model->inSetup();
+			$obj->userRole      = $this->model->member()->role;
+		}
+
+		$response = new stdClass;
+		$response->project = $obj;
+
+		$this->send($response);
+	}
+}

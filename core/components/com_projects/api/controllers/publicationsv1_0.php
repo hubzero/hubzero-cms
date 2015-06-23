@@ -41,11 +41,13 @@ use Route;
 use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+	. DS . 'models' . DS . 'publication.php');
 
 /**
- * API controller for the project team
+ * API controller for the project publications
  */
-class Teamv1_0 extends ApiController
+class Publicationsv1_0 extends ApiController
 {
 	/**
 	 * Execute a request
@@ -54,11 +56,12 @@ class Teamv1_0 extends ApiController
 	 */
 	public function execute()
 	{
-		$this->registerTask('team', 'list');
+		$this->registerTask('publications', 'list');
 		$this->_task = Request::getWord('task', 'list');
 
-		// Load component language file
-		Lang::load('com_projects') || Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		// Load language files
+		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('plg_projects_publications', PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'publications');
 
 		// Incoming
 		$id = Request::getVar('id', '');
@@ -72,7 +75,7 @@ class Teamv1_0 extends ApiController
 		}
 
 		// Check authorization
-		if (!$this->model->access('member') && !$this->model->isPublic())
+		if (!$this->model->access('member'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
 		}
@@ -81,10 +84,10 @@ class Teamv1_0 extends ApiController
 	}
 
 	/**
-	 * Get a list of project team members
+	 * Get a list of project files
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/team
+	 * @apiUri    /projects/{id}/files
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
@@ -112,48 +115,79 @@ class Teamv1_0 extends ApiController
 	 * 		"type":          "string",
 	 * 		"required":      false,
 	 *      "default":       "title",
-	 * 		"allowedValues": "title, created, alias"
+	 * 		"allowedValues": "title, date, id, category, status"
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "sortdir",
 	 * 		"description":   "Direction to sort results by.",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "desc",
+	 * 		"default":       "asc",
 	 * 		"allowedValues": "asc, desc"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "published",
+	 * 		"description":   "Get only published datasets (1) or all including drafts (0)",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "0",
+	 * 		"allowedValues": "0, 1"
 	 * }
 	 * @return  void
 	 */
 	public function listTask()
 	{
 		$response = new stdClass;
-		$filters = array(
-			'limit'   => Request::getInt('limit', 0, 'post'),
-			'start'   => Request::getInt('limitstart', 0, 'post'),
-			'sortby'  => Request::getVar( 'sortby', 'name', 'post'),
-			'sortdir' => Request::getVar( 'sortdir', 'ASC', 'post'),
-			'status'  => 'active'
-		);
-		$response->count   = count($this->model->team());
-		$response->team    = array();
-		$response->project = $this->model->get('alias');
 
-		$team = $this->model->team($filters, true);
-		if (!empty($team))
+		// Instantiate a publication object
+		$pub = new \Components\Publications\Models\Publication();
+
+		// Filters for returning results
+		$filters = array(
+			'project'	    => $this->model->get('id'),
+			'limit'	        => Request::getInt('limit', 25),
+			'limitstart'	=> Request::getInt('limitstart', 0),
+			'sortby'	    => Request::getWord('sortby', 'title', 'post'),
+			'sortdir'	    => strtoupper(Request::getWord('sortdir', 'ASC')),
+			'ignore_access' => 1
+		);
+		$published = Request::getInt('published', '0', 'post');
+		if (!$published)
 		{
-			foreach ($team as $i => $entry)
+			$filters['dev'] = 1;
+		}
+
+		$response->publications = array();
+		$response->total        = $pub->entries('count', $filters);
+		$response->project      = $this->model->get('alias');
+
+		$publications = $pub->entries( 'list', $filters );
+		if (!empty($publications))
+		{
+			$base = rtrim(Request::base(), '/');
+
+			foreach ($publications as $i => $entry)
 			{
 				$obj = new stdClass;
-				$obj->ownerId     = $entry->id;
-				$obj->userId      = $entry->userid;
-				$obj->name        = $entry->fullname;
-				$obj->joined      = $entry->added;
-				$obj->owner       = $entry->userid == $this->model->get('owned_by_user') ? 1 : 0;
-				$obj->manager     = $entry->role == 1 ? 1 : 0;
-				$obj->editor      = $entry->role == 5 ? 0 : 1;
-				$obj->lastVisit   = $entry->lastvisit;
-				$obj->group       = $entry->groupname;
-				$response->team[] = $obj;
+				$obj->id            = $entry->get('id');
+				$obj->alias         = $entry->get('alias');
+				$obj->title         = $entry->get('title');
+				$obj->abstract      = $entry->get('abstract');
+				$obj->creator       = $entry->creator('name');
+				$obj->created       = $entry->get('created');
+				$obj->published     = $entry->published('date');
+				$obj->masterType    = $entry->masterType()->type;
+				$obj->category      = $entry->category()->name;
+				$obj->version       = $entry->get('version_number');
+				$obj->versionLabel  = $entry->get('version_label');
+				$obj->status        = $entry->get('state');
+				$obj->statusName    = $entry->getStatusName();
+
+				$obj->thumbUrl      = str_replace('/api', '', $base . '/'
+									. ltrim(Route::url($entry->link('thumb')), '/'));
+				$obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('version')), '/'));
+
+				$response->publications[] = $obj;
 			}
 		}
 

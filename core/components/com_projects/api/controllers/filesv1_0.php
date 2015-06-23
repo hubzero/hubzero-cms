@@ -324,6 +324,12 @@ class Filesv1_0 extends ApiController
 				break;
 			}
 
+			// Must have a name
+			if (trim($item) == '')
+			{
+				continue;
+			}
+
 			$params = array(
 				'type'   => $type,
 				'item'   => $item,
@@ -337,6 +343,167 @@ class Filesv1_0 extends ApiController
 		}
 		$response->total   = count($items);
 		$response->deleted = $deleted;
+
+		if ($this->model->repo()->getError())
+		{
+			$response->error = $this->model->repo()->getError();
+		}
+
+		$this->send($response);
+	}
+
+	/**
+	 * Move file or folder in project
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /projects/{id}/files/move
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "target",
+	 * 		"description":   "Target directory path within project repo",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "asset",
+	 * 		"description":   "Array of file paths to move.",
+	 * 		"type":          "array",
+	 * 		"required":      true,
+	 * 		"default":       ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "folder",
+	 * 		"description":   "Array of folder paths to move.",
+	 * 		"type":          "array",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 * @return  void
+	 */
+	public function moveTask()
+	{
+		// Incoming
+		$items = $this->_sortIncoming();
+
+		if (empty($items))
+		{
+			throw new Exception(Lang::txt('No asset/folder path(s) given'), 404);
+		}
+
+		// Incoming
+		$target = trim(urldecode(Request::getVar('target', '')), DS);
+
+		$response = new stdClass;
+		$moved  = 0;
+
+		foreach ($items as $element)
+		{
+			foreach ($element as $type => $item)
+			{
+				// Get type and item name
+				break;
+			}
+
+			// Must have a name
+			if (trim($item) == '')
+			{
+				continue;
+			}
+
+			$params = array(
+				'type'            => $type,
+				'item'            => $item,
+				'targetDir'       => $target,
+				'createTargetDir' => true // allow new directories
+			);
+
+			if ($this->model->repo()->moveItem($params))
+			{
+				$moved++;
+			}
+		}
+		$response->total = count($items);
+		$response->moved = $moved;
+
+		if ($this->model->repo()->getError())
+		{
+			$response->error = $this->model->repo()->getError();
+		}
+
+		$this->send($response);
+	}
+
+	/**
+	 * Move file or folder in project
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /projects/{id}/files/rename
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Project identifier (numeric ID or alias)",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "type",
+	 * 		"description":   "File or folder.",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 *      "default":       "file",
+	 * 		"allowedValues": "file, folder"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "from",
+	 * 		"description":   "Name of file/folder to rename (do not include local path - use subdir param).",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "to",
+	 * 		"description":   "New name for file/folder (do not include local path - use subdir param).",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "subdir",
+	 * 		"description":   "Directory path within project repo.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "",
+	 * 		"allowedValues": ""
+	 * }
+	 * @return  void
+	 */
+	public function renameTask()
+	{
+		// Set params
+		$params = array(
+			'subdir'  => Request::getVar('subdir', ''),
+			'from'    => Request::getVar( 'from', ''),
+			'to'      => Request::getVar( 'to', ''),
+			'type'    => Request::getVar( 'type', 'file')
+		);
+
+		$response = new stdClass;
+		$response->success = 0;
+
+		if ($this->model->repo()->rename($params))
+		{
+			$response->success = 1;
+		}
 
 		if ($this->model->repo()->getError())
 		{
@@ -472,7 +639,7 @@ class Filesv1_0 extends ApiController
 		$folders = Request::getVar( 'folder', array() );
 
 		$combined = array();
-		if (!empty($checked))
+		if (!empty($checked) && is_array($checked))
 		{
 			foreach ($checked as $ch)
 			{
@@ -486,7 +653,7 @@ class Filesv1_0 extends ApiController
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
-		if (!empty($folders))
+		if (!empty($folders) && is_array($folders))
 		{
 			foreach ($folders as $f)
 			{

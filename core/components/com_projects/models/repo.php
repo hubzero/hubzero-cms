@@ -667,6 +667,11 @@ class Repo extends Object
 		{
 			$type = $file->get('type');
 		}
+		if (!$params['file']->exists())
+		{
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_MOVE_NO_FILE'));
+			return false;
+		}
 
 		// No new location
 		if ($targetDir == $dirPath)
