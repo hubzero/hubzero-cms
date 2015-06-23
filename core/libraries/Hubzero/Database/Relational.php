@@ -780,7 +780,7 @@ class Relational implements \IteratorAggregate
 	{
 		$row = $this->query->fetch('row');
 
-		return self::newFromResults($row);
+		return ($row) ? self::newFromResults($row) : self::blank();
 	}
 
 	/**
