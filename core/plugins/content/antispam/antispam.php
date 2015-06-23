@@ -110,6 +110,9 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 				Notify::error($message);
 			}
 
+			// Increment spam hits count...go to spam jail!
+			\Hubzero\User\User::oneOrFail(User::get('id'))->reputation->incrementSpamCount();
+
 			return false;
 		}
 
