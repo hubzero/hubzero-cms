@@ -46,17 +46,17 @@ class RateLimitService extends Middleware
 	 */
 	public function register()
 	{
-		// bind the actual rate limiter
+		// Bind the actual rate limiter
 		$this->app['ratelimiter'] = function($app)
 		{
 			// creat new storage object
 			$storage = new Storage\Database($app['db']);
 
-			// get rate limit config
-			// json encode/decode to get as array
+			// Get rate limit config (JSON encode/decode to get as array)
 			$config = json_decode(json_encode($app['config']->get('rateLimit')), true);
+			$config = (is_array($config)) ? $config : [];
 
-			// create and return new rate limiter
+			// Create and return new rate limiter
 			return new RateLimiter($storage, $config);
 		};
 	}
@@ -69,49 +69,42 @@ class RateLimitService extends Middleware
 	 */
 	public function handle(Request $request)
 	{
-		// get authentication
-		$token = $this->app['auth']->token();
-
-		// rate limit application/user id and get data
-		$rateLimitData = $this->app['ratelimiter']->rateLimit($token['application_id'], $token['uidNumber']);
-
-		// get response
+		// Get response
 		$response = $this->next($request);
 
-		// calculate header values
+		// Get authentication
+		$token = $this->app['auth']->token();
+
+		// Rate limit application/user id and get data
+		$rateLimitData = $this->app['ratelimiter']->rateLimit($token['application_id'], $token['uidNumber']);
+
+		// Calculate header values
 		$limit     = $rateLimitData->limit_short;
 		$remaining = $rateLimitData->limit_short - $rateLimitData->count_short;
 		$reset     = with(new Date($rateLimitData->expires_short))->toUnix();
 
-		// if we exceeded out rate limit lets respond accordingly
+		// If we exceeded out rate limit lets respond accordingly
 		if ($rateLimitData->exceeded_long || $rateLimitData->exceeded_short)
 		{
-			// set response error
-			/*$response->setError('Too Many Requests', 429, array(
-				array(
-					'error'             => 'rate_limit_exceeded',
-					'error_description' => 'You have exceeded your rate limit allowance. Please see rate limit headers for details.'
-				)
-			));*/
 			throw new \Exception('You have exceeded your rate limit allowance. Please see rate limit headers for details.', 429);
 
-			// use different values for long
+			// Use different values for long
 			if ($rateLimitData->exceeded_long)
 			{
 				$limit = $rateLimitData->limit_long;
 				$reset = with(new Date($rateLimitData->expires_long))->toUnix();
 			}
 
-			// always 0 if exceeded
+			// Always 0 if exceeded
 			$remaining = 0;
 		}
 
-		// add rate limit headers
+		// Add rate limit headers
 		$response->headers->set('X-RateLimit-Limit',     $limit);
 		$response->headers->set('X-RateLimit-Remaining', $remaining);
 		$response->headers->set('X-RateLimit-Reset',     $reset);
 
-		// return response
+		// Return response
 		return $response;
 	}
 }
