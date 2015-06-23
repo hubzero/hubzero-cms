@@ -5,7 +5,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 JLoader::register('MenusHelper', dirname(__DIR__) . '/menus.php');
 

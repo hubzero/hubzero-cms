@@ -41,7 +41,7 @@ if ($canDo->get('core.admin'))
 Toolbar::help('install');
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(pressbutton) {

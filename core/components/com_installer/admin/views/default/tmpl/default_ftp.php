@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <fieldset title="<?php echo Lang::txt('COM_INSTALLER_MSG_DESCFTPTITLE'); ?>">
 	<legend><?php echo Lang::txt('COM_INSTALLER_MSG_DESCFTPTITLE'); ?></legend>

@@ -7,7 +7,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 $options = array(
 	Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),

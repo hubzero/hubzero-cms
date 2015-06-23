@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <ul <?php echo $this->folders_id; ?>>
 	<?php foreach ($this->folders['children'] as $folder) : ?>

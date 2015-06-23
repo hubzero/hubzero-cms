@@ -21,8 +21,8 @@
  */
 
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die();
 
 	/* Resume List */
 	$seekers 	= $this->seekers;

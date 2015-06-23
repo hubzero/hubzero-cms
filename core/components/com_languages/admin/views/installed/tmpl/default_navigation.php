@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 $client	= $this->state->get('filter.client_id', 0);
 ?>
 <div id="submenu-box">

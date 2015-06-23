@@ -27,7 +27,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'generic.png');
 Toolbar::preferences('com_oaipmh', 500);

@@ -6,7 +6,7 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Require the com_content helper library
 require_once JPATH_COMPONENT.'/helpers/route.php';

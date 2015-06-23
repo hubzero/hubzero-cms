@@ -7,7 +7,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 Html::behavior('keepalive');
 ?>
 <script type="text/javascript">

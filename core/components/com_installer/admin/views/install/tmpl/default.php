@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 if ($this->showMessage) :
 	echo $this->loadTemplate('message');

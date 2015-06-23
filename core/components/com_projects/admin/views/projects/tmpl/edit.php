@@ -1,6 +1,6 @@
 <?php
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_HZEXEC_') or die();
 
 // Connections enabled?
 $p_params = Plugin::params( 'projects', 'files' );

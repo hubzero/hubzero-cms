@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 $notice_homes		= $this->homes == 2 || $this->homes == 1 && ($this->language_filter || $this->switchers != 0);
 $notice_disabled	= !$this->language_filter	&& ($this->homes > 1 || $this->switchers != 0);

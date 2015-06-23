@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXEC_') or die();
 ?>
 <ol id="steps" class="steps">
 	<li class="setup-step<?php if ($this->step == 0) { echo ' active'; } else if ($this->model->get('setup_stage') >= 1) { echo ' completed'; } ?>"><?php if ($this->model->get('setup_stage') > 0 && $this->step != 0) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=setup&section=describe'); ?>"><?php } ?><?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?><?php if ($this->model->get('setup_stage') > 0 && $this->step != 0) { ?></a><?php } ?></li>

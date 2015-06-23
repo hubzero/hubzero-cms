@@ -8,7 +8,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Include dependencies.
 jimport('joomla.application.component.modeladmin');

@@ -29,7 +29,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Include the component HTML helpers.
 Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');

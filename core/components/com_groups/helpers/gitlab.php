@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,20 +35,21 @@ class Gitlab
 	/**
 	 * URL to GitLab
 	 * 
-	 * @var [type]
+	 * @var  string
 	 */
 	private $url;
 
 	/**
 	 * GitLab Auth Token
 	 * 
-	 * @var [type]
+	 * @var  string
 	 */
 	private $token;
 
 	/**
 	 * HTTP Client used for API requests
-	 * @var [type]
+	 *
+	 * @var  object
 	 */
 	private $client;
 
@@ -68,7 +69,7 @@ class Gitlab
 	/**
 	 * Get List of groups on Gitlab
 	 * 
-	 * @return array
+	 * @return  array
 	 */
 	public function groups()
 	{
@@ -78,8 +79,8 @@ class Gitlab
 	/**
 	 * Get a Group by name
 	 * 
-	 * @param  [type] $name [description]
-	 * @return [type]       [description]
+	 * @param   string   $name
+	 * @return  boolean
 	 */
 	public function group($name)
 	{
@@ -96,8 +97,8 @@ class Gitlab
 	/**
 	 * Create group based on params
 	 * 
-	 * @param  array  $params Group params
-	 * @return array
+	 * @param   array  $params  Group params
+	 * @return  array
 	 */
 	public function createGroup($params = array())
 	{
@@ -107,7 +108,7 @@ class Gitlab
 	/**
 	 * Get List of projects on gitlab
 	 * 
-	 * @return array
+	 * @return  array
 	 */
 	public function projects()
 	{
@@ -117,8 +118,8 @@ class Gitlab
 	/**
 	 * Get Project by Name
 	 * 
-	 * @param  [type] $name [description]
-	 * @return [type]       [description]
+	 * @param   string   $name
+	 * @return  boolean
 	 */
 	public function project($name)
 	{
@@ -135,8 +136,8 @@ class Gitlab
 	/**
 	 * Create project based on params
 	 * 
-	 * @param  array  $params Project params
-	 * @return array
+	 * @param   array  $params  Project params
+	 * @return  array
 	 */
 	public function createProject($params = array())
 	{
@@ -158,8 +159,8 @@ class Gitlab
 	/**
 	 * Generic Get Request
 	 * 
-	 * @param  [type] $url [description]
-	 * @return [type]      [description]
+	 * @param   string  $url
+	 * @return  string
 	 */
 	private function _getRequest($resource)
 	{

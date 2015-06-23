@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 JLoader::import('Hubzero.Api.Controller');
 

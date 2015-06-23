@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @author	    Brandon Beatty
+ * HUBzero CMS
  *
- * Copyright 2005-2012 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,8 +21,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Brandon Beatty
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-defined('_JEXEC') or die('Restricted access');
+
+defined('_HZEXEC_') or die();
 
 /**
  * Display HABRI Members on Google Map
@@ -38,15 +41,15 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		$filters          = array();
-		$filters['limit'] = 1000; //JRequest::getInt('limit', 1000, 'request');
-		$filters['start'] = 0; //JRequest::getInt('limitstart', 0, 'request');
-		$resources        = JRequest::getVar('resource', '', 'request');
-		$tags             = trim(JRequest::getString('tags', '', 'request'));
-		$distance         = JRequest::getInt('distance', '', 'request');
-		$location         = JRequest::getVar('location', '', 'request');
-		$unit             = JRequest::getVar('dist_units', '', 'request');
+		$filters['limit'] = 1000; //Request::getInt('limit', 1000, 'request');
+		$filters['start'] = 0; //Request::getInt('limitstart', 0, 'request');
+		$resources        = Request::getVar('resource', '', 'request');
+		$tags             = trim(Request::getString('tags', '', 'request'));
+		$distance         = Request::getInt('distance', '', 'request');
+		$location         = Request::getVar('location', '', 'request');
+		$unit             = Request::getVar('dist_units', '', 'request');
 
-/*profiles = new MembersProfile($this->database);
+		/*profiles = new MembersProfile($this->database);
 		//getRecords()
 		$profiles = $profiles->getRecords(array('sortby' => 'uidNumber', 'show'=>''));
 
@@ -61,7 +64,7 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 			{
 			}
 		}
-	*/
+		*/
 		// get resources, set to all if none selected
 		if (empty($resources))
 		{
@@ -112,13 +115,11 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 	 */
 	private function _pathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
-
 		//add 'groups' item to pathway
-		if (count($pathway->getPathWay()) <= 0)
+		if (count(Pathway::count()) <= 0)
 		{
-			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+			Pathway::append(
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -131,8 +132,7 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 	private function _title()
 	{
 		//set title of browser window
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_option)));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)));
 	}
 
 	/**
@@ -161,8 +161,8 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 	public function getaddyxmlTask()
 	{
 		// get id and type
-		$id = JRequest::getInt('uid', 0, 'request');
-		$type = JRequest::getVar('type', 0, 'request');
+		$id = Request::getInt('uid', 0, 'request');
+		$type = Request::getVar('type', 0, 'request');
 
 		// start XML
 		$dom = new DOMDocument("1.0");
@@ -177,10 +177,9 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 		{
 			case "member":
 				// check for logged in user
-				$juser = JFactory::getUser();
-				if ($juser->get('id'))
+				if (User::get('id'))
 				{
-					$newnode->setAttribute("jid", $juser->get('id'));
+					$newnode->setAttribute("jid", User::get('id'));
 				}
 
 				// get profile object
@@ -213,10 +212,10 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 				}
 
 				// link
-				$profileLink = JRoute::_('index.php?option=com_members&id=' . $user->get('uidNumber'));
+				$profileLink = Route::url('index.php?option=com_members&id=' . $user->get('uidNumber'));
 				$newnode->setAttribute("profilelink", $profileLink);
 
-				$messageLink = JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $user->get('uidNumber'));
+				$messageLink = Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $user->get('uidNumber'));
 				if ($juser->get('guest'))
 				{
 					$messageLink = '/login?return' . base64_encode($messageLink);
@@ -235,17 +234,17 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 				}
 
 				// format dates
-				$start = JHTML::_('date', $event->publish_up, 'l, F j, Y g:i a');
-				$end   = JHTML::_('date', $event->publish_down, 'l, F j, Y g:i a');
+				$start = Date::of($event->publish_up)->toLocal('l, F j, Y g:i a');
+				$end   = Date::of($event->publish_down)->toLocal('l, F j, Y g:i a');
 				$newnode->setAttribute("start", $start);
 				$newnode->setAttribute("end", $end);
 				$newnode->setAttribute("tz", $event->time_zone);
 
-				$link = JRoute::_('index.php?option=com_events&task=details&id=' . $event->id);
+				$link = Route::url('index.php?option=com_events&task=details&id=' . $event->id);
 				$newnode->setAttribute("link", $link);
 				break;
 			case "job":
-				$J = new Job($this->database);
+				$J = new \Components\Jobs\Tables\Job($this->database);
 				$job = $J->get_opening($id);
 				$newnode->setAttribute("url", '');
 				$newnode->setAttribute("code", $job->code);
@@ -253,17 +252,17 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 				$newnode->setAttribute("org", $job->companyName);
 				if ($job->description)
 				{
-					$jobsModelJob = new JobsModelJob($job->id);
+					$jobsModelJob = new \Components\Jobs\Models\Job($job->id);
 					$desc = $jobsModelJob->content('parsed');
 					$desc = \Hubzero\Utility\String::truncate($desc, 290);
 					$newnode->setAttribute("bio", $desc);
 				}
-				$link = JRoute::_('index.php?option=com_jobs&task=job&id=' . $job->code);
+				$link = Route::url('index.php?option=com_jobs&task=job&id=' . $job->code);
 				$newnode->setAttribute("link", $link);
 				$newnode->setAttribute("jobtype", $job->typename);
 				break;
 			case "org":
-				$RR = new ResourcesResource($this->database);
+				$RR = new \Components\Resources\Tables\Resource($this->database);
 				$RR->load($id);
 
 				// get url, location data
@@ -282,7 +281,7 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 				$bio = \Hubzero\Utility\String::truncate(stripslashes($bio), 200);
 				$newnode->setAttribute("bio", $bio);
 
-				$link = JRoute::_('index.php?option=com_resources&id=' . $RR->id);
+				$link = Route::url('index.php?option=com_resources&id=' . $RR->id);
 				$newnode->setAttribute("link", $link);
 				break;
 		}
@@ -343,5 +342,4 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 		}
 		return $data;
 	}
-
 }

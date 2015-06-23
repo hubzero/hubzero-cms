@@ -1,30 +1,32 @@
 <?php
 /**
-* @package  hubzero-cms
-* @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
-* @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
-* @author	    Kevin Wojkovich <kevinw@purdue.edu>
-*
-* Copyright 2005-2012 Purdue University. All rights reserved.
-*
-* This file is part of: The HUBzero(R) Platform for Scientific Collaboration
-*
-* The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
-* software: you can redistribute it and/or modify it under the terms of
-* the GNU Lesser General Public License as published by the Free Software
-* Foundation, either version 3 of the License, or (at your option) any
-* later version.
-*
-* HUBzero is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-* HUBzero is a registered trademark of Purdue University.
-*/
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
 $this->js('https://maps.googleapis.com/maps/api/js?v=3.exp');
 $this->js("geosearch.jquery.js");
@@ -33,32 +35,27 @@ $this->js('oms.min.js');
 ?>
 <style>
 #map_canvas {
-width: 95%;
-min-height: 500px;
-margin: 0 0 2em 0;
-padding: 2em 2em 2em 2em;
+	width: 95%;
+	min-height: 500px;
+	margin: 0 0 2em 0;
+	padding: 2em 2em 2em 2em;
 }
-
-.event-popup h1{
+.event-popup h1 {
 	font-size: 14pt;
 	margin-top: 5px;
 	margin-bottom: 0;
 }
-
 .event-popup p.date {
 	font-size: 10pt;
 	margin-top:0;
 	margin-bottom:0;
 	font-style: normal;
 }
-
-.event-popup p.location{
+.event-popup p.location {
 	font-size: 10pt;
 	margin-top: 0;
 	font-style: normal;
 }
-
-
 </style>
 
 <div id="content-header" class="full">

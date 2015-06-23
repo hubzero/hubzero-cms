@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <?php if (count($this->images) > 0 || count($this->folders) > 0) { ?>
 <div class="manager">

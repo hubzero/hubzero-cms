@@ -7,7 +7,7 @@
  *
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 /**
  * HTML View class for the Newsfeeds component

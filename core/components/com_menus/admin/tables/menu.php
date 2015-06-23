@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Import JTableMenu
 JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');

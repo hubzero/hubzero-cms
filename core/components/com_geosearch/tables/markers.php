@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @author	    Brandon Beatty
+ * HUBzero CMS
  *
- * Copyright 2005-2012 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -13,7 +10,7 @@
  * software: you can redistribute it and/or modify it under the terms of
  * the GNU Lesser General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any
- * later version. Quote all SQL values!
+ * later version.
  *
  * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,15 +21,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Brandon Beatty
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_HZEXEC_') or die();
 
 /**
  * Table class for tags
  */
-class GeosearchMarkers extends JTable
+class GeosearchMarkers extends \JTable
 {
 	/**
 	 * int(11)
@@ -107,14 +109,13 @@ class GeosearchMarkers extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object &$db Database
 	 * @return     void
 	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__geosearch_markers', 'id', $db);
 	}
-
 
 	/**
 	 * Gets markers and returns a json encoded array
@@ -223,9 +224,6 @@ class GeosearchMarkers extends JTable
 	 */
 	public function getEvents($year='',$eids=array())
 	{
-		// get user object
-		$juser = JFactory::getUser();
-
 		$where = "";
 		if ($eids != "")
 		{
@@ -263,16 +261,16 @@ class GeosearchMarkers extends JTable
 
 				// only show group events with a
 				$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'calendar');
-				if ($access == 'nobody' || $access == 'registered' && $juser->get('guest')
-					|| ($access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
+				if ($access == 'nobody' || $access == 'registered' && User::isGuest()
+					|| ($access == 'members' && !in_array(User::get('id'), $group->get('members'))))
 				{
 					unset($events[$k]);
 					continue;
 				}
 			}
 
-			$now = JFactory::getDate('now');
-			$down = JFactory::getDate($event->publish_down);
+			$now  = Date::of('now')->toSql();
+			$down = Date::of($event->publish_down)->toSql();
 			if ($now > $down)
 			{
 				unset($events[$k]);
@@ -329,10 +327,8 @@ class GeosearchMarkers extends JTable
 		{
 			return $this->_db->loadRow();
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**

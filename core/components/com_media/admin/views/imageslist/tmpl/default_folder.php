@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <div class="item">
 	<a href="<?php echo Route::url('index.php?option=com_media&view=imagesList&tmpl=component&folder=' . $this->_tmp_folder->path_relative . '&asset=' . Request::getCmd('asset') . '&author=' . Request::getCmd('author')); ?>">

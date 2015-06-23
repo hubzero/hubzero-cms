@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 ?>
 <form target="_parent" action="<?php echo Route::url('index.php?option=com_media&tmpl=index&folder=' . $this->state->folder); ?>" method="post" id="mediamanager-form" name="mediamanager-form">

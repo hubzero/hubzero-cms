@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Initiasile related data.
 require_once PATH_CORE.'/components/com_menus/admin/helpers/menus.php';

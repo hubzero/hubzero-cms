@@ -4,8 +4,8 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 /**
  * Languages Controller
