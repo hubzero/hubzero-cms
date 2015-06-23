@@ -110,7 +110,7 @@ if ($this->rows)
 					</span>
 				</td>
 				<td class="priority-2">
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=<?php echo $row->username; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&username=' . $row->username); ?>">
 						<span><?php echo $this->escape($row->username); ?></span>
 					</a>
 				</td>
@@ -125,17 +125,17 @@ if ($this->rows)
 					</time>
 				</td>
 				<td class="priority-3">
-					<a class="tool" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;appname=<?php echo $row->appname; ?>">
+					<a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&appname=' . $row->appname); ?>">
 						<span><?php echo $this->escape($row->appname); ?></span>
 					</a>
 				</td>
 				<td class="priority-4">
-					<a class="tool" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;exechost=<?php echo $row->exechost; ?>">
+					<a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&exechost=' . $row->exechost); ?>">
 						<span><?php echo $this->escape($row->exechost); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state trash" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;id[]=<?php echo $row->sessnum; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
+					<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=remove&id[]=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
 						<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
 					</a>
 				</td>

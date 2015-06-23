@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 		</td>
 		<td class="media-browser">
 			<?php if ((User::authorise('core.create', 'com_media')) and $this->require_ftp): ?>
-				<form action="index.php?option=com_media&amp;task=ftpValidate" name="ftpForm" id="ftpForm" method="post">
+				<form action="<?php echo Route::url('index.php?option=com_media&task=ftpValidate'); ?>" name="ftpForm" id="ftpForm" method="post">
 					<fieldset title="<?php echo Lang::txt('COM_MEDIA_DESCFTPTITLE'); ?>">
 						<legend><?php echo Lang::txt('COM_MEDIA_DESCFTPTITLE'); ?></legend>
 						<?php echo Lang::txt('COM_MEDIA_DESCFTP'); ?>

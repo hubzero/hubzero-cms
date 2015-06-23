@@ -48,7 +48,7 @@ if ($canDo->get('core.edit'))
 	Toolbar::editListX();
 }*/
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php echo $this->states; ?>
 
@@ -111,7 +111,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = &$this->rows[$i];
 
 	//$link = Route::url( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
-	$link = 'index.php?option=com_plugins&amp;task=plugin.edit&amp;extension_id=' . $row->id . '&amp;component=' . $row->folder;
+	$link = 'index.php?option=com_plugins&task=plugin.edit&extension_id=' . $row->id . '&component=' . $row->folder;
 
 	$access 	= $row->groupname;//Html::grid('access', $row, $i);
 	//$checked 	= Html::grid('checkedout', $row, $i);
@@ -157,7 +157,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							echo $this->escape($row->name);
 						} else {
 					?>
-						<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo Lang::txt( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
+						<a class="editlinktip hasTip" href="<?php echo Route::url($link); ?>" title="<?php echo Lang::txt( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
 							<span><?php echo $this->escape($row->name); ?></span>
 						</a>
 					<?php } ?>
@@ -168,7 +168,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('Set this to %s',$task);?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('Set this to %s',$task);?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>
@@ -184,7 +184,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if (in_array($row->element, $this->manage)) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=' . $row->element); ?>">
 							<span><?php echo Lang::txt('Manage'); ?></span>
 						</a>
 					<?php } ?>

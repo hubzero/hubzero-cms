@@ -39,7 +39,7 @@ Toolbar::title( Lang::txt( 'MEMBERS' ).': Manage Points', 'user.png' );
 	     ->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>p" method="post" name="adminForm" id="item-form">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span>Find User Details</span></legend>

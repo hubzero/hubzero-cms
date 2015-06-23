@@ -96,7 +96,7 @@ else
 	<p class="warning"><?php echo Lang::txt('COM_COURSES_STATUS_NEW_COURSE'); ?></p>
 <?php } ?>
 
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<!-- <h3>Looking for a course?</h3>
 			<p>Browse the course catalog. Courses can be found by category (tags), searching, popularity, or title.</p>

@@ -82,7 +82,7 @@ if (file_exists(PATH_CORE . DS . $this->group->getBasePath() . DS . 'pages' . DS
 			<?php endif ;?>
 		</ul>
 
-		<form action="index.php" method="post" id="hubForm" class="full">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="full">
 			<fieldset data-tab-content="pages">
 				<?php
 					$this->view('display')

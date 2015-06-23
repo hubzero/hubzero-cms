@@ -31,7 +31,7 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="media">
-	<form action="index.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 		<table class="formed">
 			<thead>
 				<tr>

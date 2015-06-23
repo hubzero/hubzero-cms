@@ -87,7 +87,7 @@ $offerings = $this->course->offerings();
 
 		<?php echo Html::input('token'); ?>
 	</form>
-	<form action="index.php" method="post" id="adminForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="adminForm">
 		<table class="paramlist admintable">
 			<thead>
 				<tr>
@@ -127,7 +127,7 @@ $offerings = $this->course->offerings();
 						<!-- <input type="checkbox" name="users[]" value="<?php echo $u->get('id'); ?>" /> -->
 					</td>
 					<td class="paramlist_key">
-						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
+						<a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $u->get('id')); ?>" target="_parent">
 							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN'); ?>
 						</a>
 					</td>

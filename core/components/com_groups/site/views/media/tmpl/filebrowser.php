@@ -70,7 +70,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 		<div class="foldertree-list">
 			<?php echo $this->folderList; ?>
 		</div>
-		<form action="index.php" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
 			<fieldset>
 				<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ajaxupload&no_html=1'); ?>">
 					<noscript>

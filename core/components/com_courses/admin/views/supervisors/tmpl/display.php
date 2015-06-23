@@ -89,7 +89,7 @@ $offerings = $course->offerings();
 
 		<?php echo Html::input('token'); ?>
 	</form>
-	<form action="index.php" method="post" id="adminForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="adminForm">
 		<table class="paramlist admintable">
 			<thead>
 				<tr>

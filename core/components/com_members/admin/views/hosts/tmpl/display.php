@@ -31,7 +31,7 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="hosts">
-	<form action="index.php" method="post">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 		<table>
 			<tbody>
 				<tr>

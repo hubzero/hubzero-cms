@@ -31,6 +31,6 @@ Toolbar::title(Lang::txt('COM_TIME'));
 Toolbar::preferences('com_time', '550');
 ?>
 
-<form action="index.php?option=com_time" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=com_time'); ?>" name="adminForm" id="item-form">
 	<p class="warning"><?php echo Lang::txt('COM_TIME_NO_FEATURES'); ?></p>
 </form>

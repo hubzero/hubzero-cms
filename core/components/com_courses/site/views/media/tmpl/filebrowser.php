@@ -38,7 +38,7 @@ $this->css('media.css')
 $base = rtrim(Request::base(true), '/');
 ?>
 <div id="file_browser">
-	<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="adminForm" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<div id="themanager" class="manager">
 				<iframe src="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;task=listfiles&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="99%" height="180"></iframe>

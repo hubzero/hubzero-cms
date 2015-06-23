@@ -51,7 +51,7 @@ $this->css()
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><strong>Are you sure you want to delete?</strong></p>
 			<p>Deleting a course will permanently remove the course and all data associated with that course.</p>

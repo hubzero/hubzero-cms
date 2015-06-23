@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo Lang::txt('COM_EVENTS_PAGE'); ?></span></legend>
 
 			<div class="input-wrap">
-				<a href="index.php?option=com_events&amp;task=edit&amp;id=<?php echo $this->event->id; ?>">
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id); ?>">
 					<?php echo $this->escape(stripslashes($this->event->title)); ?>
 				</a>
 			</div>

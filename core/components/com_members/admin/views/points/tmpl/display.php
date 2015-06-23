@@ -40,7 +40,7 @@ Toolbar::preferences('com_members', '550');
 	     ->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<?php if ($this->rows) { ?>
 		<table class="adminlist">
 			<caption>Top Earners</caption>

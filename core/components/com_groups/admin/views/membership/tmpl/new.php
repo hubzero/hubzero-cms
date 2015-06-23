@@ -78,7 +78,7 @@ jQuery(document).ready(function($){
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="component-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration" >

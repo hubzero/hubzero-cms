@@ -74,7 +74,7 @@ if ($this->resp->getStartTime())
 			echo '<p class="error incomplete">' . Lang::txt('COM_COURSES_SELECT_ANSWER_FOR_EACH_QUESTION') . '</p>';
 		endif;
 	?>
-	<form action="index.php" method="post">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 		<ol id="pages" class="complete">
 		<?php $pdf->eachPage(function($url, $idx) use ($layout, $progress, $incomplete) { ?>
 			<li>

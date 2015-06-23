@@ -63,11 +63,11 @@ $this->css('course.css')
 		}
 	?>
 <section class="main section">
-	<form name="customize" method="POST" action="index.php" id="hubForm">
+	<form name="customize" method="POST" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="hubForm">
 		<div class="explaination">
 			<div id="asset_browser">
 				<p><strong><?php echo Lang::txt('Upload files or images:'); ?></strong></p>
-				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->course->get('id'); ?>"></iframe>
+				<iframe width="100%" height="300" name="filer" id="filer" src="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->course->get('id'); ?>"></iframe>
 			</div><!-- / .asset_browser -->
 		</div>
 

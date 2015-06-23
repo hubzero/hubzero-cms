@@ -53,7 +53,7 @@ defined('_HZEXEC_') or die();
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p class="info"><?php echo Lang::txt('COM_GROUPS_JOIN_HELP'); ?></p>
 		</div>

@@ -187,7 +187,7 @@ $groupDefs = $groups->getAllGroups();
 	     ->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
 		<legend><span>Incremental Registration Options</span></legend>
 

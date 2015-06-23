@@ -78,7 +78,7 @@ jQuery(document).ready(function($){
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php endif; ?>
 
-<form action="index.php" method="post" name="adminForm" id="component-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">

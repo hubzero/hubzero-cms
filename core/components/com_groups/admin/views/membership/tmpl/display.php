@@ -93,7 +93,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
@@ -165,7 +165,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
-					<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id=<?php echo $row->uidNumber; ?>">
+					<a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->uidNumber); ?>">
 						<?php echo $this->escape(stripslashes($row->name)); ?>
 					</a>
 				<?php else : ?>
@@ -197,7 +197,7 @@ foreach ($this->rows as $row)
 		case 'invitee':
 		case 'inviteemail':
 	?>
-					<a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uninvite&gid=' . $this->filters['gid'] . '&id=' . (isset($row->uidNumber) ? $row->uidNumber : $row->email) . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
 					</a>
 				</td>
@@ -207,19 +207,19 @@ foreach ($this->rows as $row)
 		break;
 		case 'applicant':
 	?>
-					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state publish" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_APPROVE'); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deny&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deny&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
 					</a>
 	<?php
 		break;
 		case 'manager':
 	?>
-					<a class="state demote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=demote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state demote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=demote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DEMOTE'); ?></span>
 					</a>
 				</td>
@@ -230,12 +230,12 @@ foreach ($this->rows as $row)
 		default:
 		case 'member':
 	?>
-					<a class="state promote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=promote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state promote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=promote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_PROMOTE'); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+					<a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
 					</a>
 	<?php

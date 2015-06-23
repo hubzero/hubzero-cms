@@ -105,7 +105,7 @@ else
 		</p>
 	<?php endif; ?>
 
-	<form action="index.php" method="post" id="hubForm" class="full stepper">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="full stepper">
 		<div class="grid">
 			<div class="col span8">
 				<fieldset>

@@ -81,7 +81,7 @@ function submitbutton(pressbutton)
 		<?php if ($this->filters['wish'] > 0) { ?>
 			<tr>
 				<th colspan="7">
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=wishes&wishlist=' . $this->wishlist->id); ?>">
 						(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp;
 						<?php echo $this->escape(stripslashes($this->wishlist->title)); ?> &nbsp;&rsaquo;&nbsp;
 					</a>

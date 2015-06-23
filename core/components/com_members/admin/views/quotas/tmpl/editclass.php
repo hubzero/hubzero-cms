@@ -62,7 +62,7 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_LEGEND'); ?></span></legend>

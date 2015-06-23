@@ -63,7 +63,7 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 		$('#class_id').on('change', function (e) {
 			//e.preventDefault();
 
-			var req = $.getJSON('index.php?option=com_members&controller=quotas&task=getClassValues&class_id=' + $(this).val(), {}, function (data) {
+			var req = $.getJSON('<?php echo Route::url('index.php?option=' . $this->option . '&controller=quotas&task=getClassValues&class_id='); ?>' + $(this).val(), {}, function (data) {
 				$.each(data, function (key, val) {
 					var item = $('#field-'+key);
 					item.val(val);
@@ -78,7 +78,7 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 		});
 	});
 </script>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<?php if ($this->getError()) : ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php endif; ?>

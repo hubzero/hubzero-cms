@@ -44,7 +44,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 	<?php endif; ?>
 
 	<div class="col width-70 fltlft">
-		<form action="index.php" method="post" name="adminForm">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_LEGEND'); ?></span></legend>
 
@@ -74,7 +74,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_MISSING_USERS'); ?>:</th>
 					<td>
-						<form action="index.php" method="post">
+						<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="importMissing" />

@@ -58,7 +58,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="item-form" name="adminForm">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATEGORY_INFORMATION'); ?></span></legend>
