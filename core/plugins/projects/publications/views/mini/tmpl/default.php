@@ -35,7 +35,7 @@ $this->css();
 <?php } ?>
 </h4>
 <?php if (count($this->items) == 0) { ?>
-		<p class="s-publications"><a href="<?php echo Route::url($this->model->link('publications') . '&action=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_ADD_PUBLICATION'); ?></a></p>
+		<p class="s-publications"><a href="<?php echo Route::url($this->model->link('publications') . '&action=start'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a></p>
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->items as $pub) {

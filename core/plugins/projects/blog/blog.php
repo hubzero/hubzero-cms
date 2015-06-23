@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,12 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Projects Blog plugin
@@ -95,7 +95,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name'    => 'blog',
 			'alias'   => 'feed',
-			'title'   => Lang::txt('COM_PROJECTS_TAB_FEED'),
+			'title'   => Lang::txt('PLG_PROJECTS_UPDATES'),
 			'submenu' => NULL,
 			'show'    => true
 		);
@@ -256,7 +256,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$member = $model->member();
 		if (!is_object($member->params))
 		{
-			$member->params = new \JParameter($member->params);
+			$member->params = new \Hubzero\Config\Registry($member->params);
 		}
 
 		// Show welcome screen?
@@ -303,11 +303,11 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->limit 			= intval($this->params->get('limit', 25));
+		$view->limit = intval($this->params->get('limit', 25));
 
 		// Get activities
-		$objAC                  = $this->model->table('Activity');
-		$view->filters 			= array(
+		$objAC = $this->model->table('Activity');
+		$view->filters = array(
 			'role'    => $this->model->member()->role,
 			'limit'   => Request::getVar('limit', $view->limit, 'request')
 		);
@@ -329,7 +329,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// Output html
-		$view->params 		= new JParameter($this->model->params);
+		$view->params 		= $this->model->params;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->model 		= $this->model;
@@ -345,10 +345,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 		return $view->loadTemplate();
 	}
-
-	//----------------------------------------
-	// Processors
-	//----------------------------------------
 
 	/**
 	 * Save new blog entry
@@ -389,7 +385,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = Lang::txt('COM_PROJECTS_NEW_BLOG_ENTRY_SAVED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED');
 			}
 
 			// Get new entry ID
@@ -470,7 +466,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				// Delete blog entry
 				if ($objM->deletePost())
 				{
-					$this->_msg = Lang::txt('COM_PROJECTS_ENTRY_DELETED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_ENTRY_DELETED');
 
 					// Delete all associated comments
 					$comments = $objC->deleteComments($eid, $tbl);
@@ -499,7 +495,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 				if ($objAA->deleteActivity())
 				{
-					$this->_msg = Lang::txt('COM_PROJECTS_ENTRY_DELETED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_ENTRY_DELETED');
 
 					// Delete all associated comments
 					$comments = $objC->deleteComments($eid, $tbl);
@@ -1043,7 +1039,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = Lang::txt('COM_PROJECTS_COMMENT_POSTED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_COMMENT_POSTED');
 			}
 			// Get new entry ID
 			if (!$objC->id)
@@ -1121,7 +1117,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			// delete comment
 			if ($objC->deleteComment())
 			{
-				$this->_msg = Lang::txt('COM_PROJECTS_COMMENT_DELETED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_BLOG_COMMENT_DELETED');
 			}
 
 			// delete associated activity

@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 // Get block properties
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
@@ -160,8 +160,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 				<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file')
 				{  // Default handler for multiple files - zip together
 
-					$versionParams 	= new JParameter( $this->pub->params );
-					$bundleName		= $versionParams->get($elName . 'bundlename', 'bundle');
+					$bundleName		= $this->pub->params->get($elName . 'bundlename', 'bundle');
 
 					$bundleUrl = Route::url($this->pub->link('serve') . '&el='
 						. $this->elementId . '&download=1');

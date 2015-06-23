@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
 <?php } ?>
 </h4>
 <?php if (count($this->items) == 0) { ?>
-		<p class="s-todo"><a href="<?php echo Route::url($this->model->link('todo')); ?>"><?php echo Lang::txt('COM_PROJECTS_ADD_TODO'); ?></a></p>
+		<p class="s-todo"><a href="<?php echo Route::url($this->model->link('todo')); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?></a></p>
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->items as $row) {

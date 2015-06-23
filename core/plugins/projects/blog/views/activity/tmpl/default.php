@@ -52,9 +52,9 @@ if ($this->total > $this->filters['limit'])
 	$limit = $this->filters['limit'] + $this->limit; ?>
 	<p><a href="<?php echo Route::url($this->model->link() . '&limit=' . $limit . '&amp;prev=' . $this->filters['limit']);  ?>"><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 <?php } else if ($this->filters['limit'] != $this->limit) { ?>
-	<p><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php } else if ($this->total > 5 && $this->total < $this->filters['limit']) { ?>
-	<p><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php
 } ?>
 </div><!-- / #more-updates -->

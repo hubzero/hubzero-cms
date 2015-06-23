@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 $html  = '';
 
 $this->css()
@@ -33,7 +33,7 @@ $this->css()
 $this->project->title = $this->escape($this->project->title);
 $this->project->about = $this->escape($this->project->about);
 
-$title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
+$title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->project->title : $this->title;
 ?>
 <header id="content-header">
 	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo Lang::txt('COM_PROJECTS_FOR').' '.ucfirst(Lang::txt('COM_PROJECTS_GROUP')); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>

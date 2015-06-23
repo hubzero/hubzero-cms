@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,12 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 // Include external file connection
 require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
@@ -411,7 +411,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Load member params
 		$member = $this->model->member(true);
-		$view->oparams = new \JParameter($member->params);
+		$view->oparams = new \Hubzero\Config\Registry($member->params);
 
 		// Sync active?
 		$remotes = array();
@@ -2765,11 +2765,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get refreshed params
 		$this->model->reloadProject();
-		$view->params = new \JParameter( $this->model->table()->params );
+		$view->params = new \Hubzero\Config\Registry( $this->model->table()->params );
 
 		// Get connection details for user
 		$member = $this->model->member();
-		$view->oparams = new \JParameter( $member->params );
+		$view->oparams = new \Hubzero\Config\Registry( $member->params );
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;

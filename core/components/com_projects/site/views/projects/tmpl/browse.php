@@ -26,12 +26,12 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-	->js();
+     ->js();
 
 if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 {
 	$this->css('reviewers')
-		->css('jquery.fancybox.css', 'system');
+		 ->css('jquery.fancybox.css', 'system');
 }
 
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
@@ -119,7 +119,7 @@ $total = $this->model->entries('count', $this->filters);
 			{
 				if (User::isGuest())
 				{
-					echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND').' '.Lang::txt('COM_PROJECTS_PLEASE').' <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse&action=login') .'">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
+					echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND') . ' ' . Lang::txt('COM_PROJECTS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse&action=login') . '">' . Lang::txt('COM_PROJECTS_LOGIN') . '</a> ' . Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
 				}
 				else
 				{
