@@ -1,5 +1,5 @@
 <?php
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 Html::behavior('keepalive');
 Html::behavior('formvalidation');

@@ -7,7 +7,7 @@
  * @since		1.6
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <div class="registration-complete<?php echo $this->pageclass_sfx;?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>

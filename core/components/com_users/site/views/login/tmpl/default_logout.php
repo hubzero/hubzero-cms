@@ -7,7 +7,7 @@
  * @since		1.5
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // If the user is already logged in, redirect to the return or profile page.
 if (User::isGuest())

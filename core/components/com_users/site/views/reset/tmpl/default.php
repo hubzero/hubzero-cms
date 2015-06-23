@@ -1,4 +1,4 @@
-<?php defined('_JEXEC') or die; ?>
+<?php defined('_HZEXEC_') or die(); ?>
 
 <?php
 Html::behavior('keepalive');

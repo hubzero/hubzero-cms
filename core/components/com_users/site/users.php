@@ -7,7 +7,7 @@
  * @since		1.5
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 require_once JPATH_COMPONENT . '/helpers/route.php';
 

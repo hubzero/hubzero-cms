@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <fieldset class="adminform" title="<?php echo Lang::txt('COM_TEMPLATES_FTP_TITLE'); ?>">
 	<legend><?php echo Lang::txt('COM_TEMPLATES_FTP_TITLE'); ?></legend>

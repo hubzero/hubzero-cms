@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo.png');
 Toolbar::help('sysinfo');

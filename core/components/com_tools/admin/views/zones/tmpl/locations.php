@@ -28,7 +28,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_LOCATIONS'), 'tools.png');
 Toolbar::addNew();

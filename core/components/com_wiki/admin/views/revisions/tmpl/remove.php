@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_WIKI').': '.Lang::txt('COM_WIKI_REVISION') . ': ' . Lang::txt('COM_WIKI_DELETE'), 'wiki.png');
 Toolbar::cancel();

@@ -7,7 +7,7 @@
  * @since		1.6
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 ?>
 <div class="profile<?php echo $this->pageclass_sfx?>">

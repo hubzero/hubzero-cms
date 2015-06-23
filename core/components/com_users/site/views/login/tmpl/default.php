@@ -7,7 +7,7 @@
  * @since		1.5
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 if ($this->user->get('guest')):
 	// The user is not logged in.

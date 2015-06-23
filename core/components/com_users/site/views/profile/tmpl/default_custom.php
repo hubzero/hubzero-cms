@@ -6,7 +6,7 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * @since		1.6
  */
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 JLoader::register('JHtmlUsers', JPATH_COMPONENT . '/helpers/html/users.php');
 

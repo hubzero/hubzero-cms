@@ -4,7 +4,7 @@
  * @license		GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 /**
  * Users mail controller.

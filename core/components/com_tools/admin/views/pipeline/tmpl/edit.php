@@ -1,6 +1,6 @@
 <?php
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

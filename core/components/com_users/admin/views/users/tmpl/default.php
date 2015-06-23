@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Load the tooltip behavior.
 Html::behavior('tooltip');
