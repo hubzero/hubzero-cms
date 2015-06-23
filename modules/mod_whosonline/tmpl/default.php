@@ -28,8 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
 ?>
 
 <div class="<?php echo $this->params->get('moduleclass_sfx', ''); ?>">
@@ -37,8 +35,8 @@ defined('_JEXEC') or die;
 		<table>
 			<thead>
 				<tr>
-					<th><?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN'); ?></th>
-					<th><?php echo Lang::txt('MOD_WHOSONLINE_GUESTS'); ?></th>
+					<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN'); ?></th>
+					<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_GUESTS'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,7 +59,7 @@ defined('_JEXEC') or die;
 				<?php foreach ($this->loggedInList as $loggedin) : ?>
 					<tr>
 						<td><?php echo $loggedin->get('name'); ?></td>
-						<td align="right">
+						<td>
 							<a href="<?php echo Route::url('index.php?option=com_members&id=' . $loggedin->get('uidNumber')); ?>">
 								<?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN_VIEW_PROFILE'); ?>
 							</a>
@@ -71,10 +69,11 @@ defined('_JEXEC') or die;
 			</tbody>
 		</table>
 	<?php endif; ?>
+
 	<table>
 		<tbody>
 			<tr>
-				<td align="center">
+				<td>
 					<a class="btn btn-secondary opposite icon-next" href="<?php echo Route::url('index.php?option=com_members&task=activity'); ?>">
 						<?php echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL_ACTIVITIY'); ?>
 					</a>

@@ -34,6 +34,9 @@ use Hubzero\Module\Module;
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\User\Profile;
 
+/**
+ * Module class for showing users online
+ */
 class Helper extends Module
 {
 	/**
@@ -42,6 +45,21 @@ class Helper extends Module
 	 * @return  void
 	 */
 	public function display()
+	{
+		if (App::isAdmin())
+		{
+			return $this->displayAdmin();
+		}
+
+		return $this->displaySite();
+	}
+
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function displaySite()
 	{
 		// Get all sessions
 		$sessions = SessionHelper::getAllSessions(array(
@@ -73,6 +91,28 @@ class Helper extends Module
 		}
 
 		// Render view
-		require $this->getLayoutPath();
+		require $this->getLayoutPath('default');
+	}
+
+	/**
+	 * Display module contents for Admin
+	 *
+	 * @return  void
+	 */
+	public function displayAdmin()
+	{
+		if (!\App::isAdmin())
+		{
+			return;
+		}
+
+		// get active sessions (users online)
+		$this->rows = SessionHelper::getAllSessions(array(
+			'guest'    => 0,
+			'distinct' => 1
+		));
+
+		// Get the view
+		require $this->getLayoutPath('default_admin');
 	}
 }

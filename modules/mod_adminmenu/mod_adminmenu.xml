@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           modules/mod_whosonline/whosonline.xml
-@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@file           administrator/modules/mod_adminmenu/mode_adminmenu.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2014 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,49 +27,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension type="module" version="2.5" client="site" method="upgrade">
-	<name>mod_whosonline</name>
+<extension type="module" version="2.5" client="administrator">
+	<name>mod_menu</name>
 	<author>HUBzero</author>
 	<creationDate>January 2015</creationDate>
-	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>
-	<version>1.1.0</version>
-	<description>MOD_WHOSONLINE_XML_DESCRIPTION</description>
-	<clients>
-		<client>admin</client>
-		<client>site</client>
-	</clients>
+	<version>1.0.0</version>
+	<description>MOD_MENU_XML_DESCRIPTION</description>
 	<files>
-		<filename module="mod_whosonline">mod_whosonline.php</filename>
-		<folder>tmpl</folder>
+		<filename module="mod_adminmenu">mod_adminmenu.php</filename>
+		<filename>tree.php</filename>
+		<filename>node.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
-		<filename>mod_whosonline.xml</filename>
+		<folder>tmpl</folder>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.mod_whosonline.ini</language>
-		<language tag="en-GB">en-GB.mod_whosonline.sys.ini</language>
+		<language tag="en-GB">en-GB.mod_adminmenu.ini</language>
+		<language tag="en-GB">en-GB.mod_adminmenu.sys.ini</language>
 	</languages>
-	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_WHO_ONLINE" />
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ADMIN_MENU" />
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
-				<field name="showmode" type="list" default="0" label="MOD_WHOSONLINE_SHOWMODE_LABEL" description="MOD_WHOSONLINE_SHOWMODE_DESC">
-					<option value="0">MOD_WHOSONLINE_FIELD_VALUE_NUMBER</option>
-					<option value="1">MOD_WHOSONLINE_FIELD_VALUE_NAMES</option>
-					<option value="2">MOD_WHOSONLINE_FIELD_VALUE_BOTH</option>
-				</field>
-			</fieldset>
 			<fieldset name="advanced">
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field name="shownew" type="list" default="1" label="MOD_MENU_FIELD_SHOWNEW" description="MOD_MENU_FIELD_SHOWNEW_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="showhelp" type="list" default="1" label="MOD_MENU_FIELD_SHOWHELP" description="MOD_MENU_FIELD_SHOWHELP_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="forum_url" type="url" class="inputbox" size="30" default="" label="MOD_MENU_FIELD_FORUMURL_LABEL" description="MOD_MENU_FIELD_FORUMURL_DESC" />
 				<field name="cache" type="list" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
 					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
-			</fieldset>
-			<fieldset name="admin">
-				<field name="display_limit" type="text" default="25" label="MOD_WHOSONLINE_LIMIT_LABEL" description="MOD_WHOSONLINE_LIMIT_DESC" />
 			</fieldset>
 		</fields>
 	</config>

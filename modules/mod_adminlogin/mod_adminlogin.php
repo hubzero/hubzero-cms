@@ -28,27 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Modules\AdminLogin;
 
-// Get the login modules
-// If you want to use a completely different login module change the value of name
-// in your layout override.
+require_once __DIR__ . '/helper.php';
 
-$loginmodule = \Components\Login\Models\Login::getLoginModule('mod_adminlogin');
-
-echo Module::render($loginmodule, array('style' => 'rounded', 'id' => 'section-box'));
-
-
-// Get any other modules in the login position.
-// If you want to use a different position for the modules, change the name here in your override.
-$modules = Module::byPosition('login');
-
-foreach ($modules as $module)
-{
-	// Render the login modules
-	if ($module->module != 'mod_adminlogin')
-	{
-		echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
-	}
-}
+with(new Helper($params, $module))->display();

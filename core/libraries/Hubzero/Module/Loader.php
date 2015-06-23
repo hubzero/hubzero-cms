@@ -258,14 +258,14 @@ class Loader
 
 		// Get module path
 		$module->module = preg_replace('/[^A-Z0-9_\.-]/i', '', $module->module);
-		$path = JPATH_BASE . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
+		$path = PATH_ROOT . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
 
 		// Load the module
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
-		if (empty($module->user) && file_exists($path))
+		if (file_exists($path))
 		{
-				$this->app['language']->load($module->module, JPATH_BASE, null, false, true)
-			||	$this->app['language']->load($module->module, dirname($path), null, false, true);
+			$this->app['language']->load($module->module, PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $this->app['client']->name, null, false, true) ||
+			$this->app['language']->load($module->module, dirname($path), null, false, true);
 
 			$content = '';
 			ob_start();
@@ -357,8 +357,8 @@ class Loader
 
 		// Build the template and base path for the layout
 		$tPath = JPATH_THEMES . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
-		$bPath = JPATH_BASE . '/modules/' . $module . '/tmpl/' . $default . '.php';
-		$dPath = JPATH_BASE . '/modules/' . $module . '/tmpl/default.php';
+		$bPath = PATH_ROOT . '/modules/' . $module . '/tmpl/' . $default . '.php';
+		$dPath = PATH_ROOT . '/modules/' . $module . '/tmpl/default.php';
 
 		// If the template has a layout override use it
 		if (file_exists($tPath))
@@ -369,10 +369,8 @@ class Loader
 		{
 			return $bPath;
 		}
-		else
-		{
-			return $dPath;
-		}
+
+		return $dPath;
 	}
 
 	/**
@@ -508,6 +506,9 @@ class Loader
 	 */
 	public function cache($module, $moduleparams, $cacheparams)
 	{
+		// [!] Deprecated. Needs to be refactored.
+		return true;
+
 		if (!isset($cacheparams->modeparams))
 		{
 			$cacheparams->modeparams = null;

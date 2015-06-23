@@ -28,27 +28,41 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Modules\Version;
 
-// Get the login modules
-// If you want to use a completely different login module change the value of name
-// in your layout override.
+use Hubzero\Module\Module;
+use App;
 
-$loginmodule = \Components\Login\Models\Login::getLoginModule('mod_adminlogin');
-
-echo Module::render($loginmodule, array('style' => 'rounded', 'id' => 'section-box'));
-
-
-// Get any other modules in the login position.
-// If you want to use a different position for the modules, change the name here in your override.
-$modules = Module::byPosition('login');
-
-foreach ($modules as $module)
+/**
+ * Module class for displaying CMS version
+ */
+class Helper extends Module
 {
-	// Render the login modules
-	if ($module->module != 'mod_adminlogin')
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
 	{
-		echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
+		$version = '';
+
+		if ($this->params->get('product', 0))
+		{
+			$version .= 'HUBzero CMS';
+		}
+
+		if ($this->params->get('format', 'short') == 'short')
+		{
+			$parts = explode('-', App::version());
+			$version .= ' ' . array_shift($parts);
+		}
+		else
+		{
+			$version .= ' ' . App::version();
+		}
+
+		// Get the view
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }

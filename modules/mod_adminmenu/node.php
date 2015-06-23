@@ -28,27 +28,81 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Modules\AdminMenu;
 
-// Get the login modules
-// If you want to use a completely different login module change the value of name
-// in your layout override.
-
-$loginmodule = \Components\Login\Models\Login::getLoginModule('mod_adminlogin');
-
-echo Module::render($loginmodule, array('style' => 'rounded', 'id' => 'section-box'));
-
-
-// Get any other modules in the login position.
-// If you want to use a different position for the modules, change the name here in your override.
-$modules = Module::byPosition('login');
-
-foreach ($modules as $module)
+/**
+ * Menu node class
+ */
+class Node extends \JNode
 {
-	// Render the login modules
-	if ($module->module != 'mod_adminlogin')
+	/**
+	 * Node Title
+	 *
+	 * @var  string
+	 */
+	public $title = null;
+
+	/**
+	 * Node Id
+	 *
+	 * @var  string
+	 */
+	public $id = null;
+
+	/**
+	 * Node Link
+	 *
+	 * @var  string
+	 */
+	public $link = null;
+
+	/**
+	 * Link Target
+	 *
+	 * @var  string
+	 */
+	public $target = null;
+
+	/**
+	 * CSS Class for node
+	 *
+	 * @var  string
+	 */
+	public $class = null;
+
+	/**
+	 * Active Node?
+	 *
+	 * @var  boolean
+	 */
+	public $active = false;
+
+	/**
+	 * Constructor
+	 *
+	 * @return  void
+	 */
+	public function __construct($title, $link = null, $class = null, $active = false, $target = null, $titleicon = null)
 	{
-		echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
+		$this->title  = $titleicon ? $title . $titleicon : $title;
+		$this->link   = \Hubzero\Utility\String::ampReplace($link);
+		$this->class  = $class;
+		$this->active = $active;
+
+		$this->id = null;
+		if (!empty($link) && $link !== '#')
+		{
+			$params = with(new \Hubzero\Utility\Uri($link))->getQuery(true);
+
+			$parts = array();
+			foreach ($params as $name => $value)
+			{
+				$parts[] = str_replace(array('.', '_'), '-', $value);
+			}
+
+			$this->id = implode('-', $parts);
+		}
+
+		$this->target = $target;
 	}
 }

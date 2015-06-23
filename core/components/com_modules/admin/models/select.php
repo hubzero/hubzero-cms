@@ -111,14 +111,15 @@ class ModulesModelSelect extends JModelList
 		$items = parent::getItems();
 
 		// Initialise variables.
-		$client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
+		$client = \Hubzero\Base\ClientManager::client($this->getState('filter.client_id', 0));
+		$client->path = PATH_ROOT;
 		$lang   = Lang::getRoot();
 
 		// Loop through the results to add the XML metadata,
 		// and load language support.
 		foreach ($items as &$item)
 		{
-			$path = Filesystem::cleanPath($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
+			$path = \Hubzero\Filesystem\Util::normalizePath($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
 			if (file_exists($path))
 			{
 				$item->xml = simplexml_load_file($path);
@@ -130,8 +131,8 @@ class ModulesModelSelect extends JModelList
 
 			// 1.5 Format; Core files or language packs then
 			// 1.6 3PD Extension Support
-				$lang->load($item->module . '.sys', $client->path, null, false, true)
-			||	$lang->load($item->module . '.sys', $client->path . '/modules/' . $item->module, null, false, true);
+			$lang->load($item->module . '.sys', PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $client->name, null, false, true) ||
+			$lang->load($item->module . '.sys', $client->path . '/modules/' . $item->module, null, false, true);
 			$item->name	= Lang::txt($item->name);
 
 			if (isset($item->xml) && $text = trim($item->xml->description))
