@@ -26,62 +26,40 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 2.0.0
  */
-
 namespace Hubzero\User;
 
+use Hubzero\Database\Relational;
+
 /**
- * Users database model
+ * Reputation database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class User extends \Hubzero\Database\Relational
+class Reputation extends Relational
 {
 	/**
-	 * Defines a one to many relationship between users and reset tokens
+	 * The table to which the class pertains
 	 *
-	 * @return \Hubzero\Database\Relationship\OneToMany
-	 * @since  2.0.0
+	 * @var string
 	 **/
-	public function tokens()
-	{
-		return $this->oneToMany('Token');
-	}
+	protected $table = '#__user_reputation';
 
 	/**
-	 * Defines a one to one relationship between a user and their reputation
-	 *
-	 * @return \Hubzero\Database\Relationship\OneToOne
-	 * @since  2.0.0
-	 **/
-	public function reputation()
-	{
-		return $this->oneToOne('Reputation');
-	}
-
-	/**
-	 * Checks to see if the current user has exceeded the site
-	 * password reset request limit for a given time period
+	 * Increments user spam count, both globally and in current session
 	 *
 	 * @return bool
 	 **/
-	public function hasExceededResetLimit()
+	public function incrementSpamCount()
 	{
-		$params     = \Component::params('com_users');
-		$resetCount = (int)$params->get('reset_count', 10);
-		$resetHours = (int)$params->get('reset_time', 1);
-		$result     = true;
+		// Save global spam count
+		$current = $this->get('spam_count', 0);
+		$this->set('spam_count', ($current+1));
+		$this->set('user_id', \User::get('id'));
+		$this->save();
 
-		// Get the user's tokens
-		$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$resetHours} hours ago"));
-		$tokens    = $this->tokens()->where('created', '>=', $threshold)->rows();
-
-		if ($tokens->count() < $resetCount)
-		{
-			$result = false;
-		}
-
-		return $result;
+		// Also increment session spam count
+		$current = Session::get('spam_count', 0);
+		Session::set('spam_count', ($current+1));
 	}
 }
