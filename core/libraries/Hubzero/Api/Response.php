@@ -53,6 +53,8 @@ class Response extends BaseResponse
 	 */
 	public function setContent($content)
 	{
+		$this->original = $content;
+
 		$status = $this->getStatusCode();
 		$reason = '';
 		$output = '';

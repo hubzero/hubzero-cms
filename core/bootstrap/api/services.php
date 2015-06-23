@@ -35,6 +35,7 @@ return array(
 	'Hubzero\Api\AuthServiceProvider',
 	'Hubzero\Api\ComponentServiceProvider',
 	'Hubzero\Menu\MenuServiceProvider',
+	'Hubzero\Api\Response\UriBase',
 	//'Hubzero\Api\RateLimit\RateLimitService',
 	//'Hubzero\Api\Response\JsonpCallable',
 	//'Hubzero\Api\Response\DateFormatter',

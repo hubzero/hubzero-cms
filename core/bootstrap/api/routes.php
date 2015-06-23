@@ -156,7 +156,13 @@ $router->rules('build')->append('rewrite', function ($uri)
 	}
 
 	// Add basepath to the uri
-	$uri->setPath(\App::get('request')->base(true) . '/' . $route);
+	//$uri->setScheme(\App::get('request')->getScheme());
+	//$uri->setHost(\App::get('request')->getHost());
+	//$uri->setPort(\App::get('request')->getPort());
+	//$uri->setUser(\App::get('request')->getUser());
+	//$uri->setPass(\App::get('request')->getPassword());
+	//$uri->setPath(str_replace('/api', '', \App::get('request')->base(true)) . '/' . $route);
+	$uri->setPath($route);
 
 	return $uri;
 });
