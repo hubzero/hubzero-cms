@@ -209,7 +209,7 @@ class Legacy extends Registry
 	 * @param   string  $path
 	 * @return  void
 	 */
-	public function split($format, $path)
+	public function split($format = null, $path = null)
 	{
 		$format = $format ?: 'php';
 		$path   = $path   ?: PATH_APP . DS . 'app' . DS . 'config';
