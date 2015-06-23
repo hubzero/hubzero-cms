@@ -615,44 +615,6 @@ class Entries extends SiteController
 			return $this->entryTask();
 		}
 
-		/*
-		$entry = new Entry($row->get('entry_id'));
-
-		if ($row->get('created_by') != $entry->get('created_by'))
-		{
-			// Build the "from" data for the e-mail
-			$from = array(
-				'name'  => Config::get('sitename').' '.Lang::txt('PLG_MEMBERS_BLOG'),
-				'email' => Config::get('mailfrom')
-			);
-
-			$subject = Lang::txt('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
-
-			// Build the SEF referenced in the message
-			$sef = Route::url($entry->link() . '#comments);
-
-			// Message
-			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
-			$message .= stripslashes($row->content)."\r\n\r\n";
-			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= Request::base() . '/' . ltrim($sef, '/') . "\r\n";
-
-			// Send the message
-			$activity = array(
-				'blog_comment',
-				$subject,
-				$message,
-				$from,
-				array($entry->get('created_by')), $this->option)
-			);
-
-			if (!Event::trigger('xmessage.onSendMessage', $activity)
-			{
-				$this->setError(Lang::txt('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
-			}
-		}
-		*/
-
 		return $this->entryTask();
 	}
 
