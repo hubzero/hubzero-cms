@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_CONFIG_GLOBAL_CONFIGURATION'), 'config.png');
 Toolbar::apply('application.apply');

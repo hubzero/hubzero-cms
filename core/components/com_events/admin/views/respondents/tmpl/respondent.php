@@ -1,6 +1,6 @@
 <?php
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt( 'COM_EVENTS' ).': '.Lang::txt('COM_EVENTS_RESPONDANT'), 'user.png' );
 //Toolbar::cancel();

@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Create shortcut
 $urls = json_decode($this->item->urls);

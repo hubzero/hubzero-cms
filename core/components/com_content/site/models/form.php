@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Base this model on the backend version.
 require_once __DIR__ . '/article.php';

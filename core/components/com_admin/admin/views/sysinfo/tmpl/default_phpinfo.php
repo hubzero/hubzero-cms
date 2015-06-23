@@ -7,7 +7,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <fieldset class="adminform">
 	<legend><?php echo Lang::txt('COM_ADMIN_PHP_INFORMATION'); ?></legend>

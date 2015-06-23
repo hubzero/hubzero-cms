@@ -8,7 +8,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 function dv_data_definition_new()
 {
@@ -50,7 +50,7 @@ function dv_data_definition_new()
 	}
 
 
-	$dd_text = "<?php\ndefined('_JEXEC') or die();\n\n";
+	$dd_text = "<?php\ndefined('_HZEXEC_') or die();\n\n";
 	$dd_text .= "function get_$name()\n{\n";
 	$dd_text .= "\t" . '$dd[\'title\'] = \'' . $title . '\';' . "\n";
 	$dd_text .= "\t" . '$dd[\'table\'] = \'' . $dd['table'] . '\';' . "\n";

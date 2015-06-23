@@ -7,7 +7,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <div id="submenu-box">
 	<div class="submenu-box">

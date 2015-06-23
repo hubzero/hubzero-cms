@@ -28,7 +28,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit') ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW');
 

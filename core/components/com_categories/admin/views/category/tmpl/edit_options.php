@@ -7,7 +7,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die; ?>
+defined('_HZEXEC_') or die(); ?>
 
 <?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 

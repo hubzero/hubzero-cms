@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-isset($argc) or die('Restricted access');
+isset($argc) or die();
 
 $opt = getopt("i:o:v::");
 

@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 require_once dirname(__FILE__) . '/articles.php';
 

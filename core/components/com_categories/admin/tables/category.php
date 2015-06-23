@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Import JTableCategory
 JLoader::register('JTableCategory', JPATH_PLATFORM . '/joomla/database/table/category.php');

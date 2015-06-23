@@ -5,7 +5,7 @@
  */
 
 // No direct access.
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 require_once PATH_CORE.'/components/com_users/admin/models/user.php';
 

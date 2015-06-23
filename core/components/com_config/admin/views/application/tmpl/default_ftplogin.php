@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <div class="width-100">
 	<fieldset title="<?php echo Lang::txt('COM_CONFIG_FTP_DETAILS'); ?>" class="adminform">

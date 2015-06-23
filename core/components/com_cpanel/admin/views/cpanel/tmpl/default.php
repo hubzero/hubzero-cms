@@ -29,7 +29,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // Set toolbar items for the page
 Toolbar::title(Lang::txt('COM_CPANEL'), 'cpanel.png');

@@ -7,7 +7,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 ?>
 <h3><?php echo Lang::txt('COM_CONTENT_MORE_ARTICLES'); ?></h3>
 

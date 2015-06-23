@@ -8,7 +8,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die();
 
 // http://www.php.net/manual/en/function.json-encode.php#80339
 function json_format($json)
