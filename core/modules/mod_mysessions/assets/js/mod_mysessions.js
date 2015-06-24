@@ -171,5 +171,5 @@ HUB.Modules.MySessions = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Modules.MySessions.initialize();
+	Hubzero.initApi(HUB.Modules.MySessions.initialize);
 });
