@@ -62,7 +62,7 @@ class Finder
 
 		// Path to help page
 		$paths[] = self::path($component) . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
-		$paths[] = PATH_ROOT . DS . 'plugins' . DS . $name . DS . $page . DS . 'help' . DS . $lang . DS . 'index.' . self::$ext;
+		$paths[] = PATH_CORE . DS . 'plugins' . DS . $name . DS . $page . DS . 'help' . DS . $lang . DS . 'index.' . self::$ext;
 
 		// If we have an extension
 		if ($extension)
@@ -94,14 +94,17 @@ class Finder
 	private static function path($component)
 	{
 		$client = \App::isAdmin() ? 'admin' : 'site';
-		if (file_exists(PATH_ROOT . DS . 'components' . DS . $component . DS . $client))
+
+		return \App::get('component')->path($component) . DS . $client;
+
+		/*if (file_exists(PATH_CORE . DS . 'components' . DS . $component . DS . $client))
 		{
-			return PATH_ROOT . DS . 'components' . DS . $component . DS . $client;
+			return PATH_CORE . DS . 'components' . DS . $component . DS . $client;
 		}
 		else
 		{
-			return JPATH_BASE . DS . 'components' . DS . $component;
-		}
+			return PATH_APP . DS . 'components' . DS . $component;
+		}*/
 	}
 
 	/**
