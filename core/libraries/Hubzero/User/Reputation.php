@@ -30,6 +30,7 @@
 namespace Hubzero\User;
 
 use Hubzero\Database\Relational;
+use Session;
 
 /**
  * Reputation database model
@@ -61,5 +62,26 @@ class Reputation extends Relational
 		// Also increment session spam count
 		$current = Session::get('spam_count', 0);
 		Session::set('spam_count', ($current+1));
+	}
+
+	/**
+	 * Checks to see if user is jailed
+	 *
+	 * @return bool
+	 **/
+	public function isJailed()
+	{
+		if ($this->get('user_id', false))
+		{
+			$params        = Plugin::params('system', 'spamjail');
+			$sessionCount  = $params->get('session_count', 5);
+			$lifetimeCount = $params->get('user_count', 10);
+			if (Session::get('spam_count', 0) > $sessionCount || $this->get('spam_count', 0) > $lifetimeCount)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
