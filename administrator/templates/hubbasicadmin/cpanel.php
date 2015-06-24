@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 // Load CSS
 $this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');

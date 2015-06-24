@@ -1,21 +1,22 @@
 /**
- * Super Group Template Css
- *
- * This template is responsible for displaying a super group: 
- *
- *  -It should include a bar at the top branded for the HUB
- *  -It should include the help pane incase a super group template wanted to use it
- *
- * @package   hubzero-cms
- * @author    Chris Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @file       templates/system/css/group.css
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+   Super Group Template Css
+
+   This template is responsible for displaying a super group: 
+
+    -It should include a bar at the top branded for the HUB
+    -It should include the help pane incase a super group template wanted to use it
  */
 
 /* Group Bar */
 .super-group-bar {
 	background: #000;
-	/*height: 44px;*/
 	position: relative;
 	z-index: 999;
 }
@@ -69,10 +70,10 @@
 .super-group-bar #account ul li a {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 	-webkit-transition: background 0.2s ease-in-out;
-	-moz-transition: background 0.2s ease-in-out;
-	-o-transition: background 0.2s ease-in-out;
-	-ms-transition: background 0.2s ease-in-out;
-	transition: background 0.2s ease-in-out;
+	   -moz-transition: background 0.2s ease-in-out;
+	    -ms-transition: background 0.2s ease-in-out;
+	     -o-transition: background 0.2s ease-in-out;
+	        transition: background 0.2s ease-in-out;
 	font-size: 12px;
 	padding: 14px 20px;
 	border: none;
@@ -124,10 +125,10 @@
 }
 .super-group-bar #account ul ul li a {
 	-webkit-transition: none;
-	-moz-transition: none;
-	-o-transition: none;
-	-ms-transition: none;
-	transition: none;
+	   -moz-transition: none;
+	    -ms-transition: none;
+	     -o-transition: none;
+	        transition: none;
 	font-size: 12px;
 	color: #ccc;
 	padding: 0.8em 1em;
@@ -401,6 +402,7 @@
 		display: none;
 	}
 }
+
 @media all and (max-width: 700px) {
 	#group-info .links li {
 		float: none;
@@ -426,12 +428,6 @@
 	}
 }
 
-
-/* opened state */
-/*.opened #group-info {
-	height:  auto;
-	overflow: auto;
-}*/
 .opened #group a {
 	background: #222;
 	color: #FFF;

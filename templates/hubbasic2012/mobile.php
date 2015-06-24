@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_HZEXEC_') or die();
 
 //define tempate
 $this->template = 'hubbasic2012';

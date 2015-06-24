@@ -1,11 +1,27 @@
+/**
+ * @package    hubzero-cms
+ * @file       templates/system/css/help.css
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	     -o-box-sizing: border-box;
+	        box-sizing: border-box;
+}
 
 body {
-	font-size: 14px;
-	line-height: 20px;
-	color: #222;
+	padding: 2em;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+	line-height: 1.7;
+	color: #333;
 	background: #fff;
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-	padding: 20px;
 	text-rendering: optimizeLegibility;
 }
 h1, h2, h3, h4, h5, h6 {

@@ -5,7 +5,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-@import url('/components/com_groups/assets/css/media.css');
+@import url('/core/components/com_groups/site/assets/css/media.css');
 
 body#file_list {
 	background:#FFF;

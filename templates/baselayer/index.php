@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,11 +24,12 @@
  *
  * @package   hubzero-cms
  * @author    Ilya Shunko
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_HZEXEC_') or die();
 
 // Include global scripts
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');

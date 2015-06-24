@@ -28,14 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_HZEXEC_') or die();
 
 // get needed objects
 $group  = \Hubzero\User\Group::getInstance(Request::getCmd('cn', ''));
 
 // return url (if any)
-$return = DS . trim(str_replace(Request::base(),'', Request::current()), DS);
+$return = '/' . trim(str_replace(Request::base(),'', Request::current()), '/');
 
 // include frameworks
 Html::behavior('framework', true);
@@ -102,7 +101,7 @@ $membership_control = $params->get('membership_control', 1);
 				</div>
 				<div class="col span8 omega">
 					<p id="tab">
-						<a href="/support/" title="<?php echo Lang::txt('TPL_SYSTEM_HELP_HINT'); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('TPL_SYSTEM_HELP_HINT'); ?>">
 							<span><?php echo Lang::txt('TPL_SYSTEM_HELP'); ?></span>
 						</a>
 					</p>
