@@ -125,8 +125,16 @@ HUB.Projects = {
 			$(item).off('click');
 			
 			var href = $(item).attr('href');
-			if (href.search('&no_html=1') == -1) {
-				href = href + '&no_html=1';
+			if (href.search('no_html=1') == -1)
+			{
+				if (href.indexOf('?') == -1)
+				{
+					href = href + '?no_html=1';
+				}
+				else
+				{
+					href = href + '&no_html=1';
+				}
 			}
 			if (href.search('&ajax=1') == -1) {
 				href = href + '&ajax=1';
