@@ -94,27 +94,55 @@
 }
 
 @media (max-width: 50em) {
-	.dark .toolbar-box {
-		ul {
-			color: #fff;
+	.dark {
+		.main-navigation {
+			background: #444;
 
-			&:before {
-				border-color: rgba(255, 255, 255, 0.4);
-			}
-			&:hover {
-				color: #222;
-			}
+			ul#menu {
+				border-left: none;
 
-			li {
-				a {
-					&:hover {
-						background-color: rgba(0, 0, 0, 0.4);
+				li {
+					border-right: none;
+					border-top: 1px solid rgba(255, 255, 255, 0.1);
+				}
+				ul {
+					background-color: #444;
+
+					li {
+						background-color: rgba(0, 0, 0, 0.2);
 					}
+				}
+				&.disabled li,
+				&.disabled li:hover,
+				&.disabled a,
+				&.disabled a:hover {
+					color: rgba(255, 255, 255, 0.2);
+				}
+			}
+		}
 
-					span {
-						&:before,
-						&:after {
-							color: #444;
+		.toolbar-box {
+			ul {
+				color: #fff;
+
+				&:before {
+					border-color: rgba(255, 255, 255, 0.4);
+				}
+				&:hover {
+					color: #222;
+				}
+
+				li {
+					a {
+						&:hover {
+							background-color: rgba(0, 0, 0, 0.4);
+						}
+
+						span {
+							&:before,
+							&:after {
+								color: #444;
+							}
 						}
 					}
 				}

@@ -231,8 +231,8 @@
 @media (max-width: 50em) {
 	.main-navigation {
 		position: absolute;
-		overflow: hidden;
-		border-right: 1px solid rgba(0, 0, 0, 0.1);
+		overflow-x: hidden;
+		overflow-y: auto;
 		width: 200px;
 		height: 100%;
 		margin: 0;
@@ -241,6 +241,18 @@
 		bottom: 0;
 		z-index: 1000;
 		left: -200px;
+
+		ul#menu {
+			li.node>a:after {
+				content: "\2304";
+				font-family: "Fontcons";
+				position: absolute;
+				right: 1em;
+			}
+			li.active.node>a:after {
+				content: "\2303";
+			}
+		}
 	}
 
 	.menu-opened .main-navigation {
