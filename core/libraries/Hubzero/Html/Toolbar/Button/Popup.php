@@ -67,7 +67,7 @@ class Popup extends Button
 		$class  = $this->fetchIconClass($name);
 		$doTask = $this->_getCommand($name, $url, $width, $height, $top, $left);
 
-		$html  = "<a data-title=\"$text\" class=\"modal\" href=\"$doTask\" rel=\"{handler: 'iframe', size: {x: $width, y: $height}, onClose: function() {" . $onClose . "}}\">\n";
+		$html  = "<a data-title=\"$text\" class=\"modal\" href=\"$doTask\" rel=\"{size: {width: $width, height: $height}, onClose: function() {" . $onClose . "}}\">\n";
 		$html .= "<span class=\"$class\">\n";
 		$html .= "$text\n";
 		$html .= "</span>\n";

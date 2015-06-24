@@ -233,23 +233,6 @@ class Behavior
 	}
 
 	/**
-	 * Add HUBzero core js resources
-	 *
-	 * @return  void
-	 */
-	public static function core()
-	{
-		if (isset(self::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		Asset::script('assets/hubzero.js', true, true);
-
-		self::$loaded[__METHOD__] = true;
-	}
-
-	/**
 	 * Add unobtrusive javascript support for charts
 	 *
 	 * @return  void
@@ -477,10 +460,32 @@ class Behavior
 			if (isset($params['size'])
 			 && is_array($params['size']))
 			{
-				$opt['width']  = $params['size']['width'];
-				$opt['height'] = $params['size']['height'];
+				if (isset($params['size']['width']))
+				{
+					$opt['width']  = $params['size']['width'];
+				}
+				if (isset($params['size']['height']))
+				{
+					$opt['height'] = $params['size']['height'];
+				}
+				if (isset($params['size']['minWidth']))
+				{
+					$opt['minWidth']  = $params['size']['minWidth'];
+				}
+				if (isset($params['size']['maxWidth']))
+				{
+					$opt['maxWidth']  = $params['size']['maxWidth'];
+				}
+				if (isset($params['size']['minHeight']))
+				{
+					$opt['minHeight'] = $params['size']['minHeight'];
+				}
+				if (isset($params['size']['maxHeight']))
+				{
+					$opt['maxHeight'] = $params['size']['maxHeight'];
+				}
 			}
-			$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("data-rel"); }';
+			$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("data-rel"); if (atts) { atts = jQuery.parseJSON(atts); console.log(atts); }}';
 			$opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
 			$opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
 			$opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
@@ -488,7 +493,7 @@ class Behavior
 			$opt['afterClose'] = (isset($params['onHide'])) ? $params['onHide'] : null;
 			$opt['tpl']        = (isset($params['tpl'])) ? $params['tpl'] : null;
 			$opt['autoSize']   = (isset($params['autoSize'])) ? $params['autoSize'] : false;
-			$opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : false;
+			$opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : true;
 
 			$options = self::getJSObject($opt);
 
