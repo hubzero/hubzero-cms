@@ -152,6 +152,9 @@
 	#cbody {
 		min-width: 500px;
 	}
+	.edit-project {
+		padding: 1em 2em;
+	}
 
 /* Cancel project 
 --------------------------------------------- */

@@ -51,7 +51,7 @@ else
 }
 
 ?>
-<div id="project-wrap" class="theme">
+<div id="project-wrap" class="edit-project">
 	<?php if ($layout == 'extended') {
 		// Draw top header
 		$this->view('_topheader', 'projects')
