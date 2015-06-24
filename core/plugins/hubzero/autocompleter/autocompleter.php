@@ -88,17 +88,17 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 
 			$templatecss = DS . 'templates' . DS . App::get('template')->template . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
 			$plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css';
-			if (file_exists(JPATH_SITE . $templatecss))
+			if (file_exists(PATH_CORE . $templatecss))
 			{
-				$scripts .= $base . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss);
+				$scripts .= $base . $templatecss . '?v=' . filemtime(PATH_CORE . $templatecss);
 			}
 			else
 			{
-				$scripts .= $base . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss);
+				$scripts .= 'core' . DS . $plugincss . '?v=' . filemtime(PATH_CORE . $plugincss);
 			}
 
 			$scripts .= '";</script>' . "\n";
-			$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
+			$scripts .= '<script type="text/javascript" src="' . 'core' . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
 
 			$this->_pushscripts = false;
 		}
