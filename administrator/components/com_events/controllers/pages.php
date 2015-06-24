@@ -294,7 +294,7 @@ class EventsControllerPages extends \Hubzero\Component\AdminController
 	protected function reorderTask($move='down')
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getVar('id', array());

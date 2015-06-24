@@ -377,7 +377,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());

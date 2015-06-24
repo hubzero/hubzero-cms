@@ -482,7 +482,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 	public function accessTask($access=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -558,7 +558,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$cid = JRequest::getInt('cid', 0);

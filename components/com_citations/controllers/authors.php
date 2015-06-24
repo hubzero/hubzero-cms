@@ -74,7 +74,7 @@ class CitationsControllerAuthors extends \Hubzero\Component\SiteController
 	public function addTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		if ($this->getError())
 		{
@@ -136,7 +136,7 @@ class CitationsControllerAuthors extends \Hubzero\Component\SiteController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		if ($this->getError())
 		{
@@ -173,7 +173,7 @@ class CitationsControllerAuthors extends \Hubzero\Component\SiteController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		if ($this->getError())
 		{

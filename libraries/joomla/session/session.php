@@ -282,13 +282,14 @@ class JSession extends JObject
 	 *
 	 * Use in conjunction with JHtml::_('form.token') or JSession::getFormToken.
 	 *
-	 * @param   string  $method  The request method in which to look for the token key.
+	 * @param   string   $method   The request method in which to look for the token key.
+	 * @param   boolean  $capture  Return result instead of throwing exception?
 	 *
 	 * @return  boolean  True if found and valid, false otherwise.
 	 *
 	 * @since   12.1
 	 */
-	public static function checkToken($method = 'post')
+	public static function checkToken($method = 'post', $capture = false)
 	{
 		if ($method == 'default')
 		{
@@ -296,11 +297,26 @@ class JSession extends JObject
 			return false;
 		}
 
+		$result = false;
+
+		if (is_string($method) && strstr($method, ','))
+		{
+			$method = explode(',', $method);
+			$method = array_map('trim', $method);
+		}
+		$method = (array) $method;
+
 		$token = self::getFormToken();
 		$app = JFactory::getApplication();
 
-		if (!JRequest::getVar($token, '', $method, 'alnum'))
+		foreach ($method as $m)
 		{
+			if (JRequest::getVar($token, '', $method, 'alnum'))
+			{
+				$result = true;
+				break;
+			}
+
 			$session = JFactory::getSession();
 			if ($session->isNew())
 			{
@@ -308,15 +324,19 @@ class JSession extends JObject
 				$app->redirect(JRoute::_('index.php'), JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
 				$app->close();
 			}
-			else
-			{
-				return false;
-			}
 		}
-		else
+
+		if (!$result)
 		{
-			return true;
+			if ($capture)
+			{
+				return $result;
+			}
+
+			throw new Exception(JText::_('JINVALID_TOKEN'), 403);
 		}
+
+		return $result;
 	}
 
 	/**

@@ -302,7 +302,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	public function accessTask($access=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -368,7 +368,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());

@@ -367,7 +367,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getVar('listdir', 0);
@@ -936,7 +936,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());

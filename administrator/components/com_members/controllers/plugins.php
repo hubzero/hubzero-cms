@@ -307,7 +307,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getVar('id', array(), '', 'array');
@@ -382,7 +382,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 	public function orderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$cid 	= JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
@@ -449,7 +449,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 	public function accessTask($access=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$cid = JRequest::getVar('id', array(0), 'post', 'array');
@@ -498,7 +498,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$cid = JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));

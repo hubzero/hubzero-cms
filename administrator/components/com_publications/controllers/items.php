@@ -473,7 +473,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	public function savecontentTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$el 	 = JRequest::getInt( 'el', 0 );
@@ -703,7 +703,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	public function saveauthororderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$id       = JRequest::getInt('id', 0);
@@ -798,7 +798,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	public function saveauthorTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$author  = JRequest::getInt( 'author', 0 );

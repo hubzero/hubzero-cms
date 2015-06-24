@@ -211,7 +211,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function addusersTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 
@@ -309,7 +309,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function approveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 
@@ -390,7 +390,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function promoteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 
@@ -463,7 +463,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function demoteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 
@@ -552,7 +552,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 
@@ -638,7 +638,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function uninviteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 
@@ -723,7 +723,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	public function denyTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$gid = JRequest::getVar('gid', '');
 

@@ -383,7 +383,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	protected function toggle($publish=1)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('cid', array());

@@ -173,7 +173,7 @@ class Helper extends Module
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Was a collection title submitted?
 		// If so, we'll create a new collection with that title.

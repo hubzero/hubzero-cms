@@ -61,7 +61,7 @@ class CoursesControllerMedia extends \Hubzero\Component\AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getVar('listdir', 0);

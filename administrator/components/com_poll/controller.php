@@ -169,7 +169,7 @@ class PollController extends JController
 		$mainframe = JFactory::getApplication();
 
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken(array('get', 'post')) or jexit( 'Invalid Token' );
 
 		$db 	= JFactory::getDBO();
 		$user 	= JFactory::getUser();
@@ -217,7 +217,7 @@ class PollController extends JController
 		$mainframe = JFactory::getApplication();
 
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken(array('get', 'post')) or jexit( 'Invalid Token' );
 
 		$db 	= JFactory::getDBO();
 		$user 	= JFactory::getUser();

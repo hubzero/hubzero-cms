@@ -406,7 +406,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	public function removeZoneTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		if ($id = JRequest::getInt('id', false))

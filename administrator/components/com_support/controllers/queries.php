@@ -307,7 +307,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -429,7 +429,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function savefolderTask($redirect=true)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$fields  = JRequest::getVar('fields', array());
@@ -525,7 +525,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function removefolderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -567,7 +567,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function saveorderingTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$folders = JRequest::getVar('folder', array());

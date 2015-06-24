@@ -1280,7 +1280,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$id  = JRequest::getInt('id', 0);
@@ -1369,7 +1369,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	public function stateTask($publish=1)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
 		$pid = JRequest::getInt('pid', 0);

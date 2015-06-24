@@ -369,7 +369,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Ensure we have an ID to work with
 		$id = JRequest::getInt('id', 0);
@@ -623,7 +623,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function ajaxRemoveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Ensure we have an ID to work with
 		$id = JRequest::getInt('id', 0);
