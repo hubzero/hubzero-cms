@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 			<p>
 				<label for="rsearchword"><?php echo Lang::txt('MOD_FINDRESOURCES_SEARCH_LABEL'); ?></label>
 				<input type="text" name="terms" id="rsearchword" value="" />
-				<input type="hidden" name="domains[]" value="resources" />
+				<input type="hidden" name="domain" value="resources" />
 				<input type="submit" value="<?php echo Lang::txt('MOD_FINDRESOURCES_SEARCH'); ?>" />
 			</p>
 		</fieldset>
