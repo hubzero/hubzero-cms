@@ -98,6 +98,11 @@ class FileLoader
 				);
 			}
 
+			if (empty($data))
+			{
+				throw new EmptyDirectoryException("Configuration directory: [" . $this->defaultPath . "] is empty");
+			}
+
 			if ($client)
 			{
 				$paths = $this->getPath($this->defaultPath . DS . $client);
