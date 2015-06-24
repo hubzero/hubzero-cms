@@ -190,10 +190,12 @@ else
 						<div id="cbody">
 							<?php echo $this->content; ?>
 						</div>
-						<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_PROJECT') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>:</h5>
+						<h5 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_PROJECT') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?> <?php if ($this->model->access('manager')) { ?>
+							<span class="mini"><a href="<?php echo Route::url($this->model->link('team') . '&action=changeowner'); ?>" class="showinbox"><?php echo ucfirst(Lang::txt('COM_PROJECTS_EDIT')); ?></a></span>
+						<?php } ?></h5>
 						<?php if ($this->model->groupOwner() && $cn = $this->model->groupOwner('cn'))
 						{
-							$ownedby = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . Lang::txt('COM_PROJECTS_GROUP') . ' ' . $cn . '</a>';
+							$ownedby = ucfirst(Lang::txt('COM_PROJECTS_GROUP')) . ' <a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . ' ' . $this->model->groupOwner('description') . ' (' . $cn . ')</a>';
 						}
 						else
 						{

@@ -368,7 +368,7 @@
 	}
 	#setup fieldset h4 {
 		margin: 3em 0 1em 0;
-		padding: 0 2em;
+		padding: 0 0.5em;
 		background: #EFEFEF;
 	}
 	#hubForm .explaination ul {
@@ -1073,10 +1073,14 @@
 		display: inline;
 		border: none;
 	}
+	#abox-content #hubForm-ajax label {
+		margin-top: 0.5em;
+		display: block;
+	}
 	#abox-content #hubForm-ajax label select {
 		width: auto !important;
 		margin: 0;
-		padding: 0;
+		padding: 0.2em;
 	}
 	#abox-content  #hubForm-ajax td.tdmini, #abox-content  th.tdmini {
 		width: 5px !important;

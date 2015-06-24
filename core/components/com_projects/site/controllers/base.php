@@ -130,12 +130,15 @@ class Base extends SiteController
 	protected function _getNotifications($type = 'success')
 	{
 		// Get messages in queue
-		$messages = $this->getComponentMessage();
+		if (!isset($this->_messages))
+		{
+			$this->_messages = $this->getComponentMessage();
+		}
 
 		// Return first message of type
-		if ($messages && count($messages) > 0)
+		if ($this->_messages && count($this->_messages) > 0)
 		{
-			foreach ($messages as $message)
+			foreach ($this->_messages as $message)
 			{
 				if ($message['type'] == $type)
 				{

@@ -68,7 +68,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 				</a>
 			</li>
 		</ul>
-		<p class="msg-total"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')); ?> <?php if ($this->total <= count($this->team)) { echo Lang::txt('PLG_PROJECTS_TEAM_ALL'); } ?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if ($this->total > count($this->team)) { echo Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total; } ?> <?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_MEMBERS'); ?></p>
+		<p class="msg-total"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')); ?> <?php if ($this->total <= count($this->team)) { echo Lang::txt('PLG_PROJECTS_TEAM_ALL'); } ?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if ($this->total > count($this->team)) { echo Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total; } ?> <?php echo Lang::txt('PLG_PROJECTS_TEAM_MEMBERS'); ?></p>
 	</div>
 	<table id="teamlist" class="listing">
 		<thead>
@@ -80,53 +80,53 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 				<?php if ($this->count_groups) { ?>
 				<th class="i_group"></th>
 				<?php } ?>
-				<th><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_LAST_VISIT'); ?></th>
+				<th><?php echo Lang::txt('PLG_PROJECTS_TEAM_LAST_VISIT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 <?php foreach ($this->team as $owner)
 	{
-					// Get profile thumb image
-					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
-					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+		// Get profile thumb image
+		$profile = \Hubzero\User\Profile::getInstance($owner->userid);
+		$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+		$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
-					$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
-					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'
-								? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AGO')
-								: Lang::txt('PLG_PROJECTS_TEAM_NEVER');
-					$lastvisit = $owner->userid == $this->uid || ($owner->online && $owner->lastvisit > $timecheck)
-								? '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_TEAM_ONLINE_NOW') . '</span>'
-								: $lastvisit;
+		$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
+		$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'
+					? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AGO')
+					: Lang::txt('PLG_PROJECTS_TEAM_NEVER');
+		$lastvisit = $owner->userid == $this->uid || ($owner->online && $owner->lastvisit > $timecheck)
+					? '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
+					: $lastvisit;
 
-					// User deleted?
-					// Edge case!
-					if ($owner->userid && !$owner->username)
-					{
-						$objO = new \Components\Projects\Tables\Owner($this->database);
-						$objO->load($owner->id);
-						$objO->status = 2;
-						$objO->store();
-						continue;
-					}
+		// User deleted?
+		// Edge case!
+		if ($owner->userid && !$owner->username)
+		{
+			$objO = new \Components\Projects\Tables\Owner($this->database);
+			$objO->load($owner->id);
+			$objO->status = 2;
+			$objO->store();
+			continue;
+		}
 
-					$creator = $this->model->owner('id') == $owner->userid ? 1 : 0;
+		$creator = $this->model->owner('id') == $owner->userid ? 1 : 0;
 
-					// Determine css class for user
-					switch ($owner->role)
-					{
-						case '1':
-							$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER');
-							break;
-						case '2':
-						default:
-							$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
-							break;
-						case '5':
-							$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWER');
-							break;
-					}
-					$username = $owner->username ? $owner->username : $owner->invited_email;
+		// Determine css class for user
+		switch ($owner->role)
+		{
+			case '1':
+				$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER');
+				break;
+			case '2':
+			default:
+				$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
+				break;
+			case '5':
+				$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWER');
+				break;
+		}
+		$username = $owner->username ? $owner->username : $owner->invited_email;
 ?>
 			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } ?>" id="tr_<?php echo $owner->id; ?>">
 				<td class="imagebox"><a href="/members/<?php echo $owner->userid; ?>" <?php if ($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php } ?>><img src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>

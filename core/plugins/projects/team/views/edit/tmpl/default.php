@@ -82,13 +82,13 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 </div>
 <div id="team-spacer">
 	<?php if ($this->model->groupOwner()) { ?>
-	<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_GROUP_PROJECT_EDITING'); ?></p>
+	<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
 	<?php } ?>
 	<div class="list-editing">
 	 <p>
-		<span><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
+		<span><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
 	 	<span id="team-manage" class="manage-options hidden">
-		<span class="faded"><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_EDIT_ROLE'); ?></span>
+		<span class="faded"><?php echo Lang::txt('PLG_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
 			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?></a>
 		</span>
 	</p>

@@ -56,7 +56,7 @@ class Setup extends Base
 		// Login required
 		if (User::isGuest())
 		{
-			$this->_msg = $this->_task == 'edit'
+			$this->_msg = $this->_task == 'edit' || !$this->_task
 				? Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
 				: Lang::txt('COM_PROJECTS_LOGIN_SETUP');
 			$this->_login();
@@ -886,13 +886,14 @@ class Setup extends Base
 		$this->view->publishing	= $this->_publishing;
 		$this->view->active		= 'edit';
 
-		// Get messages	and errors
-		$this->view->msg = $this->_getNotifications('success');
+		// Get messages and errors
 		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
 			$this->view->setError( $error );
 		}
+		$this->view->msg = $this->_getNotifications('success');
+
 		$this->view->display();
 	}
 

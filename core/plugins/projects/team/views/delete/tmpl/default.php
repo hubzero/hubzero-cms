@@ -42,7 +42,7 @@ if (!$this->getError()) {
 <form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->model->link()); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="action" value="removeowner" />
+		<input type="hidden" name="action" value="deleteit" />
 		<input type="hidden" name="active" value="team" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p class="anote"><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE_TEAM_MEMBERS_NOTE'); ?></p>
@@ -53,7 +53,7 @@ if (!$this->getError()) {
 			$i++;
 			echo '<input type="hidden" name="owner[]" value="' . $owner->id . '" />';
 		} ?></p>
-		<?php if ($self) { ?><p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_WARNING_SELF_DELETE'); ?></p><?php } ?>
+		<?php if ($self) { ?><p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_WARNING_SELF_DELETE'); ?></p><?php } ?>
 		<p class="submitarea">
 			<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?>" class="btn" />
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>" />

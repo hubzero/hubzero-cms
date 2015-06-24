@@ -126,6 +126,14 @@
 		padding: 0;
 		color: #666;
 	}
+	h5.terms-question {
+		padding: 0 0.5em;
+		background: #e2e2e2;
+	}
+	h5.terms-question span {
+		float: right;
+		margin-right: 0.5em;
+	}
 	#edit-project table#infotbl {
 		margin-top: 1em;
 	}

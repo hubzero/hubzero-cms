@@ -167,13 +167,17 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 					break;
 
 				case 'delete':
-				case 'removeowner':
+				case 'deleteit':
 					$arr['html'] = $this->delete();
 					break;
 
 				case 'changerole':
 				case 'assignrole':
 					$arr['html'] = $this->_changeRole();
+					break;
+
+				case 'changeowner':
+					$arr['html'] = $this->_changeOwner();
 					break;
 
 				case 'save':
@@ -192,11 +196,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				case 'select':
 				case 'newauthor':
 					$arr['html'] = $this->select();
-					break;
-
-				case 'editauthors':
-				case 'saveauthors':
-					$arr['html'] = $this->_publicationAuthors();
 					break;
 			}
 		}
@@ -601,11 +600,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$uids = array_unique($uids);
 		if (count($uids) > 0)
 		{
-			$this->_msg = Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED') . ' ' . count($uids) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_NEW') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_TEAM_MEMBERS');
+			$this->_msg = Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED') . ' ' . count($uids) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_NEW') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS');
 
 			if (count($invalid) > 0)
 			{
-				$this->_msg .= '<br />' . Lang::txt('PLG_PROJECTS_TEAM_TEAM_MEMBERS_INVALID_NAMES');
+				$this->_msg .= '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
 			}
 
 			if (!$setup) {
@@ -655,8 +654,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		elseif (count($invalid) > 0)
 		{
-			 $this->setError(Lang::txt('PLG_PROJECTS_TEAM_TEAM_MEMBERS_INVALID_NAMES')
-				. '<br />' . Lang::txt('PLG_PROJECTS_TEAM_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
+			 $this->setError(Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES')
+				. '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
 		}
 
 		// Pass success or error message
@@ -781,6 +780,96 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Change project owner
+	 *
+	 * @return     void, redirect
+	 */
+	protected function _changeOwner()
+	{
+		// Incoming
+		$confirm = Request::getInt( 'confirm', 0, 'post' );
+		$user    = Request::getInt( 'owned_by_user', $this->model->get('owned_by_user'), 'post' );
+		$group   = Request::getInt( 'owned_by_group', 0, 'post' );
+
+		if ($confirm)
+		{
+			// Load project owner table class
+			$objO = $this->model->table('Owner');
+			$objO->loadOwner($this->model->get('id'), $user);
+
+			if (!$objO->id)
+			{
+				throw new Exception(Lang::txt('Error loading user'), 404);
+			}
+
+			// Change in individual ownership
+			if ($user != $this->model->get('owned_by_user'))
+			{
+				$this->model->set('owned_by_user', $user);
+				$this->model->store();
+
+				// Make sure user is manager
+				$objO->role = 1;
+				$objO->store();
+			}
+
+			// Change in group ownership
+			if ($group != $this->model->get('owned_by_group'))
+			{
+				$this->model->set('owned_by_group', $group);
+				$this->model->store();
+
+				// Make sure project lead is affiliated with group
+				$objO->groupid = $group;
+				$objO->store();
+			}
+
+			$this->_msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERSHIP_UPDATED');
+		}
+		else
+		{
+			// Output HTML
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  =>'projects',
+					'element' =>'team',
+					'name'    =>'changeowner'
+				)
+			);
+
+			// Get groups project owner belongs to
+			$view->groups = \Hubzero\User\Helper::getGroups($this->model->get('owned_by_user'), 'members', 1);
+			if ($this->model->groupOwner())
+			{
+				$view->groups[] = $this->model->groupOwner();
+			}
+
+			$view->option 		= $this->_option;
+			$view->model 		= $this->model;
+			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
+			$view->title		= $this->_area['title'];
+			if ($this->getError())
+			{
+				$view->setError( $this->getError() );
+			}
+			return $view->loadTemplate();
+		}
+
+		// Pass success or error message
+		if ($this->getError())
+		{
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+		}
+		elseif (isset($this->_msg) && $this->_msg)
+		{
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+		}
+
+		$this->_referer = Route::url($this->model->link('edit') . '&section=team');
+		return;
+	}
+
+	/**
 	 * Quit project
 	 *
 	 * @return     void, redirect
@@ -806,16 +895,17 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if ($confirm && !$onlymanager)
+		// Remove member from team if not owner & other managers exist
+		if ($confirm && !$onlymanager && !$this->model->access('owner'))
 		{
 			$deleted = $objO->removeOwners($this->model->get('id'), array($this->_uid));
 			if ($deleted)
 			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_TEAM_TEAM_MEMBER_QUIT_SUCCESS');
+				$this->_msg = Lang::txt('PLG_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
 
 				// Record activity
 				$aid = $this->model->recordActivity(
-					Lang::txt('PLG_PROJECTS_TEAM_TEAM_PROJECT_QUIT'), 0, '', '', 'team', 0
+					Lang::txt('PLG_PROJECTS_TEAM_PROJECT_QUIT'), 0, '', '', 'team', 0
 				);
 
 				// Sync with system group
@@ -833,8 +923,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$objO->loadOwner($this->model->get('id'), $this->_uid);
-			$view->group 		= $objO->groupid;
+			$view->group 		= $this->model->groupOwner('id');
 			$view->onlymanager 	= $onlymanager;
 			$view->option 		= $this->_option;
 			$view->database 	= $this->_database;

@@ -624,7 +624,7 @@ class Owner extends \JTable
 	 * @param      integer $projectid
 	 * @return     boolean, true if any updates were required, false if nothing to change
 	 */
-	public function	reconcileGroups ( $projectid = NULL, $owned_by_group = 0 )
+	public function reconcileGroups ( $projectid = NULL, $owned_by_group = 0 )
 	{
 		if ($projectid === NULL)
 		{

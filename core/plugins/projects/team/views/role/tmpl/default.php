@@ -58,7 +58,7 @@ if (!$this->getError()) {
 			echo '<input type="hidden" name="owner[]" value="' . $owner->id . '" />';
 		} ?></p>
 		<div class="combine_options">
-			<?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_SET_ROLE'); ?>
+			<?php echo Lang::txt('PLG_PROJECTS_TEAM_SET_ROLE'); ?>
 			 <label>
 				 <input class="option" name="role" type="radio" value="1" checked="checked"  />
 				<?php echo Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER'); ?>
