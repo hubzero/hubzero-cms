@@ -155,7 +155,8 @@ HUB.Modules.MySessions = {
 				elementClass = $(element).parent().attr('class');
 
 			// if we didnt click the quick launch button
-			if (element.tagName != 'IMG' || (element.tagName == 'IMG' && elementClass.match(/session-title-icon/gi))) {
+			//if (element.tagName != 'IMG' || (element.tagName == 'IMG' && elementClass.match(/session-title-icon/gi))) {
+			if (!$(element).hasClass('session-title-quicklaunch') && !$(element).parent().hasClass('session-title-quicklaunch')) {
 				// stop event
 				event.preventDefault();
 
