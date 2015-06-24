@@ -166,7 +166,7 @@ class ResourcesElement extends JObject
 
 	/**
 	 * Create html tag for element.
-	 * 
+	 *
 	 * @param  string $tag    Tag Name
 	 * @param  sting  $value  Tag Value
 	 * @param  string $prefix Tag prefix
@@ -174,6 +174,12 @@ class ResourcesElement extends JObject
 	 */
 	public function toHtmlTag($tag, $value, $prefix = 'nb:')
 	{
-		return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
+		/*
+			Some value checking, apparently the resource importer breaks this.
+		 */
+		if (!is_object($value))
+		{
+			return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
+		}
 	}
 }
