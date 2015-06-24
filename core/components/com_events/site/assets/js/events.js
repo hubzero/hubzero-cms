@@ -32,15 +32,15 @@ if (!jq) {
 
 HUB.Events = {
 	jQuery: jq,
-	
+
 	form: '',
-	
+
 	addEvent: function() {
 		var $ = HUB.Events.jQuery;
 
 		$('#sub-sub-menu a').on('click', function(e){
 			e.preventDefault();
-			
+
 			$.fancybox.open($(this).attr('href'), {
 				type: 'ajax',
 				width: '80%',
@@ -55,12 +55,12 @@ HUB.Events = {
 			});
 		});
 	},
-	
+
 	initialize: function() {
 		var $ = this.jQuery;
-		
+
 		HUB.Events.form = $('#hubForm');
-		
+
 		/*$('.title a').fancybox({
 			type: 'ajax',
 			width: '80%',
@@ -82,7 +82,7 @@ HUB.Events = {
 				HUB.Events.addEvent();
 			}
 		});*/
-		
+
 		if ($('#event-id') && $('#event-id').val() != '0') {
 			$('#publish_up').datepicker({
 				dateFormat: 'yy-mm-dd'
@@ -99,7 +99,7 @@ HUB.Events = {
 				dateFormat: 'yy-mm-dd'
 			});
 		}
-		
+
 		if ($('#reccurtype0')) {
 			$('#reccurtype0').onclick = function() {HUB.Events.checkDisable()};
 			$('#reccurtype1').onclick = function() {HUB.Events.checkDisable()};
@@ -160,7 +160,7 @@ HUB.Events = {
 		// rewrite the value of the field based on either 24hr or 12hr time formats according
 		// to the events config.
 		// if an illegal time format is entered, restore field value to original value before bad edit
-		
+
 		if (myField.name.search(/start/i) != -1) {
 			name = "Start";
 			chkBoxGroup = document.ev_adminForm.start_pm;
@@ -168,13 +168,13 @@ HUB.Events = {
 			name = "End";
 			chkBoxGroup = document.ev_adminForm.end_pm;
 		}
-		
+
 		pmUsed = false;
 		amUsed = false;
 		no_hours = false;
-		
+
 		var time = myField.value;
-		
+
 		// if value begins with an optional leading 0 followed by a delimiter, assume only minutes being specified
 		if (time.search(/^\s*0?[\.\-\+:]/) != -1) no_hours=true;
 		time = time.replace(/[-\.,_=\+:;]/g, "");
@@ -187,7 +187,7 @@ HUB.Events = {
 			//time = time.replace(/([^1,2]\d{2})\d+/,"$1");
 			//time = time.replace(/((1|2)\d{3})\d+/,"$1");
 			num = time.replace(/^(\d+).*/, "$1");
-			
+
 			if (num*1 <= 2359) {
 				// pad the entered numer with zeros on the right to make it 4 digits
 				if (no_hours) {
@@ -198,13 +198,13 @@ HUB.Events = {
 				num = num.replace(/^(\d)$/,"$1" + "00");
 				num = num.replace(/^((1|2)\d)$/,"$1" + "00");
 				num = num.replace(/^(\d\d)$/,"$1" + "0");
-				
+
 				if (document.all) mins = num.slice(-2);
 				else mins = num.substr(-2);
 				//alert('mins are: '+ mins);
 				if (mins*1 < 60) {
 					num *= 1;
-					
+
 					// need to determine here if am/pm being used
 					if (time.search(/(a|p)m?$/i) != -1) {
 						// using std time for entry
@@ -240,7 +240,7 @@ HUB.Events = {
 					}
 					if (hrs*1 == 0) hrs = 12;
 					time = hrs + ':' + mins;
-			
+
 					// sucessful field edit.  update the old field value with the new one
 					myField.oldValue = myField.value;
 					myField.value = time;
@@ -264,7 +264,7 @@ HUB.Events = {
 		if (form.publish_down.value < form.publish_up.value) {
 			form.publish_down.value = form.publish_up.value;
 		}
-		checkDisable();		
+		checkDisable();
 	},
 
 	checkRepeatValues: function() {
@@ -273,7 +273,7 @@ HUB.Events = {
 		if (recurtval >= 0) {
 			f[recurtval].checked = true;
 		}
-		
+
 		if ((recurtval == 1) || (recurtval == 2)) {
 			var g = document.ev_adminForm;
 			if (recurwval == "pair") {
@@ -289,7 +289,7 @@ HUB.Events = {
 		var form = HUB.Events.form;
 		if ((form.reccurtype[1].checked==true) || (form.reccurtype[2].checked==true)) {
 			var check = 0;
-			for (i=1; i < 8; i++) 
+			for (i=1; i < 8; i++)
 			{
 				cb = eval( 'form.cb_wn' + i );
 				if (cb.checked==true) {
@@ -299,13 +299,13 @@ HUB.Events = {
 			return check;
 		}
 	},
-	
+
 	checkSelectedDays: function() {
 		var form = HUB.Events.form;
 		if (form.reccurtype[5].checked==true) {
 			var f = form.reccurday_year;
 			var check = 0;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				if (f[i].checked==true) {
 					check++;
@@ -316,7 +316,7 @@ HUB.Events = {
 		if (form.reccurtype[3].checked==true) {
 			var f = form.reccurday_month;
 			var check = 0;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				if (f[i].checked==true) {
 					check++;
@@ -327,7 +327,7 @@ HUB.Events = {
 		if (form.reccurtype[1].checked==true) {
 			var f = form.reccurday_week;
 			var check = 0;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				if (f[i].checked==true) {
 					check++;
@@ -337,7 +337,7 @@ HUB.Events = {
 		}
 		if (form.reccurtype[2].checked==true) {
 			var check = 0;
-			for (i=0; i < 7; i++) 
+			for (i=0; i < 7; i++)
 			{
 				cb = eval( 'form.cb_wd' + i );
 				if (cb.checked==true) {
@@ -347,13 +347,13 @@ HUB.Events = {
 			return check;
 		}
 	},
-	
+
 	checkDisable: function(control) {
 		var form = HUB.Events.form;
 		// Check repeat Disable repeat option
 		if (form.publish_down.value == form.publish_up.value) {
 			var f = form.reccurtype;
-			for (i=1; i < f.length; i++) 
+			for (i=1; i < f.length; i++)
 			{
 				// dmcd May 7/04 commented out this disable.  It confuses people
 				f[i].disabled = false;
@@ -361,21 +361,21 @@ HUB.Events = {
 			//form.reccurtype[0].checked=true;
 		} else {
 			var f = form.reccurtype;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = false;
 			}
 		}
-		// By Week : Check reccurday 
+		// By Week : Check reccurday
 		if (form.reccurtype[1].checked==true) {
 			var f = form.reccurday_week;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = false;
 			}
 		} else {
 			var f = form.reccurday_week;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = true;
 			}
@@ -383,14 +383,14 @@ HUB.Events = {
 		// By Week : Check weekdays
 		if (form.reccurtype[2].checked==true) {
 			var f = HUB.Events.form;
-			for (i=0; i < 7; i++) 
+			for (i=0; i < 7; i++)
 			{
 				cb = eval( 'f.cb_wd' + i );
 				cb.disabled = false;
 			}
 		} else {
 			var f = HUB.Events.form;
-			for (i=0; i < 7; i++) 
+			for (i=0; i < 7; i++)
 			{
 				cb = eval( 'f.cb_wd' + i );
 				cb.disabled = true;
@@ -399,14 +399,14 @@ HUB.Events = {
 		// By Week : Disable Weeks select
 		if ((form.reccurtype[1].checked==true) || (form.reccurtype[2].checked==true)) {
 			var g = HUB.Events.form;
-			for (i=1; i < 8; i++) 
+			for (i=1; i < 8; i++)
 			{
 				cb = eval( 'g.cb_wn' + i );
 				cb.disabled = false;
 			}
 			if (control && (control.id == "cb_wn6" || control.id == "cb_wn7")) {
 				// dmcd oct 4/04  uncheck all of the month weeks
-				for (i=1; i < 6; i++) 
+				for (i=1; i < 6; i++)
 				{
 					cb = eval( 'g.cb_wn' + i );
 					cb.checked = false;
@@ -418,43 +418,55 @@ HUB.Events = {
 			}
 		} else {
 			var g = HUB.Events.form;
-			for (i=1; i < 8; i++) 
+			for (i=1; i < 8; i++)
 			{
 				cb = eval( 'g.cb_wn' + i );
 				cb.disabled = true;
 			}
 		}
-		// By Month : Check reccurday 
+		// By Month : Check reccurday
 		if (form.reccurtype[3].checked==true) {
 			var f = form.reccurday_month;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = false;
 			}
 		} else {
 			var f = form.reccurday_month;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = true;
 			}
 		}
-		// By Year : Check reccurday 
+		// By Year : Check reccurday
 		if (form.reccurtype[5].checked==true) {
 			var f = form.reccurday_year;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = false;
 			}
 		} else {
 			var f = form.reccurday_year;
-			for (i=0; i < f.length; i++) 
+			for (i=0; i < f.length; i++)
 			{
 				f[i].disabled = true;
 			}
 		}
+	},
+	preventDelete: function() {
+		$('.delete').click(function(event){
+			var del = confirm('Are you sure you would like to delete this event?');
+			if (!del)
+			{
+				event.preventDefault();
+			}
+		});
 	}
+
 }
 
 jQuery(document).ready(function($){
 	HUB.Events.initialize();
+	HUB.Events.preventDelete();
+
 });
