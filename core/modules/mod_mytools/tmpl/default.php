@@ -39,7 +39,7 @@ if ($this->fav || $this->no_html) { ?>
 	<?php echo $this->buildList($this->favtools, 'fav'); ?>
 	<p><?php echo Lang::txt('MOD_MYTOOLS_EXPLANATION'); ?></p>
 <?php } else { ?>
-	<div id="myToolsTabs">
+	<div id="myToolsTabs" data-api="<?php echo Route::url('index.php?option=com_members&active=dashboard&no_html=1&init=1&action='); ?>">
 		<ul class="tab_titles">
 			<li title="recenttools" class="active"><?php echo Lang::txt('MOD_MYTOOLS_RECENT'); ?></li>
 			<li title="favtools"><?php echo Lang::txt('MOD_MYTOOLS_FAVORITES'); ?></li>

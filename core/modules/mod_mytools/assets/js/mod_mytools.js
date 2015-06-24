@@ -28,10 +28,10 @@ HUB.Modules.MyTools	 = {
 	jQuery: jq,
 
 	settings: { 
-		mouseOverClass:	'over',
+		mouseOverClass: 'over',
 		ajax: {
 			enabled: false,
-			url: '/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=',
+			url: $('#myToolsTabs').attr('data-api'), //'/index.php?option=com_members&active=dashboard&no_html=1&init=1&action=',
 			options: {
 				method:'get'
 			},
@@ -54,7 +54,7 @@ HUB.Modules.MyTools	 = {
 		}
 
 		$(settings.titles).each(function(i, item) {
-			$(item).click(function () {
+			$(item).on('click', function () {
 				$(this).removeClass(settings.mouseOverClass);
 				mod.activate($(this));
 			});
@@ -114,8 +114,7 @@ HUB.Modules.MyTools	 = {
 
 		// add settings pane if doesnt exist
 		var settingsPaneExists = $(mod).find('.module-settings').length;
-		if (settingsPaneExists == 0)
-		{
+		if (settingsPaneExists == 0) {
 			$(mod).find('.module-main').prepend('<div class="module-settings"><form></form></div>');
 		}
 

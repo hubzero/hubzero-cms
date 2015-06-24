@@ -39,8 +39,17 @@
 		background-image: none;
 	}
 	.sortable .tab_panel li.supported {
-		background: url("/core/modules/mod_mytools/assets/img/award_star_gold_1.png") 0.5em 0.7em no-repeat;
 		padding-left: 2em;
+	}
+	.sortable .tab_panel li.supported:before {
+		font-family: "Fontcons";
+		content: "\f04e";
+		color: gold;
+		position: absolute;
+		top: 0.5em;
+		left: 0.5em;
+		line-height: 1;
+		font-size: 1.4em;
 	}
 	.sortable .tab_panel p {
 		margin: 0.5em;
@@ -81,26 +90,42 @@
 	.sortable .fav,
 	.sortable .launchtool {
 		display: block;
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
+		font-size: 1.4em;
+		line-height: 1;
 		overflow: hidden;
 		position: absolute;
-		top: 0.6em;
-		text-indent: -55em;
+		top: 0.5em;
 		border: none;
-	}	
+	}
+	.sortable .fav:before,
+	.sortable .launchtool:before {
+		font-family: "Fontcons";
+		margin-right: 1em;
+	}
 	.sortable .fav {
-		right: 50px;
-		background: url("/core/modules/mod_mytools/assets/img/fav_heart.gif") 0 0 no-repeat;
+		right: 2.5em;
+		color: pink;
 	}
+	.sortable .fav:before {
+		content: "\2665";
+	}
+	.sortable .fav:hover {
+		color: red;
+	}
+
 	.sortable .launchtool {
-		right: 10px;
-		background: url("/core/modules/mod_mytools/assets/img/app_go.gif") 0 0 no-repeat;
+		right: 1em;
+		color: #666;
 	}
-	.sortable .fav:hover,
+	.sortable .launchtool:before {
+		content: "\f0c2";
+	}
 	.sortable .launchtool:hover {
-		background-position: 0 -16px;
+		color: #222;
 	}
+
 	.sortable #recenttools .fav,
 	.sortable #favtools .fav {
 		display: none;
@@ -108,8 +133,8 @@
 	.sortable .favd {
 		background-color: #FFFFEB;
 	}
-	.sortable .favd .fav {
-		background: url("/core/modules/mod_mytools/assets/img/heart.png") 0 0 no-repeat;
+	.sortable .favd .fav:before {
+		color: red;
 	}
 	.sortable #alltools li {
 		padding-right: 60px;
