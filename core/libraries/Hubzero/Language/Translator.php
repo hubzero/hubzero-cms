@@ -1053,10 +1053,15 @@ class Translator extends Object
 	 */
 	public static function getMetadata($lang)
 	{
-		$path = self::getLanguagePath(PATH_ROOT, $lang);
+		$path = self::getLanguagePath(PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . \App::get('client')->name, $lang);
 		$file = $lang . '.xml';
 
 		$result = null;
+
+		if (!is_file("$path/$file"))
+		{
+			$path = self::getLanguagePath(PATH_CORE . DS . 'bootstrap' . DS . \App::get('client')->name, $lang);
+		}
 
 		if (is_file("$path/$file"))
 		{
