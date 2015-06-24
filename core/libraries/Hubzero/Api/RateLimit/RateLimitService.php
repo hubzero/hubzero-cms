@@ -53,7 +53,7 @@ class RateLimitService extends Middleware
 			$storage = new Storage\Database($app['db']);
 
 			// Get rate limit config (JSON encode/decode to get as array)
-			$config = json_decode(json_encode($app['config']->get('rateLimit')), true);
+			$config = json_decode(json_encode($app['config']->get('rate_limit')), true);
 			$config = (is_array($config)) ? $config : [];
 
 			// Create and return new rate limiter
