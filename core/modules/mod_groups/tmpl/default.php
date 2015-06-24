@@ -87,19 +87,19 @@ $this->css();
 		<tbody>
 			<tr>
 				<td class="approved">
-					<a href="<?php echo Lang::txt('index.php?option=com_groups&controller=manage&type=' . $this->type . '&approved=1&discoverability=&policy='); ?>" title="<?php echo Lang::txt('MOD_GROUPS_PUBLISHED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&type=' . $this->type . '&approved=1&discoverability=&policy='); ?>" title="<?php echo Lang::txt('MOD_GROUPS_PUBLISHED_TITLE'); ?>">
 						<?php echo $this->escape($this->approved); ?>
 						<span><?php echo Lang::txt('MOD_GROUPS_PUBLISHED'); ?></span>
 					</a>
 				</td>
 				<td class="pending">
-					<a href="<?php echo Lang::txt('index.php?option=com_groups&controller=manage&type=' . $this->type . '&approved=0&discoverability=&policy='); ?>" title="<?php echo Lang::txt('MOD_GROUPS_PENDING_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&type=' . $this->type . '&approved=0&discoverability=&policy='); ?>" title="<?php echo Lang::txt('MOD_GROUPS_PENDING_TITLE'); ?>">
 						<?php echo $this->escape($this->pending); ?>
 						<span><?php echo Lang::txt('MOD_GROUPS_PENDING'); ?></span>
 					</a>
 				</td>
 				<td class="newest">
-					<a href="<?php echo Lang::txt('index.php?option=com_groups&controller=manage&type=' . $this->type . '&created=pastday&discoverability=&policy=&approved='); ?>" title="<?php echo Lang::txt('MOD_GROUPS_NEW_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&type=' . $this->type . '&created=pastday&discoverability=&policy=&approved='); ?>" title="<?php echo Lang::txt('MOD_GROUPS_NEW_TITLE'); ?>">
 						<?php echo $this->escape($this->pastDay); ?>
 						<span><?php echo Lang::txt('MOD_GROUPS_NEW'); ?></span>
 					</a>
