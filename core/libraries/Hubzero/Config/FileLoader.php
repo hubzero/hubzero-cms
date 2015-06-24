@@ -84,7 +84,11 @@ class FileLoader
 			{
 				// Get file information
 				$info      = pathinfo($path);
-				$extension = isset($info['extension']) ? $info['extension'] : '';
+				$extension = isset($info['extension']) ? strtolower($info['extension']) : '';
+				if (!$extension || $extension == 'html')
+				{
+					continue;
+				}
 				$parser    = $this->getParser($extension);
 
 				// Try and load file
@@ -102,7 +106,11 @@ class FileLoader
 				{
 					// Get file information
 					$info      = pathinfo($path);
-					$extension = isset($info['extension']) ? $info['extension'] : '';
+					$extension = isset($info['extension']) ? strtolower($info['extension']) : '';
+					if (!$extension || $extension == 'html')
+					{
+						continue;
+					}
 					$parser    = $this->getParser($extension);
 
 					// Try and load file
@@ -147,6 +155,8 @@ class FileLoader
 	{
 		$parser = null;
 
+		$extension = strtolower($extension);
+
 		foreach (Processor::all() as $fileParser)
 		{
 			if (in_array($extension, $fileParser->getSupportedExtensions()))
@@ -159,7 +169,7 @@ class FileLoader
 		// If none exist, then throw an exception
 		if ($parser === null)
 		{
-			throw new UnsupportedFormatException('Unsupported configuration format');
+			throw new UnsupportedFormatException(sprintf('Unsupported configuration format "%s"', $extension));
 		}
 
 		return $parser;
