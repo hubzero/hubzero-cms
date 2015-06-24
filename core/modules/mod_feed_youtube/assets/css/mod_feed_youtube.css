@@ -1,0 +1,107 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_feed_youtube/assets/img/mod_feed_youtube.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_feed_youtube
+	-- -- -- -- -- -- --
+
+*/
+
+	.youtubefeed {
+		padding-left: 1.7em;
+	}
+	.youtubefeed img {
+		width: 80px;
+		height: 60px;
+		border: 1px solid #ccc;
+		border-right: 2px solid #ccc;
+		border-bottom: 2px solid #ccc;
+		float: left;
+		margin-right: 20px;
+	}
+	.youtubefeed p {
+		color: #666666;
+	}
+	.youtubefeed span {
+		font-size: 90%;
+	}
+	.youtubefeed ul {
+		padding: 0;
+		background: none;
+		list-style: none;
+		margin: 0;
+	}
+	.youtubefeed li {
+		min-height: 60px;
+		border-bottom: 1px solid #cccccc;
+		background: #f7f7f7 url("/core/modules/mod_feed_youtube/assets/img/libg.gif") 0 -20px repeat-x;
+		padding: 1em 0.5em;
+		margin: 0;
+	}
+	h3.feed_title {
+		display: block;
+		min-height: 20px;
+		margin: 0.5em 0;
+		padding: 0;
+	}
+	.feed_title img {
+		border: none;
+		width: auto;
+		height: auto;
+		float: right;
+		margin-right: 0;
+	}
+	.feed_title {
+		font-weight: bold;
+		font-size: 110%;
+		text-transform: uppercase;
+	}
+	.feed_title a,
+	.youtubefeed h3 a {
+		color: #000000;
+	}
+	.feed_title a:hover,
+	.youtubefeed h3 a:hover {
+		color: #FF0000;
+		border: none;
+	}
+	.youtubefeed h3 {
+		background: url("/core/modules/mod_feed_youtube/assets/img/fc-tv.gif") 0 2px no-repeat;
+		padding:0.3em 0;
+		padding-left: 23px;
+	}
+/* horizontal layout */
+	.youtubefeed ul.layout_horizontal li {
+		display: inline;
+		background: none;
+		text-align: center;
+		padding: 0.5em 1em 0.5em 1em;
+		margin: 0 0 1em -1px;
+		float: left;
+		border: none;
+		border: 1px solid #e4e4e4;
+		background: #f7f7f7;
+		min-height: 150px;
+	}
+	.youtubefeed ul.layout_horizontal {
+		display: block;
+	}
+	.youtubefeed ul.layout_horizontal li span {
+		display: block;
+		width: 150px;
+		text-align: left;
+		float: none;
+		margin: 1em 0 0.5em 0;
+		line-height: 1.4em;
+	}
+	.youtubefeed ul.layout_horizontal img {
+		margin: 0;
+		float: none;
+		display: block;
+	}

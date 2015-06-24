@@ -258,7 +258,7 @@ class Loader
 
 		// Get module path
 		$module->module = preg_replace('/[^A-Z0-9_\.-]/i', '', $module->module);
-		$path = PATH_ROOT . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
+		$path = PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
 
 		// Load the module
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
@@ -357,8 +357,8 @@ class Loader
 
 		// Build the template and base path for the layout
 		$tPath = JPATH_THEMES . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
-		$bPath = PATH_ROOT . '/modules/' . $module . '/tmpl/' . $default . '.php';
-		$dPath = PATH_ROOT . '/modules/' . $module . '/tmpl/default.php';
+		$bPath = PATH_CORE . '/modules/' . $module . '/tmpl/' . $default . '.php';
+		$dPath = PATH_CORE . '/modules/' . $module . '/tmpl/default.php';
 
 		// If the template has a layout override use it
 		if (file_exists($tPath))

@@ -1,0 +1,152 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_notices/assets/css/mod_notices.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_notices
+	-- -- -- -- -- -- --
+
+*/
+
+	.modnotices {
+		margin: 0;
+		padding: 0.61803399em 0.61803399em 0.61803399em 3em;
+		color: #ffffc0;
+		position: relative;
+		overflow: hidden;
+		zoom: 1;
+		background: #fff;
+		border-bottom: 0.27em solid #eee;
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		z-index: 1;
+		*background-image: url("/media/system/images/light-stripes.png");
+		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
+											color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
+											to(transparent));
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		-moz-background-size: 30px 30px;
+		background-size: 30px 30px; /* Controls the size of the stripes */
+		-webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+		-moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+		-ms-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+		-o-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+		box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+	}
+	html.ie8,
+	html.ie9 {
+		background-image: url("/media/system/images/light-stripes.png");
+	}
+
+	.modnotices.low {
+		background-color: #84A7DB;
+		color: #e8f1fe !important;
+		border-color: #6685b2;
+	}
+	.modnotices.medium {
+		background-color: #cea638;
+		color: #ffffc0 !important;
+		border-color: #ac8416;
+	}
+	.modnotices.high {
+		background-color: #ba4a3b;
+		color: #ffd2c3 !important;
+		border-color: #982819;
+	}
+	.modnotices p {
+		margin: 0;
+		padding: 0;
+	}
+	.modnotices p span.modnoticep-before,
+	.modnotices p:before {
+		content: "\f095";
+		position: absolute;
+		top: 0.41803399em;
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+		line-height: 18px;
+		display: inline-block;
+		left: 0.61803399em;
+		font-family: 'Fontcons';
+	}
+	.modnotices .close {
+		display: block;
+		position: absolute;
+		top: 0.41803399em;
+		right: 0.61803399em;
+		text-align: left;
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+		line-height: 18px;
+		overflow: hidden;
+		white-space: nowrap;
+		border: none !important;
+	}
+	.modnotices.low .close {
+		color: #e8f1fe !important;
+	}
+	.modnotices.medium .close {
+		color: #ffffc0 !important;
+	}
+	.modnotices.high .close {
+		color: #ffd2c3 !important;
+	}
+	.modnotices .close:hover {
+		color: #fff !important;
+		border: none !important;
+	}
+	.modnotices .close span.modnoticec-before,
+	.modnotices .close:before {
+		font-family: 'Fontcons';
+		margin-top: -0.25em;
+		content: "\f057";
+	}
+	.modnotices .close span.modnoticec-before {
+		margin-top: -0.5em;
+	}
+/* [!] HACKS - IE 7 and older */
+	.modnotices p {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="modnoticep-before">&#xf095;&nbsp;</span>' + this.innerHTML);
+	}
+	.modnotices .close {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="modnoticec-before">&#xf057;&nbsp;</span>' + this.innerHTML);
+	}
+/* [!] HACKS - Firefox 3.4 and older */
+@-moz-document url-prefix() {
+	html.firefox3 .modnotices.low { 
+		background: #84A7DB url("/core/modules/mod_notices/assets/img/information.png") 0.71803399em 0.71803399em no-repeat;
+	}
+	html.firefox3 .modnotices.medium { 
+		background: #cea638 url("/core/modules/mod_notices/assets/img/warning.png") 0.71803399em 0.71803399em no-repeat;
+	}
+	html.firefox3 .modnotices.high { 
+		background: #ba4a3b url("/core/modules/mod_notices/assets/img/error.png") 0.71803399em 0.71803399em no-repeat; 
+	}
+	html.firefox3 .modnotices .close {
+		background: url("/core/modules/mod_notices/assets/img/delete.png") 0 0 no-repeat;
+		text-indent: 5em;
+	}
+}

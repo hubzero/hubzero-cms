@@ -1,0 +1,133 @@
+/**
+ * @package     hubzero-cms
+ * @file        core/core/modules/mod_wishlist/assets/css/mod_wishlist.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.mod_wishlist {
+		padding: 1.618em;
+		position: relative;
+	}
+	.mod_wishlist .overview-container {
+		position: relative;
+		float: left;
+		width: 50%;
+		margin: 0;
+		padding: 1em 0 0 0;
+	}
+	.mod_wishlist:before,
+	.mod_wishlist:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.mod_wishlist:after {
+		clear: left;
+	}
+	.mod_wishlist .wishlist-stats-overview {
+		padding-top: 0;
+	}
+
+/* Chart legend */
+	.mod_wishlist .legend table,
+	.mod_wishlist .legend table thead tr,
+	.mod_wishlist .legend table thead th,
+	.mod_wishlist .legend table tbody tr,
+	.mod_wishlist .legend table tbody td {
+		border: none;
+		background: transparent;
+	}
+	.mod_wishlist .legend table {
+		width: auto;
+	}
+	.mod_wishlist .legend table tbody td {
+		padding: 0.2em;
+	}
+
+/* Total */
+	.mod_wishlist .wishlist-total {
+		position: absolute;
+		top: 93px;
+		left: 50%;
+		margin-left: -50px;
+		font-size: 2em;
+		color: #666;
+		font-weight: 300;
+		text-align: center;
+		width: 100px;
+	}
+
+/* Data */
+	.mod_wishlist .wishlist-stats-overview table {
+		margin: 0;
+		padding: 0 0.618em;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr th,
+	.mod_wishlist .wishlist-stats-overview tbody tr td {
+		padding: 0.618em 0;
+		font-weight: normal;
+		color: #444;
+		border-top: 1px solid #e9e9e9;
+		border-bottom: none;
+		text-align: left;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr td {
+		text-align: right;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr:first-child th,
+	.mod_wishlist .wishlist-stats-overview tbody tr:first-child td {
+		border-top: none;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody th span {
+		display: inline-block;
+		/*-webkit-border-radius: 50%;
+		   -moz-border-radius: 50%;
+		        border-radius: 50%;*/
+		width: 0.65em;
+		height: 0.65em;
+		line-height: 1;
+		padding: 0;
+		margin-right: 0.5em;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr:hover,
+	.mod_wishlist .wishlist-stats-overview tbody tr:hover td,
+	.mod_wishlist .wishlist-stats-overview tbody tr:hover th {
+		background: transparent;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr th a {
+		color: #888;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr td a {
+		color: #444;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr th a:hover,
+	.mod_wishlist .wishlist-stats-overview tbody tr th a:hover span,
+	.mod_wishlist .wishlist-stats-overview tbody tr td a:hover,
+	.mod_wishlist .wishlist-stats-overview tbody tr td a:hover span {
+		color: #222;
+	}
+	.mod_wishlist .chrt {
+		min-width: 200px;
+		height: 200px;
+	}
+
+@media (max-width: 600px) {
+	.mod_wishlist .chrt {
+		min-width: 160px;
+	}
+}
+
+@media (max-width: 500px) {
+	.mod_wishlist .chrt {
+		min-width: 150px;
+	}
+	.mod_wishlist .overview-container {
+		width: 55%;
+	}
+	.mod_wishlist .wishlist-stats-overview {
+		width: 45%;
+	}
+}

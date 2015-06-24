@@ -4,7 +4,7 @@
 	width: 214px;
 	float: left;
 	border-right: 1px solid #d1d1d1;
-	background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+	background: #e1e1e1 url("../../images/layout/noise-lite.png");
 	margin-bottom: -50000px;
 	padding-bottom: 50000px;
 	-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);

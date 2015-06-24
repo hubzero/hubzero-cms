@@ -302,7 +302,6 @@ class File extends Object
 					break;
 
 					case 'modules':
-						$basec  = PATH_ROOT . DS;
 						$path = $this->extensionType() . DS . $this->extensionName() . DS;
 					break;
 

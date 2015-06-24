@@ -1,0 +1,64 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_youtube/assets/css/mod_youtube.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_youtube
+	-- -- -- -- -- -- --
+
+*/
+
+	.youtube_vertical {
+		position: relative;
+	}
+	.youtube_vertical h3 {
+		background: url("/core/modules/mod_youtube/assets/img/fc-tv.gif") no-repeat top left;
+		padding-left: 23px;
+	}
+	.youtube_vertical .description {
+		font-size: 11px;
+		color: #777;
+		margin-top: 0;
+		border-bottom: 1px solid #CCC;
+		padding-bottom: 0.5em;
+		margin-bottom: 0.5em;
+	}
+	.youtube_vertical .logo {
+		position: absolute;
+		right: 0px;
+		top: -3px;
+		height: 20px;
+	}
+	.youtube_vertical ul {
+		border-bottom: 1px solid #CCC;
+	}
+	.youtube_vertical ul li {
+		overflow: hidden;
+	}
+	.youtube_vertical ul li .entry-thumb {
+		float: left;
+		width: 85px;
+		margin-right: 15px;
+	}
+	.youtube_vertical ul li .entry-thumb:hover {
+		border: none;
+	}
+	.youtube_vertical ul li .entry-thumb img {
+		width: 100%;
+		border: 1px solid #CCC;
+		padding: 1px;
+	}
+	.youtube_vertical ul li .entry-duration  { 
+		font-size: 11px;
+	}
+	.youtube_vertical ul li .entry-duration span {
+		border-bottom: 1px dotted #444;
+	}
+	.youtube_vertical .more { 
+		margin: 1em 0;
+	}
