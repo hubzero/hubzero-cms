@@ -6,4 +6,4 @@
  */
 
 /* Import project-level system CSS */
-@import url(../../../../media/system/css/system.css);
+@import url("../../../../core/assets/css/system.css");

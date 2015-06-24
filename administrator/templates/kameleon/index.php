@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 Html::behavior('framework', true);
 
@@ -58,11 +58,11 @@ $htheme = $this->params->get('header', 'light');
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme; ?> ie ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme; ?> ie ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme; ?> ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme; ?> ie ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme; ?> ie ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
 		<meta name="viewport" content="width=device-width" />
 
@@ -116,14 +116,14 @@ $browser = new \Hubzero\Browser\Detector();
 				endforeach;
 				?>
 			</ul>
-		</header><!-- / header -->
+		</header><!-- / #header -->
 
 		<div id="wrap">
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
 					<jdoc:include type="modules" name="menu" />
 				</div>
-			</nav><!-- / .navigation -->
+			</nav><!-- / .main-navigation -->
 
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
@@ -150,7 +150,7 @@ $browser = new \Hubzero\Browser\Detector();
 						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 					</noscript>
 				</section><!-- / #main -->
-			</section><!-- / #content -->
+			</section><!-- / #component-content -->
 		</div><!-- / #wrap -->
 
 		<footer id="footer">

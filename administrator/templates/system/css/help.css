@@ -5,13 +5,23 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	     -o-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
 body {
-	font-size: 14px;
-	line-height: 20px;
-	color: #222;
+	padding: 2em;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+	line-height: 1.7;
+	color: #333;
 	background: #fff;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	padding: 20px;
 	text-rendering: optimizeLegibility;
 }
 
@@ -26,11 +36,12 @@ h6 {
 	margin: 0;
 }
 h1 {
-	font-size: 3em;
+	font-size: 2.8em;
 	line-height: 1;
 	margin-bottom: 0.5em;
 	padding-bottom: 0.25em;
 	border-bottom: 1px solid #CCC;
+	font-weight: 400;
 }
 h2 {
 	font-size: 2em;
@@ -198,7 +209,7 @@ figure {
 	border: 1px solid #ccc;
 	padding: 4px;
 	background: #FFF;
-	margin: 10px 0;
+	margin: 1em 0;
 }
 figcaption {
 	font-size: 1em;
@@ -240,8 +251,8 @@ hr {
 .help-footer {
 	border-top: 1px solid #ccc;
 	font-size: 0.85em;
-	padding: 10px 0 0 0;
-	margin: 10px 0 0 0;
+	padding: 1em 0 0 0;
+	margin: 1em 0 0 0;
 }
 .help-footer a.top,
 .help-footer a.index {
@@ -249,7 +260,7 @@ hr {
 	color: #0FA1CA;
 }
 .help-footer a.index {
-	margin-right: 10px;
+	margin-right: 1em;
 }
 .help-footer .modified {
 	color: #ccc;
@@ -260,7 +271,7 @@ hr {
 	position: relative;
 	width: 24px;
 	height: 24px;
-	margin: 10px 10px 0 0;
+	margin: 1em 1em 0 0;
 	background: #555;
 	border: none;
 	color: transparent;

@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 $browser = new \Hubzero\Browser\Detector();
 ?>
@@ -91,17 +91,17 @@ $browser = new \Hubzero\Browser\Detector();
 					?>
 				</li>
 			</ul>
-		</header><!-- / header -->
+		</header><!-- / #header -->
 
 		<div id="wrap">
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
 					<ul id="menu">
 						<li><a href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?></a></li>
-						<li><a href="<?php echo Route::url('index.php?option=com_admin&view=help'); ?>"><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></a></li>
+						<li><a href="<?php echo Route::url('index.php?option=com_help'); ?>"><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></a></li>
 					</ul>
 				</div>
-			</nav><!-- / .navigation -->
+			</nav><!-- / .main-navigation -->
 
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
@@ -129,8 +129,8 @@ $browser = new \Hubzero\Browser\Detector();
 				<noscript>
 					<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 				</noscript>
-			</section>
-		</div>
+			</section><!-- / #component-content -->
+		</div><!-- / #wrap -->
 
 		<footer id="footer">
 			<section class="basement">
