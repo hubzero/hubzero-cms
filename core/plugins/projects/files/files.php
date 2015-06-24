@@ -3393,7 +3393,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$folders = Request::getVar( 'folder', array() );
 
 		$combined = array();
-		if (!empty($checked))
+		if (!empty($checked) && is_array($checked))
 		{
 			foreach ($checked as $ch)
 			{
@@ -3407,7 +3407,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
-		if (!empty($folders))
+		if (!empty($folders) && is_array($folders))
 		{
 			foreach ($folders as $f)
 			{

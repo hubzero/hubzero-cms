@@ -63,7 +63,7 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
 <?php
 // Display error
 if ($this->getError()) {
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo ('<p class="witherror">' . $this->getError() . '</p>');
 }
 ?>
 <?php } ?>
@@ -152,8 +152,8 @@ if ($this->getError()) {
 				else
 				{
 					$url = $this->url
-						.'/?file='.urlencode($version['name'])
-						. '&amp;action=download&amp;hash='.$version['hash'];
+						.'/?asset=' . urlencode($version['name'])
+						. '&amp;action=download&amp;hash=' . $version['hash'];
 					$action = (in_array($version['commitStatus'], array('A', 'M', 'R', 'W')))
 						? '<a href="' . $url .'" class="download_file" title="' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
 						: '';
@@ -250,10 +250,6 @@ if ($this->getError()) {
 				</tbody>
 			</table>
 			<?php } ?>
-
-			<?php if ($this->getError()) {
-				echo ('<p class="witherror">'.$this->getError().'</p>');
-			} ?>
 		</fieldset>
 </form>
 <?php if ($this->ajax) { ?>
