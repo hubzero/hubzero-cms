@@ -90,6 +90,9 @@ class plgContentSpamassassin extends JPlugin
 				$obj->failed = $content;
 				JFactory::getSpamLogger()->info(json_encode($obj));
 				JFactory::getSession()->set('spam' . $hash, 1);
+
+				// Increment spam hits count...go to spam jail!
+				\Hubzero\User\Reputation::incrementSpamCount();
 			}
 			return false;
 		}
