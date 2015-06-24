@@ -169,6 +169,23 @@ class Behavior
 	}
 
 	/**
+	 * Add HUBzero core js resources
+	 *
+	 * @return  void
+	 */
+	public static function core()
+	{
+		if (isset(self::$loaded[__METHOD__]))
+		{
+			return;
+		}
+
+		Asset::script('assets/hubzero.js', true, true);
+
+		self::$loaded[__METHOD__] = true;
+	}
+
+	/**
 	 * Add unobtrusive javascript support for image captions.
 	 *
 	 * @param   string  $selector  The selector for which a caption behaviour is to be applied.
