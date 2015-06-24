@@ -53,14 +53,14 @@ $team = $this->model->team($filters = array('status' => 1));
 		<?php } ?>
 			</select>
 		</label>
-		<?php if (!empty($this->groups)) { 
+		<?php if (!empty($this->groups)) {
 			$used = array();
 			?>
 		<label for="owned_by_group">
 			<?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
 			<select name="owned_by_group" class="block">
 				<option value="0" <?php if (!$this->model->groupOwner()) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
-		<?php foreach ($this->groups as $g) { 
+		<?php foreach ($this->groups as $g) {
 			if (in_array($g->gidNumber, $used))
 			{
 				continue;
