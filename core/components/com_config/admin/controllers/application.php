@@ -39,7 +39,7 @@ use Route;
 use User;
 use App;
 
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'application.php');
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
 
 /**
  * Controller class for the Application config

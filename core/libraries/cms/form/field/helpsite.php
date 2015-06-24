@@ -40,7 +40,21 @@ class JFormFieldHelpsite extends JFormFieldList
 	protected function getOptions()
 	{
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), JHelp::createSiteList(JPATH_ADMINISTRATOR . '/help/helpsites.xml', $this->value));
+		$opts = array();
+		if (file_exists(PATH_CORE . '/help/helpsites.xml'))
+		{
+			$opts = JHelp::createSiteList(PATH_CORE . '/help/helpsites.xml', $this->value);
+		}
+		else
+		{
+			$opts[] = JHtml::_(
+				'select.option',
+				'English (GB) - HUBzero help',
+				'http://hubzero.org/documentation/'
+			);
+		}
+
+		$options = array_merge(parent::getOptions(), $opts);
 
 		return $options;
 	}
