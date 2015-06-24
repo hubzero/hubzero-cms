@@ -36,12 +36,13 @@ $this->css();
 Html::behavior('chart', 'pie');
 
 $total = $this->draftInternal + $this->draftUser + $this->pending + $this->published + $this->unpublished + $this->removed;
+
 $this->draft = $this->draftInternal + $this->draftUser;
 ?>
 <div class="mod_resources">
 	<div class="overview-container">
 		<div id="resources-container<?php echo $this->module->id; ?>" class="chrt"></div>
-
+		<?php if ($total > 0): ?>
 		<script type="text/javascript">
 		if (!jq) {
 			var jq = $;
@@ -80,7 +81,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 			});
 		}
 		</script>
-
+	<?php endif; ?>
 		<p class="resources-total"><?php echo $total; ?></p>
 	</div>
 	<div class="overview-container resources-stats-overview">
