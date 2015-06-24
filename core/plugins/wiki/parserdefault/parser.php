@@ -1927,8 +1927,8 @@ class WikiParser
 			$h = str_repeat('=', $i);
 
 			$patterns = array(
-				"/^(.*) {$h}(.+) {$h}\s\#(.*)\\s*$/m",    // === Header #myheader ===
-				"/^(.*) {$h}(.+) {$h}\\s*$/m"             // === Header ===
+				"/^(.*){$h}(.+){$h}\s\#(.*)\\s*$/m",    // === Header #myheader ===
+				"/^(.*){$h}(.+){$h}\\s*$/m"             // === Header ===
 			);
 			$replace  = array(
 				"\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4",  // <h3 id="myheader">Header</h3>
