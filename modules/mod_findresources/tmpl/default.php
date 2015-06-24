@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p>
 				<label for="rsearchword"><?php echo JText::_('MOD_FINDRESOURCES_SEARCH_LABEL'); ?></label>
 				<input type="text" name="terms" id="rsearchword" value="" />
-				<input type="hidden" name="domains[]" value="resources" />
+				<input type="hidden" name="domain" value="resources" />
 				<input type="submit" value="<?php echo JText::_('MOD_FINDRESOURCES_SEARCH'); ?>" />
 			</p>
 		</fieldset>
