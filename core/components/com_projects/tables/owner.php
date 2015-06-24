@@ -484,7 +484,7 @@ class Owner extends \JTable
 			return false;
 		}
 		$online   	= isset($filters['online']) 	? $filters['online'] : 0;
-		$status    	= isset($filters['status']) 	? $filters['status'] : '';
+		$status    	= isset($filters['status']) 	? $filters['status'] : 'active';
 		$sortby  	= isset($filters['sortby']) 	? $filters['sortby'] : 'name';
 		$sortdir 	= isset($filters['sortdir']) 	? $filters['sortdir'] : '';
 		$limit   	= isset($filters['limit']) 		? $filters['limit'] : 0;
@@ -514,7 +514,7 @@ class Owner extends \JTable
 		$query  .=  " JOIN #__projects as p ON o.projectid=p.id";
 		if ($pub)
 		{
-			$query  .=  " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=".$pub;
+			$query  .=  " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $this->_db->Quote($pub);
 		}
 		$query  .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
 		$query  .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
@@ -531,7 +531,7 @@ class Owner extends \JTable
 
 		if (is_numeric($status))
 		{
-			$query .= " AND o.status=$status ";
+			$query .= " AND o.status=" . $this->_db->Quote($status);
 		}
 		elseif ($status == 'active')
 		{
@@ -539,7 +539,7 @@ class Owner extends \JTable
 		}
 		if ($native != '-')
 		{
-			$query .= " AND o.native=$native ";
+			$query .= " AND o.native=" . $this->_db->Quote($native);
 		}
 		if (isset($filters['role']))
 		{
@@ -594,7 +594,7 @@ class Owner extends \JTable
 	 * @param      integer $join verify if group exists
 	 * @return     object
 	 */
-	public function	getProjectGroups( $projectid = NULL, $what='o.groupid', $native = 0, $join = 0 )
+	public function getProjectGroups( $projectid = NULL, $what='o.groupid', $native = 0, $join = 0 )
 	{
 		if ($projectid === NULL)
 		{
