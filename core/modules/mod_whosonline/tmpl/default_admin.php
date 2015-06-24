@@ -51,7 +51,7 @@ $editAuthorized = User::authorize('com_users', 'manage');
 ?>
 
 <div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">
-	<table class="whosonline-summary">
+	<table class="adminlist whosonline-summary">
 		<thead>
 			<tr>
 				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_SITE'); ?></th>
