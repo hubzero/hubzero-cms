@@ -173,7 +173,7 @@ class Licenses extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
@@ -223,7 +223,7 @@ class Licenses extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
@@ -265,7 +265,7 @@ class Licenses extends AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$dir = $this->_task == 'orderup' ? -1 : 1;
 

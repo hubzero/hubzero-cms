@@ -298,7 +298,7 @@ class Polls extends SiteController
 	public function voteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$poll_id   = Request::getVar('id', 0, '', 'int');
 		$option_id = Request::getVar('voteid', 0, 'post', 'int');

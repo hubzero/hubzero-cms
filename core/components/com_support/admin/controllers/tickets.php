@@ -429,7 +429,7 @@ class Tickets extends AdminController
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$isNew = true;
@@ -1141,7 +1141,7 @@ class Tickets extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

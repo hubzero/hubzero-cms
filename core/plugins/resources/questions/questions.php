@@ -266,7 +266,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		Lang::load('com_answers');
 

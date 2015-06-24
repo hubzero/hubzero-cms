@@ -290,7 +290,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$tags   = Request::getVar('tags', '');

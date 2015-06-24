@@ -792,7 +792,7 @@ class Items extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Initiate extended database class
 		$row = new Resource($this->database);
@@ -1148,7 +1148,7 @@ class Items extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -1231,7 +1231,7 @@ class Items extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$id  = Request::getInt('id', 0);
@@ -1320,7 +1320,7 @@ class Items extends AdminController
 	public function stateTask($publish=1)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$pid = Request::getInt('pid', 0);
@@ -1409,7 +1409,7 @@ class Items extends AdminController
 	public function cancelTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id  = Request::getInt('id', 0);
@@ -1435,7 +1435,7 @@ class Items extends AdminController
 	public function resethitsTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -1467,7 +1467,7 @@ class Items extends AdminController
 	public function resetratingTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -1500,7 +1500,7 @@ class Items extends AdminController
 	public function resetrankingTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -1532,7 +1532,7 @@ class Items extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -1565,7 +1565,7 @@ class Items extends AdminController
 	public function reorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getVar('id', array());

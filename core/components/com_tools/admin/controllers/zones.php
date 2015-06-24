@@ -185,7 +185,7 @@ class Zones extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
@@ -248,7 +248,7 @@ class Zones extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -288,7 +288,7 @@ class Zones extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -365,7 +365,7 @@ class Zones extends AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -525,7 +525,7 @@ class Zones extends AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -615,7 +615,7 @@ class Zones extends AdminController
 	public function ajaxRemoveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -684,7 +684,7 @@ class Zones extends AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

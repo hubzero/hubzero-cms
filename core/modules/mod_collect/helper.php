@@ -171,7 +171,7 @@ class Helper extends Module
 		}
 
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Was a collection title submitted?
 		// If so, we'll create a new collection with that title.

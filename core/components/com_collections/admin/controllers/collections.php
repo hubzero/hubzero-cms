@@ -175,7 +175,7 @@ class Collections extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -220,7 +220,7 @@ class Collections extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -297,7 +297,7 @@ class Collections extends AdminController
 	public function accessTask($access=0)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -343,7 +343,7 @@ class Collections extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$state = $this->getTask() == 'publish' ? 1 : 0;

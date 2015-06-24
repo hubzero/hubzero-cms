@@ -234,7 +234,7 @@ class Jobs extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$data       = array_map('trim',$_POST);
@@ -402,7 +402,7 @@ class Jobs extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());

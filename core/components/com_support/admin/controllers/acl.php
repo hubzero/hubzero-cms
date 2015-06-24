@@ -73,7 +73,7 @@ class Acl extends AdminController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken('get') or exit('Invalid Token');
+		//Request::checkToken('get');
 
 		$id     = Request::getInt('id', 0);
 		$action = Request::getVar('action', '');
@@ -117,7 +117,7 @@ class Acl extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$ids = Request::getVar('id', array());
 
@@ -156,7 +156,7 @@ class Acl extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Trim and addslashes all posted items
 		$aro = Request::getVar('aro', array(), 'post');

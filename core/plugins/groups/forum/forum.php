@@ -538,7 +538,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function savesection()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming posted data
 		$fields = Request::getVar('fields', array(), 'post');
@@ -908,7 +908,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	public function savecategory()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);

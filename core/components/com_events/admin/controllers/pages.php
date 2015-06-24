@@ -154,7 +154,7 @@ class Pages extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Bind incoming data to object
 		$row = new Page($this->database);
@@ -210,7 +210,7 @@ class Pages extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$event = Request::getInt('event', 0);
@@ -271,7 +271,7 @@ class Pages extends AdminController
 	protected function reorderTask($move='down')
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$id = Request::getVar('id', array());

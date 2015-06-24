@@ -391,7 +391,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Make sure the token is the proper length
 		if (strlen($token) != 32)
@@ -522,7 +522,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Load some needed libraries
 		jimport('joomla.user.helper');

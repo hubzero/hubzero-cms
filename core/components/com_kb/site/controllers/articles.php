@@ -444,7 +444,7 @@ class Articles extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);

@@ -168,7 +168,7 @@ class Pipeline extends AdminController
 	 */
 	public function saveTask()
 	{
-		Request::checkToken() or die('Invalid Token');
+		Request::checkToken();
 
 		// Incoming instance ID
 		$fields = Request::getVar('fields', array(), 'post');

@@ -54,7 +54,7 @@ class Media extends SiteController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$resource = Request::getInt('resource', 0, 'post');
@@ -139,7 +139,7 @@ class Media extends SiteController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$resource = Request::getInt('resource', 0);

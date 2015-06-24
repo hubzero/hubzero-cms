@@ -1761,7 +1761,7 @@ class Events extends SiteController
 
 
 		// good ol' form validation
-		Request::checkToken() or die('Invalid Token');
+		Request::checkToken();
 		Request::checkHoneypot() or die('Invalid Field Data Detected. Please try again.');
 
 		$offset = $this->offset;

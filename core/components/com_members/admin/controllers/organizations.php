@@ -173,7 +173,7 @@ class Organizations extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Load the tag object and bind the incoming data to it
 		$model = new Organization($this->database);
@@ -221,7 +221,7 @@ class Organizations extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array(), 'post');

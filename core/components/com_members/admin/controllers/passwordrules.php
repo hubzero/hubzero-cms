@@ -179,7 +179,7 @@ class PasswordRules extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming password rule edits
 		$fields = Request::getVar('fields', array(), 'post');
@@ -216,7 +216,7 @@ class PasswordRules extends AdminController
 	public function orderupTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		$this->orderTask(1);
 
@@ -235,7 +235,7 @@ class PasswordRules extends AdminController
 	public function orderdownTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		$this->orderTask(0);
 
@@ -273,7 +273,7 @@ class PasswordRules extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Get the id's
 		$cid = Request::getVar('id', array(0), 'post', 'array');
@@ -374,7 +374,7 @@ class PasswordRules extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

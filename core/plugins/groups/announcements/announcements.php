@@ -333,7 +333,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		//verify were authorized
 		if ($this->authorized != 'manager')

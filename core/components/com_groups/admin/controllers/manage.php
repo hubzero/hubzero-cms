@@ -240,7 +240,7 @@ class Manage extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$g = Request::getVar('group', array(), 'post', 'none', 2);
@@ -671,7 +671,7 @@ class Manage extends AdminController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -808,7 +808,7 @@ class Manage extends AdminController
 	public function doUpdateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -901,7 +901,7 @@ class Manage extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1011,7 +1011,7 @@ class Manage extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken() or exit('Invalid Token');
+		//Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1066,7 +1066,7 @@ class Manage extends AdminController
 	public function unpublishTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken() or exit('Invalid Token');
+		//Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

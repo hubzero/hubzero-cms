@@ -48,7 +48,7 @@ class Media extends AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -150,7 +150,7 @@ class Media extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

@@ -77,30 +77,12 @@ class Request extends Facade
 	 *
 	 * Use in conjunction with Html::input('token').
 	 *
-	 * @param   string  $method  The request method in which to look for the token key.
+	 * @param   string   $method  The request method in which to look for the token key.
 	 * @return  boolean  True if found and valid, false otherwise.
 	 */
 	public static function checkToken($method = 'post')
 	{
-		$token = \Session::getFormToken();
-
-		if (!self::getVar($token, '', $method, 'alnum'))
-		{
-			$session = \App::get('session');
-			if ($session->isNew())
-			{
-				// Redirect to login screen.
-				$return = \Route::url('index.php');
-				\App::redirect($return, \Lang::txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'error');
-				\App::close();
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return \App::get('session')->checkToken($method);
 	}
 
 	/**

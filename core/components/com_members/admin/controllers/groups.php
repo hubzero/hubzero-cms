@@ -47,7 +47,7 @@ class Groups extends AdminController
 	public function addTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

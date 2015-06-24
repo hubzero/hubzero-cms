@@ -179,7 +179,7 @@ class Posts extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Login is required
 		if (User::isGuest())
@@ -271,7 +271,7 @@ class Posts extends SiteController
 	public function savecommentTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Ensure the user is logged in
 		if (User::isGuest())
@@ -495,7 +495,7 @@ class Posts extends SiteController
 	public function reorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$posts = Request::getVar('post', array());

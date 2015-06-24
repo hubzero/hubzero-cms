@@ -204,7 +204,7 @@ class Membership extends AdminController
 	public function addusersTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 
@@ -302,7 +302,7 @@ class Membership extends AdminController
 	public function approveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 
@@ -383,7 +383,7 @@ class Membership extends AdminController
 	public function promoteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 
@@ -456,7 +456,7 @@ class Membership extends AdminController
 	public function demoteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 
@@ -545,7 +545,7 @@ class Membership extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 
@@ -626,7 +626,7 @@ class Membership extends AdminController
 	public function uninviteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 
@@ -711,7 +711,7 @@ class Membership extends AdminController
 	public function denyTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$gid = Request::getVar('gid', '');
 

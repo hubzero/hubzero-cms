@@ -180,7 +180,7 @@ class Items extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -285,7 +285,7 @@ class Items extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		$id = Request::getInt('id', 0, 'get');
 

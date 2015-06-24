@@ -203,7 +203,7 @@ class Preferences extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
@@ -261,7 +261,7 @@ class Preferences extends AdminController
 	public function restoreDefaultTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

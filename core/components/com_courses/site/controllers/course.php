@@ -286,7 +286,7 @@ class Course extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -441,7 +441,7 @@ class Course extends SiteController
 	public function saveofferingTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -665,7 +665,7 @@ class Course extends SiteController
 	public function savepageTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Check if they're logged in
 		if (User::isGuest())

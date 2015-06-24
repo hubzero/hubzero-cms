@@ -456,7 +456,7 @@ class Threads extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$section = Request::getVar('section', '');

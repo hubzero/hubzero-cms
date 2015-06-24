@@ -265,7 +265,7 @@ class Application extends AdminController
 	public function removerootTask()
 	{
 		// Check for request forgeries.
-		\Session::checkToken('get') or die('Invalid Token');
+		\Session::checkToken('get');
 
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin'))

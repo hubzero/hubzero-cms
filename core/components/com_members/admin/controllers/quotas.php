@@ -196,7 +196,7 @@ class Quotas extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
@@ -261,7 +261,7 @@ class Quotas extends AdminController
 	public function restoreDefaultTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -413,7 +413,7 @@ class Quotas extends AdminController
 	public function saveClassTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming fields
 		$fields = Request::getVar('fields', array(), 'post');
@@ -464,7 +464,7 @@ class Quotas extends AdminController
 	public function deleteClassTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

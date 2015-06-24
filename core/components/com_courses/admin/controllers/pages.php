@@ -210,7 +210,7 @@ class Pages extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// load the request vars
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -251,7 +251,7 @@ class Pages extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
@@ -343,7 +343,7 @@ class Pages extends AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
 		$listdir = Request::getVar('listdir', 0);
@@ -465,7 +465,7 @@ class Pages extends AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = Request::getVar('listdir', 0, 'post');
@@ -559,7 +559,7 @@ class Pages extends AdminController
 	public function deletefolderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		$this->view->setLayout('display');
 
@@ -613,7 +613,7 @@ class Pages extends AdminController
 	public function deletefileTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$course_id = Request::getInt('course', 0);
@@ -811,7 +811,7 @@ class Pages extends AdminController
 	public function orderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$id = Request::getVar('id', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($id, array(0));
@@ -835,7 +835,7 @@ class Pages extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$state = $this->_task == 'publish' ? 1 : 0;
 

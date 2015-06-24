@@ -313,7 +313,7 @@ class Citations extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$citation = array_map('trim', Request::getVar('citation', array(), 'post'));
 		$exclude  = Request::getVar('exclude', '', 'post');

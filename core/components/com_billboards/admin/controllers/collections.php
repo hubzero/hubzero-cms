@@ -102,7 +102,7 @@ class Collections extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Create object
 		$collection = Collection::oneOrNew(Request::getInt('id'))->set(array(
@@ -138,7 +138,7 @@ class Collections extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

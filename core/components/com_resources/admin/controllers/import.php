@@ -144,7 +144,7 @@ class Import extends AdminController
 	public function saveTask()
 	{
 		// check token
-		Session::checkToken() or die('Invalid Token');
+		Session::checkToken();
 
 		// get request vars
 		$import = Request::getVar('import', array());
@@ -247,7 +247,7 @@ class Import extends AdminController
 	public function removeTask()
 	{
 		// check token
-		Session::checkToken() or die( 'Invalid Token' );
+		Session::checkToken();
 
 		// get request vars
 		$ids = Request::getVar('id', array());
@@ -329,7 +329,7 @@ class Import extends AdminController
 	public function doRunTask()
 	{
 		// check token
-		\Session::checkToken() or die('Invalid Token');
+		Session::checkToken();
 
 		// start of import
 		$start = microtime(true);

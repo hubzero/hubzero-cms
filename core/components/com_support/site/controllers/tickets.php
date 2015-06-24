@@ -902,7 +902,7 @@ class Tickets extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$live_site = rtrim(Request::base(), '/');
 
@@ -1613,7 +1613,7 @@ class Tickets extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0, 'post');

@@ -130,7 +130,7 @@ class Mailinglist extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// get request vars
 		$list = Request::getVar('list', array(), 'post');

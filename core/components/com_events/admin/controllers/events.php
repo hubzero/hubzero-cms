@@ -384,7 +384,7 @@ class Events extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$offset = Config::get('offset');
 

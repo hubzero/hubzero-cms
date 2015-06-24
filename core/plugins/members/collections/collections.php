@@ -913,7 +913,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		if (User::isGuest())
 		{
@@ -1059,7 +1059,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$collection_id = Request::getInt('collection_id', 0);
 		if (!$collection_id)

@@ -174,7 +174,7 @@ class Queries extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$fields  = Request::getVar('fields', array(), 'post');
@@ -306,7 +306,7 @@ class Queries extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken(['post', 'get']);
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -413,7 +413,7 @@ class Queries extends AdminController
 	public function savefolderTask($redirect=true)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$fields  = Request::getVar('fields', array());
@@ -503,7 +503,7 @@ class Queries extends AdminController
 	public function removefolderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -540,7 +540,7 @@ class Queries extends AdminController
 	public function saveorderingTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$folders = Request::getVar('folder', array());

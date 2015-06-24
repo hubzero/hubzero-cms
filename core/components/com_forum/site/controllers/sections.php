@@ -130,7 +130,7 @@ class Sections extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming posted data
 		$fields = Request::getVar('fields', array(), 'post');

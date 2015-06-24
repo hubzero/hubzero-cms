@@ -79,7 +79,7 @@ class Authors extends SiteController
 	public function addTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		if ($this->getError())
 		{
@@ -141,7 +141,7 @@ class Authors extends SiteController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		if ($this->getError())
 		{
@@ -176,7 +176,7 @@ class Authors extends SiteController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		if ($this->getError())
 		{

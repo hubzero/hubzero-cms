@@ -202,7 +202,7 @@ class Abusereports extends AdminController
 	public function releaseTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -261,7 +261,7 @@ class Abusereports extends AdminController
 	public function removeTask($isSpam=false)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);

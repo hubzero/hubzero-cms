@@ -754,7 +754,7 @@ class Tags extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Check that the user is authorized
 		if (!$this->config->get('access-edit-tag'))

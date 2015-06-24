@@ -272,7 +272,7 @@ class Points extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		$id = Request::getInt('id', 0);
 
@@ -388,7 +388,7 @@ class Points extends AdminController
 	public function saveconfigTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		$points = Request::getVar('points', array());
 		$descriptions = Request::getVar('description', array());
@@ -441,7 +441,7 @@ class Points extends AdminController
 	public function process_batchTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		$duplicate = 0;
 

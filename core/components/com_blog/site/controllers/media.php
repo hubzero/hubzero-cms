@@ -186,7 +186,7 @@ class Media extends SiteController
 	public function deletefolderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -235,7 +235,7 @@ class Media extends SiteController
 	public function deletefileTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Check if they're logged in
 		if (User::isGuest())

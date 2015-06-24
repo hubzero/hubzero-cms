@@ -51,7 +51,7 @@ class Logo extends AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -236,7 +236,7 @@ class Logo extends AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -349,7 +349,7 @@ class Logo extends AdminController
 	public function ajaxRemoveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -443,7 +443,7 @@ class Logo extends AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

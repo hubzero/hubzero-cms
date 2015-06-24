@@ -98,7 +98,7 @@ class Categories extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$order = Request::getVar('order', array(), 'post', 'array');
@@ -169,7 +169,7 @@ class Categories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Initiate extended database class
 		$row = new JobCategory($this->database);
@@ -201,7 +201,7 @@ class Categories extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());

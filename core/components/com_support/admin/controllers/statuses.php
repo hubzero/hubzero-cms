@@ -153,7 +153,7 @@ class Statuses extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Trim and addslashes all posted items
 		$fields = Request::getVar('fields', array(), 'post');
@@ -189,7 +189,7 @@ class Statuses extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

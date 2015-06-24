@@ -282,7 +282,7 @@ class Plugins extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$client = Request::getWord('filter_client', 'site');
 
@@ -346,7 +346,7 @@ class Plugins extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken(['post', 'get']);
 
 		$state = $this->_task == 'publish' ? 1 : 0;
 
@@ -403,7 +403,7 @@ class Plugins extends AdminController
 	public function orderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken(['post', 'get']);
 
 		$cid    = Request::getVar('id', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));
@@ -439,7 +439,7 @@ class Plugins extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken(['post', 'get']);
 
 		switch ($this->_task)
 		{
@@ -495,7 +495,7 @@ class Plugins extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken(['post', 'get']);
 
 		$cid = Request::getVar('id', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid, array(0));

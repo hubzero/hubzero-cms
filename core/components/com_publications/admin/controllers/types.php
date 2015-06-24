@@ -173,7 +173,7 @@ class Types extends AdminController
 	public function saveblockTask($redirect = false)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id       = Request::getInt('id', 0);
@@ -589,7 +589,7 @@ class Types extends AdminController
 	public function saveblockorderTask($redirect = false)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id       = Request::getInt('id', 0);
@@ -734,7 +734,7 @@ class Types extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
@@ -894,7 +894,7 @@ class Types extends AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getVar('id', array(0), '', 'array');
@@ -929,7 +929,7 @@ class Types extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());

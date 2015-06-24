@@ -78,7 +78,7 @@ class UsersControllerUser extends UsersController
 		if (!isset($myplugin))
 		{
 			// Check for request forgeries
-			Request::checkToken('request') or exit( 'Invalid Token' );
+			Session::checkToken('request');
 
 			if ($return = Request::getVar('return', '', 'method', 'base64'))
 			{
@@ -114,29 +114,30 @@ class UsersControllerUser extends UsersController
 		}
 
 		// Set the return URL if empty.
-		if (empty($data['return'])) {
+		if (empty($data['return']))
+		{
 			$data['return'] = 'index.php?option=com_members&task=myaccount';
 		}
 
 		// Set the return URL in the user state to allow modification by plugins
-		$app->setUserState('users.login.form.return', $data['return']);
+		User::setState('users.login.form.return', $data['return']);
 
 		$result = $app->login($credentials, $options);
 		// Perform the log in.
 		if (true === $result)
 		{
 			// Success
-			$app->setUserState('users.login.form.data', array());
+			User::setState('users.login.form.data', array());
 
 			// If no_html is set, return json response
 			if (Request::getInt('no_html', 0))
 			{
-				echo json_encode( array("success" => true, "redirect" => Route::url($app->getUserState('users.login.form.return'), false)) );
+				echo json_encode( array("success" => true, "redirect" => Route::url(User::getState('users.login.form.return'), false)) );
 				exit;
 			}
 			else
 			{
-				App::redirect(Route::url($app->getUserState('users.login.form.return'), false));
+				App::redirect(Route::url(User::getState('users.login.form.return'), false));
 			}
 		}
 		else
@@ -146,11 +147,13 @@ class UsersControllerUser extends UsersController
 			User::setState('users.login.form.data', $data);
 
 			// Facilitate third party login forms
-			if (!$return) {
+			if (!$return)
+			{
 				$return	= Route::url('index.php?option=com_users&view=login');
 			}
 
-			if (isset($freturn)) {
+			if (isset($freturn))
+			{
 				$return = $freturn;
 			}
 
@@ -243,12 +246,12 @@ class UsersControllerUser extends UsersController
 
 					if ($auto_logoff)
 					{
-						$app->redirect(Route::url('index.php?option=com_users&task=user.logout&authenticator=' . $auth_domain_name, false));
+						App::redirect(Route::url('index.php?option=com_users&task=user.logout&authenticator=' . $auth_domain_name, false));
 						return;
 					}
 					else
 					{
-						$app->redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
+						App::redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
 						return;
 					}
 				}
@@ -278,7 +281,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function register()
 	{
-		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post');
 
 		// Get the form data.
 		$data   = Request::getVar('user', array(), 'post', 'array');
@@ -291,7 +294,6 @@ class UsersControllerUser extends UsersController
 		if ($return === false)
 		{
 			// Get the validation messages.
-			$app    =  JFactory::getApplication();
 			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
@@ -299,11 +301,11 @@ class UsersControllerUser extends UsersController
 			{
 				if ($errors[$i] instanceof Exception)
 				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					Notify::warning($errors[$i]->getMessage());
 				}
 				else
 				{
-					$app->enqueueMessage($errors[$i], 'notice');
+					Notify::warning($errors[$i]);
 				}
 			}
 
@@ -344,9 +346,8 @@ class UsersControllerUser extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post');
 
-		$app   = JFactory::getApplication();
 		$model = $this->getModel('User', 'UsersModel');
 		$data  = Request::getVar('jform', array(), 'post', 'array');
 
@@ -411,13 +412,12 @@ class UsersControllerUser extends UsersController
 	public function resend()
 	{
 		// Check for request forgeries
-		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post');
 	}
 
 	public function link()
 	{
 		$user = User::getRoot();
-		$app  = JFactory::getApplication();
 
 		// First, they should already be logged in, so check for that
 		if ($user->get('guest'))

@@ -79,7 +79,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	private function savereply()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Is the user logged in?
 		if (User::isGuest())

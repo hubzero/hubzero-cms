@@ -264,28 +264,50 @@ class Manager extends Object
 	/**
 	 * Checks for a form token in the request.
 	 *
-	 * @param   string   $method  The request method in which to look for the token key.
+	 * @param   string   $method   The request method in which to look for the token key.
+	 * @param   boolean  $capture  Return result instead of throwing exception?
 	 * @return  boolean  True if found and valid, false otherwise.
 	 */
-	public static function checkToken($method = 'post')
+	public static function checkToken($method = 'post', $capture = false)
 	{
 		$token = self::getFormToken();
 
-		if (!\Request::getVar($token, '', $method, 'alnum'))
+		$result = false;
+
+		if (is_string($method) && strstr($method, ','))
 		{
+			$method = explode(',', $method);
+			$method = array_map('trim', $method);
+		}
+		$method = (array) $method;
+
+		foreach ($method as $m)
+		{
+			if (\App::get('request')->getVar($token, '', $m, 'alnum'))
+			{
+				$result = true;
+				break;
+			}
+
 			if (\App::get('session')->isNew())
 			{
 				// Redirect to login screen.
-				\App::redirect(\Route::url('index.php'), \Lang::txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
+				\App::redirect(\Route::url('index.php'), \App::get('language')->txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
 				\App::close();
-			}
-			else
-			{
-				return false;
 			}
 		}
 
-		return true;
+		if (!$result)
+		{
+			if ($capture)
+			{
+				return $result;
+			}
+
+			\App::abort(403, \App::get('language')->txt('JINVALID_TOKEN'));
+		}
+
+		return $result;
 	}
 
 	/**

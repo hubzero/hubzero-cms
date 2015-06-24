@@ -160,7 +160,7 @@ class Mailinglist extends SiteController
 	public function doSingleSubscribeTask()
 	{
 		//check to make sure we have a valid token
-		if (!Request::checkToken()) die('Invalid Token');
+		Request::checkToken();
 
 		//get request vars
 		$list   = Request::getInt('list_' . \Session::getFormToken(), '', 'post');

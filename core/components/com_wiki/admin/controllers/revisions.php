@@ -197,7 +197,7 @@ class Revisions extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$revision = Request::getVar('revision', array(), 'post', 'none', 2);
@@ -317,7 +317,7 @@ class Revisions extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or exit('Invalid Token');
+				Request::checkToken();
 
 				// Check if they confirmed
 				$confirmed = Request::getInt('confirm', 0);
@@ -379,7 +379,7 @@ class Revisions extends AdminController
 	public function approveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or exit('Invalid Token');
+		Request::checkToken('get');
 
 		// Incoming
 		$pageid = Request::getInt('pageid', 0);

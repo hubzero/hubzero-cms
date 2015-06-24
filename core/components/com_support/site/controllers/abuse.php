@@ -168,7 +168,7 @@ class Abuse extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$this->view->cat = Request::getVar('category', '');

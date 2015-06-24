@@ -160,7 +160,7 @@ class Members extends AdminController
 	public function newTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming profile edits
 		$p = Request::getVar('profile', array(), 'post', 'none', 2);
@@ -336,7 +336,7 @@ class Members extends AdminController
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming user ID
 		$id = Request::getInt('id', 0, 'post');
@@ -588,7 +588,7 @@ class Members extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('ids', array());
@@ -659,7 +659,7 @@ class Members extends AdminController
 	public function stateTask($state=1)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming user ID
 		$ids = Request::getVar('id', array());

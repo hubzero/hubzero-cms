@@ -642,7 +642,7 @@ class Register extends SiteController
 		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			Request::checkToken() or exit('Invalid token');
+			Request::checkToken();
 
 			// Load POSTed data
 			$xregistration->loadPost();

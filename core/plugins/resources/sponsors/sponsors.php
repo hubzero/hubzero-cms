@@ -276,7 +276,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Initiate extended database class
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -333,7 +333,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
@@ -394,7 +394,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$ids = Request::getVar('id', array());

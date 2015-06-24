@@ -218,7 +218,7 @@ class Sections extends AdminController
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
@@ -608,7 +608,7 @@ class Sections extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -710,7 +710,7 @@ class Sections extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$state = $this->_task == 'publish' ? 1 : 0;
 

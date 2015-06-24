@@ -150,7 +150,7 @@ class Batchcreate extends AdminController
 	public function processTask( $dryRun = 0 )
 	{
 		// check token
-		\Session::checkToken() or die( 'Invalid Token' );
+		\Session::checkToken();
 
 		// Incoming
 		$id     = Request::getInt('projectid', 0);

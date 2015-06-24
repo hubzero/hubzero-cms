@@ -78,7 +78,7 @@ class Format extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		//get format
 		$format = Request::getVar('format', array());

@@ -185,7 +185,7 @@ class Applications extends AdminController
 	public function saveTask($redirect=true)
 	{
 		// [SECURITY] Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -290,7 +290,7 @@ class Applications extends AdminController
 	public function deleteTask()
 	{
 		// [SECURITY] Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -353,7 +353,7 @@ class Applications extends AdminController
 	public function stateTask($state=0)
 	{
 		// [SECURITY] Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -427,7 +427,7 @@ class Applications extends AdminController
 	public function resetClientSecretTask()
 	{
 		// [SECURITY] Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));
@@ -475,7 +475,7 @@ class Applications extends AdminController
 	public function removeTokensTask()
 	{
 		// [SECURITY] Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array(0));

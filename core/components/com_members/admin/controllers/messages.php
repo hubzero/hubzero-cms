@@ -166,7 +166,7 @@ class Messages extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming profile edits
 		$fields = Request::getVar('fields', array(), 'post');
@@ -218,7 +218,7 @@ class Messages extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getVar('id', array());

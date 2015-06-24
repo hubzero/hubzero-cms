@@ -243,7 +243,7 @@ class Applications extends SiteController
 	public function saveTask()
 	{
 		// CSRF check
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// get request vars
 		$data = Request::getVar('application', array(), 'post', 2, 'none');
@@ -365,7 +365,7 @@ class Applications extends SiteController
 	public function deleteTask()
 	{
 		// CSRF check
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// get the app id
 		$id = Request::getInt('id', 0);
@@ -432,7 +432,7 @@ class Applications extends SiteController
 	public function resetClientSecretTask()
 	{
 		// CSRF check
-		Request::checkToken() or exit('Invalid token');
+		Request::checkToken();
 
 		// get the app id
 		$id = Request::getInt('id', 0);
@@ -481,7 +481,7 @@ class Applications extends SiteController
 	public function revokeTask()
 	{
 		// CSRF check
-		Request::checkToken('get') or exit('Invalid token');
+		Request::checkToken('get');
 
 		// get the app id
 		$id    = Request::getInt('id', 0);
@@ -528,7 +528,7 @@ class Applications extends SiteController
 	public function revokeAllTask()
 	{
 		// CSRF check
-		Request::checkToken('get') or exit('Invalid token');
+		Request::checkToken('get');
 
 		// get the app id
 		$id = Request::getInt('id', 0);

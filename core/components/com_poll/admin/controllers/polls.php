@@ -293,7 +293,7 @@ class Polls extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$post = Request::get('post');
 
@@ -366,7 +366,7 @@ class Polls extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$db  = \JFactory::getDBO();
 		$cid = Request::getVar('cid', array(), '', 'array');
@@ -398,7 +398,7 @@ class Polls extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$cid = Request::getVar('cid', array(), '', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid);
@@ -450,7 +450,7 @@ class Polls extends AdminController
 	public function openTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		$cid = Request::getVar('cid', array(), '', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid);
@@ -502,7 +502,7 @@ class Polls extends AdminController
 	public function cancelTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		if ($id  = Request::getVar('id', 0, '', 'int'))
 		{

@@ -363,7 +363,7 @@ class Entries extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
 
@@ -474,7 +474,7 @@ class Entries extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Delete the entry itself
 		$entry->set('state', -1);
@@ -595,7 +595,7 @@ class Entries extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);

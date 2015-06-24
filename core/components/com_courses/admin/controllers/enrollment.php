@@ -47,7 +47,7 @@ class Enrollment extends AdminController
 	public function addTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);
@@ -114,7 +114,7 @@ class Enrollment extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

@@ -298,7 +298,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		$page = Request::getVar('fields', array(), 'post', 'none', 2);
 
@@ -508,7 +508,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or exit('Invalid Token');
+		Request::checkToken();
 
 		// Ensure we have an ID to work with
 		$listdir = Request::getInt('listdir', 0, 'post');
