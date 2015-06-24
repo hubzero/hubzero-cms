@@ -25,18 +25,18 @@ if (!jq) {
 //----------------------------------------------------------
 HUB.Modules.MySessions = {
 	jQuery: jq,
-	
+
 	initialize: function() {
 		//session snapshots
 		HUB.Modules.MySessions.sessionSnapshots();
-		
+
 		//terminate confirm?
 		HUB.Modules.MySessions.confirmTerminate();
-			
+
 		//collapsable sessions
 		HUB.Modules.MySessions.collapsableSessions();
 	},
-	
+
 	sessionSnapshots: function() {
 		var $ = this.jQuery;
 
@@ -44,10 +44,10 @@ HUB.Modules.MySessions = {
 		
 		//show session snapshots in lightbox
 		$('.session-snapshot a').on('click',function(event) {
-			
+
 			//get buttons
 			var buttons = $(this).parents('.session-details').find('.session-buttons').html();
-			
+
 			event.preventDefault();
 			$.fancybox({
 				width: 800,
@@ -134,15 +134,15 @@ HUB.Modules.MySessions = {
 						session
 							.find('img.snapshot')
 							.attr('src', source + '&v=' + d.getTime());
-					}					
+					}
 				});
 			}
 		});
 	},
-	
+
 	confirmTerminate: function() {
 		var $ = this.jQuery;
-		
+
 		//double check terminate
 		$('.session-list').on('click', '.terminate-confirm', function(event){
 			var message = $(this).attr('title') + '?';
@@ -153,22 +153,23 @@ HUB.Modules.MySessions = {
 			}
 		});
 	},
-	
+
 	collapsableSessions: function() {
 		var $ = this.jQuery;
-		
+
 		//collapsible session list
 		$(".session-list").on('click', '.session-title-bar', function(event) {
 			//get the clicked element
 			var element = (event.srcElement) ? event.srcElement : event.target,
 				elementClass = $(element).parent().attr('class');
-			
+
 			//if we didnt click the quick launch button
-			if (element.tagName != 'IMG' || (element.tagName == 'IMG' && elementClass.match(/session-title-icon/gi)))
+			//if (element.tagName != 'IMG' || (element.tagName == 'IMG' && elementClass.match(/session-title-icon/gi)))
+			if (!$(element).hasClass('session-title-quicklaunch') && !$(element).parent().hasClass('session-title-quicklaunch'))
 			{
 				//stop event
 				event.preventDefault();
-				
+
 				//toggle class
 				$(this).parent().toggleClass('active');
 

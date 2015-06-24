@@ -51,13 +51,13 @@ defined('_JEXEC') or die('Restricted access');
 					$disconnectLink = JRoute::_('index.php?option=com_tools&task=unshare&sess='.$session->sessnum.'&app='.$appname);
 
 					//get snapshot
-					$snapshot = DS . 'api' . DS . 'tools' . DS . 'screenshot?sessionid=' . $session->sessnum . '&notfound=1';
+					$snapshot = rtrim(JURI::base(true), '/') . '/api/tools/screenshot?sessionid=' . $session->sessnum . '&notfound=1';
 				?>
 				<li class="session <?php echo $cls; ?>">
 					<div class="session-title-bar">
 						<?php if ($this->params->get('show_screenshots', 1)) : ?>
 							<?php if ($this->params->get('quick_launch', 1)) : ?>
-								<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
+								<a class="session-title-quicklaunch tooltips" title="<?php echo JText::_('Quick Launch'); ?> :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
 									<img class="snapshot" data-src="<?php echo $snapshot; ?>" />
 								</a>
 							<?php else : ?>
