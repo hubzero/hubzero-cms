@@ -250,9 +250,10 @@ class Projects extends AdminController
 		$objO->sysGroup($model->get('alias'), $this->config->get('group_prefix', 'pr-'));
 
 		// Get members and managers
-		$this->view->managers = $objO->getOwnerNames($id, 0, '1', 1);
-		$this->view->members = $objO->getOwnerNames($id, 0, '0', 1);
-		$this->view->authors = $objO->getOwnerNames($id, 0, '2', 1);
+		$this->view->managers   = $objO->getOwnerNames($id, 0, '1', 1);
+		$this->view->members    = $objO->getOwnerNames($id, 0, '0', 1);
+		$this->view->authors    = $objO->getOwnerNames($id, 0, '2', 1);
+		$this->view->reviewers  = $objO->getOwnerNames($id, 0, '5', 1);
 
 		// Get last activity
 		$afilters = array('limit' => 1);
@@ -347,8 +348,8 @@ class Projects extends AdminController
 			$suspended = $model->table('Activity')->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
-		$subject 		= Lang::txt('COM_PROJECTS_PROJECT') . ' "' . $model->get('alias') . '" ';
-		$sendmail 		= 0;
+		$subject  = Lang::txt('COM_PROJECTS_PROJECT') . ' "' . $model->get('alias') . '" ';
+		$sendmail = 0;
 
 		// Get project managers
 		$managers = $model->table('Owner')->getIds( $id, 1, 1 );
@@ -432,6 +433,9 @@ class Projects extends AdminController
 		$this->model = $model;
 		$this->_saveMember();
 
+		// Change ownership
+		$this->_changeOwnership();
+
 		// Send message
 		if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0)
 		{
@@ -500,6 +504,50 @@ class Projects extends AdminController
 				$this->model->table('Owner')->saveOwners ( $this->model->get('id'), User::get('id'), $profile->get('uidNumber'), 0, $role, $status = 1, 0);
 			}
 		}
+	}
+
+	/**
+	 * Change ownership
+	 *
+	 * @return     void
+	 */
+	protected function _changeOwnership()
+	{
+		// Incoming
+		$user    = Request::getInt( 'owned_by_user', $this->model->get('owned_by_user'), 'post' );
+		$group   = Request::getInt( 'owned_by_group', 0, 'post' );
+
+		// Load project owner table class
+		$objO = $this->model->table('Owner');
+		$objO->loadOwner($this->model->get('id'), $user);
+
+		if (!$objO->id)
+		{
+			throw new Exception(Lang::txt('Error loading user'), 404);
+		}
+
+		// Change in individual ownership
+		if ($user != $this->model->get('owned_by_user'))
+		{
+			$this->model->set('owned_by_user', $user);
+			$this->model->store();
+
+			// Make sure user is manager
+			$objO->role = 1;
+			$objO->store();
+		}
+
+		// Change in group ownership
+		if ($group != $this->model->get('owned_by_group'))
+		{
+			$this->model->set('owned_by_group', $group);
+			$this->model->store();
+
+			// Make sure project lead is affiliated with group
+			$objO->groupid = $group;
+			$objO->store();
+		}
+
 	}
 
 	/**

@@ -15,8 +15,6 @@ Toolbar::apply();
 Toolbar::save();
 Toolbar::cancel();
 
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 // Determine status & options
 $status = '';
 
@@ -56,6 +54,13 @@ $pubQuota 	= $this->params->get('pubQuota');
 $pubQuota 	= $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 $this->css();
+
+// Get groups project owner belongs to
+$groups = \Hubzero\User\Helper::getGroups($this->model->get('owned_by_user'), 'members', 1);
+if ($this->model->groupOwner())
+{
+	$groups[] = $this->model->groupOwner();
+}
 
 ?>
 <script type="text/javascript">
@@ -145,27 +150,35 @@ function submitbutton(pressbutton)
 			<?php } ?>
 
 			<div class="input-wrap">
-				<?php echo Lang::txt('COM_PROJECTS_OWNER'); ?>:
-				<?php
-				if ($this->model->get('owned_by_group'))
-				{
-					if ($this->model->groupOwner())
-					{
-						$ownedby = '<span class="i_group">' . $this->model->groupOwner('cn') . '</span>';
-					}
-					else
-					{
-						$ownedby = '<span class="pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP').'</span>';
-					}
-				}
-				else
-				{
-					$ownedby = $this->model->owner('name') ? $this->model->owner('name') : Lang::txt('COM_PROJECTS_INFO_UNKNOWN_USER');
-					$ownedby = '<span class="i_user">' . $ownedby . '</span>';
-				}
-				echo $ownedby;
-				?>
+				<label for="owned_by_user">
+					<?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
+					<select name="owned_by_user" class="block">
+				<?php foreach ($this->model->team($filters = array('status' => 1), true) as $member) {  ?>
+					<option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) { echo 'selected="selected"'; } ?>><?php echo $member->fullname; ?> <?php if ($member->userid == $this->model->get('owned_by_user')) { echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'; } ?></option>
+				<?php } ?>
+					</select>
+				</label>
 			</div>
+				<?php if (!empty($groups)) {
+					$used = array();
+					?>
+			<div class="input-wrap">
+				<label for="owned_by_group">
+					<?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
+					<select name="owned_by_group" class="block">
+						<option value="0" <?php if (!$this->model->groupOwner()) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
+				<?php foreach ($groups as $g) {
+					if (in_array($g->gidNumber, $used))
+					{
+						continue;
+					}
+					$used[] = $g->gidNumber; ?>
+					<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+				<?php } ?>
+					</select>
+				</label>
+			</div>
+			<?php } ?>
 
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_PROJECTS_SYS_GROUP'); ?>:</label>
@@ -344,7 +357,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><?php echo Lang::txt('COM_PROJECTS_TEAM').' ('.$this->counts['team'].')'; ?></legend>
+			<legend><?php echo Lang::txt('COM_PROJECTS_TEAM') . ' (' . $this->counts['team'] . ')'; ?></legend>
 			<table>
 				<tbody>
 					<tr>
@@ -358,6 +371,10 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_PROJECTS_AUTHORS'); ?>:</th>
 						<td><?php echo $this->authors ? $this->authors : Lang::txt('COM_PROJECTS_NA'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_PROJECTS_REVIEWERS'); ?>:</th>
+						<td><?php echo $this->reviewers ? $this->reviewers : Lang::txt('COM_PROJECTS_NA'); ?></td>
 					</tr>
 				</tbody>
 			</table>

@@ -116,11 +116,6 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 					$creator = $this->model->get('owned_by_user') == $owner->userid ? 1 : 0;
 
-					// Determine css class for user
-					$usr_class = $owner->status == 0 ? ' class="userinvited"' : ' class="useractive"';
-					$usr_class = ($creator || ($this->model->groupOwner() && $owner->native))
-						? ' class="userowner"' : $usr_class;
-
 					switch ($owner->role)
 					{
 						case '1':
@@ -137,7 +132,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 ?>
 			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } else if ($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
 				<td><input type="checkbox" value="<?php echo $owner->id?>" name="owner[]" class="checkmember <?php if ($owner->groupid) { echo 'group:' . $owner->groupid; } ?>"  <?php if ($owner->native && ($this->model->groupOwner() or ($this->managers_count == 1 && $owner->role == 1) or $this->setup)) { echo 'disabled="disabled"'; } ?> /></td>
-				<td <?php echo $usr_class; ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
+				<td width="30px"><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini nobsp"><?php if (!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if (!$creator) { ?></span><?php } ?></td>
 				<td class="mini"><?php echo $owner->status == 1 ? Date::of($owner->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('PLG_PROJECTS_TEAM_INVITED') . '</span>';  ?></td>

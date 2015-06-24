@@ -132,6 +132,7 @@
 	}
 	table#teamlist img {
 		border: 1px solid #CCCCCC;
+		width: 30px;
 	}
 	table.listing tbody tr.native {
 		background: #effeee;
