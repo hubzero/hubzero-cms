@@ -220,7 +220,7 @@ class Sessionsv1_0 extends ApiController
 	 */
 	public function screenshotsTask()
 	{
-		$userid = Request::getInt('user_id', 0);
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		// make sure we have a user
@@ -273,8 +273,8 @@ class Sessionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		require_once(dirname(dirname(__DIR__)) . DS . 'mw.session.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 
 		//instantiate middleware database object
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -301,7 +301,7 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//load session
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$sess = $ms->loadSession($sessionid);
 
 		//check to make sure we have a sessions dir
@@ -343,6 +343,7 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//load image and serve up
+		$this->response->setStatusCode(200);
 		$image = new \Hubzero\Image\Processor($screenshot);
 		$image->setImageType($image_type);
 		$image->display();
@@ -359,7 +360,7 @@ class Sessionsv1_0 extends ApiController
 	public function invokeTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -545,8 +546,10 @@ class Sessionsv1_0 extends ApiController
 	 */
 	public function runTask()
 	{
+		$this->requiresAuthentication();
+
 		// Get the user_id and attempt to load user profile
-		$userid  = \JFactory::getApplication()->getAuthn('user_id');
+		$userid  = App::get('authn')['user_id'];
 		$profile = \Hubzero\User\Profile::getInstance($userid);
 
 		// Make sure we have a user
@@ -740,8 +743,10 @@ class Sessionsv1_0 extends ApiController
 	 **/
 	public function statusTask()
 	{
+		$this->requiresAuthentication();
+
 		// Get profile instance and session number
-		$profile = \Hubzero\User\Profile::getInstance(JFactory::getApplication()->getAuthn('user_id'));
+		$profile = \Hubzero\User\Profile::getInstance(App::get('authn')['user_id']);
 		$session = Request::getInt('session_num', 0);
 
 		// Require authorization
@@ -866,7 +871,7 @@ class Sessionsv1_0 extends ApiController
 	public function readTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -966,7 +971,7 @@ class Sessionsv1_0 extends ApiController
 	public function deleteTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -1036,7 +1041,7 @@ class Sessionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -1087,7 +1092,7 @@ class Sessionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
@@ -1128,7 +1133,7 @@ class Sessionsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		//get the userid and attempt to load user profile
-		$userid = \JFactory::getApplication()->getAuthn('user_id');
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user

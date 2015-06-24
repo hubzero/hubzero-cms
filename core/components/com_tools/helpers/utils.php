@@ -36,6 +36,7 @@ use Request;
 use User;
 use Lang;
 use App;
+use stdClass;
 
 /**
  * Contains functions used by multiple Session/Tool modules

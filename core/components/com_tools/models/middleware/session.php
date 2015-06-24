@@ -37,6 +37,7 @@ use User;
 use Lang;
 
 $base = dirname(dirname(__DIR__));
+require_once($base . DS . 'models' . DS . 'middleware' . DS . 'base.php');
 require_once($base . DS . 'tables' . DS . 'session.php');
 require_once($base . DS . 'tables' . DS . 'view.php');
 require_once($base . DS . 'tables' . DS . 'viewperm.php');
