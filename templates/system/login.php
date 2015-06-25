@@ -28,15 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+// No direct access.
 defined('_HZEXEC_') or die();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" class="<?php echo $this->direction; ?>">
 	<head>
 		<jdoc:include type="head" />
+		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/system.css" type="text/css" />
 	</head>
-	<body class="contentpane">
-		<jdoc:include type="message" />
-		<jdoc:include type="component" />
+	<body id="login-body">
+		<div class="container">
+			<jdoc:include type="message" />
+			<jdoc:include type="component" />
+			<noscript>
+				<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
+			</noscript>
+		</div>
 	</body>
 </html>

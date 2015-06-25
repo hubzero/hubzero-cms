@@ -31,14 +31,11 @@
 defined('_HZEXEC_') or die();
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" class="<?php echo $this->direction; ?>">
 	<head>
 		<jdoc:include type="head" />
-		<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/offline.css" type="text/css" />
-		<?php if ($this->direction == 'rtl') : ?>
-			<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/offline_rtl.css" type="text/css" />
-		<?php endif; ?>
-		<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/general.css" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/system/css/general.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/system/css/offline.css" />
 	</head>
 	<body>
 		<jdoc:include type="message" />

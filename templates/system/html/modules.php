@@ -66,29 +66,12 @@ function modChrome_table($module, &$params, &$attribs)
 }
 
 /*
- * Module chrome that wraps the tabled module output in a <td> tag of another table
- */
-function modChrome_horz($module, &$params, &$attribs)
-{
-	?>
-	<table>
-		<tbody>
-			<tr>
-				<td>
-					<?php modChrome_table($module, $params, $attribs); ?>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<?php
-}
-
-/*
  * xhtml (divs and font header tags)
  */
 function modChrome_xhtml($module, &$params, &$attribs)
 {
-	if (!empty ($module->content)) : ?>
+	$content = trim($module->content);
+	if (!empty($module->content)) : ?>
 		<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
 			<?php if ($module->showtitle != 0) : ?>
 				<h3><?php echo $module->title; ?></h3>
@@ -96,27 +79,6 @@ function modChrome_xhtml($module, &$params, &$attribs)
 			<?php echo $module->content; ?>
 		</div>
 	<?php endif;
-}
-
-/*
- * Module chrome that allows for rounded corners by wrapping in nested div tags
- */
-function modChrome_rounded($module, &$params, &$attribs)
-{
-	?>
-	<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
-		<div>
-			<div>
-				<div>
-					<?php if ($module->showtitle != 0) : ?>
-						<h3><?php echo $module->title; ?></h3>
-					<?php endif; ?>
-				<?php echo $module->content; ?>
-				</div>
-			</div>
-		</div>
-	</div>
-	<?php
 }
 
 /*
@@ -162,4 +124,52 @@ function modChrome_outline($module, &$params, &$attribs)
 		</div>
 	</div>
 	<?php
+}
+
+/*
+ * allows sliders
+ */
+function modChrome_sliders($module, &$params, &$attribs)
+{
+	$content = trim($module->content);
+	if (!empty($content))
+	{
+		if ($params->get('automatic_title', '0')=='0')
+		{
+			echo Html::sliders('panel', $module->title, 'module'.$module->id);
+		}
+		elseif (method_exists('mod'.$module->name.'Helper', 'getTitle'))
+		{
+			echo Html::sliders('panel', call_user_func_array(array('mod'.$module->name.'Helper','getTitle'), array($params, $module)), 'module'.$module->id);
+		}
+		else
+		{
+			echo Html::sliders('panel', Lang::txt('MOD_'.$module->name.'_TITLE'), 'module'.$module->id);
+		}
+		echo $content;
+	}
+}
+
+/*
+ * allows tabs
+ */
+function modChrome_tabs($module, &$params, &$attribs)
+{
+	$content = trim($module->content);
+	if (!empty($content))
+	{
+		if ($params->get('automatic_title', '0')=='0')
+		{
+			echo Html::tabs('panel', $module->title, 'module'.$module->id);
+		}
+		elseif (method_exists('mod'.$module->name.'Helper', 'getTitle'))
+		{
+			echo Html::tabs('panel', call_user_func_array(array('mod'.$module->name.'Helper', 'getTitle'), array($params)), 'module'.$module->id);
+		}
+		else
+		{
+			echo Html::tabs('panel', Lang::txt('MOD_'.$module->name.'_TITLE'), 'module'.$module->id);
+		}
+		echo $content;
+	}
 }

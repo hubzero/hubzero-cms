@@ -5,37 +5,37 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/* Start Common Styles */
 * {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	font-size: 0.8em;
-	color: #5F6565;
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	     -o-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 html {
 	height: 100%;
-	margin-bottom: 1px;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	-webkit-text-size-adjust: 100%;
+	    -ms-text-size-adjust: 100%;
 }
-
 body {
+	height: 100%;
 	margin: 0;
 	padding: 0;
-	height: 100%;
-	margin-bottom: 1px;
 	background: #fff;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #222;
 	font-size: 0.8em;
 	line-height: 1.7;
 	font-weight: normal;
-	padding-top: 0;
-	margin-top: 0;
+	text-rendering: optimizeLegibility;
 }
-
-.error {
-	margin-left: auto;
-	margin-right: auto;
-}
-
 table,
 td,
 th,
@@ -45,52 +45,90 @@ blockquote,
 ul,
 ol,
 dl,
-address,
-.componentheading,
-.contentheading,
-.contentpagetitle,
-.sectiontableheader,
-.newsfeedheading {
+address {
 	font-weight: normal;
 }
-
-#outline {
-	width: 900px;
-	margin: 0 auto;
-	padding: 0;
-	padding-top: 60px;
-	padding-bottom: 60px;
-	background: #FFF;
+li {
+	margin-left: 2em;
 }
-#errorboxoutline {
-	width: 900px;
+h1 {
 	margin: 0;
-	padding: 0;
-	border: 1px solid #000;
-}
-#errorboxheader {
-	width: 900px;
-	margin: 0;
-	padding: 0;
-	background: #E44249;
+	padding: 1em;
+	background: #DA564A;
 	color: #FFF;
 	font-weight: bold;
 	font-size: 1.2em;
 	text-align: center;
-	border-bottom: 1px solid #000;
 }
-#errorboxbody {
-	margin: 0px;
-	padding: 10px;
+
+.container {
+	margin: 6em auto;
+	max-width: 65em;
+	background: #FFF;
+	border: 1px solid #999;
+}
+.container .content {
+	padding: 2em;
 	text-align: left;
 }
-#techinfo {
-	margin: 10px;
-	padding: 10px;
-	text-align: left;
-	border: 1px solid #CCC;
-	color: #CCC;
+.container section {
+	margin-bottom: 1em;
 }
-#techinfo p {
-	color: #CCC;
+
+/* Stack trace */
+.trace {
+	margin: 1em;
+	text-align: left;
+	color: #ccc;
+}
+table {
+	border-collapse: collapse;
+	text-align: left;
+	font-size: 0.85em;
+	margin: 0;
+	width: 100%;
+}
+table caption {
+	padding: 0.2em 0.5em;
+	background: #eee;
+
+}
+table th,
+table td {
+	padding: 0.2em 0.5em;
+	border: solid 1px #eee;
+}
+table caption,
+table th {
+	text-align: left;
+	font-weight: bold;
+	color: #444;
+}
+table th,
+table td {
+	vertical-align: top;
+}
+
+.trace .cls {
+	color: #9b859d;
+}
+.trace .mtd {
+	color: #4bb1b1;
+}
+.trace .fl {
+	color: #666;
+}
+.trace .ln {
+	color: #DA564A;
+}
+
+/* Right-to-left */
+html.rtl body,
+html.rtl caption,
+html.rtl .content,
+html.rtl .trace {
+	text-align: right;
+}
+html.rtl .TD {
+	text-align: left;
 }

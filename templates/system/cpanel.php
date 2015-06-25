@@ -28,15 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+// No direct access.
 defined('_HZEXEC_') or die();
-?>
-<!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" class="<?php echo $this->direction; ?>">
-	<head>
-		<jdoc:include type="head" />
-	</head>
-	<body class="contentpane">
-		<jdoc:include type="message" />
-		<jdoc:include type="component" />
-	</body>
-</html>
+
+include __DIR__ . DIRECTORY_SEPARATOR . 'component.php';
