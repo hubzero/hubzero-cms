@@ -279,7 +279,26 @@ $option = 'com_groups';
 								<?php } else { ?>
 									<span class="name">
 										<?php if ($u->get('public')) { ?><a href="<?php echo JRoute::_($u->getLink()); ?>"><?php } ?>
-											<?php echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName'))); ?>
+											<?php
+
+												//handles the comma
+												$surname = $u->get('surname');
+												$givenName = $u->get('givenName');
+
+												if ($surname != "" && $givenName != "")
+												{
+													echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName')));
+												}
+												elseif ($surname =! "" && $givenName == "")
+												{
+													echo $this->escape(stripslashes($u->get('surname')));
+
+												}
+												elseif ($surname == "" && $givenName != "")
+												{
+													echo $this->escape(stripslashes($u->get('givenName')));
+												}
+											?>
 										<?php if ($u->get('public')) { ?></a><?php } ?>
 									</span>
 									<span class="status"><?php echo $status; ?></span><br />
