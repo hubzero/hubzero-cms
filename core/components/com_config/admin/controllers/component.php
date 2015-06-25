@@ -38,7 +38,7 @@ use Notify;
 use User;
 use App;
 
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'component.php');
+include_once(dirname(__DIR__) . DS . 'models' . DS . 'component.php');
 
 /**
  * Controller class for a component's config
@@ -86,7 +86,7 @@ class Component extends AdminController
 		// Bind the form to the data.
 		if ($form && $component->params)
 		{
-			$form->bind($component->params);
+			$form->bind($component->params->toArray());
 		}
 
 		// Get the document object.
@@ -110,7 +110,7 @@ class Component extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		\Session::checkToken();
 
 		// Set FTP credentials, if given.
 		\JClientHelper::setCredentialsFromRequest('ftp');
