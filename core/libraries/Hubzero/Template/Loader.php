@@ -48,6 +48,13 @@ class Loader
 	protected $app;
 
 	/**
+	 * Base path for templates
+	 *
+	 * @var  string
+	 */
+	protected $path;
+
+	/**
 	 * The component list cache
 	 *
 	 * @var  array
@@ -60,11 +67,12 @@ class Loader
 	 * @param   object  $app
 	 * @return  void
 	 */
-	public function __construct(Container $app)
+	public function __construct(Container $app, $path = null)
 	{
 		self::$components = array();
 
-		$this->app = $app;
+		$this->path = ($path ?: PATH_ROOT . DS . 'templates');
+		$this->app  = $app;
 	}
 
 	/**
@@ -190,7 +198,7 @@ class Loader
 		$template->template = $this->canonical($template->template);
 		$template->params   = new Registry($template->params);
 
-		if (!file_exists(JPATH_THEMES . DS . $template->template . DS . 'index.php'))
+		if (!file_exists($this->path . DS . $template->template . DS . 'index.php'))
 		{
 			$template = $this->getSystemTemplate();
 		}
@@ -206,7 +214,7 @@ class Loader
 	public function getSiteTemplate()
 	{
 		// Get the id of the active menu item
-		$menu = \App::get('menu');
+		$menu = $this->app['menu'];
 		$item = $menu->getActive();
 		if (!$item)
 		{
@@ -233,10 +241,11 @@ class Loader
 		}
 
 		$tag = '';
-		/*if ($this->_language_filter)
+
+		if ($this->app->has('language.filter'))
 		{
 			$tag = $this->app['language']->getTag();
-		}*/
+		}
 
 		if (!$templates = $cache->get('com_templates.templates0' . $tag))
 		{
@@ -300,7 +309,7 @@ class Loader
 		$template->template = $this->canonical($template->template); // need to filter the default value as well
 
 		// Fallback template
-		if (!file_exists(JPATH_THEMES . DS . $template->template . DS . 'index.php'))
+		if (!file_exists($this->path . DS . $template->template . DS . 'index.php'))
 		{
 			$template = $this->getSystemTemplate();
 		}

@@ -102,7 +102,7 @@ class Opensearch extends Base
 				$path = str_replace('\\', '/', $path);
 
 				$favicon = new Image;
-				$favicon->data   = Request::base() . $path . '/favicon.ico';
+				$favicon->data   = \Request::root() . $path . '/favicon.ico';
 				$favicon->height = '16';
 				$favicon->width  = '16';
 				$favicon->type   = 'image/vnd.microsoft.icon';

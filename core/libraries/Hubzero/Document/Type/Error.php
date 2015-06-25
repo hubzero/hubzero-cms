@@ -110,7 +110,7 @@ class Error extends Base
 		}
 
 		// Set variables
-		$this->baseurl  = Request::base(true);
+		$this->baseurl  = rtrim(\Request::root(true), '/');
 		$this->template = $template;
 		$this->debug    = isset($params['debug']) ? $params['debug'] : false;
 
@@ -179,7 +179,7 @@ class Error extends Base
 			$html[] = '		<tr>';
 			$html[] = '			<th scope="row">0</th>';
 			$html[] = '			<td><span class="msg">!! ' . $this->error->getMessage() . ' !!</span></td>';
-			$html[] = '			<td><span class="fl">' . $this->error->getFile() . '</span>:<span class="ln">' . $this->error->getLine() . '</span></td>';
+			$html[] = '			<td><span class="fl">' . $this->rooted($this->error->getFile()) . '</span>:<span class="ln">' . $this->error->getLine() . '</span></td>';
 			$html[] = '		</tr>';
 			for ($i = count($backtrace) - 1; $i >= 0; $i--)
 			{
@@ -195,7 +195,7 @@ class Error extends Base
 				}
 				if (isset($backtrace[$i]['file']))
 				{
-					$html[] = '			<td><span class="fl">' . $backtrace[$i]['file'] . '</span>:<span class="ln">' . $backtrace[$i]['line'] . '</span></td>';
+					$html[] = '			<td><span class="fl">' . $this->rooted($backtrace[$i]['file']) . '</span>:<span class="ln">' . $backtrace[$i]['line'] . '</span></td>';
 				}
 				else
 				{
@@ -212,5 +212,20 @@ class Error extends Base
 			ob_end_clean();
 		}
 		return $contents;
+	}
+
+	/**
+	 * Strip root path off to shorten lines some
+	 *
+	 * @param   string  $path
+	 * @return  string
+	 */
+	private function rooted($path)
+	{
+		if (substr($path, 0, strlen(PATH_ROOT)) == PATH_ROOT)
+		{
+			$path = 'ROOT' . substr($path, strlen(PATH_ROOT));
+		}
+		return $path;
 	}
 }

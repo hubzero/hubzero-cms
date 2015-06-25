@@ -91,10 +91,10 @@ class DocumentServiceProvider extends Middleware
 			{
 				$document->setMetaData('keywords', $this->app['config']->get('MetaKeys'));
 			}
-			$document->setMetaData('rights',   $this->app['config']->get('MetaRights'));
+			$document->setMetaData('rights', $this->app['config']->get('MetaRights'));
 
 			$file = $request->getCmd('tmpl', 'index');
-			if (!$this->app['config']->get('offline') && ($file == 'offline'))
+			if (!$this->app['config']->get('offline') && $file == 'offline')
 			{
 				$file = 'index';
 			}
@@ -118,29 +118,33 @@ class DocumentServiceProvider extends Middleware
 		{
 			$document->setTitle($this->app['config']->get('sitename'));
 		}
+		if ($this->app->isAdmin())
+		{
+			$document->setTitle($this->app['config']->get('sitename') . ' - ' . $this->app['language']->txt('JADMINISTRATION'));
+		}
 
 		if (!$document->getDescription())
 		{
 			$document->setDescription($this->app['config']->get('MetaDesc'));
 		}
+
 		/*
-		$document->setTitle($this->app['config']->get('sitename') . ' - ' . $this->app['language']->txt('JADMINISTRATION'));*/
-					// Get language
-					/*$lang_code = JFactory::getLanguage()->getTag();
-					$languages = JLanguageHelper::getLanguages('lang_code');
+		// Get language
+		$lang_code = Lang::getTag();
+		$languages = Lang::getLanguages('lang_code');
 
-					// Set metadata
-					if (isset($languages[$lang_code]) && $languages[$lang_code]->metakey)
-					{
-						$document->setMetaData('keywords', $languages[$lang_code]->metakey);
-					}
-					else
-					{
-						$document->setMetaData('keywords', $this->getCfg('MetaKeys'));
-					}*/
+		// Set metadata
+		if (isset($languages[$lang_code]) && $languages[$lang_code]->metakey)
+		{
+			$document->setMetaData('keywords', $languages[$lang_code]->metakey);
+		}
+		else
+		{
+			$document->setMetaData('keywords', $this->app['config']->get('MetaKeys'));
+		}
 
-		//$document->setTitle($params->get('page_title'));
-		//$document->setDescription($params->get('page_description'));
+		$document->setTitle($params->get('page_title'));
+		$document->setDescription($params->get('page_description'));*/
 
 		$generator = 'HUBzero - The open source platform for scientific and educational collaboration';
 		if ($this->app['config']->get('MetaVersion', 0))
@@ -148,6 +152,7 @@ class DocumentServiceProvider extends Middleware
 			$generator .= ' (' . $this->app->version() . ')';
 		}
 		$document->setGenerator($generator);
+
 		if ($this->app->isSite())
 		{
 			$document->setBase(htmlspecialchars($request->base()));
@@ -156,10 +161,10 @@ class DocumentServiceProvider extends Middleware
 		$document->parse($params);
 
 		$caching = false;
-		/*if ($this->app['config']->get('caching', 2) == 2 && !$user->get('id'))
+		if ($this->app['config']->get('caching', 2) == 2 && !\User::get('id'))
 		{
 			$caching = true;
-		}*/
+		}
 		$this->app['dispatcher']->trigger('system.onBeforeRender');
 
 		$response->setContent($document->render($caching, $params));

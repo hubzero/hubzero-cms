@@ -474,15 +474,15 @@ class Html extends Base
 
 		// Try to find a favicon by checking the template and root folder
 		$path = $directory . '/';
-		$dirs = array($path, JPATH_BASE . '/');
+		$dirs = array($path, PATH_ROOT . '/');
 		foreach ($dirs as $dir)
 		{
 			$icon = $dir . 'favicon.ico';
 			if (file_exists($icon))
 			{
-				$path = str_replace(JPATH_BASE . '/', '', $dir);
+				$path = str_replace(PATH_ROOT . '/', '', $dir);
 				$path = str_replace('\\', '/', $path);
-				$this->addFavicon(\Request::base(true) . '/' . $path . 'favicon.ico');
+				$this->addFavicon(rtrim(\Request::root(true), '/') . '/' . $path . 'favicon.ico');
 				break;
 			}
 		}
@@ -516,7 +516,7 @@ class Html extends Base
 
 		// Assign the variables
 		$this->template = $template;
-		$this->baseurl  = \Request::base(true);
+		$this->baseurl  = rtrim(\Request::root(true), '/');
 		$this->params   = isset($params['params']) ? $params['params'] : new Registry;
 
 		// Load
