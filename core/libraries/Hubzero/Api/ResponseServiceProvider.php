@@ -85,6 +85,7 @@ class ResponseServiceProvider extends ServiceProvider
 		$format = $this->app['request']->getWord('format', 'json');
 		$format = (isset($types[$format]) ? $format : 'json');
 
+		$this->app['response']->setStatusCode(404);
 		$this->app['response']->headers->set('Content-Type', $types[$format]);
 	}
 }
