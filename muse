@@ -58,7 +58,7 @@ require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'd
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'framework.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 
 /*
 |--------------------------------------------------------------------------

@@ -22,12 +22,12 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR 
 
 /*
 |--------------------------------------------------------------------------
-| Register The Joomla Loader
+| Include Helper Functions
 |--------------------------------------------------------------------------
 |
-| To maintain compatibility with Joomla, we'll include it's autoloader
-| here. Eventually, this will be moved.
+| Include some helper functions. There's really no other good spot to do
+| this so it happens here.
 |
 */
 
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'import.php';
+require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'Hubzero' . DIRECTORY_SEPARATOR . 'Base' . DIRECTORY_SEPARATOR . 'helpers.php';

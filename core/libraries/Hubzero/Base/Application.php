@@ -64,6 +64,7 @@ class Application extends Container
 	 * @var  array
 	 */
 	private static $baseServices = array(
+		'Hubzero\Base\JoomlaServiceProvider',
 		'Hubzero\Events\EventServiceProvider',
 		'Hubzero\Language\TranslationServiceProvider',
 		'Hubzero\Database\DatabaseServiceProvider',
@@ -459,7 +460,7 @@ class Application extends Container
 			});
 		}
 
-		$app = \JFactory::getApplication($this['client']->name);
+		//$app = \JFactory::getApplication($this['client']->name);
 
 		$this->boot();
 

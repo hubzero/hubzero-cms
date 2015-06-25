@@ -28,63 +28,41 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Api;
-
-use Hubzero\Base\ServiceProvider;
+namespace Hubzero\Base;
 
 /**
- * API response service provider
+ * Joomla handler service provider
  */
-class ResponseServiceProvider extends ServiceProvider
+class JoomlaServiceProvider extends ServiceProvider
 {
 	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app->forget('response');
-
-		$this->app['response'] = function($app)
-		{
-			return new Response();
-		};
-	}
-
-	/**
-	 * Force debugging off.
+	 * Register the exception handler.
 	 *
 	 * @return  void
 	 */
 	public function boot()
 	{
-		if (function_exists('xdebug_disable'))
+		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
+		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
+
+		if ($this->app->isAdmin() || $this->app->isSite())
 		{
-			xdebug_disable();
+			jimport('joomla.application.menu');
 		}
-		ini_set('zlib.output_compression','0');
-		ini_set('output_handler','');
-		ini_set('implicit_flush','0');
 
-		$this->app['config']->set('debug', 0);
-		$this->app['config']->set('debug_lang', 0);
+		jimport('joomla.environment.uri');
+		jimport('joomla.utilities.utility');
+		jimport('joomla.event.dispatcher');
+		jimport('joomla.utilities.arrayhelper');
 
-		static $types = array(
-			'xml'   => 'application/xml',
-			'html'  => 'text/html',
-			'xhtml' => 'application/xhtml+xml',
-			'json'  => 'application/json',
-			'text'  => 'text/plain',
-			'txt'   => 'text/plain',
-			'plain' => 'text/plain',
-			'php'   => 'application/php',
-			'php_serialized' => 'application/vnd.php.serialized'
-		);
+		if ($this->app->isAdmin())
+		{
+			jimport('joomla.html.parameter');
 
-		$format = $this->app['request']->getWord('format', 'json');
-		$format = (isset($types[$format]) ? $format : 'json');
+			require_once PATH_CORE . DS . 'bootstrap' . DS . $this->app['client']->name . DS . 'helper.php';
+			require_once PATH_CORE . DS . 'bootstrap' . DS . $this->app['client']->name . DS . 'toolbar.php';
+		}
 
-		$this->app['response']->headers->set('Content-Type', $types[$format]);
+		$app = \JFactory::getApplication($this->app['client']->name);
 	}
 }

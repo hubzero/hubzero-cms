@@ -41,72 +41,63 @@ class Html extends Base
 	/**
 	 * Array of Header <link> tags
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	public $_links = array();
 
 	/**
 	 * Array of custom tags
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	public $_custom = array();
 
 	/**
 	 * Name of the template
 	 *
-	 * @var    string
-	 * @since  11.1
+	 * @var  string
 	 */
 	public $template = null;
 
 	/**
 	 * Base url
 	 *
-	 * @var    string
-	 * @since  11.1
+	 * @var  string
 	 */
 	public $baseurl = null;
 
 	/**
 	 * Array of template parameters
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	public $params = null;
 
 	/**
 	 * File name
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	public $_file = null;
 
 	/**
 	 * String holding parsed template
 	 *
-	 * @var    string
-	 * @since  11.1
+	 * @var  string
 	 */
 	protected $_template = '';
 
 	/**
-	 * Array of parsed template JDoc tags
+	 * Array of parsed template tags
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	protected $_template_tags = array();
 
 	/**
 	 * Integer with caching setting
 	 *
-	 * @var    integer
-	 * @since  11.1
+	 * @var  integer
 	 */
 	protected $_caching = null;
 
@@ -131,8 +122,6 @@ class Html extends Base
 	 * Get the HTML document head data
 	 *
 	 * @return  array  The document head data in array form
-	 *
-	 * @since   11.1
 	 */
 	public function getHeadData()
 	{
@@ -153,11 +142,8 @@ class Html extends Base
 	/**
 	 * Set the HTML document head data
 	 *
-	 * @param   array  $data  The document head data in array form
-	 *
-	 * @return  JDocumentHTML instance of $this to allow chaining
-	 *
-	 * @since   11.1
+	 * @param   array   $data  The document head data in array form
+	 * @return  object  instance of $this to allow chaining
 	 */
 	public function setHeadData($data)
 	{
@@ -166,17 +152,17 @@ class Html extends Base
 			return;
 		}
 
-		$this->title = (isset($data['title']) && !empty($data['title'])) ? $data['title'] : $this->title;
-		$this->description = (isset($data['description']) && !empty($data['description'])) ? $data['description'] : $this->description;
-		$this->link = (isset($data['link']) && !empty($data['link'])) ? $data['link'] : $this->link;
+		$this->title        = (isset($data['title']) && !empty($data['title'])) ? $data['title'] : $this->title;
+		$this->description  = (isset($data['description']) && !empty($data['description'])) ? $data['description'] : $this->description;
+		$this->link         = (isset($data['link']) && !empty($data['link'])) ? $data['link'] : $this->link;
 
-		$this->_metaTags = (isset($data['metaTags']) && !empty($data['metaTags'])) ? $data['metaTags'] : $this->_metaTags;
-		$this->_links = (isset($data['links']) && !empty($data['links'])) ? $data['links'] : $this->_links;
+		$this->_metaTags    = (isset($data['metaTags']) && !empty($data['metaTags'])) ? $data['metaTags'] : $this->_metaTags;
+		$this->_links       = (isset($data['links']) && !empty($data['links'])) ? $data['links'] : $this->_links;
 		$this->_styleSheets = (isset($data['styleSheets']) && !empty($data['styleSheets'])) ? $data['styleSheets'] : $this->_styleSheets;
-		$this->_style = (isset($data['style']) && !empty($data['style'])) ? $data['style'] : $this->_style;
-		$this->_scripts = (isset($data['scripts']) && !empty($data['scripts'])) ? $data['scripts'] : $this->_scripts;
-		$this->_script = (isset($data['script']) && !empty($data['script'])) ? $data['script'] : $this->_script;
-		$this->_custom = (isset($data['custom']) && !empty($data['custom'])) ? $data['custom'] : $this->_custom;
+		$this->_style       = (isset($data['style']) && !empty($data['style'])) ? $data['style'] : $this->_style;
+		$this->_scripts     = (isset($data['scripts']) && !empty($data['scripts'])) ? $data['scripts'] : $this->_scripts;
+		$this->_script      = (isset($data['script']) && !empty($data['script'])) ? $data['script'] : $this->_script;
+		$this->_custom      = (isset($data['custom']) && !empty($data['custom'])) ? $data['custom'] : $this->_custom;
 
 		return $this;
 	}
@@ -184,11 +170,8 @@ class Html extends Base
 	/**
 	 * Merge the HTML document head data
 	 *
-	 * @param   array  $data  The document head data in array form
-	 *
-	 * @return  JDocumentHTML instance of $this to allow chaining
-	 *
-	 * @since   11.1
+	 * @param   array   $data  The document head data in array form
+	 * @return  object  instance of $this to allow chaining
 	 */
 	public function mergeHeadData($data)
 	{
@@ -342,38 +325,8 @@ class Html extends Base
 		}
 
 		$renderer = $this->loadRenderer($type);
-		/*if ($this->_caching == true && $type == 'modules')
-		{
-			$cache = JFactory::getCache('com_modules', '');
-			$hash = md5(serialize(array($name, $attribs, $result, $renderer)));
-			$cbuffer = $cache->get('cbuffer_' . $type);
 
-			if (isset($cbuffer[$hash]))
-			{
-				return JCache::getWorkarounds($cbuffer[$hash], array('mergehead' => 1));
-			}
-			else
-			{
-				$options = array();
-				$options['nopathway'] = 1;
-				$options['nomodules'] = 1;
-				$options['modulemode'] = 1;
-
-				$this->setBuffer($renderer->render($name, $attribs, $result), $type, $name);
-				$data = parent::$_buffer[$type][$name];
-
-				$tmpdata = JCache::setWorkarounds($data, $options);
-
-				$cbuffer[$hash] = $tmpdata;
-
-				$cache->store($cbuffer, 'cbuffer_' . $type);
-			}
-
-		}
-		else
-		{*/
-			$this->setBuffer($renderer->render($name, $attribs, $result), $type, $name);
-		//}
+		$this->setBuffer($renderer->render($name, $attribs, $result), $type, $name);
 
 		return parent::$_buffer[$type][$name];
 	}
@@ -472,7 +425,7 @@ class Html extends Base
 
 		if (!isset($children))
 		{
-			$menu = \App::get('meu');
+			$menu = \App::get('menu');
 			$active = $menu->getActive();
 			if ($active)
 			{
@@ -558,14 +511,13 @@ class Html extends Base
 
 		// Load the language file for the template
 		$lang = \App::get('language');
-
-			$lang->load('tpl_' . $template, JPATH_BASE, null, false, true)
-		||	$lang->load('tpl_' . $template, $directory . '/' . $template, null, false, true);
+		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true) ||
+		$lang->load('tpl_' . $template, $directory . '/' . $template, null, false, true);
 
 		// Assign the variables
 		$this->template = $template;
-		$this->baseurl = \Request::base(true);
-		$this->params = isset($params['params']) ? $params['params'] : new Registry;
+		$this->baseurl  = \Request::base(true);
+		$this->params   = isset($params['params']) ? $params['params'] : new Registry;
 
 		// Load
 		$this->_template = $this->_loadTemplate($directory . '/' . $template, $file);
@@ -591,7 +543,7 @@ class Html extends Base
 			for ($i = count($matches[0]) - 1; $i >= 0; $i--)
 			{
 				$type = $matches[1][$i];
-				$attribs = empty($matches[2][$i]) ? array() : \JUtility::parseAttributes($matches[2][$i]);
+				$attribs = empty($matches[2][$i]) ? array() : $this->parseAttributes($matches[2][$i]);
 				$name = isset($attribs['name']) ? $attribs['name'] : null;
 
 				// Separate buffers to be executed first and last
@@ -611,6 +563,33 @@ class Html extends Base
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Method to extract key/value pairs out of a string with XML style attributes
+	 *
+	 * @param   string  $string  String containing XML style attributes
+	 * @return  array   Key/Value pairs for the attributes
+	 */
+	private function parseAttributes($string)
+	{
+		// Initialise variables.
+		$attr = array();
+		$retarray = array();
+
+		// Let's grab all the key/value pairs using a regular expression
+		preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);
+
+		if (is_array($attr))
+		{
+			$numPairs = count($attr[1]);
+			for ($i = 0; $i < $numPairs; $i++)
+			{
+				$retarray[$attr[1][$i]] = $attr[2][$i];
+			}
+		}
+
+		return $retarray;
 	}
 
 	/**

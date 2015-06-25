@@ -43,7 +43,7 @@ require_once dirname(JPATH_BASE) . DS . 'core' . DS . 'bootstrap' . DS . 'api' .
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'api' .  DS . 'framework.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 
 /*
 |--------------------------------------------------------------------------

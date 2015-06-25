@@ -43,7 +43,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'de
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'framework.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 
 /*
 |--------------------------------------------------------------------------
