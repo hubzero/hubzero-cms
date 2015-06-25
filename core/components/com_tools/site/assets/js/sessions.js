@@ -16,6 +16,8 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	Hubzero.initApi();
+
 	if ($('#app-btn-options').length) {
 		$('#app-btn-options').on('click', function (e){
 			e.preventDefault();
@@ -34,7 +36,7 @@ jQuery(document).ready(function(jq){
 			/*$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
 				$('#diskusage').html(data);
 			}, 'html');*/
-			$.get($('#diskusage').attr('data-base') + '/api/members/diskusage', {}, function(data) {
+			$.get($('#diskusage').attr('data-base') + '/api/members/tools/diskusage', {}, function(data) {
 				if (data && $.type(data.amount) === "number" && $.type(data.total) === "number") {
 					$('#diskusage .du-amount-bar').css('width', data.amount+'%');
 					$('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');

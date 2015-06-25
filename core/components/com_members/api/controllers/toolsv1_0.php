@@ -287,7 +287,7 @@ class Toolsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$userid = Request::getInt('id', 0);
+		$userid = App::get('authn')['user_id'];
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		if ($result === false)

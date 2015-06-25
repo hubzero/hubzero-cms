@@ -31,6 +31,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+HTML::behavior('core');
+
 //is this a share session thats read-only
 $readOnly = false;
 foreach ($this->shares as $share)

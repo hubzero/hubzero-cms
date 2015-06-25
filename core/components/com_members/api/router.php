@@ -84,26 +84,18 @@ class Router extends Base
 					$vars['task'] = 'read';
 				}
 			}
-			else
+			else if ($segments[0] == 'tools')
 			{
-				$vars['task'] = $segments[0];
-			}
-
-			if (isset($segments[1]))
-			{
-				if ($segments[1] == 'tools')
-				{
-					$vars['controller'] = $segments[1];
-					$vars['task'] = 'index';
-					if (isset($segments[2]))
-					{
-						$vars['task'] = $segments[2];
-					}
-				}
-				else
+				$vars['controller'] = $segments[0];
+				$vars['task'] = 'index';
+				if (isset($segments[1]))
 				{
 					$vars['task'] = $segments[1];
 				}
+			}
+			else
+			{
+				$vars['task'] = $segments[0];
 			}
 		}
 
