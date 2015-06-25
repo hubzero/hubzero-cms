@@ -1,0 +1,18 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_login/admin/assets/css/userconsent.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.userconsent .wrap {
+	width: 320px;
+	margin: 0 auto 100px auto;
+}
+.userconsent .actions,
+.userconsent .title {
+	text-align: center;
+}
+.userconsent .actions {
+	margin-top: 10px;
+}

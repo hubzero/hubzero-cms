@@ -485,6 +485,17 @@ class UsersControllerUser extends UsersController
 		);
 	}
 
+	/**
+	 * Consents current user to site terms (ferpa requirement)
+	 *
+	 * @return void
+	 **/
+	public function consent()
+	{
+		Session::set('user_consent', true);
+		App::redirect(base64_decode(Request::getVar('return')));
+	}
+
 	public function attach()
 	{
 	}

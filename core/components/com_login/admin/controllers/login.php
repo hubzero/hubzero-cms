@@ -197,6 +197,27 @@ class Login extends AdminController
 	}
 
 	/**
+	 * User consent form
+	 *
+	 * @return void
+	 **/
+	public function consentTask()
+	{
+		$this->view->display();
+	}
+
+	/**
+	 * Grant user consent
+	 *
+	 * @return void
+	 **/
+	public function grantConsentTask()
+	{
+		Session::set('user_consent', true);
+		App::redirect(base64_decode(Request::getVar('return')));
+	}
+
+	/**
 	 * Method to log out a user.
 	 *
 	 * @return  void
