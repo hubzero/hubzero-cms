@@ -3,7 +3,7 @@
 */
 
 CKEDITOR.addTemplates('hubzero',{
-	imagesPath: '/media/editors/ckeditor/templates/template-images/',
+	imagesPath: '/core/plugins/editors/ckeditor/assets/templates/template-images/',
 	templates: [
 		{
 			title: 'Left Sidebar',
