@@ -37,16 +37,9 @@ use stdClass;
 use Date;
 use Request;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'models' . DS . 'job.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php';
 
-/*
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'proxy.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'liaison.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php'; */
 
 /**
  * API controller for the time component
@@ -55,72 +48,98 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . 
  */
 class Jobsv1_0 extends ApiController
 {
-	/**
-	 * Lists all applicable time records
+		/**
+	 * Display a list of jobs
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /time/indexRecords
+	 * @apiUri    /jobs/list
 	 * @apiParameter {
-	 * 		"name":        "tid",
-	 * 		"description": "Task id by which to limit records",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"name":          "limit",
+	 * 		"description":   "Number of result to return.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       25
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "startdate",
-	 * 		"description": "Beginning date threshold",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"name":          "start",
+	 * 		"description":   "Number of where to start returning results.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "enddate",
-	 * 		"description": "Ending date threshold",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"name":          "search",
+	 * 		"description":   "A word or phrase to search for.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "limit",
-	 * 		"description": "Maximim number of records to return",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     20
+	 * 		"name":          "sort",
+	 * 		"description":   "Field to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 *      "default":       "name",
+	 * 		"allowedValues": "name, id"
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "start",
-	 * 		"description": "Record index to start at (for pagination)",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "orderby",
-	 * 		"description": "Field by which to order results",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     "id"
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "orderdir",
-	 * 		"description": "Direction by which to order results",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     "asc"
+	 * 		"name":          "sort_Dir",
+	 * 		"description":   "Direction to sort results by.",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "desc",
+	 * 		"allowedValues": "asc, desc"
 	 * }
 	 * @return  void
 	 */
-	public function indexJobsTask()
+	public function listTask()
 	{
 		// Require authentication and authorization
-		$this->requiresAuthentication();
-		$this->authorizeOrFail();
+		//$this->requiresAuthentication();
+		//$this->authorizeOrFail();
+		$database = \JFactory::getDbo();
 
+		$obj = new \Components\Jobs\Tables\Job($database);
+		$filters = array();
+		$jobs = $obj->get_openings($filters);
 
 		// Create object with records property
 		$response          = new stdClass();
-		$response->records = $record->rows()->toObject();
+		$response->records = $jobs;
+
+		// Return object
+		$this->send($response);
+	}
+
+
+	/**
+	 * Display a list of jobs
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /jobs/job
+	 * @apiParameter {
+	 * 		"name":          "jobcode",
+	 * 		"description":   "The job code associated with the opening",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       ""
+	 * }
+	 *
+	 * @return  void
+	 */
+	public function jobTask()
+	{
+		$jobCode = Request::getInt('jobcode');
+
+		$database = \JFactory::getDbo();
+
+		$obj = new \Components\Jobs\Tables\Job($database);
+		$filters = array();
+		$jobs = $obj->get_opening($jid = NULL, $uid = NULL, $admin = NULL, $jobcode = $jobCode);
+
+		// Create object with records property
+		$response          = new stdClass();
+		$response->records = $jobs;
 
 		// Return object
 		$this->send($response);
@@ -135,7 +154,7 @@ class Jobsv1_0 extends ApiController
 	 */
 	private function authorizeOrFail()
 	{
-		$permissions = new Permissions('com_time');
+		$permissions = new Permissions('com_jobs');
 
 		// Make sure action can be performed
 		if (!$permissions->can('api'))
