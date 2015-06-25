@@ -94,13 +94,18 @@ class Jobsv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		// Require authentication and authorization
-		//$this->requiresAuthentication();
-		//$this->authorizeOrFail();
+		// get POST data
+		$filters = array();
+		$filters['limit'] = Request::getInt('limit', 25);
+		$filters['start'] = Request::getInt('start', 0);
+		$filters['search'] = Request::getVar('search', "");
+		$filters['sort'] = Request::getVar('sort', "name");
+		$filters['sort_dir'] = Request::getCmd('sort_Dir', "desc");
+
 		$database = \JFactory::getDbo();
 
 		$obj = new \Components\Jobs\Tables\Job($database);
-		$filters = array();
+
 		$jobs = $obj->get_openings($filters);
 
 		// Create object with records property
@@ -121,7 +126,7 @@ class Jobsv1_0 extends ApiController
 	 * 		"name":          "jobcode",
 	 * 		"description":   "The job code associated with the opening",
 	 * 		"type":          "integer",
-	 * 		"required":      false,
+	 * 		"required":      true,
 	 * 		"default":       ""
 	 * }
 	 *
