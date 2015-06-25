@@ -39,9 +39,9 @@ use Lang;
 use User;
 use Date;
 
-include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php';
-include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php';
-include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
+include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'profile.php';
+include_once dirname(__DIR__) . DS . 'tags.php';
+include_once dirname(__DIR__) . DS . 'registration.php';
 
 /**
  * Member Record importer
@@ -258,7 +258,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		{
 			// Check if the username passed if the same for the record we're updating
 			$username = $this->record->entry->get('username');
-			if ($username && $username != $this->raw->username)
+			if ($username && isset($this->raw->username) && $username != $this->raw->username)
 			{
 				// Uh-oh. Notify the user.
 				array_push($this->record->notices, Lang::txt('Usernames for existing members cannot be changed at this time.'));
@@ -379,16 +379,16 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if ($password = $this->raw->password)
 		{
-			if ($isNew)
+			/*if ($isNew)
 			{
 				// We need to bypass any hashing
 				$this->raw->password = '*';
 				\Hubzero\User\Password::changePasshash($this->_profile->get('uidNumber'), $password);
 			}
 			else
-			{
+			{*/
 				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $password);
-			}
+			//}
 		}
 
 		if ($isNew && $this->_options['emailnew'] == 1)
