@@ -158,6 +158,13 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		}*/
 		$params['class'][] = 'ckeditor-content';
 
+		// Set default height to a rough approximation of the height
+		// of the textarea (rows * 1.5em of 12px font)
+		if (!isset($params['height']))
+		{
+			$params['height'] = (18 * intval($row)) . 'px';
+		}
+
 		// build config & json encode
 		$config = json_encode($this->_buildConfig($params));
 
