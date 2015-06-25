@@ -81,16 +81,6 @@ class Twitter extends Macro
 		$width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '100%';
 		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
 
-		$atts   = array();
-		$atts[] = 'width="' . $width . '"';
-		$atts[] = 'height="' . $height . '"';
-		$atts[] = 'data-chrome="' . $chrome . '"';
-
-		if (isset($args[1]) && is_numeric($args[1]))
-		{
-			$atts[] = 'data-tweet-limit="' . $args[1] . '"';
-		}
-
 		//make sure we have a user name
 		if ($screenName == '' && $widgetId == '')
 		{
@@ -98,6 +88,7 @@ class Twitter extends Macro
 		}
 
 		// code for screename
+		$atts   = array();
 		$atts[] = 'data-widget-id="346714310770302976"';
 
 		// to account for different URL for hashtags?
@@ -115,7 +106,16 @@ class Twitter extends Macro
 		// pass already configured widget
 		if ($widgetId)
 		{
-			$atts[] = 'data-widget-id="' . $widgetId . '"';
+			$atts = array('data-widget-id="' . $widgetId . '"');
+		}
+
+		$atts[] = 'width="' . $width . '"';
+		$atts[] = 'height="' . $height . '"';
+		$atts[] = 'data-chrome="' . $chrome . '"';
+
+		if (isset($args[1]) && is_numeric($args[1]))
+		{
+			$atts[] = 'data-tweet-limit="' . $args[1] . '"';
 		}
 
 		//output embeded timeline
