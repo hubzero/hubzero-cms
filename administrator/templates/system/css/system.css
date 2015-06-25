@@ -1,9 +1,0 @@
-/**
- * @package    hubzero-cms
- * @file       templates/system/css/system.css
- * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
- * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
-
-/* Import project-level system CSS */
-@import url("../../../../core/assets/css/system.css");
