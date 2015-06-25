@@ -151,9 +151,30 @@ class Job extends \JTable
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
 		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
 
-		$sort = $filters['search'] != '' ? 'keywords DESC, ' : '';
+		//$sort = isset($filters['search'] && $filters['search'] != '' ? 'keywords DESC, ' : '';
 
-		$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'DESC';
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sort = 'keywords DESC, ';
+		}
+		else
+		{
+			$sort = '';
+		}
+
+		if (isset($filters['sortdir']) && $filters['sortdir'] != '')
+		{
+			$sortdir = $filters['sortdir'];
+		}
+		else
+		{
+			$sortdir = 'DESC';
+		}
+
+		if (!isset($filters['sortby']) || $filters['sortby'] == '')
+		{
+			$filters['sortby'] = 'type';
+		}
 
 		// list  sorting
 		switch ($filters['sortby'])
@@ -213,7 +234,7 @@ class Job extends \JTable
 			}
 			$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
 
-			if (trim($filters['search']))
+			if (isset($filters['search']) && trim($filters['search']))
 			{
 				$words   = explode(',', $filters['search']);
 				$s = array();
