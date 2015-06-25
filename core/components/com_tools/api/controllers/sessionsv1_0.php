@@ -816,7 +816,7 @@ class Sessionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$session = Request::getInt('session', 0);
+		$session = Request::getInt('session_num', 0);
 		$runFile = Request::getVar('run_file', false);
 
 		if (!$session)
