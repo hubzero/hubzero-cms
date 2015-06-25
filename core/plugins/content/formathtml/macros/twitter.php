@@ -40,7 +40,7 @@ class Twitter extends Macro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -67,57 +67,59 @@ class Twitter extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
 		//get the args passed in
-		$args = array_map("trim", explode(',', $this->args));
+		$args = array_map('trim', explode(',', $this->args));
 
 		//get screen name & num tweets
 		$screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
 		$widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
-		$numItems   = (isset($args[1]) && is_numeric($args[1])) ? 'data-tweet-limit="' . $args[1] . '"' : '';
 		$chrome     = (preg_match('/chrome="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
 		$width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '100%';
 		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
 
+		$atts   = array();
+		$atts[] = 'width="' . $width . '"';
+		$atts[] = 'height="' . $height . '"';
+		$atts[] = 'data-chrome="' . $chrome . '"';
+
+		if (isset($args[1]) && is_numeric($args[1]))
+		{
+			$atts[] = 'data-tweet-limit="' . $args[1] . '"';
+		}
+
 		//make sure we have a user name
 		if ($screenName == '' && $widgetId == '')
 		{
-			return "(Please enter a valid Twitter Username/ID or Widget ID)";
+			return '(Please enter a valid Twitter Username/ID or Widget ID)';
 		}
 
 		// code for screename
-		$widgetCode  = 'data-widget-id="346714310770302976"';
+		$atts[] = 'data-widget-id="346714310770302976"';
 
 		// to account for different URL for hashtags?
 		if (strpos($screenName, '#') !== FALSE)
 		{
 			$screenName = str_replace('#', '', $screenName);
-			$widgetCode .= ' href="https://twitter.com/hastag/' . $screenName . '"';
+			$atts[] = 'href="https://twitter.com/hashtag/' . $screenName . '"';
 		}
 		else
 		{
-			$widgetCode .= ' href="https://twitter.com/'. $screenName .'"';
+			$atts[] = 'href="https://twitter.com/'. $screenName . '"';
+			$atts[] = 'data-screen-name="' . $screenName . '"';
 		}
-
-		$widgetCode .= ' data-screen-name="' . $screenName . '"';
 
 		// pass already configured widget
 		if ($widgetId)
 		{
-			$widgetCode  = 'data-widget-id="' . $widgetId . '"';
+			$atts[] = 'data-widget-id="' . $widgetId . '"';
 		}
 
 		//output embeded timeline
-		return '<a class="twitter-timeline"
-					width="' . $width . '"
-					height="' . $height . '"
-					' . $widgetCode . '
-					' . $numItems . '
-					data-chrome="' . $chrome . '"
-					>Loading Tweets...</a>
+		return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>
 				<script>!function(d,s,id) {var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 	}
 }
