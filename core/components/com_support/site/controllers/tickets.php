@@ -39,6 +39,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Browser\Detector;
 use Hubzero\User\Profile;
 use Hubzero\Content\Server;
+use Hubzero\Utility\Validate;
 use Filesystem;
 use Exception;
 use Request;
