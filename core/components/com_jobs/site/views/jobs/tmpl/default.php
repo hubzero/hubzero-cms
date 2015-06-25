@@ -117,8 +117,8 @@ defined('_HZEXEC_') or die();
 
 			<?php if (count($jobs) > 0) { ?>
 				<?php
-				$jt = new JobType ( $this->database );
-				$jc = new JobCategory ( $this->database );
+				$jt = new Components\Jobs\Tables\JobType ( $this->database );
+				$jc = new Components\Jobs\Tables\JobCategory ( $this->database );
 
 				$sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
@@ -164,7 +164,7 @@ defined('_HZEXEC_') or die();
 					<?php
 					for ($i=0, $n=count( $jobs ); $i < $n; $i++)
 					{
-						$model = new JobsModelJob($jobs[$i]);
+						$model = new Components\Jobs\Models\Job($jobs[$i]);
 
 						//$txt = $model->content('parsed');
 						$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? Date::of($jobs[$i]->closedate)->toLocal('d&\nb\sp;M&\nb\sp;y') : 'ASAP';
@@ -272,7 +272,7 @@ defined('_HZEXEC_') or die();
 	<?php if (!$this->mini) { ?>
 		<?php
 		// Insert page navigation
-		$pagenavhtml = $this->pageNav->getListFooter();
+		$pagenavhtml = $this->pageNav->render();
 		$pagenavhtml = str_replace('jobs/?','jobs/browse/?',$pagenavhtml);
 		echo $pagenavhtml;
 		if ($allowsubscriptions) { ?>
