@@ -342,11 +342,10 @@ class Sessionsv1_0 extends ApiController
 			}
 		}
 
-		//load image and serve up
-		$this->response->setStatusCode(200);
+		// Load image and serve up
 		$image = new \Hubzero\Image\Processor($screenshot);
 		$image->setImageType($image_type);
-		$image->display();
+		$this->send($image->inline(), 200);
 	}
 
 

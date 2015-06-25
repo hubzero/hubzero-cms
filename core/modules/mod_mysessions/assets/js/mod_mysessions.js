@@ -67,7 +67,7 @@ HUB.Modules.MySessions = {
 	},
 
 	sessionSnapshotImages: function(retry) {
-		var $      = this.jQuery
+		var $      = this.jQuery,
 			module = this;
 
 		$('.session').each(function(index, el) {
@@ -75,16 +75,15 @@ HUB.Modules.MySessions = {
 				snapshot = session.find('img.snapshot-main'),
 				source   = snapshot.attr('data-src');
 
-			if (snapshot.length && source != '') {
+			if (snapshot.length && source !== '') {
 				$.ajax({
 					type: 'get',
 					url: source,
-					success: function() {
+					success: function(data) {
 						session
 							.find('img.snapshot')
-							.removeAttr('data-src')
 							.addClass('refreshable')
-							.attr('src', source)
+							.attr('src', data)
 							.parent().addClass('loaded');
 					},
 					error: function(jqXHR, status, error) {
@@ -116,16 +115,18 @@ HUB.Modules.MySessions = {
 				$('.session').each(function(index, el) {
 					var session  = $(this),
 						snapshot = session.find('img.snapshot-main'),
-						source   = snapshot.attr('src');
+						source   = snapshot.attr('data-src');
 
 					if (snapshot.hasClass('refreshable')) {
 						// remove old version
-						source = source.replace(/&v=\d{13}/g,'');
+						source = source.replace(/&vid=\d{13}/g,'');
 
 						// set new source
 						session
 							.find('img.snapshot')
-							.attr('src', source + '&v=' + d.getTime());
+							.attr('data-src', source + '&vid=' + d.getTime());
+
+						HUB.Modules.MySessions.sessionSnapshotImages(true);
 					}
 				});
 			}
