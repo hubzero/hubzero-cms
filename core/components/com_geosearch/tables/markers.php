@@ -209,7 +209,7 @@ class GeosearchMarkers extends \JTable
 		// set the units
 		$R = ($unit == 'mi') ? 3956 : 6371;
 		$sql = "SELECT *, ($R * ACOS(COS(RADIANS($clatlng[0])) * COS(RADIANS(addressLatitude)) * COS(RADIANS(addressLongitude) - RADIANS($clatlng[1])) + SIN(RADIANS($clatlng[0])) * SIN(RADIANS(addressLatitude))))
-		AS distance FROM " . $this->_db->nameQuote($tbl) . " $where distance < ".$this->_db->quote($distance)." ORDER BY distance LIMIT {$filters['start']}, {$filters['limit']}";
+		AS distance FROM " . $this->_db->quoteName($tbl) . " $where distance < ".$this->_db->quote($distance)." ORDER BY distance LIMIT {$filters['start']}, {$filters['limit']}";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}

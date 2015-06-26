@@ -41,7 +41,7 @@ class Group extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object  &$db  Database
 	 * @return     void
 	 */
 	public function __construct(&$db)

@@ -979,7 +979,7 @@ class Post extends \JTable
 			return false;
 		}
 
-		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE category_id = ' . $this->_db->quote($oid);
+		$query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl) . ' WHERE category_id = ' . $this->_db->quote($oid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -1007,7 +1007,7 @@ class Post extends \JTable
 		$this->load($this->$k);
 		if (!$this->parent)
 		{
-			$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE parent = ' . $this->_db->quote($this->$k);
+			$query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl) . ' WHERE parent = ' . $this->_db->quote($this->$k);
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{

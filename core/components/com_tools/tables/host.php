@@ -40,7 +40,7 @@ class Host extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object  &$db  Database
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -113,7 +113,7 @@ class Host extends \JTable
 					{
 						$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
 					}
-					$tmp[] = $this->_db->nameQuote($ky) . '=' . $val;
+					$tmp[] = $this->_db->quoteName($ky) . '=' . $val;
 				}
 				$this->_db->setQuery(sprintf($fmtsql, implode(',', $tmp), $where));
 				$ret = $this->_db->query();
@@ -148,7 +148,7 @@ class Host extends \JTable
 			$this->$k = $oid;
 		}
 
-		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
+		$query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl) .
 				' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 

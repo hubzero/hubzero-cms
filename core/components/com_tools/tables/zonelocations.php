@@ -40,7 +40,7 @@ class ZoneLocations extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object  &$db  Database
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -95,7 +95,7 @@ class ZoneLocations extends \JTable
 			$zone_id = $this->zone_id;
 		}
 
-		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
+		$query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl) .
 				' WHERE zone_id = ' . $this->_db->quote($zone_id);
 		$this->_db->setQuery($query);
 

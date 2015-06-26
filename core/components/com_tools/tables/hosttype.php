@@ -42,7 +42,7 @@ class Hosttype extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
+	 * @param      object  &$db  Database
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -200,7 +200,7 @@ class Hosttype extends \JTable
 			$this->$k = $oid;
 		}
 
-		$query = 'DELETE FROM '.$this->_db->nameQuote($this->_tbl).
+		$query = 'DELETE FROM '.$this->_db->quoteName($this->_tbl).
 				' WHERE '.$this->_tbl_key.' = '. $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 

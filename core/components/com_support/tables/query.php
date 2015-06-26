@@ -411,11 +411,11 @@ class Query extends \JTable
 			{
 				if (strtolower($expr->fldval) == 'tag')
 				{
-					//$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $this->_db->nameQuote('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
+					//$e[] = '(' . $prfx . '.' . $this->_db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $this->_db->quoteName('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
 				}
 				else
 				{
-					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval);
+					$e[] = $prfx . '.' . $this->_db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval);
 				}
 			}
 			else
@@ -443,11 +443,11 @@ class Query extends \JTable
 				{
 					$condition->expressions[$i]->val = '0';
 
-					$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val) . ' AND ' . $prfx . '.' . $this->_db->nameQuote('open') . ' = ' . $this->_db->quote('0') . ')';
+					$e[] = '(' . $prfx . '.' . $this->_db->quoteName($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val) . ' AND ' . $prfx . '.' . $this->_db->quoteName('open') . ' = ' . $this->_db->quote('0') . ')';
 				}
 				else
 				{
-					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val);
+					$e[] = $prfx . '.' . $this->_db->quoteName($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val);
 				}
 			}
 		}
@@ -456,26 +456,26 @@ class Query extends \JTable
 		{
 			if (implode("','", $tags) == implode("','", $nottags))
 			{
-				$e[] = 'f.' . $this->_db->nameQuote('id') . ' NOT IN (
-							SELECT st.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS st
-							LEFT JOIN #__tags AS t ON st.' . $this->_db->nameQuote('tagid') . '=t.' . $this->_db->nameQuote('id') . '
-							WHERE st.' . $this->_db->nameQuote('tbl') . '=\'support\'
-							AND (t.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
+				$e[] = 'f.' . $this->_db->quoteName('id') . ' NOT IN (
+							SELECT st.' . $this->_db->quoteName('objectid') . ' FROM #__tags_object AS st
+							LEFT JOIN #__tags AS t ON st.' . $this->_db->quoteName('tagid') . '=t.' . $this->_db->quoteName('id') . '
+							WHERE st.' . $this->_db->quoteName('tbl') . '=\'support\'
+							AND (t.' . $this->_db->quoteName('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
 				$having = " GROUP BY f.id ";
 			}
 			else if (count($tags) && count($nottags))
 			{
-				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
-				$e[] = 'f.' . $this->_db->nameQuote('id') . ' NOT IN (
-							SELECT jto.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS jto
-							JOIN #__tags AS jt ON jto.' . $this->_db->nameQuote('tagid') . '=jt.' . $this->_db->nameQuote('id') . '
-							WHERE jto.' . $this->_db->nameQuote('tbl') . '=\'support\'
-							AND (jt.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR jt.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
+				$e[] = '(t.' . $this->_db->quoteName('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+				$e[] = 'f.' . $this->_db->quoteName('id') . ' NOT IN (
+							SELECT jto.' . $this->_db->quoteName('objectid') . ' FROM #__tags_object AS jto
+							JOIN #__tags AS jt ON jto.' . $this->_db->quoteName('tagid') . '=jt.' . $this->_db->quoteName('id') . '
+							WHERE jto.' . $this->_db->quoteName('tbl') . '=\'support\'
+							AND (jt.' . $this->_db->quoteName('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR jt.' . $this->_db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
 				$having = " GROUP BY f.id ";
 			}
 			else
 			{
-				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+				$e[] = '(t.' . $this->_db->quoteName('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
 
 				$having  = " GROUP BY f.id ";
 				if (strtoupper($condition->operator) == 'OR')
@@ -535,11 +535,11 @@ class Query extends \JTable
 			//$prfx = (strtolower($expr->fldval) == 'tag') ? 't' : 'f';
 			if (strstr($expr->val, '$1'))
 			{
-				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . str_replace('$1', $expr->val);
+				$e[] = $prfx . '.' . $this->_db->quoteName($expr->fldval) . ' ' . $expr->opval . ' ' . str_replace('$1', $expr->val);
 			}
 			else
 			{
-				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val);
+				$e[] = $prfx . '.' . $this->_db->quoteName($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val);
 			}
 		}
 
