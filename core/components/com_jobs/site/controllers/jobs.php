@@ -1302,8 +1302,6 @@ class Jobs extends SiteController
 			$this->setError(Lang::txt('COM_JOBS_ERROR_JOB_INACTIVE'));
 
 			// Set the pathway
-			$app = \JFactory::getApplication();
-
 			if (Pathway::count() <= 0)
 			{
 				Pathway::append(
@@ -1847,7 +1845,7 @@ class Jobs extends SiteController
 	/**
 	 * Search Preferences
 	 *
-	 * @param      object $database JDatabase
+	 * @param      object  $database  Database
 	 * @param      object $user     User
 	 * @param      string $category Preferences category
 	 * @return     void
@@ -1920,7 +1918,7 @@ class Jobs extends SiteController
 	/**
 	 * Get a user's preferences
 	 *
-	 * @param      object $database JDatabase
+	 * @param      object  $database  Database
 	 * @param      object $user     User
 	 * @param      string $category Preferences category
 	 * @return     void
@@ -2155,7 +2153,7 @@ class Jobs extends SiteController
 	 *
 	 * @param      object $job      Job
 	 * @param      object $user     User
-	 * @param      object $database JDatabase
+	 * @param      object  $database  Database
 	 * @return     integer
 	 */
 	public function checkQuota($job, $user, $database)

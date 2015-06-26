@@ -296,14 +296,14 @@ class Entry extends \JTable
 		}
 		else
 		{
-			if (!\JFactory::getApplication()->isAdmin())
+			if (!\App::isAdmin())
 			{
 				$created_by = " OR m.created_by=" .  $this->_db->quote(User::get('id'));
 				$where[] = "(m.publish_up = " . $this->_db->quote($nullDate) . " OR m.publish_up <= " . $this->_db->quote($now) . "{$created_by})";
 			}
 		}
 
-		if (!\JFactory::getApplication()->isAdmin())
+		if (!\App::isAdmin())
 		{
 			if ((isset($filters['state']) && $filters['state'] != 'all') || !isset($filters['state']))
 			{

@@ -144,7 +144,7 @@ class NewsletterControllerMailing extends SiteController
 		//if we do redirect
 		if (filter_var($link, FILTER_VALIDATE_URL))
 		{
-			\JFactory::getApplication()->redirect($link);
+			\App::redirect($link);
 		}
 	}
 

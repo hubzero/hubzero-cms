@@ -37,7 +37,6 @@ require_once dirname(__DIR__) . '/admin/helpers/media.php';
 require_once __DIR__.'/controller.php';
 
 // Make sure the user is authorized to view this page
-$app = JFactory::getApplication();
 $cmd = Request::getCmd('task', null);
 
 if (strpos($cmd, '.') != false)

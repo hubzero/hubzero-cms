@@ -28,7 +28,6 @@ class ResourcesModelRole extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
@@ -88,7 +87,7 @@ class ResourcesModelRole extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_resources.edit.role.data', array());
+		$data = User::getState('com_resources.edit.role.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

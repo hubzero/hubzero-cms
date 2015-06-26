@@ -409,11 +409,14 @@ class Ticketsv1_0 extends ApiController
 	public function createTask()
 	{
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = User::get('id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false) return $this->not_found();
+		if ($result === false)
+		{
+			throw new Exception(Lang::txt('User not found.'), 500);
+		}
 
 		// Initiate class and bind data to database fields
 		$ticket = new \Components\Support\Models\Ticket();
@@ -425,8 +428,7 @@ class Ticketsv1_0 extends ApiController
 		$ticket->set('report', Request::getVar('report', '', 'post', 'none', 2));
 		if (!$ticket->get('report'))
 		{
-			$this->errorMessage(500, Lang::txt('Error: Report contains no text.'));
-			return;
+			throw new Exception(Lang::txt('Error: Report contains no text.'), 500);
 		}
 		$ticket->set('os', Request::getVar('os', 'unknown', 'post'));
 		$ticket->set('browser', Request::getVar('browser', 'unknown', 'post'));
@@ -457,8 +459,7 @@ class Ticketsv1_0 extends ApiController
 		// Save the data
 		if (!$ticket->store())
 		{
-			$this->errorMessage(500, $ticket->getErrors());
-			return;
+			throw new Exception($ticket->getErrors(), 500);
 		}
 
 		// Any tags?
@@ -472,8 +473,7 @@ class Ticketsv1_0 extends ApiController
 		$msg->submitted = $ticket->get('created');
 		$msg->ticket    = $ticket->get('id');
 
-		$this->setMessageType(Request::getVar('format', 'json'));
-		$this->send($msg, 200, 'OK');
+		$this->send($msg);
 	}
 
 	/**

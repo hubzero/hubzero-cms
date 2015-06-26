@@ -94,13 +94,12 @@ class Install extends \JModelLegacy
 
 		// Set FTP credentials, if given.
 		\JClientHelper::setCredentialsFromRequest('ftp');
-		$app = JFactory::getApplication();
 
 		switch (Request::getWord('installtype'))
 		{
 			case 'folder':
 				// Remember the 'Install from Directory' path.
-				$app->getUserStateFromRequest($this->_context.'.install_directory', 'install_directory');
+				Request::getState($this->_context.'.install_directory', 'install_directory');
 				$package = $this->_getPackageFromFolder();
 				break;
 
@@ -113,7 +112,7 @@ class Install extends \JModelLegacy
 				break;
 
 			default:
-				$app->setUserState('com_installer.message', Lang::txt('COM_INSTALLER_NO_INSTALL_TYPE_FOUND'));
+				User::setState('com_installer.message', Lang::txt('COM_INSTALLER_NO_INSTALL_TYPE_FOUND'));
 				return false;
 				break;
 		}
@@ -121,7 +120,7 @@ class Install extends \JModelLegacy
 		// Was the package unpacked?
 		if (!$package)
 		{
-			$app->setUserState('com_installer.message', Lang::txt('COM_INSTALLER_UNABLE_TO_FIND_INSTALL_PACKAGE'));
+			User::setState('com_installer.message', Lang::txt('COM_INSTALLER_UNABLE_TO_FIND_INSTALL_PACKAGE'));
 			return false;
 		}
 

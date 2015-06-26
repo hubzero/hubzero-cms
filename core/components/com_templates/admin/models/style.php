@@ -81,7 +81,7 @@ class TemplatesModelStyle extends JModelAdmin
 				// You should not delete a default style
 				if ($table->home != '0')
 				{
-					Notify::warning(SOME_ERROR_NUMBER, Lang::txt('COM_TEMPLATES_STYLE_CANNOT_DELETE_DEFAULT_STYLE'));
+					Notify::warning(Lang::txt('COM_TEMPLATES_STYLE_CANNOT_DELETE_DEFAULT_STYLE'));
 					return false;
 				}
 
@@ -286,8 +286,8 @@ class TemplatesModelStyle extends JModelAdmin
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the template XML.
-			$client = JApplicationHelper::getClientInfo($table->client_id);
-			$path   = Filesystem::cleanPath($client->path.'/templates/'.$table->template.'/templateDetails.xml');
+			$client = \Hubzero\Base\ClientManager::client($table->client_id);
+			$path   = Filesystem::cleanPath(PATH_APP . DS . 'app' .'/templates/'.$table->template.'/templateDetails.xml');
 
 			if (file_exists($path))
 			{

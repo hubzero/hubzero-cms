@@ -34,6 +34,9 @@ use Components\Help\Helpers\Finder;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use Exception;
+use Request;
+use Lang;
+use App;
 
 /**
  * Help controller class
@@ -56,7 +59,7 @@ class Help extends SiteController
 		$name      = str_replace('com_', '', $component);
 		$extension = Request::getWord('extension', '');
 
-		$tmpl = \JFactory::getApplication()->getTemplate();
+		$tmpl = App::get('template')->template;
 		$lang = Lang::getTag();
 
 		$finalHelpPage = Finder::page($component, $extension, $page);

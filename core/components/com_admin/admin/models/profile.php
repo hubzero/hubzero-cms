@@ -28,12 +28,10 @@ class AdminModelProfile extends UsersModelUser
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm('com_admin.profile', 'profile', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -68,9 +66,10 @@ class AdminModelProfile extends UsersModelUser
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_users.edit.user.data', array());
+		$data = User::getState('com_users.edit.user.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -79,7 +78,8 @@ class AdminModelProfile extends UsersModelUser
 		$results = Event::trigger('user.onContentPrepareData', array('com_admin.profile', $data));
 
 		// Check for errors encountered while preparing the data.
-		if (count($results) && in_array(false, $results, true)) {
+		if (count($results) && in_array(false, $results, true))
+		{
 			$this->setError($dispatcher->getError());
 		}
 
@@ -125,7 +125,8 @@ class AdminModelProfile extends UsersModelUser
 		}
 
 		// Bind the data.
-		if (!$user->bind($data)) {
+		if (!$user->bind($data))
+		{
 			$this->setError($user->getError());
 			return false;
 		}
@@ -133,7 +134,8 @@ class AdminModelProfile extends UsersModelUser
 		$user->groups = null;
 
 		// Store the data.
-		if (!$user->save()) {
+		if (!$user->save())
+		{
 			$this->setError($user->getError());
 			return false;
 		}

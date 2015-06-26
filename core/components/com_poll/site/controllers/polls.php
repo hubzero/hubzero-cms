@@ -67,8 +67,6 @@ class Polls extends SiteController
 	 */
 	public function displayTask()
 	{
-		$app = \JFactory::getApplication();
-
 		$poll_id = Request::getVar('id', 0, '', 'int');
 
 		$poll = new Poll($this->database);
@@ -81,7 +79,7 @@ class Polls extends SiteController
 		}
 
 		// Adds parameter handling
-		$params = $app->getParams();
+		$params = \App::get('menu.params');
 
 		// Set page title information
 		$menus = \App::get('menu');
@@ -243,8 +241,6 @@ class Polls extends SiteController
 	 */
 	public function latestTask()
 	{
-		$app      = \JFactory::getApplication();
-
 		$model = new Poll($this->database);
 		$poll = $model->getLatest();
 
@@ -257,7 +253,7 @@ class Polls extends SiteController
 		$options = $model->getPollOptions($poll->id);
 
 		// Adds parameter handling
-		$params = $app->getParams();
+		$params = \App::get('menu.params');
 
 		//Set page title information
 		$menus = \App::get('menu');

@@ -40,8 +40,6 @@ $this->css()
      ->css('tasks')
      ->js('tasks');
 
-$app = JFactory::getApplication();
-
 // Set some ordering variables
 $sortcol = $this->tasks->orderBy;
 $dir     = $this->tasks->orderDir;

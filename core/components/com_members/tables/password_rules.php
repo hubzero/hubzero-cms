@@ -217,9 +217,8 @@ class PasswordRules extends \JTable
 		);
 
 		// Get a few config values from joomla
-		$app    = \JFactory::getApplication();
-		$schema = $app->getCfg('db');
-		$prefix = $app->getCfg('dbprefix');
+		$schema = \App::get('config')->get('db');
+		$prefix = \App::get('config')->get('dbprefix');
 
 		// Check auto_increment value of the table (wish there was a jdatabase method for this?)
 		$query  =  "SELECT AUTO_INCREMENT AS ai";

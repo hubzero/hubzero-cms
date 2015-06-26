@@ -464,8 +464,8 @@ function view($dd = false)
 
 		// Filter dialog show/hide parameter
 		$dv_show_filters = 'false';
-		$u = JFactory::getURI();
-		$path = explode('/', $u->getPath());
+
+		$path = explode('/', Request::path());
 		if (isset($path[5]) && $path[5] == 'filter_dialog') {
 			$dv_show_filters = 'true';
 		}

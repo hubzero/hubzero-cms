@@ -1531,7 +1531,6 @@ class Resources extends SiteController
 
 		// Start a new feed object
 		$doc = Document::instance();
-		$params = \JFactory::getApplication()->getParams();
 
 		// Incoming
 		$id    = Request::getInt('id', 0);

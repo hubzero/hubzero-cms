@@ -65,7 +65,6 @@ class Checkin extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
@@ -81,7 +80,6 @@ class Checkin extends JModelList
 	 */
 	public function checkin($ids = array())
 	{
-		$app      = JFactory::getApplication();
 		$db       = $this->_db;
 		$nullDate = $db->getNullDate();
 
@@ -96,7 +94,7 @@ class Checkin extends JModelList
 		foreach ($ids as $tn)
 		{
 			// make sure we get the right tables based on prefix
-			if (stripos($tn, $app->getCfg('dbprefix')) !== 0)
+			if (stripos($tn, Config::get('dbprefix')) !== 0)
 			{
 				continue;
 			}
@@ -150,7 +148,6 @@ class Checkin extends JModelList
 	{
 		if (!isset($this->items))
 		{
-			$app      = JFactory::getApplication();
 			$db       = $this->_db;
 			$nullDate = $db->getNullDate();
 			$tables   = $db->getTableList();
@@ -161,7 +158,7 @@ class Checkin extends JModelList
 			foreach ($tables as $i => $tn)
 			{
 				// make sure we get the right tables based on prefix
-				if (stripos($tn, $app->getCfg('dbprefix')) !== 0)
+				if (stripos($tn, Config::get('dbprefix')) !== 0)
 				{
 					unset($tables[$i]);
 					continue;

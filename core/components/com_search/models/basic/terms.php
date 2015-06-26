@@ -182,7 +182,7 @@ class Terms extends \JModel
 			}
 		}
 		$chunks = array_unique(array_merge(array_map('stem', $chunks), $chunks));
-		\JFactory::getApplication()->triggerEvent('onSearchExpandTerms', array(&$chunks));
+		\Event::trigger('onSearchExpandTerms', array(&$chunks));
 
 		return array_unique($chunks);
 	}

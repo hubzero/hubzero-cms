@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'CurrentCart.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php');
 
 /**
  * Cart controller class
@@ -82,7 +82,7 @@ class CartControllerCart extends ComponentController
 			if (!empty($pIds))
 			{
 				$skus = array();
-				include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 				$warehouse = new StorefrontModelWarehouse();
 
 				foreach ($pIds as $pId => $qty)
@@ -132,7 +132,7 @@ class CartControllerCart extends ComponentController
 		// Check if there is a delete request
 		else
 		{
-			$allPost = JFactory::getApplication()->input->getArray($_POST);
+			$allPost = Request::request();
 			foreach ($allPost as $var => $val)
 			{
 				if ($val == 'delete')
@@ -201,15 +201,13 @@ class CartControllerCart extends ComponentController
 
 				// Redirect directly to checkout, skip the cart page
 				$redirect_url  = Route::url('index.php?option=' . 'com_cart') . DS . 'checkout';
-				$app = JFactory::getApplication();
-				$app->redirect($redirect_url);
+				App::redirect($redirect_url);
 			}
 
 			// prevent resubmitting form by refresh
 			// redirect to cart
 			$redirect_url = Route::url('index.php?option=' . 'com_cart');
-			$app = JFactory::getApplication();
-			$app->redirect($redirect_url);
+			App::redirect($redirect_url);
 		}
 
 		// Get the latest synced cart info, it will also enable cart syncing that was turned off before

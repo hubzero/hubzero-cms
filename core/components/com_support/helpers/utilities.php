@@ -176,8 +176,6 @@ class Utilities
 	 */
 	public static function getFilters()
 	{
-		$app = \JFactory::getApplication();
-
 		// Query filters defaults
 		$filters = array();
 		$filters['search']     = '';
@@ -188,16 +186,16 @@ class Utilities
 		$filters['severity']   = 'normal';
 		$filters['severity']   = '';
 
-		$filters['sort']       = trim($app->getUserStateFromRequest('com_support.tickets.sort', 'filter_order', 'created'));
-		$filters['sortdir']    = trim($app->getUserStateFromRequest('com_support.tickets.sortdir', 'filter_order_Dir', 'DESC'));
+		$filters['sort']       = trim(Request::getState('com_support.tickets.sort', 'filter_order', 'created'));
+		$filters['sortdir']    = trim(Request::getState('com_support.tickets.sortdir', 'filter_order_Dir', 'DESC'));
 
 		// Paging vars
-		$filters['limit']      = $app->getUserStateFromRequest('com_support.tickets.limit', 'limit', Config::get('list_limit'), 'int');
-		$filters['start']      = $app->getUserStateFromRequest('com_support.tickets.limitstart', 'limitstart', 0, 'int');
+		$filters['limit']      = Request::getState('com_support.tickets.limit', 'limit', Config::get('list_limit'), 'int');
+		$filters['start']      = Request::getState('com_support.tickets.limitstart', 'limitstart', 0, 'int');
 
 		// Incoming
-		$filters['_find']      = urldecode(trim($app->getUserStateFromRequest('com_support.tickets.find', 'find', '')));
-		$filters['_show']      = urldecode(trim($app->getUserStateFromRequest('com_support.tickets.show', 'show', '')));
+		$filters['_find']      = urldecode(trim(Request::getState('com_support.tickets.find', 'find', '')));
+		$filters['_show']      = urldecode(trim(Request::getState('com_support.tickets.show', 'show', '')));
 
 		// Break it apart so we can get our filters
 		// Starting string hsould look like "filter:option filter:option"

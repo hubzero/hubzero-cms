@@ -56,7 +56,6 @@ class Database extends Extension
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = \JFactory::getApplication();
 		$this->setState('message', User::getState('com_installer.message'));
 		$this->setState('extension_message', User::getState('com_installer.extension_message'));
 

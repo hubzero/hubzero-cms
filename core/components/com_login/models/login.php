@@ -131,12 +131,11 @@ class Login extends \JModelLegacy
 			return $clean;
 		}
 
-		$app      = \JFactory::getApplication();
 		$lang     = \Lang::getTag();
-		$clientId = (int) $app->getClientId();
+		$clientId = (int) \App::get('client')->id;
 
-		$cache       = \JFactory::getCache('com_modules', '');
-		$cacheid     = md5(serialize(array( $clientId, $lang)));
+		$cache       = \App::get('cache');
+		$cacheid     = 'com_modules.' . md5(serialize(array($clientId, $lang)));
 		$loginmodule = array();
 
 		if (!($clean = $cache->get($cacheid)))
@@ -169,11 +168,10 @@ class Login extends \JModelLegacy
 				return $loginmodule;
 			}
 
-
 			// Return to simple indexing that matches the query order.
 			$loginmodule = $modules;
 
-			$cache->store($loginmodule, $cacheid);
+			$cache->put($cacheid, $loginmodule, App::get('config')->get('cachetime', 15));
 		}
 
 		return $loginmodule;

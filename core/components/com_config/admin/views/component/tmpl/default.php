@@ -31,8 +31,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$template = JFactory::getApplication()->getTemplate();
-
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 Html::behavior('formvalidation');

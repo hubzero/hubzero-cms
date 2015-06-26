@@ -28,13 +28,13 @@ class ResourcesModelType extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
 		$pk = Request::getVar($key, array());
-		if (!empty($pk)) {
+		if (!empty($pk))
+		{
 			$pk = intval($pk[0]);
 		}
 		$this->setState($this->getName().'.id', $pk);
@@ -56,7 +56,8 @@ class ResourcesModelType extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_resources.type', 'type', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -64,14 +65,14 @@ class ResourcesModelType extends JModelAdmin
 	}
 
 	/**
-		 * Returns a reference to the a Table object, always creating it.
-		 *
-		 * @param	type	The table type to instantiate
-		 * @param	string	A prefix for the table class name. Optional.
-		 * @param	array	Configuration array for model. Optional.
-		 * @return	JTable	A database object
-		 * @since	1.7
-		 */
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 * @return	JTable	A database object
+	 * @since	1.7
+	 */
 	public function getTable($type = 'Type', $prefix = 'Resources', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -86,7 +87,7 @@ class ResourcesModelType extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_resources.edit.type.data', array());
+		$data = User::getState('com_resources.edit.type.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

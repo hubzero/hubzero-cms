@@ -27,9 +27,8 @@ class TemplatesControllerTemplate extends JControllerLegacy
 	public function copy()
 	{
 		// Check for request forgeries
-		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken();
 
-		$app = JFactory::getApplication();
 		Request::setVar('installtype', 'folder');
 		$newName = Request::getCmd('new_name');
 		$newNameRaw = Request::getVar('new_name', null, '', 'string');

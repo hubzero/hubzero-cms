@@ -113,7 +113,6 @@ class Basic extends SiteController
 			$total = $results->get_total_count();
 		}
 
-		$this->view->app     = \JFactory::getApplication();
 		$this->view->terms   = $terms;
 		$this->view->results = $results;
 		$this->view->total   = $total;

@@ -271,7 +271,7 @@ class Item extends \JTable
 			{
 				$where[] = "b.created_by=" . $this->_db->quote($filters['created_by']);
 			}
-			else if (!\JFactory::getApplication()->isAdmin())
+			else if (!\App::isAdmin())
 			{
 				$where[] = "d.access=0";
 				$where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";

@@ -59,7 +59,6 @@ class Router extends Base
 		// Get the menu items for this component.
 		if (!$items)
 		{
-			$app       = \JFactory::getApplication();
 			$menu      = \App::get('menu');
 			$component = Component::load('com_poll');
 			$items     = $menu->getItems('component_id', $component->id);

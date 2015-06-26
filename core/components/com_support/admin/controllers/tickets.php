@@ -470,7 +470,7 @@ class Tickets extends AdminController
 			if (isset($lastcomment) && $lastcomment->created() >= $started)
 			{
 				$rowc->set('comment', $comment);
-				\JFactory::getApplication()->enqueueMessage(Lang::txt('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'), 'error');
+				\Notify::error(Lang::txt('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'));
 				return $this->editTask($rowc);
 			}
 		}

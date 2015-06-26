@@ -46,7 +46,6 @@ class PagePermissions extends \JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 

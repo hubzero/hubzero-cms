@@ -102,8 +102,6 @@ class TemplatesModelTemplate extends JModelLegacy
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication('administrator');
-
 		// Load the User state.
 		$pk = (int) Request::getInt('id');
 		$this->setState('extension.id', $pk);

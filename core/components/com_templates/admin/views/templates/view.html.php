@@ -49,7 +49,8 @@ class TemplatesViewTemplates extends JViewLegacy
 		$this->preview    = Component::params('com_templates')->get('template_positions_display');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			App::abort(500, implode("\n", $errors));
 			return false;
 		}
@@ -57,9 +58,8 @@ class TemplatesViewTemplates extends JViewLegacy
 		// Check if there are no matching items
 		if (!count($this->items))
 		{
-			JFactory::getApplication()->enqueueMessage(
+			Notify::warning(
 				Lang::txt('COM_TEMPLATES_MSG_MANAGE_NO_TEMPLATES')
-				, 'warning'
 			);
 		}
 

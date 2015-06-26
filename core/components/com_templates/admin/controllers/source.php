@@ -96,7 +96,6 @@ class TemplatesControllerSource extends JControllerLegacy
 	public function edit()
 	{
 		// Initialise variables.
-		$app      = JFactory::getApplication();
 		$model    = $this->getModel();
 		$recordId = Request::getVar('id');
 		$context  = 'com_templates.edit.source';
@@ -113,8 +112,8 @@ class TemplatesControllerSource extends JControllerLegacy
 		}
 
 		// Check-out succeeded, push the new record id into the session.
-		$app->setUserState($context.'.id', $recordId);
-		$app->setUserState($context.'.data', null);
+		User::setState($context.'.id', $recordId);
+		User::setState($context.'.data', null);
 		$this->setRedirect('index.php?option=com_templates&view=source&layout=edit');
 
 		return true;
@@ -131,14 +130,13 @@ class TemplatesControllerSource extends JControllerLegacy
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app      = JFactory::getApplication();
 		$model    = $this->getModel();
 		$context  = 'com_templates.edit.source';
 		$returnId = (int) $model->getState('extension.id');
 
 		// Clean the session data and redirect.
-		$app->setUserState($context.'.id', null);
-		$app->setUserState($context.'.data', null);
+		User::setState($context.'.id', null);
+		User::setState($context.'.data', null);
 		$this->setRedirect(Route::url('index.php?option=com_templates&view=template&id='.$returnId, false));
 	}
 
@@ -151,7 +149,6 @@ class TemplatesControllerSource extends JControllerLegacy
 		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app     = JFactory::getApplication();
 		$data    = Request::getVar('jform', array(), 'post', 'array');
 		$context = 'com_templates.edit.source';
 		$task    = $this->getTask();
@@ -178,7 +175,7 @@ class TemplatesControllerSource extends JControllerLegacy
 		}
 
 		// Validate the posted data.
-		$form	= $model->getForm();
+		$form = $model->getForm();
 		if (!$form)
 		{
 			throw new Exception($model->getError(), 500);
@@ -190,23 +187,23 @@ class TemplatesControllerSource extends JControllerLegacy
 		if ($data === false)
 		{
 			// Get the validation messages.
-			$errors	= $model->getErrors();
+			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
 				if ($errors[$i] instanceof Exception)
 				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+					Notify::warning($errors[$i]->getMessage());
 				}
 				else
 				{
-					$app->enqueueMessage($errors[$i], 'warning');
+					Notify::warning($errors[$i]);
 				}
 			}
 
 			// Save the data in the session.
-			$app->setUserState($context.'.data', $data);
+			User::setState($context.'.data', $data);
 
 			// Redirect back to the edit screen.
 			$this->setRedirect(Route::url('index.php?option=com_templates&view=source&layout=edit', false));
@@ -217,7 +214,7 @@ class TemplatesControllerSource extends JControllerLegacy
 		if (!$model->save($data))
 		{
 			// Save the data in the session.
-			$app->setUserState($context.'.data', $data);
+			User::setState($context.'.data', $data);
 
 			// Redirect back to the edit screen.
 			$this->setMessage(Lang::txt('JERROR_SAVE_FAILED', $model->getError()), 'warning');
@@ -232,7 +229,7 @@ class TemplatesControllerSource extends JControllerLegacy
 		{
 			case 'apply':
 				// Reset the record data in the session.
-				$app->setUserState($context.'.data',	null);
+				User::setState($context.'.data', null);
 
 				// Redirect back to the edit screen.
 				$this->setRedirect(Route::url('index.php?option=com_templates&view=source&layout=edit', false));
@@ -240,8 +237,8 @@ class TemplatesControllerSource extends JControllerLegacy
 
 			default:
 				// Clear the record id and data from the session.
-				$app->setUserState($context.'.id', null);
-				$app->setUserState($context.'.data', null);
+				User::setState($context.'.id', null);
+				User::setState($context.'.data', null);
 
 				// Redirect to the list screen.
 				$this->setRedirect(Route::url('index.php?option=com_templates&view=template&id='.$model->getState('extension.id'), false));
