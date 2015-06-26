@@ -395,9 +395,9 @@ class Translator extends Object
 	 */
 	public function getPluralSuffixes($count)
 	{
-		if ($this->pluralSuffixesCallback !== null)
+		if ($this->callbacks['pluralSuffixes'] !== null)
 		{
-			return call_user_func($this->pluralSuffixesCallback, $count);
+			return call_user_func($this->callbacks['pluralSuffixes'], $count);
 		}
 		else
 		{
