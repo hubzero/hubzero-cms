@@ -93,7 +93,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Get a needed library
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');

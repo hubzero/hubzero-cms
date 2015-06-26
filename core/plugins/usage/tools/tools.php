@@ -571,7 +571,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	 */
 	private function check_for_data($yearmonth, $period)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$sql = "SELECT COUNT(datetime) FROM `#__stats_topvals` WHERE `datetime`=" . $database->Quote($yearmonth . '-00 00:00:00') . " AND `period`=" . $database->Quote($period);
 		$database->setQuery($sql);
@@ -661,7 +661,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();

@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 ?>
 <h3><?php echo Lang::txt('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
 

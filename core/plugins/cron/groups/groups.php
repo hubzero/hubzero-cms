@@ -107,7 +107,7 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 	 */
 	public function sendGroupAnnouncements(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// get hubzero announcement object
 		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($database);

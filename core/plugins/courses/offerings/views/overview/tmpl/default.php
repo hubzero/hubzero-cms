@@ -92,7 +92,7 @@ $this->css();
 					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
 						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
-					<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
+					<?php } else if ($offering->student(User::get('id'))->get('student')) { ?>
 					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
 						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>

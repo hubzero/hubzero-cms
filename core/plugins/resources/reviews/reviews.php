@@ -94,7 +94,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$resource = new \Components\Resources\Tables\Resource($database);
 		$resource->load($id);
 
@@ -154,7 +154,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		$h->execute();
 
 		// Get reviews for this resource
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$r = new \Components\Resources\Tables\Review($database);
 		$reviews = $r->getRatings($model->resource->id);
 		if (!$reviews)
@@ -238,7 +238,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getComments($id, $item, $category, $level, $abuse=false)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$level++;
 
@@ -272,7 +272,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getAbuseReports($item, $category)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$ra = new \Components\Support\Tables\ReportAbuse($database);
 		return $ra->getCount(array('id' => $item, 'category' => $category));

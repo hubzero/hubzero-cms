@@ -167,7 +167,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			// Set vars
 			$this->_config     = $model->config();
 			$this->_task       = Request::getVar('action', '');
-			$this->_database   = JFactory::getDBO();
+			$this->_database   = App::get('db');
 			$this->_uid        = User::get('id');
 
 			switch ($this->_task)
@@ -606,7 +606,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->model     = $model;
-		$this->_database = JFactory::getDBO();
+		$this->_database = App::get('db');
 		$this->_uid      = $uid;
 		$this->miniView  = true;
 

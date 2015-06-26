@@ -39,7 +39,7 @@ $this->css()
 $loggedin = false;
 $isUser = false;
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 //if we are logged in set logged in flag
 if (!User::isGuest())
@@ -653,7 +653,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				) : ?>
 				<?php
 					// Get member addresses
-					$db = JFactory::getDBO();
+					$db = App::get('db');
 					$membersAddress = new \Components\Members\Tables\Address($db);
 					$addresses = $membersAddress->getAddressesForMember($this->profile->get("uidNumber"));
 

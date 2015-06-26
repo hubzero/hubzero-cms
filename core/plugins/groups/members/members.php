@@ -197,7 +197,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$view->option = $option;
 				$view->group = $group;
 				$view->authorized = $authorized;
-				$this->database = JFactory::getDBO();
+				$this->database = App::get('db');
 
 				$view->q = Request::getVar('q', '');
 				$view->filter = Request::getVar('filter', '');
@@ -212,7 +212,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
 
 				//get all member roles
-				$db = JFactory::getDBO();
+				$db = App::get('db');
 				$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($group->get('gidNumber'));
 				$db->setQuery($sql);
 				$view->member_roles = $db->loadAssocList();
@@ -380,7 +380,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Set a flag for emailing any changes made
 		$admchange = '';
@@ -827,7 +827,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$admchange = '';
 
@@ -930,7 +930,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// An array for the users we're going to deny
 		$users = array();
@@ -982,7 +982,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group->update();
 
 		//delete any email invited users
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		foreach ($user_emails as $ue)
 		{
 			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $db->Quote($ue);
@@ -1020,7 +1020,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view = $this->view('add', 'role');
 
 		// database object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// load role object
 		$view->role = new GroupsMembersRole($database);
@@ -1065,7 +1065,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$role['permissions'] = json_encode($role['permissions']);
 
 		// database object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// load role object
 		$this->role = new GroupsMembersRole($database);
@@ -1104,7 +1104,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role));
 		$db->query();
 
@@ -1150,7 +1150,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Cancel membership confirmation screen
 		$view = $this->view('assign', 'role');
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery("SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->Quote($this->group->get('gidNumber')));
 		$roles = $db->loadAssocList();
 
@@ -1192,7 +1192,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery("INSERT INTO `#__xgroups_member_roles` (roleid,uidNumber) VALUES (" . $db->Quote($role) . "," . $db->Quote($uid) . ")");
 		$db->query();
 
@@ -1226,7 +1226,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid));
 		if (!$db->query())
 		{

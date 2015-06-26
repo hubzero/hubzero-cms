@@ -60,7 +60,7 @@ class JFormFieldResourcetype extends JFormFieldList
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$sr = new \Components\Resources\Tables\Type($db);
 
 		$types = $sr->getMajorTypes();

@@ -100,7 +100,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onProjectCount( $model, $admin = 0 )
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$objTD = new \Components\Projects\Tables\Todo( $database );
 		$counts['todo'] = $objTD->getTodos($model->get('id'), $filters = array('count' => 1));
@@ -171,7 +171,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			// Set vars
 			$this->_task		= $action ? $action : Request::getVar('action','');
 			$this->_todoid		= Request::getInt('todoid', 0);
-			$this->_database	= JFactory::getDBO();
+			$this->_database	= App::get('db');
 			$this->_uid 		= User::get('id');
 
 			switch ($this->_task)

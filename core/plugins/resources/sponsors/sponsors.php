@@ -74,7 +74,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get recommendations
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		// Instantiate a view
 		$this->view = $this->view('mini', 'display');
@@ -160,7 +160,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$this->_option     = $option;
 		$this->_controller = $controller;
 		$this->_task       = $task;
-		$this->database    = JFactory::getDBO();
+		$this->database    = App::get('db');
 
 		$method = strtolower($task) . 'Task';
 

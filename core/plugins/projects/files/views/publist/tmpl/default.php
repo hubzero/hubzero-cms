@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
 require_once( PATH_CORE . DS . 'components' . DS
 	.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
-$database 	= JFactory::getDBO();
+$database 	= App::get('db');
 $objSt 		= new \Components\Projects\Tables\Stamp( $database );
 
 // Get listed public files

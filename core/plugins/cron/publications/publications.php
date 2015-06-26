@@ -82,7 +82,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function sendAuthorStats(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$pconfig = Component::params('com_publications');
 
@@ -227,7 +227,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function rollUserStats(\Components\Cron\Models\Job $job)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$pconfig  = Component::params('com_publications');
 
 		$numMonths = 1;
@@ -268,7 +268,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function runMkAip(\Components\Cron\Models\Job $job)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$config = Component::params('com_publications');
 
 		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
@@ -406,7 +406,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function issueMasterDoi(\Components\Cron\Models\Job $job)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$config   = Component::params('com_publications');
 
 		// Is config to issue master DOI turned ON?

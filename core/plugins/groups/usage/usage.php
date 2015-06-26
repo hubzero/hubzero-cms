@@ -128,7 +128,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			}
 
 			//instantiate the db
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			//reference group for other functions
 			$this->group = $group;
@@ -216,7 +216,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 		$rr = new \Components\Resources\Tables\Resource($database);
@@ -238,7 +238,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$database->setQuery("SELECT COUNT(*) FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
 		return $database->loadResult();
@@ -257,7 +257,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
 		$pageids = $database->loadObjectList();
@@ -292,7 +292,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			return 0;
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
@@ -352,7 +352,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public function getGroupPageViews($gid, $pageid = null, $start, $end)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if ($pageid != '')
 		{
@@ -485,7 +485,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 
@@ -513,7 +513,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			return 0;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.scope_id=" . $database->quote($gid) . " AND be.id=bc.entry_id";
 		$database->setQuery($query);
@@ -530,7 +530,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getGroupCalendarCount($gid)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$query = "SELECT COUNT(*) FROM `#__events` WHERE scope=".$database->quote('group')." AND scope_id=" . $database->quote($gid) . " AND state=1";
 		$database->setQuery($query);

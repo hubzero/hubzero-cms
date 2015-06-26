@@ -91,7 +91,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 		}
 
 		// create needed objects
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// get all queued mailing recipients
 		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking
@@ -207,7 +207,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
 
 		// get db
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// get actions
 		$newsletterMailingRecipientAction = new \Components\Newsletter\Tables\MailingRecipientAction($database);

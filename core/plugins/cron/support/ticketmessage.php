@@ -56,7 +56,7 @@ class Ticketmessage extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 
 		$html = array();
 

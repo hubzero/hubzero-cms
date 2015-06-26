@@ -100,7 +100,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		$view->resource = $resource;
 
 		// Get recommendations
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$r = new ResourcesRecommendation($database);
 		$view->results  = $r->getResults($filters);
 

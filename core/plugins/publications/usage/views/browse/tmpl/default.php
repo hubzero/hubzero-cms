@@ -31,7 +31,7 @@ if ($this->publication->alias) {
 	$url = 'index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=usage';
 }
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 ?>
 <h3>

@@ -145,7 +145,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return $counts;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$objPD = new \Components\Projects\Tables\Database($database);
 		$total = $objPD->getItems($model->get('id'), array('count' => 1));
@@ -252,7 +252,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$this->_database 	= JFactory::getDBO();
+		$this->_database 	= App::get('db');
 		$this->_uid 		= User::get('id');
 
 		// Publishing?
@@ -1359,7 +1359,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$db 	=  JFactory::getDBO();
+		$db 	=  App::get('db');
 		$ds_db 	= $this->get_ds_db($project->get('id'));
 
 		// Load database record
@@ -1441,7 +1441,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$db 	=  JFactory::getDBO();
+		$db 	=  App::get('db');
 		$ds_db 	= $this->get_ds_db($project->get('id'));
 
 		// Load database record

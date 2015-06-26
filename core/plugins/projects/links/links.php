@@ -136,7 +136,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		if ( in_array($this->_task, $tasks) )
 		{
 			// Set vars
-			$this->_database 	= JFactory::getDBO();
+			$this->_database 	= App::get('db');
 			$this->_uid 		= User::get('id');
 
 			// Load component configs
@@ -407,7 +407,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$c 		  = new \Components\Citations\Tables\Citation( $database );
 		$assoc 	  = new \Components\Citations\Tables\Association($database);
 
@@ -470,7 +470,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$c 		  = new \Components\Citations\Tables\Citation( $database );
 
 		if ($c->loadPubCitation($doi, $pid))

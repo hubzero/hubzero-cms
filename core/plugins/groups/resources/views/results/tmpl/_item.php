@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 // Instantiate a helper object
 $RE = new \Components\Resources\Helpers\Helper($this->row->id, $database);

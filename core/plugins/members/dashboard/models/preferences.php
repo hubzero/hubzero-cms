@@ -58,7 +58,7 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 	public function __construct( $oid = null )
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = App::get('db');
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -105,7 +105,7 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 	public static function loadForUser($uidNumber=null)
 	{
 		// get db
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// load prefs by userid
 		$sql = "SELECT * FROM `#__xprofiles_dashboard_preferences` WHERE `uidNumber`=" . $db->quote($uidNumber) . " LIMIT 1";

@@ -179,7 +179,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate our message object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$recipient = new \Hubzero\Message\Message($database);
 
 		// Retrieve data
@@ -224,7 +224,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		//insantiate db
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Load the message and parse it
 		$xmessage = new \Hubzero\Message\Message($database);
@@ -279,7 +279,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'create');
 
 		//get all member roles
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($this->group->get('gidNumber'));
 		$db->setQuery($sql);
 		$member_roles = $db->loadAssocList();
@@ -355,7 +355,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 					if (strstr($mbr, '_'))
 					{
 						$role = explode('_', $mbr);
-						$db = JFactory::getDBO();
+						$db = App::get('db');
 						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE roleid=" . $db->Quote($role[1]);
 						$db->setQuery($sql);
 						$member_roles = $db->loadAssocList();
@@ -403,7 +403,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		if ($action == 'group_invitees_message')
 		{
 			// Get invite emails
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 			$group_inviteemails = new \Hubzero\User\Group\InviteEmail($db);
 			$current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
 
@@ -448,7 +448,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		if ($action == 'group_invitees_message')
 		{
 			// Get invite emails
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 			$group_inviteemails = new \Hubzero\User\Group\InviteEmail($db);
 			$current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
 

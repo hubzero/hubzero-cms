@@ -79,7 +79,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 			'children' => array()
 		);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$rt = new \Components\Publications\Tables\Category($database);
 		foreach ($rt->getCategories() as $category)
 		{
@@ -185,7 +185,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 		$rt = new \Components\Publications\Tables\Category($database);
@@ -292,7 +292,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 
 		$row->href = Route::url('index.php?option=com_publications&id=' . $row->id);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Get version authors
 		$pa = new \Components\Publications\Tables\Author($database);

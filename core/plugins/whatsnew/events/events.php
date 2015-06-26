@@ -82,7 +82,7 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Build the query
 		$e_count = "SELECT count(DISTINCT e.id)";

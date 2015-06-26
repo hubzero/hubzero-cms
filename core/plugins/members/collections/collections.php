@@ -101,7 +101,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 			// Set some variables so other functions have access
 			$this->option   = $option;
-			$this->database = JFactory::getDBO();
+			$this->database = App::get('db');
 
 			$this->_authorize('item');
 

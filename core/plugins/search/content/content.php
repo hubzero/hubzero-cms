@@ -59,9 +59,7 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltext` NOT LIKE '%$forb%')";
 		}
 
-		$user = JFactory::getUser();
-
-		$addtl_where[] = '(c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
+		$addtl_where[] = '(c.access IN (' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
 		$query = "SELECT
 			c.title,

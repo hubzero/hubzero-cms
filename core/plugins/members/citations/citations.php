@@ -95,7 +95,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		// Instantiate citations object and get count
 		$obj = new \Components\Citations\Tables\Citation($this->database);

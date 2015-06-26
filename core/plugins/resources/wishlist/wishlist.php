@@ -97,7 +97,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 		Lang::load('com_wishlist');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$option = 'com_wishlist';
 		$cat    = 'resource';

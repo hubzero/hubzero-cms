@@ -56,13 +56,15 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 		$tmpl = 'system';
 
 		// Get the active site template
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
-		$query->select('id, home, template, s.params');
+		$query->select('s.id, s.home, s.template, s.params, e.protected');
 		$query->from('#__template_styles as s');
 		$query->where('s.client_id = 0');
 		$query->where('e.enabled = 1');
 		$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type='.$db->quote('template').' AND e.client_id=s.client_id');
+
+		$path = PATH_APP . DS . 'app';
 
 		$db->setQuery($query);
 		$templates = $db->loadObjectList('id');
@@ -70,6 +72,10 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 		{
 			if ($template->home == 1)
 			{
+				if ($template->protected)
+				{
+					$path = PATH_CORE;
+				}
 				$tmpl = $template->template;
 			}
 		}
@@ -77,7 +83,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 		$response->data['site'] = $this->_obj('Name', $tmpl);
 
 		$overrides = array();
-		$path = PATH_CORE . '/templates/' . $tmpl . '/html';
+		$path .= '/templates/' . $tmpl . '/html';
 
 		if (is_dir($path))
 		{
@@ -91,7 +97,6 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 
 				$overrides[] = str_replace(PATH_CORE . '/templates/' . $tmpl . '/html', '', $name);
 			}
-
 		}
 
 		$response->data['overrides'] = $this->_obj('Overrides', $overrides);

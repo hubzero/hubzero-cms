@@ -258,7 +258,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	protected function getCitationVars()
 	{
 		// get all the vars that a citation can have
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$tbl = new \Components\Citations\Tables\Citation($db);
 		$keys = $tbl->getProperties();
 
@@ -365,7 +365,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 
 		// database object
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// query
 		$sql = "SELECT id, title, doi, isbn FROM `#__citations`";

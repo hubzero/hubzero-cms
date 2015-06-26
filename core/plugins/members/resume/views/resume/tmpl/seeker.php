@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $jt = new \Components\Jobs\Tables\JobType($database);
 $jc = new \Components\Jobs\Tables\JobCategory($database);

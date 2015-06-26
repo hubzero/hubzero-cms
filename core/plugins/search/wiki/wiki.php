@@ -59,8 +59,7 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(wp.title NOT LIKE '%$forb%' AND wv.pagetext NOT LIKE '%$forb%')";
 		}
 
-		$user = JFactory::getUser();
-		$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
+		$viewlevels	= implode(',', User::getAuthorisedViewLevels());
 
 		if ($gids = $authz->get_group_ids())
 		{

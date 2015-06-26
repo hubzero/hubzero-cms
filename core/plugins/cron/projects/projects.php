@@ -77,7 +77,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 	 */
 	public function computeStats(\Components\Cron\Models\Job $job)
 	{
-		$database   = JFactory::getDBO();
+		$database   = App::get('db');
 		$publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
 		require_once(PATH_CORE . DS . 'components'. DS . 'com_projects' . DS . 'models' . DS . 'project.php');
@@ -106,7 +106,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 	 */
 	public function googleSync(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$pconfig = Component::params('com_projects');
 
@@ -179,7 +179,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 	 */
 	public function gitGc(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$pconfig = Component::params('com_projects');
 

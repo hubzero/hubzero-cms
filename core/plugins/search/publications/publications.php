@@ -99,12 +99,10 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 	{
 		$dbg = isset($_GET['dbg']);
 
-		$database = JFactory::getDBO();
-
-		$user = JFactory::getUser();
+		$database = App::get('db');
 
 		$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
-		$viewlevels = implode(',', $user->getAuthorisedViewLevels());
+		$viewlevels = implode(',', User::getAuthorisedViewLevels());
 
 		/*if ($groups)
 		{

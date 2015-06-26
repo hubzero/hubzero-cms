@@ -48,7 +48,7 @@ $img2 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->re
 
 $cls = 'even';
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $topvals = new \Components\Resources\Tables\Stats\Tools\Topvals($database);
 

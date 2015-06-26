@@ -73,7 +73,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Build the query that checks topic pages
 		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext,

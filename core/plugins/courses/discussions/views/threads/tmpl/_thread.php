@@ -96,7 +96,7 @@ if (!$this->thread->thread)
 							$this->thread->instructor_replied = 0;
 							if (count($this->instructors))
 							{
-								$database = JFactory::getDBO();
+								$database = App::get('db');
 								$database->setQuery("SELECT COUNT(*) FROM `#__forum_posts` AS c WHERE c.thread=" . $this->thread->thread . " AND c.state=1 AND c.created_by IN (" . implode(',', $this->instructors) . ")");
 								$this->thread->instructor_replied = $database->loadResult();
 							}

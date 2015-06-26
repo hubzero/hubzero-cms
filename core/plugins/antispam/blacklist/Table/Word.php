@@ -147,7 +147,7 @@ class Word extends \JTable
 				$this->_db->setQuery($query);
 				if ($what == 'array')
 				{
-					return $this->_db->loadResultArray();
+					return $this->_db->loadColumn();
 				}
 				return $this->_db->loadObjectList();
 			break;

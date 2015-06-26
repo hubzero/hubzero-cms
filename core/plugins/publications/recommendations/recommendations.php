@@ -85,7 +85,7 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get recommendations
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$r = new PublicationRecommendation($database);
 		$results = $r->getResults($filters);
 

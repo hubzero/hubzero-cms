@@ -82,7 +82,7 @@ class Miner extends Object implements Provider
 	{
 		if (!$db)
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 		}
 
 		if (!($db instanceof \JDatabase))
@@ -334,7 +334,7 @@ class Miner extends Object implements Provider
 			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($id) . " AND tos.tbl='resources' AND t.admin=0
 			ORDER BY t.raw_tag"
 		);
-		$record->subject = $this->database->loadResultArray();
+		$record->subject = $this->database->loadColumn();
 
 		$record->relation = array();
 
@@ -400,7 +400,7 @@ class Miner extends Object implements Provider
 					AND t.revision=" . $this->database->quote($revision) . "
 					ORDER BY t.ordering"
 				);
-				$record->creator = $this->database->loadResultArray();
+				$record->creator = $this->database->loadColumn();
 			}
 
 			if ($revision)
@@ -447,7 +447,7 @@ class Miner extends Object implements Provider
 				WHERE a.subtable='resources' AND a.subid=" . $this->database->quote($id) . " AND a.role!='submitter'
 				ORDER BY a.ordering, a.name"
 			);
-			$record->creator = $this->database->loadResultArray();
+			$record->creator = $this->database->loadColumn();
 		}
 
 		return $record;

@@ -82,7 +82,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Build the query
 		$f_count = "SELECT COUNT(*)";

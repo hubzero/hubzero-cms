@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>

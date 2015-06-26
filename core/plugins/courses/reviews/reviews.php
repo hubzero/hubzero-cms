@@ -64,7 +64,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		$this->option     = Request::getCmd('option', 'com_courses');
 		$this->controller = Request::getWord('controller', 'course');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$tbl = new \Hubzero\Item\Comment($database);
 
 		// Build the HTML meant for the tab's metadata overview

@@ -96,7 +96,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		if (!is_array($categories))
 		{
 			// Get categories
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 			$rt = new \Components\Resources\Tables\Type($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
@@ -147,7 +147,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if (is_array($areas) && $limit)
 		{
@@ -328,7 +328,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		{
 			$authorized = true;
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate a helper object
 		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);

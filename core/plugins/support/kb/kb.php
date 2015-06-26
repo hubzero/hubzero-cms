@@ -62,7 +62,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 						ON c.id = f.category
 					WHERE rc.id=" . $refid;
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)

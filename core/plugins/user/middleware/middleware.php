@@ -53,7 +53,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 			try
 			{
 				$gids = JUserHelper::getUserGroups($userId);
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 
 				//
 				// Quota class
@@ -218,7 +218,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 		{
 			try
 			{
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 				$db->setQuery("DELETE FROM `#__users_quotas` WHERE `user_id`=" . $userId);
 
 				if (!$db->query())
@@ -226,7 +226,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 					throw new Exception($db->getErrorMsg());
 				}
 
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 				$db->setQuery("DELETE FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
 
 				if (!$db->query())

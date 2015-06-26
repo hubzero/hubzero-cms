@@ -187,7 +187,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->repo = new \Components\Projects\Models\Repo ($this->model, $repoName);
 
 			$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
-			$this->_database   = \JFactory::getDBO();
+			$this->_database   = \App::get('db');
 			$this->_uid 	   = User::get('id');
 			$this->_task       = $action ? $action : Request::getVar('action', 'browse');
 			$this->subdir 	   = trim(urldecode(Request::getVar('subdir', '')), DS);
@@ -2622,7 +2622,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$filters['ignore_access']   = 1;
 			$filters['dev']   	 		= 1;
 
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 
 			$objP 				= new \Components\Publications\Tables\Publication( $database );
 			$pubs 				= $objP->getRecords($filters);

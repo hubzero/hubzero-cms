@@ -111,7 +111,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//creat database object
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		//get the group members
 		$members = $group->get('members');

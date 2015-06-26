@@ -857,7 +857,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	private function setToken($hashedToken)
 	{
 		// Create the database object and set the token
-		$db     = JFactory::getDBO();
+		$db     = App::get('db');
 		$query	= 'UPDATE #__users'
 				. ' SET activation = ' . $db->Quote($hashedToken)
 				. ' WHERE id = ' . (int) $this->user->get('id')
@@ -884,7 +884,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	private function getToken()
 	{
 		// Create database object and check that token matches that of the user stored in the db
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery('SELECT id, activation FROM `#__users` WHERE block = 0 AND username = ' . $db->Quote($this->user->get('username')));
 
 		return $db->loadObject();

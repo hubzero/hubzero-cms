@@ -69,7 +69,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$view = $this->view('default', 'create');
 		$view->ticket = $ticket;
@@ -130,7 +130,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// Incoming posted data
 		$record = Request::getVar('records', array(), 'post');

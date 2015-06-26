@@ -135,7 +135,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			// set up some vars
 			$this->member   = $member;
 			$this->params   = $this->params;
-			$this->database = JFactory::getDBO();
+			$this->database = App::get('db');
 			$this->option   = $option;
 			$this->action   = Request::getVar('action', 'display');
 
@@ -383,7 +383,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$this->option     = $option;
 		$this->controller = $controller;
 		$this->action     = $action;
-		$this->database   = JFactory::getDBO();
+		$this->database   = App::get('db');
 
 		// include dasboard models
 		include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
@@ -441,8 +441,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$application = JFactory::getApplication();
-		$view->admin = $application->isAdmin();
+		$view->admin = App::isAdmin();
 
 		// return rendered view
 		return $view->loadTemplate();

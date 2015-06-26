@@ -54,7 +54,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 		$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` "
 				. "FROM #__item_comments AS rc "
 				. "WHERE rc.id=" . $refid;
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 
 		if ($rows = $database->loadObjectList())
@@ -127,7 +127,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);
@@ -152,7 +152,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);
@@ -179,7 +179,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$this->loadLanguage();
 

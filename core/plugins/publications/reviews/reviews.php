@@ -146,7 +146,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		$h->execute();
 
 		// Get reviews for this publication
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$r = new \Components\Publications\Tables\Review( $database );
 		$reviews = $r->getRatings($model->get('id'));
 		if (!$reviews)
@@ -234,7 +234,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function getComments($id, $item, $category, $level, $abuse=false)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$level++;
 
@@ -268,7 +268,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function getAbuseReports($item, $category)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$ra = new \Components\Support\Tables\ReportAbuse( $database );
 		return $ra->getCount( array('id' => $item, 'category' => $category) );
@@ -344,7 +344,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$row = new \Hubzero\Item\Comment($database);
 		if (!$row->bind($comment))
@@ -387,7 +387,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function deletereply()
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$publication =& $this->publication;
 
 		// Incoming
@@ -432,7 +432,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function rateitem()
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$publication =& $this->publication;
 
 		$id   = Request::getInt( 'refid', 0 );
@@ -536,7 +536,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		// Incoming
 		$myr = Request::getInt( 'myrating', 0 );
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$review = new \Components\Publications\Tables\Review( $database );
 		$review->loadUserReview( $publication->get('id'), User::get('id'), $publication->get('version_id') );
@@ -589,7 +589,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Bind the form data to our object
 		$row = new \Components\Publications\Tables\Review( $database );
@@ -684,7 +684,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function deletereview()
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$publication =& $this->publication;
 
 		// Incoming

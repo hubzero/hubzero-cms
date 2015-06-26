@@ -66,7 +66,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		// Expression to search for.
 		$regex = '#<hr(.*)class="system-pagebreak"(.*)\/>#iU';
 
-		$print = Request::getBool('print');
+		$print   = Request::getBool('print');
 		$showall = Request::getBool('showall');
 
 		if (!$this->params->get('enabled', 1))
@@ -86,7 +86,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$view = Request::getString('view');
 		$full = Request::getBool('fullview');
 

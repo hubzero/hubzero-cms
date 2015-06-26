@@ -372,7 +372,7 @@ class WikiParser
 		// If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
 		if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))
 		{
-			$links = new \Components\Wiki\Tables\Link(JFactory::getDBO());
+			$links = new \Components\Wiki\Tables\Link(App::get('db'));
 			$links->updateLinks($this->get('pageid'), $this->_data['links']);
 		}
 

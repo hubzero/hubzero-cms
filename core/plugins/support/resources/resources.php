@@ -81,7 +81,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 						WHERE rr.id=" . $refid;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)
@@ -107,7 +107,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function getParentId($parentid, $category)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$refid = $parentid;
 
 		if ($category == 'reviewcomment')
@@ -148,7 +148,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$parent = new \Hubzero\Item\Comment($database);
 		$parent->load($parentid);
@@ -200,7 +200,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Components\Resources\Tables\Review($database);
 		$comment->load($refid);
@@ -227,7 +227,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Components\Resources\Tables\Review($database);
 		$comment->load($refid);
@@ -255,7 +255,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{

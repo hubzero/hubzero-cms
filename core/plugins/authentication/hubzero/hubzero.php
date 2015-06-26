@@ -84,7 +84,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		$conditions = '';
 
 		// Get a database object
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Determine if attempting to log in via username or email address
 		if (strpos($credentials['username'], '@'))

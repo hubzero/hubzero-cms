@@ -66,7 +66,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 						WHERE rr.id=" . $refid;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)
@@ -92,7 +92,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function getParentId($parentid, $category)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$refid = $parentid;
 
 		if ($category == 'pubreviewcomment')
@@ -133,7 +133,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$parent = new \Hubzero\Item\Comment($database);
 		$parent->load($parentid);
@@ -189,7 +189,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 
 		$msg = Lang::txt('PLG_SUPPORT_PUBLICATIONS_CONTENT_FOUND_OBJECTIONABLE');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{

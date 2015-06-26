@@ -170,7 +170,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 
 			//set vars for reuse purposes
-			$this->database = JFactory::getDBO();
+			$this->database = App::get('db');
 
 			//include needed event libs
 			require __DIR__ . '/helper.php';
@@ -874,7 +874,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//force https protocol
 		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 		{
-			JFactory::getApplication()->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die(Lang::txt('Calendar subscriptions only support the HTTPS (port 443) protocol.'));
 		}
 
@@ -1784,7 +1784,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function _getAllFutureEvents()
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$sql = "SELECT COUNT(*)
 				FROM #__events
 				WHERE scope=" . $db->quote('group') . "
@@ -1803,7 +1803,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function _getFutureEventsThisMonth()
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$sql = "SELECT COUNT(*)
 				FROM #__events
 				WHERE scope=" . $db->quote('group') . "

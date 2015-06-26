@@ -433,9 +433,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$datetime = $selectedPeriod . '-00 00:00:00';
 
 		// Set the pathway
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(Lang::txt('PLG_USAGE_PERIOD_' . strtoupper($period)), 'index.php?option=' . $option . '&task=' . $task . '&period=' . $period);
+		Pathway::append(Lang::txt('PLG_USAGE_PERIOD_' . strtoupper($period)), 'index.php?option=' . $option . '&task=' . $task . '&period=' . $period);
 
 		// Build the HTML
 		$html  = $this->_navlinks($option, $task, $period);

@@ -94,7 +94,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{

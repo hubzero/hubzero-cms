@@ -66,7 +66,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		}
 
 		// See if the current url exists in the database as a redirect.
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 			$db->setQuery(
 			'SELECT ' . $db->quoteName('new_url') . ', ' . $db->quoteName('published').
 			' FROM ' . $db->quoteName('#__redirect_links') .

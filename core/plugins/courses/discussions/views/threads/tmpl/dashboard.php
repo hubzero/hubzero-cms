@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $base = $this->course->offering()->link();
 

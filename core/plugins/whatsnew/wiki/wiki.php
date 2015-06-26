@@ -82,7 +82,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 

@@ -66,7 +66,7 @@ class plgCronUsers extends \Hubzero\Plugin\Plugin
 	 */
 	public function cleanAuthTempAccounts(\Components\Cron\Models\Job $job)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT `id` FROM `#__users` WHERE `username` < 0;";
 		$db->setQuery($query);

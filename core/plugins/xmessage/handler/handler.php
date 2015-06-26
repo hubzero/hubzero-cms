@@ -63,7 +63,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		// Do we have any user IDs?
 		if (count($uids) > 0)
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			// Loop through each ID
 			foreach ($uids as $uid)
@@ -118,7 +118,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Create the message object
 		$xmessage = new \Hubzero\Message\Message($database);

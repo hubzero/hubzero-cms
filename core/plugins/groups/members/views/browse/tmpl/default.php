@@ -346,7 +346,7 @@ $option = 'com_groups';
 								}
 
 								if ($this->filter == 'pending') {
-									$database = JFactory::getDBO();
+									$database = App::get('db');
 									$row = new GroupsReason($database);
 									$row->loadReason($u->get('uidNumber'), $this->group->gidNumber);
 

@@ -67,7 +67,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function issueResourceMasterDoi(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$config   = Component::params('com_publications');
 
 		// Is config to issue master DOI turned ON?

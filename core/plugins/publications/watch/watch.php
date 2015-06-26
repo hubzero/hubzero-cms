@@ -79,7 +79,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 		$this->publication = $publication;
 
 		// Item watch class
@@ -205,7 +205,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	public function onWatch( $publication, $activity = 'newversion')
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$this->publication = $publication;
 
 		// Item watch class

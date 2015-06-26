@@ -48,7 +48,7 @@ class Sync extends \Hubzero\Base\Object
 		{
 			return false;
 		}
-		$this->_db      = \JFactory::getDBO();
+		$this->_db      = \App::get('db');
 		$this->_connect = $connect;
 		$this->model    = $connect->model;
 		$this->_uid     = User::get('id');

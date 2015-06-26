@@ -101,7 +101,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$row = new \Hubzero\Item\Comment($database);
 		if (!$row->bind($comment))
@@ -140,7 +140,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function deletereply()
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$resource =& $this->resource;
 
 		// Incoming
@@ -184,7 +184,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function rateitem()
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$id   = Request::getInt('refid', 0);
 		$ajax = Request::getInt('no_html', 0);
@@ -286,7 +286,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		// Incoming
 		$myr = Request::getInt('comment', 0);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$review = new \Components\Resources\Tables\Review($database);
 		$review->loadUserReview($resource->id, User::get('id'));
@@ -331,7 +331,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Bind the form data to our object
 		$row = new \Components\Resources\Tables\Review($database);
@@ -419,7 +419,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function deletereview()
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$resource =& $this->resource;
 
 		// Incoming

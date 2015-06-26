@@ -68,7 +68,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -131,7 +131,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$ct = new \Components\Citations\Tables\Type($database);
 		$types = $ct->getType();
@@ -176,7 +176,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 			case 'both':   $citations_label_class = 'both-label';   break;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$citationsFormat = new \Components\Citations\Tables\Format($database);
 		$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
@@ -219,7 +219,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		$html .= '</p>';
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$cc = new \Components\Citations\Tables\Citation($db);
 		$cc->load($row->id);
 

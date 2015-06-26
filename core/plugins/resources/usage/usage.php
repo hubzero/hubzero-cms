@@ -99,7 +99,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check if we have a needed database table
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$tables = $database->getTableList();
 		$table  = $database->getPrefix() . 'resource_stats_tools';
@@ -231,7 +231,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getOverview($id, $period=1)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$sql = "SELECT *
 				FROM `#__resource_stats_tools`
@@ -253,7 +253,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getTopValue($id, $top, $tid, $datetime, $prd=14)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if (!$id || !$tid)
 		{
@@ -284,7 +284,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getTid($id, $datetime, $period=14)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$sql = "SELECT t.id FROM `#__resource_stats_tools` AS t WHERE t.resid = " . $database->quote($id) . " AND t.period = " . $database->quote($period) . " AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
 		$database->setQuery($sql);
@@ -372,7 +372,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 		$json = new stdClass;
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$tid = $this->getTid($id, $datetime, $period);
 

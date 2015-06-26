@@ -233,7 +233,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			}
 			if ($this->params->get('queries', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-database" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . \JFactory::getDbo()->getCount() . '</span></a>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-database" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . \App::get('db')->getCount() . '</span></a>';
 			}
 		}
 
@@ -846,7 +846,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 */
 	protected function displayQueries()
 	{
-		$db	= \JFactory::getDbo();
+		$db	= \App::get('db');
 
 		$log = $db->getLog();
 
@@ -1142,7 +1142,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			=> '<span class="dbgCommand">$1</span>',
 
 			// Tables are identified by the prefix
-			'/(' . \JFactory::getDbo()->getPrefix() . '[a-z_0-9]+)/'
+			'/(' . \App::get('db')->getPrefix() . '[a-z_0-9]+)/'
 			=> '<span class="dbgTable">$1</span>'
 
 		);

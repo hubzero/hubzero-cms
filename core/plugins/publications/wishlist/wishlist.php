@@ -95,7 +95,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Load component language file
 		Lang::load('com_wishlist') || Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');

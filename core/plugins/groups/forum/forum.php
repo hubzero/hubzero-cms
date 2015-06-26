@@ -98,7 +98,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->group    = $group;
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
 
@@ -1811,7 +1811,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		$sModel = new \Components\Forum\Tables\Section($this->database);
 		$sections = $sModel->getRecords(array(

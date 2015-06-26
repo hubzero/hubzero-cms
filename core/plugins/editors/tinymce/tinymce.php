@@ -73,7 +73,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		$content_css_custom = $this->params->def('content_css_custom', '');
 
 		// Lets get the default template for the site application
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('template');

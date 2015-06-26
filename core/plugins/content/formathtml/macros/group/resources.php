@@ -115,7 +115,7 @@ class Resources extends GroupMacro
 	private function _getResources($type = 'all', $limit = 5)
 	{
 		// database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Instantiate some needed objects
 		$rr = new \Components\Resources\Tables\Resource($database);

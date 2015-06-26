@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-//$this->database = JFactory::getDBO();
+//$this->database = App::get('db');
 
 $unit = $this->course->offering()->unit($this->unit);
 if (!$unit)

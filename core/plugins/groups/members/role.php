@@ -110,7 +110,7 @@ class GroupsMembersRole extends \JTable
 	 */
 	public static function deleteRolesForUserWithId($userId)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$sql = "DELETE FROM `#__xgroups_member_roles` WHERE uidNumber=" . $database->Quote($userId);
 		$database->setQuery($sql);
 		if (!$database->query())

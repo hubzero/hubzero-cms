@@ -56,7 +56,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		$upconfig = Component::params('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if ($from_type == NULL or $from_id == NULL or $to_type == NULL)
 		{
@@ -353,7 +353,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery('SELECT t.objectid FROM `#__tags_object` as t LEFT JOIN `#__tags` as tt ON tt.id = t.tagid WHERE t.tbl="resources" AND (tt.raw_tag=' . $database->quote($tag) . ' OR tt.tag=' . $database->quote($tag) . ')');
 		return $database->loadResult();
 	}
@@ -372,7 +372,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery('SELECT r.id FROM `#__resources` as r LEFT JOIN `#__xgroups` as g ON g.cn = r.alias WHERE g.cn=' . $database->quote($groupname));
 		return $database->loadResult();
 	}

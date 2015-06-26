@@ -184,7 +184,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Incoming paging vars
 		$sort = Request::getVar('sort', 'date');
@@ -360,7 +360,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$log = Lang::txt('PLG_GROUPS_RESOURCES_LOG') . ': ';
 		if (count($ids) > 0)
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			// Loop through all the IDs for resources associated with this group
 			foreach ($ids as $id)
@@ -408,7 +408,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			return array();
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$rr = new \Components\Resources\Tables\Resource($database);
 
@@ -433,7 +433,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		if (!is_array($categories))
 		{
 			// Get categories
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 			$rt = new \Components\Resources\Tables\Type($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
@@ -490,7 +490,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate some needed objects
 		$rr = new \Components\Resources\Tables\Resource($database);

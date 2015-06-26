@@ -98,7 +98,7 @@ class Detector implements DetectorInterface
 
 		if (!isset($options['db']))
 		{
-			$options['db'] = \JFactory::getDBO();
+			$options['db'] = \App::get('db');
 		}
 
 		$this->setDbo($options['db']);

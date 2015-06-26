@@ -102,7 +102,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 		$this->model    = $model;
 		$this->option   = $option;
 

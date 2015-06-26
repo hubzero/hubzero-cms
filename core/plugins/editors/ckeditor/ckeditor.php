@@ -436,7 +436,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			// always get front end template
 			if (!$template)
 			{
-				$db = JFactory::getDBO();
+				$db = App::get('db');
 				$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
 				$template = $db->loadResult();
 			}

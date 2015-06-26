@@ -259,7 +259,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery("UPDATE `#__wiki_page` SET `group_cn`=" . $database->quote($after->get('cn')) . " WHERE `group_cn`=" . $database->quote($before->get('cn')));
 		if (!$database->query())
 		{
@@ -297,7 +297,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
 		// Instantiate a object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Start the log text
 		$log = Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ';
@@ -356,7 +356,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		{
 			return array();
 		}
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.group_cn=" . $database->quote($gid));
 		return $database->loadObjectList();
 	}

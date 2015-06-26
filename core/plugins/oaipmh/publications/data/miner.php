@@ -75,7 +75,7 @@ class Miner extends Object implements Provider
 	{
 		if (!$db)
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 		}
 
 		if (!($db instanceof \JDatabase))
@@ -255,7 +255,7 @@ class Miner extends Object implements Provider
 			WHERE pa.publication_version_id = pv.id AND pa.role != 'submitter' AND pv.publication_id = p.id AND p.id=" . $this->database->quote($id) . "
 			ORDER BY pa.name"
 		);
-		$record->creator = $this->database->loadResultArray();
+		$record->creator = $this->database->loadColumn();
 
 		$this->database->setQuery(
 			"SELECT DISTINCT t.raw_tag
@@ -263,7 +263,7 @@ class Miner extends Object implements Provider
 			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($id) . " AND tos.tbl='publications' AND t.admin=0
 			ORDER BY t.raw_tag"
 		);
-		$record->subject = $this->database->loadResultArray();
+		$record->subject = $this->database->loadColumn();
 
 		return $record;
 	}

@@ -36,7 +36,7 @@ $this->css();
 $now  = Date::toSql();
 $week = Date::add('1 week')->toSql();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $query = "SELECT sd.*
 		FROM `#__courses_offering_section_dates` AS sd

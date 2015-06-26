@@ -69,9 +69,7 @@ class plgSearchKB extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.`fulltxt` NOT LIKE '%$forb%')";
 		}
 
-		$user = JFactory::getUser();
-
-		$addtl_where[] = '(f.access IN (0,' . implode(',', $user->getAuthorisedViewLevels()) . '))';
+		$addtl_where[] = '(f.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
 		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT

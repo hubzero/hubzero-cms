@@ -123,7 +123,7 @@ class GroupEventMacro extends WikiMacro
 	private function getGroupEvents( $group, $filters = array() )
 	{
 		//instantiate database
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		//build query
 		$sql = "SELECT * FROM #__events

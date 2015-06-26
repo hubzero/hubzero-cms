@@ -80,7 +80,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->_database = JFactory::getDBO();
+		$this->_database = App::get('db');
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
@@ -292,7 +292,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate some needed objects
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$objP = new \Components\Publications\Tables\Publication($database);
 
 		// Build query
@@ -343,7 +343,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$thedate  = Date::of($row->published_up)->toLocal('d M Y');
 
 		// Get version authors

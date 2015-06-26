@@ -104,7 +104,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Load the parent unit
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// Attempt to load the category
 		$category = new \Components\Forum\Tables\Category($db);
@@ -191,7 +191,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
-		$db   = JFactory::getDBO();
+		$db   = App::get('db');
 		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 
 		// Attempt to load an associated category
@@ -236,7 +236,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db      = JFactory::getDBO();
+		$db      = App::get('db');
 		$section = new \Components\Forum\Tables\Section($db);
 		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
 		if ($section->id && $section->state != 2)
@@ -266,7 +266,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$db      = JFactory::getDBO();
+		$db      = App::get('db');
 		$section = new \Components\Forum\Tables\Section($db);
 		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
 		if ($section->id)
@@ -326,7 +326,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->config   = $course->config();
 		$this->course   = $course;
 		$this->offering = $offering;
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		$this->params->merge(new \Hubzero\Config\Registry($offering->section()->get('params')));
 
@@ -508,7 +508,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$this->_active = 'outline';
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 		$this->offering = $course->offering();
 
 		$this->base = $this->offering->link() . '&active=' . $this->_active;
@@ -1378,7 +1378,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		//$this->config = $config;
 		$this->course   = $course;
 		$this->offering = $offering;
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		$this->option = 'com_courses';
 		$this->name = 'courses';
@@ -2739,7 +2739,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$log = Lang::txt('PLG_COURSES_FORUM') . ': ';
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		$sModel = new \Components\Forum\Tables\Section($this->database);
 		$sections = array();

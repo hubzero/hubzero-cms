@@ -82,7 +82,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Build the query
 		$c_count = " SELECT count(DISTINCT c.id)";
@@ -188,7 +188,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			unset($aliases);
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1");
 		$level = $database->loadRow();
 

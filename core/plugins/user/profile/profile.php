@@ -53,7 +53,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 			if (!isset($data->profile) and $userId > 0)
 			{
 				// Load the profile data from the database.
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 				$db->setQuery(
 					'SELECT profile_key, profile_value FROM #__user_profiles' .
 					' WHERE user_id = '.(int) $userId." AND profile_key LIKE 'profile.%'" .
@@ -257,7 +257,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 					$data['profile']['dob'] = $date->format('Y-m-d');
 				}
 
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
 					" AND profile_key LIKE 'profile.%'"
@@ -316,7 +316,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		{
 			try
 			{
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 				$db->setQuery(
 					'DELETE FROM `#__user_profiles` WHERE user_id = '.$userId .
 					" AND profile_key LIKE 'profile.%'"

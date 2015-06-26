@@ -172,7 +172,7 @@ $this->css()
 			<ol>
 			<?php foreach ($popular as $row) { ?>
 				<?php
-					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+					if (!$row->isAvailable() && $row->get('created_by') != User::get('id'))
 					{
 						continue;
 					}
@@ -195,7 +195,7 @@ $this->css()
 			<ol>
 			<?php foreach ($recent as $row) { ?>
 				<?php
-					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+					if (!$row->isAvailable() && $row->get('created_by') != User::get('id'))
 					{
 						continue;
 					}

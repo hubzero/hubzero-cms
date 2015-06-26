@@ -95,7 +95,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		if (!is_array($categories))
 		{
 			// Get categories
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 			$rt = new \Components\Resources\Tables\Type($database);
 			$this->_cats = $rt->getMajorTypes();
 		}
@@ -144,7 +144,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate some needed objects
 		$rr = new \Components\Resources\Tables\Resource($database);
@@ -295,7 +295,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row, $period)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate a helper object
 		if (!isset($row->authors))

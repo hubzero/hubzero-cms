@@ -78,7 +78,7 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get recommendations
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		// Instantiate a view
 		$this->view = new \Hubzero\Plugin\View(array(

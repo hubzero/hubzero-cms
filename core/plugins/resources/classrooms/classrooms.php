@@ -78,7 +78,7 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 		{
 			try
 			{
-				$dbh = JFactory::getDBO();
+				$dbh = App::get('db');
 				$dbh->setQuery('SELECT 1 FROM `#__resource_stats_clusters` WHERE toolname = ' . $dbh->quote($alias) . ' LIMIT 1');
 				list($any[$alias]) = $dbh->loadColumn(0);
 			}
@@ -132,7 +132,7 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 				\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
 				\Hubzero\Document\Assets::addSystemScript('d3.v2.js');
 
-				$dbh = JFactory::getDBO();
+				$dbh = App::get('db');
 				$tool = $dbh->quote($model->resource->alias);
 				$dbh->setQuery('SELECT DISTINCT
 					c2.toolname AS tool,

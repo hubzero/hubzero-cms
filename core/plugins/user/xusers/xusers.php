@@ -47,7 +47,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 	}
 
 	/**
@@ -355,7 +355,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 				if (!empty($hubHomeDir))
 				{
-					$db = JFactory::getDBO();
+					$db = App::get('db');
 
 					$component = new JTableExtension($this->database);
 					$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));

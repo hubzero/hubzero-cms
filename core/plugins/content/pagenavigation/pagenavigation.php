@@ -31,16 +31,15 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 		if ($params->get('show_item_navigation') && ($context == 'com_content.article') && ($view == 'article'))
 		{
 			$html = '';
-			$db		= JFactory::getDbo();
-			$app	= JFactory::getApplication();
-			$lang	= JFactory::getLanguage();
+			$db   = App::get('db');
+
 			$nullDate = $db->getNullDate();
 
-			$date	= Date::of('now');
+			$date = Date::of('now');
 			$now = $date->toSql();
 
-			$uid	= $row->id;
-			$option	= 'com_content';
+			$uid = $row->id;
+			$option = 'com_content';
 			$canPublish = User::authorise('core.edit.state', $option.'.article.'.$row->id);
 
 			// The following is needed as different menu items types utilise a different param to control ordering.
@@ -123,7 +122,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 			$query->order($orderby);
 			if (\App::isSite() && \App::get('language.filter'))
 			{
-				$query->where('a.language in ('.$db->quote($lang->getTag()).','.$db->quote('*').')');
+				$query->where('a.language in ('.$db->quote(Lang::getTag()).','.$db->quote('*').')');
 			}
 
 			$db->setQuery($query);

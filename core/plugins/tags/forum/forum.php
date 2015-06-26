@@ -51,11 +51,11 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 */
 	private function _getGroupIds($uid=0)
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 		$dbh->setQuery(
 			'SELECT DISTINCT gidNumber FROM `#__xgroups_members` WHERE uidNumber=' . $uid
 		);
-		return $dbh->loadResultArray();
+		return $dbh->loadColumn();
 	}
 
 	/**
@@ -78,7 +78,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 			'sql'     => ''
 		);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -159,7 +159,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'thread.php');
+		include_once(Component::path('com_forum') . DS . 'models' . DS . 'thread.php');
 
 		$row->scope    = $row->rcount;
 		$row->scope_id = $row->data3;

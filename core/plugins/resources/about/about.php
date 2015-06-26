@@ -101,7 +101,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'index');
 			$view->option   = $option;
 			$view->model    = $model;
-			$view->database = JFactory::getDBO();
+			$view->database = App::get('db');
 			$view->plugin   = $this->params;
 
 			// Return the output

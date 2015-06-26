@@ -92,7 +92,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 		$this->member = $member;
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
@@ -412,7 +412,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if (is_array($areas) && $limit)
 		{

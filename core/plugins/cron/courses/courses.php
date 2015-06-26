@@ -163,7 +163,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 	 */
 	public function emailInstructorDigest(\Components\Cron\Models\Job $job)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$cconfig  = Component::params('com_courses');
 
 		Lang::load('com_courses') ||

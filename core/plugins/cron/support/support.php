@@ -122,7 +122,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	{
 		$params = $job->get('params');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$slc = "SELECT id, login, email, name FROM `#__support_tickets` AS t";
 		$upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(Date::toSql());
@@ -468,7 +468,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	{
 		$params = $job->get('params');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$sconfig = Component::params('com_support');
 
@@ -618,7 +618,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	{
 		$params = $job->get('params');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$sconfig = Component::params('com_support');
 

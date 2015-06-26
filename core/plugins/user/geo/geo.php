@@ -64,7 +64,7 @@ class plgUserGeo extends \Hubzero\Plugin\Plugin
 			// Update group if that group exists
 			if (is_object($group))
 			{
-				$group->add('members', array(\JFactory::getUser($user['username'])->get('id')));
+				$group->add('members', array(\User::getInstance($user['username'])->get('id')));
 				$group->update();
 			}
 		}

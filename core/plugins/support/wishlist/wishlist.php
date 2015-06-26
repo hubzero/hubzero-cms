@@ -81,7 +81,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			$query .= " WHERE rr.id=" . $refid;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)
@@ -111,7 +111,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function getParentId($parentid, $category)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$refid = $parentid;
 
 		if ($category == 'wishcomment')
@@ -152,7 +152,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$parent = new \Hubzero\Item\Comment($database);
 		$parent->load($parentid);
@@ -202,7 +202,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{
@@ -241,7 +241,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{
@@ -283,7 +283,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{

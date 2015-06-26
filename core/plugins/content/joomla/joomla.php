@@ -51,7 +51,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 		JModelLegacy::addIncludePath(PATH_CORE.'/components/com_messages/admin/models', 'MessagesModel');
 		JTable::addIncludePath(PATH_CORE.'/components/com_messages/admin/tables');
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$db->setQuery('SELECT id FROM #__users WHERE sendEmail = 1');
 		$users = (array) $db->loadColumn();
 
@@ -170,7 +170,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 	 */
 	private function _countItemsInCategory($table, $catid)
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		// Count the items in this category
 		$query->select('COUNT(id)');
@@ -201,7 +201,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 	 */
 	private function _countItemsInChildren($table, $catid, $data)
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		// Create subquery for list of child categories
 		$childCategoryTree = $data->getTree();
 		// First element in tree is the current category, so we can skip that one

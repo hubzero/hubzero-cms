@@ -53,7 +53,7 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
 		$response->label = 'Support Tickets';
 		$response->data  = array();
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$database->setQuery("SELECT COUNT(*) FROM `#__support_tickets` AS f WHERE f.`type` = '0'");
 		$response->data['total'] = $this->_obj('Total', intval($database->loadResult()));

@@ -149,7 +149,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			// Set some variables so other functions have access
 			$this->action     = $action;
 			$this->option     = $option;
-			$this->database   = JFactory::getDBO();
+			$this->database   = App::get('db');
 
 			//get the plugins params
 			$p = new \Hubzero\Plugin\Params($this->database);
@@ -232,7 +232,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Import needed libraries
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$tbl = new \Components\Blog\Tables\Entry($database);
 
@@ -281,7 +281,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	{
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$tbl = new \Components\Blog\Tables\Entry($database);
 

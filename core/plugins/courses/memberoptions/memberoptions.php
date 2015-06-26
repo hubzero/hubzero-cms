@@ -110,7 +110,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'browse');
 
 		// Load the options
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$recvEmailOption = new courses_MemberOption($database);
 		$recvEmailOption->loadRecord($course->get('gidNumber'), $user->get('id'), COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
@@ -148,7 +148,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 		$postSaveRedirect = Request::getVar('postsaveredirect', '');
 
 		// Instantaite database object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Save the COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
 		$row = new courses_MemberOption($database);

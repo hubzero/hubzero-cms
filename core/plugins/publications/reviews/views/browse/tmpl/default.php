@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 if (!isset($this->reviews) || !$this->reviews)
 {

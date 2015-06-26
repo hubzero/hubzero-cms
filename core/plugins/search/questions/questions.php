@@ -98,7 +98,7 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 			$raddtl_where[] = "(r.answer NOT LIKE '%$forb%')";
 		}*/
 
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 		$dbh->setQuery(
 			"SELECT
 				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, $qweight AS qweight, null AS rweight,

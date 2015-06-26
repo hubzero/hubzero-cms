@@ -97,7 +97,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onProjectCount( $model )
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$counts['team'] = count($model->team());
 
@@ -155,7 +155,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		{
 			// Set vars
 			$this->_task 		= $action ? $action : Request::getVar('action', '');
-			$this->_database 	= JFactory::getDBO();
+			$this->_database 	= App::get('db');
 			$this->_uid 		= User::get('id');
 			$this->_config      = $model->config();
 
@@ -1077,7 +1077,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Validate email
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';

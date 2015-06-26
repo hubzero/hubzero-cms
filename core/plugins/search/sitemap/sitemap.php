@@ -94,7 +94,7 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 	 */
 	public static function onSearchAdministrate($context)
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 		$dbh->setQuery('SELECT id, title, link, description FROM #__ysearch_site_map ORDER BY title');
 		$map = $dbh->loadAssocList();
 		$edit = NULL;
@@ -165,7 +165,7 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 	 */
 	private static function save_entry_from_post($update = false)
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 		$fields = array('sm-title', 'sm-link', 'sm-description');
 		if ($update)
 		{
@@ -224,7 +224,7 @@ class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$dbh = JFactory::getDBO();
+					$dbh = App::get('db');
 					$dbh->execute('DELETE FROM #__ysearch_site_map WHERE id = ' . (int)$id[2]);
 					return array('sitemap', '<p class="success">' . Lang::txt('COM_SEARCH_ENTRY_DELETED') . '</p>', array());
 				}

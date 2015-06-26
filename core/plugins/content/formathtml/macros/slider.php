@@ -79,7 +79,7 @@ class Slider extends Macro
 		$base_url = '';
 
 		// needed objects
-		$db     = \JFactory::getDBO();
+		$db     = \App::get('db');
 		$option = \Request::getCmd('option');
 		$config = \Component::params($option);
 

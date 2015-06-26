@@ -43,7 +43,7 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onSystemOverview($values = 'all')
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$response = new stdClass;
 		$response->name  = 'users';

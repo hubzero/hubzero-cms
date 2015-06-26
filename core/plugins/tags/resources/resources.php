@@ -79,7 +79,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			'children' => array()
 		);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$rt = new \Components\Resources\Tables\Type($database);
 		foreach ($rt->getMajorTypes() as $category)
 		{
@@ -188,7 +188,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$rt = new \Components\Resources\Tables\Type($database);
 
@@ -303,7 +303,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$row->href = Route::url('index.php?option=com_resources&id=' . $row->id);
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate a helper object
 		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);

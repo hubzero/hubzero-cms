@@ -100,7 +100,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		if (is_array($areas) && $limit)
 		{
@@ -196,7 +196,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";

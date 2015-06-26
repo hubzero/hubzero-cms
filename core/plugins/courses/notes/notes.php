@@ -77,7 +77,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$this->course   = $course;
 			$this->offering = $offering;
-			$this->database = JFactory::getDBO();
+			$this->database = App::get('db');
 
 			$this->view = with($this->view('default', 'notes'))
 				->set('option', Request::getCmd('option', 'com_courses'))
@@ -146,7 +146,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 
 		$this->view = $this->view('default', 'lecture');
 
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 		$this->view->course   = $this->course   = $course;
 		$this->view->offering = $this->offering = $course->offering();
 		$this->view->unit     = $this->unit     = $unit;

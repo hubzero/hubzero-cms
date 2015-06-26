@@ -97,7 +97,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)
@@ -140,7 +140,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$refid = $parentid;
 
 		if ($category == 'answercomment')
@@ -172,7 +172,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$parent = new \Hubzero\Item\Comment($database);
 		$parent->load($parentid);
@@ -226,7 +226,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{
@@ -266,7 +266,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$state = 1;
 		switch ($category)
@@ -307,7 +307,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		switch ($category)
 		{
@@ -451,7 +451,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReward($id)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// check if question owner assigned a reward for answering his Q
 		$sql = "SELECT amount FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $id;

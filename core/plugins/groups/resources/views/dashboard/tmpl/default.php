@@ -36,7 +36,7 @@ if ($this->results) {
 
 	plgGroupsResources::documents();
 
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 ?>
 	<table class="related-resources">
 		<tbody>

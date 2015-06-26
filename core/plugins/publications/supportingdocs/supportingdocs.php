@@ -104,7 +104,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			$config = Component::params( $option );
 

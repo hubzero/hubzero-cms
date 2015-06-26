@@ -121,7 +121,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			// Instantiate project publication
 			$objP = new \Components\Publications\Tables\Publication( $database );
@@ -185,7 +185,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->_uid       = User::get('id');
-		$this->_database  = JFactory::getDBO();
+		$this->_database  = App::get('db');
 		$this->_config    = $this->model->config();
 		$this->_pubconfig = Component::params( 'com_publications' );
 
@@ -2805,7 +2805,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Build query
 		$filters = array();
@@ -2871,7 +2871,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate a project
 		$model = new \Components\Projects\Models\Project($projectid);

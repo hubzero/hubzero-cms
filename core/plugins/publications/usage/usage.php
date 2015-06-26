@@ -101,7 +101,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$rtrn = 'metadata';
 
 		// Check if we have a needed database table
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'publication_stats';

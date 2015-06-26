@@ -203,7 +203,7 @@ $this->css()
 			<h5><?php echo Lang::txt('PLG_MEMBERS_LOCAL_SERVICES_USERNAME'); ?></h5>
 			<p>
 				<?php echo Lang::txt('PLG_MEMBERS_LOCAL_SERVICES_USERNAME_DESC'); ?>
-				<span class="local-services-username"><?php echo JFactory::getUser()->get('username'); ?></span>
+				<span class="local-services-username"><?php echo User::get('username'); ?></span>
 			</p>
 			<h5><?php echo Lang::txt('PLG_MEMBERS_MANAGE_KEYS'); ?></h5>
 			<?php if ($this->key !== false) : ?>

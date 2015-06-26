@@ -200,7 +200,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			Lang::load('com_wiki') || Lang::load('com_wiki', PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site');
 
 			// Set vars
-			$this->_database 	= JFactory::getDBO();
+			$this->_database 	= App::get('db');
 			$this->_uid 		= User::get('id');
 
 			// Load component configs
@@ -729,7 +729,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$this->_option 	= 'com_projects';
 
 		// Instantiate a project
@@ -854,7 +854,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'tables' . DS . 'publicstamp.php');
 
-		$database 	= JFactory::getDBO();
+		$database 	= App::get('db');
 		$objSt 		= new \Components\Projects\Tables\Stamp( $database );
 
 		$view->items = $objSt->getPubList($model->get('id'), 'notes');

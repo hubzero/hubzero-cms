@@ -55,7 +55,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		$this->_config = Component::params('com_projects');
-		$this->_database = JFactory::getDBO();
+		$this->_database = App::get('db');
 	}
 
 	/**

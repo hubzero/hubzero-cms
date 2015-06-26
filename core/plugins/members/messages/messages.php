@@ -100,7 +100,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get our database object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Are we returning HTML?
 		if ($returnhtml)
@@ -863,7 +863,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($ids) > 0)
 		{
 			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 			$database->setQuery($sql);
 			$database->query();
 

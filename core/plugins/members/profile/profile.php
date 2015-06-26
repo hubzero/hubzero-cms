@@ -285,7 +285,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$registration->loadProfile($profile);
 
 		//add tags to the registration object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$mt = new \Components\Members\Models\Tags($profile->get('uidNumber'));
 		$registration->_registration['tags'] = $mt->render('string');
 
@@ -344,7 +344,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$this->view->addressId = Request::getInt('addressid', 0);
 
 		//get member addresses
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$this->view->address = new \Components\Members\Tables\Address($database);
 		$this->view->address->load($this->view->addressId);
 
@@ -376,7 +376,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$address = Request::getVar('address', array());
 
 		//set up objects
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$membersAddress = new \Components\Members\Tables\Address($database);
 
 		//create object from vars
@@ -421,7 +421,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$addressId = Request::getInt('addressid', 0);
 
 		//set up objects
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$membersAddress = new \Components\Members\Tables\Address($database);
 
 		//load address object

@@ -119,7 +119,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Instantiate some needed objects
 		$rr = new \Components\Publications\Tables\Publication($database);
@@ -217,7 +217,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row, $period)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$config = Component::params('com_publications');
 

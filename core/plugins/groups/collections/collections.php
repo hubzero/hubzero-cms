@@ -62,9 +62,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 		// Get all the IDs for collections
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery("SELECT id FROM `#__collections` WHERE `object_type`='group' AND `object_id`=" . $database->quote($group->get('gidNumber')));
-		$entries = $database->loadResultArray();
+		$entries = $database->loadColumn();
 
 		// Start the log text
 		$log = Lang::txt('PLG_GROUPS_COLLECTIONS_LOG') . ': ';
@@ -75,7 +75,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 			// Get a list of IDs for posts created by this group
 			$database->setQuery("SELECT i.id FROM `#__collections_items` AS i LEFT JOIN `#__collections_posts` AS p ON p.`item_id`=i.`id` WHERE p.`original`=1 AND p.`collection_id` IN (" . implode(',', $entries) . ")");
-			$ids = $database->loadResultArray();
+			$ids = $database->loadColumn();
 
 			if ($ids && count($ids))
 			{
@@ -109,7 +109,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery("SELECT COUNT(*) FROM `#__collections` WHERE `object_type`=" . $database->quote('group') . " AND `object_id`=" . $database->quote($group->get('gidNumber')));
 
 		return Lang::txt('PLG_GROUPS_COLLECTIONS_LOG') . ': ' . intval($database->loadResult());
@@ -169,7 +169,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->group    = $group;
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
@@ -792,7 +792,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->collection = \Components\Collections\Models\Collection::getInstance();
 
-		//$view->filters['user_id'] = JFactory::getUser()->get('id');
+		//$view->filters['user_id'] = User::get('id');
 
 		$view->count = $view->posts;
 		$view->rows  = $view->collection->posts($view->filters);
@@ -1769,7 +1769,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->_params)
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 			$p = new \Hubzero\Plugin\Params($database);
 			$this->_params = $p->getCustomParams($group_id, 'groups', $this->_name);
 		}

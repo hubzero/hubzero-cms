@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
 // Add stylesheet
 $this->css('assets/css/related.css');
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 // Get author class
 $pa = new \Components\Publications\Tables\Author( $database );

@@ -64,7 +64,7 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 			$ids[] = (int) $instructor->get('user_id');
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$query  = "SELECT DISTINCT c.*
 					FROM `#__courses` AS c

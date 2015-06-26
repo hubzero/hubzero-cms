@@ -72,7 +72,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 					FROM `#__wiki_comments` AS rc
 					WHERE rc.id=" . $refid;
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery($query);
 
 		$rows = $database->loadObjectList();
@@ -110,7 +110,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Components\Wiki\Tables\Comment($database);
 		$comment->load($refid);
@@ -137,7 +137,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Components\Wiki\Tables\Comment($database);
 		$comment->load($refid);
@@ -165,7 +165,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$comment = new \Components\Wiki\Tables\Comment($database);
 		$comment->load($refid);

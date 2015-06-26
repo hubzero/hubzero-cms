@@ -96,7 +96,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$this->member  = $member;
 			$this->option  = $option;
 			//$this->authorized = $authorized;
-			$this->database = JFactory::getDBO();
+			$this->database = App::get('db');
 
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);

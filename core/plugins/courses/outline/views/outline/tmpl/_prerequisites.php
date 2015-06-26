@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$db = JFactory::getDbo();
+$db = App::get('db');
 
 $this->css('prerequisites');
 $this->js('prerequisites');

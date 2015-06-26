@@ -89,7 +89,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Incoming paging vars
 		$limit = Request::getInt('limit', 25);

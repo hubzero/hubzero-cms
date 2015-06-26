@@ -68,7 +68,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$ids = array();
 		foreach ($tags as $tag)

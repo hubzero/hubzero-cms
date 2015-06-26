@@ -59,7 +59,7 @@ if (Request::getInt('nonadmin', 0) == 1)
 	$isNowOnManager = false;
 }
 
-$this->database = JFactory::getDBO();
+$this->database = App::get('db');
 
 $base = $this->course->offering()->link();
 

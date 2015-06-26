@@ -99,7 +99,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$this->database 		= JFactory::getDBO();
+		$this->database 		= App::get('db');
 		$this->publication    	= $publication;
 		$this->option   		= $option;
 

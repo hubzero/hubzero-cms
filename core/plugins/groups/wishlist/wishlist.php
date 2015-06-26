@@ -137,7 +137,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		}
 
 		//instantiate database
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Set some variables so other functions have access
 		$this->database = $database;
@@ -272,7 +272,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$wishlist = new \Components\Wishlist\Tables\Wishlist($database);
 		$wish     = new \Components\Wishlist\Tables\Wish($database);
 
@@ -306,7 +306,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$wishlist = new \Components\Wishlist\Tables\Wishlist($database);
 		$wish     = new \Components\Wishlist\Tables\Wish($database);
 

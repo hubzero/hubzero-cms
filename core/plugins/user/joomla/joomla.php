@@ -29,7 +29,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$db->setQuery(
 			'DELETE FROM '.$db->quoteName('#__session') .
 			' WHERE '.$db->quoteName('userid').' = '.(int) $user['id']
@@ -183,7 +183,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		if (App::get('config')->get('session_handler') == 'database')
 		{
 			// Update the user related fields for the Joomla sessions table.
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 			$db->setQuery(
 				'UPDATE '.$db->quoteName('#__session') .
 				' SET '.$db->quoteName('guest').' = '.$db->quote($instance->get('guest')).',' .
@@ -231,7 +231,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		}
 
 		// Force logout all users with that userid
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery(
 			'DELETE FROM '.$db->quoteName('#__session') .
 			' WHERE '.$db->quoteName('userid').' = '.(int) $user['id'] .

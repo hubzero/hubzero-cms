@@ -53,7 +53,7 @@ class plgExtensionJoomla extends \Hubzero\Plugin\Plugin
 	 */
 	private function addUpdateSite($name, $type, $location, $enabled)
 	{
-		$dbo = JFactory::getDBO();
+		$dbo = App::get('db');
 		// look if the location is used already; doesn't matter what type
 		// you can't have two types at the same address, doesn't make sense
 		$query = $dbo->getQuery(true);
@@ -130,7 +130,7 @@ class plgExtensionJoomla extends \Hubzero\Plugin\Plugin
 		if ($eid)
 		{
 			// wipe out any update_sites_extensions links
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 			$query = $db->getQuery(true);
 			$query->delete()->from('#__update_sites_extensions')->where('extension_id = '. $eid);
 			$db->setQuery($query);

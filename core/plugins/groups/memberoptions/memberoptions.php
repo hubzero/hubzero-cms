@@ -127,7 +127,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'browse');
 
 		// Load the options
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$recvEmailOption = new GroupsTableMemberoption($database);
 		$recvEmailOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
@@ -165,7 +165,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		$postSaveRedirect = Request::getVar('postsaveredirect', '');
 
 		//instantaite database object
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
 		$row = new GroupsTableMemberoption($database);
@@ -229,7 +229,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	public function onGroupUserEnrollment($gidNumber, $userid)
 	{
 		// get database
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// get group
 		$group = \Hubzero\User\Group::getInstance($gidNumber);

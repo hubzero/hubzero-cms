@@ -66,7 +66,7 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onPointRoyalties(\Components\Cron\Models\Job $job)
 	{
-		$this->database = JFactory::getDBO();
+		$this->database = App::get('db');
 
 		$action = 'royalty';
 

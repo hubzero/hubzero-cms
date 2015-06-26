@@ -104,7 +104,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	public function isEmployer($user=null, $member=null)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 		$employer = new \Components\Jobs\Tables\Employer($database);
 
 		// Check if they're a site admin (from Joomla)
@@ -221,7 +221,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($return == 'html'  && $areas[0] == 'resume')
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			$task = Request::getVar('action','');
 
@@ -652,7 +652,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	{
 		if (!User::isGuest())
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			$shortlist = new \Components\Jobs\Tables\Shortlist($database);
 			$shortlist->loadEntry(User::get('id'), $oid, 'resume');
@@ -787,7 +787,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _download($member)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Ensure we have a database object
 		if (!$database)
