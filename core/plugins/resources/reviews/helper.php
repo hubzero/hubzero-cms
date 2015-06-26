@@ -165,7 +165,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$reply->load($replyid);
 
 		// Permissions check
-		if ($reply->created_by != User::get('id'))
+		if ($reply->created_by != User::get('id') && !User::authorise('core.admin'))
 		{
 			return;
 		}
@@ -443,7 +443,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$review->load($reviewid);
 
 		// Permissions check
-		if ($review->user_id != User::get('id'))
+		if ($review->user_id != User::get('id') && !User::authorise('core.admin'))
 		{
 			return;
 		}
