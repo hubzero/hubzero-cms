@@ -122,7 +122,15 @@ class UsersControllerUser extends UsersController
 		// Set the return URL in the user state to allow modification by plugins
 		User::setState('users.login.form.return', $data['return']);
 
-		$result = $app->login($credentials, $options);
+		try
+		{
+			$result = $app->login($credentials, $options);
+		}
+		catch (JException $e)
+		{
+			$result = $e;
+		}
+
 		// Perform the log in.
 		if (true === $result)
 		{
@@ -157,17 +165,18 @@ class UsersControllerUser extends UsersController
 				$return = $freturn;
 			}
 
+			$error = ($result) ? $result->getMessage() : 'An unknown error has occurred';
+
 			// If no_html is set, return json response
 			if (Request::getInt('no_html', 0))
 			{
-				$error = ($result) ? $result->getMessage() : 'An unknown error has occurred';
 				echo json_encode( array("error" => $error, "freturn" => Route::url($return, false)) );
 				exit;
 			}
 			else
 			{
 				// Redirect to a login form
-				App::redirect(Route::url($return, false));
+				App::redirect(Route::url($return, false), $error, 'error');
 			}
 		}
 	}
