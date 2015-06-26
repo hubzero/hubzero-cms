@@ -434,7 +434,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$reply->load($replyid);
 
 		// Permissions check
-		if ($reply->created_by != JFactory::getUser()->get('id'))
+		if ($reply->created_by != JFactory::getUser()->get('id') && !JFactory::getUser()->authorise('admin_delete_reply', 'core.admin'))
 		{
 			return;
 		}
@@ -575,6 +575,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
 		}
 		$review->rating = ($myr) ? $myr : $review->rating;
+		$review->state = 1;
 
 		// Store the object in our registry
 		$this->myreview = $review;
@@ -716,7 +717,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$review->load($reviewid);
 
 		// Permissions check
-		if ($review->user_id != JFactory::getUser()->get('id'))
+		if ($review->user_id != JFactory::getUser()->get('id') && !JFactory::getUser()->authorise("admin_delete_comment", "core.admin"))
 		{
 			return;
 		}

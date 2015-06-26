@@ -141,7 +141,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<p class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
-			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
+			<?php if ($juser->get('id') == $this->comment->get('created_by') || $juser->authorise("admin",  "core.admin")) { ?>
 					<a class="icon-delete delete" data-txt-confirm="<?php echo JText::_('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo JText::_('PLG_RESOURCES_REVIEWS_DELETE'); ?><!--
 					--></a>
