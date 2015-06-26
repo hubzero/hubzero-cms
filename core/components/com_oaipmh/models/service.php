@@ -33,6 +33,7 @@ namespace Components\Oaipmh\Models;
 use Components\Oaipmh\Models\Xml\Response;
 use Hubzero\Base\Traits\Escapable;
 use Hubzero\Base\Object;
+use Hubzero\Database\Driver;
 use Exception;
 use Event;
 use Lang;
@@ -139,7 +140,7 @@ class Service extends Object
 	 * @param   object  $db    Database connection
 	 * @return  object  $this
 	 */
-	public function setDbo(\JDatabase $db)
+	public function setDbo(Driver $db)
 	{
 		$this->database = $db;
 

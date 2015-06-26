@@ -30,8 +30,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-$app = \JFactory::getApplication();
 ?>
 	<script type="text/javascript">
 		function updateDir()

@@ -271,8 +271,6 @@ class Results extends SiteController
 	 */
 	public function feedTask()
 	{
-		$app = \JFactory::getApplication();
-
 		// Set the mime encoding for the document
 		Document::setType('feed');
 
@@ -391,14 +389,14 @@ class Results extends SiteController
 				if (strstr($row->href, 'view'))
 				{
 					// tests to see if itemid has already been included - this occurs for typed content items
-					if (!strstr($row->href, 'Itemid'))
+					/*if (!strstr($row->href, 'Itemid'))
 					{
 						$temp = explode('id=', $row->href);
 						if (isset($temp[1]))
 						{
 							$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
 						}
-					}
+					}*/
 				}
 				$link = Route::url($row->href);
 

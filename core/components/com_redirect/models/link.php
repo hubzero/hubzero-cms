@@ -129,7 +129,7 @@ class Link extends \JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = \JFactory::getApplication()->getUserState('com_redirect.edit.link.data', array());
+		$data = User::getState('com_redirect.edit.link.data', array());
 
 		if (empty($data))
 		{

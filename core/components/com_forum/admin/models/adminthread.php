@@ -49,7 +49,6 @@ class AdminThread extends \JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
@@ -110,7 +109,7 @@ class AdminThread extends \JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = \JFactory::getApplication()->getUserState('com_forum.edit.thread.data', array());
+		$data = \User::getState('com_forum.edit.thread.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

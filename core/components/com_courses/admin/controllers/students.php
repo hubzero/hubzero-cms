@@ -262,7 +262,7 @@ class Students extends AdminController
 				$user = User::getInstance($user_id);
 				if (!is_object($user))
 				{
-					$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
+					\Notify::error(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
 					$this->editTask( );
 					return;
 				}
@@ -282,15 +282,13 @@ class Students extends AdminController
 			// Is there an existing record and are they a student?
 			if ($model->exists() && !$model->get('student'))
 			{
-				//$this->addComponentMessage(Lang::txt('User "%s" is a course manager and cannot be added as a student.', $user_id), 'error');
-				\JFactory::getApplication()->enqueueMessage(Lang::txt('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id), 'error');
+				\Notify::error(Lang::txt('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id));
 				continue;
 			}
 			// If the section is the same
 			if ($model->exists() && $model->get('section_id') == $fields['section_id'])
 			{
-				//$this->addComponentMessage(Lang::txt('User "%s" is already a student of the selected section.', $user_id), 'warning');
-				\JFactory::getApplication()->enqueueMessage(Lang::txt('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id), 'warning');
+				\Notify::warning(Lang::txt('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id));
 				continue;
 			}
 
@@ -303,7 +301,7 @@ class Students extends AdminController
 			// Bind posted data
 			if (!$model->bind($fields))
 			{
-				$this->addComponentMessage($model->getError(), 'error');
+				\Notify::error($model->getError());
 				$this->editTask($model);
 				return;
 			}
@@ -311,7 +309,7 @@ class Students extends AdminController
 			// Store data
 			if (!$model->store())
 			{
-				$this->addComponentMessage($model->getError(), 'error');
+				\Notify::error($model->getError());
 				$this->editTask($model);
 				return;
 			}
@@ -373,7 +371,7 @@ class Students extends AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					\JFactory::getApplication()->enqueueMessage(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT', $model->get('user_id'), $model->get('section_id')), 'error');
+					\Notify::error(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT', $model->get('user_id'), $model->get('section_id')));
 					continue;
 				}
 
@@ -410,9 +408,6 @@ class Students extends AdminController
 	 */
 	public function csvTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			'offering' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.offering',

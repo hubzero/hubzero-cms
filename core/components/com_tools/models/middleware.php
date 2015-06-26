@@ -74,7 +74,7 @@ class Middleware extends Object
 	 */
 	public function __construct($db=null)
 	{
-		if (!($db instanceof \JDatabase))
+		if (!($db instanceof \JDatabase) && !($db instanceof \Hubzero\Database\Driver))
 		{
 			$db = Utils::getMWDBO();
 		}

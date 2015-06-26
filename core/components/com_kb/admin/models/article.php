@@ -44,7 +44,6 @@ class KbModelArticle extends \JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
@@ -105,7 +104,7 @@ class KbModelArticle extends \JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = \JFactory::getApplication()->getUserState('com_kb.edit.article.data', array());
+		$data = \User::getState('com_kb.edit.article.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();
