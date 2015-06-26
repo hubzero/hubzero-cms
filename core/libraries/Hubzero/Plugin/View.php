@@ -120,7 +120,11 @@ class View extends AbstractView
 		}
 		else
 		{
-			$this->_basePath = JPATH_PLUGINS . DS . $this->_folder . DS . $this->_element;
+			$this->_basePath = PATH_APP . DS . 'app' . DS . 'plugins' . DS . $this->_folder . DS . $this->_element;
+			if (!file_exists($this->_basePath))
+			{
+				$this->_basePath = PATH_CORE . DS . 'plugins' . DS . $this->_folder . DS . $this->_element;
+			}
 		}
 
 		// Set the default template search path
@@ -248,8 +252,6 @@ class View extends AbstractView
 		switch (strtolower($type))
 		{
 			case 'template':
-				$app = \JFactory::getApplication();
-
 				$option = 'plg_' . $this->_folder . '_' . $this->_element;
 				$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 
@@ -258,7 +260,7 @@ class View extends AbstractView
 				{
 					$this->_addPath(
 						'template',
-						JPATH_BASE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . $option . DS . $this->getName()
+						\App::get('template')->path . DS . 'html' . DS . $option . DS . $this->getName()
 					);
 				}
 			break;

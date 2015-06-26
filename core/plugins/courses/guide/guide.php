@@ -100,7 +100,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		if (!isset($tmpl) || $tmpl != 'component')
 		{
 			$this->css()
-			     ->js('system', 'jquery.fancybox')
+			     ->js('jquery.fancybox', 'system')
 			     ->js('guide.overlay');
 		}
 

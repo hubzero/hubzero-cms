@@ -463,12 +463,14 @@ class View extends Object
 		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
 		$tpl  = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
 
+		$apppath = PATH_APP . DS . 'app' . DS . 'bootstrap' . \App::get('client')->name;
+
 		// Load the language file for the template
 		$lang = \App::get('language');
-		$lang->load('tpl_' . $template, JPATH_BASE, null, false, false) ||
-		$lang->load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, false) ||
-		$lang->load('tpl_' . $template, JPATH_BASE, $lang->getDefault(), false, false) ||
-		$lang->load('tpl_' . $template, JPATH_THEMES . "/$template", $lang->getDefault(), false, false);
+		$lang->load('tpl_' . $template, $apppath, null, false, false) ||
+		$lang->load('tpl_' . $template, \App::get('template')->path, null, false, false) ||
+		$lang->load('tpl_' . $template, $apppath, $lang->getDefault(), false, false) ||
+		$lang->load('tpl_' . $template, \App::get('template')->path, $lang->getDefault(), false, false);
 
 		// Change the template folder if alternative layout is in different template
 		if (isset($layoutTemplate) && $layoutTemplate != '_' && $layoutTemplate != $template)

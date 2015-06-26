@@ -307,6 +307,7 @@ class File extends Object
 
 					case 'system':
 					case 'core':
+					default:
 						$path = '';
 					break;
 				}
