@@ -460,28 +460,33 @@ class Html extends Base
 		$contents = '';
 
 		// Check to see if we have a valid template file
-		if (file_exists($directory . '/' . $filename))
+		if (file_exists($directory . DS . $filename))
 		{
 			// Store the file path
-			$this->_file = $directory . '/' . $filename;
+			$this->_file = $directory . DS . $filename;
 
 			//get the file content
 			ob_start();
-			require $directory . '/' . $filename;
+			require $directory . DS . $filename;
 			$contents = ob_get_contents();
 			ob_end_clean();
 		}
 
 		// Try to find a favicon by checking the template and root folder
-		$path = $directory . '/';
-		$dirs = array($path, PATH_ROOT . '/');
+		$dirs = array(
+			$directory . DS,
+			PATH_ROOT . DS
+		);
+
 		foreach ($dirs as $dir)
 		{
 			$icon = $dir . 'favicon.ico';
+
 			if (file_exists($icon))
 			{
 				$path = str_replace(PATH_ROOT . '/', '', $dir);
 				$path = str_replace('\\', '/', $path);
+
 				$this->addFavicon(rtrim(\Request::root(true), '/') . '/' . $path . 'favicon.ico');
 				break;
 			}
@@ -504,23 +509,25 @@ class Html extends Base
 		$template = preg_replace('/[^A-Z0-9_\.-]/i', '', $params['template']);
 		$file     = preg_replace('/[^A-Z0-9_\.-]/i', '', $params['file']);
 
-		if (!file_exists($directory . '/' . $template . '/' . $file))
+		if (!file_exists($directory . DS . $template . DS . $file))
 		{
 			$template = 'system';
 		}
 
 		// Load the language file for the template
 		$lang = \App::get('language');
-		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true) ||
-		$lang->load('tpl_' . $template, $directory . '/' . $template, null, false, true);
+		$lang->load('tpl_' . $template, PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . \App::get('client')->name, null, false, true) ||
+		$lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
 		// Assign the variables
 		$this->template = $template;
-		$this->baseurl  = rtrim(\Request::root(true), '/');
+		//$this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) . '/templates/' . $template;
+		//$this->baseurl  = rtrim(\Request::root(true), '/');
+		$this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/'));
 		$this->params   = isset($params['params']) ? $params['params'] : new Registry;
 
 		// Load
-		$this->_template = $this->_loadTemplate($directory . '/' . $template, $file);
+		$this->_template = $this->_loadTemplate($directory . DS . $template, $file);
 
 		return $this;
 	}
@@ -537,7 +544,7 @@ class Html extends Base
 		if (preg_match_all('#<jdoc:include\ type="([^"]+)" (.*)\/>#iU', $this->_template, $matches))
 		{
 			$template_tags_first = array();
-			$template_tags_last = array();
+			$template_tags_last  = array();
 
 			// Step through the jdocs in reverse order.
 			for ($i = count($matches[0]) - 1; $i >= 0; $i--)
@@ -553,7 +560,7 @@ class Html extends Base
 				}
 				else
 				{
-					$template_tags_last[$matches[0][$i]] = array('type' => $type, 'name' => $name, 'attribs' => $attribs);
+					$template_tags_last[$matches[0][$i]]  = array('type' => $type, 'name' => $name, 'attribs' => $attribs);
 				}
 			}
 			// Reverse the last array so the jdocs are in forward order.
@@ -575,7 +582,7 @@ class Html extends Base
 	{
 		// Initialise variables.
 		$attr = array();
-		$retarray = array();
+		$ret  = array();
 
 		// Let's grab all the key/value pairs using a regular expression
 		preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);
@@ -585,11 +592,11 @@ class Html extends Base
 			$numPairs = count($attr[1]);
 			for ($i = 0; $i < $numPairs; $i++)
 			{
-				$retarray[$attr[1][$i]] = $attr[2][$i];
+				$ret[$attr[1][$i]] = $attr[2][$i];
 			}
 		}
 
-		return $retarray;
+		return $ret;
 	}
 
 	/**
@@ -600,12 +607,12 @@ class Html extends Base
 	protected function _renderTemplate()
 	{
 		$replace = array();
-		$with = array();
+		$with    = array();
 
 		foreach ($this->_template_tags as $jdoc => $args)
 		{
 			$replace[] = $jdoc;
-			$with[] = $this->getBuffer($args['type'], $args['name'], $args['attribs']);
+			$with[]    = $this->getBuffer($args['type'], $args['name'], $args['attribs']);
 		}
 
 		return str_replace($replace, $with, $this->_template);

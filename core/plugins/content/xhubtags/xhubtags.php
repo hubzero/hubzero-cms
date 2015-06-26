@@ -137,7 +137,8 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 	 */
 	private function _templateDir()
 	{
-		return '/templates/' . App::get('template')->template;
+		$base = (App::get('template')->protected ? substr(PATH_CORE, strlen(PATH_ROOT)) : substr(PATH_APP . DS . 'app', strlen(PATH_ROOT)));
+		return $base . '/templates/' . App::get('template')->template;
 	}
 
 	/**
@@ -173,16 +174,15 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 		}
 		else if (preg_match($regex, $options, $component))
 		{
-			$filename = 'templates/' . $template . '/html/' . $component[2] . '/' . $file[2];
-			if (!file_exists(JPATH_SITE . DS . $filename))
+			$filename = $this->_templateDir(). '/html/' . $component[2] . '/' . $file[2]; //'templates/' . $template
+			if (!file_exists(PATH_ROOT . $filename))
 			{
-				$filename  = 'components/' . $component[2] . '/' . $file[2];
+				$filename = substr(Component::path($component[2]), strlen(PATH_ROOT)) . '/' . $file[2];
 			}
-			$filename = DS . $filename;
 		}
 		else
 		{
-			$filename = "/templates/$template/";
+			$filename = $this->_templateDir() . '/'; //"/templates/$template/";
 			if ($type[2] == 'script')
 			{
 				$filename .= 'js/';
@@ -194,18 +194,18 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 			$filename .= $file[2];
 		}
 
-		if (!file_exists(JPATH_SITE . $filename))
+		if (!file_exists(PATH_ROOT . $filename))
 		{
 			return '';
 		}
 
 		if ($type[2] == 'script')
 		{
-			Document::addScript(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename));
+			Document::addScript(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(PATH_ROOT . $filename));
 		}
 		else if ($type[2] == 'stylesheet')
 		{
-			Document::addStyleSheet(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename), 'text/css', 'screen');
+			Document::addStyleSheet(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(PATH_ROOT . $filename), 'text/css', 'screen');
 		}
 
 		return '';

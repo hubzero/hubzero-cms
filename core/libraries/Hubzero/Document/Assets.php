@@ -562,14 +562,14 @@ class Assets
 			return $image;
 		}
 
-		$template = 'system';
+		$template = DS . 'core' . DS . 'templates' . DS . 'system';
 		if ($t = self::app('template'))
 		{
-			$template = self::app('template')->template;
+			$template = substr($t->path, strlen(PATH_ROOT));
 		}
 
 		$paths = array();
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
+		$paths[] = $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
 		$paths[] = DS . 'core' . DS . 'assets' . DS . $dir . DS . $image;
 
 		// Run through each path until we find one that works
@@ -578,7 +578,7 @@ class Assets
 			if (file_exists(PATH_ROOT . $path))
 			{
 				// Push script to the document
-				return str_replace('/administrator', '', rtrim(Request::base(true), DS)) . $path;
+				return str_replace('/administrator', '', rtrim(Request::base(true), '/')) . $path;
 			}
 		}
 	}
@@ -621,7 +621,7 @@ class Assets
 			// If debugging is turned off and a cache file exist
 			if ($env == 'production' && file_exists($output))
 			{
-				$output =  DS . 'app' . DS . 'cache' . DS . $client . DS . $primary . '.css?v=' . filemtime($output);
+				$output = rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . filemtime($output);
 			}
 			else
 			{
@@ -640,7 +640,7 @@ class Assets
 				}
 
 				// Are there any template overrides?
-				$template  = PATH_ROOT . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
+				$template  = self::app('template')->path . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
 				if (file_exists($template . DS . $primary . '.less'))
@@ -721,7 +721,7 @@ class Assets
 					$newCache['compiled'] = str_replace(array("'/media/system/", "'/core/assets/"), "'" . rtrim(Request::base(true), '/') . '/core/assets/', $newCache['compiled']);
 					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
 				}
-				$output =  rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
+				$output = rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
 			}
 		}
 		catch (Exception $e)

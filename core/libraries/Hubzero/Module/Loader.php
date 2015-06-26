@@ -280,8 +280,8 @@ class Loader
 			$chrome = array();
 		}
 
-		include_once JPATH_THEMES . DS . 'system' . DS . 'html' . DS . 'modules.php';
-		$chromePath = JPATH_THEMES . DS . $this->app['template']->template . DS . 'html' . DS . 'modules.php';
+		include_once PATH_CORE . DS . 'templates' . DS . 'system' . DS . 'html' . DS . 'modules.php';
+		$chromePath = $this->app['template']->path . DS . 'html' . DS . 'modules.php';
 
 		if (!isset($chrome[$chromePath]))
 		{
@@ -343,6 +343,7 @@ class Loader
 	public function getLayoutPath($module, $layout = 'default')
 	{
 		$template = $this->app['template']->template;
+		$path     = ($this->app['template']->protected ? PATH_CORE : PATH_APP) . DS . 'templates';
 		$default  = $layout;
 
 		if (strpos($layout, ':') !== false)
@@ -356,7 +357,7 @@ class Loader
 		}
 
 		// Build the template and base path for the layout
-		$tPath = JPATH_THEMES . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
+		$tPath = $path . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
 		$bPath = PATH_CORE . '/modules/' . $module . '/tmpl/' . $default . '.php';
 		$dPath = PATH_CORE . '/modules/' . $module . '/tmpl/default.php';
 

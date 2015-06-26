@@ -544,7 +544,7 @@ class View extends Object
 
 				$this->_addPath(
 					'template',
-					JPATH_THEMES . '/' . \App::get('template')->template . '/html/' . $component . '/' . $this->getName()
+					\App::get('template')->path . DS . 'html' . DS . $component . DS . $this->getName()
 				);
 			break;
 		}

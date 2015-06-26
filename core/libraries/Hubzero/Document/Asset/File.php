@@ -342,7 +342,7 @@ class File extends Object
 	{
 		if (!isset($this->paths['override']))
 		{
-			$this->paths['override']  = PATH_ROOT . DS . 'templates' . DS . \App::get('template')->template . DS . 'html';
+			$this->paths['override']  = (\App::get('template')->protected ? PATH_CORE : PATH_APP . DS . 'app') . DS . 'templates' . DS . \App::get('template')->template . DS . 'html';
 			$this->paths['override'] .= DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
 		}
 		return $this->paths['override'];
@@ -443,14 +443,16 @@ class File extends Object
 		}
 		else
 		{
-			if (substr($output, 0, strlen(JPATH_BASE)) == JPATH_BASE)
+			/*if (substr($output, 0, strlen(JPATH_BASE)) == JPATH_BASE)
 			{
 				$relative = rtrim(\Request::base(true), '/') . substr($output, strlen(JPATH_BASE));
 			}
 			else
 			{
 				$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
-			}
+			}*/
+			$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
+			$relative = rtrim(\Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');
 		}
 
 		return $relative . ($timestamp ? '?v=' . $this->lastModified() : '');

@@ -1,0 +1,27 @@
+@import url("/core/components/com_resources/site/assets/css/resources.css");
+
+/* Tabbed view containers */
+	.com_resources .upperpane {
+		padding: 10px 30px 30px 30px;
+		background: #fff;
+		border-bottom: 1px dotted #e4e4e4;
+	}
+	.com_resources .upperpane .subject {
+		margin-bottom: 0 !important;
+	}
+	ul.sub-menu {
+		margin-left: -30px;
+		margin-right: -30px;
+		padding-left: 30px;
+		padding-right: 30px;
+		margin-bottom: 30px;
+	}
+	.com_resources .noborder .aside:before {
+		top: 0;
+	}
+	.com_resources .upperpane .aside:before,
+	.com_resources .upperpane .aside:after,
+	.com_resources .upperpane .subject:before,
+	.com_resources .noborder .aside:after {
+		display: none;
+	}

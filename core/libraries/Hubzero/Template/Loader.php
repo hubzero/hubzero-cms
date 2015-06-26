@@ -50,9 +50,9 @@ class Loader
 	/**
 	 * Base path for templates
 	 *
-	 * @var  string
+	 * @var  array
 	 */
-	protected $path;
+	protected $paths;
 
 	/**
 	 * The component list cache
@@ -71,8 +71,16 @@ class Loader
 	{
 		self::$components = array();
 
-		$this->path = ($path ?: PATH_ROOT . DS . 'templates');
-		$this->app  = $app;
+		if (!$path)
+		{
+			$path = array(
+				PATH_APP . DS . 'app' . DS . 'templates',
+				PATH_CORE . DS . 'templates'
+			);
+		}
+
+		$this->paths = (array) $path;
+		$this->app   = $app;
 	}
 
 	/**
@@ -129,24 +137,6 @@ class Loader
 		}
 
 		return $this->getSystemTemplate();
-
-		/*$client = $this->app['client']->url;
-
-		// Load the template name from the database
-		$db = \JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('id, home, template AS name, s.params');
-		$query->from('#__template_styles as s');
-		$query->leftJoin('#__extensions as e ON e.type=' . $db->quote('template') . ' AND e.element=s.template AND e.client_id=s.client_id');
-		$query->where('s.client_id = ' . $this->app['client']->id);
-		$query->where('e.enabled = 1');
-		if ($style = $this->app['user']->getParam($client . '_style'))
-		{
-			$query->where('id = ' . (int) $style . ' AND e.enabled = 1', 'OR');
-		}
-		$query->order('home');
-		$db->setQuery($query);
-		$template = $db->loadObject();*/
 	}
 
 	/**
@@ -157,10 +147,12 @@ class Loader
 	public function getSystemTemplate()
 	{
 		$template = new stdClass;
-		$template->id       = 0;
-		$template->home     = 0;
-		$template->template = 'system';
-		$template->params   = new Registry();
+		$template->id        = 0;
+		$template->home      = 0;
+		$template->template  = 'system';
+		$template->params    = new Registry();
+		$template->protected = 1;
+		$template->path      = PATH_CORE . DS . 'templates' . DS . $template->template;
 
 		return $template;
 	}
@@ -177,14 +169,14 @@ class Loader
 		{
 			$db = \JFactory::getDbo();
 			$query = $db->getQuery(true);
-			$query->select('s.id, s.home, s.template, s.params');
+			$query->select('s.id, s.home, s.template, s.params, e.protected');
 			$query->from('#__template_styles as s');
-			$query->leftJoin('#__extensions as e ON e.type='.$db->quote('template').' AND e.element=s.template AND e.client_id=s.client_id');
+			$query->leftJoin('#__extensions as e ON e.type=' . $db->quote('template') . ' AND e.element=s.template AND e.client_id=s.client_id');
 			if ($style = \User::getParam('admin_style'))
 			{
-				$query->where('s.client_id = 1 AND id = ' . (int) $style . ' AND e.enabled = 1', 'OR');
+				$query->where('s.client_id = 1 AND s.id = ' . (int) $style . ' AND e.enabled = 1', 'OR');
 			}
-			$query->where('s.client_id = 1 AND home = 1', 'OR');
+			$query->where('s.client_id = 1 AND s.home = 1', 'OR');
 			$query->order('home');
 			$db->setQuery($query);
 
@@ -198,12 +190,16 @@ class Loader
 		$template->template = $this->canonical($template->template);
 		$template->params   = new Registry($template->params);
 
-		if (!file_exists($this->path . DS . $template->template . DS . 'index.php'))
+		foreach ($this->paths as $path)
 		{
-			$template = $this->getSystemTemplate();
+			if (file_exists($path . DS . $template->template . DS . 'index.php'))
+			{
+				$template->path = $path . DS . $template->template;
+				return $template;
+			}
 		}
 
-		return $template;
+		return $this->getSystemTemplate();
 	}
 
 	/**
@@ -254,7 +250,7 @@ class Loader
 			{
 				$db = \JFactory::getDbo();
 				$query = $db->getQuery(true);
-				$query->select('s.id, s.home, s.template, s.params');
+				$query->select('s.id, s.home, s.template, s.params, e.protected');
 				$query->from('#__template_styles as s');
 				$query->where('s.client_id = 0');
 				$query->where('e.enabled = 1');
@@ -269,7 +265,7 @@ class Loader
 					$template->params = $registry;
 
 					// Create home element
-					if ($template->home == 1 && !isset($templates[0])) // || $this->_language_filter && $template->home == $tag)
+					if ($template->home == 1 && !isset($templates[0])) // || ($this->app->has('language.filter') && $this->app->get('language.filter') && $template->home == $tag))
 					{
 						$templates[0] = clone $template;
 					}
@@ -300,8 +296,9 @@ class Loader
 				$template->params = new Registry;
 				$template->home   = 0;
 			}
-			$template->template = 'system';
-			$template->id   = 0;
+			$template->id        = 0;
+			$template->template  = 'system';
+			$template->protected = 1;
 		}
 
 		// Allows for overriding the active template from the request
@@ -309,11 +306,15 @@ class Loader
 		$template->template = $this->canonical($template->template); // need to filter the default value as well
 
 		// Fallback template
-		if (!file_exists($this->path . DS . $template->template . DS . 'index.php'))
+		foreach ($this->paths as $path)
 		{
-			$template = $this->getSystemTemplate();
+			if (file_exists($path . DS . $template->template . DS . 'index.php'))
+			{
+				$template->path = $path . DS . $template->template;
+				return $template;
+			}
 		}
 
-		return $template;
+		return $this->getSystemTemplate();
 	}
 }
