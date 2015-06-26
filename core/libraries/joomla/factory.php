@@ -177,9 +177,9 @@ abstract class JFactory
 	{
 		if (class_exists('\\App'))
 		{
-			if ($lang = \App::get('language'))
+			if (\App::has('language'))
 			{
-				return $lang;
+				return \App::get('language');
 			}
 		}
 
@@ -205,9 +205,9 @@ abstract class JFactory
 	{
 		if (class_exists('\\App'))
 		{
-			if ($lang = \App::get('document'))
+			if (\App::has('document'))
 			{
-				return $lang;
+				return \App::get('document');
 			}
 		}
 
@@ -323,6 +323,14 @@ abstract class JFactory
 	 */
 	public static function getDbo()
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('db'))
+			{
+				return \App::get('db');
+			}
+		}
+
 		if (!self::$database)
 		{
 			self::$database = self::createDbo();
