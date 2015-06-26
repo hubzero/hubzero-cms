@@ -479,6 +479,30 @@ class Profilesv1_0 extends ApiController
 	}
 
 	/**
+	 * Get a list of oranizations used throughout member profiles
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /members/organizations
+	 *
+	 * @return  void
+	 */
+	public function organizationsTask()
+	{
+		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'organization.php');
+		$database = \JFactory::getDbo();
+
+		$obj = new \Components\Members\Tables\Organization($database);
+
+		$organizations = $obj->find('all', $filters=array());
+
+		// Encode sessions for return
+		$object = new stdClass();
+		$object->organizations = $organizations;
+
+		$this->send($object);
+	}
+
+	/**
 	 * Get a resource based on tool name
 	 *
 	 * @param   string  $appname
