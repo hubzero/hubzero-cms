@@ -38,7 +38,7 @@ class Comment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -68,28 +68,28 @@ class Comment extends \JTable
 			}
 			else if ($filters['status'] >= 0)
 			{
-				$where[] = "c.status=" . $this->_db->Quote(intval($filters['status']));
+				$where[] = "c.status=" . $this->_db->quote(intval($filters['status']));
 			}
 		}
 		if (isset($filters['created_by']) && $filters['created_by'] != 0)
 		{
-			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['pageid']) && $filters['pageid'] != 0)
 		{
-			$where[] = "c.pageid=" . $this->_db->Quote($filters['pageid']);
+			$where[] = "c.pageid=" . $this->_db->quote($filters['pageid']);
 		}
 		if (isset($filters['parent']) && $filters['parent'] != '')
 		{
-			$where[] = "c.parent=" . $this->_db->Quote($filters['parent']);
+			$where[] = "c.parent=" . $this->_db->quote($filters['parent']);
 		}
 		if (isset($filters['anonymous']) && $filters['anonymous'] != '')
 		{
-			$where[] = "c.anonymous=" . $this->_db->Quote($filters['anonymous']);
+			$where[] = "c.anonymous=" . $this->_db->quote($filters['anonymous']);
 		}
 		if (isset($filters['version']) && $filters['version'] != 0)
 		{
-			$where[] = "c.version=" . $this->_db->Quote($filters['version']);
+			$where[] = "c.version=" . $this->_db->quote($filters['version']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

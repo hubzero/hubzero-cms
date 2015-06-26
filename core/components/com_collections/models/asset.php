@@ -58,7 +58,7 @@ class Asset extends Base
 	 */
 	public function __construct($oid=null, $item_id=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$tbl = $this->_tbl_name;
 		$this->_tbl = new $tbl($this->_db);
@@ -318,7 +318,7 @@ class Asset extends Base
 		{
 			$item_id = $this->get('item_id');
 		}
-		return $this->_tbl->reorder("item_id=" . $this->_db->Quote(intval($item_id)));
+		return $this->_tbl->reorder("item_id=" . $this->_db->quote(intval($item_id)));
 	}
 }
 

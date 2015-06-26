@@ -447,7 +447,7 @@ class TemplatesModelStyle extends JModelAdmin
 		if (User::authorise('core.edit', 'com_menus') && $table->client_id==0)
 		{
 			$n  = 0;
-			$db = JFactory::getDbo();
+			$db = App::get('db');
 
 			if (!empty($data['assigned']) && is_array($data['assigned']))
 			{

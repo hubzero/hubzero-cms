@@ -43,7 +43,7 @@ class QuestionsLog extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -107,14 +107,14 @@ class QuestionsLog extends \JTable
 			return false;
 		}
 
-		$query = "SELECT COUNT(*) FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid);
+		$query = "SELECT COUNT(*) FROM `$this->_tbl` WHERE question_id=" . $this->_db->quote($qid);
 		if ($voter !== null)
 		{
-			$query .= " AND voter=" . $this->_db->Quote($voter);
+			$query .= " AND voter=" . $this->_db->quote($voter);
 		}
 		else
 		{
-			$query .= " AND ip=" . $this->_db->Quote($ip);
+			$query .= " AND ip=" . $this->_db->quote($ip);
 		}
 
 

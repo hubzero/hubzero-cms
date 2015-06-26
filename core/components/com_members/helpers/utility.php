@@ -249,7 +249,7 @@ class Utility
 	 */
 	public static function isActiveCode($code)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT `uidNumber` FROM `#__xprofiles` WHERE emailConfirmed = ".$db->quote('-'.$code)." LIMIT 1";
 		$db->setQuery($query);

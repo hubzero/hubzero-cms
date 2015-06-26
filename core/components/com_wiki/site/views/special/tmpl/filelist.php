@@ -36,7 +36,7 @@ Pathway::append(
 	$this->page->link()
 );
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $sort = strtolower(Request::getVar('sort', 'created'));
 if (!in_array($sort, array('created', 'filename', 'description', 'created_by')))
@@ -125,7 +125,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			<?php
 			if ($rows)
 			{
-				$database = \JFactory::getDBO();
+				$database = \App::get('db');
 				$asset = new \Components\Wiki\Tables\Attachment($database);
 
 				foreach ($rows as $row)

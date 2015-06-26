@@ -80,7 +80,7 @@ class Repo extends Object
 	 */
 	public function __construct($project = NULL, $name = 'local')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->set('project', $project);
 		$this->set('name', $name);

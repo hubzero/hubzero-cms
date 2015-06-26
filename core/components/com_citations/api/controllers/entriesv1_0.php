@@ -97,7 +97,7 @@ class Entriesv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),

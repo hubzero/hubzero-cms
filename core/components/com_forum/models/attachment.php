@@ -57,7 +57,7 @@ class Attachment extends Base
 	 */
 	public function __construct($oid=null, $pid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$cls = $this->_tbl_name;
 		$this->_tbl = new $cls($this->_db);

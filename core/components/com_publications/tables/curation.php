@@ -80,7 +80,7 @@ class Curation extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		$query.= " ORDER BY step ASC, element ASC ";
 		$this->_db->setQuery( $query );
 
@@ -101,11 +101,11 @@ class Curation extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
-		$query.= " AND publication_version_id=" . $this->_db->Quote($vid);
-		$query.= " AND block=" . $this->_db->Quote($block);
-		$query.= " AND step=" . $this->_db->Quote($step);
-		$query.= $element ? " AND element=" . $this->_db->Quote($element) : " AND (element IS NULL OR element=0)";
+		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+		$query.= " AND publication_version_id=" . $this->_db->quote($vid);
+		$query.= " AND block=" . $this->_db->quote($block);
+		$query.= " AND step=" . $this->_db->quote($step);
+		$query.= $element ? " AND element=" . $this->_db->quote($element) : " AND (element IS NULL OR element=0)";
 		$query.= " ORDER BY id DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
@@ -126,11 +126,11 @@ class Curation extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
-		$query.= " AND publication_version_id=" . $this->_db->Quote($vid);
-		$query.= " AND block=" . $this->_db->Quote($block);
-		$query.= " AND step=" . $this->_db->Quote($step);
-		$query.= $element ? " AND element=" . $this->_db->Quote($element) : " AND (element IS NULL OR element=0)";
+		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+		$query.= " AND publication_version_id=" . $this->_db->quote($vid);
+		$query.= " AND block=" . $this->_db->quote($block);
+		$query.= " AND step=" . $this->_db->quote($step);
+		$query.= $element ? " AND element=" . $this->_db->quote($element) : " AND (element IS NULL OR element=0)";
 		$query.= " ORDER BY id DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 

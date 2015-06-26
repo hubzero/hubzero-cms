@@ -38,7 +38,7 @@ class Screenshot extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -106,10 +106,10 @@ class Screenshot extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl as s WHERE s.filename=" . $this->_db->Quote($filename) . " AND s.resourceid=" . $this->_db->Quote($rid);
+		$query  = "SELECT * FROM $this->_tbl as s WHERE s.filename=" . $this->_db->quote($filename) . " AND s.resourceid=" . $this->_db->quote($rid);
 		if ($versionid)
 		{
-			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
+			$query .= " AND s.versionid=" . $this->_db->quote($versionid);
 		}
 		$query .= " LIMIT 1";
 
@@ -131,10 +131,10 @@ class Screenshot extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT ordering FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
+		$query  = "SELECT ordering FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->quote($rid);
 		if ($versionid)
 		{
-			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
+			$query .= " AND s.versionid=" . $this->_db->quote($versionid);
 		}
 		$query .= " ORDER BY s.ordering DESC LIMIT 1";
 
@@ -162,7 +162,7 @@ class Screenshot extends \JTable
 		if (!$new)
 		{
 			$ret = false;
-			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($ordering) . " WHERE filename=" . $this->_db->Quote($filename) . " AND resourceid=" . $this->_db->Quote($rid) . " AND versionid=" . $this->_db->Quote($versionid));
+			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->quote($ordering) . " WHERE filename=" . $this->_db->quote($filename) . " AND resourceid=" . $this->_db->quote($rid) . " AND versionid=" . $this->_db->quote($versionid));
 			if ($this->_db->query())
 			{
 				$ret = true;
@@ -202,10 +202,10 @@ class Screenshot extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND resourceid=" . $this->_db->Quote($rid);
+		$query = "DELETE FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND resourceid=" . $this->_db->quote($rid);
 		if ($versionid)
 		{
-			$query .= " AND versionid=" . $this->_db->Quote($versionid) . " LIMIT 1";
+			$query .= " AND versionid=" . $this->_db->quote($versionid) . " LIMIT 1";
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -231,10 +231,10 @@ class Screenshot extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
+		$query = "SELECT * FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->quote($rid);
 		if ($versionid)
 		{
-			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
+			$query .= " AND s.versionid=" . $this->_db->quote($versionid);
 		}
 		$query .= " ORDER BY s.ordering ASC";
 
@@ -256,10 +256,10 @@ class Screenshot extends \JTable
 			return false;
 		}
 
-		$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
+		$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->quote($rid);
 		if ($versionid)
 		{
-			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
+			$query .= " AND s.versionid=" . $this->_db->quote($versionid);
 		}
 		$query .= " ORDER BY s.ordering ASC";
 
@@ -304,9 +304,9 @@ class Screenshot extends \JTable
 					$newid = $this->id;
 
 					$query  = "UPDATE $this->_tbl as t1, $this->_tbl as t2 ";
-					$query .= "SET t2.versionid=" . $this->_db->Quote($currentid) . ", t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering, t2.resourceid=t1.resourceid";
-					$query .= " WHERE t1.id =" . $this->_db->Quote($s->id) . " ";
-					$query .= " AND t2.id =" . $this->_db->Quote($newid);
+					$query .= "SET t2.versionid=" . $this->_db->quote($currentid) . ", t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering, t2.resourceid=t1.resourceid";
+					$query .= " WHERE t1.id =" . $this->_db->quote($s->id) . " ";
+					$query .= " AND t2.id =" . $this->_db->quote($newid);
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
@@ -314,9 +314,9 @@ class Screenshot extends \JTable
 		}
 		else
 		{
-			$query  = "UPDATE $this->_tbl SET versionid=" . $this->_db->Quote($currentid) . " WHERE ";
-			$query .= " versionid=" . $this->_db->Quote($devid) . " ";
-			$query .= " AND resourceid=" . $this->_db->Quote($rid);
+			$query  = "UPDATE $this->_tbl SET versionid=" . $this->_db->quote($currentid) . " WHERE ";
+			$query .= " versionid=" . $this->_db->quote($devid) . " ";
+			$query .= " AND resourceid=" . $this->_db->quote($rid);
 			$this->_db->setQuery($query);
 			if ($this->_db->query())
 			{

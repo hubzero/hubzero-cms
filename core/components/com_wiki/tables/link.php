@@ -41,7 +41,7 @@ class Link extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct($db)
@@ -96,7 +96,7 @@ class Link extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id) . " ORDER BY `timestamp` DESC");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE page_id=" . $this->_db->quote($page_id) . " ORDER BY `timestamp` DESC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -115,7 +115,7 @@ class Link extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->quote($page_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -144,12 +144,12 @@ class Link extends \JTable
 		$inserts = array();
 		foreach ($links as $link)
 		{
-			$inserts[] = "(" . $this->_db->Quote($link['page_id']) . "," .
-								$this->_db->Quote($timestamp) . "," .
-								$this->_db->Quote($link['scope']) . "," .
-								$this->_db->Quote($link['scope_id']) . "," .
-								$this->_db->Quote($link['link']) . "," .
-								$this->_db->Quote($link['url']) .
+			$inserts[] = "(" . $this->_db->quote($link['page_id']) . "," .
+								$this->_db->quote($timestamp) . "," .
+								$this->_db->quote($link['scope']) . "," .
+								$this->_db->quote($link['scope_id']) . "," .
+								$this->_db->quote($link['link']) . "," .
+								$this->_db->quote($link['url']) .
 							")";
 		}
 

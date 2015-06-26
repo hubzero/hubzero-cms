@@ -209,7 +209,7 @@ if (!$tmpl)
 					<label for="field-sort"><?php echo Lang::txt('In folder'); ?></label>
 					<select name="fields[folder_id]" id="field-folder_id">
 						<?php
-						$database = JFactory::getDBO();
+						$database = App::get('db');
 						include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
 						$sr = new \Components\Support\Tables\QueryFolder($database);

@@ -279,7 +279,7 @@ class Router extends Base
 		if (is_numeric($userId))
 		{
 			// Get the package id from the packages table by alias.
-			$db = \JFactory::getDbo();
+			$db = App::get('db');
 			$db->setQuery(
 				'SELECT '.$db->quoteName('id') .
 				' FROM '.$db->quoteName('#__users') .

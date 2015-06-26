@@ -136,41 +136,41 @@ class Announcement extends \JTable
 
 		if (isset($filters['offering_id']) && $filters['offering_id'])
 		{
-			$where[] = "a.`offering_id` = " . $this->_db->Quote(intval($filters['offering_id']));
+			$where[] = "a.`offering_id` = " . $this->_db->quote(intval($filters['offering_id']));
 		}
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			$where[] = "a.`section_id` = " . $this->_db->Quote(intval($filters['section_id']));
+			$where[] = "a.`section_id` = " . $this->_db->quote(intval($filters['section_id']));
 		}
 		if (isset($filters['state']) && $filters['state'])
 		{
-			$where[] = "a.`state` = " . $this->_db->Quote(intval($filters['state']));
+			$where[] = "a.`state` = " . $this->_db->quote(intval($filters['state']));
 		}
 		if (isset($filters['created_by']) && $filters['created_by'])
 		{
-			$where[] = "a.`created_by` = " . $this->_db->Quote(intval($filters['created_by']));
+			$where[] = "a.`created_by` = " . $this->_db->quote(intval($filters['created_by']));
 		}
 		if (isset($filters['priority']) && $filters['priority'])
 		{
-			$where[] = "a.`priority` = " . $this->_db->Quote(intval($filters['priority']));
+			$where[] = "a.`priority` = " . $this->_db->quote(intval($filters['priority']));
 		}
 		if (isset($filters['sticky']) && $filters['sticky'])
 		{
-			$where[] = "a.`sticky` = " . $this->_db->Quote(intval($filters['sticky']));
+			$where[] = "a.`sticky` = " . $this->_db->quote(intval($filters['sticky']));
 		}
 
 		if (isset($filters['published']))
 		{
 			$now = \Date::toSql();
-			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
-			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
+			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->quote($now) . ")";
+			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->quote($now) . ")";
 		}
 
 		if (isset($filters['search']) && $filters['search'])
 		{
 			if (is_numeric($filters['search']))
 			{
-				$where[] = "a.`id`=" . $this->_db->Quote(intval($filters['search']));
+				$where[] = "a.`id`=" . $this->_db->quote(intval($filters['search']));
 			}
 			else
 			{

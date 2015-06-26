@@ -62,8 +62,8 @@ class HandlerAssoc extends \JTable
 
 		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
 		$query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
-		$query .= " WHERE A.publication_version_id=" . $this->_db->Quote($vid);
-		$query .= " AND A.element_id=" . $this->_db->Quote($elementid);
+		$query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
+		$query .= " AND A.element_id=" . $this->_db->quote($elementid);
 		$query .= " ORDER BY A.ordering ASC";
 
 		$this->_db->setQuery( $query );
@@ -88,8 +88,8 @@ class HandlerAssoc extends \JTable
 
 		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
 		$query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
-		$query .= " WHERE A.publication_version_id=" . $this->_db->Quote($vid);
-		$query .= " AND A.element_id=" . $this->_db->Quote($elementid);
+		$query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
+		$query .= " AND A.element_id=" . $this->_db->quote($elementid);
 		$query .= " AND H.name=" . $this->_db->quote($handler);
 		$query .= " LIMIT 1";
 

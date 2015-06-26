@@ -61,7 +61,7 @@ class CurationHistory extends \JTable
 		$sortby  = isset($filters['sortby']) && $filters['sortby'] ? $filters['sortby'] : 'created';
 		$sortdir = isset($filters['sortdir']) && $filters['sortdir'] ? $filters['sortdir'] : 'DESC';
 
-		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 
 		if (isset($filters['curator']) && $filters['curator'] == 1)
 		{
@@ -87,7 +87,7 @@ class CurationHistory extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		$query.= ($curator == 1) ? " AND curator=1" : " AND curator=0";
 
 		$query .= " ORDER BY id DESC LIMIT 1";

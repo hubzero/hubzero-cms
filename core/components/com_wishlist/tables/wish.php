@@ -43,7 +43,7 @@ class Wish extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -485,7 +485,7 @@ class Wish extends \JTable
 		}
 
 		// Dlete attachments
-		$this->_db->setQuery("SELECT * FROM `#__wish_attachments` WHERE wish=" . $this->_db->Quote($this->$k));
+		$this->_db->setQuery("SELECT * FROM `#__wish_attachments` WHERE wish=" . $this->_db->quote($this->$k));
 		if (($attachments = $this->_db->loadObjectList()))
 		{
 			$config = Component::params('com_wishlist');
@@ -506,7 +506,7 @@ class Wish extends \JTable
 		}
 
 		// Delete the plan
-		$query = 'DELETE FROM `#__wishlist_implementation` WHERE wishid = ' . $this->_db->Quote($this->$k);
+		$query = 'DELETE FROM `#__wishlist_implementation` WHERE wishid = ' . $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -573,12 +573,12 @@ class Wish extends \JTable
 		$sql .= "\n FROM #__wishlist_item AS ws";
 		if ($refid && $cat)
 		{
-			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid=" . $this->_db->Quote($refid) . " AND W.category=" . $this->_db->Quote($cat) . " ";
+			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid=" . $this->_db->quote($refid) . " AND W.category=" . $this->_db->quote($cat) . " ";
 		}
 		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter=" . $this->_db->Quote($uid) . " ";
-		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid=" . $this->_db->Quote($uid) . " ";
-		$sql .= "\n WHERE ws.id=" . $this->_db->Quote($wishid) . " ";
+		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter=" . $this->_db->quote($uid) . " ";
+		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid=" . $this->_db->quote($uid) . " ";
+		$sql .= "\n WHERE ws.id=" . $this->_db->quote($wishid) . " ";
 		if (!$deleted)
 		{
 			$sql .=" AND ws.status!=2";
@@ -607,7 +607,7 @@ class Wish extends \JTable
 
 		$query  = "SELECT id ";
 		$query .= "FROM #__wishlist_item  ";
-		$query .= "WHERE id = " . $this->_db->Quote($wishid) . " AND wishlist=" . $this->_db->Quote($listid) . " LIMIT 1";
+		$query .= "WHERE id = " . $this->_db->quote($wishid) . " AND wishlist=" . $this->_db->quote($listid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -638,8 +638,8 @@ class Wish extends \JTable
 			$query .= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 			$query .= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
-		$query .= "WHERE ws.wishlist=" . $this->_db->Quote($listid) . " AND ";
-		$query .= ($which == 'prev')  ? "ws.id < " . $this->_db->Quote($id) . " " : "ws.id > " . $this->_db->Quote($id);
+		$query .= "WHERE ws.wishlist=" . $this->_db->quote($listid) . " AND ";
+		$query .= ($which == 'prev')  ? "ws.id < " . $this->_db->quote($id) . " " : "ws.id > " . $this->_db->quote($id);
 
 		if (isset($filters['filterby']))
 		{
@@ -733,7 +733,7 @@ class Wish extends \JTable
 
 		$query  = "SELECT v.helpful ";
 		$query .= "FROM #__vote_log as v  ";
-		$query .= "WHERE v.referenceid = " . $this->_db->Quote($refid) . " AND v.category=" . $this->_db->Quote($category) . " AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1";
+		$query .= "WHERE v.referenceid = " . $this->_db->quote($refid) . " AND v.category=" . $this->_db->quote($category) . " AND v.voter=" . $this->_db->quote($uid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

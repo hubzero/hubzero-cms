@@ -88,7 +88,7 @@ class Respondent extends \JTable
 	 */
 	public static function getRacialIdentification($resp_id)
 	{
-		$dbh = \JFactory::getDBO();
+		$dbh = \App::get('db');
 		if (is_array($resp_id))
 		{
 			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN (' . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
@@ -149,7 +149,7 @@ class Respondent extends \JTable
 	 */
 	public function __construct($filters)
 	{
-		parent::__construct('#__events_respondents', 'id', \JFactory::getDBO());
+		parent::__construct('#__events_respondents', 'id', \App::get('db'));
 
 		if (array_key_exists('sortby', $filters))
 		{
@@ -285,7 +285,7 @@ class Respondent extends \JTable
 	 */
 	public static function checkUniqueEmailForEvent($email, $eventId)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$sql = "SELECT COUNT(*) FROM `#__events_respondents` WHERE `event_id`=" . $db->quote($eventId) . " AND `email`=" .$db->quote($email);
 		$db->setQuery($sql);
 		return $db->loadResult();

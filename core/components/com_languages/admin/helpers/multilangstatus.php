@@ -19,7 +19,7 @@ abstract class multilangstatusHelper
 	public static function getHomes()
 	{
 		// Check for multiple Home pages
-		$db		= JFactory::getDBO();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 		$query->select('COUNT(*)');
 		$query->from($db->quoteName('#__menu'));
@@ -43,7 +43,7 @@ abstract class multilangstatusHelper
 	public static function getLangswitchers()
 	{
 		// Check if switcher is published
-		$db			= JFactory::getDBO();
+		$db			= App::get('db');
 		$query		= $db->getQuery(true);
 		$query->select('COUNT(*)');
 		$query->from($db->quoteName('#__modules'));
@@ -57,7 +57,7 @@ abstract class multilangstatusHelper
 	public static function getContentlangs()
 	{
 		// Check for published Content Languages
-		$db		= JFactory::getDBO();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 		$query->select('a.lang_code AS lang_code');
 		$query->select('a.published AS published');
@@ -69,7 +69,7 @@ abstract class multilangstatusHelper
 	public static function getSitelangs()
 	{
 		// check for published Site Languages
-		$db		= JFactory::getDBO();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 		$query->select('a.element AS element');
 		$query->from('#__extensions AS a');
@@ -82,7 +82,7 @@ abstract class multilangstatusHelper
 	public static function getHomepages()
 	{
 		// Check for Home pages languages
-		$db		= JFactory::getDBO();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 		$query->select('language');
 		$query->select('id');
@@ -97,7 +97,7 @@ abstract class multilangstatusHelper
 	public static function getStatus()
 	{
 		//check for combined status
-		$db		= JFactory::getDBO();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 
 		// Select all fields from the languages table.

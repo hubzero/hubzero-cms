@@ -119,7 +119,7 @@ class Archive extends Object
 	 */
 	public function __construct($object_type='', $object_id=0)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_object_type = (string) $object_type;
 		$this->_object_id   = (int) $object_id;
@@ -394,7 +394,7 @@ class Archive extends Object
 				}
 
 				$this->_db->setQuery($query);
-				$ids = array_merge($ids, $this->_db->loadResultArray());
+				$ids = array_merge($ids, $this->_db->loadColumn());
 			}
 
 			return $ids;

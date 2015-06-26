@@ -315,7 +315,7 @@ class Html
 	 */
 	public static function buildCategorySelect($catid, $args, $gid, $option)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$catsql = "SELECT id AS value, title AS text FROM #__categories "
 				. "WHERE extension='$option' AND published='1' ORDER BY lft";
@@ -565,7 +565,7 @@ class Html
 		}
 		else
 		{
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 			$database->setQuery("SELECT created_by_alias FROM #__events WHERE id='$agid'");
 			$userdet = $database->loadResult();
 			if ($userdet)

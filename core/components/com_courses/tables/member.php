@@ -76,19 +76,19 @@ class Member extends \JTable
 				WHERE ";
 		if ($student !== null)
 		{
-			$where[] = "`student`=" . $this->_db->Quote((int) $student);
+			$where[] = "`student`=" . $this->_db->quote((int) $student);
 		}
-		$where[] = "`user_id`=" . $this->_db->Quote((int) $uid);
-		$where[] = "`course_id`=" . $this->_db->Quote((int) $cid);
+		$where[] = "`user_id`=" . $this->_db->quote((int) $uid);
+		$where[] = "`course_id`=" . $this->_db->quote((int) $cid);
 		if ($oid !== null)
 		{
-			//$where[] = "`offering_id` IN (0, " . $this->_db->Quote((int) $cid) . ")";
-			$where[] = "`offering_id` IN (0," . (int) $oid . ")"; //$this->_db->Quote((int) $oid);
+			//$where[] = "`offering_id` IN (0, " . $this->_db->quote((int) $cid) . ")";
+			$where[] = "`offering_id` IN (0," . (int) $oid . ")"; //$this->_db->quote((int) $oid);
 		}
 		if ($sid !== null)
 		{
-			//$where[] = "`section_id` IN (0, " . $this->_db->Quote((int) $sid) . ")";
-			$where[] = "`section_id` IN (0," . (int) $sid . ")"; //$this->_db->Quote((int) $sid);
+			//$where[] = "`section_id` IN (0, " . $this->_db->quote((int) $sid) . ")";
+			$where[] = "`section_id` IN (0," . (int) $sid . ")"; //$this->_db->quote((int) $sid);
 		}
 		$query .= implode(" AND ", $where) . " ORDER BY student ASC, section_id ASC, offering_id ASC LIMIT 1";
 
@@ -117,7 +117,7 @@ class Member extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `section_id`=" . $this->_db->Quote((int) $oid) . " LIMIT 1";
+		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->quote((int) $uid) . " AND `section_id`=" . $this->_db->quote((int) $oid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -155,7 +155,7 @@ class Member extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `offering_id`=" . $this->_db->Quote((int) $oid) . " LIMIT 1";
+		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->quote((int) $uid) . " AND `offering_id`=" . $this->_db->quote((int) $oid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -233,7 +233,7 @@ class Member extends \JTable
 			return 0;
 		}
 
-		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `token`=" . $this->_db->Quote($token);
+		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `token`=" . $this->_db->quote($token);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -257,9 +257,9 @@ class Member extends \JTable
 	/*public function save()
 	{
 		$this->_db->setQuery("UPDATE $this->_tbl
-			SET `role_id`=" . $this->_db->Quote($this->role_id) . ", `permissions`=" . $this->_db->Quote($this->permissions) . "
-			WHERE `offering_id`=" . $this->_db->Quote($this->offering_id) . "
-			AND `user_id`=" . $this->_db->Quote($this->user_id));
+			SET `role_id`=" . $this->_db->quote($this->role_id) . ", `permissions`=" . $this->_db->quote($this->permissions) . "
+			WHERE `offering_id`=" . $this->_db->quote($this->offering_id) . "
+			AND `user_id`=" . $this->_db->quote($this->user_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -283,7 +283,7 @@ class Member extends \JTable
 		$where = array();
 		if (isset($filters['course_id']) && $filters['course_id'])
 		{
-			$where[] = "m.`course_id`=" . $this->_db->Quote(intval($filters['course_id']));
+			$where[] = "m.`course_id`=" . $this->_db->quote(intval($filters['course_id']));
 		}
 		if (isset($filters['offering_id']))
 		{
@@ -294,7 +294,7 @@ class Member extends \JTable
 			}
 			else
 			{
-				$where[] = "m.`offering_id`=" . $this->_db->Quote(intval($filters['offering_id']));
+				$where[] = "m.`offering_id`=" . $this->_db->quote(intval($filters['offering_id']));
 			}
 		}
 		if (isset($filters['section_id']))
@@ -306,26 +306,26 @@ class Member extends \JTable
 			}
 			else
 			{
-				$where[] = "m.`section_id`=" . $this->_db->Quote(intval($filters['section_id']));
+				$where[] = "m.`section_id`=" . $this->_db->quote(intval($filters['section_id']));
 			}
 		}
 		if (isset($filters['user_id']))
 		{
-			$where[] = "m.`user_id`=" . $this->_db->Quote(intval($filters['user_id']));
+			$where[] = "m.`user_id`=" . $this->_db->quote(intval($filters['user_id']));
 		}
 		if (isset($filters['role_id']))
 		{
-			$where[] = "m.`role_id`=" . $this->_db->Quote(intval($filters['role_id']));
+			$where[] = "m.`role_id`=" . $this->_db->quote(intval($filters['role_id']));
 		}
 		if (isset($filters['role']))
 		{
 			if (substr($filters['role'], 0, 1) == '!')
 			{
-				$where[] = "r.`alias`!=" . $this->_db->Quote(ltrim($filters['role'], '!'));
+				$where[] = "r.`alias`!=" . $this->_db->quote(ltrim($filters['role'], '!'));
 			}
 			else
 			{
-				$where[] = "r.`alias`=" . $this->_db->Quote($filters['role']);
+				$where[] = "r.`alias`=" . $this->_db->quote($filters['role']);
 			}
 		}
 		if (isset($filters['search']) && $filters['search'])
@@ -340,7 +340,7 @@ class Member extends \JTable
 		}
 		if (isset($filters['student']))
 		{
-			$where[] = "m.`student`=" . $this->_db->Quote(intval($filters['student']));
+			$where[] = "m.`student`=" . $this->_db->quote(intval($filters['student']));
 		}
 
 		if (count($where) > 0)
@@ -377,7 +377,7 @@ class Member extends \JTable
 		$query  = "SELECT m.*, u.name, u.email, u.username, r.alias AS role_alias, r.title AS role_title, r.permissions AS role_permissions ";
 		/*if (isset($filters['offering_id']))
 		{
-			$query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id=" . $this->_db->Quote(intval($filters['offering_id'])) . ")";
+			$query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id=" . $this->_db->quote(intval($filters['offering_id'])) . ")";
 		}
 		else
 		{
@@ -417,7 +417,7 @@ class Member extends \JTable
 	 */
 	public function deleteBySection($section_id)
 	{
-		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
+		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->quote($section_id);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())

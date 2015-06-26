@@ -234,7 +234,7 @@ class GradeBook extends Base
 			'member_id'  => $member_id
 		);
 
-		$dbo = \JFactory::getDBO();
+		$dbo = \App::get('db');
 
 		switch ($progress_calculation)
 		{
@@ -358,7 +358,7 @@ class GradeBook extends Base
 		);
 
 		// Get the asset views
-		$database   = \JFactory::getDBO();
+		$database   = \App::get('db');
 		$assetViews = new Tables\AssetViews($database);
 		$results    = $assetViews->find($filters);
 
@@ -399,7 +399,7 @@ class GradeBook extends Base
 		}
 		elseif (!is_null($asset_id) && is_numeric($asset_id))
 		{
-			$asset = new Tables\Asset(\JFactory::getDBO());
+			$asset = new Tables\Asset(\App::get('db'));
 			$asset->load($asset_id);
 			$course_id = $asset->course_id;
 
@@ -788,7 +788,7 @@ class GradeBook extends Base
 		if (!isset($assets))
 		{
 			// Get the graded assets
-			$asset  = new Tables\Asset(\JFactory::getDBO());
+			$asset  = new Tables\Asset(\App::get('db'));
 			$assets = $asset->find(
 				array(
 					'w' => array(
@@ -941,7 +941,7 @@ class GradeBook extends Base
 						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
 						$badgesProvider->setCredentials($credentials);
 
-						$dbo = \JFactory::getDBO();
+						$dbo = \App::get('db');
 						$memberTbl = new Tables\Member($dbo);
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');

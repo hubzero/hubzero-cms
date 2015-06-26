@@ -48,7 +48,7 @@ class Author extends Model
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Author($this->_db);
 

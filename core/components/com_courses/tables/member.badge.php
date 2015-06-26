@@ -56,7 +56,7 @@ class MemberBadge extends \JTable
 	{
 		$query =   "SELECT *
 					FROM {$this->_tbl}
-					WHERE member_id = " . $this->_db->Quote($id);
+					WHERE member_id = " . $this->_db->quote($id);
 
 		$this->_db->setQuery($query);
 

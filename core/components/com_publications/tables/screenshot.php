@@ -95,20 +95,20 @@ class Screenshot extends \JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number=" . $this->_db->Quote($version);
+				$query.= " AND V.version_number=" . $this->_db->quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=" . $this->_db->Quote($pid);
+			$query .= " AND V.publication_id=" . $this->_db->quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id =" . $this->_db->Quote($versionid);
+			$query.= " WHERE s.publication_version_id =" . $this->_db->quote($versionid);
 		}
-		$query.= " AND s.filename=" . $this->_db->Quote($filename);
+		$query.= " AND s.filename=" . $this->_db->quote($filename);
 
 		$query.= " LIMIT 1";
 
@@ -158,20 +158,20 @@ class Screenshot extends \JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number=" . $this->_db->Quote($version);
+				$query.= " AND V.version_number=" . $this->_db->quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=" . $this->_db->Quote($pid);
+			$query .= " AND V.publication_id=" . $this->_db->quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id =" . $this->_db->Quote($versionid);
+			$query.= " WHERE s.publication_version_id =" . $this->_db->quote($versionid);
 		}
-		$query.= " AND s.filename=" . $this->_db->Quote($filename);
+		$query.= " AND s.filename=" . $this->_db->quote($filename);
 
 		$query.= " LIMIT 1";
 
@@ -209,18 +209,18 @@ class Screenshot extends \JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number=" . $this->_db->Quote($version);
+				$query.= " AND V.version_number=" . $this->_db->quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=" . $this->_db->Quote($pid);
+			$query .= " AND V.publication_id=" . $this->_db->quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id =" . $this->_db->Quote($versionid);
+			$query.= " WHERE s.publication_version_id =" . $this->_db->quote($versionid);
 		}
 		$query.= " ORDER BY s.ordering DESC LIMIT 1";
 
@@ -250,9 +250,9 @@ class Screenshot extends \JTable
 		}
 		if (!$new)
 		{
-			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($ordering) . "
-				WHERE filename=" . $this->_db->Quote($filename) . " AND publication_id="
-				. $this->_db->Quote($pid) . " AND publication_version_id=" . $this->_db->Quote($versionid));
+			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=" . $this->_db->quote($ordering) . "
+				WHERE filename=" . $this->_db->quote($filename) . " AND publication_id="
+				. $this->_db->quote($pid) . " AND publication_version_id=" . $this->_db->quote($versionid));
 			if ($this->_db->query())
 			{
 				$ret = true;
@@ -267,7 +267,7 @@ class Screenshot extends \JTable
 			$this->ordering               = $ordering;
 			$this->publication_id         = $pid;
 			$this->publication_version_id = $versionid;
-			$this->filename               = $this->_db->Quote($filename);
+			$this->filename               = $this->_db->quote($filename);
 			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
 		}
 		if (!$ret)
@@ -300,8 +300,8 @@ class Screenshot extends \JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl ";
-		$query.= " WHERE publication_version_id=" . $this->_db->Quote($versionid);
-		$query.= " AND filename=" . $this->_db->Quote($filename);
+		$query.= " WHERE publication_version_id=" . $this->_db->quote($versionid);
+		$query.= " AND filename=" . $this->_db->quote($filename);
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
@@ -320,7 +320,7 @@ class Screenshot extends \JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl ";
-		$query.= " WHERE publication_version_id=" . $this->_db->Quote($versionid);
+		$query.= " WHERE publication_version_id=" . $this->_db->quote($versionid);
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
@@ -387,18 +387,18 @@ class Screenshot extends \JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number=" . $this->_db->Quote($version);
+				$query.= " AND V.version_number=" . $this->_db->quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query = " AND V.publication_id=" . $this->_db->Quote($pid);
+			$query = " AND V.publication_id=" . $this->_db->quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id=" . $this->_db->Quote($versionid);
+			$query.= " WHERE s.publication_version_id=" . $this->_db->quote($versionid);
 		}
 		$query.= " ORDER BY s.ordering ASC";
 
@@ -436,18 +436,18 @@ class Screenshot extends \JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number=" . $this->_db->Quote($version);
+				$query.= " AND V.version_number=" . $this->_db->quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query = " AND V.publication_id=" . $this->_db->Quote($pid);
+			$query = " AND V.publication_id=" . $this->_db->quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id=" . $this->_db->Quote($versionid);
+			$query.= " WHERE s.publication_version_id=" . $this->_db->quote($versionid);
 		}
 		$query.= "ORDER BY s.ordering ASC";
 

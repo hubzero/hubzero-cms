@@ -42,7 +42,7 @@ class Comment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -71,7 +71,7 @@ class Comment extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
@@ -137,7 +137,7 @@ class Comment extends \JTable
 		{
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
-		$sql .= "WHERE c.entry_id=" . $this->_db->Quote($entry_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC";
+		$sql .= "WHERE c.entry_id=" . $this->_db->quote($entry_id) . " AND c.parent=" . $this->_db->quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -187,7 +187,7 @@ class Comment extends \JTable
 			$id = $this->id;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->quote($id));
 		$comments = $this->_db->loadObjectList();
 		if ($comments)
 		{
@@ -201,7 +201,7 @@ class Comment extends \JTable
 				}*/
 
 				// Delete children
-				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($row->id));
+				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->quote($row->id));
 				if (!$this->_db->query())
 				{
 					$this->setError($this->_db->getErrorMsg());
@@ -209,7 +209,7 @@ class Comment extends \JTable
 				}
 			}
 
-			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->quote($id));
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());

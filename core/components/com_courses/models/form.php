@@ -142,7 +142,7 @@ class PdfForm
 		// If we don't already have one, create it
 		if (!$dbh)
 		{
-			$dbh = \JFactory::getDBO();
+			$dbh = \App::get('db');
 		}
 
 		return $dbh;

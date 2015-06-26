@@ -67,7 +67,7 @@ class Polls extends AdminController
 	 */
 	public function displayTask()
 	{
-		$db  = \JFactory::getDBO();
+		$db  = \App::get('db');
 
 		$filter_order     = Request::getState(
 			$this->_option . '.' . $this->_controller . '.filter_order',
@@ -195,7 +195,7 @@ class Polls extends AdminController
 		Request::setVar('hidemainmenu', 1);
 		Request::setVar('tmpl', 'component');
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$id = Request::getVar('cid', array(0));
 		if (is_array($id) && !empty($id))
@@ -230,7 +230,7 @@ class Polls extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$user = User::getRoot();
 
 		if (!$poll)
@@ -298,7 +298,7 @@ class Polls extends AdminController
 		$post = Request::get('post');
 
 		// Save the poll parent information
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$row = new Poll($db);
 
 		if (!$row->bind($post))
@@ -368,7 +368,7 @@ class Polls extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$db  = \JFactory::getDBO();
+		$db  = \App::get('db');
 		$cid = Request::getVar('cid', array(), '', 'array');
 		\Hubzero\Utility\Arr::toInteger($cid);
 
@@ -418,7 +418,7 @@ class Polls extends AdminController
 
 		$cids = implode( ',', $cid);
 
-		$db   = \JFactory::getDBO();
+		$db   = \App::get('db');
 		$user = User::getRoot();
 
 		$query = 'UPDATE `#__polls`'
@@ -470,7 +470,7 @@ class Polls extends AdminController
 
 		$cids = implode( ',', $cid);
 
-		$db   = \JFactory::getDBO();
+		$db   = \App::get('db');
 		$user = User::getRoot();
 
 		$query = 'UPDATE `#__polls`'
@@ -506,7 +506,7 @@ class Polls extends AdminController
 
 		if ($id  = Request::getVar('id', 0, '', 'int'))
 		{
-			$db  = \JFactory::getDBO();
+			$db  = \App::get('db');
 			$row = new Poll($db);
 			$row->checkin($id);
 		}

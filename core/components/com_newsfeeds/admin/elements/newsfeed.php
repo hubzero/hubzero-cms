@@ -28,7 +28,7 @@ class JElementNewsfeed extends JElement
 
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 
 		$query = 'SELECT a.id, c.title, a.name'
 		. ' FROM #__newsfeeds AS a'

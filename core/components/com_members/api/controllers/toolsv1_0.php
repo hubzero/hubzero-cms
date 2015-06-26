@@ -75,7 +75,7 @@ class Toolsv1_0 extends ApiController
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'session.php');
 
 		// Get db connection
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Get Middleware DB connection
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -224,7 +224,7 @@ class Toolsv1_0 extends ApiController
 		}
 
 		// Load database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Get the supported tag
 		$rconfig = Component::params('com_resources');

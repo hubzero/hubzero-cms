@@ -115,7 +115,7 @@ class Finder
 	 */
 	public static function pages($component)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Get component name from database
 		$database->setQuery(

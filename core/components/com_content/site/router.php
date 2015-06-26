@@ -115,7 +115,7 @@ class Router extends Base
 					// Make sure we have the id and the alias
 					if (strpos($query['id'], ':') === false)
 					{
-						$db = \JFactory::getDbo();
+						$db = \App::get('db');
 						$aquery = $db->setQuery($db->getQuery(true)
 							->select('alias')
 							->from('#__content')
@@ -268,7 +268,7 @@ class Router extends Base
 		$item   = $menu->getActive();
 		$params = Component::params('com_content');
 		$advanced = $params->get('sef_advanced_link', 0);
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Count route segments
 		$count = count($segments);
@@ -388,7 +388,7 @@ class Router extends Base
 			{
 				if ($advanced)
 				{
-					$db = \JFactory::getDBO();
+					$db = \App::get('db');
 					$query = 'SELECT id FROM `#__content` WHERE catid = ' . $vars['catid'] . ' AND alias = ' . $db->Quote($segment);
 					$db->setQuery($query);
 					$cid = $db->loadResult();

@@ -101,7 +101,7 @@ class Prerequisite extends Base
 	 */
 	public function __construct($section_id, $gradebook, $member_id)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new $this->_tbl_name($this->_db);
 

@@ -96,7 +96,7 @@ class Wishlist extends Base
 	 */
 	public function __construct($oid=null, $scope=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if ($this->_tbl_name)
 		{
@@ -606,7 +606,7 @@ class Wishlist extends Base
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT `id` FROM `#__users` WHERE `username`=" . $this->_db->Quote($user));
+		$this->_db->setQuery("SELECT `id` FROM `#__users` WHERE `username`=" . $this->_db->quote($user));
 
 		if (($result = $this->_db->loadResult()))
 		{
@@ -629,7 +629,7 @@ class Wishlist extends Base
 			return $group;
 		}
 
-		$this->_db->setQuery("SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`=" . $this->_db->Quote($group));
+		$this->_db->setQuery("SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`=" . $this->_db->quote($group));
 
 		if (($result = $this->_db->loadResult()))
 		{

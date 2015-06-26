@@ -139,7 +139,7 @@ class Section extends Base
 	 */
 	public function __construct($oid=null, $offering_id=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Section($this->_db);
 
@@ -586,7 +586,7 @@ class Section extends Base
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT id FROM #__users WHERE username=" . $this->_db->Quote($user));
+		$this->_db->setQuery("SELECT id FROM #__users WHERE username=" . $this->_db->quote($user));
 
 		if (($result = $this->_db->loadResult()))
 		{

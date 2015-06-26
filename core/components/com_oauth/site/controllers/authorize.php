@@ -53,7 +53,7 @@ class Authorize extends SiteController
 			throw new Exception('Forbidden', 403);
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->Quote($oauth_token) . " AND user_id=0 LIMIT 1;");
 
 		$result = $db->loadObject();

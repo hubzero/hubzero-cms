@@ -42,7 +42,7 @@ class Entry extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -236,15 +236,15 @@ class Entry extends \JTable
 
 		if (isset($filters['created_by']) && $filters['created_by'] != 0)
 		{
-			$where[] = "m.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "m.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'] != 0)
 		{
-			$where[] = "m.scope_id=" . $this->_db->Quote($filters['scope_id']);
+			$where[] = "m.scope_id=" . $this->_db->quote($filters['scope_id']);
 		}
 		if (isset($filters['scope']) && $filters['scope'] != '')
 		{
-			$where[] = "m.scope=" . $this->_db->Quote($filters['scope']);
+			$where[] = "m.scope=" . $this->_db->quote($filters['scope']);
 		}
 		if (isset($filters['state']) && $filters['state'] != '')
 		{
@@ -291,15 +291,15 @@ class Entry extends \JTable
 				$enddate   = ($filters['year']+1) . '-01-01 00:00:00';
 			}
 
-			$where[] = "m.publish_up >= " . $this->_db->Quote($startdate);
-			$where[] = "m.publish_up < " . $this->_db->Quote($enddate);
+			$where[] = "m.publish_up >= " . $this->_db->quote($startdate);
+			$where[] = "m.publish_up < " . $this->_db->quote($enddate);
 		}
 		else
 		{
 			if (!\JFactory::getApplication()->isAdmin())
 			{
 				$created_by = " OR m.created_by=" .  $this->_db->quote(User::get('id'));
-				$where[] = "(m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . "{$created_by})";
+				$where[] = "(m.publish_up = " . $this->_db->quote($nullDate) . " OR m.publish_up <= " . $this->_db->quote($now) . "{$created_by})";
 			}
 		}
 
@@ -309,11 +309,11 @@ class Entry extends \JTable
 			{
 				if (!isset($filters['authorized']) || !$filters['authorized'])
 				{
-					$where[] = "(m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
+					$where[] = "(m.publish_down = " . $this->_db->quote($nullDate) . " OR m.publish_down >= " . $this->_db->quote($now) . ")";
 				}
 				else if (isset($filters['authorized']) && $filters['authorized'] && is_numeric($filters['authorized']))
 				{
-					$where[] = "((m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ") OR m.created_by=" . $this->_db->Quote($filters['authorized']) . ")";
+					$where[] = "((m.publish_down = " . $this->_db->quote($nullDate) . " OR m.publish_down >= " . $this->_db->quote($now) . ") OR m.created_by=" . $this->_db->quote($filters['authorized']) . ")";
 				}
 			}
 		}

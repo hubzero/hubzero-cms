@@ -87,7 +87,7 @@ class Link extends \JModelAdmin
 	public function getTable($type = 'Link', $prefix = 'RedirectTable', $config = array())
 	{
 		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'link.php');
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		return new \Components\Redirect\Tables\Link($db); //\JTable::getInstance($type, $prefix, $config);
 	}
 

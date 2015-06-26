@@ -123,7 +123,7 @@ class Csv
 	 */
 	public static function downloadlist($resp, $option)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$ee = new \Components\Events\Tables\Event($database);
 
 		header('Content-type: text/comma-separated-values');

@@ -60,7 +60,7 @@ class Dashboard extends AdminController
 		$this->view->repositoryMechanism = json_decode(Cli::mechanism());
 		$this->view->repositoryMechanism = $this->view->repositoryMechanism[0];
 		$this->view->databaseMechanism   = Config::get('dbtype');
-		$this->view->databaseVersion     = \JFactory::getDbo()->getVersion();
+		$this->view->databaseVersion     = \App::get('db')->getVersion();
 		$this->view->status    = json_decode(Cli::status());
 		$this->view->upcoming  = json_decode(Cli::update(true, false, $source));
 		$this->view->migration = json_decode(Cli::migration());

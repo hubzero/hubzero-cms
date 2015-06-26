@@ -58,7 +58,7 @@ class Media extends SiteController
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
 
 		// Instantiate objects
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$session  = \App::get('session');
 
 		// Get request vars

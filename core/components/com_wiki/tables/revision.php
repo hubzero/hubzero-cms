@@ -42,7 +42,7 @@ class Revision extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct($db)
@@ -106,11 +106,11 @@ class Revision extends \JTable
 
 		if ($version)
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version) . " AND approved != 2";
+			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->quote($pageid) . " AND version=" . $this->_db->quote($version) . " AND approved != 2";
 		}
 		else
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC LIMIT 1";
+			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->quote($pageid) . " AND approved=" . $this->_db->quote('1') . " ORDER BY version DESC LIMIT 1";
 		}
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -129,7 +129,7 @@ class Revision extends \JTable
 	 */
 	public function getContributors()
 	{
-		$this->_db->setQuery("SELECT DISTINCT created_by AS id FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($this->pageid) . " AND approved=" . $this->_db->Quote('1'));
+		$this->_db->setQuery("SELECT DISTINCT created_by AS id FROM $this->_tbl WHERE pageid=" . $this->_db->quote($this->pageid) . " AND approved=" . $this->_db->quote('1'));
 		$contributors = $this->_db->loadObjectList();
 
 		$cons = array();
@@ -150,7 +150,7 @@ class Revision extends \JTable
 	 */
 	public function getRevisionCount()
 	{
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($this->pageid) . " AND approved=" . $this->_db->Quote('1'));
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE pageid=" . $this->_db->quote($this->pageid) . " AND approved=" . $this->_db->quote('1'));
 		return $this->_db->loadResult();
 	}
 
@@ -166,7 +166,7 @@ class Revision extends \JTable
 		{
 			$pageid = $this->pageid;
 		}
-		$this->_db->setQuery("SELECT DISTINCT version FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC");
+		$this->_db->setQuery("SELECT DISTINCT version FROM $this->_tbl WHERE pageid=" . $this->_db->quote($pageid) . " AND approved=" . $this->_db->quote('1') . " ORDER BY version DESC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -243,7 +243,7 @@ class Revision extends \JTable
 
 		if (isset($filters['pageid']))
 		{
-			$where[] = "r.pageid=" . $this->_db->Quote((int) $filters['pageid']);
+			$where[] = "r.pageid=" . $this->_db->quote((int) $filters['pageid']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -258,7 +258,7 @@ class Revision extends \JTable
 			}
 			else
 			{
-				$where[] = "r.approved=" . $this->_db->Quote($filters['approved']);
+				$where[] = "r.approved=" . $this->_db->quote($filters['approved']);
 			}
 		}
 

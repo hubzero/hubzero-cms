@@ -182,7 +182,7 @@ $this->css();
 					<ul id="tktlist">
 					<?php
 					$k = 0;
-					$database = JFactory::getDBO();
+					$database = App::get('db');
 					$sc = new \Components\Support\Tables\Comment($database);
 					$st = new \Components\Support\Models\Tags();
 

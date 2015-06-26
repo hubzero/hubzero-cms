@@ -43,7 +43,7 @@ foreach ($this->sections as $section)
 
 if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('show_audience') || $this->model->params->get('supportedtag') || $data)
 {
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 	?>
 	<div class="metadata">
 		<?php

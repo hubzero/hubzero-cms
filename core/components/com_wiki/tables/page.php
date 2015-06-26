@@ -42,7 +42,7 @@ class Page extends \JTable
 	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param   object  $db  JDatabase object
+	 * @param   object  $db  Database object
 	 * @return  void
 	 */
 	public function __construct($db)
@@ -80,7 +80,7 @@ class Page extends \JTable
 
 		if (!isset($instances[$scope . '/' . $pagename]))
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 			$page = new self($db);
 			// Find the page id
 			if (strstr($pagename, ' '))
@@ -111,7 +111,7 @@ class Page extends \JTable
 		if ($oid !== NULL && $scope !== NULL) // && !is_numeric($oid)) Allow for page names that are numeric
 		{
 			$this->_tbl_key = 'pagename';
-			$s = "AND scope=" . $this->_db->Quote($scope);
+			$s = "AND scope=" . $this->_db->quote($scope);
 			$oid = $this->normalize($oid);
 		}
 		$k = $this->_tbl_key;
@@ -125,7 +125,7 @@ class Page extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s ORDER BY state ASC LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->quote($oid) . " $s ORDER BY state ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			$res = $this->bind($result);
@@ -156,7 +156,7 @@ class Page extends \JTable
 		if ($oid !== NULL) // && !is_numeric($oid))
 		{
 			$this->_tbl_key = 'title';
-			$s = "AND scope=" . $this->_db->Quote($scope);
+			$s = "AND scope=" . $this->_db->quote($scope);
 		}
 		$k = $this->_tbl_key;
 		if ($oid !== NULL)
@@ -169,7 +169,7 @@ class Page extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s ORDER BY state ASC LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->quote($oid) . " $s ORDER BY state ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			$res = $this->bind($result);
@@ -218,7 +218,7 @@ class Page extends \JTable
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename=" . $this->_db->Quote($this->pagename) . " AND scope=" . $this->_db->Quote($this->scope));
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename=" . $this->_db->quote($this->pagename) . " AND scope=" . $this->_db->quote($this->scope));
 		$this->id = $this->_db->loadResult();
 		return $this->id;
 	}
@@ -244,7 +244,7 @@ class Page extends \JTable
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery("SELECT rating FROM `#__wiki_comments` WHERE pageid=" . $this->_db->Quote($this->id) . " AND rating!=0");
+		$this->_db->setQuery("SELECT rating FROM `#__wiki_comments` WHERE pageid=" . $this->_db->quote($this->id) . " AND rating!=0");
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -394,7 +394,7 @@ class Page extends \JTable
 	 */
 	public function getTemplates()
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group_cn`=" . $this->_db->Quote($this->group_cn) . " ORDER BY `pagename`");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group_cn`=" . $this->_db->quote($this->group_cn) . " ORDER BY `pagename`");
 		return $this->_db->loadObjectList();
 	}
 
@@ -539,35 +539,35 @@ class Page extends \JTable
 		}
 
 		// Delete the page's version history
-		$this->_db->setQuery("DELETE FROM `#__wiki_version` WHERE pageid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_version` WHERE pageid=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's tags
-		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='wiki' AND objectid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='wiki' AND objectid=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's comments
-		$this->_db->setQuery("DELETE FROM `#__wiki_comments` WHERE pageid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_comments` WHERE pageid=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's attachments
-		$this->_db->setQuery("DELETE FROM `#__wiki_attachments` WHERE pageid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_attachments` WHERE pageid=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's authors
-		$this->_db->setQuery("DELETE FROM `#__wiki_page_author` WHERE page_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_page_author` WHERE page_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -587,7 +587,7 @@ class Page extends \JTable
 		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE ";
 		if ($group_cn)
 		{
-			$query .= "`group_cn`=" . $this->_db->Quote($group_cn);
+			$query .= "`group_cn`=" . $this->_db->quote($group_cn);
 		}
 		else
 		{
@@ -670,7 +670,7 @@ class Page extends \JTable
 		{
 			if ($filters['scope'])
 			{
-				$where[] = "LOWER(t.scope)=" . $this->_db->Quote(strtolower($filters['scope']));
+				$where[] = "LOWER(t.scope)=" . $this->_db->quote(strtolower($filters['scope']));
 			}
 			else
 			{
@@ -681,7 +681,7 @@ class Page extends \JTable
 		{
 			if ($filters['group'] != '')
 			{
-				$where[] = "t.`group_cn`=" . $this->_db->Quote($filters['group']);
+				$where[] = "t.`group_cn`=" . $this->_db->quote($filters['group']);
 			}
 			else
 			{
@@ -697,7 +697,7 @@ class Page extends \JTable
 			}
 			else
 			{
-				$where[] = "t.`state`=" . $this->_db->Quote($filters['state']);
+				$where[] = "t.`state`=" . $this->_db->quote($filters['state']);
 			}
 		}
 
@@ -813,7 +813,7 @@ class Page extends \JTable
 
 		if (isset($filters['author']))
 		{
-			$where[] = "(w.created_by=" . $this->_db->Quote(intval($filters['author'])) . " OR " . intval($filters['author']) . " IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id))";
+			$where[] = "(w.created_by=" . $this->_db->quote(intval($filters['author'])) . " OR " . intval($filters['author']) . " IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id))";
 		}
 
 		if (isset($filters['tags']))
@@ -887,11 +887,11 @@ class Page extends \JTable
 
 					if (count($groups) > 0)
 					{
-						$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->Quote(User::get('id')) . ")))";
+						$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->quote(User::get('id')) . ")))";
 					}
 					else
 					{
-						$where[] = "(w.access!=1 OR (w.access=1 AND w.created_by=" . $this->_db->Quote(User::get('id')) . "))";
+						$where[] = "(w.access!=1 OR (w.access=1 AND w.created_by=" . $this->_db->quote(User::get('id')) . "))";
 					}
 				}
 			}
@@ -902,11 +902,11 @@ class Page extends \JTable
 		}
 		if (isset($filters['startdate']))
 		{
-			$where[] = "v.created > " . $this->_db->Quote($filters['startdate']);
+			$where[] = "v.created > " . $this->_db->quote($filters['startdate']);
 		}
 		if (isset($filters['enddate']))
 		{
-			$where[] = "v.created < " . $this->_db->Quote($filters['enddate']);
+			$where[] = "v.created < " . $this->_db->quote($filters['enddate']);
 		}
 
 		if (!empty($where))
@@ -958,7 +958,7 @@ class Page extends \JTable
 	{
 		$stats = null;
 
-		$this->_db->setQuery("SELECT visitors, visits FROM `#__wiki_page_metrics` WHERE pageid = " . $this->_db->Quote($this->id));
+		$this->_db->setQuery("SELECT visitors, visits FROM `#__wiki_page_metrics` WHERE pageid = " . $this->_db->quote($this->id));
 		if ($vals = $this->_db->loadObjectList())
 		{
 			$stats = array(

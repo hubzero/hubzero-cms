@@ -88,9 +88,9 @@ class Activity extends \JTable
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE referenceid = '$refid'
-				AND projectid = " . $this->_db->Quote($projectid) . " AND class = "
-				. $this->_db->Quote($class) . " AND activity = "
-				. $this->_db->Quote($activity) . " LIMIT 1";
+				AND projectid = " . $this->_db->quote($projectid) . " AND class = "
+				. $this->_db->quote($class) . " AND activity = "
+				. $this->_db->quote($activity) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
 		{
@@ -145,7 +145,7 @@ class Activity extends \JTable
 		}
 		if ($projectid)
 		{
-		$query  .= " WHERE a.projectid=" . $this->_db->Quote($projectid);
+		$query  .= " WHERE a.projectid=" . $this->_db->quote($projectid);
 		}
 		else
 		{
@@ -160,7 +160,7 @@ class Activity extends \JTable
 		}
 		if ($class)
 		{
-			$query  .= " AND a.class=" . $this->_db->Quote($class);
+			$query  .= " AND a.class=" . $this->_db->quote($class);
 		}
 		if ($managers && $role == 1)
 		{
@@ -172,7 +172,7 @@ class Activity extends \JTable
 		}
 		if ($id)
 		{
-			$query  .= " AND a.id=" . $this->_db->Quote($id);
+			$query  .= " AND a.id=" . $this->_db->quote($id);
 		}
 
 		$query  .= " AND a.state != 2 ";
@@ -221,11 +221,11 @@ class Activity extends \JTable
 		if ($referenceid || $class == 'project')
 		{
 			$this->_db->setQuery( "UPDATE $this->_tbl SET state = 2 WHERE class="
-				. $this->_db->Quote($class) . " AND activity="
-				. $this->_db->Quote($activity) . " AND userid="
-				. $this->_db->Quote($by) . " AND projectid="
-				. $this->_db->Quote($projectid) . " AND referenceid="
-				. $this->_db->Quote($referenceid));
+				. $this->_db->quote($class) . " AND activity="
+				. $this->_db->quote($activity) . " AND userid="
+				. $this->_db->quote($by) . " AND projectid="
+				. $this->_db->quote($projectid) . " AND referenceid="
+				. $this->_db->quote($referenceid));
 			$this->_db->query();
 		}
 
@@ -276,7 +276,7 @@ class Activity extends \JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE projectid=" . $this->_db->Quote($projectid) . " AND referenceid=" . $this->_db->Quote($refid) . " AND class=" . $this->_db->Quote($class);
+		$query .= " WHERE projectid=" . $this->_db->quote($projectid) . " AND referenceid=" . $this->_db->quote($refid) . " AND class=" . $this->_db->quote($class);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -330,7 +330,7 @@ class Activity extends \JTable
 		{
 			return false;
 		}
-		$query  = "UPDATE $this->_tbl SET preview =" . $this->_db->Quote($preview);
+		$query  = "UPDATE $this->_tbl SET preview =" . $this->_db->quote($preview);
 		$query .= " WHERE id=" . $aid;
 
 		$this->_db->setQuery( $query );
@@ -387,7 +387,7 @@ class Activity extends \JTable
 		}
 
 		$query  = " SELECT COUNT(*) FROM #__project_activity AS X ";
-		$query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid=" . $this->_db->Quote($uid);
+		$query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid=" . $this->_db->quote($uid);
 		$query .= " WHERE X.projectid=" . $projectid . "
 					AND (X.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 				    AND X.state != 2 AND (X.managers_only = 0
@@ -532,7 +532,7 @@ class Activity extends \JTable
 
 		$query  =  "SELECT IF(admin = 0, 2, 1) FROM $this->_tbl ";
 		$query .=  "WHERE projectid=$projectid ";
-		$query .=  "AND activity=" . $this->_db->Quote($check) . " AND state!=2 ";
+		$query .=  "AND activity=" . $this->_db->quote($check) . " AND state!=2 ";
 		$query .= " ORDER BY recorded DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();

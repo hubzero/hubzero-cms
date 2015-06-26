@@ -46,7 +46,7 @@ class Owner extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -76,7 +76,7 @@ class Owner extends \JTable
 		// cannot delete "native" owner (e.g. resource contributor)
 		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true))
 		{
-			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->Quote($listid) . " AND userid=" . $this->_db->Quote($uid);
+			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->quote($listid) . " AND userid=" . $this->_db->quote($uid);
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}
@@ -218,7 +218,7 @@ class Owner extends \JTable
 		// Get individuals
 		if (!$native)
 		{
-			$sql = "SELECT o.userid FROM `#__wishlist_owners` AS o WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type!=2";
+			$sql = "SELECT o.userid FROM `#__wishlist_owners` AS o WHERE o.wishlist=" . $this->_db->quote($listid) . " AND o.type!=2";
 
 			$this->_db->setQuery($sql);
 			if ($results =  $this->_db->loadObjectList())
@@ -240,7 +240,7 @@ class Owner extends \JTable
 
 		if ($wconfig->get('allow_advisory'))
 		{
-			$sql = "SELECT DISTINCT o.userid FROM `#__wishlist_owners` AS o WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type=2";
+			$sql = "SELECT DISTINCT o.userid FROM `#__wishlist_owners` AS o WHERE o.wishlist=" . $this->_db->quote($listid) . " AND o.type=2";
 
 			$this->_db->setQuery($sql);
 			if ($results = $this->_db->loadObjectList())
@@ -258,7 +258,7 @@ class Owner extends \JTable
 			$activeowners = array();
 
 			$query  = "SELECT v.userid FROM `#__wishlist_vote` AS v LEFT JOIN `#__wishlist_item` AS i ON v.wishid = i.id ";
-			$query .= "WHERE i.wishlist = " . $this->_db->Quote($listid) . " AND v.wishid=" . $this->_db->Quote($wishid) . " AND (v.userid IN ('" . implode("','", $owners) . "')) ";
+			$query .= "WHERE i.wishlist = " . $this->_db->quote($listid) . " AND v.wishid=" . $this->_db->quote($wishid) . " AND (v.userid IN ('" . implode("','", $owners) . "')) ";
 
 			$this->_db->setQuery($query);
 			if ($result = $this->_db->loadObjectList())

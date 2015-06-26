@@ -201,7 +201,7 @@ class Story extends AdminController
 			}
 		}
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//is there a nother story having the order we want?
 		$sql = "SELECT * FROM {$story->getTableName()} WHERE `order`=" . $database->quote($newOrder) . " AND nid=" . $database->quote($id);

@@ -69,10 +69,10 @@ class Unit extends \JTable
 			return parent::load($oid);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid);
+		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->quote($oid);
 		if ($offering_id)
 		{
-			$sql .= " AND `offering_id`=" . $this->_db->Quote($offering_id);
+			$sql .= " AND `offering_id`=" . $this->_db->quote($offering_id);
 		}
 		$sql .= " AND `state`!=2 LIMIT 1";
 		$this->_db->setQuery($sql);
@@ -145,18 +145,18 @@ class Unit extends \JTable
 
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			$query .= " AND sd.section_id=" . $this->_db->Quote($filters['section_id']);
+			$query .= " AND sd.section_id=" . $this->_db->quote($filters['section_id']);
 		}
 
 		$where = array();
 
 		if (isset($filters['offering_id']) && $filters['offering_id'])
 		{
-			$where[] = "cu.offering_id=" . $this->_db->Quote($filters['offering_id']);
+			$where[] = "cu.offering_id=" . $this->_db->quote($filters['offering_id']);
 		}
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "cu.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "cu.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -217,7 +217,7 @@ class Unit extends \JTable
 	 */
 	public function getHighestOrdering($offering_id)
 	{
-		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id));
+		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE offering_id=" . $this->_db->quote(intval($offering_id));
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -229,9 +229,9 @@ class Unit extends \JTable
 	 */
 	private function makeAliasUnique()
 	{
-		$sql = "SELECT alias from $this->_tbl WHERE `offering_id`=" . $this->_db->Quote(intval($this->offering_id)) . " AND `id`!=" . $this->_db->Quote(intval($this->id));
+		$sql = "SELECT alias from $this->_tbl WHERE `offering_id`=" . $this->_db->quote(intval($this->offering_id)) . " AND `id`!=" . $this->_db->quote(intval($this->id));
 		$this->_db->setQuery($sql);
-		$result = $this->_db->loadResultArray();
+		$result = $this->_db->loadColumn();
 
 		$original_alias = $this->alias;
 

@@ -569,7 +569,7 @@ class Course extends Base
 			}
 			else
 			{
-				$usernames[] = $this->_db->Quote($u);
+				$usernames[] = $this->_db->quote($u);
 			}
 		}
 
@@ -580,7 +580,7 @@ class Course extends Base
 
 		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode($usernames, ",") . ");");
 
-		if (!($result = $this->_db->loadResultArray()))
+		if (!($result = $this->_db->loadColumn()))
 		{
 			$result = array();
 		}

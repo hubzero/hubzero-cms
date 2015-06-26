@@ -38,7 +38,7 @@ class Author extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -69,7 +69,7 @@ class Author extends \JTable
 
 		if (!$this->id)
 		{
-			$sql = "SELECT ordering from $this->_tbl WHERE `cid`=" . $this->_db->Quote(intval($this->cid)) . " ORDER BY ordering DESC LIMIT 1";
+			$sql = "SELECT ordering from $this->_tbl WHERE `cid`=" . $this->_db->quote(intval($this->cid)) . " ORDER BY ordering DESC LIMIT 1";
 			$this->_db->setQuery($sql);
 			$this->ordering = intval($this->_db->loadResult());
 			$this->ordering++;
@@ -90,15 +90,15 @@ class Author extends \JTable
 		$ands = array();
 		if (isset($filters['cid']) && $filters['cid'] != 0)
 		{
-			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
+			$ands[] = "r.cid=" . $this->_db->quote($filters['cid']);
 		}
 		if (isset($filters['author_uid']) && $filters['author_uid'] != 0)
 		{
-			$ands[] = "r.author_uid=" . $this->_db->Quote($filters['author_uid']);
+			$ands[] = "r.author_uid=" . $this->_db->quote($filters['author_uid']);
 		}
 		if (isset($filters['author']) && trim($filters['author']) != '')
 		{
-			$ands[] = "LOWER(r.author)=" . $this->_db->Quote(strtolower($filters['author']));
+			$ands[] = "LOWER(r.author)=" . $this->_db->quote(strtolower($filters['author']));
 		}
 		if (count($ands) > 0)
 		{
@@ -170,7 +170,7 @@ class Author extends \JTable
 		}
 
 		// Remove any types in the remove list
-		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `cid`=" . $this->_db->Quote(intval($cid)));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `cid`=" . $this->_db->quote(intval($cid)));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

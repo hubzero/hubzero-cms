@@ -40,7 +40,7 @@ class AroAco extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -85,7 +85,7 @@ class AroAco extends \JTable
 			$this->setError(Lang::txt('Missing ARO ID'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=" . $this->_db->Quote($aro_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=" . $this->_db->quote($aro_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -107,7 +107,7 @@ class AroAco extends \JTable
 			$this->setError(Lang::txt('Missing ACO ID'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=" . $this->_db->Quote($aco_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=" . $this->_db->quote($aco_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

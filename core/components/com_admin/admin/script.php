@@ -27,7 +27,7 @@ class joomlaInstallerScript
 	 */
 	public function preflight($route, $installer)
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('version_id');
 		$query->from('#__schemas');
@@ -59,7 +59,7 @@ class joomlaInstallerScript
 	}
 	protected function updateDatabase()
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		if (substr($db->name, 0, 5) == 'mysql')
 		{
 			$query = 'SHOW ENGINES';
@@ -93,7 +93,7 @@ class joomlaInstallerScript
 		// TODO Remove this for 2.5
 		if (!JTable::getInstance('Extension')->load(array('element'=> 'pkg_joomla', 'type'=>'package'))) {
 			// Create the package pkg_joomla
-			$db = JFactory::getDbo();
+			$db = App::get('db');
 			$query = $db->getQuery(true);
 			$query->insert('#__extensions');
 			$query->columns(array($db->quoteName('name'), $db->quoteName('type'),
@@ -288,7 +288,7 @@ class joomlaInstallerScript
 		$extensions[] = array('package', 'pkg_joomla', '', 0);
 
 		// Attempt to refresh manifest caches
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__extensions');

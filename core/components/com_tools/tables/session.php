@@ -58,11 +58,11 @@ class Session extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
+		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->quote($sess);
 
 		if ($username)
 		{
-			$query .= " AND username=" . $this->_db->Quote($username);
+			$query .= " AND username=" . $this->_db->quote($username);
 		}
 
 		$this->_db->setQuery($query);
@@ -101,15 +101,15 @@ class Session extends \JTable
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
+					  WHERE v.sessnum=" . $this->_db->quote($sess) . "
 					  LIMIT 1";
 		}
 		else
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
-					  AND v.viewuser=" . $this->_db->Quote(\User::get('username'));
+					  WHERE v.sessnum=" . $this->_db->quote($sess) . "
+					  AND v.viewuser=" . $this->_db->quote(\User::get('username'));
 		}
 
 		$this->_db->setQuery($query);
@@ -140,7 +140,7 @@ class Session extends \JTable
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
+					  WHERE v.sessnum=" . $this->_db->quote($sess) . "
 					  LIMIT 1";
 		}
 		else
@@ -149,9 +149,9 @@ class Session extends \JTable
 			// Here, we check that the User::get('username') OWNS the session.
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
-					  AND s.username=" . $this->_db->Quote(\User::get('username')) . "
-					  AND v.viewuser=" . $this->_db->Quote(\User::get('username'));
+					  WHERE v.sessnum=" . $this->_db->quote($sess) . "
+					  AND s.username=" . $this->_db->quote(\User::get('username')) . "
+					  AND v.viewuser=" . $this->_db->quote(\User::get('username'));
 		}
 
 		$this->_db->setQuery($query);
@@ -186,7 +186,7 @@ class Session extends \JTable
 
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum
-				  WHERE v.viewuser=" . $this->_db->Quote($username) . " AND s.username=" . $this->_db->Quote($username) . " $a
+				  WHERE v.viewuser=" . $this->_db->quote($username) . " AND s.username=" . $this->_db->quote($username) . " $a
 				  ORDER BY s.start";
 
 		$this->_db->setQuery($query);
@@ -215,7 +215,7 @@ class Session extends \JTable
 		$a = "";
 		if ($appname)
 		{
-			$a = "AND s.appname=" . $this->_db->Quote($appname);
+			$a = "AND s.appname=" . $this->_db->quote($appname);
 		}
 
 		$mv = new Viewperm($this->_db);
@@ -228,7 +228,7 @@ class Session extends \JTable
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.viewuser=" . $this->_db->Quote($username) . " $a
+					  WHERE v.viewuser=" . $this->_db->quote($username) . " $a
 					  ORDER BY s.start";
 		}
 
@@ -266,7 +266,7 @@ class Session extends \JTable
 			LEFT JOIN $mv->_tbl AS v ON s.sessnum = v.sessnum
 			LEFT JOIN $mj->_tbl AS j ON s.sessnum = j.sessnum
 			WHERE viewid IS NULL AND jobid IS NULL
-			AND s.sessnum=" . $this->_db->Quote($sess);
+			AND s.sessnum=" . $this->_db->quote($sess);
 
 		$this->_db->setQuery($query);
 		return $mwdb->loadResult();
@@ -296,19 +296,19 @@ class Session extends \JTable
 		$where = array();
 		if (isset($filters['username']) && $filters['username'] != '')
 		{
-			$where[] = "v.viewuser=" . $this->_db->Quote($filters['username']);
+			$where[] = "v.viewuser=" . $this->_db->quote($filters['username']);
 		}
 		if (isset($filters['appname']) && $filters['appname'] != '')
 		{
-			$where[] = "s.appname=" . $this->_db->Quote($filters['appname']);
+			$where[] = "s.appname=" . $this->_db->quote($filters['appname']);
 		}
 		if (isset($filters['zone_id']) && $filters['zone_id'])
 		{
-			$where[] = "s.zone_id=" . $this->_db->Quote($filters['zone_id']);
+			$where[] = "s.zone_id=" . $this->_db->quote($filters['zone_id']);
 		}
 		if (isset($filters['exechost']) && $filters['exechost'] != '')
 		{
-			$where[] = "s.exechost=" . $this->_db->Quote($filters['exechost']);
+			$where[] = "s.exechost=" . $this->_db->quote($filters['exechost']);
 		}
 		if (count($where) > 0)
 		{

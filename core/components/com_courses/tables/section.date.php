@@ -115,8 +115,8 @@ class SectionDate extends \JTable
 			$this->created_by = User::get('id');
 
 			// Make sure the record doesn't already exist
-			$query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->Quote($this->scope) . " AND scope_id=" . $this->_db->Quote($this->scope_id);
-			$query .= " AND section_id=" . $this->_db->Quote($this->section_id);
+			$query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->quote($this->scope) . " AND scope_id=" . $this->_db->quote($this->scope_id);
+			$query .= " AND section_id=" . $this->_db->quote($this->section_id);
 			$query .= " LIMIT 1";
 
 			$this->_db->setQuery($query);
@@ -143,17 +143,17 @@ class SectionDate extends \JTable
 
 		if (isset($filters['section_id']) && $filters['section_id'] >= 0)
 		{
-			$where[] = "sd.section_id=" . $this->_db->Quote(intval($filters['section_id']));
+			$where[] = "sd.section_id=" . $this->_db->quote(intval($filters['section_id']));
 		}
 
 		if (isset($filters['scope']) && $filters['scope'])
 		{
-			$where[] = "sd.scope=" . $this->_db->Quote($filters['scope']);
+			$where[] = "sd.scope=" . $this->_db->quote($filters['scope']);
 		}
 
 		if (isset($filters['scope_id']) && $filters['scope_id'] > 0)
 		{
-			$where[] = "sd.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			$where[] = "sd.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
 		}
 
 		if (count($where) > 0)
@@ -222,7 +222,7 @@ class SectionDate extends \JTable
 	 */
 	public function deleteBySection($section_id)
 	{
-		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
+		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->quote($section_id);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())

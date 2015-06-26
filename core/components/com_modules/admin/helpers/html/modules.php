@@ -153,7 +153,7 @@ abstract class JHtmlModules
 	 */
 	public static function positionList($clientId = 0)
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT(position) as value');

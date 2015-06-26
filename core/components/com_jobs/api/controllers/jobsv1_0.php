@@ -102,7 +102,7 @@ class Jobsv1_0 extends ApiController
 		$filters['sort'] = Request::getVar('sort', "name");
 		$filters['sort_dir'] = Request::getCmd('sort_Dir', "desc");
 
-		$database = \JFactory::getDbo();
+		$database = \App::get('db');
 
 		$obj = new \Components\Jobs\Tables\Job($database);
 
@@ -136,7 +136,7 @@ class Jobsv1_0 extends ApiController
 	{
 		$jobCode = Request::getInt('jobcode');
 
-		$database = \JFactory::getDbo();
+		$database = \App::get('db');
 
 		$obj = new \Components\Jobs\Tables\Job($database);
 		$filters = array();

@@ -40,7 +40,7 @@ class Watching extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct($db)
@@ -65,7 +65,7 @@ class Watching extends \JTable
 			return parent::load($oid);
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE ticket_id=" . $this->_db->Quote(trim($oid)) . " AND user_id=" . $this->_db->Quote(intval($user_id));
+		$query = "SELECT * FROM $this->_tbl WHERE ticket_id=" . $this->_db->quote(trim($oid)) . " AND user_id=" . $this->_db->quote(intval($user_id));
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -120,17 +120,17 @@ class Watching extends \JTable
 
 		if (isset($filters['ticket_id']) && $filters['ticket_id'] > 0)
 		{
-			$where[] = "w.ticket_id=" . $this->_db->Quote($filters['ticket_id']);
+			$where[] = "w.ticket_id=" . $this->_db->quote($filters['ticket_id']);
 		}
 		if (isset($filters['user_id']) && $filters['user_id'] > 0)
 		{
-			$where[] = "w.user_id=" . $this->_db->Quote($filters['user_id']);
+			$where[] = "w.user_id=" . $this->_db->quote($filters['user_id']);
 		}
 		if (isset($filters['open']))
 		{
 			$query .= " INNER JOIN `#__support_tickets` AS t ON t.id=w.ticket_id";
 
-			$where[] = "t.open=" . $this->_db->Quote($filters['open']);
+			$where[] = "t.open=" . $this->_db->quote($filters['open']);
 		}
 
 		if (count($where) > 0)

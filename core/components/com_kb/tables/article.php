@@ -42,7 +42,7 @@ class Article extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -224,23 +224,23 @@ class Article extends \JTable
 
 		if (isset($filters['user_id']) && $filters['user_id'] > 0)
 		{
-			$query .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=a.id AND v.user_id=" . $this->_db->Quote($filters['user_id']) . " AND v.type='entry' ";
+			$query .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=a.id AND v.user_id=" . $this->_db->quote($filters['user_id']) . " AND v.type='entry' ";
 		}
 
 		$where = array();
 
 		if (isset($filters['section']) && $filters['section'] > 0)
 		{
-			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
+			$where[] = "a.`section`=" . $this->_db->quote($filters['section']);
 		}
 		if (isset($filters['category']) && $filters['category'] >= 0)
 		{
-			$where[] = "a.`category`=" . $this->_db->Quote($filters['category']);
+			$where[] = "a.`category`=" . $this->_db->quote($filters['category']);
 		}
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
-			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
+			$where[] = "a.`state`=" . $this->_db->quote($filters['state']);
+			$where[] = "c.`state`=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['access']))
 		{
@@ -253,7 +253,7 @@ class Article extends \JTable
 			}
 			else if ($filters['access'] > 0)
 			{
-				$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+				$where[] = "a.`access`=" . $this->_db->quote($filters['access']);
 			}
 		}
 		if (isset($filters['search']) && $filters['search'])

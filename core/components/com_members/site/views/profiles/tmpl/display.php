@@ -121,7 +121,7 @@ $this->css('introduction.css', 'system')
 		<div class="col span9 omega">
 			<div class="grid">
 <?php
-	$db = JFactory::getDBO();
+	$db = App::get('db');
 	$c = new \Components\Members\Tables\Profile($db);
 
 	$filters = array(

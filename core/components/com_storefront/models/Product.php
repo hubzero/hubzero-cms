@@ -362,7 +362,7 @@ class StorefrontModelProduct
 	 */
 	public static function getMeta($pId, $metaKey = false)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sql  = 'SELECT ';
 		if (!$metaKey)

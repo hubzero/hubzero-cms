@@ -227,22 +227,22 @@ class Ticket extends \JTable
 		{
 			if (is_array($filters['opened']))
 			{
-				$filter .= " AND (f.created >= " . $this->_db->Quote($filters['opened'][0]) . " AND f.created <= " . $this->_db->Quote($filters['opened'][1]) . ")";
+				$filter .= " AND (f.created >= " . $this->_db->quote($filters['opened'][0]) . " AND f.created <= " . $this->_db->quote($filters['opened'][1]) . ")";
 			}
 			else
 			{
-				$filter .= " AND f.created >= " . $this->_db->Quote($filters['opened']);
+				$filter .= " AND f.created >= " . $this->_db->quote($filters['opened']);
 			}
 		}
 		if (isset($filters['closed']) && $filters['closed'])
 		{
 			if (is_array($filters['closed']))
 			{
-				$filter .= " AND (f.closed >= " . $this->_db->Quote($filters['closed'][0]) . " AND f.closed <= " . $this->_db->Quote($filters['closed'][1]) . ")";
+				$filter .= " AND (f.closed >= " . $this->_db->quote($filters['closed'][0]) . " AND f.closed <= " . $this->_db->quote($filters['closed'][1]) . ")";
 			}
 			else
 			{
-				$filter .= " AND f.closed >= " . $this->_db->Quote($filters['closed']);
+				$filter .= " AND f.closed >= " . $this->_db->quote($filters['closed']);
 			}
 		}
 
@@ -593,7 +593,7 @@ class Ticket extends \JTable
 		$sql = "SELECT count(*)
 				FROM $this->_tbl
 				WHERE report!=''
-				AND type=" . $this->_db->Quote($type);
+				AND type=" . $this->_db->quote($type);
 		if (!$group)
 		{
 			//$sql .= " AND (`group`='' OR `group` IS NULL)";
@@ -637,7 +637,7 @@ class Ticket extends \JTable
 		}
 		else
 		{
-			$sql .= " AND f.`group`=" . $this->_db->Quote($group);
+			$sql .= " AND f.`group`=" . $this->_db->quote($group);
 		}
 		if ($username)
 		{
@@ -654,7 +654,7 @@ class Ticket extends \JTable
 			}
 			else
 			{
-				$sql .= " AND f.owner=" . $this->_db->Quote($username);
+				$sql .= " AND f.owner=" . $this->_db->quote($username);
 			}
 		}
 
@@ -675,7 +675,7 @@ class Ticket extends \JTable
 		$sql = "SELECT count(*)
 				FROM $this->_tbl
 				WHERE report!=''
-				AND type=" . $this->_db->Quote($type) . "
+				AND type=" . $this->_db->quote($type) . "
 				AND open=1";
 		if (!$group)
 		{
@@ -683,7 +683,7 @@ class Ticket extends \JTable
 		}
 		else
 		{
-			$sql .= " AND `group`=" . $this->_db->Quote($group);
+			$sql .= " AND `group`=" . $this->_db->quote($group);
 		}
 		if ($unassigned)
 		{
@@ -713,7 +713,7 @@ class Ticket extends \JTable
 		$sql = "SELECT COUNT(DISTINCT k.ticket)
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!=''
-				AND f.type=" . $this->_db->Quote($type) . "
+				AND f.type=" . $this->_db->quote($type) . "
 				AND f.open=0
 				AND k.ticket=f.id
 				AND k.created>=" . $this->_db->quote($year . "-" . $month . "-01 00:00:00") . "
@@ -724,11 +724,11 @@ class Ticket extends \JTable
 		}
 		else
 		{
-			$sql .= " AND f.`group`=" . $this->_db->Quote($group);
+			$sql .= " AND f.`group`=" . $this->_db->quote($group);
 		}
 		if ($username)
 		{
-			$sql .= " AND k.created_by=" . $this->_db->Quote(User::getInstance($username)->get('id'));
+			$sql .= " AND k.created_by=" . $this->_db->quote(User::getInstance($username)->get('id'));
 		}
 
 		$this->_db->setQuery($sql);
@@ -754,7 +754,7 @@ class Ticket extends \JTable
 		$sql = "SELECT count(*)
 				FROM $this->_tbl
 				WHERE report!=''
-				AND type=" . $this->_db->Quote($type) . "
+				AND type=" . $this->_db->quote($type) . "
 				AND created>=" . $this->_db->quote($year . "-" . $month . "-01 00:00:00") . "
 				AND created<" . $this->_db->quote($nextyear . "-" . $nextmonth . "-01 00:00:00");
 		if (!$group)
@@ -785,7 +785,7 @@ class Ticket extends \JTable
 		$sql = "SELECT k.ticket, UNIX_TIMESTAMP(f.created) AS t_created, UNIX_TIMESTAMP(MAX(k.created)) AS c_created
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!=''
-				AND f.type=" . $this->_db->Quote($type) . "
+				AND f.type=" . $this->_db->quote($type) . "
 				AND f.open=0
 				AND k.ticket=f.id
 				AND f.created>=" . $this->_db->quote($year . "-01-01 00:00:00");
@@ -795,7 +795,7 @@ class Ticket extends \JTable
 		}
 		else
 		{
-			$sql .= " AND f.`group`=" . $this->_db->Quote($group);
+			$sql .= " AND f.`group`=" . $this->_db->quote($group);
 		}
 		$sql .= " GROUP BY k.ticket";
 		$this->_db->setQuery($sql);

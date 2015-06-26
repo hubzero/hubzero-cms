@@ -65,7 +65,7 @@ class License extends \JTable
 
 		$oid = trim($oid);
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($oid));
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -118,7 +118,7 @@ class License extends \JTable
 		$where = array();
 		if (isset($filters['state']))
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -281,7 +281,7 @@ class License extends \JTable
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE id=" . $this->_db->Quote($id);
+		$query.= " WHERE id=" . $this->_db->quote($id);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -302,7 +302,7 @@ class License extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->Quote($ordering) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->quote($ordering) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -351,7 +351,7 @@ class License extends \JTable
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE name LIKE " . $this->_db->Quote($name);
+		$query.= " WHERE name LIKE " . $this->_db->quote($name);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -372,7 +372,7 @@ class License extends \JTable
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE title LIKE " . $this->_db->Quote($title);
+		$query.= " WHERE title LIKE " . $this->_db->quote($title);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -395,7 +395,7 @@ class License extends \JTable
 
 		$query = "SELECT L.*, v.license_type, v.license_text FROM $this->_tbl AS L,
 		          #__publication_versions AS v  ";
-		$query.= " WHERE v.id=" . $this->_db->Quote($vid) . " AND v.license_type=L.id";
+		$query.= " WHERE v.id=" . $this->_db->quote($vid) . " AND v.license_type=L.id";
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -412,7 +412,7 @@ class License extends \JTable
 	public function undefault ( $except = 0 )
 	{
 		$query = "UPDATE $this->_tbl SET main=0 ";
-		$query.= $except ? " WHERE id != " . $this->_db->Quote($except) : '';
+		$query.= $except ? " WHERE id != " . $this->_db->quote($except) : '';
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{

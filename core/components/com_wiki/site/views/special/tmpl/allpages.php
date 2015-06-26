@@ -42,7 +42,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 	$dir = 'ASC';
 }
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $where = '';
 $namespace = urldecode(Request::getVar('namespace', ''));

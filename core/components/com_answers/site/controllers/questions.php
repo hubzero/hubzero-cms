@@ -1459,7 +1459,7 @@ class Questions extends SiteController
 	public function latestTask()
 	{
 		//instantiate database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//get the id of module so we get the right params
 		$mid = Request::getInt('m', 0);

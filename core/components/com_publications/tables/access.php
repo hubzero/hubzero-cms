@@ -89,8 +89,8 @@ class Access extends \JTable
 		}
 
 		$this->_db->setQuery( "SELECT publication_version_id FROM $this->_tbl
-			WHERE publication_version_id=" . $this->_db->Quote($vid) . "
-			AND group_id=" . $this->_db->Quote($group_id));
+			WHERE publication_version_id=" . $this->_db->quote($vid) . "
+			AND group_id=" . $this->_db->quote($group_id));
 		return $this->_db->loadResult();
 	}
 
@@ -118,12 +118,12 @@ class Access extends \JTable
 		$query.= " JOIN #__xgroups AS X ON X.gidNumber = A.group_id ";
 		if ($vid)
 		{
-			$query .= "WHERE A.publication_version_id=" . $this->_db->Quote($vid);
+			$query .= "WHERE A.publication_version_id=" . $this->_db->quote($vid);
 		}
 		else
 		{
 			$query .= " JOIN #__publication_versions AS V ON V.id=A.publication_version_id ";
-			$query .= " WHERE V.publication_id=" . $this->_db->Quote($pid);
+			$query .= " WHERE V.publication_id=" . $this->_db->quote($pid);
 			if ($version == 'default' or $version == 'current' && $version == 'main')
 			{
 				$query.= " AND V.main=1 ";
@@ -134,7 +134,7 @@ class Access extends \JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number=" . $this->_db->Quote($version);
+				$query.= " AND V.version_number=" . $this->_db->quote($version);
 			}
 			else
 			{
@@ -144,7 +144,7 @@ class Access extends \JTable
 		}
 		if ($sysgroup)
 		{
-			$query.= " AND X.cn !=" . $this->_db->Quote($sysgroup);
+			$query.= " AND X.cn !=" . $this->_db->quote($sysgroup);
 		}
 
 		$this->_db->setQuery( $query );
@@ -202,7 +202,7 @@ class Access extends \JTable
 			else
 			{
 				$query = "INSERT INTO $this->_tbl (publication_version_id,group_id)
-				          VALUES($this->_db->Quote($vid), $this->_db->Quote($gid))";
+				          VALUES($this->_db->quote($vid), $this->_db->quote($gid))";
 				$this->_db->setQuery( $query );
 				if ($this->_db->query())
 				{
@@ -233,8 +233,8 @@ class Access extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
-		$query.= $sysgroup ? " AND group_id !=" . $this->_db->Quote($sysgroup) : "";
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
+		$query.= $sysgroup ? " AND group_id !=" . $this->_db->quote($sysgroup) : "";
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{

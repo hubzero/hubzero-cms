@@ -38,7 +38,7 @@ class Sponsor extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -54,7 +54,7 @@ class Sponsor extends \JTable
 	 */
 	public function getSponsor($id = '')
 	{
-		$where = (is_numeric($id)) ? "WHERE id=" . $this->_db->Quote($id) : "";
+		$where = (is_numeric($id)) ? "WHERE id=" . $this->_db->quote($id) : "";
 
 		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY sponsor";
 		$this->_db->setQuery($sql);
@@ -74,9 +74,9 @@ class Sponsor extends \JTable
 			return;
 		}
 
-		$sql = "SELECT sid FROM `#__citations_sponsors_assoc` WHERE cid=" . $this->_db->Quote($citeid);
+		$sql = "SELECT sid FROM `#__citations_sponsors_assoc` WHERE cid=" . $this->_db->quote($citeid);
 		$this->_db->setQuery($sql);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Sponsor extends \JTable
 		}
 
 		// remove any existing associations
-		$sql = "DELETE FROM `#__citations_sponsors_assoc` WHERE cid=" . $this->_db->Quote($citeid);
+		$sql = "DELETE FROM `#__citations_sponsors_assoc` WHERE cid=" . $this->_db->quote($citeid);
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 

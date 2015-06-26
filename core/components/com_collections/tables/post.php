@@ -42,7 +42,7 @@ class Post extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -98,7 +98,7 @@ class Post extends \JTable
 
 			if (array_key_exists('ordering', $this->getFields()) && !$this->ordering)
 			{
-				$this->_db->setQuery("SELECT MAX(ordering)+1 FROM $this->_tbl WHERE collection_id=" . $this->_db->Quote($this->collection_id));
+				$this->_db->setQuery("SELECT MAX(ordering)+1 FROM $this->_tbl WHERE collection_id=" . $this->_db->quote($this->collection_id));
 
 				$this->ordering = $this->_db->loadResult();
 				$this->ordering = ($this->ordering ?: 1);
@@ -222,7 +222,7 @@ class Post extends \JTable
 
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
-			$query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=p.item_id AND v.user_id=" . $this->_db->Quote($filters['user_id']);
+			$query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=p.item_id AND v.user_id=" . $this->_db->quote($filters['user_id']);
 		}
 
 		$where = array();
@@ -236,24 +236,24 @@ class Post extends \JTable
 			}
 			else
 			{
-				$where[] = "p.collection_id=" . $this->_db->Quote($filters['collection_id']);
+				$where[] = "p.collection_id=" . $this->_db->quote($filters['collection_id']);
 			}
 		}
 		if (isset($filters['object_id']) && $filters['object_id'])
 		{
-			$where[] = "c.object_id=" . $this->_db->Quote($filters['object_id']);
+			$where[] = "c.object_id=" . $this->_db->quote($filters['object_id']);
 		}
 		if (isset($filters['object_type']) && $filters['object_type'])
 		{
-			$where[] = "c.object_type=" . $this->_db->Quote($filters['object_type']);
+			$where[] = "c.object_type=" . $this->_db->quote($filters['object_type']);
 		}
 		if (isset($filters['created_by']) && $filters['created_by'])
 		{
-			$where[] = "p.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "p.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['item_id']) && $filters['item_id'])
 		{
-			$where[] = "p.item_id=" . $this->_db->Quote($filters['item_id']);
+			$where[] = "p.item_id=" . $this->_db->quote($filters['item_id']);
 		}
 		if (isset($filters['state']))
 		{
@@ -265,8 +265,8 @@ class Post extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "i.state=" . $this->_db->Quote($filters['state']);
-				$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+				$where[] = "i.state=" . $this->_db->quote($filters['state']);
+				$where[] = "c.state=" . $this->_db->quote($filters['state']);
 			}
 		}
 		if (isset($filters['access']))
@@ -279,13 +279,13 @@ class Post extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$where[] = "i.access=" . $this->_db->Quote($filters['access']);
-				$where[] = "c.access=" . $this->_db->Quote($filters['access']);
+				$where[] = "i.access=" . $this->_db->quote($filters['access']);
+				$where[] = "c.access=" . $this->_db->quote($filters['access']);
 			}
 		}
 		if (isset($filters['original']))
 		{
-			$where[] = "p.original=" . $this->_db->Quote($filters['original']);
+			$where[] = "p.original=" . $this->_db->quote($filters['original']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

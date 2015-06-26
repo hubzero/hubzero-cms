@@ -101,8 +101,8 @@ class Audience extends \JTable
 				$sql .= "\n JOIN #__publication_audience_levels AS L5 on L5.label='level5' ";
 			}
 		}
-		$sql .= " WHERE  a.publication_id=" . $this->_db->Quote($pid);
-		$sql .= $versionid ? " AND  a.publication_version_id=" . $this->_db->Quote($versionid) : "";
+		$sql .= " WHERE  a.publication_id=" . $this->_db->quote($pid);
+		$sql .= $versionid ? " AND  a.publication_version_id=" . $this->_db->quote($versionid) : "";
 		$sql .= " LIMIT 1 ";
 
 		$this->_db->setQuery( $sql );
@@ -122,7 +122,7 @@ class Audience extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($versionid);
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($versionid);
 		$this->_db->setQuery( $query );
 
 		if (!$this->_db->query())

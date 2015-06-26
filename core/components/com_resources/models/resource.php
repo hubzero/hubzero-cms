@@ -75,7 +75,7 @@ class Resource extends Object
 	 */
 	public function __construct($oid, $revision=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->resource = new Tables\Resource($this->_db);
 		$this->resource->load($oid);

@@ -354,7 +354,7 @@ class Tags extends \TagsHandler
 					AND ta.objectid=r.id";
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -495,10 +495,10 @@ class Tags extends \TagsHandler
 		$sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid ";
 		$sql .= "LEFT JOIN #__publication_versions AS V ON V.publication_id=tj.objectid AND tj.tbl='publications' ";
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
-		$sql .= "AND tj.tbl=" . $this->_db->Quote($this->_tbl) . " ";
+		$sql .= "AND tj.tbl=" . $this->_db->quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
-		$sql .= "AND V.published_up < " . $this->_db->Quote(Date::toSql()) . " ";
-		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->Quote(Date::toSql()) . ") ";
+		$sql .= "AND V.published_up < " . $this->_db->quote(Date::toSql()) . " ";
+		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
 		$sql .= "GROUP BY tagid ";
 		$sql .= "ORDER BY tcount DESC ";
 		$sql .= "LIMIT $limit";

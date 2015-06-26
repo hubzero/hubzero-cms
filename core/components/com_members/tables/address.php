@@ -40,7 +40,7 @@ class Address extends \JTable
 	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param   object  $db  JDatabase object
+	 * @param   object  $db  Database object
 	 * @return  void
 	 */
 	public function __construct($db)

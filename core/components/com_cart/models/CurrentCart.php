@@ -390,7 +390,7 @@ class CartModelCurrentCart extends CartModelCart
 		// Get DB steps for this transaction
 		$sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId DESC";
 		$this->_db->setQuery($sql);
-		$steps = $this->_db->loadResultArray();
+		$steps = $this->_db->loadColumn();
 
 		return $steps;
 	}
@@ -937,7 +937,7 @@ class CartModelCurrentCart extends CartModelCart
 	{
 		$sql = "SELECT cnId FROM `#__cart_coupons` WHERE `crtId` = {$this->crtId} AND crtCnStatus = 'active' ORDER BY `crtCnAdded`";
 		$this->_db->setQuery($sql);
-		$cnIds = $this->_db->loadResultArray();
+		$cnIds = $this->_db->loadColumn();
 
 		// Get coupon types
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
@@ -1817,7 +1817,7 @@ class CartModelCurrentCart extends CartModelCart
 					AND `cnId` IN (" . $cnSql . ") AND `crtCnStatus` = 'active'";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
-			$existingCnIds = $this->_db->loadResultArray();
+			$existingCnIds = $this->_db->loadColumn();
 
 			// merge coupons
 			$couponsIdsToMerge = array_diff($allCouponsIds, $existingCnIds);
@@ -2030,7 +2030,7 @@ class CartModelCurrentCart extends CartModelCart
 		// Get all pending transactions for this cart
 		$sql = "SELECT `tId` FROM `#__cart_transactions` WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = 'pending'";
 		$this->_db->setQuery($sql);
-		$tIds = $this->_db->loadResultArray();
+		$tIds = $this->_db->loadColumn();
 
 		foreach ($tIds as $tId)
 		{

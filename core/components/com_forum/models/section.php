@@ -73,7 +73,7 @@ class Section extends Base
 	 */
 	public function __construct($oid, $scope='site', $scope_id=0)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$cls = $this->_tbl_name;
 		$this->_tbl = new $cls($this->_db);

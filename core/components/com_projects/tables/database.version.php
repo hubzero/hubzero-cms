@@ -61,7 +61,7 @@ class DatabaseVersion extends \JTable
 		}
 
 		$query = "SELECT MAX(version) as version FROM $this->_tbl
-					WHERE database_name=" . $this->_db->Quote($dbname);
+					WHERE database_name=" . $this->_db->quote($dbname);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();

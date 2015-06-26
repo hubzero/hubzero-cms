@@ -41,7 +41,7 @@ class QuotasClasses extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -162,7 +162,7 @@ class QuotasClasses extends \JTable
 
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
+			$where[] = "`alias`=" . $this->_db->quote($filters['alias']);
 		}
 
 		if (count($where))

@@ -59,7 +59,7 @@ class Status extends Model
 	 */
 	public function __construct($oid = NULL)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if (!isset($this->_tbl))
 		{

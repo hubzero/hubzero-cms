@@ -128,7 +128,7 @@ class Info extends \JModelLegacy
 		{
 			$version  = new \JVersion();
 			$platform = new \JPlatform();
-			$db       = \JFactory::getDBO();
+			$db       = \App::get('db');
 
 			if (isset($_SERVER['SERVER_SOFTWARE']))
 			{

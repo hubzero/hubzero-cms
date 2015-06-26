@@ -36,7 +36,7 @@ Pathway::append(
 	$this->page->link()
 );
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 if (Request::getInt('force_fix', 0))
 {

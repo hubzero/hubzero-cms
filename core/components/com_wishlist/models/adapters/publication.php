@@ -62,7 +62,7 @@ class Publication extends Base
 		     ->set('category', 'publication')
 		     ->set('option', $this->_segments['option']);
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$objP = new \Components\Publications\Tables\Publication($database);
 		$this->_item = $objP->getPublication($referenceid, 'default');
 

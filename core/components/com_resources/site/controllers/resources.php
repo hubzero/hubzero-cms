@@ -867,7 +867,7 @@ class Resources extends SiteController
 
 		//document object
 		$document = Document::getRoot();
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//media tracking object
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'media.tracking.php');

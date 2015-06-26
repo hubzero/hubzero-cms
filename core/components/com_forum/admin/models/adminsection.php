@@ -97,7 +97,7 @@ class AdminSection extends \JModelAdmin
 		 */
 	public function getTable($type = 'Section', $prefix = 'ForumTable', $config = array())
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		return new \Components\Forum\Tables\Section($db); //JTable::getInstance($type, $prefix, $config);
 	}
 

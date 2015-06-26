@@ -88,7 +88,7 @@ class Project extends Model
 	 */
 	public function __construct($oid = NULL)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Project($this->_db);
 

@@ -209,7 +209,7 @@ class Tool
 	 */
 	public function getToolNames()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$db->setQuery("SELECT toolname FROM `#__tool`;");
 		return $db->loadResultArray();
@@ -298,7 +298,7 @@ class Tool
 	 */
 	public function _mysql_create()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -387,7 +387,7 @@ class Tool
 	 */
 	private function _mysql_read()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$lazyloading = false;
 
 		if (empty($db))
@@ -491,7 +491,7 @@ class Tool
 	 */
 	function _mysql_update($all = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "UPDATE `#__tool` SET ";
 
@@ -705,7 +705,7 @@ class Tool
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -787,7 +787,7 @@ class Tool
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db = \JFactory::getDBO();
+				$db = \App::get('db');
 
 				if (is_object($db))
 				{
@@ -1048,7 +1048,7 @@ class Tool
 	 */
 	public function getDevelopmentGroup()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT cn FROM `#__tool_groups` WHERE toolid=" . $db->Quote($this->id) . " AND role='1';";
 
@@ -1074,7 +1074,7 @@ class Tool
 	 */
 	public function unpublishVersion($instance)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($this->toolname))
 		{
@@ -1120,7 +1120,7 @@ class Tool
 	 */
 	public function unpublishAllVersions()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($this->toolname))
 		{
@@ -1231,7 +1231,7 @@ class Tool
 	 */
 	protected static function buildQuerySearch($filters = array(), $admin = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($filters['search']))
 		{
@@ -1300,7 +1300,7 @@ class Tool
 	 */
 	static function getToolCount($filters = array(), $admin = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT count(DISTINCT t.toolname) FROM #__tool AS t ";
 		$query .= "WHERE 1=1 ";
@@ -1322,7 +1322,7 @@ class Tool
 	 */
 	static function getToolSummaries($filters = array(), $admin = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered," .
 			" t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v " .
@@ -1350,7 +1350,7 @@ class Tool
 	{
 		// id  instance  version revision state
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM `#__tool_version` AS v " .
 			" WHERE v.toolid=" . $db->Quote($this->id);
@@ -1375,7 +1375,7 @@ class Tool
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$sql = "SELECT f.toolname FROM `#__tool` as f " . "JOIN #__tool_groups AS g ON " .
 			" f.id=g.toolid AND g.role=1 " . "JOIN #__xgroups AS xg ON g.cn=xg.cn " .
@@ -1383,7 +1383,7 @@ class Tool
 
 		$this->_db->setQuery($sql);
 
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -1397,7 +1397,7 @@ class Tool
 	 */
 	public static function getResourceId($toolname = null, $id = null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (is_numeric($toolname) && empty($id))
 		{
@@ -1459,7 +1459,7 @@ class Tool
 	 */
 	public static function validate(&$tool, &$err, $id)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
 
@@ -1600,7 +1600,7 @@ class Tool
 	 */
 	public static function validateVersion($newversion, &$err, $id)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$err = '';
 
@@ -1673,7 +1673,7 @@ class Tool
 	 */
 	public static function getMyTools()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
 				FROM `#__resources` AS r, `#__tool_version` AS v
 				WHERE r.published=1
@@ -1698,7 +1698,7 @@ class Tool
 	 */
 	public static function getToolId($toolname=NULL)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		if ($toolname=== NULL)
 		{
 			return false;
@@ -1717,7 +1717,7 @@ class Tool
 	 */
 	public static function getToolDevelopers($toolid)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
 		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
@@ -1739,7 +1739,7 @@ class Tool
 	 */
 	public static function getToolGroups($toolid, $groups = array())
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
@@ -1764,7 +1764,7 @@ class Tool
 	 */
 	public static function getToolGroupsRestriction($toolid, $instance)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query  = "SELECT tv.toolname, tg.cn ";
 		$query .= "FROM #__tool_groups AS tg, #__tool_version AS tv ";
@@ -1785,7 +1785,7 @@ class Tool
 	 */
 	public static function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		if ($toolid=== NULL or $ticketid=== NULL)
 		{
 			return false;
@@ -1809,7 +1809,7 @@ class Tool
 	 */
 	public static function getTicketId($toolid=NULL)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		if ($toolid=== NULL)
 		{
 			return false;
@@ -1884,7 +1884,7 @@ class Tool
 	 */
 	public static function getTools($filters=array(), $admin=false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$filter = self::xbuildQuery($filters, $admin);
 
 		$sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"

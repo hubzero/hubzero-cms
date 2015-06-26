@@ -65,7 +65,7 @@ class Badge extends Base
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new $this->_tbl_name($this->_db);
 
@@ -93,7 +93,7 @@ class Badge extends Base
 	public static function loadBySectionId($id)
 	{
 		$model = new stdClass();
-		$model->_db = \JFactory::getDBO();
+		$model->_db = \App::get('db');
 
 		$model = new self();
 
@@ -122,7 +122,7 @@ class Badge extends Base
 	public function loadByProviderBadgeId($id)
 	{
 		$model = new stdClass();
-		$model->_db = \JFactory::getDBO();
+		$model->_db = \App::get('db');
 
 		$model = new self();
 

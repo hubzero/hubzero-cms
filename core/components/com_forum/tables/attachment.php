@@ -41,7 +41,7 @@ class Attachment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -111,7 +111,7 @@ class Attachment extends \JTable
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->Quote($this->filename) . " AND description=" . $this->_db->Quote($this->description) . " AND post_id=" . $this->_db->Quote(intval($this->post_id)));
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->quote($this->filename) . " AND description=" . $this->_db->quote($this->description) . " AND post_id=" . $this->_db->quote(intval($this->post_id)));
 		$this->id = $this->_db->loadResult();
 		return $this->id;
 	}
@@ -124,7 +124,7 @@ class Attachment extends \JTable
 	 */
 	public function getAttachments($parent)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent=" . $this->_db->Quote(intval($parent)));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent=" . $this->_db->quote(intval($parent)));
 		return $this->_db->loadObjectList();
 	}
 
@@ -237,7 +237,7 @@ class Attachment extends \JTable
 	 */
 	public function deleteAttachment($filename, $post_id)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND post_id= " . $this->_db->Quote(intval($post_id)));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND post_id= " . $this->_db->quote(intval($post_id)));
 		if (!$this->_db->query())
 		{
 			return $this->_db->getErrorMsg();
@@ -262,7 +262,7 @@ class Attachment extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND post_id= " . $this->_db->Quote(intval($post_id)));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND post_id= " . $this->_db->quote(intval($post_id)));
 		return $this->_db->loadObject($this);
 	}
 }

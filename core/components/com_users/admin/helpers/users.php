@@ -158,7 +158,7 @@ class UsersHelper
 	 */
 	static function getGroups()
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$db->setQuery(
 			'SELECT a.id AS value, a.title AS text, COUNT(DISTINCT b.id) AS level' .
 			' FROM #__usergroups AS a' .

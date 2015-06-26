@@ -64,13 +64,13 @@ class RemoteFile extends \JTable
 		$query  = "SELECT local_path, local_dirpath, remote_id, synced, type,
 					remote_editing as converted, remote_parent, remote_format,
 					remote_modified, paired, original_path FROM $this->_tbl";
-		$query .= " WHERE projectid=" . $this->_db->Quote($projectid);
-		$query .= " AND service=" . $this->_db->Quote($service);
-		$query .= $local_dirpath ? " AND local_dirpath=" . $this->_db->Quote($local_dirpath) : '';
+		$query .= " WHERE projectid=" . $this->_db->quote($projectid);
+		$query .= " AND service=" . $this->_db->quote($service);
+		$query .= $local_dirpath ? " AND local_dirpath=" . $this->_db->quote($local_dirpath) : '';
 		if ($converted != 'na')
 		{
 			$converted = $converted == 1 ? 1 : 0;
-			$query .= " AND remote_editing = " . $this->_db->Quote($converted);
+			$query .= " AND remote_editing = " . $this->_db->quote($converted);
 		}
 
 		$this->_db->setQuery( $query );
@@ -115,12 +115,12 @@ class RemoteFile extends \JTable
 		}
 
 		$query  = "SELECT COUNT(*) FROM $this->_tbl";
-		$query .= " WHERE projectid=" . $this->_db->Quote($projectid);
-		$query .= $service ? " AND service=" . $this->_db->Quote($service) : "";
+		$query .= " WHERE projectid=" . $this->_db->quote($projectid);
+		$query .= $service ? " AND service=" . $this->_db->quote($service) : "";
 		if ($converted != 'na')
 		{
 			$converted = $converted == 1 ? 1 : 0;
-			$query .= " AND remote_editing = " . $this->_db->Quote($converted);
+			$query .= " AND remote_editing = " . $this->_db->quote($converted);
 		}
 
 		$this->_db->setQuery( $query );
@@ -180,16 +180,16 @@ class RemoteFile extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid =" . $this->_db->Quote($projectid);
-		$query .= $service ? " AND service=" . $this->_db->Quote($service) : '';
+		$query  = "SELECT * FROM $this->_tbl WHERE projectid =" . $this->_db->quote($projectid);
+		$query .= $service ? " AND service=" . $this->_db->quote($service) : '';
 
 		if ($id)
 		{
-			$query .= " AND remote_id = " . $this->_db->Quote($id);
+			$query .= " AND remote_id = " . $this->_db->quote($id);
 		}
 		else
 		{
-			$query .= " AND local_path =" . $this->_db->Quote($local_path);
+			$query .= " AND local_path =" . $this->_db->quote($local_path);
 		}
 
 		$query .= " ORDER BY modified DESC, created DESC LIMIT 1";
@@ -223,20 +223,20 @@ class RemoteFile extends \JTable
 			   		service, remote_modified as modified, remote_author as author,
 					remote_md5 as md5, synced, paired, type, original_path,
 					original_format, original_id
-		 		   FROM $this->_tbl WHERE projectid = " . $this->_db->Quote($projectid);
-		$query .= $service ? " AND service=" . $this->_db->Quote($service) : '';
+		 		   FROM $this->_tbl WHERE projectid = " . $this->_db->quote($projectid);
+		$query .= $service ? " AND service=" . $this->_db->quote($service) : '';
 		if ($id)
 		{
-			$query .= " AND remote_id = " . $this->_db->Quote($id);
+			$query .= " AND remote_id = " . $this->_db->quote($id);
 		}
 		else
 		{
-			$query .= " AND local_path = " . $this->_db->Quote($local_path);
+			$query .= " AND local_path = " . $this->_db->quote($local_path);
 		}
 		if ($converted != 'na')
 		{
 			$converted = $converted == 1 ? 1 : 0;
-			$query .= " AND remote_editing = " . $this->_db->Quote($converted);
+			$query .= " AND remote_editing = " . $this->_db->quote($converted);
 		}
 		$query .= " ORDER BY modified DESC, created DESC LIMIT 1";
 

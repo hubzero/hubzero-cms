@@ -89,7 +89,7 @@ class JobType extends \JTable
 			return $default;
 		}
 
-		$query = "SELECT category FROM $this->_tbl WHERE id=" . $this->_db->Quote($id);
+		$query = "SELECT category FROM $this->_tbl WHERE id=" . $this->_db->quote($id);
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}

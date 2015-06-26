@@ -41,7 +41,7 @@ class JFormFieldGroup extends JFormField
 			$options[] = Html::select('option', (string)$option->attributes()->value, Lang::txt(trim((string) $option)));
 		}
 
-		$dbo = JFactory::getDbo();
+		$dbo = App::get('db');
 		$query = $dbo->getQuery(true);
 		$query->select('DISTINCT folder');
 		$query->from('#__extensions');

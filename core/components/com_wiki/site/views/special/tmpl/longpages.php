@@ -36,7 +36,7 @@ Pathway::append(
 	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'
 );
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);

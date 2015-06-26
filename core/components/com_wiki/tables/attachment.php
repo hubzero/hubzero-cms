@@ -38,7 +38,7 @@ class Attachment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -80,7 +80,7 @@ class Attachment extends \JTable
 	 */
 	public function getID($filename, $pageid)
 	{
-		$this->_db->setQuery("SELECT id, description FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND pageid=" . $this->_db->Quote($pageid));
+		$this->_db->setQuery("SELECT id, description FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND pageid=" . $this->_db->quote($pageid));
 		return $this->_db->loadRow();
 	}
 
@@ -98,7 +98,7 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND pageid=" . $this->_db->Quote($pageid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND pageid=" . $this->_db->quote($pageid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -131,7 +131,7 @@ class Attachment extends \JTable
 		$tokens = preg_split('/#/', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->quote($id));
 		$a = $this->_db->loadRow();
 
 		if (is_file(PATH_APP . $this->path . DS . $this->pageid . DS . $a[0]))
@@ -166,7 +166,7 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET pageid=" . $this->_db->Quote($newid) . " WHERE pageid=" . $this->_db->Quote($oldid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET pageid=" . $this->_db->quote($newid) . " WHERE pageid=" . $this->_db->quote($oldid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

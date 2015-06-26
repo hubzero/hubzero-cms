@@ -100,7 +100,7 @@ class AssetGroup extends \JTable
 	 */
 	public function getHighestOrder($unit_id, $parent=0)
 	{
-		$sql = "SELECT ordering from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($unit_id)) . " AND `parent`=" . $this->_db->Quote(intval($parent)) . " ORDER BY ordering DESC LIMIT 1";
+		$sql = "SELECT ordering from $this->_tbl WHERE `unit_id`=" . $this->_db->quote(intval($unit_id)) . " AND `parent`=" . $this->_db->quote(intval($parent)) . " ORDER BY ordering DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -117,7 +117,7 @@ class AssetGroup extends \JTable
 		$query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset_group' AND sd.scope_id=cag.id";
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			$query .= " AND sd.section_id=" . $this->_db->Quote($filters['section_id']);
+			$query .= " AND sd.section_id=" . $this->_db->quote($filters['section_id']);
 		}
 		$query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.unit_id";
 
@@ -125,19 +125,19 @@ class AssetGroup extends \JTable
 
 		if (isset($filters['unit_id']) && $filters['unit_id'])
 		{
-			$where[] = "cag.unit_id=" . $this->_db->Quote($filters['unit_id']);
+			$where[] = "cag.unit_id=" . $this->_db->quote($filters['unit_id']);
 		}
 		if (isset($filters['parent']))
 		{
-			$where[] = "cag.parent=" . $this->_db->Quote($filters['parent']);
+			$where[] = "cag.parent=" . $this->_db->quote($filters['parent']);
 		}
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "cag.alias=" . $this->_db->Quote($filters['alias']);
+			$where[] = "cag.alias=" . $this->_db->quote($filters['alias']);
 		}
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "cag.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "cag.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -186,7 +186,7 @@ class AssetGroup extends \JTable
 			if (!empty($filters['w']['unit_id']))
 			{
 				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " cu.id = " . $this->_db->Quote($filters['w']['unit_id']);
+				$query .= " cu.id = " . $this->_db->quote($filters['w']['unit_id']);
 
 				$first = false;
 			}
@@ -210,13 +210,13 @@ class AssetGroup extends \JTable
 	 */
 	private function makeAliasUnique()
 	{
-		$sql = "SELECT alias from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($this->unit_id));
+		$sql = "SELECT alias from $this->_tbl WHERE `unit_id`=" . $this->_db->quote(intval($this->unit_id));
 		if ($this->id)
 		{
-			$sql .= " AND `id`!=" . $this->_db->Quote(intval($this->id));
+			$sql .= " AND `id`!=" . $this->_db->quote(intval($this->id));
 		}
 		$this->_db->setQuery($sql);
-		$result = $this->_db->loadResultArray();
+		$result = $this->_db->loadColumn();
 
 		$original_alias = $this->alias;
 
@@ -245,7 +245,7 @@ class AssetGroup extends \JTable
 
 		// Dlete attachments
 		$ids = array();
-		$this->_db->setQuery("SELECT * FROM {$this->_tbl} WHERE parent=" . $this->_db->Quote($this->$k));
+		$this->_db->setQuery("SELECT * FROM {$this->_tbl} WHERE parent=" . $this->_db->quote($this->$k));
 		if (($groups = $this->_db->loadObjectList()))
 		{
 			foreach ($groups as $group)
@@ -255,7 +255,7 @@ class AssetGroup extends \JTable
 		}
 
 		// Delete sub groups
-		$query = "DELETE FROM #__courses_offering_section_dates WHERE scope_id = " . $this->_db->Quote($this->$k) . " ANd scope=" . $this->_db->Quote('asset_group');
+		$query = "DELETE FROM #__courses_offering_section_dates WHERE scope_id = " . $this->_db->quote($this->$k) . " ANd scope=" . $this->_db->quote('asset_group');
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{

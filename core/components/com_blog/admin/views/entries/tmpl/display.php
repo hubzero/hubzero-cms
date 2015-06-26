@@ -164,7 +164,7 @@ $k = 0;
 $i = 0;
 
 $now    = Date::of('now');
-$db     = JFactory::getDBO();
+$db     = App::get('db');
 
 $nullDate = $db->getNullDate();
 

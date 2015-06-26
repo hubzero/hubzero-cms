@@ -776,7 +776,7 @@ class MenusModelItem extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		return 'menutype = ' . $this->_db->Quote($table->menutype);
+		return 'menutype = ' . $this->_db->quote($table->menutype);
 	}
 
 	/**
@@ -1217,7 +1217,7 @@ class MenusModelItem extends JModelAdmin
 			$associations[$table->language]=$table->id;
 
 			// Deleting old association for these items
-			$db = JFactory::getDbo();
+			$db = App::get('db');
 			$query = $db->getQuery(true);
 			$query->delete('#__associations');
 			$query->where('context='.$db->quote('com_menus.item'));

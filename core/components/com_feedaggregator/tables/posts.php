@@ -38,7 +38,7 @@ class Posts extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -143,7 +143,7 @@ class Posts extends \JTable
 	{
 		$query = "SELECT url FROM $this->_tbl";
 		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 
 	/**

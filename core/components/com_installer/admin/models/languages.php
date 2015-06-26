@@ -71,7 +71,7 @@ class Languages extends \JModelList
 	 */
 	protected function _getListQuery()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the updates table

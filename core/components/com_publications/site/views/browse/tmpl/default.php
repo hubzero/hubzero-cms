@@ -25,7 +25,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \JFactory::getDBO();
+$database = \App::get('db');
 
 $this->css()
      ->js();

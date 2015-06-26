@@ -507,7 +507,7 @@ class Pages
 	public static function getCheckout($pageid)
 	{
 		// get joomla objects
-		$db   = \JFactory::getDBO();
+		$db   = \App::get('db');
 
 		// get person who has page checkedout
 		$sql = "SELECT * FROM `#__xgroups_pages_checkout`
@@ -525,7 +525,7 @@ class Pages
 	public static function checkout($pageid)
 	{
 		// get needed joomla objects
-		$db   = \JFactory::getDBO();
+		$db   = \App::get('db');
 
 		// check in other pages
 		self::checkinForUser();
@@ -546,7 +546,7 @@ class Pages
 	public static function checkin($pageid)
 	{
 		// get joomla objects
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// check in page
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote($pageid);
@@ -562,7 +562,7 @@ class Pages
 	public static function checkinForUser()
 	{
 		// get joomla objects
-		$db   = \JFactory::getDBO();
+		$db   = \App::get('db');
 
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote(User::get('id'));
@@ -579,7 +579,7 @@ class Pages
 	public static function checkinAbandoned()
 	{
 		// get joomla objects
-		$db   = \JFactory::getDBO();
+		$db   = \App::get('db');
 
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `when` < NOW() - INTERVAL 12 HOUR";
@@ -611,7 +611,7 @@ class Pages
 		}
 
 		// get needed vars
-		$database    = \JFactory::getDBO();
+		$database    = \App::get('db');
 		$authorized  = \Components\Groups\Helpers\View::authorize($group);
 		$version     = ($page) ? $page->approvedVersion() : null;
 

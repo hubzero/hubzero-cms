@@ -38,7 +38,7 @@ class Secondary extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -81,11 +81,11 @@ class Secondary extends \JTable
 		$ands = array();
 		if (isset($filters['cid']) && $filters['cid'] != 0)
 		{
-			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
+			$ands[] = "r.cid=" . $this->_db->quote($filters['cid']);
 		}
 		if (isset($filters['search_string']) && $filters['search_string'] != '')
 		{
-			$ands[] = "LOWER(r.search_string)=" . $this->_db->Quote(strtolower($filters['search_string']));
+			$ands[] = "LOWER(r.search_string)=" . $this->_db->quote(strtolower($filters['search_string']));
 		}
 		if (count($ands) > 0)
 		{

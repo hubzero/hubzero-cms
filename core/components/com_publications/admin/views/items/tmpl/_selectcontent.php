@@ -31,7 +31,7 @@
 defined('_HZEXEC_') or die();
 
 $pub = $this->pub;
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 if (!$pub->_attachments)
 {

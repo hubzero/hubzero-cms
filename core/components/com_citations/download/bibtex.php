@@ -88,7 +88,7 @@ class Bibtex extends Downloadable
 		$addarray = array();
 
 		//get all the citation types
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$ct = new Type($db);
 		$types = $ct->getType();
 

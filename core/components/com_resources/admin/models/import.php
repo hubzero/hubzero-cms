@@ -74,7 +74,7 @@ class Import extends Model
 	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);

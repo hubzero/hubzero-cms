@@ -533,7 +533,7 @@ $area = Request::getVar('area', 'about');
 					<tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_TAGS'); ?></th>
 						<td>
-							<?php echo \Components\Citations\Helpers\Format::citationTags($citation, JFactory::getDBO()); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationTags($citation, App::get('db')); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -542,7 +542,7 @@ $area = Request::getVar('area', 'about');
 					<tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_BADGES'); ?></th>
 						<td>
-							<?php echo \Components\Citations\Helpers\Format::citationBadges($citation, JFactory::getDBO()); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationBadges($citation, App::get('db')); ?>
 						</td>
 					</tr>
 				<?php endif; ?>

@@ -84,7 +84,7 @@ class Event extends \JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=1 WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=1 WHERE id=" . $this->_db->quote($oid));
 		$this->_db->query();
 	}
 
@@ -100,7 +100,7 @@ class Event extends \JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=0 WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=0 WHERE id=" . $this->_db->quote($oid));
 		$this->_db->query();
 	}
 

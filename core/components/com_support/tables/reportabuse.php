@@ -75,7 +75,7 @@ class ReportAbuse extends \JTable
 
 		if (isset($filters['state']))
 		{
-			$query .= " a.state=" . $this->_db->Quote($filters['state']);
+			$query .= " a.state=" . $this->_db->quote($filters['state']);
 		}
 		else
 		{
@@ -83,15 +83,15 @@ class ReportAbuse extends \JTable
 		}
 		if (isset($filters['id']) && $filters['id'] != '')
 		{
-			$query .= " AND a.referenceid=" . $this->_db->Quote($filters['id']);
+			$query .= " AND a.referenceid=" . $this->_db->quote($filters['id']);
 		}
 		if (isset($filters['category']) && $filters['category'] != '')
 		{
-			$query .= " AND a.category=" . $this->_db->Quote($filters['category']);
+			$query .= " AND a.category=" . $this->_db->quote($filters['category']);
 		}
 		if (isset($filters['reviewed_by']) && $filters['reviewed_by'] != '')
 		{
-			$query .= " AND a.reviewed_by=" . $this->_db->Quote($filters['reviewed_by']);
+			$query .= " AND a.reviewed_by=" . $this->_db->quote($filters['reviewed_by']);
 		}
 		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{

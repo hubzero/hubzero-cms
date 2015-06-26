@@ -40,7 +40,7 @@ class Category extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -199,11 +199,11 @@ class Category extends \JTable
 
 		if (isset($filters['section']) && $filters['section'] >= 0)
 		{
-			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
+			$where[] = "a.`section`=" . $this->_db->quote($filters['section']);
 		}
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
+			$where[] = "a.`state`=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['access']))
 		{
@@ -216,7 +216,7 @@ class Category extends \JTable
 			}
 			else if ($filters['access'] > 0)
 			{
-				$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+				$where[] = "a.`access`=" . $this->_db->quote($filters['access']);
 			}
 		}
 		if (isset($filters['search']) && $filters['search'])
@@ -296,7 +296,7 @@ class Category extends \JTable
 				$access = '';
 				if (isset($filters['state']) && $filters['state'] >= 0)
 				{
-					$access .= " AND fa.`state`=" . $this->_db->Quote($filters['state']);
+					$access .= " AND fa.`state`=" . $this->_db->quote($filters['state']);
 				}
 				if (isset($filters['access']))
 				{
@@ -309,7 +309,7 @@ class Category extends \JTable
 					}
 					else if ($filters['access'] > 0)
 					{
-						$where[] = "fa.`access`=" . $this->_db->Quote($filters['access']);
+						$where[] = "fa.`access`=" . $this->_db->quote($filters['access']);
 					}
 				}
 

@@ -38,7 +38,7 @@ class Preferences extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -157,7 +157,7 @@ class Preferences extends \JTable
 		}
 		if (isset($filters['jobs']) && $filters['jobs'])
 		{
-			$where[] = "`jobs`=" . $this->_db->Quote($filters['jobs']);
+			$where[] = "`jobs`=" . $this->_db->quote($filters['jobs']);
 		}
 
 		if (count($where))

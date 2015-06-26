@@ -61,7 +61,7 @@ class Newslettersv1_0 extends ApiController
 	{
 		$result = array();
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$newsletterNewsletter = new Newsletter($database);
 
 		// get the current newsletter
@@ -104,7 +104,7 @@ class Newslettersv1_0 extends ApiController
 		$limit = Request::getInt('limit', 5);
 		$start = Request::getInt('start', 0);
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$newsletterNewsletter = new Newsletter($database);
 
 		$newsletters = $newsletterNewsletter->getNewsletters(null, true);
@@ -143,7 +143,7 @@ class Newslettersv1_0 extends ApiController
 
 		$result = array();
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$newsletterNewsletter = new Newsletter($database);
 
 		// get newsletters

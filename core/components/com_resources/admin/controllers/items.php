@@ -1662,7 +1662,7 @@ class Items extends AdminController
 	 */
 	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';
@@ -1783,7 +1783,7 @@ class Items extends AdminController
 		$this->view->good    = array();
 
 		// get all resources
-		$db  = \JFactory::getDBO();
+		$db  = \App::get('db');
 		$sql = "SELECT id, title, type, path FROM `#__resources` ORDER BY id";
 		$db->setQuery($sql);
 		$results = $db->loadObjectList();

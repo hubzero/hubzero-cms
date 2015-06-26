@@ -112,7 +112,7 @@ class Item extends Base
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$tbl = $this->_tbl_name;
 		$this->_tbl = new $tbl($this->_db);

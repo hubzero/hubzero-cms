@@ -373,7 +373,7 @@ class Version
 	 */
 	public function getTool_VersionNames($tool = null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (!isset($this))
 		{ // static method call
@@ -504,7 +504,7 @@ class Version
 	 */
 	private function _mysql_create()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -592,7 +592,7 @@ class Version
 	 */
 	private function _mysql_read()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$lazyloading = false;
 
 		if (empty($db))
@@ -705,7 +705,7 @@ class Version
 	 */
 	private function _mysql_update($all = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		Log::debug('_mysql_update() start');
 		$query = "UPDATE #__tool_version SET ";
@@ -992,7 +992,7 @@ class Version
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -1088,7 +1088,7 @@ class Version
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db = \JFactory::getDBO();
+				$db = \App::get('db');
 
 				if (is_object($db))
 				{
@@ -1373,7 +1373,7 @@ class Version
 	 */
 	public function getDevelopmentGroup($byid = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if ($byid == false)
 		{
@@ -1401,7 +1401,7 @@ class Version
 	 */
 	public static function getVersionInfo($id, $version=null, $toolname=null, $instance=null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		// data comes from mysql
 		$query  = "SELECT v.*, d.doi_label as doi ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";

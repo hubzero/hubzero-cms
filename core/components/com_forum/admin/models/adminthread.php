@@ -97,7 +97,7 @@ class AdminThread extends \JModelAdmin
 		 */
 	public function getTable($type = 'Post', $prefix = 'ForumTable', $config = array())
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		return new \Components\Forum\Tables\Post($db); //JTable::getInstance($type, $prefix, $config);
 	}
 

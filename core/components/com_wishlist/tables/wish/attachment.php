@@ -41,7 +41,7 @@ class Attachment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -174,7 +174,7 @@ class Attachment extends \JTable
 	 */
 	public function deleteAttachment($filename, $wish)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND wish=" . $this->_db->quote($wish));
 		if (!$this->_db->query())
 		{
 			return $this->_db->getErrorMsg();

@@ -38,7 +38,7 @@ class Audience extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -99,7 +99,7 @@ class Audience extends \JTable
 			}
 		}
 		$sql .= " WHERE  a.rid=$rid ";
-		$sql .= $versionid ? " AND  a.versionid=" . $this->_db->Quote($versionid) : "";
+		$sql .= $versionid ? " AND  a.versionid=" . $this->_db->quote($versionid) : "";
 		$sql .= " LIMIT 1 ";
 
 		$this->_db->setQuery($sql);

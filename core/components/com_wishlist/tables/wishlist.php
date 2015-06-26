@@ -44,7 +44,7 @@ class Wishlist extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -111,7 +111,7 @@ class Wishlist extends \JTable
 		// get individuals
 		$sql = "SELECT id"
 			. " FROM $this->_tbl "
-			. " WHERE referenceid=" . $this->_db->Quote($rid) . " AND category=" . $this->_db->Quote($cat) . " ORDER BY id DESC LIMIT 1";
+			. " WHERE referenceid=" . $this->_db->quote($rid) . " AND category=" . $this->_db->quote($cat) . " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);
 		return  $this->_db->loadResult();
@@ -236,7 +236,7 @@ class Wishlist extends \JTable
 		{
 			return false;
 		}
-		$sql = "SELECT w.title FROM $this->_tbl AS w WHERE w.id=" . $this->_db->Quote($id);
+		$sql = "SELECT w.title FROM $this->_tbl AS w WHERE w.id=" . $this->_db->quote($id);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -254,7 +254,7 @@ class Wishlist extends \JTable
 		{
 			return false;
 		}
-		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=" . $this->_db->Quote($id) . " AND w.referenceid=1 AND w.category='general'";
+		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=" . $this->_db->quote($id) . " AND w.referenceid=1 AND w.category='general'";
 
 		$this->_db->setQuery($sql);
 		if ($this->_db->loadResult())
@@ -293,11 +293,11 @@ class Wishlist extends \JTable
 
 		if ($id)
 		{
-			$sql .= " WHERE w.id=" . $this->_db->Quote($id);
+			$sql .= " WHERE w.id=" . $this->_db->quote($id);
 		}
 		else if ($refid && $cat)
 		{
-			$sql .= " WHERE w.referenceid=" . $this->_db->Quote($refid) . " AND w.category=" . $this->_db->Quote($cat);
+			$sql .= " WHERE w.referenceid=" . $this->_db->quote($refid) . " AND w.category=" . $this->_db->quote($cat);
 		}
 		else if ($primary)
 		{
@@ -335,7 +335,7 @@ class Wishlist extends \JTable
 		// currently for tools only
 		if ($type == 7)
 		{
-			$query  = "SELECT v.id FROM `#__tool_version` as v JOIN `#__resources` as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->Quote($rid);
+			$query  = "SELECT v.id FROM `#__tool_version` as v JOIN `#__resources` as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
 			$query .= " AND v.state=3 ";
 			$query .= " OR v.state!=3 ORDER BY state DESC, revision DESC LIMIT 3";
 			$this->_db->setQuery($query);
@@ -361,7 +361,7 @@ class Wishlist extends \JTable
 			$sql = "SELECT r.title, r.type, r.alias, r.introtext, t.type as typetitle
 				FROM `#__resources` AS r
 				LEFT JOIN `#__resource_types` AS t ON t.id=r.type
-				WHERE r.id=" . $this->_db->Quote($refid);
+				WHERE r.id=" . $this->_db->quote($refid);
 			$this->_db->setQuery($sql);
 			$res  = $this->_db->loadObjectList();
 			$resource = ($res) ? $res[0]: array();
@@ -382,7 +382,7 @@ class Wishlist extends \JTable
 			FROM `#__xprofiles` AS n
 			JOIN `#__author_assoc` AS a ON n.uidNumber=a.authorid
 			WHERE a.subtable = 'resources'
-			AND a.subid=" . $this->_db->Quote($refid);
+			AND a.subid=" . $this->_db->quote($refid);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -401,7 +401,7 @@ class Wishlist extends \JTable
 				JOIN `#__xgroups` AS xg ON g.cn=xg.cn
 				JOIN `#__tool` AS t ON g.toolid=t.id
 				JOIN `#__resources` as r ON r.alias = t.toolname
-				WHERE r.id = " . $this->_db->Quote($refid) . " AND g.role=1";
+				WHERE r.id = " . $this->_db->quote($refid) . " AND g.role=1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -420,15 +420,15 @@ class Wishlist extends \JTable
 		$w = array();
 		if (isset($filters['category']) && $filters['category'])
 		{
-			$w[] = "m.category=" . $this->_db->Quote($filters['category']);
+			$w[] = "m.category=" . $this->_db->quote($filters['category']);
 		}
 		if (isset($filters['referenceid']) && $filters['referenceid'])
 		{
-			$w[] = "m.referenceid=" . $this->_db->Quote($filters['referenceid']);
+			$w[] = "m.referenceid=" . $this->_db->quote($filters['referenceid']);
 		}
 		if (isset($filters['state']))
 		{
-			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
+			$w[] = "m.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

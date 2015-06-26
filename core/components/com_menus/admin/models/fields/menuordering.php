@@ -43,7 +43,7 @@ class JFormFieldMenuOrdering extends JFormFieldList
 		{
 			return false;
 		}
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text');

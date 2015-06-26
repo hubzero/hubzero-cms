@@ -167,7 +167,7 @@ function submitbutton(pressbutton)
 				</thead>
 				<tbody>
 				<?php
-				$database = JFactory::getDBO();
+				$database = App::get('db');
 				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='publications'" );
 
 				if ($plugins = $database->loadObjectList())

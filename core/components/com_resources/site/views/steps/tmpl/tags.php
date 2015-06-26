@@ -54,7 +54,7 @@ class RecommendedTags
 		), $opts);
 
 		require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'Inflect.php';
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 
 		$dbh->setQuery(
 			'SELECT t.raw_tag, fa.*

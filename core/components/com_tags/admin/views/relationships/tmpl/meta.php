@@ -42,7 +42,7 @@ Html::behavior('framework');
 
 $this->js('tag_graph.js');
 
-$dbh = JFactory::getDBO();
+$dbh = App::get('db');
 $dbh->setQuery(
 	'SELECT *, (SELECT group_concat(resource_type_id) FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types
 	FROM `#__tags` t

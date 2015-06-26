@@ -86,7 +86,7 @@ class JobStats extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE itemid=" . $this->_db->Quote($itemid) . " AND category=" . $this->_db->Quote($category) . " ORDER BY ";
+		$query  = "SELECT * FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " ORDER BY ";
 		$query .= $type=='shared' ? "lastshared": "lastviewed";
 		$query .= " DESC LIMIT 1";
 
@@ -182,18 +182,18 @@ class JobStats extends \JTable
 		{
 			$query .= " MAX(p.total_shared) AS times ";
 		}
-		$query .= " FROM $this->_tbl WHERE itemid=" . $this->_db->Quote($itemid) . " AND category=" . $this->_db->Quote($category) . " AND ";
+		$query .= " FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " AND ";
 
 		switch ($when)
 		{
 			case 'thisweek':
-				$query .= " lastviewed > " . $this->_db->Quote($lastweek) . " ";
+				$query .= " lastviewed > " . $this->_db->quote($lastweek) . " ";
 			break;
 			case 'thismonth':
-				$query .= " lastviewed > " . $this->_db->Quote($lastmonth) . " ";
+				$query .= " lastviewed > " . $this->_db->quote($lastmonth) . " ";
 			break;
 			case 'today':
-				$query .= " lastviewed > " . $this->_db->Quote($today) . " ";
+				$query .= " lastviewed > " . $this->_db->quote($today) . " ";
 			break;
 			default:
 				$query .= " 1=1 ";
@@ -281,7 +281,7 @@ class JobStats extends \JTable
 	public function cleanup()
 	{
 		$lastmonth = Date::of(time() - (30 * 24 * 60 * 60))->toSql();
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE lastviewed < " . $this->_db->Quote($lastmonth));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE lastviewed < " . $this->_db->quote($lastmonth));
 		$this->_db->query();
 	}
 
@@ -299,7 +299,7 @@ class JobStats extends \JTable
 			$this->setError(Lang::txt('Missing argument'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE itemid =" . $this->_db->Quote($itemid) . " AND category =" . $this->_db->Quote($category));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE itemid =" . $this->_db->quote($itemid) . " AND category =" . $this->_db->quote($category));
 		$this->_db->query();
 	}
 }

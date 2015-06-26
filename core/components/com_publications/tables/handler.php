@@ -59,7 +59,7 @@ class Handler extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($name);
+		$query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
 		$query.= " LIMIT 1";
 		$this->_db->setQuery( $query );
 
@@ -91,8 +91,8 @@ class Handler extends \JTable
 		$query  = "SELECT H.*, IFNULL(A.id, 0) as assigned, IFNULL(A.ordering, 0) as ordering,
 				A.params as assigned_params, A.status as active  FROM $this->_tbl as H ";
 		$query .= "LEFT JOIN #__publication_handler_assoc as A ON H.id=A.handler_id ";
-		$query .= " AND A.publication_version_id=" . $this->_db->Quote($vid)
-				. " AND A.element_id=" . $this->_db->Quote($elementid);
+		$query .= " AND A.publication_version_id=" . $this->_db->quote($vid)
+				. " AND A.element_id=" . $this->_db->quote($elementid);
 		$query .= " WHERE H.status = 1";
 		$query .= " ORDER BY assigned DESC, A.ordering ASC";
 
@@ -116,7 +116,7 @@ class Handler extends \JTable
 
 		if (!$entry || !is_object($entry))
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($name);
+			$query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
 			$query.= " LIMIT 1";
 
 			$this->_db->setQuery( $query );

@@ -41,7 +41,7 @@ class Author extends \JTable
 	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param   object  $db  JDatabase object
+	 * @param   object  $db  Database object
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -96,7 +96,7 @@ class Author extends \JTable
 
 		if (!$this->id)
 		{
-			$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id) . " AND user_id=" . $this->_db->Quote($user_id));
+			$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE page_id=" . $this->_db->quote($page_id) . " AND user_id=" . $this->_db->quote($user_id));
 			$this->id = $this->_db->loadResult();
 		}
 		return $this->id;
@@ -134,8 +134,8 @@ class Author extends \JTable
 			$this->setError(Lang::txt('Missing page ID.'));
 			return false;
 		}
-		$this->_db->setQuery("SELECT user_id FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
-		return $this->_db->loadResultArray();
+		$this->_db->setQuery("SELECT user_id FROM $this->_tbl WHERE page_id=" . $this->_db->quote($page_id));
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Author extends \JTable
 			$this->setError(Lang::txt('Missing page ID.'));
 			return false;
 		}
-		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, `#__users` AS u WHERE wa.page_id=" . $this->_db->Quote($page_id) . " AND u.id=wa.user_id");
+		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, `#__users` AS u WHERE wa.page_id=" . $this->_db->quote($page_id) . " AND u.id=wa.user_id");
 		return $this->_db->loadObjectList();
 	}
 
@@ -175,7 +175,7 @@ class Author extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id) . " AND user_id=" . $this->_db->Quote($user_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->quote($page_id) . " AND user_id=" . $this->_db->quote($user_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -200,7 +200,7 @@ class Author extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->quote($page_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -239,7 +239,7 @@ class Author extends \JTable
 			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
-				$targetuser = \User::getInstance($author);
+				$targetuser = User::getInstance($author);
 
 				// Ensure we found an account
 				if (!is_object($targetuser))

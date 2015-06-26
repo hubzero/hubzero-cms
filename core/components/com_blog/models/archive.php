@@ -88,7 +88,7 @@ class Archive extends Object
 	 */
 	public function __construct($scope='site', $scope_id=0)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Entry($this->_db);
 

@@ -62,8 +62,8 @@ class ToolView extends  \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl
-				   WHERE parent_id=" . $this->_db->Quote($toolid) . "
-				   AND userid=" . $this->_db->Quote($userid) . "
+				   WHERE parent_id=" . $this->_db->quote($toolid) . "
+				   AND userid=" . $this->_db->quote($userid) . "
 				   ORDER BY viewed DESC LIMIT 1";
 
 		$this->_db->setQuery($query);

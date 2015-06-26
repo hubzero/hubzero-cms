@@ -41,7 +41,7 @@ class Quote extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -81,7 +81,7 @@ class Quote extends \JTable
 
 		if (isset($filters['notable_quote']) && $filters['notable_quote'] >= 0)
 		{
-			$where[] = "`notable_quote`=" . $this->_db->Quote($filters['notable_quote']);
+			$where[] = "`notable_quote`=" . $this->_db->quote($filters['notable_quote']);
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -91,7 +91,7 @@ class Quote extends \JTable
 
 			foreach ($words as $word)
 			{
-				$sqlsearch[] = "(LOWER(`fullname`) LIKE " . $this->_db->Quote('%' . strtolower($word) . '%') . ")";
+				$sqlsearch[] = "(LOWER(`fullname`) LIKE " . $this->_db->quote('%' . strtolower($word) . '%') . ")";
 			}
 
 			$where[] = "(" . implode(" OR ", $sqlsearch) . ")";
@@ -99,7 +99,7 @@ class Quote extends \JTable
 
 		if (isset($filters['id']) && $filters['id'] != 0)
 		{
-			$where[] = "`id`=" . $this->_db->Quote($filters['id']);
+			$where[] = "`id`=" . $this->_db->quote($filters['id']);
 		}
 
 		if (count($where))

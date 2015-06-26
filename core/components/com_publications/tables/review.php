@@ -97,9 +97,9 @@ class Review extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid)
-				. " AND created_by=" . $this->_db->Quote($uid);
-		$query .= $versionid ? " AND publication_version_id=" . $this->_db->Quote($versionid)  : '';
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
+				. " AND created_by=" . $this->_db->quote($uid);
+		$query .= $versionid ? " AND publication_version_id=" . $this->_db->quote($versionid)  : '';
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
 
@@ -132,9 +132,9 @@ class Review extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT rating FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid)
-				. " AND created_by=" . $this->_db->Quote($uid);
-		$query .= $versionid ? " AND publication_version_id=" . $this->_db->Quote($versionid)  : '';
+		$query  = "SELECT rating FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
+				. " AND created_by=" . $this->_db->quote($uid);
+		$query .= $versionid ? " AND publication_version_id=" . $this->_db->quote($versionid)  : '';
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -169,9 +169,9 @@ class Review extends \JTable
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful "
 			."\n FROM $this->_tbl AS rr "
 			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='pubreview' ";
-		$query.= "AND v.voter=" . $this->_db->Quote($uid);
-		$query.= " WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->Quote($pid);
-		$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
+		$query.= "AND v.voter=" . $this->_db->quote($uid);
+		$query.= " WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->quote($pid);
+		$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->quote($versionid) : '';
 		$query.= " ORDER BY rr.created DESC";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -205,9 +205,9 @@ class Review extends \JTable
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful,
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='pubreview' AND v.voter=" . $this->_db->Quote($uid) . "
-			WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->Quote($pid);
-			$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='pubreview' AND v.voter=" . $this->_db->quote($uid) . "
+			WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->quote($pid);
+			$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->quote($versionid) : '';
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -235,9 +235,9 @@ class Review extends \JTable
 
 		$query  = "SELECT $select ";
 		$query .= "FROM #__vote_log as v  ";
-		$query .= "WHERE v.referenceid= " . $this->_db->Quote($id) . " 
-					AND v.category=" . $this->_db->Quote($category) . " 
-					AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1";
+		$query .= "WHERE v.referenceid= " . $this->_db->quote($id) . " 
+					AND v.category=" . $this->_db->quote($category) . " 
+					AND v.voter=" . $this->_db->quote($uid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}

@@ -33,7 +33,7 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('Incremental Options'), 'user.png');
 Toolbar::save();
 
-$dbh = JFactory::getDBO();
+$dbh = App::get('db');
 $dbh->setQuery('SELECT popover_text, award_per, test_group FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
 list($popoverText, $awardPer, $testGroup) = $dbh->loadRow();
 $dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx');

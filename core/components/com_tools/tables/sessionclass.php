@@ -40,7 +40,7 @@ class SessionClass extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -131,7 +131,7 @@ class SessionClass extends \JTable
 	 */
 	public function userCount()
 	{
-		$this->_db->setQuery("SELECT COUNT(*) FROM `#__users_tool_preferences` WHERE `class_id`=" . $this->_db->Quote($this->id));
+		$this->_db->setQuery("SELECT COUNT(*) FROM `#__users_tool_preferences` WHERE `class_id`=" . $this->_db->quote($this->id));
 		return $this->_db->loadResult();
 	}
 
@@ -149,12 +149,12 @@ class SessionClass extends \JTable
 
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
+			$where[] = "`alias`=" . $this->_db->quote($filters['alias']);
 		}
 
 		if (isset($filters['jobs']) && $filters['jobs'])
 		{
-			$where[] = "`jobs`=" . $this->_db->Quote($filters['jobs']);
+			$where[] = "`jobs`=" . $this->_db->quote($filters['jobs']);
 		}
 
 		if (count($where))

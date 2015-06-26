@@ -43,7 +43,7 @@ class Log extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -68,7 +68,7 @@ class Log extends \JTable
 		if (!$this->id)
 		{
 			$this->timestamp = Date::toSql();
-			$this->actorid = User::get('id');
+			$this->actorid   = User::get('id');
 		}
 
 		$this->user_id = intval($this->user_id);
@@ -149,7 +149,7 @@ class Log extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `tag_id`=" . $this->_db->Quote($tag_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `tag_id`=" . $this->_db->quote($tag_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -187,23 +187,23 @@ class Log extends \JTable
 
 		if (isset($filters['timestamp']) && (string) $filters['timestamp'] != '')
 		{
-			$where[] = "o.timestamp >= " . $this->_db->Quote($filters['timestamp']);
+			$where[] = "o.timestamp >= " . $this->_db->quote($filters['timestamp']);
 		}
 		if (isset($filters['action']) && (string) $filters['action'] != '')
 		{
-			$where[] = "o.action=" . $this->_db->Quote($filters['action']);
+			$where[] = "o.action=" . $this->_db->quote($filters['action']);
 		}
 		if (isset($filters['tag_id']) && (int) $filters['tag_id'] > 0)
 		{
-			$where[] = "o.tag_id=" . $this->_db->Quote(intval($filters['tag_id']));
+			$where[] = "o.tag_id=" . $this->_db->quote(intval($filters['tag_id']));
 		}
 		if (isset($filters['user_id']) && (int) $filters['user_id'] >= 0)
 		{
-			$where[] = "o.user_id=" . $this->_db->Quote(intval($filters['user_id']));
+			$where[] = "o.user_id=" . $this->_db->quote(intval($filters['user_id']));
 		}
 		if (isset($filters['actorid']) && (int) $filters['actorid'] > 0)
 		{
-			$where[] = "o.actorid=" . $this->_db->Quote(intval($filters['actorid']));
+			$where[] = "o.actorid=" . $this->_db->quote(intval($filters['actorid']));
 		}
 
 		if (count($where) > 0)

@@ -102,7 +102,7 @@ if ($canDo->get('core.edit'))
 		</tfoot>
 		<tbody>
 <?php
-$db = JFactory::getDBO();
+$db = App::get('db');
 $tbl = new JTableExtension($db);
 
 $k = 0;

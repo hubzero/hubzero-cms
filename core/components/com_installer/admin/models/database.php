@@ -90,7 +90,7 @@ class Database extends Extension
 	public function getItems()
 	{
 		$folder = PATH_CORE . '/components/com_admin/amdin/sql/updates/';
-		$changeSet = \JSchemaChangeset::getInstance(\JFactory::getDbo(), $folder);
+		$changeSet = \JSchemaChangeset::getInstance(\App::get('db'), $folder);
 		return $changeSet;
 	}
 
@@ -108,7 +108,7 @@ class Database extends Extension
 
 	public function getSchemaVersion()
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('version_id')->from($db->qn('#__schemas'))
 			->where('extension_id = 700');
@@ -132,7 +132,7 @@ class Database extends Extension
 	{
 		// Get correct schema version -- last file in array
 		$schema = $changeSet->getSchema();
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$result = false;
 
 		// Check value. If ok, don't do update

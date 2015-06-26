@@ -2211,7 +2211,7 @@ class Wishlists extends SiteController
 	 */
 	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$query = "SELECT a.id AS value, a.name AS text"
 			  . "\n FROM #__users AS a"

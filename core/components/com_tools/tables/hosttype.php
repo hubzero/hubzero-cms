@@ -201,7 +201,7 @@ class Hosttype extends \JTable
 		}
 
 		$query = 'DELETE FROM '.$this->_db->nameQuote($this->_tbl).
-				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
+				' WHERE '.$this->_tbl_key.' = '. $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 
 		if ($this->_db->query())

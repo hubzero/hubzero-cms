@@ -94,7 +94,7 @@ class Author extends \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id="
-				. $this->_db->Quote($vid) . " AND user_id=" . $this->_db->Quote($uid);
+				. $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
 		$query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
@@ -135,7 +135,7 @@ class Author extends \JTable
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE publication_version_id="
-				. $this->_db->Quote($vid) . " AND project_owner_id=" . $this->_db->Quote($owner_id);
+				. $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
 		$query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
@@ -188,7 +188,7 @@ class Author extends \JTable
 			$query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
 		}
 
-		$query .= " WHERE A.publication_version_id=" . $this->_db->Quote($vid);
+		$query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
 		$query .= $active ? " AND A.status=1" : "";
 
 		if ($incSubmitter == false)
@@ -243,7 +243,7 @@ class Author extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->Quote($vid) . " LIMIT 1";
+		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->quote($vid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 
 		$result = $this->_db->loadObjectList();
@@ -256,9 +256,9 @@ class Author extends \JTable
 		$query .= " COALESCE( A.name , x.name ) as name, x.username, x.orcid, COALESCE( A.organization , x.organization ) as organization ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id 
-		            AND A.publication_version_id=" . $this->_db->Quote($vid);
+		            AND A.publication_version_id=" . $this->_db->quote($vid);
 		$query .= " AND A.status=1 AND A.role = 'submitter' ";
-		$query .= " WHERE ( x.uidNumber=" . $this->_db->Quote($by) . ")";
+		$query .= " WHERE ( x.uidNumber=" . $this->_db->quote($by) . ")";
 		$query .= " LIMIT 1 ";
 
 		$this->_db->setQuery( $query );
@@ -300,7 +300,7 @@ class Author extends \JTable
 		$owner_id = $objO->getOwnerId( $projectid, $by);
 
 		// Load submitter record if exists
-		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->Quote($vid);
+		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->quote($vid);
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
 		{
@@ -360,9 +360,9 @@ class Author extends \JTable
 		$query .= " COALESCE( A.lastName, x.surname ) lastName ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id
-		            AND A.publication_version_id=" . $this->_db->Quote($vid);
+		            AND A.publication_version_id=" . $this->_db->quote($vid);
 		$query .= $active ? " AND A.status=1" : "";
-		$query .= " WHERE x.uidNumber=" . $this->_db->Quote($uid);
+		$query .= " WHERE x.uidNumber=" . $this->_db->quote($uid);
 		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
 		$query .= " LIMIT 1 ";
 
@@ -402,10 +402,10 @@ class Author extends \JTable
 		$query .= " COALESCE( A.lastName, x.surname ) lastName ";
 		$query .= " FROM #__project_owners as po  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id
-		            AND A.publication_version_id=" . $this->_db->Quote($vid);
+		            AND A.publication_version_id=" . $this->_db->quote($vid);
 		$query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=po.userid ";
 		$query .= " AND po.status!=2 ";
-		$query .= " WHERE po.id=" . $this->_db->Quote($owner_id);
+		$query .= " WHERE po.id=" . $this->_db->quote($owner_id);
 		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
 		$query .= " LIMIT 1 ";
 
@@ -427,7 +427,7 @@ class Author extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
@@ -465,12 +465,12 @@ class Author extends \JTable
 		}
 		if ($delete == 1)
 		{
-			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid) . " AND user_id=" . $this->_db->Quote($uid);
+			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
 			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 		else
 		{
-			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->Quote($vid) . " AND user_id=" . $this->_db->Quote($uid);
+			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
 			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 
@@ -511,12 +511,12 @@ class Author extends \JTable
 		}
 		if ($delete == 1)
 		{
-			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid) . " AND project_owner_id=" . $this->_db->Quote($owner_id);
+			$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
 			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 		else
 		{
-			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->Quote($vid) . " AND project_owner_id=" . $this->_db->Quote($owner_id);
+			$query = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
 			$query.= " AND (role IS NULL OR role != 'submitter')  ";
 		}
 
@@ -539,18 +539,18 @@ class Author extends \JTable
 		$query = "INSERT INTO $this->_tbl (	publication_version_id, user_id, ordering,
 				name, firstName, lastName, organization, credit, created,
 				created_by, status, project_owner_id)
-				VALUES(" . $this->_db->Quote($this->publication_version_id) . ", "
-				. $this->_db->Quote($this->user_id) . ", "
-				. $this->_db->Quote($this->ordering) . ", "
-				. $this->_db->Quote($this->name) . ", "
-				. $this->_db->Quote($this->firstName) . ", "
-				. $this->_db->Quote($this->lastName) . ", "
-				. $this->_db->Quote($this->organization) . ", "
-				. $this->_db->Quote($this->credit) . ", "
-				. $this->_db->Quote(Date::toSql()) . ", "
-				. $this->_db->Quote($this->created_by) . ", "
-				. $this->_db->Quote($this->status) . ", "
-				. $this->_db->Quote($this->project_owner_id) . ")";
+				VALUES(" . $this->_db->quote($this->publication_version_id) . ", "
+				. $this->_db->quote($this->user_id) . ", "
+				. $this->_db->quote($this->ordering) . ", "
+				. $this->_db->quote($this->name) . ", "
+				. $this->_db->quote($this->firstName) . ", "
+				. $this->_db->quote($this->lastName) . ", "
+				. $this->_db->quote($this->organization) . ", "
+				. $this->_db->quote($this->credit) . ", "
+				. $this->_db->quote(Date::toSql()) . ", "
+				. $this->_db->quote($this->created_by) . ", "
+				. $this->_db->quote($this->status) . ", "
+				. $this->_db->quote($this->project_owner_id) . ")";
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -569,18 +569,18 @@ class Author extends \JTable
 	public function updateAssociationByOwner()
 	{
 		$query = "UPDATE $this->_tbl
-					SET ordering=" . $this->_db->Quote($this->ordering) . ",
-					name=" . $this->_db->Quote($this->name) . ",
-					firstName=" . $this->_db->Quote($this->firstName) . ",
-					lastName=" . $this->_db->Quote($this->lastName) . ",
-					credit=" . $this->_db->Quote($this->credit) . ",
-					modified=" . $this->_db->Quote($this->modified) . ",
-					modified_by=" . $this->_db->Quote($this->modified_by) . ",
-					role=" . $this->_db->Quote($this->role) . ",
-					name=" . $this->_db->Quote($this->name) . ",
-					organization=" . $this->_db->Quote($this->organization) . "
-					WHERE publication_version_id=" . $this->_db->Quote($this->publication_version_id)
-					. " AND project_owner_id=" . $this->_db->Quote($this->project_owner_id)
+					SET ordering=" . $this->_db->quote($this->ordering) . ",
+					name=" . $this->_db->quote($this->name) . ",
+					firstName=" . $this->_db->quote($this->firstName) . ",
+					lastName=" . $this->_db->quote($this->lastName) . ",
+					credit=" . $this->_db->quote($this->credit) . ",
+					modified=" . $this->_db->quote($this->modified) . ",
+					modified_by=" . $this->_db->quote($this->modified_by) . ",
+					role=" . $this->_db->quote($this->role) . ",
+					name=" . $this->_db->quote($this->name) . ",
+					organization=" . $this->_db->quote($this->organization) . "
+					WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id)
+					. " AND project_owner_id=" . $this->_db->quote($this->project_owner_id)
 					. " AND (role IS NULL OR role != 'submitter')";
 
 		$this->_db->setQuery( $query );
@@ -608,7 +608,7 @@ class Author extends \JTable
 					x.name, x.organization, x.uidNumber, x.givenName, x.surname, x.orcid ";
 		$query  .= " FROM #__project_owners as PO  ";
 		$query  .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
-		$query  .= " WHERE PO.id=" . $this->_db->Quote($owner_id) . " LIMIT 1";
+		$query  .= " WHERE PO.id=" . $this->_db->quote($owner_id) . " LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
@@ -632,7 +632,7 @@ class Author extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid) . " AND status=1 " );
+		$this->_db->setQuery( "SELECT count(*) FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND status=1 " );
 		return $this->_db->loadResult();
 	}
 
@@ -653,7 +653,7 @@ class Author extends \JTable
 			return false;
 		}
 		$this->_db->setQuery( "SELECT ordering FROM $this->_tbl
-			WHERE publication_version_id=" . $this->_db->Quote($vid) . "
+			WHERE publication_version_id=" . $this->_db->quote($vid) . "
 			ORDER BY ordering DESC LIMIT 1" );
 		return $this->_db->loadResult();
 	}
@@ -669,11 +669,11 @@ class Author extends \JTable
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($this->publication_version_id) . " AND ordering < " . $this->_db->Quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering < " . $this->_db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($this->publication_version_id) . " AND ordering > " . $this->_db->Quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering > " . $this->_db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery( $sql );

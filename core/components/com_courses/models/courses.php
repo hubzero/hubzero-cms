@@ -78,7 +78,7 @@ class Courses extends Object
 	 */
 	public function __construct()
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Course($this->_db);
 	}

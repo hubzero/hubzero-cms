@@ -93,7 +93,7 @@ switch ($this->action)
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$memberBadge = new \Components\Courses\Tables\MemberBadge($db);
 		$memberBadge->load(array('validation_token' => $this->token));

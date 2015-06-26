@@ -61,14 +61,14 @@ class Helper
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == ''))
 			{
-				$instance = \JFactory::getDBO();
+				$instance = \App::get('db');
 			}
 			else
 			{
 				$instance = \JDatabase::getInstance($options);
 				if ($instance instanceof \Exception)
 				{
-					$instance = \JFactory::getDBO();
+					$instance = \App::get('db');
 				}
 			}
 		}

@@ -170,7 +170,7 @@ class Request
 
 		if ($tag_ids)
 		{
-			$dbh = \JFactory::getDBO();
+			$dbh = \App::get('db');
 			$dbh->setQuery(
 				'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')'
 			);

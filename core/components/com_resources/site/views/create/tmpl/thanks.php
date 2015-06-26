@@ -38,7 +38,7 @@ $state = 'pending';
 $type = '';
 if ($this->resource->id)
 {
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 	$ra = new \Components\Resources\Tables\Assoc($database);
 	$rc = new \Components\Resources\Tables\Contributor($database);
 	$rt = new \Components\Resources\Helpers\Tags($this->resource->id);

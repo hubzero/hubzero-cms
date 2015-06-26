@@ -71,7 +71,7 @@ class Sessionsv1_0 extends ApiController
 		//if ($result === false) return $this->not_found();
 
 		//instantiate database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//get list of tools
 		$tools = \Components\Tools\Models\Tool::getMyTools();
@@ -132,7 +132,7 @@ class Sessionsv1_0 extends ApiController
 	 */
 	public function infoTask()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$tool    = Request::getVar('tool', '');
 		$version = Request::getVar('version', 'current');
@@ -388,7 +388,7 @@ class Sessionsv1_0 extends ApiController
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 
 		//create database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//load the tool version
 		$tv = new \Components\Tools\Tables\Version($database);
@@ -576,7 +576,7 @@ class Sessionsv1_0 extends ApiController
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
 		// Create database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Load the tool version
 		$tv = new \Components\Tools\Tables\Version($database);
@@ -882,7 +882,7 @@ class Sessionsv1_0 extends ApiController
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
 
 		//instantiate db objects
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars

@@ -44,7 +44,7 @@ class Attachment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -92,7 +92,7 @@ class Attachment extends \JTable
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->Quote($this->filename) . " AND description=" . $this->_db->Quote($this->description) . " AND ticket=" . $this->_db->Quote($this->ticket));
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->quote($this->filename) . " AND description=" . $this->_db->quote($this->description) . " AND ticket=" . $this->_db->quote($this->ticket));
 		$id = $this->_db->loadResult();
 		$this->id = $id;
 	}
@@ -121,7 +121,7 @@ class Attachment extends \JTable
 		$tokens = explode('#', $match);
 		$id     = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->quote($id));
 		$a = $this->_db->loadRow();
 
 		if ($this->output != 'web' && $this->output != 'email')
@@ -172,7 +172,7 @@ class Attachment extends \JTable
 	 */
 	public function deleteAttachment($filename, $ticket, $comment=0)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket) . " AND comment=" . $this->_db->Quote($comment));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND ticket=" . $this->_db->quote($ticket) . " AND comment=" . $this->_db->quote($comment));
 		if (!$this->_db->query())
 		{
 			return $this->_db->getErrorMsg();
@@ -188,7 +188,7 @@ class Attachment extends \JTable
 	 */
 	public function deleteAllForTicket($ticket)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $this->_db->quote($ticket));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -226,7 +226,7 @@ class Attachment extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket) . " AND comment=" . $this->_db->Quote($comment));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->quote($filename) . " AND ticket=" . $this->_db->quote($ticket) . " AND comment=" . $this->_db->quote($comment));
 		return $this->_db->loadObject($this);
 	}
 
@@ -239,7 +239,7 @@ class Attachment extends \JTable
 	 */
 	public function updateCommentId($before, $after)
 	{
-		$this->_db->setQuery("UPDATE $this->_tbl SET comment_id=" . $this->_db->Quote($after) . " WHERE comment_id=" . $this->_db->Quote($before));
+		$this->_db->setQuery("UPDATE $this->_tbl SET comment_id=" . $this->_db->quote($after) . " WHERE comment_id=" . $this->_db->quote($before));
 		if (!$this->_db->query())
 		{
 			$this->setError($database->getErrorMsg());
@@ -257,7 +257,7 @@ class Attachment extends \JTable
 	 */
 	public function updateTicketId($before, $after)
 	{
-		$this->_db->setQuery("UPDATE $this->_tbl SET ticket=" . $this->_db->Quote($after) . " WHERE ticket=" . $this->_db->Quote($before));
+		$this->_db->setQuery("UPDATE $this->_tbl SET ticket=" . $this->_db->quote($after) . " WHERE ticket=" . $this->_db->quote($before));
 		if (!$this->_db->query())
 		{
 			$this->setError($database->getErrorMsg());
@@ -328,19 +328,19 @@ class Attachment extends \JTable
 
 		if (isset($filters['ticket']) && (int) $filters['ticket'] > 0)
 		{
-			$where[] = "ticket=" . $this->_db->Quote(intval($filters['ticket']));
+			$where[] = "ticket=" . $this->_db->quote(intval($filters['ticket']));
 		}
 		if (isset($filters['comment_id'])) // && (int) $filters['comment_id'] >= 0)
 		{
-			$where[] = "comment_id=" . $this->_db->Quote(intval($filters['comment_id']));
+			$where[] = "comment_id=" . $this->_db->quote(intval($filters['comment_id']));
 		}
 		if (isset($filters['filename']) && $filters['filename'])
 		{
-			$where[] = "filename=" . $this->_db->Quote($filters['filename']);
+			$where[] = "filename=" . $this->_db->quote($filters['filename']);
 		}
 		if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 		{
-			$where[] = "created_by=" . $this->_db->Quote(intval($filters['created_by']));
+			$where[] = "created_by=" . $this->_db->quote(intval($filters['created_by']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

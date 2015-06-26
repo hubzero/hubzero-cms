@@ -67,7 +67,7 @@ if (!$this->publication->isPublished())
 	return;
 }
 
-$database = \JFactory::getDbo();
+$database = \App::get('db');
 
 $data = '';
 foreach ($this->sections as $section)

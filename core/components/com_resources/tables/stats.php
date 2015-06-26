@@ -44,7 +44,7 @@ class Stats extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -88,7 +88,7 @@ class Stats extends \JTable
 
 		$sql = "SELECT *
 				FROM $this->_tbl
-				WHERE `period`=" . $this->_db->Quote($period) . " AND `resid`=" . $this->_db->Quote($resid);
+				WHERE `period`=" . $this->_db->quote($period) . " AND `resid`=" . $this->_db->quote($resid);
 		if ($dthis)
 		{
 			$sql .= " AND `datetime`=" . $this->_db->quote($dthis . "-00 00:00:00");

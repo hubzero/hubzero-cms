@@ -35,7 +35,7 @@ $this->css()
      ->js();
 
 //database object
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 //declare vars
 $citations_require_attention = $this->citations_require_attention;

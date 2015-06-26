@@ -94,7 +94,7 @@ class PagePermissions extends \JModelAdmin
 		 */
 	public function getTable($type = 'Page', $prefix = 'Wiki', $config = array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		return new \Components\Wiki\Tables\Page($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 

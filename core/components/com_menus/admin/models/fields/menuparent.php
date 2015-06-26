@@ -36,7 +36,7 @@ class JFormFieldMenuParent extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text, a.level');

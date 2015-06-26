@@ -50,7 +50,7 @@ class JFormFieldModal_Article extends JFormField
 		$html	= array();
 		$link	= 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_'.$this->id;
 
-		$db	= JFactory::getDBO();
+		$db	= App::get('db');
 		$db->setQuery(
 			'SELECT title' .
 			' FROM #__content' .

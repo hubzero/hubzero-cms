@@ -42,7 +42,7 @@ class Course extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -161,10 +161,10 @@ class Course extends \JTable
 		$sql = "SELECT alias FROM $this->_tbl";
 		if ($this->id)
 		{
-			$sql .= " WHERE `id`!=" . $this->_db->Quote(intval($this->id));
+			$sql .= " WHERE `id`!=" . $this->_db->quote(intval($this->id));
 		}
 		$this->_db->setQuery($sql);
-		$result = $this->_db->loadResultArray();
+		$result = $this->_db->loadColumn();
 
 		$original_alias = $this->alias;
 
@@ -232,29 +232,29 @@ class Course extends \JTable
 			}
 			else
 			{
-				$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+				$where[] = "c.state=" . $this->_db->quote($filters['state']);
 			}
 		}
 		if (isset($filters['created_by']) && $filters['created_by'] >= 0)
 		{
-			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['access']) && $filters['access'] >= 0)
 		{
-			$where[] = "c.access=" . $this->_db->Quote($filters['access']);
+			$where[] = "c.access=" . $this->_db->quote($filters['access']);
 		}
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "c.alias=" . $this->_db->Quote($filters['alias']);
+			$where[] = "c.alias=" . $this->_db->quote($filters['alias']);
 		}
 		if (isset($filters['group_id']) && $filters['group_id'] >= 0)
 		{
-			$where[] = "c.group_id=" . $this->_db->Quote($filters['group_id']);
+			$where[] = "c.group_id=" . $this->_db->quote($filters['group_id']);
 		}
 
 		if (isset($filters['index']) && $filters['index'] != '')
 		{
-			$where[] = "LOWER(LEFT(c.title, 1)) = " . $this->_db->Quote(strtolower($filters['index']));
+			$where[] = "LOWER(LEFT(c.title, 1)) = " . $this->_db->quote(strtolower($filters['index']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -366,7 +366,7 @@ class Course extends \JTable
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=0 AND r.alias='manager'";
+					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=0 AND r.alias='manager'";
 
 		$query3 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM $this->_tbl AS c
@@ -374,7 +374,7 @@ class Course extends \JTable
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=0 AND r.alias='instructor'";
+					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=0 AND r.alias='instructor'";
 
 		$query4 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM $this->_tbl AS c
@@ -382,7 +382,7 @@ class Course extends \JTable
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=1 AND c.state=1";
+					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=1 AND c.state=1";
 
 		$query5 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM $this->_tbl AS c
@@ -390,7 +390,7 @@ class Course extends \JTable
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=0 AND r.alias='ta' AND c.state=1";
+					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=0 AND r.alias='ta' AND c.state=1";
 
 		switch ($type)
 		{
@@ -401,7 +401,7 @@ class Course extends \JTable
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->Quote($uid);
+					WHERE m.user_id=" . $this->_db->quote($uid);
 			break;
 			case 'manager':
 				$query = $query2; //"( $query1 ) UNION ( $query2 )";
@@ -423,7 +423,7 @@ class Course extends \JTable
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND r.alias=" . $this->_db->Quote($type);
+					WHERE m.user_id=" . $this->_db->quote($uid) . " AND r.alias=" . $this->_db->quote($type);
 			break;
 		}
 

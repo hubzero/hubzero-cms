@@ -42,7 +42,7 @@ class Vote extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -105,7 +105,7 @@ class Vote extends \JTable
 
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
-			$where[] = "v.user_id=" . $this->_db->Quote(intval($filters['user_id']));
+			$where[] = "v.user_id=" . $this->_db->quote(intval($filters['user_id']));
 		}
 		if (isset($filters['collection_id']) && $filters['collection_id'])
 		{
@@ -116,7 +116,7 @@ class Vote extends \JTable
 			}
 			else
 			{
-				$where[] = "s.collection_id=" . $this->_db->Quote(intval($filters['collection_id']));
+				$where[] = "s.collection_id=" . $this->_db->quote(intval($filters['collection_id']));
 			}
 		}
 		if (count($where) > 0)
@@ -144,7 +144,7 @@ class Vote extends \JTable
 
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
-			$where[] = "v.user_id=" . $this->_db->Quote(intval($filters['user_id']));
+			$where[] = "v.user_id=" . $this->_db->quote(intval($filters['user_id']));
 		}
 		if (isset($filters['collection_id']) && $filters['collection_id'])
 		{
@@ -155,7 +155,7 @@ class Vote extends \JTable
 			}
 			else
 			{
-				$where[] = "s.collection_id=" . $this->_db->Quote(intval($filters['collection_id']));
+				$where[] = "s.collection_id=" . $this->_db->quote(intval($filters['collection_id']));
 			}
 		}
 		if (count($where) > 0)

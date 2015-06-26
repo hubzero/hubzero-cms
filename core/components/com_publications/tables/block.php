@@ -57,7 +57,7 @@ class Block extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE block=" . $this->_db->Quote($name)  . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE block=" . $this->_db->quote($name)  . " LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -74,7 +74,7 @@ class Block extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE block=" . $this->_db->Quote($name)  . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE block=" . $this->_db->quote($name)  . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -120,7 +120,7 @@ class Block extends \JTable
 			return false;
 		}
 
-		$query = "SELECT manifest FROM $this->_tbl WHERE block=" . $this->_db->Quote($name);
+		$query = "SELECT manifest FROM $this->_tbl WHERE block=" . $this->_db->quote($name);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );

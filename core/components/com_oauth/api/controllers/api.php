@@ -139,7 +139,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 		$token_secret = sha1(OAuthProvider::generateToken(20,false));
 		$verifier = sha1(OAuthProvider::generateToken(20,false));
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$consumer_data = $this->_provider->getConsumerData();
 
@@ -192,7 +192,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			$this->view->setLayout('notoken');
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	.
 				$db->Quote($oauth_token) .
@@ -381,7 +381,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 			$useraccount = User::getInstance(JUserHelper::getUserId($x_auth_username));
 
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 
 			$db->setQuery("SELECT token,token_secret FROM #__oauthp_tokens WHERE consumer_id="
 				. $db->Quote($this->_provider->getConsumerData()->id) . " AND user_id ="
@@ -406,7 +406,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				$token = sha1(OAuthProvider::generateToken(20,false));
 				$token_secret = sha1(OAuthProvider::generateToken(20,false));
 
-				$db = JFactory::getDBO();
+				$db = App::get('db');
 
 				$db->setQuery("INSERT INTO #__oauthp_tokens (consumer_id,user_id,state,token,token_secret,callback_url) VALUE ("
 					. $db->Quote($this->_provider->getConsumerData()->id) . ","

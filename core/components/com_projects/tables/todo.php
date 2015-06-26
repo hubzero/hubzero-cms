@@ -61,8 +61,8 @@ class Todo extends \JTable
 		}
 
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE projectid="
-			. $this->_db->Quote($projectid) . " AND id="
-			. $this->_db->Quote($id) . " LIMIT 1" );
+			. $this->_db->quote($projectid) . " AND id="
+			. $this->_db->quote($id) . " LIMIT 1" );
 
 		if ($result = $this->_db->loadAssoc())
 		{
@@ -129,12 +129,12 @@ class Todo extends \JTable
 		}
 		else
 		{
-			$query .= $color ? " AND p.color=" . $this->_db->Quote($color) : " ";
-			$query .= $assignedto ? " AND p.assigned_to=" . $this->_db->Quote($assignedto) : " ";
-			$query .= " AND p.state=" . $this->_db->Quote($state);
+			$query .= $color ? " AND p.color=" . $this->_db->quote($color) : " ";
+			$query .= $assignedto ? " AND p.assigned_to=" . $this->_db->quote($assignedto) : " ";
+			$query .= " AND p.state=" . $this->_db->quote($state);
 			if ($activityid)
 			{
-				$query .= " AND p.activityid=" . $this->_db->Quote($activityid);
+				$query .= " AND p.activityid=" . $this->_db->quote($activityid);
 			}
 		}
 
@@ -192,7 +192,7 @@ class Todo extends \JTable
 		$query	= "SELECT ";
 		$query .= isset($filters['count']) && $filters['count'] == 1 ? " COUNT(*) " : "DISTINCT todolist, color ";
 		$query .= "FROM $this->_tbl ";
-		$query .= "WHERE projectid =" . $this->_db->Quote($projectid) . " AND todolist IS NOT NULL AND color IS NOT NULL AND todolist != '' AND color != '' ";
+		$query .= "WHERE projectid =" . $this->_db->quote($projectid) . " AND todolist IS NOT NULL AND color IS NOT NULL AND todolist != '' AND color != '' ";
 		$query .= "ORDER BY todolist";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -213,8 +213,8 @@ class Todo extends \JTable
 		}
 
 		$query	= "SELECT todolist FROM $this->_tbl ";
-		$query .= "WHERE projectid =" . $this->_db->Quote($projectid)
-				. " AND color = " . $this->_db->Quote($color);
+		$query .= "WHERE projectid =" . $this->_db->quote($projectid)
+				. " AND color = " . $this->_db->quote($color);
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -236,11 +236,11 @@ class Todo extends \JTable
 		}
 		if ($all)
 		{
-			$query	= "DELETE FROM $this->_tbl WHERE projectid =" . $this->_db->Quote($projectid) . " AND color = " . $this->_db->Quote($color);
+			$query	= "DELETE FROM $this->_tbl WHERE projectid =" . $this->_db->quote($projectid) . " AND color = " . $this->_db->quote($color);
 		}
 		else
 		{
-			$query	= "UPDATE $this->_tbl SET color = '', todolist = '' WHERE projectid =" . $this->_db->Quote($projectid) . " AND color =" . $this->_db->Quote($color);
+			$query	= "UPDATE $this->_tbl SET color = '', todolist = '' WHERE projectid =" . $this->_db->quote($projectid) . " AND color =" . $this->_db->quote($color);
 		}
 
 		$this->_db->setQuery( $query );
@@ -266,7 +266,7 @@ class Todo extends \JTable
 		}
 
 		$query	= "SELECT priority FROM $this->_tbl ";
-		$query .= "WHERE projectid =" . $this->_db->Quote($projectid) . "
+		$query .= "WHERE projectid =" . $this->_db->quote($projectid) . "
 				ORDER BY priority DESC LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -288,14 +288,14 @@ class Todo extends \JTable
 		}
 		if ($permanent)
 		{
-			$query	= "DELETE FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid);
+			$query	= "DELETE FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
 		}
 		else
 		{
-			$query	= "UPDATE $this->_tbl SET state = 2 WHERE projectid =" . $this->_db->Quote($projectid);
+			$query	= "UPDATE $this->_tbl SET state = 2 WHERE projectid =" . $this->_db->quote($projectid);
 		}
 
-		$query.= $todolist ? " AND color=" . $this->_db->Quote($todolist) : "";
+		$query.= $todolist ? " AND color=" . $this->_db->quote($todolist) : "";
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
@@ -317,14 +317,14 @@ class Todo extends \JTable
 
 		if ($permanent)
 		{
-			$query	= "DELETE FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid);
+			$query	= "DELETE FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
 		}
 		else
 		{
-			$query	= "UPDATE $this->_tbl SET state = 2 WHERE projectid =" . $this->_db->Quote($projectid);
+			$query	= "UPDATE $this->_tbl SET state = 2 WHERE projectid =" . $this->_db->quote($projectid);
 		}
 
-		$query .= " AND id=" . $this->_db->Quote($todoid);
+		$query .= " AND id=" . $this->_db->quote($todoid);
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 		return true;

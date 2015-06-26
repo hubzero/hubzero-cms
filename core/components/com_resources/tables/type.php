@@ -38,7 +38,7 @@ class Type extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -88,7 +88,7 @@ class Type extends \JTable
 
 		if (!isset($instances[$id]))
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 
 			$tbl = new self($db);
 			$tbl->load($id);
@@ -131,7 +131,7 @@ class Type extends \JTable
 		$query = "SELECT count(*) FROM $this->_tbl";
 		if (isset($filters['category']) && $filters['category'])
 		{
-			$query .= " WHERE category=" . $this->_db->Quote($filters['category']);
+			$query .= " WHERE category=" . $this->_db->quote($filters['category']);
 		}
 		else
 		{
@@ -154,7 +154,7 @@ class Type extends \JTable
 		$query  = "SELECT * FROM $this->_tbl ";
 		if (isset($filters['category']) && $filters['category'])
 		{
-			$query .= "WHERE category=" . $this->_db->Quote($filters['category']) . " ";
+			$query .= "WHERE category=" . $this->_db->quote($filters['category']) . " ";
 		}
 		else
 		{
@@ -175,7 +175,7 @@ class Type extends \JTable
 	 */
 	public function getTypes($cat='0')
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE category=" . $this->_db->Quote($cat) . " ORDER BY type");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE category=" . $this->_db->quote($cat) . " ORDER BY type");
 		return $this->_db->loadObjectList();
 	}
 
@@ -200,7 +200,7 @@ class Type extends \JTable
 
 		$r = new Resource($this->_db);
 
-		$this->_db->setQuery("SELECT count(*) FROM $r->_tbl WHERE type=" . $this->_db->Quote($id) . " OR logical_type=" . $this->_db->Quote($id));
+		$this->_db->setQuery("SELECT count(*) FROM $r->_tbl WHERE type=" . $this->_db->quote($id) . " OR logical_type=" . $this->_db->quote($id));
 		return $this->_db->loadResult();
 	}
 
@@ -227,7 +227,7 @@ class Type extends \JTable
 
 		$query = "SELECT r.id, r.title, r.alias
 					FROM `#__author_roles` AS r
-					JOIN `#__author_role_types` AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
+					JOIN `#__author_role_types` AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->quote($type_id) . "
 					ORDER BY r.title ASC";
 
 		$this->_db->setQuery($query);

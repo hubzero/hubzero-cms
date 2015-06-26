@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 // Instantiate a helper object
 $helper = new \Components\Resources\Helpers\Helper($this->line->id, $database);
@@ -112,7 +112,7 @@ if ($this->config->get('supportedtag'))
 		<dl class="rankinfo">
 			<dt class="ranking">
 				<?php
-				//$database = JFactory::getDBO();
+				//$database = App::get('db');
 
 				// Get statistics info
 				$helper->getCitationsCount();

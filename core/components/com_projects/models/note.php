@@ -63,7 +63,7 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function __construct($scope = '__site__', $group_cn = '', $project_id = 0)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 		$this->_scope = $scope;
 		$this->_tbl = new \Components\Wiki\Tables\Page($this->_db);
 		$this->_group_cn = $group_cn;

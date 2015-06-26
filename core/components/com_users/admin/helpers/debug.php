@@ -27,7 +27,7 @@ class UsersHelperDebug
 	static function getComponents()
 	{
 		// Initialise variable.
-		$db    = JFactory::getDbo();
+		$db    = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('name AS text, element AS value')

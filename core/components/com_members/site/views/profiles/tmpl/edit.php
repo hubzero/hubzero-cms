@@ -307,7 +307,7 @@ if ($this->registration->Organization != REG_HIDE) {
 
 	//$orgs = array();
 	include_once( PATH_CORE.DS.'components'.DS.'com_members'.DS.'tables'.DS.'organization.php' );
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 
 	$xo = new \Components\Members\Tables\Organization($database);
 	$orgs = $xo->find('list');

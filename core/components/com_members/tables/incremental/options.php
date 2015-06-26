@@ -72,7 +72,7 @@ class ModIncrementalRegistrationOptions
 			return false;
 		}
 
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 		$dbh->setQuery('SELECT emailConfirmed FROM `#__xprofiles` WHERE uidNumber = ' . $uid);
 		if ($dbh->loadResult() < 0)
 		{
@@ -107,7 +107,7 @@ class ModIncrementalRegistrationOptions
 
 		$uid = $uid ?: (int)User::get('id');
 
-		$dbh = JFactory::getDBO();
+		$dbh = App::get('db');
 		$dbh->setQuery('SELECT edited_profile FROM `#__profile_completion_awards` WHERE user_id = ' . $uid);
 		return !$dbh->loadResult();
 	}
@@ -121,7 +121,7 @@ class ModIncrementalRegistrationOptions
 	{
 		if (!self::$current)
 		{
-			$dbh = JFactory::getDBO();
+			$dbh = App::get('db');
 			$dbh->setQuery('SELECT * FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
 			self::$current = $dbh->loadAssoc();
 		}

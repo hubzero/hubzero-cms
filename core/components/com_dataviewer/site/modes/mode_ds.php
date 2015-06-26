@@ -37,7 +37,7 @@ function get_dd($db_id)
 {
 	global $dv_conf;
 	$dd = false;
-	$db = JFactory::getDBO();
+	$db = App::get('db');
 
 	$dv_id = Request::getVar('dv');
 

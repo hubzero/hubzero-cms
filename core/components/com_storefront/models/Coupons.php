@@ -49,7 +49,7 @@ class StorefrontModelCoupons
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = App::get('db');
 
 		// Load language file
 		Lang::load('com_storefront');

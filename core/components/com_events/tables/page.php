@@ -78,7 +78,7 @@ class Page extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias) . " AND event_id=" . intval($event_id));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " AND event_id=" . intval($event_id));
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);

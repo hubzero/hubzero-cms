@@ -92,7 +92,7 @@ class Authorization
 	{
 		if (is_null($this->groups))
 		{
-			$dbh = \JFactory::getDBO();
+			$dbh = \App::get('db');
 			$dbh->setQuery(
 				'SELECT DISTINCT xm.gidNumber, g.cn
 				FROM `#__xgroups_members` AS xm

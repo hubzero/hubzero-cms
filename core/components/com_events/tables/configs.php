@@ -161,7 +161,7 @@ class Configs
 		);
 		foreach ($config as $p => $v)
 		{
-			$this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES (" . $this->_db->Quote($p) . ", " . $this->_db->Quote($v) . ")");
+			$this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES (" . $this->_db->quote($p) . ", " . $this->_db->quote($v) . ")");
 			if (!$this->_db->query())
 			{
 				return false;

@@ -203,7 +203,7 @@ class Offering extends Base
 	{
 		$section = '!!default!!';
 
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Offering($this->_db);
 
@@ -1177,7 +1177,7 @@ class Offering extends Base
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username=" . $this->_db->Quote($user));
+		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username=" . $this->_db->quote($user));
 
 		if (($result = $this->_db->loadResult()))
 		{

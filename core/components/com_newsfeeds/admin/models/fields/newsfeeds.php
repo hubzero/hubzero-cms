@@ -36,7 +36,7 @@ class JFormFieldNewsfeeds extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('id As value, name As text');

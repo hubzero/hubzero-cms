@@ -139,7 +139,7 @@ class Category extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias)  . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias)  . " LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -156,7 +156,7 @@ class Category extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias)  . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias)  . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -188,7 +188,7 @@ class Category extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT count(*) FROM #__publications WHERE category=" . $this->_db->Quote($id));
+		$this->_db->setQuery( "SELECT count(*) FROM #__publications WHERE category=" . $this->_db->quote($id));
 		return $this->_db->loadResult();
 	}
 }

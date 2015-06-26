@@ -94,7 +94,7 @@ class Comment extends \JModelAdmin
 	 */
 	public function getTable($type = 'Comment', $prefix = 'Blog', $config = array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		return new \Components\Blog\Tables\Comment($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 

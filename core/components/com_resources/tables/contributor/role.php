@@ -38,7 +38,7 @@ class Role extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -157,7 +157,7 @@ class Role extends \JTable
 		$where = array();
 		if (isset($filters['state']))
 		{
-			$where[] = "r.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "r.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -192,7 +192,7 @@ class Role extends \JTable
 		$this->_db->setQuery(
 			"SELECT r.id, r.title, r.alias
 			FROM `$this->_tbl` AS r
-			JOIN `#__author_role_types` AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
+			JOIN `#__author_role_types` AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->quote($type_id) . "
 			ORDER BY r.title ASC"
 		);
 		return $this->_db->loadObjectList();
@@ -219,7 +219,7 @@ class Role extends \JTable
 			"SELECT r.id, r.type, r.alias
 			FROM `#__resource_types` AS r
 			LEFT JOIN `#__author_role_types` AS rt ON r.id=rt.type_id
-			WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
+			WHERE rt.role_id=" . $this->_db->quote($role_id) . "
 			ORDER BY r.type ASC"
 		);
 		return $this->_db->loadObjectList();

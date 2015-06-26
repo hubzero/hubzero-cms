@@ -49,7 +49,7 @@ class Router extends Base
 
 		if (!empty($query['id']))
 		{
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 			$sql = "SELECT `alias` FROM `#__newsletters` WHERE `id`=" . $database->quote( $query['id'] );
 			$database->setQuery($sql);
 			$campaign = $database->loadResult();
@@ -86,7 +86,7 @@ class Router extends Base
 
 		if (isset($segments[0]))
 		{
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 			$sql = "SELECT `id` FROM `#__newsletters` WHERE `alias`=" . $database->quote($segments[0]);
 			$database->setQuery($sql);
 			$campaignId = $database->loadResult();

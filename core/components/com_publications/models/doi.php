@@ -60,7 +60,7 @@ class Doi extends Object
 	 */
 	public function __construct( $pub = NULL )
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		// Set configs
 		$this->configs();

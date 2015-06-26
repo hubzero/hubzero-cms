@@ -42,7 +42,7 @@ class Response extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -119,13 +119,13 @@ class Response extends \JTable
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.response_id AND ip=" . $this->_db->Quote($filters['ip']) . " WHERE r.state!=2 AND r.question_id=" . $this->_db->Quote($qid);
+			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.response_id AND ip=" . $this->_db->quote($filters['ip']) . " WHERE r.state!=2 AND r.question_id=" . $this->_db->quote($qid);
 		}
 		else
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.question_id=" . $this->_db->Quote($qid);
+			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.question_id=" . $this->_db->quote($qid);
 		}
 		$query .= " ORDER BY r.state DESC, r.created DESC";
 
@@ -148,7 +148,7 @@ class Response extends \JTable
 			return false;
 		}
 
-		$query = "SELECT id, helpful, nothelpful, state, created_by FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid) . " AND state!='2'";
+		$query = "SELECT id, helpful, nothelpful, state, created_by FROM `$this->_tbl` WHERE question_id=" . $this->_db->quote($qid) . " AND state!='2'";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -171,7 +171,7 @@ class Response extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN `#__answers_log` AS l ON r.id=l.response_id AND ip=" . $this->_db->Quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->Quote($id);
+		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN `#__answers_log` AS l ON r.id=l.response_id AND ip=" . $this->_db->quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->quote($id);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -192,7 +192,7 @@ class Response extends \JTable
 			return false;
 		}
 
-		$query  = "UPDATE `$this->_tbl` SET state=" . $this->_db->Quote(2) . " WHERE id=" . $this->_db->Quote($id);
+		$query  = "UPDATE `$this->_tbl` SET state=" . $this->_db->quote(2) . " WHERE id=" . $this->_db->quote($id);
 
 		$this->_db->setQuery($query);
 		$this->_db->query();
@@ -214,7 +214,7 @@ class Response extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid));
+		$this->_db->setQuery("SELECT id FROM `$this->_tbl` WHERE question_id=" . $this->_db->quote($qid));
 		return $this->_db->loadObjectList();
 	}
 
@@ -257,14 +257,14 @@ class Response extends \JTable
 				}
 				else if ($filters['state'] >= 0)
 				{
-					$where[] = "m.state=" . $this->_db->Quote($filters['state']);
+					$where[] = "m.state=" . $this->_db->quote($filters['state']);
 				}
 			}
 		}
 
 		if (isset($filters['question_id']) && $filters['question_id'] > 0)
 		{
-			$where[] = "m.question_id=" . $this->_db->Quote($filters['question_id']);
+			$where[] = "m.question_id=" . $this->_db->quote($filters['question_id']);
 		}
 
 		if (count($where) > 0)

@@ -141,7 +141,7 @@ class Login extends \JModelLegacy
 
 		if (!($clean = $cache->get($cacheid)))
 		{
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 
 			$query = $db->getQuery(true);
 			$query->select('m.id, m.title, m.module, m.position, m.showtitle, m.params');

@@ -40,7 +40,7 @@ class Status extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -85,19 +85,19 @@ class Status extends \JTable
 
 		if (isset($filters['id']))
 		{
-			$where[] = "`id`=" . $this->_db->Quote($filters['uid']);
+			$where[] = "`id`=" . $this->_db->quote($filters['uid']);
 		}
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
+			$where[] = "`alias`=" . $this->_db->quote($filters['alias']);
 		}
 		if (isset($filters['title']) && $filters['title'])
 		{
-			$where[] = "`title`=" . $this->_db->Quote($filters['title']);
+			$where[] = "`title`=" . $this->_db->quote($filters['title']);
 		}
 		if (isset($filters['open']) && $filters['open'] >= 0)
 		{
-			$where[] = "`open`=" . $this->_db->Quote($filters['open']);
+			$where[] = "`open`=" . $this->_db->quote($filters['open']);
 		}
 
 		if (count($where))

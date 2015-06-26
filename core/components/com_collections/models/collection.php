@@ -112,7 +112,7 @@ class Collection extends Base
 	 */
 	public function __construct($oid=null, $object_id=0, $object_type='member')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$tbl = $this->_tbl_name;
 		$this->_tbl = new $tbl($this->_db);

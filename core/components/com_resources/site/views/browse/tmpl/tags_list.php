@@ -107,7 +107,7 @@ switch ($this->level)
 		$html .= '<h3>'.Lang::txt('COM_RESOURCES').' '.\Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"').'</h3>';
 		$html .= '<ul id="ulitems">';
 		if ($tools && count($tools) > 0) {
-			//$database = JFactory::getDBO();
+			//$database = App::get('db');
 			foreach ($tools as $tool)
 			{
 				$tool->title = \Hubzero\Utility\String::truncate($tool->title, 40);
@@ -161,7 +161,7 @@ switch ($this->level)
 		$config = $this->bits['config'];
 		$authorized = $this->bits['authorized'];
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$statshtml = '';
 		if ($params->get('show_ranking')) {

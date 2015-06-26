@@ -57,7 +57,7 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		Document::addScriptDeclaration(implode("\n", $script));
 
 		// Get the title of the linked chart
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery(
 			'SELECT name' .
 			' FROM #__newsfeeds' .

@@ -42,7 +42,7 @@ class Section extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -233,7 +233,7 @@ class Section extends \JTable
 	 */
 	public function getHighestOrdering($scope, $scope_id)
 	{
-		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope);
+		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE scope_id=" . $this->_db->quote(intval($scope_id)) . " AND scope=" . $this->_db->quote($scope);
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -257,7 +257,7 @@ class Section extends \JTable
 
 		if (isset($filters['state']) && (int) $filters['state'] >= 0)
 		{
-			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 		}
 		if (isset($filters['access']))
 		{
@@ -268,26 +268,26 @@ class Section extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+				$where[] = "c.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 
 		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
-			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+			$where[] = "(c.scope_id=" . $this->_db->quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->quote('group') . ")";
 		}
 
 		if (isset($filters['scope']) && (string) $filters['scope'])
 		{
-			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+			$where[] = "c.scope=" . $this->_db->quote(strtolower($filters['scope']));
 		}
 		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 		{
-			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			$where[] = "c.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
 		}
 		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 		{
-			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			$where[] = "c.object_id=" . $this->_db->quote(intval($filters['object_id']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')

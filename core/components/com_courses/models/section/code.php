@@ -70,7 +70,7 @@ class Code extends Base
 	 */
 	public function __construct($oid=null, $section_id=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if ($this->_tbl_name)
 		{

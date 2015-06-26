@@ -60,7 +60,7 @@ class Stamp extends \JTable
 		}
 		$now = Date::toSql();
 
-		$query  = "SELECT * FROM $this->_tbl WHERE stamp=" . $this->_db->Quote($stamp);
+		$query  = "SELECT * FROM $this->_tbl WHERE stamp=" . $this->_db->quote($stamp);
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -99,8 +99,8 @@ class Stamp extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid);
-		$query .= " AND type=" . $this->_db->Quote($type)
+		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
+		$query .= " AND type=" . $this->_db->quote($type)
 				. " AND listed=1 ORDER BY created DESC";
 
 		$this->_db->setQuery( $query );
@@ -121,9 +121,9 @@ class Stamp extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid);
-		$query .= " AND reference=" . $this->_db->Quote($reference)
-				. " AND type= " . $this->_db->Quote($type) . " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
+		$query .= " AND reference=" . $this->_db->quote($reference)
+				. " AND type= " . $this->_db->quote($type) . " LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())

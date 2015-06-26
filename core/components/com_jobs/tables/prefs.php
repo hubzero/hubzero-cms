@@ -60,7 +60,7 @@ class Prefs extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " AND category=" . $this->_db->Quote($category) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid) . " AND category=" . $this->_db->quote($category) . " LIMIT 1");
 
 		if ($result = $this->_db->loadAssoc())
 		{

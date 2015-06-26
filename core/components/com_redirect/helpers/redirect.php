@@ -91,7 +91,7 @@ class Redirect
 	 */
 	public static function isEnabled()
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$db->setQuery(
 			'SELECT enabled' .
 			' FROM #__extensions' .

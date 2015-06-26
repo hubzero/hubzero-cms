@@ -74,7 +74,7 @@ class Offering extends \JTable
 
 		if (!isset($instances[$alias]))
 		{
-			$inst = new self(\JFactory::getDBO());
+			$inst = new self(\App::get('db'));
 			$inst->load($alias);
 
 			$instances[$alias] = $inst;
@@ -151,13 +151,13 @@ class Offering extends \JTable
 	 */
 	private function makeAliasUnique()
 	{
-		$sql = "SELECT alias from $this->_tbl WHERE `course_id`=" . $this->_db->Quote(intval($this->course_id));
+		$sql = "SELECT alias from $this->_tbl WHERE `course_id`=" . $this->_db->quote(intval($this->course_id));
 		if ($this->id)
 		{
-			$sql .= " AND `id`!=" . $this->_db->Quote(intval($this->id));
+			$sql .= " AND `id`!=" . $this->_db->quote(intval($this->id));
 		}
 		$this->_db->setQuery($sql);
-		$result = $this->_db->loadResultArray();
+		$result = $this->_db->loadColumn();
 
 		$original_alias = $this->alias;
 
@@ -185,19 +185,19 @@ class Offering extends \JTable
 
 		if (isset($filters['course_alias']) && $filters['course_alias'])
 		{
-			$where[] = "c.alias=" . $this->_db->Quote($filters['course_alias']);
+			$where[] = "c.alias=" . $this->_db->quote($filters['course_alias']);
 		}
 		else if (isset($filters['course_id'])) // && $filters['course_id'])
 		{
-			$where[] = "c.id=" . $this->_db->Quote(intval($filters['course_id']));
+			$where[] = "c.id=" . $this->_db->quote(intval($filters['course_id']));
 		}
 
 		if (isset($filters['available']) && $filters['available'])
 		{
 			$now = Date::toSql();
 
-			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->Quote($now) . ")";
-			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->Quote($now) . ")";
+			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->quote($now) . ")";
+			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->quote($now) . ")";
 
 			$filters['state'] = 1;
 		}
@@ -211,7 +211,7 @@ class Offering extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "ci.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 

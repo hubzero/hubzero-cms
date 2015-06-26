@@ -42,7 +42,7 @@ class Category extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -248,7 +248,7 @@ class Category extends \JTable
 	 */
 	public function getHighestOrdering($scope, $scope_id)
 	{
-		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope);
+		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE scope_id=" . $this->_db->quote(intval($scope_id)) . " AND scope=" . $this->_db->quote($scope);
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -271,7 +271,7 @@ class Category extends \JTable
 		$where = array();
 		if (isset($filters['state']) && (int) $filters['state'] >= 0)
 		{
-			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 		}
 		if (isset($filters['access']))
 		{
@@ -282,36 +282,36 @@ class Category extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+				$where[] = "c.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 		if (isset($filters['closed']))
 		{
-			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
+			$where[] = "c.closed=" . $this->_db->quote(intval($filters['closed']));
 		}
 		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
-			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+			$where[] = "(c.scope_id=" . $this->_db->quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->quote('group') . ")";
 		}
 		if (isset($filters['scope']) && (string) $filters['scope'])
 		{
-			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+			$where[] = "c.scope=" . $this->_db->quote(strtolower($filters['scope']));
 		}
 		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 		{
-			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			$where[] = "c.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
 		}
 		/*if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
-			$where[] = "c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id']));
+			$where[] = "c.scope_sub_id=" . $this->_db->quote(intval($filters['scope_sub_id']));
 		}*/
 		if (isset($filters['section_id']) && (int) $filters['section_id'] >= 0)
 		{
-			$where[] = "c.section_id=" . $this->_db->Quote(intval($filters['section_id']));
+			$where[] = "c.section_id=" . $this->_db->quote(intval($filters['section_id']));
 		}
 		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 		{
-			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			$where[] = "c.object_id=" . $this->_db->quote(intval($filters['object_id']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -355,7 +355,7 @@ class Category extends \JTable
 		$flt = "";
 		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
-			$flt = " AND (r.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR r.sticky=1)";
+			$flt = " AND (r.scope_sub_id=" . $this->_db->quote(intval($filters['scope_sub_id'])) . " OR r.sticky=1)";
 		}
 		if (isset($filters['access']))
 		{
@@ -366,7 +366,7 @@ class Category extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$flt .= " AND r.access=" . $this->_db->Quote(intval($filters['access']));
+				$flt .= " AND r.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 
@@ -427,7 +427,7 @@ class Category extends \JTable
 			$this->$k = intval($oid);
 		}
 
-		$query = "SELECT COUNT(*) FROM `#__forum_posts` WHERE `category_id`=" . $this->_db->Quote($this->$k) . " AND `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM `#__forum_posts` WHERE `category_id`=" . $this->_db->quote($this->$k) . " AND `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope) . " AND parent=0 AND state < 2";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -449,7 +449,7 @@ class Category extends \JTable
 		}
 
 		//$query = "SELECT COUNT(*) FROM `#__forum_posts` WHERE parent IN (SELECT r.id FROM `#__forum_posts` AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
-		$query = "SELECT COUNT(*) FROM `#__forum_posts` AS r WHERE r.category_id=" . $this->_db->Quote($this->$k) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM `#__forum_posts` AS r WHERE r.category_id=" . $this->_db->quote($this->$k) . " AND scope_id=" . $this->_db->quote($scope_id) . " AND scope=" . $this->_db->quote($scope) . " AND parent=0 AND state < 2";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -508,7 +508,7 @@ class Category extends \JTable
 			$section = intval($section);
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE section_id IN ($section)");
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->quote($state) . " WHERE section_id IN ($section)");
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

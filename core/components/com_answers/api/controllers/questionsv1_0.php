@@ -88,7 +88,7 @@ class Questionsv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$model = new \Components\Answers\Tables\Question($database);
 
 		$filters = array(

@@ -190,7 +190,7 @@ class Format
 
 		$c_type = 'journal';
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$ct = new Type($db);
 		$types = $ct->getType();
 
@@ -543,7 +543,7 @@ class Format
 	{
 		$html = "";
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$text  = $openurl['text'];
 		$icon  = $openurl['icon'];
@@ -665,7 +665,7 @@ class Format
 		$internally_cited_image_multiple = $config->get('citation_cited_multiple', '');
 
 		//database
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Get the associations
 		$assoc = new Association($database);

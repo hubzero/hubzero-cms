@@ -512,7 +512,7 @@ class Html
 		$license = str_replace(' ', '-', strtolower($license));
 		$license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$rl = new \Components\Resources\Tables\License($database);
 		$rl->load($license);
 
@@ -817,7 +817,7 @@ class Html
 	 */
 	public static function processPath($option, $item, $pid=0, $action=0)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//$rt = new \Components\Resources\Tables\Type($database);
 		//$rt->load($item->type);
@@ -892,7 +892,7 @@ class Html
 	 */
 	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$html = '';
 
@@ -918,7 +918,7 @@ class Html
 
 				// Generate the URL that launches a tool session
 				$lurl ='';
-				$database = \JFactory::getDBO();
+				$database = \App::get('db');
 				$tables = $database->getTableList();
 				$table = $database->getPrefix() . 'tool_version';
 

@@ -57,10 +57,10 @@ class Viewperm extends \JTable
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
+		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->quote($sess);
 		if ($username)
 		{
-			$query .=  " AND viewuser=" . $this->_db->Quote($username);
+			$query .=  " AND viewuser=" . $this->_db->quote($username);
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -105,10 +105,10 @@ class Viewperm extends \JTable
 		{
 			return false;
 		}
-		$query = "DELETE FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
+		$query = "DELETE FROM $this->_tbl WHERE sessnum=" . $this->_db->quote($sess);
 		if ($username)
 		{
-			$query .=  " AND viewuser=" . $this->_db->Quote($username);
+			$query .=  " AND viewuser=" . $this->_db->quote($username);
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())

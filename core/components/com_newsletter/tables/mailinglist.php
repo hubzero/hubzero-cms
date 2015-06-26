@@ -211,7 +211,7 @@ class Mailinglist extends \JTable
 
 		if (isset($filters['select']))
 		{
-			return $this->_db->loadResultArray();
+			return $this->_db->loadColumn();
 		}
 
 		return $this->_db->loadObjectList($key);

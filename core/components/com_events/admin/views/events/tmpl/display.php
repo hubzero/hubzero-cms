@@ -103,7 +103,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$database = JFactory::getDBO();
+$database = App::get('db');
 $p = new \Components\Events\Tables\Page($database);
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {

@@ -633,7 +633,7 @@ class PdfFormDeployment
 
 		if (!$dbh)
 		{
-			$dbh = \JFactory::getDBO();
+			$dbh = \App::get('db');
 		}
 
 		return $dbh;

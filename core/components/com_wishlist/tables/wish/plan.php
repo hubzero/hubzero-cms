@@ -42,7 +42,7 @@ class Plan extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -101,7 +101,7 @@ class Plan extends \JTable
 		$query  = "SELECT *, xp.name AS authorname 
 					FROM `#__wishlist_implementation` AS p 
 					LEFT JOIN `#__xprofiles` AS xp ON xp.uidNumber=p.created_by 
-					WHERE p.wishid = " . $this->_db->Quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
+					WHERE p.wishid = " . $this->_db->quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -119,7 +119,7 @@ class Plan extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->quote($wishid));
 		$this->_db->query();
 		return true;
 	}

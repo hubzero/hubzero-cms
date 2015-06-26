@@ -303,7 +303,7 @@ class Router extends Base
 						{
 							include_once(PATH_CORE . DS . 'components'
 								. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
-							$database = \JFactory::getDBO();
+							$database = \App::get('db');
 
 							$b = new \Components\Publications\Tables\Block($database);
 							$blocks = $b->getBlocks('block');

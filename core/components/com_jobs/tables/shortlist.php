@@ -83,7 +83,7 @@ class Shortlist extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE emp=" . $this->_db->Quote($emp) . " AND seeker=" . $this->_db->Quote($seeker) . " AND category=" . $this->_db->Quote($category) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE emp=" . $this->_db->quote($emp) . " AND seeker=" . $this->_db->quote($seeker) . " AND category=" . $this->_db->quote($category) . " LIMIT 1");
 
 		if ($result = $this->_db->loadAssoc())
 		{

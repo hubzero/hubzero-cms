@@ -94,7 +94,7 @@ class Entry extends \JModelAdmin
 	 */
 	public function getTable($type = 'Post', $prefix = 'Blog', $config = array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		return new \Components\Blog\Tables\Post($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 

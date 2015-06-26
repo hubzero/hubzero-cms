@@ -7,7 +7,7 @@ class BaseSubscription
 	{
 		$this->pId = $pId;
 		$this->uId = $uId;
-		$this->_db = JFactory::getDBO();
+		$this->_db = App::get('db');
 	}
 
 	/**

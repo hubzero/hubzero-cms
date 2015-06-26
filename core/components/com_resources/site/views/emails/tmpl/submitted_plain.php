@@ -31,7 +31,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$db = \JFactory::getDBO();
+$db = \App::get('db');
 
 $creator = User::getInstance($this->resource->created_by);
 

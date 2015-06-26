@@ -96,7 +96,7 @@ class ZoneLocations extends \JTable
 		}
 
 		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
-				' WHERE zone_id = ' . $this->_db->Quote($zone_id);
+				' WHERE zone_id = ' . $this->_db->quote($zone_id);
 		$this->_db->setQuery($query);
 
 		if ($this->_db->query())
@@ -122,7 +122,7 @@ class ZoneLocations extends \JTable
 
 		if (isset($filters['zone_id']) && $filters['zone_id'] != '')
 		{
-			$where[] = "c.`zone_id`=" . $this->_db->Quote($filters['zone_id']);
+			$where[] = "c.`zone_id`=" . $this->_db->quote($filters['zone_id']);
 		}
 
 		$query  = "FROM $this->_tbl AS c";

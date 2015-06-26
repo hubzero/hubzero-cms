@@ -111,7 +111,7 @@ $k = 0;
 
 $now = Date::toSql();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $jt = new \Components\Jobs\Tables\JobType($database);
 $jc = new \Components\Jobs\Tables\JobCategory($database);

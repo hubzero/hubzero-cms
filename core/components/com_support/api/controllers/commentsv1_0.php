@@ -56,7 +56,7 @@ class Commentsv1_0 extends ApiController
 	public function execute()
 	{
 		$this->config   = Component::params('com_support');
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		$this->acl = \Components\Support\Helpers\ACL::getACL();
 		$this->acl->setUser($userid);

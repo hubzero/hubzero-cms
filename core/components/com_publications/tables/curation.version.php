@@ -53,7 +53,7 @@ class CurationVersion extends \JTable
 	 */
 	public function getLatest( $type_id = '', $get = '*' )
 	{
-		$query = "SELECT $get FROM $this->_tbl WHERE type_id=" . $this->_db->Quote($type_id);
+		$query = "SELECT $get FROM $this->_tbl WHERE type_id=" . $this->_db->quote($type_id);
 		$query.= " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -70,7 +70,7 @@ class CurationVersion extends \JTable
 	 */
 	public function loadLatest( $type_id = '')
 	{
-		$query = "SELECT * FROM $this->_tbl WHERE type_id=" . $this->_db->Quote($type_id);
+		$query = "SELECT * FROM $this->_tbl WHERE type_id=" . $this->_db->quote($type_id);
 		$query.= " ORDER BY id DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 

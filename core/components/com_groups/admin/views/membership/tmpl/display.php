@@ -74,7 +74,7 @@ switch ($this->filters['status'])
 Toolbar::spacer();
 Toolbar::help('membership');
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $this->css('groups.css');
 

@@ -41,7 +41,7 @@ class Log extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -124,7 +124,7 @@ class Log extends \JTable
 			return 0;
 		}
 
-		$query = "SELECT helpful FROM `$this->_tbl` WHERE response_id=" . $this->_db->Quote($response_id) . " AND ip=" . $this->_db->Quote($ip);
+		$query = "SELECT helpful FROM `$this->_tbl` WHERE response_id=" . $this->_db->quote($response_id) . " AND ip=" . $this->_db->quote($ip);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -145,7 +145,7 @@ class Log extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($response_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE response_id=" . $this->_db->quote($response_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -40,7 +40,7 @@ class Vote extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -93,9 +93,9 @@ class Vote extends \JTable
 
 		$this->_db->setQuery(
 			"SELECT vote FROM `$this->_tbl` 
-			WHERE object_id=" . $this->_db->Quote($object_id) . " 
-			AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")
-			AND type=" . $this->_db->Quote($type)
+			WHERE object_id=" . $this->_db->quote($object_id) . " 
+			AND (user_id=" . $this->_db->quote($user_id) . " OR ip=" . $this->_db->quote($ip) . ")
+			AND type=" . $this->_db->quote($type)
 		);
 		return $this->_db->loadResult();
 	}
@@ -114,10 +114,10 @@ class Vote extends \JTable
 		$ip        = $ip        ?: $this->ip;
 		$type      = $type      ?: $this->type;
 
-		$sql  = "DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($type);
+		$sql  = "DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->quote($object_id) . " AND type=" . $this->_db->quote($type);
 		if ($user_id || $ip)
 		{
-			$sql .= " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")";
+			$sql .= " AND (user_id=" . $this->_db->quote($user_id) . " OR ip=" . $this->_db->quote($ip) . ")";
 		}
 
 		$this->_db->setQuery($sql);

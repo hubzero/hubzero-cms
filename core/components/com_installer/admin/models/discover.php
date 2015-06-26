@@ -71,7 +71,7 @@ class Discover extends Extension
 	 */
 	protected function getListQuery()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__extensions');
@@ -93,7 +93,7 @@ class Discover extends Extension
 
 		// Get all templates, including discovered ones
 		$query = 'SELECT extension_id, element, folder, client_id, type FROM `#__extensions`';
-		$dbo = \JFactory::getDBO();
+		$dbo = \App::get('db');
 		$dbo->setQuery($query);
 		$installedtmp = $dbo->loadObjectList();
 		$extensions = array();
@@ -168,7 +168,7 @@ class Discover extends Extension
 	 */
 	public function purge()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->delete();
 		$query->from('#__extensions');

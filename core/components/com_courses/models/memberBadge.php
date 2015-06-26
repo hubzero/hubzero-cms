@@ -60,7 +60,7 @@ class MemberBadge extends Base
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new $this->_tbl_name($this->_db);
 

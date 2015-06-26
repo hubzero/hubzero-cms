@@ -59,7 +59,7 @@ class ModIncrementalRegistrationGroups
 	{
 		if (!self::$dbh)
 		{
-			self::$dbh = JFactory::getDBO();
+			self::$dbh = App::get('db');
 		}
 		if (!self::$possibleCols)
 		{

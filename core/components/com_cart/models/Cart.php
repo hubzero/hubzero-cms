@@ -63,7 +63,7 @@ abstract class CartModelCart
 	public function __construct()
 	{
 		// Initialize DB
-		$this->_db = JFactory::getDBO();
+		$this->_db = App::get('db');
 
 		// Load language file
 		Lang::load('com_cart');
@@ -154,7 +154,7 @@ abstract class CartModelCart
 		// Get all info
 		$allSkuInfo = $this->_db->loadObjectList('sId');
 		// Get just sku IDs
-		$skus = $this->_db->loadResultArray();
+		$skus = $this->_db->loadColumn();
 
 		$items = new stdClass();
 		$items->allSkuInfo = $allSkuInfo;
@@ -452,7 +452,7 @@ abstract class CartModelCart
 	 */
 	public static function getCartUser($crtId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sql = 'SELECT `uidNumber` AS uId FROM `#__cart_carts` WHERE `crtId` = ' . $db->quote($crtId);
 		$db->setQuery($sql);
@@ -474,7 +474,7 @@ abstract class CartModelCart
 	 */
 	protected static function removeItem($sId, $qty, $crtId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sql = "UPDATE `#__cart_cart_items` SET `crtiQty` = `crtiQty` - {$qty} WHERE `sId` = '{$sId}' AND `crtId` = {$crtId}";
 		$db->setQuery($sql);
@@ -489,7 +489,7 @@ abstract class CartModelCart
 	 */
 	protected static function kill($crtId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// delete cart items
 		$sql = "DELETE FROM `#__cart_cart_items` WHERE `crtId` = {$crtId}";
@@ -552,7 +552,7 @@ abstract class CartModelCart
 	 */
 	protected static function getTransactionItems($tId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sql = "SELECT `sId`, `tiQty`, `tiPrice` FROM `#__cart_transaction_items` ti WHERE ti.`tId` = {$tId}";
 		$db->setQuery($sql);
@@ -597,7 +597,7 @@ abstract class CartModelCart
 	 */
 	protected static function getTransactionInfo($tId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// Get info
 		$sql = 'SELECT t.*, TIMESTAMPDIFF(MINUTE, t.`tLastUpdated`, NOW()) AS tAge, ti.*
@@ -648,7 +648,7 @@ abstract class CartModelCart
 		self::removeTransactionCouponsFromCart($tInfo);
 
 		/* Clean up cart */
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// Delete zero and negative qty items in the cart
 		$sql = "DELETE FROM `#__cart_cart_items` WHERE `crtiQty` <= 0 AND `crtId` = {$tInfo->info->crtId}";
@@ -665,7 +665,7 @@ abstract class CartModelCart
 	 */
 	public static function updateTransactionStatus($status, $tId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sql = "UPDATE `#__cart_transactions` SET `tStatus` = '{$status}' WHERE `tId` = {$tId}";
 		$db->setQuery($sql);
@@ -731,7 +731,7 @@ abstract class CartModelCart
 			}
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sqlCoupons = '0';
 		foreach ($couponIds as $cnId)
@@ -769,7 +769,7 @@ abstract class CartModelCart
 	 */
 	public static function releaseTransaction($tId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		// Check if the transaction can be released (status is pending)
 		// Get info
@@ -809,7 +809,7 @@ abstract class CartModelCart
 	 */
 	protected static function killTransaction($tId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$sql = "DELETE FROM `#__cart_transactions` WHERE `tId` = {$tId}";
 		$db->setQuery($sql);

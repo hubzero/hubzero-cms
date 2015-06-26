@@ -42,7 +42,7 @@ class Following extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -140,19 +140,19 @@ class Following extends \JTable
 
 		if (isset($filters['following_id']) && $filters['following_id'])
 		{
-			$where[] = "f.following_id=" . $this->_db->Quote($filters['following_id']);
+			$where[] = "f.following_id=" . $this->_db->quote($filters['following_id']);
 		}
 		if (isset($filters['following_type']) && $filters['following_type'])
 		{
-			$where[] = "f.following_type=" . $this->_db->Quote($filters['following_type']);
+			$where[] = "f.following_type=" . $this->_db->quote($filters['following_type']);
 		}
 		if (isset($filters['follower_id']) && $filters['follower_id'])
 		{
-			$where[] = "f.follower_id=" . $this->_db->Quote($filters['follower_id']);
+			$where[] = "f.follower_id=" . $this->_db->quote($filters['follower_id']);
 		}
 		if (isset($filters['follower_type']) && $filters['follower_type'])
 		{
-			$where[] = "f.follower_type=" . $this->_db->Quote($filters['follower_type']);
+			$where[] = "f.follower_type=" . $this->_db->quote($filters['follower_type']);
 		}
 
 		if (count($where) > 0)

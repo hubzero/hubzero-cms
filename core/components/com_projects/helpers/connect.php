@@ -127,7 +127,7 @@ class Connect extends Object
 	 */
 	public function __construct( $model = NULL, $userid = 0, $zone = 'UTC' )
 	{
-		$this->_db		= \JFactory::getDBO();
+		$this->_db		= \App::get('db');
 		$this->model 	= $model;
 		$this->_uid 	= $userid ? $userid : User::get('id');
 

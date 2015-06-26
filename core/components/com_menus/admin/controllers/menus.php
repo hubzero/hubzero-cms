@@ -113,7 +113,7 @@ class MenusControllerMenus extends JControllerLegacy
 	public function resync()
 	{
 		// Initialise variables.
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$parts = null;
 
 		// Load a lookup table of all the component id's.

@@ -38,7 +38,7 @@ class RoleType extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -90,7 +90,7 @@ class RoleType extends \JTable
 		$query = "SELECT r.id, r.title, r.alias
 					FROM `#__author_roles` AS r
 					JOIN `#__author_role_types` AS rt ON r.id=rt.role_id
-					WHERE rt.type_id=" . $this->_db->Quote($type_id) . "
+					WHERE rt.type_id=" . $this->_db->quote($type_id) . "
 					ORDER BY r.title ASC";
 
 		$this->_db->setQuery($query);
@@ -116,7 +116,7 @@ class RoleType extends \JTable
 		$query = "SELECT r.id, r.type, r.alias
 					FROM `#__resource_types` AS r
 					LEFT JOIN `#__author_role_types` AS rt ON r.id=rt.type_id
-					WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
+					WHERE rt.role_id=" . $this->_db->quote($role_id) . "
 					ORDER BY r.type ASC";
 
 		$this->_db->setQuery($query);
@@ -175,7 +175,7 @@ class RoleType extends \JTable
 		if (count($remove) > 0)
 		{
 			$remove = implode(',', $remove);
-			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->Quote($role_id) . " AND type_id IN ($remove)");
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->quote($role_id) . " AND type_id IN ($remove)");
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -222,7 +222,7 @@ class RoleType extends \JTable
 		$role_id = intval($role_id);
 
 		// Remove any types in the remove list
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->Quote($role_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->quote($role_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -252,7 +252,7 @@ class RoleType extends \JTable
 		$type_id = intval($type_id);
 
 		// Remove any types in the remove list
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE type_id=" . $this->_db->Quote($type_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE type_id=" . $this->_db->quote($type_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

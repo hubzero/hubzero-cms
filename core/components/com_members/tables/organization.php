@@ -40,7 +40,7 @@ class Organization extends \JTable
 	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param   object  $db  JDatabase object
+	 * @param   object  $db  Database object
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -165,7 +165,7 @@ class Organization extends \JTable
 
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "`state`=" . $this->_db->Quote($filters['state']);
+			$where[] = "`state`=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['id']) && $filters['id'])
 		{

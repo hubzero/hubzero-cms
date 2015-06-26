@@ -39,7 +39,7 @@ class NewsControllerApi extends \Hubzero\Component\ApiController
 		$format   = Request::getVar('format', 'json');
 
 		//load up the news articles
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$query = "SELECT c.*
 					FROM `#__content` as c, `#__categories` as cat

@@ -44,7 +44,7 @@ class Asset extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -90,7 +90,7 @@ class Asset extends \JTable
 			$this->created_by = User::get('id');
 			$this->state      = 1;
 
-			$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($this->item_id) . " ORDER BY ordering DESC LIMIT 1");
+			$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE item_id=" . $this->_db->quote($this->item_id) . " ORDER BY ordering DESC LIMIT 1");
 
 			$this->ordering = (int) $this->_db->loadResult() + 1;
 		}
@@ -224,12 +224,12 @@ class Asset extends \JTable
 			}
 			else
 			{
-				$where[] = "a.item_id=" . $this->_db->Quote(intval($filters['item_id']));
+				$where[] = "a.item_id=" . $this->_db->quote(intval($filters['item_id']));
 			}
 		}
 		if (isset($filters['filename']))
 		{
-			$where[] = "a.filename=" . $this->_db->Quote($filters['filename']);
+			$where[] = "a.filename=" . $this->_db->quote($filters['filename']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -238,13 +238,13 @@ class Asset extends \JTable
 		}
 		if (isset($filters['created_by']))
 		{
-			$where[] = "a.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+			$where[] = "a.created_by=" . $this->_db->quote(intval($filters['created_by']));
 		}
 		if (!isset($filters['state']))
 		{
 			$filters['state'] = 1;
 		}
-		$where[] = "a.state=" . $this->_db->Quote(intval($filters['state']));
+		$where[] = "a.state=" . $this->_db->quote(intval($filters['state']));
 
 		if (count($where) > 0)
 		{

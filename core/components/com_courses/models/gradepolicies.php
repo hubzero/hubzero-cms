@@ -64,7 +64,7 @@ class GradePolicies extends Base
 	 */
 	public function __construct($oid, $sid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new $this->_tbl_name($this->_db);
 

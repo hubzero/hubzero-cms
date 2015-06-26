@@ -80,7 +80,7 @@ class Category extends Model
 	public function __construct($oid = null)
 	{
 		// create database object
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		// create page cateogry jtable object
 		$this->_tbl = new $this->_tbl_name($this->_db);

@@ -42,7 +42,7 @@ class Item extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -248,7 +248,7 @@ class Item extends \JTable
 
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
-			$query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=b.id AND v.user_id=" . $this->_db->Quote($filters['user_id']);
+			$query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=b.id AND v.user_id=" . $this->_db->quote($filters['user_id']);
 		}
 
 		$where = array();
@@ -262,14 +262,14 @@ class Item extends \JTable
 			}
 			else
 			{
-				$where[] = "s.collection_id=" . $this->_db->Quote($filters['collection_id']);
+				$where[] = "s.collection_id=" . $this->_db->quote($filters['collection_id']);
 			}
 		}
 		else
 		{
 			if (isset($filters['created_by']) && $filters['created_by'])
 			{
-				$where[] = "b.created_by=" . $this->_db->Quote($filters['created_by']);
+				$where[] = "b.created_by=" . $this->_db->quote($filters['created_by']);
 			}
 			else if (!\JFactory::getApplication()->isAdmin())
 			{
@@ -291,7 +291,7 @@ class Item extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "b.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 
@@ -351,11 +351,11 @@ class Item extends \JTable
 
 		if (is_array($id))
 		{
-			$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s INNER JOIN `$this->_tbl` AS i ON s.item_id=i.id WHERE i.type=" . $this->_db->Quote($id['object_type']) . " AND i.object_id=" . $this->_db->Quote($id['object_id']) . " AND s.original=" . $this->_db->Quote('0');
+			$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s INNER JOIN `$this->_tbl` AS i ON s.item_id=i.id WHERE i.type=" . $this->_db->quote($id['object_type']) . " AND i.object_id=" . $this->_db->quote($id['object_id']) . " AND s.original=" . $this->_db->quote('0');
 		}
 		else
 		{
-			$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=" . $this->_db->Quote(intval($id)) . " AND s.original=" . $this->_db->Quote('0');
+			$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=" . $this->_db->quote(intval($id)) . " AND s.original=" . $this->_db->quote('0');
 		}
 
 		$this->_db->setQuery($query);
@@ -380,7 +380,7 @@ class Item extends \JTable
 			return false;
 		}
 
-		$query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote(User::get('id'));
+		$query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->quote($id) . " AND v.user_id=" . $this->_db->quote(User::get('id'));
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -396,11 +396,11 @@ class Item extends \JTable
 	{
 		if (isset($filters['object_id']))
 		{
-			$query = "SELECT positive FROM `$this->_tbl` WHERE type=" . $this->_db->Quote($filters['object_type']) . " AND object_id=" . $this->_db->Quote($filters['object_id']);
+			$query = "SELECT positive FROM `$this->_tbl` WHERE type=" . $this->_db->quote($filters['object_type']) . " AND object_id=" . $this->_db->quote($filters['object_id']);
 		}
 		else
 		{
-			$query = "SELECT positive FROM `$this->_tbl` WHERE id=" . $this->_db->Quote(intval($filters['id']));
+			$query = "SELECT positive FROM `$this->_tbl` WHERE id=" . $this->_db->quote(intval($filters['id']));
 		}
 
 		$this->_db->setQuery($query);
@@ -417,11 +417,11 @@ class Item extends \JTable
 	{
 		if (isset($filters['object_id']))
 		{
-			$query = "SELECT negative FROM `$this->_tbl` WHERE type=" . $this->_db->Quote($filters['object_type']) . " AND object_id=" . $this->_db->Quote($filters['object_id']);
+			$query = "SELECT negative FROM `$this->_tbl` WHERE type=" . $this->_db->quote($filters['object_type']) . " AND object_id=" . $this->_db->quote($filters['object_id']);
 		}
 		else
 		{
-			$query = "SELECT negative FROM `$this->_tbl` WHERE id=" . $this->_db->Quote(intval($filters['id']));
+			$query = "SELECT negative FROM `$this->_tbl` WHERE id=" . $this->_db->quote(intval($filters['id']));
 		}
 
 		$this->_db->setQuery($query);

@@ -76,7 +76,7 @@ class TemplatesHelper
 	public static function getTemplateOptions($clientId = '*')
 	{
 		// Build the filter options.
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		if ($clientId != '*')

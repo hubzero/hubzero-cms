@@ -104,7 +104,7 @@ class Log extends \JTable
 			return null;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope) . " ORDER BY `timestamp` DESC";
+		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope) . " ORDER BY `timestamp` DESC";
 		if ($limit)
 		{
 			$query .= " LIMIT " . $limit;
@@ -139,7 +139,7 @@ class Log extends \JTable
 			return null;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope) . " ";
+		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope) . " ";
 		if ($which == 'first')
 		{
 			$query .= "ORDER BY `timestamp` ASC LIMIT 1";
@@ -185,7 +185,7 @@ class Log extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -219,7 +219,7 @@ class Log extends \JTable
 			return null;
 		}
 
-		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope);
+		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope);
 		if ($action)
 		{
 			$query .= " AND action='$action'";

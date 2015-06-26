@@ -140,7 +140,7 @@ class Update extends \JModelList
 	 */
 	public function purge()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		// Note: TRUNCATE is a DDL operation
 		// This may or may not mean depending on your database
 		$db->setQuery('TRUNCATE TABLE #__updates');
@@ -171,7 +171,7 @@ class Update extends \JModelList
 	 */
 	public function enableSites()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$db->setQuery('UPDATE #__update_sites SET enabled = 1 WHERE enabled = 0');
 		if ($db->Query())
 		{

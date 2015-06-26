@@ -128,11 +128,11 @@ class GradeBook extends \JTable
 		}
 		if (isset($filters['course_id']) && $filters['course_id'])
 		{
-			$where[] = "ca.course_id = " . $this->_db->Quote($filters['course_id']);
+			$where[] = "ca.course_id = " . $this->_db->quote($filters['course_id']);
 		}
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			$where[] = "cm.section_id = " . $this->_db->Quote($filters['section_id']);
+			$where[] = "cm.section_id = " . $this->_db->quote($filters['section_id']);
 		}
 
 		if (count($where) > 0)

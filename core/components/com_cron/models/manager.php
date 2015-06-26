@@ -70,7 +70,7 @@ class Manager extends Model
 	 */
 	public function __construct()
 	{
-		$this->_db  = \JFactory::getDBO();
+		$this->_db  = \App::get('db');
 		$this->_tbl = new Table($this->_db);
 	}
 

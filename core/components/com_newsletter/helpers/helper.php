@@ -141,7 +141,7 @@ class Helper
 		}
 
 		//instantiate database
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//try to load mailing recipient object to validate
 		$sql = "SELECT * FROM #__newsletter_mailing_recipients
@@ -196,7 +196,7 @@ class Helper
 		}
 
 		//instantiate database
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//attempt to load mailing list email object
 		$sql = "SELECT * FROM #__newsletter_mailinglist_emails AS mle

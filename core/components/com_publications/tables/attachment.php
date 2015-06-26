@@ -93,7 +93,7 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($versionid);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($versionid);
 		$query .= " AND params LIKE '%pubThumb=1%' LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -177,9 +177,9 @@ class Attachment extends \JTable
 	{
 		$query = "UPDATE $this->_tbl AS A ";
 		$query.= "JOIN #__publications AS B ON B.id=A.publication_id ";
-		$query.= " SET A." . $field . "=" . $this->_db->Quote($to);
-		$query.= " WHERE A." . $field . "=" . $this->_db->Quote($from)
-				. " AND B.project_id=" . $this->_db->Quote($projectid);
+		$query.= " SET A." . $field . "=" . $this->_db->quote($to);
+		$query.= " WHERE A." . $field . "=" . $this->_db->quote($from)
+				. " AND B.project_id=" . $this->_db->quote($projectid);
 
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
@@ -209,7 +209,7 @@ class Attachment extends \JTable
 
 		$query = "SELECT a.*";
 		$query.= " FROM $this->_tbl AS a";
-		$query.= " WHERE a.publication_version_id=" . $this->_db->Quote($versionid);
+		$query.= " WHERE a.publication_version_id=" . $this->_db->quote($versionid);
 		$query.= " ORDER BY a.ordering ASC";
 
 		$this->_db->setQuery( $query );
@@ -280,10 +280,10 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		foreach ($find as $property => $value )
 		{
-			$query .= " AND " . $property . "=" . $this->_db->Quote($value);
+			$query .= " AND " . $property . "=" . $this->_db->quote($value);
 		}
 
 		$this->_db->setQuery($query);
@@ -346,14 +346,14 @@ class Attachment extends \JTable
 		else
 		{
 			$query.= intval($project)
-				? " p.project_id=" . $this->_db->Quote($project)
-				: " a.publication_version_id=" . $this->_db->Quote($versionid);
+				? " p.project_id=" . $this->_db->quote($project)
+				: " a.publication_version_id=" . $this->_db->quote($versionid);
 		}
 		if ($element)
 		{
 			if (intval($element))
 			{
-				$query .= " AND a.element_id=" . $this->_db->Quote($element);
+				$query .= " AND a.element_id=" . $this->_db->quote($element);
 			}
 			elseif (is_array($element))
 			{
@@ -367,7 +367,7 @@ class Attachment extends \JTable
 				$tquery = '';
 				foreach ($filters['role'] as $role)
 				{
-					$tquery .= $this->_db->Quote($role) . ",";
+					$tquery .= $this->_db->quote($role) . ",";
 				}
 				$tquery = substr($tquery,0,strlen($tquery) - 1);
 				$query .= " AND (a.role IN (" . $tquery . ") ) ";
@@ -378,12 +378,12 @@ class Attachment extends \JTable
 			}
 			else
 			{
-				$query .= " AND a.role=" . $this->_db->Quote($filters['role']);
+				$query .= " AND a.role=" . $this->_db->quote($filters['role']);
 			}
 		}
 		if ($type)
 		{
-			$query .= " AND a.type=" . $this->_db->Quote($type);
+			$query .= " AND a.type=" . $this->_db->quote($type);
 		}
 		if (isset($filters['order']) && $filters['order'] != '')
 		{
@@ -422,8 +422,8 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
-				. " AND type=" . $this->_db->Quote($type);
+		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid)
+				. " AND type=" . $this->_db->quote($type);
 		$query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
 
 		if ($role)
@@ -433,7 +433,7 @@ class Attachment extends \JTable
 
 		foreach ($find as $property => $value )
 		{
-			$query .= " AND " . $property ."=" . $this->_db->Quote($value);
+			$query .= " AND " . $property ."=" . $this->_db->quote($value);
 		}
 
 		$this->_db->setQuery( $query );
@@ -465,8 +465,8 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
-				. " AND type=" . $this->_db->Quote($type);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid)
+				. " AND type=" . $this->_db->quote($type);
 		$query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
 
 		if ($role)
@@ -476,7 +476,7 @@ class Attachment extends \JTable
 
 		foreach ($find as $property => $value )
 		{
-			$query .= " AND " . $property ."=" . $this->_db->Quote($value);
+			$query .= " AND " . $property ."=" . $this->_db->quote($value);
 		}
 
 		$query .= " LIMIT 1";
@@ -516,15 +516,15 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
-				. " AND type=" . $this->_db->Quote($type);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid)
+				. " AND type=" . $this->_db->quote($type);
 
 		// Get types helper
 		$attach = new \Components\Publications\Models\Attachments($this->_db);
 		$prop = $attach->connector($type);
 		$prop = $prop ? $prop : 'path';
 
-		$query .= " AND " . $prop . "=" . $this->_db->Quote($identifier);
+		$query .= " AND " . $prop . "=" . $this->_db->quote($identifier);
 
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
@@ -597,8 +597,8 @@ class Attachment extends \JTable
 		$prop = $attach->connector($type);
 		$prop = $prop ? $prop : 'path';
 
-		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
-		$query .= " AND " . $prop . "=" . $this->_db->Quote($identifier);
+		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
+		$query .= " AND " . $prop . "=" . $this->_db->quote($identifier);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -626,7 +626,7 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
@@ -653,8 +653,8 @@ class Attachment extends \JTable
 
 		$query = "SELECT A.*, V.version_label, V.version_number FROM $this->_tbl AS A ";
 		$query.= " JOIN #__publication_versions AS V ON A.publication_version_id = V.id ";
-		$query.= " WHERE A.publication_id = " . $this->_db->Quote($pid)
-				. " AND A.publication_version_id !=" . $this->_db->Quote($vid);
+		$query.= " WHERE A.publication_id = " . $this->_db->quote($pid)
+				. " AND A.publication_version_id !=" . $this->_db->quote($vid);
 		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
 		$query.= " ORDER BY A.ordering";
 
@@ -681,8 +681,8 @@ class Attachment extends \JTable
 		$query = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
 		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
 		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-		$query.= " WHERE P.project_id=" . $this->_db->Quote($projectid);
-		$query.= $hash ? " AND a.vcs_hash=" . $this->_db->Quote($hash) : " AND a.path=" . $this->_db->Quote($path);
+		$query.= " WHERE P.project_id=" . $this->_db->quote($projectid);
+		$query.= $hash ? " AND a.vcs_hash=" . $this->_db->quote($hash) : " AND a.path=" . $this->_db->quote($path);
 		$query.= $primary ? " AND a.role=1 " : "";
 		$query.= " ORDER BY v.id DESC LIMIT 1";
 		$this->_db->setQuery( $query );
@@ -719,8 +719,8 @@ class Attachment extends \JTable
 		$query = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
 		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
 		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-		$query.= " WHERE P.project_id=" . $this->_db->Quote($projectid)
-				. " AND a.type=" . $this->_db->Quote($type);
+		$query.= " WHERE P.project_id=" . $this->_db->quote($projectid)
+				. " AND a.type=" . $this->_db->quote($type);
 		$query.= $primary ? " AND a.role=1 " : "";
 		$query.= " GROUP BY a.path ";
 		$query.= " ORDER BY v.id DESC ";

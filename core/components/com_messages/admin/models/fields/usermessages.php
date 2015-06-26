@@ -32,7 +32,7 @@ class JFormFieldUserMessages extends JFormFieldUser
 	protected function getGroups()
 	{
 		// Compute usergroups
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('id');
 		$query->from('#__usergroups');

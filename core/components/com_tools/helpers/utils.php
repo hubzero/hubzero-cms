@@ -74,14 +74,14 @@ class Utils
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == ''))
 			{
-				$instance = \JFactory::getDBO();
+				$instance = \App::get('db');
 			}
 			else
 			{
 				$instance = \JDatabase::getInstance($options);
 				if ($instance instanceof Exception)
 				{
-					$instance = \JFactory::getDBO();
+					$instance = \App::get('db');
 				}
 			}
 		}
@@ -333,7 +333,7 @@ class Utils
 
 		//instantiate objects
 		$access = new stdClass();
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Ensure we have a tool
 		if (!$tool)
@@ -569,7 +569,7 @@ class Utils
 		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'recent.php');
 
 		//instantiate needed objects
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//load tool version
 		$toolVersion = new \Components\Tools\Tables\Version($database);

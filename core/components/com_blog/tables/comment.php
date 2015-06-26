@@ -42,7 +42,7 @@ class Comment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -124,10 +124,10 @@ class Comment extends \JTable
 			$parent = 0;
 		}*/
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id);
+		$sql  = "SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->quote($entry_id);
 		if (!is_null($parent))
 		{
-			$sql .= " AND parent=" . $this->_db->Quote($parent);
+			$sql .= " AND parent=" . $this->_db->quote($parent);
 		}
 		$sql .= " ORDER BY created ASC";
 
@@ -217,21 +217,21 @@ class Comment extends \JTable
 			$id = $this->id;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->quote($id));
 		$comments = $this->_db->loadObjectList();
 		if ($comments)
 		{
 			foreach ($comments as $row)
 			{
 				// Delete children
-				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($row->id));
+				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->quote($row->id));
 				if (!$this->_db->query())
 				{
 					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
 			}
-			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->quote($id));
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -261,7 +261,7 @@ class Comment extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->quote($state) . " WHERE id=" . $this->_db->quote($oid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -290,7 +290,7 @@ class Comment extends \JTable
 		}
 
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent IN ($id)");
-		$rows = $this->_db->loadResultArray();
+		$rows = $this->_db->loadColumn();
 		if ($rows && count($rows) > 0)
 		{
 			$state = intval($state);
@@ -356,19 +356,19 @@ class Comment extends \JTable
 
 		if (isset($filters['created_by']) && (int) $filters['created_by'] != 0)
 		{
-			$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+			$where[] = "c.created_by=" . $this->_db->quote(intval($filters['created_by']));
 		}
 		if (isset($filters['modified_by']) && (int) $filters['modified_by'] != 0)
 		{
-			$where[] = "c.modified_by=" . $this->_db->Quote(intval($filters['modified_by']));
+			$where[] = "c.modified_by=" . $this->_db->quote(intval($filters['modified_by']));
 		}
 		if (isset($filters['entry_id']) && (int) $filters['entry_id'] != 0)
 		{
-			$where[] = "c.entry_id=" . $this->_db->Quote(intval($filters['entry_id']));
+			$where[] = "c.entry_id=" . $this->_db->quote(intval($filters['entry_id']));
 		}
 		if (isset($filters['parent']))
 		{
-			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
+			$where[] = "c.parent=" . $this->_db->quote(intval($filters['parent']));
 		}
 		if (isset($filters['state']))
 		{
@@ -379,12 +379,12 @@ class Comment extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 		if (isset($filters['anonymous']))
 		{
-			$where[] = "c.anonymous=" . $this->_db->Quote(intval($filters['anonymous']));
+			$where[] = "c.anonymous=" . $this->_db->quote(intval($filters['anonymous']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -426,7 +426,7 @@ class Comment extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `entry_id`=" . $this->_db->Quote($entry_id));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `entry_id`=" . $this->_db->quote($entry_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -57,7 +57,7 @@ class Attachment extends Base
 	 */
 	public function __construct($oid=null, $wishid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if ($this->_tbl_name)
 		{

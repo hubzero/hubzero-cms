@@ -117,7 +117,7 @@ class MenusHelper
 	 */
 	public static function getMenuTypes()
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$db->setQuery('SELECT a.menutype FROM #__menu_types AS a');
 		return $db->loadColumn();
 	}
@@ -132,7 +132,7 @@ class MenusHelper
 	 */
 	public static function getMenuLinks($menuType = null, $parentId = 0, $mode = 0, $published=array(), $languages=array())
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text, a.level, a.menutype, a.type, a.template_style_id, a.checked_out');
@@ -229,7 +229,7 @@ class MenusHelper
 	static public function getAssociations($pk)
 	{
 		$associations = array();
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		$query->from('#__menu as m');
 		$query->innerJoin('#__associations as a ON a.id=m.id AND a.context='.$db->quote('com_menus.item'));

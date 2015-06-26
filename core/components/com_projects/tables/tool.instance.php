@@ -82,7 +82,7 @@ class ToolInstance extends  \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->Quote($instance) . " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($instance) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -110,7 +110,7 @@ class ToolInstance extends  \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl AS v WHERE ";
-		$query .= is_numeric($parent) ? "v.parent_id=" . $this->_db->Quote($parent) : "v.parent_name=" . $this->_db->Quote($parent);
+		$query .= is_numeric($parent) ? "v.parent_id=" . $this->_db->quote($parent) : "v.parent_name=" . $this->_db->quote($parent);
 		if ($version == 'dev')
 		{
 			$query .= " AND v.state=3 ";
@@ -185,8 +185,8 @@ class ToolInstance extends  \JTable
 
 		$query  = "SELECT v.* ";
 		$query .= "FROM $this->_tbl as v WHERE 1=1 AND ";
-		$query .= $parent_id ? "v.parent_id=" . $this->_db->Quote($parent_id)
-			: "v.parent_name=" . $this->_db->Quote($parent_name);
+		$query .= $parent_id ? "v.parent_id=" . $this->_db->quote($parent_id)
+			: "v.parent_name=" . $this->_db->quote($parent_name);
 		$query .= $exclude_dev ? ' AND v.state != 3' : '';
 		$query .= " ORDER BY v.revision DESC";
 
@@ -203,8 +203,8 @@ class ToolInstance extends  \JTable
 	 */
 	public function getDevInstanceProperty($parent_name, $property)
 	{
-		$query  = "SELECT " . $this->_db->Quote($property) . " FROM $this->_tbl
-			WHERE parent_name=" . $this->_db->Quote($parent_name) . " AND state=3 LIMIT 1";
+		$query  = "SELECT " . $this->_db->quote($property) . " FROM $this->_tbl
+			WHERE parent_name=" . $this->_db->quote($parent_name) . " AND state=3 LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -223,8 +223,8 @@ class ToolInstance extends  \JTable
 			return false;
 		}
 
-		$query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->Quote($newname)
-				. " WHERE parent_id =" . $this->_db->Quote($parent_id);
+		$query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->quote($newname)
+				. " WHERE parent_id =" . $this->_db->quote($parent_id);
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{

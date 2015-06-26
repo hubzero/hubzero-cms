@@ -122,7 +122,7 @@ $this->css()
 		<?php
 		if ($this->supportedtag)
 		{
-			$database = JFactory::getDBO();
+			$database = App::get('db');
 
 			include_once(Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 

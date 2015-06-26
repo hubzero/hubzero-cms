@@ -130,7 +130,7 @@ class Article extends Model
 	 */
 	public function __construct($oid, $category=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if ($this->_tbl_name)
 		{

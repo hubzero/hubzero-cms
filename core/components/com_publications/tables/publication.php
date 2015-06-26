@@ -58,7 +58,7 @@ class Publication extends \JTable
 		{
 			return false;
 		}
-		$where = is_numeric($oid) ? 'id=' . $this->_db->Quote($oid) : 'alias=' . $this->_db->Quote($oid);
+		$where = is_numeric($oid) ? 'id=' . $this->_db->quote($oid) : 'alias=' . $this->_db->quote($oid);
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE " . $where );
 		if ($result = $this->_db->loadAssoc())
 		{
@@ -83,7 +83,7 @@ class Publication extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($oid) );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -271,11 +271,11 @@ class Publication extends \JTable
 		}
 		if (isset($filters['startdate']))
 		{
-			$query .= "AND V.published_up > " . $this->_db->Quote($filters['startdate']) . " ";
+			$query .= "AND V.published_up > " . $this->_db->quote($filters['startdate']) . " ";
 		}
 		if (isset($filters['enddate']))
 		{
-			$query .= "AND V.published_up < " . $this->_db->Quote($filters['enddate']) . " ";
+			$query .= "AND V.published_up < " . $this->_db->quote($filters['enddate']) . " ";
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -483,7 +483,7 @@ class Publication extends \JTable
 		$query .= $getid ? " pub.id " : " V.*, pub.* ";
 		$query .= " FROM #__publication_versions as V, $this->_tbl AS pub ";
 		$query .= " JOIN #__projects AS p ON pub.project_id=p.id ";
-		$query .= " WHERE V.publication_id=pub.id AND V.main=1 AND p.id=" . $this->_db->Quote($pid) . " LIMIT 1 ";
+		$query .= " WHERE V.publication_id=pub.id AND V.main=1 AND p.id=" . $this->_db->quote($pid) . " LIMIT 1 ";
 
 		$this->_db->setQuery( $query );
 		if ($getid)
@@ -550,15 +550,15 @@ class Publication extends \JTable
 		}
 		elseif (intval($version))
 		{
-			$sql.= " AND V.version_number=" . $this->_db->Quote($version);
+			$sql.= " AND V.version_number=" . $this->_db->quote($version);
 		}
 		else
 		{
 			// Error in supplied version value
 			$sql.= " AND 1=2 ";
 		}
-		$sql .= $project_id ? " AND C.project_id=" . $this->_db->Quote($project_id) : '';
-		$sql .= $pid ? " AND C.id=" . $this->_db->Quote($pid) : " AND C.alias=" . $this->_db->Quote($alias);
+		$sql .= $project_id ? " AND C.project_id=" . $this->_db->quote($project_id) : '';
+		$sql .= $pid ? " AND C.id=" . $this->_db->quote($pid) : " AND C.alias=" . $this->_db->quote($alias);
 		$sql .= " LIMIT 1";
 
 		$this->_db->setQuery( $sql );
@@ -573,7 +573,7 @@ class Publication extends \JTable
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery( "SELECT rating FROM #__publication_ratings WHERE publication_id=" . $this->_db->Quote($this->id) );
+		$this->_db->setQuery( "SELECT rating FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($this->id) );
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -603,7 +603,7 @@ class Publication extends \JTable
 	 */
 	public function updateRating()
 	{
-		$this->_db->setQuery( "UPDATE $this->_tbl SET rating=" . $this->_db->Quote($this->rating) . ", times_rated=" . $this->_db->Quote($this->times_rated) . " WHERE id=" . $this->_db->Quote($this->id) );
+		$this->_db->setQuery( "UPDATE $this->_tbl SET rating=" . $this->_db->quote($this->rating) . ", times_rated=" . $this->_db->quote($this->times_rated) . " WHERE id=" . $this->_db->quote($this->id) );
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
@@ -625,14 +625,14 @@ class Publication extends \JTable
 		}
 
 		// Delete tag associations
-		$this->_db->setQuery( "DELETE FROM #__tags_object WHERE tbl='publications' AND objectid=". $this->_db->Quote($id) );
+		$this->_db->setQuery( "DELETE FROM #__tags_object WHERE tbl='publications' AND objectid=". $this->_db->quote($id) );
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();
 			exit;
 		}
 		// Delete ratings
-		$this->_db->setQuery( "DELETE FROM #__publication_ratings WHERE publication_id=" . $this->_db->Quote($id) );
+		$this->_db->setQuery( "DELETE FROM #__publication_ratings WHERE publication_id=" . $this->_db->quote($id) );
 		if (!$this->_db->query())
 		{
 			echo $this->_db->getErrorMsg();

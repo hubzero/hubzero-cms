@@ -25,7 +25,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \JFactory::getDbo();
+$database = \App::get('db');
 
 // Get version authors
 $pa = new \Components\Publications\Tables\Author( $database );

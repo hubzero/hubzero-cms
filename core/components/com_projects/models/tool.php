@@ -84,7 +84,7 @@ class Tool extends Model
 	 */
 	public function __construct($oid = NULL, $projectid = NULL, $instance = NULL)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Tool($this->_db);
 

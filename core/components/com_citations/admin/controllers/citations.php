@@ -154,10 +154,10 @@ class Citations extends AdminController
 			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
 
 			//get the citations tags
-			$this->view->tags = Format::citationTags($this->view->row, \JFactory::getDBO(), false);
+			$this->view->tags = Format::citationTags($this->view->row, \App::get('db'), false);
 
 			//get the badges
-			$this->view->badges = Format::citationBadges($this->view->row, \JFactory::getDBO(), false);
+			$this->view->badges = Format::citationBadges($this->view->row, \App::get('db'), false);
 
 			//parse citation params
 			$this->view->params = new Registry($this->view->row->params);

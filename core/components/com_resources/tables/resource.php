@@ -38,7 +38,7 @@ class Resource extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -90,7 +90,7 @@ class Resource extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT r.id FROM `$this->_tbl` AS r LEFT JOIN `#__resource_assoc` AS a ON a.child_id=r.id WHERE (r.`path`=" . $this->_db->Quote($oid) . " OR r.`path` LIKE " . $this->_db->quote('%/' . $oid) . ") AND r.`standalone`=0 AND a.parent_id=" . $this->_db->Quote($parent_id));
+		$this->_db->setQuery("SELECT r.id FROM `$this->_tbl` AS r LEFT JOIN `#__resource_assoc` AS a ON a.child_id=r.id WHERE (r.`path`=" . $this->_db->quote($oid) . " OR r.`path` LIKE " . $this->_db->quote('%/' . $oid) . ") AND r.`standalone`=0 AND a.parent_id=" . $this->_db->quote($parent_id));
 		if ($result = $this->_db->loadResult())
 		{
 			return true;
@@ -146,7 +146,7 @@ class Resource extends \JTable
 		{
 			$type = $this->type;
 		}
-		$this->_db->setQuery("SELECT type FROM `#__resource_types` WHERE id=" . $this->_db->Quote($type));
+		$this->_db->setQuery("SELECT type FROM `#__resource_types` WHERE id=" . $this->_db->quote($type));
 		$title = $this->_db->loadResult();
 		return ($title) ? $title : '';
 	}
@@ -184,7 +184,7 @@ class Resource extends \JTable
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery("SELECT rating FROM `#__resource_ratings` WHERE resource_id=". $this->_db->Quote($this->id));
+		$this->_db->setQuery("SELECT rating FROM `#__resource_ratings` WHERE resource_id=". $this->_db->quote($this->id));
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -214,7 +214,7 @@ class Resource extends \JTable
 	 */
 	public function updateRating()
 	{
-		$this->_db->setQuery("UPDATE $this->_tbl SET rating=" . $this->_db->Quote($this->rating) . ", times_rated=" . $this->_db->Quote($this->times_rated) . " WHERE id=" . $this->_db->Quote($this->id));
+		$this->_db->setQuery("UPDATE $this->_tbl SET rating=" . $this->_db->quote($this->rating) . ", times_rated=" . $this->_db->quote($this->times_rated) . " WHERE id=" . $this->_db->quote($this->id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -237,28 +237,28 @@ class Resource extends \JTable
 		}
 
 		// Delete child associations
-		$this->_db->setQuery("DELETE FROM `#__resource_assoc` WHERE child_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__resource_assoc` WHERE child_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete parent associations
-		$this->_db->setQuery("DELETE FROM `#__resource_assoc` WHERE parent_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__resource_assoc` WHERE parent_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete tag associations
-		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='resources' AND objectid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='resources' AND objectid=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete ratings
-		$this->_db->setQuery("DELETE FROM `#__resource_ratings` WHERE resource_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__resource_ratings` WHERE resource_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -308,11 +308,11 @@ class Resource extends \JTable
 				{
 					$filters['type'] = 7;
 				}
-				$query .= "AND C.type=" . $this->_db->Quote($filters['type']) . " ";
+				$query .= "AND C.type=" . $this->_db->quote($filters['type']) . " ";
 
 				if (isset($filters['toolState']))
 				{
-					$query .= "AND T.state=" . $this->_db->Quote($filters['toolState']) . " ";
+					$query .= "AND T.state=" . $this->_db->quote($filters['toolState']) . " ";
 				}
 			}
 		}
@@ -322,10 +322,10 @@ class Resource extends \JTable
 		}
 		if (isset($filters['minranking']) && $filters['minranking'] != '' && $filters['minranking'] > 0)
 		{
-			$query .= "AND C.ranking > " . $this->_db->Quote($filters['minranking']) . " ";
+			$query .= "AND C.ranking > " . $this->_db->quote($filters['minranking']) . " ";
 		}
-		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->Quote($now) . ") ";
-		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->Quote($now) . ") AND ";
+		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
+		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
 		if (isset($filters['access']) && $filters['access'] == 'public')
 		{
 			$query .= "(C.access=0 OR C.access=3) ";
@@ -480,7 +480,7 @@ class Resource extends \JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		include_once(__DIR__ . DS . 'type.php');
 		$rt = new Type($database);
@@ -599,7 +599,7 @@ class Resource extends \JTable
 
 		if (isset($filters['author']))
 		{
-			$query .= "AND (aa.authorid=" . $this->_db->Quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in #__author_assoc, making his profile page look wildly incorrect
+			$query .= "AND (aa.authorid=" . $this->_db->quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in #__author_assoc, making his profile page look wildly incorrect
 		}
 
 		if (isset($filters['tag'])) {
@@ -612,7 +612,7 @@ class Resource extends \JTable
 		}
 		if (isset($filters['type']) && $filters['type'] != '')
 		{
-			$query .= "AND r.type=" . $this->_db->Quote($filters['type']) . " ";
+			$query .= "AND r.type=" . $this->_db->quote($filters['type']) . " ";
 		}
 
 		if (isset($filters['group']) && $filters['group'] != '')
@@ -670,7 +670,7 @@ class Resource extends \JTable
 						$groups = count($usersgroups) ? $usersgroups[0] : '';
 					}
 					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
-					$query .= " OR r.created_by=" . $this->_db->Quote(\User::get('id'));
+					$query .= " OR r.created_by=" . $this->_db->quote(\User::get('id'));
 					$query .= "))) ";
 				}
 				else
@@ -686,16 +686,16 @@ class Resource extends \JTable
 
 		if (isset($filters['now']))
 		{
-			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->Quote($filters['now']) . ") ";
-			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->Quote($filters['now']) . ") ";
+			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->quote($filters['now']) . ") ";
+			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->quote($filters['now']) . ") ";
 		}
 		if (isset($filters['startdate']))
 		{
-			$query .= "AND r.publish_up > " . $this->_db->Quote($filters['startdate']) . " ";
+			$query .= "AND r.publish_up > " . $this->_db->quote($filters['startdate']) . " ";
 		}
 		if (isset($filters['enddate']))
 		{
-			$query .= "AND r.publish_up < " . $this->_db->Quote($filters['enddate']) . " ";
+			$query .= "AND r.publish_up < " . $this->_db->quote($filters['enddate']) . " ";
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -790,11 +790,11 @@ class Resource extends \JTable
 				WHERE r.standalone=1";
 		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
-			$sql .= " AND r.published=" . $this->_db->Quote($filters['status']);
+			$sql .= " AND r.published=" . $this->_db->quote($filters['status']);
 		}
 		if (isset($filters['type']) && $filters['type'])
 		{
-			$sql .= " AND r.type=" . $this->_db->Quote($filters['type']);
+			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -833,18 +833,18 @@ class Resource extends \JTable
 				WHERE r.standalone=1";
 		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
-			$sql .= " AND r.published=" . $this->_db->Quote($filters['status']);
+			$sql .= " AND r.published=" . $this->_db->quote($filters['status']);
 		}
 		if (isset($filters['type']) && $filters['type'])
 		{
-			$sql .= " AND r.type=" . $this->_db->Quote($filters['type']);
+			$sql .= " AND r.type=" . $this->_db->quote($filters['type']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			if (is_numeric($filters['search']))
 			{
-				$sql .= " OR r.id=" . $this->_db->Quote($filters['search']);
+				$sql .= " OR r.id=" . $this->_db->quote($filters['search']);
 			}
 			$sql .= ")";
 		}
@@ -877,7 +877,7 @@ class Resource extends \JTable
 			$sql = "SELECT count(*)
 					FROM $this->_tbl AS r,
 					#__resource_assoc AS ra
-					WHERE ra.child_id=r.id AND ra.parent_id=" . $this->_db->Quote($filters['parent_id']);
+					WHERE ra.child_id=r.id AND ra.parent_id=" . $this->_db->quote($filters['parent_id']);
 		}
 		else
 		{
@@ -896,7 +896,7 @@ class Resource extends \JTable
 			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			if (is_numeric($filters['search']))
 			{
-				$sql .= " OR r.id=" . $this->_db->Quote($filters['search']);
+				$sql .= " OR r.id=" . $this->_db->quote($filters['search']);
 			}
 			$sql .= ")";
 		}
@@ -922,7 +922,7 @@ class Resource extends \JTable
 			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published,
 						r.publish_up, r.publish_down, r.path, r.checked_out, r.checked_out_time, r.standalone, u.name AS editor, $gname AS groupname,
 						lt.type AS logicaltitle, ra.*, gt.type as grouptitle, t.type AS typetitle, NULL as position,
-						(SELECT count(*) FROM `#__resource_assoc` AS rraa WHERE rraa.child_id=r.id AND rraa.parent_id!=" . $this->_db->Quote($filters['parent_id']) . ") AS multiuse
+						(SELECT count(*) FROM `#__resource_assoc` AS rraa WHERE rraa.child_id=r.id AND rraa.parent_id!=" . $this->_db->quote($filters['parent_id']) . ") AS multiuse
 						FROM `#__resource_types` AS t,
 						`$this->_tbl` AS r
 						LEFT JOIN `#__users` AS u ON u.id = r.checked_out
@@ -930,7 +930,7 @@ class Resource extends \JTable
 						LEFT JOIN `#__resource_types` AS lt ON lt.id=r.logical_type,
 						`#__resource_assoc` AS ra
 						LEFT JOIN `#__resource_types` AS gt ON gt.id=ra.grouping
-						WHERE r.type=t.id AND ra.child_id=r.id AND ra.parent_id=" . $this->_db->Quote($filters['parent_id']);
+						WHERE r.type=t.id AND ra.child_id=r.id AND ra.parent_id=" . $this->_db->quote($filters['parent_id']);
 		}
 		else
 		{
@@ -946,14 +946,14 @@ class Resource extends \JTable
 		}
 		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
-			$sql .= " AND r.published=" . $this->_db->Quote($filters['status']);
+			$sql .= " AND r.published=" . $this->_db->quote($filters['status']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			if (is_numeric($filters['search']))
 			{
-				$sql .= " OR r.id=" . $this->_db->Quote($filters['search']);
+				$sql .= " OR r.id=" . $this->_db->quote($filters['search']);
 			}
 			$sql .= ")";
 		}

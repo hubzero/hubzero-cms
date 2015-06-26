@@ -91,7 +91,7 @@ class Tag extends Model
 	public function __construct($oid)
 	{
 		// Set the database object
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		// Set the table object
 		$tbl = $this->_tbl_name;

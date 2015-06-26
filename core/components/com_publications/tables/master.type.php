@@ -79,7 +79,7 @@ class MasterType extends \JTable
 		}
 		$field = is_numeric($id) ? 'id' : 'alias';
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $field=" . $this->_db->Quote($id) . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $field=" . $this->_db->quote($id) . " LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -96,7 +96,7 @@ class MasterType extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias) . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -112,7 +112,7 @@ class MasterType extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->Quote($id) . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->quote($id) . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -323,7 +323,7 @@ class MasterType extends \JTable
 
 		$p = new \Components\Publications\Tables\Publication( $this->_db );
 
-		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=" . $this->_db->Quote($id));
+		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=" . $this->_db->quote($id));
 		return $this->_db->loadResult();
 	}
 
@@ -340,7 +340,7 @@ class MasterType extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->Quote($ordering) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->quote($ordering) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);

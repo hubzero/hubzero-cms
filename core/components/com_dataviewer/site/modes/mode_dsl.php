@@ -29,7 +29,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	global $dv_conf;
 
 	$dd = false;
-	$db = JFactory::getDBO();
+	$db = App::get('db');
 
 	if (!$dv_id)
 	{
@@ -91,7 +91,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 			}
 
 			$sql = "SELECT cn FROM #__xgroups g LEFT JOIN #__publication_master_types t ON (g.gidNumber = t.curatorgroup) WHERE t.type = 'Databases'";
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 			$db->setQuery($sql);
 			$dsl_curators = $db->loadResult();
 
@@ -113,7 +113,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	{
 		// Project owners
 		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = {$dd['project']}";
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$db->setQuery($sql);
 		$dd['acl']['allowed_users'] = $db->loadResultArray();
 

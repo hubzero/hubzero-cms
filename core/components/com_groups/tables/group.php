@@ -204,14 +204,14 @@ class Group extends \JTable
 
 		if (isset($filters['status']) && $filters['status'])
 		{
-			$where[] = "v.`role`=" . $this->_db->Quote($filters['status']);
+			$where[] = "v.`role`=" . $this->_db->quote($filters['status']);
 		}
 
 		if (isset($filters['search']) && $filters['search'])
 		{
 			if (is_numeric($filters['search']))
 			{
-				$where[] = "v.`uidNumber`=" . $this->_db->Quote(intval($filters['search']));
+				$where[] = "v.`uidNumber`=" . $this->_db->quote(intval($filters['search']));
 			}
 			else
 			{
@@ -244,7 +244,7 @@ class Group extends \JTable
 
 		if (isset($filters['gidNumber']))
 		{
-			$query .= " AND {$tbl}.`gidNumber`=" . $this->_db->Quote(intval($filters['gidNumber']));
+			$query .= " AND {$tbl}.`gidNumber`=" . $this->_db->quote(intval($filters['gidNumber']));
 		}
 
 		return $query;

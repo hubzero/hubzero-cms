@@ -56,7 +56,7 @@ class Threadsv1_0 extends ApiController
 	public function execute()
 	{
 		$this->config   = Component::params('com_forum');
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		parent::execute();
 	}

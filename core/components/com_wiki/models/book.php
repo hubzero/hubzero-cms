@@ -107,7 +107,7 @@ class Book extends Object
 	 */
 	public function __construct($scope='__site__')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_scope = $scope;
 

@@ -76,7 +76,7 @@ abstract class ModulesHelper
 
 	static function getPositions($clientId)
 	{
-		$db    = JFactory::getDbo();
+		$db    = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT(position)');
@@ -113,7 +113,7 @@ abstract class ModulesHelper
 
 	public static function getTemplates($clientId = 0, $state = '', $template='')
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		// Get the database object and a new query object.
 		$query = $db->getQuery(true);
 
@@ -146,7 +146,7 @@ abstract class ModulesHelper
 	 */
 	public static function getModules($clientId)
 	{
-		$db    = JFactory::getDbo();
+		$db    = App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('element AS value, name AS text');

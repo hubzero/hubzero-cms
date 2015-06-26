@@ -62,7 +62,7 @@ class JobAdmin extends \JTable
 
 		$query  = "SELECT id ";
 		$query .= "FROM #__jobs_admins  ";
-		$query .= "WHERE uid = " . $this->_db->Quote($uid) . " AND jid = " . $this->_db->Quote($jid);
+		$query .= "WHERE uid = " . $this->_db->quote($uid) . " AND jid = " . $this->_db->quote($jid);
 		$this->_db->setQuery($query);
 		if ($this->_db->loadResult())
 		{
@@ -88,7 +88,7 @@ class JobAdmin extends \JTable
 
 		$query  = "SELECT uid ";
 		$query .= "FROM #__jobs_admins ";
-		$query .= "WHERE jid = " . $this->_db->Quote($jid);
+		$query .= "WHERE jid = " . $this->_db->quote($jid);
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		if ($result)

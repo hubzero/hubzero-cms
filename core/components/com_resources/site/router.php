@@ -137,7 +137,7 @@ class Router extends Base
 		{
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 
 			$t = new \Components\Resources\Tables\Type($database);
 			$types = $t->getMajorTypes();

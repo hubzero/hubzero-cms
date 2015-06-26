@@ -36,7 +36,7 @@ class JFormFieldGroupParent extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$user = JFactory::getUser();
 		$query = $db->getQuery(true);
 

@@ -38,7 +38,7 @@ class Tools extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -82,7 +82,7 @@ class Tools extends \JTable
 
 		$sql = "SELECT id, users, sessions, simulations, jobs, avg_wall, tot_wall, avg_cpu, tot_cpu, avg_view, tot_view, avg_wait, tot_wait, avg_cpus, tot_cpus, period, LEFT(datetime,7) as datetime
 				FROM $this->_tbl
-				WHERE `period`=" . $this->_db->Quote($period) . " AND `resid`=" . $this->_db->Quote($resid);
+				WHERE `period`=" . $this->_db->quote($period) . " AND `resid`=" . $this->_db->quote($resid);
 		if ($dthis)
 		{
 			$sql .= " AND `datetime`=" . $this->_db->quote($dthis . "-00 00:00:00");

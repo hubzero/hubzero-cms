@@ -43,7 +43,7 @@ class Vote extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -116,7 +116,7 @@ class Vote extends \JTable
 			return false;
 		}
 
-		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid=" . $this->_db->Quote($refid) . " AND category = " . $this->_db->Quote($category) . " AND voter=" . $this->_db->Quote($voter);
+		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid=" . $this->_db->quote($refid) . " AND category = " . $this->_db->quote($category) . " AND voter=" . $this->_db->quote($voter);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -151,7 +151,7 @@ class Vote extends \JTable
 	{
 		$query = "SELECT c.*
 				FROM $this->_tbl AS c
-				WHERE c.referenceid=" . $this->_db->Quote($filters['id']) . " AND category=" . $this->_db->Quote($filters['category']) . " ORDER BY c.voted DESC";
+				WHERE c.referenceid=" . $this->_db->quote($filters['id']) . " AND category=" . $this->_db->quote($filters['category']) . " ORDER BY c.voted DESC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -167,7 +167,7 @@ class Vote extends \JTable
 	 */
 	public function deleteVotes($refid=null, $category=null)
 	{
-		$query = "DELETE FROM $this->_tbl WHERE referenceid=" . $this->_db->Quote($refid) . " AND category = " . $this->_db->Quote($category);
+		$query = "DELETE FROM $this->_tbl WHERE referenceid=" . $this->_db->quote($refid) . " AND category = " . $this->_db->quote($category);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())

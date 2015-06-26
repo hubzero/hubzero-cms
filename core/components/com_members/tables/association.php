@@ -40,7 +40,7 @@ class Association extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -80,7 +80,7 @@ class Association extends \JTable
 	{
 		$id = $id ?: $this->authorid;
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $this->_db->quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

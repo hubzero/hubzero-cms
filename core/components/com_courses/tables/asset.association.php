@@ -101,7 +101,7 @@ class AssetAssociation extends \JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->Quote(intval($asset_id)) . " AND scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope);
+		$query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->quote(intval($asset_id)) . " AND scope_id=" . $this->_db->quote(intval($scope_id)) . " AND scope=" . $this->_db->quote($scope);
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -123,7 +123,7 @@ class AssetAssociation extends \JTable
 	 */
 	public function getHighestOrdering($scope_id, $scope)
 	{
-		$sql = "SELECT ordering FROM $this->_tbl WHERE scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope) . " ORDER BY ordering DESC LIMIT 1";
+		$sql = "SELECT ordering FROM $this->_tbl WHERE scope_id=" . $this->_db->quote(intval($scope_id)) . " AND scope=" . $this->_db->quote($scope) . " ORDER BY ordering DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -142,15 +142,15 @@ class AssetAssociation extends \JTable
 
 		if (isset($filters['asset_id']))
 		{
-			$where[] = "caa.asset_id=" . $this->_db->Quote((int) $filters['asset_id']);
+			$where[] = "caa.asset_id=" . $this->_db->quote((int) $filters['asset_id']);
 		}
 		if (isset($filters['scope_id']))
 		{
-			$where[] = "caa.scope_id=" . $this->_db->Quote((int) $filters['scope_id']);
+			$where[] = "caa.scope_id=" . $this->_db->quote((int) $filters['scope_id']);
 		}
 		if (isset($filters['scope']))
 		{
-			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['scope']);
+			$where[] = "caa.scope=" . $this->_db->quote((string) $filters['scope']);
 		}
 
 		if (count($where) > 0)

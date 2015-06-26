@@ -44,7 +44,7 @@ Toolbar::cancel();
 
 if ($this->row->standalone == 1)
 {
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 
 	$type = new \Components\Resources\Tables\Type($database);
 	$type->load($this->row->type);

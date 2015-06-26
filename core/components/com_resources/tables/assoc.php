@@ -38,7 +38,7 @@ class Assoc extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -88,11 +88,11 @@ class Assoc extends \JTable
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM `$this->_tbl` WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering < " . $this->_db->Quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+				$sql = "SELECT * FROM `$this->_tbl` WHERE parent_id=" . $this->_db->quote($this->parent_id) . " AND ordering < " . $this->_db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM `$this->_tbl` WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering > " . $this->_db->Quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+				$sql = "SELECT * FROM `$this->_tbl` WHERE parent_id=" . $this->_db->quote($this->parent_id) . " AND ordering > " . $this->_db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery($sql);
@@ -117,7 +117,7 @@ class Assoc extends \JTable
 	{
 		$pid = $pid ?: $this->parent_id;
 
-		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " ORDER BY ordering DESC LIMIT 1");
+		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE parent_id=" . $this->_db->quote($pid) . " ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -133,7 +133,7 @@ class Assoc extends \JTable
 		$pid = $pid ?: $this->parent_id;
 		$cid = $cid ?: $this->child_id;
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $this->_db->quote($pid) . " AND child_id=" . $this->_db->quote($cid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -154,7 +154,7 @@ class Assoc extends \JTable
 	{
 		if (!$new)
 		{
-			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($this->ordering) . ", grouping=" . $this->_db->Quote($this->grouping) . " WHERE child_id=" . $this->_db->Quote($this->child_id) . " AND parent_id=" . $this->_db->Quote($this->parent_id));
+			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->quote($this->ordering) . ", grouping=" . $this->_db->quote($this->grouping) . " WHERE child_id=" . $this->_db->quote($this->child_id) . " AND parent_id=" . $this->_db->quote($this->parent_id));
 			if ($this->_db->query())
 			{
 				$ret = true;
@@ -194,7 +194,7 @@ class Assoc extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid));
+		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE parent_id=" . $this->_db->quote($pid));
 		return $this->_db->loadResult();
 	}
 }

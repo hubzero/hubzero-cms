@@ -81,8 +81,8 @@ class Stats extends \JTable
 
 		$sql = "SELECT *
 				FROM $this->_tbl
-				WHERE period =" . $this->_db->Quote($period) . "
-				AND publication_id =" . $this->_db->Quote($publication_id);
+				WHERE period =" . $this->_db->quote($period) . "
+				AND publication_id =" . $this->_db->quote($publication_id);
 		$sql.= $dthis ? " AND datetime='" . $dthis . "-00 00:00:00'" : '';
 		$sql.= " ORDER BY datetime DESC LIMIT 1";
 

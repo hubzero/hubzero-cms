@@ -44,7 +44,7 @@ class ContentViewFeatured extends JViewLegacy
 			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language));
 
 			// Get row fulltext
-			$db = JFactory::getDBO();
+			$db = App::get('db');
 			$query = 'SELECT' .$db->quoteName('fulltext'). 'FROM #__content WHERE id ='.$row->id;
 			$db->setQuery($query);
 			$row->fulltext = $db->loadResult();

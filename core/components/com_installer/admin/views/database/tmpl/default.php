@@ -87,7 +87,7 @@ Toolbar::help('JHELP_EXTENSIONS_EXTENSION_MANAGER_DATABASE');
 			<ul>
 				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_SCHEMA_VERSION', $this->schemaVersion); ?></li>
 				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_UPDATE_VERSION', $this->updateVersion); ?></li>
-				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_DRIVER', JFactory::getDbo()->name); ?></li>
+				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_DRIVER', App::get('db')->name); ?></li>
 				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_CHECKED_OK', count($this->results['ok'])); ?></li>
 				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_SKIPPED', count($this->results['skipped'])); ?></li>
 			</ul>

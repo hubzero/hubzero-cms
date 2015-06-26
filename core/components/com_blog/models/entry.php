@@ -114,7 +114,7 @@ class Entry extends Model
 	 */
 	public function __construct($oid, $scope=null, $scope_id=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Entry($this->_db);
 

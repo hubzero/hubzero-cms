@@ -45,7 +45,7 @@ Toolbar::apply();
 Toolbar::save();
 Toolbar::cancel();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 // Get pub category
 $rt = $this->model->category();

@@ -41,7 +41,7 @@ class OwnerGroup extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -108,7 +108,7 @@ class OwnerGroup extends \JTable
 		// get groups assigned to this wishlist
 		if (!$native)
 		{
-			$sql = "SELECT o.groupid FROM `#__wishlist_ownergroups` AS o WHERE o.wishlist=" . $this->_db->Quote($listid);
+			$sql = "SELECT o.groupid FROM `#__wishlist_ownergroups` AS o WHERE o.wishlist=" . $this->_db->quote($listid);
 
 			$this->_db->setQuery($sql);
 			$wishgroups = $this->_db->loadObjectList();
@@ -151,7 +151,7 @@ class OwnerGroup extends \JTable
 		if (Group::exists($groupid)
 		 && !in_array($groupid, $nativegroups, true))
 		{
-			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->Quote($listid) . " AND groupid=" . $this->_db->Quote($groupid);
+			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->quote($listid) . " AND groupid=" . $this->_db->quote($groupid);
 			$this->_db->setQuery($query);
 			$this->_db->query();
 			return true;

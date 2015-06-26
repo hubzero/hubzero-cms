@@ -42,7 +42,7 @@ class Comment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -124,7 +124,7 @@ class Comment extends \JTable
 		{
 			$dir = 'ASC';
 		}
-		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY " . $sort . " " . $dir;
+		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->quote($ticket) . " $sqladmin ORDER BY " . $sort . " " . $dir;
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -151,7 +151,7 @@ class Comment extends \JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin");
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE ticket=" . $this->_db->quote($ticket) . " $sqladmin");
 		return $this->_db->loadResult();
 	}
 
@@ -176,7 +176,7 @@ class Comment extends \JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$this->_db->setQuery("SELECT created FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY created DESC LIMIT 1");
+		$this->_db->setQuery("SELECT created FROM $this->_tbl WHERE ticket=" . $this->_db->quote($ticket) . " $sqladmin ORDER BY created DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -222,7 +222,7 @@ class Comment extends \JTable
 		{
 			$ticket = $this->ticket;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $this->_db->quote($ticket));
 		if (!$this->_db->query())
 		{
 			$this->setError($database->getErrorMsg());

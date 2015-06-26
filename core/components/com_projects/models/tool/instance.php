@@ -59,7 +59,7 @@ class Instance extends Model
 	 */
 	public function __construct($oid, $parent = NULL)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\ToolInstance($this->_db);
 

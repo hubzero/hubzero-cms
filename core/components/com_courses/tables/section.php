@@ -71,7 +71,7 @@ class Section extends \JTable
 
 		if (!isset($instances[$alias . '_' . $offering_id]))
 		{
-			$inst = new self(\JFactory::getDBO());
+			$inst = new self(\App::get('db'));
 			$inst->load($alias, $offering_id);
 
 			$instances[$alias . '_' . $offering_id] = $inst;
@@ -142,7 +142,7 @@ class Section extends \JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 
-		$this->_db->setQuery("SELECT id FROM `#__courses_offering_sections` WHERE `offering_id`=" . $this->_db->Quote($this->offering_id) . " AND `alias`=" . $this->_db->Quote($this->alias));
+		$this->_db->setQuery("SELECT id FROM `#__courses_offering_sections` WHERE `offering_id`=" . $this->_db->quote($this->offering_id) . " AND `alias`=" . $this->_db->quote($this->alias));
 		$id = $this->_db->loadResult();
 		if ($id && $id != $this->id)
 		{
@@ -174,17 +174,17 @@ class Section extends \JTable
 
 		if (isset($filters['offering_id']) && $filters['offering_id'])
 		{
-			$where[] = "os.offering_id=" . $this->_db->Quote(intval($filters['offering_id']));
+			$where[] = "os.offering_id=" . $this->_db->quote(intval($filters['offering_id']));
 		}
 
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "os.state=" . $this->_db->Quote(intval($filters['state']));
+			$where[] = "os.state=" . $this->_db->quote(intval($filters['state']));
 		}
 
 		if (isset($filters['is_default']) && $filters['is_default'] >= 0)
 		{
-			$where[] = "os.is_default=" . $this->_db->Quote(intval($filters['is_default']));
+			$where[] = "os.is_default=" . $this->_db->quote(intval($filters['is_default']));
 		}
 
 		if (isset($filters['enrollment']))
@@ -196,7 +196,7 @@ class Section extends \JTable
 			}
 			else
 			{
-				$where[] = "os.enrollment=" . $this->_db->Quote(intval($filters['enrollment']));
+				$where[] = "os.enrollment=" . $this->_db->quote(intval($filters['enrollment']));
 			}
 		}
 
@@ -210,8 +210,8 @@ class Section extends \JTable
 		{
 			$now = Date::toSql();
 
-			$where[] = "(os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->Quote($now) . ")";
-			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->Quote($now) . ")";
+			$where[] = "(os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->quote($now) . ")";
+			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->quote($now) . ")";
 		}
 
 		if (isset($filters['started']))
@@ -220,11 +220,11 @@ class Section extends \JTable
 
 			if ($filters['started'] === true)
 			{
-				$where[] = "(os.start_date = '0000-00-00 00:00:00' OR os.start_date <= " . $this->_db->Quote($now) . ")";
+				$where[] = "(os.start_date = '0000-00-00 00:00:00' OR os.start_date <= " . $this->_db->quote($now) . ")";
 			}
 			else if ($filters['started'] === false)
 			{
-				$where[] = "(os.start_date != '0000-00-00 00:00:00' AND os.start_date > " . $this->_db->Quote($now) . ")";
+				$where[] = "(os.start_date != '0000-00-00 00:00:00' AND os.start_date > " . $this->_db->quote($now) . ")";
 			}
 		}
 
@@ -234,11 +234,11 @@ class Section extends \JTable
 
 			if ($filters['ended'] === true)
 			{
-				$where[] = "(os.end_date != '0000-00-00 00:00:00' AND os.end_date < " . $this->_db->Quote($now) . ")";
+				$where[] = "(os.end_date != '0000-00-00 00:00:00' AND os.end_date < " . $this->_db->quote($now) . ")";
 			}
 			else if ($filters['ended'] === false)
 			{
-				$where[] = "(os.end_date = '0000-00-00 00:00:00' OR os.end_date >= " . $this->_db->Quote($now) . ")";
+				$where[] = "(os.end_date = '0000-00-00 00:00:00' OR os.end_date >= " . $this->_db->quote($now) . ")";
 			}
 		}
 

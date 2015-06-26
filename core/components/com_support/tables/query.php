@@ -42,7 +42,7 @@ class Query extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct($db)
@@ -443,11 +443,11 @@ class Query extends \JTable
 				{
 					$condition->expressions[$i]->val = '0';
 
-					$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val) . ' AND ' . $prfx . '.' . $this->_db->nameQuote('open') . ' = ' . $this->_db->Quote('0') . ')';
+					$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val) . ' AND ' . $prfx . '.' . $this->_db->nameQuote('open') . ' = ' . $this->_db->quote('0') . ')';
 				}
 				else
 				{
-					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
+					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val);
 				}
 			}
 		}
@@ -539,7 +539,7 @@ class Query extends \JTable
 			}
 			else
 			{
-				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
+				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->quote($expr->val);
 			}
 		}
 

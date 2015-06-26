@@ -147,7 +147,7 @@ function submitbutton(pressbutton)
 					<?php
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 
-					$database = JFactory::getDBO();
+					$database = App::get('db');
 					$rot = new \Components\Members\Tables\OrganizationType($database);
 					if ($types = $rot->find('list'))
 					{
@@ -516,7 +516,7 @@ function submitbutton(pressbutton)
 					<th><?php echo $this->profile->get('modifiedDate'); ?></th>
 				</tr>
 				<?php
-				$database = JFactory::getDBO();
+				$database = App::get('db');
 				$database->setQuery("SELECT du.*, d.domain FROM `#__xdomain_users` AS du, `#__xdomains` AS d WHERE du.domain_id=d.domain_id AND du.uidNumber=" . (int) $this->profile->get('uidNumber'));
 				$domains = $database->loadObjectList();
 				if ($domains) {

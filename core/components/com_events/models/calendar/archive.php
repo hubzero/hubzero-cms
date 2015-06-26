@@ -62,7 +62,7 @@ class Archive extends Model
 	public function __construct()
 	{
 		// create needed objects
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 	}
 
 	/**

@@ -66,7 +66,7 @@ class Editor extends Object
 	 */
 	public function __construct($handler, $configs)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->handler 	= $handler;
 		$this->configs 	= $configs;

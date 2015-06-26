@@ -42,7 +42,7 @@ class SectionCode extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -133,11 +133,11 @@ class SectionCode extends \JTable
 		}
 		if (isset($filters['section_id']))
 		{
-			$where[] = "c.section_id=" . $this->_db->Quote($filters['section_id']);
+			$where[] = "c.section_id=" . $this->_db->quote($filters['section_id']);
 		}
 		if (isset($filters['created_by']))
 		{
-			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

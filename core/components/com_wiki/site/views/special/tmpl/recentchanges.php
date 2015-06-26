@@ -45,7 +45,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $query = "SELECT COUNT(*)
 			FROM `#__wiki_version` AS wv

@@ -78,8 +78,8 @@ class Tool extends \JTable
 		}
 		$name = is_numeric($identifier) ? 'id' : 'name';
 
-		$query = "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->Quote($identifier);
-		$query.= intval($projectid) > 0 ? " AND project_id=" . $this->_db->Quote($projectid) : "";
+		$query = "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier);
+		$query.= intval($projectid) > 0 ? " AND project_id=" . $this->_db->quote($projectid) : "";
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -215,10 +215,10 @@ class Tool extends \JTable
 	 */
 	public function checkUniqueName($name = NULL, $id = NULL)
 	{
-		$sql = "SELECT count(*) FROM $this->_tbl WHERE name=" . $this->_db->Quote($name);
+		$sql = "SELECT count(*) FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
 		if ($id)
 		{
-			$sql .= " AND id !=". $this->_db->Quote($id);
+			$sql .= " AND id !=". $this->_db->quote($id);
 		}
 
 		$this->_db->setQuery($sql);
@@ -292,7 +292,7 @@ class Tool extends \JTable
 
 		$sql .= " FROM $this->_tbl as f "
 				. "JOIN #__project_tool_instances AS v ON f.id=v.parent_id ";
-		$sql .= intval($instanceId) ? "AND v.id=" . $this->_db->Quote($instanceId) : "AND v.state=3 ";
+		$sql .= intval($instanceId) ? "AND v.id=" . $this->_db->quote($instanceId) : "AND v.state=3 ";
 		$sql .= " JOIN #__project_tool_statuses AS s ON f.status=s.id ";
 		$sql .= "JOIN #__projects as p ON p.id=f.project_id ";
 		$sql .= "JOIN #__xprofiles as x ON x.uidNumber=f.created_by ";
@@ -306,8 +306,8 @@ class Tool extends \JTable
 				PA.object_id=f.id AND PA.object_instance=v.id ";
 		$sql .= "LEFT JOIN #__publication_versions as PV ON PV.id=PA.publication_version_id AND PV.main=1 ";
 
-		$sql .= " WHERE $name=" . $this->_db->Quote($identifier);
-		$sql .= intval($projectid) > 0 ? " AND f.project_id=" . $this->_db->Quote($projectid) : "";
+		$sql .= " WHERE $name=" . $this->_db->quote($identifier);
+		$sql .= intval($projectid) > 0 ? " AND f.project_id=" . $this->_db->quote($projectid) : "";
 
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
@@ -326,7 +326,7 @@ class Tool extends \JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT id FROM #__project_tool WHERE name=" . $this->_db->Quote($name) . " LIMIT 1");
+		$this->_db->setQuery("SELECT id FROM #__project_tool WHERE name=" . $this->_db->quote($name) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -349,9 +349,9 @@ class Tool extends \JTable
 		if ($status)
 		{
 			$query = "UPDATE $this->_tbl SET ";
-			$query.= "status=" . $this->_db->Quote($status) . ", status_changed='" . date('Y-m-d H:i:s', time()) . "'";
-			$query.= $by ? ", status_changed_by=" . $this->_db->Quote($by) : "";
-			$query.= " WHERE id=" . $this->_db->Quote($id);
+			$query.= "status=" . $this->_db->quote($status) . ", status_changed='" . date('Y-m-d H:i:s', time()) . "'";
+			$query.= $by ? ", status_changed_by=" . $this->_db->quote($by) : "";
+			$query.= " WHERE id=" . $this->_db->quote($id);
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{

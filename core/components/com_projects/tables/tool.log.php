@@ -88,15 +88,15 @@ class ToolLog extends \JTable
 		$query .= "WHERE ";
 		if ($instance_id)
 		{
-			$query .= "L.instance_id=" . $this->_db->Quote($instance_id);
+			$query .= "L.instance_id=" . $this->_db->quote($instance_id);
 		}
 		elseif ($parent_name)
 		{
-			$query .= "L.parent_name=" . $this->_db->Quote($parent_name);
+			$query .= "L.parent_name=" . $this->_db->quote($parent_name);
 		}
 		elseif ($parent_id)
 		{
-			$query .= "L.parent_id=" . $this->_db->Quote($parent_id);
+			$query .= "L.parent_id=" . $this->_db->quote($parent_id);
 		}
 
 		$query .= $status_changed ? ' AND L.status_changed = 1' : '';
@@ -141,15 +141,15 @@ class ToolLog extends \JTable
 		$query .= "WHERE ";
 		if ($instance_id)
 		{
-			$query .= "L.instance_id=" . $this->_db->Quote($instance_id);
+			$query .= "L.instance_id=" . $this->_db->quote($instance_id);
 		}
 		elseif ($parent_name)
 		{
-			$query .= "L.parent_name=" . $this->_db->Quote($parent_name);
+			$query .= "L.parent_name=" . $this->_db->quote($parent_name);
 		}
 		elseif ($parent_id)
 		{
-			$query .= "L.parent_id=" . $this->_db->Quote($parent_id);
+			$query .= "L.parent_id=" . $this->_db->quote($parent_id);
 		}
 
 		$query .= $status_changed ? ' AND L.status_changed = 1' : '';
@@ -174,8 +174,8 @@ class ToolLog extends \JTable
 			return false;
 		}
 
-		$query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->Quote($newname)
-				. " WHERE parent_id =" . $this->_db->Quote($parent_id);
+		$query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->quote($newname)
+				. " WHERE parent_id =" . $this->_db->quote($parent_id);
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{
@@ -201,7 +201,7 @@ class ToolLog extends \JTable
 
 		$query  = "SELECT log ";
 		$query .= "FROM $this->_tbl ";
-		$query .= "WHERE parent_id=" . $this->_db->Quote($toolid) . " AND project_activity_id=" . $this->_db->Quote($aid);
+		$query .= "WHERE parent_id=" . $this->_db->quote($toolid) . " AND project_activity_id=" . $this->_db->quote($aid);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();

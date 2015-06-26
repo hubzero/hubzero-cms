@@ -103,7 +103,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->Quote($tool) . " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($tool) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -162,7 +162,7 @@ class Version extends \JTable
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM $this->_tbl as v ";
 		$query .= "LEFT JOIN $rd->_tbl as d ON d.alias=v.toolname  AND d.local_revision=v.revision ";
-		$query .= "WHERE v.toolname = " . $this->_db->Quote($alias) . " AND v.state!=3 ORDER BY v.revision DESC";
+		$query .= "WHERE v.toolname = " . $this->_db->quote($alias) . " AND v.state!=3 ORDER BY v.revision DESC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -184,7 +184,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->Quote($rid);
+		$query = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
 		if ($version=='dev')
 		{
 			$query.= " AND v.state=3 LIMIT 1";
@@ -195,7 +195,7 @@ class Version extends \JTable
 		}
 		else
 		{
-			$query.= " AND v.version=" . $this->_db->Quote($version) . " LIMIT 1";
+			$query.= " AND v.version=" . $this->_db->quote($version) . " LIMIT 1";
 		}
 
 		$this->_db->setQuery($query);
@@ -217,7 +217,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->Quote($alias) . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->quote($alias) . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
@@ -246,7 +246,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl WHERE toolid=" . $this->_db->Quote($toolid) . " AND ";
+		$query = "SELECT * FROM $this->_tbl WHERE toolid=" . $this->_db->quote($toolid) . " AND ";
 		if (!$version or $version=='dev')
 		{
 			$query .= "state='3'";
@@ -257,7 +257,7 @@ class Version extends \JTable
 		}
 		else
 		{
-			$query .= "version=" . $this->_db->Quote($version);
+			$query .= "version=" . $this->_db->quote($version);
 		}
 		$query .=" ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
@@ -285,11 +285,11 @@ class Version extends \JTable
 			$query = "UPDATE #__tool_version SET unpublished='".Date::toSql()."' WHERE ";
 			if ($toolname)
 			{
-				$query .= "toolname=" . $this->_db->Quote($toolname) . " ";
+				$query .= "toolname=" . $this->_db->quote($toolname) . " ";
 			}
 			else if ($vid)
 			{
-				$query.= "id=" . $this->_db->Quote($vid) . " ";
+				$query.= "id=" . $this->_db->quote($vid) . " ";
 			}
 			$query .= "AND state='1'";
 			$this->_db->setQuery($query);
@@ -323,9 +323,9 @@ class Version extends \JTable
 		$query = "UPDATE #__tool_version SET state='0', unpublished='".Date::toSql()."' WHERE ";
 		if (intval($vid))
 		{
-			$query.= "id=" . $this->_db->Quote($vid) . " AND ";
+			$query.= "id=" . $this->_db->quote($vid) . " AND ";
 		}
-		$query.= "toolid=" . $this->_db->Quote($toolid) . " AND state='1'";
+		$query.= "toolid=" . $this->_db->quote($toolid) . " AND state='1'";
 
 		$this->_db->setQuery($query);
 
@@ -362,7 +362,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query = "SELECT id FROM #__tool_version WHERE toolid=" . $this->_db->Quote($this->toolid);
+		$query = "SELECT id FROM #__tool_version WHERE toolid=" . $this->_db->quote($this->toolid);
 		if (!$version or $version=='dev')
 		{
 			$query.= " AND state='3'";
@@ -373,7 +373,7 @@ class Version extends \JTable
 		}
 		else
 		{
-			$query.= " AND version=" . $this->_db->Quote($version);
+			$query.= " AND version=" . $this->_db->quote($version);
 		}
 		$query.=" ORDER BY revision DESC LIMIT 1";
 
@@ -407,8 +407,8 @@ class Version extends \JTable
 	{
 		if (empty($this->id))
 		{
-			$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->Quote($this->toolname) .
-					" AND instance=" . $this->_db->Quote($this->instance) . ";";
+			$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->quote($this->toolname) .
+					" AND instance=" . $this->_db->quote($this->instance) . ";";
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadResult();
 
@@ -442,11 +442,11 @@ class Version extends \JTable
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($toolid)
 		{
-			$query .= "WHERE v.toolid = " . $this->_db->Quote($toolid) . " ";
+			$query .= "WHERE v.toolid = " . $this->_db->quote($toolid) . " ";
 		}
 		else if ($toolname)
 		{
-			$query .= "WHERE v.toolname = " . $this->_db->Quote($toolname) . " ";
+			$query .= "WHERE v.toolname = " . $this->_db->quote($toolname) . " ";
 		}
 		if (($toolname or $toolid) && $exclude_dev)
 		{
@@ -497,11 +497,11 @@ class Version extends \JTable
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
 		{
-			$query .= "WHERE v.id = " . $this->_db->Quote($id) . " ";
+			$query .= "WHERE v.id = " . $this->_db->quote($id) . " ";
 		}
 		else if ($version && $toolname)
 		{
-			$query.= "WHERE v.toolname=" . $this->_db->Quote($toolname) . " ";
+			$query.= "WHERE v.toolname=" . $this->_db->quote($toolname) . " ";
 			if ($version=='current')
 			{
 				$query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
@@ -512,12 +512,12 @@ class Version extends \JTable
 			}
 			else
 			{
-				$query .= "AND v.version = " . $this->_db->Quote($version) . " ";
+				$query .= "AND v.version = " . $this->_db->quote($version) . " ";
 			}
 		}
 		else if ($instance)
 		{
-			$query .= "WHERE v.instance=" . $this->_db->Quote($instance) . " ";
+			$query .= "WHERE v.instance=" . $this->_db->quote($instance) . " ";
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -669,7 +669,7 @@ class Version extends \JTable
 		$query .= "WHERE t.toolname LIKE " . $this->_db->quote($tool['toolname']) . " ";
 		if ($id)
 		{
-			$query .= "AND t.id!=" . $this->_db->Quote($id) . " ";
+			$query .= "AND t.id!=" . $this->_db->quote($id) . " ";
 		}
 
 		$this->_db->setQuery($query);
@@ -689,7 +689,7 @@ class Version extends \JTable
 		$query .= "FROM #__tool ";
 		if ($id)
 		{
-			$query .= "WHERE id!=" . $this->_db->Quote($id) . " ";
+			$query .= "WHERE id!=" . $this->_db->quote($id) . " ";
 		}
 
 		$this->_db->setQuery($query);
@@ -857,8 +857,8 @@ class Version extends \JTable
 	 */
 	public function getToolname($instance)
 	{
-		$database = \JFactory::getDBO();
-		$query  = "SELECT toolname FROM #__tool_version WHERE instance=" . $this->_db->Quote($instance) . " LIMIT 1";
+		$database = \App::get('db');
+		$query  = "SELECT toolname FROM #__tool_version WHERE instance=" . $this->_db->quote($instance) . " LIMIT 1";
 		$this->_db->setQuery($query);
 		$toolname = $this->_db->loadResult();
 		if (!$toolname)
@@ -879,8 +879,8 @@ class Version extends \JTable
 	 */
 	public function getCurrentVersionProperty($toolname, $property)
 	{
-		$database = \JFactory::getDBO();
-		$query  = "SELECT " . $property . " FROM #__tool_version  WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
+		$database = \App::get('db');
+		$query  = "SELECT " . $property . " FROM #__tool_version  WHERE toolname=" . $this->_db->quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -896,8 +896,8 @@ class Version extends \JTable
 	 */
 	public function getDevVersionProperty($toolname, $property)
 	{
-		$database = \JFactory::getDBO();
-		$query  = "SELECT " . $property . " FROM #__tool_version WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
+		$database = \App::get('db');
+		$query  = "SELECT " . $property . " FROM #__tool_version WHERE toolname=" . $this->_db->quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}

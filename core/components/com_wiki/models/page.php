@@ -133,7 +133,7 @@ class Page extends Model
 	 */
 	public function __construct($oid, $scope='')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Page($this->_db);
 

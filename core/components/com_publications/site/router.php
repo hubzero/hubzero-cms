@@ -178,7 +178,7 @@ class Router extends Base
 		{
 			include_once( dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 
 			$t = new \Components\Publications\Tables\Category( $database );
 			$cats = $t->getCategories();

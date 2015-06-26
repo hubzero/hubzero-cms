@@ -330,7 +330,7 @@ class Media extends SiteController
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatrackingdetailed.php';
 
 		// Instantiate objects
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$session  = App::get('session');
 
 		// Get request vars

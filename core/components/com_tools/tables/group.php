@@ -83,7 +83,7 @@ class Group extends \JTable
 	 */
 	public function save($cn, $toolid = '', $role = '')
 	{
-		$query = "INSERT INTO $this->_tbl (cn, toolid, role) VALUES (" . $this->_db->Quote($cn) . "," . $this->_db->Quote($toolid) . "," . $this->_db->Quote($role) . ")";
+		$query = "INSERT INTO $this->_tbl (cn, toolid, role) VALUES (" . $this->_db->quote($cn) . "," . $this->_db->quote($toolid) . "," . $this->_db->quote($role) . ")";
 		$this->_db->setQuery($query);
 		$this->_db->query();
 	}
@@ -165,7 +165,7 @@ class Group extends \JTable
 		{
 			foreach ($to_delete as $del)
 			{
-				$query = "DELETE FROM $this->_tbl WHERE cn=" . $this->_db->Quote($del) . " AND toolid=" . $this->_db->Quote($toolid) . " AND role=0";
+				$query = "DELETE FROM $this->_tbl WHERE cn=" . $this->_db->quote($del) . " AND toolid=" . $this->_db->quote($toolid) . " AND role=0";
 				$this->_db->setQuery($query);
 				$this->_db->query();
 			}

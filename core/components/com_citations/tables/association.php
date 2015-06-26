@@ -38,7 +38,7 @@ class Association extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -86,23 +86,23 @@ class Association extends \JTable
 		$ands = array();
 		if (isset($filters['cid']) && $filters['cid'] != 0)
 		{
-			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
+			$ands[] = "r.cid=" . $this->_db->quote($filters['cid']);
 		}
 		if (isset($filters['oid']) && $filters['oid'] != 0)
 		{
-			$ands[] = "r.oid=" . $this->_db->Quote($filters['oid']);
+			$ands[] = "r.oid=" . $this->_db->quote($filters['oid']);
 		}
 		if (isset($filters['type']) && $filters['type'] != '')
 		{
-			$ands[] = "r.type=" . $this->_db->Quote($filters['type']);
+			$ands[] = "r.type=" . $this->_db->quote($filters['type']);
 		}
 		if (isset($filters['type']) && $filters['type'] != '')
 		{
-			$ands[] = "r.type=" . $this->_db->Quote($filters['type']);
+			$ands[] = "r.type=" . $this->_db->quote($filters['type']);
 		}
 		if (isset($filters['table']) && $filters['table'] != '')
 		{
-			$ands[] = "r.tbl=" . $this->_db->Quote($filters['table']);
+			$ands[] = "r.tbl=" . $this->_db->quote($filters['table']);
 		}
 		if (count($ands) > 0)
 		{
@@ -169,7 +169,7 @@ class Association extends \JTable
 		}
 
 		// Remove any types in the remove list
-		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `cid`=" . $this->_db->Quote(intval($cid)));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `cid`=" . $this->_db->quote(intval($cid)));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

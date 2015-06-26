@@ -66,7 +66,7 @@ class Eventsv1_0 extends ApiController
 		$start = Request::getInt('limitstart', 0);
 
 		// load up the events
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$query = "SELECT * FROM `#__events` as e
 					/* WHERE publish_up <= UTC_TIMESTAMP() */
 					WHERE publish_down >= UTC_TIMESTAMP()
@@ -105,7 +105,7 @@ class Eventsv1_0 extends ApiController
 		$nicedate = Request::getInt('niceDate', 0);
 
 		// load up the events
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$query = "SELECT * FROM `#__events` as e
 					/* WHERE publish_up <= UTC_TIMESTAMP() */
 					WHERE state=1

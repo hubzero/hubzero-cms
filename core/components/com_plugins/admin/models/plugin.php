@@ -246,7 +246,7 @@ class Plugin extends \JModelAdmin
 		$client  = \JApplicationHelper::getClientInfo(0);
 
 		// Load the core and/or local language sys file(s) for the ordering field.
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = 'SELECT element' .
 				' FROM #__extensions' .
 				' WHERE (type =' .$db->Quote('plugin'). 'AND folder='. $db->Quote($folder) . ')';
@@ -322,8 +322,8 @@ class Plugin extends \JModelAdmin
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
-		$condition[] = 'type = '. $this->_db->Quote($table->type);
-		$condition[] = 'folder = '. $this->_db->Quote($table->folder);
+		$condition[] = 'type = '. $this->_db->quote($table->type);
+		$condition[] = 'folder = '. $this->_db->quote($table->folder);
 		return $condition;
 	}
 

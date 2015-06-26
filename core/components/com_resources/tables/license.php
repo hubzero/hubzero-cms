@@ -38,7 +38,7 @@ class License extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -110,7 +110,7 @@ class License extends \JTable
 		$where = array();
 		if (isset($filters['state']))
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

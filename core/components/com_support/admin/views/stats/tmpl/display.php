@@ -40,7 +40,7 @@ Toolbar::help('stats');
 Html::behavior('framework');
 $this->css();
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 $sql = "SELECT status
 		FROM #__support_tickets
 		WHERE open=0

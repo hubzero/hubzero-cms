@@ -43,7 +43,7 @@ class Question extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -129,15 +129,15 @@ class Question extends \JTable
 		}
 		if (isset($filters['mine']) && $filters['mine'] != 0)
 		{
-			$query .= " AND C.created_by=" . $this->_db->Quote(User::get('id')) . " ";
+			$query .= " AND C.created_by=" . $this->_db->quote(User::get('id')) . " ";
 		}
 		if (isset($filters['mine']) && $filters['mine'] == 0)
 		{
-			$query .= " AND C.created_by!=" . $this->_db->Quote(User::get('id')) . " ";
+			$query .= " AND C.created_by!=" . $this->_db->quote(User::get('id')) . " ";
 		}
 		if (isset($filters['created_before']) && $filters['created_before'] != '')
 		{
-			$query .= " AND C.created <= " . $this->_db->Quote($filters['created_before']) . " ";
+			$query .= " AND C.created <= " . $this->_db->quote($filters['created_before']) . " ";
 		}
 		if ($filters['tag'])
 		{
@@ -258,7 +258,7 @@ class Question extends \JTable
 	public function getQuestionID($id, $which)
 	{
 		$query  = "SELECT a.id FROM `$this->_tbl` AS a WHERE a.state != 2 AND ";
-		$query .= ($which == 'prev') ? "a.id < " . $this->_db->Quote($id) . " " : "a.id > " . $this->_db->Quote($id);
+		$query .= ($which == 'prev') ? "a.id < " . $this->_db->quote($id) . " " : "a.id > " . $this->_db->quote($id);
 		$query .= ($which == 'prev') ? " ORDER BY a.id DESC "  : " ORDER BY a.id ASC ";
 		$query .= " LIMIT 1";
 

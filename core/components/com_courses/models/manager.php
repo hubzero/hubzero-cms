@@ -57,7 +57,7 @@ class Manager extends Member
 	 */
 	public function __construct($uid, $cid=0, $oid=0, $sid=0)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Member($this->_db);
 

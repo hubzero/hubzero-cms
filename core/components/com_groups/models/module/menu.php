@@ -54,7 +54,7 @@ class Menu extends Model
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\ModuleMenu($this->_db);
 

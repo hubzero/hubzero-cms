@@ -102,7 +102,7 @@ class Host extends \JTable
 					}
 					if ($ky == $this->_tbl_key)
 					{ // PK not to be updated
-						$where = $this->_tbl_key . '=' . ($kv ? $this->_db->Quote($kv) : $this->_db->Quote($v));
+						$where = $this->_tbl_key . '=' . ($kv ? $this->_db->quote($kv) : $this->_db->quote($v));
 						//continue;
 					}
 					if ($v === null)
@@ -111,7 +111,7 @@ class Host extends \JTable
 					}
 					else
 					{
-						$val = $this->_db->isQuoted($ky) ? $this->_db->Quote($v) : (int) $v;
+						$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
 					}
 					$tmp[] = $this->_db->nameQuote($ky) . '=' . $val;
 				}
@@ -149,7 +149,7 @@ class Host extends \JTable
 		}
 
 		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
-				' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->Quote($this->$k);
+				' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 
 		if ($this->_db->query())
@@ -175,19 +175,19 @@ class Host extends \JTable
 
 		if (isset($filters['status']) && $filters['status'] != '')
 		{
-			$where[] = "c.`status`=" . $this->_db->Quote($filters['status']);
+			$where[] = "c.`status`=" . $this->_db->quote($filters['status']);
 		}
 		if (isset($filters['portbase']) && $filters['portbase'] != '')
 		{
-			$where[] = "c.`portbase`=" . $this->_db->Quote($filters['portbase']);
+			$where[] = "c.`portbase`=" . $this->_db->quote($filters['portbase']);
 		}
 		if (isset($filters['uses']) && $filters['uses'] != '')
 		{
-			$where[] = "c.`uses`=" . $this->_db->Quote($filters['uses']);
+			$where[] = "c.`uses`=" . $this->_db->quote($filters['uses']);
 		}
 		if (isset($filters['provisions']) && $filters['provisions'] != '')
 		{
-			$where[] = "c.`provisions`=" . $this->_db->Quote($filters['provisions']);
+			$where[] = "c.`provisions`=" . $this->_db->quote($filters['provisions']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

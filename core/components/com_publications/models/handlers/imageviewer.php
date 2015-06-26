@@ -501,7 +501,7 @@ class ImageViewer extends Base
 		// Incoming
 		$active = trim(Request::getVar( 'o', NULL )); // Requested image
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$attachments = $editor->get('attachments');
 

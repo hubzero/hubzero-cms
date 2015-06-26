@@ -549,7 +549,7 @@ class Jobs extends SiteController
 	 */
 	protected function subscribe()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Login required
 		if (User::isGuest())
@@ -1109,7 +1109,7 @@ class Jobs extends SiteController
 	 */
 	public function apply()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Incoming
 		$code = Request::getVar('code', '');
@@ -1282,7 +1282,7 @@ class Jobs extends SiteController
 	 */
 	public function job()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Incoming
 		$code = Request::getVar('code', '');

@@ -141,7 +141,7 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-$database = JFactory::getDBO();
+$database = App::get('db');
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {

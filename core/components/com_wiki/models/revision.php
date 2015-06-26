@@ -62,7 +62,7 @@ class Revision extends Model
 	 */
 	public function __construct($oid, $page_id=0)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Revision($this->_db);
 

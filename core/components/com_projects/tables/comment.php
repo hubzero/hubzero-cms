@@ -56,8 +56,8 @@ class Comment extends \JTable
 	public function loadUserComment( $itemid, $user_id )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE itemid="
-			. $this->_db->Quote($itemid) . " AND created_by="
-			. $this->_db->Quote($user_id) . " LIMIT 1" );
+			. $this->_db->quote($itemid) . " AND created_by="
+			. $this->_db->quote($user_id) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -78,7 +78,7 @@ class Comment extends \JTable
 	public function loadComment( $commentid )
 	{
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id="
-			. $this->_db->Quote($commentid) . " LIMIT 1" );
+			. $this->_db->quote($commentid) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -120,21 +120,21 @@ class Comment extends \JTable
 		$query = "SELECT c.*, x.name as author ";
 		if ($lastvisit && $activityid)
 		{
-			$query.= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity AND cc.created > " . $this->_db->Quote($lastvisit) . ") as newcount ";
+			$query.= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity AND cc.created > " . $this->_db->quote($lastvisit) . ") as newcount ";
 		}
 		$query.= " FROM $this->_tbl as c";
 		$query.= " JOIN #__xprofiles as x ON x.uidNumber=c.created_by ";
 		if ($parent_activity)
 		{
-			$query.= " WHERE c.parent_activity=" . $this->_db->Quote($parent_activity);
+			$query.= " WHERE c.parent_activity=" . $this->_db->quote($parent_activity);
 		}
 		else
 		{
 			$query.= $activityid ? "" : " WHERE c.itemid="
-				. $this->_db->Quote($itemid)
-				. " AND c.tbl=" . $this->_db->Quote($tbl);
+				. $this->_db->quote($itemid)
+				. " AND c.tbl=" . $this->_db->quote($tbl);
 			$query.= $activityid ? " WHERE c.activityid="
-				. $this->_db->Quote($activityid) : "";
+				. $this->_db->quote($activityid) : "";
 		}
 		$query.= " AND c.state != 2 ";
 		$query.= " ORDER BY c.created ASC";
@@ -157,11 +157,11 @@ class Comment extends \JTable
 	public function checkDuplicate($uid, $tbl, $itemid, $parent_activity, $comment)
 	{
 		$query = "SELECT id FROM $this->_tbl WHERE created_by="
-				. $this->_db->Quote($uid) . " AND itemid="
-				. $this->_db->Quote($itemid) . " AND tbl="
-				. $this->_db->Quote($tbl) ." AND parent_activity="
-				. $this->_db->Quote($parent_activity) . " AND comment="
-				. $this->_db->Quote($comment) . " AND state!=2 ";
+				. $this->_db->quote($uid) . " AND itemid="
+				. $this->_db->quote($itemid) . " AND tbl="
+				. $this->_db->quote($tbl) ." AND parent_activity="
+				. $this->_db->quote($parent_activity) . " AND comment="
+				. $this->_db->quote($comment) . " AND state!=2 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -185,7 +185,7 @@ class Comment extends \JTable
 		}
 		$activities = array();
 
-		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=$itemid AND tbl=" . $this->_db->Quote($tbl);
+		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=$itemid AND tbl=" . $this->_db->quote($tbl);
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		if ($result)
@@ -276,8 +276,8 @@ class Comment extends \JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE itemid=" . $this->_db->Quote($itemid)
-				. " AND tbl=" . $this->_db->Quote($tbl);
+		$query .= " WHERE itemid=" . $this->_db->quote($itemid)
+				. " AND tbl=" . $this->_db->quote($tbl);
 
 		$this->_db->setQuery( $query );
 
@@ -308,7 +308,7 @@ class Comment extends \JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE id=" . $this->_db->Quote($cid);
+		$query .= " WHERE id=" . $this->_db->quote($cid);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -340,7 +340,7 @@ class Comment extends \JTable
 		$query  = ($permanent)
 			? "DELETE c FROM $this->_tbl as c INNER JOIN #__project_activity as a ON a.id=c.activityid "
 			: "UPDATE $this->_tbl as c INNER JOIN #__project_activity as a ON a.id=c.activityid  SET c.state = 2 ";
-		$query .= " WHERE a.projectid=" . $this->_db->Quote($projectid);
+		$query .= " WHERE a.projectid=" . $this->_db->quote($projectid);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())

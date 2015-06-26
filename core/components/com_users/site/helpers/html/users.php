@@ -79,7 +79,7 @@ abstract class JHtmlUsers
 		}
 		else
 		{
-			$db = JFactory::getDbo();
+			$db = App::get('db');
 			$query = $db->getQuery(true);
 			$query->select('title');
 			$query->from('#__template_styles');
@@ -159,7 +159,7 @@ abstract class JHtmlUsers
 		}
 		else
 		{
-			$db = JFactory::getDbo();
+			$db = App::get('db');
 			$lang = Lang::getRoot();
 			$query = $db->getQuery(true);
 			$query->select('name');

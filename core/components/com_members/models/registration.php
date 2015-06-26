@@ -462,7 +462,7 @@ class Registration
 
 		//get user tags
 		require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$mt = new Tags($xprofile->get('uidNumber'));
 		$tag_string = $mt->render('string');
 
@@ -650,7 +650,7 @@ class Registration
 	public function getEmailId($email)
 	{
 		// Initialize some variables
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = 'SELECT id FROM `#__users` WHERE email = ' . $db->Quote($email);
 		$db->setQuery($query, 0, 1);
@@ -930,7 +930,7 @@ class Registration
 				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
 
 				// Check if the email is already in use
-				$db = \JFactory::getDBO();
+				$db = \App::get('db');
 				$query = "SELECT `id` FROM `#__users` WHERE `email` = " . $db->quote($email) . " AND `id` != " . (int)$id;
 				$db->setQuery($query);
 				$xid = intval($db->loadResult());
@@ -957,7 +957,7 @@ class Registration
 							// We also need to catch existing users who might try to change their
 							// email to an existing email address on the hub. For that, we need to
 							// check and see if their email address is changing with this save.
-							$db = \JFactory::getDBO();
+							$db = \App::get('db');
 							$query = "SELECT `email` FROM `#__users` WHERE `id` = " . (int)$id;
 							$db->setQuery($query);
 							$currentEmail = $db->loadResult();
@@ -1412,7 +1412,7 @@ class Registration
 		}
 
 		// Initialize database
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = 'SELECT id FROM `#__users` WHERE username = ' . $db->Quote( $username );
 		$db->setQuery($query);

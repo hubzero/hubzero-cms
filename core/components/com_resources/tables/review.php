@@ -38,7 +38,7 @@ class Review extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -102,7 +102,7 @@ class Review extends \JTable
 	 */
 	public function loadUserRating($resourceid, $userid)
 	{
-		$this->_db->setQuery("SELECT rating FROM $this->_tbl WHERE resource_id=" . $this->_db->Quote($resourceid) . " AND user_id=" . $this->_db->Quote($userid) . " LIMIT 1");
+		$this->_db->setQuery("SELECT rating FROM $this->_tbl WHERE resource_id=" . $this->_db->quote($resourceid) . " AND user_id=" . $this->_db->quote($userid) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -126,8 +126,8 @@ class Review extends \JTable
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote(\User::get('id')) . "
-			WHERE rr.resource_id=" . $this->_db->Quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC"
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->quote(\User::get('id')) . "
+			WHERE rr.resource_id=" . $this->_db->quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC"
 		);
 		return $this->_db->loadObjectList();
 	}
@@ -158,8 +158,8 @@ class Review extends \JTable
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($userid) . "
-			WHERE rr.state IN (1, 3) AND rr.id=" . $this->_db->Quote($id)
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->quote($userid) . "
+			WHERE rr.state IN (1, 3) AND rr.id=" . $this->_db->quote($id)
 		);
 		return $this->_db->loadObjectList();
 	}
@@ -186,9 +186,9 @@ class Review extends \JTable
 
 		$this->_db->setQuery(
 			"SELECT v.helpful FROM `#__vote_log` as v
-			WHERE v.referenceid=" . $this->_db->Quote($id) . "
-			AND v.category=" . $this->_db->Quote($category) . "
-			AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1"
+			WHERE v.referenceid=" . $this->_db->quote($id) . "
+			AND v.category=" . $this->_db->quote($category) . "
+			AND v.voter=" . $this->_db->quote($uid) . " LIMIT 1"
 		);
 		return $this->_db->loadResult();
 	}

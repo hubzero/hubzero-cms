@@ -66,10 +66,10 @@ class Role extends \JTable
 		}
 		$oid = trim($oid);
 
-		$query  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		$query  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($oid);
 		if (!is_null($offering_id))
 		{
-			$query .= " AND offering_id=" . $this->_db->Quote(intval($offering_id));
+			$query .= " AND offering_id=" . $this->_db->quote(intval($offering_id));
 		}
 		$query .= " LIMIT 1";
 
@@ -136,11 +136,11 @@ class Role extends \JTable
 		{
 			if (substr($filters['alias'], 0, 1) == '!')
 			{
-				$where[] = "r.`alias`!=" . $this->_db->Quote(ltrim($filters['alias'], '!'));
+				$where[] = "r.`alias`!=" . $this->_db->quote(ltrim($filters['alias'], '!'));
 			}
 			else
 			{
-				$where[] = "r.`alias`=" . $this->_db->Quote($filters['alias']);
+				$where[] = "r.`alias`=" . $this->_db->quote($filters['alias']);
 			}
 		}
 		if (isset($filters['search']) && $filters['search'])

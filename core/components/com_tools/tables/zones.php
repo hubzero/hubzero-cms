@@ -122,15 +122,15 @@ class Zones extends \JTable
 
 		if (isset($filters['state']) && $filters['state'] != '')
 		{
-			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.`state`=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['master']) && $filters['master'] != '')
 		{
-			$where[] = "c.`master`=" . $this->_db->Quote($filters['master']);
+			$where[] = "c.`master`=" . $this->_db->quote($filters['master']);
 		}
 		if (isset($filters['zone']) && $filters['zone'] != '')
 		{
-			$where[] = "c.`zone`=" . $this->_db->Quote($filters['zone']);
+			$where[] = "c.`zone`=" . $this->_db->quote($filters['zone']);
 		}
 		if (isset($filters['id']))
 		{
@@ -160,36 +160,36 @@ class Zones extends \JTable
 		 || isset($filters['ipREGION']) || isset($filters['ipCITY']))
 		{
 			$query .= " JOIN `zone_locations` AS t ON c.`id`=t.`zone_id`";
-			//$where[] = "t.`id` = " . $this->_db->Quote($this->view->filters['location']);
+			//$where[] = "t.`id` = " . $this->_db->quote($this->view->filters['location']);
 			if (isset($filters['ipFROM']) && $filters['ipFROM'] != '')
 			{
-				$where[] = "t.`ipFROM`= INET_ATON(" . $this->_db->Quote($filters['ipFROM']) . ")";
+				$where[] = "t.`ipFROM`= INET_ATON(" . $this->_db->quote($filters['ipFROM']) . ")";
 			}
 			if (isset($filters['ipTO']) && $filters['ipTO'] != '')
 			{
-				$where[] = "t.`ipTO`= INET_ATON(" . $this->_db->Quote($filters['ipTO']) . ")";
+				$where[] = "t.`ipTO`= INET_ATON(" . $this->_db->quote($filters['ipTO']) . ")";
 			}
 			// If we just have an IP address
 			if (isset($filters['ip']) && $filters['ip'] != '')
 			{
-				$where[] = "t.`ipFROM` <= INET_ATON(" . $this->_db->Quote($filters['ip']) . ")";
-				$where[] = "t.`ipTO` >= INET_ATON(" . $this->_db->Quote($filters['ip']) . ")";
+				$where[] = "t.`ipFROM` <= INET_ATON(" . $this->_db->quote($filters['ip']) . ")";
+				$where[] = "t.`ipTO` >= INET_ATON(" . $this->_db->quote($filters['ip']) . ")";
 			}
 			if (isset($filters['continent']) && $filters['continent'] != '')
 			{
-				$where[] = "LOWER(t.`continent`)=" . $this->_db->Quote(strtolower($filters['continent']));
+				$where[] = "LOWER(t.`continent`)=" . $this->_db->quote(strtolower($filters['continent']));
 			}
 			if (isset($filters['countrySHORT']) && $filters['countrySHORT'] != '')
 			{
-				$where[] = "LOWER(t.`countrySHORT`)=" . $this->_db->Quote(strtolower($filters['countrySHORT']));
+				$where[] = "LOWER(t.`countrySHORT`)=" . $this->_db->quote(strtolower($filters['countrySHORT']));
 			}
 			if (isset($filters['ipREGION']) && $filters['ipREGION'] != '')
 			{
-				$where[] = "LOWER(t.`ipREGION`)=" . $this->_db->Quote(strtolower($filters['ipREGION']));
+				$where[] = "LOWER(t.`ipREGION`)=" . $this->_db->quote(strtolower($filters['ipREGION']));
 			}
 			if (isset($filters['ipCITY']) && $filters['ipCITY'] != '')
 			{
-				$where[] = "LOWER(t.`ipCITY`)=" . $this->_db->Quote(strtolower($filters['ipCITY']));
+				$where[] = "LOWER(t.`ipCITY`)=" . $this->_db->quote(strtolower($filters['ipCITY']));
 			}
 		}
 		if (count($where) > 0)

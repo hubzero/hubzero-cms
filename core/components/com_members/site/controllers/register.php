@@ -665,7 +665,7 @@ class Register extends SiteController
 				$newUsertype = $usersConfig->get('new_usertype');
 				if (!$newUsertype)
 				{
-					$db = JFactory::getDbo();
+					$db = App::get('db');
 					$query = $db->getQuery(true)
 						->select('id')
 						->from('#__usergroups')

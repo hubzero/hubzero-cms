@@ -63,7 +63,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
 			$query.= " AND main=1 ";
@@ -74,7 +74,7 @@ class Version extends \JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND version_number=" . $this->_db->Quote($version);
+			$query.= " AND version_number=" . $this->_db->quote($version);
 		}
 		else
 		{
@@ -121,7 +121,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET $update = '".$new."' WHERE publication_id=" . $this->_db->Quote($pid);
+		$query  = "UPDATE $this->_tbl SET $update = '".$new."' WHERE publication_id=" . $this->_db->quote($pid);
 		$query .= $where ? " AND ".$where : "";
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
@@ -133,7 +133,7 @@ class Version extends \JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND version_number=" . $this->_db->Quote($version);
+			$query.= " AND version_number=" . $this->_db->quote($version);
 		}
 		else
 		{
@@ -164,7 +164,7 @@ class Version extends \JTable
 		}
 		$labels = array();
 
-		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
+		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
 		if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main')
 		{
@@ -176,7 +176,7 @@ class Version extends \JTable
 		}
 		elseif (is_numeric($exclude))
 		{
-			$query.= " AND version_number!=" . $this->_db->Quote($exclude);
+			$query.= " AND version_number!=" . $this->_db->quote($exclude);
 		}
 
 		$this->_db->setQuery( $query );
@@ -216,7 +216,7 @@ class Version extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
+		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
@@ -228,7 +228,7 @@ class Version extends \JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND version_number=" . $this->_db->Quote($version);
+			$query.= " AND version_number=" . $this->_db->quote($version);
 		}
 		else
 		{
@@ -267,7 +267,7 @@ class Version extends \JTable
 		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE publication_id=" . $this->_db->Quote($pid);
+		$query.= " WHERE publication_id=" . $this->_db->quote($pid);
 		$query.= $withdev ? "" : " AND v.state!=3 ";
 		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
 		$query.= " ORDER BY " . $sortby;
@@ -295,14 +295,14 @@ class Version extends \JTable
 		}
 		if ($version == 'dev')
 		{
-			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 3 LIMIT 1 ";
+			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 3 LIMIT 1 ";
 			$this->_db->setQuery( $query );
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
 		}
 		if (is_numeric($version))
 		{
-			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND version_number=" . $this->_db->Quote($version) . " LIMIT 1 ";
+			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($version) . " LIMIT 1 ";
 			$this->_db->setQuery( $query );
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
@@ -323,7 +323,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query  = "SELECT publication_id FROM $this->_tbl WHERE id=" . $this->_db->Quote($vid) . " LIMIT 1 ";
+		$query  = "SELECT publication_id FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -340,7 +340,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND main = 1 LIMIT 1 ";
+		$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND main = 1 LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -357,7 +357,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query  = "SELECT version_number FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+		$query  = "SELECT version_number FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -374,7 +374,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 1 ";
+		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -391,7 +391,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
+		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -408,7 +408,7 @@ class Version extends \JTable
 		{
 			return false;
 		}
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
@@ -429,7 +429,7 @@ class Version extends \JTable
 		}
 		$query  = "UPDATE $this->_tbl SET main = 0 ";
 		$query .= $unpublish ? ", state = 0 " : "";
-		$query .= "WHERE id=" . $this->_db->Quote($vid) . " AND main = 1 LIMIT 1 ";
+		$query .= "WHERE id=" . $this->_db->quote($vid) . " AND main = 1 LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -450,7 +450,7 @@ class Version extends \JTable
 		$query  = "SELECT COUNT(*)";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " . $this->_db->Quote($projectid). " AND v.state != 2";
+		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " . $this->_db->quote($projectid). " AND v.state != 2";
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();
@@ -524,7 +524,7 @@ class Version extends \JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND v.version_number=" . $this->_db->Quote($version);
+			$query.= " AND v.version_number=" . $this->_db->quote($version);
 		}
 		else
 		{

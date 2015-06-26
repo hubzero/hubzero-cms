@@ -42,7 +42,7 @@ class Collection extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -70,14 +70,14 @@ class Collection extends \JTable
 			return parent::load($oid);
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE state!=2 AND alias=" . $this->_db->Quote(trim($oid));
+		$query = "SELECT * FROM $this->_tbl WHERE state!=2 AND alias=" . $this->_db->quote(trim($oid));
 		if ($object_id !== null)
 		{
-			$query .= " AND object_id=" . $this->_db->Quote(intval($object_id));
+			$query .= " AND object_id=" . $this->_db->quote(intval($object_id));
 		}
 		if ($object_type !== null)
 		{
-			$query .= " AND object_type=" . $this->_db->Quote(strtolower(trim($object_type)));
+			$query .= " AND object_type=" . $this->_db->quote(strtolower(trim($object_type)));
 		}
 
 		$this->_db->setQuery($query);
@@ -235,15 +235,15 @@ class Collection extends \JTable
 	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
-		$query .= " LEFT JOIN `#__collections_items` AS im ON im.type=" . $this->_db->Quote('collection') . " AND im.object_id=b.id";
-		$query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type=" . $this->_db->Quote('collection') . " AND f.following_id=b.id";
+		$query .= " LEFT JOIN `#__collections_items` AS im ON im.type=" . $this->_db->quote('collection') . " AND im.object_id=b.id";
+		$query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type=" . $this->_db->quote('collection') . " AND f.following_id=b.id";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
-			$query .= " AND f.follower_type='member' AND f.follower_id=" . $this->_db->Quote($filters['user_id']);
+			$query .= " AND f.follower_type='member' AND f.follower_id=" . $this->_db->quote($filters['user_id']);
 		}
 		if (isset($filters['object_type']) && $filters['object_type'] == 'group')
 		{
-			$query .= " LEFT JOIN `#__xgroups` AS g ON g.gidNumber=b.object_id AND b.object_type=" . $this->_db->Quote('group');
+			$query .= " LEFT JOIN `#__xgroups` AS g ON g.gidNumber=b.object_id AND b.object_type=" . $this->_db->quote('group');
 		}
 
 		$where = array();
@@ -251,7 +251,7 @@ class Collection extends \JTable
 		if (isset($filters['item_id']) && $filters['item_id'])
 		{
 			$query .= " INNER JOIN #__collections_posts AS p ON p.collection_id=b.id";
-			$where[] = "p.item_id=" . $this->_db->Quote($filters['item_id']);
+			$where[] = "p.item_id=" . $this->_db->quote($filters['item_id']);
 			if (isset($filters['collection_id']))
 			{
 				if (is_array($filters['collection_id']))
@@ -261,14 +261,14 @@ class Collection extends \JTable
 				}
 				else if ($filters['collection_id'] > 0)
 				{
-					$where[] = "b.id != " . $this->_db->Quote(intval($filters['collection_id']));
+					$where[] = "b.id != " . $this->_db->quote(intval($filters['collection_id']));
 				}
 			}
 		}
 
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
+			$where[] = "b.state=" . $this->_db->quote(intval($filters['state']));
 		}
 		if (isset($filters['access']))
 		{
@@ -279,30 +279,30 @@ class Collection extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
+				$where[] = "b.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 		if (isset($filters['is_default']) && $filters['is_default'] >= 0)
 		{
-			$where[] = "b.is_default=" . $this->_db->Quote(intval($filters['is_default']));
+			$where[] = "b.is_default=" . $this->_db->quote(intval($filters['is_default']));
 		}
 
 		if (isset($filters['object_id']) && $filters['object_id'])
 		{
-			$where[] = "b.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			$where[] = "b.object_id=" . $this->_db->quote(intval($filters['object_id']));
 		}
 		if (isset($filters['object_type']) && $filters['object_type'])
 		{
-			$where[] = "b.object_type=" . $this->_db->Quote($filters['object_type']);
+			$where[] = "b.object_type=" . $this->_db->quote($filters['object_type']);
 		}
 
 		if (isset($filters['created']) && $filters['created'])
 		{
-			$where[] = "b.created=" . $this->_db->Quote($filters['created']);
+			$where[] = "b.created=" . $this->_db->quote($filters['created']);
 		}
 		if (isset($filters['created_by']) && $filters['created_by'])
 		{
-			$where[] = "b.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+			$where[] = "b.created_by=" . $this->_db->quote(intval($filters['created_by']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -384,7 +384,7 @@ class Collection extends \JTable
 					}
 					else if ($filters['access'] >= 0)
 					{
-						$access = "AND i.access=" . $this->_db->Quote(intval($filters['access']));
+						$access = "AND i.access=" . $this->_db->quote(intval($filters['access']));
 					}
 				}
 

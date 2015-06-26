@@ -305,7 +305,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = App::get('db');
 				$db->setQuery('SELECT MAX(ordering) FROM #__newsfeeds');
 				$max = $db->loadResult();
 

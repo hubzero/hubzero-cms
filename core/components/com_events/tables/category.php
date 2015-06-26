@@ -74,7 +74,7 @@ class Category extends \JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET count = count-1 WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET count = count-1 WHERE id=" . $this->_db->quote($oid));
 		$this->_db->query();
 	}
 
@@ -90,7 +90,7 @@ class Category extends \JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET published=1 WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET published=1 WHERE id=" . $this->_db->quote($oid));
 		$this->_db->query();
 	}
 
@@ -106,7 +106,7 @@ class Category extends \JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET published=0 WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET published=0 WHERE id=" . $this->_db->quote($oid));
 		$this->_db->query();
 	}
 
@@ -122,7 +122,7 @@ class Category extends \JTable
 		{
 			$section = $this->section;
 		}
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE extension=" . $this->_db->Quote($section));
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE extension=" . $this->_db->quote($section));
 		return $this->_db->loadResult();
 	}
 }

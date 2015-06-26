@@ -36,7 +36,7 @@ $this->css();
 
 $base = rtrim(Request::base(true), '/');
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 $sql = "SELECT status
 		FROM `#__support_tickets`
 		WHERE open=0

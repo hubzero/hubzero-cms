@@ -67,7 +67,7 @@ class Sql extends SearchResult
 	 */
 	public function to_associative()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$db->setQuery($this->sql);
 
 		if (!($rows = $db->loadAssocList()))

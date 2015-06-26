@@ -60,7 +60,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = App::get('db');
 
 		// Load language file
 		Lang::load('com_storefront');
@@ -486,7 +486,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	{
 		$sql = "SELECT `sId` FROM `#__storefront_skus` WHERE `sActive` = 1 AND `pId` = " . $this->_db->quote($pId);
 		$this->_db->setQuery($sql);
-		$res = $this->_db->loadResultArray();
+		$res = $this->_db->loadColumn();
 
 		return $res;
 	}
@@ -1276,7 +1276,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	{
 		$sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $this->_db->quote($pId);
 		$this->_db->setQuery($sql);
-		$res = $this->_db->loadResultArray();
+		$res = $this->_db->loadColumn();
 
 		return $res;
 	}

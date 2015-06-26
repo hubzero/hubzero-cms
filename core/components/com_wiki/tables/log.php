@@ -40,7 +40,7 @@ class Log extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -90,7 +90,7 @@ class Log extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pid=" . $this->_db->Quote($pid) . " ORDER BY `timestamp` DESC");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pid=" . $this->_db->quote($pid) . " ORDER BY `timestamp` DESC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -109,7 +109,7 @@ class Log extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE pid=" . $this->_db->Quote($pid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE pid=" . $this->_db->quote($pid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -86,7 +86,7 @@ class ResourceMapGenerator
 		$this->componentURL = Request::base() . 'publications/';
 		$this->resourceURL  = $this->componentURL . $this->id;
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$pub = new \Components\Publications\Tables\Publication($database);
 		$publication = $pub->getPublication($this->id);
 		$this->resourceSite = \Components\Publications\Helpers\Html::buildPubPath($this->id, $publication->version_id, '', $publication->secret, 1);
@@ -103,7 +103,7 @@ class ResourceMapGenerator
 		if (!empty($id) && $id != -1)
 		{
 			// Grabs the database object
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 			// Attempts to load $id on this database object.
 			$resource = new \Components\Publications\Tables\Version($database);
 
@@ -138,7 +138,7 @@ class ResourceMapGenerator
 	private function populateRDFData()
 	{
 		// Grabs database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$resource = new \Components\Publications\Tables\Version($database);
 		$resource = $resource->getLastPubRelease($this->id);
 

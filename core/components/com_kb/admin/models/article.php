@@ -92,7 +92,7 @@ class KbModelArticle extends \JModelAdmin
 		 */
 	public function getTable($type = 'Article', $prefix = 'Kb', $config = array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		return new \Components\Kb\Tables\Article($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 

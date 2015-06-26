@@ -36,7 +36,7 @@ Pathway::append(
 	$this->page->link()
 );
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 $query = "SELECT wv.id, wv.pageid, wv.pagetext FROM `#__wiki_version` AS wv WHERE wv.length = '0'";
 $database->setQuery($query);

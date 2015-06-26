@@ -40,7 +40,7 @@ class JFormFieldType extends JFormField
 			$options[] = Html::select('option', $option->attributes('value'), Lang::txt(trim((string) $option)));
 		}
 
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('type')->from('#__extensions');
 		$db->setQuery($query);

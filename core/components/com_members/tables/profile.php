@@ -41,7 +41,7 @@ class Profile extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct($db)
@@ -112,7 +112,7 @@ class Profile extends \JTable
 
 		if (isset($filters['contributions']))
 		{
-			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $this->_db->Quote($filters['contributions']);
+			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $this->_db->quote($filters['contributions']);
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -130,15 +130,15 @@ class Profile extends \JTable
 			switch ($filters['search_field'])
 			{
 				case 'email':
-					$sqlsearch .= " m.email=" . $this->_db->Quote($filters['search']) . " ";
+					$sqlsearch .= " m.email=" . $this->_db->quote($filters['search']) . " ";
 				break;
 
 				case 'uidNumber':
-					$sqlsearch .= " m.uidNumber=" . $this->_db->Quote($filters['search']) . " ";
+					$sqlsearch .= " m.uidNumber=" . $this->_db->quote($filters['search']) . " ";
 				break;
 
 				case 'username':
-					$sqlsearch .= " m.username=" . $this->_db->Quote($filters['search']) . " ";
+					$sqlsearch .= " m.username=" . $this->_db->quote($filters['search']) . " ";
 				break;
 
 				case 'giveName':
@@ -227,7 +227,7 @@ class Profile extends \JTable
 		if (isset($filters['emailConfirmed']) && $filters['emailConfirmed'] == 1)
 		{
 			$query .= (strpos($query, 'WHERE') === false) ? " WHERE" : " AND";
-			$query .= " m.emailConfirmed >= " . $this->_db->Quote($filters['emailConfirmed']);
+			$query .= " m.emailConfirmed >= " . $this->_db->quote($filters['emailConfirmed']);
 		}
 
 		return $query;
@@ -371,13 +371,13 @@ class Profile extends \JTable
 
 		if (isset($filters['public']) && $filters['public'] >= 0)
 		{
-			$where[] = "m.`public`=" . $this->_db->Quote($filters['public']);
+			$where[] = "m.`public`=" . $this->_db->quote($filters['public']);
 		}
 		if (isset($filters['emailConfirmed']) && $filters['emailConfirmed'] != 0)
 		{
 			if ($filters['emailConfirmed'] == 1)
 			{
-				$where[] = "m.`emailConfirmed` >= " . $this->_db->Quote($filters['emailConfirmed']);
+				$where[] = "m.`emailConfirmed` >= " . $this->_db->quote($filters['emailConfirmed']);
 			}
 			else
 			{
@@ -386,7 +386,7 @@ class Profile extends \JTable
 		}
 		if (isset($filters['registerDate']) && $filters['registerDate'] != '')
 		{
-			$where[] = "m.`registerDate`>=" . $this->_db->Quote($filters['registerDate']);
+			$where[] = "m.`registerDate`>=" . $this->_db->quote($filters['registerDate']);
 		}
 
 		$query  = "FROM $this->_tbl AS m

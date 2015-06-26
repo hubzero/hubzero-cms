@@ -38,7 +38,7 @@ class Clusters extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -80,7 +80,7 @@ class Clusters extends \JTable
 
 		$sql = "SELECT COUNT(DISTINCT uidNumber, username) AS users, COUNT(DISTINCT cluster) AS classes
 				FROM $this->_tbl
-				WHERE resid=" . $this->_db->Quote($resid);
+				WHERE resid=" . $this->_db->quote($resid);
 
 		$this->_db->setQuery($sql);
 

@@ -68,7 +68,7 @@ class Object extends Model
 	public function __construct($oid, $scope_id=null, $tag_id=null, $tagger_id=null)
 	{
 		// Set the database object
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		// Set the table object
 		$tbl = $this->_tbl_name;

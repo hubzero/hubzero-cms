@@ -72,7 +72,7 @@ class Following extends Model
 	 */
 	public function __construct($oid=null, $following_type=null, $follower_id=0, $follower_type='member')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$tbl = $this->_tbl_name;
 		$this->_tbl = new $tbl($this->_db);

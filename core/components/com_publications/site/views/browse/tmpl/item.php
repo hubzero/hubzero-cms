@@ -42,7 +42,7 @@ $html .= '</p>' . "\n";
 
 if ($this->params->get('show_ranking') && $this->config->get('show_ranking'))
 {
-	$database = \JFactory::getDBO();
+	$database = \App::get('db');
 
 	$ranking = round($this->line->get('master_ranking'), 1);
 

@@ -151,7 +151,7 @@ class Router extends Base
 
 				include_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 
-				$db = \JFactory::getDBO();
+				$db = \App::get('db');
 
 				$category = new Category($db);
 				$category->loadAlias($title2);

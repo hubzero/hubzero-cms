@@ -53,7 +53,7 @@ class JFormFieldModuleOrder extends JFormField
 		$html[] = 'var originalPos = "'.$position.'";';
 		$html[] = 'var orders = new Array();';
 
-		$db		= JFactory::getDbo();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 		$query->select('position, ordering, title');
 		$query->from('#__modules');

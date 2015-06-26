@@ -42,7 +42,7 @@ class Tag extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -66,14 +66,14 @@ class Tag extends \JTable
 
 		$oid = $this->normalize($oid);
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag=" . $this->_db->Quote($oid) . " LIMIT 1"); //raw_tag='$oid' OR
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag=" . $this->_db->quote($oid) . " LIMIT 1"); //raw_tag='$oid' OR
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}
 		else
 		{
-			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN `#__tags_substitute` AS s ON s.tag_id=t.id WHERE s.tag=" . $this->_db->Quote($oid) . " LIMIT 1");
+			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN `#__tags_substitute` AS s ON s.tag_id=t.id WHERE s.tag=" . $this->_db->quote($oid) . " LIMIT 1");
 			if ($result = $this->_db->loadAssoc())
 			{
 				return $this->bind($result);
@@ -113,7 +113,7 @@ class Tag extends \JTable
 			$comment = json_encode($comment);
 		}
 
-		$query = 'DELETE FROM `#__tags_object` WHERE tagid = ' . $this->_db->Quote($this->$k);
+		$query = 'DELETE FROM `#__tags_object` WHERE tagid = ' . $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -121,7 +121,7 @@ class Tag extends \JTable
 			return false;
 		}
 
-		$query = 'DELETE FROM `#__tags_substitute` WHERE tag_id = ' . $this->_db->Quote($this->$k);
+		$query = 'DELETE FROM `#__tags_substitute` WHERE tag_id = ' . $this->_db->quote($this->$k);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -181,7 +181,7 @@ class Tag extends \JTable
 	public function checkExistence()
 	{
 		// First see if the tag exists.
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tag=" . $this->_db->Quote($this->tag) . " OR raw_tag=" . $this->_db->Quote($this->raw_tag) . " LIMIT 1");
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tag=" . $this->_db->quote($this->tag) . " OR raw_tag=" . $this->_db->quote($this->raw_tag) . " LIMIT 1");
 		$id = $this->_db->loadResult();
 		// We have an ID = tag exist
 		if ($id > 0)
@@ -346,7 +346,7 @@ class Tag extends \JTable
 				$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 			}
 			$this->_db->setQuery($query);
-			$data = $this->_db->loadResultArray();
+			$data = $this->_db->loadColumn();
 
 			$query  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon,
 						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total,
@@ -404,19 +404,19 @@ class Tag extends \JTable
 		}
 		if (isset($filters['tagger_id']) && $filters['tagger_id'])
 		{
-			$where[] = "tj.`taggerid`=" . $this->_db->Quote((int) $filters['tagger_id']);
+			$where[] = "tj.`taggerid`=" . $this->_db->quote((int) $filters['tagger_id']);
 		}
 		if (isset($filters['scope']) && $filters['scope'])
 		{
-			$where[] = "tj.`tbl`=" . $this->_db->Quote((string) $filters['scope']);
+			$where[] = "tj.`tbl`=" . $this->_db->quote((string) $filters['scope']);
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
-			$where[] = "tj.`objectid`=" . $this->_db->Quote((int) $filters['scope_id']);
+			$where[] = "tj.`objectid`=" . $this->_db->quote((int) $filters['scope_id']);
 		}
 		if (isset($filters['label']) && $filters['label'] && $filters['label'] != '')
 		{
-			$where[] = "tj.`label`=" . $this->_db->Quote((string) $filters['label']); // find labeled tags
+			$where[] = "tj.`label`=" . $this->_db->quote((string) $filters['label']); // find labeled tags
 		}
 		if (isset($filters['label']) && $filters['label'] && $filters['label'] == '')
 		{
@@ -424,15 +424,15 @@ class Tag extends \JTable
 		}
 		if (isset($filters['admin']) && $filters['admin'] !== null)
 		{
-			$where[] = "t.`admin`=" . $this->_db->Quote((int) $filters['admin']);
+			$where[] = "t.`admin`=" . $this->_db->quote((int) $filters['admin']);
 		}
 		if (isset($filters['created_by']) && $filters['created_by'] > 0)
 		{
-			$where[] = "t.`created_by`=" . $this->_db->Quote((int) $filters['created_by']);
+			$where[] = "t.`created_by`=" . $this->_db->quote((int) $filters['created_by']);
 		}
 		if (isset($filters['modified_by']) && $filters['modified_by'] > 0)
 		{
-			$where[] = "t.`modified_by`=" . $this->_db->Quote((int) $filters['modified_by']);
+			$where[] = "t.`modified_by`=" . $this->_db->quote((int) $filters['modified_by']);
 		}
 
 		if (count($where) > 0)
@@ -520,10 +520,10 @@ class Tag extends \JTable
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count
 				FROM $this->_tbl AS t
-				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl=" . $this->_db->Quote($tbl) . " ";
+				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl=" . $this->_db->quote($tbl) . " ";
 		if (isset($objectid) && $objectid)
 		{
-			$sql .= "WHERE rt.objectid=" . $this->_db->Quote($objectid) . " ";
+			$sql .= "WHERE rt.objectid=" . $this->_db->quote($objectid) . " ";
 		}
 		switch ($state)
 		{
@@ -621,7 +621,7 @@ class Tag extends \JTable
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
 		if ($tbl)
 		{
-			$sql .= "AND tj.tbl=" . $this->_db->Quote($tbl) . " ";
+			$sql .= "AND tj.tbl=" . $this->_db->quote($tbl) . " ";
 		}
 		else
 		{
@@ -691,14 +691,14 @@ class Tag extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT objectid, tbl FROM `#__tags_object` WHERE tagid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("SELECT objectid, tbl FROM `#__tags_object` WHERE tagid=" . $this->_db->quote($id));
 		if ($objs = $this->_db->loadObjectList())
 		{
-			$sql = "SELECT t.* FROM `$this->_tbl` AS t, `#__tags_object` AS tg WHERE t.id=tg.tagid AND tg.tagid != " . $this->_db->Quote($id) . " AND t.admin=0 AND (";
+			$sql = "SELECT t.* FROM `$this->_tbl` AS t, `#__tags_object` AS tg WHERE t.id=tg.tagid AND tg.tagid != " . $this->_db->quote($id) . " AND t.admin=0 AND (";
 			$s = array();
 			foreach ($objs as $obj)
 			{
-				$s[] = "(tg.objectid=" . $this->_db->Quote($obj->objectid) . " AND tg.tbl=" . $this->_db->Quote($obj->tbl) . ")";
+				$s[] = "(tg.objectid=" . $this->_db->quote($obj->objectid) . " AND tg.tbl=" . $this->_db->quote($obj->tbl) . ")";
 			}
 			$sql .= implode(" OR ", $s);
 			$sql .= ") GROUP BY t.id LIMIT " . $limit;

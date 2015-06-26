@@ -42,7 +42,7 @@ class Post extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -209,7 +209,7 @@ class Post extends \JTable
 
 		if (isset($filters['thread']) && $filters['thread'] != 0)
 		{
-			$query .= " WHERE c.thread=" . $this->_db->Quote(intval($filters['thread']));
+			$query .= " WHERE c.thread=" . $this->_db->quote(intval($filters['thread']));
 			if (isset($filters['state']))
 			{
 				if (is_array($filters['state']))
@@ -219,7 +219,7 @@ class Post extends \JTable
 				}
 				else if ($filters['state'] >= 0)
 				{
-					$query .= " AND c.state=" . $this->_db->Quote(intval($filters['state']));
+					$query .= " AND c.state=" . $this->_db->quote(intval($filters['state']));
 				}
 			}
 			if (!isset($filters['sort']) || !$filters['sort'])
@@ -245,7 +245,7 @@ class Post extends \JTable
 				}
 				else if ($filters['state'] >= 0)
 				{
-					$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+					$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 				}
 			}
 			if (isset($filters['access']))
@@ -257,32 +257,32 @@ class Post extends \JTable
 				}
 				else if ($filters['access'] >= 0)
 				{
-					$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+					$where[] = "c.access=" . $this->_db->quote(intval($filters['access']));
 				}
 			}
 			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 			{
-				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+				$where[] = "c.sticky=" . $this->_db->quote(intval($filters['sticky']));
 			}
 			if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 			{
-				$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
+				$where[] = "c.closed=" . $this->_db->quote(intval($filters['closed']));
 			}
 			if (isset($filters['group']) && (int) $filters['group'] >= 0)
 			{
-				$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+				$where[] = "(c.scope_id=" . $this->_db->quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->quote('group') . ")";
 			}
 			if (isset($filters['scope']) && (string) $filters['scope'])
 			{
-				$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+				$where[] = "c.scope=" . $this->_db->quote(strtolower($filters['scope']));
 			}
 			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 			{
-				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+				$where[] = "c.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
 			}
 			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 			{
-				$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
+				$where[] = "(c.scope_sub_id=" . $this->_db->quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 			}
 			if (isset($filters['category_id']))
 			{
@@ -293,16 +293,16 @@ class Post extends \JTable
 				}
 				else if ((int) $filters['category_id'] >= 0)
 				{
-					$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+					$where[] = "c.category_id=" . $this->_db->quote(intval($filters['category_id']));
 				}
 			}
 			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 			{
-				$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+				$where[] = "c.object_id=" . $this->_db->quote(intval($filters['object_id']));
 			}
 			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 			{
-				$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+				$where[] = "c.created_by=" . $this->_db->quote(intval($filters['created_by']));
 			}
 			//if (!isset($filters['authorized']) || !$filters['authorized']) {
 			//	$query .= "c.access=0 AND ";
@@ -314,11 +314,11 @@ class Post extends \JTable
 			}
 			if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 			{
-				$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
+				$where[] = "c.parent=" . $this->_db->quote(intval($filters['parent']));
 			}
 			if (isset($filters['thread']) && (int) $filters['thread'] >= 0)
 			{
-				$where[] = "c.thread=" . $this->_db->Quote(intval($filters['thread']));
+				$where[] = "c.thread=" . $this->_db->quote(intval($filters['thread']));
 			}
 
 			if (count($where) > 0)
@@ -435,7 +435,7 @@ class Post extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 		if (isset($filters['access']))
@@ -447,37 +447,37 @@ class Post extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+				$where[] = "c.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 		{
-			$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+			$where[] = "c.sticky=" . $this->_db->quote(intval($filters['sticky']));
 		}
 
 		if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 		{
-			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
+			$where[] = "c.closed=" . $this->_db->quote(intval($filters['closed']));
 		}
 		if (isset($filters['scope']) && (string) $filters['scope'])
 		{
-			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+			$where[] = "c.scope=" . $this->_db->quote(strtolower($filters['scope']));
 		}
 		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 		{
-			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			$where[] = "c.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
 		}
 		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
-			$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
+			$where[] = "(c.scope_sub_id=" . $this->_db->quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 		}
 		if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0)
 		{
-			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+			$where[] = "c.category_id=" . $this->_db->quote(intval($filters['category_id']));
 		}
 		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 		{
-			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			$where[] = "c.object_id=" . $this->_db->quote(intval($filters['object_id']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -487,7 +487,7 @@ class Post extends \JTable
 		}
 		//if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 		//{
-			$where[] = "c.parent>0"; //. $this->_db->Quote(intval($filters['parent']));
+			$where[] = "c.parent>0"; //. $this->_db->quote(intval($filters['parent']));
 		//}
 
 		if (count($where) > 0)
@@ -560,7 +560,7 @@ class Post extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 		if (isset($filters['access']))
@@ -572,20 +572,20 @@ class Post extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+				$where[] = "c.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 		{
-			$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+			$where[] = "c.sticky=" . $this->_db->quote(intval($filters['sticky']));
 		}
 		if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 		{
-			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
+			$where[] = "c.closed=" . $this->_db->quote(intval($filters['closed']));
 		}
 		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
-			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+			$where[] = "(c.scope_id=" . $this->_db->quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->quote('group') . ")";
 		}
 		if (isset($filters['scope']) && $filters['scope'])
 		{
@@ -593,14 +593,14 @@ class Post extends \JTable
 			{
 				foreach ($filters['scope'] as $k => $scope)
 				{
-					$filters['scope'][$k] = $this->_db->Quote(strtolower((string) $scope));
+					$filters['scope'][$k] = $this->_db->quote(strtolower((string) $scope));
 				}
 
 				$where[] = "c.scope IN (" . implode(',', $filters['scope']) . ")";
 			}
 			else
 			{
-				$where[] = "c.scope=" . $this->_db->Quote(strtolower((string) $filters['scope']));
+				$where[] = "c.scope=" . $this->_db->quote(strtolower((string) $filters['scope']));
 			}
 		}
 		if (isset($filters['scope_id']))
@@ -613,37 +613,37 @@ class Post extends \JTable
 			}
 			else if ((int) $filters['scope_id'] >= 0)
 			{
-				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+				$where[] = "c.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
 			}
 		}
 		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
-			$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
+			$where[] = "(c.scope_sub_id=" . $this->_db->quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 		}
 
 		if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0)
 		{
-			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+			$where[] = "c.category_id=" . $this->_db->quote(intval($filters['category_id']));
 		}
 		if (isset($filters['replies']))
 		{
 			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 			{
-				$where[] = "p.created_by=" . $this->_db->Quote(intval($filters['created_by']));
-				$where[] = "c.created_by!=" . $this->_db->Quote(intval($filters['created_by']));
+				$where[] = "p.created_by=" . $this->_db->quote(intval($filters['created_by']));
+				$where[] = "c.created_by!=" . $this->_db->quote(intval($filters['created_by']));
 			}
 		}
 		else
 		{
 			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 			{
-				$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+				$where[] = "c.created_by=" . $this->_db->quote(intval($filters['created_by']));
 			}
 		}
 
 		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 		{
-			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			$where[] = "c.object_id=" . $this->_db->quote(intval($filters['object_id']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -652,15 +652,15 @@ class Post extends \JTable
 		}
 		if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 		{
-			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
+			$where[] = "c.parent=" . $this->_db->quote(intval($filters['parent']));
 		}
 		if (isset($filters['thread']) && (int) $filters['thread'] >= 0)
 		{
-			$where[] = "c.thread=" . $this->_db->Quote(intval($filters['thread']));
+			$where[] = "c.thread=" . $this->_db->quote(intval($filters['thread']));
 		}
 		if (isset($filters['start_at']) && $filters['start_at'])
 		{
-			$where[] = "c.created >" . $this->_db->Quote($filters['start_at']);
+			$where[] = "c.created >" . $this->_db->quote($filters['start_at']);
 		}
 
 		if (isset($filters['id']) && $filters['id'])
@@ -767,16 +767,16 @@ class Post extends \JTable
 
 		if (isset($filters['category_id']))
 		{
-			$where[] = "c.category_id = " . $this->_db->Quote($filters['category_id']);
+			$where[] = "c.category_id = " . $this->_db->quote($filters['category_id']);
 		}
 		$where[] = "c.state IN (1, 3)";
 		if (isset($filters['parent']))
 		{
-			$where[] = "(c.parent = " . $this->_db->Quote($filters['parent']) . " OR c.id = " . $this->_db->Quote($filters['parent']) . ")";
+			$where[] = "(c.parent = " . $this->_db->quote($filters['parent']) . " OR c.id = " . $this->_db->quote($filters['parent']) . ")";
 		}
 		if (isset($filters['thread']))
 		{
-			$where[] = "c.thread = " . $this->_db->Quote($filters['thread']);
+			$where[] = "c.thread = " . $this->_db->quote($filters['thread']);
 		}
 
 		$query .= implode(" AND ", $where);
@@ -802,7 +802,7 @@ class Post extends \JTable
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->Quote($thread) . " AND r.state=1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->quote($thread) . " AND r.state=1";
 		if (User::isGuest())
 		{
 			$query .= " AND r.access=0";
@@ -835,10 +835,10 @@ class Post extends \JTable
 		$where = array();
 		if ($scope_id !== null)
 		{
-			$where[] = "r.scope_id=" . $this->_db->Quote($scope_id);
+			$where[] = "r.scope_id=" . $this->_db->quote($scope_id);
 		}
-		$where[] = "r.scope=" . $this->_db->Quote($scope);
-		$where[] = "r.state=" . $this->_db->Quote(1);
+		$where[] = "r.scope=" . $this->_db->quote($scope);
+		$where[] = "r.state=" . $this->_db->quote(1);
 		if (User::isGuest())
 		{
 			$where[] = "r.access=0";
@@ -849,7 +849,7 @@ class Post extends \JTable
 		}
 		if ($category_id !== null)
 		{
-			$where[] = "r.category_id=" . $this->_db->Quote($category_id);
+			$where[] = "r.category_id=" . $this->_db->quote($category_id);
 		}
 		if (count($where) > 0)
 		{
@@ -883,7 +883,7 @@ class Post extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->quote($parent));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -919,14 +919,14 @@ class Post extends \JTable
 		$set = array();
 		foreach ($data as $key => $val)
 		{
-			$set[] = $key . '=' . $this->_db->Quote($val);
+			$set[] = $key . '=' . $this->_db->quote($val);
 		}
 		$values = implode(', ', $set);
 
-		$this->_db->setQuery("SELECT lft, rgt, thread FROM $this->_tbl WHERE id=" . $this->_db->Quote($parent));
+		$this->_db->setQuery("SELECT lft, rgt, thread FROM $this->_tbl WHERE id=" . $this->_db->quote($parent));
 		$row = $this->_db->loadObject();
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=" . $this->_db->Quote($parent) . " OR (thread=" . $this->_db->Quote($row->thread) . " AND lft > " . $this->_db->Quote($row->lft) . " AND rgt < " . $this->_db->Quote($row->rgt) . ")"); // parent=" . $this->_db->Quote($parent));
+		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=" . $this->_db->quote($parent) . " OR (thread=" . $this->_db->quote($row->thread) . " AND lft > " . $this->_db->quote($row->lft) . " AND rgt < " . $this->_db->quote($row->rgt) . ")"); // parent=" . $this->_db->quote($parent));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -955,7 +955,7 @@ class Post extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=" . $this->_db->Quote($nw) . " WHERE category_id=" . $this->_db->Quote($old) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope));
+		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=" . $this->_db->quote($nw) . " WHERE category_id=" . $this->_db->quote($old) . " AND scope_id=" . $this->_db->quote($scope_id) . " AND scope=" . $this->_db->quote($scope));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -979,7 +979,7 @@ class Post extends \JTable
 			return false;
 		}
 
-		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE category_id = ' . $this->_db->Quote($oid);
+		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE category_id = ' . $this->_db->quote($oid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -1007,7 +1007,7 @@ class Post extends \JTable
 		$this->load($this->$k);
 		if (!$this->parent)
 		{
-			$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE parent = ' . $this->_db->Quote($this->$k);
+			$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) . ' WHERE parent = ' . $this->_db->quote($this->$k);
 			$this->_db->setQuery($query);
 			if (!$this->_db->query())
 			{
@@ -1047,7 +1047,7 @@ class Post extends \JTable
 			$cat = intval($cat);
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE category_id IN ($cat)");
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->quote($state) . " WHERE category_id IN ($cat)");
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -1109,7 +1109,7 @@ class Post extends \JTable
 			}
 
 			// Shift left values.
-			$this->_db->setQuery("UPDATE $this->_tbl SET lft = lft + 2 WHERE " . $repositionData->left_where . " AND scope=" . $this->_db->Quote($parent->scope) . " AND scope_id=" . $this->_db->Quote($parent->scope_id) . " AND object_id=" . $this->_db->Quote($parent->object_id));
+			$this->_db->setQuery("UPDATE $this->_tbl SET lft = lft + 2 WHERE " . $repositionData->left_where . " AND scope=" . $this->_db->quote($parent->scope) . " AND scope_id=" . $this->_db->quote($parent->scope_id) . " AND object_id=" . $this->_db->quote($parent->object_id));
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -1117,7 +1117,7 @@ class Post extends \JTable
 			}
 
 			// Shift right values.
-			$this->_db->setQuery("UPDATE $this->_tbl SET rgt = rgt + 2 WHERE " . $repositionData->right_where . " AND scope=" . $this->_db->Quote($parent->scope) . " AND scope_id=" . $this->_db->Quote($parent->scope_id) . " AND object_id=" . $this->_db->Quote($parent->object_id));
+			$this->_db->setQuery("UPDATE $this->_tbl SET rgt = rgt + 2 WHERE " . $repositionData->right_where . " AND scope=" . $this->_db->quote($parent->scope) . " AND scope_id=" . $this->_db->quote($parent->scope_id) . " AND object_id=" . $this->_db->quote($parent->object_id));
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -1134,7 +1134,7 @@ class Post extends \JTable
 		{
 			if ($this->parent == 0)
 			{
-				$this->_db->setQuery("UPDATE $this->_tbl SET thread=id WHERE parent=0 AND id=" . $this->_db->Quote($this->id));
+				$this->_db->setQuery("UPDATE $this->_tbl SET thread=id WHERE parent=0 AND id=" . $this->_db->quote($this->id));
 				if (!$this->_db->query())
 				{
 					$this->setError($this->_db->getErrorMsg());
@@ -1239,7 +1239,7 @@ class Post extends \JTable
 					WHERE n.thread=" . (int) $pk;
 		if (isset($filters['start_at']) && $filters['start_at'])
 		{
-			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
+			$query .= " AND n.created >" . $this->_db->quote($filters['start_at']);
 		}
 		if (isset($filters['state']))
 		{
@@ -1250,7 +1250,7 @@ class Post extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
+				$query .= " AND n.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 
@@ -1289,7 +1289,7 @@ class Post extends \JTable
 					WHERE n.thread=" . (int) $pk;
 		if (isset($filters['start_at']) && $filters['start_at'])
 		{
-			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
+			$query .= " AND n.created >" . $this->_db->quote($filters['start_at']);
 		}
 		if (isset($filters['state']))
 		{
@@ -1300,7 +1300,7 @@ class Post extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
+				$query .= " AND n.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 		if (isset($filters['access']))
@@ -1312,7 +1312,7 @@ class Post extends \JTable
 			}
 			else if ($filters['access'] >= 0)
 			{
-				$query .= " AND n.access=" . $this->_db->Quote(intval($filters['access']));
+				$query .= " AND n.access=" . $this->_db->quote(intval($filters['access']));
 			}
 		}
 		$query .= " ORDER BY n.created ASC";

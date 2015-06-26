@@ -445,7 +445,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
-					$database = JFactory::getDBO();
+					$database = App::get('db');
 					$rot = new \Components\Members\Tables\OrganizationType($database);
 					$types = $rot->find('list');
 					?>
@@ -469,7 +469,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$org_known = 0;
 
 					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
-					$database = JFactory::getDBO();
+					$database = App::get('db');
 					$xo = new \Components\Members\Tables\Organization($database);
 					$orgs = $xo->find('list');
 

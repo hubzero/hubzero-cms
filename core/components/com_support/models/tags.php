@@ -92,15 +92,15 @@ class Tags extends Cloud
 
 		$where = array();
 		$where[] = "rt.objectid IN ($id)";
-		$where[] = "rt.tbl=" . $this->_db->Quote($this->_scope);
+		$where[] = "rt.tbl=" . $this->_db->quote($this->_scope);
 
 		if ($tagger_id != 0)
 		{
-			$where[] = "rt.taggerid=" . $this->_db->Quote($tagger_id);
+			$where[] = "rt.taggerid=" . $this->_db->quote($tagger_id);
 		}
 		if ($strength)
 		{
-			$where[] = "rt.strength=" . $this->_db->Quote($strength);
+			$where[] = "rt.strength=" . $this->_db->quote($strength);
 		}
 
 		$sql .= implode(" AND ", $where) . " GROUP BY rt.objectid";

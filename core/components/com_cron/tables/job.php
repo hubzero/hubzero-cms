@@ -42,7 +42,7 @@ class Job extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -134,11 +134,11 @@ class Job extends \JTable
 
 		if (isset($filters['state']))
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['next_run']) && $filters['next_run'] != '')
 		{
-			$where[] = "c.next_run <= " . $this->_db->Quote($filters['next_run']);
+			$where[] = "c.next_run <= " . $this->_db->quote($filters['next_run']);
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -150,8 +150,8 @@ class Job extends \JTable
 		{
 			$now = Date::toSql();
 
-			$where[] = "(c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $this->_db->Quote($now) . ")";
-			$where[] = "(c.publish_down = '0000-00-00 00:00:00' OR c.publish_down > " . $this->_db->Quote($now) . ")";
+			$where[] = "(c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $this->_db->quote($now) . ")";
+			$where[] = "(c.publish_down = '0000-00-00 00:00:00' OR c.publish_down > " . $this->_db->quote($now) . ")";
 		}
 
 		if (count($where) > 0)
@@ -223,12 +223,12 @@ class Job extends \JTable
 
 		if (isset($filters['state']))
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.state=" . $this->_db->quote($filters['state']);
 		}
 
 		if (isset($filters['next_run']) && $filters['next_run'] != '')
 		{
-			$where[] = "c.next_run <= " . $this->_db->Quote($filters['next_run']);
+			$where[] = "c.next_run <= " . $this->_db->quote($filters['next_run']);
 		}
 
 		if (count($where) > 0)

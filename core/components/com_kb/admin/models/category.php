@@ -92,7 +92,7 @@ class KbModelCategory extends \JModelAdmin
 		 */
 	public function getTable($type = 'Category', $prefix = 'Kb', $config = array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		return new \Components\Kb\Tables\Category($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 

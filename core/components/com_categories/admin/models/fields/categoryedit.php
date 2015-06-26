@@ -60,7 +60,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 			$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $jinput->get('option','com_content');
 		}
 
-		$db		= JFactory::getDbo();
+		$db		= App::get('db');
 		$query	= $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text, a.level, a.published');

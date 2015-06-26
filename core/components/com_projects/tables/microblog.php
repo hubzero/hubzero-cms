@@ -107,9 +107,9 @@ class Blog extends \JTable
 	public function checkDuplicate($uid, $projectid, $entry, $today)
 	{
 		$query = "SELECT id FROM $this->_tbl WHERE posted_by="
-				. $this->_db->Quote($uid) . " AND projectid="
-				. $this->_db->Quote($projectid)
-				. " AND blogentry=" . $this->_db->Quote($entry)
+				. $this->_db->quote($uid) . " AND projectid="
+				. $this->_db->quote($projectid)
+				. " AND blogentry=" . $this->_db->quote($entry)
 				. " AND posted  LIKE '$today%' ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -127,7 +127,7 @@ class Blog extends \JTable
 	{
 		$query  = "FROM $this->_tbl AS m,
 					#__users AS u
-					WHERE m.projectid=" . $this->_db->Quote($projectid) . " AND m.posted_by=u.id ";
+					WHERE m.projectid=" . $this->_db->quote($projectid) . " AND m.posted_by=u.id ";
 
 		if ($id)
 		{

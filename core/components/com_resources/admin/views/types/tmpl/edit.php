@@ -123,7 +123,7 @@ function submitbutton(pressbutton)
 				</thead>
 				<tbody>
 				<?php
-				$database = JFactory::getDBO();
+				$database = App::get('db');
 				$database->setQuery("SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='resources' AND `enabled`=1");
 				$plugins = $database->loadObjectList();
 

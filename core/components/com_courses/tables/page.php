@@ -80,10 +80,10 @@ Class Page extends \JTable
 		if (!$this->id)
 		{
 			$sql = "SELECT id FROM $this->_tbl
-					WHERE course_id=" . $this->_db->Quote($this->course_id) . "
-					AND offering_id=" . $this->_db->Quote($this->offering_id) . "
-					AND section_id=" . $this->_db->Quote($this->section_id) . "
-					AND url=" . $this->_db->Quote($this->url) . "
+					WHERE course_id=" . $this->_db->quote($this->course_id) . "
+					AND offering_id=" . $this->_db->quote($this->offering_id) . "
+					AND section_id=" . $this->_db->quote($this->section_id) . "
+					AND url=" . $this->_db->quote($this->url) . "
 					LIMIT 1";
 			$this->_db->setQuery($sql);
 			if ($this->_db->loadResult())
@@ -113,7 +113,7 @@ Class Page extends \JTable
 		$where = array();
 		if (isset($filters['course_id']))
 		{
-			$where[] = "r.`course_id`=" . $this->_db->Quote($filters['course_id']);
+			$where[] = "r.`course_id`=" . $this->_db->quote($filters['course_id']);
 		}
 		if (isset($filters['offering_id']))
 		{
@@ -145,11 +145,11 @@ Class Page extends \JTable
 		{
 			if (substr($filters['url'], 0, 1) == '!')
 			{
-				$where[] = "r.`url`!=" . $this->_db->Quote(ltrim($filters['url'], '!'));
+				$where[] = "r.`url`!=" . $this->_db->quote(ltrim($filters['url'], '!'));
 			}
 			else
 			{
-				$where[] = "r.`url`=" . $this->_db->Quote($filters['url']);
+				$where[] = "r.`url`=" . $this->_db->quote($filters['url']);
 			}
 		}
 		if (isset($filters['search']) && $filters['search'])
@@ -234,7 +234,7 @@ Class Page extends \JTable
 	 */
 	public function getHighestPageOrder($course_id, $offering_id)
 	{
-		$sql = "SELECT ordering from $this->_tbl WHERE course_id=" . $this->_db->Quote(intval($course_id)) . " AND offering_id=" . $this->_db->Quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
+		$sql = "SELECT ordering from $this->_tbl WHERE course_id=" . $this->_db->quote(intval($course_id)) . " AND offering_id=" . $this->_db->quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}

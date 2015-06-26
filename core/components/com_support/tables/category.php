@@ -40,7 +40,7 @@ class Category extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -85,27 +85,27 @@ class Category extends \JTable
 
 		if (isset($filters['id']))
 		{
-			$where[] = "`id`=" . $this->_db->Quote($filters['uid']);
+			$where[] = "`id`=" . $this->_db->quote($filters['uid']);
 		}
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
+			$where[] = "`alias`=" . $this->_db->quote($filters['alias']);
 		}
 		if (isset($filters['title']) && $filters['title'])
 		{
-			$where[] = "`title`=" . $this->_db->Quote($filters['title']);
+			$where[] = "`title`=" . $this->_db->quote($filters['title']);
 		}
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			$where[] = "`section_id`=" . $this->_db->Quote($filters['section_id']);
+			$where[] = "`section_id`=" . $this->_db->quote($filters['section_id']);
 		}
 		if (isset($filters['created_by']) && $filters['created_by'])
 		{
-			$where[] = "`created_by`=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "`created_by`=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['modified_by']) && $filters['modified_by'])
 		{
-			$where[] = "`modified_by`=" . $this->_db->Quote($filters['modified_by']);
+			$where[] = "`modified_by`=" . $this->_db->quote($filters['modified_by']);
 		}
 
 		if (count($where))

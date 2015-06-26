@@ -40,7 +40,7 @@ class Rank extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -104,7 +104,7 @@ class Rank extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE wishid=" . $this->_db->quote($wishid));
 		return $this->_db->loadObjectList();
 	}
 
@@ -126,10 +126,10 @@ class Rank extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid);
+		$query = "DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->quote($wishid);
 		if ($oid)
 		{
-			$query .= " AND userid=" . $this->_db->Quote($oid);
+			$query .= " AND userid=" . $this->_db->quote($oid);
 		}
 
 		$this->_db->setQuery($query);

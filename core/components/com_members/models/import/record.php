@@ -71,7 +71,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		$this->_mode    = $mode;
 
 		// Core objects
-		$this->_database = \JFactory::getDBO();
+		$this->_database = \App::get('db');
 		$this->_user     = User::getRoot();
 
 		// Create objects
@@ -320,7 +320,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$newUsertype = $usersConfig->get('new_usertype');
 			if (!$newUsertype)
 			{
-				$db = \JFactory::getDbo();
+				$db = \App::get('db');
 				$query = $db->getQuery(true)
 					->select('id')
 					->from('#__usergroups')

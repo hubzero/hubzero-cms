@@ -38,7 +38,7 @@ class Doi extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -90,10 +90,10 @@ class Doi extends \JTable
 		}
 
 		$query  = $get_full_doi ? "SELECT doi " : "SELECT d.doi_label as doi ";
-		$query .= "FROM $this->_tbl as d WHERE d.rid=" . $this->_db->Quote($id) . " ";
+		$query .= "FROM $this->_tbl as d WHERE d.rid=" . $this->_db->quote($id) . " ";
 		$query .= $revision
-				? "AND d.local_revision=" . $this->_db->Quote($revision) . " LIMIT 1"
-				: "AND d.versionid=" . $this->_db->Quote($versionid) . " LIMIT 1" ;
+				? "AND d.local_revision=" . $this->_db->quote($revision) . " LIMIT 1"
+				: "AND d.versionid=" . $this->_db->quote($versionid) . " LIMIT 1" ;
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -119,7 +119,7 @@ class Doi extends \JTable
 
 		$query  = $get_full_doi ? "SELECT doi " : "SELECT d.doi_label as doi ";
 		$query .= "FROM $this->_tbl as d ";
-		$query .= "WHERE d.rid=" . $this->_db->Quote($id) . " ORDER BY d.doi_label DESC LIMIT 1";
+		$query .= "WHERE d.rid=" . $this->_db->quote($id) . " ORDER BY d.doi_label DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -139,7 +139,7 @@ class Doi extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid) . " AND local_revision=" . $this->_db->Quote($revision) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE rid=" . $this->_db->quote($rid) . " AND local_revision=" . $this->_db->quote($revision) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -170,7 +170,7 @@ class Doi extends \JTable
 		}
 
 		$query = "INSERT INTO $this->_tbl (local_revision, doi_label, rid, alias, versionid, doi)
-				VALUES (" . $this->_db->Quote($revision) . "," . $this->_db->Quote($newlabel) . "," . $this->_db->Quote($rid) . "," . $this->_db->Quote($alias) . ", " . $this->_db->Quote($versionid) . ", " . $this->_db->Quote($doi) . ")";
+				VALUES (" . $this->_db->quote($revision) . "," . $this->_db->quote($newlabel) . "," . $this->_db->quote($rid) . "," . $this->_db->quote($alias) . ", " . $this->_db->quote($versionid) . ", " . $this->_db->quote($doi) . ")";
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{

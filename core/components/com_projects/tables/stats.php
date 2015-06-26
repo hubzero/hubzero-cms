@@ -59,9 +59,9 @@ class Stats extends \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
-		$query .= $year ? " AND year=" . $this->_db->Quote($year) : '';
-		$query .= $month ? " AND month=" . $this->_db->Quote($month) : '';
-		$query .= $week ? " AND week=" . $this->_db->Quote($week) : '';
+		$query .= $year ? " AND year=" . $this->_db->quote($year) : '';
+		$query .= $month ? " AND month=" . $this->_db->quote($month) : '';
+		$query .= $week ? " AND week=" . $this->_db->quote($week) : '';
 		$query .= " ORDER BY processed DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -89,9 +89,9 @@ class Stats extends \JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
-		$query .= $year ? " AND year=" . $this->_db->Quote($year) : '';
-		$query .= $month ? " AND month=" . $this->_db->Quote($month) : '';
-		$query .= $week ? " AND week=" . $this->_db->Quote($week) : '';
+		$query .= $year ? " AND year=" . $this->_db->quote($year) : '';
+		$query .= $month ? " AND month=" . $this->_db->quote($month) : '';
+		$query .= $week ? " AND week=" . $this->_db->quote($week) : '';
 		$query .= " ORDER BY processed DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );

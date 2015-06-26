@@ -83,7 +83,7 @@ class Conditions extends Object
 		{
 			$this->setRecord($record);
 		}*/
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 		$this->config = Component::params('com_support');
 	}
 

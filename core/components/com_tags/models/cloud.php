@@ -100,7 +100,7 @@ class Cloud extends Object
 	 */
 	public function __construct($scope_id=0, $scope='')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new Tables\Tag($this->_db);
 

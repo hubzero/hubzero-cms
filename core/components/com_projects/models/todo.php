@@ -77,7 +77,7 @@ class Todo extends Model
 	 */
 	public function __construct()
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		$this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 

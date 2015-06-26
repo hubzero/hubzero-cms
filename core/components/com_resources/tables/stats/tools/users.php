@@ -38,7 +38,7 @@ class Users extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -74,7 +74,7 @@ class Users extends \JTable
 	{
 		$sql = "SELECT u.name, s.user, u.email, u.organization, s.jobs, s.sessions, s.simulations, s.tot_wall, s.tot_cpu, s.tot_view
 				FROM $this->_tbl AS s, user AS u
-				WHERE u.user = s.user AND s.datetime=" . $this->_db->quote($dthis . "-00") . " AND s.period=" . $this->_db->Quote($period) . " AND s.resid=" . $this->_db->Quote($resid) . "
+				WHERE u.user = s.user AND s.datetime=" . $this->_db->quote($dthis . "-00") . " AND s.period=" . $this->_db->quote($period) . " AND s.resid=" . $this->_db->quote($resid) . "
 				ORDER BY s.jobs DESC limit 25";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();

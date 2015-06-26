@@ -47,7 +47,7 @@ class Version
 	 */
 	public function iterate($func)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (true)
 		{
@@ -81,7 +81,7 @@ class Version
 	 */
 	public static function getCurrentToolVersion($toolid)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (is_numeric($toolid))
 		{
@@ -116,7 +116,7 @@ class Version
 	 */
 	public static function getDevelopmentToolVersion($toolid)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (is_numeric($toolid))
 		{
@@ -152,7 +152,7 @@ class Version
 	 */
 	public static function getToolRevision($toolid, $revision)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if ($revision == 'dev' || $revision == 'development')
 		{

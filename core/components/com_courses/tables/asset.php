@@ -120,7 +120,7 @@ class Asset extends \JTable
 
 		if (isset($filters['section_id']))
 		{
-			$query .= " AND sd.section_id=" . $this->_db->Quote((int) $filters['section_id']);
+			$query .= " AND sd.section_id=" . $this->_db->quote((int) $filters['section_id']);
 		}
 
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
@@ -145,39 +145,39 @@ class Asset extends \JTable
 
 		if (!empty($filters['asset_id']))
 		{
-			$where[] = "ca.id=" . $this->_db->Quote((int) $filters['asset_id']);
+			$where[] = "ca.id=" . $this->_db->quote((int) $filters['asset_id']);
 		}
 		if (!empty($filters['asset_scope_id']))
 		{
-			$where[] = "cag.id=" . $this->_db->Quote((int) $filters['asset_scope_id']);
+			$where[] = "cag.id=" . $this->_db->quote((int) $filters['asset_scope_id']);
 		}
 		if (!empty($filters['asset_scope']))
 		{
-			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['asset_scope']);
+			$where[] = "caa.scope=" . $this->_db->quote((string) $filters['asset_scope']);
 		}
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "ca.state=" . $this->_db->quote($filters['state']);
 		}
 		if (!empty($filters['course_id']))
 		{
-			$where[] = "ca.course_id=" . $this->_db->Quote((int) $filters['course_id']);
+			$where[] = "ca.course_id=" . $this->_db->quote((int) $filters['course_id']);
 		}
 		if (!empty($filters['asset_type']))
 		{
-			$where[] = "ca.type=" . $this->_db->Quote((string) $filters['asset_type']);
+			$where[] = "ca.type=" . $this->_db->quote((string) $filters['asset_type']);
 		}
 		if (!empty($filters['asset_subtype']))
 		{
-			$where[] = "ca.subtype=" . $this->_db->Quote((string) $filters['asset_subtype']);
+			$where[] = "ca.subtype=" . $this->_db->quote((string) $filters['asset_subtype']);
 		}
 		if (!empty($filters['unit_id']))
 		{
-			$where[] = "cag.unit_id=" . $this->_db->Quote((int) $filters['unit_id']);
+			$where[] = "cag.unit_id=" . $this->_db->quote((int) $filters['unit_id']);
 		}
 		if (!empty($filters['offering_id']))
 		{
-			$where[] = "cu.offering_id=" . $this->_db->Quote((int) $filters['offering_id']);
+			$where[] = "cu.offering_id=" . $this->_db->quote((int) $filters['offering_id']);
 		}
 		if (!empty($filters['graded']))
 		{
@@ -270,15 +270,15 @@ class Asset extends \JTable
 
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "ca.state=" . $this->_db->quote($filters['state']);
 		}
 		if (!empty($filters['asset_type']))
 		{
-			$where[] = "ca.type=" . $this->_db->Quote((string) $filters['asset_type']);
+			$where[] = "ca.type=" . $this->_db->quote((string) $filters['asset_type']);
 		}
 		if (!empty($filters['asset_subtype']))
 		{
-			$where[] = "ca.subtype=" . $this->_db->Quote((string) $filters['asset_subtype']);
+			$where[] = "ca.subtype=" . $this->_db->quote((string) $filters['asset_subtype']);
 		}
 		if (!empty($filters['graded']))
 		{
@@ -308,7 +308,7 @@ class Asset extends \JTable
 		$query  = "SELECT caa.id";
 		$query .= " FROM $this->_tbl AS ca";
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
-		$query .= " WHERE ca.id = " . $this->_db->Quote($id);
+		$query .= " WHERE ca.id = " . $this->_db->quote($id);
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();

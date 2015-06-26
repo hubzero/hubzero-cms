@@ -43,7 +43,7 @@ if ($this->contributors)
 	$names_s = array();
 	$orgsln_s = '';
 
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 
 	$types = array(
 		'manager'       => 'manager',

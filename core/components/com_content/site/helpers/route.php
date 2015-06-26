@@ -116,7 +116,7 @@ abstract class ContentHelperRoute
 	{
 		if (count(self::$lang_lookup) == 0)
 		{
-			$db		= JFactory::getDbo();
+			$db		= App::get('db');
 			$query	= $db->getQuery(true)
 				->select('a.sef AS sef')
 				->select('a.lang_code AS lang_code')
@@ -142,7 +142,7 @@ abstract class ContentHelperRoute
 		{
 			self::$lookup[$language] = array();
 
-			$component	= JComponentHelper::getComponent('com_content');
+			$component	= Component::load('com_content');
 			$items		= $menus->getItems('component_id', $component->id);
 			foreach ($items as $item)
 			{

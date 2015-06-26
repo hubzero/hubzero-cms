@@ -57,7 +57,7 @@ class Student extends Member
 	 */
 	public function __construct($uid, $cid=null, $oid=null, $sid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if ($this->_tbl_name)
 		{

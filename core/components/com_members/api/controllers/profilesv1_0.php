@@ -108,7 +108,7 @@ class Profilesv1_0 extends ApiController
 			$filters['sortby'] = 'uidNumber';
 		}
 
-		$database = \JFactory::getDbo();
+		$database = \App::get('db');
 		$c = new \Components\Members\Tables\Profile($database);
 
 		$response = new stdClass;
@@ -152,7 +152,7 @@ class Profilesv1_0 extends ApiController
 		$newUsertype = $usersConfig->get('new_usertype');
 		if (!$newUsertype)
 		{
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 			$query = $db->getQuery(true)
 				->select('id')
 				->from('#__usergroups')

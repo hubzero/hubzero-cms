@@ -52,25 +52,27 @@ class JFormFieldCategoryParent extends JFormFieldList
 			$oldCat = $this->form->getValue($name);
 		}
 
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db    = App::get('db');
+		$query = $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text, a.level');
 		$query->from('#__categories AS a');
 		$query->join('LEFT', $db->quoteName('#__categories').' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
 
 		// Filter by the type
-		if ($extension = $this->form->getValue('extension')) {
+		if ($extension = $this->form->getValue('extension'))
+		{
 			$query->where('(a.extension = '.$db->quote($extension).' OR a.parent_id = 0)');
 		}
 		if ($this->element['parent'])
 		{
 		// Prevent parenting to children of this item.
-			if ($id = $this->form->getValue('id')) {
+			if ($id = $this->form->getValue('id'))
+			{
 				$query->join('LEFT', $db->quoteName('#__categories').' AS p ON p.id = '.(int) $id);
 				$query->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 
-				$rowQuery	= $db->getQuery(true);
+				$rowQuery = $db->getQuery(true);
 				$rowQuery->select('a.id AS value, a.title AS text, a.level, a.parent_id');
 				$rowQuery->from('#__categories AS a');
 				$rowQuery->where('a.id = ' . (int) $id);
@@ -97,7 +99,8 @@ class JFormFieldCategoryParent extends JFormFieldList
 		for ($i = 0, $n = count($options); $i < $n; $i++)
 		{
 			// Translate ROOT
-			if ($options[$i]->level == 0) {
+			if ($options[$i]->level == 0)
+			{
 				$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 			}
 
@@ -147,8 +150,10 @@ class JFormFieldCategoryParent extends JFormFieldList
 			}
 		}
 
-		if (isset($row) && !isset($options[0])) {
-			if ($row->parent_id == '1') {
+		if (isset($row) && !isset($options[0]))
+		{
+			if ($row->parent_id == '1')
+			{
 				$parent = new stdClass();
 				$parent->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 				array_unshift($options, $parent);

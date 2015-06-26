@@ -43,7 +43,7 @@ class Object extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -115,12 +115,12 @@ class Object extends \JTable
 		}
 
 		$query = "SELECT * FROM $this->_tbl
-				WHERE `tagid`=" . $this->_db->Quote((int) $tagid) . "
-				AND `objectid`=" . $this->_db->Quote((int) $objectid) . "
-				AND `tbl`=" . $this->_db->Quote((string) $tbl);
+				WHERE `tagid`=" . $this->_db->quote((int) $tagid) . "
+				AND `objectid`=" . $this->_db->quote((int) $objectid) . "
+				AND `tbl`=" . $this->_db->quote((string) $tbl);
 		if ($taggerid > 0)
 		{
-			$query .= " AND `taggerid`=" . $this->_db->Quote((int) $taggerid);
+			$query .= " AND `taggerid`=" . $this->_db->quote((int) $taggerid);
 		}
 		$query .= " LIMIT 1";
 
@@ -154,24 +154,24 @@ class Object extends \JTable
 			return false;
 		}
 
-		$sql = "DELETE FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($tagid);
+		$sql = "DELETE FROM $this->_tbl WHERE tagid=" . $this->_db->quote($tagid);
 
 		$filters = '';
 		if ($tbl)
 		{
-			$filters .= " AND tbl=" . $this->_db->Quote($tbl);
+			$filters .= " AND tbl=" . $this->_db->quote($tbl);
 		}
 		if ($objectid)
 		{
-			$filters .= " AND objectid=" . $this->_db->Quote($objectid);
+			$filters .= " AND objectid=" . $this->_db->quote($objectid);
 		}
 		if (!$admin)
 		{
-			$filters .= " AND taggerid=" . $this->_db->Quote($taggerid);
+			$filters .= " AND taggerid=" . $this->_db->quote($taggerid);
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($tagid) . " $filters");
-		$items = $this->_db->loadResultArray();
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tagid=" . $this->_db->quote($tagid) . " $filters");
+		$items = $this->_db->loadColumn();
 
 		$this->_db->setQuery($sql . $filters);
 		if (!$this->_db->query())
@@ -215,19 +215,19 @@ class Object extends \JTable
 			return false;
 		}
 
-		$query = "SELECT id FROM $this->_tbl WHERE `objectid`=" . $this->_db->Quote((int) $objectid) . " AND `tbl`=" . $this->_db->Quote($tbl);
+		$query = "SELECT id FROM $this->_tbl WHERE `objectid`=" . $this->_db->quote((int) $objectid) . " AND `tbl`=" . $this->_db->quote($tbl);
 		if ($tagger_id)
 		{
-			$query .= " AND `taggerid`=" . $this->_db->Quote((int) $taggerid);
+			$query .= " AND `taggerid`=" . $this->_db->quote((int) $taggerid);
 		}
 
 		$this->_db->setQuery($query);
-		$items = $this->_db->loadResultArray();
+		$items = $this->_db->loadColumn();
 
-		$sql = "DELETE FROM $this->_tbl WHERE `tbl`=" . $this->_db->Quote($tbl) . " AND `objectid`=" . $this->_db->Quote((int) $objectid);
+		$sql = "DELETE FROM $this->_tbl WHERE `tbl`=" . $this->_db->quote($tbl) . " AND `objectid`=" . $this->_db->quote((int) $objectid);
 		if ($tagger_id)
 		{
-			$query .= " AND `taggerid`=" . $this->_db->Quote((int) $taggerid);
+			$query .= " AND `taggerid`=" . $this->_db->quote((int) $taggerid);
 		}
 
 		$this->_db->setQuery($sql);
@@ -267,7 +267,7 @@ class Object extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($tagid));
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tagid=" . $this->_db->quote($tagid));
 		return $this->_db->loadResult();
 	}
 
@@ -295,11 +295,11 @@ class Object extends \JTable
 		$sql = "SELECT DISTINCT t.*
 				FROM $this->_tbl AS rt
 				INNER JOIN `#__tags` AS t ON (rt.tagid = t.id)
-				WHERE rt.objectid=" . $this->_db->Quote($objectid) . " AND rt.tbl=" . $this->_db->Quote($tbl);
+				WHERE rt.objectid=" . $this->_db->quote($objectid) . " AND rt.tbl=" . $this->_db->quote($tbl);
 
 		if (isset($this->label))
 		{
-			$sql .= " AND rt.label=" . $this->_db->Quote($this->label);
+			$sql .= " AND rt.label=" . $this->_db->quote($this->label);
 		}
 		switch ($state)
 		{
@@ -336,7 +336,7 @@ class Object extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($tagid) . " AND objectid=" . $this->_db->Quote($objectid) . " AND tbl=" . $this->_db->Quote($tbl));
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tagid=" . $this->_db->quote($tagid) . " AND objectid=" . $this->_db->quote($objectid) . " AND tbl=" . $this->_db->quote($tbl));
 		return $this->_db->loadResult();
 	}
 
@@ -356,10 +356,10 @@ class Object extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($oldtagid));
-		$items = $this->_db->loadResultArray();
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tagid=" . $this->_db->quote($oldtagid));
+		$items = $this->_db->loadColumn();
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET tagid=" . $this->_db->Quote($newtagid) . " WHERE tagid=" . $this->_db->Quote($oldtagid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET tagid=" . $this->_db->quote($newtagid) . " WHERE tagid=" . $this->_db->quote($oldtagid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -396,7 +396,7 @@ class Object extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($oldtagid));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tagid=" . $this->_db->quote($oldtagid));
 		if ($rows = $this->_db->loadObjectList())
 		{
 			$entries = array();
@@ -440,23 +440,23 @@ class Object extends \JTable
 
 		if (isset($filters['objectid']) && (int) $filters['objectid'] > 0)
 		{
-			$where[] = "o.objectid=" . $this->_db->Quote(intval($filters['objectid']));
+			$where[] = "o.objectid=" . $this->_db->quote(intval($filters['objectid']));
 		}
 		if (isset($filters['tbl']) && (string) $filters['tbl'] != '')
 		{
-			$where[] = "o.tbl=" . $this->_db->Quote($filters['tbl']);
+			$where[] = "o.tbl=" . $this->_db->quote($filters['tbl']);
 		}
 		if (isset($filters['tagid']) && (int) $filters['tagid'] > 0)
 		{
-			$where[] = "o.tagid=" . $this->_db->Quote(intval($filters['tagid']));
+			$where[] = "o.tagid=" . $this->_db->quote(intval($filters['tagid']));
 		}
 		if (isset($filters['strength']) && (int) $filters['strength'] >= 0)
 		{
-			$where[] = "o.strength=" . $this->_db->Quote(intval($filters['strength']));
+			$where[] = "o.strength=" . $this->_db->quote(intval($filters['strength']));
 		}
 		if (isset($filters['taggerid']) && (int) $filters['taggerid'] > 0)
 		{
-			$where[] = "o.taggerid=" . $this->_db->Quote(intval($filters['taggerid']));
+			$where[] = "o.taggerid=" . $this->_db->quote(intval($filters['taggerid']));
 		}
 
 		if (count($where) > 0)
@@ -544,7 +544,7 @@ class Object extends \JTable
 		}
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 }
 

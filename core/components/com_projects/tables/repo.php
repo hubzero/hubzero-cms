@@ -53,7 +53,7 @@ class Repo extends \JTable
 	 */
 	public function getRepos ($projectid)
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->Quote($projectid));
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid));
 		return $this->_db->loadObjectList();
 	}
 
@@ -71,7 +71,7 @@ class Repo extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->Quote($projectid) . " AND name=" . $this->_db->Quote($name) . " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid) . " AND name=" . $this->_db->quote($name) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())

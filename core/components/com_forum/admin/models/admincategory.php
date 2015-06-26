@@ -97,7 +97,7 @@ class AdminCategory extends \JModelAdmin
 		 */
 	public function getTable($type = 'Category', $prefix = 'ForumTable', $config = array())
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		return new \Components\Forum\Tables\Category($db); //JTable::getInstance($type, $prefix, $config);
 	}
 

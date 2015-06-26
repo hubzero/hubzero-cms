@@ -102,7 +102,7 @@ class Log extends \JTable
 			$n      = array_pop($bits);
 			$subnet = trim(implode('.', $bits)) . '.';
 
-			$query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE " . $this->_db->Quote($subnet . '%');
+			$query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE " . $this->_db->quote($subnet . '%');
 			$this->_db->setQuery( $query );
 			return $this->_db->loadResult();
 		}
@@ -269,10 +269,10 @@ class Log extends \JTable
 		$thisYearNum 	= $yearNum ? $yearNum : Date::format('y');
 		$thisMonthNum 	= $monthNum ? $monthNum : Date::format('m');
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
-		$query .= " AND publication_version_id=" . $this->_db->Quote($vid);
-		$query .= " AND year= " . $this->_db->Quote($thisYearNum) . "
-				    AND month=" . $this->_db->Quote($thisMonthNum);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+		$query .= " AND publication_version_id=" . $this->_db->quote($vid);
+		$query .= " AND year= " . $this->_db->quote($thisYearNum) . "
+				    AND month=" . $this->_db->quote($thisMonthNum);
 		$query .= " ORDER BY modified DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -304,10 +304,10 @@ class Log extends \JTable
 		$thisYearNum 	= $yearNum ? $yearNum : Date::format('y');
 		$thisMonthNum 	= $monthNum ? $monthNum : Date::format('m');
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
-		$query .= " AND publication_version_id=" . $this->_db->Quote($vid);
-		$query .= " AND year= " . $this->_db->Quote($thisYearNum) . "
-				    AND month=" . $this->_db->Quote($thisMonthNum);
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+		$query .= " AND publication_version_id=" . $this->_db->quote($vid);
+		$query .= " AND year= " . $this->_db->quote($thisYearNum) . "
+				    AND month=" . $this->_db->quote($thisMonthNum);
 		$query .= "ORDER BY modified DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -463,11 +463,11 @@ class Log extends \JTable
 		if ($type == 'author')
 		{
 			$query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
-			$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id=" . $this->_db->Quote($id);
+			$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id=" . $this->_db->quote($id);
 		}
 		else
 		{
-			$query .= " JOIN #__publications as P ON P.id = L.publication_id AND P.project_id=" . $this->_db->Quote($id);
+			$query .= " JOIN #__publications as P ON P.id = L.publication_id AND P.project_id=" . $this->_db->quote($id);
 			$query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
 		}
 
@@ -521,7 +521,7 @@ class Log extends \JTable
 					JOIN #__citations_assoc as CA ON CA.cid=C.id
 					AND tbl='publication'
 					WHERE CA.oid=V.publication_id
-					AND C.created <= " . $this->_db->Quote($citeTo) . " ) AS citations ";
+					AND C.created <= " . $this->_db->quote($citeTo) . " ) AS citations ";
 
 		$query .= "FROM ";
 		if ($filter)
@@ -652,7 +652,7 @@ class Log extends \JTable
 		$query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id
 					AND V.main=1 AND V.published_up < '" . Date::toSql() . "' AND C.project_id=$projectid";
 
-		$query .= $pubid ? " AND V.publication_id=" . $this->_db->Quote($pubid) : "";
+		$query .= $pubid ? " AND V.publication_id=" . $this->_db->quote($pubid) : "";
 		$query .= " GROUP BY V.publication_id ";
 		$query .= " ORDER BY S.users DESC, V.id ASC ";
 

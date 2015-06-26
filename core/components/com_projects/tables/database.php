@@ -60,7 +60,7 @@ class Database extends \JTable
 		}
 		$name = is_numeric($identifier) ? 'id' : 'database_name';
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->Quote($identifier) . " LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -91,7 +91,7 @@ class Database extends \JTable
 		$query  = "SELECT ";
 		$query .= $count ? " COUNT(*) " : "*";
 		$query .= " FROM $this->_tbl ";
-		$query .= " WHERE project = " . $this->_db->Quote($projectid);
+		$query .= " WHERE project = " . $this->_db->quote($projectid);
 		$query .= $skipPublished ? " AND revision IS NULL" : "";
 
 		$this->_db->setQuery( $query );
@@ -112,7 +112,7 @@ class Database extends \JTable
 			return false;
 		}
 
-		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $this->_db->Quote($projectid);
+		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $this->_db->quote($projectid);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssoc();
@@ -135,7 +135,7 @@ class Database extends \JTable
 				db.source_dir, db.source_revision, db.description, db.data_definition,
 				db.revision, db.created, db.created_by, c.name
 				FROM $this->_tbl AS db LEFT JOIN #__users AS c ON (c.id=db.created_by)
-				WHERE project = " . $this->_db->Quote($projectid) . " ORDER BY db.created DESC";
+				WHERE project = " . $this->_db->quote($projectid) . " ORDER BY db.created DESC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssocList();
@@ -156,9 +156,9 @@ class Database extends \JTable
 
 		$query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file
 				  FROM $this->_tbl
-				  WHERE project = " . $this->_db->Quote($projectid);
+				  WHERE project = " . $this->_db->quote($projectid);
 
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 }

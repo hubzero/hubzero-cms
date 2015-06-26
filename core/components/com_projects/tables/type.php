@@ -77,7 +77,7 @@ class Type extends \JTable
 	 */
 	public function getTypeTitle ( $id = 0 )
 	{
-		$this->_db->setQuery( "SELECT type FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
+		$this->_db->setQuery( "SELECT type FROM $this->_tbl WHERE id=" . $this->_db->quote($id));
 		return $this->_db->loadResult();
 	}
 
@@ -89,7 +89,7 @@ class Type extends \JTable
 	 */
 	public function getIdByTitle ( $type = '' )
 	{
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE type=" . $this->_db->Quote($type));
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE type=" . $this->_db->quote($type));
 		return $this->_db->loadResult();
 	}
 }

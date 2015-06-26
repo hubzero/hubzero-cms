@@ -66,7 +66,7 @@ class ModIncrementalRegistrationAwards
 	{
 		if (!self::$dbh)
 		{
-			self::$dbh = JFactory::getDBO();
+			self::$dbh = App::get('db');
 		}
 		return self::$dbh;
 	}

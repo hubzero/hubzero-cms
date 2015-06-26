@@ -127,7 +127,7 @@ class Service extends Object
 
 		if (!$db)
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 		}
 
 		$this->setDbo($db);

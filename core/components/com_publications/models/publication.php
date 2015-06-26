@@ -101,7 +101,7 @@ class Publication extends Object
 	 */
 	public function __construct($oid = NULL, $version = 'default', $vid = NULL)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		if (is_object($oid))
 		{

@@ -38,7 +38,7 @@ class Topvals extends \JTable
 	/**
 	 * Construct
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -87,7 +87,7 @@ class Topvals extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($id) . " AND top=" . $this->_db->Quote($top) . " ORDER BY rank");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($id) . " AND top=" . $this->_db->quote($top) . " ORDER BY rank");
 		return $this->_db->loadObjectList();
 	}
 }

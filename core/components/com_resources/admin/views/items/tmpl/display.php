@@ -140,7 +140,7 @@ function submitbutton(pressbutton)
 $k = 0;
 $filterstring  = '';
 
-$database = JFactory::getDBO();
+$database = App::get('db');
 
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {

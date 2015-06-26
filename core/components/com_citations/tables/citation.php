@@ -41,7 +41,7 @@ class Citation extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -168,8 +168,8 @@ class Citation extends \JTable
 
 			//if ($admin = true)
 			//{
-			//	$query .= " OR LOWER(u.username) = " . $this->_db->Quote(strtolower($filter['search'])) . "
-			//				OR r.uid = " . $this->_db->Quote($filter['search']);
+			//	$query .= " OR LOWER(u.username) = " . $this->_db->quote(strtolower($filter['search'])) . "
+			//				OR r.uid = " . $this->_db->quote($filter['search']);
 			//}
 		}
 
@@ -198,7 +198,7 @@ class Citation extends \JTable
 		//type filter
 		if (isset($filter['type']) && $filter['type'] != '')
 		{
-			$query .= " AND r.type=" . $this->_db->Quote($filter['type']);
+			$query .= " AND r.type=" . $this->_db->quote($filter['type']);
 		}
 
 		//author filter
@@ -216,15 +216,15 @@ class Citation extends \JTable
 		//year filter
 		if (isset($filter['year_start']) && is_numeric($filter['year_start']) && $filter['year_start'] > 0)
 		{
-			$query .= " AND (r.year >=" . $this->_db->Quote($filter['year_start']) . " OR r.year IS NULL OR r.year=0)";
+			$query .= " AND (r.year >=" . $this->_db->quote($filter['year_start']) . " OR r.year IS NULL OR r.year=0)";
 		}
 		if (isset($filter['year_end']) && is_numeric($filter['year_end']) && $filter['year_end'] > 0)
 		{
-			$query .= " AND (r.year <=" . $this->_db->Quote($filter['year_end']) . " OR r.year IS NULL OR r.year=0)";
+			$query .= " AND (r.year <=" . $this->_db->quote($filter['year_end']) . " OR r.year IS NULL OR r.year=0)";
 		}
 		if (isset($filter['startuploaddate']) && isset($filter['enduploaddate']))
 		{
-			$query .= " AND r.created >= " . $this->_db->Quote($filter['startuploaddate']) . " AND r.created <= " . $this->_db->Quote($filter['enduploaddate']);
+			$query .= " AND r.created >= " . $this->_db->quote($filter['startuploaddate']) . " AND r.created <= " . $this->_db->quote($filter['enduploaddate']);
 		}
 
 		//affiated? filter
@@ -582,10 +582,10 @@ class Citation extends \JTable
 		{
 			$stats[$i] = array();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=1 AND (scope != 'group' OR scope IS NULL)");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope != 'group' OR scope IS NULL)");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=0 AND (scope != 'group' OR scope IS NULL)");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope != 'group' OR scope IS NULL)");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 
@@ -607,7 +607,7 @@ class Citation extends \JTable
 				FROM $this->_tbl AS r
 				LEFT JOIN `#__users` AS u ON u.id = r.uid
 				LEFT JOIN `#__citations_secondary` as CS ON r.id=CS.cid, $ca->_tbl AS a
-				WHERE r.published=1 AND a.tbl=" . $this->_db->Quote($tbl) . " AND a.oid=" . $this->_db->Quote($oid) . " AND a.cid=r.id
+				WHERE r.published=1 AND a.tbl=" . $this->_db->quote($tbl) . " AND a.oid=" . $this->_db->quote($oid) . " AND a.cid=r.id
 				ORDER BY affiliated ASC, year DESC";
 
 		$this->_db->setQuery($sql);
@@ -694,7 +694,7 @@ class Citation extends \JTable
 
 		$sql = "SELECT c.created "
 			 . " FROM $this->_tbl AS c, $ca->_tbl AS a"
-			 . " WHERE c.published=1 AND a.tbl=" . $this->_db->Quote($tbl) . " AND a.oid=" . $this->_db->Quote($oid) . " AND a.cid=c.id"
+			 . " WHERE c.published=1 AND a.tbl=" . $this->_db->quote($tbl) . " AND a.oid=" . $this->_db->quote($oid) . " AND a.cid=c.id"
 			 . " ORDER BY created DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);

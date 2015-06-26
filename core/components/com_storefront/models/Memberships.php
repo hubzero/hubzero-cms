@@ -49,7 +49,7 @@ class StorefrontModelMemberships
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = App::get('db');
 
 		// Load language file
 		Lang::load('com_storefront');
@@ -65,7 +65,7 @@ class StorefrontModelMemberships
 	{
 		$sql = "SELECT `ptId` FROM `#__storefront_product_types` WHERE `ptModel` = 'membership'";
 		$this->_db->setQuery($sql);
-		$membershipTypes = $this->_db->loadResultArray();
+		$membershipTypes = $this->_db->loadColumn();
 
 		return $membershipTypes;
 	}
@@ -188,7 +188,7 @@ class StorefrontModelMemberships
 	 */
 	public static function getMembershipInfoByUser($uId, $pId)
 	{
-		$db = JFactory::getDBO();
+		$db = App::get('db');
 
 		$now = Date::toSql();
 		$sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";

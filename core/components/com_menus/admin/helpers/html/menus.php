@@ -24,7 +24,7 @@ abstract class MenusHtmlMenus
 		$associations = MenusHelper::getAssociations($itemid);
 
 		// Get the associated menu items
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('m.*');
 		$query->select('mt.title as menu_title');

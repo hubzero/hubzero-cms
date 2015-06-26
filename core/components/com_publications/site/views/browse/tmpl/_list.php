@@ -25,7 +25,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \JFactory::getDBO();
+$database = \App::get('db');
 switch ($this->filters['sortby'])
 {
 	case 'date_created': $show_date = 1; break;

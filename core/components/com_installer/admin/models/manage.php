@@ -123,7 +123,7 @@ class Manage extends Extension
 			}
 
 			// Get a database connector
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 
 			// Get a table object for the extension type
 			$table = \JTable::getInstance('Extension');
@@ -181,7 +181,7 @@ class Manage extends Extension
 		}
 
 		// Get a database connector
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Get an installer object for the extension type
 		$installer = \JInstaller::getInstance();
@@ -219,7 +219,7 @@ class Manage extends Extension
 			}
 
 			// Get a database connector
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 
 			// Get an installer object for the extension type
 			$installer = \JInstaller::getInstance();
@@ -294,7 +294,7 @@ class Manage extends Extension
 		$client = $this->getState('filter.client_id');
 		$group  = $this->getState('filter.group');
 
-		$query = \JFactory::getDBO()->getQuery(true);
+		$query = \App::get('db')->getQuery(true);
 		$query->select('*');
 		$query->select('2*protected+(1-protected)*enabled as status');
 		$query->from('#__extensions');
@@ -313,7 +313,7 @@ class Manage extends Extension
 		}
 		if ($type)
 		{
-			$query->where('type=' . $this->_db->Quote($type));
+			$query->where('type=' . $this->_db->quote($type));
 		}
 		if ($client != '')
 		{
@@ -321,7 +321,7 @@ class Manage extends Extension
 		}
 		if ($group != '' && in_array($type, array('plugin', 'library', '')))
 		{
-			$query->where('folder=' . $this->_db->Quote($group == '*' ? '' : $group));
+			$query->where('folder=' . $this->_db->quote($group == '*' ? '' : $group));
 		}
 
 		// Filter by search in id

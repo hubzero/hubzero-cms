@@ -125,7 +125,7 @@ class Curation extends Object
 	*/
 	public function __construct( $manifest = NULL, $masterManifest = NULL )
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = \App::get('db');
 
 		// Parse blocks
 		$this->_setBlocks($manifest, $masterManifest);

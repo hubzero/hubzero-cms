@@ -114,7 +114,7 @@ class Services extends AdminController
 	 */
 	protected function setupServices()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$objS = new Service($database);
 		$now = Date::toSql();

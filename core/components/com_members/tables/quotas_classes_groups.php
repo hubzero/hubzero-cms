@@ -40,7 +40,7 @@ class QuotasClassesGroups extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct( &$db )
@@ -209,7 +209,7 @@ class QuotasClassesGroups extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `class_id`=" . $this->_db->Quote($class_id));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `class_id`=" . $this->_db->quote($class_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -235,7 +235,7 @@ class QuotasClassesGroups extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `group_id`=" . $this->_db->Quote($group_id));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `group_id`=" . $this->_db->quote($group_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
