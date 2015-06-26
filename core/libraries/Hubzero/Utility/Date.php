@@ -395,7 +395,7 @@ class Date extends DateTime
 	{
 		if ($dbo === null)
 		{
-			$dbo = \JFactory::getDbo();
+			$dbo = \App::get('db');
 		}
 		return $this->format($dbo->getDateFormat(), $local, false);
 	}

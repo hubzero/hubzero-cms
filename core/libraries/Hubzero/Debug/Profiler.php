@@ -251,7 +251,7 @@ class Profiler extends Object
 
 		$memory = memory_get_usage(true);
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$querycount = $db->getCount();
 		$querytime = $db->timer;
 

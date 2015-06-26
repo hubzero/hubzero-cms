@@ -52,7 +52,7 @@ class Template extends \JDocumentHTML
 		{
 			if (\JFactory::getApplication()->isAdmin())
 			{
-				$db = \JFactory::getDBO();
+				$db = \App::get('db');
 				$db->setQuery("SELECT template FROM `#__template_styles` WHERE client_id=0 AND home=1");
 				$params['template'] = $db->loadResult();
 				$params['directory'] = JPATH_SITE . DS . 'templates';

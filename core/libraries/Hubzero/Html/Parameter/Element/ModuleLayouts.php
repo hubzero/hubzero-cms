@@ -62,7 +62,7 @@ class ModuleLayouts extends Select
 		$path2 = null;
 
 		// Load template entries for each menuid
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('template');
 		$query->from('#__template_styles');

@@ -62,7 +62,7 @@ class Helper
 	public static function getPopularGroups($limit=0)
 	{
 		//database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//query
 		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc,
@@ -96,7 +96,7 @@ class Helper
 	public static function getFeaturedGroups($groupList)
 	{
 		//database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//parse the group list
 		$groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
@@ -131,7 +131,7 @@ class Helper
 	public static function getGroupsMatchingTagString($usertags, $usergroups)
 	{
 		//database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//turn users tag string into array
 		$mytags = ($usertags != '') ? array_map('trim', explode(',', $usertags)) : array();
@@ -191,7 +191,7 @@ class Helper
 	public static function listGroups($name='', $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150)
 	{
 		//database object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//check to see if we have any groups to show
 		if (!$groups)
@@ -355,7 +355,7 @@ class Helper
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$sql = 'SELECT gidNumber FROM `#__xgroups_inviteemails` WHERE email=' . $db->Quote($email) . ';';
 
@@ -420,7 +420,7 @@ class Helper
 		if ($role == '')
 			return false;
 
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.roleid AND r.gidNumber='" . $group->gidNumber . "'";
 

@@ -239,7 +239,7 @@ class Link
 	 */
 	public function create()
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if (empty($db))
 		{
@@ -319,7 +319,7 @@ class Link
 	 */
 	public function read()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -378,7 +378,7 @@ class Link
 	 */
 	function update($all = false)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		$query = "UPDATE #__auth_link SET ";
 
@@ -450,7 +450,7 @@ class Link
 	 */
 	public function delete()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -633,7 +633,7 @@ class Link
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -669,7 +669,7 @@ class Link
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -712,7 +712,7 @@ class Link
 		if (empty($uid))
 			return true;
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -815,7 +815,7 @@ class Link
 		if (!is_numeric($user_id))
 			return false;
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 			return false;

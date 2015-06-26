@@ -243,7 +243,7 @@ class SiteController extends Object implements ControllerInterface
 
 		// Set some commonly used vars
 		$this->juser    = \User::getRoot();
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 		$this->config   = \Component::params($this->_option);
 
 		// Clear component messages - for cross component messages

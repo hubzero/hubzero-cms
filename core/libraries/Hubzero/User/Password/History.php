@@ -59,7 +59,7 @@ class History
 	 */
 	public static function getInstance($instance)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db)) {
 			return false;
@@ -99,7 +99,7 @@ class History
 	 */
 	public function add($passhash = null, $invalidated = null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -151,7 +151,7 @@ class History
 	 */
 	public function exists($password = null, $since = null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -198,7 +198,7 @@ class History
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{

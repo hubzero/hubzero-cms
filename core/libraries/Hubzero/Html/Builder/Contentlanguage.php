@@ -58,7 +58,7 @@ class ContentLanguage
 		if (empty(self::$items))
 		{
 			// Get the database object and a new query object.
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 
 			// Build the query.

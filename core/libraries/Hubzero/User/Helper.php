@@ -87,7 +87,7 @@ class Helper
 	 */
 	public static function getXDomainId($domain)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
@@ -115,7 +115,7 @@ class Helper
 	 */
 	public static function getXDomainUserId($domain_username, $domain)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return $domain_username;
@@ -145,7 +145,7 @@ class Helper
 	 */
 	public static function deleteXDomainUserId($id)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($id))
 			return false;
@@ -174,7 +174,7 @@ class Helper
 	 */
 	public static function isXDomainUser($uid)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = 'SELECT uidNumber FROM #__xdomain_users WHERE #__xdomain_users.uidNumber=' . $db->Quote($uid);
 
@@ -198,7 +198,7 @@ class Helper
 	 */
 	public static function createXDomain($domain)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
@@ -253,7 +253,7 @@ class Helper
 	 */
 	public static function mapXDomainUser($domain_username, $domain, $uidNumber)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($domain))
 			return 0;
@@ -304,7 +304,7 @@ class Helper
 	 */
 	public static function getGroups($uid, $type='all', $cat = null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$g = '';
 		if ($cat == 1) {
@@ -358,7 +358,7 @@ class Helper
 	 */
 	public static function removeUserFromGroups( $uid )
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
 
 		foreach ($tables as $table)
@@ -383,7 +383,7 @@ class Helper
 	 */
 	public static function getCourses($uid, $type='all', $cat = null)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$g = '';
 		if ($cat == 1) {

@@ -216,7 +216,7 @@ class Ldap
 	 */
 	public static function syncUser($user)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -478,7 +478,7 @@ class Ldap
 	 */
 	public static function syncGroup($group)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -737,7 +737,7 @@ class Ldap
 	 */
 	public static function changeGroupMemberships($group,$add,$delete)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -876,7 +876,7 @@ class Ldap
 	{
 		// @TODO: chunk this to 1000 groups at a time
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT gidNumber FROM #__xgroups;";
 
@@ -919,7 +919,7 @@ class Ldap
 	{
 		// @TODO: chunk this to 1000 users at a time
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT id FROM #__users;";
 
@@ -1020,7 +1020,7 @@ class Ldap
 		// delete all entries that have mysql counterparts
 		// @TODO: chunk this to 1000 groups at a time
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT cn FROM #__xgroups;";
 
@@ -1162,7 +1162,7 @@ class Ldap
 
 		// delete all entries that have mysql counterparts
 		// @TODO: chunk this to 1000 groups at a time
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT username FROM #__users;";
 

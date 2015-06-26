@@ -38,7 +38,7 @@ class Rule
 {
 	public static function getRules($group = null, $all = false)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if (empty($db))
 		{

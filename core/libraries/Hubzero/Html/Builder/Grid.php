@@ -465,7 +465,7 @@ class Grid
 		// Special state for dates
 		if ($publish_up || $publish_down)
 		{
-			$nullDate = \JFactory::getDBO()->getNullDate();
+			$nullDate = \App::get('db')->getNullDate();
 			$nowDate = with(new Date)->toUnix();
 
 			$tz = new \DateTimeZone(User::getParam('timezone', \Config::get('offset')));

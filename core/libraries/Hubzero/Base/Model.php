@@ -187,7 +187,7 @@ abstract class Model extends Object
 				return \Hubzero\User\Group\Helper::getDbo();
 			}
 		}
-		return \JFactory::getDBO();
+		return \App::get('db');
 	}
 
 	/**

@@ -439,7 +439,7 @@ class Profile extends Object
 	 */
 	private function _mysql_load($user)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($user))
 		{
@@ -518,7 +518,7 @@ class Profile extends Object
 			'vip'          => 'principal_investigator'
 		);
 
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		$query = "SELECT * FROM `#__author` WHERE id=" . $db->Quote($authorid);
 
@@ -764,7 +764,7 @@ class Profile extends Object
 	 */
 	public function create()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 
@@ -876,7 +876,7 @@ class Profile extends Object
 			return false;
 		}
 
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 
@@ -1030,7 +1030,7 @@ class Profile extends Object
 	 */
 	public function delete()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (!is_numeric($this->get('uidNumber')))
 		{
@@ -1125,7 +1125,7 @@ class Profile extends Object
 
 		if ($this->$property === false)
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 
 			$property_name = substr($property, 6);
 
@@ -1455,7 +1455,7 @@ class Profile extends Object
 	 */
 	public static function getGroupMemberRoles($uid, $gid)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->Quote($uid) . " AND r.gidNumber=" . $db->Quote($gid);
 		$db->setQuery($sql);
 

@@ -286,7 +286,7 @@ class Loader implements LoaderInterface
 
 		if (!(self::$plugins = $cache->get('com_plugins.' . $levels)))
 		{
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 
 			$query->select('folder AS type, element AS name, params')

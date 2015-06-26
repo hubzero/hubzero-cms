@@ -166,7 +166,7 @@ class Password
 	 */
 	public function create()
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if (empty($db))
 		{
@@ -216,7 +216,7 @@ class Password
 
 		$this->clear();
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -279,7 +279,7 @@ class Password
 	 */
 	public function update()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (!$this->__get('user_id'))
 		{
@@ -365,7 +365,7 @@ class Password
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -648,7 +648,7 @@ class Password
 		$hzup->__set('shadowExpire', null);
 		$hzup->update();
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$db->setQuery("UPDATE `#__xprofiles` SET userPassword=" . $db->Quote($passhash) . " WHERE uidNumber=" . $db->Quote($hzup->get('user_id')));
 		$db->query();

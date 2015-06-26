@@ -367,7 +367,7 @@ class Mysql implements AccessTokenInterface,
 	private function getUsernameFromEmail($enteredUsername)
 	{
 		// get username from email
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$sql = "SELECT `id`, `username`, `password`
 				FROM `#__users`
 				WHERE `email`=" . $db->quote($enteredUsername);
@@ -491,7 +491,7 @@ class Mysql implements AccessTokenInterface,
 	 */
 	public function getUserIdFromSessionId($sessionId)
 	{
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		// get session timeout period
 		$timeout = \App::get('config')->get('timeout');

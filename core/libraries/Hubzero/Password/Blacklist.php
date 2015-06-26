@@ -34,7 +34,7 @@ class Blacklist
 {
 	public static function inBlacklist($word)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if (empty($db))
 		{
@@ -309,7 +309,7 @@ class Blacklist
 
 	public static function basedOnBlacklist($word)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if (empty($db))
 		{

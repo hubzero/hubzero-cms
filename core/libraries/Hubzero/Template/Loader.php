@@ -167,7 +167,7 @@ class Loader
 		// Load the template name from the database
 		try
 		{
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 			$query->select('s.id, s.home, s.template, s.params, e.protected');
 			$query->from('#__template_styles as s');
@@ -248,7 +248,7 @@ class Loader
 			// Load styles
 			try
 			{
-				$db = \JFactory::getDbo();
+				$db = \App::get('db');
 				$query = $db->getQuery(true);
 				$query->select('s.id, s.home, s.template, s.params, e.protected');
 				$query->from('#__template_styles as s');

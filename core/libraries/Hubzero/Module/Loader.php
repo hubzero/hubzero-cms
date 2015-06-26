@@ -400,7 +400,7 @@ class Loader
 
 		if (!($clean = $cache->get($cacheid)))
 		{
-			$db = \JFactory::getDbo();
+			$db = $this->app['db'];
 
 			$query = $db->getQuery(true);
 			$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params, mm.menuid');

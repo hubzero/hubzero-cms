@@ -53,7 +53,7 @@ class ContentLanguages extends Select
 	 */
 	protected function _getOptions(&$node)
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('a.lang_code AS value, a.title AS text, a.title_native');

@@ -200,7 +200,7 @@ class Project
 	 */
 	public function create()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -262,7 +262,7 @@ class Project
 	 */
 	public function read()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$lazyloading = false;
 
@@ -314,7 +314,7 @@ class Project
 	 */
 	public function update($all = false)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		$query = "UPDATE #__trac_project SET ";
 
@@ -414,7 +414,7 @@ class Project
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -475,7 +475,7 @@ class Project
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db =  \JFactory::getDBO();
+				$db =  \App::get('db');
 
 				if (is_object($db))
 				{
@@ -668,7 +668,7 @@ class Project
 	 */
 	public function add_user_permission($user,$action)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if ($user == 'anonymous')
 		{
@@ -722,7 +722,7 @@ class Project
 	 */
 	public function add_group_permission($group,$action)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if ($group == 'authenticated')
 		{
@@ -772,7 +772,7 @@ class Project
 	 */
 	public function remove_user_permission($user,$action)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 		$all = false;
 
 		if ($user == 'anonymous')
@@ -836,7 +836,7 @@ class Project
 	 */
 	public function remove_group_permission($group,$action)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 		$all = false;
 
 		if ($group == 'authenticated')
@@ -895,7 +895,7 @@ class Project
 	 */
 	public function get_user_permission($user)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 		$quoted_project_id = $db->Quote($this->id);
 
 		if ($user == "anonymous")
@@ -928,7 +928,7 @@ class Project
 	 */
 	public function get_group_permission($group)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 		$quoted_project_id = $db->Quote($this->id);
 
 		if ($group == 'authenticated')

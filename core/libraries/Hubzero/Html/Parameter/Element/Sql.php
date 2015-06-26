@@ -57,7 +57,7 @@ class Sql extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$db->setQuery($node->attributes('query'));
 		$key = ($node->attributes('key_field') ? $node->attributes('key_field') : 'value');
 		$val = ($node->attributes('value_field') ? $node->attributes('value_field') : $name);

@@ -84,7 +84,7 @@ Class InviteEmail extends \JTable
 	public function getInviteEmails($gid, $email_only = false)
 	{
 		$final = array();
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$sql = "SELECT * FROM $this->_tbl WHERE gidNumber=" . $db->Quote($gid);
 		$db->setQuery($sql);
@@ -139,7 +139,7 @@ Class InviteEmail extends \JTable
 				$sql_values[] = "('".$a."',".$gid.",'".md5($a)."')";
 			}
 			$sql = $sql . implode(',', $sql_values);
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 			$db->setQuery($sql);
 			$db->query();
 		}

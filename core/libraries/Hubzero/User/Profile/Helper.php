@@ -46,7 +46,7 @@ class Helper
 	 */
 	public static function iterate_profiles($func)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$db->setQuery("SELECT uidNumber FROM `#__xprofiles`;");
 
 		$result = $db->loadResultArray();
@@ -78,7 +78,7 @@ class Helper
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$db->setQuery("SELECT username FROM `#__xprofiles` WHERE `email`=" . $db->Quote($email));
 
 		$result = $db->loadResultArray();
@@ -165,7 +165,7 @@ class Helper
 							// Save image to profile
 							$member->set('picture', 'identicon.png');
 							// Update directly. Using update() method can cause unexpected data loss in some cases.
-							$database = \JFactory::getDBO();
+							$database = \App::get('db');
 							$database->setQuery("UPDATE `#__xprofiles` SET picture=" . $database->quote($member->get('picture')) . " WHERE uidNumber=" . $member->get('uidNumber'));
 							$database->query();
 							//$member->update();

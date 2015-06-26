@@ -57,7 +57,7 @@ class Access
 	 */
 	public static function level($name, $selected, $attribs = '', $params = true, $id = false)
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text');
@@ -110,7 +110,7 @@ class Access
 	 */
 	public static function usergroup($name, $selected, $attribs = '', $allowAll = true)
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('a.id AS value, a.title AS text, COUNT(DISTINCT b.id) AS level');
 		$query->from($db->quoteName('#__usergroups') . ' AS a');
@@ -157,7 +157,7 @@ class Access
 
 		$isSuperAdmin = \User::authorise('core.admin');
 
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->select('a.*, COUNT(DISTINCT b.id) AS level');
 		$query->from($db->quoteName('#__usergroups') . ' AS a');
@@ -258,7 +258,7 @@ class Access
 	{
 		if (empty(self::$asset_groups))
 		{
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 
 			$query->select('a.id AS value, a.title AS text');

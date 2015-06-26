@@ -358,7 +358,7 @@ class Provider
 	 */
 	function consumerHandler()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (!is_object($db))
 		{
@@ -409,7 +409,7 @@ class Provider
 			return OAUTH_BAD_TIMESTAMP;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (!is_object($db))
 		{
@@ -451,7 +451,7 @@ class Provider
 	 */
 	function tokenHandler()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (!is_object($db))
 		{

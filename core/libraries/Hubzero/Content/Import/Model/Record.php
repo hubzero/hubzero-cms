@@ -104,7 +104,7 @@ class Record extends Object
 		$this->_mode    = strtoupper($mode);
 
 		// Create core objects
-		$this->_database = \JFactory::getDBO();
+		$this->_database = \App::get('db');
 		$this->_user     = \JFactory::getUser();
 
 		// Create objects

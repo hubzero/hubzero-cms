@@ -60,7 +60,7 @@ class Category
 		if (!isset(self::$items[$hash]))
 		{
 			$config = (array) $config;
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 
 			$query->select('a.id, a.title, a.level');
@@ -117,7 +117,7 @@ class Category
 		if (!isset(self::$items[$hash]))
 		{
 			$config = (array) $config;
-			$db = \JFactory::getDbo();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 
 			$query->select('a.id, a.title, a.level, a.parent_id');

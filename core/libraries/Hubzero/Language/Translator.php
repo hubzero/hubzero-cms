@@ -1282,7 +1282,7 @@ class Translator extends Object
 				$cache = \App::get('cache.store');
 				if (!$languages = $cache->get('com_languages.languages'))
 				{
-					$db = \JFactory::getDBO();
+					$db = \App::get('db');
 					$query = $db->getQuery(true);
 					$query->select('*')
 						->from('#__languages')
@@ -1328,7 +1328,7 @@ class Translator extends Object
 
 		if ($installed)
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 			$query->select('element');
 			$query->from('#__extensions');
@@ -1505,7 +1505,7 @@ class Translator extends Object
 		if (!$tested)
 		{
 			// Determine status of language filter plug-in.
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 			$query = $db->getQuery(true);
 
 			$query->select('enabled');

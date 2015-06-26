@@ -429,7 +429,7 @@ class Html extends Base
 			$active = $menu->getActive();
 			if ($active)
 			{
-				$dbo = \JFactory::getDbo();
+				$dbo = \App::get('db');
 
 				$query = $dbo->getQuery(true);
 				$query->select('COUNT(*)');

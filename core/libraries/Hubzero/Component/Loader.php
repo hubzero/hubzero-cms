@@ -336,7 +336,7 @@ class Loader
 			return self::$components[$option];
 		}
 
-		$db = \JFactory::getDBO();
+		$db = $this->app->get('db');
 		$query = $db->getQuery(true);
 		$query->select('extension_id AS id, element AS "option", params, enabled');
 		$query->from('#__extensions');

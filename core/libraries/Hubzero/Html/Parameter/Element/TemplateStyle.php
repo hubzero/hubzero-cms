@@ -57,7 +57,7 @@ class TemplateStyle extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = 'SELECT * FROM `#__template_styles` ' . 'WHERE client_id = 0 ' . 'AND home = 0';
 		$db->setQuery($query);
@@ -81,7 +81,7 @@ class TemplateStyle extends Element
 	{
 		$id = App::get('request')->getVar('cid', 0);
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 		$query->select($query->qn('template_style_id'))->from($query->qn('#__menu'))->where($query->qn('id') . ' = ' . (int) $id[0]);
 		$db->setQuery($query);

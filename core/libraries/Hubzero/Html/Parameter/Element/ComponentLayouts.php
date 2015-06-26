@@ -58,7 +58,7 @@ class ComponentLayouts extends Select
 		$path2 = null;
 
 		// Load template entries for each menuid
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 		$query = 'SELECT template' . ' FROM #__template_styles' . ' WHERE client_id = 0 AND home = 1';
 		$db->setQuery($query);
 		$template = $db->loadResult();

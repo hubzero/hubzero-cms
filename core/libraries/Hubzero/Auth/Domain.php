@@ -217,7 +217,7 @@ class Domain
 	 */
 	public function create()
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		if (empty($db))
 		{
@@ -284,7 +284,7 @@ class Domain
 	 */
 	public function read()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -336,7 +336,7 @@ class Domain
 	 */
 	function update($all = false)
 	{
-		$db =  \JFactory::getDBO();
+		$db =  \App::get('db');
 
 		$query = "UPDATE #__auth_domain SET ";
 
@@ -414,7 +414,7 @@ class Domain
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{

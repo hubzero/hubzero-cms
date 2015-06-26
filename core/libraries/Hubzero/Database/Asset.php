@@ -94,7 +94,7 @@ class Asset
 		$title    = $this->getAssetTitle();
 
 		// Get joomla jtable model for assets
-		$asset = \JTable::getInstance('Asset', 'JTable', array('dbo' => \JFactory::getDbo()));
+		$asset = \JTable::getInstance('Asset', 'JTable', array('dbo' => \App::get('db')));
 		$asset->loadByName($name);
 
 		// Re-inject the asset id into the model
@@ -214,7 +214,7 @@ class Asset
 	 */
 	private function getRootId()
 	{
-		$assets = \JTable::getInstance('Asset', 'JTable', array('dbo' => \JFactory::getDbo()));
+		$assets = \JTable::getInstance('Asset', 'JTable', array('dbo' => \App::get('db')));
 		$rootId = $assets->getRootId();
 		if (!empty($rootId))
 		{

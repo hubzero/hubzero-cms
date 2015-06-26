@@ -245,7 +245,7 @@ class Plugin extends Object
 	 */
 	public static function getParams($name, $folder)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// load the params from databse
 		$sql = "SELECT params FROM `#__extensions` WHERE folder=" . $database->quote($folder) . " AND element=" . $database->quote($name) . " AND enabled=1";

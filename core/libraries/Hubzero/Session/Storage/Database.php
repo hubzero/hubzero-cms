@@ -48,7 +48,7 @@ class Database extends Store
 	{
 		if (!isset($options['database']) || !($options['database'] instanceof \JDatabase))
 		{
-			$options['database'] = \JFactory::getDBO();
+			$options['database'] = \App::get('db');
 		}
 
 		$this->connection = $options['database'];

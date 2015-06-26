@@ -308,7 +308,7 @@ class Group extends Object
 	 */
 	public function create()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -392,7 +392,7 @@ class Group extends Object
 	{
 		$this->clear();
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -469,7 +469,7 @@ class Group extends Object
 	 */
 	public function update()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -669,7 +669,7 @@ class Group extends Object
 	 */
 	public function delete()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -738,7 +738,7 @@ class Group extends Object
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
-				$db = \JFactory::getDBO();
+				$db = \App::get('db');
 
 				if (is_object($db))
 				{
@@ -949,7 +949,7 @@ class Group extends Object
 	 */
 	private function _userids($users)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -1039,7 +1039,7 @@ class Group extends Object
 	 */
 	static function iterate($func)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT cn FROM `#__xgroups`;";
 
@@ -1070,7 +1070,7 @@ class Group extends Object
 	 */
 	static public function exists($group, $check_system = false)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($group))
 		{
@@ -1129,7 +1129,7 @@ class Group extends Object
 	 */
 	static function find($filters = array())
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Type 0 - System Group
 		// Type 1 - HUB Group
@@ -1387,7 +1387,7 @@ class Group extends Object
 			return false;
 		}
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -1429,7 +1429,7 @@ class Group extends Object
 		$table = '#__xgroups_' . $tbl;
 		$user_table = '#__users';
 
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u
 					WHERE t.gidNumber={$db->Quote($this->gidNumber)}
