@@ -152,39 +152,17 @@ class Translator extends Object
 	protected $transliterator = null;
 
 	/**
-	 * Name of the pluralSuffixesCallback function for this language.
+	 * A list of callback functions for this language.
 	 *
-	 * @var  string
+	 * @var  array
 	 */
-	protected $pluralSuffixesCallback = null;
-
-	/**
-	 * Name of the ignoredSearchWordsCallback function for this language.
-	 *
-	 * @var  string
-	 */
-	protected $ignoredSearchWordsCallback = null;
-
-	/**
-	 * Name of the lowerLimitSearchWordCallback function for this language.
-	 *
-	 * @var  string
-	 */
-	protected $lowerLimitSearchWordCallback = null;
-
-	/**
-	 * Name of the uppperLimitSearchWordCallback function for this language
-	 *
-	 * @var  string
-	 */
-	protected $upperLimitSearchWordCallback = null;
-
-	/**
-	 * Name of the searchDisplayedCharactersNumberCallback function for this language.
-	 *
-	 * @var  string
-	 */
-	protected $searchDisplayedCharactersNumberCallback = null;
+	protected $callbacks = array(
+		'pluralSuffixes'       => null,
+		'ignoredSearchWords'   => null,
+		'lowerLimitSearchWord' => null,
+		'upperLimitSearchWord' => null,
+		'searchDisplayedCharactersNumber' => null,
+	);
 
 	/**
 	 * Constructor activating the default information of the language.
@@ -254,29 +232,14 @@ class Translator extends Object
 				$this->transliterator = array($class, 'transliterate');
 			}
 
-			if (method_exists($class, 'getPluralSuffixes'))
+			foreach ($this->callbacks as $callback)
 			{
-				$this->pluralSuffixesCallback = array($class, 'getPluralSuffixes');
-			}
+				$method = 'get' . ucfirst($callback);
 
-			if (method_exists($class, 'getIgnoredSearchWords'))
-			{
-				$this->ignoredSearchWordsCallback = array($class, 'getIgnoredSearchWords');
-			}
-
-			if (method_exists($class, 'getLowerLimitSearchWord'))
-			{
-				$this->lowerLimitSearchWordCallback = array($class, 'getLowerLimitSearchWord');
-			}
-
-			if (method_exists($class, 'getUpperLimitSearchWord'))
-			{
-				$this->upperLimitSearchWordCallback = array($class, 'getUpperLimitSearchWord');
-			}
-
-			if (method_exists($class, 'getSearchDisplayedCharactersNumber'))
-			{
-				$this->searchDisplayedCharactersNumberCallback = array($class, 'getSearchDisplayedCharactersNumber');
+				if (method_exists($class, $method))
+				{
+					$this->callbacks[$callback] = array($class, $method);
+				}
 			}
 		}
 
@@ -449,7 +412,7 @@ class Translator extends Object
 	 */
 	public function getPluralSuffixesCallback()
 	{
-		return $this->pluralSuffixesCallback;
+		return $this->callbacks['pluralSuffixes'];
 	}
 
 	/**
@@ -460,7 +423,7 @@ class Translator extends Object
 	 */
 	public function setPluralSuffixesCallback($function)
 	{
-		$this->pluralSuffixesCallback = $function;
+		$this->callbacks['pluralSuffixes'] = $function;
 
 		return $this;
 	}
@@ -472,9 +435,9 @@ class Translator extends Object
 	 */
 	public function getIgnoredSearchWords()
 	{
-		if ($this->ignoredSearchWordsCallback !== null)
+		if ($this->callbacks['ignoredSearchWords'] !== null)
 		{
-			return call_user_func($this->ignoredSearchWordsCallback);
+			return call_user_func($this->callbacks['ignoredSearchWords']);
 		}
 
 		return array();
@@ -487,7 +450,7 @@ class Translator extends Object
 	 */
 	public function getIgnoredSearchWordsCallback()
 	{
-		return $this->ignoredSearchWordsCallback;
+		return $this->callbacks['ignoredSearchWords'];
 	}
 
 	/**
@@ -498,7 +461,7 @@ class Translator extends Object
 	 */
 	public function setIgnoredSearchWordsCallback($function)
 	{
-		$this->ignoredSearchWordsCallback = $function;
+		$this->callbacks['ignoredSearchWords'] = $function;
 
 		return $this;
 	}
@@ -510,9 +473,9 @@ class Translator extends Object
 	 */
 	public function getLowerLimitSearchWord()
 	{
-		if ($this->lowerLimitSearchWordCallback !== null)
+		if ($this->callbacks['lowerLimitSearchWord'] !== null)
 		{
-			return call_user_func($this->lowerLimitSearchWordCallback);
+			return call_user_func($this->callbacks['lowerLimitSearchWord']);
 		}
 
 		return 3;
@@ -525,7 +488,7 @@ class Translator extends Object
 	 */
 	public function getLowerLimitSearchWordCallback()
 	{
-		return $this->lowerLimitSearchWordCallback;
+		return $this->callbacks['lowerLimitSearchWord'];
 	}
 
 	/**
@@ -536,7 +499,7 @@ class Translator extends Object
 	 */
 	public function setLowerLimitSearchWordCallback($function)
 	{
-		$this->lowerLimitSearchWordCallback = $function;
+		$this->callbacks['lowerLimitSearchWord'] = $function;
 
 		return $this;
 	}
@@ -548,9 +511,9 @@ class Translator extends Object
 	 */
 	public function getUpperLimitSearchWord()
 	{
-		if ($this->upperLimitSearchWordCallback !== null)
+		if ($this->callbacks['upperLimitSearchWord'] !== null)
 		{
-			return call_user_func($this->upperLimitSearchWordCallback);
+			return call_user_func($this->callbacks['upperLimitSearchWord']);
 		}
 
 		return 20;
@@ -563,7 +526,7 @@ class Translator extends Object
 	 */
 	public function getUpperLimitSearchWordCallback()
 	{
-		return $this->upperLimitSearchWordCallback;
+		return $this->callbacks['upperLimitSearchWord'];
 	}
 
 	/**
@@ -574,7 +537,7 @@ class Translator extends Object
 	 */
 	public function setUpperLimitSearchWordCallback($function)
 	{
-		$this->upperLimitSearchWordCallback = $function;
+		$this->callbacks['upperLimitSearchWord'] = $function;
 
 		return $this;
 	}
@@ -586,9 +549,9 @@ class Translator extends Object
 	 */
 	public function getSearchDisplayedCharactersNumber()
 	{
-		if ($this->searchDisplayedCharactersNumberCallback !== null)
+		if ($this->callbacks['searchDisplayedCharactersNumber'] !== null)
 		{
-			return call_user_func($this->searchDisplayedCharactersNumberCallback);
+			return call_user_func($this->callbacks['searchDisplayedCharactersNumber']);
 		}
 
 		return 200;
@@ -601,7 +564,7 @@ class Translator extends Object
 	 */
 	public function getSearchDisplayedCharactersNumberCallback()
 	{
-		return $this->searchDisplayedCharactersNumberCallback;
+		return $this->callbacks['searchDisplayedCharactersNumber'];
 	}
 
 	/**
@@ -612,10 +575,9 @@ class Translator extends Object
 	 */
 	public function setSearchDisplayedCharactersNumberCallback($function)
 	{
-		$previous = $this->searchDisplayedCharactersNumberCallback;
-		$this->searchDisplayedCharactersNumberCallback = $function;
+		$this->callbacks['searchDisplayedCharactersNumber'] = $function;
 
-		return $previous;
+		return $this;
 	}
 
 	/**
@@ -1328,8 +1290,8 @@ class Translator extends Object
 						->order('ordering ASC');
 					$db->setQuery($query);
 
-					$languages['default'] = $db->loadObjectList();
-					$languages['sef'] = array();
+					$languages['default']   = $db->loadObjectList();
+					$languages['sef']       = array();
 					$languages['lang_code'] = array();
 
 					if (isset($languages['default'][0]))
