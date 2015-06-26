@@ -258,7 +258,7 @@ abstract class Driver
 	 */
 	public function setQuery($query)
 	{
-		$this->prepare($query);
+		$this->prepare((string)$query);
 
 		return $this;
 	}
@@ -839,7 +839,7 @@ abstract class Driver
 		// Build the actual query
 		$query = $this->toString();
 
-		Event::trigger('database.query', [
+		Event::trigger('database_query', [
 			'query' => $query,
 			'time'  => $time
 		]);
@@ -1008,6 +1008,17 @@ abstract class Driver
 	public function getLog()
 	{
 		return $this->log;
+	}
+
+	/**
+	 * Gets the database timer
+	 *
+	 * @return int
+	 * @since  2.0.0
+	 */
+	public function getTimer()
+	{
+		return $this->timer;
 	}
 
 	/**

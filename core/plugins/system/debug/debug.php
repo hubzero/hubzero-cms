@@ -72,7 +72,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			\Event::listen(function($event)
 			{
 				\Hubzero\Database\Log::add($event->getArgument('query'), $event->getArgument('time'));
-			}, 'database.query');
+			}, 'database_query');
 		}
 
 		// Only if debugging or language debug is enabled
@@ -857,7 +857,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		$html = '';
 
-		$html .= '<div class="status"><h4>' . \Lang::txt('PLG_DEBUG_QUERIES_LOGGED',  $db->getCount()) . ': ' . $db->timer .' seconds</h4></div>';
+		$html .= '<div class="status"><h4>' . \Lang::txt('PLG_DEBUG_QUERIES_LOGGED',  $db->getCount()) . ': ' . $db->getTimer() .' seconds</h4></div>';
 
 		$html .= '<ol>';
 
