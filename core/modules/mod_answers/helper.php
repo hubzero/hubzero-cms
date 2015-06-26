@@ -32,6 +32,7 @@ namespace Modules\Answers;
 
 use Hubzero\Module\Module;
 use User;
+use App;
 
 /**
  * Module class for com_answers data
@@ -45,12 +46,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		$queries = array(
 			'closed'  => "state=1",

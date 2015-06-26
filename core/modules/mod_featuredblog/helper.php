@@ -63,7 +63,7 @@ class Helper extends Module
 	{
 		include_once(\Component::path('com_blog') . DS . 'models' . DS . 'entry.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$this->row = null;
 

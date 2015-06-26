@@ -31,6 +31,7 @@
 namespace Modules\Tools;
 
 use Hubzero\Module\Module;
+use App;
 
 /**
  * Module class for com_tools data
@@ -44,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
@@ -60,7 +61,7 @@ class Helper extends Module
 		$this->retired    = 0;
 		$this->abandoned  = 0;
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery(
 			"SELECT f.state FROM `#__tool` as f
 				JOIN `#__tool_version` AS v ON f.id=v.toolid AND v.state=3

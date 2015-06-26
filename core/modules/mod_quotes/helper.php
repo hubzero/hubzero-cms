@@ -51,7 +51,7 @@ class Helper extends Module
 	{
 		require_once(Component::path('com_feedback') . DS . 'tables' . DS . 'quote.php');
 
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		//Get the admin configured settings
 		$this->filters = array(

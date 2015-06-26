@@ -48,7 +48,7 @@ class Helper extends Module
 	{
 		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$row = null;
 
 		// randomly choose one
@@ -80,7 +80,7 @@ class Helper extends Module
 			$config = Component::params('com_answers');
 
 			$this->thumb = DS . trim($this->params->get('defaultpic', '/core/modules/mod_featuredquestion/assets/img/question_thumb.gif'), DS);
-			if ($this->thumb == '/core/modules/mod_featuredquestion/question_thumb.gif')
+			if ($this->thumb == '/modules/mod_featuredquestion/question_thumb.gif')
 			{
 				$this->thumb = '/core/modules/mod_featuredquestion/assets/img/question_thumb.gif';
 			}

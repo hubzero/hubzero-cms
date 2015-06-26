@@ -32,6 +32,7 @@ namespace Modules\Courses;
 
 use Hubzero\Module\Module;
 use Date;
+use App;
 
 /**
  * Module class for com_courses data
@@ -45,12 +46,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		$queries = array(
 			'unpublished'   => 0,

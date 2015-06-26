@@ -74,7 +74,7 @@ class Helper extends Module
 			'removed'   => 2
 		);
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		foreach ($queries as $key => $state)
 		{

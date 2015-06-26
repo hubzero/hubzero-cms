@@ -49,7 +49,7 @@ class Helper extends Module
 	 *
 	 * @var array
 	 */
-	private $tpl_path = '/templates/system/html/mod_incremental_registration';
+	private $tpl_path = '/core/templates/system/html/mod_incremental_registration';
 
 	/**
 	 * Path to module directory
@@ -66,7 +66,7 @@ class Helper extends Module
 	 */
 	public function media($path)
 	{
-		$this->tpl_path = '/templates/' . App::get('template')->template . '/html/mod_incremental_registration';
+		$this->tpl_path = App::get('template')->path . '/html/mod_incremental_registration';
 
 		$b = rtrim(Request::base(true), '/');
 		return file_exists(PATH_APP . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
@@ -86,7 +86,7 @@ class Helper extends Module
 
 		$dbg = isset($_GET['dbg']);
 		$uid = (int) User::get('id');
-		$dbh = \JFactory::getDBO();
+		$dbh = \App::get('db');
 
 		require_once Component::path('com_members') . '/tables/incremental/awards.php';
 		require_once Component::path('com_members') . '/tables/incremental/groups.php';

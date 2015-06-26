@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	private function _getList()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$catid   = (int) $this->params->get('catid', 0);
 		$orderby = 'a.publish_up DESC';

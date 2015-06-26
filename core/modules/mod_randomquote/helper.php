@@ -47,7 +47,7 @@ class Helper extends Module
 	{
 		require_once(\Component::path('com_feedback') . DS . 'tables' . DS . 'quote.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//Get the admin configured settings
 		$this->charlimit  = $this->params->get('charlimit', 150);

@@ -45,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$limit = intval($this->params->get('limit', 10));
 

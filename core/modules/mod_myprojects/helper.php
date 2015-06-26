@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Get the module parameters
 		$params = $this->params;

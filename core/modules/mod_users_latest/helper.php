@@ -32,8 +32,8 @@
 namespace Modules\UsersLatest;
 
 use Hubzero\Module\Module;
-use JFactory;
 use User;
+use App;
 
 /**
  * Module class for displaying latest registered users
@@ -67,7 +67,7 @@ class Helper extends Module
 	 */
 	static function getUsers($params)
 	{
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 
 		$query = $db->getQuery(true);
 		$query->select('a.id, a.name, a.username, a.registerDate');

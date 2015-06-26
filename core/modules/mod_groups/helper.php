@@ -32,6 +32,7 @@ namespace Modules\Groups;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Date;
+use App;
 
 /**
  * Module class for com_groups data
@@ -45,7 +46,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
@@ -71,7 +72,7 @@ class Helper extends Module
 			'pending'    => "approved=0"
 		);
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		foreach ($queries as $key => $where)
 		{

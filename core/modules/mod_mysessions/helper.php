@@ -106,7 +106,7 @@ class Helper extends Module
 		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'recent.php');
 
 		// Get database object
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		// Get a connection to the middleware database
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -129,7 +129,7 @@ class Helper extends Module
 		// only take snapshots if screenshots are on
 		if ($this->params->get('show_screenshots', 1))
 		{
-			$cmd = "/bin/sh ". PATH_CORE . "/components/com_tools/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
+			$cmd = "/bin/sh ". Component::path('com_tools') . "/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
 			exec($cmd, $results, $status);
 		}
 

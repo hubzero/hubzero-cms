@@ -87,7 +87,7 @@ class Helper extends Module
 	 */
 	public static function getList($params)
 	{
-		$db     = \JFactory::getDbo();
+		$db     = \App::get('db');
 		$app    = \JFactory::getApplication();
 		$user   = User::getRoot();
 		$userId = (int) $user->get('id');

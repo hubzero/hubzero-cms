@@ -37,6 +37,7 @@ use Component;
 use stdClass;
 use Request;
 use Config;
+use App;
 
 /**
  * Module class for com_support ticket data
@@ -50,7 +51,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
@@ -58,7 +59,7 @@ class Helper extends Module
 		include_once(Component::path('com_support') . DS . 'tables' . DS . 'query.php');
 		include_once(Component::path('com_support') . DS . 'tables' . DS . 'ticket.php');
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		$st = new Ticket($database);
 

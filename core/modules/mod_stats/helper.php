@@ -68,7 +68,7 @@ class Helper extends Module
 	 */
 	static function &getList(&$params)
 	{
-		$db    = \JFactory::getDbo();
+		$db    = \App::get('db');
 		$rows  = array();
 		$query = $db->getQuery(true);
 

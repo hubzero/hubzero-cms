@@ -31,6 +31,7 @@
 namespace Modules\Members;
 
 use Hubzero\Module\Module;
+use App;
 
 /**
  * Module class for com_members data
@@ -44,12 +45,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		$database->setQuery("SELECT count(u.id) FROM `#__users` AS u, `#__xprofiles` AS m WHERE m.uidNumber=u.id AND m.emailConfirmed < -1");
 		$this->unconfirmed = $database->loadResult();

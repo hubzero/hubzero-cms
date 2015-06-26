@@ -48,7 +48,7 @@ class Helper extends Module
 	 */
 	private function _getCourses($uid, $type='all')
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Get all courses the user is a member of
 		$query = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, m.student, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, o.state AS offering_state, s.state AS section_state, s.alias AS section_alias, s.title AS section_title, s.is_default

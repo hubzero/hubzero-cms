@@ -49,7 +49,7 @@ class Helper extends Module
 			return;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$queries = array(
 			'unpublished'   => 0,

@@ -48,7 +48,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');

@@ -33,6 +33,7 @@ namespace Modules\MySubmissions;
 use Hubzero\Module\Module;
 use Component;
 use User;
+use App;
 
 /**
  * Module class for displaying a user's submissions and their progress
@@ -71,7 +72,7 @@ class Helper extends Module
 	{
 		if ($id)
 		{
-			$database = \JFactory::getDBO();
+			$database = App::get('db');
 			$ra = new \Components\Resources\Tables\Assoc($database);
 			$total = $ra->getCount($id);
 		}
@@ -92,7 +93,7 @@ class Helper extends Module
 	{
 		if ($id)
 		{
-			$database = \JFactory::getDBO();
+			$database = App::get('db');
 			$rc = new \Components\Resources\Tables\Contributor($database);
 			$contributors = $rc->getCount($id, 'resources');
 		}
@@ -112,7 +113,7 @@ class Helper extends Module
 	 */
 	public function step_tags_check($id)
 	{
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		$rt = new \Components\Resources\Helpers\Tags($id);
 		$tags = $rt->tags('count');
@@ -153,7 +154,7 @@ class Helper extends Module
 
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 
 		$rr = new \Components\Resources\Tables\Resource($database);
 		$rt = new \Components\Resources\Tables\Type($database);

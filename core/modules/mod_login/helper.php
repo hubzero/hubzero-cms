@@ -57,7 +57,7 @@ class Helper extends Module
 		$url = null;
 		if ($itemid =  $params->get($type))
 		{
-			$db = JFactory::getDbo();
+			$db = App::get('db');
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('link'));

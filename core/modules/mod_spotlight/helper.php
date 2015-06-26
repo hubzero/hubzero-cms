@@ -75,7 +75,7 @@ class Helper extends Module
 		include_once(Component::path('com_blog') . DS . 'tables' . DS . 'entry.php');
 		include_once(Component::path('com_blog') . DS . 'tables' . DS . 'comment.php');
 
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		// Get the admin configured settings
 		$filters = array();

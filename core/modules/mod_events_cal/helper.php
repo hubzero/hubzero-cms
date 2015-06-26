@@ -32,9 +32,9 @@ namespace Modules\EventsCalendar;
 
 use Hubzero\Module\Module;
 use Components\Events\Helpers\Html;
-use JFactory;
 use Route;
 use Lang;
+use App;
 
 /**
  * Class for events calendar module
@@ -201,7 +201,7 @@ class Helper extends Module
 	 */
 	private function _calendar($timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent=false)
 	{
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		$cal_year  = date("Y", $time);
 		$cal_month = date("m", $time);

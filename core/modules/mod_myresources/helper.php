@@ -48,7 +48,7 @@ class Helper extends Module
 	{
 		$this->no_html = Request::getInt('no_html', 0);
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$this->limit = intval($this->params->get('limit', 5));
 

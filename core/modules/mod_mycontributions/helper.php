@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	private function _getContributions()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 		$query .= "FROM `#__resource_types` AS rt, `#__resources` AS R ";
@@ -71,7 +71,7 @@ class Helper extends Module
 	 */
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Query filters defaults
 		$filters = array();

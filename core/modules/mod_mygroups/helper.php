@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	private function _getGroups($uid, $type='all')
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		// Get all groups the user is a member of
 		$query1 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager

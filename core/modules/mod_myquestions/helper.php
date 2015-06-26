@@ -93,12 +93,12 @@ class Helper extends Module
 	 */
 	private function _getInterests($cloud=0)
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		require_once(Component::path('com_members') . DS . 'models' . DS . 'tags.php');
 
 		// Get tags of interest
-		$mt = new \MembersModelTags(User::get('id'));
+		$mt = new \Components\Members\Models\Tags(User::get('id'));
 		if ($cloud)
 		{
 			$tags = $mt->render();
@@ -120,7 +120,7 @@ class Helper extends Module
 	 */
 	private function _getQuestions($kind='open', $interests=array())
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Get some classes we need
 		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');

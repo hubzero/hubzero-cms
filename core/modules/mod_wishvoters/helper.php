@@ -48,7 +48,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		include_once(Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php');
 

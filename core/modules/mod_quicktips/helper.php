@@ -62,7 +62,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$catid  = trim($this->params->get('catid'));
 		$secid  = trim($this->params->get('secid'));

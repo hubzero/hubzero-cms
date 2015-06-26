@@ -133,7 +133,7 @@ class Helper extends Module
 		$this->period = $this->params->get('period', 'resources:month');
 		$this->tagged = intval($this->params->get('tagged', 0));
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Build the feed link if necessary
 		if ($this->feed)

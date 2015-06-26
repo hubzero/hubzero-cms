@@ -48,7 +48,7 @@ class Helper extends Module
 	{
 		require_once(\Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$obj = new Tag($database);
 

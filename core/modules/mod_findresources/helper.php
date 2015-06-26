@@ -49,7 +49,7 @@ class Helper extends Module
 		require_once(Component::path('com_tags') . DS . 'helpers' . DS . 'handler.php');
 		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$obj = new Tag($database);
 

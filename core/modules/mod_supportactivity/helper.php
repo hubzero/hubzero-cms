@@ -50,7 +50,7 @@ class Helper extends Module
 			return;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$where = "";
 		if ($start = Request::getVar('start', ''))

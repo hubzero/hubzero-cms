@@ -154,7 +154,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		// Set today's time and date
 		$now = Date::toSql();

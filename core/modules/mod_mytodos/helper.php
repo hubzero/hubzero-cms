@@ -33,6 +33,7 @@ namespace Modules\MyTodos;
 
 use Hubzero\Module\Module;
 use User;
+use App;
 
 /**
  * Module class for displaying a user's to do items
@@ -51,7 +52,7 @@ class Helper extends Module
 		// Find the user's most recent to do items
 		if (!User::isGuest())
 		{
-			$database = \JFactory::getDBO();
+			$database = App::get('db');
 			$database->setQuery(
 				"SELECT a.id, a.content, b.title, b.alias
 				FROM `#__project_todo` a

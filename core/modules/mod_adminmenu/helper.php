@@ -79,7 +79,7 @@ class Helper extends Module
 	 */
 	public static function getMenus()
 	{
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 		$query = $db->getQuery(true);
 
 		$query->select('a.*, SUM(b.home) AS home');
@@ -111,7 +111,7 @@ class Helper extends Module
 		// Initialise variables.
 		$lang   = App::get('language');
 		$user   = User::getRoot();
-		$db     = \JFactory::getDbo();
+		$db     = \App::get('db');
 		$query  = $db->getQuery(true);
 		$result = array();
 		$langs  = array();

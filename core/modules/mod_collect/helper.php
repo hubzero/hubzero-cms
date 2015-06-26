@@ -193,7 +193,7 @@ class Helper extends Module
 		{
 			// Try loading the current post to see if this has
 			// already been posted to this collection (i.e., no duplicates)
-			$database = \JFactory::getDBO();
+			$database = \App::get('db');
 
 			$post = new Post($database);
 			$post->loadByBoard($collectible['collection_id'], $this->item->get('id'));

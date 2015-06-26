@@ -44,7 +44,7 @@ class Helper extends Module
 	 */
 	public function getPoll($id)
 	{
-		$db     = \JFactory::getDBO();
+		$db     = \App::get('db');
 		$result = null;
 
 		if ($id)
@@ -82,7 +82,7 @@ class Helper extends Module
 	 */
 	public function getPollOptions($id)
 	{
-		$db = \JFactory::getDBO();
+		$db = \App::get('db');
 
 		$query = 'SELECT id, text' .
 			' FROM #__poll_data' .

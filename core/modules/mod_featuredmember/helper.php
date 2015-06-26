@@ -52,7 +52,7 @@ class Helper extends Module
 		include_once(Component::path('com_members') . DS . 'tables' . DS . 'profile.php');
 		include_once(Component::path('com_members') . DS . 'tables' . DS . 'association.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$this->row = null;
 		$this->profile = null;
 

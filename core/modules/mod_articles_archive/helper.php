@@ -68,7 +68,7 @@ class Helper extends Module
 	public static function getList(&$params)
 	{
 		// Get database
-		$db = \JFactory::getDbo();
+		$db = \App::get('db');
 
 		$query = $db->getQuery(true);
 		$query->select('MONTH(created) AS created_month, created, id, title, YEAR(created) AS created_year');

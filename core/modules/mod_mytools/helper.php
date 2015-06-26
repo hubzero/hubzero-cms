@@ -55,7 +55,7 @@ class Helper extends Module
 		$toollist = array();
 
 		// Create a Tool object
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		if (is_array($lst))
 		{
@@ -145,7 +145,7 @@ class Helper extends Module
 			$favs = $this->favs;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$html  = "\t\t" . '<ul>' . "\n";
 		if (count($toollist) <= 0)
@@ -262,7 +262,7 @@ class Helper extends Module
 		$rconfig = Component::params('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		if ($this->supportedtag)
 		{
 			include_once(Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php');

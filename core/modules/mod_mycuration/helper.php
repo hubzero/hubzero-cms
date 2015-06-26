@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 		$config   = Component::params('com_publications');
 
 		// Get some classes we need

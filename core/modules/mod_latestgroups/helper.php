@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		$uid = User::get('id');
 

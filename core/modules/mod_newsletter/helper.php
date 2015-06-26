@@ -47,7 +47,7 @@ class Helper extends Module
 	public function display()
 	{
 		// Instantiate database object
-		$this->database = \JFactory::getDBO();
+		$this->database = \App::get('db');
 
 		// Get mailing list details that we are wanting users to sign up for
 		$sql = "SELECT * FROM `#__newsletter_mailinglists` WHERE deleted=0 AND private=0 AND id=" . $this->database->quote($this->params->get('mailinglist', 0));

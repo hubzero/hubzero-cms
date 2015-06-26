@@ -89,7 +89,7 @@ class Helper extends Module
 		{
 			// Initialise variables.
 			$list     = array();
-			$db       = \JFactory::getDbo();
+			$db       = \App::get('db');
 
 			$path     = $active->tree;
 			$start    = (int) $params->get('startLevel');

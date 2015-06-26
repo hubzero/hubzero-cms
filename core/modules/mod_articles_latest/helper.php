@@ -74,7 +74,7 @@ class Helper extends Module
 		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/models', 'ContentModel');
 
 		// Get the dbo
-		$db = JFactory::getDbo();
+		$db = App::get('db');
 
 		// Get an instance of the generic articles model
 		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));

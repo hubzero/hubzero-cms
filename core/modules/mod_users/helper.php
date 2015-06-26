@@ -31,6 +31,7 @@
 namespace Modules\Users;
 
 use Hubzero\Module\Module;
+use App;
 
 /**
  * Module class for com_users data
@@ -44,12 +45,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}
 
-		$database = \JFactory::getDBO();
+		$database = App::get('db');
 		$database->setQuery("SELECT * FROM `#__users` WHERE `approved` = 0");
 		$this->unapproved = $database->loadObjectList();
 

@@ -32,8 +32,8 @@
 namespace Modules\EventsLatest;
 
 use Hubzero\Module\Module;
-use JFactory;
 use Lang;
+use App;
 
 /**
  * Parameters:
@@ -100,7 +100,7 @@ class Helper extends Module
 			return;
 		}
 
-		$database = JFactory::getDBO();
+		$database = App::get('db');
 
 		// Get module parameters
 		$mode              = $this->params->get('mode')                ? abs(intval($this->params->get('mode'))) : 4;

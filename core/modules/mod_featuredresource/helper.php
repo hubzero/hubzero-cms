@@ -56,7 +56,7 @@ class Helper extends Module
 	{
 		include_once(Component::path('com_resources') . DS . 'tables' . DS . 'resource.php');
 
-		$database = \JFactory::getDBO();
+		$database = \App::get('db');
 
 		//Get the admin configured settings
 		$filters = array(
