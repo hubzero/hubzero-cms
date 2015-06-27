@@ -173,9 +173,9 @@ class DocumentServiceProvider extends Middleware
 		// Trigger post dispatch event
 		$this->app['dispatcher']->trigger('system.onAfterRender');
 
-		if ($this->app->has('profiler'))
+		if ($profiler = $this->app['profiler'])
 		{
-			$this->app['profiler']->mark('onAfterRender');
+			$profiler->mark('onAfterRender');
 		}
 
 		return $response;

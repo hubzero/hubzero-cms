@@ -78,12 +78,11 @@ class FileLoader
 				throw new EmptyDirectoryException("Configuration directory: [" . $this->defaultPath . "] is empty");
 			}
 
-			$registry = new Registry;
-
 			foreach ($paths as $path)
 			{
 				// Get file information
 				$info      = pathinfo($path);
+				$group     = isset($info['filename'])  ? strtolower($info['filename'])  : '';
 				$extension = isset($info['extension']) ? strtolower($info['extension']) : '';
 				if (!$extension || $extension == 'html')
 				{
@@ -91,11 +90,12 @@ class FileLoader
 				}
 				$parser    = $this->getParser($extension);
 
-				// Try and load file
-				$data = array_replace_recursive(
+				/*$data = array_replace_recursive(
 					$data,
 					$parser->parse($path)
-				);
+				);*/
+
+				$data[$group] = $parser->parse($path);
 			}
 
 			if (empty($data))
@@ -111,6 +111,7 @@ class FileLoader
 				{
 					// Get file information
 					$info      = pathinfo($path);
+					$group     = isset($info['filename'])  ? strtolower($info['filename'])  : '';
 					$extension = isset($info['extension']) ? strtolower($info['extension']) : '';
 					if (!$extension || $extension == 'html')
 					{
@@ -118,9 +119,12 @@ class FileLoader
 					}
 					$parser    = $this->getParser($extension);
 
-					// Try and load file
-					$data = array_replace_recursive(
-						$data,
+					if (!isset($data[$group]))
+					{
+						$data[$group] = array();
+					}
+					$data[$group] = array_replace_recursive(
+						$data[$group],
 						$parser->parse($path)
 					);
 				}

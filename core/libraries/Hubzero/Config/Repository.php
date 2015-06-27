@@ -71,42 +71,6 @@ class Repository extends Registry
 	}
 
 	/**
-	 * Parse data and bind to this
-	 *
-	 * @param   mixed  $data
-	 * @return  bool
-	 * @deprecated  Implemented purely for legacy compatibility
-	 */
-	/*public function loadObject($data)
-	{
-		return $this->parse($data);
-	}*/
-
-	/**
-	 * Parse data and bind to this
-	 *
-	 * @param   mixed  $data
-	 * @return  bool
-	 * @deprecated  Implemented purely for legacy compatibility
-	 */
-	/*public function loadString($data)
-	{
-		return $this->parse($data);
-	}*/
-
-	/**
-	 * Parse data and bind to this
-	 *
-	 * @param   mixed  $data
-	 * @return  bool
-	 * @deprecated  Implemented purely for legacy compatibility
-	 */
-	/*public function loadArray($data)
-	{
-		return $this->parse($data);
-	}*/
-
-	/**
 	 * Load the configuration for a specified client.
 	 *
 	 * @param   string  $client
@@ -157,5 +121,55 @@ class Repository extends Registry
 	public function getClient()
 	{
 		return $this->client;
+	}
+
+	/**
+	 * Get a registry value.
+	 *
+	 * @param   string  $path     Registry path (e.g. config.cache.file)
+	 * @param   mixed   $default  Optional default value, returned if the internal value is null.
+	 * @return  mixed   Value of entry or null
+	 */
+	public function get($path, $default = null)
+	{
+		// Return default value if path is empty
+		if (empty($path))
+		{
+			return $default;
+		}
+
+		if (strpos($path, $this->separator))
+		{
+			return parent::get($path, $default);
+		}
+
+		$nodes = get_object_vars($this->data);
+		$found = false;
+
+		// Traverse the registry to find the correct node for the result.
+		foreach ($nodes as $n => $node)
+		{
+			if (is_array($node) && isset($node[$path]))
+			{
+				$value = $node[$path];
+				$found = true;
+				continue;
+			}
+
+			if (!isset($node->$path))
+			{
+				continue;
+			}
+
+			$value = $node->$path;
+			$found = true;
+		}
+
+		if (!$found || $value === null || $value === '')
+		{
+			return $default;
+		}
+
+		return $value;
 	}
 }

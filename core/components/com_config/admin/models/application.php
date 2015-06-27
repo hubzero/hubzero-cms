@@ -82,8 +82,8 @@ class Application extends JModelForm
 	public function getData()
 	{
 		// Get the config data.
-		$config = new JConfig();
-		$data = \Hubzero\Utility\Arr::fromObject($config);
+		//$config = new JConfig();
+		$data = Config::getRoot()->toArray(); //\Hubzero\Utility\Arr::fromObject($config);
 
 		// Prime the asset_id for the rules.
 		$data['asset_id'] = 1;
@@ -130,7 +130,8 @@ class Application extends JModelForm
 			$myGroups = JAccess::getGroupsByUser(\User::get('id'));
 			$myRules = $rules->getData();
 			$hasSuperAdmin = $myRules['core.admin']->allow($myGroups);
-			if (!$hasSuperAdmin) {
+			if (!$hasSuperAdmin)
+			{
 				$this->setError(Lang::txt('COM_CONFIG_ERROR_REMOVING_SUPER_ADMIN'));
 				return false;
 			}
@@ -180,54 +181,86 @@ class Application extends JModelForm
 		}
 
 		// Get the previous configuration.
-		$prev = new JConfig();
-		$prev = \Hubzero\Utility\Arr::fromObject($prev);
+		$config = new \Hubzero\Config\Repository('site');
+
+		$prev = $config->toArray();
+
+		/*$extras = array();
+		foreach ($prev as $key => $val)
+		{
+			$found = false;
+
+			foreach ($data as $group => $values)
+			{
+				if (in_array($key, $values))
+				{
+					$found = true;
+				}
+			}
+
+			if (!$found)
+			{
+				$extras[$key] = $val;
+			}
+		}
 
 		// Merge the new data in. We do this to preserve values that were not in the form.
-		$data = array_merge($prev, $data);
+		$data['app'] = array_merge($data['app'], $extras);*/
 
 		// Perform miscellaneous options based on configuration settings/changes.
 		// Escape the offline message if present.
-		if (isset($data['offline_message']))
+		if (isset($data['offline']['offline_message']))
 		{
-			$data['offline_message'] = \Hubzero\Utility\String::ampReplace($data['offline_message']);
+			$data['offline']['offline_message'] = \Hubzero\Utility\String::ampReplace($data['offline']['offline_message']);
 		}
 
 		// Purge the database session table if we are changing to the database handler.
-		if ($prev['session_handler'] != 'database' && $data['session_handler'] == 'database')
+		if ($prev['session']['session_handler'] != 'database' && $data['session']['session_handler'] == 'database')
 		{
 			$table = JTable::getInstance('session');
 			$table->purge(-1);
 		}
 
-		if (empty($data['cache_handler']))
+		if (empty($data['cache']['cache_handler']))
 		{
-			$data['caching'] = 0;
+			$data['cache']['caching'] = 0;
 		}
 
 		// Clean the cache if disabled but previously enabled.
-		if (!$data['caching'] && $prev['caching'])
+		if (!$data['cache']['caching'] && $prev['cache']['caching'])
 		{
 			\Cache::clean();
 		}
 
+		foreach ($data as $group => $values)
+		{
+			foreach ($values as $key => $value)
+			{
+				if (!isset($prev[$group]))
+				{
+					$prev[$group] = array();
+				}
+				$prev[$group][$key] = $value;
+			}
+		}
+
 		// Create the new configuration object.
-		$config = new Registry($data);
+		//$config = new Registry($data);
 
 		// Overwrite the old FTP credentials with the new ones.
 		$temp = \Config::getRoot();
-		$temp->set('ftp_enable', $data['ftp_enable']);
-		$temp->set('ftp_host', $data['ftp_host']);
-		$temp->set('ftp_port', $data['ftp_port']);
-		$temp->set('ftp_user', $data['ftp_user']);
-		$temp->set('ftp_pass', $data['ftp_pass']);
-		$temp->set('ftp_root', $data['ftp_root']);
+		$temp->set('ftp.ftp_enable', $data['ftp']['ftp_enable']);
+		$temp->set('ftp.ftp_host', $data['ftp']['ftp_host']);
+		$temp->set('ftp.ftp_port', $data['ftp']['ftp_port']);
+		$temp->set('ftp.ftp_user', $data['ftp']['ftp_user']);
+		$temp->set('ftp.ftp_pass', $data['ftp']['ftp_pass']);
+		$temp->set('ftp.ftp_root', $data['ftp']['ftp_root']);
 
 		// Clear cache of com_config component.
 		$this->cleanCache('_system');
 
 		// Write the configuration file.
-		return $this->writeConfigFile($config);
+		return $this->writeConfigFile($prev);
 	}
 
 	/**
@@ -261,32 +294,28 @@ class Application extends JModelForm
 	 * @return  bool    True on success, false on failure.
 	 * @since   2.5.4
 	 */
-	private function writeConfigFile(Registry $config)
+	private function writeConfigFile($data)
 	{
-		// Set the configuration file path.
-		$file = JPATH_CONFIGURATION . '/configuration.php';
-
-		// Get the new FTP credentials.
-		$ftp = JClientHelper::getCredentials('ftp', true);
-
-		// Attempt to make the file writeable if using FTP.
-		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0640'))
+		if ($data instanceof \Hubzero\Config\Repository)
 		{
-			Notify::error('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTWRITABLE'));
+			$data = $data->toArray();
 		}
 
-		// Attempt to write the configuration file as a PHP class named JConfig.
-		$configuration = $config->toString('PHP', array('class' => 'JConfig', 'closingtag' => false));
-		if (!Filesystem::write($file, $configuration))
-		{
-			$this->setError(Lang::txt('COM_CONFIG_ERROR_WRITE_FAILED'));
-			return false;
-		}
+		// Attempt to write the configuration files
+		$writer = new \Hubzero\Config\FileWriter(
+			'php',
+			PATH_APP . DS . 'app' . DS . 'config'
+		);
 
-		// Attempt to make the file unwriteable if using FTP.
-		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0440'))
+		$client = null;
+
+		foreach ($data as $group => $values)
 		{
-			Notify::error('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTUNWRITABLE'));
+			if (!$writer->write($values, $group, $client))
+			{
+				$this->setError(Lang::txt('COM_CONFIG_ERROR_WRITE_FAILED'));
+				return false;
+			}
 		}
 
 		return true;

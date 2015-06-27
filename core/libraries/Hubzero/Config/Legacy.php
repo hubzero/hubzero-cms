@@ -157,7 +157,27 @@ class Legacy extends Registry
 
 		if ($this->file)
 		{
-			parent::__construct($this->read($this->file));
+			$data = $this->read($this->file);
+			$data = \Hubzero\Utility\Arr::fromObject($data);
+
+			$config = array();
+
+			foreach ($data as $key => $value)
+			{
+				foreach ($this->map as $group => $values)
+				{
+					if (!isset($config[$group]))
+					{
+						$config[$group] = array();
+					}
+					if (in_array($key, $values))
+					{
+						$config[$group][$key] = $value;
+					}
+				}
+			}
+
+			parent::__construct($config);
 		}
 	}
 
@@ -224,7 +244,7 @@ class Legacy extends Registry
 			$contents = array();
 			foreach ($values as $key)
 			{
-				$contents[$key] = $this->get($key);
+				$contents[$key] = $this->get($group . '.' . $key);
 			}
 
 			$writer->write($contents, $group);

@@ -66,6 +66,7 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 			<div class="noshow">
 				<div class="width-60 fltlft">
 					<?php echo $this->loadTemplate('site'); ?>
+					<?php echo $this->loadTemplate('offline'); ?>
 					<?php echo $this->loadTemplate('metadata'); ?>
 				</div>
 				<div class="width-40 fltrt">

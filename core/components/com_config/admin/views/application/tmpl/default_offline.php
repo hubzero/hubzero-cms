@@ -33,10 +33,10 @@ defined('_HZEXEC_') or die();
 ?>
 <div class="width-100">
 	<fieldset class="adminform">
-		<legend><span><?php echo Lang::txt('COM_CONFIG_CACHE_SETTINGS'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('COM_CONFIG_OFFLINE_SETTINGS'); ?></span></legend>
 
 		<?php
-		foreach ($this->form->getFieldset('cache') as $field):
+		foreach ($this->form->getFieldset('offline') as $field):
 		?>
 			<div class="input-wrap">
 				<?php echo $field->label; ?>
@@ -45,18 +45,5 @@ defined('_HZEXEC_') or die();
 		<?php
 		endforeach;
 		?>
-
-		<?php if (isset($this->data['cache']['cache_handler']) && $this->data['cache']['cache_handler'] == 'memcache' || $this->data['session']['session_handler'] == 'memcache') : ?>
-			<?php
-			foreach ($this->form->getFieldset('memcache') as $mfield):
-			?>
-				<div class="input-wrap">
-					<?php echo $mfield->label; ?>
-					<?php echo $mfield->input; ?>
-				</div>
-			<?php
-			endforeach;
-			?>
-		<?php endif; ?>
 	</fieldset>
 </div>
