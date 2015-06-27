@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           components/com_whatsnew/whatsnew.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,10 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component">
+<extension type="component">
 	<name>WhatsNew</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<files>
 		<filename>whatsnew.html.php</filename>
@@ -45,9 +45,9 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.com_whatsnew.ini</language>
 	</languages>
 	<administration>
-		  <files>
-			   <filename>whatsnew.xml</filename>
-			   <filename>index.html</filename>
-		  </files>
-	 </administration>
-</install>
+		<files>
+			<filename>whatsnew.xml</filename>
+			<filename>index.html</filename>
+		</files>
+	</administration>
+</extension>

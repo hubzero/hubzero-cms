@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Members</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -313,7 +313,6 @@ HUBzero is a registered trademark of Purdue University.
 	<uninstallfile>
 		<filename></filename>
 	</uninstallfile>
-
 	<administration>
 		<menu>Members</menu>
 		<files>
@@ -338,7 +337,6 @@ HUBzero is a registered trademark of Purdue University.
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_members.ini</language>
-	        </languages>
+		</languages>
 	</administration>
-</install>
-
+</extension>

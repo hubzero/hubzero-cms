@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="component" version="1.5.0">
+<extension type="component" version="1.5.0">
 	<name>Dataviewer</name>
 	<creationDate>2013-08-15</creationDate>
 	<author>Sudheera R. Fernando</author>
@@ -362,11 +362,10 @@
 		<filename>tasks/html/dataview_list.js</filename>
 		<filename>tasks/list.php</filename>
 		</files>
-
 	</administration>
 	<params>
 		<param name="record_display_limit" default="10" />
 		<param name="processing_mode_switch" default="1" />
 		<param name="proc_switch_threshold" default="50000" />
 	</params>
-</install>
+</extension>

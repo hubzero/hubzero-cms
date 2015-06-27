@@ -27,9 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Newsletters</name>
-	<author>Christopher Smoak</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage Newsletters</description>
@@ -54,8 +54,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.com_newsletter.ini</language>
 	</languages>
-	<install></install>
-	<uninstall></uninstall>
 	<administration>
 		<menu>Newsletters</menu>
 		<files>
@@ -107,5 +105,4 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>views/template/tmpl/index.html</filename>
 		</files>
 	</administration>
-	<params></params>
-</install>
+</extension>

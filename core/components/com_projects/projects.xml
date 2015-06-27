@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- All rights reserved.
+@package        hubzero-cms
+@file           components/com_projects/projects.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License,
- Version 2 as published by the Free Software Foundation.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Projects</name>
-	<author>Alissa Nedossekina</author>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>Manage projects</description>
 	<files>
@@ -72,17 +81,6 @@
 	<languages>
 		<language tag="en-GB">en-GB.com_projects.ini</language>
 	</languages>
-	<install>
-	</install>
-	<uninstall>
-	</uninstall>
-	<installfile>
-		<filename></filename>
-	</installfile>
-	<uninstallfile>
-		<filename></filename>
-	</uninstallfile>
-
 	<administration>
 		<menu>Projects</menu>
 		<files>
@@ -110,6 +108,6 @@
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_projects.ini</language>
-	        </languages>
+		</languages>
 	</administration>
-</install>
+</extension>

@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           components/com_support/support.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,10 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Support</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<files>
 		<filename>images/stophand.gif</filename>
@@ -68,17 +68,15 @@ HUBzero is a registered trademark of Purdue University.
 			<file charset="utf8" driver="mysql">install.sql</file>
 		</sql>
 	</install>
-	<uninstall>
-	</uninstall>
 	<administration>
-	      <menu>Support</menu>
-	      <submenu>
-	          <menu task="categories">Categories</menu>
-                  <menu task="messages">Messages</menu>
-                  <menu task="resolutions">Resolutions</menu>
-                  <menu task="sections">Sections</menu>
-                  <menu task="tickets">Tickets</menu>
-              </submenu>
+		<menu>Support</menu>
+		<submenu>
+			<menu task="categories">Categories</menu>
+			<menu task="messages">Messages</menu>
+			<menu task="resolutions">Resolutions</menu>
+			<menu task="sections">Sections</menu>
+			<menu task="tickets">Tickets</menu>
+		</submenu>
 		<files>
 			<filename>support.reportabuse.php</filename>
 			<filename>admin.controller.php</filename>
@@ -107,9 +105,8 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>images/email.png</filename>
 			<filename>images/page_edit.png</filename>
 		</files>
-          <languages folder="admin">
-               <language tag="en-GB">en-GB.com_support.ini</language>
-          </languages>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_support.ini</language>
+		</languages>
 	</administration>
-</install>
-
+</extension>

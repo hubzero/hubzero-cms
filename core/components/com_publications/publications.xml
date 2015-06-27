@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_resources/resources.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           components/com_publications/publications.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,14 +27,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Publications</name>
-	<author>Alissa Nedossekina</author>
-	<copyright>Copyright 2005-2012 Purdue University. All rights reserved.</copyright>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage publications</description>
-	<files>
-	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_publications.ini</language>
 	</languages>
@@ -43,8 +41,6 @@ HUBzero is a registered trademark of Purdue University.
 			<file charset="utf8" driver="mysql">install.sql</file>
 		</sql>
 	</install>
-	<uninstall>
-	</uninstall>
 	<administration>
 		<menu>Publications</menu>
 		<submenu>
@@ -54,8 +50,6 @@ HUBzero is a registered trademark of Purdue University.
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_publications.ini</language>
 		</languages>
-	 	<files>
-		</files>
 	</administration>
 	<params>
 		<param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
@@ -108,5 +102,4 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="3">Manually Inputed</option>
 		</param>
 	</params>
-</install>
-
+</extension>

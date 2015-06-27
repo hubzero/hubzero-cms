@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Courses</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -42,10 +42,10 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>courses.css</filename>
 		<filename>courses.js</filename>
 		<filename>courses.reason.php</filename>
-   		<filename>views/index.html</filename>
-   		<filename>views/intro/tmpl/default.php</filename>
-   		<filename>views/intro/tmpl/default.xml</filename>
-   		<filename>views/intro/tmpl/index.html</filename>
+		<filename>views/index.html</filename>
+		<filename>views/intro/tmpl/default.php</filename>
+		<filename>views/intro/tmpl/default.xml</filename>
+		<filename>views/intro/tmpl/index.html</filename>
 		<filename>images/message.gif</filename>
 		<filename>images/courses-large.gif</filename>
 		<filename>images/extlink.gif</filename>
@@ -91,7 +91,7 @@ HUBzero is a registered trademark of Purdue University.
 	<administration>
 		<menu>Courses</menu>
 		<files>
-  			<filename>config.xml</filename>
+			<filename>config.xml</filename>
 			<filename>admin.controller.php</filename>
 			<filename>admin.courses.html.php</filename>
 			<filename>admin.courses.php</filename>
@@ -102,5 +102,4 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_courses.ini</language>
 		</languages>
 	</administration>
-</install>
-
+</extension>
