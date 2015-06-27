@@ -71,10 +71,8 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		$type  = (isset($atts[7])) ? $atts[7] : 'multi'; // Allow single or multiple entries
 		$dsabl = (isset($atts[8])) ? $atts[8] : '';      // Readonly input
 
-		$base = rtrim(Request::base(true), '/');
+		$base = rtrim(Request::root(true), '/');
 		$datascript = $base . '/index.php';
-
-		$base = str_replace('/administrator', '', $base);
 
 		if ($opt != 'members')
 		{
@@ -90,15 +88,15 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 			$plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css';
 			if (file_exists(PATH_CORE . $templatecss))
 			{
-				$scripts .= $base . $templatecss . '?v=' . filemtime(PATH_CORE . $templatecss);
+				$scripts .= $base . '/core' . $templatecss . '?v=' . filemtime(PATH_CORE . $templatecss);
 			}
 			else
 			{
-				$scripts .= 'core' . DS . $plugincss . '?v=' . filemtime(PATH_CORE . $plugincss);
+				$scripts .= $base . '/core' . $plugincss . '?v=' . filemtime(PATH_CORE . $plugincss);
 			}
 
 			$scripts .= '";</script>' . "\n";
-			$scripts .= '<script type="text/javascript" src="' . 'core' . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
+			$scripts .= '<script type="text/javascript" src="' . $base . '/core/plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
 
 			$this->_pushscripts = false;
 		}

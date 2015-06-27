@@ -114,6 +114,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		{
 			$active = strtolower(Request::getWord('unit', ''));
 
+			$action = '';
 			if ($active == 'mark')
 			{
 				$action = 'mark';
