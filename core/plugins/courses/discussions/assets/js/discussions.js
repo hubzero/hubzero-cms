@@ -841,7 +841,7 @@ HUB.Plugins.CoursesForum = {
 			.hide()
 			.prependTo('div.comments-feed');
 
-		var api = '/api/forum/thread/?find=count&scope=' + $('#field-scope').val() + '&scope_id=' + $('#field-scope_id').val() + '&scope_sub_id=' + $('#field-scope_sub_id').val();
+		var api = '/api/forum/read/?find=count&scope=' + $('#field-scope').val() + '&scope_id=' + $('#field-scope_id').val() + '&scope_sub_id=' + $('#field-scope_sub_id').val();
 
 		// Heartbeat for checking for new posts
 		setInterval(function () {

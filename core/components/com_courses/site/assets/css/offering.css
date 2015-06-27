@@ -210,6 +210,10 @@
 		     -o-border-radius: 0.25em;
 		        border-radius: 0.25em;
 	}
+	#page_menu li.active .meta .count {
+		background: #ccc;
+		background: rgba(0, 0, 0, 0.1);
+	}
 
 	#page_menu li small.page_menu-before,
 	#page_menu li a:before {

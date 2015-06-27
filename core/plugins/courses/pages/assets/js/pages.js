@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/pages/pages.jquery.js
- * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @file        plugins/courses/pages/assets/js/pages.js
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -14,7 +14,7 @@ jQuery(document).ready(function(jq){
 
 	$('ul.manager-options a.delete').each(function(i, el) {
 		$(el).on('click', function(e) {
-			var res = confirm('Are you sure you wish to delete this document?');
+			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
@@ -37,8 +37,8 @@ jQuery(document).ready(function(jq){
 				multiple: true,
 				debug: false,
 				template: '<div class="qq-uploader">' +
-						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
-						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<div class="qq-upload-button"><span>' + uploader.attr('data-instructions') + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + uploader.attr('data-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
 				onComplete: function(id, file, response) {
@@ -72,8 +72,8 @@ jQuery(document).ready(function(jq){
 				multiple: true,
 				debug: false,
 				template: '<div class="qq-uploader">' +
-						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
-						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<div class="qq-upload-button"><span>' + uploader.attr('data-instructions') + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + uploader.attr('data-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
 				onComplete: function(id, file, response) {

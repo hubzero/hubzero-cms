@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/notes/notes.css
- * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @file        plugins/courses/notes/assets/css/notes.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -172,7 +172,6 @@
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 		color: #80744a;
-		/*font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 		font-size: 14px;
 		line-height: 1.2em;
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"; /* IE 8 */
@@ -182,19 +181,6 @@
 		opacity: 0.85;
 	}
 	.jSticky-medium.annotation {
-		/* Blue
-		color: #4a807d;
-		border-color: #1eb6bc;
-		background: #bdfaf9;
-		background: -webkit-gradient(linear, left top, left bottom, from(#d3fffe), to(#bcfaf8));
-		background: -webkit-linear-gradient(#d3fffe, #bcfaf8);
-		background: -moz-linear-gradient(center top, #d3fffe 0%, #bcfaf8 100%);
-		background: -moz-gradient(center top, #d3fffe 0%, #bcfaf8 100%);
-		background: -ms-linear-gradient(#d3fffe, #bcfaf8);
-		background: -o-linear-gradient(#d3fffe, #bcfaf8);
-		background: linear-gradient(#d3fffe, #bcfaf8);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d3fffe,endColorstr=#bcfaf8);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d3fffe, endColorstr=#bcfaf8)";*/
 		color: #5f804a;
 		border-color: #4dbc1e;
 		background: #d2fabc;
@@ -280,7 +266,6 @@
 	}
 	.annotation a.jSticky-delete,
 	.annotation .jSticky-delete {
-		/*color: #1eb6bc;*/
 		color: #4dbc1e;
 	}
 	.jSticky-delete:before {
