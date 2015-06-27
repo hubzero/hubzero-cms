@@ -1,44 +1,63 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('JPATH_BASE') or die;
+defined('_HZEXEC_') or die();
 
 /**
  * An example custom profile plugin.
- *
- * @package		Joomla.Plugin
- * @subpackage	User.profile
- * @version		1.6
  */
 class plgUserProfile extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
+	 * @return  void
 	 */
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
+
 		JFormHelper::addFieldPath(dirname(__FILE__) . '/fields');
 	}
 
 	/**
-	 * @param	string	$context	The context for the data
-	 * @param	int		$data		The user id
-	 * @param	object
-	 *
-	 * @return	boolean
-	 * @since	1.6
+	 * @param   string   $context  The context for the data
+	 * @param   integer  $data     The user id
+	 * @param   object
+	 * @return  boolean
 	 */
-	function onContentPrepareData($context, $data)
+	public function onContentPrepareData($context, $data)
 	{
 		// Check we are manipulating a valid form.
 		if (!in_array($context, array('com_users.profile', 'com_users.user', 'com_users.registration', 'com_admin.profile')))
@@ -55,7 +74,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 				// Load the profile data from the database.
 				$db = App::get('db');
 				$db->setQuery(
-					'SELECT profile_key, profile_value FROM #__user_profiles' .
+					'SELECT profile_key, profile_value FROM `#__user_profiles`' .
 					' WHERE user_id = '.(int) $userId." AND profile_key LIKE 'profile.%'" .
 					' ORDER BY ordering'
 				);
@@ -144,11 +163,9 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * @param	JForm	$form	The form to be altered.
-	 * @param	array	$data	The associated data for the form.
-	 *
-	 * @return	boolean
-	 * @since	1.6
+	 * @param   object   $form  The form to be altered.
+	 * @param   array    $data  The associated data for the form.
+	 * @return  boolean
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
@@ -242,7 +259,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 
-	function onUserAfterSave($data, $isNew, $result, $error)
+	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
 		$userId	= \Hubzero\Utility\Arr::getValue($data, 'id', 0, 'int');
 
@@ -299,9 +316,10 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	 *
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param	array		$user		Holds the user data
-	 * @param	boolean		$success	True if user was succesfully stored in the database
-	 * @param	string		$msg		Message
+	 * @param   array    $user     Holds the user data
+	 * @param   boolean  $success  True if user was succesfully stored in the database
+	 * @param   string   $msg      Message
+	 * @return  boolean
 	 */
 	public function onUserAfterDelete($user, $success, $msg)
 	{

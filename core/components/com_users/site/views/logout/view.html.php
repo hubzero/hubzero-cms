@@ -1,8 +1,6 @@
 <?php
 /**
  * HUBzero CMS
- *                       *
- * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
  *
@@ -28,16 +26,15 @@
  * permission notice:
  *
  * @package   hubzero-cms-joomla
- * @file      components/com_user/views/logout/view.html.php
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright (c) 2010-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  */
 
 // No direct access.
-defined( '_JEXEC' ) or die();
+defined('_HZEXEC_') or die();
 
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
 
 /**
  * User component logout view class
@@ -72,7 +69,7 @@ class UsersViewLogout extends JViewLegacy
 		{
 			$params = new \Hubzero\Config\Registry('');
 			$template = App::get('template')->template;
-			$inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
+			$inifile = App::get('template')->path . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
 			if (file_exists($inifile))
 			{
 				$params->parse(file_get_contents($inifile));

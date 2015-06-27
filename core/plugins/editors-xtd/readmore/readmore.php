@@ -1,25 +1,44 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_HZEXEC_') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 /**
  * Editor Readmore buton
- *
- * @package		Joomla.Plugin
- * @subpackage	Editors-xtd.readmore
- * @since 1.5
  */
 class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @access      protected
 	 * @param       object  $subject The object to observe
 	 * @param       array   $config  An array that holds the plugin configuration
 	 * @since       1.5
@@ -33,14 +52,14 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * readmore button
-	 * @return array A two element array of (imageName, textToInsert)
+	 *
+	 * @return  array  A two element array of (imageName, textToInsert)
 	 */
 	public function onDisplay($name)
 	{
 		$template = App::get('template')->template;
 
 		// button is not active in specific content components
-
 		$getContent = $this->_subject->getContent($name);
 		$present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true) ;
 		$js = "

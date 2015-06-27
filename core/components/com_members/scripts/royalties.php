@@ -35,7 +35,7 @@ $bits = explode('/', $thispath);
 $basepath = '/'.$bits[1].'/'.$bits[2];
 
 /** Set flag that this is a parent file */
-define("_JEXEC", 1);
+define("_HZEXEC_", 1);
 
 /**
  * Description for ''JPATH_BASE''

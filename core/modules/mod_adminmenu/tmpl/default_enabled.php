@@ -106,7 +106,7 @@ if ($user->authorise('core.admin'))
 }
 
 $menu->addChild(
-	new Node(Lang::txt('MOD_MENU_LOGOUT'), Route::url('index.php?option=com_login&task=logout&' . JSession::getFormToken() . '=1'), 'class:logout')
+	new Node(Lang::txt('MOD_MENU_LOGOUT'), 'index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1', 'class:logout')
 );
 
 $menu->getParent();

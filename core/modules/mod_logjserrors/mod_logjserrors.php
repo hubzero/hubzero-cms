@@ -32,7 +32,7 @@
 if (Request::method() == 'POST')
 {
 	// Write to hubzero logs if available.
-	// Otherwise fallback to the Joomla logs.
+	// Otherwise fallback to the app logs.
 	$path = Config::get('log_path');
 	if (is_dir('/var/log/hubzero'))
 	{

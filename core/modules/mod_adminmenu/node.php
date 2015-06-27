@@ -85,6 +85,10 @@ class Node extends \JNode
 	public function __construct($title, $link = null, $class = null, $active = false, $target = null, $titleicon = null)
 	{
 		$this->title  = $titleicon ? $title . $titleicon : $title;
+		if ($link && substr($link, 0, strlen('index.php')) == 'index.php')
+		{
+			$link = Route::url($link);
+		}
 		$this->link   = \Hubzero\Utility\String::ampReplace($link);
 		$this->class  = $class;
 		$this->active = $active;

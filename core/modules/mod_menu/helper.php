@@ -140,7 +140,7 @@ class Helper extends Module
 						case 'url':
 							if ((strpos($item->link, 'index.php?') === 0) && (strpos($item->link, 'Itemid=') === false))
 							{
-								// If this is an internal Joomla link, ensure the Itemid is set.
+								// If this is an internal link, ensure the Itemid is set.
 								$item->flink = $item->link . '&Itemid=' . $item->id;
 							}
 							break;

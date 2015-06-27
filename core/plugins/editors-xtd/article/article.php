@@ -1,25 +1,44 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_HZEXEC_') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 /**
  * Editor Article buton
- *
- * @package		Joomla.Plugin
- * @subpackage	Editors-xtd.article
- * @since 1.5
  */
 class plgButtonArticle extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @access      protected
 	 * @param       object  $subject The object to observe
 	 * @param       array   $config  An array that holds the plugin configuration
 	 * @since       1.5
@@ -38,12 +57,10 @@ class plgButtonArticle extends \Hubzero\Plugin\Plugin
 	 */
 	public function onDisplay($name)
 	{
-		/*
-		 * Javascript to insert the link
-		 * View element calls jSelectArticle when an article is clicked
-		 * jSelectArticle creates the link tag, sends it to the editor,
-		 * and closes the select frame.
-		 */
+		// Javascript to insert the link
+		// View element calls jSelectArticle when an article is clicked
+		// jSelectArticle creates the link tag, sends it to the editor,
+		// and closes the select frame.
 		$js = "
 		function jSelectArticle(id, title, catid, object, link, lang) {
 			var hreflang = '';
@@ -59,10 +76,8 @@ class plgButtonArticle extends \Hubzero\Plugin\Plugin
 
 		Html::behavior('modal');
 
-		/*
-		 * Use the built-in element view to select the article.
-		 * Currently uses blank class.
-		 */
+		// Use the built-in element view to select the article.
+		// Currently uses blank class.
 		$link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
 
 		$button = new \Hubzero\Base\Object();

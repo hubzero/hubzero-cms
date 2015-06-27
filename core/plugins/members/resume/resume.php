@@ -107,7 +107,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 		$employer = new \Components\Jobs\Tables\Employer($database);
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		if (User::authorise('core.admin', 'com_members.component'))
 		{
 			return 1;
