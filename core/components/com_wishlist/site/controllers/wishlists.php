@@ -769,10 +769,10 @@ class Wishlists extends SiteController
 			$admin_email = Config::get('mailfrom');
 
 			// to wish assignee
-			$subject = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
+			$subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
 
 			$from = array(
-				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
 				'email' => Config::get('mailfrom')
 			);
 
@@ -991,7 +991,7 @@ class Wishlists extends SiteController
 
 		// Verify subject is in, before it hits the table
 		$subject = $row->get('subject');
-		if (!!isset($subject) || $subject == '')
+		if (!isset($subject) || $subject == '')
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_SUBJECT'));
 		}
@@ -1014,7 +1014,7 @@ class Wishlists extends SiteController
 			$aconfig = Component::params('com_answers');
 			$infolink = $aconfig->get('infolink', \Request::base(true) . '/kb/points/');
 
-			$this->view->title    = Lang::txt(strtoupper($this->_name));
+			$this->view->title    = Lang::txt(strtoupper($this->_option));
 			$this->view->config   = $this->config;
 			$this->view->admin    = $this->_admin;
 			$this->view->wishlist = $wishlist;
@@ -1059,9 +1059,9 @@ class Wishlists extends SiteController
 
 			$this->_list_title = $wishlist->get('title');
 
-			$subject = Lang::txt(strtoupper($this->_name)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '. $this->_list_title.' '.Lang::txt('from').' '.$name;
+			$subject = Lang::txt(strtoupper($this->_option)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '. $this->_list_title.' '.Lang::txt('from').' '.$name;
 			$from = array(
-				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
 				'email' => Config::get('mailfrom')
 			);
 
@@ -1230,13 +1230,13 @@ class Wishlists extends SiteController
 				// Build e-mail components
 
 				// to wish author
-				$subject1 = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_YOUR_WISH') . ' #' . $wish->get('id') . ' is ' . $status;
+				$subject1 = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_YOUR_WISH') . ' #' . $wish->get('id') . ' is ' . $status;
 
 				// to wish assignee
-				$subject2 = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_HAS_BEEN') . ' ' . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
+				$subject2 = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_HAS_BEEN') . ' ' . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 				$from = array(
-					'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+					'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
 					'email' => Config::get('mailfrom')
 				);
 
@@ -1437,11 +1437,11 @@ class Wishlists extends SiteController
 					$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 				}
 
-				$subject1 = Lang::txt(strtoupper($this->_name)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '.$newtitle.' '.Lang::txt('COM_WISHLIST_FROM').' '.$name.' - '.Lang::txt('COM_WISHLIST_TRANSFERRED');
-				$subject2 = Lang::txt(strtoupper($this->_name)).', '.Lang::txt('COM_WISHLIST_YOUR_WISH').' #'.$wishid.' '.Lang::txt('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
+				$subject1 = Lang::txt(strtoupper($this->_option)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '.$newtitle.' '.Lang::txt('COM_WISHLIST_FROM').' '.$name.' - '.Lang::txt('COM_WISHLIST_TRANSFERRED');
+				$subject2 = Lang::txt(strtoupper($this->_option)).', '.Lang::txt('COM_WISHLIST_YOUR_WISH').' #'.$wishid.' '.Lang::txt('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 
 				$from = array(
-					'name'  => Config::get('sitename').' '.Lang::txt(strtoupper($this->_name)),
+					'name'  => Config::get('sitename').' '.Lang::txt(strtoupper($this->_option)),
 					'email' => Config::get('mailfrom')
 				);
 
@@ -1868,25 +1868,25 @@ class Wishlists extends SiteController
 				$name = Lang::txt('ANONYMOUS');
 			}
 
-			$subject = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('BY') . ' ' . $name;
+			$subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('BY') . ' ' . $name;
 
 			// email components
 			$from = array(
-				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
 				'email' => Config::get('mailfrom')
 			);
 
 			// for the wish owner
-			$subject1 = Lang::txt(strtoupper($this->_name)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
+			$subject1 = Lang::txt(strtoupper($this->_option)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
 
 			// for the person to whom wish is assigned
-			$subject2 = Lang::txt(strtoupper($this->_name)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
+			$subject2 = Lang::txt(strtoupper($this->_option)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 			// for original commentor
-			$subject3 = Lang::txt(strtoupper($this->_name)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
+			$subject3 = Lang::txt(strtoupper($this->_option)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
 
 			// for others included in the conversation thread.
-			$subject4 = Lang::txt(strtoupper($this->_name)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
+			$subject4 = Lang::txt(strtoupper($this->_option)).', '.$name.' '.Lang::txt('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 
 			$message = array();
 

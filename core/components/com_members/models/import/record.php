@@ -103,6 +103,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			// Map tags
 			$this->_mapTagsData();
+
+			// Map groups
+			$this->_mapGroupsData();
 		}
 		catch (Exception $e)
 		{
