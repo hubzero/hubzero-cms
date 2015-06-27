@@ -201,8 +201,8 @@ function submitbutton(pressbutton)
 					<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW'); ?>
 				</label>
 				<select name="params[emailnew]" id="param-emailnew">
-					<option value="0"<?php echo ($this->params->get('emailnew', 1) == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
-					<option value="1"<?php echo ($this->params->get('emailnew', 1) == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
+					<option value="0"<?php echo ($this->params->get('emailnew', 0) == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
+					<option value="1"<?php echo ($this->params->get('emailnew', 0) == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
 				</select>
 				<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT'); ?></span>
 			</div>

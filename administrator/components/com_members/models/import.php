@@ -312,6 +312,19 @@ class Import extends \Hubzero\Content\Import\Model\Import
 			'lastupdate',
 			'lastupdated',
 		),
+		'groups' => array(
+			'group',
+			'groups',
+			'gid',
+			'gids',
+			'gidNumber',
+			'gidNumbers',
+			'cn',
+			'group_alias',
+			'group_aliases',
+			'group_cn',
+			'group_membership',
+		),
 	);
 
 	/**

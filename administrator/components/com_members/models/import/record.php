@@ -104,6 +104,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			// Map tags
 			$this->_mapTagsData();
+
+			// Map groups
+			$this->_mapGroupsData();
 		}
 		catch (Exception $e)
 		{
@@ -175,6 +178,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			// Save tags
 			$this->_saveTagsData();
+
+			// Save groups
+			$this->_saveGroupsData();
 		}
 		catch (Exception $e)
 		{
@@ -457,5 +463,45 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// save tags
 		$tags = new \MembersModelTags($this->_profile->get('uidNumber'));
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
+	}
+
+	/**
+	 * Map groups
+	 *
+	 * @return  void
+	 */
+	private function _mapGroupsData()
+	{
+		if (isset($this->raw->groups))
+		{
+			$this->record->groups = $this->_multiValueField($this->raw->groups);
+		}
+	}
+
+	/**
+	 * Save groups
+	 *
+	 * @return  void
+	 */
+	private function _saveGroupsData()
+	{
+		if (!isset($this->record->groups) || !$this->record->groups)
+		{
+			return;
+		}
+
+		$id = $this->_profile->get('uidNumber');
+
+		foreach ($this->record->groups as $gid)
+		{
+			$group = \Hubzero\User\Group::getInstance($gid);
+			if (!$group || !$group->get('gidNumber'))
+			{
+				array_push($this->record->errors, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
+			}
+
+			$group->add('members', array($id));
+			$group->update();
+		}
 	}
 }
