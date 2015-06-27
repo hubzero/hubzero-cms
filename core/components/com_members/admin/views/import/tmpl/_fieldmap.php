@@ -67,6 +67,7 @@ if ($this->import->exists()) { ?>
 								<option value="homeDirectory" <?php if ($mapping['field'] == 'homeDirectory') { echo 'selected="selected"'; } ?>>homeDirectory</option>
 								<option value="modifiedDate" <?php if ($mapping['field'] == 'modifiedDate') { echo 'selected="selected"'; } ?>>modifiedDate</option>
 								<option value="locked" <?php if ($mapping['field'] == 'locked') { echo 'selected="selected"'; } ?>>locked</option>
+								<option value="groups" <?php if ($mapping['field'] == 'groups') { echo 'selected="selected"'; } ?>>groups</option>
 							</optgroup>
 							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_REGISTER'); ?>">
 								<option value="regIP" <?php if ($mapping['field'] == 'regIP') { echo 'selected="selected"'; } ?>>regIP</option>
