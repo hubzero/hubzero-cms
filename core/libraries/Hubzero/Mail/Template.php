@@ -50,16 +50,17 @@ class Template extends \JDocumentHTML
 	{
 		if (!isset($params['template']))
 		{
-			if (\JFactory::getApplication()->isAdmin())
+			if (\App::isAdmin())
 			{
 				$db = \App::get('db');
-				$db->setQuery("SELECT template FROM `#__template_styles` WHERE client_id=0 AND home=1");
-				$params['template'] = $db->loadResult();
-				$params['directory'] = JPATH_SITE . DS . 'templates';
+				$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`=0 AND `home`=1");
+				$params['template']  = $db->loadResult();
+				$params['directory'] = PATH_CORE . DS . 'templates';
 			}
 			else
 			{
-				$params['template'] = \JFactory::getApplication()->getTemplate();
+				$params['template']  = \App::get('template')->template;
+				$params['directory'] = (\App::get('template')->protected ? PATH_CORE : PATH_APP) . DS . 'templates';
 			}
 		}
 		if (!isset($params['file']))
@@ -106,14 +107,14 @@ class Template extends \JDocumentHTML
 		$contents = '';
 
 		// Check to see if we have a valid template file
-		if (file_exists($directory . '/' . $filename))
+		if (file_exists($directory . DS . $filename))
 		{
 			// Store the file path
-			$this->_file = $directory . '/' . $filename;
+			$this->_file = $directory . DS . $filename;
 
 			// Get the file content
 			ob_start();
-			require $directory . '/' . $filename;
+			require $directory . DS . $filename;
 			$contents = ob_get_contents();
 			ob_end_clean();
 		}
