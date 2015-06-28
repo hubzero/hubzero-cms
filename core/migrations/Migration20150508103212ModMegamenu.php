@@ -3,7 +3,7 @@
 use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Hubzero!
-defined('_JEXEC') or die('Restricted access');
+defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing unused/deprecated mod_megamenu module
