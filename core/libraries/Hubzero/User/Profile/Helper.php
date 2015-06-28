@@ -110,7 +110,7 @@ class Helper
 		// We need to do this here as it may be needed by the Gravatar service
 		if (!$dffull)
 		{
-			$dffull = DS . 'core/components/com_members/site/assets/img/profile.gif'; //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
+			$dffull = '/core/components/com_members/site/assets/img/profile.gif'; //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
 		}
 		if (!$dfthumb)
 		{
@@ -131,6 +131,8 @@ class Helper
 		}
 
 		$paths = array();
+
+		$apppath = trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . '/site/members';
 
 		// If not anonymous
 		if (!$anonymous)
@@ -176,8 +178,7 @@ class Helper
 				// If member has a picture set
 				if ($member->get('picture'))
 				{
-					$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
-					$thumb .= DS . self::niceidformat($member->get('uidNumber'));
+					$thumb  = DS . $apppath . DS . self::niceidformat($member->get('uidNumber'));
 
 					$thumbAlt = $thumb . DS . ltrim($member->get('picture'), DS);
 					if ($thumbit)
@@ -218,13 +219,12 @@ class Helper
 		// Start running through paths until we find a valid one
 		foreach ($paths as $path)
 		{
-			if ($path && file_exists(PATH_APP . $path))
+			if ($path && file_exists(PATH_ROOT . $path))
 			{
 				if (!$anonymous)
 				{
 					// build base path (ex. /site/members/12345)
-					$baseMemberPath  = DS . trim($config->get('webpath', '/site/members'), DS);
-					$baseMemberPath .= DS . self::niceidformat($member->get('uidNumber'));
+					$baseMemberPath  = DS . $apppath . DS . self::niceidformat($member->get('uidNumber'));
 
 					// if we want to serve file & path is within /site
 					if ($serveFile && strpos($path, $baseMemberPath) !== false)
