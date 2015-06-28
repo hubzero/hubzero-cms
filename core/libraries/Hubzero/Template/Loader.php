@@ -74,7 +74,7 @@ class Loader
 		if (!$path)
 		{
 			$path = array(
-				PATH_APP . DS . 'app' . DS . 'templates',
+				PATH_APP . DS . 'templates',
 				PATH_CORE . DS . 'templates'
 			);
 		}

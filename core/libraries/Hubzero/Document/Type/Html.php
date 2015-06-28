@@ -516,7 +516,7 @@ class Html extends Base
 
 		// Load the language file for the template
 		$lang = \App::get('language');
-		$lang->load('tpl_' . $template, PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . \App::get('client')->name, null, false, true) ||
+		$lang->load('tpl_' . $template, PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name, null, false, true) ||
 		$lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
 		// Assign the variables

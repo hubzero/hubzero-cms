@@ -137,7 +137,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 	 */
 	private function _templateDir()
 	{
-		$base = (App::get('template')->protected ? substr(PATH_CORE, strlen(PATH_ROOT)) : substr(PATH_APP . DS . 'app', strlen(PATH_ROOT)));
+		$base = (App::get('template')->protected ? substr(PATH_CORE, strlen(PATH_ROOT)) : substr(PATH_APP, strlen(PATH_ROOT)));
 		return $base . '/templates/' . App::get('template')->template;
 	}
 

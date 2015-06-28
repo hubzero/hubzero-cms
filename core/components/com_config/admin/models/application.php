@@ -304,7 +304,7 @@ class Application extends JModelForm
 		// Attempt to write the configuration files
 		$writer = new \Hubzero\Config\FileWriter(
 			'php',
-			PATH_APP . DS . 'app' . DS . 'config'
+			PATH_APP . DS . 'config'
 		);
 
 		$client = null;

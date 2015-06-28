@@ -222,7 +222,7 @@ class Loader implements LoaderInterface
 		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
 
 		$p = array(
-			'app'  => PATH_APP . DS . 'app' . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php',
+			'app'  => PATH_APP . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php',
 			'core' => PATH_CORE . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php'
 		);
 

@@ -125,7 +125,7 @@ class Plugin extends Object
 		// Load the language files if needed.
 		if ($this->_autoloadLanguage)
 		{
-			$this->loadLanguage('', PATH_APP . DS . 'app' . DS . 'bootstrap' . \App::get('client')->name);
+			$this->loadLanguage('', PATH_APP . DS . 'bootstrap' . \App::get('client')->name);
 		}
 	}
 
@@ -145,7 +145,7 @@ class Plugin extends Object
 
 		$lang = \App::get('language');
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'app' . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
 			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
 	}
 

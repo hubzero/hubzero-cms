@@ -145,7 +145,7 @@ class Extension extends \JModelList
 			$item->author_info = @$item->authorEmail .'<br />'. @$item->authorUrl;
 			$item->client = $item->client_id ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
 
-			$path = PATH_APP . DS . 'app'; //$item->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE;
+			$path = PATH_APP; //$item->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE;
 
 			switch ($item->type)
 			{

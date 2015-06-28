@@ -120,7 +120,7 @@ class View extends AbstractView
 		}
 		else
 		{
-			$this->_basePath = PATH_APP . DS . 'app' . DS . 'plugins' . DS . $this->_folder . DS . $this->_element;
+			$this->_basePath = PATH_APP . DS . 'plugins' . DS . $this->_folder . DS . $this->_element;
 			if (!file_exists($this->_basePath))
 			{
 				$this->_basePath = PATH_CORE . DS . 'plugins' . DS . $this->_folder . DS . $this->_element;

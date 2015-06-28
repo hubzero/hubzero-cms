@@ -264,7 +264,7 @@ class Loader
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
 		if (file_exists($path))
 		{
-			$this->app['language']->load($module->module, PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $this->app['client']->name, null, false, true) ||
+			$this->app['language']->load($module->module, PATH_APP . DS . 'bootstrap' . DS . $this->app['client']->name, null, false, true) ||
 			$this->app['language']->load($module->module, dirname($path), null, false, true);
 
 			$content = '';

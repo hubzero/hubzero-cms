@@ -596,10 +596,10 @@ class Assets
 		// Path to system cache
 		$client   = (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name);
 
-		$cachedir = PATH_APP . DS . 'app' . DS . 'cache' . DS . $client;
-		if (!self::app('filesystem')->exists(PATH_APP . DS . 'app' . DS . 'cache' . DS . $client))
+		$cachedir = PATH_APP . DS . 'cache' . DS . $client;
+		if (!self::app('filesystem')->exists(PATH_APP . DS . 'cache' . DS . $client))
 		{
-			if (!self::app('filesystem')->makeDirectory(PATH_APP . DS . 'app' . DS . 'cache' . DS . $client))
+			if (!self::app('filesystem')->makeDirectory(PATH_APP . DS . 'cache' . DS . $client))
 			{
 				return '';
 			}

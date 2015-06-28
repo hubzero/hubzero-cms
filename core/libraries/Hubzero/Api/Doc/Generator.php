@@ -127,7 +127,7 @@ class Generator
 		$cacheExpiration = $developerParams->get('doc_expiration', 720);
 
 		// cache file
-		$cacheFile = PATH_APP . DS . 'app' . DS . 'cache' . DS . 'api' . DS . 'documentation.json';
+		$cacheFile = PATH_APP . DS . 'cache' . DS . 'api' . DS . 'documentation.json';
 
 		// check if we have a cache file 
 		if (file_exists($cacheFile))

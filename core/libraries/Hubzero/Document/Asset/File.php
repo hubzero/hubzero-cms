@@ -285,7 +285,7 @@ class File extends Object
 			{
 				$paths  = array();
 
-				$basea  = PATH_APP . DS . 'app' . DS;
+				$basea  = PATH_APP . DS;
 				$basec  = PATH_CORE . DS;
 
 				$client = (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name);
@@ -343,7 +343,7 @@ class File extends Object
 	{
 		if (!isset($this->paths['override']))
 		{
-			$this->paths['override']  = (\App::get('template')->protected ? PATH_CORE : PATH_APP . DS . 'app') . DS . 'templates' . DS . \App::get('template')->template . DS . 'html';
+			$this->paths['override']  = (\App::get('template')->protected ? PATH_CORE : PATH_APP) . DS . 'templates' . DS . \App::get('template')->template . DS . 'html';
 			$this->paths['override'] .= DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
 		}
 		return $this->paths['override'];

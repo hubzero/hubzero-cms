@@ -92,7 +92,7 @@ class Helper extends Module
 	public static function getLanguageList()
 	{
 		$languages = array();
-		$languages = Lang::getList(null, PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . App::get('client')->name, false, true);
+		$languages = Lang::getList(null, PATH_APP . DS . 'bootstrap' . DS . App::get('client')->name, false, true);
 		array_unshift($languages, Html::select('option', '', Lang::txt('JDEFAULT')));
 
 		return Html::select('genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);

@@ -287,7 +287,7 @@ class TemplatesModelStyle extends JModelAdmin
 
 			// Get the template XML.
 			$client = \Hubzero\Base\ClientManager::client($table->client_id);
-			$path   = Filesystem::cleanPath(PATH_APP . DS . 'app' .'/templates/'.$table->template.'/templateDetails.xml');
+			$path   = Filesystem::cleanPath(PATH_APP .'/templates/'.$table->template.'/templateDetails.xml');
 
 			if (file_exists($path))
 			{

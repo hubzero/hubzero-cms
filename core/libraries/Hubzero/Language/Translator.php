@@ -184,7 +184,7 @@ class Translator extends Object
 		$this->setLanguage($lang);
 		$this->setDebug($debug);
 
-		$filename = PATH_APP . DS . 'app' . "/bootstrap/$client/language/overrides/$lang.override.ini";
+		$filename = PATH_APP . "/bootstrap/$client/language/overrides/$lang.override.ini";
 
 		if (file_exists($filename) && $contents = $this->parse($filename))
 		{
@@ -202,8 +202,8 @@ class Translator extends Object
 		$class = str_replace('-', '_', $lang . 'Localise');
 		$paths = array();
 
-		$paths[0] = PATH_APP . DS . 'app' . "/bootstrap/$client/language/overrides/$lang.localise.php";
-		$paths[1] = PATH_APP . DS . 'app' . "/bootstrap/$client/language/$lang/$lang.localise.php";
+		$paths[0] = PATH_APP . "/bootstrap/$client/language/overrides/$lang.localise.php";
+		$paths[1] = PATH_APP . "/bootstrap/$client/language/$lang/$lang.localise.php";
 		$paths[2] = PATH_CORE . "/bootstrap/$client/language/$lang/$lang.localise.php";
 
 		ksort($paths);
@@ -639,7 +639,7 @@ class Translator extends Object
 
 		if ($basePath == PATH_APP || $basePath == PATH_CORE)
 		{
-			$basePath .= ($basePath == PATH_APP ? DS . 'app' : '') . DS . 'bootstrap' . DS . $this->client;
+			$basePath .= DS . 'bootstrap' . DS . $this->client;
 		}
 
 		$path = self::getLanguagePath($basePath, $lang);
@@ -1015,7 +1015,7 @@ class Translator extends Object
 	 */
 	public static function getMetadata($lang)
 	{
-		$path = self::getLanguagePath(PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . \App::get('client')->name, $lang);
+		$path = self::getLanguagePath(PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name, $lang);
 		$file = $lang . '.xml';
 
 		$result = null;
@@ -1270,7 +1270,7 @@ class Translator extends Object
 			if (\App::get('client')->id == 2)
 			{
 				$languages[$key] = array();
-				$knownLangs = self::getKnownLanguages(PATH_APP . DS . 'app' . DS . 'bootstrap' . DS . $this->client);
+				$knownLangs = self::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . $this->client);
 				foreach ($knownLangs as $metadata)
 				{
 					// Take off 3 letters iso code languages as they can't match browsers' languages and default them to en

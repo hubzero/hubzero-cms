@@ -145,7 +145,19 @@ class Request extends BaseRequest
 			break;
 
 			case 'files':
-				return $this->file($key, $default);
+				$result = $this->file($key, $default);
+				if ($type == 'array')
+				{
+					$res = array(
+						'name'      => $result->getClientOriginalName(),
+						'tmp_name'  => $result->getPathName(),
+						'mime_type' => $result->getClientMimeType(),
+						'extension' => $result->getExtension(),
+						'size'      => $result->getClientSize(),
+					);
+					$result = $res;
+				}
+				return $result;
 			break;
 
 			case 'post':

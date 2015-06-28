@@ -46,7 +46,7 @@ class FeedServiceProvider extends ServiceProvider
 	{
 		$this->app['feed.parser'] = function($app)
 		{
-			$cache  = PATH_APP . DS . 'app' . DS . 'cache';
+			$cache  = PATH_APP . DS . 'cache';
 			$cache .= DS . (isset($app['client']->alias) ? $app['client']->alias : $app['client']->name);
 
 			include_once(PATH_CORE . DS . 'libraries' . DS . 'simplepie' . DS . 'simplepie.php');

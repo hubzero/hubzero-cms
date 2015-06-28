@@ -207,7 +207,7 @@ class Legacy extends Registry
 		{
 			if (substr($config->tmp_path, strlen(PATH_ROOT)) == DS . 'tmp')
 			{
-				$config->tmp_path = PATH_APP . DS . 'app' . substr($config->tmp_path, strlen(PATH_ROOT));
+				$config->tmp_path = PATH_APP . substr($config->tmp_path, strlen(PATH_ROOT));
 			}
 		}
 
@@ -215,7 +215,7 @@ class Legacy extends Registry
 		{
 			if (substr($config->log_path, strlen(PATH_ROOT)) == DS . 'logs')
 			{
-				$config->log_path = PATH_APP . DS . 'app' . substr($config->log_path, strlen(PATH_ROOT));
+				$config->log_path = PATH_APP . substr($config->log_path, strlen(PATH_ROOT));
 			}
 		}
 
@@ -232,7 +232,7 @@ class Legacy extends Registry
 	public function split($format = null, $path = null)
 	{
 		$format = $format ?: 'php';
-		$path   = $path   ?: PATH_APP . DS . 'app' . DS . 'config';
+		$path   = $path   ?: PATH_APP . DS . 'config';
 
 		$writer = new \Hubzero\Config\FileWriter(
 			$format,

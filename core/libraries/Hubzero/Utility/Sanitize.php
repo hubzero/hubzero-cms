@@ -306,7 +306,7 @@ class Sanitize
 		$config->set('Attr.EnableID', true);
 		$config->set('HTML.AllowedCommentsRegexp', '/./');
 
-		$path = PATH_APP . DS . 'app' . DS . 'cache' . DS . (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name) . DS . 'htmlpurifier';
+		$path = PATH_APP . DS . 'cache' . DS . (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name) . DS . 'htmlpurifier';
 		if (!is_dir($path))
 		{
 			if (!\App::get('filesystem')->makeDirectory($path))

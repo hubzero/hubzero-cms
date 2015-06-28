@@ -64,7 +64,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 		$query->where('e.enabled = 1');
 		$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type='.$db->quote('template').' AND e.client_id=s.client_id');
 
-		$path = PATH_APP . DS . 'app';
+		$path = PATH_APP;
 
 		$db->setQuery($query);
 		$templates = $db->loadObjectList('id');

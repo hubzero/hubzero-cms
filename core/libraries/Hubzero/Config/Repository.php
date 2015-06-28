@@ -60,7 +60,7 @@ class Repository extends Registry
 	{
 		if (!$loader)
 		{
-			$loader = new \Hubzero\Config\FileLoader(PATH_APP . DS . 'app' . DS . 'config');
+			$loader = new \Hubzero\Config\FileLoader(PATH_APP . DS . 'config');
 		}
 		$this->loader = $loader;
 		$this->client = $client;

@@ -463,7 +463,7 @@ class View extends Object
 		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
 		$tpl  = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
 
-		$apppath = PATH_APP . DS . 'app' . DS . 'bootstrap' . \App::get('client')->name;
+		$apppath = PATH_APP . DS . 'bootstrap' . \App::get('client')->name;
 
 		// Load the language file for the template
 		$lang = \App::get('language');

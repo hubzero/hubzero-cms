@@ -30,9 +30,6 @@
 
 namespace Hubzero\Database\Exception;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 class ConnectionFailedException extends \Hubzero\Error\Exception\RuntimeException
 {
 }
