@@ -55,7 +55,7 @@ class Repository extends AdminController
 		$this->view->filters['limit'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
-			Config::getValue('config.list_limit'),
+			Config::get('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = Request::getState(
