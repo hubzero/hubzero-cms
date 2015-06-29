@@ -620,6 +620,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
@@ -753,6 +756,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);

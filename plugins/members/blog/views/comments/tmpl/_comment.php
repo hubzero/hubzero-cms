@@ -147,6 +147,8 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo JText::_('PLG_MEMBERS_BLOG_POST_ANONYMOUS'); ?>
 						</label>
 
+						<?php echo JHTML::_('form.token'); ?>
+
 						<p class="submit">
 							<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SUBMIT'); ?>" />
 						</p>

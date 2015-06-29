@@ -146,6 +146,8 @@ $this->css('jquery.datepicker.css', 'system')
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="action" value="save" />
 
+		<?php echo JHTML::_('form.token'); ?>
+
 		<p class="submit">
 			<input class="btn btn-succes" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
 
