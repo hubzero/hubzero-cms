@@ -1,12 +1,12 @@
 <?php
 /**
  * @package     hubzero-cms
- * @copyright   Copyright (c) 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright (c) 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_HZEXE_') or die();
 
 /**
  * HUBzero includes or is derivative of works distributed under the licenses listed below.
