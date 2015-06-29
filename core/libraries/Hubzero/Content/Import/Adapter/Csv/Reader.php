@@ -56,7 +56,7 @@ class Reader implements Iterator
 		// Line endings can vary depending on what App/OS outputted the CSV
 		ini_set('auto_detect_line_endings', true);
 
-		$this->file      = fopen($file, 'r');
+		$this->file = fopen($file, 'r');
 
 		ini_set('auto_detect_line_endings', false);
 

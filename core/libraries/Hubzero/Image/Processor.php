@@ -41,44 +41,44 @@ class Processor extends Object
 	/**
 	 * Path to image
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $source = NULL;
 
 	/**
 	 * Manipulated image data
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $resource = NULL;
 
 	/**
 	 * Image type (png, gif, jpg)
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $image_type = IMAGETYPE_PNG;
 
 	/**
 	 * EXIF image data
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $exif_data = NULL;
 
 	/**
 	 * Configuration options
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $config = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      string $image_source Path to image
-	 * @param      array  $config       Optional configurations
-	 * @return     void
+	 * @param   string  $image_source  Path to image
+	 * @param   array   $config        Optional configurations
+	 * @return  void
 	 */
 	public function __construct($image_source = null, $config = array(), $isRemoteImage = false)
 	{
@@ -115,8 +115,8 @@ class Processor extends Object
 	/**
 	 * Set the image type
 	 *
-	 * @param      string $type Image type to set
-	 * @return     void
+	 * @param   string  $type  Image type to set
+	 * @return  void
 	 */
 	public function setImageType($type)
 	{
@@ -135,8 +135,8 @@ class Processor extends Object
 	/**
 	 * Check if a required package is installed
 	 *
-	 * @param      integer $package Package name
-	 * @return     boolean True on success
+	 * @param   integer  $package  Package name
+	 * @return  boolean  True on success
 	 */
 	private function checkPackageRequirements($package = '')
 	{
@@ -158,7 +158,7 @@ class Processor extends Object
 	/**
 	 * Open an image and get it's type (png, jpg, gif)
 	 *
-	 * @return     bool
+	 * @return  bool
 	 */
 	private function openImage()
 	{
@@ -209,7 +209,7 @@ class Processor extends Object
 	/**
 	 * Image Rotation
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function autoRotate()
 	{
@@ -243,9 +243,9 @@ class Processor extends Object
 	/**
 	 * Image Flip
 	 *
-	 * @param      integer $rotation   Degrees to rotate
-	 * @param      integer $background Point to rotate from
-	 * @return     void
+	 * @param   integer  $rotation    Degrees to rotate
+	 * @param   integer  $background  Point to rotate from
+	 * @return  void
 	 */
 	public function rotate($rotation = 0, $background = 0)
 	{
@@ -261,9 +261,9 @@ class Processor extends Object
 	/**
 	 * Image Flip
 	 *
-	 * @param      boolean $flip_horizontal Flip the image horizontally?
-	 * @param      boolean $flip_vertical   Flip the image vertically?
-	 * @return     void
+	 * @param   boolean  $flip_horizontal  Flip the image horizontally?
+	 * @param   boolean  $flip_vertical    Flip the image vertically?
+	 * @return  void
 	 */
 	public function flip($flip_horizontal, $flip_vertical = false)
 	{
@@ -302,11 +302,11 @@ class Processor extends Object
 	/**
 	 * Image Crop
 	 *
-	 * @param      integer $top    Top point to crop from
-	 * @param      integer $right  Right point to crop from
-	 * @param      integer $bottom Bottom point to crop from
-	 * @param      integer $left   Left point to crop from
-	 * @return     void
+	 * @param   integer  $top     Top point to crop from
+	 * @param   integer  $right   Right point to crop from
+	 * @param   integer  $bottom  Bottom point to crop from
+	 * @param   integer  $left    Left point to crop from
+	 * @return  void
 	 */
 	public function crop($top, $right = 0, $bottom = 0, $left = 0)
 	{
@@ -329,11 +329,11 @@ class Processor extends Object
 	/**
 	 * Image Resize
 	 *
-	 * @param      integer $new_dimension Size to resize image to
-	 * @param      boolean $use_height    Use the height as the baseline? (uses width by default)
-	 * @param      boolean $squared       Make the image square?
-	 * @param      boolean $resample      Resample the image?
-	 * @return     void
+	 * @param   integer  $new_dimension  Size to resize image to
+	 * @param   boolean  $use_height     Use the height as the baseline? (uses width by default)
+	 * @param   boolean  $squared        Make the image square?
+	 * @param   boolean  $resample       Resample the image?
+	 * @return  void
 	 */
 	public function resize($new_dimension, $use_height = false, $squared = false, $resample = true)
 	{
@@ -436,7 +436,7 @@ class Processor extends Object
 	/**
 	 * Image Geo Location Data
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getGeoLocation()
 	{
@@ -488,8 +488,8 @@ class Processor extends Object
 	/**
 	 * Convert a fraction to decimal
 	 *
-	 * @param      string $str Fraction to convert
-	 * @return     integer
+	 * @param   string   $str  Fraction to convert
+	 * @return  integer
 	 */
 	private function geo_frac2dec($str)
 	{
@@ -506,8 +506,8 @@ class Processor extends Object
 	/**
 	 * Convert fractions to decimals with formatting
 	 *
-	 * @param      array $fracs Fractions to convert
-	 * @return     string
+	 * @param   array   $fracs  Fractions to convert
+	 * @return  string
 	 */
 	private function geo_pretty_fracs2dec($fracs)
 	{
@@ -517,8 +517,8 @@ class Processor extends Object
 	/**
 	 * Convert fractions to decimals
 	 *
-	 * @param      array $fracs Fractions to convert
-	 * @return     integer
+	 * @param   array    $fracs  Fractions to convert
+	 * @return  integer
 	 */
 	private function geo_single_fracs2dec($fracs)
 	{
@@ -528,7 +528,7 @@ class Processor extends Object
 	/**
 	 * Display an image
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -540,7 +540,7 @@ class Processor extends Object
 	/**
 	 * Display an image inline
 	 *
-	 * @return string
+	 * @return  string
 	 **/
 	public function inline()
 	{
@@ -560,9 +560,9 @@ class Processor extends Object
 	/**
 	 * Save an image
 	 *
-	 * @param      string  $save_path  Path to save image
-	 * @param      boolean $make_paths Allow for path generation?
-	 * @return     void
+	 * @param   string   $save_path   Path to save image
+	 * @param   boolean  $make_paths  Allow for path generation?
+	 * @return  void
 	 */
 	public function save($save_path = null, $make_paths = false)
 	{
@@ -574,7 +574,7 @@ class Processor extends Object
 
 			if ($make_paths)
 			{
-				\JFolder::create($info['dirname']);
+				\App::get('filesystem')->makeDirectory($info['dirname']);
 			}
 
 			if (!is_dir($info['dirname']) && $make_paths == false)
@@ -592,8 +592,8 @@ class Processor extends Object
 	/**
 	 * Generate an image and save to a location
 	 *
-	 * @param      string $save_path Path to save image
-	 * @return     void
+	 * @param   string  $save_path  Path to save image
+	 * @return  void
 	 */
 	private function output($save_path)
 	{

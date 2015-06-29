@@ -32,6 +32,7 @@ namespace Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Model\Import;
 use Hubzero\Content\Import\Adapter\Excel\Reader;
+use Hubzero\Html\Parameter;
 
 /**
  * Excel Importer
@@ -117,7 +118,7 @@ class Excel implements Adapter
 		$iterator = new Reader($import->getDatapath(), $this->key);
 
 		// get the import params
-		$options = new \JParameter($import->get('params'));
+		$options = new Parameter($import->get('params'));
 
 		// get the mode
 		$mode = $import->get('mode', 'UPDATE');

@@ -32,6 +32,7 @@ namespace Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Model\Import;
 use Hubzero\Content\Import\Adapter\Json\Reader;
+use Hubzero\Html\Parameter;
 
 /**
  * JSON Importer
@@ -125,7 +126,7 @@ class Json implements Adapter
 		$iterator = new Reader($import->getDatapath(), $this->key);
 
 		// get the import params
-		$options = new \JParameter($import->get('params'));
+		$options = new Parameter($import->get('params'));
 
 		// get the mode
 		$mode = $import->get('mode', 'UPDATE');

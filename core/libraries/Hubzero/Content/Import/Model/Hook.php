@@ -52,7 +52,7 @@ class Hook extends Model
 	public function fileSpacePath()
 	{
 		// build upload path
-		$uploadPath = JPATH_ROOT . DS . 'site' . DS . 'import' . DS . 'hooks' . DS . $this->get('id');
+		$uploadPath = PATH_APP . DS . 'site' . DS . 'import' . DS . 'hooks' . DS . $this->get('id');
 
 		// return path
 		return $uploadPath;

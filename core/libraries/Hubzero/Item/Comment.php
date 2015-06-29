@@ -1,30 +1,39 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Item;
 
 use Hubzero\Item\Comment\File;
+use Lang;
+use Date;
+use User;
 
 /**
  * Table class for comments
@@ -34,8 +43,8 @@ class Comment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -45,45 +54,45 @@ class Comment extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->content = trim($this->content);
-		if (!$this->content || $this->content == \Lang::txt('Enter your comments...'))
+		if (!$this->content || $this->content == Lang::txt('Enter your comments...'))
 		{
-			$this->setError(\Lang::txt('Please provide a comment'));
+			$this->setError(Lang::txt('Please provide a comment'));
 			return false;
 		}
 
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(\Lang::txt('Missing entry ID.'));
+			$this->setError(Lang::txt('Missing entry ID.'));
 			return false;
 		}
 
 		$this->item_type = strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($this->item_type)));
 		if (!$this->item_type)
 		{
-			$this->setError(\Lang::txt('Missing entry type.'));
+			$this->setError(Lang::txt('Missing entry type.'));
 			return false;
 		}
 
 		if (!$this->created_by)
 		{
-			$this->created_by = \User::get('id');
+			$this->created_by = User::get('id');
 		}
 
 		if (!$this->id)
 		{
-			$this->created = \Date::toSql();
-			$this->state = 1;
+			$this->created = Date::toSql();
+			$this->state   = 1;
 		}
 		else
 		{
-			$this->modified_by = \User::get('id');
-			$this->modified = \Date::toSql();
+			$this->modified_by = User::get('id');
+			$this->modified    = Date::toSql();
 		}
 
 		// Check file attachment
@@ -97,17 +106,17 @@ class Comment extends \JTable
 				switch ($fileError)
 				{
 					case 1:
-						$this->setError(\Lang::txt('FILE TO LARGE THAN PHP INI ALLOWS'));
+						$this->setError(Lang::txt('FILE TO LARGE THAN PHP INI ALLOWS'));
 						return false;
 					break;
 
 					case 2:
-						$this->setError(\Lang::txt('FILE TO LARGE THAN HTML FORM ALLOWS'));
+						$this->setError(Lang::txt('FILE TO LARGE THAN HTML FORM ALLOWS'));
 						return false;
 					break;
 
 					case 3:
-						$this->setError(\Lang::txt('ERROR PARTIAL UPLOAD'));
+						$this->setError(Lang::txt('ERROR PARTIAL UPLOAD'));
 						return false;
 					break;
 
@@ -121,7 +130,7 @@ class Comment extends \JTable
 			$fileSize = $_FILES[$fieldName]['size'];
 			if ($fileSize > 2000000)
 			{
-				$this->setError(\Lang::txt('FILE BIGGER THAN 2MB'));
+				$this->setError(Lang::txt('FILE BIGGER THAN 2MB'));
 				return false;
 			}
 
@@ -147,7 +156,7 @@ class Comment extends \JTable
 
 			if ($extOk == false)
 			{
-				$this->setError(\Lang::txt('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
+				$this->setError(Lang::txt('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
 				return false;
 			}
 
@@ -167,7 +176,7 @@ class Comment extends \JTable
 
 			if (!\Filesystem::upload($fileTemp, $uploadPath))
 			{
-				$this->setError(\Lang::txt('ERROR MOVING FILE'));
+				$this->setError(Lang::txt('ERROR MOVING FILE'));
 				return false;
 			}
 
@@ -317,11 +326,11 @@ class Comment extends \JTable
 
 		if (!$item_type || !$item_id)
 		{
-			$this->setError(\Lang::txt('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
+			$this->setError(Lang::txt('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
 			return false;
 		}
 
-		if (!\User::isGuest())
+		if (!User::isGuest())
 		{
 			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
@@ -393,8 +402,8 @@ class Comment extends \JTable
 		if ($rows && count($rows) > 0)
 		{
 			$state = intval($state);
-			$rows = array_map('intval', $rows);
-			$ids = implode(',', $rows);
+			$rows  = array_map('intval', $rows);
+			$ids   = implode(',', $rows);
 
 			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE id IN ($ids)");
 			if (!$this->_db->query())
@@ -460,8 +469,8 @@ class Comment extends \JTable
 		if ($rows && count($rows) > 0)
 		{
 			$state = intval($state);
-			$rows = array_map('intval', $rows);
-			$id = implode(',', $rows);
+			$rows  = array_map('intval', $rows);
+			$id    = implode(',', $rows);
 
 			$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE parent IN ($id)");
 			if (!$this->_db->query())

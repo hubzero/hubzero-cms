@@ -39,8 +39,8 @@ class MarketHistory extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -50,7 +50,7 @@ class MarketHistory extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -79,12 +79,12 @@ class MarketHistory extends \JTable
 	/**
 	 * Get the ID of a record matching the data passed
 	 *
-	 * @param      mixed  $itemid   Integer
-	 * @param      string $action   Transaction type
-	 * @param      string $category Transaction category
-	 * @param      string $created  Transaction date
-	 * @param      string $log      Transaction log
-	 * @return     integer
+	 * @param   mixed   $itemid    Integer
+	 * @param   string  $action    Transaction type
+	 * @param   string  $category  Transaction category
+	 * @param   string  $created   Transaction date
+	 * @param   string  $log       Transaction log
+	 * @return  integer
 	 */
 	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '')
 	{

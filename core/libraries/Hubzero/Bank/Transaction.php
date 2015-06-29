@@ -38,8 +38,8 @@ class Transaction extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,7 +49,7 @@ class Transaction extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -89,9 +89,9 @@ class Transaction extends \JTable
 	/**
 	 * Get a history of transactions for a user
 	 *
-	 * @param      integer $limit Number of records to return
-	 * @param      integer $uid   User ID
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $limit  Number of records to return
+	 * @param   integer  $uid    User ID
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function history($limit=50, $uid=null)
 	{
@@ -116,10 +116,10 @@ class Transaction extends \JTable
 	/**
 	 * Delete records for a given category, type, and reference combination
 	 *
-	 * @param      string  $category    Transaction category (royalties, etc)
-	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
-	 * @param      integer $referenceid Reference ID (resource ID, etc)
-	 * @return     boolean False if errors, True on success
+	 * @param   string   $category     Transaction category (royalties, etc)
+	 * @param   string   $type         Transaction type (deposit, withdraw, etc)
+	 * @param   integer  $referenceid  Reference ID (resource ID, etc)
+	 * @return  boolean  False if errors, True on success
 	 */
 	public function deleteRecords($category=null, $type=null, $referenceid=null)
 	{
@@ -154,11 +154,11 @@ class Transaction extends \JTable
 	/**
 	 * Get a list of transactions of a certain type for a reference item and, optionally, user
 	 *
-	 * @param      string  $category    Transaction category (royalties, etc)
-	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
-	 * @param      integer $referenceid Reference ID (resource ID, etc)
-	 * @param      integer $uid   User ID
-	 * @return     mixed False if errors, array on success
+	 * @param   string   $category     Transaction category (royalties, etc)
+	 * @param   string   $type         Transaction type (deposit, withdraw, etc)
+	 * @param   integer  $referenceid  Reference ID (resource ID, etc)
+	 * @param   integer  $uid          User ID
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function getTransactions($category=null, $type=null, $referenceid=null, $uid=null)
 	{
@@ -192,11 +192,11 @@ class Transaction extends \JTable
 	/**
 	 * Get get the transaction amount for a category, type, reference item and, optionally, user
 	 *
-	 * @param      string  $category    Transaction category (royalties, etc)
-	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
-	 * @param      integer $referenceid Reference ID (resource ID, etc)
-	 * @param      integer $uid         User ID
-	 * @return     mixed False if errors, integer on success
+	 * @param   string   $category     Transaction category (royalties, etc)
+	 * @param   string   $type         Transaction type (deposit, withdraw, etc)
+	 * @param   integer  $referenceid  Reference ID (resource ID, etc)
+	 * @param   integer  $uid          User ID
+	 * @return  mixed    False if errors, integer on success
 	 */
 	public function getAmount($category=null, $type=null, $referenceid=null, $uid=null)
 	{
@@ -229,16 +229,16 @@ class Transaction extends \JTable
 	/**
 	 * Get a point total/average for a combination of category, type, user, etc.
 	 *
-	 * @param      string  $category    Transaction category (royalties, etc)
-	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
-	 * @param      integer $referenceid Reference ID (resource ID, etc)
-	 * @param      integer $royalty     If getting royalties
-	 * @param      string  $action      Action to filter by (asked, answered, misc)
-	 * @param      integer $uid         User ID
-	 * @param      integer $allusers    Get total for all users?
-	 * @param      string  $when        Datetime filter
-	 * @param      integer $calc        How total is calculated (record sum, avg, record count)
-	 * @return     integer
+	 * @param   string   $category     Transaction category (royalties, etc)
+	 * @param   string   $type         Transaction type (deposit, withdraw, etc)
+	 * @param   integer  $referenceid  Reference ID (resource ID, etc)
+	 * @param   integer  $royalty      If getting royalties
+	 * @param   string   $action       Action to filter by (asked, answered, misc)
+	 * @param   integer  $uid          User ID
+	 * @param   integer  $allusers     Get total for all users?
+	 * @param   string   $when         Datetime filter
+	 * @param   integer  $calc         How total is calculated (record sum, avg, record count)
+	 * @return  integer
 	 */
 	public function getTotals($category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0)
 	{

@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Item;
@@ -32,8 +38,8 @@ class Watch extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -43,7 +49,7 @@ class Watch extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -79,12 +85,10 @@ class Watch extends \JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build SQL statement based on passed filters
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -136,8 +140,8 @@ class Watch extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query off of
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query off of
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -152,8 +156,8 @@ class Watch extends \JTable
 	/**
 	 * Get an array of records
 	 *
-	 * @param      array $filters Filters to build query off of
-	 * @return     array
+	 * @param   array  $filters  Filters to build query off of
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -182,10 +186,10 @@ class Watch extends \JTable
 	/**
 	 * Is user watching item?
 	 *
-	 * @param  int $item_id
-	 * @param  int $item_type
-	 * @param  int $created_by
-	 * @return object Return boolean
+	 * @param   integer  $item_id
+	 * @param   integer  $item_type
+	 * @param   integer  $created_by
+	 * @return  object   Return boolean
 	 */
 	public function isWatching($item_id, $item_type, $created_by)
 	{
@@ -209,16 +213,17 @@ class Watch extends \JTable
 		{
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
 	 * Load record
 	 *
-	 * @param  int $item_id
-	 * @param  int $item_type
-	 * @param  int $created_by
-	 * @return object Return boolean
+	 * @param   integer  $item_id
+	 * @param   integer  $item_type
+	 * @param   integer  $created_by
+	 * @return  object   Return boolean
 	 */
 	public function loadRecord($item_id, $item_type, $created_by, $email = NULL)
 	{
@@ -246,11 +251,9 @@ class Watch extends \JTable
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 }

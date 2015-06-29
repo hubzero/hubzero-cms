@@ -430,7 +430,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	/**
 	 * Get the processor for a specific format
 	 *
-	 * @param   string  $format  Format to return the prcoessor for
+	 * @param   string  $format  Format to return the processor for
 	 * @return  object
 	 */
 	public function processor($format = 'json')
@@ -507,7 +507,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	/**
 	 * Method to extract a sub-registry from path
 	 *
-	 * @param   string  $path  Registry path (e.g. joomla.content.showauthor)
+	 * @param   string  $path  Registry path (e.g. config.cache.file)
 	 * @return  mixed   Registry object if data is present
 	 */
 	public function extract($path)

@@ -31,7 +31,6 @@
 namespace Hubzero\Content\Import\Model;
 
 use Hubzero\Base\Model;
-use JFactory;
 
 /**
  * Import Runs Model

@@ -33,6 +33,7 @@ use Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Model\Import;
 use Hubzero\Content\Import\Model\Import\Record;
 use Hubzero\Content\Import\Adapter\Xml\Reader;
+use Hubzero\Html\Parameter;
 
 /**
  * Xml Importer
@@ -122,7 +123,7 @@ class Xml implements Adapter
 		$iterator = new Reader($import->getDataPath(), $this->key);
 
 		// get the import params
-		$options = new \JParameter($import->get('params'));
+		$options = new Parameter($import->get('params'));
 
 		// get the mode
 		$mode = $import->get('mode', 'UPDATE');

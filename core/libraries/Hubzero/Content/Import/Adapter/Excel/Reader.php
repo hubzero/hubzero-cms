@@ -32,11 +32,6 @@ namespace Hubzero\Content\Import\Adapter\Excel;
 use Iterator;
 use stdClass;
 
-if (file_exists(JPATH_LIBRARIES . DS . 'phpexcel' . DS . 'PHPExcel.php'))
-{
-	include_once(JPATH_LIBRARIES . DS . 'phpexcel' . DS . 'PHPExcel.php');
-}
-
 /**
  *  Excel Reader Iterator Class implemeting interator
  */

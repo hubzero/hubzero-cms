@@ -38,8 +38,8 @@ class Account extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,7 +49,7 @@ class Account extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -65,8 +65,8 @@ class Account extends \JTable
 	/**
 	 * Load a record based on user ID and bind results to $this
 	 *
-	 * @param      integer $oid User ID
-	 * @return     boolean True on success
+	 * @param   integer  $oid  User ID
+	 * @return  boolean  True on success
 	 */
 	public function load_uid($oid=NULL)
 	{

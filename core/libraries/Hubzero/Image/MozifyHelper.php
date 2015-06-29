@@ -38,8 +38,8 @@ class MozifyHelper
 	/**
 	 * Convert images in a string of HTML to mosaics
 	 *
-	 * @param   string  $html
-	 * @param   integer $mosaicSize
+	 * @param   string   $html
+	 * @param   integer  $mosaicSize
 	 * @return  string
 	 */
 	public static function mozifyHtml($html = '', $mosaicSize = 5)

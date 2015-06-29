@@ -55,35 +55,35 @@ use Exception;
 class Identicon
 {
 	/**
-	 * @var string
+	 * @var  string
 	 */
 	private $hash;
 
 	/**
-	 * @var integer
+	 * @var  integer
 	 */
 	private $color;
 
 	/**
-	 * @var integer
+	 * @var  integer
 	 */
 	private $size;
 
 	/**
-	 * @var integer
+	 * @var  integer
 	 */
 	private $pixelRatio;
 
 	/**
-	 * @var array
+	 * @var  array
 	 */
 	private $arrayOfSquare = array();
 
 	/**
 	 * Set the image size
 	 *
-	 * @param integer $size
-	 * @return Identicon
+	 * @param   integer  $size
+	 * @return  object
 	 */
 	public function setSize($size)
 	{
@@ -96,7 +96,7 @@ class Identicon
 	/**
 	 * Get the image size
 	 *
-	 * @return integer
+	 * @return  integer
 	 */
 	public function getSize()
 	{
@@ -106,9 +106,8 @@ class Identicon
 	/**
 	 * Generate a hash fron the original string
 	 *
-	 * @param string $string
-	 *
-	 * @return Identicon
+	 * @param   string  $string
+	 * @return  object
 	 */
 	public function setString($string)
 	{
@@ -127,7 +126,7 @@ class Identicon
 	/**
 	 * Get the identicon string hash
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function getHash()
 	{
@@ -137,7 +136,7 @@ class Identicon
 	/**
 	 * Convert the hash into an multidimensionnal array of boolean
 	 *
-	 * @return Identicon
+	 * @return  object
 	 */
 	private function convertHashToArrayOfBoolean()
 	{
@@ -172,8 +171,8 @@ class Identicon
 	/**
 	 * Convert an heaxecimal number into a boolean
 	 *
-	 * @param string $hexa
-	 * @return boolean
+	 * @param   string  $hexa
+	 * @return  boolean
 	 */
 	private function convertHexaToBoolean($hexa)
 	{
@@ -183,7 +182,7 @@ class Identicon
 	/**
 	 * Get arrayOfSquare
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function getArrayOfSquare()
 	{
@@ -194,9 +193,10 @@ class Identicon
 	/**
 	 * Generate the Identicon image
 	 *
-	 * @param string  $string
-	 * @param integer $size
-	 * @param string $hexaColor
+	 * @param   string   $string
+	 * @param   integer  $size
+	 * @param   string   $hexaColor
+	 * @return  void
 	 */
 	private function generateImage($string, $size, $color)
 	{
@@ -233,8 +233,8 @@ class Identicon
 	/**
 	 * Set the image color
 	 *
-	 * @param string|array $color The color in hexa (6 chars) or rgb array
-	 * @return Identicon
+	 * @param   mixed   $color  The color in hexa (6 chars) or rgb array
+	 * @return  object
 	 */
 	public function setColor($color)
 	{
@@ -261,7 +261,7 @@ class Identicon
 	/**
 	 * Get the color
 	 *
-	 * @return arrray
+	 * @return  arrray
 	 */
 	public function getColor()
 	{
@@ -271,9 +271,10 @@ class Identicon
 	/**
 	 * Display an Identicon image
 	 *
-	 * @param string  $string
-	 * @param integer $size
-	 * @param string $hexaColor
+	 * @param   string   $string
+	 * @param   integer  $size
+	 * @param   string   $hexaColor
+	 * @return  void
 	 */
 	public function displayImage($string, $size = 64, $hexaColor = null)
 	{
@@ -284,10 +285,10 @@ class Identicon
 	/**
 	 * Get an Identicon PNG image data
 	 *
-	 * @param string  $string
-	 * @param integer $size
-	 * @param string $hexaColor
-	 * @return string
+	 * @param   string   $string
+	 * @param   integer  $size
+	 * @param   string   $hexaColor
+	 * @return  string
 	 */
 	public function getImageData($string, $size = 64, $hexaColor = null)
 	{
@@ -302,10 +303,10 @@ class Identicon
 	/**
 	 * Get an Identicon PNG image data
 	 *
-	 * @param string  $string
-	 * @param integer $size
-	 * @param string $hexaColor
-	 * @return string
+	 * @param   string   $string
+	 * @param   integer  $size
+	 * @param   string   $hexaColor
+	 * @return  string
 	 */
 	public function getImageDataUri($string, $size = 64, $hexaColor = null)
 	{

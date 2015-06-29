@@ -78,9 +78,9 @@ class Router
 	}
 
 	/**
-	 * Translates an internal Joomla URL to a humanly readable URL.
+	 * Translates an internal URL to a humanly readable URL.
 	 *
-	 * @param   string   $url    Absolute or Relative URI to Joomla resource.
+	 * @param   string   $url    Absolute or Relative URI to resource.
 	 * @param   boolean  $xhtml  Replace & by &amp; for XML compliance.
 	 * @param   integer  $ssl    Secure state for the resolved URI.
 	 *                             1: Make URI secure using global secure site URI.

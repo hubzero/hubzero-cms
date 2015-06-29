@@ -33,6 +33,7 @@ use Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Model\Import;
 use Hubzero\Content\Import\Model\Import\Record;
 use Hubzero\Content\Import\Adapter\Csv\Reader;
+use Hubzero\Html\Parameter;
 
 /**
  * CSV Importer
@@ -123,7 +124,7 @@ class Csv implements Adapter
 		$iterator = new Reader($import->getDatapath(), $this->delimiter);
 
 		// get the import params
-		$options = new \JParameter($import->get('params'));
+		$options = new Parameter($import->get('params'));
 
 		// get the mode
 		$mode = $import->get('mode', 'UPDATE');

@@ -41,15 +41,15 @@ class Wallet
 	/**
 	 * Badge provider
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_provider;
 
 	/**
 	 * Constructor
 	 *
-	 * @param	string 		provider
-	 * @param	string 		requestType
+	 * @param   string  $provider
+	 * @param   string  $requestType
 	 * @return  void
 	 */
 	public function __construct($provider, $requestType='oauth')
@@ -72,6 +72,7 @@ class Wallet
 	/**
 	 * Get badges provider instance
 	 *
+	 * @return  object
 	 */
 	public function getProvider()
 	{

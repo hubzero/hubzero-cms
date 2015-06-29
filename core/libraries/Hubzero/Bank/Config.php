@@ -38,18 +38,18 @@ use Hubzero\Base\Object;
 class Config extends Object
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	var $_db = NULL;
+	protected $_db = NULL;
 
 	/**
 	 * Constructor
 	 * Loads points configuration
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{

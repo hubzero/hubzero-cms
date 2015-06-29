@@ -39,48 +39,48 @@ use Hubzero\Utility\Date;
 class Teller extends Object
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
-	var $_db      = NULL;
+	protected $_db   = NULL;
 
 	/**
 	 * User ID
 	 *
 	 * @var string
 	 */
-	var $uid      = NULL;
+	public $uid      = NULL;
 
 	/**
 	 * Current point balance
 	 *
 	 * @var mixed
 	 */
-	var $balance  = NULL;
+	public $balance  = NULL;
 
 	/**
 	 * Lifetime point earnings
 	 *
 	 * @var mixed
 	 */
-	var $earnings = NULL;
+	public $earnings = NULL;
 
 	/**
 	 * Credit point balance
 	 *
 	 * @var mixed
 	 */
-	var $credit   = NULL;
+	public $credit   = NULL;
 
 	/**
 	 * Constructor
 	 * Find the balance from the most recent transaction.
 	 * If no balance is found, create an initial transaction.
 	 *
-	 * @param      object  &$db JDatabase
-	 * @param      integer $uid User ID
-	 * @return     void
+	 * @param   object   &$db  Database
+	 * @param   integer  $uid  User ID
+	 * @return  void
 	 */
 	public function __construct(&$db, $uid)
 	{
@@ -128,11 +128,11 @@ class Teller extends Object
 	/**
 	 * Add points
 	 *
-	 * @param      integer $amount Amount to deposit
-	 * @param      string  $desc   Transaction description
-	 * @param      string  $cat    Transaction category
-	 * @param      integer $ref    ID of item transaction references
-	 * @return     void
+	 * @param   integer  $amount  Amount to deposit
+	 * @param   string   $desc    Transaction description
+	 * @param   string   $cat     Transaction category
+	 * @param   integer  $ref     ID of item transaction references
+	 * @return  void
 	 */
 	public function deposit($amount, $desc='Deposit', $cat, $ref)
 	{
@@ -156,11 +156,11 @@ class Teller extends Object
 	/**
 	 * Withdraw (spend) points
 	 *
-	 * @param      number  $amount Amount to withdraw
-	 * @param      string  $desc   Transaction description
-	 * @param      string  $cat    Transaction category
-	 * @param      integer $ref    ID of item transaction references
-	 * @return     void
+	 * @param   number   $amount  Amount to withdraw
+	 * @param   string   $desc    Transaction description
+	 * @param   string   $cat     Transaction category
+	 * @param   integer  $ref     ID of item transaction references
+	 * @return  void
 	 */
 	public function withdraw($amount, $desc='Withdraw', $cat, $ref)
 	{
@@ -190,11 +190,11 @@ class Teller extends Object
 	/**
 	 * Set points aside (credit)
 	 *
-	 * @param      integer $amount Amount to put on hold
-	 * @param      string  $desc   Transaction description
-	 * @param      string  $cat    Transaction category
-	 * @param      integer $ref    ID of item transaction references
-	 * @return     void
+	 * @param   integer  $amount  Amount to put on hold
+	 * @param   string   $desc    Transaction description
+	 * @param   string   $cat     Transaction category
+	 * @param   integer  $ref     ID of item transaction references
+	 * @return  void
 	 */
 	public function hold($amount, $desc='Hold', $cat, $ref)
 	{
@@ -231,8 +231,8 @@ class Teller extends Object
 	/**
 	 * Make credit adjustment
 	 *
-	 * @param      integer $amount Amount to credit
-	 * @return     void
+	 * @param   integer  $amount  Amount to credit
+	 * @return  void
 	 */
 	public function credit_adjustment($amount)
 	{
@@ -244,8 +244,8 @@ class Teller extends Object
 	/**
 	 * Get a history of transactions
 	 *
-	 * @param      integer $limit Number of records to return
-	 * @return     array
+	 * @param   integer  $limit  Number of records to return
+	 * @return  array
 	 */
 	public function history($limit=20)
 	{
@@ -261,8 +261,8 @@ class Teller extends Object
 	/**
 	 * Check that they have enough in their account to perform the transaction.
 	 *
-	 * @param      number $amount Amount to subtract from balance
-	 * @return     boolean True if they have enough credit
+	 * @param   number   $amount  Amount to subtract from balance
+	 * @return  boolean  True if they have enough credit
 	 */
 	public function _creditCheck($amount)
 	{
@@ -285,8 +285,8 @@ class Teller extends Object
 	/**
 	 * Check if an amount is greater than 0
 	 *
-	 * @param      integer $amount Amount to check
-	 * @return     integer
+	 * @param   integer  $amount  Amount to check
+	 * @return  integer
 	 */
 	public function _amountCheck($amount)
 	{
@@ -301,12 +301,12 @@ class Teller extends Object
 	/**
 	 * Save a record
 	 *
-	 * @param      string  $type   Record type (inserting or updating)
-	 * @param      integer $amount Amount to process
-	 * @param      string  $desc   Transaction description
-	 * @param      string  $cat    Transaction category
-	 * @param      integer $ref    ID of item transaction references
-	 * @return     boolean True on success
+	 * @param   string   $type    Record type (inserting or updating)
+	 * @param   integer  $amount  Amount to process
+	 * @param   string   $desc    Transaction description
+	 * @param   string   $cat     Transaction category
+	 * @param   integer  $ref     ID of item transaction references
+	 * @return  boolean  True on success
 	 */
 	public function _save($type, $amount, $desc, $cat, $ref)
 	{
@@ -325,8 +325,8 @@ class Teller extends Object
 	/**
 	 * Save the current balance
 	 *
-	 * @param      string  $type   Record type (inserting or updating)
-	 * @return     boolean True on success
+	 * @param   string   $type  Record type (inserting or updating)
+	 * @return  boolean  True on success
 	 */
 	public function _saveBalance($type)
 	{
@@ -354,12 +354,12 @@ class Teller extends Object
 	/**
 	 * Record the transaction
 	 *
-	 * @param      string  $type   Record type (inserting or updating)
-	 * @param      integer $amount Amount to process
-	 * @param      string  $desc   Transaction description
-	 * @param      string  $cat    Transaction category
-	 * @param      integer $ref    ID of item transaction references
-	 * @return     boolean True on success
+	 * @param   string   $type    Record type (inserting or updating)
+	 * @param   integer  $amount  Amount to process
+	 * @param   string   $desc    Transaction description
+	 * @param   string   $cat     Transaction category
+	 * @param   integer  $ref     ID of item transaction references
+	 * @return  boolean  True on success
 	 */
 	public function _saveTransaction($type, $amount, $desc, $cat, $ref)
 	{

@@ -32,6 +32,7 @@ namespace Hubzero\Document\Type\Feed;
 
 use Hubzero\Document\Renderer;
 use Hubzero\Utility\Date;
+use App;
 
 /**
  * A feed that implements the atom specification
@@ -57,28 +58,24 @@ class Atom extends Renderer
 	 * @param   string  $name     The name of the element to render
 	 * @param   array   $params   Array of values
 	 * @param   string  $content  Override the output of the renderer
-	 *
 	 * @return  string  The output of the script
-	 *
-	 * @see JDocumentRenderer::render()
-	 * @since   11.1
 	 */
 	public function render($name = '', $params = null, $content = null)
 	{
 		$now  = new Date('now');
 		$data = $this->doc;
 
-		$uri = JFactory::getURI();
-		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-		$syndicationURL = JRoute::_('&format=feed&type=atom');
+		$uri = App::get('request')->root();
 
-		if (\App::get('config')->get('sitename_pagetitles', 0) == 1)
+		$syndicationURL = App::get('router')->url('&format=feed&type=atom');
+
+		if (App::get('config')->get('sitename_pagetitles', 0) == 1)
 		{
-			$data->title = \App::get('language')->txt('JPAGETITLE', \App::get('config')->get('sitename'), $data->title);
+			$data->title = App::get('language')->txt('JPAGETITLE', App::get('config')->get('sitename'), $data->title);
 		}
-		elseif (\App::get('config')->get('sitename_pagetitles', 0) == 2)
+		elseif (App::get('config')->get('sitename_pagetitles', 0) == 2)
 		{
-			$data->title = \App::get('language')->txt('JPAGETITLE', $data->title, \App::get('config')->get('sitename'));
+			$data->title = App::get('language')->txt('JPAGETITLE', $data->title, App::get('config')->get('sitename'));
 		}
 
 		$feed_title = htmlspecialchars($title, ENT_COMPAT, 'UTF-8');
@@ -118,7 +115,7 @@ class Atom extends Renderer
 			}
 			$feed .= "	</author>\n";
 		}
-		$feed .= "	<generator uri=\"http://joomla.org\" version=\"2.5\">" . $data->getGenerator() . "</generator>\n";
+		$feed .= "	<generator uri=\"http://hubzero.org\" version=\"2.5\">" . $data->getGenerator() . "</generator>\n";
 		$feed .= '	<link rel="self" type="application/atom+xml" href="' . str_replace(' ', '%20', $url . $syndicationURL) . "\"/>\n";
 
 		for ($i = 0, $count = count($data->items); $i < $count; $i++)
@@ -131,8 +128,9 @@ class Atom extends Renderer
 			{
 				$data->items[$i]->date = $now->toUnix();
 			}
-			$itemDate = JFactory::getDate($data->items[$i]->date);
+			$itemDate = new Date($data->items[$i]->date);
 			$itemDate->setTimeZone($tz);
+
 			$feed .= "		<published>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</published>\n";
 			$feed .= "		<updated>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</updated>\n";
 			if (empty($data->items[$i]->guid) === true)
@@ -187,7 +185,7 @@ class Atom extends Renderer
 	/**
 	 * Escape text
 	 *
-	 * @param   string $text
+	 * @param   string  $text
 	 * @return  string
 	 */
 	public function escape($text)

@@ -105,14 +105,14 @@ class Record extends Object
 
 		// Create core objects
 		$this->_database = \App::get('db');
-		$this->_user     = \JFactory::getUser();
+		$this->_user     = \User::getRoot();
 
 		// Create objects
 		$this->record = new stdClass;
 
 		// Message bags for user
-		$this->record->errors       = array();
-		$this->record->notices      = array();
+		$this->record->errors  = array();
+		$this->record->notices = array();
 
 		// Bind data
 		$this->bind();

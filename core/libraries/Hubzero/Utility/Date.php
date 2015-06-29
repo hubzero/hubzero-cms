@@ -70,7 +70,7 @@ class Date extends DateTime
 
 	/**
 	 * An array of offsets and time zone strings representing the available
-	 * options from Joomla! CMS 1.5 and below.
+	 * options from prior CMS versions.
 	 *
 	 * @deprecated    12.1
 	 * @var  array

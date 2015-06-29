@@ -40,7 +40,7 @@ use Hubzero\Base\Object;
 class Archive extends Object
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
@@ -63,11 +63,16 @@ class Archive extends Object
 	/**
 	 * Constructor
 	 *
+	 * @param   object  $db
 	 * @return  void
 	 */
-	public function __construct()
+	public function __construct($db = null)
 	{
-		$this->_db = \App::get('db');
+		if (!$db)
+		{
+			$db = \App::get('db');
+		}
+		$this->_db = $db;
 	}
 
 	/**

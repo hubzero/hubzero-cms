@@ -30,10 +30,12 @@
 
 namespace Hubzero\Image;
 
+use Hubzero\Base\Object;
+
 /**
  * Helper class for Converting Image to Table Mosaic
  */
-class Mozify extends \Hubzero\Base\Object
+class Mozify extends Object
 {
 	private $imageAlt        = null;
 	private $imageUrl        = null;
@@ -46,7 +48,7 @@ class Mozify extends \Hubzero\Base\Object
 	/**
 	 * Image Mozifyier Constructor
 	 *
-	 * @param    $config    Array of config values
+	 * @param  $config  Array of config values
 	 */
 	public function __construct($config = array())
 	{
@@ -54,24 +56,24 @@ class Mozify extends \Hubzero\Base\Object
 		if (isset($config['imageUrl']) && $config['imageUrl'] != '')
 		{
 			//set image url
-			$this->setImageUrl( $config['imageUrl'] );
+			$this->setImageUrl($config['imageUrl']);
 
 			//set alt text if we have it
 			if (isset($config['imageAlt']))
 			{
-				$this->setImageAlt( $config['imageAlt'] );
+				$this->setImageAlt($config['imageAlt']);
 			}
 
 			//set mosaic size if we have it
 			if (isset($config['mosaicSize']))
 			{
-				$this->setMosaicSize( $config['mosaicSize'] );
+				$this->setMosaicSize($config['mosaicSize']);
 			}
 
 			//set mosaic size if we have it
 			if (isset($config['cssClassName']))
 			{
-				$this->setCssClassName( $config['cssClassName'] );
+				$this->setCssClassName($config['cssClassName']);
 			}
 		}
 	}
@@ -88,7 +90,6 @@ class Mozify extends \Hubzero\Base\Object
 			return;
 		}
 
-		//build return html
 		$html  = $this->_mozifyCss() . PHP_EOL;
 		$html .= $this->_mozifyStartMsoHack() . PHP_EOL;
 		$html .= $this->_mozifyImageReplacement() . PHP_EOL;
@@ -144,6 +145,8 @@ class Mozify extends \Hubzero\Base\Object
 
 	/**
 	 * Accessor Method to get Image Alt Text
+	 *
+	 * @return  string
 	 */
 	public function getImageAlt()
 	{
@@ -152,6 +155,9 @@ class Mozify extends \Hubzero\Base\Object
 
 	/**
 	 * Mutator Method to set Image Alt Text
+	 *
+	 * @param   string $imageAlt
+	 * @return  void
 	 */
 	public function setImageAlt($imageAlt = '')
 	{
@@ -160,6 +166,8 @@ class Mozify extends \Hubzero\Base\Object
 
 	/**
 	 * Accessor Method to get Mosaic Size
+	 *
+	 * @return  string
 	 */
 	public function getMosaicSize()
 	{
@@ -168,6 +176,9 @@ class Mozify extends \Hubzero\Base\Object
 
 	/**
 	 * Mutator Method to set Mosaic Size
+	 *
+	 * @param   string  $mosaicSize
+	 * @return  void
 	 */
 	public function setMosaicSize($mosaicSize = '')
 	{
@@ -176,6 +187,8 @@ class Mozify extends \Hubzero\Base\Object
 
 	/**
 	 * Accessor Method to get CSS Class Name
+	 *
+	 * @return  string
 	 */
 	public function getCssClassName()
 	{
@@ -185,8 +198,8 @@ class Mozify extends \Hubzero\Base\Object
 	/**
 	 * Mutator Method to set CSS Class Name
 	 *
-	 * @param  string $cssClassName
-	 * @return void
+	 * @param   string  $cssClassName
+	 * @return  void
 	 */
 	public function setCssClassName($cssClassName = '')
 	{
@@ -283,7 +296,7 @@ class Mozify extends \Hubzero\Base\Object
 		//build mosaic html
 		$mosaic  = '<table width="' . $this->imageWidth . '" height="' . $this->imageHeight . '" cellspacing="0" cellpadding="0" border="0" bgcolor="#fefefe" class="' . $class . '">';
 		$mosaic .= '<tbody>';
-		for ( $y = 0; $y < $this->imageHeight; $y+=$this->mosaicSize)
+		for ($y = 0; $y < $this->imageHeight; $y+=$this->mosaicSize)
 		{
 			$mosaic .= '<tr>';
 			for ($x = 0; $x < $this->imageWidth; $x+=$this->mosaicSize)
@@ -291,7 +304,7 @@ class Mozify extends \Hubzero\Base\Object
 				$color = imagecolorat($resource, $x, $y);
 				$rgba = imagecolorsforindex($resource, $color);
 				//$rgba['alpha'] = $rgba['alpha'];
-				$color_string = $this->_rgb2hex( $rgba );
+				$color_string = $this->_rgb2hex($rgba);
 				$mosaic .= '<td width="' . $this->mosaicSize . '" bgcolor="' . $color_string . '"><b></b></td>' . PHP_EOL;
 			}
 			$mosaic .= '</tr>' . PHP_EOL;
