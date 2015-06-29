@@ -534,7 +534,7 @@ class Storage extends SiteController
 		if (is_dir($path))
 		{
 			// Loop through all files and separate them into arrays of docs and folders
-			$dirIterator = new DirectoryIterator($path);
+			$dirIterator = new \DirectoryIterator($path);
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())

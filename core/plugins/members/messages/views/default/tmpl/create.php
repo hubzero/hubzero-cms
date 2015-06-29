@@ -75,4 +75,6 @@ $this->css();
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="send" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+
+	<?php echo Html::input('token'); ?>
 </form>

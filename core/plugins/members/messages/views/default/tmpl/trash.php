@@ -148,4 +148,6 @@ $this->css()
 			<?php endif; ?>
 		</tbody>
 	</table>
+
+	<?php echo Html::input('token'); ?>
 </form>

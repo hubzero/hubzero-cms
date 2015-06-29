@@ -89,5 +89,7 @@ $this->css()
 			?>
 			</tbody>
 		</table>
+
+		<?php echo Html::input('token'); ?>
 	</form>
 <?php } ?>

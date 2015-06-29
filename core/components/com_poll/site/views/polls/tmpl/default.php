@@ -45,7 +45,7 @@ $this->css('poll_bars.css');
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
-<form action="<?php echo Route::url('index.php?option=com_poll&view=poll'); ?>" method="post" name="poll" id="poll">
+<form action="<?php echo Route::url('index.php?option=com_poll&view=poll'); ?>" method="get" name="poll" id="poll">
 	<section class="main section">
 		<label for="id">
 			<?php echo Lang::txt('COM_POLL_SELECT'); ?>

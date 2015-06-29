@@ -87,7 +87,7 @@ $this->css('storage.css');
 			<legend><?php echo Lang::txt('COM_TOOLS_STORAGE_MANUAL'); ?></legend>
 			<div class="filebrowser field-wrap">
 				<?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSE_STORAGE'); ?>
-				<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="300" border="0" frameborder="0"></iframe>
+				<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="500" border="0" frameborder="0"></iframe>
 			</div>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

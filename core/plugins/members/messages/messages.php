@@ -631,6 +631,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -675,10 +678,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 		$start = Request::getInt('limitstart', 0);
-		$mids = Request::getVar('mid', array());
+		$mids  = Request::getVar('mid', array());
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -717,6 +723,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -787,6 +796,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -824,6 +836,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($ids) > 0)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			foreach ($ids as $mid)
 			{
 				$xseen = new \Hubzero\Message\Seen($database);
@@ -862,6 +877,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($ids) > 0)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
 			$database = App::get('db');
 			$database->setQuery($sql);
@@ -887,6 +905,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function savesettings($database, $option, $member)
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		//$override = Request::getInt('override',0);
 		$settings = Request::getVar('settings',array());

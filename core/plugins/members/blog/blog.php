@@ -847,6 +847,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$settings = Request::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);
@@ -856,8 +859,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_entry();
 		}
 
-		$p = new JParameter('');
-		$p->bind(Request::getVar('params', array(), 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
 		$row->params = $p->toString();
 
