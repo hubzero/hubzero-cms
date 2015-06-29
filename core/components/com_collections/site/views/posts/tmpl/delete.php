@@ -60,6 +60,8 @@ defined('_HZEXEC_') or die();
 		<input type="hidden" name="task" value="delete" />
 		<input type="hidden" name="entry" value="<?php echo $this->entry->id; ?>" />
 
+		<?php echo Html::input('token'); ?>
+
 		<p class="submit">
 			<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>" />
 			<a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.Date::of($this->entry->publish_up)->toLocal('Y').'/'.Date::of($this->entry->publish_up)->toLocal('m').'/'.$this->entry->alias); ?>"><?php echo Lang::txt('Cancel'); ?></a>

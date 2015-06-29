@@ -432,6 +432,8 @@ class Posts extends SiteController
 			return;
 		}
 
+		Request::checkToken();
+
 		$collection_title = Request::getVar('collection_title', '');
 		$collection_id = Request::getInt('collection_id', 0);
 		$item_id       = Request::getInt('item_id', 0);

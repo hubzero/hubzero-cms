@@ -118,6 +118,8 @@ if ($this->collection_id)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="collect" />
 
+	<?php echo Html::input('token'); ?>
+
 	<p class="submit">
 		<input type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_POST'); ?>" />
 	</p>
