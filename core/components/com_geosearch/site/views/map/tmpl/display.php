@@ -76,65 +76,10 @@ $this->css('geosearch.css');
 		<div class="clear-right"></div>
 	</fieldset>
 
-
-<?php if (0): ?>
-	<fieldset>
-		<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_TAGS'); ?></legend>
-		<?php
-			if (isset($this->stags))
-			{
-				$stags = implode(",",$this->stags);
-			}
-			else
-			{
-				$stags = "";
-			}
-
-			// load tags plugin
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher = JDispatcher::getInstance();
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags','tags','actags','',$stags)) );
-			if (count($tf) > 0)
-			{
-				echo $tf[0];
-			}
-			else
-			{
-				echo '<input type="text" name="tags" value="'. $stags .'" />';
-			}
-		?>
-	</fieldset>
-
-		<fieldset>
-			<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_LOC'); ?></legend>
-			<label class="fieldset">Within:</label>
-			<input type="text" name="distance" id="idist" value="<?php //echo $this->distance; ?>" />
-			<select name="dist_units">
-				<option value="mi">Miles</option>
-				<option value="km" <?php if ($this->unit == 'km') echo 'selected="selected"'; ?>>Kilometers</option>
-			</select>
-			<label class="fieldset">of:</label>
-			<input type="text" name="location" id="iloc" value="<?php echo ($this->location != '' ? $this->location : ''); ?>" <?php echo ($this->location == '' ? 'placeholder="place, address, or zip"' : ''); ?> />
-		</fieldset>
-
-
-	<input type="submit" value="<?php echo Lang::txt('COM_GEOSEARCH_FILTER_BUTTON'); ?>" /> <input type="button" value="Clear" id="clears"/>
-
-	<div class="clear"></div>
-<?php endif; ?>
 	</div><!-- / .container -->
 </div><!-- / .aside -->
 
 <div class="subject">
-	<div class="container data-entry">
-		<input class="entry-search-submit" type="submit" value="Search">
-		<fieldset class="entry-search">
-			<legend>Search by Keyword</legend>
-			<label for="entry-search-field">Enter keyword or phrase</label>
-			<input type="text" name="search" id="entry-search-field" value="<?php echo Request::getVar('search', ''); ?>" placeholder="Search by keyword or phrase">
-		</fieldset>
-	</div> <!-- / .container .data-entry -->
-
 	<div id="map_container">
 		<div id="map_canvas"></div>
 	</div> <!-- / #map_container -->
