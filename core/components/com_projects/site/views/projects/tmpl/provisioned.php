@@ -94,20 +94,18 @@ $this->css()
 								</p>
 							</div>
 							<fieldset>
-								<label>
+								<label for="field-title">
 									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('COM_PROJECTS_PROJECT_TITLE') . ' :: ' . Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?>">&nbsp;</span>
 									<?php echo Lang::txt('COM_PROJECTS_PROJECT_TITLE'); ?>
-									<input name="title" maxlength="250" type="text" value="<?php echo $this->pub->title; ?>" class="long" />
+									<input name="title" id="field-title" maxlength="250" type="text" value="<?php echo $this->pub->title; ?>" class="verifyme long" />
 								</label>
 
-								<label>
+								<label for="field-alias">
 									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('COM_PROJECTS_CHOOSE_ALIAS') . '::' . Lang::txt('COM_PROJECTS_HINTS_NAME'); ?>">&nbsp;</span>
 									<?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?>
-									<input name="new-alias" id="new-alias" maxlength="30" type="text" value="<?php echo $this->suggested; ?>" class="long" />
+									<span class="verification"></span>
+									<input name="new-alias" id="field-alias" maxlength="30" type="text" value="<?php echo $this->suggested; ?>" class="verifyme long" />
 								</label>
-
-								<div id="verify-alias"></div>
-
 								<p class="submitarea">
 									<input type="submit" id="b-continue" class="btn btn-primary active" value="<?php echo Lang::txt('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT'); ?>" />
 									<span class="btn btncancel"><a href="<?php echo $url; ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>

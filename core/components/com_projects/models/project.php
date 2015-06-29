@@ -804,11 +804,11 @@ class Project extends Model
 		$this->config();
 
 		// Set name length
-		$minLength = $this->_config->get('min_name_length', 3);
-		$maxLength = $this->_config->get('max_name_length', 30);
+		$minLength = $this->config('min_name_length', 3);
+		$maxLength = $this->config('max_name_length', 30);
 
 		// Array of reserved names (task names and default dirs)
-		$reserved = explode(',', $this->_config->get('reserved_names'));
+		$reserved = explode(',', $this->config('reserved_names'));
 		$tasks    = array('start', 'setup', 'browse',
 			'intro', 'features', 'deleteimg',
 			'reports', 'stats', 'view', 'edit',

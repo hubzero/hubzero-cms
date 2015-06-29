@@ -738,7 +738,8 @@ class Projects extends Base
 		$verified = $this->model->check($name, $this->model->get('id'));
 		if ($confirm && !$verified)
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
+			$error = $this->model->getError() ? $this->model->getError() : Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY');
+			$this->setError( $error );
 		}
 		elseif ($confirm && ($title == '' || strlen($title) < 3))
 		{
