@@ -31,6 +31,7 @@
 namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
+use Hubzero\Utility;
 use Filesystem;
 use Component;
 use Request;
@@ -149,7 +150,7 @@ class Media extends Base
 
 	/**
 	 * Create group folder id doesnt exist
-	 * 
+	 *
 	 * @param  [type] $path [description]
 	 * @return [type]       [description]
 	 */
@@ -170,7 +171,7 @@ class Media extends Base
 
 	/**
 	 * Build Folder tree based on path
-	 * 
+	 *
 	 * @param  [type]  $folders   [description]
 	 * @param  integer $parent_id [description]
 	 * @return [type]             [description]
@@ -195,7 +196,7 @@ class Media extends Base
 
 	/**
 	 * Build Folder tree in html ul list form
-	 * 
+	 *
 	 * @param  [type] $tree [description]
 	 * @return [type]       [description]
 	 */
@@ -228,7 +229,7 @@ class Media extends Base
 
 	/**
 	 * Build Folder tree in select list form
-	 * 
+	 *
 	 * @param  [type] $tree [description]
 	 * @return [type]       [description]
 	 */
@@ -249,7 +250,7 @@ class Media extends Base
 
 	/**
 	 * Recursive function to create options for select list
-	 * 
+	 *
 	 * @param  [type] $tree [description]
 	 * @return [type]       [description]
 	 */
@@ -261,7 +262,7 @@ class Media extends Base
 		$options = '';
 		foreach ($tree as $treeLevel)
 		{
-			$value = str_replace('/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
+			$value = str_replace('/app/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
 			$text  = str_repeat('&lfloor;', substr_count($value, '/'));
 			$parts = explode('/', $value);
 			$text .= ' ' . array_pop($parts);
@@ -288,8 +289,8 @@ class Media extends Base
 		//get request vars
 		$this->view->folders = array();
 		$this->view->files   = array();
-		$this->view->type    = Request::getWord('type', '');
-		$this->view->relpath = Request::getVar('path', '/');
+		$this->view->type    = \Hubzero\Utility\Sanitize::paranoid(Request::getWord('type', ''));
+		$this->view->relpath = \Hubzero\Utility\Sanitize::paranoid(Request::getVar('path', '/'));
 
 		// make sure we default to uploads folder for non-super groups
 		if ($this->group->get('type') != 3 && $this->view->relpath == '')
