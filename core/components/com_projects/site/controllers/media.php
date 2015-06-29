@@ -415,12 +415,12 @@ class Media extends Base
 			elseif ($dir == 'tools')
 			{
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source   = $path . DS . $this->model->get('alias') . DS . $dir . DS . $media . '.png';
+				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media . '.png';
 
-				if (!is_file(PATH_APP . DS . $source))
+				if (!is_file($source))
 				{
 					// Get default tool image
-					$source = $this->config->get('toolpic', '/plugins/projects/tools/images/default.gif');
+					$source = PATH_CORE . DS . trim($this->config->get('toolpic', 'plugins/projects/tools/images/default.gif'), DS);
 				}
 			}
 			else
@@ -432,16 +432,16 @@ class Media extends Base
 				}
 
 				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source   = $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
+				$source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
 				$redirect = true;
 			}
 		}
 
-		if (is_file(PATH_APP . DS . $source))
+		if (is_file($source))
 		{
 			$server = new \Hubzero\Content\Server();
 			$server->filename($source);
-			$server->serve_inline(PATH_APP . DS . $source);
+			$server->serve_inline($source);
 			exit;
 		}
 		elseif ($redirect)
@@ -468,14 +468,14 @@ class Media extends Base
 
 		$path    = trim($this->config->get('imagepath', '/site/projects'), DS)
 				. DS . $this->model->get('alias') . DS . 'images';
-		$default = trim($this->config->get('masterpic',
-				'/core/components/com_projects/site/assets/img/projects-large.gif'), DS);
+		$default = PATH_CORE . DS . trim($this->config->get('masterpic',
+				'components/com_projects/site/assets/img/projects-large.gif'), DS);
 
-		$default = is_file( PATH_APP . DS . $default ) ? $default : NULL;
+		$default = is_file($default ) ? $default : NULL;
 
 		$src  = $this->model->get('picture')
 				&& is_file( PATH_APP . DS . $path . DS . $this->model->get('picture') )
-				? $path . DS . $this->model->get('picture')
+				? PATH_APP . DS . $path . DS . $this->model->get('picture')
 				: $default;
 		return $src;
 	}
@@ -492,11 +492,11 @@ class Media extends Base
 			return false;
 		}
 
-		$src  = '';
-		$path = DS . trim($this->config->get('imagepath', '/site/projects'), DS)
+		$src     = '';
+		$path    = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS)
 				. DS . $this->model->get('alias') . DS . 'images';
 
-		if (file_exists( PATH_APP . $path . DS . 'thumb.png' ))
+		if (file_exists( $path . DS . 'thumb.png' ))
 		{
 			return $path . DS . 'thumb.png';
 		}
@@ -504,11 +504,12 @@ class Media extends Base
 		if ($this->model->get('picture'))
 		{
 			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
-			$src = $thumb && file_exists( PATH_APP . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
+			$src = $thumb && file_exists( $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
 		}
 		if (!$src)
 		{
-			$src = $this->config->get('defaultpic');
+			$src = PATH_CORE . DS . trim($this->config->get('defaultpic',
+					'components/com_projects/site/assets/img/project.png'), DS);
 		}
 
 		return $src;
