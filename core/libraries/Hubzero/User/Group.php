@@ -299,8 +299,6 @@ class Group extends Object
 	 * Creates a new group in the CMS.
 	 * Creates a new entry under the #__xgroups table.
 	 *
-	 *
-
 	 * @return mixed Returns false if error or gid upon success.
 	 */
 	public function create()
@@ -1459,7 +1457,7 @@ class Group extends Object
 
 		if (!$default_logo)
 		{
-			$default_logo = '/core/components/com_groups/site/assets/img/group_default_logo.png'
+			$default_logo = '/core/components/com_groups/site/assets/img/group_default_logo.png';
 		}
 
 		//logo link - links to group overview page
