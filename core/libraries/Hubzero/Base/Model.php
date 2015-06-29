@@ -208,8 +208,7 @@ abstract class Model extends Object
 	 */
 	public function setDbo(&$db)
 	{
-		// Make sure the new database object is a JDatabase.
-		if (!($db instanceof \JDatabase))
+		if (!($db instanceof \Hubzero\Database\Driver))
 		{
 			return false;
 		}
