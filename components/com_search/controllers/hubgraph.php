@@ -58,6 +58,23 @@ class SearchControllerHubgraph extends \Hubzero\Component\SiteController
 			}
 		}
 
+		$base = explode('/', $this->base);
+		$base = array_map('urldecode', $base);
+		$base = array_map('trim', $base);
+		foreach ($base as $i => $segment)
+		{
+			$segment = trim($segment, '"');
+			$segment = trim($segment, "'");
+			if (strstr($segment, '='))
+			{
+				unset($base[$i]);
+				continue;
+			}
+			$segment = urlencode($segment);
+			$base[$i] = $segment;
+		}
+		$this->base = implode('/', $base);
+
 		$this->req  = new HubgraphRequest($_GET);
 		$this->conf = HubgraphConfiguration::instance();
 		$this->perPage = JFactory::getConfig()->get('list_limit', 50);
