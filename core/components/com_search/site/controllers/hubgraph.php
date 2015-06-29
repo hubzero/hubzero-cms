@@ -67,6 +67,23 @@ class Hubgraph extends SiteController
 			}
 		}
 
+		$base = explode('/', $this->base);
+		$base = array_map('urldecode', $base);
+		$base = array_map('trim', $base);
+		foreach ($base as $i => $segment)
+		{
+			$segment = trim($segment, '"');
+			$segment = trim($segment, "'");
+			if (strstr($segment, '='))
+			{
+				unset($base[$i]);
+				continue;
+			}
+			$segment = urlencode($segment);
+			$base[$i] = $segment;
+		}
+		$this->base = implode('/', $base);
+
 		$this->req  = new Request($_GET);
 		$this->conf = Configuration::instance();
 		$this->perPage = \Config::get('list_limit', 50);
