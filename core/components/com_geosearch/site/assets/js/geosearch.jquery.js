@@ -1,8 +1,9 @@
 /**
  * @package     hubzero-cms
  * @file        components/com_groups/assets/js/groups.jquery.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @author			Kevin Wojkovich <kevinw@purdue.edu>
  */
 
 //-----------------------------------------------------------
@@ -61,7 +62,6 @@ HUB.Geosearch = {
 
 			//clear it
 			infoWindow.setContent('');
-			console.log(marker);
 			switch (marker.scope)
 			{
 				case "member":
@@ -156,7 +156,6 @@ HUB.Geosearch = {
 						$(organizations).each(function(org){
 							if (this.id == marker.scope_id)
 							{
-								console.log(this.organization);
 								title = this.organization;
 							}
 						});
@@ -222,18 +221,14 @@ HUB.Geosearch = {
 				//var loc = new map.LatLng(marker.addressLatitude, marker.addressLongitude);
 				var mlatlng = new google.maps.LatLng(marker.addressLatitude, marker.addressLongitude);
 				var point = new google.maps.Marker({
-				position: mlatlng,
-				map: map,
-				icon:icon,
-				scope: marker.scope,
-				scope_id: marker.scope_id
-				//title: name,
+					position: mlatlng,
+					map: map,
+					icon:icon,
+					scope: marker.scope,
+					scope_id: marker.scope_id
 				});
 
 				// this adds the spidifier making clusters of markers easier to read.
-				if (point.scope == "member")
-				{
-				}
 				oms.addMarker(point)
 
 				// keep track of markers so we can remove them later.
@@ -268,15 +263,7 @@ HUB.Geosearch = {
 jQuery(document).ready(function($){
 
 	var latlng = new google.maps.LatLng(40.397, -86.900);
-	//HUB.Geosearch.initialize(latlng,uids,jids,eids,oids);
 	HUB.Geosearch.initialize(latlng);
-
-	/*$("#clears").click(function() {
-		$("#actags").tokenInput("clear");
-		$("input[type=text]").val("");
-	});
-
-	*/
 
 	$('.resck').on('click', function(event){
 		HUB.Geosearch.displayCheckedMarkers();
