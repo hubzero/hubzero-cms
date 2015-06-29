@@ -30,7 +30,7 @@
 
 namespace Components\Publications\Admin;
 
-$option = Request::getCmd('option','com_publications');
+$option = Request::getCmd('option', 'com_publications');
 $task = Request::getWord('task', '');
 
 if (!\User::authorise('core.manage', 'com_publications'))
@@ -48,29 +48,29 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'items';
 }
 
-\JSubMenuHelper::addEntry(
-	Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
-	'index.php?option=' .  $option . '&controller=items',
+\Submenu::addEntry(
+	\Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
+	\Route::url('index.php?option=' .  $option . '&controller=items'),
 	$controllerName == 'items'
 );
-\JSubMenuHelper::addEntry(
-	Lang::txt('COM_PUBLICATIONS_LICENSES'),
-	'index.php?option=' .  $option . '&controller=licenses',
+\Submenu::addEntry(
+	\Lang::txt('COM_PUBLICATIONS_LICENSES'),
+	\Route::url('index.php?option=' .  $option . '&controller=licenses'),
 	$controllerName == 'licenses'
 );
-\JSubMenuHelper::addEntry(
-	Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
-	'index.php?option=' .  $option . '&controller=categories',
+\Submenu::addEntry(
+	\Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
+	\Route::url('index.php?option=' .  $option . '&controller=categories'),
 	$controllerName == 'categories'
 );
-\JSubMenuHelper::addEntry(
-	Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
-	'index.php?option=' .  $option . '&controller=types',
+\Submenu::addEntry(
+	\Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
+	\Route::url('index.php?option=' .  $option . '&controller=types'),
 	$controllerName == 'types'
 );
-\JSubMenuHelper::addEntry(
-	Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
-	'index.php?option=' .  $option . '&controller=batchcreate',
+\Submenu::addEntry(
+	\Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
+	\Route::url('index.php?option=' .  $option . '&controller=batchcreate'),
 	$controllerName == 'batchcreate'
 );
 
