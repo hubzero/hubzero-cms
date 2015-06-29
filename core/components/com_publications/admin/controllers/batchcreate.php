@@ -256,14 +256,14 @@ class Batchcreate extends AdminController
 		$this->reader->XML($this->data);
 
 		// Load classes
-		$objCat = new \Components\Publications\Tables\Category( $this->database );
-		$objL = new \Components\Publications\Tables\License( $this->database );
+		$objCat = new Tables\Category( $this->database );
+		$objL = new Tables\License( $this->database );
 
 		// Get base type
 		$base = Request::getVar( 'base', 'files' );
 
 		// Determine publication master type
-		$mt 		= new \Components\Publications\Tables\MasterType( $this->database );
+		$mt 		= new Tables\MasterType( $this->database );
 		$choices  	= $mt->getTypes('alias', 1);
 		$mastertype = in_array($base, $choices) ? $base : 'files';
 
@@ -326,7 +326,7 @@ class Batchcreate extends AdminController
 				$item['authors']  = array();
 
 				// Publication properties
-				$item['publication'] = new \Components\Publications\Tables\Publication( $this->database );
+				$item['publication'] = new Tables\Publication( $this->database );
 				$item['publication']->master_type = $mType->id;
 				$item['publication']->category    = $catId ? $catId : $cat;
 				$item['publication']->project_id  = $this->project->get('id');
@@ -335,7 +335,7 @@ class Batchcreate extends AdminController
 				$item['publication']->access      = 0;
 
 				// Version properties
-				$item['version'] 		= new \Components\Publications\Tables\Version( $this->database );
+				$item['version'] 		= new Tables\Version( $this->database );
 				$item['version']->title = isset($node->title) && trim($node->title)
 										? trim($node->title) : $title;
 				$item['version']->abstract 	= isset($node->synopsis) ? trim($node->synopsis) : '';
@@ -570,7 +570,7 @@ class Batchcreate extends AdminController
 		$error = NULL;
 
 		// Start new attachment record
-		$attach = new \Components\Publications\Tables\Attachment( $this->database );
+		$attach = new Tables\Attachment( $this->database );
 		$attach->path   	= trim($file->path, DS);
 		$attach->title  	= isset($file->title) ? trim($file->title) : '';
 		$attach->role		= $role;
@@ -638,7 +638,7 @@ class Batchcreate extends AdminController
 		if ($this->curationModel)
 		{
 			// Get attachment type model
-			$attModel = new \Components\Publications\Models\Attachments($this->database);
+			$attModel = new Models\Attachments($this->database);
 			$fileAttach = $attModel->loadAttach('file');
 
 			// Get element manifest
@@ -663,12 +663,14 @@ class Batchcreate extends AdminController
 				$attachment,
 				$configs
 			);
+
 			// Save params if applicable
 			if ($suffix)
 			{
 				$pa = new \Components\Publications\Tables\Attachment( $this->database );
 				$pa->saveParam($attachment, 'suffix', $suffix);
 			}
+
 			// Copy file into the right spot
 			$fileAttach->publishAttachment($attachment, $pub, $configs);
 		}
@@ -685,7 +687,7 @@ class Batchcreate extends AdminController
 		// Need to create project owner
 		if (!$author->project_owner_id)
 		{
-			$objO = new \Components\Projects\Tables\Owner( $this->database );
+			$objO = new Tables\Owner( $this->database );
 
 			$objO->projectid 	 = $this->project->get('id');
 			$objO->userid 		 = $author->user_id;
@@ -697,6 +699,7 @@ class Batchcreate extends AdminController
 			$objO->store();
 			$author->project_owner_id = $objO->id;
 		}
+
 		$author->publication_version_id = $vid;
 		$author->created_by = $this->_uid;
 		$author->created 	= Date::toSql();
@@ -744,7 +747,7 @@ class Batchcreate extends AdminController
 			}
 		}
 
-		$pAuthor 					= new \Components\Publications\Tables\Author( $this->database );
+		$pAuthor 					= new Tables\Author( $this->database );
 		$pAuthor->user_id 			= trim($uid);
 		$pAuthor->ordering 			= $ordering;
 		$pAuthor->credit 			= '';
@@ -815,7 +818,7 @@ class Batchcreate extends AdminController
 	 */
 	public function getSchema()
 	{
-		return 'import' . DS . 'publications.xsd';
+		return dirname(__DIR__) . DS . 'import' . DS . 'publications.xsd';
 	}
 
 	/**
