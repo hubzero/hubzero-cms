@@ -35,7 +35,7 @@ $this->css('storage.css');
 ?>
 	<div id="small-page">
 		<div class="databrowser">
-			<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" id="filelist">
+			<div id="filelist">
 				<table>
 					<caption>
 						<span class="icon-home home">
@@ -124,7 +124,7 @@ $this->css('storage.css');
 					?>
 					</tbody>
 				</table>
-			</form>
+			</div>
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>

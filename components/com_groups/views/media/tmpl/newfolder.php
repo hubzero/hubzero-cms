@@ -34,17 +34,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=savefolder&no_html=1'); ?>" method="post" class="hubForm">
 	<fieldset>
-		<legend>Add Folder</legend>
+		<legend><?php echo JText::_('Add Folder'); ?></legend>
 		<label>
 			<?php echo JText::_('Folder Name: '); ?>
 			<input type="text" name="name" />
 		</label>
 		<label>
-			<?php echo JTexT::_('Create in: '); ?>
+			<?php echo JText::_('Create in: '); ?>
 			<?php echo $this->folderList; ?>
 		</label>
+		<?php echo JHTML::_('form.token'); ?>
 		<p class="controls">
-			<button type="submit" class="btn icon-save">Create</button>
+			<button type="submit" class="btn icon-save"><?php echo JText::_('Create'); ?></button>
 		</p>
 	</fieldset>
 </form>

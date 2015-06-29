@@ -44,18 +44,13 @@ $this->css()
 		<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 	<?php } ?>
 		<div class="subject">
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="get">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
 						<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
 						<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
-						<input type="hidden" name="order" value="recent" />
-						<input type="hidden" name="task" value="category" />
-						<input type="hidden" name="section" value="all" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 					</fieldset>
 				</div><!-- / .container -->
 

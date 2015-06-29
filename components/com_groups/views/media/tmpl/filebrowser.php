@@ -83,6 +83,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->group->get('gidNumber'); ?>" />
 				<input type="hidden" name="tmpl" value="component" />
+				<?php echo JHTML::_('form.token'); ?>
 			</fieldset>
 		</form>
 	</div>

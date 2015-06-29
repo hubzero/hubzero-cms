@@ -180,4 +180,6 @@ $this->css()
 			<?php endif; ?>
 		</tbody>
 	</table>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

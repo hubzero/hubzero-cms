@@ -767,6 +767,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function doMoveFileTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// get request vars
 		$file   = JRequest::getVar('file', '');
 		$folder = JRequest::getVar('folder', '');
@@ -829,6 +832,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function doRenameFileTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// get request vars
 		$file = JRequest::getVar('file', '');
 		$name = JRequest::getVar('name', '');
@@ -969,6 +975,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function saveFolderTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		//get request vars
 		$name   = JRequest::getCmd('name', '');
 		$folder = JRequest::getVar('folder', '');
@@ -1035,6 +1044,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function doRenameFolderTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// get request vars
 		$folder = JRequest::getVar('folder', '');
 		$name   = JRequest::getCmd('name', '');
@@ -1125,6 +1137,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function doMoveFolderTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// get request vars
 		$current = JRequest::getVar('current', '');
 		$folder  = JRequest::getVar('folder', '');

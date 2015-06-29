@@ -37,15 +37,16 @@ $info = pathinfo($this->folder);
 
 <form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=dorenamefolder&no_html=1'); ?>" method="post" class="hubForm">
 	<fieldset>
-		<legend><?php echo JTexT::_('COM_GROUPS_MEDIA_RENAME_FOLDER'); ?></legend>
+		<legend><?php echo JText::_('COM_GROUPS_MEDIA_RENAME_FOLDER'); ?></legend>
 		<label>
 			<?php echo JText::_('COM_GROUPS_MEDIA_RENAME_CURRENT_NAME'); ?>:<br />
-			<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
+			<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder); ?>" />
 
-			<input type="text" name="name" value="<?php echo $info['basename']; ?>" />
+			<input type="text" name="name" value="<?php echo $this->escape($info['basename']); ?>" />
 		</label>
+		<?php echo JHTML::_('form.token'); ?>
 		<p class="controls">
-			<button type="submit" class="btn icon-edit"><?php echo JTexT::_('COM_GROUPS_MEDIA_RENAME'); ?></button>
+			<button type="submit" class="btn icon-edit"><?php echo JText::_('COM_GROUPS_MEDIA_RENAME'); ?></button>
 		</p>
 	</fieldset>
 </form>

@@ -50,20 +50,17 @@ $this->css()
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 		<div class="subject">
-			<form action="<?php echo JRoute::_($this->category->link()); ?>" method="post">
-	
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="get">
+
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
 						<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
 						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
-						<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-						<input type="hidden" name="section" value="<?php echo $this->escape($this->category->get('alias')); ?>" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					</fieldset>
 				</div><!-- / .container -->
-	
+
 				<div class="container">
 					<ul class="entries-menu">
 						<li>
@@ -77,7 +74,7 @@ $this->css()
 							</a>
 						</li>
 					</ul>
-	
+
 					<table class="articles entries">
 						<caption>
 							<?php

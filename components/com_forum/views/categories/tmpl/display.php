@@ -69,7 +69,7 @@ $this->category->set('section_alias', $this->filters['section']);
 				<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 			<?php } ?>
 
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_FORUM_SEARCH'); ?>" />
 					<fieldset class="entry-search">
@@ -77,10 +77,6 @@ $this->category->set('section_alias', $this->filters['section']);
 
 						<label for="entry-search-field"><?php echo JText::_('COM_FORUM_SEARCH_LABEL'); ?></label>
 						<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
-
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="categories" />
-						<input type="hidden" name="task" value="search" />
 					</fieldset>
 				</div><!-- / .container -->
 

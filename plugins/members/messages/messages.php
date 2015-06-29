@@ -703,6 +703,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -747,10 +750,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	{
 		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
-		$mids = JRequest::getVar('mid', array());
+		$mids  = JRequest::getVar('mid', array());
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -789,6 +795,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -859,6 +868,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($mids) > 0)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			foreach ($mids as $mid)
 			{
 				$recipient = new \Hubzero\Message\Recipient($database);
@@ -896,6 +908,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($ids) > 0)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			foreach ($ids as $mid)
 			{
 				$xseen = new \Hubzero\Message\Seen($database);
@@ -934,6 +949,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (count($ids) > 0)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
 			$database = JFactory::getDBO();
 			$database->setQuery($sql);
@@ -959,6 +977,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 	 */
 	public function savesettings($database, $option, $member)
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		//$override = JRequest::getInt('override',0);
 		$settings = JRequest::getVar('settings',array());
@@ -1060,6 +1081,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming array of users to message
 		$mbrs = array_map("trim", explode(',', JRequest::getVar('mbrs', array(), 'post')));

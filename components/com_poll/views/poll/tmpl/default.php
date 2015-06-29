@@ -17,7 +17,7 @@ JHTML::_('stylesheet', 'poll_bars.css', 'components/com_poll/assets/');
 </header><!-- / #content-header -->
 <?php endif; ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_poll&view=poll'); ?>" method="post" name="poll" id="poll">
+<form action="<?php echo JRoute::_('index.php?option=com_poll&view=poll'); ?>" method="get" name="poll" id="poll">
 	<section class="main section contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 		<label for="id">
 			<?php echo JText::_('COM_POLL_SELECT'); ?>

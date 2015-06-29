@@ -911,6 +911,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$settings = JRequest::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);

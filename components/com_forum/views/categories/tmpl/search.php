@@ -56,7 +56,7 @@ $juser = JFactory::getUser();
 				</p>
 			<?php } ?>
 
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_FORUM_SEARCH'); ?>" />
 					<fieldset class="entry-search">
@@ -64,10 +64,6 @@ $juser = JFactory::getUser();
 
 						<label for="entry-search-field"><?php echo JText::_('COM_FORUM_SEARCH_LABEL'); ?></label>
 						<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
-
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="categories" />
-						<input type="hidden" name="task" value="search" />
 					</fieldset>
 				</div><!-- / .container -->
 
@@ -78,7 +74,7 @@ $juser = JFactory::getUser();
 						</caption>
 						<tbody>
 							<?php
-							if ($this->thread->posts('list', $this->filters)->total() > 0)
+							if ($this->filters['search'] && $this->thread->posts('list', $this->filters)->total() > 0)
 							{
 								foreach ($this->thread->posts() as $row)
 								{

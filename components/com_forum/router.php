@@ -102,6 +102,13 @@ function ForumParseRoute($segments)
 			$vars['task'] = 'latest';
 			return $vars;
 		}
+
+		if ($segments[0] == 'search')
+		{
+			$vars['controller'] = 'categories';
+			$vars['task'] = 'search';
+			return $vars;
+		}
 	}
 
 	if (isset($segments[1]))

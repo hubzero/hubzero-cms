@@ -87,6 +87,8 @@ $this->css()
 		<input type="hidden" name="active" value="blog" />
 		<input type="hidden" name="action" value="savesettings" />
 
+		<?php echo JHTML::_('form.token'); ?>
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
 
