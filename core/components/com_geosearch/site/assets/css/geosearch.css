@@ -1,7 +1,7 @@
 /*
  Geosearch
  */
-.geosearch fieldset legend { 
+.geosearch fieldset legend {
 	display:block !important;
 	margin: 0 0.5em;
 	padding: 0 1em 0 0.1em;
@@ -11,19 +11,13 @@
 	margin: 1em 0;
 	padding: 0.5em 1em 1em 1em;
 }
-.key {
-	float:right;
-	height:10px;
-	width:10px;
-}
+
 #map_canvas {
 	height: 400px;
 }
-img {
-	max-width:none;
-}
-input[type="submit"], 
-input[type="button"]  { 
+
+input[type="submit"],
+input[type="button"]  {
 	float:right;
 	margin:0 5px;
 }
@@ -51,7 +45,7 @@ input[type="button"]  {
 	text-align:left;
 	width:85%;
 }
-.member-img {	
+.member-img {
 	float:left;
 	margin:10px 20px 10px 0;
 }
@@ -72,8 +66,8 @@ input[type="button"]  {
 	min-width:270px;
 	max-width:380px;
 }
-.marker a { 
-	font-size:11px !important; 
+.marker a {
+	font-size:11px !important;
 }
 .marker-title a {
 	font-size:12px !important;
@@ -112,23 +106,23 @@ input[type="button"]  {
 	background: none;
 	margin:0 3px 0 0;
 }
-#marker-buttons .profile .content:before { 
-	content: "\f007"; 
+#marker-buttons .profile .content:before {
+	content: "\f007";
 }
-#marker-buttons .message .content:before { 
-	content: "\f075"; 
-} 
-#marker-buttons .moreinfo .content:before { 
-	content: "\f05a"; 
+#marker-buttons .message .content:before {
+	content: "\f075";
 }
-#marker-buttons .content { 
-	font-weight:bold; 
+#marker-buttons .moreinfo .content:before {
+	content: "\f05a";
 }
-.clear-left { 
-	clear:left; 
+#marker-buttons .content {
+	font-weight:bold;
 }
-.clear-right{ 
-	clear:right; 
+.clear-left {
+	clear:left;
+}
+.clear-right{
+	clear:right;
 }
 .list p {
 	background: #fff;
@@ -142,29 +136,6 @@ input[type="button"]  {
 		height: 600px;
 	}
 }
-
-#map_container {
-	position: relative;
-}
-#map_container .loading {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: #000;
-	background: rgba(0,0,0,0.75); 
-}
-#map_container .loading span {
-	position: absolute;
-	top: 40%;
-	left: 35%;
-	right: 0;
-	color: #FFF;
-	text-align: left;
-	font-size: 36px;
-	font-weight: 100;
-}
 .data-entry {
 	margin-bottom: 10px;
 }
@@ -173,5 +144,77 @@ input[type="button"]  {
 	margin-bottom: 10px;
 }
 #map_results span {
-	font-weight: normal;	
+	font-weight: normal;
+}
+
+#map_canvas {
+	width: 95%;
+	min-height: 500px;
+	margin: 0 0 2em 0;
+	padding: 2em 2em 2em 2em;
+}
+.event-popup h1 {
+	font-size: 14pt;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+.event-popup p.date {
+	font-size: 10pt;
+	margin-top:0;
+	margin-bottom:0;
+	font-style: normal;
+}
+.event-popup p.location {
+	font-size: 10pt;
+	margin-top: 0;
+	font-style: normal;
+}
+.member-popup {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.member-popup img {
+	height: 100px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+
+.member-popup h1{
+	font-size: 14pt;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+
+.member-popup p.organization{
+	font-size: 10pt;
+	margin-top: 0;
+	font-style: normal;
+}
+
+
+.job-popup h1 {
+	font-size: 14pt;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+.job-popup p.type {
+	font-size: 10pt;
+	margin-top:0;
+	margin-bottom:10px;
+	font-style: normal;
+}
+.job-popup p.location {
+	font-size: 10pt;
+	margin-top: 0;
+	margin-bottom: 0;
+	font-style: normal;
+}
+.job-popup .link {
+	padding-top: 15px;
+}
+.job-popup {
+	margin-right: auto;
+	margin-left: auto;
 }

@@ -31,32 +31,9 @@
 $this->js('https://maps.googleapis.com/maps/api/js?v=3.exp');
 $this->js("geosearch.jquery.js");
 $this->js('oms.min.js');
+$this->css('geosearch.css');
 
 ?>
-<style>
-#map_canvas {
-	width: 95%;
-	min-height: 500px;
-	margin: 0 0 2em 0;
-	padding: 2em 2em 2em 2em;
-}
-.event-popup h1 {
-	font-size: 14pt;
-	margin-top: 5px;
-	margin-bottom: 0;
-}
-.event-popup p.date {
-	font-size: 10pt;
-	margin-top:0;
-	margin-bottom:0;
-	font-style: normal;
-}
-.event-popup p.location {
-	font-size: 10pt;
-	margin-top: 0;
-	font-style: normal;
-}
-</style>
 
 <div id="content-header" class="full">
 	<h2><?php echo Lang::txt('COM_GEOSEARCH_TITLE'); ?></h2>
@@ -78,27 +55,29 @@ $this->js('oms.min.js');
 
 		<div class="key">
 			<img src="<?php echo $this->img('icn_member2.png'); ?>">
-			<input type="checkbox" name="resource[]" class="resck" value="member "<?php if (in_array("members",$this->resources)) { echo 'checked="checked"'; }?> /> Members
+			<input type="checkbox" name="resource[]" class="resck" value="member" checked /> Members
 		</div>
 
 		<div class="key">
 			<img src="<?php echo $this->img('icn_job2.png'); ?>" />
-			<input type="checkbox" name="resource[]" class="resck" value="job" <?php if (in_array("jobs",$this->resources)) { echo 'checked="checked"'; }?> /> Jobs
+			<input type="checkbox" name="resource[]" class="resck" value="job" checked /> Jobs
 		</div>
 
 		<div class="key">
 			<img src="<?php echo $this->img('icn_event2.png'); ?>" />
-			<input type="checkbox" name="resource[]" class="resck" value="event" <?php if (in_array("events",$this->resources)) { echo 'checked="checked"'; }?> /> Events
+			<input type="checkbox" name="resource[]" class="resck" value="event" checked /> Events
 		</div>
 
 		<div class="key">
 			<img src="<?php echo $this->img('icn_org2.png'); ?>" />
-			<input type="checkbox" name="resource[]" class="resck" value="organization" <?php if (in_array("organizations",$this->resources)) { echo 'checked="checked"'; }?> /> Organizations
+			<input type="checkbox" name="resource[]" class="resck" value="organization" checked/> Organizations
 		</div>
 
 		<div class="clear-right"></div>
 	</fieldset>
 
+
+<?php if (0): ?>
 	<fieldset>
 		<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_TAGS'); ?></legend>
 		<?php
@@ -126,21 +105,23 @@ $this->js('oms.min.js');
 		?>
 	</fieldset>
 
-	<fieldset>
-		<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_LOC'); ?></legend>
-		<label class="fieldset">Within:</label>
-		<input type="text" name="distance" id="idist" value="<?php //echo $this->distance; ?>" />
-		<select name="dist_units">
-			<option value="mi">Miles</option>
-			<option value="km" <?php if ($this->unit == 'km') echo 'selected="selected"'; ?>>Kilometers</option>
-		</select>
-		<label class="fieldset">of:</label>
-		<input type="text" name="location" id="iloc" value="<?php echo ($this->location != '' ? $this->location : ''); ?>" <?php echo ($this->location == '' ? 'placeholder="place, address, or zip"' : ''); ?> />
-	</fieldset>
+		<fieldset>
+			<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_LOC'); ?></legend>
+			<label class="fieldset">Within:</label>
+			<input type="text" name="distance" id="idist" value="<?php //echo $this->distance; ?>" />
+			<select name="dist_units">
+				<option value="mi">Miles</option>
+				<option value="km" <?php if ($this->unit == 'km') echo 'selected="selected"'; ?>>Kilometers</option>
+			</select>
+			<label class="fieldset">of:</label>
+			<input type="text" name="location" id="iloc" value="<?php echo ($this->location != '' ? $this->location : ''); ?>" <?php echo ($this->location == '' ? 'placeholder="place, address, or zip"' : ''); ?> />
+		</fieldset>
+
 
 	<input type="submit" value="<?php echo Lang::txt('COM_GEOSEARCH_FILTER_BUTTON'); ?>" /> <input type="button" value="Clear" id="clears"/>
 
 	<div class="clear"></div>
+<?php endif; ?>
 	</div><!-- / .container -->
 </div><!-- / .aside -->
 

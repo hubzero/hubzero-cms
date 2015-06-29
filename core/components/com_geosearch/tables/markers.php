@@ -142,8 +142,6 @@ class GeosearchMarkers extends \JTable
 
 				$x++; //next!
 			}
-
-
 		}
 
 		$this->_db->setQuery($query);

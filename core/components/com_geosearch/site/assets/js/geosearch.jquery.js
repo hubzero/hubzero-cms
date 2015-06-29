@@ -56,12 +56,36 @@ HUB.Geosearch = {
 		infoWindow = new google.maps.InfoWindow();
 		oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied:true});
 
-		// create info windows
+		// create info windows, callback for click event
 		oms.addListener('click', function(marker, event) {
 
+			//clear it
+			infoWindow.setContent('');
+			console.log(marker);
+			switch (marker.scope)
+			{
+				case "member":
+						var url = "/api/members/" + marker.scope_id;
+						var data = {};
+				break;
+				case "event":
+						var url = "/api/events/" + marker.scope_id;
+						var data = { nicedate : 1};
+				break;
+				case "job":
+					var url = "/api/jobs/job"
+					var data = { jobcode : marker.scope_id}
+				break;
+				case "org":
+					var url = "/api/members/organizations";
+					/* not supported yet */
+					//var data = { orgID : marker.scope_id};
+				break;
+			} //end switch
+
 			$.ajax({
-				url: "/api/events/" + marker.scope_id,
-				data: { nicedate : 1}
+				url:url,
+				data:data
 			})
 			.done(function( data ) {
 
@@ -69,7 +93,20 @@ HUB.Geosearch = {
 				switch (marker.scope)
 				{
 					case "member":
-						break;
+						var name = data.profile.name;
+						var organization = data.profile.organization;
+						var link = "/members/" + data.profile.id
+						var thumb = data.profile.picture.full;
+
+						//contruct the popup view
+						html += '<div class="member-popup">'; // classes for styling, because CSS
+						html += '<img src="' + thumb + '">';
+						html += '<h1>'+name+'</h1>';
+						html += '<p class="organization">'+organization+'</p>';
+						html += '<a href="'+link+'"><span class="link">'+data.profile.first_name+'\'s Profile</p></span>';
+						html += '</div>';
+
+					break;
 					case "event":
 						// get the data for the popup view
 						var title = data.event.title;
@@ -89,17 +126,51 @@ HUB.Geosearch = {
 						html += '</div>';
 					break;
 					case "job":
-						break;
-					case "org":
+						// get the data for the popup view
+						var title = data.job.title;
+						var jobcode = data.job.code;
+						var type = data.job.typename;
+						var description = data.job.description;
+						var company = data.job.companyName;
+						var website =  data.job.companyWebsite;
+						var location = data.job.companyLocation;
+						var country = data.job.companyLocationCountry;
+						var link = "/jobs/job/" + data.job.code;
+
+						//contruct the popup view
+						html += '<div class="job-popup">'; // classes for styling, because CSS
+						html += '<h1>'+title+'</h1>';
+						html += '<p class="type">'+type+'</p>';
+						html += '<a href="'+ website +'" class="company">' + company + '</a>';
+						html += '<p class="location">'+location+'</p>';
+						html += '<p class="location">'+country+'</p>';
+						html += '<br />';
+						html += '<a class="link" href="'+link+'">View Full Job Posting</a>';
+						html += '</div>';
+
 					break;
-				}
-				console.log(data.event);
+					case "org":
+						// organization table needs to be updated for searching by ID
+						var organizations = data.organizations;
+						var title = '';
+						$(organizations).each(function(org){
+							if (this.id == marker.scope_id)
+							{
+								console.log(this.organization);
+								title = this.organization;
+							}
+						});
+
+						//contruct the popup view
+						html += '<div class="org-popup">'; // classes for styling, because CSS
+						html += '<h1>'+title+'</h1>';
+						html += '</div>';
+
+					break;
+				} //end switch
 
 				infoWindow.setContent(html);
 			});
-
- 			 //infoWindow.setContent(marker.html);
-
 			  infoWindow.open(map, marker);
 		});
 
@@ -120,7 +191,7 @@ HUB.Geosearch = {
 		});
 
 		//get the markers
-		$.post("index.php?option=com_geosearch&task=getmarkers",
+		$.post("index.php?option=com_geosearch&task=getMarkers",
 		{
 			resources: resources
 		},
@@ -160,6 +231,9 @@ HUB.Geosearch = {
 				});
 
 				// this adds the spidifier making clusters of markers easier to read.
+				if (point.scope == "member")
+				{
+				}
 				oms.addMarker(point)
 
 				// keep track of markers so we can remove them later.
