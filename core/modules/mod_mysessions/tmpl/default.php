@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 // Push the module CSS to the template
 $this->css();
 
-HTML::behavior('core');
+Html::behavior('core');
 
 // Add the JavaScript that does the AJAX magic to the template
 $this->js();
