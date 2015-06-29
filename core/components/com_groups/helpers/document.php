@@ -31,6 +31,7 @@
 namespace Components\Groups\Helpers;
 
 use Hubzero\Base\Object;
+use Hubzero\Utility\String;
 use App;
 
 class Document extends Object
@@ -46,7 +47,7 @@ class Document extends Object
 	/**
 	 * Parse Document Content
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function parse()
 	{
@@ -60,16 +61,13 @@ class Document extends Object
 		// get all group includes
 		if (preg_match_all('#<group:include([^>]*)/>#', $this->get('document'), $matches))
 		{
-			// import utility class
-			jimport('joomla.utilities.utility');
-
 			// get number of matches
 			$count = count($matches[1]);
 
 			//loop through each match
 			for ($i = 0; $i < $count; $i++)
 			{
-				$attribs = \JUtility::parseAttributes($matches[1][$i]);
+				$attribs = String::parseAttributes($matches[1][$i]);
 
 				$type   = (isset($attribs['type'])) ? strtolower(trim($attribs['type'])) : null;
 				$name   = (isset($attribs['name'])) ? $attribs['name'] : $type;
@@ -88,7 +86,7 @@ class Document extends Object
 	/**
 	 * Render Document
 	 *
-	 * @return    string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -97,17 +95,17 @@ class Document extends Object
 		$with    = array();
 
 		// include renderer class
-		require_once dirname(__FILE__) . DS . 'document' . DS . 'renderer.php';
+		require_once __DIR__ . DS . 'document' . DS . 'renderer.php';
 
 		// loop through all includes and render
 		foreach ($this->_tags as $tag => $props)
 		{
 			$replace[] = $tag;
-			$with[]    = $this->_getBuffer( $tag, $props['type'], $props['name'], $props['params'] );
+			$with[]    = $this->_getBuffer($tag, $props['type'], $props['name'], $props['params'] );
 		}
 
 		// replace group includes
-		$this->set('document', str_replace($replace, $with, $this->get('document')) );
+		$this->set('document', str_replace($replace, $with, $this->get('document')));
 
 		// reset tags
 		$this->_tags = array();
@@ -117,9 +115,10 @@ class Document extends Object
 	}
 
 	/**
-	 * Return Content
+	 * Return or echo Content
 	 *
-	 * @return string
+	 * @param   boolean  $echo  Echo document or return?
+	 * @return  mixed
 	 */
 	public function output($echo = false)
 	{
@@ -137,7 +136,7 @@ class Document extends Object
 	/**
 	 * Get Template Buffer
 	 *
-	 * @return
+	 * @return  string
 	 */
 	private function _getBuffer( $tag, $type = null, $name = null, $params = array() )
 	{
@@ -155,7 +154,7 @@ class Document extends Object
 		if (!class_exists($renderClass))
 		{
 			// build path to renderer
-			$path = dirname(__FILE__) . DS . 'document' . DS . 'renderer' . DS . $type . '.php';
+			$path = __DIR__ . DS . 'document' . DS . 'renderer' . DS . $type . '.php';
 
 			// include renderer if exists
 			if (file_exists($path))

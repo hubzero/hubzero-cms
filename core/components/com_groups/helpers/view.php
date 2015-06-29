@@ -370,7 +370,7 @@ class View
 				$userHasAccess = false;
 			}
 
-			//if the user isnt a group member or joomla admin
+			// if the user is not a group member or site admin
 			if (!in_array(User::get('id'), $group->get('members')) && $overviewPageAccess == 'members')
 			{
 				$userHasAccess = false;
@@ -387,7 +387,7 @@ class View
 				}
 
 				// return message letting user know they dont have access
-				$content = '<p class="info">You do not have the permissions to access this group page.</p>';
+				$content = '<p class="info">' . Lang::txt('You do not have the permissions to access this group page.') . '</p>';
 			}
 		}
 
@@ -596,7 +596,6 @@ class View
 		set_exception_handler(array('\Components\Groups\Helpers\View', 'handleCustomError'));
 	}
 
-
 	/**
 	 * Custom Error Callback, Builds custom error page for super groups
 	 *
@@ -619,7 +618,7 @@ class View
 		$template->output(true);
 		$errorTemplate = ob_get_clean();
 
-		// bootstrap Jdocument
+		// bootstrap document
 		// add custom error template as component buffer
 		$document = App::get('document');
 		$document->addStylesheet('/core/assets/css/debug.css');

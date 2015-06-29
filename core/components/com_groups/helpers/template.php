@@ -89,7 +89,7 @@ class Template extends Document
 	 *
 	 * @return    void
 	 */
-	private function _fetch( $base )
+	private function _fetch($base)
 	{
 		// only fetch template if we dont already have one
 		// or if we are forcing it to fetch again

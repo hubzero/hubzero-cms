@@ -65,7 +65,7 @@ foreach ($menus as $menu)
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 	<?php } ?>
 
-	<form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=save'); ?>" method="POST" id="hubForm" class="full">
+	<form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=save'); ?>" method="post" id="hubForm" class="full">
 		<div class="grid">
 			<div class="col span9">
 				<fieldset>
@@ -117,12 +117,11 @@ foreach ($menus as $menu)
 							if ($this->group->isSuperGroup())
 							{
 								$config['templates_replace'] = false;
-								$config['templates_files']   = array('pagelayouts' => '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
+								$config['templates_files']   = array('pagelayouts' => substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
 							}
 
 							// display with ckeditor
-							jimport( 'joomla.html.editor' );
-							$editor = JEditor::getInstance( 'ckeditor' );
+							$editor = new \Hubzero\Html\Editor('ckeditor');
 							echo $editor->display('module[content]', stripslashes($this->module->get('content')), '100%', '100px', 0, 0, false, 'field-content', null, null, $config);
 						?>
 					</label>

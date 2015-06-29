@@ -10,7 +10,7 @@
  */
 
 // define base path
-$base = str_replace(PATH_CORE, '', __DIR__);
+$base = str_replace(PATH_ROOT, '', __DIR__);
 
 // add stylesheets and scripts
 Document::addStyleSheet($base . DS . 'assets/css/main.css');

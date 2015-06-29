@@ -10,7 +10,7 @@
  */
 
 // define base path (without doc root)
-$base = rtrim(str_replace(PATH_CORE, '', __DIR__), DS);
+$base = rtrim(str_replace(PATH_ROOT, '', __DIR__), DS);
 
 // define base url for links
 $baseLink = 'index.php?option=com_groups&cn=' . $this->group->get('cn');

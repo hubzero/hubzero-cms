@@ -47,19 +47,20 @@ class Base extends SiteController
 	/**
 	 * Set a notification
 	 *
-	 * @param      string $message Message to set
-	 * @param      string $type    Type [error, passed, warning]
-	 * @return     void
+	 * @param   string  $message  Message to set
+	 * @param   string  $type     Type [error, passed, warning]
+	 * @return  void
 	 */
 	public function setNotification($message, $type)
 	{
 		//if type is not set, set to error message
-		$type = ($type == '') ? 'error' : $type;
+		$type = $type ?: 'error';
 
 		//if message is set push to notifications
 		if ($message != '')
 		{
-			$this->addComponentMessage($message, $type);
+			//$this->addComponentMessage($message, $type);
+			Notify::message($message, $type, 'groups');
 		}
 	}
 
@@ -67,12 +68,12 @@ class Base extends SiteController
 	/**
 	 * Get notifications
 	 *
-	 * @return     array 	Any messages
+	 * @return  array  Any messages
 	 */
 	public function getNotifications()
 	{
 		//getmessages in quene
-		$messages = $this->getComponentMessage();
+		$messages = Notify::messages('groups'); //$this->getComponentMessage();
 
 		//if we have any messages return them
 		if ($messages)
@@ -85,13 +86,12 @@ class Base extends SiteController
 	/**
 	 *  Redirect to Login form with return URL
 	 *
-	 * @param 		string	$message		User notification message
-	 * @param 		string  $customReturn 	Do we want to redirect someplace specific after login
-	 * @return 		void
+	 * @param   string  $message       User notification message
+	 * @param   string  $customReturn  Do we want to redirect someplace specific after login
+	 * @return  void
 	 */
 	public function loginTask($message = '', $customReturn = null)
 	{
-		//general return
 		$return = 'index.php?option=' . $this->_option . '&cn=' . $this->cn;
 
 		// append controller
@@ -99,13 +99,14 @@ class Base extends SiteController
 		{
 			$return .= '&controller=' . $this->_controller;
 		}
-		//append task
+
+		// append task
 		if (isset($this->_task))
 		{
 			$return .= '&task=' . $this->_task;
 		}
 
-		//do we have a custom return
+		// do we have a custom return?
 		if ($customReturn)
 		{
 			$return = $customReturn;
@@ -217,12 +218,11 @@ class Base extends SiteController
 		}
 	}
 
-
 	/**
 	 * Override default build title
 	 *
-	 * @param		array $pages	Array of group pages, if any
-	 * @return 		void
+	 * @param   array  $pages  Array of group pages, if any
+	 * @return  void
 	 */
 	public function _buildTitle($pages = array())
 	{
@@ -262,17 +262,15 @@ class Base extends SiteController
 			}
 		}
 
-		//set title of browser window
 		\Document::setTitle($this->_title);
 	}
-
 
 	/**
 	 *  Error Handler
 	 *
-	 * @param 		int $errorCode			Error code number
-	 * @param 		string $errorMessage	Error message
-	 * @return 		void
+	 * @param   integer  $errorCode     Error code number
+	 * @param   string   $errorMessage  Error message
+	 * @return  void
 	 */
 	public function _errorHandler($errorCode, $errorMessage)
 	{
@@ -281,7 +279,7 @@ class Base extends SiteController
 		if ($no_html)
 		{
 			$error = array('error' => array(
-				'code'   => $errorCode,
+				'code'    => $errorCode,
 				'message' => $errorMessage
 			));
 			echo json_encode($error);
@@ -292,16 +290,14 @@ class Base extends SiteController
 		return;
 	}
 
-
 	/**
 	 * Check if user is authorized in groups
 	 *
-	 * @param 		bool $checkOnlyMembership 		Do we want to check joomla admin
-	 * @return 		boolean 						True if authorized, false if not
+	 * @param   boolean  $checkOnlyMembership  Do we want to check joomla admin
+	 * @return  boolean  True if authorized, false if not
 	 */
 	protected function _authorize($checkOnlyMembership = true)
 	{
-		//load the group
 		$group = Group::getInstance($this->cn);
 		if (!is_object($group))
 		{
@@ -314,12 +310,11 @@ class Base extends SiteController
 	/**
 	 * Check if user has role with permission to perform task
 	 *
-	 * @param     $task    Task to be performed
-	 * @return    boolean
+	 * @param   string   $task  Task to be performed
+	 * @return  boolean
 	 */
 	public function _authorizedForTask($task)
 	{
-		//load the group
 		$group = Group::getInstance($this->cn);
 		if (!is_object($group))
 		{

@@ -275,11 +275,10 @@ class Media extends Base
 		return $options;
 	}
 
-
 	/**
 	 * List all group files
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function listfilesTask()
 	{
@@ -343,11 +342,10 @@ class Media extends Base
 		$this->view->display();
 	}
 
-
 	/**
 	 * File upload - older browser support
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function uploadTask()
 	{
@@ -388,11 +386,10 @@ class Media extends Base
 		$this->filebrowserTask();
 	}
 
-
 	/**
 	 * File upload - for CKeditor
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function ckeditorUploadTask()
 	{
@@ -435,11 +432,10 @@ class Media extends Base
 		return;
 	}
 
-
 	/**
 	 * Do basic file upload  (ajax upload in another function)
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function doUpload()
 	{
@@ -565,12 +561,11 @@ class Media extends Base
 		return $returnObj;
 	}
 
-
 	/**
 	 * Streaming file upload
 	 * This is used by AJAX
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function ajaxuploadTask()
 	{
@@ -731,7 +726,7 @@ class Media extends Base
 	/**
 	 * Display Move group file Form
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function moveFileTask()
 	{
@@ -762,11 +757,10 @@ class Media extends Base
 		$this->view->display();
 	}
 
-
 	/**
 	 * Move group file
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function doMoveFileTask()
 	{
@@ -804,7 +798,7 @@ class Media extends Base
 	/**
 	 * Display Rename group file Form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function renameFileTask()
 	{
@@ -822,11 +816,10 @@ class Media extends Base
 		$this->view->display();
 	}
 
-
 	/**
 	 * Rename group file
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function doRenameFileTask()
 	{
@@ -869,7 +862,7 @@ class Media extends Base
 	/**
 	 * Extract group Archive
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function extractFileTask()
 	{
@@ -900,7 +893,7 @@ class Media extends Base
 	/**
 	 * Delete group file
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function deletefileTask()
 	{
@@ -938,17 +931,13 @@ class Media extends Base
 		}
 	}
 
-
 	/**
 	 * Add group folder
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function addFolderTask()
 	{
-		// set the neeced layout
-		$this->view->setLayout('newfolder');
-
 		// get list of folders
 		$folders    = Filesystem::directoryTree($this->path, '.', 10);
 		$folderTree = $this->_buildFolderTree($folders);
@@ -959,14 +948,15 @@ class Media extends Base
 		$this->view->folderList = $folderList;
 
 		//render layout
-		$this->view->display();
+		$this->view
+			->setLayout('newfolder')
+			->display();
 	}
-
 
 	/**
 	 * Save group folder
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function saveFolderTask()
 	{
@@ -1006,17 +996,13 @@ class Media extends Base
 		exit();
 	}
 
-
 	/**
 	 * Display group folder rename form
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function renameFolderTask()
 	{
-		// set the neeced layout
-		$this->view->setLayout('renamefolder');
-
 		// get request vars
 		$folder = Request::getVar('folder', '');
 
@@ -1025,14 +1011,15 @@ class Media extends Base
 		$this->view->folder = $folder;
 
 		//render layout
-		$this->view->display();
+		$this->view
+			->setLayout('renamefolder')
+			->display();
 	}
-
 
 	/**
 	 * Rename Group Folder
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function doRenameFolderTask()
 	{
@@ -1083,17 +1070,13 @@ class Media extends Base
 		exit();
 	}
 
-
 	/**
 	 * Display Move group folder form
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function moveFolderTask()
 	{
-		// set the neeced layout
-		$this->view->setLayout('movefolder');
-
 		// get request vars
 		$folder = Request::getVar('folder', '');
 
@@ -1115,14 +1098,15 @@ class Media extends Base
 		$this->view->folder     = $folder;
 
 		//render layout
-		$this->view->display();
+		$this->view
+			->setLayout('movefolder')
+			->display();
 	}
-
 
 	/**
 	 * Move group folder
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function doMoveFolderTask()
 	{
@@ -1162,11 +1146,10 @@ class Media extends Base
 		exit();
 	}
 
-
 	/**
 	 * Delete group folder
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function deleteFolderTask()
 	{

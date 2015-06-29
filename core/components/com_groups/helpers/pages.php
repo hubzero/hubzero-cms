@@ -389,9 +389,9 @@ class Pages
 
 		// build html email
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'site',
-			'name'   => 'emails',
-			'layout' => $type
+			'base_path' => dirname(__DIR__) . DS . 'site',
+			'name'      => 'emails',
+			'layout'    => $type
 		));
 
 		$eview->option     = Request::getCmd('option', 'com_groups');;
@@ -506,12 +506,10 @@ class Pages
 	 */
 	public static function getCheckout($pageid)
 	{
-		// get joomla objects
-		$db   = \App::get('db');
+		$db = \App::get('db');
 
 		// get person who has page checkedout
-		$sql = "SELECT * FROM `#__xgroups_pages_checkout`
-			    WHERE `userid`<>" . User::get('id') . " AND `pageid`=" . $db->quote($pageid) . " ORDER BY `when` LIMIT 1";
+		$sql = "SELECT * FROM `#__xgroups_pages_checkout` WHERE `userid`<>" . User::get('id') . " AND `pageid`=" . $db->quote((int) $pageid) . " ORDER BY `when` LIMIT 1";
 		$db->setQuery($sql);
 		return $db->loadObject();
 	}
@@ -524,15 +522,14 @@ class Pages
 	 */
 	public static function checkout($pageid)
 	{
-		// get needed joomla objects
-		$db   = \App::get('db');
+		$db = \App::get('db');
 
 		// check in other pages
 		self::checkinForUser();
 
 		// mark page as checked out
 		$sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`)
-			    VALUES(".$db->quote($pageid).",".$db->quote(User::get('id')).", '".Date::toSql()."');";
+			    VALUES(" . $db->quote((int) $pageid) . "," . $db->quote((int) User::get('id')) . ", " . $db->quote(Date::toSql()) . ");";
 		$db->setQuery($sql);
 		$db->query();
 	}
@@ -545,11 +542,10 @@ class Pages
 	 */
 	public static function checkin($pageid)
 	{
-		// get joomla objects
 		$db = \App::get('db');
 
 		// check in page
-		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote($pageid);
+		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote((int) $pageid);
 		$db->setQuery($sql);
 		$db->query();
 	}
@@ -561,11 +557,10 @@ class Pages
 	 */
 	public static function checkinForUser()
 	{
-		// get joomla objects
-		$db   = \App::get('db');
+		$db = \App::get('db');
 
 		// check in all pages for this user
-		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote(User::get('id'));
+		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote((int) User::get('id'));
 		$db->setQuery($sql);
 		$db->query();
 	}
@@ -578,8 +573,7 @@ class Pages
 	 */
 	public static function checkinAbandoned()
 	{
-		// get joomla objects
-		$db   = \App::get('db');
+		$db = \App::get('db');
 
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `when` < NOW() - INTERVAL 12 HOUR";
@@ -618,7 +612,7 @@ class Pages
 		// stops from displaying pages that dont exist
 		if ($page === null)
 		{
-			App::abort(404, 'Group Page Not Found');
+			App::abort(404, Lang::txt('Group Page Not Found'));
 			return;
 		}
 
@@ -641,7 +635,7 @@ class Pages
 			}
 
 			// show 404
-			App::abort(404, 'Group Page Not Found');
+			App::abort(404, Lang::txt('Group Page Not Found'));
 			return;
 		}
 
@@ -697,7 +691,7 @@ class Pages
 			// create path
 			$path = Component::params('com_groups')->get('uploadpath');
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+			include_once(Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php');
 
 			// build wiki config
 			$wikiConfig = array(
@@ -894,19 +888,19 @@ class Pages
 		$css = '';
 		foreach ($pageCss as $p)
 		{
-			$p = rtrim(Request::root(), DS) . DS . ltrim($p, DS);
-			$css .= '<link rel="stylesheet" href="'.$p.'" />';
+			$p = rtrim(Request::root(), '/') . '/' . ltrim($p, '/');
+			$css .= '<link rel="stylesheet" href="' . $p . '" />';
 		}
 
 		// output html
 		$html = '<!DOCTYPE html>
 				<html>
 					<head>
-						<title>'.$group->get('description').'</title>
-						'.$css.'
+						<title>' . $group->get('description') . '</title>
+						' . $css . '
 					</head>
 					<body class="group-page-preview">
-						'. $content .'
+						' . $content . '
 					</body>
 				</html>';
 

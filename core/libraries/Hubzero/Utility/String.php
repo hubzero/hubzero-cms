@@ -761,4 +761,31 @@ class String
 
 		return $text;
 	}
+
+	/**
+	 * Method to extract key/value pairs out of a string with XML style attributes
+	 *
+	 * @param   string  $string  String containing XML style attributes
+	 * @return  array   Key/Value pairs for the attributes
+	 */
+	public static function parseAttributes($string)
+	{
+		// Initialise variables.
+		$attr = array();
+		$ret  = array();
+
+		// Let's grab all the key/value pairs using a regular expression
+		preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);
+
+		if (is_array($attr))
+		{
+			$numPairs = count($attr[1]);
+			for ($i = 0; $i < $numPairs; $i++)
+			{
+				$ret[$attr[1][$i]] = $attr[2][$i];
+			}
+		}
+
+		return $ret;
+	}
 }
