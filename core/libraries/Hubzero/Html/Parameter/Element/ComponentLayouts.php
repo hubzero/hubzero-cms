@@ -63,7 +63,9 @@ class ComponentLayouts extends Select
 		$db->setQuery($query);
 		$template = $db->loadResult();
 
-		if ($view = $node->attributes('view') && $extn = $node->attributes('extension'))
+		$view = (string) $node['view'];
+		$extn = (string) $node['extension'];
+		if ($view && $extn)
 		{
 			$view = preg_replace('#\W#', '', $view);
 			$extn = preg_replace('#\W#', '', $extn);

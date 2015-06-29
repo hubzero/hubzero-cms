@@ -57,14 +57,14 @@ class Category extends Element
 	{
 		$db = \App::get('db');
 
-		$extension = $node->attributes('extension');
-		$class     = $node->attributes('class');
-		$filter    = explode(',', $node->attributes('filter'));
+		$extension = (string) $node['extension'];
+		$class     = (string) $node['class'];
+		$filter    = explode(',', (string) $node['filter']);
 
 		if (!isset($extension))
 		{
 			// Alias for extension
-			$extension = $node->attributes('scope');
+			$extension = (string) $node['scope'];
 			if (!isset($extension))
 			{
 				$extension = 'com_content';

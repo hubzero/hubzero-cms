@@ -59,19 +59,19 @@ class UserGroup extends Element
 		$ctrl = $control_name . '[' . $name . ']';
 		$attribs = ' ';
 
-		if ($v = $node->attributes('size'))
+		if ($v = $node['size'])
 		{
-			$attribs .= 'size="' . $v . '"';
+			$attribs .= 'size="' . (string) $v . '"';
 		}
-		if ($v = $node->attributes('class'))
+		if ($v = $node['class'])
 		{
-			$attribs .= 'class="' . $v . '"';
+			$attribs .= 'class="' . (string) $v . '"';
 		}
 		else
 		{
 			$attribs .= 'class="inputbox"';
 		}
-		if ($m = $node->attributes('multiple'))
+		if ($m = $node['multiple'])
 		{
 			$attribs .= 'multiple="multiple"';
 			$ctrl .= '[]';

@@ -66,7 +66,7 @@ class Project
 	/**
 	 * Resets internal properties
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function clear()
 	{
@@ -99,19 +99,19 @@ class Project
 	/**
 	 * Log a debug message
 	 *
-	 * @param      string $msg Message to log
-	 * @return     void
+	 * @param   string  $msg  Message to log
+	 * @return  void
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  \JFactory::getLogger();
+		$xlog = \App::get('log.debug');
 		$xlog->debug($msg);
 	}
 
 	/**
 	 * Output data as an array
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function toArray()
 	{
@@ -137,8 +137,8 @@ class Project
 	/**
 	 * Find a project
 	 *
-	 * @param      string $name PRoject name
-	 * @return     mixed
+	 * @param   string  $name  Project name
+	 * @return  mixed
 	 */
 	public function find($name)
 	{
@@ -164,8 +164,8 @@ class Project
 	/**
 	 * Find a project. Create it if one doesn't exist.
 	 *
-	 * @param      string $name Project name
-	 * @return     mixed
+	 * @param   string  $name  Project name
+	 * @return  mixed
 	 */
 	public static function find_or_create($name)
 	{
@@ -196,7 +196,7 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function create()
 	{
@@ -258,7 +258,7 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function read()
 	{
@@ -309,8 +309,8 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      boolean $all Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   boolean  $all
+	 * @return  boolean
 	 */
 	public function update($all = false)
 	{
@@ -405,7 +405,7 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function delete()
 	{
@@ -449,16 +449,14 @@ class Project
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Property accessor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string  $property
+	 * @return  string
 	 */
 	public function __get($property = null)
 	{
-		$xlog =  \JFactory::getLogger();
+		$xlog = \App::get('log.debug');
 
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
@@ -512,13 +510,11 @@ class Project
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Property setter
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $property
+	 * @param   mixed   $value
+	 * @return  void
 	 */
 	public function __set($property = null, $value = null)
 	{
@@ -552,12 +548,10 @@ class Project
 	}
 
 	/**
-	 * Short description for '__isset'
+	 * Check if a property is set
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string  $property  Property name
+	 * @return  boolean
 	 */
 	public function __isset($property = null)
 	{
@@ -576,12 +570,10 @@ class Project
 	}
 
 	/**
-	 * Short description for '__unset'
+	 * Unset a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $property  Property name
+	 * @return  void
 	 */
 	public function __unset($property = null)
 	{
@@ -602,13 +594,11 @@ class Project
 	}
 
 	/**
-	 * Short description for '_error'
+	 * Echo an error message
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $message Parameter description (if any) ...
-	 * @param      integer $level Parameter description (if any) ...
-	 * @return     void
+	 * @param   string   $message
+	 * @param   integer  $level
+	 * @return  void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
@@ -635,8 +625,8 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $key
+	 * @return  mixed
 	 */
 	public function get($key)
 	{
@@ -648,9 +638,9 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $key
+	 * @param   mixed   $value
+	 * @return  void
 	 */
 	public function set($key, $value)
 	{
@@ -662,11 +652,11 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      string $user Parameter description (if any) ...
-	 * @param      unknown $action Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $user
+	 * @param   string  $action
+	 * @return  void
 	 */
-	public function add_user_permission($user,$action)
+	public function add_user_permission($user, $action)
 	{
 		$db =  \App::get('db');
 
@@ -716,11 +706,11 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      string $group Parameter description (if any) ...
-	 * @param      unknown $action Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $group
+	 * @param   string  $action
+	 * @return  void
 	 */
-	public function add_group_permission($group,$action)
+	public function add_group_permission($group, $action)
 	{
 		$db =  \App::get('db');
 
@@ -766,11 +756,11 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      string $user Parameter description (if any) ...
-	 * @param      unknown $action Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $user
+	 * @param   string  $action
+	 * @return  void
 	 */
-	public function remove_user_permission($user,$action)
+	public function remove_user_permission($user, $action)
 	{
 		$db =  \App::get('db');
 		$all = false;
@@ -830,11 +820,11 @@ class Project
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      string $group Parameter description (if any) ...
-	 * @param      unknown $action Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $group
+	 * @param   string  $action
+	 * @return  void
 	 */
-	public function remove_group_permission($group,$action)
+	public function remove_group_permission($group, $action)
 	{
 		$db =  \App::get('db');
 		$all = false;
@@ -886,12 +876,10 @@ class Project
 	}
 
 	/**
-	 * Short description for 'get_user_permission'
+	 * Get permissions for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $user Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $user
+	 * @return  array
 	 */
 	public function get_user_permission($user)
 	{
@@ -913,18 +901,16 @@ class Project
 		}
 
 		$db->setQuery($query);
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		return $result;
 	}
 
 	/**
-	 * Short description for 'get_group_permission'
+	 * Get permissions for a group
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $group Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $group
+	 * @return  array
 	 */
 	public function get_group_permission($group)
 	{
@@ -946,7 +932,7 @@ class Project
 		}
 
 		$db->setQuery($query);
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		return $result;
 	}

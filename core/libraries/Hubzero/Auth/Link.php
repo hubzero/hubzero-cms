@@ -36,7 +36,6 @@ namespace Hubzero\Auth;
  */
 class Link
 {
-
 	/**
 	 * Description for 'id'
 	 *
@@ -148,7 +147,7 @@ class Link
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  \JFactory::getLogger();
+		$xlog = \App::get('log.debug');
 		$xlog->debug($msg);
 	}
 

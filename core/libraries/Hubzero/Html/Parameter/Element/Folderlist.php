@@ -58,10 +58,10 @@ class Folderlist extends Element
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
 		// Initialise variables.
-		$path = PATH_ROOT . '/' . $node->attributes('directory');
+		$path = PATH_ROOT . DS . (string) $node['directory'];
 
-		$filter  = $node->attributes('filter');
-		$exclude = $node->attributes('exclude');
+		$filter  = (string) $node['filter'];
+		$exclude = (string) $node['exclude'];
 		$folders = App::get('filesystem')->folders($path, $filter);
 
 		$options = array();
@@ -77,12 +77,12 @@ class Folderlist extends Element
 			$options[] = Builder\Select::option($folder, $folder);
 		}
 
-		if (!$node->attributes('hide_none'))
+		if (!$node['hide_none'])
 		{
 			array_unshift($options, Builder\Select::option('-1', App::get('language')->txt('JOPTION_DO_NOT_USE')));
 		}
 
-		if (!$node->attributes('hide_default'))
+		if (!$node['hide_default'])
 		{
 			array_unshift($options, Builder\Select::option('', App::get('language')->txt('JOPTION_USE_DEFAULT')));
 		}

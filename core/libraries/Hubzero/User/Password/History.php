@@ -47,7 +47,7 @@ class History
 	 */
 	private function logDebug($msg)
 	{
-		$xlog = \JFactory::getLogger();
+		$xlog = \App::get('log.debug');
 		$xlog->debug($msg);
 	}
 

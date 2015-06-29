@@ -58,21 +58,21 @@ class Filelist extends Element
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
 		// path to images directory
-		$path = PATH_ROOT . DS . $node->attributes('directory');
+		$path = PATH_ROOT . DS . (string) $node['directory'];
 
-		$filter   = $node->attributes('filter');
-		$exclude  = $node->attributes('exclude');
-		$stripExt = $node->attributes('stripext');
+		$filter   = (string) $node['filter'];
+		$exclude  = (string) $node['exclude'];
+		$stripExt = (string) $node['stripext'];
 		$files    = App::get('filesystem')->files($path, $filter);
 
 		$options = array();
 
-		if (!$node->attributes('hide_none'))
+		if (!$node['hide_none'])
 		{
 			$options[] = Builder\Select::option('-1', App::get('language')->txt('JOPTION_DO_NOT_USE'));
 		}
 
-		if (!$node->attributes('hide_default'))
+		if (!$node['hide_default'])
 		{
 			$options[] = Builder\Select::option('', App::get('language')->txt('JOPTION_USE_DEFAULT'));
 		}

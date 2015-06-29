@@ -55,9 +55,10 @@ class Textarea extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$rows  = $node->attributes('rows');
-		$cols  = $node->attributes('cols');
-		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : 'class="text_area"');
+		$rows  = (string) $node['rows'];
+		$cols  = (string) $node['cols'];
+		$class = (string) $node['class'];
+		$class = ($class ? 'class="' . $class . '"' : 'class="text_area"');
 		// Convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 

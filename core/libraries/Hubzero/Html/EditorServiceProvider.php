@@ -49,7 +49,7 @@ class EditorServiceProvider extends ServiceProvider
 		{
 			$global = $app['config']->get('editor');
 
-			$editor = \JFactory::getUser()->getParam('editor', $global);
+			$editor = \User::getParam('editor', $global);
 
 			if (!$app['plugin']->isEnabled('editors', $editor))
 			{

@@ -60,8 +60,8 @@ class Radio extends Element
 		$options = array();
 		foreach ($node->children() as $option)
 		{
-			$val  = $option->attributes('value');
-			$text = $option->data();
+			$val  = (string) $option['value'];
+			$text = (string) $option;
 			$options[] = Builder\Select::option($val, $text);
 		}
 

@@ -60,8 +60,7 @@ class Rss extends Renderer
 		$now  = new Date('now');
 		$data = $this->doc;
 
-		$uri = \JFactory::getURI();
-		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
+		$uri = \App::get('request')->root();
 
 		if (\App::get('config')->get('sitename_pagetitles', 0) == 1)
 		{
@@ -324,7 +323,7 @@ class Rss extends Renderer
 	 */
 	private function _relToAbs($text)
 	{
-		$base = \Request::base();
+		$base = \App::get('request')->base();
 		$text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 
 		return $text;

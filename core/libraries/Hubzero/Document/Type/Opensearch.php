@@ -87,18 +87,18 @@ class Opensearch extends Base
 		$update = new Url;
 		$update->type     = 'application/opensearchdescription+xml';
 		$update->rel      = 'self';
-		$update->template = Route::url(\JFactory::getURI());
+		$update->template = Route::url(\Request::current());
 		$this->addUrl($update);
 
 		// Add the favicon as the default image
 		// Try to find a favicon by checking the template and root folder
-		$dirs = array(JPATH_THEMES . DS . App::get('template')->template, JPATH_BASE);
+		$dirs = array(App::get('template')->path, PATH_ROOT);
 
 		foreach ($dirs as $dir)
 		{
-			if (file_exists($dir . '/favicon.ico'))
+			if (file_exists($dir . DS . 'favicon.ico'))
 			{
-				$path = str_replace(JPATH_BASE . '/', '', $dir);
+				$path = str_replace(PATH_ROOT . DS, '', $dir);
 				$path = str_replace('\\', '/', $path);
 
 				$favicon = new Image;

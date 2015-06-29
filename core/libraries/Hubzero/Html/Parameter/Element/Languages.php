@@ -57,7 +57,7 @@ class Languages extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$client = $node->attributes('client');
+		$client = (string) $node['client'];
 
 		$languages = App::get('language')->createLanguageList($value, constant('JPATH_' . strtoupper($client)), true);
 		array_unshift($languages, Builder\Select::option('', App::get('language')->txt('JOPTION_SELECT_LANGUAGE')));

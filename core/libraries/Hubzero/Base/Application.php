@@ -460,8 +460,6 @@ class Application extends Container
 			});
 		}
 
-		//$app = \JFactory::getApplication($this['client']->name);
-
 		$this->boot();
 
 		if (!$this->runningInConsole())

@@ -117,18 +117,18 @@ class Parameter extends Registry
 	{
 		if (is_object($xml))
 		{
-			if ($group = $xml->attributes('group'))
+			if ($group = $xml['group'])
 			{
-				$this->_xml[$group] = $xml;
+				$this->_xml[(string) $group] = $xml;
 			}
 			else
 			{
 				$this->_xml['_default'] = $xml;
 			}
 
-			if ($dir = $xml->attributes('addpath'))
+			if ($dir = $xml['addpath'])
 			{
-				$this->addElementPath(PATH_ROOT . str_replace('/', DS, $dir));
+				$this->addElementPath(PATH_ROOT . str_replace('/', DS, (string) $dir));
 			}
 		}
 	}
@@ -150,10 +150,10 @@ class Parameter extends Registry
 		$params = $this->getParams($name, $group);
 		$html = array();
 
-		if ($description = $this->_xml[$group]->attributes('description'))
+		if ($description = $this->_xml[$group]['description'])
 		{
 			// Add the params description to the display
-			$html[] = '<p class="paramrow_desc">' . \App::get('language')->txt($description) . '</p>';
+			$html[] = '<p class="paramrow_desc">' . \App::get('language')->txt((string) $description) . '</p>';
 		}
 
 		foreach ($params as $param)
@@ -276,7 +276,7 @@ class Parameter extends Registry
 	public function getParam(&$node, $control_name = 'params', $group = '_default')
 	{
 		// Get the type of the parameter.
-		$type = $node->attributes('type');
+		$type = (string) $node['type'];
 
 		$element = $this->loadElement($type);
 
@@ -284,14 +284,14 @@ class Parameter extends Registry
 		if ($element === false)
 		{
 			$result = array();
-			$result[0] = $node->attributes('name');
+			$result[0] = (string) $node['name'];
 			$result[1] = \App::get('language')->txt('Element not defined for type') . ' = ' . $type;
 			$result[5] = $result[0];
 			return $result;
 		}
 
 		// Get value.
-		$value = $this->get($node->attributes('name'), $node->attributes('default'), $group);
+		$value = $this->get((string) $node['name'], (string) $node['default'], $group);
 
 		return $element->render($node, $value, $control_name);
 	}
@@ -308,17 +308,19 @@ class Parameter extends Registry
 
 		if ($path)
 		{
-			$xml = \JFactory::getXMLParser('Simple');
-
-			if ($xml->loadFile($path))
+			if (!file_exists($path))
 			{
-				if ($params = $xml->document->params)
+				return $result;
+			}
+
+			$xml = simplexml_load_file($path);
+
+			if ($params = $xml->params)
+			{
+				foreach ($params as $param)
 				{
-					foreach ($params as $param)
-					{
-						$this->setXML($param);
-						$result = true;
-					}
+					$this->setXML($param);
+					$result = true;
 				}
 			}
 		}

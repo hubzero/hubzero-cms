@@ -58,9 +58,13 @@ class Sql extends Element
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
 		$db = \App::get('db');
-		$db->setQuery($node->attributes('query'));
-		$key = ($node->attributes('key_field') ? $node->attributes('key_field') : 'value');
-		$val = ($node->attributes('value_field') ? $node->attributes('value_field') : $name);
+		$db->setQuery((string) $node['query']);
+
+		$key = (string) $node['key_field'];
+		$key = $key ?: 'value';
+
+		$val = (string) $node['value_field'];
+		$val = $val ?: $name;
 
 		$options = $db->loadObjectlist();
 

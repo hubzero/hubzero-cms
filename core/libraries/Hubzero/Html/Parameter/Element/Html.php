@@ -55,6 +55,6 @@ class Html extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		return $node->_data;
+		return (string) $node;
 	}
 }

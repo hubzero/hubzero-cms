@@ -55,7 +55,8 @@ class ModuleLayouts extends Select
 	 */
 	protected function _getOptions(&$node)
 	{
-		$clientId = ($v = $node->attributes('client_id')) ? $v : 0;
+		$v = (int) $node['client_id'];
+		$clientId = $v ? $v : 0;
 
 		$options = array();
 		$path1 = null;
@@ -71,7 +72,7 @@ class ModuleLayouts extends Select
 		$db->setQuery($query);
 		$template = $db->loadResult();
 
-		if ($module = $node->attributes('module'))
+		if ($module = (string) $node['module'])
 		{
 			$base = ($clientId == 1) ? JPATH_ADMINISTRATOR : JPATH_SITE;
 			$module = preg_replace('#\W#', '', $module);

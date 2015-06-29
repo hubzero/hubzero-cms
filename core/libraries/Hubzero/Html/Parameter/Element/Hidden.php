@@ -56,7 +56,8 @@ class Hidden extends Element
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$class = ($node->attributes('class') ? $node->attributes('class') : 'text_area');
+		$class = (string) $node['class'];
+		$class = $class ?: 'text_area';
 
 		return Input::hidden($name, $value, array('class' => $class));
 	}

@@ -56,8 +56,8 @@ class Select extends Element
 		$options = array();
 		foreach ($node->children() as $option)
 		{
-			$val  = $option->attributes('value');
-			$text = $option->data();
+			$val  = $option['value'];
+			$text = (string) $option;
 			$options[] = Builder\Select::option($val, \App::get('language')->txt($text));
 		}
 		return $options;
@@ -77,19 +77,19 @@ class Select extends Element
 		$ctrl = $control_name . '[' . $name . ']';
 		$attribs = ' ';
 
-		if ($v = $node->attributes('size'))
+		if ($v = $node['size'])
 		{
-			$attribs .= 'size="' . $v . '"';
+			$attribs .= 'size="' . (string) $v . '"';
 		}
-		if ($v = $node->attributes('class'))
+		if ($v = $node['class'])
 		{
-			$attribs .= 'class="' . $v . '"';
+			$attribs .= 'class="' . (string) $v . '"';
 		}
 		else
 		{
 			$attribs .= 'class="inputbox"';
 		}
-		if ($m = $node->attributes('multiple'))
+		if ($m = $node['multiple'])
 		{
 			$attribs .= 'multiple="multiple"';
 			$ctrl .= '[]';
@@ -98,7 +98,11 @@ class Select extends Element
 		return Builder\Select::genericlist(
 			$this->_getOptions($node),
 			$ctrl,
-			array('id' => $control_name . $name, 'list.attr' => $attribs, 'list.select' => $value)
+			array(
+				'id' => $control_name . $name,
+				'list.attr' => $attribs,
+				'list.select' => $value
+			)
 		);
 	}
 }

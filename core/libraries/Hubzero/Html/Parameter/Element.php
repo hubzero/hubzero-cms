@@ -87,9 +87,9 @@ class Element extends Object
 	 */
 	public function render(&$xmlElement, $value, $control_name = 'params')
 	{
-		$name  = $xmlElement->attributes('name');
-		$label = $xmlElement->attributes('label');
-		$descr = $xmlElement->attributes('description');
+		$name  = (string) $xmlElement['name'];
+		$label = (string) $xmlElement['label'];
+		$descr = (string) $xmlElement['description'];
 
 		//make sure we have a valid label
 		$label = $label ? $label : $name;
