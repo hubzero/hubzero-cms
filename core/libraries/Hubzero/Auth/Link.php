@@ -186,16 +186,17 @@ class Link
 	 */
 	public static function find_by_id($id)
 	{
-	$hzal = new self();
-	$hzal->id = $id;
+		$hzal = new self();
+		$hzal->id = $id;
 
 		$hzal->read();
 
 		if (empty($hzal->auth_domain_id))
-		return false;
+		{
+			return false;
+		}
 
 		return $hzal;
-
 	}
 
 	/**
@@ -203,11 +204,11 @@ class Link
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param	  unknown $auth_domain_id Parameter description (if any) ...
-	 * @param	  unknown $username Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   unknown $auth_domain_id Parameter description (if any) ...
+	 * @param   unknown $username Parameter description (if any) ...
+	 * @return  mixed  Return description (if any) ...
 	 */
-	public function createInstance($auth_domain_id,$username)
+	public function createInstance($auth_domain_id, $username)
 	{
 		if (empty($auth_domain_id) || empty($username))
 		{
@@ -234,7 +235,7 @@ class Link
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @return	 boolean Return description (if any) ...
+	 * @return  boolean R eturn description (if any) ...
 	 */
 	public function create()
 	{
@@ -248,13 +249,13 @@ class Link
 		if (is_numeric($this->id))
 		{
 			$query = "INSERT INTO #__auth_link (id,user_id,auth_domain_id,username,email,password,params) VALUES ( "
-				. $db->Quote($this->id) .
-				"," . $db->Quote($this->user_id) .
-				"," . $db->Quote($this->auth_domain_id) .
-				"," . $db->Quote($this->username) .
-				"," . $db->Quote($this->email) .
-				"," . $db->Quote($this->password) .
-				"," . $db->Quote($this->params) .
+				. $db->quote($this->id) .
+				"," . $db->quote($this->user_id) .
+				"," . $db->quote($this->auth_domain_id) .
+				"," . $db->quote($this->username) .
+				"," . $db->quote($this->email) .
+				"," . $db->quote($this->password) .
+				"," . $db->quote($this->params) .
 				");";
 
 			$db->setQuery($query);
@@ -269,12 +270,12 @@ class Link
 		else
 		{
 			$query = "INSERT INTO #__auth_link (user_id,auth_domain_id,username,email,password,params) VALUES ( "
-				. $db->Quote($this->user_id) .
-				"," . $db->Quote($this->auth_domain_id) .
-				"," . $db->Quote($this->username) .
-				"," . $db->Quote($this->email) .
-				"," . $db->Quote($this->password) .
-				"," . $db->Quote($this->params) .
+				. $db->quote($this->user_id) .
+				"," . $db->quote($this->auth_domain_id) .
+				"," . $db->quote($this->username) .
+				"," . $db->quote($this->email) .
+				"," . $db->quote($this->password) .
+				"," . $db->quote($this->params) .
 				");";
 
 			$db->setQuery($query);
@@ -284,8 +285,8 @@ class Link
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
 				$query = "SELECT id FROM #__auth_link WHERE " .
-					"auth_domain_id=" . $db->Quote($this->auth_domain_id) . " AND " .
-					"user_id=" . $db->Quote($this->user_id) . ";";
+					"auth_domain_id=" . $db->quote($this->auth_domain_id) . " AND " .
+					"user_id=" . $db->quote($this->user_id) . ";";
 
 				$db->setQuery($query);
 
@@ -328,17 +329,17 @@ class Link
 		if (is_numeric($this->id))
 		{
 			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE id=" .
-				$db->Quote($this->id) . ";";
+				$db->quote($this->id) . ";";
 		}
 		else if (is_numeric($this->user_id))
 		{
 			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
-				" user_id=" . $db->Quote($this->user_id) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
+				" user_id=" . $db->quote($this->user_id) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";";
 		}
 		else if (is_string($this->username))
 		{
 			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
-				" username=" . $db->Quote($this->username) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";";
+				" username=" . $db->quote($this->username) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";";
 
 		}
 
@@ -375,7 +376,7 @@ class Link
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	function update($all = false)
+	public function update($all = false)
 	{
 		$db =  \App::get('db');
 
@@ -414,11 +415,11 @@ class Link
 			}
 			else
 			{
-				$query .= "`$property`=" . $db->Quote($value);
+				$query .= "`$property`=" . $db->quote($value);
 			}
 		}
 
-		$query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
+		$query .= " WHERE `id`=" . $db->quote($this->__get('id')) . ";";
 
 		if ($first == true)
 		{
@@ -459,7 +460,7 @@ class Link
 		if (!isset($this->id))
 		{
 			$db->setQuery("SELECT id FROM #__auth_link WHERE user_id=" .
-				$db->Quote($this->user_id) . " AND auth_domain_id=" . $db->Quote($this->auth_domain_id) . ";");
+				$db->quote($this->user_id) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -469,7 +470,7 @@ class Link
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__auth_link WHERE id= " . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM #__auth_link WHERE id= " . $db->quote($this->id) . ";");
 
 		if (!$db->query())
 		{
@@ -540,7 +541,9 @@ class Link
 		$this->$property = $value;
 
 		if (!in_array($property, $this->_updatedkeys))
+		{
 			$this->_updatedkeys[] = $property;
+		}
 	}
 
 	/**
@@ -548,15 +551,17 @@ class Link
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param	  string $property Parameter description (if any) ...
-	 * @return	 string Return description (if any) ...
+	 * @param   string $property Parameter description (if any) ...
+	 * @return  string Return description (if any) ...
 	 */
 	public function __isset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
 			if (empty($property))
+			{
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
@@ -570,8 +575,8 @@ class Link
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param	  string $property Parameter description (if any) ...
-	 * @return	 void
+	 * @param   string $property Parameter description (if any) ...
+	 * @return  void
 	 */
 	public function __unset($property = null)
 	{
@@ -594,9 +599,9 @@ class Link
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param	  string $message Parameter description (if any) ...
-	 * @param	  integer $level Parameter description (if any) ...
-	 * @return	 void
+	 * @param   string $message Parameter description (if any) ...
+	 * @param   integer $level Parameter description (if any) ...
+	 * @return  void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
@@ -622,8 +627,8 @@ class Link
 	 * Return array of linked accounts associated with a given user id
 	 * Also include auth domain name for easy display of domain name
 	 *
-	 * @param	  int $user_id - id of user to return accounts for
-	 * @return	 array Return - array of auth link entries for the given user_id
+	 * @param   int $user_id - id of user to return accounts for
+	 * @return  array Return - array of auth link entries for the given user_id
 	 */
 	public static function find_by_user_id($user_id = null)
 	{
@@ -640,7 +645,7 @@ class Link
 		}
 
 		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
-		$sql .= " WHERE l.auth_domain_id = d.id AND l.user_id = " . $db->Quote($user_id);
+		$sql .= " WHERE l.auth_domain_id = d.id AND l.user_id = " . $db->quote($user_id);
 
 		$db->setQuery($sql);
 
@@ -676,13 +681,13 @@ class Link
 		}
 
 		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
-		$sql .= " WHERE l.auth_domain_id = d.id AND l.email = " . $db->Quote($email);
+		$sql .= " WHERE l.auth_domain_id = d.id AND l.email = " . $db->quote($email);
 
 		if (!empty($exclude[0]))
 		{
 			foreach ($exclude as $e)
 			{
-				$sql .= " AND l.auth_domain_id != " . $db->Quote($e);
+				$sql .= " AND l.auth_domain_id != " . $db->quote($e);
 			}
 		}
 
@@ -718,7 +723,7 @@ class Link
 				return false;
 		}
 
-		$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->Quote($uid) . ";");
+		$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->quote($uid) . ";");
 
 		if (!$db->query())
 		{
@@ -819,11 +824,11 @@ class Link
 		if (empty($db))
 			return false;
 
-		$sql = "SELECT email FROM #__auth_link WHERE user_id = " . $db->Quote($user_id) . ";";
+		$sql = "SELECT email FROM #__auth_link WHERE user_id = " . $db->quote($user_id) . ";";
 
 		$db->setQuery($sql);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if (empty($result))
 		{

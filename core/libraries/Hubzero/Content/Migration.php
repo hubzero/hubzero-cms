@@ -389,7 +389,7 @@ class Migration
 					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
 						// This migration is older than the current, but let's see if we should inform that it should still be run
-						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$this->queryScope} ORDER BY `date` DESC LIMIT 1");
+						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->quote($file) . "{$this->queryScope} ORDER BY `date` DESC LIMIT 1");
 						$row = $this->db->loadResult();
 
 						// Check if last run was either not in the current direction we're going,
@@ -417,7 +417,7 @@ class Migration
 			try
 			{
 				// Look to the database log to see the last run on this file
-				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$this->queryScope} ORDER BY `date` DESC LIMIT 1");
+				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->quote($file) . "{$this->queryScope} ORDER BY `date` DESC LIMIT 1");
 				$row = $this->db->loadResult();
 
 				// If the last migration for this file doesn't exist, or, it was the opposite of $direction, we can go ahead and run it.

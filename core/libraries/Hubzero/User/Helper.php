@@ -92,7 +92,7 @@ class Helper
 		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
 
-		$query = 'SELECT domain_id FROM `#__xdomains` WHERE domain=' . $db->Quote($domain) . ';';
+		$query = 'SELECT domain_id FROM `#__xdomains` WHERE domain=' . $db->quote($domain) . ';';
 
 		$db->setQuery( $query );
 
@@ -122,8 +122,8 @@ class Helper
 
 		$query = 'SELECT uidNumber FROM #__xdomain_users,#__xdomains WHERE ' .
 				 '#__xdomains.domain_id=#__xdomain_users.domain_id AND ' .
-				 '#__xdomains.domain=' . $db->Quote($domain) . ' AND ' .
-				 '#__xdomain_users.domain_username=' . $db->Quote($domain_username);
+				 '#__xdomains.domain=' . $db->quote($domain) . ' AND ' .
+				 '#__xdomain_users.domain_username=' . $db->quote($domain_username);
 
 		$db->setQuery( $query );
 
@@ -155,7 +155,7 @@ class Helper
 		if ($id <= 0)
 			return false;
 
-		$query = 'DELETE FROM #__xdomain_users WHERE uidNumber=' . $db->Quote($id) . ';';
+		$query = 'DELETE FROM #__xdomain_users WHERE uidNumber=' . $db->quote($id) . ';';
 
 		$db->setQuery($query);
 
@@ -176,7 +176,7 @@ class Helper
 	{
 		$db = \App::get('db');
 
-		$query = 'SELECT uidNumber FROM #__xdomain_users WHERE #__xdomain_users.uidNumber=' . $db->Quote($uid);
+		$query = 'SELECT uidNumber FROM #__xdomain_users WHERE #__xdomain_users.uidNumber=' . $db->quote($uid);
 
 		$db->setQuery($query);
 
@@ -204,7 +204,7 @@ class Helper
 			return false;
 
 		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
-				 '#__xdomains.domain=' . $db->Quote($domain);
+				 '#__xdomains.domain=' . $db->quote($domain);
 
 		$db->setQuery($query);
 
@@ -212,7 +212,7 @@ class Helper
 
 		if (empty($result))
 		{
-			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->Quote($domain) . ')';
+			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->quote($domain) . ')';
 
 			$db->setQuery($query);
 
@@ -259,7 +259,7 @@ class Helper
 			return 0;
 
 		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
-				 '#__xdomains.domain=' . $db->Quote($domain);
+				 '#__xdomains.domain=' . $db->quote($domain);
 
 		$db->setQuery($query);
 
@@ -267,7 +267,7 @@ class Helper
 
 		if (empty($result))
 		{
-			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->Quote($domain) . ')';
+			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->quote($domain) . ')';
 
 			$db->setQuery($query);
 
@@ -279,8 +279,8 @@ class Helper
 			$domain_id = $result->domain_id;
 
 		$query = 'INSERT INTO #__xdomain_users (domain_id,domain_username,uidNumber) ' .
-			' VALUES (' . $db->Quote($domain_id) . ',' .
-			$db->Quote($domain_username) . ',' . $db->Quote($uidNumber) . ')';
+			' VALUES (' . $db->quote($domain_id) . ',' .
+			$db->quote($domain_username) . ',' . $db->quote($uidNumber) . ')';
 
 		$db->setQuery($query);
 

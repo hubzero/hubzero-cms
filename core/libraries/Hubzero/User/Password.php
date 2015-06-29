@@ -178,7 +178,7 @@ class Password
 
 		if ($this->user_id > 0)
 		{
-			$query = "INSERT INTO #__users_password (user_id) VALUES ( " . $db->Quote($this->user_id) . ");";
+			$query = "INSERT INTO #__users_password (user_id) VALUES ( " . $db->quote($this->user_id) . ");";
 
 			$db->setQuery($query);
 
@@ -232,11 +232,11 @@ class Password
 				return false;
 			}
 
-			$query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . "shadowMax,shadowWarning,shadowInactive,shadowExpire," . "shadowFlag FROM #__users_password WHERE user_id=" . $db->Quote($instance) . ";";
+			$query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . "shadowMax,shadowWarning,shadowInactive,shadowExpire," . "shadowFlag FROM #__users_password WHERE user_id=" . $db->quote($instance) . ";";
 		}
 		else
 		{
-			$query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . "shadowMax,shadowWarning,shadowInactive,shadowExpire," . "shadowFlag FROM #__users_password,#__users WHERE user_id=id" . " AND username=" . $db->Quote($instance) . ";";
+			$query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . "shadowMax,shadowWarning,shadowInactive,shadowExpire," . "shadowFlag FROM #__users_password,#__users WHERE user_id=id" . " AND username=" . $db->quote($instance) . ";";
 		}
 
 		$db->setQuery($query);
@@ -321,11 +321,11 @@ class Password
 			}
 			else
 			{
-				$query .= "`$property`=" . $db->Quote($value);
+				$query .= "`$property`=" . $db->quote($value);
 			}
 		}
 
-		$query .= " WHERE `user_id`=" . $db->Quote($this->__get('user_id'));
+		$query .= " WHERE `user_id`=" . $db->quote($this->__get('user_id'));
 
 		if ($first == true)
 		{
@@ -374,7 +374,7 @@ class Password
 
 		if (!isset($this->user_id))
 		{
-			$db->setQuery("SELECT user_id FROM #__users_password WHERE user_id" . $db->Quote($this->user_id) . ";");
+			$db->setQuery("SELECT user_id FROM #__users_password WHERE user_id" . $db->quote($this->user_id) . ";");
 
 			$this->__set('user_id', $db->loadResult());
 		}
@@ -384,7 +384,7 @@ class Password
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__users_password WHERE user_id= " . $db->Quote($this->user_id) . ";");
+		$db->setQuery("DELETE FROM #__users_password WHERE user_id= " . $db->quote($this->user_id) . ";");
 
 		$affected = 0;
 
@@ -650,10 +650,10 @@ class Password
 
 		$db = \App::get('db');
 
-		$db->setQuery("UPDATE `#__xprofiles` SET userPassword=" . $db->Quote($passhash) . " WHERE uidNumber=" . $db->Quote($hzup->get('user_id')));
+		$db->setQuery("UPDATE `#__xprofiles` SET userPassword=" . $db->quote($passhash) . " WHERE uidNumber=" . $db->quote($hzup->get('user_id')));
 		$db->query();
 
-		$db->setQuery("UPDATE `#__users` SET password=" . $db->Quote($passhash) . " WHERE id=" . $db->Quote($hzup->get('user_id')));
+		$db->setQuery("UPDATE `#__users` SET password=" . $db->quote($passhash) . " WHERE id=" . $db->quote($hzup->get('user_id')));
 		$db->query();
 
 		if (!empty($oldhash))

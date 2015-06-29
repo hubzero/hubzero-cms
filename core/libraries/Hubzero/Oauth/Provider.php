@@ -365,7 +365,7 @@ class Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" . $db->Quote($this->_provider->consumer_key) . " LIMIT 1;");
+		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" . $db->quote($this->_provider->consumer_key) . " LIMIT 1;");
 
 		$result = $db->loadObject();
 
@@ -418,9 +418,9 @@ class Provider
 
 		$db->setQuery("INSERT INTO #__oauthp_nonces (nonce,stamp,created) "
 				. " VALUES (" .
-				$db->Quote($this->_provider->nonce) .
+				$db->quote($this->_provider->nonce) .
 				"," .
-				$db->Quote($this->_provider->timestamp) .
+				$db->quote($this->_provider->timestamp) .
 				", UTC_TIMESTAMP());");
 
 		if (($db->query() === false) && ($db->getErrorNum() != 1062)) // duplicate row error ok (well expected anyway)
@@ -458,7 +458,7 @@ class Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. $db->Quote($this->_provider->token) . " LIMIT 1;");
+		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. $db->quote($this->_provider->token) . " LIMIT 1;");
 
 		$result = $db->loadObject();
 

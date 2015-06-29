@@ -499,7 +499,7 @@ class Mysql implements AccessTokenInterface,
 		// load user from session table
 		$sql = "SELECT userid 
 				  FROM `#__session`
-				  WHERE `session_id`=" . $this->database->Quote($sessionId) . "
+				  WHERE `session_id`=" . $this->database->quote($sessionId) . "
 				  AND time + " . (int) $timeout . " <= NOW()
 				  AND client_id = 0;";
 		$this->database->setQuery($sql);

@@ -414,8 +414,8 @@ class Loader
 			$now = with(new Date('now'))->toSql();
 			$nullDate = $db->getNullDate();
 
-			$query->where('(m.publish_up = ' . $db->Quote($nullDate) . ' OR m.publish_up <= ' . $db->Quote($now) . ')');
-			$query->where('(m.publish_down = ' . $db->Quote($nullDate) . ' OR m.publish_down >= ' . $db->Quote($now) . ')');
+			$query->where('(m.publish_up = ' . $db->quote($nullDate) . ' OR m.publish_up <= ' . $db->quote($now) . ')');
+			$query->where('(m.publish_down = ' . $db->quote($nullDate) . ' OR m.publish_down >= ' . $db->quote($now) . ')');
 
 			$query->where('m.access IN (' . $groups . ')');
 			$query->where('m.client_id = ' . $clientId);
@@ -424,7 +424,7 @@ class Loader
 			// Filter by language
 			if ($this->app->isSite() && $this->app->get('language.filter'))
 			{
-				$query->where('m.language IN (' . $db->Quote($lang) . ',' . $db->Quote('*') . ')');
+				$query->where('m.language IN (' . $db->quote($lang) . ',' . $db->quote('*') . ')');
 			}
 
 			$query->order('m.position, m.ordering');

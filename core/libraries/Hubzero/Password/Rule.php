@@ -51,7 +51,7 @@ class Rule
 		}
 		else
 		{
-			$group = $db->Quote($group);
+			$group = $db->quote($group);
 		}
 
 		$query = "SELECT id,rule,class,value,description,failuremsg FROM " . "#__password_rule WHERE `grp` LIKE $group";

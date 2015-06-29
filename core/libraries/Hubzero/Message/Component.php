@@ -39,7 +39,7 @@ class Component extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -61,7 +61,7 @@ class Component extends \JTable
 			return false;
 		}
 		$this->_db->setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
-		$extensions = $this->_db->loadResultArray();
+		$extensions = $this->_db->loadColumn();
 		if (!in_array($this->component, $extensions))
 		{
 			$this->setError(\Lang::txt('Component does not exist.'));
@@ -122,7 +122,7 @@ class Component extends \JTable
 		$where[] = "c.type = 'component'";
 		if (isset($filters['component']) && $filters['component'])
 		{
-			$where[] = "c.element=" . $this->_db->Quote($filters['component']);
+			$where[] = "c.element=" . $this->_db->quote($filters['component']);
 		}
 
 		$query .= " WHERE " . implode(" AND ", $where);
@@ -152,7 +152,7 @@ class Component extends \JTable
 					ORDER BY x.component ASC";
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 }
 

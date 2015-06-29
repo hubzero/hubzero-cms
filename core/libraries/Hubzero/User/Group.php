@@ -34,9 +34,6 @@ use Hubzero\Base\Object;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\String;
 
-jimport('joomla.application.component.helper');
-jimport('joomla.plugin.helper');
-
 /**
  * Group model
 */
@@ -330,7 +327,7 @@ class Group extends Object
 				$cn = '_gid' . $gidNumber;
 			}
 
-			$query = "INSERT INTO `#__xgroups` (gidNumber,cn) VALUES (" . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
+			$query = "INSERT INTO `#__xgroups` (gidNumber,cn) VALUES (" . $db->quote($gidNumber) . "," . $db->quote($cn) . ");";
 
 			$db->setQuery($query);
 
@@ -343,7 +340,7 @@ class Group extends Object
 		}
 		else
 		{
-			$query = "INSERT INTO `#__xgroups` (cn) VALUES (" . $db->Quote($cn) . ");";
+			$query = "INSERT INTO `#__xgroups` (cn) VALUES (" . $db->quote($cn) . ");";
 
 			$db->setQuery($query);
 
@@ -351,7 +348,7 @@ class Group extends Object
 
 			if ($result === false && $db->getErrorNum() == 1062) // row exists
 			{
-				$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($cn) . ";";
+				$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($cn) . ";";
 
 				$db->setQeury($query);
 
@@ -416,11 +413,11 @@ class Group extends Object
 
 		if (is_numeric($this->gidNumber))
 		{
-			$query = "SELECT * FROM `#__xgroups` WHERE gidNumber = " . $db->Quote($this->gidNumber) . ";";
+			$query = "SELECT * FROM `#__xgroups` WHERE gidNumber = " . $db->quote($this->gidNumber) . ";";
 		}
 		else
 		{
-			$query = "SELECT * FROM `#__xgroups` WHERE cn = " . $db->Quote($this->cn) . ";";
+			$query = "SELECT * FROM `#__xgroups` WHERE cn = " . $db->quote($this->cn) . ";";
 		}
 
 		$db->setQuery($query);
@@ -522,11 +519,11 @@ class Group extends Object
 			}
 			else
 			{
-				$query .= "`$property`=" . $db->Quote($value);
+				$query .= "`$property`=" . $db->quote($value);
 			}
 		}
 
-		$query .= " WHERE `gidNumber`=" . $db->Quote($this->gidNumber) . ";";
+		$query .= " WHERE `gidNumber`=" . $db->quote($this->gidNumber) . ";";
 
 		if (($first != true) && !empty($query))
 		{
@@ -571,8 +568,8 @@ class Group extends Object
 					$tlist .= ',';
 				}
 
-				$ulist .= $db->Quote($value);
-				$tlist .= '(' . $db->Quote($this->gidNumber) . ',' . $db->Quote($value) . ')';
+				$ulist .= $db->quote($value);
+				$tlist .= '(' . $db->quote($this->gidNumber) . ',' . $db->quote($value) . ')';
 			}
 
 			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
@@ -625,7 +622,7 @@ class Group extends Object
 			{
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
-					$query = "DELETE FROM $aux_table WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";";
+					$query = "DELETE FROM $aux_table WHERE gidNumber=" . $db->quote($this->gidNumber) . ";";
 				}
 			}
 			else
@@ -633,7 +630,7 @@ class Group extends Object
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
 					$query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber=" .
-						$db->Quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
+						$db->quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
 				}
 			}
 
@@ -678,7 +675,7 @@ class Group extends Object
 
 		if (!is_numeric($this->gidNumber))
 		{
-			$db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($this->cn) . ";");
+			$db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($this->cn) . ";");
 
 			$gidNumber = $db->loadResult();
 
@@ -690,7 +687,7 @@ class Group extends Object
 			$this->gidNumber = $gidNumber;
 		}
 
-		$db->setQuery("DELETE FROM `#__xgroups` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups` WHERE gidNumber=" . $db->quote($this->gidNumber) . ";");
 
 		$result = $db->query();
 
@@ -699,13 +696,13 @@ class Group extends Object
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM `#__xgroups_applicants` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_applicants` WHERE gidNumber=" . $db->quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM `#__xgroups_invitees` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_invitees` WHERE gidNumber=" . $db->quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM `#__xgroups_managers` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_managers` WHERE gidNumber=" . $db->quote($this->gidNumber) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM `#__xgroups_members` WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM `#__xgroups_members` WHERE gidNumber=" . $db->quote($this->gidNumber) . ";");
 		$db->query();
 
 		//trigger the onAfterStoreGroup event
@@ -749,13 +746,13 @@ class Group extends Object
 						$this->__set($key, $data);
 					}
 
-					$query = "(select uidNumber, 'invitees' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
+					$query = "(select uidNumber, 'invitees' AS role from #__xgroups_invitees where gidNumber=" . $db->quote($this->gidNumber) . ")
 						UNION
-							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
+							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->quote($this->gidNumber) . ")
 						UNION
-							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->Quote($this->gidNumber) . ")
+							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->quote($this->gidNumber) . ")
 						UNION
-							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
+							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->quote($this->gidNumber) . ")";
 
 					$db->setQuery($query);
 
@@ -972,7 +969,7 @@ class Group extends Object
 			}
 			else
 			{
-				$usernames[] = $db->Quote($u);
+				$usernames[] = $db->quote($u);
 			}
 		}
 
@@ -987,7 +984,7 @@ class Group extends Object
 
 		$db->setQuery($sql);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumny();
 
 		if (empty($result))
 		{
@@ -1045,7 +1042,7 @@ class Group extends Object
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumny();
 
 		if ($result === false)
 		{
@@ -1098,11 +1095,11 @@ class Group extends Object
 
 		if (is_numeric($group))
 		{
-			$query = 'SELECT gidNumber FROM `#__xgroups` WHERE gidNumber=' . $db->Quote($group);
+			$query = 'SELECT gidNumber FROM `#__xgroups` WHERE gidNumber=' . $db->quote($group);
 		}
 		else
 		{
-			$query = 'SELECT gidNumber FROM `#__xgroups` WHERE cn=' . $db->Quote($group);
+			$query = 'SELECT gidNumber FROM `#__xgroups` WHERE cn=' . $db->quote($group);
 		}
 
 		$db->setQuery($query);
@@ -1394,11 +1391,11 @@ class Group extends Object
 			return false;
 		}
 
-		$query = 'SELECT u.email FROM #__users AS u, #__xgroups_' . $tbl . ' AS gm WHERE gm.gidNumber=' . $db->Quote($this->gidNumber) . ' AND u.id=gm.uidNumber;';
+		$query = 'SELECT u.email FROM #__users AS u, #__xgroups_' . $tbl . ' AS gm WHERE gm.gidNumber=' . $db->quote($this->gidNumber) . ' AND u.id=gm.uidNumber;';
 
 		$db->setQuery($query);
 
-		$emails = $db->loadResultArray();
+		$emails = $db->loadColumny();
 
 		return $emails;
 	}
@@ -1432,11 +1429,11 @@ class Group extends Object
 		$db = \App::get('db');
 
 		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u
-					WHERE t.gidNumber={$db->Quote($this->gidNumber)}
+					WHERE t.gidNumber={$db->quote($this->gidNumber)}
 					AND u.id=t.uidNumber
 					AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumny();
 	}
 
 	/**
@@ -1458,7 +1455,12 @@ class Group extends Object
 	public function getLogo($what='')
 	{
 		//default logo
-		$default_logo = DS . 'core' . DS . 'components' . DS . 'com_groups' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
+		static $default_logo;
+
+		if (!$default_logo)
+		{
+			$default_logo = '/core/components/com_groups/site/assets/img/group_default_logo.png'
+		}
 
 		//logo link - links to group overview page
 		$link = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
@@ -1526,7 +1528,7 @@ class Group extends Object
 
 		// build link
 		$link  = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
-		$link .= DS . ucfirst($type) . ':' . implode(DS, $segments);
+		$link .= '/' . ucfirst($type) . ':' . implode('/', $segments);
 
 		// return link
 		return $link;

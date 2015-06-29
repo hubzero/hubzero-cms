@@ -517,7 +517,7 @@ class Pdo extends Driver
 	 */
 	public function tableExists($table)
 	{
-		$query = 'SHOW TABLES LIKE ' . str_replace('#__', $this->tablePrefix, $this->Quote($table, false));
+		$query = 'SHOW TABLES LIKE ' . str_replace('#__', $this->tablePrefix, $this->quote($table, false));
 		$this->setQuery($query)->execute();
 
 		return ($this->getAffectedRows() > 0) ? true : false;

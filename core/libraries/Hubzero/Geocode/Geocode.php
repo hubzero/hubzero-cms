@@ -38,15 +38,15 @@ class Geocode
 	/**
 	 * Get a list of countries and their country code
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	public static $countries = array();
 
 	/**
 	 * Get a list of countries and their coutnry code
 	 *
-	 * @param  string $continent Continent to filter by
-	 * @return array
+	 * @param   string  $continent  Continent to filter by
+	 * @return  array
 	 */
 	public static function countries($continent='all')
 	{
@@ -110,8 +110,8 @@ class Geocode
 	/**
 	 * Get country based on short code
 	 *
-	 * @param  string $code Short code (ex: us, de, fr, jp)
-	 * @return string
+	 * @param   string  $code  Short code (ex: us, de, fr, jp)
+	 * @return  string
 	 */
 	public static function country($code)
 	{
@@ -161,8 +161,8 @@ class Geocode
 	/**
 	 * Geo-locate an address
 	 *
-	 * @param  string $address
-	 * @return array
+	 * @param   string  $address
+	 * @return  array
 	 */
 	public static function locate($address)
 	{
@@ -204,8 +204,8 @@ class Geocode
 	/**
 	 * Get the address (reverse locate)
 	 *
-	 * @param  array $coordinates array(latitude, longitude)
-	 * @return array
+	 * @param   array  $coordinates  array(latitude, longitude)
+	 * @return  array
 	 */
 	public static function address($coordinates)
 	{
@@ -244,7 +244,7 @@ class Geocode
 	/**
 	 * Get the geo database
 	 *
-	 * @return     mixed JDatabase object upon success, null if error
+	 * @return  mixed  Database object upon success, null if error
 	 */
 	public static function getGeoDBO()
 	{
@@ -270,7 +270,7 @@ class Geocode
 
 			try
 			{
-				$instance = \JDatabase::getInstance($options);
+				$instance = \Hubzero\Database\Driver::getInstance($options);
 			}
 			catch (\Exception $e)
 			{
@@ -289,7 +289,7 @@ class Geocode
 	/**
 	 * Get a list of countries and their coutnry code
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public static function getcountries()
 	{
@@ -324,8 +324,8 @@ class Geocode
 	/**
 	 * Get a list of countries by continent
 	 *
-	 * @param      string $continent Parameter description (if any) ...
-	 * @return     array
+	 * @param   string  $continent
+	 * @return  array
 	 */
 	public static function getCountriesByContinent($continent='')
 	{
@@ -335,14 +335,14 @@ class Geocode
 		}
 
 		$gdb->setQuery("SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) =" . $gdb->quote(strtolower($continent)));
-		return $gdb->loadResultArray();
+		return $gdb->loadColumn();
 	}
 
 	/**
 	 * Get continent by the country
 	 *
-	 * @param      string $country Parameter description (if any) ...
-	 * @return     array
+	 * @param   string  $country
+	 * @return  array
 	 */
 	public static function getContinentByCountry($country='')
 	{
@@ -352,14 +352,14 @@ class Geocode
 		}
 
 		$gdb->setQuery("SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) ='" . strtolower($country) . "'");
-		return $gdb->loadResultArray();
+		return $gdb->loadColumn();
 	}
 
 	/**
-	 * Get a list of countries by continent
+	 * Get a list of country codes by names
 	 *
-	 * @param      array $names Parameter description (if any) ...
-	 * @return     array
+	 * @param   array  $names  List of country names
+	 * @return  array
 	 */
 	public static function getCodesByNames($names=array())
 	{
@@ -386,8 +386,8 @@ class Geocode
 	/**
 	 * Get country based on short code
 	 *
-	 * @param      string $code Short code (ex: us, de, fr, jp)
-	 * @return     string
+	 * @param   string  $code  Short code (ex: us, de, fr, jp)
+	 * @return  string
 	 */
 	public static function getCodeByName($name='')
 	{
@@ -399,7 +399,7 @@ class Geocode
 				return $code;
 			}
 
-			$gdb->setQuery("SELECT code FROM countries WHERE LOWER(name) = " . $gdb->Quote(strtolower($name)));
+			$gdb->setQuery("SELECT code FROM countries WHERE LOWER(name) = " . $gdb->quote(strtolower($name)));
 			$code = stripslashes($gdb->loadResult());
 		}
 		return $code;
@@ -408,8 +408,8 @@ class Geocode
 	/**
 	 * Get country based on short code
 	 *
-	 * @param      string $code Short code (ex: us, de, fr, jp)
-	 * @return     string
+	 * @param   string  $code  Short code (ex: us, de, fr, jp)
+	 * @return  string
 	 */
 	public static function getcountry($code='')
 	{
@@ -430,8 +430,8 @@ class Geocode
 	/**
 	 * Get the country based on IP address
 	 *
-	 * @param      string $ip IP address to look up
-	 * @return     string
+	 * @param   string  $ip  IP address to look up
+	 * @return  string
 	 */
 	public static function ipcountry($ip='')
 	{
@@ -453,8 +453,8 @@ class Geocode
 	/**
 	 * Is a country an D1 nation?
 	 *
-	 * @param      string $country Country to check
-	 * @return     boolean True if D1
+	 * @param   string   $country  Country to check
+	 * @return  boolean  True if D1
 	 */
 	public static function is_d1nation($country)
 	{
@@ -479,8 +479,8 @@ class Geocode
 	/**
 	 * Is a country an E1 nation?
 	 *
-	 * @param      string $country Country to check
-	 * @return     boolean True if E1
+	 * @param   string   $country  Country to check
+	 * @return  boolean  True if E1
 	 */
 	public static function is_e1nation($country)
 	{
@@ -505,9 +505,9 @@ class Geocode
 	/**
 	 * Check if an IP is in a certain location
 	 *
-	 * @param      string $ip       IP address to check
-	 * @param      string $location Location to check in
-	 * @return     boolean True if IP is in the location
+	 * @param   string   $ip        IP address to check
+	 * @param   string   $location  Location to check in
+	 * @return  boolean  True if IP is in the location
 	 */
 	public static function is_iplocation($ip, $location)
 	{

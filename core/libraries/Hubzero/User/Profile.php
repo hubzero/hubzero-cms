@@ -451,11 +451,11 @@ class Profile extends Object
 		//if (is_numeric($user) && $user >= 0)
 		if (is_numeric($user))
 		{
-			$query = "SELECT * FROM `#__xprofiles` WHERE uidNumber = " . $db->Quote(intval($user)) . ";";
+			$query = "SELECT * FROM `#__xprofiles` WHERE uidNumber = " . $db->quote(intval($user)) . ";";
 		}
 		else
 		{
-			$query = "SELECT * FROM `#__xprofiles` WHERE username = " . $db->Quote($user) . " AND uidNumber>0;";
+			$query = "SELECT * FROM `#__xprofiles` WHERE username = " . $db->quote($user) . " AND uidNumber>0;";
 		}
 
 		$db->setQuery($query);
@@ -520,7 +520,7 @@ class Profile extends Object
 
 		$db =  \App::get('db');
 
-		$query = "SELECT * FROM `#__author` WHERE id=" . $db->Quote($authorid);
+		$query = "SELECT * FROM `#__author` WHERE id=" . $db->quote($authorid);
 
 		$db->setQuery($query);
 
@@ -770,7 +770,7 @@ class Profile extends Object
 
 		if (is_numeric($this->get('uidNumber')))
 		{
-			$query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) VALUE (" . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($this->get('username')) . ',' . $db->Quote($modifiedDate) . ");";
+			$query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) VALUE (" . $db->quote($this->get('uidNumber')) . ',' . $db->quote($this->get('username')) . ',' . $db->quote($modifiedDate) . ");";
 
 			$db->setQuery($query);
 
@@ -794,7 +794,7 @@ class Profile extends Object
 		{
 			$token = uniqid();
 
-			$query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) SELECT " . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," . $db->Quote($token) . ',' . $db->Quote($modifiedDate) . " FROM #__xprofiles;";
+			$query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) SELECT " . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," . $db->quote($token) . ',' . $db->quote($modifiedDate) . " FROM #__xprofiles;";
 
 			$db->setQuery($query);
 
@@ -805,11 +805,11 @@ class Profile extends Object
 				return false;
 			}
 
-			$query = "SELECT uidNumber FROM `#__xprofiles` WHERE username=" . $db->Quote($token) . " AND modifiedDate=" . $db->Quote($modifiedDate);
+			$query = "SELECT uidNumber FROM `#__xprofiles` WHERE username=" . $db->quote($token) . " AND modifiedDate=" . $db->quote($modifiedDate);
 
 			$db->setQuery($query);
 
-			$result = $db->loadResultArray();
+			$result = $db->loadColumn();
 
 			if ($result === false)
 			{
@@ -924,11 +924,11 @@ class Profile extends Object
 			}
 			else
 			{
-				$query .= "$property=" . $db->Quote($this->get($property));
+				$query .= "$property=" . $db->quote($this->get($property));
 			}
 		}
 
-		$query .= " WHERE uidNumber=" . $db->Quote($this->get('uidNumber')) . ";";
+		$query .= " WHERE uidNumber=" . $db->quote($this->get('uidNumber')) . ";";
 
 		$db->setQuery($query);
 
@@ -969,7 +969,7 @@ class Profile extends Object
 
 				$first = false;
 
-				$query_values .= '(' . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($value) . ')';
+				$query_values .= '(' . $db->quote($this->get('uidNumber')) . ',' . $db->quote($value) . ')';
 			}
 
 			if ($query_values != '')
@@ -990,7 +990,7 @@ class Profile extends Object
 			{
 				foreach ($list as $key=>$value)
 				{
-					$list[$key] = $db->Quote($value);
+					$list[$key] = $db->quote($value);
 				}
 
 				$valuelist = implode($list, ",");
@@ -1051,7 +1051,7 @@ class Profile extends Object
 
 			$property = substr($property, 6);
 
-			$query = "DELETE FROM `#__xprofiles_$property` WHERE uidNumber = " . $db->Quote($this->get('uidNumber'));
+			$query = "DELETE FROM `#__xprofiles_$property` WHERE uidNumber = " . $db->quote($this->get('uidNumber'));
 			$db->setQuery($query);
 
 			if (!$db->query())
@@ -1064,7 +1064,7 @@ class Profile extends Object
 			}
 		}
 
-		$query = "DELETE FROM `#__xprofiles` WHERE uidNumber = " . $db->Quote($this->get('uidNumber'));
+		$query = "DELETE FROM `#__xprofiles` WHERE uidNumber = " . $db->quote($this->get('uidNumber'));
 		$db->setQuery($query);
 
 		if (!$db->query())
@@ -1129,11 +1129,11 @@ class Profile extends Object
 
 			$property_name = substr($property, 6);
 
-			$query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->Quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
+			$query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
 
 			$db->setQuery($query);
 
-			$result = $db->loadResultArray();
+			$result = $db->loadColumn();
 
 			if ($result === false)
 			{
@@ -1456,7 +1456,7 @@ class Profile extends Object
 	public static function getGroupMemberRoles($uid, $gid)
 	{
 		$db = \App::get('db');
-		$sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->Quote($uid) . " AND r.gidNumber=" . $db->Quote($gid);
+		$sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
 		$db->setQuery($sql);
 
 		return $db->loadAssocList();

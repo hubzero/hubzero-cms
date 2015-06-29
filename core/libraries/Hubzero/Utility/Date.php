@@ -391,7 +391,7 @@ class Date extends DateTime
 	 * @param   object   $dbo    The database driver or null to use global driver
 	 * @return  string   The date string in SQL datetime format.
 	 */
-	public function toSql($local = false, \JDatabase $dbo = null)
+	public function toSql($local = false, $dbo = null)
 	{
 		if ($dbo === null)
 		{

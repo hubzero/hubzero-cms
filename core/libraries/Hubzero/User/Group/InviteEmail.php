@@ -36,38 +36,10 @@ namespace Hubzero\User\Group;
 Class InviteEmail extends \JTable
 {
 	/**
-	 * Description for 'id'
-	 *
-	 * @var unknown
-	 */
-	var $id = NULL;
-
-	/**
-	 * Description for 'email'
-	 *
-	 * @var unknown
-	 */
-	var $email = NULL;
-
-	/**
-	 * Description for 'gidNumber'
-	 *
-	 * @var unknown
-	 */
-	var $gidNumber = NULL;
-
-	/**
-	 * Description for 'token'
-	 *
-	 * @var unknown
-	 */
-	var $token = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -77,18 +49,17 @@ Class InviteEmail extends \JTable
 	/**
 	 * Get a list of email invites for a group
 	 *
-	 * @param   integer $gid        Group ID
-	 * @param   boolean $email_only Resturn only email addresses?
+	 * @param   integer  $gid         Group ID
+	 * @param   boolean  $email_only  Resturn only email addresses?
 	 * @return  array
 	 */
 	public function getInviteEmails($gid, $email_only = false)
 	{
 		$final = array();
-		$db = \App::get('db');
 
-		$sql = "SELECT * FROM $this->_tbl WHERE gidNumber=" . $db->Quote($gid);
-		$db->setQuery($sql);
-		$invitees = $db->loadAssocList();
+		$sql = "SELECT * FROM $this->_tbl WHERE gidNumber=" . $this->_db->quote($gid);
+		$this->_db->setQuery($sql);
+		$invitees = $this->_db->loadAssocList();
 
 		if ($email_only)
 		{
@@ -108,8 +79,8 @@ Class InviteEmail extends \JTable
 	/**
 	 * Add a list of emails to a group as invitees
 	 *
-	 * @param   integer $gid    Group ID
-	 * @param   array   $emails Array of email addresses
+	 * @param   integer  $gid     Group ID
+	 * @param   array    $emails  Array of email addresses
 	 * @return  array
 	 */
 	public function addInvites($gid, $emails)
@@ -136,24 +107,25 @@ Class InviteEmail extends \JTable
 			$sql = "INSERT INTO {$this->_tbl}(`email`,`gidNumber`,`token`) VALUES ";
 			foreach ($added as $a)
 			{
-				$sql_values[] = "('".$a."',".$gid.",'".md5($a)."')";
+				$sql_values[] = "(" . $this->_db->quote($a) . "," . $this->_db->quote($gid) . "," . $this->_db->quote(md5($a)) . ")";
 			}
 			$sql = $sql . implode(',', $sql_values);
-			$db = \App::get('db');
-			$db->setQuery($sql);
-			$db->query();
+
+			$this->_db->setQuery($sql);
+			$this->_db->query();
 		}
 
 		$return['exists'] = $exists;
 		$return['added']  = $added;
+
 		return $return;
 	}
 
 	/**
 	 * Remove Invite Emails
 	 *
-	 * @param   integer $gid    Group ID
-	 * @param   array   $emails Array of email addresses
+	 * @param   integer  $gid     Group ID
+	 * @param   array    $emails  Array of email addresses
 	 * @return  void
 	 */
 	public function removeInvites($gid, $emails)
@@ -161,7 +133,7 @@ Class InviteEmail extends \JTable
 		foreach ($emails as $email)
 		{
 			$sql = "DELETE FROM {$this->_tbl} WHERE gidNumber=" . $this->_db->quote($gid) . " AND email=" . $this->_db->quote($email);
-			$this->_db->setQuery( $sql );
+			$this->_db->setQuery($sql);
 			$this->_db->query();
 		}
 	}

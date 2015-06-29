@@ -106,15 +106,15 @@ class MarketHistory extends \JTable
 		$where = array();
 		if ($itemid)
 		{
-			$where[] = "itemid=" . $this->_db->Quote($itemid);
+			$where[] = "itemid=" . $this->_db->quote($itemid);
 		}
 		if ($action)
 		{
-			$where[] = "action=" . $this->_db->Quote($action);
+			$where[] = "action=" . $this->_db->quote($action);
 		}
 		if ($category)
 		{
-			$where[] = "category=" . $this->_db->Quote($category);
+			$where[] = "category=" . $this->_db->quote($category);
 		}
 		if ($created)
 		{
@@ -122,7 +122,7 @@ class MarketHistory extends \JTable
 		}
 		if ($log)
 		{
-			$where[] = "log=" . $this->_db->Quote($log);
+			$where[] = "log=" . $this->_db->quote($log);
 		}
 		if (count($where) > 0)
 		{

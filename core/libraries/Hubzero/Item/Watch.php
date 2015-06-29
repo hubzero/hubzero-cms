@@ -105,27 +105,27 @@ class Watch extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 
 		if (isset($filters['item_type']) && $filters['item_type'] >= 0)
 		{
-			$where[] = "c.item_type=" . $this->_db->Quote($filters['item_type']);
+			$where[] = "c.item_type=" . $this->_db->quote($filters['item_type']);
 		}
 
 		if (isset($filters['item_id']) && $filters['item_id'] >= 0)
 		{
-			$where[] = "c.item_id=" . $this->_db->Quote($filters['item_id']);
+			$where[] = "c.item_id=" . $this->_db->quote($filters['item_id']);
 		}
 
 		if (isset($filters['email']) && trim($filters['email']) != '')
 		{
-			$where[] = "c.email=" . $this->_db->Quote($filters['email']);
+			$where[] = "c.email=" . $this->_db->quote($filters['email']);
 		}
 		elseif (isset($filters['created_by']) && $filters['created_by'] >= 0)
 		{
-			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 
 		if (count($where) > 0)

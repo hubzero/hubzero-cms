@@ -46,7 +46,7 @@ class Blacklist
 			$word = '';
 		}
 
-		$query = 'SELECT 1 FROM #__password_blacklist WHERE word=' .  $db->Quote($word) . ';';
+		$query = 'SELECT 1 FROM #__password_blacklist WHERE word=' .  $db->quote($word) . ';';
 
 		$db->setQuery($query);
 

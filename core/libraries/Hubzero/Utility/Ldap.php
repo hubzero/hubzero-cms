@@ -74,10 +74,10 @@ class Ldap
 
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');
-		$pldap	 = $ldap_params->get('ldap_primary', 'ldap://localhost');
+		$pldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
 
 		$negotiate_tls = $ldap_params->get('ldap_tls', 0);
-		$port		  = '389';
+		$port = '389';
 
 		if (!is_numeric($port))
 		{
@@ -242,11 +242,11 @@ class Ldap
 
 		if (is_numeric($user) && $user >= 0)
 		{
-			$query .= " WHERE u.id = " . $db->Quote($user) . " LIMIT 1;";
+			$query .= " WHERE u.id = " . $db->quote($user) . " LIMIT 1;";
 		}
 		else
 		{
-			$query .= " WHERE u.username = " . $db->Quote($user) . " LIMIT 1;";
+			$query .= " WHERE u.username = " . $db->quote($user) . " LIMIT 1;";
 		}
 
 		$db->setQuery($query);
@@ -260,9 +260,9 @@ class Ldap
 
 		if (!empty($dbinfo))
 		{
-			$query = "SELECT host FROM #__xprofiles_host WHERE uidNumber = " . $db->Quote($dbinfo['uidNumber']) . ";";
+			$query = "SELECT host FROM #__xprofiles_host WHERE uidNumber = " . $db->quote($dbinfo['uidNumber']) . ";";
 			$db->setQuery($query);
-			$dbinfo['host'] = $db->loadResultArray();
+			$dbinfo['host'] = $db->loadColumn();
 		}
 
 		$ldap_params = \Component::params('com_system');
@@ -498,11 +498,11 @@ class Ldap
 
 		if (is_numeric($group) && ($group >= 0))
 		{
-			$query .= " WHERE g.gidNumber = " . $db->Quote($group) . " LIMIT 1;";
+			$query .= " WHERE g.gidNumber = " . $db->quote($group) . " LIMIT 1;";
 		}
 		else
 		{
-			$query .= " WHERE g.cn = " . $db->Quote($group) . " LIMIT 1;";
+			$query .= " WHERE g.cn = " . $db->quote($group) . " LIMIT 1;";
 		}
 
 		$db->setQuery($query);
@@ -510,9 +510,9 @@ class Ldap
 
 		if (!empty($dbinfo))
 		{
-			$query = "SELECT DISTINCT(u.username) AS memberUid FROM #__xgroups_members AS gm, #__users AS u WHERE gm.gidNumber = " . $db->Quote($dbinfo['gidNumber']) . " AND gm.uidNumber=u.id;";
+			$query = "SELECT DISTINCT(u.username) AS memberUid FROM #__xgroups_members AS gm, #__users AS u WHERE gm.gidNumber = " . $db->quote($dbinfo['gidNumber']) . " AND gm.uidNumber=u.id;";
 			$db->setQuery($query);
-			$dbinfo['memberUid'] = $db->loadResultArray();
+			$dbinfo['memberUid'] = $db->loadColumn();
 		}
 
 		$ldap_params = \Component::params('com_system');
@@ -824,7 +824,7 @@ class Ldap
 			{
 				$query = "SELECT username FROM #__users WHERE id IN ($addin) OR username IN ($addin);";
 				$db->setQuery($query);
-				$add = $db->loadResultArray();
+				$add = $db->loadColumn();
 			}
 
 			$adds = array();
@@ -853,7 +853,7 @@ class Ldap
 			{
 				$query = "SELECT username FROM #__users WHERE id IN ($deletein) OR username IN ($deletein);";
 				$db->setQuery($query);
-				$delete = $db->loadResultArray();
+				$delete = $db->loadColumn();
 			}
 
 			$deletes = array();
@@ -882,7 +882,7 @@ class Ldap
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{
@@ -925,7 +925,7 @@ class Ldap
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{
@@ -1026,7 +1026,7 @@ class Ldap
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{
@@ -1168,7 +1168,7 @@ class Ldap
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{

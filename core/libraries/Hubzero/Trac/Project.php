@@ -209,7 +209,7 @@ class Project
 
 		if (is_numeric($this->id))
 		{
-			$query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " . $db->Quote($this->id) . "," . $db->Quote($this->name) . ");";
+			$query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " . $db->quote($this->id) . "," . $db->quote($this->name) . ");";
 			$db->setQuery($query);
 
 			$result = $db->query();
@@ -221,7 +221,7 @@ class Project
 		}
 		else
 		{
-			$query = "INSERT INTO `#__trac_project` (name) VALUES ( " . $db->Quote($this->name) . ");";
+			$query = "INSERT INTO `#__trac_project` (name) VALUES ( " . $db->quote($this->name) . ");";
 
 			$db->setQuery($query);
 
@@ -229,7 +229,7 @@ class Project
 
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
-				$query = "SELECT id FROM `#__trac_project` WHERE name=" . $db->Quote($this->name) . ";";
+				$query = "SELECT id FROM `#__trac_project` WHERE name=" . $db->quote($this->name) . ";";
 
 				$db->setQuery($query);
 
@@ -273,11 +273,11 @@ class Project
 
 		if (is_numeric($this->id))
 		{
-			$query = "SELECT * FROM `#__trac_project` WHERE id = " . $db->Quote($this->id) . ";";
+			$query = "SELECT * FROM `#__trac_project` WHERE id = " . $db->quote($this->id) . ";";
 		}
 		else
 		{
-			$query = "SELECT * FROM `#__trac_project` WHERE name = " . $db->Quote($this->name) . ";";
+			$query = "SELECT * FROM `#__trac_project` WHERE name = " . $db->quote($this->name) . ";";
 		}
 
 		$db->setQuery($query);
@@ -351,11 +351,11 @@ class Project
 			}
 			else
 			{
-				$query .= "`$property`=" . $db->Quote($value);
+				$query .= "`$property`=" . $db->quote($value);
 			}
 		}
 
-		$query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
+		$query .= " WHERE `id`=" . $db->quote($this->__get('id')) . ";";
 
 		if ($first == true)
 		{
@@ -423,7 +423,7 @@ class Project
 
 		if (!isset($this->id))
 		{
-			$db->setQuery("SELECT id FROM `#__trac_project` WHERE name=" . $db->Quote($this->name) . ";");
+			$db->setQuery("SELECT id FROM `#__trac_project` WHERE name=" . $db->quote($this->name) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -433,16 +433,16 @@ class Project
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM `#__trac_project` WHERE id=" . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__trac_project` WHERE id=" . $db->quote($this->id) . ";");
 
 		if (!$db->query())
 		{
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM `#__trac_user_permission` WHERE trac_project_id=" . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__trac_user_permission` WHERE trac_project_id=" . $db->quote($this->id) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM `#__trac_group_permission` WHERE trac_project_id=" . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__trac_group_permission` WHERE trac_project_id=" . $db->quote($this->id) . ";");
 		$db->query();
 
 		return true;
@@ -483,7 +483,7 @@ class Project
 					{
 						$db->setQuery($query);
 
-						$result = $db->loadResultArray();
+						$result = $db->loadColumn();
 					}
 
 					if ($result !== false)
@@ -667,7 +667,7 @@ class Project
 
 		if (!is_numeric($user))
 		{
-			$query = "SELECT id FROM `#__users` WHERE username=" . $db->Quote($user) . ";";
+			$query = "SELECT id FROM `#__users` WHERE username=" . $db->quote($user) . ";";
 			$db->setQuery($query);
 			$user_id = $db->loadResult();
 
@@ -682,8 +682,8 @@ class Project
 			$user_id = $user;
 		}
 
-		$quoted_project_id = $db->Quote($this->id);
-		$quoted_user_id = $db->Quote($user_id);
+		$quoted_project_id = $db->quote($this->id);
+		$quoted_user_id = $db->quote($user_id);
 		$values = '';
 
 		foreach ((array) $action as $a)
@@ -692,7 +692,7 @@ class Project
 			{
 				$values .= ',';
 			}
-			$values .= "($quoted_project_id,$quoted_user_id," . $db->Quote($a) .")";
+			$values .= "($quoted_project_id,$quoted_user_id," . $db->quote($a) .")";
 		}
 
 		$query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES " .  $values . ";";
@@ -721,7 +721,7 @@ class Project
 
 		if (!is_numeric($group))
 		{
-			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($group) . ";";
+			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($group) . ";";
 			$db->setQuery($query);
 			$group_id = $db->loadResult();
 
@@ -732,8 +732,8 @@ class Project
 			}
 		}
 
-		$quoted_project_id = $db->Quote($this->id);
-		$quoted_group_id = $db->Quote($group_id);
+		$quoted_project_id = $db->quote($this->id);
+		$quoted_group_id = $db->quote($group_id);
 		$values = '';
 
 		foreach ((array) $action as $a)
@@ -742,7 +742,7 @@ class Project
 			{
 				$values .= ',';
 			}
-			$values .= "($quoted_project_id,$quoted_group_id," . $db->Quote($a) .")";
+			$values .= "($quoted_project_id,$quoted_group_id," . $db->quote($a) .")";
 		}
 
 		$query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES " .  $values . ";";
@@ -772,7 +772,7 @@ class Project
 
 		if (!is_numeric($user))
 		{
-			$query = "SELECT id FROM `#__users` WHERE username=" . $db->Quote($user) . ";";
+			$query = "SELECT id FROM `#__users` WHERE username=" . $db->quote($user) . ";";
 			$db->setQuery($query);
 			$user_id = $db->loadResult();
 
@@ -787,8 +787,8 @@ class Project
 			$user_id = $user;
 		}
 
-		$quoted_project_id = $db->Quote($this->id);
-		$quoted_user_id = $db->Quote($user_id);
+		$quoted_project_id = $db->quote($this->id);
+		$quoted_user_id = $db->quote($user_id);
 		$values = '';
 
 		foreach ((array) $action as $a)
@@ -801,7 +801,7 @@ class Project
 			{
 				$values .= ',';
 			}
-			$values .= $db->Quote($a);
+			$values .= $db->quote($a);
 		}
 
 		$query = "DELETE FROM `#__trac_user_permission` WHERE trac_project_id=$quoted_project_id AND user_id=$quoted_user_id";
@@ -836,7 +836,7 @@ class Project
 
 		if (!is_numeric($group))
 		{
-			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($group) . ";";
+			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($group) . ";";
 			$db->setQuery($query);
 			$group_id = $db->loadResult();
 
@@ -847,8 +847,8 @@ class Project
 			}
 		}
 
-		$quoted_project_id = $db->Quote($this->id);
-		$quoted_group_id = $db->Quote($group_id);
+		$quoted_project_id = $db->quote($this->id);
+		$quoted_group_id = $db->quote($group_id);
 		$values = '';
 
 		foreach ((array) $action as $a)
@@ -861,7 +861,7 @@ class Project
 			{
 				$values .= ',';
 			}
-			$values .= $db->Quote($a);
+			$values .= $db->quote($a);
 		}
 
 		$query = "DELETE FROM `#__trac_group_permission` WHERE trac_project_id=$quoted_project_id AND group_id=$quoted_group_id";
@@ -884,13 +884,13 @@ class Project
 	public function get_user_permission($user)
 	{
 		$db =  \App::get('db');
-		$quoted_project_id = $db->Quote($this->id);
+		$quoted_project_id = $db->quote($this->id);
 
 		if ($user == "anonymous")
 		{
 			$user = '0';
 		}
-		$quoted_user = $db->Quote($user);
+		$quoted_user = $db->quote($user);
 		if (is_numeric($user))
 		{
 			$query = "SELECT action FROM `#__trac_user_permission` AS up WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
@@ -915,13 +915,13 @@ class Project
 	public function get_group_permission($group)
 	{
 		$db =  \App::get('db');
-		$quoted_project_id = $db->Quote($this->id);
+		$quoted_project_id = $db->quote($this->id);
 
 		if ($group == 'authenticated')
 		{
 			$group = '0';
 		}
-		$quoted_group = $db->Quote($group);
+		$quoted_group = $db->quote($group);
 		if (is_numeric($group))
 		{
 			$query = "SELECT action FROM `#__trac_group_permission` AS gp WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";

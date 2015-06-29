@@ -49,7 +49,7 @@ class Helper
 		$db = \App::get('db');
 		$db->setQuery("SELECT uidNumber FROM `#__xprofiles`;");
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{
@@ -79,9 +79,9 @@ class Helper
 		}
 
 		$db = \App::get('db');
-		$db->setQuery("SELECT username FROM `#__xprofiles` WHERE `email`=" . $db->Quote($email));
+		$db->setQuery("SELECT username FROM `#__xprofiles` WHERE `email`=" . $db->quote($email));
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if (empty($result))
 		{

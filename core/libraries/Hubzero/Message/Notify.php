@@ -38,7 +38,7 @@ class Notify extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -79,8 +79,8 @@ class Notify extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
-		$query .= ($type) ? " AND `type`=" . $this->_db->Quote($type) : "";
+		$query  = "SELECT * FROM $this->_tbl WHERE `uid`=" . $this->_db->quote($uid);
+		$query .= ($type) ? " AND `type`=" . $this->_db->quote($type) : "";
 		$query .= " ORDER BY `priority` ASC";
 
 		$this->_db->setQuery($query);
@@ -102,7 +102,7 @@ class Notify extends \JTable
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
+		$query  = "DELETE FROM $this->_tbl WHERE `uid`=" . $this->_db->quote($uid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -124,7 +124,7 @@ class Notify extends \JTable
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE `type`=" . $this->_db->Quote($type);
+		$query  = "DELETE FROM $this->_tbl WHERE `type`=" . $this->_db->quote($type);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{

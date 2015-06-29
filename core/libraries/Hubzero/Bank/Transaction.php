@@ -109,7 +109,7 @@ class Transaction extends \JTable
 		{
 			$lmt .= " LIMIT " . $limit;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " ORDER BY created DESC, id DESC" . $lmt);
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid) . " ORDER BY created DESC, id DESC" . $lmt);
 		return $this->_db->loadObjectList();
 	}
 
@@ -140,7 +140,7 @@ class Transaction extends \JTable
 			$category = $this->category;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
+		$query = "DELETE FROM $this->_tbl WHERE category=" . $this->_db->quote($category) . " AND type=" . $this->_db->quote($type) . " AND referenceid=" . $this->_db->quote($referenceid);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -178,10 +178,10 @@ class Transaction extends \JTable
 		{
 			$category = $this->category;
 		}
-		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
+		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category=" . $this->_db->quote($category) . " AND type=" . $this->_db->quote($type) . " AND referenceid=" . $this->_db->quote($referenceid);
 		if ($uid)
 		{
-			$query .= " AND uid=" . $this->_db->Quote($uid);
+			$query .= " AND uid=" . $this->_db->quote($uid);
 		}
 		$query .= " GROUP BY referenceid";
 
@@ -217,10 +217,10 @@ class Transaction extends \JTable
 			$category = $this->category;
 		}
 
-		$query = "SELECT amount FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
+		$query = "SELECT amount FROM $this->_tbl WHERE category=" . $this->_db->quote($category) . " AND type=" . $this->_db->quote($type) . " AND referenceid=" . $this->_db->quote($referenceid);
 		if ($uid)
 		{
-			$query .= " AND uid=" . $this->_db->Quote($uid);
+			$query .= " AND uid=" . $this->_db->quote($uid);
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -275,14 +275,14 @@ class Transaction extends \JTable
 			// num of transactions
 			$query .= " COUNT(*)";
 		}
-		$query .= " FROM $this->_tbl WHERE type=" . $this->_db->Quote($type) . " ";
+		$query .= " FROM $this->_tbl WHERE type=" . $this->_db->quote($type) . " ";
 		if ($category)
 		{
-			$query .= " AND category=" . $this->_db->Quote($category) . " ";
+			$query .= " AND category=" . $this->_db->quote($category) . " ";
 		}
 		if ($referenceid)
 		{
-			$query .= " AND referenceid=" . $this->_db->Quote($referenceid);
+			$query .= " AND referenceid=" . $this->_db->quote($referenceid);
 		}
 		if ($royalty)
 		{

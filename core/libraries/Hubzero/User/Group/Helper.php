@@ -357,11 +357,11 @@ class Helper
 
 		$db = \App::get('db');
 
-		$sql = 'SELECT gidNumber FROM `#__xgroups_inviteemails` WHERE email=' . $db->Quote($email) . ';';
+		$sql = 'SELECT gidNumber FROM `#__xgroups_inviteemails` WHERE email=' . $db->quote($email) . ';';
 
 		$db->setQuery($sql);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{
@@ -393,7 +393,7 @@ class Helper
 			return false;
 		}
 
-		$sql = 'DELETE FROM `#__xgroups_inviteemails` WHERE email=' . $db->Quote($email) . ' AND gidNumber IN (' . $gids . ');';
+		$sql = 'DELETE FROM `#__xgroups_inviteemails` WHERE email=' . $db->quote($email) . ' AND gidNumber IN (' . $gids . ');';
 
 		$db->setQuery($sql);
 
@@ -426,7 +426,7 @@ class Helper
 
 		$db->setQuery($query);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		$result = array_intersect($result, $group->members);
 

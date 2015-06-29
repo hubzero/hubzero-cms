@@ -38,7 +38,7 @@ class Message extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -118,19 +118,19 @@ class Message extends \JTable
 
 		if (isset($filters['created_by']) && $filters['created_by'] != 0)
 		{
-			$where[] = "m.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "m.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['daily_limit']) && $filters['daily_limit'] != 0)
 		{
 			$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 00:00:00";
 			$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 23:59:59";
 
-			$where[] = "m.created >= " . $this->_db->Quote($start);
-			$where[] = "m.created <= " . $this->_db->Quote($end);
+			$where[] = "m.created >= " . $this->_db->quote($start);
+			$where[] = "m.created <= " . $this->_db->quote($end);
 		}
 		if (isset($filters['group_id']) && $filters['group_id'] != 0)
 		{
-			$where[] = "m.group_id=" . $this->_db->Quote($filters['group_id']);
+			$where[] = "m.group_id=" . $this->_db->quote($filters['group_id']);
 		}
 
 		if (count($where) > 0)

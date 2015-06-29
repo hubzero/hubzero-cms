@@ -38,7 +38,7 @@ class Action extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -84,10 +84,10 @@ class Action extends \JTable
 
 		$query = "SELECT m.id
 				FROM `#__xmessage_recipient` AS r, $this->_tbl AS a, `#__xmessage` AS m
-				WHERE m.id=r.mid AND r.actionid = a.id AND m.type=" . $this->_db->Quote($type) . " AND r.uid=" . $this->_db->Quote($uid) . " AND a.class=" . $this->_db->Quote($component) . " AND a.element=" . $this->_db->Quote($element);
+				WHERE m.id=r.mid AND r.actionid = a.id AND m.type=" . $this->_db->quote($type) . " AND r.uid=" . $this->_db->quote($uid) . " AND a.class=" . $this->_db->quote($component) . " AND a.element=" . $this->_db->quote($element);
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 }
 

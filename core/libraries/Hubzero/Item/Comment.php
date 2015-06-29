@@ -335,7 +335,7 @@ class Comment extends \JTable
 			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
-			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $this->_db->Quote(\User::get('id')) . " AND v.item_type='comment' ";
+			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $this->_db->quote(\User::get('id')) . " AND v.item_type='comment' ";
 		}
 		else
 		{
@@ -343,7 +343,7 @@ class Comment extends \JTable
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
 		}
-		$sql .= "WHERE c.item_type=" . $this->_db->Quote($item_type) . " AND c.item_id=" . $this->_db->Quote($item_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC LIMIT $start,$limit";
+		$sql .= "WHERE c.item_type=" . $this->_db->quote($item_type) . " AND c.item_id=" . $this->_db->quote($item_id) . " AND c.parent=" . $this->_db->quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC LIMIT $start,$limit";
 
 		$this->_db->setQuery($sql);
 
@@ -398,7 +398,7 @@ class Comment extends \JTable
 		}
 
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent IN ($id)");
-		$rows = $this->_db->loadResultArray();
+		$rows = $this->_db->loadColumn();
 		if ($rows && count($rows) > 0)
 		{
 			$state = intval($state);
@@ -436,7 +436,7 @@ class Comment extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id=" . $this->_db->Quote($oid));
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->quote($state) . " WHERE id=" . $this->_db->quote($oid));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -465,14 +465,14 @@ class Comment extends \JTable
 		}
 
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent IN ($id)");
-		$rows = $this->_db->loadResultArray();
+		$rows = $this->_db->loadColumn();
 		if ($rows && count($rows) > 0)
 		{
 			$state = intval($state);
 			$rows  = array_map('intval', $rows);
 			$id    = implode(',', $rows);
 
-			$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE parent IN ($id)");
+			$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->quote($state) . " WHERE parent IN ($id)");
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -507,18 +507,18 @@ class Comment extends \JTable
 			}
 			else if ($filters['state'] >= 0)
 			{
-				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+				$where[] = "c.state=" . $this->_db->quote(intval($filters['state']));
 			}
 		}
 
 		if (isset($filters['item_type']) && $filters['item_type'] >= 0)
 		{
-			$where[] = "c.item_type=" . $this->_db->Quote($filters['item_type']);
+			$where[] = "c.item_type=" . $this->_db->quote($filters['item_type']);
 		}
 
 		if (isset($filters['item_id']) && $filters['item_id'] >= 0)
 		{
-			$where[] = "c.item_id=" . $this->_db->Quote($filters['item_id']);
+			$where[] = "c.item_id=" . $this->_db->quote($filters['item_id']);
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -596,11 +596,11 @@ class Comment extends \JTable
 		$where = array();
 		if (isset($filters['item_id']))
 		{
-			$where[] = "r.`item_id`=" . $this->_db->Quote($filters['item_id']);
+			$where[] = "r.`item_id`=" . $this->_db->quote($filters['item_id']);
 		}
 		if (isset($filters['item_type']))
 		{
-			$where[] = "r.`item_type`=" . $this->_db->Quote($filters['item_type']);
+			$where[] = "r.`item_type`=" . $this->_db->quote($filters['item_type']);
 		}
 		if (isset($filters['state']))
 		{
@@ -611,20 +611,20 @@ class Comment extends \JTable
 			}
 			else
 			{
-				$where[] = "r.`state`=" . $this->_db->Quote($filters['state']);
+				$where[] = "r.`state`=" . $this->_db->quote($filters['state']);
 			}
 		}
 		if (isset($filters['access']))
 		{
-			$where[] = "r.`access`=" . $this->_db->Quote($filters['access']);
+			$where[] = "r.`access`=" . $this->_db->quote($filters['access']);
 		}
 		if (isset($filters['parent']))
 		{
-			$where[] = "r.`parent`=" . $this->_db->Quote($filters['parent']);
+			$where[] = "r.`parent`=" . $this->_db->quote($filters['parent']);
 		}
 		if (isset($filters['created_by']))
 		{
-			$where[] = "r.`created_by`=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "r.`created_by`=" . $this->_db->quote($filters['created_by']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{

@@ -139,11 +139,11 @@ class File extends \JTable
 		$where = array();
 		if (isset($filters['comment_id']))
 		{
-			$where[] = "f.`comment_id`=" . $this->_db->Quote($filters['comment_id']);
+			$where[] = "f.`comment_id`=" . $this->_db->quote($filters['comment_id']);
 		}
 		if (isset($filters['filename']))
 		{
-			$where[] = "f.`filename`=" . $this->_db->Quote($filters['filename']);
+			$where[] = "f.`filename`=" . $this->_db->quote($filters['filename']);
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -209,7 +209,7 @@ class File extends \JTable
 	 */
 	public function loadByComment($comment_id=NULL)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE comment_id=" . $this->_db->Quote((int) $comment_id));
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE comment_id=" . $this->_db->quote((int) $comment_id));
 		return $this->_db->loadObject();
 	}
 
@@ -228,7 +228,7 @@ class File extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE comment_id=" . $this->_db->Quote((int) $comment_id));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE comment_id=" . $this->_db->quote((int) $comment_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

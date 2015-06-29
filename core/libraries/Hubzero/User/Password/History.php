@@ -73,7 +73,7 @@ class History
 		}
 		else
 		{
-			$query = "SELECT id FROM #__users WHERE username=" .  $db->Quote($instance) . ";";
+			$query = "SELECT id FROM #__users WHERE username=" .  $db->quote($instance) . ";";
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			if (is_numeric($result) && $result > 0)
@@ -117,7 +117,7 @@ class History
 		}
 		else
 		{
-			$invalidated = $db->Quote($invalidated);
+			$invalidated = $db->quote($invalidated);
 		}
 
 		$user_id = $this->user_id;
@@ -125,8 +125,8 @@ class History
 		$query = "INSERT INTO #__users_password_history(user_id," .
 			"passhash,invalidated)" .
 			" VALUES ( " .
-			$db->Quote($user_id) . "," .
-			$db->Quote($passhash) . "," .
+			$db->quote($user_id) . "," .
+			$db->quote($passhash) . "," .
 			$invalidated .
 			");";
 
@@ -158,11 +158,11 @@ class History
 			return false;
 		}
 
-		$query = "SELECT `passhash` FROM `#__users_password_history` WHERE user_id = " . $db->Quote($this->user_id);
+		$query = "SELECT `passhash` FROM `#__users_password_history` WHERE user_id = " . $db->quote($this->user_id);
 
 		if (!empty($since))
 		{
-			$query .= " AND invalidated >= " . $db->Quote($since);
+			$query .= " AND invalidated >= " . $db->quote($since);
 		}
 
 		$db->setQuery($query);
@@ -206,9 +206,9 @@ class History
 		}
 
 		$db->setQuery("DELETE FROM #__users_password_history WHERE user_id= " .
-			$db->Quote($this->user_id) . " AND passhash = " .
-			$db->Quote($passhash) . " AND invalidated = " .
-			$db->Quote($timestamp) . ";");
+			$db->quote($this->user_id) . " AND passhash = " .
+			$db->quote($passhash) . " AND invalidated = " .
+			$db->quote($timestamp) . ";");
 
 		if (!$db->query())
 		{

@@ -75,7 +75,7 @@ class Record extends Object
 	protected $_options;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */

@@ -62,7 +62,7 @@ class MenuItem extends Element
 		$menuType = $this->_parent->get('menu_type');
 		if (!empty($menuType))
 		{
-			$where = ' WHERE menutype = ' . $db->Quote($menuType);
+			$where = ' WHERE menutype = ' . $db->quote($menuType);
 		}
 		else
 		{

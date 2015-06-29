@@ -165,43 +165,43 @@ class Announcement extends \JTable
 		//apply filters based on filters passed in
 		if (isset($filters['scope']) && $filters['scope'])
 		{
-			$where[] = "a.`scope` = " . $this->_db->Quote($filters['scope']);
+			$where[] = "a.`scope` = " . $this->_db->quote($filters['scope']);
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
-			$where[] = "a.`scope_id` = " . $this->_db->Quote(intval($filters['scope_id']));
+			$where[] = "a.`scope_id` = " . $this->_db->quote(intval($filters['scope_id']));
 		}
 		if (isset($filters['state']) && $filters['state'])
 		{
-			$where[] = "a.`state` = " . $this->_db->Quote(intval($filters['state']));
+			$where[] = "a.`state` = " . $this->_db->quote(intval($filters['state']));
 		}
 		if (isset($filters['created_by']) && $filters['created_by'])
 		{
-			$where[] = "a.`created_by` = " . $this->_db->Quote(intval($filters['created_by']));
+			$where[] = "a.`created_by` = " . $this->_db->quote(intval($filters['created_by']));
 		}
 		if (isset($filters['priority']) && $filters['priority'])
 		{
-			$where[] = "a.`priority` = " . $this->_db->Quote(intval($filters['priority']));
+			$where[] = "a.`priority` = " . $this->_db->quote(intval($filters['priority']));
 		}
 		if (isset($filters['sticky']) && in_array($filters['sticky'], array(0,1)))
 		{
-			$where[] = "a.`sticky` = " . $this->_db->Quote(intval($filters['sticky']));
+			$where[] = "a.`sticky` = " . $this->_db->quote(intval($filters['sticky']));
 		}
 		if (isset($filters['email']) && in_array($filters['email'], array(0,1)))
 		{
-			$where[] = "a.`email` = " . $this->_db->Quote(intval($filters['email']));
+			$where[] = "a.`email` = " . $this->_db->quote(intval($filters['email']));
 		}
 		if (isset($filters['sent']) && in_array($filters['sent'], array(0,1)))
 		{
-			$where[] = "a.`sent` = " . $this->_db->Quote(intval($filters['sent']));
+			$where[] = "a.`sent` = " . $this->_db->quote(intval($filters['sent']));
 		}
 
 		//published
 		if (isset($filters['published']))
 		{
 			$now = new Date('now');
-			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now->toSql()) . ")";
-			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now->toSql()) . ")";
+			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->quote($now->toSql()) . ")";
+			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->quote($now->toSql()) . ")";
 		}
 
 		//search
@@ -209,7 +209,7 @@ class Announcement extends \JTable
 		{
 			if (is_numeric($filters['search']))
 			{
-				$where[] = "a.`id`=" . $this->_db->Quote(intval($filters['search']));
+				$where[] = "a.`id`=" . $this->_db->quote(intval($filters['search']));
 			}
 			else
 			{

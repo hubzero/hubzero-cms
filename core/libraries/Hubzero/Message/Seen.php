@@ -38,7 +38,7 @@ class Seen extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -103,7 +103,7 @@ class Seen extends \JTable
 
 		if (!$new)
 		{
-			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen=" . $this->_db->Quote($this->whenseen) . " WHERE mid=" . $this->_db->Quote($this->mid) . " AND uid=" . $this->_db->Quote($this->uid));
+			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen=" . $this->_db->quote($this->whenseen) . " WHERE mid=" . $this->_db->quote($this->mid) . " AND uid=" . $this->_db->quote($this->uid));
 			if ($this->_db->query())
 			{
 				$ret = true;
@@ -111,7 +111,7 @@ class Seen extends \JTable
 		}
 		else
 		{
-			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES (" . $this->_db->Quote($this->mid) . ", " . $this->_db->Quote($this->uid). ", " . $this->_db->Quote($this->whenseen) . ")");
+			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES (" . $this->_db->quote($this->mid) . ", " . $this->_db->quote($this->uid). ", " . $this->_db->quote($this->whenseen) . ")");
 			if ($this->_db->query())
 			{
 				$ret = true;

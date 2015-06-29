@@ -226,9 +226,9 @@ class Domain
 
 		if (is_numeric($this->id))
 		{
-			$query = "INSERT INTO #__auth_domain (id,type,authenticator,domain,params) VALUES ( " . $db->Quote($this->id) .
-				"," . $db->Quote($this->type) . "," . $db->Quote($this->authenticator) . "," . $db->Quote($this->domain) . ","
-				. $db->Quote($this->params) . ");";
+			$query = "INSERT INTO #__auth_domain (id,type,authenticator,domain,params) VALUES ( " . $db->quote($this->id) .
+				"," . $db->quote($this->type) . "," . $db->quote($this->authenticator) . "," . $db->quote($this->domain) . ","
+				. $db->quote($this->params) . ");";
 
 			$db->setQuery();
 
@@ -242,7 +242,7 @@ class Domain
 		else
 		{
 			$query = "INSERT INTO #__auth_domain (type,authenticator,domain,params) VALUES ( " .
-				$db->Quote($this->type) . "," . $db->Quote($this->authenticator) . "," . $db->Quote($this->domain) . "," . $db->Quote($this->params) . ");";
+				$db->quote($this->type) . "," . $db->quote($this->authenticator) . "," . $db->quote($this->domain) . "," . $db->quote($this->params) . ");";
 
 			$db->setQuery($query);
 
@@ -251,7 +251,7 @@ class Domain
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
 				$query = "SELECT id FROM #__auth_domain WHERE authenticator=" .
-					$db->Quote($this->authenticator) . " AND domain=" . $db->Quote($this->domain) . " AND type=" . $db->Quote($this->type) . ";";
+					$db->quote($this->authenticator) . " AND domain=" . $db->quote($this->domain) . " AND type=" . $db->quote($this->type) . ";";
 
 				$db->setQuery($query);
 
@@ -294,14 +294,14 @@ class Domain
 		if (is_numeric($this->id))
 		{
 			$query = "SELECT id,type,authenticator,domain,params FROM #__auth_domain WHERE id=" .
-				$db->Quote($this->id) . ";";
+				$db->quote($this->id) . ";";
 		}
 		else
 		{
 			$query = "SELECT id,type,authenticator,domain,params FROM #__auth_domain WHERE "
-				. " type=" . $db->Quote($this->type)
-				. " AND authenticator=" . $db->Quote($this->authenticator)
-				. " AND domain=" . $db->Quote($this->domain)
+				. " type=" . $db->quote($this->type)
+				. " AND authenticator=" . $db->quote($this->authenticator)
+				. " AND domain=" . $db->quote($this->domain)
 				. ";";
 		}
 
@@ -373,11 +373,11 @@ class Domain
 			}
 			else
 			{
-				$query .= "`$property`=" . $db->Quote($value);
+				$query .= "`$property`=" . $db->quote($value);
 			}
 		}
 
-		$query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
+		$query .= " WHERE `id`=" . $db->quote($this->__get('id')) . ";";
 
 		if ($first == true)
 		{
@@ -424,7 +424,7 @@ class Domain
 		if (!isset($this->id))
 		{
 			$db->setQuery("SELECT id FROM #__auth_domain WHERE authenticator=" .
-					$db->Quote($this->authenticator) . " AND domain=" . $db->Quote($this->domain) . ";");
+					$db->quote($this->authenticator) . " AND domain=" . $db->quote($this->domain) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -434,7 +434,7 @@ class Domain
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__auth_domain WHERE id= " . $db->Quote($this->id) . ";");
+		$db->setQuery("DELETE FROM #__auth_domain WHERE id= " . $db->quote($this->id) . ";");
 
 		if (!$db->query())
 		{
@@ -444,7 +444,7 @@ class Domain
 		if ($deletelinks)
 		{
 			$db->setQuery("UPDATE #__auth_links SET auth_domain_id=NULL WHERE auth_domain_id=" .
-				$db->Quote($this->id) . ";");
+				$db->quote($this->id) . ";");
 
 			$db->query();
 		}

@@ -38,7 +38,7 @@ class Recipient extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -88,21 +88,21 @@ class Recipient extends \JTable
 	/**
 	 * Builds a query string based on filters passed
 	 *
-	 * @param   array   $filters Filters to build query from
+	 * @param   array   $filters  Filters to build query from
 	 * @return  string  SQL
 	 */
 	private function buildQuery($uid, $filters=array())
 	{
-		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid=" . $this->_db->Quote($uid) . ", $this->_tbl AS r
-					WHERE r.uid=" . $this->_db->Quote($uid) . "
+		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid=" . $this->_db->quote($uid) . ", $this->_tbl AS r
+					WHERE r.uid=" . $this->_db->quote($uid) . "
 					AND r.mid=m.id ";
 		if (isset($filters['state']))
 		{
-			$query .= "AND r.state=" . $this->_db->Quote($filters['state']);
+			$query .= "AND r.state=" . $this->_db->quote($filters['state']);
 		}
 		if (isset($filters['filter']) && $filters['filter'] != '')
 		{
-			$query .= "AND m.component=" . $this->_db->Quote($filters['filter']);
+			$query .= "AND m.component=" . $this->_db->quote($filters['filter']);
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
@@ -177,7 +177,7 @@ class Recipient extends \JTable
 
 		$query = "SELECT " . ($limit ? "DISTINCT m.*, r.expires, r.actionid" : "DISTINCT m.id") . "
 				FROM #__xmessage AS m, $this->_tbl AS r
-				WHERE m.id = r.mid AND r.uid=" . $this->_db->Quote($uid) . " AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->Quote($uid) . ")";
+				WHERE m.id = r.mid AND r.uid=" . $this->_db->quote($uid) . " AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->quote($uid) . ")";
 		if ($limit)
 		{
 			$query .= " ORDER BY r.created DESC";
@@ -203,7 +203,7 @@ class Recipient extends \JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " AND state='2'";
+		$query = "DELETE FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid) . " AND state='2'";
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -230,7 +230,7 @@ class Recipient extends \JTable
 
 		$ids = array_map('intval', $ids);
 		$ids = implode(',', $ids);
-		$query = "UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id IN ($ids)";
+		$query = "UPDATE $this->_tbl SET state=" . $this->_db->quote($state) . " WHERE id IN ($ids)";
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())

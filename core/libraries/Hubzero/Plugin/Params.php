@@ -40,7 +40,7 @@ class Params extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$db  JDatabase
+	 * @param   object  &$db  Database
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -123,7 +123,7 @@ class Params extends \JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
+		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=" . $this->_db->quote($oid) . " AND folder=" . $this->_db->quote($folder) . " AND element=" . $this->_db->quote($element) . " LIMIT 1");
 		$result = $this->_db->loadResult();
 
 		return new Registry($result);
