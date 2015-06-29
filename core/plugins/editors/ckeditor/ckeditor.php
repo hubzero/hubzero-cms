@@ -441,10 +441,13 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 				$template = $db->loadResult();
 			}
 
+			$app = substr(PATH_APP, strlen(PATH_CORE));
+
 			// vars to hold css
-			$css         = array();
-			$siteCss     = '/app/cache/site/site.css';
-			$templateCss = '/templates/' . $template . '/css/main.css';
+			$css          = array();
+			$siteCss      = $app . '/cache/site/site.css';
+			$templateCssA = $app . '/templates/' . $template . '/css/main.css';
+			$templateCssC = '/core/templates/' . $template . '/css/main.css';
 
 			// do we have a site.css
 			if (file_exists(PATH_APP . $siteCss))
@@ -453,9 +456,13 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			}
 
 			// do we have a template main.css
-			if (file_exists(PATH_ROOT . $templateCss))
+			if (file_exists(PATH_ROOT . $templateCssA))
 			{
-				array_push($css, $templateCss);
+				array_push($css, $templateCssA);
+			}
+			else if (file_exists(PATH_ROOT . $templateCssC))
+			{
+				array_push($css, $templateCssC);
 			}
 
 			if (Document::getType() == 'html')
