@@ -155,7 +155,7 @@ class Request extends BaseRequest
 						'extension' => $result->getExtension(),
 						'size'      => $result->getClientSize(),
 					);
-					$result = $res;
+					$result = ($result ? $res : null);
 				}
 				return $result;
 			break;
