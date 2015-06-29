@@ -1011,6 +1011,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming array of users to message
 		$mbrs = array_map("trim", explode(',', Request::getVar('mbrs', array(), 'post')));
 

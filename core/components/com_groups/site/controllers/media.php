@@ -765,6 +765,9 @@ class Media extends Base
 	 */
 	public function doMoveFileTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$file   = Request::getVar('file', '');
 		$folder = Request::getVar('folder', '');
@@ -824,6 +827,9 @@ class Media extends Base
 	 */
 	public function doRenameFileTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$file = Request::getVar('file', '');
 		$name = Request::getVar('name', '');
@@ -961,6 +967,9 @@ class Media extends Base
 	 */
 	public function saveFolderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		//get request vars
 		$name   = Request::getCmd('name', '');
 		$folder = Request::getVar('folder', '');
@@ -1024,6 +1033,9 @@ class Media extends Base
 	 */
 	public function doRenameFolderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$folder = Request::getVar('folder', '');
 		$name   = Request::getCmd('name', '');
@@ -1111,6 +1123,9 @@ class Media extends Base
 	 */
 	public function doMoveFolderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$current = Request::getVar('current', '');
 		$folder  = Request::getVar('folder', '');

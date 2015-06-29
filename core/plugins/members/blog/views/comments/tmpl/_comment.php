@@ -174,6 +174,8 @@ else
 							<?php echo Lang::txt('PLG_MEMBERS_BLOG_POST_ANONYMOUS'); ?>
 						</label>
 
+						<?php echo Html::input('token'); ?>
+
 						<p class="submit">
 							<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SUBMIT'); ?>" />
 						</p>

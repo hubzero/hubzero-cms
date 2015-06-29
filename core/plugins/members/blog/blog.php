@@ -581,6 +581,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
@@ -704,6 +707,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);

@@ -50,7 +50,7 @@ $this->css()
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 		<div class="subject">
-			<form action="<?php echo Route::url($this->category->link()); ?>" method="post">
+			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>" method="get">
 
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_KB_SEARCH'); ?>" />
@@ -58,9 +58,6 @@ $this->css()
 						<legend><?php echo Lang::txt('COM_KB_SEARCH_LEGEND'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('COM_KB_SEARCH_LABEL'); ?></label>
 						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
-						<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-						<input type="hidden" name="section" value="<?php echo $this->escape($this->category->get('alias')); ?>" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					</fieldset>
 				</div><!-- / .container -->
 
