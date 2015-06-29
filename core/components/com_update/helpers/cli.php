@@ -229,7 +229,7 @@ class Cli
 
 		$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
 
-		$cmd = $sudo . PATH_CORE . DS . 'cli' . DS . 'muse.php' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+		$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
 
 		return shell_exec($cmd);
 	}

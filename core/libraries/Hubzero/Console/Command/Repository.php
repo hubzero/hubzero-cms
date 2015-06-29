@@ -59,7 +59,7 @@ class Repository extends Base implements CommandInterface
 		parent::__construct($output, $arguments);
 
 		// Overriding default document root?
-		$directory = PATH_CORE;
+		$directory = PATH_ROOT;
 		if ($this->arguments->getOpt('r'))
 		{
 			if (is_dir($this->arguments->getOpt('r')) && is_readable($this->arguments->getOpt('r')))
