@@ -36,7 +36,7 @@ jimport('joomla.application.component.modeladmin');
  * Section model.
  *
  * NOTE: This is used purely for interfacing with
- * Joomla's permissions system.
+ * the permissions system.
  */
 class AdminSection extends \JModelAdmin
 {
@@ -44,7 +44,6 @@ class AdminSection extends \JModelAdmin
 	 * Stock method to auto-populate the model state.
 	 *
 	 * @return  void
-	 * @since   11.1
 	 */
 	protected function populateState()
 	{
@@ -68,10 +67,9 @@ class AdminSection extends \JModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  mixed    A JForm object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -86,14 +84,13 @@ class AdminSection extends \JModelAdmin
 	}
 
 	/**
-		 * Returns a reference to the a Table object, always creating it.
-		 *
-		 * @param	type	The table type to instantiate
-		 * @param	string	A prefix for the table class name. Optional.
-		 * @param	array	Configuration array for model. Optional.
-		 * @return	JTable	A database object
-		 * @since	1.7
-		 */
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param   string  $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 * @return  object  A database object
+	 */
 	public function getTable($type = 'Section', $prefix = 'ForumTable', $config = array())
 	{
 		$db = \App::get('db');
@@ -103,8 +100,7 @@ class AdminSection extends \JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return  array    The default data is an empty array.
-	 * @since   11.1
+	 * @return  array  The default data is an empty array.
 	 */
 	protected function loadFormData()
 	{

@@ -216,11 +216,11 @@ class PasswordRules extends \JTable
 			)
 		);
 
-		// Get a few config values from joomla
+		// Get a few config values
 		$schema = \App::get('config')->get('db');
 		$prefix = \App::get('config')->get('dbprefix');
 
-		// Check auto_increment value of the table (wish there was a jdatabase method for this?)
+		// Check auto_increment value of the table (wish there was a database method for this?)
 		$query  =  "SELECT AUTO_INCREMENT AS ai";
 		$query .= " FROM information_schema.tables";
 		$query .= " WHERE table_schema = '{$schema}' AND table_name = '" . str_replace('#__', $prefix, $this->_tbl) . "'";

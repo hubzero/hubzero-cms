@@ -691,7 +691,7 @@ class Register extends SiteController
 				$date = Date::of('now');
 				$user->set('registerDate', $date->toSql());
 
-				// Check joomla user activation setting
+				// Check user activation setting
 				// 0 = automatically confirmed
 				// 1 = require email confirmation (the norm)
 				// 2 = require admin confirmation
@@ -713,13 +713,16 @@ class Register extends SiteController
 					UserController::_sendMail($user, $password);
 
 					// Everything went fine, set relevant message depending upon user activation state and display message
-					if ($useractivation == 1) {
+					if ($useractivation == 1)
+					{
 						$message  = Lang::txt('REG_COMPLETE_ACTIVATE');
-					} else {
+					}
+					else
+					{
 						$message = Lang::txt('REG_COMPLETE');
 					}
 
-					App::redirect('index.php', $message);
+					App::redirect(Route::url('index.php'), $message);
 					*/
 
 					// Get some settings

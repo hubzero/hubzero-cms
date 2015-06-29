@@ -2538,7 +2538,7 @@ class Resources extends SiteController
 			return false;
 		}
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		$this->config->set('access-admin-component', User::authorise('core.admin', null));
 		$this->config->set('access-manage-component', User::authorise('core.manage', null));
 		if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
@@ -2580,7 +2580,7 @@ class Resources extends SiteController
 		}
 		if (!$user->get('guest'))
 		{
-			// Check if they're a site admin (from Joomla)
+			// Check if they're a site admin
 			$this->config->set('access-admin-component', $user->authorise('core.admin', null));
 			$this->config->set('access-manage-component', $user->authorise('core.manage', null));
 			if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
@@ -2723,7 +2723,7 @@ class Resources extends SiteController
 	 */
 	private function _checkToolaccess($toolid)
 	{
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		if (User::authorize($this->_option, 'manage'))
 		{
 			return true;

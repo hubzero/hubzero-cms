@@ -1,8 +1,31 @@
 <?php
 /**
- * @version		$Id: banner.php 21320 2011-05-11 01:01:37Z dextercowley $
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
@@ -11,19 +34,17 @@ defined('_HZEXEC_') or die();
 jimport('joomla.application.component.modeladmin');
 
 /**
- * Banner model.
+ * Course model.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_banners
- * @since		1.6
+ * NOTE: This is used purely for interfacing with
+ * the permissions system.
  */
-class CoursesModelCourse extends JModelAdmin
+class CoursesModelCourse extends \JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
 	 *
 	 * @return  void
-	 * @since   11.1
 	 */
 	protected function populateState()
 	{
@@ -47,10 +68,9 @@ class CoursesModelCourse extends JModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  mixed    A JForm object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -65,14 +85,13 @@ class CoursesModelCourse extends JModelAdmin
 	}
 
 	/**
-		 * Returns a reference to the a Table object, always creating it.
-		 *
-		 * @param	type	The table type to instantiate
-		 * @param	string	A prefix for the table class name. Optional.
-		 * @param	array	Configuration array for model. Optional.
-		 * @return	JTable	A database object
-		 * @since	1.7
-		 */
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param   string  $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 * @return  object  A database object
+	 */
 	public function getTable($type = 'Course', $prefix = 'Courses', $config = array())
 	{
 		return \JTable::getInstance($type, $prefix, $config);
@@ -81,8 +100,7 @@ class CoursesModelCourse extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return  array    The default data is an empty array.
-	 * @since   11.1
+	 * @return  array  The default data is an empty array.
 	 */
 	protected function loadFormData()
 	{

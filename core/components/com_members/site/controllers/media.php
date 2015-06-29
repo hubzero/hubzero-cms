@@ -561,7 +561,7 @@ class Media extends SiteController
 			return false;
 		}
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		// Admin
 		$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
 		$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));

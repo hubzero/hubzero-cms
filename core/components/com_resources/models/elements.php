@@ -38,34 +38,41 @@ include_once(__DIR__ . DS . 'element.php');
 /**
  * Resources elements class
  * Used for rendering custom resources fields
- *
  */
 class Elements
 {
 	/**
-	 * @var    string  The raw params string
+	 * The raw params string
+	 *
+	 * @var  string
 	 */
 	protected $_raw = null;
 
 	/**
-	 * @var    object  The XML params element
+	 * The XML params element
+	 *
+	 * @var  object
 	 */
 	protected $_schema = null;
 
 	/**
-	* @var    array  Loaded elements
-	*/
+	 * Loaded elements
+	 *
+	 * @var  array
+	 */
 	protected $_elements = array();
 
 	/**
-	* @var    array  Directories, where element types can be stored
-	*/
+	 * Directories, where element types can be stored
+	 *
+	 * @var  array
+	 */
 	protected $_elementPath = array();
 
 	/**
 	 * Registry Object
 	 *
-	 * @var    object
+	 * @var  object
 	 */
 	protected $data;
 
@@ -137,7 +144,7 @@ class Elements
 	/**
 	 * Check if a registry path exists.
 	 *
-	 * @param   string  $path  Registry path (e.g. joomla.content.showauthor)
+	 * @param   string  $path  Registry path
 	 * @return  boolean
 	 */
 	public function exists($path)
@@ -173,9 +180,9 @@ class Elements
 	/**
 	 * Get a registry value.
 	 *
-	 * @param   string  $path     Registry path (e.g. joomla.content.showauthor)
+	 * @param   string  $path     Registry path
 	 * @param   mixed   $default  Optional default value, returned if the internal value is null.
-	 * @return  mixed  Value of entry or null
+	 * @return  mixed   Value of entry or null
 	 */
 	public function get($path, $default = null)
 	{
@@ -270,9 +277,9 @@ class Elements
 	/**
 	 * Load the contents of a file into the registry
 	 *
-	 * @param   string  $file     Path to file to load
-	 * @param   string  $format   Format of the file [optional: defaults to JSON]
-	 * @param   mixed   $options  Options used by the formatter
+	 * @param   string   $file     Path to file to load
+	 * @param   string   $format   Format of the file [optional: defaults to JSON]
+	 * @param   mixed    $options  Options used by the formatter
 	 * @return  boolean  True on success
 	 */
 	public function loadFile($file, $format = 'JSON', $options = array())
@@ -286,9 +293,9 @@ class Elements
 	/**
 	 * Load a string into the registry
 	 *
-	 * @param   string  $data     String to load into the registry
-	 * @param   string  $format   Format of the string
-	 * @param   mixed   $options  Options used by the formatter
+	 * @param   string   $data     String to load into the registry
+	 * @param   string   $format   Format of the string
+	 * @param   mixed    $options  Options used by the formatter
 	 * @return  boolean  True on success
 	 */
 	public function loadString($data, $format = 'JSON', $options = array())
@@ -328,12 +335,12 @@ class Elements
 					$field = explode('=', $f);
 
 					$element = new stdClass();
-					$element->name = $field[0];
-					$element->label = $field[1];
-					$element->type = $field[2];
+					$element->name     = $field[0];
+					$element->label    = $field[1];
+					$element->type     = $field[2];
 					$element->required = $field[3];
-					$element->value = preg_replace('/<br\\s*?\/??>/i', "", end($field));
-					$element->default = '';
+					$element->value    = preg_replace('/<br\\s*?\/??>/i', "", end($field));
+					$element->default  = '';
 					$element->description = '';
 
 					$obj->fields[] = $element;
@@ -349,7 +356,9 @@ class Elements
 					$this->_schema[$group] = $obj;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			$result = true;
 		}
 
@@ -359,7 +368,7 @@ class Elements
 	/**
 	 * Merge an element object into this one
 	 *
-	 * @param   object  &$source  Source element object to merge.
+	 * @param   object   &$source  Source element object to merge.
 	 * @return  boolean  True on success
 	 */
 	public function merge(&$source)
@@ -382,9 +391,9 @@ class Elements
 	/**
 	 * Set a registry value.
 	 *
-	 * @param   string  $path   Registry Path (e.g. joomla.content.showauthor)
+	 * @param   string  $path   Registry Path
 	 * @param   mixed   $value  Value of entry
-	 * @return  mixed  The value of the that has been set.
+	 * @return  mixed   The value of the that has been set.
 	 */
 	public function set($path, $value)
 	{
@@ -438,7 +447,7 @@ class Elements
 	 *
 	 * @param   string  $format   Format to return the string in
 	 * @param   mixed   $options  Parameters used by the formatter, see formatters for more info
-	 * @return  string   Namespace in string format
+	 * @return  string  Namespace in string format
 	 */
 	public function toString($format = 'JSON', $options = array())
 	{
@@ -450,7 +459,8 @@ class Elements
 
 	/**
 	 * Method to convert fields to html content
-	 * @return [type] [description]
+	 *
+	 * @return  string
 	 */
 	public function toDatabaseHtml()
 	{
@@ -524,7 +534,7 @@ class Elements
 	/**
 	 * Method to determine if an array is an associative array.
 	 *
-	 * @param   array  $array  An array to test.
+	 * @param   array    $array  An array to test.
 	 * @return  boolean  True if the array is an associative array.
 	 */
 	public function isAssociative($array)
@@ -547,7 +557,7 @@ class Elements
 	 * Method to recursively convert an object of data to an array.
 	 *
 	 * @param   object  $data  An object of data to return as an array.
-	 * @return  array  Array representation of the input object.
+	 * @return  array   Array representation of the input object.
 	 */
 	protected function asArray($data)
 	{
@@ -684,7 +694,7 @@ class Elements
 	 *
 	 * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-	 * @return  array  An array of all parameters, each as array of the label, the form element and the tooltip.
+	 * @return  array   An array of all parameters, each as array of the label, the form element and the tooltip.
 	 */
 	public function getElements($name = 'nbtag', $group = '_default')
 	{
@@ -707,7 +717,7 @@ class Elements
 	 * @param   object  $node          A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 * @return  array  Any array of the label, the form element and the tooltip.
+	 * @return  array   Any array of the label, the form element and the tooltip.
 	 */
 	public function getElement(&$node, $control_name = 'nbtag', $group = '_default')
 	{
@@ -720,13 +730,13 @@ class Elements
 		if ($element === false)
 		{
 			$result = new stdClass;
-			$result->label    = $node->label;
-			$result->element = Lang::txt('Element not defined for type').' = '.$type;
+			$result->label       = $node->label;
+			$result->element     = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
-			$result->text    = $result->label;
-			$result->name    = $result->name;
-			$result->default = '';
-			$result->type    = $type;
+			$result->text        = $result->label;
+			$result->name        = $result->name;
+			$result->default     = '';
+			$result->type        = $type;
 			return $result;
 		}
 
@@ -742,7 +752,7 @@ class Elements
 	 * @param   object  $node          A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 * @return  array  Any array of the label, the form element and the tooltip.
+	 * @return  array   Any array of the label, the form element and the tooltip.
 	 */
 	public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
 	{
@@ -804,7 +814,9 @@ class Elements
 				$dirs = array();
 			}
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
+			$source = str_replace('_', DS, $type) . '.php';
+			preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', (string) $source, $matches);
+			$file = @ (string) $matches[0];
 
 			if ($elementFile = \Filesystem::find($dirs, $file))
 			{

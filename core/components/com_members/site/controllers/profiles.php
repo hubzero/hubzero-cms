@@ -1539,7 +1539,7 @@ class Profiles extends SiteController
 		$email = $profile->get('email');
 		$name  = $profile->get('name');
 
-		// Make sure certain changes make it back to the Joomla user table
+		// Make sure certain changes make it back to the user table
 		if ($id > 0)
 		{
 			$user  = User::getInstance($id);
@@ -1851,7 +1851,7 @@ class Profiles extends SiteController
 			return false;
 		}
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		// Admin
 		$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $assetId));
 		$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $assetId));

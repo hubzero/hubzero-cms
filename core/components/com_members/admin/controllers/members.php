@@ -556,7 +556,7 @@ class Members extends AdminController
 		$mt = new \Components\Members\Models\Tags($id);
 		$mt->setTags($tags, $id);
 
-		// Make sure certain changes make it back to the Joomla user table
+		// Make sure certain changes make it back to the user table
 		$user = User::getInstance($id);
 		$user->set('name', $name);
 		$user->set('email', $profile->get('email'));

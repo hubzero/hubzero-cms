@@ -1,27 +1,44 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_config
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 defined('JPATH_BASE') or die;
 
 /**
  * Text Filters form field.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_config
- * @since		1.6
  */
 class JFormFieldFilters extends JFormField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var  string
 	 */
 	public $type = 'Filters';
 
@@ -30,8 +47,7 @@ class JFormFieldFilters extends JFormField
 	 *
 	 * TODO: Add access check.
 	 *
-	 * @return	string	The field input markup.
-	 * @since	1.6
+	 * @return  string  The field input markup.
 	 */
 	protected function getInput()
 	{
@@ -64,8 +80,10 @@ class JFormFieldFilters extends JFormField
 		// The table body.
 		$html[] = '	<tbody>';
 
-		foreach ($groups as $group) {
-			if (!isset($this->value[$group->value])) {
+		foreach ($groups as $group)
+		{
+			if (!isset($this->value[$group->value]))
+			{
 				$this->value[$group->value] = array('filter_type' => 'BL', 'filter_tags' => '', 'filter_attributes' => '');
 			}
 			$group_filter = $this->value[$group->value];
@@ -101,8 +119,7 @@ class JFormFieldFilters extends JFormField
 	/**
 	 * A helper to get the list of user groups.
 	 *
-	 * @return	array
-	 * @since	1.6
+	 * @return  array
 	 */
 	protected function getUserGroups()
 	{

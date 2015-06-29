@@ -30,8 +30,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-//
-
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
@@ -55,8 +53,6 @@ else
 {
 	$id = 'tmp' . time() . rand(0, 10000);
 }
-//jimport('joomla.html.editor');
-//$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

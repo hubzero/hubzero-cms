@@ -62,7 +62,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
 			$userId = CartModelCart::getCartUser($this->crtId);
 
-			// Get Joomla! user group ID to set the user to (from meta)
+			// Get user group ID to set the user to (from meta)
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
 			$userGId = StorefrontModelProduct::getMeta($this->item['info']->pId, 'userGroupId');
 

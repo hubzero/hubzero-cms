@@ -133,7 +133,7 @@ class PdfForm
 	/**
 	 * Get database handle
 	 *
-	 * @return Joomla database object
+	 * @return  object  database object
 	 **/
 	private static function getDbh()
 	{

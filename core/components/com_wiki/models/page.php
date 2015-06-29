@@ -861,7 +861,7 @@ class Page extends Model
 						}
 					}
 				}
-				// Check if they're a site admin (from Joomla)
+				// Check if they're a site admin
 				else if (User::authorize($option, 'manage'))
 				{
 					$this->config()->set('access-page-admin', true);

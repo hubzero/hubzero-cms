@@ -2166,7 +2166,7 @@ class Wishlists extends SiteController
 	 */
 	public function authorize_admin($listid = 0, $admin = 0)
 	{
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		if (User::authorize($this->_option, 'manage'))
 		{
 			$admin = 1;
