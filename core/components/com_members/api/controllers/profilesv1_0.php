@@ -484,6 +484,13 @@ class Profilesv1_0 extends ApiController
 	 * @apiMethod GET
 	 * @apiUri    /members/organizations
 	 *
+	 * @apiParameter {
+	 * 		"name":        "orgID",
+	 * 		"description": "The row ID of an organization",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
 	 * @return  void
 	 */
 	public function organizationsTask()
@@ -491,9 +498,11 @@ class Profilesv1_0 extends ApiController
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'organization.php');
 		$database = App::get('db');
 
+		$filters = array();
+
 		$obj = new \Components\Members\Tables\Organization($database);
 
-		$organizations = $obj->find('all', $filters=array());
+		$organizations = $obj->find('all', $filters);
 
 		// Encode sessions for return
 		$object = new stdClass();
