@@ -283,7 +283,7 @@ class Comments extends AdminController
 		$row = new Comment($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -291,7 +291,7 @@ class Comments extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->setMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -331,7 +331,7 @@ class Comments extends AdminController
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->addComponentMessage($entry->getError(), 'error');
+					\Notify::error($entry->getError());
 				}
 			}
 		}
@@ -380,7 +380,7 @@ class Comments extends AdminController
 			$entry->set('status', $state);
 			if (!$entry->store())
 			{
-				$this->addComponentMessage($entry->getError(), 'error');
+				\Notify::error($entry->getError());
 			}
 		}
 

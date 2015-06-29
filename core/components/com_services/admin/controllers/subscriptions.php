@@ -270,13 +270,13 @@ class Subscriptions extends AdminController
 
 		if (!$subscription->check())
 		{
-			$this->setMessage($subscription->getError(), 'error');
+			$this->setError($subscription->getError());
 			$this->editTask($subscription);
 			return;
 		}
 		if (!$subscription->store())
 		{
-			$this->setMessage($subscription->getError(), 'error');
+			$this->setError($subscription->getError());
 			$this->editTask($subscription);
 			return;
 		}
@@ -304,7 +304,7 @@ class Subscriptions extends AdminController
 
 			if (!Event::trigger('xmessage.onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option)))
 			{
-				$this->addComponentMessage(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'), 'error');
+				\Notify::error(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'));
 			}
 		}
 

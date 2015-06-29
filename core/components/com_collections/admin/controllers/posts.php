@@ -178,7 +178,7 @@ class Posts extends AdminController
 		$row = new Post($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -186,7 +186,7 @@ class Posts extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -229,7 +229,7 @@ class Posts extends AdminController
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->addComponentMessage($entry->getError(), 'error');
+					\Notify::error($entry->getError());
 				}
 			}
 		}

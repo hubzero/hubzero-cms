@@ -142,7 +142,9 @@ class Questions extends SiteController
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
 
 		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
+			($this->getError() ? $this->getError() : null),
+			($this->getError() ? 'warning' : 'success')
 		);
 	}
 
@@ -343,7 +345,7 @@ class Questions extends SiteController
 		{
 			if (!$no_html)
 			{
-				$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'));
+				$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'));
 				$this->loginTask();
 			}
 			return;
@@ -697,11 +699,13 @@ class Questions extends SiteController
 			$this->view->responding = 0;
 		}
 
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-
+		$this->view->notifications = array();
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			$this->view->notifications[] = array(
+				'type'    => 'error',
+				'message' => $error
+			);
 		}
 
 		$this->view
@@ -741,7 +745,7 @@ class Questions extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
+			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
 			$this->loginTask();
 			return;
 		}
@@ -784,7 +788,14 @@ class Questions extends SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = array();
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->notifications[] = array(
+				'type'    => 'error',
+				'message' => $error
+			);
+		}
 		$this->view
 			->setLayout('new')
 			->display();
@@ -803,7 +814,7 @@ class Questions extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
+			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
 			$this->loginTask();
 			return;
 		}
@@ -860,7 +871,7 @@ class Questions extends SiteController
 		// Store new content
 		if (!Request::checkHoneypot())
 		{
-			$this->addComponentMessage(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'), 'error');
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'));
 			$this->newTask($row);
 			return;
 		}
@@ -868,7 +879,7 @@ class Questions extends SiteController
 		// Ensure the user added a tag
 		if (!$tags)
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'), 'error');
+			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			$this->newTask($row);
 			return;
 		}
@@ -883,7 +894,7 @@ class Questions extends SiteController
 		{
 			Request::setVar('tag', $tags);
 
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->newTask($row);
 			return;
 		}
@@ -1019,7 +1030,7 @@ class Questions extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
+			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
 			$this->loginTask();
 			return;
 		}
@@ -1148,7 +1159,7 @@ class Questions extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
+			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
 			$this->loginTask();
 			return;
 		}
@@ -1265,7 +1276,7 @@ class Questions extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
+			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
 			$this->loginTask();
 			return;
 		}
@@ -1312,7 +1323,7 @@ class Questions extends SiteController
 		{
 			if (!$no_html)
 			{
-				$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'), 'warning');
+				$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'));
 				$this->loginTask();
 			}
 			return;

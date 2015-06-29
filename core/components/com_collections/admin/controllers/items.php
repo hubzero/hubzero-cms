@@ -172,7 +172,7 @@ class Items extends AdminController
 		$row = new Item($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -188,7 +188,7 @@ class Items extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -232,7 +232,7 @@ class Items extends AdminController
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->addComponentMessage($entry->getError(), 'error');
+					\Notify::error($entry->getError());
 				}
 			}
 		}
