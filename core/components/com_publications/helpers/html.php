@@ -92,21 +92,21 @@ class Html
 
 		// Get publication directory path
 		$webpath  = DS . trim($config->get('webpath', 'site/publications'), DS);
-		$path     = self::buildPubPath($pid, $versionid, $webpath);
+		$path     = PATH_APP . self::buildPubPath($pid, $versionid, $webpath);
 
 		// Get default picture
 		$default = $cat == 'tools'
-				? $config->get('toolpic', '/core/components/com_publications/site/assets/img/tool_thumb.gif')
-				: $config->get('defaultpic', '/core/components/com_publications/site/assets/img/resource_thumb.gif');
+				? trim($config->get('toolpic', 'components/com_publications/site/assets/img/tool_thumb.gif'), DS)
+				: trim($config->get('defaultpic', 'components/com_publications/site/assets/img/resource_thumb.gif'), DS);
 
 		// Check for default image
-		if (is_file(PATH_APP . $path . DS . 'thumb.gif') && $force == false)
+		if (is_file($path . DS . 'thumb.gif') && $force == false)
 		{
 			return $path . DS . 'thumb.gif';
 		}
 		else
 		{
-			return $default;
+			return PATH_CORE . DS . $default;
 		}
 	}
 

@@ -123,30 +123,30 @@ class Media extends SiteController
 					}
 					if (!is_file(PATH_APP . DS . $source))
 					{
-						$source = $this->config->get('masterimage',
-						'/core/components/com_publications/site/assets/img/master.png');
+						$source = PATH_CORE . DS . trim($this->config->get('masterimage',
+						'components/com_publications/site/assets/img/master.png'), DS);
 					}
 				}
 			}
 			else
 			{
 				// Load from gallery
-				$source = $path . DS . 'gallery' . DS . $file;
+				$source = PATH_APP . DS . $path . DS . 'gallery' . DS . $file;
 
 				// Default image
-				if (!is_file(PATH_APP . DS . $source))
+				if (!is_file($source))
 				{
-					$source = $this->config->get('gallery_thumb',
-					'/core/components/com_publications/site/assets/img/gallery_thumb.gif');
+					$source = PATH_CORE . DS . trim($this->config->get('gallery_thumb',
+					'components/com_publications/site/assets/img/gallery_thumb.gif'), DS);
 				}
 			}
 		}
 
-		if (is_file(PATH_APP . DS . $source))
+		if (is_file($source))
 		{
 			$server = new \Hubzero\Content\Server();
 			$server->filename($source);
-			$server->serve_inline(PATH_APP . DS . $source);
+			$server->serve_inline($source);
 			exit;
 		}
 
