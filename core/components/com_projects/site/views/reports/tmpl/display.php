@@ -26,7 +26,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css('reports')
-     ->css('css/impact.css', 'projects', 'publications');
+     ->css('impact.css', 'projects', 'publications');
 
 // Common options for js charts
 $options = "
