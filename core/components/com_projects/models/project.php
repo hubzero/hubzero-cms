@@ -268,7 +268,7 @@ class Project extends Model
 			$this->_member = $this->_tblOwner->id && $this->_tblOwner->status != 2 ? $this->_tblOwner : false;
 			if ($this->_member)
 			{
-				$this->_member->params = new \Hubzero\Html\Parameter($this->_member->params);
+			//	$this->_member->params = new \Hubzero\Html\Parameter($this->_member->params);
 			}
 		}
 
@@ -1130,11 +1130,11 @@ class Project extends Model
 				$aid = $this->recordActivity(Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), $this->get('id'), '', '', 'team', 1);
 				if ($aid)
 				{
-					$this->_tblOwner->saveParam (
+					$this->member()->saveParam(
 						$this->get('id'),
 						User::get('id'),
-						$param = 'join_activityid',
-						$value = $aid
+						'join_activityid',
+						$aid
 					);
 				}
 

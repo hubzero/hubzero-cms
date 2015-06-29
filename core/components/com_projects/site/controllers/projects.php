@@ -642,7 +642,7 @@ class Projects extends Base
 				$c = Request::getInt( 'c', 0 );
 				if ($c)
 				{
-					$this->model->_tblOwner->saveParam(
+					$this->model->member()->saveParam(
 						$this->model->get('id'),
 						User::get('id'),
 						$param = 'hide_welcome', 1
