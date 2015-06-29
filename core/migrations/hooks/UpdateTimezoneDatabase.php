@@ -1,6 +1,7 @@
 <?php
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Date;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -106,9 +107,12 @@ class UpdateTimezoneDatabase extends Base
 
 		$content  = '';
 		$content .= $my_mtime . "\n";
-		$content .= \JFactory::getDate($my_mtime)->format('D M d H:i:s Y') . "\n";
+		$content .= Date::of($my_mtime)->format('D M d H:i:s Y') . "\n";
 		$content .= $my_filename . "\n";
 
-		file_put_contents($tz_dat_file, $content);
+		if (is_dir(PATH_APP . DS . 'site' . DS . 'protected'))
+		{
+			file_put_contents($tz_dat_file, $content);
+		}
 	}
 }
