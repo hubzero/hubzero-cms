@@ -450,6 +450,9 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$collection_title = JRequest::getVar('collection_title', '');
 		$collection_id = JRequest::getInt('collection_id', 0);
 		$item_id       = JRequest::getInt('item_id', 0);

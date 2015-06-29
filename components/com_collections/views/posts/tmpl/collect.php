@@ -118,6 +118,8 @@ if ($this->collection_id)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="collect" />
 
+	<?php echo JHTML::_('form.token'); ?>
+
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_(strtoupper($this->option) . '_POST'); ?>" />
 	</p>

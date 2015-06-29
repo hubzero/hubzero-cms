@@ -60,6 +60,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="task" value="delete" />
 		<input type="hidden" name="entry" value="<?php echo $this->entry->id; ?>" />
 
+		<?php echo JHTML::_('form.token'); ?>
+
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, 'Y').'/'.JHTML::_('date',$this->entry->publish_up, 'm').'/'.$this->entry->alias); ?>">Cancel</a>
