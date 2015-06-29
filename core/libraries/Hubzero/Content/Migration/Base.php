@@ -30,8 +30,8 @@
 
 namespace Hubzero\Content\Migration;
 
-use Hubzero\Config\Processor\Ini;
 use Hubzero\Config\Registry;
+use Hubzero\Config\Processor;
 
 /**
  * Base migration class
@@ -196,7 +196,7 @@ class Base
 
 		if (is_file($secrets) && is_readable($secrets))
 		{
-			$conf = Ini::parse($secrets);
+			$conf = Processor::instance('ini')->parse($secrets);
 			$user = 'root';
 			$pw   = (isset($conf['DEFAULT']['MYSQL-ROOT'])) ? $conf['DEFAULT']['MYSQL-ROOT'] : false;
 
@@ -208,7 +208,7 @@ class Base
 
 		if (is_file($conf_file) && is_readable($conf_file))
 		{
-			$conf = Ini::parse($conf_file, true);
+			$conf = Processor::instance('ini')->parse($conf_file, true);
 			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
 			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
 
@@ -220,7 +220,7 @@ class Base
 
 		if (is_file($hub_maint) && is_readable($hub_maint))
 		{
-			$conf = Ini::parse($hub_maint, true);
+			$conf = Processor::instance('ini')->parse($hub_maint, true);
 			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
 			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
 
@@ -232,7 +232,7 @@ class Base
 
 		if (is_file($deb_maint) && is_readable($deb_maint))
 		{
-			$conf = Ini::parse($deb_maint, true);
+			$conf = Processor::instance('ini')->parse($deb_maint, true);
 			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
 			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
 
