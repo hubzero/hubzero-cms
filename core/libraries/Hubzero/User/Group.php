@@ -1483,6 +1483,8 @@ class Group extends Object
 			return getimagesize(PATH_APP . $src);
 		}
 
+		$src = substr(PATH_APP, strlen(PATH_ROOT)) . $src;
+
 		if ($what == 'path')
 		{
 			return $src;
