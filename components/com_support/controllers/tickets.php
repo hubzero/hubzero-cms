@@ -165,10 +165,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		$type = JRequest::getVar('type', 'submitted');
+		$type = JRequest::getWord('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
-		$this->view->group = JRequest::getVar('group', '_none_');
+		$this->view->group = preg_replace('/[^0-9a-zA-Z_\-]/', '', JRequest::getVar('group', '_none_'));
 
 		// Set up some dates
 		$jconfig = JFactory::getConfig();
@@ -260,6 +260,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$this->view->start = JRequest::getVar('start', $first . '-01');
 		if ($this->view->start != $first . '-01')
 		{
+			if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->start))
+			{
+				$this->view->start = $first . '-01';
+			}
+
 			if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->start, $regs))
 			{
 				$startmonth = date("m", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
@@ -277,6 +282,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$end = '';
 		if ($this->view->end)
 		{
+			if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->end))
+			{
+				$this->view->end = '';
+			}
+
 			// We need to get the NEXT month. This is so that for a time range
 			// of 2013-01 to 2013-12 will display data for all of 2013-12.
 			// So, the actual time range is 2013-01-01 00:00:00 to 2014-01-01 00:00:00
