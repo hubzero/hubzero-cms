@@ -628,16 +628,12 @@ class Projects extends AdminController
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
-
-		if (is_file(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php'))
-		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php');
-		}
 		$masterscope = 'projects' . DS . $alias . DS . 'notes';
 
 		// Get all notes
 		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p
-			WHERE p.group_cn='" . $prGroup . "' AND p.scope LIKE '" . $masterscope . "%' " );
+			WHERE p.group_cn=" . $this->database->quote($prGroup)
+			. " AND p.scope LIKE '" . $masterscope . "%' " );
 		$notes = $this->database->loadObjectList();
 
 		if ($notes)
@@ -681,7 +677,7 @@ class Projects extends AdminController
 		// Redirect
 		App::redirect(
 			Route::url('index.php?option='.$this->_option, false),
-			Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' ('.$alias.') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED')
+			Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' (' . $alias . ') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED')
 		);
 	}
 
