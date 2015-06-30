@@ -159,7 +159,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 							</label>
 						</div>
 						<div class="col span2 omega">
-							<button class="btn add-author"><?php echo Lang::txt('Add'); ?></button>
+							<button class="btn add-author"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ADD'); ?></button>
 						</div>
 					</div>
 
@@ -181,7 +181,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 								</p>
 							<?php } ?>
 						<?php } else { ?>
-							<p class="author-instructions"><?php echo Lang::txt('Enter one or more names above and click &quot;Add&quot;. You may then re-arrange the order the authors will be presented in.'); ?></p>
+							<p class="author-instructions"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></p>
 						<?php } ?>
 					</div>
 
@@ -201,7 +201,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></span>
 				</label>
 				<label for="title">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TITLE_CHAPTER'); ?>:  <span class="required">Required</span>
+					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TITLE_CHAPTER'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 					<input type="text" name="fields[title]" id="title" size="30" maxlength="250" value="<?php echo $this->escape($this->row->title); ?>" />
 				</label>
 				<label for="booktitle">
@@ -376,30 +376,29 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 				</label>
 			</fieldset><div class="clear"></div>*/ ?>
 
-			<?php if ($allow_tags == "yes" || $allow_badges == "yes"): ?>
+			<?php if ($allow_tags == 'yes' || $allow_badges == 'yes'): ?>
 				<fieldset>
 					<legend><?php echo $fieldset_label; ?></legend>
-					<?php
-						if ($allow_tags == "yes"): ?>
-					<label>
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS'); ?>:
-					<?php
-						if (count($tags_list) > 0) {
-						echo $tags_list[0];
-						}
-						else
-						{
-						echo "<input type=\"text\" name=\"tags\" value=\"{$tags}\" />";
-						}
-					?>
-					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS_HINT'); ?></span>
+					<?php if ($allow_tags == 'yes'): ?>
+						<label>
+							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS'); ?>:
+							<?php
+								if (count($tags_list) > 0)
+								{
+									echo $tags_list[0];
+								}
+								else
+								{
+									echo '<input type="text" name="tags" value="' . $this->escape($tags) . '" />';
+								}
+							?>
+							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS_HINT'); ?></span>
 						</label>
 					<?php endif; ?>
 
-					<?php
-						if ($allow_badges == "yes"): ?>
-							<label class="badges">
-							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BADGES'); ?>:
+					<?php if ($allow_badges == 'yes'): ?>
+						<label class="badges">
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BADGES'); ?>:
 							<?php
 								if (count($badges_list) > 0)
 								{
@@ -407,7 +406,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 								}
 								else
 								{
-									echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
+									echo '<input type="text" name="badges" value="' . $this->escape($badges) . '" />';
 								}
 							?>
 							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BADGES_HINT'); ?></span>
@@ -465,10 +464,10 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 							echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"' : '';
 							echo '>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLICATION') . '</option>' . "\n";
 							echo '</select></td>' . "\n";
-							echo "\t\t\t" . '   <td><input type="text" name="assocs[' . $i . '][oid]" value="' . $this->assocs[$i]->oid . '" />' . "\n";
+							echo "\t\t\t" . '<td><input type="text" name="assocs[' . $i . '][oid]" value="' . $this->assocs[$i]->oid . '" />' . "\n";
 							echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][id]" value="' . $this->assocs[$i]->id . '" />' . "\n";
 							echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][cid]" value="' . $this->assocs[$i]->cid . '" /></td>' . "\n";
-							echo "\t\t\t" . '  </tr>' . "\n";
+							echo "\t\t\t" . '</tr>' . "\n";
 						}
 						?>
 						</tbody>
@@ -510,9 +509,9 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 			</fieldset>
 			<div class="clear"></div> */ ?>
 
-			<input type="hidden" name="fields[uid]" value="<?php echo $this->row->uid; ?>" />
-			<input type="hidden" name="fields[created]" value="<?php echo $this->row->created; ?>" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="fields[uid]" value="<?php echo $this->escape($this->row->uid); ?>" />
+			<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->row->created); ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->id); ?>" />
 			<input type="hidden" name="option" value="com_members" />
 			<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 			<input type="hidden" name="active" value="citations" />

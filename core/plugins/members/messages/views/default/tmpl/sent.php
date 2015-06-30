@@ -70,7 +70,7 @@ $this->css()
 						}
 
 						//get the message
-						$preview = ($row->message) ? '<h3>' . Lang::txt('Message Preview:') . '</h3>' . nl2br(stripslashes($row->message)) : '';
+						$preview = ($row->message) ? '<h3>' . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW') . '</h3>' . nl2br(stripslashes($row->message)) : '';
 
 						//subject link
 						$subject_cls = 'message-link';

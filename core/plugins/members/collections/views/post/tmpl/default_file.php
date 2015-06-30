@@ -124,11 +124,11 @@ if ($assets->total() > 0)
 
 								if (preg_match("/$UrlPtn/", $asset->get('filename')))
 								{
-									echo Lang::txt('external link');
+									echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LINK_EXTERNAL');
 								}
 								else
 								{
-									echo Lang::txt('internal link');
+									echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LINK_INTERNAL');
 								}
 							}
 							?>

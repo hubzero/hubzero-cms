@@ -43,7 +43,7 @@ $this->css();
 			<h3><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
 			<label<?php if ($this->no_html) { echo ' class="width-65"'; } ?>>
 				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TO'); ?>
-				<span class="required"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
+				<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 				<?php
 					if (count($tos) > 0)
 					{
@@ -57,10 +57,10 @@ $this->css();
 			</label>
 			<label>
 				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT'); ?>
-				<input type="text" name="subject" id="msg-subject" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'); ?>"  />
+				<input type="text" name="subject" id="msg-subject" value="<?php echo $this->escape(Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE')); ?>"  />
 			</label>
 			<label>
-				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
+				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 				<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 			</label>
 			<p class="submit">

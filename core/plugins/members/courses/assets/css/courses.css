@@ -81,6 +81,15 @@
 		color: #333;
 	}
 
+	.order-options a:before {
+		content: "\2193";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	.order-options a.desc:before {
+		content: "\2191";
+	}
+
 	.entry-state {
 		font-size: 85%;
 		font-weight: bold;

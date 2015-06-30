@@ -438,7 +438,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
-		$view->title  = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));
+		$view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
 
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
