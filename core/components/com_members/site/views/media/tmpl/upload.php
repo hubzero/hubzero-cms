@@ -33,14 +33,14 @@ defined('_HZEXEC_') or die();
 
 //default all pic vars
 $picture = new stdClass;
-$picture->src = $this->config->get("defaultpic");
-$picture->name = 'n/a';
-$picture->size = 'n/a';
-$picture->width = 'n/a';
+$picture->src    = $this->config->get('defaultpic');
+$picture->name   = 'n/a';
+$picture->size   = 'n/a';
+$picture->width  = 'n/a';
 $picture->height = 'n/a';
 
 //get user id in nice format
-$uid = \Hubzero\Utility\String::pad( $this->profile->get("uidNumber") );
+$uid = \Hubzero\Utility\String::pad($this->profile->get('uidNumber'));
 
 //get profile pic and path to picture
 $pic = $this->profile->get("picture");
@@ -52,20 +52,20 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 	$size = filesize(PATH_APP . $path . $pic);
 	list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . $pic);
 
-	$picture->src = $path . $pic;
-	$picture->name = $pic;
-	$picture->size = \Hubzero\Utility\Number::formatBytes($size);
-	$picture->width = $width . " <abbr title=\"pixels\">px</abbr>";
-	$picture->height = $height . " <abbr title=\"pixels\">px</abbr>";
+	$picture->src    = $path . $pic;
+	$picture->name   = $pic;
+	$picture->size   = \Hubzero\Utility\Number::formatBytes($size);
+	$picture->width  = $width . ' <abbr title="pixels">px</abbr>';
+	$picture->height = $height . ' <abbr title="pixels">px</abbr>';
 }
 ?>
 <div id="ajax-upload-container">
 	<form action="index.php" method="post" enctype="multipart/form-data">
-		<h2>Upload a New Profile Picture</h2>
+		<h2><?php echo Lang::txt('COM_MEMBERS_PICTURE_UPLOAD'); ?></h2>
 		<div id="ajax-upload-left">
-			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $picture->name; ?>" data-default-pic="<?php echo $this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'); ?>" />
+			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $this->escape($picture->name); ?>" data-default-pic="<?php echo $this->escape($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')); ?>" />
 			<?php if ($this->profile->get("picture") != '') : ?>
-			<a href="#" id="remove-picture">[Remove Picture]</a>
+			<a href="#" id="remove-picture"><?php echo Lang::txt('COM_MEMBERS_PICTURE_DELETE'); ?></a>
 			<?php endif; ?>
 		</div><!-- /#ajax-upload-left -->
 		<div id="ajax-upload-right">
@@ -73,35 +73,35 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 			<table>
 				<tbody>
 					<tr>
-						<td class="key">Name:</td>
-						<td id="picture-name"><?php echo $picture->name; ?></td>
+						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_NAME'); ?></td>
+						<td id="picture-name"><?php echo $this->escape($picture->name); ?></td>
 					</tr>
 					<tr>
-						<td class="key">Size:</td>
-						<td id="picture-size"><?php echo $picture->size; ?></td>
+						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_SIZE'); ?></td>
+						<td id="picture-size"><?php echo $this->escape($picture->size); ?></td>
 					</tr>
 					<tr>
-						<td class="key">Width:</td>
-						<td id="picture-width"><?php echo $picture->width; ?></td>
+						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_WIDTH'); ?></td>
+						<td id="picture-width"><?php echo $this->escape($picture->width); ?></td>
 					</tr>
 					<tr>
-						<td class="key">Height:</td>
-						<td id="picture-height"><?php echo $picture->height; ?></td>
+						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_HEIGHT'); ?></td>
+						<td id="picture-height"><?php echo $this->escape($picture->height); ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</div><!-- /#ajax-upload-right -->
 		<br class="clear" />
 		<div id="ajax-upload-actions">
-			<button class="section-edit-cancel">Cancel</button>
-			<button class="section-edit-submit">Save Changes</button>
+			<button class="btn section-edit-cancel"><?php echo Lang::txt('CANCEL'); ?></button>
+			<button class="btn btn-success section-edit-submit"><?php echo Lang::txt('COM_MEMBERS_PICTURE_SAVE'); ?></button>
 		</div><!-- /#ajax-upload-actions -->
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="ajaxuploadsave" />
-	<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
-	<input type="hidden" name="profile[picture]" id="profile-picture" value="<?php echo $this->profile->get("picture"); ?>" />
-	<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="ajaxuploadsave" />
+		<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
+		<input type="hidden" name="profile[picture]" id="profile-picture" value="<?php echo $this->escape($this->profile->get('picture')); ?>" />
+		<input type="hidden" name="no_html" value="1" />
 	</form>
 </div><!-- /#ajax-upload-container -->

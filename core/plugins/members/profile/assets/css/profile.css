@@ -124,7 +124,7 @@
 		outline:none;
 		border:1px solid #065eff;
 	}
-	.section-edit-submit,
+	/*.section-edit-submit,
 	.section-edit-cancel {
 		-webkit-border-radius: 3px;
 		-moz-border-radius: 3px;
@@ -146,7 +146,7 @@
 	.section-edit-submit:hover,
 	.section-edit-cancel:hover {
 		cursor: pointer;
-	}
+	}*/
 	.section-edit-submit:disabled {
 		background: #81adfc;
 		border: 1px solid #6389d0;
