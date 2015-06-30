@@ -290,13 +290,21 @@ class Media extends Base
 		$this->view->folders = array();
 		$this->view->files   = array();
 		$this->view->type    = \Hubzero\Utility\Sanitize::paranoid(Request::getWord('type', ''));
-		$this->view->relpath = \Hubzero\Utility\Sanitize::paranoid(Request::getVar('path', '/'));
+		$this->view->relpath = Request::getVar('path', '/');
 
 		// make sure we default to uploads folder for non-super groups
 		if ($this->group->get('type') != 3 && $this->view->relpath == '')
 		{
 			$this->view->relpath = '/uploads';
 		}
+
+		$this->view->relpath = \Hubzero\Filesystem\Util::normalizePath($this->view->relpath);
+		$this->view->relpath = explode('/', $this->view->relpath);
+		foreach ($this->view->relpath as $i => $p)
+		{
+			$this->view->relpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
+		}
+		$this->view->relpath = implode(DS, $this->view->relpath);
 
 		//build path to the group folder
 		$this->path = rtrim($this->path, DS) . $this->view->relpath;
