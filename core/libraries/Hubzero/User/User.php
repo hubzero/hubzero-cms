@@ -46,7 +46,7 @@ class User extends \Hubzero\Database\Relational
 	 **/
 	public function tokens()
 	{
-		return $this->oneToMany('Token');
+		return $this->oneToMany('\Components\Members\Models\Token');
 	}
 
 	/**
