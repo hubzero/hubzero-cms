@@ -109,6 +109,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 				<?php echo $this->content; ?>
 			</div>
 			<p class="submitarea"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn" /></p>
+			<?php echo JHTML::_('form.token'); ?>
 		</fieldset>
 	</form>
 	<div class="clear"></div>

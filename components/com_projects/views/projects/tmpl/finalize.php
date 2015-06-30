@@ -199,6 +199,7 @@ $html  = '';
 				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_AGREE'); ?> <a href="<?php echo $privacylink; ?>" rel="external" ><?php echo JText::_('COM_PROJECTS_SETUP_TERMS'); ?></a> <?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT'); ?> <span class="prominent"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS'); ?></span>.
 			</label>
 			<p class="submitarea"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn" id="btn-finalize" /></p>
+			<?php echo JHTML::_('form.token'); ?>
 		</fieldset>
 	</form>
 	<div class="clear"></div>

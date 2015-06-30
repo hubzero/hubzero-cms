@@ -678,6 +678,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Save new info
 		elseif ($save_stage or $extended)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			switch ($stage)
 			{
 				case 0:
