@@ -60,7 +60,7 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 }
 ?>
 <div id="ajax-upload-container">
-	<form action="index.php" method="post" enctype="multipart/form-data">
+	<form action="<?php echo Route::url('index.phpoption=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data">
 		<h2><?php echo Lang::txt('COM_MEMBERS_PICTURE_UPLOAD'); ?></h2>
 		<div id="ajax-upload-left">
 			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $this->escape($picture->name); ?>" data-default-pic="<?php echo $this->escape($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')); ?>" />
@@ -103,5 +103,7 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 		<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 		<input type="hidden" name="profile[picture]" id="profile-picture" value="<?php echo $this->escape($this->profile->get('picture')); ?>" />
 		<input type="hidden" name="no_html" value="1" />
+
+		<?php echo Html::input('token'); ?>
 	</form>
 </div><!-- /#ajax-upload-container -->

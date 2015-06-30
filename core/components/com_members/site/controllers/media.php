@@ -319,6 +319,9 @@ class Media extends SiteController
 			return false;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming member ID
 		$id = Request::getInt('id', 0);
 		if (!$id)
