@@ -797,6 +797,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$passrules = false;
 
 		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true))
