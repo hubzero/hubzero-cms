@@ -140,7 +140,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 	 */
 	private function _templateDir()
 	{
-		return App::get('template')->path;
+		return substr(App::get('template')->path, strlen(PATH_ROOT));
 	}
 
 	/**
