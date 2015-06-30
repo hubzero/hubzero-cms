@@ -572,10 +572,10 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			$user = User::getInstance($user['id']);
 
 			// Further check to make sure this was an abandoned auth_link account
-			if (substr($xuser->get('email'), -8) == '@invalid')
+			if (substr($user->get('email'), -8) == '@invalid')
 			{
 				// Delete the user
-				$xuser->delete();
+				$user->delete();
 			}
 		}
 
