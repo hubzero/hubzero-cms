@@ -185,6 +185,7 @@ $this->css()
 				<input type="hidden" name="id" value="<?php echo $this->member->get("uidNumber"); ?>" />
 				<input type="hidden" name="task" value="changepassword" />
 				<input type="hidden" name="no_html" id="pass_no_html" value="0" />
+				<?php echo Html::input('token'); ?>
 			</form>
 		<?php } else { ?>
 			<p><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_LOCAL_PASS_EXPLANATION'); ?></p>

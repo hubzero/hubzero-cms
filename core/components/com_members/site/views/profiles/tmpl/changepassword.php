@@ -140,6 +140,7 @@ $this->css()
 			</fieldset><div class="clear"></div>
 
 			<p class="submit">
+				<?php echo Html::input('token'); ?>
 				<input type="hidden" id="pass_no_html" name="no_html" value="0" />
 				<input type="hidden" name="change" value="1" />
 				<input class="btn btn-success" name="submit" id="password-change-save" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_CHANGEPASSWORD'); ?>" />
