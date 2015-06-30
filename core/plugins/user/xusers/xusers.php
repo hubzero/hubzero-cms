@@ -529,7 +529,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		// Check if quota exists for the user
 		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
 
-		$quota = new UsersQuotas($this->database);
+		$quota = new \Components\Members\Tables\UsersQuotas($this->database);
 		$quota->load(array('user_id'=>$user['id']));
 		if ($quota->id)
 		{
