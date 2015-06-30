@@ -2226,8 +2226,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	{
 		// Query filters defaults
 		$filters = array();
-		$filters['sortby']   = JRequest::getVar('sortby', '');
-		$filters['filterby'] = JRequest::getVar('filterby', 'all');
+		$filters['sortby']   = strtolower(JRequest::getVar('sortby', ''));
+		$filters['filterby'] = strtolower(JRequest::getVar('filterby', 'all'));
 		$filters['search']   = JRequest::getVar('search', '');
 		$filters['tag']      = JRequest::getVar('tags', '');
 
@@ -2239,6 +2239,16 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		{
 			$default = isset($this->banking) && $this->banking ? 'bonus' : 'date';
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
+		}
+
+		if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking')))
+		{
+			$filters['sortby'] = 'date';
+		}
+
+		if (!in_array($filters['filterby'], array('all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private')))
+		{
+			$filters['filterby'] = 'all';
 		}
 
 		// Get configuration
