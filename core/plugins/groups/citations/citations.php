@@ -726,9 +726,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 		}
 
-		// resdirect after save
+		// redirect after save
 		App::redirect(
-			Route::url('index.php?option=com_groups' . DS . $this->group->cn . DS .'citations'),
+			Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
 			Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
 			'success'
 		);
