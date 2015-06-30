@@ -44,6 +44,7 @@ if ($count < 1 || $this->admin)
 {
 	return '';
 }
+
 ?>
 <div class="module-settings">
 	<h4><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULES_SETTINGS', $this->escape($this->module->title)); ?></h4>
@@ -70,8 +71,8 @@ if ($count < 1 || $this->admin)
 
 				$i++;
 			?>
-			<label for="<?php echo 'param' . $i; ?>">
-				<span class="tooltipss" title="<?php echo $field->description; ?>">
+			<label>
+				<span class="tooltips" title="<?php echo $field->description; ?>">
 					<?php echo $field->title; ?>:
 				</span>
 				<?php echo $field->input; ?>
