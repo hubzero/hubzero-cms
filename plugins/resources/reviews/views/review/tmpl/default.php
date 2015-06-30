@@ -67,6 +67,7 @@ else
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="view" />
 			<input type="hidden" name="id" value="<?php echo $review->get('resource_id'); ?>" />
+			<input type="hidden" name="state" value="<?php echo $review->get('state'); ?>" />
 			<input type="hidden" name="action" value="savereview" />
 			<input type="hidden" name="active" value="reviews" />
 
