@@ -307,6 +307,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
 		}
 		$review->rating = ($myr) ? $myr : $review->rating;
+		$review->state = 1;
 
 		// Store the object in our registry
 		$this->myreview = $review;
