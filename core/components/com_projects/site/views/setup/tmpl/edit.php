@@ -140,7 +140,8 @@ else
 						<input type="hidden"  name="task" value="save" />
 						<input type="hidden"  name="active" value="<?php echo $this->section; ?>" />
 						<input type="hidden"  name="name" value="<?php echo $this->model->get('alias'); ?>" />
-
+						<?php echo Html::input('token'); ?>
+						<?php echo Html::input('honeypot'); ?>
 						<?php
 							switch ($this->section)
 							{

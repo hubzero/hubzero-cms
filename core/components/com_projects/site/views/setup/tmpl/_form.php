@@ -35,3 +35,6 @@ defined('_HZEXEC_') or die();
 <input type="hidden" name="active" value="<?php echo $this->section; ?>" />
 <input type="hidden" name="step" id="step" value="<?php echo $this->step; ?>" />
 <input type="hidden" name="gid" value="<?php echo $this->model->get('owned_by_group') ? $this->model->get('owned_by_group') : 0 ; ?>" />
+
+<?php echo Html::input('token'); ?>
+<?php echo Html::input('honeypot'); ?>

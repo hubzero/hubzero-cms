@@ -208,6 +208,9 @@ class Setup extends Base
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$step = Request::getInt( 'step', '0'); // Where do we go next?
 
