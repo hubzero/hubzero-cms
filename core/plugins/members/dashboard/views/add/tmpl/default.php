@@ -46,7 +46,6 @@ defined('_HZEXEC_') or die();
 	</ul>
 	<ul class="module-list-content">
 		<?php foreach ($this->modules as $module) : ?>
-			<?php $xml = JFactory::getXML(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml'); ?>
 			<li class="<?php echo $module->id; ?>">
 				<div class="module-title-bar">
 
@@ -63,6 +62,13 @@ defined('_HZEXEC_') or die();
 					<h3><?php echo $module->title; ?></h3>
 				</div>
 				<dl class="module-details">
+				<?php
+				$xml = null;
+				if (file_exists(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml'))
+				{
+					$xml = simplexml_load_file(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml');
+				}
+				?>
 				<?php if ($xml) : ?>
 					<?php if (isset($xml->attributes()->version)) : ?>
 						<dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_VERSION'); ?></dt>

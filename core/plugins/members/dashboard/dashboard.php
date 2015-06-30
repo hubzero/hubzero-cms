@@ -123,6 +123,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml)
 		{
+			$this->params->set('position', 'memberDashboard');
+
 			// include dasboard models
 			include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
 
@@ -167,7 +169,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'display');
 
 		// load dashboard modules
-		$dashboardModules = $this->_loadModules('memberDashboard'); //$this->params->get('position', 'memberDashboard'));
+		$dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// load user preferences
 		$preferences = $this->_loadPreferences();
@@ -661,10 +663,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	/**
 	 * Load Modules for position
 	 * 
-	 * @param  string $position Position to look for
-	 * @return array            Array of modules
+	 * @param   string  $position  Position to look for
+	 * @return  array   Array of modules
 	 */
-	private function _loadModules( $position = '' )
+	private function _loadModules($position = '')
 	{
 		$query = "SELECT *
 		          FROM `#__modules` AS m
