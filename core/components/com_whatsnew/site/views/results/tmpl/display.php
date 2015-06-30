@@ -343,7 +343,7 @@ foreach ($this->cats as $cat)
 				<legend><?php echo Lang::txt('COM_WHATSNEW_FILTER'); ?></legend>
 				<label for="period">
 					<?php echo Lang::txt('COM_WHATSNEW_TIME_PERIOD'); ?>
-					<?php echo JHTMLSelect::genericlist($this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
+					<?php echo Html::select('genericlist', $this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
 				</label>
 				<p class="submit"><input type="submit" value="<?php echo Lang::txt('COM_WHATSNEW_GO'); ?>" /></p>
 			</fieldset>
