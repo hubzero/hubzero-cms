@@ -133,7 +133,9 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		$file['name'] = str_replace(' ','_',$file['name']);
 
 		// Do we have an old file we're replacing?
-		$curfile = JRequest::getVar( 'currentfile', '' );
+		$curfile = JRequest::getVar( 'currentfile', '', 'post' );
+		$regex   = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#');
+		$curfile = preg_replace($regex, '', $curfile);
 
 		// Check it's an image in allowed format
 		$ext = explode('.', $file['name']);
