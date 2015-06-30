@@ -552,6 +552,8 @@ class JRequest
 	 */
 	public static function checkToken($method = 'post')
 	{
+		return JSession::checkToken($method);
+
 		$token = JSession::getFormToken();
 		if (!self::getVar($token, '', $method, 'alnum'))
 		{
