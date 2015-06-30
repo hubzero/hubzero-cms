@@ -247,18 +247,18 @@ $this->css()
 						$start = intval(substr($first->get('publish_up'), 0, 4));
 						$now = date("Y");
 						$m = array(
-							'PLG_MEMBERS_BLOG_JANUARY',
-							'PLG_MEMBERS_BLOG_FEBRUARY',
-							'PLG_MEMBERS_BLOG_MARCH',
-							'PLG_MEMBERS_BLOG_APRIL',
-							'PLG_MEMBERS_BLOG_MAY',
-							'PLG_MEMBERS_BLOG_JUNE',
-							'PLG_MEMBERS_BLOG_JULY',
-							'PLG_MEMBERS_BLOG_AUGUST',
-							'PLG_MEMBERS_BLOG_SEPTEMBER',
-							'PLG_MEMBERS_BLOG_OCTOBER',
-							'PLG_MEMBERS_BLOG_NOVEMBER',
-							'PLG_MEMBERS_BLOG_DECEMBER'
+							'JANUARY',
+							'FEBRUARY',
+							'MARCH',
+							'APRIL',
+							'MAY',
+							'JUNE',
+							'JULY',
+							'AUGUST',
+							'SEPTEMBER',
+							'OCTOBER',
+							'NOVEMBER',
+							'DECEMBER'
 						);
 					?>
 					<?php for ($i=$now, $n=$start; $i >= $n; $i--) : ?>

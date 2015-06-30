@@ -201,7 +201,7 @@ $this->css()
 			<?php } ?>
 
 			<h3>
-				<?php echo Lang::txt('Post a comment'); ?>
+				<?php echo Lang::txt('PLG_MEMBERS_BLOG_ADD_A_COMMENT'); ?>
 			</h3>
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
@@ -244,7 +244,7 @@ $this->css()
 						}
 					?>
 					<label>
-						<?php echo Lang::txt(($replyto->exists() ? 'Your reply' : 'Your comments')); ?>: <span class="required"><?php echo Lang::txt('PLG_MEMBERS_BLOG_REQUIRED'); ?></span>
+						<?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 						<?php
 						if (!User::isGuest()) {
 							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
@@ -277,6 +277,8 @@ $this->css()
 					<input type="hidden" name="active" value="blog" />
 					<input type="hidden" name="task" value="view" />
 					<input type="hidden" name="action" value="savecomment" />
+
+					<?php echo Html::input('token'); ?>
 
 					<div class="sidenote">
 						<p>

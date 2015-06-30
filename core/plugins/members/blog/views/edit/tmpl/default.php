@@ -61,7 +61,7 @@ $this->css('jquery.datepicker.css', 'system')
 			<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
 			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-				<?php echo Lang::txt('PLG_MEMBERS_BLOG_TITLE'); ?>
+				<?php echo Lang::txt('PLG_MEMBERS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 				<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 			</label>
 			<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
@@ -69,17 +69,15 @@ $this->css('jquery.datepicker.css', 'system')
 			<?php } ?>
 
 			<label for="entrycontent">
-				<?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
-				<?php
-				echo $this->editor('entry[content]', $this->entry->content('raw'), 50, 30, 'entrycontent');
-				?>
+				<?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+				<?php echo $this->editor('entry[content]', $this->entry->content('raw'), 50, 30, 'entrycontent'); ?>
 			</label>
 			<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 				<p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
 			<?php } ?>
 
 			<fieldset>
-				<legend><?php echo Lang::txt('Uploaded files'); ?></legend>
+				<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?></legend>
 				<div class="field-wrap">
 					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('uidNumber') . '&scope=member&tmpl=component'; ?>"></iframe>
 				</div>
@@ -149,7 +147,7 @@ $this->css('jquery.datepicker.css', 'system')
 		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
-			<input class="btn btn-succes" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SAVE'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SAVE'); ?>" />
 
 			<?php if ($this->entry->get('id')) { ?>
 				<a class="btn btn-secondary" href="<?php echo Route::url($this->entry->link()); ?>">
