@@ -295,6 +295,14 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			$this->view->relpath = '/uploads';
 		}
 
+		$this->view->relpath = JPath::clean($this->view->relpath);
+		$this->view->relpath = explode('/', $this->view->relpath);
+		foreach ($this->view->relpath as $i => $p)
+		{
+			$this->view->relpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
+		}
+		$this->view->relpath = implode(DS, $this->view->relpath);
+
 		//build path to the group folder
 		$this->path = rtrim($this->path, DS) . $this->view->relpath;
 
