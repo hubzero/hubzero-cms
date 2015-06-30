@@ -29,7 +29,7 @@
  */
 
 // No direct access
-defined('_HZEXEC') or die();
+defined('_HZEXEC_') or die();
 
 $this->css();
 ?>

@@ -71,8 +71,8 @@ class Helper extends Module
 		$this->invalid_email = $this->params->get('invalid_email', Lang::txt('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
 
 		// From
-		$this->from_name     = @$this->params->get('from_name', Lang::txt('MOD_RAPID_CONTACT'));
-		$this->from_email    = @$this->params->get('from_email', 'rapid_contact@yoursite.com');
+		$this->from_name     = $this->params->get('from_name', Lang::txt('MOD_RAPID_CONTACT'));
+		$this->from_email    = $this->params->get('from_email', 'rapid_contact@yoursite.com');
 
 		// To
 		$this->recipient     = $this->params->get('email_recipient', Config::get('mailfrom'));
