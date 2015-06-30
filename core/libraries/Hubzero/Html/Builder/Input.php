@@ -74,7 +74,7 @@ class Input
 	 */
 	public static function token()
 	{
-		return self::input('hidden', \App::get('session')->getFormToken(), 1) . "\n";
+		return self::input('hidden', \App::get('session')->getFormToken(), 1, array('id' => null)) . "\n";
 	}
 
 	/**
@@ -291,6 +291,8 @@ class Input
 		// form like required="required" instead of using incorrect numerics.
 		foreach ((array) $attributes as $key => $value)
 		{
+			$element = null;
+
 			if (is_numeric($key))
 			{
 				$key = $value;
