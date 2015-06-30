@@ -67,10 +67,9 @@ $this->css();
 					<legend><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_LEGEND'); ?></legend>
 					<label for="entry-search-field"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER'); ?>" />
-					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
+					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="policy" value="<?php echo $this->escape($this->filters['policy']); ?>" />
-					<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
-					<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
+					<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
@@ -81,8 +80,8 @@ $this->css();
 					$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
 				?>
 				<ul class="entries-menu order-options">
-					<li><a class="sort-title<?php echo ($this->filters['sortby'] == 'title') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $fltrs); ?>" title="Sort by title">&darr; Title</a></li>
-					<li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $fltrs); ?>" title="Sort by alias">&darr; Alias</a></li>
+					<li><a class="sort-title<?php echo ($this->filters['sortby'] == 'title') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_GROUPS_GROUP_TITLE'); ?></a></li>
+					<li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS'); ?>"><?php echo Lang::txt('COM_GROUPS_GROUP_ALIAS'); ?></a></li>
 				</ul>
 				<?php
 				$fltrs  = ($this->filters['index'])  ? '&index=' . $this->filters['index']   : '';
@@ -90,11 +89,11 @@ $this->css();
 				$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
 				?>
 				<ul class="entries-menu filter-options">
-					<li><a class="filter-all<?php echo ($this->filters['policy'] == '') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="Show All groups">All</a></li>
-					<li><a class="filter-open<?php echo ($this->filters['policy'] == 'open') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=open' . $fltrs); ?>" title="Show groups with an Open join policy">Open</a></li>
-					<li><a class="filter-restricted<?php echo ($this->filters['policy'] == 'restricted') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="Show groups with a Restricted join policy">Restricted</a></li>
-					<li><a class="filter-invite<?php echo ($this->filters['policy'] == 'invite') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=invite' . $fltrs); ?>" title="Show groups with an Invite only join policy">Invite only</a></li>
-					<li><a class="filter-closed<?php echo ($this->filters['policy'] == 'closed') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="Show groups with a Closed join policy">Closed</a></li>
+					<li><a class="filter-all<?php echo ($this->filters['policy'] == '') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_ALL'); ?>"><?php echo Lang::txt('JALL'); ?></a></li>
+					<li><a class="filter-open<?php echo ($this->filters['policy'] == 'open') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=open' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></a></li>
+					<li><a class="filter-restricted<?php echo ($this->filters['policy'] == 'restricted') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></a></li>
+					<li><a class="filter-invite<?php echo ($this->filters['policy'] == 'invite') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=invite' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></a></li>
+					<li><a class="filter-closed<?php echo ($this->filters['policy'] == 'closed') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></a></li>
 				</ul>
 
 				<?php
@@ -110,10 +109,11 @@ $this->css();
 				$url .= ($qs) ? '&'.$qs : '';
 
 				$html  = '<a href="'.Route::url($url).'"';
-				if ($this->filters['index'] == '') {
+				if ($this->filters['index'] == '')
+				{
 					$html .= ' class="active-index"';
 				}
-				$html .= '>'.Lang::txt('ALL').'</a> '."\n";
+				$html .= '>'.Lang::txt('JALL').'</a> '."\n";
 
 				$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 				foreach ($letters as $letter)
@@ -122,7 +122,8 @@ $this->css();
 					$url .= ($qs) ? '&'.$qs : '';
 
 					$html .= "\t\t\t\t\t\t\t\t".'<a href="'.Route::url($url).'"';
-					if ($this->filters['index'] == strtolower($letter)) {
+					if ($this->filters['index'] == strtolower($letter))
+					{
 						$html .= ' class="active-index"';
 					}
 					$html .= '>'.$letter.'</a> '."\n";
@@ -138,15 +139,18 @@ $this->css();
 
 						if ($this->filters['search'] != '')
 						{
-							echo 'Search for "'.$this->filters['search'].'" in ';
+							echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_FOR_IN', $this->filters['search']);
+						}
+						else
+						{
+							echo Lang::txt('COM_GROUPS');
 						}
 						?>
-						<?php echo Lang::txt('COM_GROUPS'); ?>
 						<?php if ($this->filters['index']) { ?>
 							<?php echo Lang::txt('COM_GROUPS_STARTING_WITH'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
 						<?php if ($this->groups) { ?>
-							<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
+							<span>(<?php echo Lang::txt('COM_GROUPS_BROWSE_RESULTS_OF', $s, $e, $this->total); ?>)</span>
 						<?php } ?>
 					</caption>
 					<thead>

@@ -95,6 +95,14 @@
 /*===========================================
 	Group Browse
 ===========================================*/
+.com_groups .order-options a:before {
+	content: "\2193";
+	font-family: "Fontcons";
+	margin-right: 0.2em;
+}
+.com_groups .order-options a.desc:before {
+	content: "\2191";
+}
 .com_groups .entries thead th {
 	text-align: left;
 	font-size: 85%;
@@ -142,17 +150,30 @@
 .groups tbody .invitee {
 	background-color: #aaaaaa;
 }
+.groups tbody tr.pending,
+.groups tbody tr.member,
+.groups tbody tr.manager,
+.groups tbody tr.invitee {
+	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	-webkit-background-size: 30px 30px;
+	-moz-background-size: 30px 30px;
+	background-size: 30px 30px;
+}
 .groups tbody tr.pending {
-	background: #ffe url("/core/components/com_groups/site/assets/img/light-stripes.png");
+	background-color: #ffe;
 }
 .groups tbody tr.member {
-	background: #F3FDF0 url("/core/components/com_groups/site/assets/img/light-stripes.png");
+	background-color: #F3FDF0;
 }
 .groups tbody tr.manager {
-	background: #FFF2EF url("/core/components/com_groups/site/assets/img/light-stripes.png");
+	background-color: #FFF2EF;
 }
 .groups tbody tr.invitee {
-	background: #F9F9F9 url("/core/components/com_groups/site/assets/img/light-stripes.png");
+	background-color: #F9F9F9;
 }
 .groups tbody .join-policy {
 	font-size: 85%;
@@ -182,7 +203,6 @@
 .groups tbody .closed {
 	background-color: #c00;
 }
-
 
 
 /*===========================================
@@ -221,8 +241,6 @@
 	display:inline-block;
 	padding:20px 0 0 0;
 }
-
-
 
 
 /*===========================================
@@ -1111,7 +1129,7 @@ body.group-page-preview {
 	letter-spacing: 0;
 	font-weight: 400;
 	color: #777;
-}	
+}
 .group-content-header-extra {
 	position: absolute;
 	top: 3px;
@@ -1237,13 +1255,9 @@ body.group-page-preview {
 	}
 }
 
-
-
 /*===========================================
 	Super Group Page
 ===========================================*/
-
-
 
 /*===========================================
  	Group Edit Availability
@@ -1283,8 +1297,6 @@ body.group-page-preview {
 	content: '\f057';
 	color: #8a1111;
 }
-
-
 
 
 /*===========================================
@@ -1345,10 +1357,10 @@ body.group-page-preview {
 	margin: 0px;
 	padding: 10px;
 	background: #efefef url('/core/components/com_groups/site/assets/img/group_menu_preview.jpg') repeat-y top right;
-}	
+}
 .preview #access img {
 	width:auto;
-}	
+}
 #hubForm #access li {
 	font-size: 14px;
 	color: #444;
@@ -1379,9 +1391,6 @@ body.group-page-preview {
 .firefox .preview img {
 	width: 100%;
 }
-
-
-
 
 
 /*===========================================
