@@ -213,8 +213,10 @@ class Credentials extends SiteController
 		}
 
 		// Get the user object
-		$user = $user->first();
-		$user = User::getInstance($user->id);
+		// NOTE: these are currently two separate objects and should remain separate until their
+		//       functionalities are merged
+		$user   = $user->first();
+		$hzuser = User::getInstance($user->id);
 
 		// Make sure the user isn't blocked
 		if ($user->block)
@@ -228,7 +230,7 @@ class Credentials extends SiteController
 		}
 
 		// Make sure the user isn't a super admin
-		if ($user->authorise('core.admin'))
+		if ($hzuser->authorise('core.admin'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
