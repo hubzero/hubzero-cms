@@ -522,7 +522,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$c['scope_id'] = $this->member->get('uidNumber');
 
 		// Bind incoming data to object
-		$row = new CitationsCitation($this->database);
+		$row = new \Components\Citations\Tables\Citation($this->database);
 		if (!$row->bind($c))
 		{
 			$this->setError($row->getError());
