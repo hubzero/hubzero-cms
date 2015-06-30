@@ -100,7 +100,7 @@ if ($this->threads && is_array($this->threads))
 } else {
 ?>
 	<li class="comments-none">
-		<p><?php echo Lang::txt('No discussions found.'); ?></p>
+		<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NO_TOPICS_FOUND'); ?></p>
 	</li>
 <?php
 }

@@ -65,18 +65,18 @@ if (count($inst) > 0)
 			<div class="comments-feed">
 				<div class="comments-toolbar cf">
 					<p class="comment-sort-options">
-						<?php echo Lang::txt('Discussions'); ?>
+						<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS'); ?>
 					</p>
 					<p class="comments-controls">
-						<a class="add active" href="<?php echo Route::url($base . '&active=discussions'); ?>" title="<?php echo Lang::txt('Start a new discussion'); ?>"><?php echo Lang::txt('New'); ?></a>
+						<a class="add active" href="<?php echo Route::url($base . '&active=discussions'); ?>" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC'); ?>"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NEW'); ?></a>
 					</p>
 				</div><!-- / .comments-toolbar -->
 
 				<div class="comments-options-bar">
 					<form class="comments-search" action="<?php echo Route::url($base . '&active=discussions'); ?>" method="get">
 						<fieldset>
-							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('search ...'); ?>" />
-							<input type="submit" class="submit" value="<?php echo Lang::txt('Go'); ?>" />
+							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SEARCH_PLACEHOLDER'); ?>" />
+							<input type="submit" class="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_GO'); ?>" />
 
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -90,7 +90,7 @@ if (count($inst) > 0)
 				<div class="comment-threads">
 					<div class="category search-results hide">
 						<div class="category-header">
-							<span class="category-title"><?php echo Lang::txt('Search'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SEARCH'); ?></span>
 						</div>
 						<div class="category-content">
 						</div>
@@ -111,7 +111,7 @@ if (count($inst) > 0)
 						$filters['replies']    = true;
 						?>
 						<div class="category-header">
-							<span class="category-title"><?php echo Lang::txt('Replies to My Comments'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLIES_TO_MY_COMMENTS'); ?></span>
 							<span class="category-discussions count"><?php echo $this->post->count($filters); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
@@ -148,7 +148,7 @@ if (count($inst) > 0)
 						//$filters['parent']     = 0;
 						?>
 						<div class="category-header">
-							<span class="category-title"><?php echo Lang::txt('Latest Comments'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LATEST_COMMENTS'); ?></span>
 							<span class="category-discussions count"><?php echo $this->post->count($filters); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
@@ -177,7 +177,7 @@ if (count($inst) > 0)
 
 			<div class="comments-panel">
 				<div class="comments-toolbar">
-					<p><span class="comments" data-comments="%s comments" data-add="<?php echo Lang::txt('Start a discussion'); ?>"><?php echo Lang::txt('Start a discussion'); ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
+					<p><span class="comments" data-comments="%s comments" data-add="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC'); ?>"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC'); ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
 				</div><!-- / .comments-toolbar -->
 				<div class="comments-frame">
 
@@ -195,7 +195,6 @@ if (count($inst) > 0)
 
 					<form action="<?php echo Route::url($base . '&active=discussions'); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
 						<p class="comment-member-photo">
-							<a class="comment-anchor" name="commentform"></a>
 							<?php
 							$anon = 1;
 							if (!User::isGuest())
@@ -204,7 +203,7 @@ if (count($inst) > 0)
 							}
 							$now = Date::getRoot();
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
+							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo $this->escape(User::get('name')); ?>" />
 						</p>
 
 						<fieldset>
@@ -298,12 +297,12 @@ if (count($inst) > 0)
 						<?php echo Html::input('token'); ?>
 
 						<p class="instructions">
-							<?php echo Lang::txt('Click on a comment on the left to view a discussion or start your own above.'); ?>
+							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTIONS'); ?>
 						</p>
 					</form>
 					<?php } else { ?>
 						<p class="instructions">
-							<?php echo Lang::txt('The forum is currently empty and requires at least one section and category before posts can be made. Go to the discussions tab and click the "manage" button to set up the forum.'); ?>
+							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EMPTY_FORUM'); ?>
 						</p>
 					<?php } ?>
 					<div class="comment-thread"><?php if ($this->data) { echo $this->data->html; } ?></div>

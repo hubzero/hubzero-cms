@@ -9,7 +9,7 @@ defined('_HZEXEC_') or die();
 	if ($this->comment->isReported())
 	{
 		$this->comment->set('anonymous', 1);
-		$comment = '<p class="warning">' . Lang::txt('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
+		$comment = '<p class="warning">' . Lang::txt('PLG_COURSES_DISCUSSIONS_CONTENT_REPORTED') . '</p>';
 	}
 	else
 	{
@@ -161,12 +161,12 @@ defined('_HZEXEC_') or die();
 						</label>
 
 						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-					<?php if ($this->config->get('comments_anon', 1)) { ?>
-							<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
-					<?php } else { ?>
-							&nbsp; <input class="option" type="hidden" name="fields[anonymous]" value="0" />
-					<?php } ?>
+							<?php if ($this->config->get('comments_anon', 1)) { ?>
+								<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+								<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
+							<?php } else { ?>
+								&nbsp; <input class="option" type="hidden" name="fields[anonymous]" value="0" />
+							<?php } ?>
 						</label>
 
 						<p class="submit">

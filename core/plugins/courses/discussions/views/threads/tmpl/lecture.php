@@ -70,7 +70,7 @@ $base = $this->course->offering()->link();
 				<div class="comment-threads">
 					<div class="category search-results hide">
 						<div class="category-header">
-							<span class="category-title"><?php echo Lang::txt('Search'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SEARCH'); ?></span>
 						</div>
 						<div class="category-content">
 						</div>

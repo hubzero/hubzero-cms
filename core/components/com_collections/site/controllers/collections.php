@@ -160,8 +160,6 @@ class Collections extends SiteController
 	 */
 	public function aboutTask()
 	{
-		$this->view;
-
 		// Filters for returning results
 		$this->view->filters = array(
 			'id'      => Request::getInt('id', 0),

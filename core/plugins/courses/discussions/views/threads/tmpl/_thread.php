@@ -82,7 +82,7 @@ if (!$this->thread->thread)
 
 							if ($this->thread->state == 3)
 							{
-								$comment = '<p class="warning">' . Lang::txt('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
+								$comment = '<p class="warning">' . Lang::txt('PLG_COURSES_DISCUSSIONS_CONTENT_REPORTED') . '</p>';
 							}
 							else
 							{
@@ -103,13 +103,13 @@ if (!$this->thread->thread)
 						?>
 						<div class="comment-content">
 							<?php //if ($this->thread->sticky) { ?>
-							<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('This thread is sticky') : Lang::txt('This thread is not sticky'); ?>">
-								<?php echo ($this->thread->sticky) ? Lang::txt('sticky') :  Lang::txt('not sticky'); ?>
+							<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY'); ?>">
+								<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') :  Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY'); ?>
 							</p>
 							<?php //} ?>
 							<?php if ($this->thread->instructor_replied) { ?>
-							<p class="instructor-commented" title="<?php echo Lang::txt('Instructor commented in this discussion'); ?>">
-								<?php echo Lang::txt('instructor'); ?>
+							<p class="instructor-commented" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED'); ?>">
+								<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR'); ?>
 							</p>
 							<?php } ?>
 							<p class="comment-title">
