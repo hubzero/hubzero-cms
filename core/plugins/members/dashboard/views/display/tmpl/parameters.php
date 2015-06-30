@@ -72,7 +72,7 @@ if ($count < 1 || $this->admin)
 				$i++;
 			?>
 			<label>
-				<span class="tooltips" title="<?php echo $field->description; ?>">
+				<span class="tooltips" title="<?php echo Lang::txt($field->description); ?>">
 					<?php echo $field->title; ?>:
 				</span>
 				<?php echo $field->input; ?>
