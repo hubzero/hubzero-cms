@@ -2146,6 +2146,16 @@ class Wishlists extends SiteController
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
 		}
 
+		if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking')))
+		{
+			$filters['sortby'] = 'date';
+		}
+
+		if (!in_array($filters['filterby'], array('all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private')))
+		{
+			$filters['filterby'] = 'all';
+		}
+
 		// Paging vars
 		$filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
 		$filters['start']    = Request::getInt('limitstart', 0);
