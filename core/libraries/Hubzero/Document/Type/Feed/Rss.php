@@ -60,7 +60,7 @@ class Rss extends Renderer
 		$now  = new Date('now');
 		$data = $this->doc;
 
-		$uri = \App::get('request')->root();
+		$url = \App::get('request')->root();
 
 		if (\App::get('config')->get('sitename_pagetitles', 0) == 1)
 		{
