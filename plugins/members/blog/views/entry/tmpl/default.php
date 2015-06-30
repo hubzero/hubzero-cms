@@ -278,6 +278,8 @@ $this->css()
 					<input type="hidden" name="task" value="view" />
 					<input type="hidden" name="action" value="savecomment" />
 
+					<?php echo JHTML::_('form.token'); ?>
+
 					<div class="sidenote">
 						<p>
 							<strong><?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>

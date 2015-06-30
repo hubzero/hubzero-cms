@@ -51,7 +51,7 @@ $this->js();
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" method="get">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH'); ?>" />
 			<fieldset class="entry-search">

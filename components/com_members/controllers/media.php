@@ -313,6 +313,9 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			return false;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
 		if (!$id)

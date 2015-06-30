@@ -60,7 +60,7 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 }
 ?>
 <div id="ajax-upload-container">
-	<form action="index.php" method="post" enctype="multipart/form-data">
+	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" enctype="multipart/form-data">
 		<h2>Upload a New Profile Picture</h2>
 		<div id="ajax-upload-left">
 			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $picture->name; ?>" data-default-pic="<?php echo $this->config->get('defaultpic', '/components/com_members/assets/img/profile.gif'); ?>" />
@@ -97,11 +97,13 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 			<button class="section-edit-submit">Save Changes</button>
 		</div><!-- /#ajax-upload-actions -->
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="ajaxuploadsave" />
-	<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
-	<input type="hidden" name="profile[picture]" id="profile-picture" value="<?php echo $this->profile->get("picture"); ?>" />
-	<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="ajaxuploadsave" />
+		<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
+		<input type="hidden" name="profile[picture]" id="profile-picture" value="<?php echo $this->profile->get("picture"); ?>" />
+		<input type="hidden" name="no_html" value="1" />
+
+		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div><!-- /#ajax-upload-container -->
