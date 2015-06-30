@@ -52,6 +52,9 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Fix asset paths
+		$article->text = str_replace('src="/media/system/', 'src="/core/assets/', $article->text);
+
 		// simple performance check to determine whether bot should process further
 		if (strpos($article->text, '{xhub') === false)
 		{
@@ -137,8 +140,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 	 */
 	private function _templateDir()
 	{
-		$base = (App::get('template')->protected ? substr(PATH_CORE, strlen(PATH_ROOT)) : substr(PATH_APP, strlen(PATH_ROOT)));
-		return $base . '/templates/' . App::get('template')->template;
+		return App::get('template')->path;
 	}
 
 	/**
