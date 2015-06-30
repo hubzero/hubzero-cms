@@ -63,7 +63,7 @@ if ($this->uid)
 }
 else
 {
-	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . Config::get('config.sitename') . ' ';
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . Config::get('sitename') . ' ';
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 $message .= $link ."\n\n";
