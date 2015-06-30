@@ -320,7 +320,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 			$path = str_replace($juri->base(true), '', $path);
 			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
+			$path = '/' . trim($path, '/');
 
 			$blog = '/groups/' . $this->group->get('cn') . '/blog';
 
@@ -330,8 +330,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				return $path;
 			}
 
-			$path = ltrim($path, DS);
+			$path = ltrim($path, '/');
 			$path = explode('/', $path);
+			$path = array_map('urldecode', $path);
 
 			/*while ($path[0] != 'members' && !empty($path));
 			{
@@ -348,7 +349,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				}
 				if ($start)
 				{
-					$paths[] = $bit;
+					$paths[] = preg_replace('/[^a-zA-Z0-9_\-\:]/', '', $bit);
 				}
 			}
 			if (count($paths) >= 2)
@@ -413,8 +414,16 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				return $this->_entry();
 			}
 
-			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
-			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
+			$view->filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $view->filters['year'];
+			$view->filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $view->filters['month'];
+		}
+		if ($view->filters['year'] > date("Y"))
+		{
+			$view->filters['year'] = 0;
+		}
+		if ($view->filters['month'] > 12)
+		{
+			$view->filters['month'] = 0;
 		}
 
 		$view->canpost = $this->_getPostingPermissions();
@@ -506,8 +515,16 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			$bits = $this->_parseUrl();
 
-			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
-			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
+			$filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $filters['year'];
+			$filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $filters['month'];
+		}
+		if ($filters['year'] > date("Y"))
+		{
+			$filters['year'] = 0;
+		}
+		if ($filters['month'] > 12)
+		{
+			$filters['month'] = 0;
 		}
 
 		// Build some basic RSS document information
