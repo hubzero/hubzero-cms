@@ -344,6 +344,12 @@ class Blacklist
 
 		$query = "SELECT 1 FROM #__password_blacklist WHERE word IN (\"";
 
+		// Make sure words are quoted
+		foreach ($words as &$word)
+		{
+			$word = $db->quote($word);
+		}
+
 		$query .= implode($words,'","');
 
 		$query .= "\");";
