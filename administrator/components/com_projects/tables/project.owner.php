@@ -603,7 +603,7 @@ class ProjectOwner extends JTable
 		$online   	= isset($filters['online']) 	? $filters['online'] : 0;
 		$status    	= isset($filters['status']) 	? $filters['status'] : '';
 		$sortby  	= isset($filters['sortby']) 	? $filters['sortby'] : 'name';
-		$sortdir 	= isset($filters['sortdir']) 	? $filters['sortdir'] : '';
+		$sortdir 	= isset($filters['sortdir']) && $filters['sortdir'] == 'DESC' 	? 'DESC' : 'ASC';
 		$limit   	= isset($filters['limit']) 		? $filters['limit'] : 0;
 		$limitstart = isset($filters['start']) 		? $filters['start'] : 0;
 		$select 	= isset($filters['select']) 	? $filters['select'] : '';
@@ -631,7 +631,7 @@ class ProjectOwner extends JTable
 		$query  .=  " JOIN #__projects as p ON o.projectid=p.id";
 		if ($pub)
 		{
-			$query  .=  " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=".$pub;
+			$query  .=  " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $pub;
 		}
 		$query  .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
 		$query  .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
@@ -673,12 +673,29 @@ class ProjectOwner extends JTable
 		}
 
 		$query  .= " ORDER BY ";
-		$query  .=  $sortby == 'status' ? " o.status $sortdir, o.added DESC " : "";
-		$query  .=  $sortby == 'name' ? " fullname $sortdir " : "";
-		$query  .=  $sortby == 'group' ? " g.cn $sortdir, fullname ASC " : "";
-		$query  .=  $sortby == 'added' ? " o.added DESC " : "";
-		$query  .=  $sortby == 'date' ? " o.added $sortdir, fullname ASC " : "";
-		$query  .=  $sortby == 'role' ? " o.role $sortdir, fullname ASC " : "";
+		switch ($sortby)
+		{
+			case 'status':
+			default:
+				$query  .=  " o.status $sortdir, o.added DESC ";
+				break;
+
+			case 'group':
+				$query  .= " g.cn $sortdir, fullname ASC ";
+				break;
+
+			case 'added':
+				$query  .= " o.added DESC ";
+				break;
+
+			case 'date':
+				$query  .= " o.added $sortdir, fullname ASC ";
+				break;
+
+			case 'role':
+				$query  .= " o.role $sortdir, fullname ASC ";
+				break;
+		}
 
 		if (isset ($limit) && $limit!=0)
 		{
