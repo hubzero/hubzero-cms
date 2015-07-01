@@ -220,7 +220,7 @@ class Resource extends SiteController
 				}
 			}
 
-			$hztv->fulltxt    = $objV->fulltxt    = $status['fulltxt'];
+			$hztv->fulltxt     = $objV->fulltxt     = $status['fulltxt'];
 			$hztv->description = $objV->description = \Hubzero\Utility\String::truncate(Request::getVar('description', $status['description'], 'post'), 500);
 			$hztv->title       = $objV->title       = \Hubzero\Utility\String::truncate(preg_replace('/\s+/', ' ', Request::getVar('title', $status['title'], 'post')), 500);
 
@@ -360,7 +360,7 @@ class Resource extends SiteController
 		$tags = implode(', ', $mytagarray);
 
 		// Set the document title
-		$this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
+		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
 		Document::setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)

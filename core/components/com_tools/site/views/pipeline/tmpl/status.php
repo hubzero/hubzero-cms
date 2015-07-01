@@ -220,13 +220,14 @@ $this->css('pipeline.css')
 								</div>
 							</th>
 						</tr>
-					<?php if ($this->config->get('access-admin-component')) { ?>
-						<tr>
-							<th colspan="2" class="toolinfo_hed"><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS');?></th>
-						</tr>
-						<tr>
-							<th colspan="2">
-								<!-- / admin controls -->
+					</tbody>
+				</table>
+			</div>
+
+			<?php if ($this->config->get('access-admin-component')) { ?>
+			<div class="admin-container">
+
+								<!-- / admin controls 
 								<form action="index.php" method="post" id="adminCalls">
 									<ul class="adminactions">
 										<li id="createtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=addrepo&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO');?></a></li>
@@ -242,56 +243,70 @@ $this->css('pipeline.css')
 									<input type="hidden" name="id" value="<?php echo $this->status['toolid']?>" />
 									<input type="hidden" name="app" value="<?php echo $this->status['toolname']?>" />
 									<input type="hidden" name="no_html" value="1" />
-								</form>
-							</th>
-						</tr>
-						<tr>
-							<th>
-								<span class="admin_label"><?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:</span>
-								<span class="admin_label"><?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:</span>
-								<span class="admin_label"><?php echo Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' <br />(' . Lang::txt('COM_TOOLS_OPTIONAL') . ')';?></span>
-							</th>
-							<td>
-								<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="adminForm">
-									<fieldset class="admin_label">
-										<select name="newstate">
-											<option value="1"<?php if ($this->status['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
-											<option value="2"<?php if ($this->status['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
-											<option value="3"<?php if ($this->status['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
-											<option value="4"<?php if ($this->status['state'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
-											<option value="5"<?php if ($this->status['state'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
-											<option value="6"<?php if ($this->status['state'] == 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
-											<option value="7"<?php if ($this->status['state'] == 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
-										<?php if ($this->status['published']==1) { // admin can retire only tools that have a published flag on ?>
-											<option value="8"<?php if ($this->status['state'] == 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
-										<?php } ?>
-										</select>
-									</fieldset>
-									<fieldset class="admin_label">
-										<select name="priority">
-											<option value="3"<?php if ($this->status['priority'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
-											<option value="2"<?php if ($this->status['priority'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
-											<option value="1"<?php if ($this->status['priority'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
-											<option value="4"<?php if ($this->status['priority'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
-											<option value="5"<?php if ($this->status['priority'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
-										</select>
-										<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-										<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-										<input type="hidden" name="task" value="update" />
-										<input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
-										<input type="hidden" name="app" value="<?php echo $this->status['toolname']; ?>" />
-									</fieldset>
-									<fieldset class="admin_label">
-										<textarea name="comment" id="comment" cols="40" rows="5"></textarea>
-										<input type="submit" class="submitform" value="<?php echo Lang::txt('COM_TOOLS_APPLY_CHANGE'); ?>" />
-									</fieldset>
-								</form>
-							</td>
-						</tr>
-					<?php } ?>
-					</tbody>
-				</table>
+								</form> -->
+
+				<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="hubForm" class="full">
+					<fieldset>
+						<legend><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS');?></legend>
+
+						<ul class="adminactions">
+							<li id="createtool"><a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=addrepo&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO');?></a></li>
+							<li id="installtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=install&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL');?></a></li>
+							<li id="publishtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=publish&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH');?></a></li>
+							<li id="retiretool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=retire&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE');?></a></li>
+						</ul>
+						<div id="ctSending"></div>
+						<div id="ctSuccess"></div>
+
+						<div class="grid">
+							<div class="col span6">
+								<label>
+									<?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
+									<select name="newstate">
+										<option value="1"<?php if ($this->status['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
+										<option value="2"<?php if ($this->status['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
+										<option value="3"<?php if ($this->status['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
+										<option value="4"<?php if ($this->status['state'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
+										<option value="5"<?php if ($this->status['state'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
+										<option value="6"<?php if ($this->status['state'] == 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
+										<option value="7"<?php if ($this->status['state'] == 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
+									<?php if ($this->status['published']==1) { // admin can retire only tools that have a published flag on ?>
+										<option value="8"<?php if ($this->status['state'] == 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
+									<?php } ?>
+									</select>
+								</label>
+							</div>
+							<div class="col span6 omega">
+								<label>
+									<?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
+									<select name="priority">
+										<option value="3"<?php if ($this->status['priority'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
+										<option value="2"<?php if ($this->status['priority'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
+										<option value="1"<?php if ($this->status['priority'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
+										<option value="4"<?php if ($this->status['priority'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
+										<option value="5"<?php if ($this->status['priority'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
+									</select>
+								</label>
+							</div>
+						</div>
+
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+						<input type="hidden" name="task" value="update" />
+						<input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
+						<input type="hidden" name="app" value="<?php echo $this->status['toolname']; ?>" />
+
+						<label for="comment">
+							<?php echo Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')';?>
+							<textarea name="comment" id="comment" cols="40" rows="5"></textarea>
+						</label>
+						<p class="submit">
+							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_TOOLS_APPLY_CHANGE'); ?>" />
+						</p>
+					</fieldset>
+				</form>
 			</div>
+			<?php } ?>
 		</div><!-- / .col span-half -->
 		<div class="col span5 omega">
 			<div id="whatsnext">

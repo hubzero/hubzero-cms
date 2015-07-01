@@ -95,7 +95,7 @@ class Membership extends Base
 		if ($this->view->group->get('approved') == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 

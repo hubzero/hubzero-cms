@@ -7,6 +7,12 @@
 
 /* Enries */
 	/* Status */
+	.icon-status:before {
+		content: "\f056";
+	}
+	.icon-preview:before {
+		content: "\f06e";
+	}
 	.tools tbody tr th .entry-id:before {
 		content: "";
 		display: none;
@@ -60,55 +66,72 @@
 		padding: 0.7em 0 0.7em 0;
 	}
 
+	.order-options a:before {
+		content: "\2193";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	.order-options a.desc:before {
+		content: "\2191";
+	}
+
 /* Contribtool */
-	#whatsnext { 
+	#whatsnext {
 		padding: 0;
 		margin: 0 0 1em;
 	}
-	#whatsnext ul, 
-	ul.youroptions { 
+	#whatsnext ul,
+	ul.youroptions {
 		margin: 1em 0 1em 1em;
 		padding: 0 0 0 0;
 		list-style: none;
 	}
-	#whatsnext a, 
-	#whatsnext a:hover { 
+	#whatsnext a,
+	#whatsnext a:hover {
 		padding: 0;
 		margin: 0;
-		position: relative;		
+		position: relative;
 	}
+	ul.youroptions li,
 	#whatsnext ul li {
-		padding: 0 0 0 20px;
+		padding: 0 0 0 1.5em;
 		margin: 0 0 1em 0;
+		position: relative;
 	}
-	#whatsnext ul li.complete, 
-	#todolist span.complete { 
-		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/task_complete.gif") 0 0 no-repeat;
+	#whatsnext ul li:before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-family: "Fontcons";
+	}
+	#whatsnext ul li.complete,
+	#todolist span.complete {
 		color: #6a0;
 	}
-	#whatsnext ul li.incomplete, 
-	#todolist span.incomplete { 
-		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/task_incomplete.gif") 0 0 no-repeat;
+	#whatsnext ul li.complete:before,
+	#todolist span.complete:before {
+		content: "\2611";
 	}
-	#whatsnext ul li.todo { 
-		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/orangepointer.gif") 0 0.2em no-repeat;
+	#whatsnext ul li.incomplete:before,
+	#todolist span.incomplete:before {
+		content: "\f0a1";
 	}
-	#whatsnext ul li.todo_disabled { 
-		color:#999999;
-		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/greypointer.gif") 0 0.2em no-repeat;
+	#whatsnext ul li.todo {
+		background: none;
 	}
-	#whatsnext ul li.todo_disabled a, 
-	#whatsnext ul li.todo_disabled a:hover, 
-	a.optiondisabled, 
-	a.optiondisabled:hover  { 
+	#whatsnext ul li.todo:before {
+		content: "\2192";
+		color: orange;
+	}
+	#whatsnext ul li.todo_disabled {
+		color: #999;
+	}
+	#whatsnext ul li.todo_disabled a,
+	#whatsnext ul li.todo_disabled a:hover,
+	a.optiondisabled,
+	a.optiondisabled:hover {
 		color:#999;
 		border-bottom: 1px solid #999999;
-	}
-	ul.youroptions li, 
-	#whatsnext ul li {
-		padding: 0 0 0 20px;
-		margin: 0 0 1em 0;
-		background: url("/core/components/com_tools/site/assets/img/contribute/bullets/arrow.png") 0 0.2em no-repeat;
 	}
 
 /* Tool Status */
@@ -204,34 +227,34 @@
 		display: none;
 	}
 	.adminactions li.history a:before {
-		content: "\f017";	
+		content: "\f017";
 	}
 	.adminactions li.wiki a:before {
-		content: "\f059";	
+		content: "\f059";
 	}
 	.adminactions li.sourcecode a:before {
-		content: "\f121";	
+		content: "\f121";
 	}
 	.adminactions li.timeline a:before {
-		content: "\f056";	
+		content: "\f056";
 	}
 	.adminactions li.message a:before {
-		content: "\f075";	
+		content: "\f075";
 	}
 	.adminactions li.canceltool a:before {
-		content: "\2716";	
+		content: "\2716";
 	}
 	.adminactions li#createtool a:before {
-		content: "\f0c2";	
+		content: "\f0c2";
 	}
 	.adminactions li#installtool a:before {
-		content: "\f0c3";	
+		content: "\f0c3";
 	}
 	.adminactions li#publishtool a:before {
-		content: "\2714";	
+		content: "\2714";
 	}
 	.adminactions li#retiretool a:before {
-		content: "\f0ab";	
+		content: "\f0ab";
 	}
 	span.showcontrols {
 		padding: 0.2em 0 0.2em 0.2em;
@@ -251,7 +274,7 @@
 	#ctSuccess {
 		padding: 0.5em 1.5em 0.5em 1.5em;
 	}
-	
+
 	span.showcontrols a { 
 		display: inline;
 		border: none;
@@ -551,12 +574,12 @@
 		text-align: left;
 		padding: 0 0 1em 5.5em;
 	}
-	.required {
+	/*.required {
 		float: right;
 		color: red;
 		font-size: 85%;
 		text-transform: uppercase;
-	}
+	}*/
 	#choice-icon {
 		width: 24px;
 		height: 24px;
@@ -584,7 +607,7 @@
 	form#toolForm tr:hover { 
 		background: #e4e4e4;
 	}
-	.submitform { 
+	/*.submitform { 
 		display:block;
 		margin: 0.5em 0 1.5em 0;
 	}
@@ -593,7 +616,7 @@
 		margin-top: 0.5em;
 		padding: 0;
 		color: #a8a8a8;
-	} 
+	}
 	#hubForm .sameline { 
 		display: inline;
 		width: 10%;
@@ -615,6 +638,11 @@
 	}
 	.section .contracted {
 		width: 55%;
+	}*/
+	#hubForm .inline input,
+	#hubForm .inline label {
+		display: inline;
+		width: auto;
 	}
 
 /* Tool Info */

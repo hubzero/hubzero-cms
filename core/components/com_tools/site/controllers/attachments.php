@@ -40,7 +40,7 @@ use User;
 use Date;
 use App;
 
-include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'contribute.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
