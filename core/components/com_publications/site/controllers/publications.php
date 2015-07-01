@@ -1172,7 +1172,7 @@ class Publications extends SiteController
 		$allowed = array('team', 'files', 'notes', 'databases', 'publications', 'links');
 		$plugin  = in_array($active, $allowed) ? $active : 'publications';
 
-		if (User::isGuest() && ($action == 'login' || $this->_task == 'start'))
+		if (User::isGuest() && ($action == 'login' || $action == 'start' || $action == 'publication'))
 		{
 			$this->_msg = $this->_task == 'start'
 						? Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START')
@@ -1218,7 +1218,8 @@ class Publications extends SiteController
 			$this->_buildPathway(null);
 			$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
 			$this->view->error  = Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
-			$this->view->title = $this->title;
+			$this->view->title  = $this->title;
+			$this->view->option = $this->_option;
 			$this->view->display();
 			return;
 		}
