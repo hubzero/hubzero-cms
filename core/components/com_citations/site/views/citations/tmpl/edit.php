@@ -74,7 +74,7 @@ $pid = Request::getInt('publication', 0);
 		<p>
 			<a class="icon-browse browse btn" href="<?php echo $backLink ?>"><?php echo Lang::txt('COM_CITATIONS_BACK'); ?></a>
 		</p>
-	</div><!-- / #content-header-extra -->
+	</div>
 </header><!-- / #content-header -->
 
 <section class="main section">
@@ -94,11 +94,12 @@ $pid = Request::getInt('publication', 0);
 			<div class="grid">
 				<div class="col span6">
 					<label for="type">
-						<?php echo Lang::txt('COM_CITATIONS_TYPE'); ?>: <span class="required">Required</span>
-						<select name="type" id="type">
+						<?php echo Lang::txt('COM_CITATIONS_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<select name="fields[type]" id="type">
 							<option value=""> <?php echo Lang::txt('COM_CITATIONS_TYPE_SELECT'); ?></option>
 							<?php
-								foreach ($this->types as $t) {
+								foreach ($this->types as $t)
+								{
 									$sel = ($this->row->type == $t['id']) ? "selected=\"selected\"" : "";
 									echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
 								}
@@ -109,7 +110,7 @@ $pid = Request::getInt('publication', 0);
 				<div class="col span6 omega">
 					<label for="cite">
 						<?php echo Lang::txt('COM_CITATIONS_CITE_KEY'); ?>:
-						<input type="text" name="cite" id="cite" size="30" maxlength="250" value="<?php echo $this->row->cite; ?>" />
+						<input type="text" name="fields[cite]" id="cite" size="30" maxlength="250" value="<?php echo $this->escape($this->row->cite); ?>" />
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_CITE_KEY_EXPLANATION'); ?></span>
 					</label>
 				</div>
@@ -117,28 +118,28 @@ $pid = Request::getInt('publication', 0);
 
 			<label for="ref_type">
 				<?php echo Lang::txt('COM_CITATIONS_REF_TYPE'); ?>:
-				<input type="text" name="ref_type" id="ref_type" size="11" maxlength="50" value="<?php echo $this->row->ref_type; ?>" />
+				<input type="text" name="fields[ref_type]" id="ref_type" size="11" maxlength="50" value="<?php echo $this->escape($this->row->ref_type); ?>" />
 			</label>
 
 			<div class="grid">
 				<div class="col span4">
 					<label for="date_submit">
 						<?php echo Lang::txt('COM_CITATIONS_DATE_SUBMITTED'); ?>:
-						<input type="text" name="date_submit" id="date_submit" size="30" maxlength="250" value="<?php echo $this->row->date_submit; ?>" />
+						<input type="text" name="fields[date_submit]" id="date_submit" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_submit); ?>" />
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_DATE_HINT'); ?></span>
 					</label>
 				</div>
 				<div class="col span4">
 					<label for="date_accept">
 						<?php echo Lang::txt('COM_CITATIONS_DATE_ACCEPTED'); ?>:
-						<input type="text" name="date_accept" id="date_accept" size="30" maxlength="250" value="<?php echo $this->row->date_accept; ?>" />
+						<input type="text" name="fields[date_accept]" id="date_accept" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_accept); ?>" />
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_DATE_HINT'); ?></span>
 					</label>
 				</div>
 				<div class="col span4 omega">
 					<label for="date_publish">
 						<?php echo Lang::txt('COM_CITATIONS_DATE_PUBLISHED'); ?>:
-						<input type="text" name="date_publish" id="date_publish" size="30" maxlength="250" value="<?php echo $this->row->date_publish; ?>" />
+						<input type="text" name="fields[date_publish]" id="date_publish" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_publish); ?>" />
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_DATE_HINT'); ?></span>
 					</label>
 				</div>
@@ -148,71 +149,71 @@ $pid = Request::getInt('publication', 0);
 				<div class="col span6">
 					<label for="year">
 						<?php echo Lang::txt('COM_CITATIONS_YEAR'); ?>:
-						<input type="text" name="year" id="year" size="4" maxlength="4" value="<?php echo $this->row->year; ?>" />
+						<input type="text" name="fields[year]" id="year" size="4" maxlength="4" value="<?php echo $this->escape($this->row->year); ?>" />
 					</label>
 				</div>
 				<div class="col span6 omega">
 					<label for="month">
 						<?php echo Lang::txt('COM_CITATIONS_MONTH'); ?>:
-						<input type="text" name="month" id="month" size="11" maxlength="50" value="<?php echo $this->row->month; ?>" />
+						<input type="text" name="fields[month]" id="month" size="11" maxlength="50" value="<?php echo $this->escape($this->row->month); ?>" />
 					</label>
 				</div>
 			</div>
 
 			<label for="author">
 				<?php echo Lang::txt('COM_CITATIONS_AUTHORS'); ?>:
-				<input type="text" name="author" id="author" size="30" value="<?php echo $this->row->author; ?>" />
+				<input type="text" name="fields[author]" id="author" size="30" value="<?php echo $this->escape($this->row->author); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_AUTHORS_HINT'); ?></span>
 			</label>
 
 			<label for="authoraddress">
 				<?php echo Lang::txt('COM_CITATIONS_AUTHOR_ADDRESS'); ?>:
-				<input type="text" name="author_address" id="authoraddress" size="30" value="<?php echo $this->row->author_address; ?>" />
+				<input type="text" name="fields[author_address]" id="authoraddress" size="30" value="<?php echo $this->escape($this->row->author_address); ?>" />
 			</label>
 
 			<label for="editor">
 				<?php echo Lang::txt('COM_CITATIONS_EDITORS'); ?>:
-				<input type="text" name="editor" id="editor" size="30" maxlength="250" value="<?php echo $this->row->editor; ?>" />
+				<input type="text" name="fields[editor]" id="editor" size="30" maxlength="250" value="<?php echo $this->escape($this->row->editor); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_AUTHORS_HINT'); ?></span>
 			</label>
 
 			<label for="title">
-				<?php echo Lang::txt('COM_CITATIONS_TITLE_CHAPTER'); ?>:  <span class="required">Required</span>
-				<input type="text" name="title" id="title" size="30" maxlength="250" value="<?php echo $this->row->title; ?>" />
+				<?php echo Lang::txt('COM_CITATIONS_TITLE_CHAPTER'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+				<input type="text" name="fields[title]" id="title" size="30" maxlength="250" value="<?php echo $this->escape($this->row->title); ?>" />
 			</label>
 
 			<label for="booktitle">
 				<?php echo Lang::txt('COM_CITATIONS_BOOK_TITLE'); ?>:
-				<input type="text" name="booktitle" id="booktitle" size="30" maxlength="250" value="<?php echo $this->row->booktitle; ?>" />
+				<input type="text" name="fields[booktitle]" id="booktitle" size="30" maxlength="250" value="<?php echo $this->escape($this->row->booktitle); ?>" />
 			</label>
 
 			<label for="shorttitle">
 				<?php echo Lang::txt('COM_CITATIONS_SHORT_TITLE'); ?>:
-				<input type="text" name="short_title" id="shorttitle" size="30" maxlength="250" value="<?php echo $this->row->short_title; ?>" />
+				<input type="text" name="fields[short_title]" id="shorttitle" size="30" maxlength="250" value="<?php echo $this->escape($this->row->short_title); ?>" />
 			</label>
 
 			<label for="journal">
 				<?php echo Lang::txt('COM_CITATIONS_JOURNAL'); ?>:
-				<input type="text" name="journal" id="journal" size="30" maxlength="250" value="<?php echo $this->row->journal; ?>" />
+				<input type="text" name="fields[journal]" id="journal" size="30" maxlength="250" value="<?php echo $this->escape($this->row->journal); ?>" />
 			</label>
 
 			<div class="grid">
 				<div class="col span4">
 					<label for="volume">
 						<?php echo Lang::txt('COM_CITATIONS_VOLUME'); ?>:
-						<input type="text" name="volume" id="volume" size="11" maxlength="11" value="<?php echo $this->row->volume; ?>" />
+						<input type="text" name="fields[volume]" id="volume" size="11" maxlength="11" value="<?php echo $this->escape($this->row->volume); ?>" />
 					</label>
 				</div>
 				<div class="col span4">
 					<label for="number">
 						<?php echo Lang::txt('COM_CITATIONS_ISSUE'); ?>:
-						<input type="text" name="number" id="number" size="11" maxlength="50" value="<?php echo $this->row->number; ?>" />
+						<input type="text" name="fields[number]" id="number" size="11" maxlength="50" value="<?php echo $this->escape($this->row->number); ?>" />
 					</label>
 				</div>
 				<div class="col span4 omega">
 					<label for="pages">
 						<?php echo Lang::txt('COM_CITATIONS_PAGES'); ?>:
-						<input type="text" name="pages" id="pages" size="11" maxlength="250" value="<?php echo $this->row->pages; ?>" />
+						<input type="text" name="fields[pages]" id="pages" size="11" maxlength="250" value="<?php echo $this->escape($this->row->pages); ?>" />
 					</label>
 				</div>
 			</div>
@@ -221,13 +222,13 @@ $pid = Request::getInt('publication', 0);
 				<div class="col span6">
 					<label for="isbn">
 						<?php echo Lang::txt('COM_CITATIONS_ISBN'); ?>:
-						<input type="text" name="isbn" id="isbn" size="11" maxlength="50" value="<?php echo $this->row->isbn; ?>" />
+						<input type="text" name="fields[isbn]" id="isbn" size="11" maxlength="50" value="<?php echo $this->escape($this->row->isbn); ?>" />
 					</label>
 				</div>
 				<div class="col span6 omega">
 					<label for="doi">
 						<abbr title="<?php echo Lang::txt('COM_CITATIONS_DOI_FULL'); ?>"><?php echo Lang::txt('COM_CITATIONS_DOI'); ?></abbr>:
-						<input type="text" name="doi" id="doi" size="30" maxlength="250" value="<?php echo $this->row->doi; ?>" />
+						<input type="text" name="fields[doi]" id="doi" size="30" maxlength="250" value="<?php echo $this->escape($this->row->doi); ?>" />
 					</label>
 				</div>
 			</div>
@@ -236,101 +237,101 @@ $pid = Request::getInt('publication', 0);
 				<div class="col span6">
 					<label for="callnumber">
 						<?php echo Lang::txt('COM_CITATIONS_CALL_NUMBER'); ?>:
-						<input type="text" name="call_number" id="callnumber" value="<?php echo $this->row->call_number; ?>" />
+						<input type="text" name="fields[call_number]" id="callnumber" value="<?php echo $this->escape($this->row->call_number); ?>" />
 					</label>
 				</div>
 				<div class="col span6 omega">
 					<label for="accessionnumber">
 						<?php echo Lang::txt('COM_CITATIONS_ACCESSION_NUMBER'); ?>:
-						<input type="text" name="accession_number" id="accessionnumber"  value="<?php echo $this->row->accession_number; ?>" />
+						<input type="text" name="fields[accession_number]" id="accessionnumber"  value="<?php echo $this->escape($this->row->accession_number); ?>" />
 					</label>
 				</div>
 			</div>
 
 			<label for="series">
 				<?php echo Lang::txt('COM_CITATIONS_SERIES'); ?>:
-				<input type="text" name="series" id="series" size="30" maxlength="250" value="<?php echo $this->row->series; ?>" />
+				<input type="text" name="fields[series]" id="series" size="30" maxlength="250" value="<?php echo $this->escape($this->row->series); ?>" />
 			</label>
 
 			<label for="edition">
 				<?php echo Lang::txt('COM_CITATIONS_EDITION'); ?>:
-				<input type="text" name="edition" id="edition" size="30" maxlength="250" value="<?php echo $this->row->edition; ?>" />
+				<input type="text" name="fields[edition]" id="edition" size="30" maxlength="250" value="<?php echo $this->escape($this->row->edition); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_EDITION_EXPLANATION'); ?></span>
 			</label>
 
 			<label for="school">
 				<?php echo Lang::txt('COM_CITATIONS_SCHOOL'); ?>:
-				<input type="text" name="school" id="school" size="30" maxlength="250" value="<?php echo $this->row->school; ?>" />
+				<input type="text" name="fields[school]" id="school" size="30" maxlength="250" value="<?php echo $this->escape($this->row->school); ?>" />
 			</label>
 
 			<label for="publisher">
 				<?php echo Lang::txt('COM_CITATIONS_PUBLISHER'); ?>:
-				<input type="text" name="publisher" id="publisher" size="30" maxlength="250" value="<?php echo $this->row->publisher; ?>" />
+				<input type="text" name="fields[publisher]" id="publisher" size="30" maxlength="250" value="<?php echo $this->escape($this->row->publisher); ?>" />
 			</label>
 
 			<label for="institution">
 				<?php echo Lang::txt('COM_CITATIONS_INSTITUTION'); ?>:
-				<input type="text" name="institution" id="institution" size="30" maxlength="250" value="<?php echo $this->row->institution; ?>" />
+				<input type="text" name="fields[institution]" id="institution" size="30" maxlength="250" value="<?php echo $this->escape($this->row->institution); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_INSTITUTION_EXPLANATION'); ?></span>
 			</label>
 
 			<label for="address">
 				<?php echo Lang::txt('COM_CITATIONS_ADDRESS'); ?>:
-				<input type="text" name="address" id="address" size="30" maxlength="250" value="<?php echo $this->row->address; ?>" />
+				<input type="text" name="fields[address]" id="address" size="30" maxlength="250" value="<?php echo $this->escape($this->row->address); ?>" />
 			</label>
 
 			<label for="location">
 				<?php echo Lang::txt('COM_CITATIONS_LOCATION'); ?>:
-				<input type="text" name="location" id="location" size="30" maxlength="250" value="<?php echo $this->row->location; ?>" />
+				<input type="text" name="fields[location]" id="location" size="30" maxlength="250" value="<?php echo $this->escape($this->row->location); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_LOCATION_EXPLANATION'); ?></span>
 			</label>
 
 			<label for="howpublished">
 				<?php echo Lang::txt('COM_CITATIONS_PUBLISH_METHOD'); ?>:
-				<input type="text" name="howpublished" id="howpublished" size="30" maxlength="250" value="<?php echo $this->row->howpublished; ?>" />
+				<input type="text" name="fields[howpublished]" id="howpublished" size="30" maxlength="250" value="<?php echo $this->escape($this->row->howpublished); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_PUBLISH_METHOD_EXPLANATION'); ?></span>
 			</label>
 
-			<label for="uri">
+			<label for="url">
 				<?php echo Lang::txt('COM_CITATIONS_URL'); ?>:
-				<input type="text" name="uri" id="uri" size="30" maxlength="250" value="<?php echo $this->row->url; ?>" />
+				<input type="text" name="fields[url]" id="url" size="30" maxlength="250" value="<?php echo $this->escape($this->row->url); ?>" />
 			</label>
 
 			<label for="eprint">
 				<?php echo Lang::txt('COM_CITATIONS_EPRINT'); ?>:
-				<input type="text" name="eprint" id="eprint" size="30" maxlength="250" value="<?php echo $this->row->eprint; ?>" />
+				<input type="text" name="fields[eprint]" id="eprint" size="30" maxlength="250" value="<?php echo $this->escape($this->row->eprint); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_CITATIONS_EPRINT_EXPLANATION'); ?></span>
 			</label>
 
 			<label for="abstract">
 				<?php echo Lang::txt('COM_CITATIONS_ABSTRACT'); ?>:
-				<textarea name="abstract" id="abstract" rows="8" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
+				<textarea name="fields[abstract]" id="abstract" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->abstract)); ?></textarea>
 			</label>
 
 			<label for="note">
 				<?php echo Lang::txt('COM_CITATIONS_NOTES'); ?>:
-				<textarea name="note" id="note" rows="8" cols="10"><?php echo stripslashes($this->row->note); ?></textarea>
+				<textarea name="fields[note]" id="note" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->note)); ?></textarea>
 			</label>
 
 			<label for="keywords">
 				<?php echo Lang::txt('COM_CITATIONS_KEYWORDS'); ?>:
-				<textarea name="keywords" id="keywords" rows="8" cols="10"><?php echo stripslashes($this->row->keywords); ?></textarea>
+				<textarea name="fields[keywords]" id="keywords" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->keywords)); ?></textarea>
 			</label>
 
 			<label for="research_notes">
 				<?php echo Lang::txt('COM_CITATIONS_RESEARCH_NOTES'); ?>:
-				<textarea name="research_notes" id="research_notes" rows="8" cols="10"><?php echo stripslashes($this->row->research_notes); ?></textarea>
+				<textarea name="fields[research_notes]" id="research_notes" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->research_notes)); ?></textarea>
 			</label>
 
 			<div class="group twoup">
 				<label for="language">
 					<?php echo Lang::txt('COM_CITATIONS_LANGUAGE'); ?>:
-					<input type="text" name="language" id="language" size="11" maxlength="50" value="<?php echo $this->row->language; ?>" />
+					<input type="text" name="fields[language]" id="language" size="11" maxlength="50" value="<?php echo $this->escape($this->row->language); ?>" />
 				</label>
 
 				<label for="label">
 					<?php echo Lang::txt('COM_CITATIONS_LABEL'); ?>:
-					<input type="text" name="label" id="label" size="30" maxlength="250" value="<?php echo $this->row->label; ?>" />
+					<input type="text" name="fields[label]" id="label" size="30" maxlength="250" value="<?php echo $this->escape($this->row->label); ?>" />
 				</label>
 			</div>
 		</fieldset><div class="clear"></div>
@@ -338,19 +339,18 @@ $pid = Request::getInt('publication', 0);
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT'); ?>:</legend>
 			<p class="warning"><?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_HINT'); ?></p>
-			<label for="format_type">
+			<label for="format">
 				<?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_FORMAT'); ?>:
-				<select id="format_type" name="format_type">
+				<select id="format" name="fields[format]">
 					<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_APA'); ?></option>
 					<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_IEEE'); ?></option>
 				</select>
 			</label>
 			<label for="formatted">
 				<?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_CITATION'); ?>:
-				<textarea name="formatted" id="formatted" rows="8" cols="10"><?php echo stripslashes($this->row->formatted); ?></textarea>
+				<textarea name="fields[formatted]" id="formatted" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->formatted)); ?></textarea>
 			</label>
 		</fieldset><div class="clear"></div>
-
 
 		<?php if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 			<div class="explaination">
@@ -360,12 +360,12 @@ $pid = Request::getInt('publication', 0);
 				<legend><?php echo $fieldset_label; ?></legend>
 				<?php if ($allow_tags == "yes") : ?>
 					<label>
-						<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>: <span class="optional">Optional</span>
+						<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 						<?php
 							if (count($tags_list) > 0) {
 								echo $tags_list[0];
 							} else {
-								echo "<input type=\"text\" name=\"tags\" value=\"{$tags}\" />";
+								echo '<input type="text" name="tags" value="' . $tags . '" />';
 							}
 						?>
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_TAGS_HINT'); ?></span>
@@ -374,12 +374,12 @@ $pid = Request::getInt('publication', 0);
 
 				<?php if ($allow_badges == "yes") : ?>
 					<label class="badges">
-						<?php echo Lang::txt('COM_CITATIONS_BADGES'); ?>: <span class="optional">Optional</span>
+						<?php echo Lang::txt('COM_CITATIONS_BADGES'); ?>:
 						<?php
 							if (count($badges_list) > 0) {
 								echo $badges_list[0];
 							} else {
-								echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
+								echo '<input type="text" name="badges" value="' . $badges . '" />';
 							}
 						?>
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_BADGES_HINT'); ?></span>
@@ -423,13 +423,14 @@ $pid = Request::getInt('publication', 0);
 						}
 						for ($i=0; $i < $n; $i++)
 						{
-							if ($r == 0 || !isset($this->assocs[$i])) {
+							if ($r == 0 || !isset($this->assocs[$i]))
+							{
 								$this->assocs[$i] = new stdClass;
-								$this->assocs[$i]->id = NULL;
-								$this->assocs[$i]->cid = NULL;
-								$this->assocs[$i]->oid = NULL;
+								$this->assocs[$i]->id   = NULL;
+								$this->assocs[$i]->cid  = NULL;
+								$this->assocs[$i]->oid  = NULL;
 								$this->assocs[$i]->type = NULL;
-								$this->assocs[$i]->tbl = NULL;
+								$this->assocs[$i]->tbl  = NULL;
 							}
 
 							echo "\t\t\t".'  <tr>'."\n";
@@ -444,10 +445,10 @@ $pid = Request::getInt('publication', 0);
 							echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
 							echo '>'.Lang::txt('COM_CITATIONS_PUBLICATION').'</option>'."\n";
 							echo '</select></td>'."\n";
-							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
+							echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
-							echo "\t\t\t".'  </tr>'."\n";
+							echo "\t\t\t".'</tr>'."\n";
 						}
 				?>
 				</tbody>
@@ -458,23 +459,32 @@ $pid = Request::getInt('publication', 0);
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_CITATIONS_AFFILIATION'); ?></legend>
 
-			<label>
-				<input type="checkbox" class="option" name="affiliated" id="affiliated" value="1"<?php if ($this->row->affiliated) { echo ' checked="checked"'; } ?> />
+			<label for="affiliated">
+				<input type="checkbox" class="option" name="fields[affiliated]" id="affiliated" value="1"<?php if ($this->row->affiliated) { echo ' checked="checked"'; } ?> />
 				<?php echo Lang::txt('COM_CITATIONS_AFFILIATED_WITH_YOUR_ORG'); ?>
 			</label>
 
-			<label>
-				<input type="checkbox" class="option" name="fundedby" id="fundedby" value="1"<?php if ($this->row->fundedby) { echo ' checked="checked"'; } ?> />
+			<label for="fundedby">
+				<input type="checkbox" class="option" name="fields[fundedby]" id="fundedby" value="1"<?php if ($this->row->fundedby) { echo ' checked="checked"'; } ?> />
 				<?php echo Lang::txt('COM_CITATIONS_FUNDED_BY_YOUR_ORG'); ?>
 			</label>
 
-			<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
-			<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
+			<input type="hidden" name="fields[uid]" value="<?php echo $this->row->uid; ?>" />
+			<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->row->created); ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
+
+			<?php echo Html::input('token'); ?>
 		</fieldset>
 		<div class="clear"></div>
-		<p class="submit"><input type="submit" name="create" value="<?php echo Lang::txt('COM_CITATIONS_SAVE'); ?>" /></p>
+
+		<p class="submit">
+			<input type="submit" class="btn btn-success" name="create" value="<?php echo Lang::txt('COM_CITATIONS_SAVE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+				<?php echo Lang::txt('COM_CITATIONS_CANCEL'); ?>
+			</a>
+		</p>
 	</form>
 </section>

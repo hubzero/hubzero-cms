@@ -65,6 +65,10 @@ class Citation extends \JTable
 			$this->setError(Lang::txt('COM_CITATIONS_CITATION_MUST_HAVE_TYPE'));
 		}
 
+		$this->year      = intval($this->year);
+		$this->scope_id  = intval($this->scope_id);
+		$this->published = intval($this->published);
+
 		if ($this->getError())
 		{
 			return false;
@@ -87,7 +91,7 @@ class Citation extends \JTable
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
 			$query  = "SELECT COUNT(b.id) FROM
-			 			(
+						(
 						SELECT r.id, COUNT(DISTINCT tag.tag) AS uniques
 						FROM $this->_tbl AS r
 						LEFT JOIN `#__users` AS u ON u.id = r.uid

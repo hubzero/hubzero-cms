@@ -750,27 +750,21 @@ class Citations extends SiteController
 			return;
 		}
 
-		//get the posted vars
-		$c = $_POST;
-		if (isset($c['format_type']))
-		{
-			$c['format'] = $c['format_type'];
-		}
+		Request::checkToken();
 
-		//get tags
-		$tags = trim(Request::getVar('tags', ''));
-		unset($c['tags']);
-
-		//get badges
-		$badges = trim(Request::getVar('badges', ''));
-		unset($c['badges']);
+		// get the posted vars
+		$id = Request::getInt('id', 0, 'post');
+		$c  = Request::getVar('fields', array(), 'post');
+		$c['id'] = $id;
 
 		// clean vars
 		foreach ($c as $key => $val)
 		{
 			if (!is_array($val))
 			{
-				$c[$key] = Sanitize::stripScripts($val);
+				$val = html_entity_decode(urldecode($val));
+				$val = Sanitize::stripAll($val);
+				$c[$key] = Sanitize::clean($val);
 			}
 		}
 
@@ -789,9 +783,6 @@ class Citations extends SiteController
 			$row->created = Date::toSql();
 		}
 
-		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = Request::getVar('uri', '', 'post');
-		$row->url = Sanitize::clean($row->url);
 		if (!filter_var($row->url, FILTER_VALIDATE_URL))
 		{
 			$row->url = null;
@@ -814,7 +805,7 @@ class Citations extends SiteController
 		}
 
 		// Incoming associations
-		$arr = Request::getVar('assocs', array());
+		$arr = Request::getVar('assocs', array(), 'post');
 
 		$ignored = array();
 
@@ -869,6 +860,8 @@ class Citations extends SiteController
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
+			$tags = trim(Request::getVar('tags', '', 'post'));
+
 			$ct1 = new Tags($row->id);
 			$ct1->setTags($tags, User::get('id'), 0, 1, '');
 		}
@@ -876,27 +869,23 @@ class Citations extends SiteController
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
+			$badges = trim(Request::getVar('badges', '', 'post'));
+
 			$ct2 = new Tags($row->id);
 			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 		}
 
 		// Redirect
+		$task = '&task=browse';
 		if ($this->config->get('citation_single_view', 1))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=view&id=' . $row->id),
-				Lang::txt('COM_CITATIONS_CITATION_SAVED')
-			);
-		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=browse'),
-				Lang::txt('COM_CITATIONS_CITATION_SAVED')
-			);
+			$task = '&task=view&id=' . $row->id;
 		}
 
-		return;
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . $task),
+			Lang::txt('COM_CITATIONS_CITATION_SAVED')
+		);
 	}
 
 	/**
