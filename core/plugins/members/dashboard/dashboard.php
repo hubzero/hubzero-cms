@@ -322,6 +322,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 */
 	public function saveAction()
 	{
+		Request::checkToken(['get', 'post']);
+
 		// get request vars
 		$modules = Request::getString('modules', '');
 

@@ -55,7 +55,7 @@ if ($this->params->get('allow_customization', 1) == 0)
 	<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 </noscript>
 
-<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo User::get('id'); ?>">
+<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo User::get('id'); ?>" data-token="<?php echo Session::getFormToken(); ?>">
 	<?php
 		foreach ($this->modules as $module)
 		{
