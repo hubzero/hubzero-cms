@@ -292,10 +292,10 @@ HUB.Plugins.MemberDashboard = {
 			userid = $('.modules').attr('data-userid'),
 			params = dashboard.modules.serialize(),
 			module_data = JSON.stringify(params);
-		
+
 		$.ajax({
 			type: 'post',
-			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=save&no_html=1', 
+			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=save&no_html=1&' + $('.modules').attr('data-token') + '=1',
 			dataType: 'json',
 			data: {
 				modules: module_data

@@ -55,7 +55,7 @@ if ($this->params->get('allow_customization', 1) == 0)
 	<p class="warning"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 </noscript>
 
-<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo $this->juser->get('id'); ?>">
+<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo $this->juser->get('id'); ?>" data-token="<?php echo JSession::getFormToken(); ?>">
 	<?php
 		foreach ($this->modules as $module)
 		{

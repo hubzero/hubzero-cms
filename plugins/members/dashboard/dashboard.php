@@ -342,6 +342,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 */
 	public function saveAction()
 	{
+		// Check for request forgeries
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
+
 		// get request vars
 		$modules = JRequest::getString('modules', '');
 
