@@ -253,6 +253,8 @@ class Feedback extends SiteController
 			return;
 		}
 
+		Request::checkToken();
+
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
