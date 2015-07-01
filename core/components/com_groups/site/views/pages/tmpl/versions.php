@@ -41,6 +41,8 @@ foreach ($stylesheets as $stylesheet)
 	Document::addStylesheet($stylesheet);
 }
 
+include_once(Component::path('com_wiki') . DS . 'helpers' . DS . 'differenceengine.php');
+
 // add styles & scripts
 $this->css()
 	 ->js()

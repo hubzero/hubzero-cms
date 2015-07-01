@@ -166,9 +166,6 @@ class Pages extends Base
 	 */
 	public function editTask()
 	{
-		//set to edit layout
-		$this->view->setLayout('edit');
-
 		//get request vars
 		$pageid = Request::getInt('pageid', 0,'get');
 
@@ -208,7 +205,7 @@ class Pages extends Base
 		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'state'     => array(0,1),
+			'state'     => array(0, 1),
 			'orderby'   => 'lft'
 		));
 
@@ -237,7 +234,9 @@ class Pages extends Base
 		$this->view->config        = $this->config;
 
 		//display layout
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -258,6 +257,8 @@ class Pages extends Base
 	 */
 	public function saveTask($apply = false)
 	{
+		Request::checkToken();
+
 		// Get the page vars being posted
 		$page    = Request::getVar('page', array(), 'post');
 		$version = Request::getVar('pageversion', array(), 'post', 'none', JREQUEST_ALLOWRAW);
@@ -451,11 +452,6 @@ class Pages extends Base
 	 */
 	public function versionsTask()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
-
-		//set to edit layout
-		$this->view->setLayout('versions');
-
 		//get request vars
 		$pageid = Request::getInt('pageid', 0,'get');
 
@@ -485,7 +481,9 @@ class Pages extends Base
 		$this->view->group         = $this->group;
 
 		//display layout
-		$this->view->display();
+		$this->view
+			->setLayout('versions')
+			->display();
 	}
 
 	/**
@@ -498,7 +496,6 @@ class Pages extends Base
 		$this->setStateTask(1, 'published');
 	}
 
-
 	/**
 	 * Unpublish Group Page
 	 *
@@ -509,7 +506,6 @@ class Pages extends Base
 		$this->setStateTask(0, 'unpubished');
 	}
 
-
 	/**
 	 * Delete Group Page
 	 *
@@ -519,7 +515,6 @@ class Pages extends Base
 	{
 		$this->setStateTask(2, 'deleted');
 	}
-
 
 	/**
 	 * Set page state
@@ -598,12 +593,16 @@ class Pages extends Base
 		}
 
 		//inform user & redirect
-		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status), 'passed');
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
-		if ($return = Request::getVar('return', '','get'))
+		$return = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
+		if ($r = Request::getVar('return', '','get'))
 		{
-			App::redirect(base64_decode($return));
+			$return = base64_decode($r);
 		}
+
+		App::redirect(
+			$return,
+			Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status)
+		);
 	}
 
 
@@ -666,7 +665,9 @@ class Pages extends Base
 		if ($version === null)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_ERROR', $page->get('title')), 'error');
-			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages')
+			);
 			return;
 		}
 
@@ -725,8 +726,8 @@ class Pages extends Base
 	/**
 	 * Output raw content
 	 *
-	 * @param     $escape    Escape outputted content
-	 * @return    string     HTML content
+	 * @param   boolean  $escape  Escape outputted content
+	 * @return  string   HTML content
 	 */
 	public function rawTask($escape = true)
 	{
@@ -767,7 +768,7 @@ class Pages extends Base
 	/**
 	 * Restore Page Version
 	 *
-	 * @return [type] [description]
+	 * @return  void
 	 */
 	public function restoreTask()
 	{
