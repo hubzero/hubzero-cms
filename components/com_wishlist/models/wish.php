@@ -621,6 +621,8 @@ class WishlistModelWish extends WishlistModelAbstract
 			$this->set('anonymous', 0);
 		}
 
+		$this->set('about', \Hubzero\Utility\Sanitize::clean($this->get('about')));
+
 		if (!parent::store($check))
 		{
 			return false;
