@@ -547,8 +547,16 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$g_gidNumber = JRequest::getInt('gidNumber', 0, 'post');
+		$c_gidNumber = JRequest::getVar('gidNumber', 0, 'post');
+		if ((string) $g_gidNumber !== (string) $c_gidNumber)
+		{
+			throw new Exception(JText::_('COM_GROUPS_ERROR_NO_ID'), 404);
+		}
 
 		if ((!$g_gidNumber && !$this->juser->authorise('core.create', $this->_option))
 		 || ($g_gidNumber && !$this->juser->authorise('core.edit', $this->_option)))
@@ -560,18 +568,18 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			);
 		}
 
-		$g_cn           	= trim(JRequest::getVar('cn', '', 'post'));
-		$g_description  	= preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
-		$g_discoverability	= JRequest::getInt('discoverability', 0, 'post');
-		$g_public_desc  	= trim(JRequest::getVar('public_desc',  '', 'post', 'none', 2));
-		$g_private_desc 	= trim(JRequest::getVar('private_desc', '', 'post', 'none', 2));
-		$g_restrict_msg 	= trim(JRequest::getVar('restrict_msg', '', 'post', 'none', 2));
-		$g_join_policy  	= JRequest::getInt('join_policy', 0, 'post');
-		$tags 				= trim(JRequest::getVar('tags', ''));
-		$lid 				= JRequest::getInt('lid', 0, 'post');
-		$customization      = JRequest::getVar('group', '', 'POST', 'none', 2);
-		$plugins            = JRequest::getVar('group_plugin', '', 'POST');
-		$params             = JRequest::getVar('params', array(), 'POST');
+		$g_cn              = trim(JRequest::getVar('cn', '', 'post'));
+		$g_description     = preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
+		$g_discoverability = JRequest::getInt('discoverability', 0, 'post');
+		$g_public_desc     = \Hubzero\Utility\Sanitize::stripScripts(trim(JRequest::getVar('public_desc',  '', 'post', 'none', 2)));
+		$g_private_desc    = \Hubzero\Utility\Sanitize::stripScripts(trim(JRequest::getVar('private_desc', '', 'post', 'none', 2)));
+		$g_restrict_msg    = \Hubzero\Utility\Sanitize::stripScripts(trim(JRequest::getVar('restrict_msg', '', 'post', 'none', 2)));
+		$g_join_policy     = JRequest::getInt('join_policy', 0, 'post');
+		$tags              = trim(JRequest::getVar('tags', ''));
+		$lid               = JRequest::getInt('lid', 0, 'post');
+		$customization     = JRequest::getVar('group', '', 'POST', 'none', 2);
+		$plugins           = JRequest::getVar('group_plugin', '', 'POST');
+		$params            = JRequest::getVar('params', array(), 'POST');
 
 		$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post');
 
