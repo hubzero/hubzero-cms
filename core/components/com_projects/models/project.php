@@ -266,10 +266,6 @@ class Project extends Model
 		{
 			$this->_tblOwner->loadOwner($this->get('id'), User::get('id'));
 			$this->_member = $this->_tblOwner->id && $this->_tblOwner->status != 2 ? $this->_tblOwner : false;
-			if ($this->_member)
-			{
-			//	$this->_member->params = new \Hubzero\Html\Parameter($this->_member->params);
-			}
 		}
 
 		return $this->_member;
@@ -517,7 +513,7 @@ class Project extends Model
 			$cg = explode(',', $cg);
 			$cg = array_map('trim', $cg);
 
-			if (!empty($cg))
+			if (!empty($cg) && !empty($cg[0]))
 			{
 				foreach ($cg as $c)
 				{

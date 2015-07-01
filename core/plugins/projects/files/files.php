@@ -546,7 +546,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->items = $this->repo->filelist($params);
 		}
 
-		$view->option 		= $this->_option;
+		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;
 		$view->database 	= $this->_database;
 		$view->model 		= $this->model;
 		$view->repo    		= $this->repo;

@@ -635,7 +635,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		$view->option 		= $this->_option;
+		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->model;
 		$view->uid 			= $this->_uid;
@@ -1098,7 +1098,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Append breadcrumbs
 		Pathway::append(
 			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
-			$view->url . '?action=start'
+			Route::url($view->route . '&action=start')
 		);
 
 		// Output HTML

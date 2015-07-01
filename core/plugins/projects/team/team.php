@@ -422,7 +422,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$view->mc = Event::trigger( 'hubzero.onGetSingleEntry', array(array('members', 'uid', 'uid')) );
 
-		$view->option 		= $this->_option;
+		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;
 		$view->database 	= $this->_database;
 		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;

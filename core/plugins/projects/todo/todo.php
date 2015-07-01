@@ -243,7 +243,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	public function page()
 	{
 		// Get default view from owner params
-		$defaultView = $this->model->member()->params->get('todo_layout', 'pinboard');
+		$mparams = new \Hubzero\Html\Parameter($this->model->member()->params);
+		$defaultView = $mparams->get('todo_layout', 'pinboard');
 
 		// Incoming
 		$layout = Request::getVar('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';

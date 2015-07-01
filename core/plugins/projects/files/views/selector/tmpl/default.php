@@ -253,7 +253,7 @@ if ($this->items)
 				<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success" id="f-upload"  />
 			</span>
 		</h5>
-		<div id="ajax-uploader" data-action="<?php echo Route::url( $route) . '?active=files&amp;action=save&amp;no_html=1&amp;ajax=1'; ?>" >
+		<div id="ajax-uploader" data-action="<?php echo Route::url( $this->publication->link('edit') . '&active=files&action=save&no_html=1&ajax=1'); ?>" >
 			<label class="addnew">
 				<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
 			</label>
