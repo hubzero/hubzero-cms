@@ -32,6 +32,7 @@ namespace Components\Groups\Site\Controllers;
 
 use Hubzero\Config\Registry;
 use Hubzero\User\Group;
+use Hubzero\Utility\Sanitize;
 use Components\Groups\Models\Page;
 use Components\Groups\Helpers;
 use Components\Groups\Models\Tags;
@@ -545,8 +546,15 @@ class Groups extends Base
 			return;
 		}
 
+		Request::checkToken();
+
 		// Incoming
 		$g_gidNumber = Request::getInt('gidNumber', 0, 'post');
+		$c_gidNumber = Request::getVar('gidNumber', 0, 'post');
+		if ((string) $g_gidNumber !== (string) $c_gidNumber)
+		{
+			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+		}
 
 		if ((!$g_gidNumber && !User::authorise('core.create', $this->_option))
 		 || ($g_gidNumber && !User::authorise('core.edit', $this->_option)))
@@ -561,9 +569,9 @@ class Groups extends Base
 		$g_cn              = trim(Request::getVar('cn', '', 'post'));
 		$g_description     = preg_replace('/\s+/', ' ',trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
 		$g_discoverability = Request::getInt('discoverability', 0, 'post');
-		$g_public_desc     = trim(Request::getVar('public_desc',  '', 'post', 'none', 2));
-		$g_private_desc    = trim(Request::getVar('private_desc', '', 'post', 'none', 2));
-		$g_restrict_msg    = trim(Request::getVar('restrict_msg', '', 'post', 'none', 2));
+		$g_public_desc     = Sanitize::stripScripts(trim(Request::getVar('public_desc',  '', 'post', 'none', 2)));
+		$g_private_desc    = Sanitize::stripScripts(trim(Request::getVar('private_desc', '', 'post', 'none', 2)));
+		$g_restrict_msg    = Sanitize::stripScripts(trim(Request::getVar('restrict_msg', '', 'post', 'none', 2)));
 		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
 		$tags              = trim(Request::getVar('tags', ''));
 		$lid               = Request::getInt('lid', 0, 'post');

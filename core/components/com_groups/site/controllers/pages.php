@@ -714,6 +714,16 @@ class Pages extends Base
 		$pageid  = Request::getInt('pageid', 0, 'get');
 		$version = Request::getInt('version', 0, 'get');
 
+		if (!$pageid)
+		{
+			App::abort(404, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_FOUND'));
+		}
+
+		if ((string) $pageid !== (string) Request::getVar('pageid', 0, 'get'))
+		{
+			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+		}
+
 		// page object
 		$page = new Page($pageid);
 

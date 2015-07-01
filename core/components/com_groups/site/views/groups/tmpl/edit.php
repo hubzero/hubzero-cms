@@ -328,6 +328,8 @@ else
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT'); ?>" />
 		</p>
 
+		<?php echo Html::input('token'); ?>
+
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
 		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -303,6 +303,8 @@ if ($this->page->get('id'))
 			</div>
 		</div>
 
+		<?php echo Html::input('token'); ?>
+
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="pages" />
