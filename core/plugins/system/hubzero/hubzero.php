@@ -187,7 +187,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLoginFailure($response)
 	{
-		App::get('log.auth')->info($_POST['username'] . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
+		App::get('log.auth')->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
 		apache_note('auth','invalid');
 
