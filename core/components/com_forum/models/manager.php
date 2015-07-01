@@ -140,7 +140,7 @@ class Manager extends Base
 		// Create a default section
 		$section = new Section(0, $this->get('scope'), $this->get('scope_id'));
 		$section->bind(array(
-			'title'    => Lang::txt('Default Section'),
+			'title'    => Lang::txt('COM_FORUM_SECTION_DEFAULT'),
 			'scope'    => $this->get('scope'),
 			'scope_id' => $this->get('scope_id'),
 			'state'    => 1
@@ -154,8 +154,8 @@ class Manager extends Base
 		// Create a default category
 		$category = new Category(0);
 		$category->bind(array(
-			'title'       => Lang::txt('Discussions'),
-			'description' => Lang::txt('Default category for all discussions in this forum.'),
+			'title'       => Lang::txt('COM_FORUM_CATEGORY_DEFAULT'),
+			'description' => Lang::txt('COM_FORUM_CATEGORY_DEFAULT_DESCRIPTION'),
 			'section_id'  => $section->get('id'),
 			'scope'       => $this->get('scope'),
 			'scope_id'    => $this->get('scope_id'),

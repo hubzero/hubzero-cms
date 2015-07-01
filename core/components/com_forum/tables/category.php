@@ -175,8 +175,8 @@ class Category extends \JTable
 	{
 		$result = array(
 			'id'          => 0,
-			'title'       => Lang::txt('Discussions'),
-			'description' => Lang::txt('Default category for all discussions in this forum.'),
+			'title'       => Lang::txt('COM_FORUM_CATEGORY_DEFAULT'),
+			'description' => Lang::txt('COM_FORUM_CATEGORY_DEFAULT_DESCRIPTION'),
 			'section_id'  => 0,
 			'created_by'  => 0,
 			'scope'       => $scope,

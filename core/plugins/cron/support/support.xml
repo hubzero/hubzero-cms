@@ -30,9 +30,9 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.7" type="plugin" group="cron">
 	<name>Cron - Support</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Cron events for support</description>
+	<description>PLG_CRON_SUPPORT_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="support">support.php</filename>
 	</files>
@@ -62,7 +62,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketpending_activity" type="list" default="-2week" label="Last activity" description="When the last activity on the ticket was.">
-					<option value="all">--</option>
+					<option value="all">PLG_CRON_SUPPORT_ALL</option>
 					<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
 					<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
 					<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
@@ -122,7 +122,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="+year">PLG_CRON_SUPPORT_CREATED_PAST_YEAR</option>
 				</field>
 				<field name="support_ticketlist_activity" type="list" default="all" label="Last activity" description="When the last activity on the ticket was.">
-					<option value="all">--</option>
+					<option value="all">PLG_CRON_SUPPORT_ALL</option>
 					<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
 					<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
 					<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
@@ -167,7 +167,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 		</param>
 		<param name="support_ticketpending_activity" type="list" default="-2week" label="PLG_CRON_SUPPORT_TICKETPENDING_ACTIVITY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_ACTIVITY_DESC">
-			<option value="all">--</option>
+			<option value="all">PLG_CRON_SUPPORT_ALL</option>
 			<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
 			<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
 			<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
@@ -187,7 +187,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="support_ticketpending_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_CRON_SUPPORT_TICKETPENDING_NOTIFY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_NOTIFY_DESC" />
 		<param name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_DESC" />
 		<param name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_DESC" />
-		<param name="support_ticketpending_message" type="ticketmessage" default="0" label="Email message" description="A message to send upon closing the ticket." />
+		<param name="support_ticketpending_message" type="ticketmessage" default="0" label="PLG_CRON_SUPPORT_TICKETPENDING_TICKETMESSAGE_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_TICKETMESSAGE_DESC" />
 	</params>
 	<params group="ticketreminder">
 		<param name="support_ticketreminder_severity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETREMINDER_SEVERITY_LABEL" description="PLG_CRON_SUPPORT_TICKETREMINDER_SEVERITY_DESC">
@@ -229,7 +229,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="+year">PLG_CRON_SUPPORT_CREATED_PAST_YEAR</option>
 		</param>
 		<param name="support_ticketlist_activity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETLIST_ACTIVITY_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_ACTIVITY_DESC">
-			<option value="all">--</option>
+			<option value="all">PLG_CRON_SUPPORT_ALL</option>
 			<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
 			<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
 			<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
