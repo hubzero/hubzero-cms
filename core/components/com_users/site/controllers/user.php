@@ -151,11 +151,11 @@ class UsersControllerUser extends UsersController
 		else
 		{
 			// Login failed !
-			$data['remember'] = (int)$options['remember'];
+			$data['remember'] = isset($options['remember']) ? (int)$options['remember'] : 0;
 			User::setState('users.login.form.data', $data);
 
 			// Facilitate third party login forms
-			if (!$return)
+			if (!isset($return) || !$return)
 			{
 				$return	= Route::url('index.php?option=com_users&view=login');
 			}
