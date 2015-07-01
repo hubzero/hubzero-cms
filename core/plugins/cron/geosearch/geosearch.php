@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package	 hubzero-cms
- * @author		Christopher Smoak <csmoak@purdue.edu>
+ * @author		Kevin Wojkovic <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
