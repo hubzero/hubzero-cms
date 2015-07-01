@@ -250,6 +250,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 

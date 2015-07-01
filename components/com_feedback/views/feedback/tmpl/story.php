@@ -70,6 +70,8 @@ $jconfig = JFactory::getConfig();
 				<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->user_id; ?>" id="userid" />
 				<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
 
+				<?php echo JHTML::_('form.token'); ?>
+
 				<label for="field-fullname">
 					<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 					<input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" />
