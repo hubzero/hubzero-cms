@@ -89,7 +89,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$canDo = GroupsHelper::getActions('group');
 		if (!$canDo->get('core.admin'))
 		{
-			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == 0)
+			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == NULL || $this->view->filters['type'][0] == "0")
 			{
 				$this->view->filters['type'] = array('all');
 			}
