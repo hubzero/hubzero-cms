@@ -105,7 +105,7 @@ class Manage extends AdminController
 		$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 		if (!$canDo->get('core.admin'))
 		{
-			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == 0)
+			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == "0" || $this->view->filters['type'][0] == NULL)
 			{
 				$this->view->filters['type'] = array('all');
 			}
