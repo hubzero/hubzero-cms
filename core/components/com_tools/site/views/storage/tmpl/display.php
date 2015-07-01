@@ -92,6 +92,8 @@ $this->css('storage.css');
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="purge" />
+
+			<?php echo Html::input('token'); ?>
 		</fieldset><div class="clear"></div>
 	</form>
 </section><!-- / .main section -->

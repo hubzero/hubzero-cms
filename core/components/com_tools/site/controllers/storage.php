@@ -230,6 +230,8 @@ class Storage extends SiteController
 			return;
 		}
 
+		Request::checkToken();
+
 		$degree = Request::getVar('degree', 'default');
 
 		$info = array();
