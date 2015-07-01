@@ -195,61 +195,43 @@ class Info extends \JModelLegacy
 
 			$cparams = \Component::params('com_media');
 
-			$this->_addDirectory('administrator/components', JPATH_ADMINISTRATOR . '/components');
-			$this->_addDirectory('administrator/language', JPATH_ADMINISTRATOR . '/language');
+			$app = substr(PATH_APP, strlen(PATH_ROOT)) . '/';
 
-			// List all admin languages
-			$admin_langs = Filesystem::directories(JPATH_ADMINISTRATOR . '/language');
-			foreach ($admin_langs as $alang)
-			{
-				$this->_addDirectory('administrator/language/' . $alang, JPATH_ADMINISTRATOR . '/language/' . $alang);
-			}
+			$this->_addDirectory($app . 'components', PATH_APP . '/components');
 
-			// List all manifests folders
-			$manifests = Filesystem::directories(JPATH_ADMINISTRATOR . '/manifests');
-			foreach ($manifests as $_manifest)
-			{
-				$this->_addDirectory('administrator/manifests/' . $_manifest, JPATH_ADMINISTRATOR . '/manifests/' . $_manifest);
-			}
+			$this->_addDirectory($app . $cparams->get('image_path'), PATH_APP . '/' . $cparams->get('image_path'));
 
-			$this->_addDirectory('administrator/modules', JPATH_ADMINISTRATOR . '/modules');
-			$this->_addDirectory('administrator/templates', JPATH_THEMES);
-
-			$this->_addDirectory('components', PATH_APP . '/components');
-
-			$this->_addDirectory($cparams->get('image_path'), JPATH_SITE . '/' . $cparams->get('image_path'));
-
-			$image_folders = Filesystem::directories(JPATH_SITE . '/' . $cparams->get('image_path'));
+			$image_folders = Filesystem::directories(PATH_APP . '/' . $cparams->get('image_path'));
 			// List all images folders
 			foreach ($image_folders as $folder)
 			{
-				$this->_addDirectory('images/' . $folder, JPATH_SITE . '/' . $cparams->get('image_path') . '/' . $folder);
+				$this->_addDirectory($app . $cparams->get('image_path') . $folder, PATH_APP . '/' . $cparams->get('image_path') . '/' . $folder);
 			}
 
-			$this->_addDirectory('language', JPATH_SITE . '/language');
+			$this->_addDirectory($app . 'language', JPATH_SITE . '/language');
 			// List all site languages
-			$site_langs = Filesystem::directories(JPATH_SITE . '/language');
+			$site_langs = Filesystem::directories(PATH_APP . '/language');
 			foreach ($site_langs as $slang)
 			{
-				$this->_addDirectory('language/' . $slang, JPATH_SITE . '/language/' . $slang);
+				$this->_addDirectory($app . 'language/' . $slang, JPATH_SITE . '/language/' . $slang);
 			}
 
-			$this->_addDirectory('libraries', JPATH_LIBRARIES);
+			$this->_addDirectory($app . 'libraries', PATH_APP . '/libraries');
 
-			$this->_addDirectory('media', JPATH_SITE . '/media');
-			$this->_addDirectory('modules', JPATH_SITE . '/modules');
-			$this->_addDirectory('plugins', JPATH_PLUGINS);
+			//$this->_addDirectory('media', PATH_APP . '/media');
+			$this->_addDirectory($app . 'modules', PATH_APP . '/modules');
+			$this->_addDirectory($app . 'plugins', PATH_APP . '/plugins');
 
 			$plugin_groups = Filesystem::directories(JPATH_PLUGINS);
 			foreach ($plugin_groups as $folder)
 			{
-				$this->_addDirectory('plugins/' . $folder, JPATH_PLUGINS . '/' . $folder);
+				$this->_addDirectory($app . 'plugins' . $folder, PATH_APP . '/plugins' . $folder);
 			}
 
-			$this->_addDirectory('templates', JPATH_SITE . '/templates');
-			$this->_addDirectory('configuration.php', JPATH_CONFIGURATION . '/configuration.php');
-			$this->_addDirectory('cache', PATH_APP . '/app/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
-			$this->_addDirectory('administrator/cache', PATH_APP . '/app/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
+			$this->_addDirectory($app . 'templates', PATH_APP . '/templates');
+			$this->_addDirectory('configuration.php', PATH_ROOT . '/configuration.php');
+			$this->_addDirectory($app . 'cache/site', PATH_APP . '/app/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
+			$this->_addDirectory($app . 'cache/admin', PATH_APP . '/app/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 
 			$this->_addDirectory(Config::get('log_path', PATH_APP . '/app/log'), Config::get('log_path', PATH_APP . '/app/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
 			$this->_addDirectory(Config::get('tmp_path', PATH_APP . '/app/tmp'), Config::get('tmp_path', PATH_APP . '/app/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
