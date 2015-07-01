@@ -80,9 +80,11 @@ $this->css('create.css')
 		     ->set('progress', $this->progress)
 		     ->display();
 	?>
-<?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
+
+	<?php if ($this->getError()) { ?>
+		<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
+
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">
 		<div class="explaination">
 			<p><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
@@ -93,7 +95,7 @@ $this->css('create.css')
 			<legend><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABOUT'); ?></legend>
 
 			<label for="field-title">
-				<?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>: <span class="required"><?php echo Lang::txt('COM_CONTRIBUTE_REQUIRED'); ?></span>
+				<?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</label>
 
@@ -103,23 +105,25 @@ $this->css('create.css')
 			</label>
 
 			<fieldset>
-				<legend>Manage files</legend>
+				<legend><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER'); ?></legend>
 				<div class="field-wrap">
 					<iframe width="100%" height="160" name="filer" id="filer" src="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;resource=<?php echo $this->row->id; ?>"></iframe>
 				</div>
 			</fieldset>
 		</fieldset><div class="clear"></div>
-	<?php if ($fields) { ?>
-		<div class="explaination">
-			<p><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_CUSTOM_FIELDS_EXPLANATION'); ?></p>
-		</div>
-		<fieldset>
-			<legend><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></legend>
-			<?php
-			echo $fields;
-			?>
-		</fieldset><div class="clear"></div>
-	<?php } ?>
+
+		<?php if ($fields) { ?>
+			<div class="explaination">
+				<p><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_CUSTOM_FIELDS_EXPLANATION'); ?></p>
+			</div>
+			<fieldset>
+				<legend><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></legend>
+				<?php
+				echo $fields;
+				?>
+			</fieldset><div class="clear"></div>
+		<?php } ?>
+
 		<input type="hidden" name="published" value="<?php echo $this->row->published; ?>" />
 		<input type="hidden" name="standalone" value="1" />
 		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
@@ -134,6 +138,9 @@ $this->css('create.css')
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
+
+		<?php echo Html::input('token'); ?>
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_CONTRIBUTE_NEXT'); ?>" />
 		</p>

@@ -54,20 +54,20 @@ $this->css('create.css');
 					</div>
 					<div class="col span2">
 						<label for="new-authors-role">
-							<span id="new-authors-role-label"><?php echo Lang::txt('Role'); ?></span>
+							<span id="new-authors-role-label"><?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ROLE'); ?></span>
 							<select name="role" id="new-authors-role">
-								<option value=""><?php echo Lang::txt('Author'); ?></option>
-<?php
-		if ($this->roles)
-		{
-			foreach ($this->roles as $role)
-			{
-?>
-								<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php
-			}
-		}
-?>
+								<option value=""><?php echo Lang::txt('COM_CONTRIBUTE_AUTHOR'); ?></option>
+								<?php
+								if ($this->roles)
+								{
+									foreach ($this->roles as $role)
+									{
+										?>
+										<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+										<?php
+									}
+								}
+								?>
 							</select>
 						</label>
 					</div>
@@ -103,11 +103,11 @@ if ($this->contributors) {
 			<tfoot>
 				<td>
 					<span class="caption">
-						<?php echo Lang::txt('Changes to organization or role must be saved to take effect.'); ?>
+						<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_CHANGES_INSTRUCTIONS'); ?>
 					</span>
 				</td>
 				<td>
-					<input type="submit" value="<?php echo Lang::txt('Save Changes'); ?>"/>
+					<input type="submit" value="<?php echo Lang::txt('COM_CONTRIBUTE_SAVE'); ?>"/>
 				</td>
 				<td></td>
 				<td></td>
@@ -130,23 +130,23 @@ if ($this->contributors) {
 				<tr class="author-<?php echo $contributor->authorid; ?>">
 					<td>
 						<span class="author-name"><?php echo $this->escape($name); ?></span><br />
-						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" id="organization-<?php echo $contributor->authorid; ?>" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo Lang::txt('Organization'); ?>" />
+						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" id="organization-<?php echo $contributor->authorid; ?>" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION'); ?>" />
 						<?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
 					</td>
 					<td>
 						<select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">
-							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('Author'); ?></option>
-<?php
-					if ($this->roles)
-					{
-						foreach ($this->roles as $role)
-						{
-?>
-							<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($contributor->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php
-						}
-					}
-?>
+							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_CONTRIBUTE_AUTHOR'); ?></option>
+							<?php
+							if ($this->roles)
+							{
+								foreach ($this->roles as $role)
+								{
+									?>
+									<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($contributor->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+									<?php
+								}
+							}
+							?>
 						</select>
 					</td>
 					<td class="u"><?php
@@ -164,8 +164,8 @@ if ($this->contributors) {
 					}
 					?></td>
 					<td class="t">
-						<a class="icon-delete delete" href="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
-							<span><?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?></span>
+						<a class="icon-delete delete" href="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 						</a>
 					</td>
 				</tr>

@@ -60,10 +60,10 @@ if ($this->resource->id)
 	<table class="meta">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo Lang::txt('Type'); ?></th>
-				<th scope="col"><?php echo Lang::txt('Title'); ?></th>
-				<th scope="col" colspan="3"><?php echo Lang::txt('Associations'); ?></th>
-				<th scope="col"><?php echo Lang::txt('Status'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CONTRIBUTE_STEP_TYPE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CONTRIBUTE_TITLE'); ?></th>
+				<th scope="col" colspan="3"><?php echo Lang::txt('COM_CONTRIBUTE_ASSOCIATIONS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CONTRIBUTE_STATUS'); ?></th>
 			<?php if ($this->progress['submitted'] != 1) { ?>
 				<th></th>
 			<?php } ?>
@@ -72,10 +72,10 @@ if ($this->resource->id)
 		<tbody>
 			<tr>
 				<td>
-					<?php echo ($this->resource->getTypeTitle()) ? $this->escape(stripslashes($this->resource->getTypeTitle())) : Lang::txt('(none)'); ?>
+					<?php echo ($this->resource->getTypeTitle()) ? $this->escape(stripslashes($this->resource->getTypeTitle())) : Lang::txt('COM_CONTRIBUTE_NONE'); ?>
 				</td>
 				<td>
-					<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->title), 150)) : Lang::txt('(none)'); ?>
+					<?php echo ($this->resource->title) ? $this->escape(\Hubzero\Utility\String::truncate(stripslashes($this->resource->title), 150)) : Lang::txt('COM_CONTRIBUTE_NONE'); ?>
 				</td>
 				<td>
 					<?php echo $attachments; ?> attachment(s)
@@ -124,7 +124,7 @@ for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 	$html .= '>';
 	if ($this->step == $i)
 	{
-		$html .= '<strong>' . $this->steps[$i] . '</strong>';
+		$html .= '<strong>' . Lang::txt('COM_CONTRIBUTE_STEP_'.strtoupper($this->steps[$i])) . '</strong>';
 	}
 	elseif ($this->progress[$this->steps[$i]] == 1 || $this->step > $i)
 	{

@@ -117,7 +117,7 @@ class RecommendedTags
 			INNER JOIN #__document_text_data dtd ON dtd.id = drr.document_id
 			WHERE ra.parent_id = '.$rid
 		);
-		$words = preg_split('/\W+/', join(' ', $dbh->loadResultArray()));
+		$words = preg_split('/\W+/', join(' ', $dbh->loadColumn()));
 		$word_count = count($words);
 		if (!$words[$word_count - 1])
 		{
@@ -267,7 +267,7 @@ $this->css('create.css')
 	<div id="content-header-extra">
 		<p>
 			<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
-				<?php echo Lang::txt('New submission'); ?>
+				<?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
 			</a>
 		</p>
 	</div><!-- / #content-header -->

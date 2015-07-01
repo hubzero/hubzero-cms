@@ -120,13 +120,13 @@ class Element extends Object
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description)
 		{
-			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
+			$output .= ' class="hasTip" title="' . $label . '::' . $description . '">';
 		}
 		else
 		{
 			$output .= '>';
 		}
-		$output .= Lang::txt($label);
+		$output .= $label;
 		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</label>';
 

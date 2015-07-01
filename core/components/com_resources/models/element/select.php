@@ -66,7 +66,7 @@ class Select extends Base
 		{
 			$val  = $option->value;
 			$text = $option->label;
-			$options[] = \Html::select('option', $val, Lang::txt($text));
+			$options[] = \Html::select('option', $val, $text);
 		}
 
 		return '<span class="field-wrap">' . \Html::select('genericlist',  $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';

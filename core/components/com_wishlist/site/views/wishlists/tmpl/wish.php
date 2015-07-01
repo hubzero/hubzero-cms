@@ -387,6 +387,8 @@ $this->css()
 							</tbody>
 						</table>
 
+						<?php echo Html::input('token'); ?>
+
 						<input type="hidden" name="task" value="savevote" />
 						<input type="hidden" name="category" value="<?php echo $this->wishlist->get('category'); ?>" />
 						<input type="hidden" name="rid" value="<?php echo $this->wishlist->get('referenceid'); ?>" />
@@ -421,6 +423,8 @@ $this->css()
 							<div class="sidenote">
 								<p><?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_INFO'); ?></p>
 							</div>
+
+							<?php echo Html::input('token'); ?>
 
 							<input type="hidden" name="task" value="editwish" />
 							<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
@@ -466,13 +470,11 @@ $this->css()
 							</label>
 
 							<p>
-								<input type="submit" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" />
+								<input type="submit" class="btn btn-success" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" />
 
-								<span class="cancelaction">
-									<a href="<?php echo Route::url($this->wish->link()); ?>">
-										<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
-									</a>
-								</span>
+								<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
+									<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+								</a>
 							</p>
 						</fieldset>
 					</form>
@@ -513,14 +515,12 @@ $this->css()
 								</label>
 
 								<p>
-								<?php if ($this->wish->get('funds') > 0) { ?>
-									<input type="submit" class="process" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_ADD_POINTS')); ?>" />
-								<?php } ?>
-									<span class="cancelaction">
-										<a href="<?php echo Route::url($this->wish->link()); ?>">
-											<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
-										</a>
-									</span>
+									<?php if ($this->wish->get('funds') > 0) { ?>
+										<input type="submit" class="btn btn-success process" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_ADD_POINTS')); ?>" />
+									<?php } ?>
+									<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
+										<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+									</a>
 								</p>
 							</fieldset>
 						</form>

@@ -78,13 +78,13 @@ class Radio extends Base
 		$output = '<legend id="' . $control_name . $name . '-lgd"';
 		if (isset($element->description) && $element->description)
 		{
-			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($element->description) . '">';
+			$output .= ' class="hasTip" title="' . $label . '::' . $element->description . '">';
 		}
 		else
 		{
 			$output .= '>';
 		}
-		$output .= Lang::txt($label);
+		$output .= $label;
 		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</legend>';
 
@@ -115,7 +115,7 @@ class Radio extends Base
 
 				$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
 				$html[] = '<input class="option" type="radio" name="' . $control_name . '[' . $name . ']" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
-				$html[] = Lang::txt($option->label) . '</label>';
+				$html[] = $option->label . '</label>';
 
 				$k++;
 			}

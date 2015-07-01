@@ -149,14 +149,14 @@ if ($this->wishlist->exists())
 					<div class="container">
 						<ul class="entries-menu order-options">
 						<?php if ($this->wishlist->get('admin')) { ?>
-							<li><a class="sort-ranking<?php if ($this->filters['sortby'] == 'ranking') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=ranking&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_WISHLIST_SORT_RANKING'); ?></a></li>
+							<li><a class="sort-ranking<?php if ($this->filters['sortby'] == 'ranking') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=ranking&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_RANKING'); ?></a></li>
 						<?php } ?>
 						<?php if ($this->wishlist->get('banking')) { ?>
-							<li><a class="sort-bonus<?php if ($this->filters['sortby'] == 'bonus') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=bonus&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_WISHLIST_SORT_BONUS'); ?></a></li>
+							<li><a class="sort-bonus<?php if ($this->filters['sortby'] == 'bonus') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=bonus&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_BONUS'); ?></a></li>
 						<?php } ?>
-							<li><a class="sort-feedback<?php if ($this->filters['sortby'] == 'feedback') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=feedback&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK'); ?></a></li>
-							<li><a class="sort-submitter<?php if ($this->filters['sortby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=submitter&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER'); ?></a></li>
-							<li><a class="sort-date<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=date&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?>">&darr; <?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?></a></li>
+							<li><a class="sort-feedback<?php if ($this->filters['sortby'] == 'feedback') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=feedback&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK'); ?></a></li>
+							<li><a class="sort-submitter<?php if ($this->filters['sortby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=submitter&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER'); ?></a></li>
+							<li><a class="sort-date<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=date&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?></a></li>
 						</ul>
 
 						<ul class="entries-menu filter-options">

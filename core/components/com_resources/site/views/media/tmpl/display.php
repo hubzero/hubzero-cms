@@ -32,11 +32,11 @@ defined('_HZEXEC_') or die();
 
 $this->css('component.css');
 ?>
-<form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<label for="upload">
 			<input type="file" class="option" name="upload" id="upload" />
-			<input type="submit" class="option" value="<?php echo strtolower(Lang::txt('Upload')); ?>" />
+			<input type="submit" class="option" value="<?php echo strtolower(Lang::txt('COM_CONTRIBUTE_UPLOAD')); ?>" />
 		</label>
 
 		<input type="hidden" name="tmpl" value="component" />
@@ -53,7 +53,7 @@ $this->css('component.css');
 	<?php } ?>
 
 	<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-		<p><?php echo Lang::txt('Here you can upload and manage screenshots or other files you wish to include in your abstract.'); ?></p>
+		<p><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_EXPLANATION'); ?></p>
 	<?php } else { ?>
 		<table>
 			<tbody>
@@ -70,8 +70,8 @@ $this->css('component.css');
 						<?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . $docs[$docName]); ?>
 					</td>
 					<td>
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('DELETE'); ?>">
-							<span><?php echo Lang::txt('DELETE'); ?></span>
+						<a class="icon-delete delete" href="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 						</a>
 					</td>
 				</tr>
