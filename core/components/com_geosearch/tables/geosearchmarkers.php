@@ -124,7 +124,7 @@ class GeosearchMarkers extends \JTable
 	 * @param  array  $filters a list of query parameters
 	 * @return json   returns a json encoded object list of all geosearch markers, with filters applied.
 	 */
-	public function getMarkers($filters = array())
+	public function getMarkers($filters = array(), $format = 'json')
 	{
 		$query = "SELECT * FROM #__geosearch_markers";
 
@@ -149,7 +149,15 @@ class GeosearchMarkers extends \JTable
 		$this->_db->setQuery($query);
 
 		$markers = $this->_db->LoadObjectList();
-		return json_encode($markers);
+
+		if ($format == 'json')
+		{
+			return json_encode($markers); //used in the map view
+		}
+		else
+		{
+			return $markers;
+		}
 	}
 
 	/**
