@@ -43,7 +43,7 @@ class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		if (App::isSite())
+		if (App::isSite() && !User::isGuest())
 		{
 			$exceptions = [
 				'com_users.logout',
@@ -59,10 +59,12 @@ class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
 
 			// If guest, proceed as normal and they'll land on the login page
-			if (!User::isGuest() && !in_array($current, $exceptions) && !User::get('approved'))
+			if (!in_array($current, $exceptions) && !User::get('approved'))
 			{
 				Request::setVar('option', 'com_users');
 				Request::setVar('view', 'unapproved');
+
+				$this->event->stop();
 			}
 		}
 	}

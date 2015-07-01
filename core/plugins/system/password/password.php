@@ -43,7 +43,7 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		if (App::isSite())
+		if (App::isSite() && !User::isGuest())
 		{
 			$exceptions = [
 				'com_users.logout',
@@ -62,7 +62,7 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 			$expiredpassword = Session::get('expiredpassword',false);
 
 			// If guest, proceed as normal and they'll land on the login page
-			if (!User::isGuest() && !in_array($current, $exceptions) && ($badpassword || $expiredpassword))
+			if (!in_array($current, $exceptions) && ($badpassword || $expiredpassword))
 			{
 				Request::setVar('option', 'com_members');
 				Request::setVar('task', 'changepassword');
@@ -77,6 +77,8 @@ class plgSystemPassword extends \Hubzero\Plugin\Plugin
 				{
 					Request::setVar('Your password has expired. Please change your password now.');
 				}
+
+				$this->event->stop();
 			}
 		}
 	}

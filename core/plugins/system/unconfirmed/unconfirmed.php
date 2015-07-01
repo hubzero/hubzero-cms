@@ -72,6 +72,8 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 				Request::setVar('option', 'com_members');
 				Request::setVar('controller', 'register');
 				Request::setVar('task', 'unconfirmed');
+
+				$this->event->stop();
 			}
 		}
 	}
