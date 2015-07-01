@@ -304,6 +304,8 @@ if ($this->page->get('id'))
 			</div>
 		</div>
 
+		<?php echo JHTML::_('form.token'); ?>
+
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="pages" />

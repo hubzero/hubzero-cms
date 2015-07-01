@@ -248,6 +248,9 @@ class GroupsControllerPages extends GroupsControllerAbstract
 	 */
 	public function saveTask($apply = false)
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Get the page vars being posted
 		$page    = JRequest::getVar('page', array(), 'post');
 		$version = JRequest::getVar('pageversion', array(), 'post', 'none', JREQUEST_ALLOWRAW);
