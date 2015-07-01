@@ -1464,10 +1464,10 @@ class Group extends Object
 		$link = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
 
 		//path to group uploaded logo
-		$path = '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
+		$path = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
 
 		//if logo exists and file is uploaded use that logo instead of default
-		$src = ($this->get('logo') != '' && is_file(PATH_APP . $path)) ? $path : $default_logo;
+		$src = ($this->get('logo') != '' && is_file(PATH_ROOT . $path)) ? $path : $default_logo;
 
 		//check to make sure were a member to show logo for hidden group
 		$members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
@@ -1480,10 +1480,8 @@ class Group extends Object
 		$what = strtolower($what);
 		if ($what == 'size')
 		{
-			return getimagesize(PATH_APP . $src);
+			return getimagesize(PATH_ROOT . $src);
 		}
-
-		$src = substr(PATH_APP, strlen(PATH_ROOT)) . $src;
 
 		if ($what == 'path')
 		{
