@@ -87,6 +87,7 @@ final class WrappedListener
 
 		$event = isset($arguments[0]) ? $arguments[0] : new Event($method);
 
+		$this->listener->event = $event;
 		$args = $event->getArguments();
 
 		switch (count($args))
