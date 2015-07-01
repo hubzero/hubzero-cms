@@ -703,6 +703,16 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$pageid  = JRequest::getInt('pageid', 0, 'get');
 		$version = JRequest::getInt('version', 0, 'get');
 
+		if (!$pageid)
+		{
+			throw new Exception(JText::_('COM_GROUPS_ERROR_NO_ID'), 404);
+		}
+
+		if ((string) $pageid !== (string) JRequest::getVar('pageid', 0, 'get'))
+		{
+			throw new Exception(JText::_('COM_GROUPS_ERROR_NO_ID'), 404);
+		}
+
 		// page object
 		$page = new GroupsModelPage( $pageid );
 
