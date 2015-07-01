@@ -142,7 +142,7 @@ class Job extends \JTable
 	 * @param      string  $subscription Subscription code
 	 * @return     object Return description (if any) ...
 	 */
-	public function get_openings($filters, $uid = 0, $admin = 0, $subscription = '', $count = 0)
+	public function get_openings($filters = array(), $uid = 0, $admin = 0, $subscription = '', $count = 0)
 	{
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
 		$category    = isset($filters['category']) ? $filters['category'] : 'all';
@@ -421,4 +421,3 @@ class Job extends \JTable
 		return $result;
 	}
 }
-
