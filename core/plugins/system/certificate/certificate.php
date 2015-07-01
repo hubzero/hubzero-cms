@@ -40,10 +40,9 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 	/**
 	 * Hook for after parsing route
 	 *
-	 * @param  array $vars the request vars
 	 * @return void
 	 */
-	public function onParseRoute($vars)
+	public function onAfterRoute()
 	{
 		// First, check for presence of subject dn, which is the minimum required field
 		if (!isset($_SERVER['SSL_CLIENT_S_DN']) || !$_SERVER['SSL_CLIENT_S_DN'])
@@ -55,12 +54,12 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 		if (\User::isGuest())
 		{
 			// If so, redirect to login
-			$return['option']        = 'com_users';
-			$return['task']          = 'user.login';
-			$return['authenticator'] = 'certificate';
-			$return['return']        = base64_encode(\Request::current());
+			Request::setVar('option',        'com_users');
+			Request::setVar('task',          'user.login');
+			Request::setVar('authenticator', 'certificate');
+			Request::setVar('return',        base64_encode(\Request::current()));
 
-			return $return;
+			return;
 		}
 
 		// Check if user is registered and if current session is linked to cert identity
@@ -75,9 +74,9 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 		}
 
 		// Otherwise, we have a cert-based user that doesn't match the current user
-		$return['option'] = 'com_users';
-		$return['task']   = 'user.logout';
+		Request::setVar('option', 'com_users');
+		Request::setVar('task',   'user.logout');
 
-		return $return;
+		$this->event->stop();
 	}
 }
