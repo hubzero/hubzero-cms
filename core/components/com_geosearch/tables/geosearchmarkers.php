@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Geosearch\Tables;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -398,4 +400,3 @@ class GeosearchMarkers extends \JTable
 		$this->_db->query();
 	}
 }
-
