@@ -132,9 +132,9 @@ class Detector implements DetectorInterface
 	 */
 	public function setDbo($db)
 	{
-		if (!($db instanceof \JDatabase))
+		if (!($db instanceof \Hubzero\Database\Driver))
 		{
-			throw new Exception('Database object must extend JDatabase');
+			throw new Exception('Database object must extend the Hubzero database driver');
 		}
 
 		$this->db = $db;
