@@ -755,27 +755,21 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		//get the posted vars
-		$c = $_POST;
-		if (isset($c['format_type']))
-		{
-			$c['format'] = $c['format_type'];
-		}
+		JRequest::checkToken() or jexit('Invalid token.');
 
-		//get tags
-		$tags = trim(JRequest::getVar('tags', ''));
-		unset($c['tags']);
-
-		//get badges
-		$badges = trim(JRequest::getVar('badges', ''));
-		unset($c['badges']);
+		// get the posted vars
+		$id = JRequest::getInt('id', 0, 'post');
+		$c  = JRequest::getVar('fields', array(), 'post');
+		$c['id'] = $id;
 
 		// clean vars
 		foreach ($c as $key => $val)
 		{
 			if (!is_array($val))
 			{
-				$c[$key] = \Hubzero\Utility\Sanitize::stripScripts($val);
+				$val = html_entity_decode(urldecode($val));
+				$val = \Hubzero\Utility\Sanitize::stripAll($val);
+				$c[$key] = \Hubzero\Utility\Sanitize::clean($val);
 			}
 		}
 
@@ -794,9 +788,6 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			$row->created = JFactory::getDate()->toSql();
 		}
 
-		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = JRequest::getVar('uri', '', 'post');
-		$row->url = \Hubzero\Utility\Sanitize::clean($row->url);
 		if (!filter_var($row->url, FILTER_VALIDATE_URL))
 		{
 			$row->url = null;
@@ -819,7 +810,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming associations
-		$arr = JRequest::getVar('assocs', array());
+		$arr = JRequest::getVar('assocs', array(), 'post');
 
 		$ignored = array();
 
@@ -874,6 +865,8 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
+			$tags = trim(JRequest::getVar('tags', '', 'post'));
+
 			$ct1 = new CitationTags($row->id);
 			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
 		}
@@ -881,27 +874,23 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
+			$badges = trim(JRequest::getVar('badges', '', 'post'));
+
 			$ct2 = new CitationTags($row->id);
 			$ct2->setTags($badges, $this->juser->get('id'), 0, 1, 'badge');
 		}
 
 		// Redirect
+		$task = '&task=browse';
 		if ($this->config->get('citation_single_view', 1))
 		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=view&id=' . $row->id),
-				JText::_('COM_CITATIONS_CITATION_SAVED')
-			);
-		}
-		else
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=browse'),
-				JText::_('COM_CITATIONS_CITATION_SAVED')
-			);
+			$task = '&task=view&id=' . $row->id;
 		}
 
-		return;
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . $task),
+			JText::_('COM_CITATIONS_CITATION_SAVED')
+		);
 	}
 
 	/**
