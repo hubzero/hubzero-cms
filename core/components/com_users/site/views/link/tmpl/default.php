@@ -77,7 +77,7 @@ $step = (int) Request::getInt('step', 1);
 					Route::url('index.php?option=com_users&view=login&reset=1&return=' .
 						base64_encode(
 							Route::url('index.php?option=com_users&view=login&authenticator=' . $this->hzad->authenticator, false)
-						), 
+						),
 					false)
 				)); ?>">
 				<div data-step="3" class="button ok">OK</div>
