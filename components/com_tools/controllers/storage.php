@@ -223,6 +223,9 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$degree = JRequest::getVar('degree', 'default');
 
 		$info = array();
