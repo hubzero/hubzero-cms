@@ -44,8 +44,8 @@ $info = pathinfo($this->folder);
 
 			<input type="text" name="name" value="<?php echo $this->escape($info['basename']); ?>" />
 		</label>
-		<?php echo JHTML::_('form.token'); ?>
 		<p class="controls">
+			<?php echo JHTML::_('form.token'); ?>
 			<button type="submit" class="btn icon-edit"><?php echo JText::_('COM_GROUPS_MEDIA_RENAME'); ?></button>
 		</p>
 	</fieldset>

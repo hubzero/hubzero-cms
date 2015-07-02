@@ -448,6 +448,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function doUpload()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// var to hold potential error
 		$returnObj          = new stdClass;
 		$returnObj->error   = false;
@@ -579,6 +582,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function ajaxuploadTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
+
 		//get config
 		$config = JComponentHelper::getParams('com_media');
 
@@ -916,6 +922,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function deletefileTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming file
 		$file = trim(JRequest::getVar('file', '', 'get'));
 		$file = $this->path . $file;
@@ -1192,6 +1201,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	 */
 	public function deleteFolderTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		//get request vars
 		$folder = JRequest::getVar('folder', '');
 

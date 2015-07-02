@@ -43,8 +43,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php echo JText::_('Create in: '); ?>
 			<?php echo $this->folderList; ?>
 		</label>
-		<?php echo JHTML::_('form.token'); ?>
 		<p class="controls">
+			<?php echo JHTML::_('form.token'); ?>
 			<button type="submit" class="btn icon-save"><?php echo JText::_('Create'); ?></button>
 		</p>
 	</fieldset>

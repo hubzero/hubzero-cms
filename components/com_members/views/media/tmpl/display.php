@@ -42,6 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 			<input type="hidden" name="no_html" value="1" />
 			<input type="hidden" name="task" value="upload" />
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+			<?php echo JHTML::_('form.token'); ?>
 
 			<input type="file" name="upload" id="upload" size="17" />
 			<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />

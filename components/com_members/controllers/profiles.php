@@ -1373,6 +1373,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return false;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$no_html = JRequest::getVar("no_html", 0);
 
 		// Incoming user ID

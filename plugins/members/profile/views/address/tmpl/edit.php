@@ -98,4 +98,6 @@ $this->css()
 	<input type="hidden" name="active" value="profile" />
 	<input type="hidden" name="action" value="saveaddress" />
 	<input type="hidden" name="address[id]" value="<?php echo $this->addressId; ?>" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

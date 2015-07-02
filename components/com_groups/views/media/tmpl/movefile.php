@@ -43,8 +43,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php echo JText::_('COM_GROUPS_MEDIA_MOVE_MOVE_TO'); ?>: 
 			<?php echo $this->folderList; ?>
 		</label>
-		<?php echo JHTML::_('form.token'); ?>
 		<p class="controls">
+			<?php echo JHTML::_('form.token'); ?>
 			<button type="submit" class="btn icon-move"><?php echo JText::_('COM_GROUPS_MEDIA_MOVE'); ?></button>
 		</p>
 	</fieldset>
