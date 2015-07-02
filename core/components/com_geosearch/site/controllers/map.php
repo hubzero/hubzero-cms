@@ -26,6 +26,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Geosearch\Tables;
+
 defined('_HZEXEC_') or die();
 
 /**
@@ -70,44 +72,9 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 		$filters['scope'] = $resources;
 
 		// get markers object
-		$GM = new GeosearchMarkers($this->database);
+		$GM = new \Components\Geosearch\Tables\GeosearchMarkers($this->database);
 
 		echo $GM->getMarkers($filters);
 		exit();
-	}
-
-	/**
-	 * geocode location
-	 * string	$location
-	 * return 	array lat/lng coordinates
-	 */
-	public function doGeocode($location = "")
-	{
-		if ($location != "")
-		{
-			// geocode address
-			$base_url = "http://maps.googleapis.com/maps/api/geocode/xml?address=";
-			$url_addy = urlencode($location);
-			$request_url = $base_url . $url_addy . "&sensor=false";
-			$xml = simplexml_load_file($request_url);
-			$status = $xml->status;
-			if ($status == "OK")
-			{
-				// successful geocode
-				$lat = $xml->result->geometry->location->lat;
-				$lng = $xml->result->geometry->location->lng;
-				$latlng = array($lat,$lng);
-				return $latlng;
-			}
-			else
-			{
-				// failure to geocode
-				/*
-				echo "Location " . $location . " failed to geocode. ";
-				echo "Received status " . $status . "\n";
-				*/
-				return false;
-			}
-		}
 	}
 }
