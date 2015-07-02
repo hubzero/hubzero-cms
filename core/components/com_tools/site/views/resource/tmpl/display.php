@@ -50,7 +50,7 @@ $this->css('resource.css')
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="icon-config btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li><a class="icon-status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
 			<li><a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
@@ -71,7 +71,7 @@ $this->css('resource.css')
 </section>
 
 <section class="main section">
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
@@ -115,7 +115,7 @@ $this->css('resource.css')
 			     ->set('authors', $this->authors)
 			     ->display();
 		?>
-		</fieldset><div class="clear"></div>
+
 		<input type="hidden" name="app" value="<?php echo $this->row->alias; ?>" />
 		<input type="hidden" name="rid" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -124,11 +124,12 @@ $this->css('resource.css')
 		<input type="hidden" name="step" value="<?php echo $nextstep; ?>" />
 		<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
 		<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']; ?>" />
+		<?php echo Html::input('token'); ?>
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
-		<?php if ($this->step != 1) { ?>
-			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
-		<?php } ?>
+			<?php if ($this->step != 1) { ?>
+				<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
+			<?php } ?>
 			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>

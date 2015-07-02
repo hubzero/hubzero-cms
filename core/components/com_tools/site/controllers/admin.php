@@ -58,9 +58,9 @@ class Admin extends SiteController
 	 *
 	 * @param	string $message Message
 	 */
-	public function setMessage($message)
+	public function setMessage($msg, $type='message')
 	{
-		array_push($this->_messages, $message);
+		array_push($this->_messages, $msg);
 	}
 
 	/**

@@ -594,7 +594,7 @@ class Resource extends SiteController
 		}
 
 		// Set the document title
-		$this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
+		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
 		Document::setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)

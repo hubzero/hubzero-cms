@@ -555,8 +555,8 @@ class Pipeline extends SiteController
 		}
 
 		// get default license text
-		$toolhelper = new ContribtoolHelper();
-		$this->view->licenses = $toolhelper->getLicenses($this->database);
+		$this->database->setQuery("SELECT text, name, title FROM #__tool_licenses ORDER BY ordering ASC");
+		$this->view->licenses = $this->database->loadObjectList();
 
 		// Set the page title
 		$this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';

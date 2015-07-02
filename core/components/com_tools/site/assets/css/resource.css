@@ -12,6 +12,9 @@
 	-- -- -- -- -- -- --
 
 */
+	.icon-status:before {
+		content: "\f056";
+	}
 /* Steps */
 	.steps-section {
 		margin-bottom: 0;
@@ -36,9 +39,12 @@
 		font-weight: normal;
 	}
 	#steps li.intermediate {
-		background: url("/core/components/com_tools/site/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
 		padding: 0 1em 0 1em;
 		margin: 0;
+	}
+	#steps li.intermediate:before {
+		content: "\2192";
+		font-family: "Fontcons";
 	}
 	#steps li.prev {
 		color: #333;
@@ -48,9 +54,17 @@
 	}
 	#steps li.active {
 		color: #bd6416;
-		background: #fff;
 		font-weight: bold;
-		background: url("/core/components/com_tools/site/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+		position: relative;
+	}
+	#steps li.active:after {
+		content: "";
+		border: 0.35em solid #666;
+		border-color: transparent transparent #666 transparent;
+		position: absolute;
+		bottom: 0.1em;
+		left: 50%;
+		margin-left: -0.35em;
 	}
 	#steps li.future {
 		color: #b1c1b3;
@@ -121,7 +135,16 @@
 
 	#displays_0,
 	.devversion {
-		background: url("/core/components/com_tools/site/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
+		background-color: #eff7ef;
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		   -moz-background-size: 30px 30px;
+		    -ms-background-size: 30px 30px;
+		        background-size: 30px 30px;
 	}
 	p.devversion,
 	p.currentversion {

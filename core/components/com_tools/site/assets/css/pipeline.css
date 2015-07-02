@@ -69,7 +69,7 @@
 	.order-options a:before {
 		content: "\2193";
 		font-family: "Fontcons";
-		margin-right: 0.2em;
+		margin-right: 0.1em;
 	}
 	.order-options a.desc:before {
 		content: "\2191";
@@ -190,26 +190,26 @@
 	.admintitle {
 		padding-top: 1.5em;
 	}
-	.adminactions {
+	.developer.actions {
 		list-style: none;
 		margin: 0;
 		padding: 0 0 0 1em;
 		line-height: 2em;
 	}
-	.adminactions li {
+	.developer.actions li {
 		display: inline;
 		padding: 0 0.5em 0 0.2em;
 		background: none;
 	}
-	.adminactions li a, 
-	.adminactions li a:hover, 
-	.adminactions li span {
+	.developer.actions li a, 
+	.developer.actions li a:hover,
+	.developer.actions li span {
 		padding: 0.2em 0;
 		border: none;
 		font-size: x-small;
 		background: none;
 	}
-	.adminactions li a:before {
+	.developer.actions li a:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -219,6 +219,9 @@
 		margin-right: 0.2em;
 		font-weight: normal;
 	}
+	.admin.actions .btn {
+		display: block;
+	}
 	.history {
 		padding: 0 !important;
 		background: none !important;
@@ -226,55 +229,43 @@
 	.history:before {
 		display: none;
 	}
-	.adminactions li.history a:before {
+	.actions li.history a:before {
 		content: "\f017";
 	}
-	.adminactions li.wiki a:before {
+	.actions li.wiki a:before {
 		content: "\f059";
 	}
-	.adminactions li.sourcecode a:before {
+	.actions li.sourcecode a:before {
 		content: "\f121";
 	}
-	.adminactions li.timeline a:before {
+	.actions li.timeline a:before {
 		content: "\f056";
 	}
-	.adminactions li.message a:before {
+	.actions li.message a:before {
 		content: "\f075";
 	}
-	.adminactions li.canceltool a:before {
+	.actions li.canceltool a:before {
 		content: "\2716";
 	}
-	.adminactions li#createtool a:before {
+
+	.icon-create:before {
 		content: "\f0c2";
 	}
-	.adminactions li#installtool a:before {
+	.icon-install:before {
 		content: "\f0c3";
 	}
-	.adminactions li#publishtool a:before {
+	.icon-publish:before {
 		content: "\2714";
 	}
-	.adminactions li#retiretool a:before {
+	.icon-retire:before {
 		content: "\f0ab";
 	}
+
 	span.showcontrols {
 		padding: 0.2em 0 0.2em 0.2em;
 		margin: 0;
 		border: none;
 	}
-	#ctSending {
-		padding: 0.5em 1.5em 0.5em 1.5em;
-	}
-	#ctSending p {
-		color:#666666;
-	}
-	#ctSending img {
-		vertical-align:middle;
-		padding-right:0.5em;
-	}
-	#ctSuccess {
-		padding: 0.5em 1.5em 0.5em 1.5em;
-	}
-
 	span.showcontrols a { 
 		display: inline;
 		border: none;
@@ -290,6 +281,21 @@
 		padding: 0.2em 0.2em 0.2em 0.5em;
 		border: 0;
 	}
+
+	#ctSending {
+		padding: 0.5em 1.5em 0.5em 1.5em;
+	}
+	#ctSending p {
+		color:#666666;
+	}
+	#ctSending img {
+		vertical-align:middle;
+		padding-right:0.5em;
+	}
+	#ctSuccess {
+		padding: 0.5em 1.5em 0.5em 1.5em;
+	}
+
 	.disabled { 
 		color: #999;
 	}
@@ -322,6 +328,66 @@
 	.item_s a {
 		background: url("/core/components/com_tools/site/assets/img/contribute/warning.gif") 0 0 no-repeat;
 		padding-left: 17px;
+	}
+
+	.loading {
+		background: rgba(0, 0, 0, 0.05);
+		position: relative;
+		padding: 1em 1em 1em 4em;
+		margin: 0;
+		border-radius: 0.25em;
+	}
+	.spinner {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		line-height: 1;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		border: 2px solid rgba(0, 0, 0, 0.1);
+		display: block;
+		position: absolute;
+		top: 0.7em;
+		left: 0.7em;
+		border-left-color: #222;
+		border-left-color: rgba(0, 0, 0, 0.8);
+		-webkit-transform: translateZ(0);
+		   -moz-transform: translateZ(0);
+		    -ms-transform: translateZ(0);
+		        transform: translateZ(0);
+		-webkit-animation: spin 1.1s infinite linear;
+		   -moz-animation: spin 1.1s infinite linear;
+		    -ms-animation: spin 1.1s infinite linear;
+		        animation: spin 1.1s infinite linear;
+	}
+	@-webkit-keyframes spin {
+		0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
+	}
+	@keyframes spin {
+		0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+		100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
 	}
 
 /* Tool Summary */
@@ -495,9 +561,12 @@
 		font-weight: normal;
 	}
 	#steps li.intermediate { 
-		background: url("/core/components/com_tools/site/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
 		padding: 0 1em 0 1em;
 		margin: 0;
+	}
+	#steps li.intermediate:before {
+		content: "\2192";
+		font-family: "Fontcons";
 	}
 	#steps li.prev { 
 		color: #333;
@@ -509,7 +578,16 @@
 		color: #bd6416;
 		background: #fff;
 		font-weight: bold;
-		background: url("/core/components/com_tools/site/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+		position: relative;
+	}
+	#steps li.active:after {
+		content: "";
+		border: 0.35em solid #666;
+		border-color: transparent transparent #666 transparent;
+		position: absolute;
+		bottom: 0.1em;
+		left: 50%;
+		margin-left: -0.35em;
 	}
 	#steps li.future { 
 		color: #b1c1b3;
@@ -588,10 +666,10 @@
 		position: absolute;
 	}
 	#choice-icon.opensource {
-		background: url("/core/components/com_tools/site/assets/img/happyface_sm.png") 0 0 no-repeat;	
+		background: url("/core/components/com_tools/site/assets/img/happyface_sm.png") 0 0 no-repeat;
 	}
 	#choice-icon.closedsource {
-		background: url("/core/components/com_tools/site/assets/img/sadface_sm.png") 0 0 no-repeat;	
+		background: url("/core/components/com_tools/site/assets/img/sadface_sm.png") 0 0 no-repeat;
 	}
 	.why-open {
 		padding: 0.5em 1em 1em 1em;

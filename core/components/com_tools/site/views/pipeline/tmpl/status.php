@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
@@ -28,9 +34,9 @@ defined('_HZEXEC_') or die();
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
 $live_site = rtrim(Request::base(),'/');
-$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
-$project_path = $this->config->get('project_path', '/tools/');
-$dev_suffix   = $this->config->get('dev_suffix', '_dev');
+$developer_url = $live_site = 'https://' . preg_replace('#^(https://|http://)#', '', $live_site);
+$project_path  = $this->config->get('project_path', '/tools/');
+$dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
 // get status name
 \Components\Tools\Helpers\Html::getStatusName($this->status['state'], $state);
@@ -45,7 +51,7 @@ $this->css('pipeline.css')
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li><a class="icon-main main-page btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
-			<li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -173,21 +179,21 @@ $this->css('pipeline.css')
 						<tr>
 							<th colspan="2">
 							<!-- / tool admin icons -->
-								<ul class="adminactions">
+								<ul class="developer actions">
 									<li class="history"><a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $this->status['ticketid']); ?>" title="<?php echo Lang::txt('COM_TOOLS_HISTORY_TIPS');?>">History</a></li>
-								<?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status ?>
-									<li class="wiki"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki" title="<?php echo Lang::txt('COM_TOOLS_WIKI_TIPS');?>">Wiki</a></li>
-									<li class="sourcecode"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/browser" title="<?php echo Lang::txt('COM_TOOLS_SOURCE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_SOURCE');?></a></li>
-									<li class="timeline"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/timeline" title="<?php echo Lang::txt('COM_TOOLS_TIMELINE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></a></li>
-								<?php }  else { ?>
-									<li class="wiki"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_WIKI');?></span></li>
-									<li class="sourcecode"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE');?></span></li>
-									<li class="timeline"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></span></li>
-								<?php } ?>
+									<?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status ?>
+										<li class="wiki"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki" title="<?php echo Lang::txt('COM_TOOLS_WIKI_TIPS');?>">Wiki</a></li>
+										<li class="sourcecode"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/browser" title="<?php echo Lang::txt('COM_TOOLS_SOURCE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_SOURCE');?></a></li>
+										<li class="timeline"><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/timeline" title="<?php echo Lang::txt('COM_TOOLS_TIMELINE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></a></li>
+									<?php }  else { ?>
+										<li class="wiki"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_WIKI');?></span></li>
+										<li class="sourcecode"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE');?></span></li>
+										<li class="timeline"><span class="disabled"><?php echo Lang::txt('COM_TOOLS_TIMELINE');?></span></li>
+									<?php } ?>
 									<li class="message"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_SEND_MESSAGE').' '.Lang::txt('COM_TOOLS_TO');?> <?php echo ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN'); ?>" class="showmsg"><?php echo Lang::txt('COM_TOOLS_MESSAGE');?></a></li>
-								<?php if ($this->status['published']!=1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development ?>
-									<li class="canceltool"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_CANCEL_TIPS');?>" class="showcancel"><?php echo Lang::txt('COM_TOOLS_CANCEL');?></a></li>
-	 							<?php } ?>
+									<?php if ($this->status['published']!=1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development ?>
+										<li class="canceltool"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_CANCEL_TIPS');?>" class="showcancel"><?php echo Lang::txt('COM_TOOLS_CANCEL');?></a></li>
+		 							<?php } ?>
 								</ul>
 								<div id="ctCancel">
 									<p class="error">
@@ -206,7 +212,7 @@ $this->css('pipeline.css')
 										</fieldset>
 									<?php } ?>
 										<fieldset>
-											<textarea name="comment" style="width:300px;height:100px;" cols="50" rows="5"></textarea>
+											<textarea name="comment" cols="50" rows="5"></textarea>
 										</fieldset>
 										<fieldset>
 											<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -214,6 +220,7 @@ $this->css('pipeline.css')
 											<input type="hidden" name="task" value="message" />
 											<input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
 											<input type="hidden" name="app" value="<?php echo $this->status['toolname']; ?>" />
+											<?php echo Html::input('token'); ?>
 											<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_SEND_MESSAGE'); ?>" />
 										</fieldset>
 									</form>
@@ -225,87 +232,71 @@ $this->css('pipeline.css')
 			</div>
 
 			<?php if ($this->config->get('access-admin-component')) { ?>
-			<div class="admin-container">
+				<div class="admin-container">
+					<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="hubForm" class="full">
+						<fieldset>
+							<legend><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS');?></legend>
 
-								<!-- / admin controls 
-								<form action="index.php" method="post" id="adminCalls">
-									<ul class="adminactions">
-										<li id="createtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=addrepo&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO');?></a></li>
-										<li id="installtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=install&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL');?></a></li>
-										<li id="publishtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=publish&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH');?></a></li>
-										<li id="retiretool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=retire&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE');?></a></li>
-									</ul>
-									<div id="ctSending"></div>
-									<div id="ctSuccess"></div>
-									<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-									<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-									<input type="hidden" name="task" value="" />
-									<input type="hidden" name="id" value="<?php echo $this->status['toolid']?>" />
-									<input type="hidden" name="app" value="<?php echo $this->status['toolname']?>" />
-									<input type="hidden" name="no_html" value="1" />
-								</form> -->
-
-				<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="hubForm" class="full">
-					<fieldset>
-						<legend><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS');?></legend>
-
-						<ul class="adminactions">
-							<li id="createtool"><a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=addrepo&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO');?></a></li>
-							<li id="installtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=install&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL');?></a></li>
-							<li id="publishtool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=publish&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH');?></a></li>
-							<li id="retiretool"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=retire&app=' . $this->status['toolname']); ?>" class="admincall" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE');?></a></li>
-						</ul>
-						<div id="ctSending"></div>
-						<div id="ctSuccess"></div>
-
-						<div class="grid">
-							<div class="col span6">
-								<label>
-									<?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
-									<select name="newstate">
-										<option value="1"<?php if ($this->status['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
-										<option value="2"<?php if ($this->status['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
-										<option value="3"<?php if ($this->status['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
-										<option value="4"<?php if ($this->status['state'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
-										<option value="5"<?php if ($this->status['state'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
-										<option value="6"<?php if ($this->status['state'] == 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
-										<option value="7"<?php if ($this->status['state'] == 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
-									<?php if ($this->status['published']==1) { // admin can retire only tools that have a published flag on ?>
-										<option value="8"<?php if ($this->status['state'] == 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
-									<?php } ?>
-									</select>
-								</label>
+							<div class="admin actions grid">
+								<div class="col span3" id="createtool"><a class="icon-create btn admincall" data-action-txt="<?php echo Lang::txt('Creating tool project area...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=addrepo&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_ADD_REPO');?></a></div>
+								<div class="col span3" id="installtool"><a class="icon-install btn admincall" data-action-txt="<?php echo Lang::txt('Installing tool...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=install&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_INSTALL');?></a></div>
+								<div class="col span3" id="publishtool"><a class="icon-publish btn admincall" data-action-txt="<?php echo Lang::txt('Publishing tool...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=publish&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_PUBLISH');?></a></div>
+								<div class="col span3 omega" id="retiretool"><a class="icon-retire btn admincall" data-action-txt="<?php echo Lang::txt('Retiring tool...'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=admin&task=retire&app=' . $this->status['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS');?>"><?php echo Lang::txt('COM_TOOLS_COMMAND_RETIRE');?></a></div>
 							</div>
-							<div class="col span6 omega">
-								<label>
-									<?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
-									<select name="priority">
-										<option value="3"<?php if ($this->status['priority'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
-										<option value="2"<?php if ($this->status['priority'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
-										<option value="1"<?php if ($this->status['priority'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
-										<option value="4"<?php if ($this->status['priority'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
-										<option value="5"<?php if ($this->status['priority'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
-									</select>
-								</label>
+							<div id="ctSending"></div>
+							<div id="ctSuccess"></div>
+
+							<div class="grid">
+								<div class="col span6">
+									<label>
+										<?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
+										<select name="newstate">
+											<option value="1"<?php if ($this->status['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
+											<option value="2"<?php if ($this->status['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
+											<option value="3"<?php if ($this->status['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
+											<option value="4"<?php if ($this->status['state'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
+											<option value="5"<?php if ($this->status['state'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
+											<option value="6"<?php if ($this->status['state'] == 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
+											<option value="7"<?php if ($this->status['state'] == 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
+											<?php if ($this->status['published']==1) { // admin can retire only tools that have a published flag on ?>
+												<option value="8"<?php if ($this->status['state'] == 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
+											<?php } ?>
+										</select>
+									</label>
+								</div>
+								<div class="col span6 omega">
+									<label>
+										<?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
+										<select name="priority">
+											<option value="3"<?php if ($this->status['priority'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
+											<option value="2"<?php if ($this->status['priority'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
+											<option value="1"<?php if ($this->status['priority'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
+											<option value="4"<?php if ($this->status['priority'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
+											<option value="5"<?php if ($this->status['priority'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
+										</select>
+									</label>
+								</div>
 							</div>
-						</div>
 
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-						<input type="hidden" name="task" value="update" />
-						<input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
-						<input type="hidden" name="app" value="<?php echo $this->status['toolname']; ?>" />
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+							<input type="hidden" name="task" value="update" />
+							<input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
+							<input type="hidden" name="app" value="<?php echo $this->status['toolname']; ?>" />
 
-						<label for="comment">
-							<?php echo Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')';?>
-							<textarea name="comment" id="comment" cols="40" rows="5"></textarea>
-						</label>
-						<p class="submit">
-							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_TOOLS_APPLY_CHANGE'); ?>" />
-						</p>
-					</fieldset>
-				</form>
-			</div>
+							<?php echo Html::input('token'); ?>
+
+							<label for="comment">
+								<?php echo Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')';?>
+								<textarea name="comment" id="comment" cols="40" rows="5"></textarea>
+							</label>
+
+							<p class="submit">
+								<input type="submit" class="btn" value="<?php echo Lang::txt('COM_TOOLS_APPLY_CHANGE'); ?>" />
+							</p>
+						</fieldset>
+					</form>
+				</div>
 			<?php } ?>
 		</div><!-- / .col span-half -->
 		<div class="col span5 omega">

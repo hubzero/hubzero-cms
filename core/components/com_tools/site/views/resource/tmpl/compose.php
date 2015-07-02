@@ -95,5 +95,7 @@ $fields = $elements->render();
 	</div>
 	<fieldset>
 		<legend><?php echo Lang::txt('COM_TOOLS_COMPOSE_DETAILS'); ?></legend>
-<?php
-echo $fields;
+		<?php
+		echo $fields;
+		?>
+	</fieldset><div class="clear"></div>

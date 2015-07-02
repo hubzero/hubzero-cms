@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
@@ -57,8 +63,8 @@ $this->css('pipeline.css')
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="icon-config btn" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-			<li class="last"><a class="icon-add btn" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-status btn" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li><a class="icon-add btn" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -87,7 +93,7 @@ $this->css('pipeline.css')
 					<div id="closed-source">
 						<h4><?php echo Lang::txt('COM_TOOLS_LICENSE_ARE_YOU_SURE'); ?></h4>
 						<div class="why-open"><?php echo Lang::txt('COM_TOOLS_LICENSE_WHY_OPEN_SOURCE'); ?></div>
-						<label><?php echo Lang::txt('COM_TOOLS_LICENSE_CLOSED_REASON'); ?> <span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
+						<label><?php echo Lang::txt('COM_TOOLS_LICENSE_CLOSED_REASON'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 							<textarea name="reason" cols="30" rows="5" id="reason"></textarea>
 						</label>
 					</div>
@@ -97,7 +103,7 @@ $this->css('pipeline.css')
 							<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 						</div>
 						<div class="licinput" >
-							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEXT'); ?><span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
+							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEXT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 							<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo Lang::txt('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"> <?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 							</label>
 							<?php
@@ -117,6 +123,7 @@ $this->css('pipeline.css')
 							<input type="hidden" name="action" value="<?php echo $this->action; ?>" />
 							<input type="hidden" name="toolid" value="<?php echo $this->status['toolid']; ?>" />
 							<input type="hidden" name="alias" value="<?php echo $this->status['toolname']; ?>" />
+							<?php echo Html::input('token'); ?>
 						</div>
 						<div id="legendnotes">
 							<h3><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_LICENSE_TEMPLATE_CHOICE'); ?></h3>
@@ -131,7 +138,7 @@ $this->css('pipeline.css')
 						</div>
 						<label for="field-authorize">
 							<input type="checkbox" name="authorize" id="field-authorize" value="1" />
-							<span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span><?php echo Lang::txt('COM_TOOLS_LICENSE_CERTIFY') . ' '.Lang::txt('COM_TOOLS_LICENSE_UNDER_SPECIFIED'); ?>
+							<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span> <?php echo Lang::txt('COM_TOOLS_LICENSE_CERTIFY') . ' '.Lang::txt('COM_TOOLS_LICENSE_UNDER_SPECIFIED'); ?>
 						</label>
 					</div>
 					<div class="moveon">
