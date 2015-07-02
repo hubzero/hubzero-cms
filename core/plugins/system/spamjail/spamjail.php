@@ -43,7 +43,7 @@ class plgSystemSpamjail extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		if (App::isSite())
+		if (App::isSite() && !User::isGuest())
 		{
 			$exceptions = [
 				'com_users.logout',
@@ -57,9 +57,7 @@ class plgSystemSpamjail extends \Hubzero\Plugin\Plugin
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
 
 			// If guest, proceed as normal and they'll land on the login page
-			if (!User::isGuest()
-			 && !in_array($current, $exceptions)
-			 && \Hubzero\User\User::oneOrFail(User::get('id'))->reputation->isJailed())
+			if (!in_array($current, $exceptions) && \Hubzero\User\User::oneOrFail(User::get('id'))->reputation->isJailed())
 			{
 				Request::setVar('option', 'com_users');
 				Request::setVar('view', 'spamjail');
