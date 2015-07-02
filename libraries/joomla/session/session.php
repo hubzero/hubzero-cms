@@ -311,7 +311,7 @@ class JSession extends JObject
 
 		foreach ($method as $m)
 		{
-			if (JRequest::getVar($token, '', $method, 'alnum'))
+			if (JRequest::getVar($token, '', $m, 'alnum'))
 			{
 				$result = true;
 				break;
