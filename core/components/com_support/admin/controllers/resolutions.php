@@ -121,7 +121,7 @@ class Resolutions extends AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			\Notify::error($this->getError());
 		}
 
 		// Output the HTML
@@ -148,7 +148,7 @@ class Resolutions extends AdminController
 		$row = new Resolution($this->database);
 		if (!$row->bind($res))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -156,7 +156,7 @@ class Resolutions extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -164,7 +164,7 @@ class Resolutions extends AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}

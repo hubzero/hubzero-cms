@@ -268,7 +268,7 @@ class Assets extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -296,21 +296,21 @@ class Assets extends AdminController
 
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
 
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
 
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -323,21 +323,21 @@ class Assets extends AdminController
 		{
 			if (!$row2->bind($fields))
 			{
-				$this->addComponentMessage($row2->getError(), 'error');
+				$this->setError($row2->getError());
 				$this->editTask($row);
 				return;
 			}
 
 			if (!$row2->check())
 			{
-				$this->addComponentMessage($row2->getError(), 'error');
+				$this->setError($row2->getError());
 				$this->editTask($row);
 				return;
 			}
 
 			if (!$row2->store())
 			{
-				$this->addComponentMessage($row2->getError(), 'error');
+				$this->setError($row2->getError());
 				$this->editTask($row);
 				return;
 			}

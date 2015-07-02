@@ -142,7 +142,7 @@ class Authors extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -191,18 +191,18 @@ class Authors extends AdminController
 				{
 					if (!$rc->createAssociation())
 					{
-						$this->addComponentMessage($rc->getError(), 'error');
+						$this->setError($rc->getError());
 					}
 					if (!$rc->deleteAssociation($id, $rc->subid, $rc->subtable))
 					{
-						$this->addComponentMessage($rc->getError(), 'error');
+						$this->setError($rc->getError());
 					}
 				}
 				else
 				{
 					if (!$rc->updateAssociation())
 					{
-						$this->addComponentMessage($rc->getError(), 'error');
+						$this->setError($rc->getError());
 					}
 				}
 

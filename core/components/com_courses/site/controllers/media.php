@@ -37,6 +37,7 @@ use Components\Resources\Tables\MediaTracking;
 use stdClass;
 use Filesystem;
 use Request;
+use Notify;
 use Date;
 use User;
 use Lang;
@@ -221,7 +222,7 @@ class Media extends SiteController
 		// Ensure we have an ID to work with
 		if (!$listdir)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -230,7 +231,7 @@ class Media extends SiteController
 		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_FILE'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -242,7 +243,7 @@ class Media extends SiteController
 		{
 			if (!Filesystem::makeDirectory($path))
 			{
-				$this->addComponentMessage(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
+				Notify::error(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'), 'courses');
 				$this->mediaTask();
 				return;
 			}
@@ -256,11 +257,11 @@ class Media extends SiteController
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->addComponentMessage(Lang::txt('ERROR_UPLOADING'), 'error');
+			Notify::error(Lang::txt('ERROR_UPLOADING'), 'courses');
 		}
 
 		//push a success message
-		$this->addComponentMessage('You successfully uploaded the file.', 'passed');
+		Notify::success('You successfully uploaded the file.', 'courses');
 
 		// Push through to the media view
 		$this->mediaTask();
@@ -393,7 +394,7 @@ class Media extends SiteController
 		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -402,7 +403,7 @@ class Media extends SiteController
 		$folder = trim(Request::getVar('folder', '', 'get'));
 		if (!$folder)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_DIRECTORY'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_DIRECTORY'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -415,12 +416,12 @@ class Media extends SiteController
 			// Attempt to delete the file
 			if (!Filesystem::deleteDirectory(PATH_APP . $del_folder))
 			{
-				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');
+				Notify::error(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'courses');
 			}
 			else
 			{
 				//push a success message
-				$this->addComponentMessage('You successfully deleted the folder.', 'passed');
+				Notify::success('You successfully deleted the folder.', 'courses');
 			}
 		}
 
@@ -446,7 +447,7 @@ class Media extends SiteController
 		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -455,7 +456,7 @@ class Media extends SiteController
 		$file = trim(Request::getVar('file', '', 'get'));
 		if (!$file)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_FILE'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -465,7 +466,7 @@ class Media extends SiteController
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->addComponentMessage(Lang::txt('FILE_NOT_FOUND'), 'error');
+			Notify::error(Lang::txt('FILE_NOT_FOUND'), 'courses');
 			$this->mediaTask();
 			return;
 		}
@@ -474,12 +475,12 @@ class Media extends SiteController
 			// Attempt to delete the file
 			if (!Filesystem::delete($path . DS . $file))
 			{
-				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_FILE'), 'error');
+				Notify::error(Lang::txt('UNABLE_TO_DELETE_FILE'), 'courses');
 			}
 		}
 
 		//push a success message
-		$this->addComponentMessage('The file was successfully deleted.', 'passed');
+		Notify::success('The file was successfully deleted.', 'courses');
 
 		// Push through to the media view
 		$this->mediaTask();
@@ -496,7 +497,7 @@ class Media extends SiteController
 		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
 		}
 
 		$course = Course::getInstance($listdir);
@@ -508,7 +509,7 @@ class Media extends SiteController
 			$this->view->course = $course;
 		}
 		$this->view->listdir = $listdir;
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = Notify::messages('courses');
 		$this->view->display();
 	}
 
@@ -530,7 +531,7 @@ class Media extends SiteController
 
 		if (!$listdir)
 		{
-			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
+			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
 		}
 
 		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
@@ -583,7 +584,7 @@ class Media extends SiteController
 		$this->view->images = $images;
 		$this->view->config = $this->config;
 		$this->view->listdir = $listdir;
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->notifications = Notify::messages('courses');
 		$this->view->display();
 	}
 

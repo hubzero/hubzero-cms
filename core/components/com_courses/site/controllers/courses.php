@@ -143,7 +143,7 @@ class Courses extends SiteController
 		$this->view->user     = User::getRoot();
 		$this->view->title    = $this->_title;
 
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = \Notify::messages('courses');
 		$this->view->display();
 	}
 
@@ -217,7 +217,7 @@ class Courses extends SiteController
 		$this->view->model  = $model;
 		$this->view->title  = $this->_title;
 		$this->view->config = $this->config;
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = \Notify::messages('courses');
 		$this->view->display();
 	}
 

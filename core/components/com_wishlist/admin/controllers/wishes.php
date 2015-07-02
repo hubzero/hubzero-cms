@@ -265,10 +265,8 @@ class Wishes extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
-
-		$this->view->messages = $this->getComponentMessage();
 
 		// Output the HTML
 		$this->view
@@ -294,7 +292,7 @@ class Wishes extends AdminController
 		$row = new Wish($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -306,7 +304,7 @@ class Wishes extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -314,7 +312,7 @@ class Wishes extends AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -357,14 +355,14 @@ class Wishes extends AdminController
 
 			if (!$page->check())
 			{
-				$this->addComponentMessage($page->getError(), 'error');
+				$this->setError($page->getError());
 				$this->editTask($row);
 				return;
 			}
 
 			if (!$page->store())
 			{
-				$this->addComponentMessage($page->getError(), 'error');
+				$this->setError($page->getError());
 				$this->editTask($row);
 				return;
 			}

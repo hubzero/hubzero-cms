@@ -1580,9 +1580,9 @@ class Tickets extends SiteController
 		$this->view->title = $this->_title;
 		$this->view->database = $this->database;
 
-		if ($this->getComponentMessage())
+		if (\Notify::any('support'))
 		{
-			foreach ($this->getComponentMessage() as $error)
+			foreach (\Notify::messages('support') as $error)
 			{
 				if ($error['type'] == 'error')
 				{

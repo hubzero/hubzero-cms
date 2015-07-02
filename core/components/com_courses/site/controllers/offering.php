@@ -224,7 +224,7 @@ class Offering extends SiteController
 		$this->view->user          = User::getRoot();
 		$this->view->config        = $this->config;
 		$this->view->plugins       = $plugins;
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = \Notify::messages('courses');
 		$this->view->display();
 	}
 
@@ -385,9 +385,9 @@ class Offering extends SiteController
 
 		if ($this->getError())
 		{
-			$this->addComponentMessage($this->getError(), 'error');
+			\Notify::error($this->getError(), 'courses');
 		}
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = \Notify::messages('courses');
 		$this->view->display();
 	}
 
@@ -408,10 +408,10 @@ class Offering extends SiteController
 	 */
 	public function editTask()
 	{
-		$this->view->setLayout('edit');
-
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-		$this->view->display();
+		$this->view->notifications = \Notify::messages('courses');
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**

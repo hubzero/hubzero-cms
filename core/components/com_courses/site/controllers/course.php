@@ -39,6 +39,7 @@ use Exception;
 use Pathway;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Event;
 use Date;
@@ -193,7 +194,7 @@ class Course extends SiteController
 		$this->view->course        = $this->course;
 		$this->view->user          = User::getRoot();
 		$this->view->config        = $this->config;
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = Notify::messages('courses');
 		$this->view->display();
 	}
 
@@ -272,7 +273,7 @@ class Course extends SiteController
 		// Output HTML
 		$this->view->course = $this->course;
 
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = Notify::messages('courses');
 		$this->view
 			->setLayout('edit')
 			->display();
@@ -317,7 +318,8 @@ class Course extends SiteController
 		if (!$course->bind($data))
 		{
 			$this->tags = $tags;
-			$this->addComponentMessage($course->getError(), 'error');
+
+			Notify::error($course->getError(), 'courses');
 			$this->newTask($course);
 			return;
 		}
@@ -332,7 +334,8 @@ class Course extends SiteController
 		if (!$course->store(true))
 		{
 			$this->tags = $tags;
-			$this->addComponentMessage($course->getError(), 'error');
+
+			Notify::error($course->getError(), 'courses');
 			$this->editTask($course);
 			return;
 		}
@@ -428,7 +431,7 @@ class Course extends SiteController
 		$this->view->course = $this->course;
 
 		$this->view->title = Lang::txt('COM_COURSES_NEW_OFFERING');
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->notifications = Notify::messages('courses');
 
 		$this->view->display();
 	}
@@ -477,7 +480,7 @@ class Course extends SiteController
 			}
 			else
 			{
-				$this->addComponentMessage($offering->getError(), 'error');
+				Notify::error($offering->getError(), 'courses');
 				$this->newofferingTask($offering);
 			}
 			return;
@@ -492,7 +495,7 @@ class Course extends SiteController
 			}
 			else
 			{
-				$this->addComponentMessage($offering->getError(), 'error');
+				Notify::error($offering->getError(), 'courses');
 				$this->newTask($offering);
 			}
 			return;
@@ -561,7 +564,7 @@ class Course extends SiteController
 		{
 			if ($process && !$confirmdel)
 			{
-				$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_CONFIRM_DELETION'), 'error');
+				Notify::error(Lang::txt('COM_COURSES_ERROR_CONFIRM_DELETION'), 'courses');
 			}
 
 			$log = Lang::txt('COM_COURSES_MEMBERS_LOG', count($managers));
@@ -579,7 +582,7 @@ class Course extends SiteController
 			$this->view->course = $course;
 			$this->view->log    = $log;
 			$this->view->msg    = $msg;
-			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+			$this->view->notifications = Notify::messages('courses');
 			$this->view->display();
 			return;
 		}
@@ -593,9 +596,9 @@ class Course extends SiteController
 			$this->view->title = $title;
 			if ($this->course->getError())
 			{
-				$this->addComponentMessage($this->course->getError(), 'error');
+				Notify::error($this->course->getError(), 'courses');
 			}
-			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+			$this->view->notifications = Notify::messages('courses');
 			$this->view->display();
 			return;
 		}
@@ -630,7 +633,7 @@ class Course extends SiteController
 		// Send the message
 		if (!Event::trigger('xmessage.onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option)))
 		{
-			$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');
+			Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
 		}
 
 		// Log the deletion
@@ -643,7 +646,7 @@ class Course extends SiteController
 		$xlog->actorid   = User::get('id');
 		if (!$xlog->store())
 		{
-			$this->addComponentMessage($xlog->getError(), 'error');
+			Notify::error($xlog->getError());
 		}
 
 		// Redirect back to the courses page

@@ -110,7 +110,7 @@ class Citations extends SiteController
 		}
 
 		// Output HTML
-		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->messages = \Notify::messages('citations');
 
 		$this->view
 			->setLayout('display')
@@ -361,7 +361,7 @@ class Citations extends SiteController
 		}
 
 		// Get any messages
-		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->messages = \Notify::messages('citations');
 
 		// Are we allowing importing?
 		$this->view->allow_import = $this->config->get('citation_import', 1);
@@ -447,7 +447,7 @@ class Citations extends SiteController
 		}
 
 		//get any messages & display view
-		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->messages = \Notify::messages('citations');
 		$this->view->config   = $this->config;
 		$this->view->display();
 	}

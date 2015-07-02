@@ -1482,9 +1482,9 @@ class Pipeline extends SiteController
 		{
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
 		}
-		//$this->addComponentMessage(Lang::txt('COM_TOOLS_NOTICE_STATUS_CHANGED'));
+
 		$this->_msg = Lang::txt('COM_TOOLS_NOTICE_STATUS_CHANGED');
-		//$this->_task = 'status';
+
 		$this->statusTask();
 	}
 
@@ -1625,9 +1625,8 @@ class Pipeline extends SiteController
 			Log::debug(__FUNCTION__ . "() after newUpdateTicket");
 		}
 
-		//$this->addComponentMessage(Lang::txt('COM_TOOLS_NOTICE_STATUS_CHANGED'));
 		$this->_msg = Lang::txt('COM_TOOLS_NOTICE_STATUS_CHANGED');
-		//$this->_task = 'status';
+
 		$this->statusTask();
 	}
 
@@ -1677,10 +1676,8 @@ class Pipeline extends SiteController
 		{
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
 			$this->_msg = Lang::txt('COM_TOOLS_NOTICE_MSG_SENT');
-			//$this->addComponentMessage(Lang::txt('COM_TOOLS_NOTICE_MSG_SENT'));
 		}
 
-		//$this->_task = 'status';
 		$this->statusTask();
 	}
 
@@ -1816,7 +1813,7 @@ class Pipeline extends SiteController
 		{
 			if (!Event::trigger('xmessage.onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option)))
 			{
-				$this->addComponentMessage(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'), 'error');
+				Notify::error(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'));
 			}
 		}
 	}

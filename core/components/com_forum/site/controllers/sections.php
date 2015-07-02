@@ -111,7 +111,7 @@ class Sections extends SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		$this->view->notifications = $this->getComponentMessage();
+		$this->view->notifications = \Notify::messages('forum');
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

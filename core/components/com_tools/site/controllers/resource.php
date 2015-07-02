@@ -444,13 +444,11 @@ class Resource extends SiteController
 		}
 		else if ($newtool)
 		{
-			$this->addComponentMessage(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'));
-			//$this->setMessage(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'));
+			\Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'), 'tools');
 		}
 		else
 		{
-			$this->addComponentMessage(Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'));
-			//$this->setMessage(Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'));
+			\Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'), 'tools');
 		}
 
 		return true;

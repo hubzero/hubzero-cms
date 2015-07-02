@@ -138,7 +138,7 @@ class Statuses extends AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			\Notify::error($this->getError());
 		}
 
 		// Output the HTML
@@ -164,7 +164,7 @@ class Statuses extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}

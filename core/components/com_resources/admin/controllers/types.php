@@ -144,7 +144,7 @@ class Types extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -167,7 +167,7 @@ class Types extends AdminController
 		$row = new Type($this->database);
 		if (!$row->bind($_POST))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -227,7 +227,7 @@ class Types extends AdminController
 		// Make sure a category is set
 		if (!$row->category)
 		{
-			$this->addComponentMessage(Lang::txt('COM_RESOURCES_ERROR_SELECT_CATEGORY'), 'error');
+			$this->setError(Lang::txt('COM_RESOURCES_ERROR_SELECT_CATEGORY'));
 			$this->editTask($row);
 			return;
 		}
@@ -235,7 +235,7 @@ class Types extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -243,7 +243,7 @@ class Types extends AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}

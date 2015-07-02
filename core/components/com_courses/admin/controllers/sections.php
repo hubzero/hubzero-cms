@@ -182,7 +182,7 @@ class Sections extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -228,7 +228,7 @@ class Sections extends AdminController
 
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
@@ -243,7 +243,7 @@ class Sections extends AdminController
 
 		if (!$model->store(true))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
@@ -583,7 +583,7 @@ class Sections extends AdminController
 
 		if ($this->getError())
 		{
-			$this->addComponentMessage(implode('<br />', $this->getErrors()), 'error');
+			$this->setError(implode('<br />', $this->getErrors()));
 			$this->editTask($model);
 			return;
 		}

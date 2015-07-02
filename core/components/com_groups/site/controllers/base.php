@@ -35,6 +35,7 @@ use Hubzero\User\Group;
 use Components\Groups\Helpers\View;
 use Pathway;
 use Request;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -51,15 +52,12 @@ class Base extends SiteController
 	 * @param   string  $type     Type [error, passed, warning]
 	 * @return  void
 	 */
-	public function setNotification($message, $type)
+	public function setNotification($message, $type = null)
 	{
-		//if type is not set, set to error message
 		$type = $type ?: 'error';
 
-		//if message is set push to notifications
 		if ($message != '')
 		{
-			//$this->addComponentMessage($message, $type);
 			Notify::message($message, $type, 'groups');
 		}
 	}
@@ -72,10 +70,8 @@ class Base extends SiteController
 	 */
 	public function getNotifications()
 	{
-		//getmessages in quene
-		$messages = Notify::messages('groups'); //$this->getComponentMessage();
+		$messages = Notify::messages('groups');
 
-		//if we have any messages return them
 		if ($messages)
 		{
 			return $messages;
@@ -112,7 +108,6 @@ class Base extends SiteController
 			$return = $customReturn;
 		}
 
-		//redirect
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return))),
 			$message,

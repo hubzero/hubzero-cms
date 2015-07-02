@@ -172,7 +172,7 @@ class Offerings extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -199,7 +199,7 @@ class Offerings extends AdminController
 
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError());
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
@@ -215,7 +215,7 @@ class Offerings extends AdminController
 
 		if (!$model->store(true))
 		{
-			$this->addComponentMessage($model->getError());
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}

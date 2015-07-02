@@ -126,7 +126,7 @@ class Messages extends AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			\Notify::error($this->getError());
 		}
 
 		// Output the HTML
@@ -153,7 +153,7 @@ class Messages extends AdminController
 		$row = new Message($this->database);
 		if (!$row->bind($msg))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -165,7 +165,7 @@ class Messages extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -173,7 +173,7 @@ class Messages extends AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}

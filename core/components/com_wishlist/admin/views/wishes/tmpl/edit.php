@@ -82,11 +82,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<?php if ($this->messages) { ?>
-		<?php foreach ($this->messages as $message) { ?>
-			<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
-		<?php } ?>
-	<?php } ?>
+
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_WISHLIST_DETAILS'); ?></span></legend>

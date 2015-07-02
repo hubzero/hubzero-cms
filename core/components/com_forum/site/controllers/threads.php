@@ -42,6 +42,7 @@ use Filesystem;
 use Document;
 use Pathway;
 use Request;
+use Notify;
 use Config;
 use Route;
 use User;
@@ -186,7 +187,7 @@ class Threads extends SiteController
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;
 
-		$this->view->notifications = $this->getComponentMessage();
+		$this->view->notifications = \Notify::messages('forum');
 
 		// Set the page title
 		$this->_buildTitle();
@@ -427,7 +428,7 @@ class Threads extends SiteController
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;
 
-		$this->view->notifications = $this->getComponentMessage();
+		$this->view->notifications = \Notify::messages('forum');
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -500,14 +501,14 @@ class Threads extends SiteController
 			$thread = new Thread($fields['thread']);
 			if (!$thread->exists() || $thread->get('closed'))
 			{
-				$this->addComponentMessage(Lang::txt('COM_FORUM_ERROR_THREAD_CLOSED'), 'error');
+				Notify::error(Lang::txt('COM_FORUM_ERROR_THREAD_CLOSED'), 'forum');
 				$this->editTask($model);
 				return;
 			}
 		}
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			Notify::error($model->getError(), 'forum');
 			$this->editTask($model);
 			return;
 		}
@@ -515,7 +516,7 @@ class Threads extends SiteController
 		// Store new content
 		if (!$model->store(true))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			Notify::error($model->getError(), 'forum');
 			$this->editTask($model);
 			return;
 		}

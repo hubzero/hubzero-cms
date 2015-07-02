@@ -157,7 +157,7 @@ class Codes extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -184,14 +184,14 @@ class Codes extends AdminController
 
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
 
 		if (!$model->store(true))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
@@ -289,8 +289,7 @@ class Codes extends AdminController
 
 		if ($this->getError())
 		{
-			echo implode('<br />', $this->getErrors());
-			die();
+			throw new Exception(implode('<br />', $this->getErrors(), 500);
 		}
 
 		if (!Request::getInt('no_html', 0))

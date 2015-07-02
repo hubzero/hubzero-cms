@@ -38,6 +38,7 @@ use Exception;
 use Filesystem;
 use Pathway;
 use Request;
+use Notify;
 use Route;
 use Event;
 use User;
@@ -127,7 +128,7 @@ class Import extends SiteController
 		$this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
 
 		//get any messages
-		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->messages = Notify::messages('citations');
 
 		//display view
 		$this->view->display();
@@ -297,7 +298,7 @@ class Import extends SiteController
 		$this->view->citations_require_no_attention = $citations_require_no_attention;
 
 		// get any messages
-		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->messages = Notify::messages('citations');
 
 		// display view
 		$this->view->display();
@@ -547,25 +548,25 @@ class Import extends SiteController
 		else
 		{
 			// success message a redirect
-			$this->addComponentMessage(
+			Notify::success(
 				Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
-				'passed'
+				'citations'
 			);
 
 			// if we have citations not getting saved
 			if (count($citations_not_saved) > 0)
 			{
-				$this->addComponentMessage(
+				Notify::warning(
 					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
-					'warning'
+					'citations'
 				);
 			}
 
 			if (count($citations_error) > 0)
 			{
-				$this->addComponentMessage(
+				Notify::error(
 					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
-					'error'
+					'citations'
 				);
 			}
 
@@ -651,7 +652,7 @@ class Import extends SiteController
 		$this->view->types = $ct->getType();
 
 		//get any messages
-		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->messages = Notify::messages('citations');
 
 		//display view
 		$this->view->display();

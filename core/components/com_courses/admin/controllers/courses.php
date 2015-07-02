@@ -159,7 +159,7 @@ class Courses extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		$this->view->config = $this->config;
@@ -188,7 +188,7 @@ class Courses extends AdminController
 		$row = new \Components\Courses\Models\Course(0);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -196,7 +196,7 @@ class Courses extends AdminController
 		// Store content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}

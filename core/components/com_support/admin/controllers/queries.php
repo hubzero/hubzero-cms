@@ -186,7 +186,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editTask($row);
 			}
 			else
@@ -201,7 +201,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editTask($row);
 			}
 			else
@@ -216,7 +216,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editTask($row);
 			}
 			else
@@ -429,7 +429,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editfolderTask($row);
 			}
 			else
@@ -446,7 +446,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editfolderTask($row);
 			}
 			else
@@ -463,7 +463,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editfolderTask($row);
 			}
 			else
