@@ -553,7 +553,7 @@ class Groups extends Base
 		$c_gidNumber = Request::getVar('gidNumber', 0, 'post');
 
 		// forces the default value to 0
-		if($c_gidNumber == "")
+		if ($c_gidNumber == "")
 		{
 			$c_gidNumber = 0;
 		}
