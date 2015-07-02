@@ -98,9 +98,9 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 					Request::setVar('id',      User::get('id'));
 					Request::setVar('active', 'profile');
 				}
-			}
 
-			$this->event->stop();
+				$this->event->stop();
+			}
 		}
 	}
 }
