@@ -1384,7 +1384,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Do we have an ID?
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
+			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
 			return;
 		}
 
@@ -1418,6 +1418,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		{
 			foreach ($a as $k => $v)
 			{
+				$v = intval($v);
+				if (!in_array($v, array(0, 1, 2, 3, 4)))
+				{
+					$v = 0;
+				}
 				$profile->setParam('access_' . $k, $v);
 			}
 		}
@@ -1719,7 +1724,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Do we have an ID?
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
+			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
 			return;
 		}
 
@@ -1730,8 +1735,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			// Load the profile
 			$profile = \Hubzero\User\Profile::getInstance($id);
 
-			foreach ($p as $k=>$v)
+			foreach ($p as $k => $v)
 			{
+				$v = intval($v);
+				if (!in_array($v, array(0, 1, 2, 3, 4)))
+				{
+					$v = 0;
+				}
 				$profile->setParam('access_' . $k, $v);
 			}
 
