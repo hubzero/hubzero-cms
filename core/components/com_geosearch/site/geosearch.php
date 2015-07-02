@@ -36,8 +36,7 @@ $componentBase = dirname(__DIR__) . DS;
 require_once($componentBase . 'site' . DS . 'controllers' . DS .  'map.php' );
 
 // require models
-require_once($componentBase . 'tables' . DS . 'markers.php');
-require_once($componentBase . 'tables' . DS . 'tags.php');
+require_once($componentBase . 'tables' . DS . 'geosearchmarkers.php');
 
 $controllerName = \Request::getCmd('controller', 'map');
 if (!file_exists($componentBase . DS . 'site' . 'controllers' . DS . $controllerName . '.php'))
