@@ -1762,6 +1762,15 @@ class Tickets extends SiteController
 			// Send e-mail to ticket owner?
 			if (Request::getInt('email_owner', 0) == 1)
 			{
+				if ($old->get('owner') && $row->get('owner') != $old->get('owner'))
+				{
+					$rowc->addTo(array(
+						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_PRIOR_OWNER'),
+						'name'  => $old->owner('name'),
+						'email' => $old->owner('email'),
+						'id'    => $old->owner('id')
+					));
+				}
 				if ($row->get('owner'))
 				{
 					$rowc->addTo(array(
