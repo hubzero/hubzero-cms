@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @author	Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -32,7 +32,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->js();
+	 ->js();
 
 //get no_html request var
 $no_html = Request::getInt( 'no_html', 0 );
@@ -67,11 +67,11 @@ $no_html = Request::getInt( 'no_html', 0 );
 						// Determine the join policy
 						switch ($this->group->get('join_policy'))
 						{
-							case 3: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING');     break;
-							case 2: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING');     break;
+							case 3: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING');	 break;
+							case 2: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING');	 break;
 							case 1: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); break;
 							case 0:
-							default: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING');      break;
+							default: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING');	  break;
 						}
 
 						// Determine the discoverability
@@ -123,13 +123,13 @@ $no_html = Request::getInt( 'no_html', 0 );
 				</div><!-- /#page_header -->
 				<div id="page_notifications">
 					<?php
-                        if (count($this->notifications) > 0)
-                        {
-                            foreach ($this->notifications as $notification)
-                            {
-                                echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-                            }
-                        }
+						if (count($this->notifications) > 0)
+						{
+							foreach ($this->notifications as $notification)
+							{
+								echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+							}
+						}
 
 					?>
 				</div><!-- /#page_notifications -->
