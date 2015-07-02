@@ -103,53 +103,99 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 		$objOrganizations = new	\Components\Members\Tables\Organization($this->database);
 		$organizations = $objOrganizations->find('all');
 
-		//separate by scope
-		$existingMarkers = $this->_separatebyScope($markers);
-		echo "<pre>";
-
-		//unique entries
-		foreach ($existingMarkers as $class => &$existing)
+		if (count($markers) > 0)
 		{
-			switch ($class)
+			//separate by scope
+			$existingMarkers = $this->_separatebyScope($markers);
+
+			//unique entries
+			foreach ($existingMarkers as $class => &$existing)
 			{
-				case 'markerJobIDs':
-					$identifier = 'code';
-					$all = $jobs;
-				break;
-				case 'markerMemberIDs':
-					$identifier = 'uidNumber';
-					$all = $profiles;
-				break;
-				case 'markerEventIDs':
-					$identifier = 'id';
-					$all = $events;
-				break;
-				case 'markerOrganizationIDs':
-					$identifier = 'id';
-					$all = $organizations;
-				break;
-				default:
-					$identifier = '';
-					$all = array();
-				break;
-			} //end switch
-			if ($identifier != '' && count($all) > 0)
+				switch ($class)
+				{
+					case 'markerJobIDs':
+						$identifier = 'code';
+						$all = $jobs;
+					break;
+					case 'markerMemberIDs':
+						$identifier = 'uidNumber';
+						$all = $profiles;
+					break;
+					case 'markerEventIDs':
+						$identifier = 'id';
+						$all = $events;
+					break;
+					case 'markerOrganizationIDs':
+						$identifier = 'id';
+						$all = $organizations;
+					break;
+					default:
+						$identifier = '';
+						$all = array();
+					break;
+				} //end switch
+				if ($identifier != '' && count($all) > 0)
+				{
+					//var_dump($all);
+					$existing = $this->_distill($existing, $all, $identifier);
+				}
+			}
+
+			$markerMemberIDs = $this->_scopify($existingMarkers['markerMemberIDs'], 'member');
+			$markerJobIDs = $this->_scopify($existingMarkers['markerJobIDs'], 'job');
+			$markerEventIDs = $this->_scopify($existingMarkers['markerEventIDs'], 'event');
+			$markerOrganizationIDs = $this->_scopify($existingMarkers['markerOrganizationIDs'], 'organization');
+
+		} //end if (checks for existing markers and filters in new markers)
+		elseif(count($markers) == 0) // for unpopulated table
+		{
+			$markerMemberIDs = array();
+			$markerJobIDs = array();
+			$markerEventIDs = array();
+			$markerOrganizationIDs = array();
+
+			foreach($profiles as $profile)
 			{
-				//var_dump($all);
-				$existing = $this->_distill($existing, $all, $identifier);
+				$obj = array();
+				$obj['scope'] = 'member';
+				$obj['scope_id'] = $profile->uidNumber;
+
+				array_push($markerMemberIDs, $obj);
+			}
+
+			foreach($jobs as $job)
+			{
+				$obj = array();
+				$obj['scope'] = 'job';
+				$obj['scope_id'] = $job->code;
+
+				array_push($markerJobIDs, $obj);
+			}
+
+			foreach($events as $event)
+			{
+				$obj = array();
+				$obj['scope'] = 'event';
+				$obj['scope_id'] = $event->id;
+
+				array_push($markerEventIDs, $obj);
+			}
+
+			foreach($organizations as $organization)
+			{
+				$obj = array();
+				$obj['scope'] = 'organization';
+				$obj['scope_id'] = $organization->id;;
+
+				array_push($markerEventIDs, $obj);
 			}
 		}
-
-		$markerMemberIDs = $this->_scopify($existingMarkers['markerMemberIDs'], 'member');
-		$markerJobIDs = $this->_scopify($existingMarkers['markerJobIDs'], 'job');
-		$markerEventIDs = $this->_scopify($existingMarkers['markerEventIDs'], 'event');
-		$markerOrganizationIDs = $this->_scopify($existingMarkers['markerOrganizationIDs'], 'organization');
 
 		//merge into one array
 		$newMarkers = $this->_merger($markerMemberIDs, $markerJobIDs, $markerEventIDs, $markerOrganizationIDs);
 
 		$creations = $this->_doGeocode($newMarkers, $objProfile, $objJob, $objEvents, $objOrganizations);
-
+		
 		foreach ($creations as $creation)
 		{
 
@@ -173,6 +219,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 	private function _doGeocode($markers, $objProfile, $objJob, $objEvents, $objOrganizations)
 	{
 		$geocode = new \Hubzero\Geocode\Geocode;
+		$createMarkers = array();
 
 		foreach ($markers as $marker)
 		{
@@ -202,7 +249,6 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				break;
 			} //end switch
 
-			$createMarkers = array();
 			if ($address != "")
 			{
 				$location = $geocode->locate($address);
