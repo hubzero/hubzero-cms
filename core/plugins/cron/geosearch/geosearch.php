@@ -192,7 +192,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				break;
 				case 'organization':
 					$object = $objOrganizations->find('all');
-					foreach($object as $obj)
+					foreach ($object as $obj)
 					{
 						if ($marker['scope_id'] == $obj->id)
 						{
@@ -272,7 +272,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 			} //end foreach
 			return $existing;
 		} // end if
-		elseif(count($existing) == 0 && count($all) > 0)
+		elseif (count($existing) == 0 && count($all) > 0)
 		{
 			$newMarkers = array();
 			foreach ($all as $a)
