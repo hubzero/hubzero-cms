@@ -559,7 +559,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			$c_gidNumber = 0;
 		}
-		
+
 		if ((string) $g_gidNumber !== (string) $c_gidNumber)
 		{
 			throw new Exception(JText::_('COM_GROUPS_ERROR_NO_ID'), 404);
