@@ -60,32 +60,32 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 }
 ?>
 <div id="ajax-upload-container">
-	<form action="<?php echo Route::url('index.phpoption=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data">
-		<h2><?php echo Lang::txt('COM_MEMBERS_PICTURE_UPLOAD'); ?></h2>
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data">
+		<h2><?php echo Lang::txt('Upload a New Profile Picture'); ?></h2>
 		<div id="ajax-upload-left">
 			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $this->escape($picture->name); ?>" data-default-pic="<?php echo $this->escape($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')); ?>" />
 			<?php if ($this->profile->get("picture") != '') : ?>
-			<a href="#" id="remove-picture"><?php echo Lang::txt('COM_MEMBERS_PICTURE_DELETE'); ?></a>
+				<a href="#" id="remove-picture"><?php echo Lang::txt('[Remove Picture]'); ?></a>
 			<?php endif; ?>
 		</div><!-- /#ajax-upload-left -->
 		<div id="ajax-upload-right">
-			<div id="ajax-uploader" data-action="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>&amp;task=doajaxupload&amp;no_html=1"></div>
+			<div id="ajax-uploader" data-action="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>&amp;task=doajaxupload&amp;no_html=1&amp;<?php echo Session::getFormToken(); ?>=1"></div>
 			<table>
 				<tbody>
 					<tr>
-						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_NAME'); ?></td>
+						<td class="key"><?php echo Lang::txt('Name:'); ?></td>
 						<td id="picture-name"><?php echo $this->escape($picture->name); ?></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_SIZE'); ?></td>
+						<td class="key"><?php echo Lang::txt('Size:'); ?></td>
 						<td id="picture-size"><?php echo $this->escape($picture->size); ?></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_WIDTH'); ?></td>
+						<td class="key"><?php echo Lang::txt('Width:'); ?></td>
 						<td id="picture-width"><?php echo $this->escape($picture->width); ?></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo Lang::txt('COM_MEMBERS_PICTURE_HEIGHT'); ?></td>
+						<td class="key"><?php echo Lang::txt('Height:'); ?></td>
 						<td id="picture-height"><?php echo $this->escape($picture->height); ?></td>
 					</tr>
 				</tbody>
@@ -93,8 +93,8 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 		</div><!-- /#ajax-upload-right -->
 		<br class="clear" />
 		<div id="ajax-upload-actions">
-			<button class="btn section-edit-cancel"><?php echo Lang::txt('CANCEL'); ?></button>
-			<button class="btn btn-success section-edit-submit"><?php echo Lang::txt('COM_MEMBERS_PICTURE_SAVE'); ?></button>
+			<button class="btn section-edit-cancel"><?php echo Lang::txt('Cancel'); ?></button>
+			<button class="btn btn-success section-edit-submit"><?php echo Lang::txt('Save Changes'); ?></button>
 		</div><!-- /#ajax-upload-actions -->
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 <form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=savefolder&no_html=1'); ?>" method="post" class="hubForm">
 	<fieldset>
-		<legend>Add Folder</legend>
+		<legend><?php echo Lang::txt('Add Folder'); ?></legend>
 		<label>
 			<?php echo Lang::txt('Folder Name: '); ?>
 			<input type="text" name="name" />
@@ -44,7 +44,8 @@ defined('_HZEXEC_') or die();
 			<?php echo $this->folderList; ?>
 		</label>
 		<p class="controls">
-			<button type="submit" class="btn icon-save">Create</button>
+			<?php echo Html::input('token'); ?>
+			<button type="submit" class="btn icon-save"><?php echo Lang::txt('Create'); ?></button>
 		</p>
 	</fieldset>
 </form>

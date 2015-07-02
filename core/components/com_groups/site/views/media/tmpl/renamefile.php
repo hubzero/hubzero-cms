@@ -45,6 +45,7 @@ $fileInfo = pathinfo($this->file);
 			<input type="text" name="name" value="<?php echo $fileInfo['basename']; ?>" />
 		</label>
 		<p class="controls">
+			<?php echo Html::input('token'); ?>
 			<button type="submit" class="btn icon-edit"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></button>
 		</p>
 	</fieldset>

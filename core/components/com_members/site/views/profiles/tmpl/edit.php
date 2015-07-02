@@ -714,7 +714,7 @@ $html .= "<a name=\"memberpicture\"></a>";
 $html .= "\t\t".'<legend>'.Lang::txt('MEMBER_PICTURE').'</legend>'."\n";
 $html .= "\t\t".'<iframe width="100%" height="350" border="0" name="filer" id="filer" src="index.php?option='.$this->option.'&amp;controller=media&amp;tmpl=component&amp;file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('uidNumber').'"></iframe>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
-
+$html .= Html::input('token');
 $html .= "\t".'<p class="submit"><input class="btn btn-success" type="submit" name="submit" value="'.Lang::txt('SAVE').'" /></p>'."\n";
 $html .= '</form>'."\n";
 $html .= '</section>'."\n";

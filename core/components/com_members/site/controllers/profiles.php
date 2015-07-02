@@ -777,9 +777,6 @@ class Profiles extends SiteController
 			return;
 		}
 
-		// Check token
-		Request::checkToken();
-
 		$passrules = false;
 
 		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true))
@@ -1342,6 +1339,8 @@ class Profiles extends SiteController
 		{
 			return false;
 		}
+
+		Request::checkToken();
 
 		$no_html = Request::getVar("no_html", 0);
 

@@ -448,6 +448,8 @@ class Media extends Base
 	 */
 	public function doUpload()
 	{
+		Request::checkToken();
+
 		// var to hold potential error
 		$returnObj          = new \stdClass;
 		$returnObj->error   = false;
@@ -578,6 +580,8 @@ class Media extends Base
 	 */
 	public function ajaxuploadTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		//get config
 		$config = Component::params('com_media');
 
@@ -912,6 +916,8 @@ class Media extends Base
 	 */
 	public function deletefileTask()
 	{
+		Request::checkToken();
+
 		// Incoming file
 		$file = trim(Request::getVar('file', '', 'get'));
 		$file = $this->path . $file;
@@ -1177,6 +1183,8 @@ class Media extends Base
 	 */
 	public function deleteFolderTask()
 	{
+		Request::checkToken();
+
 		//get request vars
 		$folder = Request::getVar('folder', '');
 

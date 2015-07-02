@@ -83,7 +83,6 @@ class Media extends SiteController
 		$this->view->profile = \Hubzero\User\Profile::getInstance($id);
 
 		//instantiate view and pass needed vars
-		$this->view->setLayout('upload');
 		$this->view->config = $this->config;
 
 		foreach ($this->getErrors() as $error)
@@ -91,7 +90,9 @@ class Media extends SiteController
 			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('upload')
+			->display();
 	}
 
 	/**
@@ -101,6 +102,8 @@ class Media extends SiteController
 	 */
 	public function doajaxuploadTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		//allowed extensions for uplaod
 		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
 
@@ -249,6 +252,8 @@ class Media extends SiteController
 	 */
 	public function ajaxuploadsaveTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		//get the user id
 		$id = Request::getInt('id', 0);
 		if (!$id)
@@ -319,7 +324,6 @@ class Media extends SiteController
 			return false;
 		}
 
-		// Check for request forgeries
 		Request::checkToken();
 
 		// Incoming member ID

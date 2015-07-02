@@ -42,6 +42,7 @@ defined('_HZEXEC_') or die();
 			<input type="hidden" name="no_html" value="1" />
 			<input type="hidden" name="task" value="upload" />
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+			<?php echo Html::input('token'); ?>
 
 			<input type="file" name="upload" id="upload" size="17" />
 			<input type="submit" value="<?php echo Lang::txt('UPLOAD'); ?>" />

@@ -44,6 +44,7 @@ defined('_HZEXEC_') or die();
 			<?php echo $this->folderList; ?>
 		</label>
 		<p class="controls">
+			<?php echo Html::input('token'); ?>
 			<button type="submit" class="btn icon-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></button>
 		</p>
 	</fieldset>

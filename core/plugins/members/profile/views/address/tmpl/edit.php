@@ -39,7 +39,7 @@ $this->css()
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="index.php" method="post" id="hubForm<?php if (Request::getInt('no_html', 0)) { echo '-ajax'; }; ?>" class="member-address-form">
+<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" id="hubForm<?php if (Request::getInt('no_html', 0)) { echo '-ajax'; }; ?>" class="member-address-form">
 	<?php if (!Request::getInt('no_html', 0)) : ?>
 	<div class="explaination">
 		<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></h3>
@@ -98,4 +98,5 @@ $this->css()
 	<input type="hidden" name="active" value="profile" />
 	<input type="hidden" name="action" value="saveaddress" />
 	<input type="hidden" name="address[id]" value="<?php echo $this->addressId; ?>" />
+	<?php echo Html::input('token'); ?>
 </form>
