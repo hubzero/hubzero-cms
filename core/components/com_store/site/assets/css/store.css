@@ -29,7 +29,8 @@
 	.storeitems li.new {
 		position: relative;
 	}
-	.storeitems li.featured:before, .storeitems li.new:before {
+	.storeitems li.featured:before,
+	.storeitems li.new:before {
 		font-size: 0.9em;
 		display: block;
 		position: absolute;
@@ -43,9 +44,8 @@
 		text-align: center;
 		top: 0em;
 		left: -0.25em;
-		
-		-ms-transform: rotate(-20deg);
 		-webkit-transform: rotate(-20deg);
+		-ms-transform: rotate(-20deg);
 		-o-transform: rotate(-20deg);
 		transform: rotate(-20deg);
 		-webkit-box-shadow: 2px 2px 5px -2px rgba(0,0,0,0.2);
@@ -60,7 +60,7 @@
 		content: 'NEW!';
 		background: #C30;
 	}
-	
+
 	.storeitems h4 { 
 		margin: 0;
 		padding: 0;
@@ -74,7 +74,7 @@
 	.imageholder a:hover {
 		border: none;
 	}
-	
+
 	.shoppingcart {
 		background: transparent url("/core/components/com_store/site/assets/img/cart.gif") 0 0 no-repeat; 
 		padding-left: 22px;
@@ -97,7 +97,7 @@
 		margin-right: 3em; 
 		color: #888; 
 	}
-	
+
 	.totals { 
 		height: 30px; 
 		font-weight: bold; 
@@ -131,7 +131,7 @@
 		border: none;
 		color: #666666;
 	}
-		
+
 	.sidetitle { 
 		display: block; 
 		color: #333333; 
@@ -155,7 +155,7 @@
 	.checkout {
 		background: transparent url("/core/components/com_store/site/assets/img/checkout.gif") 0 0 no-repeat;
 		margin: 0 0 0 -3em;
-		padding: 15px 0 0 80px;		
+		padding: 15px 0 0 80px;
 	}
 	.reassure {
 		font-weight: bold;
@@ -211,12 +211,12 @@
 		padding-left: 3em; 
 		display: block; 
 	}
-	
+
 	.price  {
 		color: #000;
 		text-transform: lowercase;
-		font-size: 120%;	
-		margin: 0 0 1em 0;	
+		font-size: 120%;
+		margin: 0 0 1em 0;
 		padding: 0 0 0.5em 1em;
 		border: 0;
 		display: block;
@@ -232,13 +232,14 @@
 		text-indent: -55em;
 		float: left;
 	}
-	.price a:hover { 
-		border: none; 
+	.price a:hover {
+		border: none;
 	}
-	.coin:hover { 
-		border: none; 
+	.coin:hover {
+		border: none;
 	}
-	.coin, a.coin  {
+	.coin,
+	a.coin {
 		margin: 0.3em 0 0 0.3em;
 		background: transparent url("/core/components/com_store/site/assets/img/coin.gif") 0 0  no-repeat;
 		padding: 0 0.5em 0 0.5em;
@@ -285,7 +286,7 @@
 		right: 1em;
 		font-weight: bold;
 	}
-	
+
 	.final_summary span {
 		float: right;
 		padding-right: 4em;
@@ -346,14 +347,13 @@
 	.removeitem {
 		margin: 0 0 0 0.5em;
 	}
-	
-	#hubForm h3 { 
+
+	#hubForm h3 {
 		padding: 0.5em 0 0.5em 0;
 	}
-	#hubForm fieldset { 
-
+	#hubForm fieldset {
 	}
-	.loginform #hubForm fieldset { 
+	.loginform #hubForm fieldset {
 		width: 50%;
 	}
 	.hint {
@@ -378,8 +378,5 @@
 		border: none;
 	}
 	.quantityspecs {
-
 	}
-	
-/* [!] IE 7 Hacks */
 

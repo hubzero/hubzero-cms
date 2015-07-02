@@ -139,8 +139,8 @@ class Store extends \JTable
 				{
 					$row = &$result[$i];
 
-					$row->webpath = $config->get('webpath', '/site/store');
-					$row->root = PATH_APP;
+					$row->webpath = substr(PATH_APP, strlen(PATH_ROOT)) . $config->get('webpath', '/site/store');
+					$row->root = PATH_ROOT;
 
 					// Get parameters
 					$params = new \Hubzero\Config\Registry($row->params);

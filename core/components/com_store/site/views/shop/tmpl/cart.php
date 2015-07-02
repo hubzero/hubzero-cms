@@ -39,7 +39,7 @@ $this->css()
 
 	<div id="content-header-extra">
 		<p>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="icon-store storefront btn"><?php echo Lang::txt('COM_STORE_STOREFRONT'); ?></a>
+			<a class="icon-prev storefront btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_STORE_STOREFRONT'); ?></a>
 			<a class="icon-points mypoints btn" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_STORE_MY_POINTS'); ?></a>
 		</p>
 	</div><!-- / #content-header-extra -->
@@ -68,6 +68,7 @@ $this->css()
 					<input type="hidden" name="task" value="checkout" />
 					<input type="hidden" name="funds" id="funds" value="<?php echo $this->funds; ?>" />
 					<input type="hidden" name="cost" id="cost" value="<?php echo $this->cost; ?>" />
+					<?php echo Html::input('token'); ?>
 
 					<table id="tktlist">
 						<thead>
@@ -160,7 +161,7 @@ $this->css()
 					<?php } ?>
 					</p>
 				</form>
-				
+
 				<div class="footernotes">
 					<p>* <?php echo Lang::txt('COM_STORE_CART_NOTES'); ?></p>
 				</div>
