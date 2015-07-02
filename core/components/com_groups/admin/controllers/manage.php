@@ -475,13 +475,17 @@ class Manage extends AdminController
 
 		// look at all current users granted permissions
 		$canCreateSuperGroupDB = false;
-		foreach ($grants as $grant)
+
+		if (count($grants) > 0)
 		{
-			if (preg_match('/sg\\\\_%/', $grant))
+			foreach ($grants as $grant)
 			{
-				$canCreateSuperGroupDB = true;
-			}
-		}
+				if (preg_match('/sg\\\\_%/', $grant))
+				{
+					$canCreateSuperGroupDB = true;
+				}
+			} //end foreach
+		} //end if
 
 		// create super group DB if doesnt already exist
 		if ($canCreateSuperGroupDB)
