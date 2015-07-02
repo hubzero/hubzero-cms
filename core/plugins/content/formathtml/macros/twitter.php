@@ -46,7 +46,8 @@ class Twitter extends Macro
 	{
 		$txt = array();
 		$txt['wiki'] = "Embeds a Twitter Feed into the page";
-		$txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero) or search by trend(#hubzero), followed by a comma(,) and then the number of tweets to display.</p>
+		$txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero), or a Twitter widget ID(see below), followed by a comma(,) and then the number of tweets to display.</p>
+						<p>A Twitter widget may be set up by going to <a href="https://www.twitter.com/settings/widgets">Twitter\'s widget configuration page</a>.  After setting a widget up, the widget ID can be found as an 18 digit number in the URL of the settings, or within the HTML in the text box labeled "Copy and paste the code into the HTML of your site" as the item data-widget-id="####".</p>
 						<p>Examples:</p>
 						<ul>
 							<li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>
@@ -59,7 +60,7 @@ class Twitter extends Macro
 							data-tweet-limit="2"
 							data-chrome=""
 							>Loading Tweets...</a>
-						<script>!function(d,s,id) {var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 
 		return $txt['html'];
 	}
@@ -82,7 +83,7 @@ class Twitter extends Macro
 		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
 
 		//make sure we have a user name
-		if ($screenName == '' && $widgetId == '')
+		if ($screenName == '' && $widgetId == '' || strpos($screenName, '#') !== FALSE)
 		{
 			return '(Please enter a valid Twitter Username/ID or Widget ID)';
 		}
@@ -91,16 +92,11 @@ class Twitter extends Macro
 		$atts   = array();
 		$atts[] = 'data-widget-id="346714310770302976"';
 
-		// to account for different URL for hashtags?
-		if (strpos($screenName, '#') !== FALSE)
+		// twitter does not allow numeric usernames, this must be a widget id
+		if (is_numeric($screenName))
 		{
-			$screenName = str_replace('#', '', $screenName);
-			$atts[] = 'href="https://twitter.com/hashtag/' . $screenName . '"';
-		}
-		else
-		{
-			$atts[] = 'href="https://twitter.com/'. $screenName . '"';
-			$atts[] = 'data-screen-name="' . $screenName . '"';
+			$atts = array('data-widget-id="' . $screenName . '"');
+			$screenName = '';
 		}
 
 		// pass already configured widget
@@ -108,6 +104,13 @@ class Twitter extends Macro
 		{
 			$atts = array('data-widget-id="' . $widgetId . '"');
 		}
+		//no widget id, set up the screen name to show tweets from
+		else
+		{
+			$atts[] = 'href="https://twitter.com/'. $screenName . '"';
+			$atts[] = 'data-screen-name="' . $screenName . '"';
+		}
+
 
 		$atts[] = 'width="' . $width . '"';
 		$atts[] = 'height="' . $height . '"';
