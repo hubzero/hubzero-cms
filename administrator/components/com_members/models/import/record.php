@@ -356,7 +356,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			// Did we successfully create an account?
 			if ($result)
 			{
-				$this->_profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+				if (!$this->record->entry->get('emailConfirmed', null))
+				{
+					$this->_profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+				}
 				$this->_profile->set('uidNumber', $user->get('id'));
 				$this->_profile->set('gidNumber', $profile->get('gidNumber'));
 
@@ -397,6 +400,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $password);
 			//}
 		}
+
+		\Hubzero\User\Password::expirePassword($this->_profile->get('uidNumber'));
 
 		if ($isNew && $this->_options['emailnew'] == 1)
 		{
