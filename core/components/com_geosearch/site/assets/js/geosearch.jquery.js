@@ -76,7 +76,7 @@ HUB.Geosearch = {
 					var url = "/api/jobs/job"
 					var data = { jobcode : marker.scope_id}
 				break;
-				case "org":
+				case "organization":
 					var url = "/api/members/organizations";
 					/* not supported yet */
 					//var data = { orgID : marker.scope_id};
@@ -149,7 +149,7 @@ HUB.Geosearch = {
 						html += '</div>';
 
 					break;
-					case "org":
+					case "organization":
 						// organization table needs to be updated for searching by ID
 						var organizations = data.organizations;
 						var title = '';
@@ -213,7 +213,7 @@ HUB.Geosearch = {
 					case "job":
 						var icon = "/core/components/com_geosearch/site/assets/img/icn_job.png";
 						break;
-					case "org":
+					case "organization":
 						var icon = "/core/components/com_geosearch/site/assets/img/icn_org.png";
 					break;
 				}
