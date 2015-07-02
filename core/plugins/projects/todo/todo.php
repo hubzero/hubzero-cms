@@ -236,6 +236,41 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * To do in multiple projects (members/groups plugins)
+	 *
+	 * @param      array 	$filters    Query filters
+	 * @param      integer  $limit 		Number of entries
+	 *
+	 * @return     array
+	 */
+	public function onShared($area, $model, $projects, $uid, $filters)
+	{
+		// Check if our area is the one we want to return results for
+		if ($area != 'todo')
+		{
+			return;
+		}
+
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'todo',
+				'name'    => 'view',
+				'layout'  => 'shared'
+			)
+		);
+		$view->limit    = isset($filters['limit']) ? $filters['limit'] : 0;
+		$view->filters  = $filters;
+		$view->uid      = $uid;
+		$view->model    = $model;
+		$view->database = App::get('db');
+		$view->todo     = new \Components\Projects\Models\Todo();
+
+		return $view->loadTemplate();
+	}
+
+	/**
 	 * View of items
 	 *
 	 * @return	   string
@@ -265,8 +300,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			'projects'	 => array($this->model->get('id')),
 			'limit'		 => Request::getInt('limit', $this->params->get('limit', 50)),
 			'start'		 => Request::getInt('limitstart', 0),
-			'todolist'	 => Request::getVar('list', ''),
-			'state'		 => isset($this->_state) ? $this->_state : Request::getVar('state', 0),
+			'todolist'	 => Request::getWord('list', ''),
+			'state'		 => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
 			'mine'		 => $mine,
 			'assignedto' => $mine == 1  ? $this->_uid : 0,
 			'sortby'	 => Request::getVar('sortby', 'priority'),

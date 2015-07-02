@@ -67,7 +67,6 @@
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
-		color: #aaa;
 		margin-right: 0.3em;
 		vertical-align: middle;
 	}
@@ -189,6 +188,9 @@
 	#suggestions .s-todo a:before, .suggestions .s-todo a:before,
 	.feature #feature-todo .ima:before, .todo:before {
 		content: "\f08d";
+	}
+	#suggestions .s-todo a:before, .suggestions .s-todo a:before,
+	.feature #feature-todo .ima:before, .com_projects .todo:before {
 		color: #c6a68d;
 	}
 	#suggestions .s-notes a:before, .suggestions .s-notes a:before,
@@ -199,6 +201,8 @@
 	}
 	.feature #feature-blog .ima:before, .blog:before {
 		content: "\f075";
+	}
+	.feature #feature-blog .ima:before, .com_projects .blog:before {
 		color: #8f8faa;
 	}
 	.feature #feature-publications .ima:before,

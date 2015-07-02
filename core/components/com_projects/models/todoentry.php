@@ -159,6 +159,22 @@ class Entry extends Model
 	}
 
 	/**
+	 * Get the home project of this entry
+	 *
+	 * @return  object Models\Project
+	 */
+	public function project($get = NULL)
+	{
+		if (empty($this->_project))
+		{
+			$this->_project = new \Components\Projects\Models\Project($this->get('projectid'));
+			$this->_project->_params = new \Hubzero\Config\Registry( $this->_project->params );
+		}
+
+		return $get ? $this->_project->get($get) : $this->_project;
+	}
+
+	/**
 	 * Return a formatted created timestamp
 	 *
 	 * @param      string $as What data to return

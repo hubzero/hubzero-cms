@@ -142,7 +142,7 @@ class Todo extends \JTable
 		{
 			$sort = '';
 			$sortby	 = isset($filters['sortby']) ? $filters['sortby'] : 'priority';
-			$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
+			$sortdir = isset($filters['sortdir']) && $filters['sortdir'] == 'DESC' ? 'DESC' : 'ASC';
 
 			switch ($sortby)
 			{
@@ -162,6 +162,14 @@ class Todo extends \JTable
 				case 'list':
 					$sort .= 'p.color ' . $sortdir;
 					break;
+
+				case 'content':
+					$sort .= 'p.content ' . $sortdir;
+					break;
+
+				case 'project':
+					$sort .= 'p.projectid ' . $sortdir;
+					break;
 			}
 
 			$query .= "ORDER BY $sort ";
@@ -172,7 +180,7 @@ class Todo extends \JTable
 		}
 
 		$this->_db->setQuery( $query );
-		return $count ? $this->_db->loadResult() :	$this->_db->loadObjectList();
+		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
 	}
 
 	/**

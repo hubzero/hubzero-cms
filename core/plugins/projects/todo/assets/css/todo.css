@@ -1129,6 +1129,40 @@
 		font-size: 85%;
 		padding: 0.5em 0 0 0;
 	}
+/* Members plugin
+--------------------------------------------- */
+	.com_members #todo-table.entries thead th {
+		padding: 0.5em 0;
+		text-align: left;
+	}
+	.ordernum {
+		background: #EFEFEF;
+		color: #666;
+		display: block;
+		font-size: 0.8em;
+		vertical-align: middle;
+		height: 20px;
+		min-width: 20px;
+		text-align: center;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.block {
+		display: block;
+	}
+	.mini {
+		font-size: 85%;
+	}
+	.faded {
+		color: #999;
+	}
+	.nowrap {
+		white-space: nowrap;
+	}
+	.member_todo .container {
+		margin-bottom: 2em;
+	}
+
 /* 	Fixes for smaller screens
 --------------------------------------------- */
 	@media all and (max-width: 800px) {

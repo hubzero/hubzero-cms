@@ -142,6 +142,10 @@ class Project extends \JTable
 							AND ((p.state != 2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
 							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " ))) "
 						: " WHERE 1=2";
+				if (!empty($filters['editor']))
+				{
+					$query .= " AND o.role != 5 ";
+				}
 				if ($which == 'owned' && $uid)
 				{
 					$query .= " AND (p.owned_by_user =" . $this->_db->quote($uid) . " AND p.owned_by_group = 0) ";
