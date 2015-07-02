@@ -31,6 +31,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Hubzero\Geocode;
+
 /**
  * Cron plugin for support tickets
  */
@@ -71,15 +73,15 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 	 */
 	public function getLocationData(\Components\Cron\Models\Job $job)
 	{
+		//setup database object
 		$this->database = App::get('db');
+
+		//get the relevant tables
 		require_once(PATH_CORE . DS . 'components' . DS .'com_members' . DS . 'tables' . DS . 'profile.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_geosearch' . DS . 'tables' . DS . 'geosearchmarkers.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_jobs' . DS . 'tables' . DS . 'job.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_events' . DS . 'tables' . DS . 'event.php');
 		require_once(PATH_CORE . DS . 'components' . DS .'com_members' . DS . 'tables' . DS . 'organization.php');
-
-
-
 
 		// get current markers
 		$markers = new \Components\Geosearch\Tables\GeosearchMarkers($this->database);
@@ -101,89 +103,63 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 		$objOrganizations = new	\Components\Members\Tables\Organization($this->database);
 		$organizations = $objOrganizations->find('all');
 
-		// create some containers
-		$markerMemberIDs = array();
-		$markerJobIDs = array();
-		$markerEventIDs = array();
-		$markerOrganizationIDs = array();
+		//separate by scope
+		$existingMarkers = $this->_separatebyScope($markers);
+		echo "<pre>";
 
-		//separate IDs by scope
-		foreach ($markers as $marker)
+		//unique entries
+		foreach ($existingMarkers as $class => &$existing)
 		{
-			switch ($marker->scope)
+			switch ($class)
 			{
-				case "member":
-					array_push($markerMemberIDs, $marker->scope_id);
+				case 'markerJobIDs':
+					$identifier = 'code';
+					$all = $jobs;
 				break;
-
-				case "job":
-					array_push($markerJobIDs, $marker->scope_id);
+				case 'markerMemberIDs':
+					$identifier = 'uidNumber';
+					$all = $profiles;
 				break;
-
-				case "event":
-					array_push($markerEventIDs, $marker->scope_id);
+				case 'markerEventIDs':
+					$identifier = 'id';
+					$all = $events;
 				break;
-
-				case "organization":
-					array_push($markerOrganizationIDs, $marker->scope_id);
+				case 'markerOrganizationIDs':
+					$identifier = 'id';
+					$all = $organizations;
 				break;
-
-
+				default:
+					$identifier = '';
+					$all = array();
+				break;
+			} //end switch
+			if ($identifier != '' && count($all) > 0)
+			{
+				//var_dump($all);
+				$existing = $this->_distill($existing, $all, $identifier);
 			}
 		}
 
-		// removes existing ids, adds non-existant ids [profile]
-		foreach ($profiles as $profile)
+		$markerMemberIDs = $this->_scopify($existingMarkers['markerMemberIDs'], 'member');
+		$markerJobIDs = $this->_scopify($existingMarkers['markerJobIDs'], 'job');
+		$markerEventIDs = $this->_scopify($existingMarkers['markerEventIDs'], 'event');
+		$markerOrganizationIDs = $this->_scopify($existingMarkers['markerOrganizationIDs'], 'organization');
+
+		//merge into one array
+		$newMarkers = $this->_merger($markerMemberIDs, $markerJobIDs, $markerEventIDs, $markerOrganizationIDs);
+
+		$creations = $this->_doGeocode($newMarkers, $objProfile, $objJob, $objEvents, $objOrganizations);
+
+		foreach ($creations as $creation)
 		{
-			if (($key = array_search($profile->uidNumber, $markerMemberIDs)) !== false)
-			{
-				unset($markerMemberIDs[$key]);
-			}
-			else
-			{
-				array_push($markerMemberIDs, $profile->uidNumber);
-			}
-		}
 
-		// removes existing ids, adds non-existant ids [job]
-		foreach ($jobs as $job)
-		{
-			if (($key = array_search($job->code, $markerJobIDs)) !== false)
-			{
-				unset($markerJobIDs[$key]);
-			}
-			else
-			{
-				array_push($markerJobIDs, $job->code);
-			}
+			$m = new \Components\Geosearch\Tables\GeosearchMarkers($this->database);
+			$m->addressLatitude = $creation->location->getLatitude();
+			$m->addressLongitude = $creation->location->getLongitude();
+			$m->scope_id = $creation->scope_id;
+			$m->scope = $creation->scope;
+			$m->store(true);
 		}
-
-		// removes existing ids, adds non-existant ids [event]
-		foreach ($events as $event)
-		{
-			if (($key = array_search($event->id, $markerEventIDs)) !== false)
-			{
-				unset($markerEventIDs[$key]);
-			}
-			else
-			{
-				array_push($markerEventIDs, $event->id);
-			}
-		}
-
-		// removes existing ids, adds non-existant ids
-		foreach ($organizations as $organization)
-		{
-			if (($key = array_search($organization->id, $markerOrganizationIDs)) !== false)
-			{
-				unset($markerOrganizationIDs[$key]);
-			}
-			else
-			{
-				array_push($markerOrganizationIDs, $organization->id);
-			}
-		}
-
 
 		return true;
 	}
@@ -191,11 +167,207 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 	/**
 	 * populate the geosearch markers table
 	 *
-	 * @param	 object	 $job	\Components\Cron\Models\Job
+	 * @param	 array	 $markers	list of markers to geocode
 	 * @return	boolean
 	 */
-	public function updateLocationData(\Components\Cron\Models\Job $job)
+	private function _doGeocode($markers, $objProfile, $objJob, $objEvents, $objOrganizations)
 	{
+		$geocode = new \Hubzero\Geocode\Geocode;
 
+		foreach ($markers as $marker)
+		{
+			switch ($marker['scope'])
+			{
+				case 'job':
+					$object = $objJob->get_opening(0,0,0, $marker['scope_id']);
+					$address = $object->companyLocation;
+				break;
+				case 'member':
+					$object = $objProfile->selectWhere('organization' , 'uidNumber = ' . $marker['scope_id']);
+					$address = $object[0]->organization;
+				break;
+				case 'event':
+					$object = $objEvents->find($marker['scope_id']);
+					$address = $object[0]->adresse_info;
+				break;
+				case 'organization':
+					$object = $objOrganizations->find('all');
+					foreach($object as $obj)
+					{
+						if ($marker['scope_id'] == $obj->id)
+						{
+							$address = $obj->organization;
+						}
+					}
+				break;
+			} //end switch
+
+			$createMarkers = array();
+			if ($address != "")
+			{
+				$location = $geocode->locate($address);
+				$createMarker = new stdClass;
+				$createMarker->location = $location;
+				$createMarker->scope = $marker['scope'];
+				$createMarker->scope_id = $marker['scope_id'];
+				array_push($createMarkers, $createMarker);
+			}
+		} //end foreach
+
+		return $createMarkers;
+	} // end _doGeocode
+
+	/**
+	* add the unique IDs with scope for gathering later
+	*
+	* @param array  $idList   list of unique IDs
+	* @param string $scope    the scope of the ID
+	* @return array $result   array(['scope'] => $scope, ['scope_id'] = $id)
+	*/
+	private function _scopify($idList = array(), $scope = '')
+	{
+		if (count($idList) > 0 && $scope != '')
+		{
+			foreach ($idList as &$obj)
+			{
+				$id = $obj;
+				$obj = array();
+				$obj['scope'] = $scope;
+				$obj['scope_id'] = $id;
+			}
+
+			return $idList;
+		}
+		else
+		{
+			return false;
+		}
 	}
-}
+
+	/**
+	* add the unique IDs with scope for gathering later
+	*
+	* @param array  $idList   list of unique IDs
+	* @param string $scope    the scope of the ID
+	* @param string $identifier the name of the ID property for the given object
+	* @return array $result   array(['scope'] => $scope, ['scope_id'] = $id)
+	*/
+	private function _distill($existing = array(), $all = array(), $identifier = '')
+	{
+		if (count($existing) > 0 && count($all) > 0 && $identifier != '')
+		{
+			foreach ($all as $a)
+			{
+				// detect if the identifier is in the list of current markers
+				if (($key = array_search($a->$identifier, $existing)) !== false)
+				{
+					// remove it from the list
+					unset($existing[$key]);
+				}
+				else
+				{
+					// add new ones
+					array_push($existing, $a->$identifier);
+				}
+			} //end foreach
+			return $existing;
+		} // end if
+		elseif(count($existing) == 0 && count($all) > 0)
+		{
+			$newMarkers = array();
+			foreach ($all as $a)
+			{
+				array_push($newMarkers, $a->$identifier);
+			}
+
+			return $newMarkers;
+
+		} //end elseif
+		else
+		{
+			return false;
+		} //end else
+	} //end _uniqueEntry
+
+	/**
+	* separates existing markers by scope for counting and sorting later.
+	*
+	* @param array  $markers   array of marker objects
+	* @return array  array($markerMemberIDs, $markerJobIDs, $markerEventIDs, $markerOrganizationIDs)
+	*/
+	private function _separatebyScope($markers = array())
+	{
+		if (count($markers) > 0)
+		{
+			// create some containers
+			$markerMemberIDs = array();
+			$markerJobIDs = array();
+			$markerEventIDs = array();
+			$markerOrganizationIDs = array();
+
+			//separate IDs by scope
+			foreach ($markers as $marker)
+			{
+				switch ($marker->scope)
+				{
+					case "member":
+						array_push($markerMemberIDs, $marker->scope_id);
+					break;
+
+					case "job":
+						array_push($markerJobIDs, $marker->scope_id);
+					break;
+
+					case "event":
+						array_push($markerEventIDs, $marker->scope_id);
+					break;
+
+					case "organization":
+						array_push($markerOrganizationIDs, $marker->scope_id);
+					break;
+				}
+			}
+
+			return array(
+				'markerMemberIDs' => $markerMemberIDs,
+				'markerJobIDs' => $markerJobIDs,
+				'markerEventIDs' => $markerEventIDs,
+				'markerOrganizationIDs' => $markerOrganizationIDs
+				);
+		}
+		else
+		{
+			return false;
+		}
+	} //end _separateByScope
+
+	/**
+	* separates existing markers by scope for counting and sorting later.
+	*
+	* @param array  $markers   array of marker objects
+	* @return array  array($markerMemberIDs, $markerJobIDs, $markerEventIDs, $markerOrganizationIDs)
+	*/
+	private function _merger()
+	{
+		$arrays = func_get_args();
+		$output = array();
+		if (func_num_args() > 0)
+		{
+			foreach ($arrays as $array)
+			{
+				if (count($array) > 0 && $array != false)
+				{
+					foreach ($array as $key => $value)
+					{
+						array_push($output, $value);
+					}
+				}
+			}
+			return $output;
+		}
+		else
+		{
+			return false;
+		}
+	} //end _merger
+} //end plgCronGeosearch
