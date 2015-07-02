@@ -552,12 +552,6 @@ class Groups extends Base
 		$g_gidNumber = Request::getInt('gidNumber', 0, 'post');
 		$c_gidNumber = Request::getVar('gidNumber', 0, 'post');
 
-		// forces the default value to 0
-		if ($c_gidNumber == "")
-		{
-			$c_gidNumber = 0;
-		}
-
 		if ((string) $g_gidNumber !== (string) $c_gidNumber)
 		{
 			App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));

@@ -149,7 +149,7 @@ else
 						?>
 					</label>
 				</fieldset>
-				
+
 				<?php if ($this->task != 'new') : ?>
 					<fieldset>
 						<legend><?php echo Lang::txt('COM_GROUPS_LOGO_FIELD_TITLE'); ?></legend>
@@ -331,7 +331,7 @@ else
 		<?php echo Html::input('token'); ?>
 
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
-		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>" />
+        <input type="hidden" name="gidNumber" value="<?php echo ($this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
