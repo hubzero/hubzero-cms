@@ -147,14 +147,14 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 			$markerOrganizationIDs = $this->_scopify($existingMarkers['markerOrganizationIDs'], 'organization');
 
 		} //end if (checks for existing markers and filters in new markers)
-		elseif(count($markers) == 0) // for unpopulated table
+		elseif (count($markers) == 0) // for unpopulated table
 		{
 			$markerMemberIDs = array();
 			$markerJobIDs = array();
 			$markerEventIDs = array();
 			$markerOrganizationIDs = array();
 
-			foreach($profiles as $profile)
+			foreach ($profiles as $profile)
 			{
 				$obj = array();
 				$obj['scope'] = 'member';
@@ -163,7 +163,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				array_push($markerMemberIDs, $obj);
 			}
 
-			foreach($jobs as $job)
+			foreach ($jobs as $job)
 			{
 				$obj = array();
 				$obj['scope'] = 'job';
@@ -172,7 +172,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				array_push($markerJobIDs, $obj);
 			}
 
-			foreach($events as $event)
+			foreach ($events as $event)
 			{
 				$obj = array();
 				$obj['scope'] = 'event';
@@ -181,7 +181,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				array_push($markerEventIDs, $obj);
 			}
 
-			foreach($organizations as $organization)
+			foreach ($organizations as $organization)
 			{
 				$obj = array();
 				$obj['scope'] = 'organization';
@@ -195,7 +195,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 		$newMarkers = $this->_merger($markerMemberIDs, $markerJobIDs, $markerEventIDs, $markerOrganizationIDs);
 
 		$creations = $this->_doGeocode($newMarkers, $objProfile, $objJob, $objEvents, $objOrganizations);
-		
+
 		foreach ($creations as $creation)
 		{
 
