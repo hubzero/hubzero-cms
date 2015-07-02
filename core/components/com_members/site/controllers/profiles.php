@@ -1350,7 +1350,7 @@ class Profiles extends SiteController
 		// Do we have an ID?
 		if (!$id)
 		{
-			App::abort(500, Lang::txt('MEMBERS_NO_ID'));
+			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
 			return;
 		}
 
@@ -1384,6 +1384,11 @@ class Profiles extends SiteController
 		{
 			foreach ($a as $k => $v)
 			{
+				$v = intval($v);
+				if (!in_array($v, array(0, 1, 2, 3, 4)))
+				{
+					$v = 0;
+				}
 				$profile->setParam('access_' . $k, $v);
 			}
 		}
@@ -1680,7 +1685,7 @@ class Profiles extends SiteController
 		// Do we have an ID?
 		if (!$id)
 		{
-			App::abort(500, Lang::txt('MEMBERS_NO_ID'));
+			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
 			return;
 		}
 
@@ -1691,8 +1696,13 @@ class Profiles extends SiteController
 			// Load the profile
 			$profile = \Hubzero\User\Profile::getInstance($id);
 
-			foreach ($p as $k=>$v)
+			foreach ($p as $k => $v)
 			{
+				$v = intval($v);
+				if (!in_array($v, array(0, 1, 2, 3, 4)))
+				{
+					$v = 0;
+				}
 				$profile->setParam('access_' . $k, $v);
 			}
 
