@@ -108,7 +108,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			if ($this->_stats)
 			{
 				$areas['impact'] = Lang::txt('PLG_MEMBERS_IMPACT');
-				$areas['icon'] = '';
+				$areas['icon']   = 'f012';
 			}
 		}
 
