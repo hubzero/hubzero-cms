@@ -554,12 +554,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$g_gidNumber = JRequest::getInt('gidNumber', 0, 'post');
 		$c_gidNumber = JRequest::getVar('gidNumber', 0, 'post');
 
-		// forces the default value to 0
-		if ($c_gidNumber == "")
-		{
-			$c_gidNumber = 0;
-		}
-
 		if ((string) $g_gidNumber !== (string) $c_gidNumber)
 		{
 			throw new Exception(JText::_('COM_GROUPS_ERROR_NO_ID'), 404);
