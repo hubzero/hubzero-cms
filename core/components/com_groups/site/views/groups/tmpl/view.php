@@ -123,10 +123,14 @@ $no_html = Request::getInt( 'no_html', 0 );
 				</div><!-- /#page_header -->
 				<div id="page_notifications">
 					<?php
-						foreach ($this->notifications as $notification)
-						{
-							echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-						}
+                        if (count($this->notifications) > 0)
+                        {
+                            foreach ($this->notifications as $notification)
+                            {
+                                echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+                            }
+                        }
+
 					?>
 				</div><!-- /#page_notifications -->
 
@@ -145,4 +149,3 @@ $no_html = Request::getInt( 'no_html', 0 );
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
 <?php endif; ?>
-
