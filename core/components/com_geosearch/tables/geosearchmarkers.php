@@ -50,49 +50,14 @@ class GeosearchMarkers extends \JTable
 	 *
 	 * @var integer
 	 */
-	var $uidNumber          = NULL;
+	var $scope          = NULL;
 
 	/**
 	 * string(100)
 	 *
 	 * @var string
 	 */
-	var $address1       = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $address2       = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $addressCity       = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $addressRegion       = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $addressPostal        = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $addressCountry        = NULL;
+	var $scope_id       = NULL;
 
 	/**
 	 * string(100)
