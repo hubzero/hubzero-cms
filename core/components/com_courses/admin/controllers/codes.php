@@ -289,7 +289,7 @@ class Codes extends AdminController
 
 		if ($this->getError())
 		{
-			throw new Exception(implode('<br />', $this->getErrors(), 500);
+			throw new Exception(implode('<br />', $this->getErrors()), 500);
 		}
 
 		if (!Request::getInt('no_html', 0))
