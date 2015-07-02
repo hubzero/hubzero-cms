@@ -102,9 +102,10 @@ $this->css('pipeline.css')
 							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEMPLATE'); ?>:</label>
 							<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 						</div>
-						<div class="licinput" >
-							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEXT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-							<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo Lang::txt('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"> <?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
+						<div class="licinput">
+							<label>
+								<?php echo Lang::txt('COM_TOOLS_LICENSE_TEXT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+								<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo Lang::txt('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"> <?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 							</label>
 							<?php
 							if ($this->licenses)

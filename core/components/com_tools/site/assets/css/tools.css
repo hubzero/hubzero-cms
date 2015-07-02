@@ -930,8 +930,3 @@
 		width: 30px;
 		background: black;
 	}
-
-/* [!] HACKS - IE 7 and older */
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#x2692;</small>');
-	}

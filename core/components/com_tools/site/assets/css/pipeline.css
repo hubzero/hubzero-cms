@@ -86,12 +86,12 @@
 		padding: 0 0 0 0;
 		list-style: none;
 	}
-	#whatsnext a,
+	/*#whatsnext a,
 	#whatsnext a:hover {
 		padding: 0;
 		margin: 0;
 		position: relative;
-	}
+	}*/
 	ul.youroptions li,
 	#whatsnext ul li {
 		padding: 0 0 0 1.5em;
@@ -266,20 +266,18 @@
 		margin: 0;
 		border: none;
 	}
-	span.showcontrols a { 
-		display: inline;
+	span.showcontrols a,
+	span.showcontrols a:hover { 
 		border: none;
-		padding: 0.2em 0.2em 0.2em 0.2em;
-		margin: 0 -2px 0 0;
+		color: #333;
 	}
-	span.showcontrols a.expand { 
-		background: url("/core/components/com_tools/site/assets/img/contribute/showcontrols.gif") -3px 3px no-repeat;
-		border: 0;
+	span.showcontrols a.expand:before {
+		content: "\f0da";
+		font-family: "Fontcons";
 	}
-	span.showcontrols a.collapse { 
-		background:  url("/core/components/com_tools/site/assets/img/contribute/showcontrols.gif") -1px -12px no-repeat;
-		padding: 0.2em 0.2em 0.2em 0.5em;
-		border: 0;
+	span.showcontrols a.collapse:before {
+		content: "\f0d7";
+		font-family: "Fontcons";
 	}
 
 	#ctSending {
@@ -296,14 +294,16 @@
 		padding: 0.5em 1.5em 0.5em 1.5em;
 	}
 
-	.disabled { 
+	.disabled {
 		color: #999;
 	}
-	.conf { 
-		background: transparent url("/core/components/com_tools/site/assets/img/contribute/configure.gif") 0 0 no-repeat;
+	.conf:before {
+		/*background: transparent url("/core/components/com_tools/site/assets/img/contribute/configure.gif") 0 0 no-repeat;
 		padding: 0.2em 0.6em 0.2em 0.6em;
 		border: none;
-		margin-left: 1em;
+		margin-left: 1em;*/
+		content: "\2699";
+		font-family: "Fontcons";
 	}
 	.conf:hover { 
 		background-position: 0 -17px;
@@ -461,22 +461,36 @@
 
 /* Versioning */
 	.toolpublished {
-		background: url("/core/components/com_tools/site/assets/img/contribute/check.gif") 0 0 no-repeat;
 		display: block;
-		width: 15px;
-		height: 15px;
-		margin: 0 0 0 2em;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		font-size: 1.2em;
+		margin: 0;
 		padding: 0;
+		overflow: hidden;
+		color: green;
+	}
+	.toolpublished:before {
+		content: "\f058";
+		font-family: "Fontcons";
 	}
 	.toolunpublished {
-		background: url("/core/components/com_tools/site/assets/img/contribute/minus.gif") 0 0 no-repeat;
 		display: block;
-		width: 15px;
-		height: 15px;
-		margin: 0 0 0 2em;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
+		line-height: 1;
+		margin: 0;
 		padding: 0;
+		overflow: hidden;
+		color: red;
 	}
-	
+	.toolunpublished:before {
+		content: "\2296";
+		font-family: "Fontcons";
+	}
+
 	.vmanage { 
 		padding: 0 0 1.5em 0;
 	}
@@ -492,14 +506,14 @@
 	.vline {
 		line-height: 0.8em;
 	}
-	
+
 	.versionfield { 
 		padding: 1em;
 		background: #f0ece7;
 		border: 1px solid #dbd5ce;
 		margin: 0.5em 0 0.5em 0;
 	}
-	
+
 	.vbutton {
 		float: right;
 		position: relative;
@@ -507,7 +521,16 @@
 	}
 	#displays_0, 
 	.devversion {
-		background: url("/core/components/com_tools/site/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
+		background-color: #eff7ef;
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		   -moz-background-size: 30px 30px;
+		    -ms-background-size: 30px 30px;
+		        background-size: 30px 30px;
 	}
 	.devversion, 
 	.currentversion {
@@ -576,7 +599,6 @@
 	}
 	#steps li.active { 
 		color: #bd6416;
-		background: #fff;
 		font-weight: bold;
 		position: relative;
 	}
@@ -642,7 +664,7 @@
 		width: 100%;
 	}
 	.opensource {
-		background: url("/core/components/com_tools/site/assets/img/happyface.png") 0 0 no-repeat;	
+		background: url("/core/components/com_tools/site/assets/img/happyface.png") 0 0 no-repeat;
 	}
 	.closedsource { 
 		background: url("/core/components/com_tools/site/assets/img/sadface.png") 0 0 no-repeat;
@@ -685,38 +707,7 @@
 	form#toolForm tr:hover { 
 		background: #e4e4e4;
 	}
-	/*.submitform { 
-		display:block;
-		margin: 0.5em 0 1.5em 0;
-	}
-	#hubForm p.hint { 
-		margin-bottom: 0;
-		margin-top: 0.5em;
-		padding: 0;
-		color: #a8a8a8;
-	}
-	#hubForm .sameline { 
-		display: inline;
-		width: 10%;
-	}
-	div.subject { 
-		background: none;
-		border: none;
-		margin-left: 0;
-		margin-top: 0;
-		padding-left: 0;
-	}
-	div.subject legend { 
-		font-size: 120%;
-		color: #333333;
-		font-weight: bold;
-	}
-	.section .expanded {
-		width: 40%;
-	}
-	.section .contracted {
-		width: 55%;
-	}*/
+
 	#hubForm .inline input,
 	#hubForm .inline label {
 		display: inline;
@@ -797,7 +788,7 @@
 	#lic_cl { 
 		margin: 2em 0 1em 0;
 	}
-	
+
 	span.actionlink {
 		color: #999;
 		text-transform: uppercase;
@@ -831,63 +822,11 @@
 		margin: 0;
 		padding: 0;
 	}
-	#primary-document a {
+
+	#whatsnext .btn-primary {
 		display: block;
-		*display: inline;
-		zoom: 1;
-		width: 7em;
-		vertical-align: baseline;
-		margin: 0 2px;
-		outline: none;
-		cursor: pointer;
-		text-align: center;
-		text-decoration: none;
-		font-weight: bold;
-		line-height: 1.8em;
-		padding: 0.35em 1.2em 0.35em 1.2em;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		-webkit-border-radius: .25em; 
-		-moz-border-radius: .25em;
-		-ms-border-radius: .25em;
-		-o-border-radius: .25em;
-		border-radius: .25em;
-		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-ms-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		color: #fff;
-		border: solid 1px #333;
-		background: #333;
-		background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#000000));
-		background: -webkit-linear-gradient(#666666, #000000);
-		background: -moz-linear-gradient(center top, #666666 0%, #000000 100%);
-		background: -moz-gradient(center top, #666666 0%, #000000 100%);
-		background: -o-linear-gradient(#666666, #000000);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#000000);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#000000)";
 	}
-	#primary-document a:hover,
-	#primary-document a:active {
-		padding: 0.35em 1.2em 0.35em 1.2em;
-		margin: 0 2px;
-		text-decoration: none;
-		color: #fef4e9;
-		border: solid 1px #da7c0c;
-		background: #f78d1d;
-		background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
-		background: -webkit-linear-gradient(#faa51a, #f47a20);
-		background: -moz-linear-gradient(center top, #faa51a 0%, #f47a20 100%);
-		background: -moz-gradient(center top, #faa51a 0%, #f47a20 100%);
-		background: -o-linear-gradient(#faa51a, #f47a20);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a,endColorstr=#f47a20);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faa51a, endColorstr=#f47a20)";
-	}
-	#whatsnext #primary-document a {
-		width: auto;
-		white-space: nowrap;
-	}
-	/*#primary-document a:before {
+	/*#whatsnext .btn-primary:before {
 		content: "\f003";
 		font-family: "Fontcons";
 		margin-right: 0.2em;

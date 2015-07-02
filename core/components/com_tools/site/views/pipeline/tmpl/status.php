@@ -482,9 +482,8 @@ $this->css('pipeline.css')
 					</p>
 					<ul>
 						<li class="todo">
-							<span id="primary-document">
-								<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_TEST'); ?>: <a class="launchtool" href="<?php echo $testpath; ?>"><?php echo Lang::txt('COM_TOOLS_LAUNCH_TOOL'); ?></a>
-							</span>
+							<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_TEST'); ?>:
+							<a class="btn btn-primary launchtool" href="<?php echo $testpath; ?>"><?php echo Lang::txt('COM_TOOLS_LAUNCH_TOOL'); ?></a>
 						</li>
 						<li class="todo">
 					<?php if ($this->status['resource_modified']) { ?>

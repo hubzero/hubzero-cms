@@ -40,7 +40,7 @@ $this->css('pipeline.css')
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li><a class="icon-status status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-			<li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -79,10 +79,11 @@ $this->css('pipeline.css')
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="saveversion" />
-							<input type="hidden" name="newstate" value="<?php echo $newstate; ?>" />
-							<input type="hidden" name="action" value="<?php echo $this->action; ?>" />
-							<input type="hidden" name="id" value="<?php echo $this->status['toolid'] ?>" />
-							<input type="hidden" name="toolname" value="<?php echo $this->status['toolname'] ?>" />
+							<input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
+							<input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
+							<input type="hidden" name="id" value="<?php echo $this->escape($this->status['toolid']); ?>" />
+							<input type="hidden" name="toolname" value="<?php echo $this->escape($this->status['toolname']); ?>" />
+							<?php echo Html::input('token'); ?>
 							<input type="submit" value="<?php echo $submitlabel ?>" />
 						</fieldset>
 					</form>
@@ -120,7 +121,7 @@ $this->css('pipeline.css')
 					<tr id="displays_<?php echo $i; ?>">
 						<td>
 							<span class="showcontrols">
-								<a href="javascript:void(0);" class="expand" style="border:none;" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
+								<a href="#confdiv_<?php echo $i; ?>" class="expand" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
 							</span>
 							<?php echo ($t->version) ? $t->version : Lang::txt('COM_TOOLS_NA'); ?>
 						</td>

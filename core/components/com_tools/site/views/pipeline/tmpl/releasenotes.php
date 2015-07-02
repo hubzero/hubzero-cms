@@ -74,7 +74,8 @@ $this->css('pipeline.css')
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 	<?php
-		if ($this->action == 'confirm') {
+		if ($this->action == 'confirm')
+		{
 			\Components\Tools\Helpers\Html::writeApproval('Confirm license');
 		}
 		//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;
@@ -105,10 +106,11 @@ $this->css('pipeline.css')
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 						<input type="hidden" name="task" value="savelicense" />
 						<input type="hidden" name="curcode" id="curcode" value="<?php echo $open; ?>" />
-						<input type="hidden" name="newstate" value="<?php echo $newstate; ?>" />
-						<input type="hidden" name="action" value="<?php echo $this->action; ?>" />
-						<input type="hidden" name="toolid" value="<?php echo $this->status['toolid']; ?>" />
-						<input type="hidden" name="alias" value="<?php echo $this->status['toolname']; ?>" />
+						<input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
+						<input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
+						<input type="hidden" name="toolid" value="<?php echo$this->escape( $this->status['toolid']); ?>" />
+						<input type="hidden" name="alias" value="<?php echo $this->escape($this->status['toolname']); ?>" />
+						<?php echo Html::input('token'); ?>
 					</div>
 					<div id="lic">
 						<label><?php echo Lang::txt('LICENSE_TEMPLATE'); ?>:</label>
