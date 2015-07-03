@@ -86,6 +86,6 @@ class Format extends Relational
 	 **/
 	public function citation()
 	{
-        return $this->belongsToOne('Citation', 'id', 'format');
+		return $this->belongsToOne('Citation', 'id', 'format');
 	}
 }
