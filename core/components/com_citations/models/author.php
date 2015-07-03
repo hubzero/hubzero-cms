@@ -86,18 +86,6 @@ class Author extends Relational
 	 **/
 	public function citation()
 	{
-		return $this->belongsToOne('Citation', 'id', 'cid');
-		//public function belongsToOne($model, $thisKey=null, $parentKey=null)
-
+		return $this->belongsToOne('Citation', 'cid', 'id');
 	}
 }
-
-/**
- * Retrieves a belongs to one model relationship
- *
- * @param  string $model the name of the model to relate to the current one
- * @param  string|null $thisKey the local key used to associate the many back to the model
- * @param  string|null $parentKey the parent key used to associate the model to its parent
- * @return \Hubzero\Database\Relationship\BelongsToOne
- * @since  1.3.2
- **/

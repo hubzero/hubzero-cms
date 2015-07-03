@@ -89,14 +89,3 @@ class Citation extends Relational
 		return $this->oneToMany('Author', 'cid', 'id');
 	}
 }
-
-
-	/**
-	 * Retrieves a one to many model relationship
-	 *
-	 * @param  string $model the name of the model to relate to the current one
-	 * @param  string|null $foreignKey the foreign key used to associate the many back to the model
-	 * @param  string|null $thisKey the local key used to associate the many back to the model
-	 * @return \Hubzero\Database\Relationship\OneToMany
-	 * @since  1.3.2
-	 **/
