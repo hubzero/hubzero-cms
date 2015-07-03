@@ -40,14 +40,14 @@ use Hubzero\Base\Object;
  *
  * @uses \Hubzero\Database\Relational
  */
-class Citation extends Relational
+class Format extends Relational
 {
 	/**
 	 * The table namespace
 	 *
 	 * @var string
 	 **/
-	protected $namespace = '';
+	protected $namespace = 'citations';
 	// table name jos_citations
 
 	/**
@@ -79,24 +79,13 @@ class Citation extends Relational
 
 
 	/**
-	 * Defines a one to many relationship with authors
+	 * Defines a one to one relationship with citation
 	 *
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function authors()
+	public function citation()
 	{
-		return $this->oneToMany('Author', 'cid', 'id');
+        return $this->belongsToOne('Citation', 'id', 'format');
 	}
-	/**
-	 * Defines a one to one relationship with format
-	 *
-	 * @return $this
-	 * @since  1.3.2
-	 **/
-	public function citationFormat()
-	{
-		return $this->oneToOne('Format', 'id', 'format');
-	}
-
 }
