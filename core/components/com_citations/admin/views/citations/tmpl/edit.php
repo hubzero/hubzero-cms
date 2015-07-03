@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue Universty. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -387,7 +387,21 @@ function submitbutton(pressbutton)
 				<label for="fundedby"><?php echo Lang::txt('FUNDED_BY_YOUR_ORG'); ?></label>
 			</div>
 		</fieldset>
-
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('SCOPE'); ?></span></legend>
+			<div class="input-wrap">
+				<label for="scope"><?php echo Lang::txt('SCOPE'); ?></label>
+				<select name="citation[scope]" id="scope">
+					<option <?php echo ($this->row->scope == "hub") ? 'selected="selected"': ''; ?> value="hub">Hub</option>
+					<option <?php echo ($this->row->scope == "group") ? 'selected="selected"': ''; ?> value="group">Group</option>
+					<option <?php echo ($this->row->scope == "member") ? 'selected="selected"': ''; ?> value="member">Member</option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<input type="text" name="citation[scope_id]" id="scope_id" maxlength="10" value="<?php echo $this->escape(stripslashes($this->row->scope_id)); ?>" />
+				<label for="fundedby"><?php echo Lang::txt('SCOPE_ID'); ?></label>
+			</div>
+		</fieldset>
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_CITATIONS_OPTIONS'); ?></span></legend>
 

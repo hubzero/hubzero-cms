@@ -215,7 +215,7 @@ class Citations extends AdminController
 
 		//set vars for view
 		$this->view->config = $this->config;
-
+		
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -224,7 +224,7 @@ class Citations extends AdminController
 
 	/**
 	 * Publish a citation
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function publishTask()
@@ -258,7 +258,7 @@ class Citations extends AdminController
 
 	/**
 	 * Unpublish a citation
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function unpublishTask()
@@ -527,4 +527,3 @@ class Citations extends AdminController
 		return $this->database->loadResult();
 	}
 }
-

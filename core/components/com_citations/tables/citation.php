@@ -462,18 +462,9 @@ class Citation extends \JTable
 		{
 			$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
 		}
-		else
-		{
-			$query .= " AND r.scope is NULL OR r.scope=''";
-		}
-
 		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
 		{
 			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
-		}
-		else
-		{
-			$query .= " AND r.scope_id is NULL OR r.scope_id=''";
 		}
 
 		//group by
@@ -725,4 +716,3 @@ class Citation extends \JTable
 		return $ca->getRecords(array('cid' => $id));
 	}
 }
-

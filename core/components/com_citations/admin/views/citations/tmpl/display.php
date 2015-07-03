@@ -85,6 +85,8 @@ function submitbutton(pressbutton)
 				<option value="type"<?php if ($this->filters['sort'] == 'type') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TYPE'); ?></option>
 				<option value="author ASC"<?php if ($this->filters['sort'] == 'author ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('AUTHORS'); ?></option>
 				<option value="title ASC"<?php if ($this->filters['sort'] == 'title ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TITLE'); ?></option>
+				<option value="scope ASC"<?php if ($this->filters['sort'] == 'scope ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SCOPE'); ?></option>
+				<option value="scope_id ASC"<?php if ($this->filters['sort'] == 'scope_id ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SCOPE_ID'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -100,6 +102,8 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-3"><?php echo Lang::txt('YEAR') ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('AFFILIATED'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('FUNDED_BY'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('SCOPE'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('SCOPE ID'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -181,6 +185,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td class="priority-4">
 					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . Lang::txt('JYES') . '</span></span>'; } ?>
+				</td>
+				<td>
+					<?php echo ($row->scope == '' ? Lang::txt('Hub') : $this->escape($row->scope)); ?>
+				</td>
+				<td>
+					<?php echo ($row->scope_id == 0 ? Lang::txt('N/A') : $this->escape($row->scope_id)); ?>
 				</td>
 			</tr>
 <?php
