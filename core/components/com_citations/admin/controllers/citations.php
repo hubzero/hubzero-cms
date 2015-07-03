@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author	Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -215,7 +215,7 @@ class Citations extends AdminController
 
 		//set vars for view
 		$this->view->config = $this->config;
-		
+
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -318,7 +318,7 @@ class Citations extends AdminController
 		$citation = array_map('trim', Request::getVar('citation', array(), 'post'));
 		$exclude  = Request::getVar('exclude', '', 'post');
 		$rollover = Request::getInt("rollover", 0);
-		$this->tags     = Request::getVar('tags', '');
+		$this->tags	 = Request::getVar('tags', '');
 		$this->badges   = Request::getVar('badges', '');
 		$this->sponsors = Request::getVar('sponsors', array(), 'post');
 
@@ -427,8 +427,8 @@ class Citations extends AdminController
 	/**
 	 * Check if an array has any values set other than $ignored values
 	 *
-	 * @param   array    $b        Array to check
-	 * @param   array    $ignored  Values to ignore
+	 * @param   array	$b		Array to check
+	 * @param   array	$ignored  Values to ignore
 	 * @return  boolean  True if empty
 	 */
 	private function _isEmpty($b, $ignored=array())
@@ -475,7 +475,7 @@ class Citations extends AdminController
 		{
 			// Loop through the IDs and delete the citation
 			$citation = new Citation($this->database);
-			$assoc    = new Association($this->database);
+			$assoc	= new Association($this->database);
 			$author   = new Author($this->database);
 			foreach ($ids as $id)
 			{
