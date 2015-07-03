@@ -23,10 +23,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author	Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since	 Class available since release 1.3.2
  */
 
 namespace Components\Citations\Models;
@@ -48,7 +48,7 @@ class Citation extends Relational
 	 * @var string
 	 **/
 	protected $namespace = '';
-    // table name jos_citations
+	// table name jos_citations
 
 	/**
 	 * Default order by for model
@@ -63,7 +63,7 @@ class Citation extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'    => 'notempty',
+		//'name'	=> 'notempty',
 		//'liaison' => 'notempty'
 	);
 

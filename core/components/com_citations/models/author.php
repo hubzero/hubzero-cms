@@ -23,10 +23,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @author	Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since	 Class available since release 1.3.2
  */
 
 namespace Components\Citations\Models;
@@ -48,7 +48,7 @@ class Author extends Relational
 	 * @var string
 	 **/
 	protected $namespace = 'citations';
-    // table name jos_citations
+	// table name jos_citations
 
 	/**
 	 * Default order by for model
@@ -63,7 +63,7 @@ class Author extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		//'name'    => 'notempty',
+		//'name'	=> 'notempty',
 		//'liaison' => 'notempty'
 	);
 
@@ -78,7 +78,7 @@ class Author extends Relational
 	);
 
 
-    /**
+	/**
 	 * Defines the inverse relationship between a record and a task
 	 *
 	 * @return \Hubzero\Database\Relationship\belongsToOne
@@ -87,7 +87,7 @@ class Author extends Relational
 	public function citation()
 	{
 		return $this->belongsToOne('Citation', 'id', 'cid');
-        //public function belongsToOne($model, $thisKey=null, $parentKey=null)
+		//public function belongsToOne($model, $thisKey=null, $parentKey=null)
 
 	}
 }
