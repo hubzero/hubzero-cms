@@ -51,6 +51,9 @@ if ($label == "none") {
 } elseif ($label == "both") {
 	$citations_label_class = " both-label";
 }
+else{
+    $citations_label_class = " both-label";
+}
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
