@@ -34,14 +34,14 @@ $canDo = Components\Citations\Helpers\Permissions::getActions('citation');
 
 $text = ($this->task == 'edit' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 
-JToolBarHelper::title(Lang::txt('CITATION') . ': ' . $text, 'citation.png');
+Toolbar::title(Lang::txt('CITATION') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('citation');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('citation');
 
 //set the escape callback
 $this->setEscape("htmlentities");
@@ -398,8 +398,8 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 			<div class="input-wrap">
+				<label for="scope_id"><?php echo Lang::txt('SCOPE_ID'); ?></label>
 				<input type="text" name="citation[scope_id]" id="scope_id" maxlength="10" value="<?php echo $this->escape(stripslashes($this->row->scope_id)); ?>" />
-				<label for="fundedby"><?php echo Lang::txt('SCOPE_ID'); ?></label>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
@@ -490,6 +490,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="citation[uid]" value="<?php echo $this->row->uid; ?>" />
 	<input type="hidden" name="citation[created]" value="<?php echo $this->row->created; ?>" />
 	<input type="hidden" name="citation[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="citation[published]" value="<?php echo $this->row->published; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
