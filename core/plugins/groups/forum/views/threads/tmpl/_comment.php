@@ -29,7 +29,6 @@
  */
 
 defined('_HZEXEC_') or die();
-
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -97,7 +96,7 @@ defined('_HZEXEC_') or die();
 						--><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
-				<?php if ($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) { ?>
+				<?php if (($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) && $this->comment->get('created_by') == User::get('id')) { ?>
 					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
 						--><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?><!--
 					--></a>

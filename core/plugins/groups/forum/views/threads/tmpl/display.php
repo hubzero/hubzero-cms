@@ -37,6 +37,8 @@ $this->category->set('section_alias', $this->filters['section']);
 $this->thread->set('section', $this->filters['section']);
 $this->thread->set('category', $this->category->get('alias'));
 
+$now = time();
+
 $this->css()
      ->js();
 ?>
