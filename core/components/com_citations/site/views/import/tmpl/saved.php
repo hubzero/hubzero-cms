@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author	Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -32,7 +32,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->js();
+	 ->js();
 
 //citation params
 $label = $this->config->get("citation_label", "number");
@@ -52,7 +52,7 @@ if ($label == "none") {
 	$citations_label_class = " both-label";
 }
 else{
-    $citations_label_class = " both-label";
+	$citations_label_class = " both-label";
 }
 ?>
 <header id="content-header">
