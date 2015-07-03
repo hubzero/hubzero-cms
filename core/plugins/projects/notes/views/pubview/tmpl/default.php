@@ -39,7 +39,7 @@ $html = str_replace($this->page->get('scope') . DS . $this->page->get('pagename'
 ?>
 
 <div class="wiki-wrap">
-	<p class="wiki-back"><?php echo Lang::txt('PLG_PROJECTS_NOTES_PUBLIC_VIEW'); ?> <span class="goback"><a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PROJECTS_NOTES_BACK_TO_PROJECT'); ?></a></span></p>
+	<p class="wiki-back"><?php echo Lang::txt('PLG_PROJECTS_NOTES_PUBLIC_VIEW'); ?> <span class="goback"><a href="<?php echo $this->model->link(); ?>"><?php echo Lang::txt('PLG_PROJECTS_NOTES_BACK_TO_PROJECT'); ?></a></span></p>
 	<div class="wiki-content">
 		<h1 class="page-title"><?php echo $this->page->get('title'); ?></h1>
 		<div class="wikipage"><?php echo $html; ?></div>

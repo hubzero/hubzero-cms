@@ -58,20 +58,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Store internal message
 	 *
 	 * @var	   array
@@ -130,9 +116,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     =>'',
-			'metadata' =>'',
-			'msg'      =>'',
-			'referer'  =>''
+			'metadata' =>''
 		);
 
 		// Get this area details
@@ -193,9 +177,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					break;
 			}
 		}
-
-		$arr['referer'] = $this->_referer;
-		$arr['msg']     = $this->_message;
 
 		// Return data
 		return $arr;
@@ -337,12 +318,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];
 
-		// Get messages	and errors
-		$view->msg = $this->_msg;
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
 		return $view->loadTemplate();
 	}
 
@@ -412,24 +387,18 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array(
-				'message' => $this->getError(),
-				'type'    => 'error'
-			);
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array(
-				'message' => $this->_msg,
-				'type'    => 'success'
-			);
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		// Redirect back to feed
-		$this->_referer = Route::url($this->model->link());
+		// Redirect
+		App::redirect(Route::url($this->model->link()));
 		return;
 	}
 
@@ -516,30 +485,20 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array(
-				'message' => $this->getError(),
-				'type'   => 'error'
-			);
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array(
-				'message' => $this->_msg,
-				'type'    => 'success'
-			);
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		// Redirect back to feed
-		$this->_referer = Route::url($this->model->link('feed'));
+		// Redirect
+		App::redirect(Route::url($this->model->link('feed')));
 		return;
 	}
-
-	//----------------------------------------
-	// Retrievers & Prep
-	//----------------------------------------
 
 	/**
 	 * Update activity feed (load more entries)
@@ -1069,24 +1028,18 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array(
-				'message' => $this->getError(),
-				'type'    => 'error'
-			);
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array(
-				'message' => $this->_msg,
-				'type'    => 'success'
-			);
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		// Redirect back to feed
-		$this->_referer = Route::url($this->model->link());
+		// Redirect
+		App::redirect(Route::url($this->model->link()));
 		return;
 	}
 
@@ -1128,24 +1081,18 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array(
-				'message' => $this->getError(),
-				'type'    => 'error'
-			);
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array(
-				'message' => $this->_msg,
-				'type'    => 'success'
-			);
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		// Redirect back to feed
-		$this->_referer = Route::url($this->model->link());
+		// Redirect
+		App::redirect(Route::url($this->model->link()));
 		return;
 	}
 }

@@ -48,20 +48,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Name of project group
 	 *
 	 * @var	   array
@@ -162,9 +148,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     =>'',
-			'metadata' =>'',
-			'msg'      =>'',
-			'referer'  =>''
+			'metadata' =>''
 		);
 
 		// Get this area details
@@ -302,9 +286,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$arr['referer'] = $this->_referer;
-		$arr['msg'] = $this->_message;
-
 		// Return data
 		return $arr;
 	}
@@ -439,7 +420,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		// Get messages	and errors
 		$view->msg = isset($this->_msg) ? $this->_msg : NULL;
-		if ( $this->getError())
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
@@ -464,7 +445,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * List/unlist on public project page
 	 *
-	 *
 	 * @return     string
 	 */
 	protected function _list()
@@ -472,14 +452,11 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = trim(Request::getInt( 'p', 0 ));
 
-		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
-		$url 	= Route::url($route . '&active=notes');
-
 		// Load requested page
 		$page = $this->note->page($id);
 		if (!$page->get('id'))
 		{
-			$this->_referer = $url;
+			App::redirect(Route::url($this->model->link('notes')));
 			return;
 		}
 
@@ -489,12 +466,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		if ($this->note->getPublicStamp($page->get('id'), true, $listed))
 		{
 			$this->_msg = $this->_task == 'publist' ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED') : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
-			$this->_referer = Route::url('index.php?option=' . $this->_option . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename'));
+
+			\Notify::message($this->_msg, 'success', 'projects');
+
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename')));
 			return;
 		}
 
-		$this->_referer = $url;
+		App::redirect(Route::url($this->model->link('notes')));
 		return;
 	}
 
@@ -509,14 +488,11 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = trim(Request::getInt( 'p', 0 ));
 
-		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
-		$url 	= Route::url($route . '&active=notes');
-
 		// Load requested page
 		$page = $this->note->page($id);
 		if (!$page->get('id'))
 		{
-			$this->_referer = $url;
+			App::redirect(Route::url($this->model->link('notes')));
 			return;
 		}
 
@@ -699,9 +675,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     => $html,
-			'metadata' => '',
-			'msg'      => '',
-			'referer'  => ''
+			'metadata' => ''
 		);
 
 		return $arr;
@@ -753,9 +727,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		// Fix pathway (com_wiki screws it up)
 		$this->fixupPathway();
 
-		// URL to project
-		$url = Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias'));
-
 		// Load requested page
 		$page = $this->note->page($data->pageid);
 		if (!$page->get('id'))
@@ -776,9 +747,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->option 			= $this->_option;
-		$view->url				= $url;
-		$view->config 			= $this->model->config();
-		$view->database 		= $database;
+		$view->model			= $this->model;
 		$view->page				= $page;
 		$view->revision 		= $page->revision('current');
 		$view->masterscope 		= 'projects' . DS . $this->model->get('alias') . DS . 'notes';

@@ -47,20 +47,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Store output message
 	 *
 	 * @var	   array
@@ -833,7 +819,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$table['rec_total'] = $count;
 			$table['rec_display'] = $display_count;
 
-			print json_encode(array('status'=>'success', 'data' => $table));
+			print json_encode(array('status' => 'success', 'data' => $table));
 		}
 	}
 
@@ -1153,9 +1139,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		print json_encode(array('status' => 'success', 'data' => $url));
 
 		// Success message
-		if (isset($this->_msg) && $this->_msg)
+		if (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		return;
@@ -1284,7 +1270,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$ds_db->setQuery($sql);
 				$ds_db->query();
 
-				$this->_message = array('message' => Lang::txt('PLG_PROJECTS_DATABASES_DELETED'), 'type' => 'success');
+				$this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_DELETED');
 			}
 
 			// Record project activity
@@ -1295,7 +1281,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
-		return array('referer' => $url, 'msg' => $this->_message);
+
+		// Pass success message
+		if (!empty($this->_msg))
+		{
+			\Notify::message($this->_msg, 'success', 'projects');
+		}
+
+		// Redirect
+		App::redirect($url);
+		return;
 	}
 
 	/**
@@ -1333,13 +1328,22 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$objPD->data_definition = json_encode($dd);
 				$objPD->store();
 
-				$this->_message = array('message' => Lang::txt('PLG_PROJECTS_DATABASES_UPDATED'), 'type'=>'success');
+				$this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED');
 			}
 		}
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI'])
 			. "/projects/" . $this->model->get('alias') . "/databases/";
-		return array('referer' => $url, 'msg' => $this->_message);
+
+		// Pass success message
+		if (!empty($this->_msg))
+		{
+			\Notify::message($this->_msg, 'success', 'projects');
+		}
+
+		// Redirect
+		App::redirect($url);
+		return;
 	}
 
 	/**

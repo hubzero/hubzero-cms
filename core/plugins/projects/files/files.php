@@ -60,39 +60,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
-	 * Sync queue
-	 *
-	 * @var	   array
-	 */
-	protected $_queue = NULL;
-
-	/**
 	 * Repository path
 	 *
 	 * @var	   array
 	 */
 	protected $_path = NULL;
-
-	/**
-	 * Repository name (used to build path)
-	 *
-	 * @var	   array
-	 */
-	protected $_case = 'files';
 
 	/**
 	 * Component name
@@ -153,9 +125,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     =>'',
-			'metadata' =>'',
-			'msg'      =>'',
-			'referer'  =>''
+			'metadata' =>''
 		);
 
 		// Get this area details
@@ -340,9 +310,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					break;
 			}
 		}
-
-		$arr['referer'] = $this->_referer;
-		$arr['msg'] = $this->_message;
 
 		// Return data
 		return $arr;
@@ -701,8 +668,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
-				$this->_referer = $url;
+				\Notify::message($this->repo->getError(), 'error', 'projects');
+				App::redirect($url);
 				return;
 			}
 		}
@@ -719,15 +686,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			));
 		}
 
-		// Go back
-		$this->_referer = $url;
-
-		// Set success message
-		if (isset($this->_msg) && $this->_msg)
+		if (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
+		// Redirect
+		App::redirect($url);
 		return;
 	}
 
@@ -791,11 +756,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($this->repo->getError())
 		{
-			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+			\Notify::message($this->repo->getError(), 'error', 'projects');
 		}
 		else
 		{
-			$this->_msg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY');
+			\Notify::message($this->_msg, 'success', 'projects');
 
 			// Force sync
 			if ($this->repo->isLocal())
@@ -808,13 +773,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
 
-		// Set success message
-		if (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
-		}
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -843,7 +804,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$success = $this->repo->deleteDirectory($params);
 		if ($success)
 		{
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_DELETED_DIRECTORY'), 'type' => 'success');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_DELETED_DIRECTORY'), 'success', 'projects');
+
 			// Force sync
 			if ($this->repo->isLocal())
 			{
@@ -852,14 +814,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif ($this->repo->getError())
 		{
-			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+			\Notify::message($this->repo->getError(), 'error', 'projects');
 		}
 
 		// Redirect to file list
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
+
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -995,7 +959,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
+
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -1067,7 +1033,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$success = $this->repo->rename($params);
 		if ($success)
 		{
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'type' => 'success');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
 			// Force sync
 			if ($this->repo->isLocal())
 			{
@@ -1076,14 +1042,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif ($this->repo->getError())
 		{
-			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+			\Notify::message($this->repo->getError(), 'error', 'projects');
 		}
 
 		// Redirect to file list
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
+
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -1213,9 +1181,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Output message
 		if ($moved > 0)
 		{
-			$this->_msg = Lang::txt('PLG_PROJECTS_FILES_MOVED'). ' '
-				. $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S');
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED'). ' '
+				. $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
 
 			// Force sync
 			if ($this->repo->isLocal())
@@ -1225,14 +1192,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'type' => 'error');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'error', 'projects');
 		}
 
 		// Redirect to file list
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
+
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -1588,14 +1557,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$error = $this->repo->getError()
 				? $this->repo->getError()
 				: $this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED'));
-			$this->_message = array('message' => $error, 'type' => 'error');
+			\Notify::message($error, 'error', 'projects');
 		}
 
 		// Redirect to file list
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
+
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -1752,12 +1723,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$connected)
 				{
 					// Redirect to connect screen
-					$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
-						'type' => 'success');
-					$url  = Route::url('index.php?option=' . $this->_option
-						 . '&alias=' . $this->model->get('alias') . '&active=files');
-					$url .= '/?action=connect';
-					$this->_referer = $url;
+					\Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
+
+					// Redirect
+					App::redirect(Route::url($this->model->link('files') . '&action=connect'));
 					return;
 				}
 
@@ -1774,7 +1743,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file->get('name'), 404 );
 					return;
 				}
-				$this->_referer = $openLink;
+
+				// Redirect
+				App::redirect($openLink);
 				return;
 			}
 
@@ -1870,18 +1841,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
 
 		// Redirect to file list
 		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = Route::url($url);
+
+		// Redirect
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -2142,13 +2111,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$this->model->saveParam('google_sync_queue', 1);
 					}
 
-					$this->_message = array(
-						'message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_COMPILED'),
-						'type'    => 'success'
-					);
+					\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_COMPILED'), 'success', 'projects');
 
 					// Redirect to file list
-					$this->_referer = Route::url($url);
+					App::redirect(Route::url($url));
 					return;
 				}
 			}
@@ -2270,12 +2236,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!$connected)
 			{
 				// Redirect to connect screen
-				$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
-					'type' => 'success');
-				$url  = Route::url('index.php?option=' . $this->_option
-					 . '&alias=' . $this->model->get('alias') . '&active=files');
-				$url .= '/?action=connect';
-				$this->_referer = $url;
+				\Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
+
+				App::redirect(Route::url($this->model->link('files') . '&action=connect'));
 				return;
 			}
 		}
@@ -2418,7 +2381,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					}
 
 					// Output message
-					$this->_msg = Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title;
+					\Notify::message(Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title, 'success', 'projects');
 
 					// Force sync
 					$sync = true;
@@ -2501,7 +2464,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							);
 
 							// Output message
-							$this->_msg = Lang::txt('PLG_PROJECTS_FILES_SHARE_SUCCESS');
+							\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SHARE_SUCCESS'), 'success', 'projects');
 
 							// Force sync
 							$sync = true;
@@ -2524,11 +2487,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
 
 		// Force sync
@@ -2538,7 +2497,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$this->_referer = Route::url($url);
+		App::redirect(Route::url($url));
 		return;
 	}
 
@@ -2721,7 +2680,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 
 				// Redirect to connect screen
-				$this->_referer = $url . '?action=connect';
+				App::redirect(Route::url($this->model->link('files') . '&action=connect'));
 				return;
 			}
 			elseif (!$this->_connect->makeConnection($service, $reauth, $return))
@@ -3197,7 +3156,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if (!empty($failed) && !$uploaded && !$uploaded)
 		{
-			$this->_message = array('message' => 'Failed to upload ' . $failed, 'type' => 'error');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_TO_UPLOAD') . $failed, 'error', 'projects');
 		}
 		elseif ($uploaded || $updated || $expanded)
 		{
@@ -3250,7 +3209,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$message = 'Successfully ' . $message;
 			$message.= $failed ? ' There was a problem uploading ' . $failed : '';
-			$this->_message = array('message' => $message, 'type' => 'success');
+
+			\Notify::message($message, 'success', 'projects');
 		}
 		elseif ($deleted)
 		{
@@ -3263,8 +3223,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				. ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
 
 			// Output message
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED')
-				. ' ' . $what, 'type' => 'success');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED')
+				. ' ' . $what, 'success', 'projects');
 		}
 		elseif ($restored)
 		{
@@ -3276,8 +3236,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$activity = 'restored deleted file ' . basename($resParts[0]);
 
 			// Output message
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED')
-				. ' ' . basename($resParts[0]), 'type' => 'success');
+			\Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED')
+				. ' ' . basename($resParts[0]), 'success', 'projects');
 		}
 
 		// Add activity to feed
@@ -3329,7 +3289,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$aid = $model->recordActivity( $activity, $parsedRef, 'project files',
+			$aid = $model->recordActivity( $activity, $parsedRef, 'files',
 				Route::url($model->link('files')), 'files', 1
 			);
 		}

@@ -47,20 +47,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Component name
 	 *
 	 * @var  string
@@ -321,9 +307,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$arr['html'] = $this->handler();
 				break;
 		}
-
-		$arr['referer'] = $this->_referer;
-		$arr['msg']     = $this->_message;
 
 		// Return data
 		return $arr;
@@ -795,20 +778,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Error loading publication record
 		if (!$pub->exists() && $new == false)
 		{
-			$this->_referer = Route::url($pub->link('editbase'));
-			$this->_message = array(
-				'message'   => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
-				'type'      => 'error');
+			\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editbase')));
 			return;
 		}
 
 		// Is this pub from this project?
 		if (!$pub->belongsToProject($this->model->get('id')))
 		{
-			$this->_referer = Route::url($this->model->link('publications'));
-			$this->_message = array(
-				'message'   => Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'),
-				'type'      => 'error');
+			Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
+			App::redirect(Route::url($this->model->link('publications')));
 			return;
 		}
 
@@ -896,7 +875,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Go back to panel after changes to individual attachment
 		if ($this->_task == 'saveitem' || $this->_task == 'deleteitem')
 		{
-			$this->_referer = $back;
+			App::redirect($back);
 			return;
 		}
 
@@ -971,7 +950,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect
-		$this->_referer = htmlspecialchars_decode(Route::url($route));
+		App::redirect(htmlspecialchars_decode(Route::url($route)));
 		return;
 	}
 
@@ -988,14 +967,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Record activity
@@ -1091,7 +1070,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Do we have a choice?
 		if (count($choices) <= 1 )
 		{
-			$this->_referer = Route::url($view->route . '&action=edit');
+			App::redirect(Route::url($view->route . '&action=edit'));
 			return;
 		}
 
@@ -1169,7 +1148,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Save changes
 			if (!$this->model->store())
 			{
-				$this->setError( $this->model->getError() );
+				throw new Exception($this->model->getError());
 				return false;
 			}
 		}
@@ -1180,7 +1159,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Make sure we got type info
 		if (!$mType)
 		{
-			throw new Exception(Lang::txt('Error loading publication type'));
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOAD_TYPE'));
 			return false;
 		}
 
@@ -1237,9 +1216,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_uid, $this->_uid,
 					0, 1, 1, 1 ))
 				{
-					// File auto ticket to report this - TBD
-					//*******
-					$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS').': '.$objO->getError() );
+					throw new Exception( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError() );
 					return false;
 				}
 			}
@@ -1310,8 +1287,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$firstBlock    = $pub->_curationModel->_blocks->$blockId->name;
 
 			// Redirect to first block
-			$this->_referer = Route::url($pub->link('edit')
-				. '&move=continue&step=' . $blockId . '&section=' . $firstBlock);
+			App::redirect(Route::url($pub->link('edit')
+				. '&move=continue&step=' . $blockId . '&section=' . $firstBlock));
 			return;
 		}
 		else
@@ -1322,20 +1299,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// If publication not found, raise error
 		if (!$pub->exists() || $pub->isDeleted())
 		{
-			$this->_referer = Route::url($pub->link('editbase'));
-			$this->_message = array(
-				'message'   => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
-				'type'      => 'error');
+			\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editbase')));
 			return;
 		}
 
 		// Make sure the publication belongs to the project
 		if (!$pub->belongsToProject($this->model->get('id')))
 		{
-			$this->_referer = Route::url($this->model->link('publications'));
-			$this->_message = array(
-				'message'   => Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'),
-				'type'      => 'error');
+			Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
+			App::redirect(Route::url($this->model->link('publications')));
 			return;
 		}
 
@@ -1723,18 +1696,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect
-		$this->_referer = Route::url($pub->link('editversion') . '&section=license');
+		App::redirect(Route::url($pub->link('editversion') . '&section=license'));
 		return;
 	}
 
@@ -1769,10 +1742,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Make sure the publication belongs to the project
 		if (!$pub->belongsToProject($this->model->get('id')))
 		{
-			$this->_referer = Route::url($this->model->link('publications'));
-			$this->_message = array(
-				'message'   => Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'),
-				'type'      => 'error');
+			Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
+			App::redirect(Route::url($this->model->link('publications')));
 			return;
 		}
 
@@ -1783,7 +1754,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($pub->version->checkVersion($pid, 'dev'))
 		{
 			// Redirect
-			$this->_referer = Route::url($pub->link('editdev'));
+			App::redirect(Route::url($pub->link('editdev')));
 			return;
 		}
 
@@ -1794,7 +1765,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		)
 		{
 			// Determine redirect path
-			$this->_referer = Route::url($pub->link('editdefault'));
+			App::redirect(Route::url($pub->link('editdefault')));
 			return;
 		}
 
@@ -1897,15 +1868,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect
-		$this->_referer = Route::url($pub->link('editdev'));
+		App::redirect(Route::url($pub->link('editdev')));
 		return;
 	}
 
@@ -1976,32 +1947,24 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Error loading publication record
 		if (!$pub->exists())
 		{
-			$this->_referer = Route::url($pub->link('editbase'));
-			$this->_message = array(
-				'message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
-				'type' => 'error');
+			\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editbase')));
 			return;
 		}
 
 		// Agreement to terms is required
 		if ($confirm && !$agree)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED') );
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-			// Redirect
-			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
+			\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED'), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
 			return;
 		}
 
 		// Check against quota
 		if ($this->_overQuota())
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-			// Redirect
-			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
+			\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE'), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
 			return;
 		}
 
@@ -2015,10 +1978,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Make sure the publication belongs to the project
 		if (!$pub->belongsToProject($this->model->get('id')))
 		{
-			$this->_referer = Route::url($this->model->link('publications'));
-			$this->_message = array(
-				'message'   => Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'),
-				'type'      => 'error');
+			Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
+			App::redirect(Route::url($this->model->link('publications')));
 			return;
 		}
 
@@ -2083,8 +2044,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// On error
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
+			\Notify::message($this->getError(), 'error', 'projects');
+			App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
 			return;
 		}
 
@@ -2200,7 +2161,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->onAfterChangeState( $pub, $originalStatus );
 
 		// Redirect
-		$this->_referer = Route::url($pub->link('editversion'));
+		App::redirect(Route::url($pub->link('editversion')));
 		return;
 	}
 
@@ -2348,14 +2309,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub->_curationModel->package();
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		return;
@@ -2595,17 +2556,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		$this->_referer = $baseUrl;
+		App::redirect($baseUrl);
 		return;
 	}
 

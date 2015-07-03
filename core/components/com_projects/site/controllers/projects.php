@@ -592,10 +592,6 @@ class Projects extends Base
 				{
 					foreach ($sections as $section)
 					{
-						if (isset($section['msg']) && !empty($section['msg']))
-						{
-							$this->_setNotification($section['msg']['message'], $section['msg']['type']);
-						}
 						if (isset($section['html']) && $section['html'])
 						{
 							if ($ajax)
@@ -609,11 +605,6 @@ class Projects extends Base
 								// Normal output
 								$this->view->content .= $section['html'];
 							}
-						}
-						elseif (isset($section['referer']) && $section['referer'] != '')
-						{
-							App::redirect($section['referer']);
-							return;
 						}
 					}
 				}
@@ -1005,8 +996,8 @@ class Projects extends Base
 		if ($error)
 		{
 			$error =  $error == 'access_denied'
-				? Lang::txt('Sorry, we cannot connect you to external file service without your permission')
-				: Lang::txt('Sorry, we cannot connect you to external file service at this time');
+				? Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_PERMISSION')
+				: Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_NOW');
 			$this->_setNotification($error, 'error');
 			$return = $json->return;
 		}

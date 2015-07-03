@@ -118,7 +118,7 @@ class Base extends SiteController
 		// If message is set push to notifications
 		if ($message != '')
 		{
-			$this->addComponentMessage($message, $type);
+			\Notify::message($message, $type, 'projects');
 		}
 	}
 
@@ -132,7 +132,7 @@ class Base extends SiteController
 		// Get messages in queue
 		if (!isset($this->_messages))
 		{
-			$this->_messages = $this->getComponentMessage();
+			$this->_messages = \Notify::messages('projects');
 		}
 
 		// Return first message of type

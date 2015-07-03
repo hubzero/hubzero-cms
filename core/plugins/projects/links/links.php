@@ -44,32 +44,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Component name
 	 *
 	 * @var  string
 	 */
 	protected $_option = 'com_projects';
-
-	/**
-	 * Store internal message
-	 *
-	 * @var	   array
-	 */
-	protected $_msg = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -181,9 +160,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			$arr = array(
 				'html' 		=> $html,
-				'metadata' 	=> '',
-				'msg' 		=> $this->_message,
-				'referer' 	=> $this->_referer
+				'metadata' 	=> ''
 			);
 
 			return $arr;
@@ -223,18 +200,14 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Unattach citation
 			if ($this->unattachCitation($pid, $cid ))
 			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_LINKS_CITATION_DELETED');
+				\Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_DELETED'), 'success', 'projects');
 			}
 		}
 
 		// Pass success or error message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
 
 		// Build pub url
@@ -242,9 +215,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->model->get('alias')
 				. '&active=publications';
-		$url = Route::url($route . '&pid=' . $pid).'/?version=' . $version . '&amp;section=citations';
+		$url = Route::url($route . '&pid=' . $pid . '&version=' . $version . '&section=citations');
 
-		$this->_referer = $url;
+		App::redirect($url);
 		return;
 	}
 
@@ -273,17 +246,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Attach citation
 		if ($this->attachCitation($pid, $doi, $format, $this->_uid ))
 		{
-			$this->_msg = Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED');
+			\Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
 		}
 
 		// Pass success or error message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
 
 		// Build pub url
@@ -291,10 +260,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->model->get('alias')
 				. '&active=publications';
-		$url = Route::url($route .'&pid=' . $pid)
-			.'/?version=' . $version . '&amp;section=citations';
 
-		$this->_referer = $url;
+		App::redirect(Route::url($route .'&pid=' . $pid . '&version=' . $version . '&section=citations'));
 		return;
 	}
 
@@ -356,17 +323,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$this->_msg = Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED');
+			\Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
 		}
 
 		// Pass success or error message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
 
 		// Build pub url
@@ -374,10 +337,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->model->get('alias')
 				. '&active=publications';
-		$url = Route::url($route . '&pid=' . $pid)
-			.'/?version=' . $version . '&amp;section=citations';
 
-		$this->_referer = $url;
+		App::redirect(Route::url($route .'&pid=' . $pid . '&version=' . $version . '&section=citations'));
 		return;
 	}
 
@@ -736,7 +697,6 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->filter		= $filter;
 
 		// Get messages	and errors
-		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
@@ -825,7 +785,6 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->ajax			= Request::getInt( 'ajax', 0 );
 
 		// Get messages	and errors
-		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
 			$view->setError( $this->getError() );

@@ -48,20 +48,6 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Component name
 	 *
 	 * @var  string
@@ -130,9 +116,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     =>'',
-			'metadata' =>'',
-			'msg'      =>'',
-			'referer'  =>''
+			'metadata' =>''
 		);
 
 		// Get this area details
@@ -193,8 +177,6 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Return data
-		$arr['referer'] = $this->_referer;
-		$arr['msg']     = $this->_message;
 		return $arr;
 	}
 
@@ -327,12 +309,6 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		// Get messages and errors
-		$view->msg = $this->_msg;
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
 		return $view->loadTemplate();
 
 	}
@@ -389,9 +365,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Append breadcrumbs
 		Pathway::append(
 				stripslashes($view->row->get('content')),
-				Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $this->model->get('alias') . '&active=todo'
-					. '&action=view') . '/?todoid=' . $todoid
+				Route::url($this->model->link('todo')
+					. '&action=view&todoid=' . $todoid)
 		);
 
 		$view->uid			= $this->_uid;
@@ -399,18 +374,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$view->list			= Request::getVar('list', '');
 		$view->ajax			= Request::getVar('ajax', 0);
 
-		// Get messages and errors
-		$view->msg = $this->_msg;
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
 		return $view->loadTemplate();
 	}
-
-	//----------------------------------------
-	// Processors
-	//----------------------------------------
 
 	/**
 	 * Save item
@@ -472,8 +437,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Prevent resubmit
 		if ($task == 'save' && $content == '' && $newlist == '')
 		{
-			$this->_referer = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias') . '&active=todo');
+			App::redirect($this->model->link('todo'));
 			return;
 		}
 
@@ -654,16 +618,6 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Pass error or success message
-		if ($this->getError())
-		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
-		}
-
 		// Set redirect path
 		if ($page == 'item')
 		{
@@ -685,11 +639,19 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				? $this->item()
 				: $this->page();
 		}
-		else
+
+		// Pass error or success message
+		if ($this->getError())
 		{
-			$this->_referer = $url;
-			return; // redirect
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
+		elseif (!empty($this->_msg))
+		{
+			\Notify::message($this->_msg, 'success', 'projects');
+		}
+
+		// Redirect
+		App::redirect(Route::url($url));
 	}
 
 	/**
@@ -745,7 +707,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED');
 			}
 		}
-		else if ($list && $objTD->getListName($this->model->get('id'), $list))
+		elseif ($list && $objTD->getListName($this->model->get('id'), $list))
 		{
 			// Are we deleting a list?
 			$deleteall = Request::getInt('all', 0);
@@ -789,21 +751,20 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		// Redirect back to todo list
-		$url  = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias') . '&active=todo');
+		$url  = Route::url($this->model->link('todo'));
 		$url .= $gobacklist ? '?list=' . $gobacklist : '';
-		$this->_referer = $url;
+		App::redirect($url);
 		return;
 	}
 
@@ -860,10 +821,6 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		return $this->page();
 	}
 
-	//----------------------------------------
-	// Commenting
-	//----------------------------------------
-
 	/**
 	 * Delete comment
 	 *
@@ -906,19 +863,16 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		// Set redirect path
-		$this->_referer = Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->model->get('alias') . '&active=todo'
-							. '&action=view&todoid=' . $todoid);
+		// Redirect
+		App::redirect(Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid));
 		return;
-
 	}
 
 	/**
@@ -991,17 +945,15 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		// Set redirect path
-		$this->_referer = Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->model->get('alias') . '&active=todo'
-							. '&action=view&todoid=' . $itemid);
+		// Redirect
+		App::redirect(Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid));
 		return;
 	}
 }

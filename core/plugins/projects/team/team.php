@@ -44,20 +44,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Store redirect URL
-	 *
-	 * @var	   string
-	 */
-	protected $_referer = NULL;
-
-	/**
-	 * Store output message
-	 *
-	 * @var	   array
-	 */
-	protected $_message = NULL;
-
-	/**
 	 * Component name
 	 *
 	 * @var  string
@@ -118,9 +104,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$arr = array(
 			'html'     =>'',
-			'metadata' =>'',
-			'msg'      =>'',
-			'referer'  =>''
+			'metadata' =>''
 		);
 
 		// Get this area details
@@ -199,9 +183,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 					break;
 			}
 		}
-
-		$arr['referer'] = $this->_referer;
-		$arr['msg']     = $this->_message;
 
 		// Return data
 		return $arr;
@@ -658,20 +639,20 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				. '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
 		$url = $setup
 				? Route::url($this->model->link('setup') . '&section=team')
 				: Route::url($this->model->link('edit') . '&section=team');
-		$this->_referer = $url;
+		App::redirect($url);
 		return;
 	}
 
@@ -761,20 +742,20 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
 			}
 
-			// Pass success or error message
+			// Pass error or success message
 			if ($this->getError())
 			{
-				$this->_message = array('message' => $this->getError(), 'type' => 'error');
+				\Notify::message($this->getError(), 'error', 'projects');
 			}
-			elseif (isset($this->_msg) && $this->_msg)
+			elseif (!empty($this->_msg))
 			{
-				$this->_message = array('message' => $this->_msg, 'type' => 'success');
+				\Notify::message($this->_msg, 'success', 'projects');
 			}
 
-			$url = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&task=';
+			$url  = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&task=';
 			$url .= $setup ? 'setup' : 'edit';
 			$url .= '&active=team';
-			$this->_referer = Route::url($url);
+			App::redirect(Route::url($url));
 			return;
 		}
 	}
@@ -855,17 +836,17 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		$this->_referer = Route::url($this->model->link('edit') . '&section=team');
+		App::redirect(Route::url($this->model->link('edit') . '&section=team'));
 		return;
 	}
 
@@ -939,17 +920,17 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Pass success or error message
+		// Pass error or success message
 		if ($this->getError())
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			\Notify::message($this->getError(), 'error', 'projects');
 		}
-		elseif (isset($this->_msg) && $this->_msg)
+		elseif (!empty($this->_msg))
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			\Notify::message($this->_msg, 'success', 'projects');
 		}
 
-		$this->_referer = Route::url('index.php?option=' . $this->_option);
+		App::redirect(Route::url('index.php?option=' . $this->_option));
 		return;
 	}
 

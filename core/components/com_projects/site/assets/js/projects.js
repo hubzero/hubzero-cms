@@ -32,25 +32,25 @@ if (!jq) {
 
 HUB.Projects = {
 	jQuery: jq,
-		
-	initialize: function() 
-	{											
+
+	initialize: function()
+	{
 		// Fix up users with no JS
 		HUB.Projects.fixJS();
-		
+
 		// Activate boxed content
 		HUB.Projects.launchBox();
-		
+
 		// Add confirms
 		HUB.Projects.addConfirms();
-		
+
 		// Reviewers
 		HUB.Projects.addFiltering();
-		
+
 		// Fade-out status message
 		HUB.Projects.addMessageFade();
 	},
-	
+
 	addFiltering: function()
 	{
 		var $ = this.jQuery;
@@ -67,21 +67,21 @@ HUB.Projects = {
 	addMessageFade: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if ($("#status-msg").length > 0)
 		{
-			var keyupTimer = setTimeout((function() 
-			{  
+			var keyupTimer = setTimeout((function()
+			{
 				if (!$("#status-msg").hasClass('ajax-loading') && $('#status-msg').html().trim() != '')
 				{
 					$("#status-msg").animate({opacity:0.0}, 2000, function() {
 					    $('#status-msg').html('');
-					});	
+					});
 				}
 			}), 4000);
-		}		
+		}
 	},
-	
+
 	addConfirms: function()
 	{
 		var $ = this.jQuery;
@@ -89,11 +89,11 @@ HUB.Projects = {
 		// Confirm project delete delete
 		if ($('#delproject').length)
 		{
-			$('#delproject').on('click', function(e) 
+			$('#delproject').on('click', function(e)
 			{
-				e.preventDefault();			
-				HUB.Projects.addConfirm($('#delproject'), 
-				'Are you sure you want to delete this project? <br />This is a permanent action and cannot be undone.', 
+				e.preventDefault();
+				HUB.Projects.addConfirm($('#delproject'),
+				'Are you sure you want to delete this project? <br />This is a permanent action and cannot be undone.',
 				'Yes, delete', 'No, do not delete');
 			});
 		}
@@ -101,29 +101,29 @@ HUB.Projects = {
 		// Confirm revert
 		if ($('#confirm-revert').length)
 		{
-			$('#confirm-revert').on('click', function(e) 
+			$('#confirm-revert').on('click', function(e)
 				{
-					e.preventDefault();			
-					HUB.Projects.addConfirm($('#confirm-revert'), 
-					'Are you sure you want to revert this publication to draft mode?', 
+					e.preventDefault();
+					HUB.Projects.addConfirm($('#confirm-revert'),
+					'Are you sure you want to revert this publication to draft mode?',
 					'Yes, revert', 'No, keep as pending');
 			});
-		}	
+		}
 	},
 
-	// Launch SqueezeBox with Ajax actions	
-	launchBox: function() 
+	// Launch SqueezeBox with Ajax actions
+	launchBox: function()
 	{
 		var $ = this.jQuery;
 		var bWidth 	= 600;
 		var bHeight = 500;
 		var css 	= 'sbp-window';
 		var cBtn	= 1;
-		
+
 		$('.showinbox').each(function(i, item) {
 			// Clean up
 			$(item).off('click');
-			
+
 			var href = $(item).attr('href');
 			if (href.search('no_html=1') == -1)
 			{
@@ -139,27 +139,27 @@ HUB.Projects = {
 			if (href.search('&ajax=1') == -1) {
 				href = href + '&ajax=1';
 			}
-			$(item).attr('href', href);	
-			
+			$(item).attr('href', href);
+
 			// TEX compiler view
 			if ($(item).hasClass('tex-menu') || $(item).hasClass('box-expanded'))
 			{
 				bWidth = 800;
 			}
-						
+
 			// Open box on click
 			$(item).on('click', function(e) {
 				e.preventDefault();
-				
+
 				// New publication process: fileselector
 				if ($(this).hasClass('item-add'))
 				{
-					bWidth = 700;				
+					bWidth = 700;
 				}
 				if ($(this).hasClass('nox'))
 				{
 					cBtn = 0;
-				}		
+				}
 
 				if (!$(this).hasClass('inactive')) {
 					// Modal box for actions
@@ -177,13 +177,13 @@ HUB.Projects = {
 									$.fancybox.close();
 								});
 							}
-							
+
 							// Publication process
 							if ($('#ajax-selections').length && $('#section').length) {
 								if (HUB.ProjectPublications) {
 									var replacement = '';
 									if ($('#section').val() == 'gallery' || $('#section').val() == 'content') {
-										replacement = 'clone-';	
+										replacement = 'clone-';
 									} else {
 										replacement = 'clone-author::';
 									}
@@ -203,8 +203,8 @@ HUB.Projects = {
 			});
 		});
 	},
-	
-	resetApproval: function() 
+
+	resetApproval: function()
 	{
 		var $ = this.jQuery;
 
@@ -225,8 +225,8 @@ HUB.Projects = {
 			});
 		}
 	},
-	
-	setCounter: function(el, numel) 
+
+	setCounter: function(el, numel)
 	{
 		var $ = this.jQuery;
 		var maxchars = 250,
@@ -244,13 +244,13 @@ HUB.Projects = {
 				$(numel).css('color', '#999999').html('');
 			}
 		}
-		
+
 		if (remaining_chars == 0) {
 			$(el).val($(el).val().substr(0, maxchars));
-		}			
+		}
 	},
-	
-	cleanupText: function(text) 
+
+	cleanupText: function(text)
 	{
 		// Clean up entered value
 		var cleaned = text.toLowerCase()
@@ -260,13 +260,13 @@ HUB.Projects = {
 						  .replace(/[|&;$%@"<>()+,#!?.~*^=-_]/g, '');
 		return cleaned;
 	},
-	
-	fixJS: function() 
+
+	fixJS: function()
 	{
 		var $ = this.jQuery;
 		var js_off = $(".nojs"),
 			js_on = $(".js");
-			
+
 		// Hide all no-js messages
 		if (js_off.length)
 		{
@@ -274,18 +274,18 @@ HUB.Projects = {
 				$(item).css('display', 'none');
 			});
 		}
-		
+
 		// Show all js-only options
 		if (js_on.length)
 		{
 			js_on.each(function(i, item) {
 				$(item).removeClass('js');
-			});	
+			});
 		}
 	},
-	
-	addConfirm: function (link, question, yesanswer, noanswer) 
-	{	
+
+	addConfirm: function (link, question, yesanswer, noanswer)
+	{
 		var $ = this.jQuery;
 		if ($('#confirm-box')) {
 			$('#confirm-box').remove();
@@ -295,91 +295,91 @@ HUB.Projects = {
 
 		// Add confirmation
 		var ancestor = $(link).parent().parent();
-		$(ancestor).after('<div class="confirmaction" id="confirm-box" style="display:block;">' + 
-			'<p>' + question + '</p>' + 
-			'<p>' + 
-				'<a href="' + href + '" class="confirm">' + yesanswer + '</a>' + 
-				'<a href="#" class="cancel" id="confirm-box-cancel">' + noanswer + '</a>' + 
-			'</p>' + 
+		$(ancestor).after('<div class="confirmaction" id="confirm-box" style="display:block;">' +
+			'<p>' + question + '</p>' +
+			'<p>' +
+				'<a href="' + href + '" class="confirm">' + yesanswer + '</a>' +
+				'<a href="#" class="cancel" id="confirm-box-cancel">' + noanswer + '</a>' +
+			'</p>' +
 		'</div>');
-		
+
 		$('#confirm-box-cancel').on('click', function(e){
 			e.preventDefault();
 			$('#confirm-box').remove();
 		});
-		
+
 		// Move close to item
 		var coord = $($(link).parent()).position();
-		
+
 		/*
 		$('html, body').animate({
 			scrollTop: $(link).offset().top
 		}, 2000); */
-		
+
 		$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);
 	},
-	
+
 	loadingIma: function(txt)
 	{
-		var html = '<span id="fbwrap">' + 
+		var html = '<span id="fbwrap">' +
 			'<span id="facebookG">' +
 			' <span id="blockG_1" class="facebook_blockG"></span>' +
 			' <span id="blockG_2" class="facebook_blockG"></span>' +
 			' <span id="blockG_3" class="facebook_blockG"></span> ';
-		
+
 		if (txt)
 		{
 			html = html + txt;
 		}
-		
-		html = html + 
+
+		html = html +
 			'</span>' +
 		'</span>';
-		
+
 		return html;
 	},
-	
+
 	setStatusMessage: function (txt, loading)
 	{
-		var $ = this.jQuery;	
+		var $ = this.jQuery;
 
 		var log = $('#status-msg').empty();
-		
+
 		if (loading == 1)
 		{
 			$('#status-msg').addClass('ajax-loading');
-			
+
 			if (!txt)
 			{
-				txt = 'Please wait while we are performing your request...';	
-			} 
-			
+				txt = 'Please wait while we are performing your request...';
+			}
+
 			var html = HUB.Projects.loadingIma(txt);
 		}
 		else
 		{
 			var html = txt;
 		}
-				
+
 		// Add element
 		if (txt)
 		{
 			$('#status-msg').html(html);
-			$('#status-msg').css({'opacity':100});	
+			$('#status-msg').css({'opacity':100});
 		}
 		else
 		{
 			$('#status-msg').css('opacity', 0);
 			return;
-		}		
+		}
 	},
-	
+
 	getArrayIndex: function (obj, arr)
 	{
 		if (!Array.indexOf)
 		{
 			// Fix for indexOf in IE browsers
-			for (var i = 0, j = arr.length; i < j; i++) 
+			for (var i = 0, j = arr.length; i < j; i++)
 			{
 			   if (arr[i] === obj) { return i; }
 			}
@@ -390,8 +390,8 @@ HUB.Projects = {
 			return arr.indexOf(obj);
 		}
 	}
-}		
-	
+}
+
 jQuery(document).ready(function($){
 	HUB.Projects.initialize();
 });
