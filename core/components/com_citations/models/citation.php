@@ -84,19 +84,8 @@ class Citation extends Relational
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function authors()
+	public function relatedAuthors()
 	{
 		return $this->oneToMany('Author', 'cid', 'id');
 	}
-	/**
-	 * Defines a one to one relationship with format
-	 *
-	 * @return $this
-	 * @since  1.3.2
-	 **/
-	public function citationFormat()
-	{
-		return $this->oneToOne('Format', 'id', 'format');
-	}
-
 }
