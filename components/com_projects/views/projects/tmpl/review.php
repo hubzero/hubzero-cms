@@ -75,6 +75,7 @@ if ($this->getError()) {
 		<input type="hidden" name="reviewer" value="<?php echo $this->reviewer; ?>" />
 		<input type="hidden" name="filterby" value="<?php echo $this->filterby; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<?php echo JHTML::_('form.token'); ?>
 	</fieldset>
 	<div class="info_blurb">
 		<div class="pthumb"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" /></div>

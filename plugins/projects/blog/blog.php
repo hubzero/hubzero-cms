@@ -407,6 +407,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$managers = JRequest::getInt('managers_only', 0);
 		$entry = trim(JRequest::getVar('blogentry', ''));
@@ -1005,6 +1008,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _saveComment()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$itemid = JRequest::getInt('itemid', 0, 'post');
 		$tbl = trim(JRequest::getVar('tbl', 'activity', 'post'));

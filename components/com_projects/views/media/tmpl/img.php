@@ -60,6 +60,7 @@ $app = JFactory::getApplication();
 				<input type="file" name="upload" id="upload" size="20" />
 				<input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" />
 				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" />
+				<?php echo JHTML::_('form.token'); ?>
 				<?php if ($this->getError()) { ?>
 							<p class="error_s"><?php echo JText::_('COM_PROJECTS_ERROR'); ?>: <?php echo $this->getError(); ?></p>
 				<?php } else { ?>

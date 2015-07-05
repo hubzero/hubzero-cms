@@ -1660,6 +1660,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Redirect after saving
 		if ($save)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			if ($updated)
 			{
 				$objAA->recordActivity( $pid, $this->juser->get('id'),
@@ -2180,6 +2183,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	 */
 	public function activateTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
@@ -2611,6 +2617,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 		if ($action == 'save' && !$this->getError() && $obj->id)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			$cbase = $obj->admin_notes;
 
 			// Meta data for comment

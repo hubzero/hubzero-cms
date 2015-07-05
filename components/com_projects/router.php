@@ -244,12 +244,11 @@ function ProjectsParseRoute($segments)
 		elseif (in_array($segments[1], $mediaTasks))
 		{
 			$vars['controller'] = 'media';
-			$vars['task'] = $segments[1];
+			$vars['task']       = $segments[1];
 			if (!empty($segments[2]))
 			{
 				$vars['media'] = $segments[2];
 			}
-
 			return $vars;
 		}
 		else

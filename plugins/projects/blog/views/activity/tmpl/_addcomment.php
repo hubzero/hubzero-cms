@@ -40,6 +40,7 @@ if ($a->commentable) { ?>
 			<input type="hidden" name="itemid" value="<?php echo $this->eid; ?>" />
 			<input type="hidden" name="tbl" value="<?php echo $this->etbl; ?>" />
 			<input type="hidden" name="parent_activity" value="<?php echo $a->id; ?>" />
+			<?php echo JHTML::_('form.token'); ?>
 			<img class="comment-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->uid); ?>" alt="" />
 			<label class="comment-show">
 				<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea>

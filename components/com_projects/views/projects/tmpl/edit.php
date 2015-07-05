@@ -273,6 +273,7 @@ else
 							}
 						?>
 					</div>
+					<?php echo JHTML::_('form.token'); ?>
 				</form>
 			</div><!-- / .subject -->
 			</div>

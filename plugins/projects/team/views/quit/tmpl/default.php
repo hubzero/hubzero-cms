@@ -36,6 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="active" value="team" />
 		<input type="hidden" name="confirm" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<?php echo JHTML::_('form.token'); ?>
 		<?php if ($this->onlymanager) { ?>
 			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&amp;alias=' . $this->project->alias . '&amp;task=edit').'/?edit=team'; ?>"><?php echo JText::_('COM_PROJECTS_TEAM'); ?></a>.</p>
 		<?php } else if ($this->group) {

@@ -343,6 +343,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function save()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$listcolor	= JRequest::getVar('list', '');
 		$content	= JRequest::getVar('content', '');
@@ -828,6 +831,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _saveComment()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$itemid = JRequest::getInt( 'itemid', 0, 'post' );
 		$comment = trim(JRequest::getVar( 'comment', '', 'post' ));

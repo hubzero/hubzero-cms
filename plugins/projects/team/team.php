@@ -877,6 +877,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		if ($confirm && !$onlymanager)
 		{
+			// Check for request forgeries
+			JRequest::checkToken() or jexit('Invalid Token');
+
 			$deleted = $objO->removeOwners ( $this->_project->id, array($this->_uid));
 			if ($deleted)
 			{

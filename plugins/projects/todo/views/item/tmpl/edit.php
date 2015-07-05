@@ -67,6 +67,7 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 			<input type="hidden" name="action" value="save" />
 			<input type="hidden" name="page" id="tdpage" value="item" />
 			<input type="hidden" name="todoid" id="todoid" value="<?php echo $this->row->get('id'); ?>" />
+			<?php echo JHTML::_('form.token'); ?>
 		</fieldset>
 		<section class="section intropage">
 			<div id="td-item" class="<?php echo $class; ?>">

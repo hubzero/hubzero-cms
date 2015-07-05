@@ -58,6 +58,9 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function uploadTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// How many steps in setup process?
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$prefix = JPATH_ROOT;
@@ -73,8 +76,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		$tempid = JRequest::getInt( 'tempid', 0 );
 		if (!$id && !$tempid)
 		{
-			$this->setError( JText::_('COM_PROJECTS_ERROR_NO_ID') );
-			$this->imgTask( $id, $tempid );
+			JError::raiseError( 403, JText::_('COM_PROJECTS_ERROR_NO_ID') );
 			return;
 		}
 
@@ -375,6 +377,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		$this->_alias   	= JRequest::getVar( 'alias', '' );
 		$this->_identifier  = $this->_id ? $this->_id : $this->_alias;
 		$this->_identifier	= $id ? $id : $this->_identifier;
+
 		$tempid 			= $tempid ? $tempid : JRequest::getInt( 'tempid', 0, 'get' );
 
 		$useid 				= $this->_identifier ? $this->_identifier : $tempid;

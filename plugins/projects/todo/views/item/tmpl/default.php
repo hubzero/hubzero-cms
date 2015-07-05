@@ -121,6 +121,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : JText::_('PL
 					<input type="hidden" name="active" value="todo" />
 					<input type="hidden" name="itemid" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="parent_activity" value="<?php echo $this->row->get('activityid'); ?>" />
+					<?php echo JHTML::_('form.token'); ?>
 					<p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?php echo JText::_('PLG_PROJECTS_TODO_ADD_COMMENT'); ?>" /></p>
 			</div>
 		</form>

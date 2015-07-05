@@ -37,6 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="managers_only" value="0" />
 				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
+				<?php echo JHTML::_('form.token'); ?>
 			</p>
 		</fieldset>
 	</form>

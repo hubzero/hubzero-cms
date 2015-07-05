@@ -85,6 +85,7 @@ $this->css()
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden" name="verified" id="verified" value="<?php echo $this->verified; ?>" />
 								<input type="hidden" name="pubid" value="<?php echo $this->pub->id; ?>" />
+								<?php echo JHTML::_('form.token'); ?>
 							</fieldset>
 							<div id="activate-summary">
 								<p>
