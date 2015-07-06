@@ -59,7 +59,7 @@ if ($tmpl != 'component') { ?>
 					<?php echo JText::_('COM_WIKI_SEARCH'); ?>
 				</a>
 				<div class="page-search-form">
-					<form action="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:Search'); ?>" method="post">
+					<form action="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:Search'); ?>" method="get">
 						<fieldset>
 							<legend><?php echo JText::_('COM_WIKI_SEARCH_LEGEND'); ?></legend>
 							<label for="page-search-q">
