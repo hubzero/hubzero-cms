@@ -200,6 +200,7 @@ class Helper extends Module
 			if (!$post->id)
 			{
 				// No record found -- we're OK to add one
+				$post = new Post($database);
 				$post->item_id       = $this->item->get('id');
 				$post->collection_id = $collectible['collection_id'];
 				$post->description   = $collectible['description'];
@@ -210,6 +211,10 @@ class Helper extends Module
 					{
 						$this->setError($post->getError());
 					}
+				}
+				else
+				{
+					$this->setError($post->getError());
 				}
 			}
 		}
