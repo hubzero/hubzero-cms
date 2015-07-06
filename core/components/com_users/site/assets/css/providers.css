@@ -82,6 +82,8 @@
 .pucas { background: #A3792C; }
 .twitter:before { content: "\f010"; }
 .twitter { background: #55ACEE; }
+.orcid:before { content: "\f02d"; }
+.orcid { background: #A6CE39; }
 .hubzero:before { content: "\f001"; }
 .hubzero { background: #999; }
 
@@ -128,6 +130,7 @@
 .primary .upper.google:before { content: "Google"; }
 .primary .upper.linkedin:before { content: "LinkedIn"; }
 .primary .upper.twitter:before { content: "Twitter"; }
+.primary .upper.orcid:before { content: "ORCiD"; }
 /*.primary .upper.pucas:before { content: "Purdue Career Account"; }*/
 
 .primary .facebook { color: #FFFFFF; }
@@ -139,5 +142,7 @@
 .primary .pucas { background: #D1D3D4 url('/plugins/authentication/pucas/assets/img/logo.png') no-repeat 75px 7px; }
 .primary .twitter:before { content: ""; }
 .primary .twitter { color: #55ACEE; }
+.primary .orcid:before { content: ""; }
+.primary .orcid { color: #A6CE39; }
 .primary .hubzero:before { content: ""; }
 .primary .hubzero { color: #999; }

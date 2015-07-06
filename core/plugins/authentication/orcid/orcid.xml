@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+@package        hubzero-cms
+@file           core/plugins/authentication/orcid/orcid.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2015 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.7" type="plugin" group="authentication">
+	<name>Authentication - ORCID</name>
+	<author>HUBzero</author>
+	<creationDate>July 2015</creationDate>
+	<copyright>Copyright (C) 2008-2015 Purdue University.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>hubzero@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>1.7</version>
+	<description>PLG_AUTHENTICATION_ORCID_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="orcid.php">orcid.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="client_id"     type="text" size="20" label="PLG_AUTHENTICATION_ORCID_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_ORCID_PARAM_KEY_DESC" />
+				<field name="client_secret" type="text" size="32" label="PLG_AUTHENTICATION_ORCID_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_ORCID_PARAM_SECRET_DESC" />
+				<field name="display_name"  type="text" size="32" label="PLG_AUTHENTICATION_ORCID_PARAM_NAME_LABEL"   description="PLG_AUTHENTICATION_ORCID_PARAM_NAME_DESC" default="ORCID" />
+				<field name="site_login"    type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_ORCID_PARAM_SITELOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="admin_login"   type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_ADMINLOGIN_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_ADMINLOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
