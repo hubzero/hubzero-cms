@@ -104,22 +104,21 @@ class Helper
 	 *
 	 * @param      string  $position Position to render modules for
 	 * @param      integer $style    Module style (deprecated?)
-	 * @return     string HTML
+	 * @return     string  HTML
 	 */
-	public static function renderModules($position, $style=-2)
+	public static function renderModules($position, $style=-1)
 	{
-		$document = \JFactory::getDocument();
-		$renderer = $document->loadRenderer('module');
+		$contents = '';
+
 		$params   = array('style' => $style);
 
-		$contents = '';
 		foreach (\JModuleHelper::getModules($position) as $mod)
 		{
 			if ($mod->showtitle != 0)
 			{
 				$contents .= '<h3>' . stripslashes($mod->title) . '</h3>';
 			}
-			$contents .= $renderer->render($mod, $params);
+			$contents .= \JModuleHelper::renderModule($mod, $params);
 		}
 
 		return $contents;
