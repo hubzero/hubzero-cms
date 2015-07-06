@@ -681,6 +681,7 @@ class Structures_BibTex
 		$entry       = $this->_unwrap($entry);
 		$authorarray = array();
 		$authorarray = preg_split('# and #', $entry);
+		$PEAR = new PEAR;
 		for ($i = 0; $i < sizeof($authorarray); $i++) {
 			$author = trim($authorarray[$i]);
 			/*The first version of how an author could be written (First von Last)
@@ -707,14 +708,14 @@ class Structures_BibTex
 							$last .= ' '.$tmparray[$j];
 						} elseif ($invon) {
 							$case = $this->_determineCase($tmparray[$j]);
-							if (PEAR::isError($case)) {
+							if ($PEAR->isError($case)) {
 								// IGNORE?
 							} elseif ((0 == $case) || (-1 == $case)) { //Change from von to last
 								//You only change when there is no more lower case there
 								$islast = true;
 								for ($k=($j+1); $k<($size-1); $k++) {
 									$futurecase = $this->_determineCase($tmparray[$k]);
-									if (PEAR::isError($case)) {
+									if ($PEAR->isError($case)) {
 										// IGNORE?
 									} elseif (0 == $futurecase) {
 										$islast = false;
@@ -735,7 +736,7 @@ class Structures_BibTex
 							}
 						} else {
 							$case = $this->_determineCase($tmparray[$j]);
-							if (PEAR::isError($case)) {
+							if ($PEAR->isError($case)) {
 								// IGNORE?
 							} elseif (0 == $case) { //Change from first to von
 								$invon = true;
@@ -768,7 +769,7 @@ class Structures_BibTex
 								for ($k=($j+1); $k<($size-1); $k++) {
 									$this->_determineCase($vonlastarray[$k]);
 									$case = $this->_determineCase($vonlastarray[$k]);
-									if (PEAR::isError($case)) {
+									if ($PEAR->isError($case)) {
 										// IGNORE?
 									} elseif (0 == $case) {
 										$islast = false;
