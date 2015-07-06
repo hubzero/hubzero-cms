@@ -144,7 +144,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 			'element' => 'blogs',
 			'name'    => 'result'
 		));
-		$view->entry = new BlogModelEntry($row);
+		$view->entry = new \Components\Blog\Models\Entry($row);
 
 		return $view->loadTemplate();
 	}

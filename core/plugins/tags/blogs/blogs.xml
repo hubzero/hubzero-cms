@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/tags/blogs.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/tags/blogs/blogs.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,9 +30,9 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.7" type="plugin" group="tags">
 	<name>Tags - Blogs</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Allows Searching of Blogs</description>
+	<description>PLG_TAGS_BLOGS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="blogs">blogs.php</filename>
 	</files>
@@ -40,4 +40,3 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_tags_blogs.ini</language>
 	</languages>
 </extension>
-
