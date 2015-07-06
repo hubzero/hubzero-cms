@@ -211,6 +211,10 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 				$view->q = JRequest::getVar('q', '');
 				$view->filter = JRequest::getVar('filter', '');
+				if (!in_array($view->filter, array('members', 'managers', 'invitees', 'pending')))
+				{
+					$view->filter = '';
+				}
 				$view->role_filter = JRequest::getVar('role_filter','');
 
 				if ($view->authorized != 'manager' && $view->authorized != 'admin')
