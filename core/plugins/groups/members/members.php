@@ -146,7 +146,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 
 			// Set the page title
-			Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
+			//Document::setTitle(Lang::txt(strtoupper($this->_option)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
 
 			$this->css('members.css')
 			     ->js('members.js');
