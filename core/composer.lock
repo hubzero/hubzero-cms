@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "adc6896aa4882e8788ca79c5d0ec9eef",
+    "hash": "b73f003d7323d0612b3c073df37ff556",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -636,6 +636,37 @@
             "time": "2014-10-12 19:18:40"
         },
         {
+            "name": "hubzero/orcid-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hubzero/orcid-php.git",
+                "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
+                "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Orcid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD New"
+            ],
+            "description": "Library for ORCID web services",
+            "time": "2015-07-06 16:28:20"
+        },
+        {
             "name": "leafo/lessphp",
             "version": "v0.3.9",
             "source": {
@@ -801,7 +832,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/d4fdf7e12971d31f223e81f0d7298cab274ce49a",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/7593bb1cad225ff64343b7f9fd33d4cb1af187ef",
                 "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
                 "shasum": ""
             },
@@ -1473,7 +1504,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "guzzle/guzzle": 20,
-        "pelago/emogrifier": 20
+        "pelago/emogrifier": 20,
+        "hubzero/orcid-php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

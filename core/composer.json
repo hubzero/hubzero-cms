@@ -76,10 +76,11 @@
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
         "phpdocumentor/reflection-docblock": "2.0.4",
-        "bshaffer/oauth2-server-php": "v1.4"
+        "bshaffer/oauth2-server-php": "v1.4",
+        "hubzero/orcid-php": "dev-master"
     },
     "autoload": {
-	"psr-0": { "Hubzero": "libraries/" },
+    "psr-0": { "Hubzero": "libraries/" },
         "classmap": [ "libraries/joomla" ]
     },
     "config": {

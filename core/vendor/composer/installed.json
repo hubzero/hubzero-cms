@@ -1469,7 +1469,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/d4fdf7e12971d31f223e81f0d7298cab274ce49a",
+            "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/7593bb1cad225ff64343b7f9fd33d4cb1af187ef",
             "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
             "shasum": ""
         },
@@ -1515,5 +1515,38 @@
         ],
         "description": "Converts CSS styles into inline style attributes in your HTML code",
         "homepage": "http://www.pelagodesign.com/sidecar/emogrifier/"
+    },
+    {
+        "name": "hubzero/orcid-php",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/hubzero/orcid-php.git",
+            "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
+            "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.4.0"
+        },
+        "time": "2015-07-06 16:28:20",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Orcid\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD New"
+        ],
+        "description": "Library for ORCID web services"
     }
 ]
