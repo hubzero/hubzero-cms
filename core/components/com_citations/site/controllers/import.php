@@ -142,7 +142,7 @@ class Import extends SiteController
 	public function uploadTask()
 	{
 		// get file
-		$file = Request::getVar('citations_file', null, 'files', 'array');
+		$file = Request::file('citations_file');
 
 		// make sure we have a file
 		$filename = $file->getClientOriginalName();
@@ -202,7 +202,15 @@ class Import extends SiteController
 			\Filesystem::makeDirectory($this->getTmpPath(), 0755);
 		}
 
-		$file1 = \Filesystem::write($p1, serialize($citations[0]['attention']));
+		if (isset($citations[0]['attention']))
+		{
+			$file1 = \Filesystem::write($p1, serialize($citations[0]['attention']));
+		}
+		else
+		{
+			$file1 = \Filesystem::write($p1, '');
+		}
+
 		$file2 = \Filesystem::write($p2, serialize($citations[0]['no_attention']));
 
 		//get group ID
