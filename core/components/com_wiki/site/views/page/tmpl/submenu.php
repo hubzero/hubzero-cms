@@ -58,7 +58,7 @@ if ($tmpl != 'component') { ?>
 					<?php echo Lang::txt('COM_WIKI_SEARCH'); ?>
 				</a>
 				<div class="page-search-form">
-					<form action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>" method="post">
+					<form action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>" method="get">
 						<fieldset>
 							<legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
 							<label for="page-search-q">

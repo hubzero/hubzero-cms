@@ -76,17 +76,19 @@ if ($limit && $limit != 'all')
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="post">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="get">
 	<div class="container data-entry">
 		<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_WIKI_SEARCH'); ?>" />
 		<fieldset class="entry-search">
 			<legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
 			<label for="entry-search-field"><?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?></label>
 			<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
+			<!--
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="page" />
 			<input type="hidden" name="pagename" value="Special:Search" />
 			<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->get('scope')); ?>" />
+			-->
 		</fieldset>
 	</div><!-- / .container -->
 
