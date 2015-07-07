@@ -39,7 +39,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .'&active=collections&action=savesettings'); ?>" method="post" id="hubForm" class="full">
-
 		<fieldset class="settings">
 			<legend><?php echo JText::_('PLG_GROUPS_COLLECTIONS'); ?></legend>
 
@@ -82,10 +81,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="collections" />
 		<input type="hidden" name="action" value="savesettings" />
+		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
 			<input type="submit" class="btn btn-success" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>">
+				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_CANCEL'); ?>
+			</a>
 		</p>
 	</form>

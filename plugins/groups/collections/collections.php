@@ -1893,6 +1893,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_collections();
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$settings = JRequest::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);
