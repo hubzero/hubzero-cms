@@ -159,7 +159,7 @@ class Arguments
 			$task  = (isset($this->raw[2]) && substr($this->raw[2], 0, 1) != "-") ? $this->raw[2] : 'execute';
 
 			$this->class = self::routeCommand($class);
-			$this->task  = self::routeTask($this->class, $task);
+			$this->task  = self::routeTask($class, $this->class, $task);
 
 			// Parse the remaining args for command options/arguments
 			for ($i = 2; $i < count($this->raw); $i++)
@@ -238,7 +238,7 @@ class Arguments
 			{
 				if (strpos($aliases->$command, '::') !== false)
 				{
-					$bits      = explode('::', $aliases[$command]);
+					$bits      = explode('::', $aliases->$command);
 					$command   = $bits[0];
 					$aliasTask = $bits[1];
 				}
@@ -295,29 +295,29 @@ class Arguments
 	 * Routes task to the proper method based on the input given
 	 *
 	 * @param   string  $command  the command to route
+	 * @param   string  $class    the class deduced from routeCommand
 	 * @param   string  $task     the task to route
 	 * @return  void
 	 **/
-	public static function routeTask($command, $task='execute')
+	public static function routeTask($command, $class, $task='execute')
 	{
 		// Aliases take precedence, so parse for them first
 		if ($aliases = Config::get('aliases'))
 		{
-			$short = strtolower(with(new \ReflectionClass($command))->getShortName());
-			if (array_key_exists($short, $aliases))
+			if (array_key_exists($command, $aliases))
 			{
 				if (strpos($aliases->$command, '::') !== false)
 				{
-					$bits = explode('::', $aliases[$command]);
+					$bits = explode('::', $aliases->$command);
 					$task = $bits[1];
 				}
 			}
 		}
 
 		// Make sure task exists
-		if (!method_exists($command, $task))
+		if (!method_exists($class, $task))
 		{
-			throw new UnsupportedTaskException("{$command} does not support the {$task} method.");
+			throw new UnsupportedTaskException("{$class} does not support the {$task} method.");
 		}
 
 		return $task;
