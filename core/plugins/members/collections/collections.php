@@ -607,7 +607,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 				$collection = $this->model->collection(Request::getVar('board', ''));
 				if (!$collection->exists())
 				{
-					App::abort(400, Lang::txt('Collection does not exist'));
+					App::abort(404, Lang::txt('Collection does not exist'));
 					return;
 				}
 				$id = $collection->get('id');
@@ -929,8 +929,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
+		if ($fields['id'] && !is_numeric($fields['id']))
+		{
+			App::abort(404, Lang::txt('Post does not exist'));
+		}
+
 		// Get model
-		$row = new \Components\Collections\Models\Item($fields['id']);
+		$row = new \Components\Collections\Models\Item(intval($fields['id']));
 
 		// Bind content
 		if (!$row->bind($fields))

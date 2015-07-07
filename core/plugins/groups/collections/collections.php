@@ -974,8 +974,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
+		if ($fields['id'] && !is_numeric($fields['id']))
+		{
+			App::abort(404, Lang::txt('Post does not exist'));
+		}
+
 		// Get model
-		$row = new \Components\Collections\Models\Item($fields['id']);
+		$row = new \Components\Collections\Models\Item(intval($fields['id']));
 
 		// Bind content
 		if (!$row->bind($fields))

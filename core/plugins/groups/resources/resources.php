@@ -188,7 +188,15 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Incoming paging vars
 		$sort = Request::getVar('sort', 'date');
+		if (!in_array($sort, array('date', 'title', 'ranking', 'rating')))
+		{
+			$sort = 'date';
+		}
 		$access = Request::getVar('access', 'all');
+		if (!in_array($access, array('all', 'public', 'protected', 'private')))
+		{
+			$access = 'date';
+		}
 
 		$config = Component::params('com_resources');
 		if ($return == 'metadata')
