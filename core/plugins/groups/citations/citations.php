@@ -199,17 +199,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	{
 		//initialize the view
 		$view = $this->view('default', 'browse');
-
 		// push objects to the view
 		$view->group             = $this->group;
 		$view->option            = $this->option;
 		$view->task              = $this->_name;
 		$view->database          = $this->database;
-		$view->config            = Component::params('com_citations');
-		$view->allow_import      = $view->config->get('citation_import', 1);
-		$view->allow_bulk_import = $view->config->get('citation_bulk_import', 1);
 		$view->title             = Lang::txt(strtoupper($this->_name));
-		$view->isAdmin           = ($this->authorized == 'manager') ? true : false;
+		$view->isManager           = ($this->authorized == 'manager') ? true : false;
 
 		// Instantiate a new citations object
 		$citations = new \Components\Citations\Tables\Citation($this->database);
@@ -331,9 +327,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->filters['start'] = 0;
 		}
 
-
 		// Get record count
-		$view->total     = $citations->getCount($view->filters, $view->isAdmin);
+		$view->total = $citations->getCount($view->filters, $view->isManager);
 
 		// check to see if super group has any additional filters
 		if ($this->group->isSuperGroup() && file_exists($this->_superGroupHelper()))
@@ -352,86 +347,62 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		}
 
-		$view->citations = $citations->getRecords($view->filters, $view->isAdmin);
+		// get the citations
+		$view->citations = $citations->getRecords($view->filters, $view->isManager);
+
+		// get the default citation format
+		$groupParams = json_decode($this->group->get('params'));
+		if (array_keys( (array) $groupParams , 'citation_format') && $groupParams['citations_format'] != "")
+		{
+			//use the group setting
+			$view->citationTemplate = $groupParams['citations_format'];
+		}
+		else
+		{
+			//use the hub default
+			$citationsFormat = new \Components\Citations\Tables\Format($this->database);
+			$view->citationTemplate = $citationsFormat->getDefaultFormat()->format;
+		}
+
+		// get the preferred labeling scheme
+		$view->label = null;
+
+		if ($view->label == "none")
+		{
+			$view->citations_label_class = "no-label";
+		}
+		elseif ($view->label == "number")
+		{
+			$view->citations_label_class = "number-label";
+		}
+		elseif ($view->label == "type")
+		{
+			$view->citations_label_class = "type-label";
+		}
+		elseif ($view->label == "both")
+		{
+			$view->citations_label_class = "both-label";
+		}
+		else
+		{
+			$view->citations_label_class = "both-label";
+		}
+
+		// enable coins support
+		$view->coins = 1;
+
+		// config
+		$view->config = Component::params('com_citations');
 
 		// Add some data to our view for form filtering/sorting
 		$ct = new \Components\Citations\Tables\Type($this->database);
 		$view->types = $ct->getType();
 
-		//for the inemo-navigation
-		//grabs the IDs of the types for navigation purposes without making additional queries.
-		$view->typeName = '';
-		if (isset($view->filters['type']))
-		{
-			foreach ($view->types as $type)
-			{
-				if ($view->filters['type'] == $type['id'])
-				{
-					$view->typeName = $type['type_title'];
-				}
-			}
-		}
-
-		//get the users id to make lookup
-		$users_ip = Request::ip();
-
-		//get the param for ip regex to use machine ip
-		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
-
-		$use_machine_ip = false;
-		foreach ($ip_regex as $ipr)
-		{
-			$match = preg_match('/' . $ipr . '/i', $users_ip);
-			if ($match)
-			{
-				$use_machine_ip = true;
-			}
-		}
-
-		//make url based on if were using machine ip or users
-		if ($use_machine_ip)
-		{
-			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
-		}
-		else
-		{
-			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
-		}
-
-		//get the resolver
-		$r = null;
-		if (function_exists('curl_init'))
-		{
-			$cURL = curl_init();
-			curl_setopt($cURL, CURLOPT_URL, $url );
-			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
-			$r = curl_exec($cURL);
-			curl_close($cURL);
-		}
-
-		//parse the returned xml
-		$view->openurl = array(
-			'link' => '',
-			'text' => '',
-			'icon' => ''
-		);
-
-		//parse the return from resolver lookup
-		$resolver = null;
-		$xml = simplexml_load_string($r);
-		if (isset($xml->resolverRegistryEntry))
-		{
-			$resolver = $xml->resolverRegistryEntry->resolver;
-		}
-
-		//if we have resolver set vars for creating open urls
-		if ($resolver != null)
-		{
-			$view->openurl['link'] = $resolver->baseURL;
-			$view->openurl['text'] = $resolver->linkText;
-			$view->openurl['icon'] = $resolver->linkIcon;
-		}
+		// OpenURL
+		$openURL = $this->_handleOpenURL();
+		$view->openurl['link'] = $openURL['link'];
+		$view->openurl['text'] = $openURL['text'];
+		$view->openurl['icon'] = $openURL['icon'];
 
 		// Output HTML
 		foreach ($this->getErrors() as $error)
@@ -466,7 +437,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// push objects to view
 		$view->group   = $this->group;
-		$view->isAdmin = ($this->authorized == 'manager') ? true : false;
+		$view->isManager = ($this->authorized == 'manager') ? true : false;
 		$view->config  = Component::params('com_citations');
 
 		// are we allowing user to add citation
@@ -524,12 +495,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Get associations
 		if ($id)
 		{
-			$view->assocs = $assoc->getRecords(array('cid' => $id), $view->isAdmin);
+			$view->assocs = $assoc->getRecords(array('cid' => $id), $view->isManager);
 			$pubAuthor    = $this->isPubAuthor($view->assocs);
 		}
 
 		// Is user authorized to edit citations?
-		if (!$view->isAdmin && !$pubAuthor)
+		if (!$view->isManager && !$pubAuthor)
 		{
 			$id = 0;
 		}
@@ -841,6 +812,79 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	{
 		App::redirect(Route::url('index.php?option=com_citations&controller=import&group=' . $group->get('gidNumber')));
 		return;
+	}
+
+	/**
+	 * Uses URL to determine OpenURL server
+	 *
+	 * @return  object $openURL
+	 */
+	private function _handleOpenURL()
+	{
+		//get the users id to make lookup
+		$users_ip = Request::ip();
+
+		//get the param for ip regex to use machine ip
+		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
+
+		$use_machine_ip = false;
+		foreach ($ip_regex as $ipr)
+		{
+			$match = preg_match('/' . $ipr . '/i', $users_ip);
+			if ($match)
+			{
+				$use_machine_ip = true;
+			}
+		}
+
+		//make url based on if were using machine ip or users
+		if ($use_machine_ip)
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
+		}
+		else
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
+		}
+
+		//get the resolver
+		$r = null;
+		if (function_exists('curl_init'))
+		{
+			$cURL = curl_init();
+			curl_setopt($cURL, CURLOPT_URL, $url );
+			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
+			$r = curl_exec($cURL);
+			curl_close($cURL);
+		}
+
+		//parse the returned xml
+		$openurl = array(
+			'link' => '',
+			'text' => '',
+			'icon' => ''
+		);
+
+		//parse the return from resolver lookup
+		$resolver = null;
+		$xml = simplexml_load_string($r);
+		if (isset($xml->resolverRegistryEntry))
+		{
+			$resolver = $xml->resolverRegistryEntry->resolver;
+		}
+
+		//if we have resolver set vars for creating open urls
+		if ($resolver != null)
+		{
+			$openURL['link'] = $resolver->baseURL;
+			$openURL['text'] = $resolver->linkText;
+			$openURL['icon'] = $resolver->linkIcon;
+
+			return $openURL;
+		}
+
+		return false;
 	}
 
 }
