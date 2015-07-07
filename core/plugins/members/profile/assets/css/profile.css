@@ -101,6 +101,26 @@
 		width:49%;
 		padding-right: 2%;
 	}
+	#profile .section-edit-content .block {
+		display: block;
+		margin-top: 1em;
+		clear: both;
+	}
+	#profile .section-edit-content .block label {
+		display: block;
+		padding-top: 1em;
+		border-top: 1px solid #efefef;
+	}
+	#profile .section-edit-content div.side-by-side {
+		float:left;
+		width:48%;
+		padding-right: 2%;
+	}
+	#profile .section-edit-content .side-by-side label {
+		display: inline;
+		margin: 0.5em 0 0 0;
+		border-bottom: none;
+	}
 	#profile .section-edit-content label.three {
 		width: 32%;
 		padding-right: 2%;

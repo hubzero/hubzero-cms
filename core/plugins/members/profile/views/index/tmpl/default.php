@@ -146,7 +146,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) .'</p>';
 
 			$increm .= '</div>';
-			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']).'</span></div>';
+			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']) . '</span></div>';
 			$increm .= '<script type="text/javascript">
 							window.bonus_eligible_fields = '.json_encode($awards['eligible']).';
 							window.bonus_amount = '.$incrOpts->getAwardPerField().';
@@ -443,10 +443,10 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="'.$this->escape($this->profile->get('email')).'" /></label>'
-												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="'.$this->escape($this->profile->get('email')).'" /></label>'
+							     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
+												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
 												. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[email]', $this->params->get('access_email'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -503,8 +503,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<label>
 						' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID') . '
 						<input type="text" class="input-text" name="orcid" id="orcid" value="'. $this->escape($this->profile->get('orcid')) .'" />
-						<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />
 					</label>
+					<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />
 				</div>
 				<div class="col span3 omega">
 					<a class="btn icon-search" id="orcid-fetch" href="' . Route::url('index.php?option=com_members&controller=orcid') . '">' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_FIND') . '</a>
@@ -573,8 +573,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE') . '<input type="text" class="input-text" name="web" id="profile-url" value="'.$this->escape($this->profile->get('url')).'" /></label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE') . '<input type="text" class="input-text" name="web" id="profile-url" value="' . $this->escape($this->profile->get('url')) . '" /></label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[url]', $this->params->get('access_url'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
@@ -697,7 +697,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_TITLE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="profile_address">' . Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />' . $addAddressLink . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />' . $addAddressLink . '</label>')
 							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[address]', $this->params->get('access_address'), 'input-select') . '</label>')
 							     ->display();
 						?>
@@ -814,7 +814,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$interests = $tf[0];
 							} else
 							{
-								$interests = "\t\t\t".'<input type="text" name="tags" value="'. $this->escape($tag_string) .'" />'."\n";
+								$interests = "\t\t\t" . '<input type="text" name="tags" value="'. $this->escape($tag_string) .'" />' . "\n";
 							}
 
 							$this->view('default', 'edit')
@@ -893,7 +893,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 						<?php
 							$countries  = '<select name="corigin" id="corigin" class="input-select">';
-							$countries .= '<option value="">'.Lang::txt('PLG_MEMBERS_PROFILE_SELECT').'</option>';
+							$countries .= '<option value="">' . Lang::txt('PLG_MEMBERS_PROFILE_SELECT') . '</option>';
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
@@ -915,8 +915,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$no = 'checked="checked"';
 							}
 
-							$citizenship  = '<br /><input type="radio" name="corigin_us" id="corigin_usyes" value="yes" '.$yes.' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
-							$citizenship .= '<input type="radio" name="corigin_us" id="corigin_usno" value="no" '.$no.' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO') . ' ';
+							$citizenship  = '<br /><label><input type="radio" name="corigin_us" id="corigin_usyes" value="yes" '.$yes.' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . '</label> &nbsp;&nbsp;&nbsp;';
+							$citizenship .= '<label><input type="radio" name="corigin_us" id="corigin_usno" value="no" '.$no.' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO') . '</label> ';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'countryorigin')
@@ -925,9 +925,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_CITIZENSHIP'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side" for="123">' . Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OF_USA') . $citizenship . '</label>'
-												. '<label class="side-by-side no-padding-right" for="corigin">'.Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OR_RESIDENT') . $countries . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[countryorigin]', $this->params->get('access_countryorigin'), 'input-select') . '</label>')
+							     ->set('inputs', '<div class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OF_USA') . $citizenship . '</div>'
+												. '<div class="side-by-side"><label for="corigin">' . Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OR_RESIDENT') . $countries . '</label></div>')
+							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[countryorigin]', $this->params->get('access_countryorigin'), 'input-select') . '</label></div>')
 							     ->display();
 						?>
 					</div>
@@ -1016,8 +1016,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$no = 'checked="checked"';
 							}
 
-							$citizenship  = '<br /><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" ' . $yes . ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
-							$citizenship .= '<input type="radio" name="cresident_us" id="cresident_usno" value="no" ' . $no . ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO') . ' ';
+							$citizenship  = '<br /><label><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" ' . $yes . ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . '</label> &nbsp;&nbsp;&nbsp;';
+							$citizenship .= '<label><input type="radio" name="cresident_us" id="cresident_usno" value="no" ' . $no . ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO') . '</label> ';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'countryresident')
@@ -1026,9 +1026,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side" for="456">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship . '</label>'
-												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN') . $countries . '</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label>')
+							     ->set('inputs', '<div class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship . '</div>'
+												. '<div class="side-by-side"><label for="cresident">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN') . $countries . '</label></div>')
+							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label></div>')
 							     ->display();
 						?>
 					</div>
@@ -1175,60 +1175,60 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 							$disability_html = "";
 
-							$disability_html .= "\t\t".'<fieldset class="sub">'."\n";
-							$disability_html .= "\t\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityyes" value="yes"';
+							$disability_html .= "\t\t" . '<fieldset class="sub">' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label><input type="radio" class="option" name="disability" id="disabilityyes" value="yes"';
 							if ($disabilityyes)
 							{
 								$disability_html .= ' checked="checked"';
 							}
-							$disability_html .= ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . '</label>'."\n";
-							$disability_html .= "\t\t\t".'<fieldset class="sub-sub">'."\n";
-							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" ';
+							$disability_html .= ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . '</label>' . "\n";
+							$disability_html .= "\t\t\t" . '<fieldset class="sub-sub">' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" ';
 							if (in_array('blind', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VISUAL').'</label>'."\n";
-							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilitydeaf" id="disabilitydeaf" ';
+							$disability_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VISUAL') . '</label>' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="disabilitydeaf" id="disabilitydeaf" ';
 							if (in_array('deaf', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_HEARING').'</label>'."\n";
-							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" ';
+							$disability_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_HEARING') . '</label>' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" ';
 							if (in_array('physical', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_PHYSICAL').'</label>'."\n";
-							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilitylearning" id="disabilitylearning" ';
+							$disability_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_PHYSICAL') . '</label>' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="disabilitylearning" id="disabilitylearning" ';
 							if (in_array('learning', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_COGNITIVE').'</label>'."\n";
-							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityvocal" id="disabilityvocal" ';
+							$disability_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_COGNITIVE') . '</label>' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="disabilityvocal" id="disabilityvocal" ';
 							if (in_array('vocal', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VOCAL').'</label>'."\n";
-							$disability_html .= "\t\t\t\t".'<label>'.Lang::txt('PLG_MEMBERS_PROFILE_OPT_OTHER').':'."\n";
-							$disability_html .= "\t\t\t\t".'<input name="disabilityother" class="input-text" id="disabilityother" type="text" value="'. $this->escape($disabilityother) .'" /></label>'."\n";
-							$disability_html .= "\t\t\t".'</fieldset>'."\n";
-							$disability_html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityno" value="no"';
+							$disability_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VOCAL') . '</label>' . "\n";
+							$disability_html .= "\t\t\t\t" . '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_OPT_OTHER').':' . "\n";
+							$disability_html .= "\t\t\t\t" . '<input name="disabilityother" class="input-text" id="disabilityother" type="text" value="'. $this->escape($disabilityother) .'" /></label>' . "\n";
+							$disability_html .= "\t\t\t" . '</fieldset>' . "\n";
+							$disability_html .= "\t\t\t" . '<label><input type="radio" class="option" name="disability" id="disabilityno" value="no"';
 							if (in_array('no', $disabilities))
 							{
 								$disability_html .= ' checked="checked"';
 							}
-							$disability_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_NO_NONE').'</label>'."\n";
-							$disability_html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"';
+							$disability_html .= '> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO_NONE') . '</label>' . "\n";
+							$disability_html .= "\t\t\t" . '<label><input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"';
 							if (in_array('refused', $disabilities))
 							{
 								$disability_html .= ' checked="checked"';
 							}
-							$disability_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
-							$disability_html .= "\t\t".'</fieldset>'."\n";
+							$disability_html .= '> ' . Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED') . '</label>' . "\n";
+							$disability_html .= "\t\t" . '</fieldset>' . "\n";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'disability')
@@ -1315,48 +1315,48 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 
 							$hispanic_html  = '';
-							$hispanic_html .= "\t\t".'<fieldset class="sub">'."\n";
-							$hispanic_html .= "\t\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicyes" value="yes" ';
+							$hispanic_html .= "\t\t" . '<fieldset class="sub">' . "\n";
+							$hispanic_html .= "\t\t\t\t" . '<label><input type="radio" class="option" name="hispanic" id="hispanicyes" value="yes" ';
 							if ($hispanicyes)
 							{
 								$hispanic_html .= 'checked="checked"';
 							}
-							$hispanic_html .= ' /> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_YES').'</label>'."\n";
-							$hispanic_html .= "\t\t\t".'<fieldset class="sub-sub">'."\n";
-							$hispanic_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispaniccuban" id="hispaniccuban" ';
+							$hispanic_html .= ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_YES') . '</label>' . "\n";
+							$hispanic_html .= "\t\t\t" . '<fieldset class="sub-sub">' . "\n";
+							$hispanic_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="hispaniccuban" id="hispaniccuban" ';
 							if (in_array('cuban', $hispanic))
 							{
 								$hispanic_html .= 'checked="checked" ';
 							}
-							$hispanic_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_CUBAN').'</label>'."\n";
-							$hispanic_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispanicmexican" id="hispanicmexican" ';
+							$hispanic_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_CUBAN') . '</label>' . "\n";
+							$hispanic_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="hispanicmexican" id="hispanicmexican" ';
 							if (in_array('mexican', $hispanic))
 							{
 								$hispanic_html .= 'checked="checked" ';
 							}
-							$hispanic_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_MEXICAN').'</label>'."\n";
-							$hispanic_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispanicpuertorican" id="hispanicpuertorican" ';
+							$hispanic_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_MEXICAN') . '</label>' . "\n";
+							$hispanic_html .= "\t\t\t\t" . '<label><input type="checkbox" class="option" name="hispanicpuertorican" id="hispanicpuertorican" ';
 							if (in_array('puertorican', $hispanic))
 							{
 								$hispanic_html .= 'checked="checked" ';
 							}
-							$hispanic_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_PEURTORICAN').'</label>'."\n";
-							$hispanic_html .= "\t\t\t\t".'<label>'.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_OTHER')."\n";
-							$hispanic_html .= "\t\t\t\t".'<input name="hispanicother" class="input-text" id="hispanicother" type="text" value="'. $this->escape($hispanicother) .'" /></label>'."\n";
-							$hispanic_html .= "\t\t\t".'</fieldset>'."\n";
-							$hispanic_html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicno" value="no"';
+							$hispanic_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_PEURTORICAN') . '</label>' . "\n";
+							$hispanic_html .= "\t\t\t\t" . '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_OTHER')."\n";
+							$hispanic_html .= "\t\t\t\t" . '<input name="hispanicother" class="input-text" id="hispanicother" type="text" value="'. $this->escape($hispanicother) .'" /></label>' . "\n";
+							$hispanic_html .= "\t\t\t" . '</fieldset>' . "\n";
+							$hispanic_html .= "\t\t\t" . '<label><input type="radio" class="option" name="hispanic" id="hispanicno" value="no"';
 							if (in_array('no', $hispanic))
 							{
 								$hispanic_html .= ' checked="checked"';
 							}
-							$hispanic_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_NO').'</label>'."\n";
-							$hispanic_html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"';
+							$hispanic_html .= '> ' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_NO') . '</label>' . "\n";
+							$hispanic_html .= "\t\t\t" . '<label><input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"';
 							if (in_array('refused', $hispanic))
 							{
 								$hispanic_html .= ' checked="checked"';
 							}
-							$hispanic_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
-							$hispanic_html .= "\t\t".'</fieldset>'."\n";
+							$hispanic_html .= '> ' . Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED') . '</label>' . "\n";
+							$hispanic_html .= "\t\t" . '</fieldset>' . "\n";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'hispanic')
@@ -1422,48 +1422,48 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 
 							$race_html = "";
-							$race_html .= "\t\t".'<fieldset class="sub">'."\n";
-							$race_html .= "\t\t\t".'<p class="hint">'.Lang::txt('PLG_MEMBERS_PROFILE_SELECT_MULTIPLE').'</p>'."\n";
+							$race_html .= "\t\t" . '<fieldset class="sub">' . "\n";
+							$race_html .= "\t\t\t" . '<p class="hint">' . Lang::txt('PLG_MEMBERS_PROFILE_SELECT_MULTIPLE') . '</p>' . "\n";
 
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="1" ';
+							$race_html .= "\t\t\t" . '<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="1" ';
 							if (in_array('nativeamerican', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_NATIVEAMERICAN').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label class="indent">'.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_TRIBE').':'."\n";
-							$race_html .= "\t\t\t".'<input name="racenativetribe" class="input-text" id="racenativetribe" type="text" value="'. $this->escape($this->profile->get('nativeTribe')) .'" /></label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" value="1" ';
+							$race_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_NATIVEAMERICAN') . '</label>' . "\n";
+							$race_html .= "\t\t\t" . '<label class="indent">' . Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_TRIBE').':' . "\n";
+							$race_html .= "\t\t\t" . '<input name="racenativetribe" class="input-text" id="racenativetribe" type="text" value="' . $this->escape($this->profile->get('nativeTribe')) . '" /></label>' . "\n";
+							$race_html .= "\t\t\t" . '<label><input type="checkbox" class="option" name="raceasian" id="raceasian" value="1" ';
 							if (in_array('asian', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_ASIAN').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceblack" id="raceblack" value="1" ';
+							$race_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_ASIAN') . '</label>' . "\n";
+							$race_html .= "\t\t\t" . '<label><input type="checkbox" class="option" name="raceblack" id="raceblack" value="1" ';
 							if (in_array('black', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_BLACK').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racehawaiian" id="racehawaiian" value="1" ';
+							$race_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_BLACK') . '</label>' . "\n";
+							$race_html .= "\t\t\t" . '<label><input type="checkbox" class="option" name="racehawaiian" id="racehawaiian" value="1" ';
 							if (in_array('hawaiian', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_HAWAIIAN').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racewhite" id="racewhite" value="1" ';
+							$race_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_HAWAIIAN') . '</label>' . "\n";
+							$race_html .= "\t\t\t" . '<label><input type="checkbox" class="option" name="racewhite" id="racewhite" value="1" ';
 							if (in_array('white', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_WHITE').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racerefused" id="racerefused" value="1" ';
+							$race_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_WHITE') . '</label>' . "\n";
+							$race_html .= "\t\t\t" . '<label><input type="checkbox" class="option" name="racerefused" id="racerefused" value="1" ';
 							if (in_array('refused', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
-							$race_html .= "\t\t".'</fieldset>'."\n";
+							$race_html .= '/> ' . Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED') . '</label>' . "\n";
+							$race_html .= "\t\t" . '</fieldset>' . "\n";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'race')
@@ -1472,8 +1472,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_RACE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="race-input">' . Lang::txt('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</label>')
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>')
+							     ->set('inputs', '<div>' . Lang::txt('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</div>')
+							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[race]', $this->params->get('access_race'),'input-select') . '</label></div>')
 							     ->display();
 						?>
 					</div>
@@ -1536,11 +1536,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//build option list
 							$optin_html  = '<strong>' . Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION') . '</strong>';
 							$optin_html .= '<label for="mailPreferenceOption">';
-							$optin_html .= '<select name="mailPreferenceOption">';
+							$optin_html .= '<select name="mailPreferenceOption" id="mailPreferenceOption" class="input-select">';
 							foreach ($options as $key => $value)
 							{
 								$sel = ($key == $this->profile->get('mailPreferenceOption')) ? 'selected="selected"' : '';
-								$optin_html .= '<option '.$sel.' value="'. $key .'">' . $value . '</option>';
+								$optin_html .= '<option ' . $sel . ' value="' . $key . '">' . $value . '</option>';
 							}
 							$optin_html .= '</select>';
 							$optin_html .= '</label>';
@@ -1553,7 +1553,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', $optin_html)
-							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>')
+							     ->set('access', '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label></div>')
 							     ->display();
 						?>
 					</div>
