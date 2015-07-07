@@ -113,7 +113,8 @@ class LanguagesModelInstalled extends JModelList
 	{
 		if (is_null($this->client))
 		{
-			$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
+			$this->client = \Hubzero\Base\ClientManager::client($this->getState('filter.client_id', 0));
+			$this->client->path = '/bootstrap/' . $this->client->name;
 		}
 
 		return $this->client;
@@ -168,7 +169,9 @@ class LanguagesModelInstalled extends JModelList
 
 			foreach ($langlist as $lang)
 			{
-				$file = $path . '/' . $lang . '/' . $lang.'.xml';
+				$file = $path . '/' . $lang . '/' . $lang . '.xml';
+				$file = file_exists(PATH_APP . $file) ? PATH_APP . $file : PATH_CORE . $file;
+
 				$info = JApplicationHelper::parseXMLLangMetaFile($file);
 				$row = new \Hubzero\Base\Object();
 				$row->language = $lang;
