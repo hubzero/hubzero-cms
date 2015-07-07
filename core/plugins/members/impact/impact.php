@@ -86,6 +86,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 	}
 
 	/**
@@ -306,7 +307,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		if (!$limit)
 		{
 			$results = $objP->getCount($filters);
-			return count($results);
+			return $results;
 		}
 		else
 		{
@@ -352,18 +353,18 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		$html .= "\t\t".'<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->cat_name);
+		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->cat_name);
 		if ($authors)
 		{
-			$html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";
+			$html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";
 		}
 		if ($row->doi)
 		{
 			$html .= ' <span>|</span> doi:' . $row->doi . "\n";
 		}
-		if (isset($row->project_private) && $row->project_private != 1 || $row->author == true)
+		if (!$row->project_provisioned && ((isset($row->project_private) && $row->project_private != 1) || $row->author == true))
 		{
-			$url  = 'index.php?option=com_projects&alias='. $row->project_alias;
+			$url  = 'index.php?option=com_projects&alias=' . $row->project_alias;
 			$url .= $row->author == true ? '&active=publications&pid=' . $row->id : '';
 			$html .= ' <span>|</span> Project: ';
 			$html .= '<a href="';
