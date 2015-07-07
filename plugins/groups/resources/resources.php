@@ -193,7 +193,15 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Incoming paging vars
 		$sort = JRequest::getVar('sort', 'date');
+		if (!in_array($sort, array('date', 'title', 'ranking', 'rating')))
+		{
+			$sort = 'date';
+		}
 		$access = JRequest::getVar('access', 'all');
+		if (!in_array($access, array('all', 'public', 'protected', 'private')))
+		{
+			$access = 'date';
+		}
 
 		$config = JComponentHelper::getParams('com_resources');
 		if ($return == 'metadata')

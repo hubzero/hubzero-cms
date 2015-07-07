@@ -1111,6 +1111,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
+		if ($fields['id'] && !is_numeric($fields['id']))
+		{
+			JError::raiseError(404, JText::_('Post does not exist'));
+		}
+
 		// Get model
 		$row = new CollectionsModelItem($fields['id']);
 
