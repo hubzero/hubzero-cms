@@ -41,7 +41,7 @@ if (php_sapi_name() != 'cli')
 | Set flag that this is a parent file.
 |
 */
-define('_JEXEC', 1);
+define('_HZEXEC_', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
 /*
@@ -54,9 +54,9 @@ define('DS', DIRECTORY_SEPARATOR);
 |
 */
 
-define('JPATH_BASE', dirname(dirname(dirname(__DIR__))));
+define('PATH_ROOT', dirname(dirname(dirname(__DIR__))));
 
-require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'd
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'framework.php';
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -160,5 +160,3 @@ foreach ($services as $service)
 $aliases = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 
 $app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
-
-\JFactory::getApplication('site');
