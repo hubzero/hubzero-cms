@@ -78,7 +78,7 @@ class Cli implements ClientInterface
 	public function call($class, $task, Arguments $arguments, Output $output)
 	{
 		// Namespace class
-		$class = 'Hubzero\\Console\\Command\\' . ucfirst($class);
+		$class = Arguments::routeCommand($class);
 
 		// Say no to infinite nesting!
 		$backtrace = debug_backtrace();
