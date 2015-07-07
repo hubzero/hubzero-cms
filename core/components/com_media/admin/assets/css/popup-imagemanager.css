@@ -244,10 +244,10 @@ table.properties td {
 }
 
 legend {
-    color: #146295;
-    font-size: 1.2em;
-    font-weight: bold;
-    font-size:11px
+	color: #146295;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-size:11px
 }
 
 #uploadform legend
@@ -258,9 +258,9 @@ legend {
 
 
 input, select {
-    font-size: 0.909em;
-    border: 1px solid silver;
-    background: #fff;
+	font-size: 0.909em;
+	border: 1px solid silver;
+	background: #fff;
 }
 
 
@@ -273,9 +273,9 @@ fieldset textarea,
 fieldset select,
 fieldset img,
 fieldset button {
-    float: left;
-    width: auto;
-    margin: 5px 5px 5px 0px;
+	float: left;
+	width: auto;
+	margin: 5px 5px 5px 0px;
 }
 
  label.hidelabeltxt {
@@ -283,9 +283,139 @@ fieldset button {
 }
 #imageForm fieldset label,
 #uploadform fieldset label {
-    float: left;
-    clear: left;
-    display:block;
-    margin: 5px 0;
-    font-size:11px
+	float: left;
+	clear: left;
+	display:block;
+	margin: 5px 0;
+	font-size:11px
+}
+
+
+/**
+ * Right-to-left
+ */
+html[dir=rtl] #messages,
+html.rtl #messages {
+	right: 175px;
+	float: right;
+}
+
+/* Upload Widget CSS */
+html[dir=rtl] #upload-flash,
+html.rtl #upload-flash {
+	font-size: 11px;
+	margin-left: 0;
+}
+html[dir=rtl] #upload-flash ul,
+html.rtl #upload-flash ul {
+	margin-left: 0;
+	margin-right: -15px;
+}
+html[dir=rtl] #upload-flash .progress,
+html.rtl #upload-flash .progress {
+	background: url(../images/progress.gif) no-repeat;
+	background-position: +50% 0;
+	margin-right: 0;
+	margin-left: 0.5em;
+}
+html[dir=rtl] #upload-queue,
+html.rtl #upload-queue {
+	margin-left:0px;
+	margin-right:25px;
+}
+
+html[dir=rtl] #upload-queue li.file,
+html.rtl #upload-queue li.file {
+	background: url(../images/upload.png) no-repeat;
+	background-position: right 6px;
+}
+html[dir=rtl] #upload-queue li.file.file-uploading,
+html.rtl #upload-queue li.file.file-uploading {
+	background-image: url(../images/uploading.png);
+}
+html[dir=rtl] #upload-queue li.file.file-success,
+html.rtl #upload-queue li.file.file-success {
+	background-image: url(../images/success.png);
+}
+html[dir=rtl] #upload-queue li.file.file-failed,
+html.rtl #upload-queue li.file.file-failed {
+	background-image: url(../images/failed.png);
+}
+html[dir=rtl] #upload-queue li.file .file-name,
+html.rtl #upload-queue li.file .file-name {
+	margin-left: 0;
+	margin-right: 25px;
+	clear: none;
+	clear: right;
+}
+html[dir=rtl] #upload-queue li.file .file-remove,
+html.rtl #upload-queue li.file .file-remove {
+	float: left;
+	margin-right: 0;
+	margin-left: 6px;
+}
+html[dir=rtl] #upload-queue li.file .file-size,
+html.rtl #upload-queue li.file .file-size {
+	float: left;
+	margin-right: 0;
+	margin-left: 6px;
+}
+html[dir=rtl] #upload-queue li.file .file-info,
+html.rtl #upload-queue li.file .file-info {
+	margin-left: 0;
+	margin-right: 44px;
+}
+html[dir=rtl] div#upload-flash ul li,
+html.rtl div#upload-flash ul li {
+	float: right;
+	clear: none;
+	clear: left;
+	margin-right: 0;
+	margin-left: 10px;
+}
+
+/* added Angie */
+html[dir=rtl] #imageForm fieldset,
+html[dir=rtl] #uploadform,
+html[dir=rtl] #upload-noflash,
+html.rtl #imageForm fieldset,
+html.rtl #uploadform,
+html.rtl #upload-noflash {
+	text-align: right;
+}
+html[dir=rtl] .fltrt,
+html.rtl .fltrt {
+	float: left;
+}
+html[dir=rtl] .fltlft,
+html.rtl .fltlft {
+	float: right;
+}
+html[dir=rtl] fieldset input,
+html[dir=rtl] fieldset textarea,
+html[dir=rtl] fieldset select,
+html[dir=rtl] fieldset img,
+html[dir=rtl] fieldset button,
+html.rtl fieldset input,
+html.rtl fieldset textarea,
+html.rtl fieldset select,
+html.rtl fieldset img,
+html.rtl fieldset button {
+	float: right;
+	margin: 5px 0 5px 5px;
+}
+html[dir=rtl] label.hidelabeltxt,
+html.rtl label.hidelabeltxt {
+	text-indent: -9999em;
+}
+html[dir=rtl] #imageForm fieldset label,
+html[dir=rtl] #uploadform fieldset label,
+html.rtl #imageForm fieldset label,
+html.rtl #uploadform fieldset label {
+	float: right;
+	clear: right;
+}
+html[dir=rtl] .swiff-uploader-box,
+html.rtl .swiff-uploader-box {
+	right: auto !important;
 }

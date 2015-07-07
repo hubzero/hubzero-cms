@@ -3,7 +3,8 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-html, body {
+html,
+body {
 	margin: 0 !important;
 	padding: 0 !important;
 	font-family: Tahoma, Verdana, sans-serif !important;
@@ -55,16 +56,23 @@ html>body .item img {
 	font-family: Tahoma, Verdana, sans-serif !important;
 	font-size: 11px;
 }
-
-.item  a:link span,
+.item a:link span,
 .item a:visited span {
 	background-color: #eee;
 	color: #333;
 }
-
-.item  a:hover span,
+.item a:hover span,
 .item a:active span,
-.item a:active focus {
+.item a:focus span {
 	background-color: #eee;
 	color: #095197;
+}
+
+/**
+ * Right-to-left
+ */
+
+html[dir=rtl] .item,
+html.rtl .item {
+	float: right;
 }

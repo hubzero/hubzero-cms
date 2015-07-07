@@ -21,12 +21,7 @@ class MediaViewImagesList extends JViewLegacy
 		App::get('response')->headers->set('Cache-Control', 'no-cache', false);
 		App::get('response')->headers->set('Pragma', 'no-cache');
 
-		//Html::asset('stylesheet', 'media/popup-imagelist.css', array(), true);
 		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'popup-imagelist.css');
-		if (Lang::isRTL()) :
-			//Html::asset('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
-			\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'popup-imagelist_rtl.css');
-		endif;
 
 		Document::addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
 

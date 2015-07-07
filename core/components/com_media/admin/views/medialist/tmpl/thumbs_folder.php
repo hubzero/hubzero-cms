@@ -13,8 +13,8 @@ defined('_HZEXEC_') or die();
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
-					<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->_tmp_folder->path_relative); ?>" target="folderframe">
-						<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/folder.png" alt="<?php echo Lang::txt('COM_MEDIA_FOLDER'); ?>" height="80" width"80" />
+					<a class="folder-item" href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->_tmp_folder->path_relative); ?>" target="folderframe">
+						<?php echo Lang::txt('COM_MEDIA_FOLDER'); ?>
 					</a>
 				</div>
 			</div>

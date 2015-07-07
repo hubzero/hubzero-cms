@@ -15,12 +15,8 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 ?>
 		<tr>
 			<td>
-				<a title="<?php echo $this->_tmp_doc->name; ?>">
-					<?php if (file_exists(PATH_CORE . '/components/com_media/admin/assets/images/' . $this->_tmp_doc->icon_16)) { ?>
-						<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/<?php echo $this->_tmp_doc->icon_16; ?>" alt="<?php echo $this->_tmp_doc->title; ?>" width="16" height="16" />
-					<?php } else { ?>
-						<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/con_info.png" alt="<?php echo $this->_tmp_doc->name; ?>" width="16" height="16" />
-					<?php } ?>
+				<a class="doc-item <?php echo Filesystem::extension($this->_tmp_doc->name); ?>" title="<?php echo $this->_tmp_doc->name; ?>" >
+					<?php echo $this->_tmp_doc->title; ?>
 				</a>
 			</td>
 			<td class="description"  title="<?php echo $this->_tmp_doc->name; ?>">

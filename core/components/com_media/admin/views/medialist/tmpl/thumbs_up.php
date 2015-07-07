@@ -12,8 +12,8 @@ defined('_HZEXEC_') or die();
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
-					<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
-						<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/folderup_32.png" alt=".." height="32" width"32" />
+					<a class="up-item" href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
+						..
 					</a>
 				</div>
 			</div>

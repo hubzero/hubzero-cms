@@ -25,14 +25,8 @@ class MediaViewMedia extends JViewLegacy
 
 		Html::behavior('framework', true);
 
-		//Html::asset('script', 'media/mediamanager.js', true, true);
-		//Html::asset('stylesheet', 'media/mediamanager.css', array(), true);
 		\Hubzero\Document\Assets::addComponentScript('com_media', 'mediamanager.js');
 		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
-		if (Lang::isRTL()) :
-			//Html::asset('stylesheet', 'media/mediamanager_rtl.css', array(), true);
-			\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager_rtl.css');
-		endif;
 
 		Html::behavior('modal');
 		Document::addScriptDeclaration("

@@ -4,9 +4,9 @@
  */
 
 .outline {
-  border: 1px solid #cccccc;
-  background: #ffffff;
-  padding: 2px;
+	border: 1px solid #cccccc;
+	background: #ffffff;
+	padding: 2px;
 }
 
 .manager table td,
@@ -34,4 +34,126 @@
 	background: #F0F0F0;
 	padding: 4px;
 	color: #666;
+}
+
+.delete-item {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	line-height: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	border: none;
+	font-size: 1.2em;
+	color: #c00;
+}
+.delete-item:before {
+	content: "\f057";
+	font-family: "Fontcons";
+	margin-right: 2em;
+}
+.delete-item:hover {
+	text-decoration: none;
+	color: red;
+}
+
+.up-item,
+.folder-item,
+.doc-item {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	line-height: 1;
+	overflow: hidden;
+	border: none;
+	font-size: 1.5em;
+	color: #fadd80;
+	text-align: center;
+}
+.up-item:before,
+.folder-item:before,
+.doc-item:before {
+	font-family: "Fontcons";
+}
+.up-item:hover,
+.folder-item:hover,
+.doc-item:hover {
+	text-decoration: none;
+}
+
+.up-item {
+	color: green;
+}
+.up-item:before {
+	content: "\f01b\a";
+}
+
+.folder-item:before {
+	content: "\f07b\a";
+}
+.folder-item:hover:before {
+	content: "\f07c\a";
+}
+
+.doc-item {
+	color: #666;
+}
+.doc-item:before {
+	content: "\f016\a";
+}
+.doc-item.zip:before,
+.doc-item.tar:before,
+.doc-item.tgz:before,
+.doc-item.rar:before {
+	content: "\f005\a";
+}
+.doc-item.html:before,
+.doc-item.txt:before,
+.doc-item.rtf:before,
+.doc-item.htm:before {
+	content: "\f15c\a";
+}
+.doc-item.mp3:before,
+.doc-item.m4a:before,
+.doc-item.wma:before,
+.doc-item.ogg:before {
+	content: "\266B\a";
+}
+.doc-item.mp4:before,
+.doc-item.m4v:before,
+.doc-item.wmv:before,
+.doc-item.avi:before,
+.doc-item.mov:before,
+.doc-item.qt:before,
+.doc-item.mpeg2:before,
+.doc-item.mpeg:before {
+	content: "\f008\a";
+}
+.doc-item.ppt:before {
+	content: "\f000\a";
+}
+
+/**
+ * Right-to-left
+ */
+
+html[dir=rtl] .manager table td,
+html.rtl .manager table td,
+html[dir=rtl] .manager table th,
+html.rtl .manager table th {
+	border-left: 1px dashed #E7E7E7;
+	border-right: 1px solid #fff;
+}
+html[dir=rtl] .manager table td.filesize,
+html.rtl .manager table td.filesize {
+	text-align: left;
+}
+html[dir=rtl] .manager table td.description,
+html.rtl .manager table td.description {
+	text-align: right;
+}
+html[dir=rtl] .manager table th,
+html.rtl .manager table th {
+	border-right: 0 solid #E7E7E7;
+	border-left: 1px solid #E7E7E7;
 }

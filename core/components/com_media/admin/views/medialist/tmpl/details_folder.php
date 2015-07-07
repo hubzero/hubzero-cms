@@ -12,8 +12,8 @@ defined('_HZEXEC_') or die();
 ?>
 		<tr>
 			<td class="imgTotal">
-				<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->_tmp_folder->path_relative); ?>" target="folderframe">
-					<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/folder_sm.png" alt="<?php echo $this->_tmp_folder->name; ?>" height="16" width"16" />
+				<a class="folder-item" href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->_tmp_folder->path_relative); ?>" target="folderframe">
+					<?php echo Lang::txt('COM_MEDIA_FOLDER'); ?>
 				</a>
 			</td>
 			<td class="description">

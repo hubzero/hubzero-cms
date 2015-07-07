@@ -15,13 +15,9 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 ?>
 		<div class="imgOutline">
 			<div class="imgTotal">
-				<div align="center" class="imgBorder">
-					<a style="display: block; width: 100%; height: 100%" title="<?php echo $this->_tmp_doc->name; ?>" >
-						<?php if (file_exists(PATH_CORE . '/components/com_media/admin/assets/images/' . $this->_tmp_doc->icon_32)) { ?>
-							<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/<?php echo $this->_tmp_doc->icon_32; ?>" alt="<?php echo $this->_tmp_doc->title; ?>" />
-						<?php } else { ?>
-							<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/con_info.png" alt="<?php echo $this->_tmp_doc->name; ?>" />
-						<?php } ?>
+				<div class="imgBorder">
+					<a class="doc-item <?php echo Filesystem::extension($this->_tmp_doc->name); ?>" title="<?php echo $this->_tmp_doc->name; ?>" >
+						<?php echo $this->_tmp_doc->title; ?>
 					</a>
 				</div>
 			</div>

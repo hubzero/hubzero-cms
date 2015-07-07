@@ -194,3 +194,84 @@ p.nowarning {
 div#update-progress {
 	clear: both;
 }
+
+/**
+ * Right-to-left
+ */
+
+/* Upload Widget CSS */
+html[dir=rtl] #upload-flash,
+html.rtl #upload-flash {
+	margin-left: 0;
+	margin-right: 5px;
+}
+html[dir=rtl] #upload-flash ul,
+html.rtl #upload-flash ul {
+	margin-left: 0;
+	margin-right: -15px;
+}
+html[dir=rtl] #upload-flash .progress,
+html.rtl #upload-flash .progress {
+	background: url(../images/progress.gif) no-repeat;
+	background-position: +50% 0;
+	margin-right: 0;
+	margin-left: 0.5em;
+}
+html[dir=rtl] #upload-queue,
+html.rtl #upload-queue {
+	margin-left:0;
+	margin-right:25px;
+}
+html[dir=rtl] #upload-queue li.file,
+html.rtl #upload-queue li.file {
+	background: url(../images/upload.png) no-repeat right 6px;
+}
+html[dir=rtl] #upload-queue li.file.file-uploading,
+html.rtl #upload-queue li.file.file-uploading {
+	background-image: url(../images/uploading.png);
+}
+html[dir=rtl] #upload-queue li.file.file-success,
+html.rtl #upload-queue li.file.file-success {
+	background-image: url(../images/success.png);
+}
+html[dir=rtl] #upload-queue li.file.file-failed,
+html.rtl #upload-queue li.file.file-failed {
+	background-image: url(../images/failed.png);
+}
+html[dir=rtl] #upload-queue li.file .file-name,
+html.rtl #upload-queue li.file .file-name {
+	margin-left: 0;
+	margin-right: 25px;
+	clear: none;
+	clear: right;
+}
+html[dir=rtl] #upload-queue li.file .file-remove,
+html.rtl #upload-queue li.file .file-remove {
+	float: left;
+	margin-right: 0;
+	margin-left: 6px;
+}
+html[dir=rtl] #upload-queue li.file .file-size,
+html.rtl #upload-queue li.file .file-size {
+	float: left;
+	margin-right: 0;
+	margin-left: 6px;
+}
+html[dir=rtl] #upload-queue li.file .file-info,
+html.rtl #upload-queue li.file .file-info {
+	margin-left: 0;
+	margin-right: 44px;
+}
+html[dir=rtl] div#upload-flash ul li,
+html.rtl div#upload-flash ul li {
+	float: right;
+	clear: left;
+	margin-left: 0;
+	margin-right: 10px;
+}
+html[dir=rtl] .swiff-uploader-box,
+html.rtl .swiff-uploader-box {
+	right: auto !important;
+}
+
+
