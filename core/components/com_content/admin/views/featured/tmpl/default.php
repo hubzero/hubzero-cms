@@ -27,7 +27,6 @@ $saveOrder = $listOrder == 'fp.ordering';
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
@@ -45,45 +44,46 @@ $saveOrder = $listOrder == 'fp.ordering';
 		</div>
 	</fieldset>
 	<div class="clr"> </div>
+
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo $this->grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
-					<?php echo $this->grid('sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+				<th>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
-				<th class="priority-2" width="5%">
-					<?php echo $this->grid('sort', 'JCATEGORY', 'a.catid', $listDirn, $listOrder); ?>
+				<th class="priority-2">
+					<?php echo Html::grid('sort', 'JCATEGORY', 'a.catid', $listDirn, $listOrder); ?>
 				</th>
-				<th class="priority-3" width="10%">
-					<?php echo $this->grid('sort', 'JGRID_HEADING_ORDERING', 'fp.ordering', $listDirn, $listOrder); ?>
+				<th class="priority-3">
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'fp.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'featured.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th class="priority-4" width="10%">
-					<?php echo $this->grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+				<th class="priority-4">
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-6">
-					<?php echo $this->grid('sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
-				<th class="priority-5" width="5%">
-					<?php echo $this->grid('sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+				<th class="priority-5">
+					<?php echo Html::grid('sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
 				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<th width="5%">
-					<?php echo $this->grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th> -->
-				<th class="priority-6" width="5%">
-					<?php echo $this->grid('sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
+				<th class="priority-6">
+					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="priority-5 nowrap">
-					<?php echo $this->grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+				<th class="priority-5 nowrap">
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -159,10 +159,10 @@ $saveOrder = $listOrder == 'fp.ordering';
 				<td class="center nowrap priority-5">
 					<?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
 				</td>
-				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
+				<?php /* [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<td class="center">
 					<?php echo (int) $item->hits; ?>
-				</td> -->
+				</td> */ ?>
 				<td class="center priority6">
 					<?php if ($item->language=='*'):?>
 						<?php echo Lang::txt('JALL', 'language'); ?>
