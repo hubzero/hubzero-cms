@@ -62,42 +62,42 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th class="priority-3">
 					<?php echo Html::grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th width="13%">
+				<th>
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'a.lft', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'items.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="10%">
+				<th class="priority-4">
 					<?php echo Html::grid('sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th class="priority-5">
 					<?php echo Lang::txt('JGRID_HEADING_MENU_ITEM_TYPE'); ?>
 				</th>
-				<th width="5%">
+				<th>
 					<?php echo Html::grid('sort', 'COM_MENUS_HEADING_HOME', 'a.home', $listDirn, $listOrder); ?>
 				</th>
 				<?php
 				$assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
 				if ($assoc):
 				?>
-				<th width="5%">
+				<th>
 					<?php echo Html::grid('sort', 'COM_MENUS_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
 				</th>
 				<?php endif;?>
-				<th width="5%">
+				<th class="priority-6">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th class="nowrap priority-6">
 					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -131,7 +131,8 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=com_menus&task=item.edit&id='.(int) $item->id);?>">
-							<?php echo $this->escape($item->title); ?></a>
+							<?php echo $this->escape($item->title); ?>
+						</a>
 					<?php else : ?>
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
@@ -145,9 +146,10 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 							<?php endif; ?>
 						<?php elseif ($item->type =='url' && $item->note) : ?>
 							<?php echo Lang::txt('JGLOBAL_LIST_NOTE', $this->escape($item->note));?>
-						<?php endif; ?></p>
+						<?php endif; ?>
+					</p>
 				</td>
-				<td class="center">
+				<td class="center priority-3">
 					<?php echo Html::menus('state', $item->published, $i, $canChange, 'cb'); ?>
 				</td>
 				<td class="order">
@@ -163,12 +165,13 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 						<?php echo $orderkey + 1;?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-4">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
-				<td class="nowrap">
+				<td class="nowrap priority-5">
 					<span title="<?php echo isset($item->item_type_desc) ? htmlspecialchars($this->escape($item->item_type_desc), ENT_COMPAT, 'UTF-8') : ''; ?>">
-						<?php echo $this->escape($item->item_type); ?></span>
+						<?php echo $this->escape($item->item_type); ?>
+					</span>
 				</td>
 				<td class="center">
 					<?php if ($item->type == 'component') : ?>
@@ -193,7 +196,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<?php endif;?>
 				</td>
 				<?php endif;?>
-				<td class="center">
+				<td class="center priority-6">
 					<?php if ($item->language==''):?>
 						<?php echo Lang::txt('JDEFAULT'); ?>
 					<?php elseif ($item->language=='*'):?>
@@ -202,9 +205,10 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
 				</td>
-				<td class="center">
+				<td class="center priority-6">
 					<span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt);?>">
-						<?php echo (int) $item->id; ?></span>
+						<?php echo (int) $item->id; ?>
+					</span>
 				</td>
 			</tr>
 			<?php endforeach; ?>

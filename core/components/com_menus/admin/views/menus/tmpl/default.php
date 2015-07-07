@@ -35,30 +35,30 @@ $modMenuId = (int) $this->get('ModMenuId');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%" rowspan="2">
+				<th rowspan="2">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th rowspan="2">
 					<?php echo Html::grid('sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="30%" colspan="3">
+				<th colspan="3" class="priority-4">
 					<?php echo Lang::txt('COM_MENUS_HEADING_NUMBER_MENU_ITEMS'); ?>
 				</th>
-				<th width="20%" rowspan="2">
+				<th rowspan="2">
 					<?php echo Lang::txt('COM_MENUS_HEADING_LINKED_MODULES'); ?>
 				</th>
-				<th width="1%" class="nowrap" rowspan="2">
+				<th class="nowrap priority-5" rowspan="2">
 					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			<tr>
-				<th width="10%">
+				<th class="priority-4">
 					<?php echo Lang::txt('COM_MENUS_HEADING_PUBLISHED_ITEMS'); ?>
 				</th>
-				<th width="10%">
+				<th class="priority-4">
 					<?php echo Lang::txt('COM_MENUS_HEADING_UNPUBLISHED_ITEMS'); ?>
 				</th>
-				<th width="10%">
+				<th class="priority-4">
 					<?php echo Lang::txt('COM_MENUS_HEADING_TRASHED_ITEMS'); ?>
 				</th>
 			</tr>
@@ -72,9 +72,9 @@ $modMenuId = (int) $this->get('ModMenuId');
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= User::authorise('core.create',		'com_menus');
-			$canEdit	= User::authorise('core.edit',			'com_menus');
-			$canChange	= User::authorise('core.edit.state',	'com_menus');
+			$canCreate = User::authorise('core.create', 'com_menus');
+			$canEdit   = User::authorise('core.edit', 'com_menus');
+			$canChange = User::authorise('core.edit.state', 'com_menus');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -82,7 +82,8 @@ $modMenuId = (int) $this->get('ModMenuId');
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=com_menus&view=items&menutype='.$item->menutype) ?> ">
-						<?php echo $this->escape($item->title); ?></a>
+						<?php echo $this->escape($item->title); ?>
+					</a>
 					<p class="smallsub">(<span><?php echo Lang::txt('COM_MENUS_MENU_MENUTYPE_LABEL') ?></span>
 						<?php if ($canEdit) : ?>
 							<?php echo '<a href="'.Route::url('index.php?option=com_menus&task=menu.edit&id='.$item->id).' title='.$this->escape($item->description).'">'.
@@ -92,17 +93,20 @@ $modMenuId = (int) $this->get('ModMenuId');
 						<?php endif; ?>
 					</p>
 				</td>
-				<td class="center btns">
+				<td class="priority-4 center btns">
 					<a href="<?php echo Route::url('index.php?option=com_menus&view=items&menutype='.$item->menutype.'&filter_published=1');?>">
-						<?php echo $item->count_published; ?></a>
+						<?php echo $item->count_published; ?>
+					</a>
 				</td>
-				<td class="center btns">
+				<td class="priority-4 center btns">
 					<a href="<?php echo Route::url('index.php?option=com_menus&view=items&menutype='.$item->menutype.'&filter_published=0');?>">
-						<?php echo $item->count_unpublished; ?></a>
+						<?php echo $item->count_unpublished; ?>
+					</a>
 				</td>
-				<td class="center btns">
+				<td class="priority-4 center btns">
 					<a href="<?php echo Route::url('index.php?option=com_menus&view=items&menutype='.$item->menutype.'&filter_published=-2');?>">
-						<?php echo $item->count_trashed; ?></a>
+						<?php echo $item->count_trashed; ?>
+					</a>
 				</td>
 				<td class="left">
 					<?php if (isset($this->modules[$item->menutype])) : ?>
@@ -123,7 +127,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 						<?php echo Lang::txt('COM_MENUS_ADD_MENU_MODULE'); ?></a>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="priority-5 center">
 					<?php echo $item->id; ?>
 				</td>
 			</tr>
