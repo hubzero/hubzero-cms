@@ -37,7 +37,7 @@ if (substr(strtolower($view), 0, 6) == "images" || $popup_upload == 1)
 	$path = "image_path";
 }
 
-define('COM_MEDIA_BASE', PATH_CORE . '/' . $params->get($path, 'images'));
+define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get($path, 'images'));
 define('COM_MEDIA_BASEURL', Request::root() . $params->get($path, 'images'));
 
 $controller	= JControllerLegacy::getInstance('Media');

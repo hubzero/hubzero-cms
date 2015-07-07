@@ -103,27 +103,30 @@ class MediaModelManager extends JModelLegacy
 
 		foreach ($folders as $folder)
 		{
-			$folder		= str_replace(DIRECTORY_SEPARATOR, '/', $folder);
-			$name		= substr($folder, strrpos($folder, '/') + 1);
-			$relative	= str_replace($mediaBase, '', $folder);
-			$absolute	= $folder;
-			$path		= explode('/', $relative);
-			$node		= (object) array('name' => $name, 'relative' => $relative, 'absolute' => $absolute);
+			$folder   = str_replace(DIRECTORY_SEPARATOR, '/', $folder);
+			$name     = substr($folder, strrpos($folder, '/') + 1);
+			$relative = str_replace($mediaBase, '', $folder);
+			$absolute = $folder;
+			$path     = explode('/', $relative);
+			$node     = (object) array('name' => $name, 'relative' => $relative, 'absolute' => $absolute);
 
 			$tmp = &$tree;
 			for ($i=0, $n=count($path); $i<$n; $i++)
 			{
-				if (!isset($tmp['children'])) {
+				if (!isset($tmp['children']))
+				{
 					$tmp['children'] = array();
 				}
 
-				if ($i == $n-1) {
+				if ($i == $n-1)
+				{
 					// We need to place the node
 					$tmp['children'][$relative] = array('data' =>$node, 'children' => array());
 					break;
 				}
 
-				if (array_key_exists($key = implode('/', array_slice($path, 0, $i+1)), $tmp['children'])) {
+				if (array_key_exists($key = implode('/', array_slice($path, 0, $i+1)), $tmp['children']))
+				{
 					$tmp = &$tmp['children'][$key];
 				}
 			}
@@ -144,7 +147,8 @@ class MediaModelManager extends JModelLegacy
 		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_MEDIA_BASE.'/');
 
 		// convert splfileinfo instance into the structure the view wants. return the relative and parent path as well since it's useful to find where the node belongs
-		$mkData = function($fi) use($mediaBase) {
+		$mkData = function($fi) use($mediaBase)
+		{
 			$rel = preg_replace('#^'.preg_quote($mediaBase).'\/?#', '', $fi);
 			$lastSlash = strrpos($rel, DIRECTORY_SEPARATOR);
 			return array(array(

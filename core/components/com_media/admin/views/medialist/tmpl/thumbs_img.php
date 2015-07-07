@@ -24,7 +24,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 			<div class="controls">
 			<?php if (User::authorise('core.delete', 'com_media')):?>
 				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_img->name); ?>" rel="<?php echo $this->_tmp_img->name; ?>">
-					<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/remove.png" alt="<?php echo Lang::txt('JACTION_DELETE'); ?>" height="16" width"16" />
+					<?php echo Lang::txt('JACTION_DELETE'); ?>
 				</a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_img->name; ?>" />
 			<?php endif;?>

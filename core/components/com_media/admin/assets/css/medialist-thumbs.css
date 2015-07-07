@@ -97,3 +97,24 @@ div.imgBorder a {
 div.image {
 	padding-top: 10px;
 }
+
+.delete-item {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	line-height: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	border: none;
+	font-size: 1.2em;
+	color: #c00;
+}
+.delete-item:before {
+	content: "\f057";
+	font-family: "Fontcons";
+	margin-right: 2em;
+}
+.delete-item:hover {
+	text-decoration: none;
+	color: red;
+}

@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 			<div class="controls">
 			<?php if (User::authorise('core.delete', 'com_media')):?>
 				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=folder.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_folder->name); ?>" rel="<?php echo $this->_tmp_folder->name; ?> :: <?php echo $this->_tmp_folder->files+$this->_tmp_folder->folders; ?>">
-					<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/images/remove.png" alt="<?php echo Lang::txt('JACTION_DELETE'); ?>" height="16" width"16" />
+					<?php echo Lang::txt('JACTION_DELETE'); ?>
 				</a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_folder->name; ?>" />
 			<?php endif;?>
