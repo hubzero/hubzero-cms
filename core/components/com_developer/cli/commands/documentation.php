@@ -28,17 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Console\Command;
+namespace Components\Developer\Cli\Commands;
 
+use Hubzero\Console\Command\Base;
+use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Console\Application;
-use Hubzero\Database\Exception\QueryFailedException;
 
 /**
- * Group command class
+ * Developer documentation command class
  **/
-class Api extends Base implements CommandInterface
+class Documentation extends Base implements CommandInterface
 {
 	/**
 	 * Default (required) command
@@ -54,98 +54,11 @@ class Api extends Base implements CommandInterface
 	}
 
 	/**
-	 * Revokes all oauth related tokens/codes
-	 * 
-	 * @return void
-	 */
-	public function revokeAll()
-	{
-		$this->revokeAccessTokens();
-		$this->revokeRefreshTokens();
-		$this->revokeAuthorizationCodes();
-	}
-
-	/**
-	 * Delete all access tokens
-	 *
-	 * @return void
-	 **/
-	public function revokeAccessTokens()
-	{
-		// Get db object
-		$db = App::get('db');
-
-		// Attempt to delete tokens
-		try
-		{
-			$db->setQuery("DELETE FROM `#__developer_access_tokens`");
-			$db->query();
-		}
-		catch (QueryFailedException $e)
-		{
-			$this->output->error('Error:' . $e->getMessage());
-		}
-
-		// Successfully deleted tokens
-		$this->output->addLine('All access tokens successfully revoked.', 'success');
-	}
-
-	/**
-	 * Delete all refresh tokens
-	 *
-	 * @return void
-	 **/
-	public function revokeRefreshTokens()
-	{
-		// Get db object
-		$db = App::get('db');
-
-		// Attempt to delete tokens
-		try
-		{
-			$db->setQuery("DELETE FROM `#__developer_refresh_tokens`");
-			$db->query();
-		}
-		catch (QueryFailedException $e)
-		{
-			$this->output->error('Error:' . $e->getMessage());
-		}
-
-		// Successfully deleted tokens
-		$this->output->addLine('All refresh tokens successfully revoked.', 'success');
-	}
-
-	/**
-	 * Delete all authorization codes
-	 *
-	 * @return void
-	 **/
-	public function revokeAuthorizationCodes()
-	{
-		// Get db object
-		$db = App::get('db');
-
-		// Attempt to delete tokens
-		try
-		{
-			$db->setQuery("DELETE FROM `#__developer_authorization_codes`");
-			$db->query();
-		}
-		catch (QueryFailedException $e)
-		{
-			$this->output->error('Error:' . $e->getMessage());
-		}
-
-		// Successfully deleted tokens
-		$this->output->addLine('All authorization codes successfully revoked.', 'success');
-	}
-
-	/**
 	 * Generate documentation for API
 	 * 
 	 * @return void
 	 */
-	public function generateDocumentation()
+	public function generate()
 	{
 		// Generate documentation
 		$generator     = new \Hubzero\Api\Doc\Generator();
@@ -174,7 +87,7 @@ class Api extends Base implements CommandInterface
 		$this
 			->output
 			->addOverview(
-				'Api Related Commands.'
+				'Api documentation related commands.'
 			);
 	}
 }
