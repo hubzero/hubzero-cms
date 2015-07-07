@@ -30,12 +30,15 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Base\ServiceProvider;
+use Hubzero\Console\Exception\UnsupportedCommandException;
+use Hubzero\Console\Exception\UnsupportedTaskException;
+use Hubzero\Base\Middleware;
+use Hubzero\Http\Request;
 
 /**
  * Console arguments service provider
  */
-class ArgumentsServiceProvider extends ServiceProvider
+class ArgumentsServiceProvider extends Middleware
 {
 	/**
 	 * Register the service provider
@@ -50,5 +53,31 @@ class ArgumentsServiceProvider extends ServiceProvider
 
 			return new \Hubzero\Console\Arguments($argv);
 		};
+	}
+
+	/**
+	 * Handle request in stack
+	 * 
+	 * @param   object  $request  Request
+	 * @return  mixed
+	 */
+	public function handle(Request $request)
+	{
+		$response = $this->next($request);
+
+		try
+		{
+			$this->app->get('arguments')->parse();
+		}
+		catch (UnsupportedCommandException $e)
+		{
+			$this->app->get('output')->error($e->getMessage());
+		}
+		catch (UnsupportedTaskException $e)
+		{
+			$this->app->get('output')->error($e->getMessage());
+		}
+
+		return $response;
 	}
 }

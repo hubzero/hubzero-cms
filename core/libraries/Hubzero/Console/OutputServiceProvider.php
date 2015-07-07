@@ -30,14 +30,13 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Console\Exception\UnsupportedCommandException;
-use Hubzero\Console\Exception\UnsupportedTaskException;
-use Hubzero\Base\ServiceProvider;
+use Hubzero\Base\Middleware;
+use Hubzero\Http\Request;
 
 /**
  * Console output service provider
  */
-class OutputServiceProvider extends ServiceProvider
+class OutputServiceProvider extends Middleware
 {
 	/**
 	 * Register the service provider
@@ -53,27 +52,17 @@ class OutputServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Add the plugin loader to the event dispatcher.
-	 *
-	 * @return  void
+	 * Handle request in stack
+	 * 
+	 * @param   object  $request  Request
+	 * @return  mixed
 	 */
-	public function boot()
+	public function handle(Request $request)
 	{
+		$response = $this->next($request);
+
 		$arguments = $this->app['arguments'];
 		$output    = $this->app['output'];
-
-		try
-		{
-			$arguments->parse();
-		}
-		catch (UnsupportedCommandException $e)
-		{
-			$output->error($e->getMessage());
-		}
-		catch (UnsupportedTaskException $e)
-		{
-			$output->error($e->getMessage());
-		}
 
 		// Check for interactivity flag and set on output accordingly
 		if ($arguments->getOpt('non-interactive'))
@@ -121,5 +110,7 @@ class OutputServiceProvider extends ServiceProvider
 		// Reset the output stored on the application
 		$this->app->forget('output');
 		$this->app->set('output', $output);
+
+		return $response;
 	}
 }

@@ -48,9 +48,9 @@ class DispatcherServiceProvider extends Middleware
 	}
 
 	/**
-	 * Handle request in HTTP stack
+	 * Handle request in stack
 	 * 
-	 * @param   object  $request  HTTP Request
+	 * @param   object  $request  Request
 	 * @return  mixed
 	 */
 	public function handle(Request $request)
@@ -72,6 +72,7 @@ class DispatcherServiceProvider extends Middleware
 		Event::fire($shortName . '.' . 'after' . ucfirst($task));
 
 		$this->app->get('output')->render();
-		exit();
+
+		return $response;
 	}
 }
