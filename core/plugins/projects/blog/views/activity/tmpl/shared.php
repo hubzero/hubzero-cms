@@ -68,15 +68,15 @@ if (count($this->activities) > 0 )
 	</div>
 </div>
 <?php } else { ?>
-	<p class="noresults"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_NO_ACTIVITIES'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_BLOG_NO_ACTIVITIES'); ?></p>
 <?php } ?>
 
 <div class="nav_pager more-updates">
 <?php
 if ($this->total > $this->filters['limit']) {
 	$limit = $this->filters['limit'] + $this->limit; ?>
-	<p><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects') . '?action=updates&amp;limit=' . $limit . '&amp;prev=' . $this->filters['limit'] . '#' . $li;  ?>"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
+	<p><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects') . '?action=updates&amp;limit=' . $limit . '&amp;prev=' . $this->filters['limit'] . '#' . $li;  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
 <?php } else if ($this->filters['limit'] != $this->limit) { ?>
-	<p><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php } ?>
 </div><!-- / #more-updates -->

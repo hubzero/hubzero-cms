@@ -81,16 +81,15 @@ $this->css();
 			</div>
 		</div>
 	</div><!-- /.subject -->
-	<aside class="aside">
+	<div class="aside">
 		<div class="container">
-			<h3>Create a Project</h3>
-			<p>Have a new project? Want to create a dedicated space for project collaboration? Create a project today!</p>
-			<p><a class="icon-add btn" href="/projects/start?gid=<?php echo $this->group->get('gidNumber'); ?>">Add Project</a></p>
+			<h3><?php echo Lang::txt('PLG_GROUPS_PROJECTS_CREATE'); ?></h3>
+			<p><?php echo Lang::txt('PLG_GROUPS_PROJECTS_CREATE_EXPLANATION'); ?></p>
+			<p><a class="icon-add btn" href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?></a></p>
 		</div>
 		<div class="container">
-			<h3>Your Projects</h3>
-			<p>View a list of all the projects you collaborate on.</p>
-			<p>Go to <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects'); ?>">your projects</a></p>
+			<h3><?php echo Lang::txt('PLG_GROUPS_PROJECTS_EXPLORE'); ?></h3>
+			<p><?php echo Lang::txt('PLG_GROUPS_PROJECTS_EXPLORE_EXPLANATION', Route::url('index.php?option=com_projects&task=browse'), Route::url('index.php?option=com_projects&task=features')); ?></p>
 		</div>
-	</aside><!-- /.aside -->
+	</div><!-- / .aside -->
 </section><!-- /.main section -->
