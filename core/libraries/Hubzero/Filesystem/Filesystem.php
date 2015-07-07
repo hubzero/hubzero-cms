@@ -127,7 +127,7 @@ class Filesystem
 	{
 		$path = Util::normalizePath($path);
 
-		$this->assertAbsent($path);
+		//$this->assertAbsent($path);
 
 		return (bool) $this->adapter->write($path, $contents);
 	}
