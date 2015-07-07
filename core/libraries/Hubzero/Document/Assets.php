@@ -718,7 +718,7 @@ class Assets
 				if (!is_array($cache) || $newCache['updated'] > $cache['updated'])
 				{
 					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
-					$newCache['compiled'] = str_replace(array("'/media/system/", "'/core/assets/"), "'" . rtrim(Request::base(true), '/') . '/core/assets/', $newCache['compiled']);
+					$newCache['compiled'] = str_replace(array("'/media/system/", "'/core/assets/"), "'" . rtrim(Request::root(true), '/') . '/core/assets/', $newCache['compiled']);
 					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
 				}
 				$output = rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
@@ -812,7 +812,7 @@ class Assets
 					'$1'*/
 				);
 				$contents = preg_replace($patterns, $replacements, $contents);
-				$contents = str_replace(array("url('/media/system/", "url('/core/assets/"), "url('" . rtrim(Request::base(true), '/') . "/core/assets/", $contents);
+				$contents = str_replace(array("url('/media/system/", "url('/core/assets/"), "url('" . rtrim(Request::root(true), '/') . "/core/assets/", $contents);
 
 				if ($fp = fopen($cachedir . DS . $cachefile, 'wb'))
 				{
