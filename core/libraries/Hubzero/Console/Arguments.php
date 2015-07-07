@@ -155,89 +155,11 @@ class Arguments
 	{
 		if (isset($this->raw) && count($this->raw) > 0)
 		{
-			// Take the first argument as command to be run - defaults to help
-			$command = (isset($this->raw[1])) ? $this->raw[1] : 'help';
+			$class = $this->raw[1] ? $this->raw[1] : 'help';
+			$task  = (isset($this->raw[2]) && substr($this->raw[2], 0, 1) != "-") ? $this->raw[2] : 'execute';
 
-			// Aliases take precedence, so parse for them first
-			if ($aliases = Config::get('aliases'))
-			{
-				if (array_key_exists($command, $aliases))
-				{
-					if (strpos($aliases->$command, '::') !== false)
-					{
-						$bits      = explode('::', $aliases[$command]);
-						$command   = $bits[0];
-						$aliasTask = $bits[1];
-					}
-					else
-					{
-						$command = $aliases->$command;
-					}
-				}
-			}
-
-			// Check if we're targeting a namespaced command
-			if (strpos($command, ':'))
-			{
-				$bits    = explode(':', $command);
-				$command = '';
-				foreach ($bits as $bit)
-				{
-					$command .= '\\' . ucfirst($bit);
-				}
-			}
-			else
-			{
-				$command = '\\' . ucfirst($command);
-			}
-
-			$class = __NAMESPACE__ . '\\Command' . $command;
-
-			// Make sure class exists
-			if (class_exists($class))
-			{
-				$this->class = $class;
-			}
-			else
-			{
-				$notfound = true;
-
-				// Also check to see if a command is available in the component itself
-				$parts = explode('\\', ltrim($command, '\\'));
-
-				$comPath = PATH_CORE . DS . 'components' . DS . 'com_' . strtolower($parts[0]);
-				if (is_dir($comPath))
-				{
-					if (isset($parts[1]) && is_file($comPath . DS . 'cli' . DS . 'commands' . DS . $parts[1] . '.php'))
-					{
-						require_once $comPath . DS . 'cli' . DS . 'commands' . DS . $parts[1] . '.php';
-						$notfound    = false;
-						$class       = 'Components\\' . ucfirst($parts[0]) . '\\Cli\\Commands\\' . ucfirst($parts[1]);
-						$this->class = $class;
-					}
-				}
-
-				if ($notfound) throw new UnsupportedCommandException("Unknown command: {$command}.");
-			}
-
-			// Take the second argument and use that as the task to be run - defaults to execute
-			$task = (isset($this->raw[2]) && substr($this->raw[2], 0, 1) != "-") ? $this->raw[2] : 'execute';
-
-			// If we have an alias task, set it now
-			if (isset($aliasTask))
-			{
-				$task = $aliasTask;
-			}
-
-			// Make sure task exists
-			if (method_exists($class, $task))
-			{
-				$this->task = $task;
-			}
-			else
-			{
-				throw new UnsupportedTaskException("{$command} does not support the {$task} method.");
-			}
+			$this->class = self::routeCommand($class);
+			$this->task  = self::routeTask($this->class, $task);
 
 			// Parse the remaining args for command options/arguments
 			for ($i = 2; $i < count($this->raw); $i++)
@@ -299,5 +221,105 @@ class Arguments
 				$this->opts[$key] = $value;
 			}
 		}
+	}
+
+	/**
+	 * Routes command to the proper file based on the input given
+	 *
+	 * @param   string  $command  the command to route
+	 * @return  void
+	 **/
+	public static function routeCommand($command='help')
+	{
+		// Aliases take precedence, so parse for them first
+		if ($aliases = Config::get('aliases'))
+		{
+			if (array_key_exists($command, $aliases))
+			{
+				if (strpos($aliases->$command, '::') !== false)
+				{
+					$bits      = explode('::', $aliases[$command]);
+					$command   = $bits[0];
+					$aliasTask = $bits[1];
+				}
+				else
+				{
+					$command = $aliases->$command;
+				}
+			}
+		}
+
+		// Check if we're targeting a namespaced command
+		if (strpos($command, ':'))
+		{
+			$bits    = explode(':', $command);
+			$command = '';
+			foreach ($bits as $bit)
+			{
+				$command .= '\\' . ucfirst($bit);
+			}
+		}
+		else
+		{
+			$command = '\\' . ucfirst($command);
+		}
+
+		$class = __NAMESPACE__ . '\\Command' . $command;
+
+		// Make sure class exists
+		if (!class_exists($class))
+		{
+			$notfound = true;
+
+			// Also check to see if a command is available in the component itself
+			$parts = explode('\\', ltrim($command, '\\'));
+
+			$comPath = PATH_CORE . DS . 'components' . DS . 'com_' . strtolower($parts[0]);
+			if (is_dir($comPath))
+			{
+				if (isset($parts[1]) && is_file($comPath . DS . 'cli' . DS . 'commands' . DS . $parts[1] . '.php'))
+				{
+					require_once $comPath . DS . 'cli' . DS . 'commands' . DS . $parts[1] . '.php';
+					$notfound    = false;
+					$class       = 'Components\\' . ucfirst($parts[0]) . '\\Cli\\Commands\\' . ucfirst($parts[1]);
+				}
+			}
+
+			if ($notfound) throw new UnsupportedCommandException("Unknown command: {$command}.");
+		}
+
+		return $class;
+	}
+
+	/**
+	 * Routes task to the proper method based on the input given
+	 *
+	 * @param   string  $command  the command to route
+	 * @param   string  $task     the task to route
+	 * @return  void
+	 **/
+	public static function routeTask($command, $task='execute')
+	{
+		// Aliases take precedence, so parse for them first
+		if ($aliases = Config::get('aliases'))
+		{
+			$short = strtolower(with(new \ReflectionClass($command))->getShortName());
+			if (array_key_exists($short, $aliases))
+			{
+				if (strpos($aliases->$command, '::') !== false)
+				{
+					$bits = explode('::', $aliases[$command]);
+					$task = $bits[1];
+				}
+			}
+		}
+
+		// Make sure task exists
+		if (!method_exists($command, $task))
+		{
+			throw new UnsupportedTaskException("{$command} does not support the {$task} method.");
+		}
+
+		return $task;
 	}
 }
