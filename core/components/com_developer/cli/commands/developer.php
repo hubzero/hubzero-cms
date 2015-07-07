@@ -60,9 +60,9 @@ class Developer extends Base implements CommandInterface
 	 */
 	public function revoke()
 	{
-		$this->revokeAccessTokens();
-		$this->revokeRefreshTokens();
-		$this->revokeAuthorizationCodes();
+		App::get('client')->call('developer:accesstokens', 'revoke', $this->arguments, $this->output);
+		App::get('client')->call('developer:refreshtokens', 'revoke', $this->arguments, $this->output);
+		App::get('client')->call('developer:authorizationcodes', 'revoke', $this->arguments, $this->output);
 	}
 
 	/**
