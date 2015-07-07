@@ -75,6 +75,8 @@ $this->css()
 		<input type="hidden" name="active" value="forum" />
 		<input type="hidden" name="action" value="savesettings" />
 
+		<?php echo Html::input('token'); ?>
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 

@@ -1936,6 +1936,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return $this->sections();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$settings = Request::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);

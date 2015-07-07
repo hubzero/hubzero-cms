@@ -83,9 +83,13 @@ defined('_HZEXEC_') or die();
 		<input type="hidden" name="active" value="collections" />
 		<input type="hidden" name="action" value="savesettings" />
 
+		<?php echo Html::input('token'); ?>
+
 		<p class="submit">
 			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
+			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CANCEL'); ?>
+			</a>
 		</p>
 	</form>
