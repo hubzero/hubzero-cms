@@ -99,8 +99,8 @@ switch ($this->which)
 					}
 					echo $html;
 				?>
-				<?php } ?>
 				</td>
+				<?php } ?>
 				<td class="th_role">
 					<?php echo $role; ?>
 				</td>

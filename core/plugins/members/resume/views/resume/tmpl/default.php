@@ -51,7 +51,7 @@ $this->css('jobs', 'com_jobs');
 
 		<?php if (!$this->editpref) { ?>
 				<span class="includeme">
-					<a href="<?php echo Route::url($this->member->getLink() . '&active=resume&action=activate') . '&on=' . ($this->js->active && $this->file ? 0 : 1); ?>">
+					<a href="<?php echo Route::url($this->member->getLink() . '&active=resume&action=activate' . '&on=' . ($this->js->active && $this->file ? 0 : 1)); ?>">
 				<?php if ($this->js->active && $this->file) { ?>
 					[-] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
 				<?php } else if ($this->file) { ?>
