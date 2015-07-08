@@ -23,12 +23,31 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Create aliases for runtime
-return [
-	'Component' => 'Hubzero\Facades\Component',
-];
+namespace Hubzero\Console;
+
+use Hubzero\Base\ServiceProvider;
+use Hubzero\Component\Loader;
+
+/**
+ * Component loader service provider
+ */
+class ComponentServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['component'] = function($app)
+		{
+			return new Loader($app);
+		};
+	}
+}

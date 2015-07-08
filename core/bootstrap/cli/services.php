@@ -33,4 +33,5 @@ return [
 	'Hubzero\Console\ArgumentsServiceProvider',
 	'Hubzero\Console\OutputServiceProvider',
 	'Hubzero\Console\DispatcherServiceProvider',
+	'Hubzero\Console\ComponentServiceProvider',
 ];
