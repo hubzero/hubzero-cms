@@ -506,7 +506,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id  = JRequest::getInt('id', 0);
 		$tab = JRequest::getVar('active', 'dashboard');  // The active tab (section)
 
 		// Get plugins
@@ -514,7 +514,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$dispatcher = JDispatcher::getInstance();
 
 		// Ensure we have an ID
-		if (!$id)
+		if (!$id || !is_numeric($id))
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_task)),
@@ -523,6 +523,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
 			return;
 		}
+
+		$id = intval($id);
 
 		// Check administrative access
 		$this->view->authorized = $this->_authorize($id);
