@@ -222,7 +222,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			$output .= "SEQUENCE:{$sequence}\r\n";
 			$output .= "DTSTAMP:{$now}\r\n";
 			$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-			if($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
+			if ($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
 			}
@@ -242,7 +242,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			$output .= "SUMMARY:{$title}\r\n";
 			$output .= "DESCRIPTION:{$content}\r\n";
 			// do we have extra info
-			if($url != '' && filter_var($url, FILTER_VALIDATE_URL))
+			if ( $url != '' && filter_var($url, FILTER_VALIDATE_URL) )
 			{
 				$output .= "URL;VALUE=URI:{$url}\r\n";
 			}
