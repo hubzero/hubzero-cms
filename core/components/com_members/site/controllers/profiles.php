@@ -496,11 +496,11 @@ class Profiles extends SiteController
 		}
 
 		// Incoming
-		$id = Request::getInt('id', 0);
+		$id  = Request::getVar('id', 0);
 		$tab = Request::getVar('active', 'dashboard');  // The active tab (section)
 
 		// Ensure we have an ID
-		if (!$id)
+		if (!$id || !is_numeric($id))
 		{
 			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
@@ -509,6 +509,8 @@ class Profiles extends SiteController
 			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
 			return;
 		}
+
+		$id = intval($id);
 
 		// Check administrative access
 		$this->view->authorized = $this->_authorize($id);
