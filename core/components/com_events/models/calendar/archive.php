@@ -198,7 +198,7 @@ class Archive extends Model
 		foreach ($events as $event)
 		{
 			$sequence = 0;
-			$uid      = $event->get('id');
+			$uid      = $event->get('id') . '@' . $_SERVER['HTTP_HOST'];
 			$title    = $event->get('title');
 			$content  = str_replace("\r\n", '\n', $event->get('content'));
 			$location = $event->get('adresse_info');
