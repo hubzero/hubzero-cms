@@ -118,7 +118,7 @@ if (isset($this->messages))
 								<th class="batch">
 									<input type="checkbox" class="checkall-download" />
 								</th>
-								<th colspan="3"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
+								<th colspan="5"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
 							</tr>
 							<?php if ($this->isManager) : ?>
 								<tr class="hidden"></tr>
@@ -127,7 +127,7 @@ if (isset($this->messages))
 						<tbody>
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
-								<tr>
+								<tr class="citation-row">
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 									</td>
@@ -211,7 +211,7 @@ if (isset($this->messages))
 									<?php endif; ?>
 								</tr>
 								<tr>
-									<td <?php if ($this->label == "none") { echo 'colspan="3"'; } else { echo 'colspan="4"'; } ?> class="citation-details">
+									<td <?php if ($this->label == "none") { echo 'colspan="3"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
 										<?php
 											$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
@@ -242,7 +242,10 @@ if (isset($this->messages))
 							$this->filters['start'],
 							$this->filters['limit']
 						);
-						$pageNav->setAdditionalUrlParam('task', 'browse');
+						$pageNav->setAdditionalUrlParam('option', 'com_groups');
+						$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+						$pageNav->setAdditionalUrlParam('active', 'citations');
+
 						foreach ($this->filters as $key => $value)
 						{
 							switch ($key)
@@ -266,6 +269,7 @@ if (isset($this->messages))
 								break;
 							}
 						}
+
 						echo $pageNav->render();
 					?>
 					<div class="clearfix"></div>

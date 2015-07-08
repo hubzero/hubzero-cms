@@ -18,8 +18,14 @@
 .legendColorBox {
 	max-width: 14px;
 }
+.citation-row {
+	margin-bottom: 40px;
+}
 .citations .citation-label .type {
 	font-weight: bold;
+}
+.citation-details {
+	background-color: rgba(245, 245, 245, 0.33);
 }
 .citation-details .badges {
 	float: right;

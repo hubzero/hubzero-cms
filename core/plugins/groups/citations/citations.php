@@ -197,6 +197,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
+
 		//initialize the view
 		$view = $this->view('default', 'browse');
 		// push objects to the view
@@ -234,6 +235,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
 		$view->filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
 		$view->filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
+		$view->filters['limit']			  = Request::getInt('limit', 10);
+		$view->filters['start']			  = Request::getInt('start', 0);
 
 		// Affiliation filter
 		$view->filter = array(
@@ -314,17 +317,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'error'
 			);
 			return;
-		}
-
-		// Ensure limit has a value
-		if (!isset($view->filters['limit']))
-		{
-			$view->filters['limit'] = 10;
-		}
-		// Ensure start has a value
-		if (!isset($view->filters['start']))
-		{
-			$view->filters['start'] = 0;
 		}
 
 		// Get record count
