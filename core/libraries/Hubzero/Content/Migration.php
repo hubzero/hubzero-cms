@@ -216,39 +216,7 @@ class Migration
 	 **/
 	public function getDBO()
 	{
-		// Include the joomla configuration file
-		if (file_exists($this->docroot . '/configuration.php'))
-		{
-			// If there's one in the provided doc root, use that
-			require_once $this->docroot . '/configuration.php';
-		}
-		else
-		{
-			if (file_exists(PATH_ROOT . '/configuration.php'))
-			{
-				// If there's one in the provided doc root, use that
-				require_once PATH_ROOT . '/configuration.php';
-			}
-			else
-			{
-				$this->log('Error: document root does not contain a configuration file', 'error');
-				return false;
-			}
-		}
-
-		// Instantiate a config object
-		$config = new \JConfig();
-
-		$db = \JDatabase::getInstance(
-			array(
-				'driver'   => 'pdo',
-				'host'     => $config->host,
-				'user'     => $config->user,
-				'password' => $config->password,
-				'database' => $config->db,
-				'prefix'   => 'jos_'
-			)
-		);
+		$db = App::get('db');
 
 		// Test the connection
 		if (!$db->connected())
