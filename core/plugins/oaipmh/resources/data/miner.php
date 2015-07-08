@@ -85,7 +85,7 @@ class Miner extends Object implements Provider
 			$db = \App::get('db');
 		}
 
-		if (!($db instanceof \JDatabase))
+		if (!($db instanceof \Hubzero\Database\Driver) && !($db instanceof \JDatabase))
 		{
 			throw new \Exception(\Lang::txt('Database must be of type JDatabase'), 500);
 		}

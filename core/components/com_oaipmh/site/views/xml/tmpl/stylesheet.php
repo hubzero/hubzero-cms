@@ -531,7 +531,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 
 <!-- ListIdentifiers -->
 <xsl:template match="oai:ListIdentifiers">
-	<xsl:apply-templates select="oai:header" />
+	<xsl:apply-templates select="oai:record" />
 	<xsl:apply-templates select="oai:resumptionToken" />
 </xsl:template>
 
@@ -600,41 +600,44 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 
 <xsl:template match="oai:record" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<div class="oaiContainer">
-		<h2 class="oaiRecordTitle"><xsl:value-of select="oai:metadata/oai_dc:dc/dc:title"/></h2>
-		<div class="oaiRecord">
-			<!-- <xsl:apply-templates select="oai:header" /> -->
-			<xsl:apply-templates select="oai:metadata" />
-			<xsl:apply-templates select="oai:about" />
-		</div>
+		<xsl:choose>
+			<xsl:when test="oai:metadata">
+				<h2 class="oaiRecordTitle"><xsl:value-of select="oai:metadata/oai_dc:dc/dc:title"/></h2>
+				<div class="oaiRecord">
+					<xsl:apply-templates select="oai:metadata" />
+					<xsl:apply-templates select="oai:about" />
+				</div>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="oai:header" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</div>
 </xsl:template>
 
 <xsl:template match="oai:header">
-	<div class="oaiContainer">
-		<h3>OAI Record Header</h3>
-		<table class="values">
-			<tbody>
-				<tr>
-					<th class="key">OAI Identifier</th>
-					<td class="value">
-						<!--<xsl:value-of select="oai:identifier"/>-->
-						<span class="options">
-							<xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=GetRecord&metadataPrefix=oai_dc&identifier={oai:identifier}'); ?>">oai_dc</a>
-							<xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListMetadataFormats&identifier={oai:identifier}'); ?>">formats</a>
-						</span>
-					</td>
-				</tr>
-				<tr>
-					<th class="key">Datestamp</th>
-					<td class="value"><xsl:value-of select="oai:datestamp"/></td>
-				</tr>
-				<xsl:apply-templates select="oai:setSpec" />
-			</tbody>
-		</table>
-		<xsl:if test="@status='deleted'">
-			<p>This record has been deleted.</p>
-		</xsl:if>
-	</div>
+	<table class="values">
+		<tbody>
+			<tr>
+				<th class="key">OAI Identifier</th>
+				<td class="value">
+					<a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=GetRecord&metadataPrefix=oai_dc&identifier={oai:identifier}'); ?>"><xsl:value-of select="oai:identifier"/></a>
+					<!--<span class="options">
+						<xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=GetRecord&metadataPrefix=oai_dc&identifier={oai:identifier}'); ?>">oai_dc</a>
+						<xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListMetadataFormats&identifier={oai:identifier}'); ?>">formats</a>
+					</span>-->
+				</td>
+			</tr>
+			<tr>
+				<th class="key">Datestamp</th>
+				<td class="value"><xsl:value-of select="oai:datestamp"/></td>
+			</tr>
+			<xsl:apply-templates select="oai:setSpec"/>
+		</tbody>
+	</table>
+	<xsl:if test="@status='deleted'">
+		<p>This record has been deleted.</p>
+	</xsl:if>
 </xsl:template>
 
 
