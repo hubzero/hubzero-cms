@@ -506,7 +506,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$id  = JRequest::getInt('id', 0);
+		$id  = JRequest::getVar('id', 0);
 		$tab = JRequest::getVar('active', 'dashboard');  // The active tab (section)
 
 		// Get plugins
