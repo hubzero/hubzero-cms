@@ -171,7 +171,7 @@ class plgUserXusers extends JPlugin
 		$tracker['rsid'] = $session->get('tracker.rsid', $tracker['sid']);
 		$tracker['ssid'] = $session->get('tracker.ssid', $tracker['sid']);
 		$cookie = $crypt->encrypt(serialize($tracker));
-		$lifetime = time() + 365*24*60*60;
+		$lifetime = time() + 365*24*60*60*10;
 		setcookie($hash, $cookie, $lifetime, '/');
 
 		/* Mark registration as incomplete so it gets checked on next page load */
