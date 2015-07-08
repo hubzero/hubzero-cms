@@ -194,6 +194,7 @@ class plgSystemHubzero extends JPlugin
 			{
 				apache_note('auth','cookie');
 				apache_note('userid', $tracker['user_id']);
+				apache_note('tracker', $tracker['rsid']);
 			}
 		}
 	}
