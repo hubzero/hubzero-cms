@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Resource License Layout">
+	<layout title="Standard Publication License Layout">
 		<message>
-			<![CDATA[STANDARD RESOURCE LICENSE LAYOUT DESC]]>
+			<![CDATA[STANDARD PUBLICATION LICENSE LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Resource License Layout</name>
-		<description>STANDARD RESOURCE LICENSE LAYOUT DESC</description>
+		<name>Standard Publication License Layout</name>
+		<description>STANDARD PUBLICATION LICENSE LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Resource Layout">
+	<layout title="Standard Publication Layout">
 		<message>
-			<![CDATA[STANDARD RESOURCE LAYOUT DESC]]>
+			<![CDATA[STANDARD PUBLICATION LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Resource Layout</name>
-		<description>STANDARD RESOURCE LAYOUT DESC</description>
+		<name>Standard Publication Layout</name>
+		<description>STANDARD PUBLICATION LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

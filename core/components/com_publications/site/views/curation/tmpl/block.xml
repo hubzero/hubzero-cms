@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Project Publications One Panel Layout">
+	<layout title="Project Publications Block Layout">
 		<message>
-			<![CDATA[PROJECT PUBLICATIONS ONE PANEL LAYOUT DESC]]>
+			<![CDATA[PROJECT PUBLICATIONS BLOCK LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Project Publications One Panel Layout</name>
-		<description>PROJECT PUBLICATIONS ONE PANEL LAYOUT DESC</description>
+		<name>Project Publications Block Layout</name>
+		<description>PROJECT PUBLICATIONS BLOCK LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

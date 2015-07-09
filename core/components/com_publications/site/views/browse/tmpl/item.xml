@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Browse Resources Item Layout">
+	<layout title="Standard Browse Publications Item Layout">
 		<message>
-			<![CDATA[STANDARD BROWSE RESOURCES ITEM LAYOUT DESC]]>
+			<![CDATA[STANDARD BROWSE PUBLICATIONS ITEM LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Resources Item Layout</name>
-		<description>STANDARD BROWSE RESOURCES ITEM LAYOUT DESC</description>
+		<name>Standard Browse Publications Item Layout</name>
+		<description>STANDARD BROWSE PUBLICATIONS ITEM LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Project Publications License Plugin Layout">
+	<layout title="Project Publications Tags Plugin Layout">
 		<message>
-			<![CDATA[PROJECT PUBLICATIONS LICENSE PLUGIN LAYOUT DESC]]>
+			<![CDATA[PROJECT PUBLICATIONS TAGS PLUGIN LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Project Publications License Plugin Layout</name>
-		<description>PROJECT PUBLICATIONS LICENSE PLUGIN LAYOUT DESC</description>
+		<name>Project Publications Tangs Plugin Layout</name>
+		<description>PROJECT PUBLICATIONS TAGS PLUGIN LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

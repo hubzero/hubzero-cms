@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Projects Error Layout">
+	<layout title="Standard Publications Error Layout">
 		<message>
-			<![CDATA[STANDARD PROJECTS ERROR LAYOUT DESC]]>
+			<![CDATA[STANDARD PUBLICATIONS ERROR LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Projects Error Layout</name>
-		<description>STANDARD PROJECTS ERROR LAYOUT DESC</description>
+		<name>Standard Publications Error Layout</name>
+		<description>STANDARD PUBLICATIONS ERROR LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>
