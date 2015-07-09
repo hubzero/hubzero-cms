@@ -28,44 +28,46 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
+<article>
+	<h1>Resources FAQ's</h1>
 
-<h1>Resources FAQ's</h1>
-<ul>
-	<li>
-		<a href="#whatareresources">What are resources?</a>
-	</li>
-	<li>
-		<a href="#uploadresources">How do I upload a new resource?</a>
-	</li>
-	<li>
-		<a href="#deleteresources">How can I delete a resource?</a>
-	</li>
-	<li>
-		<a href="#resourcelimit">Is there a limit on the number of resources I can submit?</a>
-	</li>
-</ul>
+	<nav>
+		<ul>
+			<li>
+				<a href="#whatareresources">What are resources?</a>
+			</li>
+			<li>
+				<a href="#uploadresources">How do I upload a new resource?</a>
+			</li>
+			<li>
+				<a href="#deleteresources">How can I delete a resource?</a>
+			</li>
+			<li>
+				<a href="#resourcelimit">Is there a limit on the number of resources I can submit?</a>
+			</li>
+		</ul>
+	</nav>
 
-<a name="whatareresources"></a>
-<h3>What are resources?</h3>
-<p>Think of a hub as an empty library. Resources are items on the shelves. Unlike a traditional library, resources not only be publications, but also videos, tools, animations, and other types. Anyone can upload resources, although some hubs require moderation and approval before a resource is posted.</p>
+	<section id="whatareresources">
+		<h3>What are resources?</h3>
+		<p>Think of a hub as an empty library. Resources are items on the shelves. Unlike a traditional library, resources not only be publications, but also videos, tools, animations, and other types. Anyone can upload resources, although some hubs require moderation and approval before a resource is posted.</p>
+	</section>
 
-<hr />
+	<section id="uploadresources">
+		<h3>How do I upload a new resource?</h3>
+		<p>You can submit a new resource with our <a target="_blank" href="<?php echo rtrim(Request::base(true), '/'); ?>/resources/new">contribution section.</a> This will guide you, step-by-step, through the process. If you get interrupted during the submission process, no problem. The hub will remember where you left off. Submissions may be worked on at your leisure and submitted at any future date when you feel they are ready.</p>
+	</section>
 
-<a name="uploadresources"></a>
-<h3>How do I upload a new resource?</h3>
-<p>You can submit a new resource with our <a target="_blank" href="/resources/new">contribution section.</a> This will guide you, step-by-step, through the process. If you get interrupted during the submission process, no problem. The hub will remember where you left off. Submissions may be worked on at your leisure and submitted at any future date when you feel they are ready.</p>
+	<section id="deleteresources">
+		<h3>How can I delete a resource?</h3>
+		<p>Currently, you can't. This is partly because others may reference your resource in journal articles, and it would be wrong for it to suddenly disappear. Instead, resources are normally "retired," or put in a state where they can be seen but not downloaded or used. If you wish to have a resource retired or completely removed, please contact our support and we will work with you to address the issue.</p>
+	</section>
 
-<hr />
-
-<a name="deleteresources"></a>
-<h3>How can I delete a resource?</h3>
-<p>Currently, you can't. This is partly because others may reference your resource in journal articles, and it would be wrong for it to suddenly disappear. Instead, resources are normally "retired," or put in a state where they can be seen but not downloaded or used. If you wish to have a resource retired or completely removed, please contact our support and we will work with you to address the issue.</p>
-
-<hr />
-
-<a name="resourcelimit"></a>
-<h3>Is there a limit on the number of resources I can submit?</h3>
-<p>No. Think of resources as publications or presentations that you would be proud to have others find in the library. It usually takes time to produce high-quality resources, but there is no limit on the amount that you can contribute</p>
+	<section id="resourcelimit">
+		<h3>Is there a limit on the number of resources I can submit?</h3>
+		<p>No. Think of resources as publications or presentations that you would be proud to have others find in the library. It usually takes time to produce high-quality resources, but there is no limit on the amount that you can contribute</p>
+	</section>
+</article>

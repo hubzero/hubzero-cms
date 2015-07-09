@@ -28,142 +28,143 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
+<article>
+	<h1>Group FAQs</h1>
 
-<h1>Group FAQs</h1>
+	<ol>
+		<li>
+			<a href="#discoverability">What is Group Discoverability?</a>
+		</li>
+		<li>
+			<a href="#setdiscoverability">How do I make a visible group hidden? And vice-versa?</a>
+		</li>
+		<li>
+			<a href="#membershipaccess">What is Group Membership Access?</a>
+		</li>
+		<li>
+			<a href="#customizegroup">How to Customize a Group?</a>
+		</li>
+		<li>
+			<a href="#pluginaccess">What are Group Plugin Access Levels?</a>
+		</li>
+		<li>
+			<a href="#groupsmanaged">How are groups managed?</a>
+		</li>
+		<li>
+			<a href="#leavegroup">How do I leave a group?</a>
+		</li>
+		<li>
+			<a href="#deletegroup">How do I delete a group?</a>
+		</li>
+		<li>
+			<a href="#trackinvitations">How do we keep track of the invitations we've sent out?</a>
+		</li>
+		<li>
+			<a href="#cancelinvitations">How do we cancel a group invitation?</a>
+		</li>
+		<li>
+			<a href="#acceptinvitations">How do I accept a group invitation?</a>
+		</li>
+	</ol>
 
-<ol>
-	<li>
-		<a href="#discoverability">What is Group Discoverability?</a>
-	</li>
-	<li>
-		<a href="#setdiscoverability">How do I make a visible group hidden? And vice-versa?</a>
-	</li>
-	<li>
-		<a href="#membershipaccess">What is Group Membership Access?</a>
-	</li>
-	<li>
-		<a href="#customizegroup">How to Customize a Group?</a>
-	</li>
-	<li>
-		<a href="#pluginaccess">What are Group Plugin Access Levels?</a>
-	</li>
-	<li>
-		<a href="#groupsmanaged">How are groups managed?</a>
-	</li>
-	<li>
-		<a href="#leavegroup">How do I leave a group?</a>
-	</li>
-	<li>
-		<a href="#deletegroup">How do I delete a group?</a>
-	</li>
-	<li>
-		<a href="#trackinvitations">How do we keep track of the invitations we've sent out?</a>
-	</li>
-	<li>
-		<a href="#cancelinvitations">How do we cancel a group invitation?</a>
-	</li>
-	<li>
-		<a href="#acceptinvitations">How do I accept a group invitation?</a>
-	</li>
-</ol>
+	<a name="discoverability"></a>
+	<h3>What is Group Discoverability?</h3>
+	<p>All groups have an overall discoverability setting of either visible or hidden. This determines whether or not the group appears in searches or by browsing groups. Visible means the group can be found by anyone, hidden means the reverse. Hidden groups are not listed anywhere on the site.</p>
+	<p>The group mangers have the ability to update the group discoverability which can be found by editing the group.</p>
+	<p>Group managers can also set access restrictions on each group plugin (members, messages, wiki, etc) to limit access to that specific plugin's content. Information about group access levels can be found below.</p>
 
-<a name="discoverability"></a>
-<h3>What is Group Discoverability?</h3>
-<p>All groups have an overall discoverability setting of either visible or hidden. This determines whether or not the group appears in searches or by browsing groups. Visible means the group can be found by anyone, hidden means the reverse. Hidden groups are not listed anywhere on the site.</p>
-<p>The group mangers have the ability to update the group discoverability which can be found by editing the group.</p>
-<p>Group managers can also set access restrictions on each group plugin (members, messages, wiki, etc) to limit access to that specific plugin's content. Information about group access levels can be found below.</p>
+	<hr />
 
-<hr />
+	<a name="setdiscoverability"></a>
+	<h3>How do I make a visible group hidden? And vice-versa?</h3>
+	<p>If you are an administrator, go to your Groups page and select "Show Manager Controls" under your title (group manager) at the right. Select "Edit Group" from the drop down menu. Go to "Discoverability Settings" toward the bottom. Choose the "hidden" option and click save.</p>
+	<p>Instructions are the same for making a hidden group visible except choose "visible" instead.</p>
 
-<a name="setdiscoverability"></a>
-<h3>How do I make a visible group hidden? And vice-versa?</h3>
-<p>If you are an administrator, go to your Groups page and select "Show Manager Controls" under your title (group manager) at the right. Select "Edit Group" from the drop down menu. Go to "Discoverability Settings" toward the bottom. Choose the "hidden" option and click save.</p>
-<p>Instructions are the same for making a hidden group visible except choose "visible" instead.</p>
+	<hr />
 
-<hr />
+	<a name="membershipaccess"></a>
+	<h3>What is Group Membership Access?</h3>
+	<p>Group membership allows for groups to restrict access for new members. There are four settings for group membership: Anyone or Open, Restricted, Invite Only, and Closed.</p>
+	<ol>
+		<li><strong>Anyone or Open</strong> means that if a registered hub member comes to you group they will be able to click a button to join the group without a group manager having to approve.</li>
+		<li><strong>Restricted</strong> means that the user will have to enter a reason for wanting to join the group and a group manager must approve their request before they will be granted access to the group.</li>
+		<li><strong>Invite Only</strong> means that the user will not be able to join the group unless they have been sent a group invite from one of the group managers.</li>
+		<li><strong>Closed</strong> simply means that membership cannot be modified.</li>
+	</ol>
+	<p>The group managers have the ability to update the group membership access, which can be found by editing the group.</p>
 
-<a name="membershipaccess"></a>
-<h3>What is Group Membership Access?</h3>
-<p>Group membership allows for groups to restrict access for new members. There are four settings for group membership: Anyone or Open, Restricted, Invite Only, and Closed.</p>
-<ol>
-	<li><strong>Anyone or Open</strong> means that if a registered hub member comes to you group they will be able to click a button to join the group without a group manager having to approve.</li>
-	<li><strong>Restricted</strong> means that the user will have to enter a reason for wanting to join the group and a group manager must approve their request before they will be granted access to the group.</li>
-	<li><strong>Invite Only</strong> means that the user will not be able to join the group unless they have been sent a group invite from one of the group managers.</li>
-	<li><strong>Closed</strong> simply means that membership cannot be modified.</li>
-</ol>
-<p>The group managers have the ability to update the group membership access, which can be found by editing the group.</p>
+	<hr />
 
-<hr />
+	<a name="customizegroup"></a>
+	<h3>How to Customize a Group?</h3>
+	<p>Groups allow for customization including adding a group logo, customizing the group home or main page (instead of using default group description and random selection of group members), setting group plugin access levels (discussed below), and the ability to add extra custom group pages.</p>
 
-<a name="customizegroup"></a>
-<h3>How to Customize a Group?</h3>
-<p>Groups allow for customization including adding a group logo, customizing the group home or main page (instead of using default group description and random selection of group members), setting group plugin access levels (discussed below), and the ability to add extra custom group pages.</p>
+	<p>All group managers can customize any of these items through the group customization interface.</p>
+	<hr />
 
-<p>All group managers can customize any of these items through the group customization interface.</p>
-<hr />
+	<a name="pluginaccess"></a>
+	<h3>What are Group Plugin Access Levels?</h3>
+	<p>Group Plugin Access Levels allow for groups to set access levels for each plugin (members, messages, wiki, etc) individually. The different access levels are: Any HUB Visitor, Registered HUB Members, Group Members, and Disabled or Off.</p>
+	<ol>
+		<li><strong>Any HUB Visitor</strong> means that if a guest (not logged in user) comes to the group plugin they will be granted access to view the plugin but not allowed to perform any actions (add, edit, delete, etc) within the plugin.</li>
+		<li><strong>Registered HUB Members</strong> means that if a HUB member (not a member of the group) comes to the group plugin they will be granted access to view the plugin but not allowed to perform any actions (add, edit, delete, etc) within the plugin. Guest users will not be granted access to view the plugin.</li>
+		<li><strong>Group Members</strong> means that is a group member comes to the group plugin they will granted access to view the plugin and perform any actions that group members are allowed to perform. Guest users and Registered HUB users will not be granted access to the plugin.</li>
+		<li><strong>Disabled or Off</strong> means that no one will be granted access to the plugin.</li>
+	</ol>
+	<p>All group managers have the ability to update the group plugin access levels, which can be found through the group customization interface.</p>
 
-<a name="pluginaccess"></a>
-<h3>What are Group Plugin Access Levels?</h3>
-<p>Group Plugin Access Levels allow for groups to set access levels for each plugin (members, messages, wiki, etc) individually. The different access levels are: Any HUB Visitor, Registered HUB Members, Group Members, and Disabled or Off.</p>
-<ol>
-	<li><strong>Any HUB Visitor</strong> means that if a guest (not logged in user) comes to the group plugin they will be granted access to view the plugin but not allowed to perform any actions (add, edit, delete, etc) within the plugin.</li>
-	<li><strong>Registered HUB Members</strong> means that if a HUB member (not a member of the group) comes to the group plugin they will be granted access to view the plugin but not allowed to perform any actions (add, edit, delete, etc) within the plugin. Guest users will not be granted access to view the plugin.</li>
-	<li><strong>Group Members</strong> means that is a group member comes to the group plugin they will granted access to view the plugin and perform any actions that group members are allowed to perform. Guest users and Registered HUB users will not be granted access to the plugin.</li>
-	<li><strong>Disabled or Off</strong> means that no one will be granted access to the plugin.</li>
-</ol>
-<p>All group managers have the ability to update the group plugin access levels, which can be found through the group customization interface.</p>
+	<hr />
 
-<hr />
+	<a name="groupsmanaged"></a>
+	<h3>How are groups managed?</h3>
+	<p>When you create a group, you are automatically made its first manager. As manager, you can also promote members to help you run the group.</p>
+	<p><strong>A group manager can:</strong></p>
+	<ol>
+		<li>Create group participation rules</li>
+		<li>Promote/demote members and approve/deny membership requests.</li>
+		<li>Modify information about the group
+			<ul>
+				<li>Create or change the group name</li>
+				<li>Create or change the group description</li>
+				<li>Associate the group with an external URL</li>
+				<li>Determine whether or not your group wiki pages, resources, and discussion topics can be viewed by non-members.</li>
+				<li>Moderate group discussions</li>
+			</ul>
+		</li>
+	</ol>
+	<p>There's no maximum limit on the number of managers a group can have, but a group must have at least one manager at all times.</p>
+	<p>You can read about keeping your group happy on the <a href="/help/groups/guidelines">Tips for Running Your Group page.</a></p>
 
-<a name="groupsmanaged"></a>
-<h3>How are groups managed?</h3>
-<p>When you create a group, you are automatically made its first manager. As manager, you can also promote members to help you run the group.</p>
-<p><strong>A group manager can:</strong></p>
-<ol>
-	<li>Create group participation rules</li>
-	<li>Promote/demote members and approve/deny membership requests.</li>
-	<li>Modify information about the group
-		<ul>
-			<li>Create or change the group name</li>
-			<li>Create or change the group description</li>
-			<li>Associate the group with an external URL</li>
-			<li>Determine whether or not your group wiki pages, resources, and discussion topics can be viewed by non-members.</li>
-			<li>Moderate group discussions</li>
-		</ul>
-	</li>
-</ol>
-<p>There's no maximum limit on the number of managers a group can have, but a group must have at least one manager at all times.</p>
-<p>You can read about keeping your group happy on the <a href="/help/groups/guidelines">Tips for Running Your Group page.</a></p>
+	<hr />
 
-<hr />
+	<a name="leavegroup"></a>
+	<h3>How do I leave a group?</h3>
+	<p>Go to your group page and click on "Show Member Controls" under "Group Member" on the right side. Click on "Cancel Membership". Select OK to confirm the cancellation. If you would like to rejoin the group at a later date, please request group membership again.</p>
 
-<a name="leavegroup"></a>
-<h3>How do I leave a group?</h3>
-<p>Go to your group page and click on "Show Member Controls" under "Group Member" on the right side. Click on "Cancel Membership". Select OK to confirm the cancellation. If you would like to rejoin the group at a later date, please request group membership again.</p>
+	<hr />
 
-<hr />
+	<a name="deletegroup"></a>
+	<h3>How do I delete a group?</h3>
+	<p>The only way to delete a group is to leave the group as the last remaining member. A group can't be deleted if it has more than one member.</p>
 
-<a name="deletegroup"></a>
-<h3>How do I delete a group?</h3>
-<p>The only way to delete a group is to leave the group as the last remaining member. A group can't be deleted if it has more than one member.</p>
+	<hr />
 
-<hr />
+	<a name="trackinvitations"></a>
+	<h3>How do we keep track of the invitations we've sent out?</h3>
+	<p>In the Invitees tab found under Members inside your group, you can keep track of whom you have sent an invitation to. You will find an symbol next to an invitees email address if he/she does not have an account on the hub yet. For those with hub accounts, you will see their profile picture next to their name.</p>
 
-<a name="trackinvitations"></a>
-<h3>How do we keep track of the invitations we've sent out?</h3>
-<p>In the Invitees tab found under Members inside your group, you can keep track of whom you have sent an invitation to. You will find an symbol next to an invitees email address if he/she does not have an account on the hub yet. For those with hub accounts, you will see their profile picture next to their name.</p>
+	<hr />
 
-<hr />
+	<a name="cancelinvitations"></a>
+	<h3>How do we cancel a group invitation?</h3>
+	<p>In the Invitees tab found under Members inside your group, you can keep track of whom you have sent an invitation to. Cancel the invitation by clicking the red (U) icon next to a persons name.</p>
 
-<a name="cancelinvitations"></a>
-<h3>How do we cancel a group invitation?</h3>
-<p>In the Invitees tab found under Members inside your group, you can keep track of whom you have sent an invitation to. Cancel the invitation by clicking the red (U) icon next to a persons name.</p>
+	<hr />
 
-<hr />
-
-<a name="acceptinvitations"></a>
-<h3>How do I accept a group invitation?</h3>
-<p>Click on accept in the "My Groups" section of your "My HUB" page or click on the accept link in the invitation message.</p>
+	<a name="acceptinvitations"></a>
+	<h3>How do I accept a group invitation?</h3>
+	<p>Click on accept in the "My Groups" section of your "My HUB" page or click on the accept link in the invitation message.</p>
+</article>

@@ -28,20 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
+<article>
+	<h1>Support FAQ's</h1>
 
-<h1>Support FAQ's</h1>
-<ol>
-	<li>
-		<a href="#mathquestion">Why the math question?</a>
-	</li>
-</ol>
+	<nav>
+		<ol>
+			<li>
+				<a href="#mathquestion">Why the math question?</a>
+			</li>
+		</ol>
+	</nav>
 
-
-<a name="mathquestion"></a>
-<h3>Why the math question?</h3>
-<p>When you use the Help button to submit a trouble report, it may ask you a simple math question such as "What is the sum of 3 and 5?" You get this if you're not logged in. Providing a correct answer gives us some indication that you're a human that has read and understood the question--not a bot that is attempting to put spam on our site!</p>
-
-<hr />
+	<section id="mathquestion">
+		<h3>Why the math question?</h3>
+		<p>When you use the Help button to submit a trouble report, it may ask you a simple math question such as "What is the sum of 3 and 5?" You get this if you're not logged in. Providing a correct answer gives us some indication that you're a human that has read and understood the question--not a bot that is attempting to put spam on our site!</p>
+	</section>
+</article>

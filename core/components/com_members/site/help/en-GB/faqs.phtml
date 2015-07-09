@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
 
 <h1>Member FAQ's</h1>
@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 $page = "Member Profile";
 $link = "/members/myaccount/profile#profile-password";
-if(JPluginHelper::isEnabled('members', 'account'))
+if (Plugin::isEnabled('members', 'account'))
 {
 	$page = "Member Account";
 	$link = "/members/myaccount/account";
@@ -100,7 +100,7 @@ Our funding agency periodically reviews statistics about the number of users tha
 
 <a name="lostpassword"></a>
 <h3>I've lost my password!</h3>
-<p>Don't panic! Just click on the <a target="_blank" href="/login/reset">Forgot your Password</a> link on the <a target="_blank" href="/login">login page</a> and enter the e-mail address for your account. A verification token will be sent to you. Once you have received the token, you will be able to choose a new password for your account. If you don't receive an e-mail with the token right away, check your junk mail folder and make sure that it didn't get filed there by mistake. If you no longer have access to the e-mail address that you have on file with us, <a target="_blank" href="/support/ticket/new">contact support</a> and we'll help you recover your account.</p>
+<p>Don't panic! Just click on the <a target="_blank" href="/login/reset">Forgot your Password</a> link on the <a target="_blank" href="/login">login page</a> and enter the e-mail address for your account. A verification token will be sent to you. Once you have received the token, you will be able to choose a new password for your account. If you don't receive an e-mail with the token right away, check your junk mail folder and make sure that it didn't get filed there by mistake. If you no longer have access to the e-mail address that you have on file with us, <a target="_blank" href="<?php echo Route::url('index.php?option=com_support&task=new'); ?>">contact support</a> and we'll help you recover your account.</p>
 
 <hr />
 

@@ -28,45 +28,46 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
+<article>
+	<h1>Group Page Categories</h1>
+	<p>Page categories are a simple easy to use way to group related pages together.</p>
+	<p class="info">Categories are NOT hierarchical.</p>
 
-<h1>Group Page Categories</h1>
-<p>Page categories are a simple easy to use way to group related pages together.</p>
-<p class="info">Categories are NOT hierarchical.</p>
+	<hr />
 
-<hr />
-
-<h3>Adding Page Categories</h3>
-<ol>
-	<li>Navigate to the page manager.</li>
-	<li>Click on the "Manage Page Categories" tab.</li>
-	<li>Here you will see any current page categories.</li>
-	<li>Click the "New Page Category" button. Fill in the name field, color is optonal, then click "Save Category".</li>
-</ol>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/categories/manager.png" alt="" />
-	<figcaption>Group Category Manager</figcaption>
-</figure>
+	<h3>Adding Page Categories</h3>
+	<ol>
+		<li>Navigate to the page manager.</li>
+		<li>Click on the "Manage Page Categories" tab.</li>
+		<li>Here you will see any current page categories.</li>
+		<li>Click the "New Page Category" button. Fill in the name field, color is optonal, then click "Save Category".</li>
+	</ol>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/categories/manager.png" alt="" />
+		<figcaption>Group Category Manager</figcaption>
+	</figure>
 
 
-<hr />
+	<hr />
 
-<h3>Editing Page Categories</h3>
-<ol>
-	<li>Navigate to the page manager.</li>
-	<li>Click on the "Manage Page Categories" tab.</li>
-	<li>Here you will see any current page categories.</li>
-	<li>Click on the "Manage Page Category" button for the category you wish to edit.</li>
-	<li>Change the name or color settings, then click the "Save Category" button to finish.</li>
-</ol>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/categories/edit.png" alt="" />
-	<figcaption>Edit Page Category</figcaption>
-</figure>
+	<h3>Editing Page Categories</h3>
+	<ol>
+		<li>Navigate to the page manager.</li>
+		<li>Click on the "Manage Page Categories" tab.</li>
+		<li>Here you will see any current page categories.</li>
+		<li>Click on the "Manage Page Category" button for the category you wish to edit.</li>
+		<li>Change the name or color settings, then click the "Save Category" button to finish.</li>
+	</ol>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/categories/edit.png" alt="" />
+		<figcaption>Edit Page Category</figcaption>
+	</figure>
 
-<hr />
+	<hr />
 
-<h3>Assigning Page Categories</h3>
-<p>Putting a page into a page category is done through the edit page interface.</p>
+	<h3>Assigning Page Categories</h3>
+	<p>Putting a page into a page category is done through the edit page interface.</p>
+</article>

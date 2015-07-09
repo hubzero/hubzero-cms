@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
 <article>
 	<h1>Tools Sessions</h1>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 	<section id="renamesession">
 		<h3>Renaming Tool Sessions</h3>
 		<p>You can rename a simulation session by simple double-clicking the session title just above the active tool area. The title will then become a text box where you can input any title you wish. Press the TAB key or ENTER key to save changes or press ESC to cancel.</p>
-		<p><img src="<?php echo Request::base(true); ?>/components/com_tools/site/help/en-GB/tool-rename-session.png" alt="" /></p>
+		<p><img src="<?php echo Request::base(true); ?>/core/components/com_tools/site/help/en-GB/tool-rename-session.png" alt="" /></p>
 	</section>
 
 	<section id="sharesession">
@@ -58,6 +58,6 @@ defined('_JEXEC') or die('Restricted access');
 		<p>Enter one or more login names in the form beneath the tool session and click on the Share button. Anyone added for sharing will see your tool session listed on their own My Sessions area on their my nanoHUB page. Just as you would click a link to resume a tool session, they can click the link and access your session. Many people can access a single session at the same time and discuss the results on a conference call.</p>
 
 		<p><strong>Note:</strong> If you don't want others to have control of the tool, be sure to select the Read-Only checkbox before sharing the session.</p>
-		<p><img src="<?php echo Request::base(true); ?>/components/com_tools/site/help/en-GB/tool-share-session.png" alt="" /></p>
+		<p><img src="<?php echo Request::base(true); ?>/core/components/com_tools/site/help/en-GB/tool-share-session.png" alt="" /></p>
 	</section>
 </article>

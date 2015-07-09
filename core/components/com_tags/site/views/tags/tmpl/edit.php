@@ -60,7 +60,7 @@ $this->css()
 				<legend><?php echo Lang::txt('COM_TAGS_DETAILS'); ?></legend>
 
 				<label for="field-raw_tag">
-					<?php echo Lang::txt('COM_TAGS_FIELD_TAG'); ?>
+					<?php echo Lang::txt('COM_TAGS_FIELD_TAG'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 					<input type="text" name="fields[raw_tag]" id="field-raw_tag" data-error="<?php echo Lang::txt('COM_TAGS_FIELD_TAG_BLANK'); ?>" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
 				</label>
 

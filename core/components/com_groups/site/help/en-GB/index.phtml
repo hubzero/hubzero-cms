@@ -28,45 +28,46 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 
 // lets see if the logged in user is a manager in any super groups
 $superGroups = \Hubzero\User\Helper::getGroups(
-	JFactory::getUser()->get('id'), 
+	User::get('id'), 
 	'managers',
 	3
 );
 
 // are page modules enabled for standard groups
-$groupParams = Component::params('com_groups');
+$groupParams  = Component::params('com_groups');
 $groupModules = $groupParams->get('page_modules', 0);
 ?>
-
-<h1>Group Help</h1>
-<p>Groups are a way to connect people with a common interest. They are also an easy way to share content and conversation, either privately or with the world.</p>
-<ul>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=general'); ?>">What are Groups?</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=membership'); ?>">Group Membership</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=pages'); ?>">Group Pages</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=categories'); ?>">Group Page Categories</a>
-	</li>
-	<?php if ((!empty($superGroups) && count($superGroups) > 0) || $groupModules) : ?>
+<article>
+	<h1>Group Help</h1>
+	<p>Groups are a way to connect people with a common interest. They are also an easy way to share content and conversation, either privately or with the world.</p>
+	<ul>
 		<li>
-			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=modules'); ?>">Group Page Modules</a>
+			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=general'); ?>">What are Groups?</a>
 		</li>
-	<?php endif; ?>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=guidelines'); ?>">Guidelines &amp; Tips</a>
-	</li>
-	<li>
-		<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=faqs'); ?>">FAQs</a>
-	</li>
-</ul>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=membership'); ?>">Group Membership</a>
+		</li>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=pages'); ?>">Group Pages</a>
+		</li>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=categories'); ?>">Group Page Categories</a>
+		</li>
+		<?php if ((!empty($superGroups) && count($superGroups) > 0) || $groupModules) : ?>
+			<li>
+				<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=modules'); ?>">Group Page Modules</a>
+			</li>
+		<?php endif; ?>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=guidelines'); ?>">Guidelines &amp; Tips</a>
+		</li>
+		<li>
+			<a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=faqs'); ?>">FAQs</a>
+		</li>
+	</ul>
+</article>

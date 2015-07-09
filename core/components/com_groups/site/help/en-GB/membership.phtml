@@ -28,76 +28,77 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
+<article>
+	<h1>Group Membership</h1>
 
-<h1>Group Membership</h1>
-
-<p>Group Managers have the ability to manage group membership, including inviting new members, approving &amp; denying membership requests, promoting members to managers, and creating member roles.</p>
+	<p>Group Managers have the ability to manage group membership, including inviting new members, approving &amp; denying membership requests, promoting members to managers, and creating member roles.</p>
 
 
-<h3>Inviting new Members</h3>
-<div class="clearfix">
-	<figure style="float:right">
-		<img width="300" src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/membership/invite.png" alt="" />
-	</figure>
-	<p>Group managers can invite both hub users and unregistered users to join their group.</p>
+	<h3>Inviting new Members</h3>
+	<div class="clearfix">
+		<figure style="float:right">
+			<img width="300" src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/membership/invite.png" alt="" />
+		</figure>
+		<p>Group managers can invite both hub users and unregistered users to join their group.</p>
+		<ol>
+			<li>From the "My Groups" section on your "my HUB" page, select the group.</li>
+			<li>Click Show Manager Controls and click Invite Members.</li>
+			<li>Type in the name of the user you would like to invite (notice that the auto completer assists in finding users) or the email address of the person.</li>
+			<li>You may include a message with your invitation in appropriate box.</li>
+			<li>Click "Invite" and they will receive the invite in their email.</li>
+			<li>Verify that the invitation have been sent to the correct people.</li>
+		</ol>
+	</div>
+	<hr />
+
+
+	<h3>Approving &amp; Denying Membership Requests</h3>
 	<ol>
-		<li>From the "My Groups" section on your "my HUB" page, select the group.</li>
-		<li>Click Show Manager Controls and click Invite Members.</li>
-		<li>Type in the name of the user you would like to invite (notice that the auto completer assists in finding users) or the email address of the person.</li>
-		<li>You may include a message with your invitation in appropriate box.</li>
-		<li>Click "Invite" and they will receive the invite in their email.</li>
-		<li>Verify that the invitation have been sent to the correct people.</li>
+		<li>Go to the main group page and click on the "Members" tab at the left side.</li>
+		<li>Then Click on the "Pending" section in that area.</li>
+		<li>You will see all pending membership requests for the group. Here you can also see the reason the user entered when requesting membership.</li>
+		<li>Click on either of the buttons in the red box to approve or deny the users request.</li>
 	</ol>
-</div>
-<hr />
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/membership/approvedeny.png" alt="" />
+	</figure>
+	<hr />
 
 
-<h3>Approving &amp; Denying Membership Requests</h3>
-<ol>
-	<li>Go to the main group page and click on the "Members" tab at the left side.</li>
-	<li>Then Click on the "Pending" section in that area.</li>
-	<li>You will see all pending membership requests for the group. Here you can also see the reason the user entered when requesting membership.</li>
-	<li>Click on either of the buttons in the red box to approve or deny the users request.</li>
-</ol>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/membership/approvedeny.png" alt="" />
-</figure>
-<hr />
+	<h3>Promoting Members to Managers</h3>
+	<p>Groups can have multiple managers. As a group manager, you can promote other group members or demote other managers.</p>
+	<p class="warning">NOTE: A group must have at least one manager at all times.</p>
+	<ol>
+		<li>Go to the main group page and click on the "Members" tab at the left side.</li>
+		<li>Click on the promote icon(indicated by the arrow pointing up) next to the name of the person you would like to promote to manager status.</li>
+	</ol>
+	<hr />
 
+	<a name="member-roles"></a>
+	<h3>Member Roles</h3>
+	<p>Member roles are a way to organize members of a group into teams. Member roles now have the ability to assign a small set of permissions to each role.</p>
+	<ol> 
+		<li>Go to the main group page and click on the "Members" tab at the left side.</li>
+		<li>Click on the "Add a Member Role" button in the top right.</li>
+		<li>You must enter a role name since it is required. You can choose to assign one or many other permissions to this role by clicking on the checkboxes.</li>
+		<li>Click submit to save the role.</li>
+	</ol>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/membership/role.png" alt="" />
+	</figure>
+	<hr />
 
-<h3>Promoting Members to Managers</h3>
-<p>Groups can have multiple managers. As a group manager, you can promote other group members or demote other managers.</p>
-<p class="warning">NOTE: A group must have at least one manager at all times.</p>
-<ol>
-	<li>Go to the main group page and click on the "Members" tab at the left side.</li>
-	<li>Click on the promote icon(indicated by the arrow pointing up) next to the name of the person you would like to promote to manager status.</li>
-</ol>
-<hr />
-
-<a name="member-roles"></a>
-<h3>Member Roles</h3>
-<p>Member roles are a way to organize members of a group into teams. Member roles now have the ability to assign a small set of permissions to each role.</p>
-<ol> 
-	<li>Go to the main group page and click on the "Members" tab at the left side.</li>
-	<li>Click on the "Add a Member Role" button in the top right.</li>
-	<li>You must enter a role name since it is required. You can choose to assign one or many other permissions to this role by clicking on the checkboxes.</li>
-	<li>Click submit to save the role.</li>
-</ol>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/membership/role.png" alt="" />
-</figure>
-<hr />
-
-<h3>Assigning Member Roles</h3>
-<p class="warning">NOTE: A group must have at least one role to assign to a group member.</p>
-<ol>
-	<li>Go to the main group page and click on the "Members" tab at the left side.</li>
-	<li>Click the link "Assign Role" below the user you want to assign a role for.</li>
-	<li>Select the role you wish to assign from the dropdown and click "Assign Role".</li>
-</ol>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/membership/role2.png" alt="" />
-</figure>
+	<h3>Assigning Member Roles</h3>
+	<p class="warning">NOTE: A group must have at least one role to assign to a group member.</p>
+	<ol>
+		<li>Go to the main group page and click on the "Members" tab at the left side.</li>
+		<li>Click the link "Assign Role" below the user you want to assign a role for.</li>
+		<li>Select the role you wish to assign from the dropdown and click "Assign Role".</li>
+	</ol>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/membership/role2.png" alt="" />
+	</figure>
+</article>

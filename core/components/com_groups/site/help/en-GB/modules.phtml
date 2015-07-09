@@ -28,110 +28,111 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 ?>
+<article>
+	<h1>Group Page Modules</h1>
+	<p>Page modules are a way to create blocks of reusable content that you would like to include in multiple pages.</p>
+	<p class="warning">Page modules are a feature that can only be used by Super Groups. Contact the HUB owner if you are interested in becoming a Super Group.</p>
 
-<h1>Group Page Modules</h1>
-<p>Page modules are a way to create blocks of reusable content that you would like to include in multiple pages.</p>
-<p class="warning">Page modules are a feature that can only be used by Super Groups. Contact the HUB owner if you are interested in becoming a Super Group.</p>
+	<hr />
 
-<hr />
-
-<h3>Accessing the Module Manager</h3>
-<p>The module manager is restricted to group managers and <a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=membership'); ?>#member-roles">group roles</a> with permissions allowing page editing.</p>
-<ol>
-	<li>Click on the "Manage Group Pages" link in the group manager toolbar, to get to the page manager</li>
-	<li>Then click on the "Manage Modules" tab to view the module manager.</li>
-</ol>
-<div class="grid">
-	<div class="col span3">
-		<figure>
-			<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/modules/toolbar.png" alt="" />
-			<figcaption>Group Manager Toolbar</figcaption>
-		</figure>
+	<h3>Accessing the Module Manager</h3>
+	<p>The module manager is restricted to group managers and <a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=membership'); ?>#member-roles">group roles</a> with permissions allowing page editing.</p>
+	<ol>
+		<li>Click on the "Manage Group Pages" link in the group manager toolbar, to get to the page manager</li>
+		<li>Then click on the "Manage Modules" tab to view the module manager.</li>
+	</ol>
+	<div class="grid">
+		<div class="col span3">
+			<figure>
+				<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/modules/toolbar.png" alt="" />
+				<figcaption>Group Manager Toolbar</figcaption>
+			</figure>
+		</div>
+		<div class="col span8 ">
+			<figure>
+				<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/modules/manager.png" alt="" />
+				<figcaption>Group Module Manager</figcaption>
+			</figure>
+		</div>
+		<div class="col span1 omega">
+		</div>
 	</div>
-	<div class="col span8 ">
-		<figure>
-			<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/modules/manager.png" alt="" />
-			<figcaption>Group Module Manager</figcaption>
-		</figure>
-	</div>
-	<div class="col span1 omega">
-	</div>
-</div>
 
-<hr />
+	<hr />
 
-<h3>Searching &amp; Filtering Modules</h3>
-<p>With the new module manager, you are now able to filter and search group modules. You can filter pages based on position and search on module title.</p>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/modules/search&filter.png" alt="" />
-	<figcaption>Module Filtering and Searching</figcaption>
-</figure>
+	<h3>Searching &amp; Filtering Modules</h3>
+	<p>With the new module manager, you are now able to filter and search group modules. You can filter pages based on position and search on module title.</p>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/modules/search&filter.png" alt="" />
+		<figcaption>Module Filtering and Searching</figcaption>
+	</figure>
 
-<hr />
+	<hr />
 
-<h3>Adding Modules</h3>
-<ol>
-	<li>Navigate to the module manager, as described above.</li>
-	<li>Click the "New Module" button in the toolbar</li>
-	<li>Fill in all required fields and click the "Save Page" button in the right column.</li>
-	<li>You now have a new group module!!</li>
-</ol>
+	<h3>Adding Modules</h3>
+	<ol>
+		<li>Navigate to the module manager, as described above.</li>
+		<li>Click the "New Module" button in the toolbar</li>
+		<li>Fill in all required fields and click the "Save Page" button in the right column.</li>
+		<li>You now have a new group module!!</li>
+	</ol>
 
-<hr />
+	<hr />
 
-<h3>Editing Module</h3>
-<ol>
-	<li>Navigate to the module manager.</li>
-	<li>Click on either the "Manage Module" button or hover over the arrow next to the button to see more options, including "Edit Module".</li>
-	<li>One of the new features with the module manager is the page content WYSIWYG editor. It now uses CKEditor and HTML to manage your page content.</li>
-	<li>Modify any of the previously entered values, then click the "Save Page" button in the right column.</li>
-	<li>You have edited a group module!!</li>
-</ol>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/modules/edit.png" alt="" />
-	<figcaption>Edit Group Module</figcaption>
-</figure>
+	<h3>Editing Module</h3>
+	<ol>
+		<li>Navigate to the module manager.</li>
+		<li>Click on either the "Manage Module" button or hover over the arrow next to the button to see more options, including "Edit Module".</li>
+		<li>One of the new features with the module manager is the page content WYSIWYG editor. It now uses CKEditor and HTML to manage your page content.</li>
+		<li>Modify any of the previously entered values, then click the "Save Page" button in the right column.</li>
+		<li>You have edited a group module!!</li>
+	</ol>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/modules/edit.png" alt="" />
+		<figcaption>Edit Group Module</figcaption>
+	</figure>
 
-<hr />
+	<hr />
 
-<h3>Using Modules in Group Pages (Group Includes)</h3>
-<p>Including a module into a page can happen one of two ways, both using a group include.</p>
-<ol>
-	<li>
-		By Position:
-		<pre><?php echo htmlentities('<group:include type="modules" position="{position}" />'); ?></pre>
-	</li>
-	<li>
-		By Module Title
-		<pre><?php echo htmlentities('<group:include type="module" title="{title}" />'); ?></pre>
-	</li>
-</ol>
+	<h3>Using Modules in Group Pages (Group Includes)</h3>
+	<p>Including a module into a page can happen one of two ways, both using a group include.</p>
+	<ol>
+		<li>
+			By Position:
+			<pre><?php echo htmlentities('<group:include type="modules" position="{position}" />'); ?></pre>
+		</li>
+		<li>
+			By Module Title
+			<pre><?php echo htmlentities('<group:include type="module" title="{title}" />'); ?></pre>
+		</li>
+	</ol>
 
-<hr />
+	<hr />
 
-<h3>Assigning Modules to Pages</h3>
-<p>"Module Assignment" allows you to create or edit group modules, and decide on which pages in your group they will appear.  In order for a module to be considered available for display, it must be included in that page through a group include tag.</p>
-<figure>
-	<img src="<?php echo rtrim(Request::base(true), '/'); ?>/components/com_groups/site/help/img/modules/assignment.png" alt="" />
-	<figcaption>Module Assignment</figcaption>
-</figure>
+	<h3>Assigning Modules to Pages</h3>
+	<p>"Module Assignment" allows you to create or edit group modules, and decide on which pages in your group they will appear.  In order for a module to be considered available for display, it must be included in that page through a group include tag.</p>
+	<figure>
+		<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/help/images/modules/assignment.png" alt="" />
+		<figcaption>Module Assignment</figcaption>
+	</figure>
 
-<hr />
+	<hr />
 
-<h3>Publishing/Unpublishing Modules</h3>
-<ol>
-	<li>Navigate to the module manager.</li>
-	<li>You can publish/unpublish modules directly on the module manager, by clicking on the green checkmark or the red ban cirle icon.</li>
-	<li>You can also publish/unpublish by editing a module and changing its published state and then saving the module.</li>
-</ol>
+	<h3>Publishing/Unpublishing Modules</h3>
+	<ol>
+		<li>Navigate to the module manager.</li>
+		<li>You can publish/unpublish modules directly on the module manager, by clicking on the green checkmark or the red ban cirle icon.</li>
+		<li>You can also publish/unpublish by editing a module and changing its published state and then saving the module.</li>
+	</ol>
 
-<hr />
+	<hr />
 
-<h3>Reordering Modules</h3>
-<ol>
-	<li>Navigate to the module manager.</li>
-	<li>You can reorder a module through the edit module interface. Simply change its ordering in the dropdown and save the module.</li>
-</ol>
+	<h3>Reordering Modules</h3>
+	<ol>
+		<li>Navigate to the module manager.</li>
+		<li>You can reorder a module through the edit module interface. Simply change its ordering in the dropdown and save the module.</li>
+	</ol>
+</article>

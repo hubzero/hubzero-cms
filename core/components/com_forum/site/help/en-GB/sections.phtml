@@ -28,17 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 
-$juser = JFactory::getUser();
 ?>
 <article>
 	<h1>Forum Sections</h1>
 
 	<p>Sections are a way to organize or group related categories (topics). By default, sections are sequenced alphabetically by title.</p>
 
-	<?php /*if ($juser->authorise('core.admin', 'com_forum.component') || $juser->authorise('core.manage', 'com_forum.component')) { ?>
+	<?php /*if (User::authorise('core.admin', 'com_forum.component') || User::authorise('core.manage', 'com_forum.component')) { ?>
 		<section>
 			<h2>Creating a Section</h2>
 			<p>--</p>

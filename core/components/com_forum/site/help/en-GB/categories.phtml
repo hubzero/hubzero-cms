@@ -28,10 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_HZEXEC_') or die();
 
-$juser = JFactory::getUser();
 ?>
 <article>
 	<h1>Forum Categories</h1>
@@ -43,7 +42,7 @@ $juser = JFactory::getUser();
 		<h2>Locked Categories</h2>
 		<p>When a category is locked, no new threads may be created within that category. Typically, a locked category will be indicated as such by a <span class="icon-lock">padloack</span> icon.</p>
 	</section>
-<?php if ($juser->authorise('core.admin', 'com_forum.component') || $juser->authorise('core.manage', 'com_forum.component')) { ?>
+<?php if (User::authorise('core.admin', 'com_forum.component') || User::authorise('core.manage', 'com_forum.component')) { ?>
 	<hr />
 
 	<section>
