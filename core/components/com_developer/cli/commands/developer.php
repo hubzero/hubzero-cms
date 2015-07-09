@@ -43,7 +43,7 @@ class Developer extends Base implements CommandInterface
 	/**
 	 * Default (required) command
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -56,7 +56,7 @@ class Developer extends Base implements CommandInterface
 	/**
 	 * Revokes all oauth related tokens/codes
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function revoke()
 	{
@@ -68,7 +68,7 @@ class Developer extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
