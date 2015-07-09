@@ -188,8 +188,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			$row->org      = $this->view->user->get('organization');
 			$row->fullname = $this->view->user->get('name');
 		}
-		$row->user_id   = $this->view->user->get('uidNumber');
-		$row->useremail = $this->view->user->get('email');
 
 		$this->view->row = $row;
 
@@ -255,6 +253,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+
+		$fields['user_id']   = $this->juser->get('uidNumber');
+		$fields['useremail'] = $this->juser->get('email');
 
 		$dir  = \Hubzero\Utility\String::pad($fields['user_id']);
 		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
