@@ -110,6 +110,11 @@ class Comments extends SiteController
 			return;
 		}
 
+		if (!$this->page->exists())
+		{
+			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
+		}
+
 		$this->registerTask('addcomment', 'new');
 		$this->registerTask('editcomment', 'edit');
 		$this->registerTask('savecomment', 'save');

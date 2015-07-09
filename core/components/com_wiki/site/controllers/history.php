@@ -39,6 +39,7 @@ use Pathway;
 use Request;
 use User;
 use Lang;
+use App;
 
 /**
  * Wiki controller class for page history
@@ -106,6 +107,11 @@ class History extends SiteController
 				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'
 			);
 			return;
+		}
+
+		if (!$this->page->exists())
+		{
+			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
 		}
 
 		$this->registerTask('deleterevision', 'delete');

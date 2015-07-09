@@ -960,8 +960,10 @@ class Page extends SiteController
 		// Does a page exist for the given pagename?
 		if (!$this->page->exists() || $this->page->isDeleted())
 		{
+			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
+
 			// No! Ask if they want to create a new page
-			$this->view->setLayout('doesnotexist');
+			/*$this->view->setLayout('doesnotexist');
 			if ($this->_group)
 			{
 				$this->page->set('group_cn', $this->_group);
@@ -976,7 +978,7 @@ class Page extends SiteController
 				}
 			}
 			$this->view->display();
-			return;
+			return;*/
 		}
 
 		// Retrieve a specific version if given
