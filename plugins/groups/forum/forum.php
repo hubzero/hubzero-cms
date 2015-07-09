@@ -1248,9 +1248,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$this->view->post->set('scope', $this->model->get('scope'));
 			$this->view->post->set('created_by', $this->juser->get('id'));
 		}
-		elseif ($this->view->post->get('created_by') != $this->juser->get('id') && !$this->params->get('access-edit-thread'))
+		// - IMPORTANT - ONLY the original commenter can change the content.
+		// Group Managers can only delete OR report for abuse.
+		elseif ($this->view->post->get('created_by') != $this->juser->get('id') || !$this->params->get('access-edit-thread'))
 		{
-			$this->setRedirect(JRoute::_($this->base . '&scope=' . $section . '/' . $category));
+			$this->setRedirect(JRoute::_($this->base . '&scope=' . $sectionAlias . '/' . $category),
+				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'), 'error');
 			return;
 		}
 

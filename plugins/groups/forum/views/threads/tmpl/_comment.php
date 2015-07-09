@@ -99,7 +99,7 @@ defined('_JEXEC') or die('Restricted access');
 						--><?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
-				<?php if ($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) { ?>
+				<?php if (($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) && $this->comment->get('created_by') == $juser->get('id'))) { ?>
 					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!--
 						--><?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?><!--
 					--></a>
