@@ -197,8 +197,6 @@ class Feedback extends SiteController
 			$row->org      = $this->view->user->get('organization');
 			$row->fullname = $this->view->user->get('name');
 		}
-		$row->user_id   = $this->view->user->get('uidNumber');
-		$row->useremail = $this->view->user->get('email');
 
 		$this->view->row = $row;
 
@@ -260,6 +258,9 @@ class Feedback extends SiteController
 
 		// Initiate class and bind posted items to database fields
 		$row = new Quote($this->database);
+
+		$fields['user_id']   = User::get('id');
+		$fields['useremail'] = User::get('email');
 
 		$dir  = String::pad($fields['user_id']);
 		$path = $row->filespace(false) . DS . $dir;
