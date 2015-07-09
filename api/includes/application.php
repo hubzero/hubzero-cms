@@ -505,6 +505,25 @@ class Hubzero_API extends JApplication
 
 			if (!empty($session_id))
 			{
+				// This is cookie auth, so we should make sure the referrer matches
+				$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+
+				if (!empty($referer))
+				{
+					$incoming = JURI::getInstance($referer)->getHost();
+					$bits     = explode('.', $incoming);
+					$rDomain  = implode(array_splice($bits, -2), '.');
+
+					$current  = JURI::getInstance()->getHost();
+					$bits     = explode('.', $current);
+					$cDomain  = implode(array_splice($bits, -2), '.');
+
+					if ($rDomain != $cDomain)
+					{
+						return false;
+					}
+				}
+
 				$db = JFactory::getDBO();
 				$timeout = JFactory::getConfig()->getValue('config.timeout');
 				$query = "SELECT userid FROM `#__session` WHERE session_id=" . $db->Quote($session_id) . "AND " .
