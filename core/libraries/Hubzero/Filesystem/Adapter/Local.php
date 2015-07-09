@@ -439,7 +439,7 @@ class Local implements AdapterInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
+	public function makeDirectory($path, $mode = 0755, $recursive = true, $force = false)
 	{
 		if ($force)
 		{

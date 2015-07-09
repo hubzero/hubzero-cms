@@ -149,15 +149,25 @@ class Request extends BaseRequest
 				if ($type == 'array')
 				{
 					$res = array(
-						'name'      => $result->getClientOriginalName(),
-						'tmp_name'  => $result->getPathName(),
-						'mime_type' => $result->getClientMimeType(),
-						'extension' => $result->getExtension(),
-						'size'      => $result->getClientSize(),
+						'name'      => null,
+						'tmp_name'  => null,
+						'mime_type' => null,
+						'extension' => null,
+						'size'      => null
 					);
-					$result = ($result ? $res : null);
+					if ($result)
+					{
+						$res = array(
+							'name'      => $result->getClientOriginalName(),
+							'tmp_name'  => $result->getPathName(),
+							'mime_type' => $result->getClientMimeType(),
+							'extension' => $result->getExtension(),
+							'size'      => $result->getClientSize()
+						);
+					}
+					$result = $res;
 				}
-				return $result;
+				return ($result !== null ? $result : $default);
 			break;
 
 			case 'post':
