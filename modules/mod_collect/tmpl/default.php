@@ -36,7 +36,7 @@ $this->css()
 
 $foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
 
-$url  = JRequest::getVar('REQUEST_URI', '', 'server');
+$url  = JURI::current();
 $url .= (strstr($url, '?') ? '&' : '?') . 'tryto=collect';
 ?>
 

@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$url  = JRequest::getVar('REQUEST_URI', '', 'server');
+$url = JURI::current();
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo JRoute::_($url); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo $url; ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('MOD_COLLECT'); ?></legend>
 
