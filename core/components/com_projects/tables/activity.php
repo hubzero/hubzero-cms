@@ -53,9 +53,9 @@ class Activity extends \JTable
 	 * @param      integer $projectid
 	 * @return     object or false
 	 */
-	public function loadActivity( $id, $projectid = NULL )
+	public function loadActivity( $id = NULL, $projectid = NULL )
 	{
-		if ($projectid === NULL)
+		if ($id === NULL || !intval($id) || $projectid === NULL)
 		{
 			return false;
 		}
@@ -124,7 +124,7 @@ class Activity extends \JTable
 		$limit   		= isset($filters['limit']) ? $filters['limit'] : 0;
 		$limitstart 	= isset($filters['start']) ? $filters['start'] : 0;
 		$class 			= isset($filters['class']) ? $filters['class'] : '';
-		$sortdir 		= isset($filters['sortdir']) ? $filters['sortdir'] : 'DESC';
+		$sortdir 		= isset($filters['sortdir']) && $filters['sortdir'] == 'ASC'  ? 'ASC' : 'DESC';
 		$managers 		= isset($filters['managers']) ? $filters['managers'] : 0;
 		$role 			= isset($filters['role']) ? $filters['role'] : 0;
 		$id 			= isset($filters['id']) ? $filters['id'] : 0;
@@ -153,7 +153,7 @@ class Activity extends \JTable
 			$tquery = '';
 			foreach ($projects as $project)
 			{
-				$tquery .= "'" . $project . "',";
+				$tquery .= "'" . intval($project) . "',";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery . ") ";
@@ -349,7 +349,7 @@ class Activity extends \JTable
 	 * @param      boolean $permanent
 	 * @return     boolean true on success
 	 */
-	public function deleteActivities ( $projectid = 0, $permanent = 0 )
+	public function deleteActivities ( $projectid = 0, $permanent = false )
 	{
 		if (!$projectid)
 		{
@@ -423,6 +423,8 @@ class Activity extends \JTable
 	 * Get top active projects
 	 *
 	 * @param      array 	$exclude
+	 * @param      integer  $limit
+	 * @param      boolean  $publicOnly
 	 * @return     mixed
 	 */
 	public function getTopActiveProjects ( $exclude = array(), $limit = 3, $publicOnly = false)
@@ -443,7 +445,7 @@ class Activity extends \JTable
 			$tquery = '';
 			foreach ($exclude as $ex)
 			{
-				$tquery .= "'" . $ex . "',";
+				$tquery .= "'" . intval($ex) . "',";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery . ") ";
@@ -451,7 +453,7 @@ class Activity extends \JTable
 
 		$query .= " GROUP BY p.id ";
 		$query .= " ORDER BY activity DESC ";
-		$query .= " LIMIT 0," . $limit;
+		$query .= " LIMIT 0," . intval($limit);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -482,7 +484,7 @@ class Activity extends \JTable
 			$tquery = '';
 			foreach ($validProjects as $v)
 			{
-				$tquery .= "'" . $v . "',";
+				$tquery .= "'" . intval($v) . "',";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery . ") ";
@@ -523,16 +525,16 @@ class Activity extends \JTable
 	 * @param      string $check
 	 * @return     integer or false
 	 */
-	public function checkActivity ( $projectid = NULL, $check = '' )
+	public function checkActivity ( $projectid = NULL, $check = NULL )
 	{
 		if ($projectid === NULL || intval($projectid) == 0)
 		{
 			return false;
 		}
 
-		$query  =  "SELECT IF(admin = 0, 2, 1) FROM $this->_tbl ";
-		$query .=  "WHERE projectid=$projectid ";
-		$query .=  "AND activity=" . $this->_db->quote($check) . " AND state!=2 ";
+		$query  = "SELECT IF(admin = 0, 2, 1) FROM $this->_tbl ";
+		$query .= "WHERE projectid=" .  $this->_db->quote($projectid);
+		$query .= " AND activity=" . $this->_db->quote($check) . " AND state!=2 ";
 		$query .= " ORDER BY recorded DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();

@@ -112,7 +112,8 @@ class Database extends \JTable
 			return false;
 		}
 
-		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $this->_db->quote($projectid);
+		$query = "SELECT database_name, title FROM $this->_tbl WHERE id="
+			. $this->_db->quote($id) . " AND project=" . $this->_db->quote($projectid);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssoc();

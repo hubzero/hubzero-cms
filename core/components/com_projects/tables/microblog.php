@@ -75,7 +75,7 @@ class Blog extends \JTable
 	 * Get items
 	 *
 	 * @param      integer $projectid
-	 * @param      array $filters
+	 * @param      array   $filters
 	 * @param      integer $id
 	 * @return     object
 	 */
@@ -100,17 +100,21 @@ class Blog extends \JTable
 	 *
 	 * @param      integer $uid
 	 * @param      integer $projectid
-	 * @param      string $entry
-	 * @param      string $today
+	 * @param      string  $entry
+	 * @param      string  $today
 	 * @return     integer or NULL
 	 */
-	public function checkDuplicate($uid, $projectid, $entry, $today)
+	public function checkDuplicate($uid = 0, $projectid = 0, $entry = NULL, $today = NULL)
 	{
+		if (!$projectid || !$uid)
+		{
+			return false;
+		}
 		$query = "SELECT id FROM $this->_tbl WHERE posted_by="
 				. $this->_db->quote($uid) . " AND projectid="
 				. $this->_db->quote($projectid)
 				. " AND blogentry=" . $this->_db->quote($entry)
-				. " AND posted  LIKE '$today%' ";
+				. " AND posted  LIKE " . $this->_db->quote($today .  '%');
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -119,25 +123,29 @@ class Blog extends \JTable
 	 * Build query
 	 *
 	 * @param      integer $projectid
-	 * @param      array $filters
+	 * @param      array   $filters
 	 * @param      integer $id
 	 * @return     string
 	 */
-	private function _buildQuery($projectid, $filters, $id)
+	private function _buildQuery($projectid = 0, $filters = array(), $id = 0)
 	{
+		if (!$projectid)
+		{
+			return false;
+		}
 		$query  = "FROM $this->_tbl AS m,
 					#__users AS u
 					WHERE m.projectid=" . $this->_db->quote($projectid) . " AND m.posted_by=u.id ";
 
 		if ($id)
 		{
-			$query .= " AND m.id=" . $id;
+			$query .= " AND m.id=" . $this->_db->quote($id);
 		}
 		else
 		{
 			if (isset($filters['posted_by']) && $filters['posted_by'] != 0)
 			{
-				$query .= " AND m.posted_by=".$filters['posted_by'];
+				$query .= " AND m.posted_by=" . intval($filters['posted_by']);
 			}
 			if (isset($filters['managers_only']) && $filters['managers_only'] != 0)
 			{
@@ -145,12 +153,12 @@ class Blog extends \JTable
 			}
 			if (isset($filters['activityid']) && $filters['activityid'] != 0)
 			{
-				$query .= " AND m.activityid=" . $filters['activityid'];
+				$query .= " AND m.activityid=" . intval($filters['activityid']);
 			}
 			if (isset($filters['search']) && $filters['search'] != '')
 			{
 				$filters['search'] = strtolower(stripslashes($filters['search']));
-				$query .= " AND (LOWER(m.blogentry) LIKE '%".$filters['search']."%')";
+				$query .= " AND (LOWER(m.blogentry) LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
 			}
 		}
 		$query .= " AND m.state != 2";
@@ -164,7 +172,7 @@ class Blog extends \JTable
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			$query .= " LIMIT " . $filters['start'].", " . $filters['limit'];
+			$query .= " LIMIT " . intval($filters['start']) . ", " . intval($filters['limit']);
 		}
 		return $query;
 	}
@@ -176,10 +184,14 @@ class Blog extends \JTable
 	 * @param      array $filters
 	 * @return     integer
 	 */
-	public function getCount($projectid, $filters=array())
+	public function getCount($projectid = 0, $filters=array())
 	{
+		if (!$projectid)
+		{
+			return false;
+		}
 		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) ".$this->_buildQuery( $projectid, $filters );
+		$query = "SELECT COUNT(*) " . $this->_buildQuery( $projectid, $filters );
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -204,7 +216,7 @@ class Blog extends \JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE id=" . $id;
+		$query .= " WHERE id=" . $this->_db->quote($id);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -234,7 +246,7 @@ class Blog extends \JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE projectid=" . $projectid;
+		$query .= " WHERE projectid=" . intval($projectid);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())

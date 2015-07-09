@@ -66,7 +66,7 @@ class Owner extends \JTable
 		{
 			$query  =  "SELECT CASE o.role WHEN 0 THEN 4 WHEN 1 THEN 1
 						WHEN 2 THEN 2 WHEN 3 THEN 3 END
-						FROM $this->_tbl AS o WHERE o.userid=$uid
+						FROM $this->_tbl AS o WHERE o.userid=intval($uid)
 						AND o.projectid=" . $this->_db->quote($projectid);
 		}
 		else
@@ -93,7 +93,7 @@ class Owner extends \JTable
 	 * Get project owner count
 	 *
 	 * @param      integer $projectid
-	 * @param      array $filters
+	 * @param      array   $filters
 	 * @return     integer
 	 */
 	public function countOwners($projectid = NULL, $filters = array())
@@ -135,8 +135,8 @@ class Owner extends \JTable
 	 * Get owner information
 	 *
 	 * @param      integer $projectid
-	 * @param      array $ids
-	 * @param      array $groups
+	 * @param      array   $ids
+	 * @param      array   $groups
 	 * @return     array
 	 */
 	public function getInfo($projectid = NULL, $ids = array(), $groups = array())
@@ -173,7 +173,7 @@ class Owner extends \JTable
 					$k++;
 				}
 				$query  .= ") ";
-				$query  .= " AND o.projectid=$projectid ) ";
+				$query  .= " AND o.projectid=" . $this->_db->quote($projectid) . " ) ";
 			}
 			$query  .= ") ";
 			$this->_db->setQuery( $query );
@@ -316,7 +316,7 @@ class Owner extends \JTable
 	 *
 	 * @param      integer $projectid
 	 * @param      integer $limit
-	 * @param      string $get_uids
+	 * @param      string  $get_uids
 	 * @param      integer $show_uid
 	 * @return     string
 	 */
@@ -362,8 +362,8 @@ class Owner extends \JTable
 			$i = 1;
 			foreach ($result as $entry)
 			{
-				$name = $entry->name ? $entry->name : $entry->invited_email;
-				$name = $name ? $name : $entry->invited_name;
+				$name   = $entry->name ? $entry->name : $entry->invited_email;
+				$name   = $name ? $name : $entry->invited_name;
 				$names .= $name;
 				if ($show_uid)
 				{
@@ -580,9 +580,9 @@ class Owner extends \JTable
 				break;
 		}
 
-		if (isset ($limit) && $limit!=0)
+		if (isset($limit) && $limit!=0)
 		{
-			$query.= " LIMIT " . $limitstart . ", " . $limit;
+			$query.= " LIMIT " . intval($limitstart) . ", " . intval($limit);
 		}
 
 		$this->_db->setQuery( $query );
@@ -670,7 +670,7 @@ class Owner extends \JTable
 
 			// Get current group members
 			$where_groups = ' m.gidNumber IN ( ';
-			$k=1;
+			$k = 1;
 			foreach ($groups as $ug)
 			{
 				$where_groups .= $ug->groupid;
@@ -683,11 +683,11 @@ class Owner extends \JTable
 			// Get members of all groups
 			$query  = "(SELECT DISTINCT m.uidNumber, m.gidNumber ";
 			$query .= " FROM #__xgroups_members AS m WHERE ";
-			$query .= $where_groups." ) ";
+			$query .= $where_groups . " ) ";
 			$query .= " UNION ";
 			$query .= "(SELECT DISTINCT m.uidNumber, m.gidNumber ";
 			$query .= " FROM #__xgroups_managers AS m WHERE ";
-			$query .= $where_groups." ) ";
+			$query .= $where_groups . " ) ";
 
 			$this->_db->setQuery( $query );
 			$members = $this->_db->loadObjectList();
@@ -702,7 +702,8 @@ class Owner extends \JTable
 
 			if (!empty($members))
 			{
-				foreach ($members as $m) {
+				foreach ($members as $m)
+				{
 					$array_members[] = $m->uidNumber;
 					$array_member_groups[$m->uidNumber] = $m->gidNumber;
 				}
@@ -718,9 +719,10 @@ class Owner extends \JTable
 			{
 				foreach ($ownersingroups as $g)
 				{
-					$array_ownersingroups[] =  $g->uidNumber;
+					$array_ownersingroups[] = $g->uidNumber;
 					// Not in group any longer
-					if (!in_array($g->uidNumber, $array_members ) )	{
+					if (!in_array($g->uidNumber, $array_members ) )
+					{
 						$owners_to_delete[] = $g->uidNumber;
 					}
 				}
@@ -762,7 +764,8 @@ class Owner extends \JTable
 		{
 			return true;
 		}
-		else {
+		else
+		{
 			return false;
 		}
 	}
@@ -813,23 +816,28 @@ class Owner extends \JTable
 	 * Remove project owners
 	 *
 	 * @param      integer $projectid
-	 * @param      array $users user or owner ids to remove
-	 * @param      boolean $byownerid owner ids in users array?
-	 * @param      boolean $remove permanently remove if true
-	 * @param      integer $status what status to set
-	 * @param      boolean $all if true delete all owners of a project
+	 * @param      array   $users      user or owner ids to remove
+	 * @param      boolean $byownerid  owner ids in users array?
+	 * @param      boolean $remove     permanently remove if true
+	 * @param      integer $status     what status to set
+	 * @param      boolean $all       if true delete all owners of a project
 	 * @return     false if errors, integer - number of deleted members
 	 */
-	public function removeOwners( $projectid = NULL, $users = array(), $byownerid = 0 , $remove = 0, $status = 2, $all = 0 )
+	public function removeOwners(
+		$projectid = NULL, $users = array(), $byownerid = 0,
+		$remove = 0, $status = 2, $all = 0
+	)
 	{
 		if ($projectid === NULL)
 		{
 			return false;
 		}
+
 		$deleted = 0;
+
 		if (!empty($users))
 		{
-			 foreach ($users as $user)
+			foreach ($users as $user)
 			{
 				if ($remove == 1)
 				{
@@ -846,14 +854,16 @@ class Owner extends \JTable
 				{
 					return false;
 				}
-				else {
+				else
+				{
 					$deleted++;
 				}
-			 }
+			}
 		}
 
 		// Delete all owners?
-		if ($all) {
+		if ($all)
+		{
 			$query  = ($remove) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET status = 2 ";
 			$query .= " WHERE projectid=" . $this->_db->quote($projectid);
 			$this->_db->setQuery( $query );
@@ -873,9 +883,9 @@ class Owner extends \JTable
 	 * Reassign role
 	 *
 	 * @param      integer $projectid
-	 * @param      array $users user or owner ids to remove
-	 * @param      boolean $byownerid owner ids in users array?
-	 * @param      integer $role new role
+	 * @param      array   $users      user or owner ids to remove
+	 * @param      boolean $byownerid  owner ids in users array?
+	 * @param      integer $role       new role
 	 * @return     false if errors, integer - number of members with role changed
 	 */
 	public function reassignRole( $projectid = NULL, $users = array(), $byownerid = 0 , $role = 0 )
@@ -884,7 +894,9 @@ class Owner extends \JTable
 		{
 			return false;
 		}
+
 		$reassigned = 0;
+
 		if (!empty($users))
 		{
 			 foreach ($users as $user)
@@ -909,7 +921,7 @@ class Owner extends \JTable
 	 * Check if person is invited, locate record by email
 	 *
 	 * @param      integer $projectid
-	 * @param      string $email
+	 * @param      string  $email
 	 * @return     boolean true if record found
 	 */
 	public function checkInvited ( $projectid = NULL, $email = '')
@@ -922,6 +934,7 @@ class Owner extends \JTable
 		{
 			return false;
 		}
+
 		$query  = "SELECT id FROM $this->_tbl WHERE invited_email=" . $this->_db->quote($email) . " AND projectid=" . $this->_db->quote($projectid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -931,7 +944,7 @@ class Owner extends \JTable
 	 * Check if person is invited, locate record by name
 	 *
 	 * @param      integer $projectid
-	 * @param      string $name
+	 * @param      string  $name
 	 * @return     boolean true if record found
 	 */
 	public function checkInvitedByName ( $projectid = NULL, $name = '')
@@ -944,6 +957,7 @@ class Owner extends \JTable
 		{
 			return false;
 		}
+
 		$query  = "SELECT id FROM $this->_tbl WHERE invited_name=" . $this->_db->quote($name) . " AND projectid=" . $this->_db->quote($projectid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -953,9 +967,9 @@ class Owner extends \JTable
 	 * Save invitation
 	 *
 	 * @param      integer $projectid
-	 * @param      string $email
-	 * @param      string $code
-	 * @param      string $name
+	 * @param      string  $email
+	 * @param      string  $code
+	 * @param      string  $name
 	 * @param      integer $role
 	 * @return     boolean true if saved
 	 */
@@ -997,7 +1011,8 @@ class Owner extends \JTable
 		}
 
 		$query = "UPDATE $this->_tbl SET groupid = '0'
-				  WHERE projectid = " . $this->_db->quote($projectid) . " AND groupid = " . $this->_db->quote($groupid);
+				  WHERE projectid = " . $this->_db->quote($projectid)
+				 . " AND groupid = " . $this->_db->quote($groupid);
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{
@@ -1011,21 +1026,23 @@ class Owner extends \JTable
 	 * Save invitation
 	 *
 	 * @param      integer $projectid
-	 * @param      string $actor user id of person adding new member
+	 * @param      string  $actor      user id of person adding new member
 	 * @param      integer $userid
 	 * @param      integer $groupid
 	 * @param      integer $role
 	 * @param      integer $status
 	 * @param      integer $native
-	 * @param      string $invited_email
+	 * @param      string  $invited_email
 	 * @param      boolean $split_group_roles preserve group roles when adding to a project (manager/member)
 	 * @return     false if error, integer on success (number of saved records)
 	 */
-	public function saveOwners( $projectid = NULL, $actor = 0, $userid = 0,
+	public function saveOwners(
+		$projectid = NULL, $actor = 0, $userid = 0,
 		$groupid = 0, $role = 0, $status = 1, $native = 0,
-		$invited_email = '', $split_group_roles = 0 )
+		$invited_email = '', $split_group_roles = 0
+	)
 	{
-		if ($projectid === NULL)
+		if ($projectid === NULL || !intval($projectid))
 		{
 			return false;
 		}
@@ -1036,7 +1053,9 @@ class Owner extends \JTable
 		// Individual user added
 		if ($userid && is_numeric($userid))
 		{
-			$query  = "SELECT status FROM $this->_tbl WHERE userid=" . $this->_db->quote($userid) . " AND projectid=" . $this->_db->quote($projectid) . " LIMIT 1";
+			$query  = "SELECT status FROM $this->_tbl WHERE userid="
+				. $this->_db->quote($userid) . " AND projectid="
+				. $this->_db->quote($projectid) . " LIMIT 1";
 			$this->_db->setQuery( $query );
 			$found = $this->_db->loadResult();
 
@@ -1045,14 +1064,15 @@ class Owner extends \JTable
 				// User not in project
 				$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email` ) SELECT $projectid, $userid, $groupid , '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
 				$this->_db->setQuery( $query );
-				if ($this->_db->query()) {
+				if ($this->_db->query())
+				{
 					$added[] = $userid;
 				}
 			}
 			elseif ($found != 1)
 			{
 				// Inactive/deleted - activate
-				$query = "UPDATE $this->_tbl SET added = '$now', status = 1, role = " . $this->_db->quote($role) . ", groupid = " . $this->_db->quote($groupid) . "  WHERE projectid = " . $this->_db->quote($projectid) . " AND userid = " . $this->_db->quote($userid);
+				$query = "UPDATE $this->_tbl SET added = '$now', status = 1, role = " . $this->_db->quote($role) . ", groupid = " . $this->_db->quote($groupid) . "  WHERE projectid = " . $this->_db->quote($projectid) . " AND userid= " . $this->_db->quote($userid);
 				$this->_db->setQuery( $query );
 				if ($this->_db->query())
 				{
@@ -1064,7 +1084,7 @@ class Owner extends \JTable
 		// Group members added
 		if ($groupid && !$userid)
 		{
-			$group = \Hubzero\User\Group::getInstance( $groupid);
+			$group = \Hubzero\User\Group::getInstance($groupid);
 			$gidNumber = $group ? $group->get('gidNumber') : 0;
 
 			if ($gidNumber)
@@ -1081,7 +1101,9 @@ class Owner extends \JTable
 
 				foreach ($owners as $owner)
 				{
-					$query  = "SELECT status FROM $this->_tbl WHERE userid=" . $this->_db->quote($owner) . " AND projectid=" . $this->_db->quote($projectid) . " LIMIT 1";
+					$query  = "SELECT status FROM $this->_tbl WHERE userid="
+						. $this->_db->quote($owner) . " AND projectid="
+						. $this->_db->quote($projectid) . " LIMIT 1";
 					$this->_db->setQuery( $query );
 					$found = $this->_db->loadResult();
 
@@ -1115,7 +1137,7 @@ class Owner extends \JTable
 			}
 			else
 			{
-				$this->setError( Lang::txt('COM_PROJECTS_TEAM_ERROR_GROUP_NOT_FOUND'));
+				$this->setError(Lang::txt('COM_PROJECTS_TEAM_ERROR_GROUP_NOT_FOUND'));
 			}
 		}
 
@@ -1125,8 +1147,8 @@ class Owner extends \JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $projectid
-	 * @param      integer $owner owner user id
+	 * @param      string  $projectid
+	 * @param      integer $owner       owner user id
 	 * @return     boolean False or object
 	 */
 	public function loadOwner( $projectid = NULL, $owner = 0 )
@@ -1156,8 +1178,8 @@ class Owner extends \JTable
 	 *
 	 * @param      integer $projectid
 	 * @param      integer $owner owner user id
-	 * @param      string $param
-	 * @param      string $value
+	 * @param      string  $param
+	 * @param      string  $value
 	 * @return     void
 	 */
 	public function saveParam( $projectid = NULL, $owner = 0, $param = '', $value = 0 )
@@ -1233,6 +1255,7 @@ class Owner extends \JTable
 	 *
 	 * @param      array 	$exclude
 	 * @param      string 	$get
+	 * @param      date 	$when
 	 * @return     mixed
 	 */
 	public function getTeamStats ( $exclude = array(), $get = 'total', $when = NULL)
@@ -1250,7 +1273,7 @@ class Owner extends \JTable
 				$tquery = '';
 				foreach ($exclude as $ex)
 				{
-					$tquery .= "'" . $ex . "',";
+					$tquery .= "'" . intval($ex) . "',";
 				}
 				$tquery = substr($tquery, 0, strlen($tquery) - 1);
 				$query .= $tquery . ") ";
@@ -1289,7 +1312,7 @@ class Owner extends \JTable
 			$tquery = '';
 			foreach ($exclude as $ex)
 			{
-				$tquery .= "'" . $ex . "',";
+				$tquery .= "'" . intval($ex) . "',";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery . ") ";
@@ -1347,7 +1370,7 @@ class Owner extends \JTable
 				$d++;
 			}
 
-			return number_format($c/$d,0);
+			return number_format($c/$d, 0);
 		}
 	}
 
@@ -1375,7 +1398,7 @@ class Owner extends \JTable
 			$tquery = '';
 			foreach ($exclude as $ex)
 			{
-				$tquery .= "'" . $ex . "',";
+				$tquery .= "'" . intval($ex) . "',";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery . ") ";
@@ -1383,7 +1406,7 @@ class Owner extends \JTable
 
 		$query .= " GROUP BY p.id ";
 		$query .= " ORDER BY team DESC, p.private ASC, p.id DESC ";
-		$query .= " LIMIT 0," . $limit;
+		$query .= " LIMIT 0," . intval($limit);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();

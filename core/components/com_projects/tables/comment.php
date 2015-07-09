@@ -53,8 +53,13 @@ class Comment extends \JTable
 	 * @param      integer $user_id
 	 * @return     object or false
 	 */
-	public function loadUserComment( $itemid, $user_id )
+	public function loadUserComment( $itemid = NULL, $user_id = NULL )
 	{
+		if ($itemid === NULL || $user_id === NULL)
+		{
+			return false;
+		}
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE itemid="
 			. $this->_db->quote($itemid) . " AND created_by="
 			. $this->_db->quote($user_id) . " LIMIT 1" );
@@ -75,8 +80,13 @@ class Comment extends \JTable
 	 * @param      integer $commentid
 	 * @return     object or false
 	 */
-	public function loadComment( $commentid )
+	public function loadComment( $commentid = NULL )
 	{
+		if ($commentid === NULL)
+		{
+			return false;
+		}
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id="
 			. $this->_db->quote($commentid) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
@@ -154,7 +164,7 @@ class Comment extends \JTable
 	 * @param      string $comment
 	 * @return     integer or NULL
 	 */
-	public function checkDuplicate($uid, $tbl, $itemid, $parent_activity, $comment)
+	public function checkDuplicate($uid = 0, $tbl = NULL, $itemid = 0, $parent_activity = 0, $comment = NULL)
 	{
 		$query = "SELECT id FROM $this->_tbl WHERE created_by="
 				. $this->_db->quote($uid) . " AND itemid="
@@ -185,7 +195,8 @@ class Comment extends \JTable
 		}
 		$activities = array();
 
-		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=$itemid AND tbl=" . $this->_db->quote($tbl);
+		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid="
+			. $this->_db->quote($itemid) . " AND tbl=" . $this->_db->quote($tbl);
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		if ($result)
@@ -252,7 +263,8 @@ class Comment extends \JTable
 			return false;
 		}
 
-		$this->_db->setQuery( "UPDATE $this->_tbl SET activityid = $activityid WHERE id = $id ");
+		$this->_db->setQuery( "UPDATE $this->_tbl SET activityid ="
+			. $this->_db->quote($activityid) . " WHERE id =" . $this->_db->quote($id));
 		$this->_db->query();
 	}
 
