@@ -63,7 +63,7 @@ if ($this->application->get('id') > 0)
 				<p class="error"><?php echo $this->getError(); ?></p>
 			<?php } ?>
 
-			<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="POST" id="hubForm" class="full">
+			<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="full">
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_DETAILS'); ?></legend>
 
@@ -134,7 +134,7 @@ if ($this->application->get('id') > 0)
 
 		<?php if ($this->application->get('id')) : ?>
 			<div class="aside">
-				<form action="index.php" method="POST">
+				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 					<h3><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_RESET_CLIENT_SECRET'); ?></h3>
 					<p><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_RESET_CLIENT_SECRET_DESC'); ?></p>
 					<button type="submit" class="btn btn-warning confirm" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_RESET_CLIENT_SECRET_CONFIRM'); ?>">
@@ -147,7 +147,7 @@ if ($this->application->get('id') > 0)
 					<?php echo Html::input('token'); ?>
 				</form>
 				<hr />
-				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="POST">
+				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 					<h3><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_DELETE'); ?></h3>
 					<p><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_DELETE_DESC'); ?></p>
 					<button type="submit" class="btn btn-danger confirm" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_DELETE_CONFIRM'); ?>">
