@@ -1127,6 +1127,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			{
 				$scope = strtolower(\JRequest::getCmd('option'));
 				$scope = ($scope ? substr($scope, 4) : 'site');
+				$scope = ($scope == 'wiki' ? 'site' : $scope);
 			}
 			$cls = 'WikiModelAdapter' . ucfirst($scope);
 

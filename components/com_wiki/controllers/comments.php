@@ -99,6 +99,11 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		if (!$this->page->exists())
+		{
+			JError::raiseError(404, JText::_('COM_WIKI_WARNING_NOT_FOUND'));
+		}
+
 		$this->registerTask('addcomment', 'new');
 		$this->registerTask('editcomment', 'edit');
 		$this->registerTask('savecomment', 'save');
