@@ -31,14 +31,14 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$url  = Request::getVar('REQUEST_URI', '', 'server');
+$url  = Request::current();
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url($url); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo $url; ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo Lang::txt('MOD_COLLECT'); ?></legend>
 
