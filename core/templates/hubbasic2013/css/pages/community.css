@@ -44,7 +44,7 @@
 		bottom: 0;
 		width: 30px;
 		left: -30px;
-		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #e1e1e1 url("../../images/layout/noise-lite.png");
 		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
@@ -62,7 +62,7 @@
 	}
 
 	.com_content .about.odd {
-		background: #e9e9e9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #e9e9e9 url("../../images/layout/noise-lite.png");
 		padding: 30px 30px 30px 50%;
 	}
 	.com_content .about.even {
@@ -111,18 +111,4 @@
 	.com_content .about.forum small.h3-after,
 	.com_content .about.forum h3:after {
 		content: "\f075";
-	}
-
-/* [!] IE 7 */
-	html.ie7 .about.members h3 {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="h3-after">&#xf007;&nbsp;</small>');
-	}
-	html.ie7 .about.groups h3 {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="h3-after">&#xf042;&nbsp;</small>');
-	}
-	html.ie7 .about.answers h3 {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="h3-after">&#xf0e6;&nbsp;</small>');
-	}
-	html.ie7 .about.forum h3 {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="h3-after">&#xf075;&nbsp;</small>');
 	}

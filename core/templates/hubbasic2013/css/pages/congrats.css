@@ -15,11 +15,11 @@
 
 	@font-face {
 		font-family: 'Socicons';
-		src: url('/media/system/css/fonts/socicons-webfont.eot');
-		src: url('/media/system/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
-			 url('/media/system/css/fonts/socicons-webfont.woff') format('woff'), 
-			 url('/media/system/css/fonts/socicons-webfont.ttf') format('truetype'),
-			 url('/media/system/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
+		src: url('/core/assets/css/fonts/socicons-webfont.eot');
+		src: url('/core/assets/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
+			 url('/core/assets/css/fonts/socicons-webfont.woff') format('woff'), 
+			 url('/core/assets/css/fonts/socicons-webfont.ttf') format('truetype'),
+			 url('/core/assets/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
 		font-weight: normal;
 		font-style: normal;
 	}
@@ -162,7 +162,7 @@
 
 /* Freatured items */
 	#features {
-		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #ececec url("../../images/layout/noise-lite.png");
 		background: #fff;
 		padding: 0;
 	}
@@ -178,7 +178,7 @@
 		padding: 20px 30px 30px 30px;
 		margin: 0;
 		font-weight: normal;
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9 url("../../images/layout/noise-lite.png");
 		position: relative;
 	}
 	#features h3:before,
@@ -333,7 +333,7 @@
 		padding: 0 30px;
 		margin: 0 -30px;
 		text-align: center;
-		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #e1e1e1 url("../../images/layout/noise-lite.png");
 		color: #5a5a5a;
 		text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
 		-webkit-box-shadow: none;
@@ -445,7 +445,7 @@
 	
 /* Block section */
 	.blocks-section {
-		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #ececec url("../../images/layout/noise-lite.png");
 		position: relative;
 		z-index: 1;
 	}
@@ -469,7 +469,7 @@
 
 /* Support section */
 	.support-section {
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9 url("../../images/layout/noise-lite.png");
 		padding: 0;
 		margin: 0;
 	}
@@ -478,20 +478,4 @@
 		display: block;
 		margin: 0;
 		z-index: 1;
-	}
-
-/* [!] Ie 7 */
-	html.ie7 #congrats {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="congrats-before"></small>' + this.innerHTML + '<small class="congrats-after">&#xf002;&nbsp;</small>');
-	}
-	html.ie7 small.congrats-before {
-		*background: #b1c1ca;
-	}
-	html.ie7 small.congrats-after {
-		*color: #b1c1ca;
-		*line-height: 1;
-		*top: 0.1em;
-	}
-	html.ie7 #features h3 {
-		*padding-top: 30px;
 	}

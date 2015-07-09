@@ -180,7 +180,7 @@
 		padding: 20px 30px 30px 30px;
 		margin: 0;
 		font-weight: normal;
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9 url("../../images/layout/noise-lite.png");
 		position: relative;
 	}
 	#features h3:before,
@@ -441,7 +441,7 @@
 
 /* Events section */
 	.events-section {
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9 url("../../images/layout/noise-lite.png");
 		padding: 0;
 		margin: 0;
 	}
@@ -579,20 +579,4 @@
 	}
 	.event-headline .time {
 		display: block;
-	}
-
-/* [!] Ie 7 */
-	html.ie7 #welcome {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="welcome-before"></small>' + this.innerHTML + '<small class="welcome-after">&#xf002;&nbsp;</small>');
-	}
-	html.ie7 small.welcome-before {
-		*background: #b1c1ca;
-	}
-	html.ie7 small.welcome-after {
-		*color: #b1c1ca;
-		*line-height: 1;
-		*top: 0.1em;
-	}
-	html.ie7 #features h3 {
-		*padding-top: 30px;
 	}
