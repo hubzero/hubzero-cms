@@ -328,7 +328,7 @@ class PdfFormDeployment
 
 		if (!($res = $dbh->loadAssoc()))
 		{
-			throw new \Hubzero\Error\Exception\RuntimeException("no such deployment");
+			throw new \Hubzero\Error\Exception\RuntimeException("no such deployment", 404);
 		}
 
 		foreach ($res as $k=>$v)
