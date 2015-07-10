@@ -100,7 +100,7 @@ if (!$no_html)
 	$this->css();
 }
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo (!$no_html ? 'item' : 'ajax'); ?>-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" <?php echo (!$no_html ? 'name="adminForm" id="item-form"' : 'name="ajaxForm" id="ajax-form"'); ?> enctype="multipart/form-data">
 	<?php if (!$no_html) { ?>
 	<div class="col width-70 fltlft">
 		<fieldset>
