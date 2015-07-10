@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$accesses = array('Public','Registered','Special','Protected','Private');
-
 $this->css('create.css')
      ->js('create.js');
 ?>
@@ -96,22 +94,17 @@ $this->css('create.css')
 					<label for="access">
 						<?php echo JText::_('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo JText::_('COM_CONTRIBUTE_OPTIONAL'); ?></span>
 						<select name="access" id="access">
-						<?php
-						for ($i=0, $n=count( $accesses ); $i < $n; $i++)
-						{
-							if ($accesses[$i] != 'Registered' && $accesses[$i] != 'Special') {
-							?>
-							<option value="<?php echo $i; ?>"<?php if ($this->row->access == $i) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_'.strtoupper($accesses[$i])); ?></option>
-							<?php
-							}
-						}
-						?>
+							<option value="0"<?php if ($this->row->access == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></option>
+							<option value="1"<?php if ($this->row->access == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></option>
+							<option value="3"<?php if ($this->row->access == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></option>
+							<option value="4"<?php if ($this->row->access == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></option>
 						</select>
 					</label>
 				</div>
 			</div>
 			<p>
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
+				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?><br />
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?><br />
 				<strong><?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo JText::_('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
 			</p>

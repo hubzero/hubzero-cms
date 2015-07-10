@@ -959,7 +959,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->group_owner = JRequest::getVar('group_owner', '');
 		$row->access = JRequest::getInt('access', 0);
 
-		if ($row->access > 0 && !$row->group_owner)
+		if ($row->access > 2 && !$row->group_owner)
 		{
 			$this->setError(JText::_('Please select a group to restrict access to.'));
 			$this->step--;
