@@ -989,7 +989,7 @@ class Newsletter extends AdminController
 	{
 		$sql = "SELECT `alias` FROM `#__newsletters` WHERE `id` NOT IN (".$this->database->quote($id).")";
 		$this->database->setQuery($sql);
-		$aliases = $this->database->loadResultArray();
+		$aliases = $this->database->loadColumn();
 
 		//if we have another newsletter with this alias lets add random #
 		if (in_array($alias, $aliases))
