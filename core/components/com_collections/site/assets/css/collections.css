@@ -454,6 +454,7 @@
 	}
 	.btn.unfollow:before {
 		content: "\f070";
+		margin-left: 3px;
 	}
 	.attribution p span {
 		margin-right: 1em;
