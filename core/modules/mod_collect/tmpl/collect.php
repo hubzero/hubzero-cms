@@ -31,14 +31,15 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$url  = Request::current();
+$url = urldecode(Request::path());
+$url = implode('/', array_map('rawurlencode', explode('/', $url)));
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo $url; ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo htmlspecialchars($url); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo Lang::txt('MOD_COLLECT'); ?></legend>
 
