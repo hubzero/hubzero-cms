@@ -175,6 +175,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			{
 				$action = strtolower(trim($action));
 
+				if (!method_exists($this, $action))
+				{
+					App::abort(404, Lang::txt('PLG_GROUPS_MESSAGES_ERROR_ACTION_NOTFOUND'));
+				}
+
 				// Perform the action
 				$this->$action();
 
