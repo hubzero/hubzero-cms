@@ -67,7 +67,7 @@ defined('_HZEXEC_') or die();
 						<td><?php echo $feed->name; ?></td>
 						<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
 						<td>
-							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=PostsById&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
+							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&task=PostsById&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
 							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=edit&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_EDIT'); ?></a>
 							<?php if ($feed->enabled == '1'):?>
 								<a class="btn disableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=disable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_DISABLE'); ?></a>
