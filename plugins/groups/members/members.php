@@ -179,6 +179,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			{
 				$action = strtolower(trim($action));
 
+				if (!method_exists($this, $action))
+				{
+					JError::raiseError(404, JText::_('PLG_GROUPS_MESSAGES_ERROR_ACTION_NOTFOUND'));
+				}
+
 				// Perform the action
 				$this->$action();
 
