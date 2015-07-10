@@ -187,7 +187,7 @@ class Router
 		// Create the URI object
 		$uri = $this->createUri($uri);
 
-		$vars = array();
+		$vars = array_merge($this->vars(), $uri->getQuery(true));
 
 		// Process the parsed variables based on custom defined rules
 		foreach ($this->rules['parse'] as $rule)
@@ -198,7 +198,7 @@ class Router
 			}
 		}
 
-		return array_merge($this->vars(), $uri->getQuery(true));
+		return array_merge($uri->getQuery(true), $vars);
 	}
 
 	/**
