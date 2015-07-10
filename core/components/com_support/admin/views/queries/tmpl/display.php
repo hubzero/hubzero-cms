@@ -52,6 +52,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+	<p class="info"><?php echo Lang::txt('COM_SUPPORT_QUERY_INFO'); ?></p>
 	<table class="adminlist">
 		<thead>
 			<tr>
