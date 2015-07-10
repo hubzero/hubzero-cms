@@ -270,6 +270,12 @@ class Base
 					}
 				}
 
+				if (method_exists(get_called_class(), 'parse' . ucfirst($field)))
+				{
+					$method = 'parse' . ucfirst($field);
+					$value  = static::$method($value);
+				}
+
 				$output->addString($value, $style);
 
 				// Increment used count
