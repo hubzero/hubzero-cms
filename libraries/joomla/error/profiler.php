@@ -235,4 +235,36 @@ class JProfiler extends JObject
 		$time = microtime(true) - $this->_start;
 
 		$logger->info("$hubname $ip $client $uri [$query] $memory $querycount $querytime $time");
-	}}
+
+		// Now log post data if applicable
+		if (\JRequest::getMethod() == 'POST' && \JFactory::getConfig()->getValue('config.log_post_data', false))
+		{
+			$logger = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				\JDispatcher::getInstance()
+			);
+
+			$logger->useFiles($path . DS . 'cmspost.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
+
+			$post     = json_encode($_POST);
+			$referrer = $_SERVER['HTTP_REFERER'];
+
+			// Encrypt for some reasonable level of obscurity
+			$key = md5(\JFactory::getConfig()->getValue('config.secret'));
+
+			// Compute needed iv size and random iv
+			$ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+			$iv     = mcrypt_create_iv($ivSize, MCRYPT_RAND);
+
+			$ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $post, MCRYPT_MODE_CBC, $iv);
+
+			// Prepend iv for decoding later
+			$ciphertext = $iv . $ciphertext;
+
+			// Encode the resulting cipher text so it can be represented by a string
+			$ciphertextEncoded = base64_encode($ciphertext);
+
+			$logger->info("$uri $referrer $ciphertextEncoded");
+		}
+	}
+}
