@@ -47,7 +47,7 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 		<div id="page_views_heading">
 			<h3>Group Page Views</h3>
 			<div id="page_view_settings">
-				<form name="page_selector" action="/groups/<?php echo $this->group->get('cn'); ?>/usage" method="POST">
+				<form name="page_selector" action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=usage'); ?>" method="get">
 					<select name="pid" id="page_view_selector">
 						<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>All Group Page Views</option>
 						<?php foreach ($this->pages as $page) : ?>
