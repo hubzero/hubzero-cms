@@ -489,6 +489,18 @@
 				<option
 					value="0">JNO</option>
 			</field>
+			<field
+				name="log_post_data"
+				type="radio"
+				default="0"
+				label="COM_CONFIG_FIELD_LOG_POST_DATA_LABEL"
+				description="COM_CONFIG_FIELD_LOG_POST_DATA_DESC"
+				filter="integer">
+				<option
+					value="1">JYES</option>
+				<option
+					value="0">JNO</option>
+			</field>
 		</fieldset>
 		<fieldset
 			name="locale"
