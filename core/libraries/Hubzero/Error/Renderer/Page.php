@@ -103,11 +103,17 @@ class Page implements RendererInterface
 
 			$this->document->setTitle(\Lang::txt('Error') . ': ' . $error->getCode());
 
+			$path = PATH_APP . DS . 'templates';
+			if (!is_dir($path . DS . $this->template))
+			{
+				$path = PATH_CORE . DS . 'templates';
+			}
+
 			$data = $this->document->render(
 				false,
 				array(
 					'template'  => $this->template,
-					'directory' => JPATH_THEMES,
+					'directory' => $path,
 					'debug'     => $this->debug
 				)
 			);
