@@ -229,7 +229,7 @@ class Profiler extends Object
 		// This method is only called once per request so we don't need to
 		// seperate logger instance creation from its use
 
-		/*$logger = new Writer(
+		$logger = new Writer(
 			new Monolog(\App::get('config')->get('application_env')),
 			\App::get('dispatcher')
 		);
@@ -243,22 +243,48 @@ class Profiler extends Object
 
 		$logger->useFiles($path . DS . 'cmsprofile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
 
-		$hubname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
-		$uri = JURI::getInstance()->getPath();
-		$uri = strtr($uri, array(" "=>"%20"));
-		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
-		$query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown'; 
+		$hubname    = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
+		$uri        = \Request::path();
+		$uri        = strtr($uri, array(" "=>"%20"));
+		$ip         = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
+		$query      = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown'; 
+		$memory     = memory_get_usage(true);
+		$querycount = \App::get('db')->getCount();
+		$querytime  = \App::get('db')->getTimer();
+		$client     = \App::get('client')->name;
+		$time       = microtime(true) - $this->started;
 
-		$memory = memory_get_usage(true);
+		$logger->info("$hubname $ip $client $uri [$query] $memory $querycount $querytime $time");
 
-		$db = \App::get('db');
-		$querycount = $db->getCount();
-		$querytime = $db->timer;
+		// Now log post data if applicable
+		if (\Request::method() == 'POST' && \App::get('config')->get('log_post_data', false))
+		{
+			$logger = new Writer(
+				new Monolog(\App::get('config')->get('application_env')),
+				\App::get('dispatcher')
+			);
 
-		$client = \App::get('client')->name;
+			$logger->useFiles($path . DS . 'cmspost.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
 
-		$time = microtime(true) - $this->started;
+			$post     = json_encode($_POST);
+			$referrer = $_SERVER['HTTP_REFERER'];
 
-		$logger->info("$hubname $ip $client $uri [$query] $memory $querycount $querytime $time");*/
+			// Encrypt for some reasonable level of obscurity
+			$key = md5(\App::get('config')->get('secret'));
+
+			// Compute needed iv size and random iv
+			$ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+			$iv     = mcrypt_create_iv($ivSize, MCRYPT_RAND);
+
+			$ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $post, MCRYPT_MODE_CBC, $iv);
+
+			// Prepend iv for decoding later
+			$ciphertext = $iv . $ciphertext;
+
+			// Encode the resulting cipher text so it can be represented by a string
+			$ciphertextEncoded = base64_encode($ciphertext);
+
+			$logger->info("$uri $referrer $ciphertextEncoded");
+		}
 	}
 }
