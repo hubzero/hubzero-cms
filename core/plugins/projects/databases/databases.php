@@ -153,28 +153,35 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return $this->_configured;
 		}
 
-		// Check if the plugin parameters the two mysql accounts are properly set
-		$db_opt_rw['driver']    = 'mysqli';
-		$db_opt_rw['host']      = $this->params->get('db_host');
-		$db_opt_rw['user']      = $this->params->get('db_user');
-		$db_opt_rw['password']  = $this->params->get('db_password');
-		$db_opt_rw['prefix']    = '';
-		$db_rw = JDatabase::getInstance($db_opt_rw);
+		try
+		{
+			// Check if the plugin parameters the two mysql accounts are properly set
+			$db_opt_rw['driver']    = 'mysqli';
+			$db_opt_rw['host']      = $this->params->get('db_host');
+			$db_opt_rw['user']      = $this->params->get('db_user');
+			$db_opt_rw['password']  = $this->params->get('db_password');
+			$db_opt_rw['prefix']    = '';
+			$db_rw = JDatabase::getInstance($db_opt_rw);
 
-		$db_opt_ro['driver']    = 'mysqli';
-		$db_opt_ro['host']      = $this->params->get('db_host');
-		$db_opt_ro['user']      = $this->params->get('db_ro_user');
-		$db_opt_ro['password']  = $this->params->get('db_ro_password');
-		$db_opt_ro['prefix']    = '';
-		$db_ro = JDatabase::getInstance($db_opt_ro);
+			$db_opt_ro['driver']    = 'mysqli';
+			$db_opt_ro['host']      = $this->params->get('db_host');
+			$db_opt_ro['user']      = $this->params->get('db_ro_user');
+			$db_opt_ro['password']  = $this->params->get('db_ro_password');
+			$db_opt_ro['prefix']    = '';
+			$db_ro = JDatabase::getInstance($db_opt_ro);
 
-		if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0)
+			if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0)
+			{
+				$this->_configured = false;
+			}
+			else
+			{
+				$this->_configured = true;
+			}
+		}
+		catch (Exception $e)
 		{
 			$this->_configured = false;
-		}
-		else
-		{
-			$this->_configured = true;
 		}
 
 		return $this->_configured;
@@ -188,7 +195,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ($model, $action = 'view', $areas = null)
+	public function onProject($model, $action = 'view', $areas = null)
 	{
 		$arr = array(
 			'html'     =>'',
@@ -219,8 +226,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$this->model = $model;
 
 		// Load component configs
-		$this->_config 		= $model->config();
-		$this->gitpath 		= $this->_config->get('gitpath', '/opt/local/bin/git');
+		$this->_config = $model->config();
+		$this->gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
 
 		// Incoming
 		$raw_op = Request::getInt('raw_op', 0);
@@ -271,7 +278,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if ($raw_op)
 		{
-			$this->$act_func(); exit();
+			$this->$act_func();
+			exit();
 		}
 		else
 		{
@@ -282,12 +290,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			Document::addScript('/core/plugins/projects/databases/res/main.js');
 			Document::addStyleSheet('/core/plugins/projects/databases/res/main.css');
 
-			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.js'))
+			if (file_exists(__DIR__ . '/res/ds.' . $action . '.js'))
 			{
 				Document::addScript('/core/plugins/projects/databases/res/ds.' . $action . '.js');
 			}
 
-			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.css'))
+			if (file_exists(__DIR__ . '/res/ds.' . $action . '.css'))
 			{
 				Document::addStyleSheet('/core/plugins/projects/databases/res/ds.' . $action . '.css');
 			}
@@ -365,16 +373,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
 		}
 
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->ajax			= $ajax;
-		$view->element		= $element;
-		$view->block		= $block;
-		$view->step 		= $step;
-		$view->props		= $props;
-		$view->filter		= $filter;
+		$view->option   = $this->_option;
+		$view->database = $this->_database;
+		$view->model    = $this->model;
+		$view->uid      = $this->_uid;
+		$view->ajax     = $ajax;
+		$view->element  = $element;
+		$view->block    = $block;
+		$view->step     = $step;
+		$view->props    = $props;
+		$view->filter   = $filter;
 
 		// Get databases to choose from
 		$objPD = new \Components\Projects\Tables\Database($this->_database);
@@ -383,7 +391,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Get messages	and errors
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		$arr = array(
@@ -404,9 +412,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	public function browser()
 	{
 		// Incoming
-		$ajax 		= Request::getInt('ajax', 0);
-		$primary 	= Request::getInt('primary', 1);
-		$versionid  = Request::getInt('versionid', 0);
+		$ajax      = Request::getInt('ajax', 0);
+		$primary   = Request::getInt('primary', 1);
+		$versionid = Request::getInt('versionid', 0);
 
 		if (!$ajax)
 		{
@@ -423,9 +431,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get current attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
-		$role 	= $primary ? '1' : '0';
-		$other 	= $primary ? '0' : '1';
+		$pContent = new \Components\Publications\Tables\Attachment($this->_database);
+		$role  = $primary ? '1' : '0';
+		$other = $primary ? '0' : '1';
 
 		$view->attachments = $pContent->getAttachments(
 			$versionid,
@@ -433,20 +441,20 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		);
 
 		// Output HTML
-		$view->params 		= $this->model->params;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->config 		= $this->_config;
-		$view->title		= $this->_area['title'];
-		$view->primary		= $primary;
-		$view->versionid	= $versionid;
+		$view->params    = $this->model->params;
+		$view->option    = $this->_option;
+		$view->database  = $this->_database;
+		$view->model     = $this->model;
+		$view->uid       = $this->_uid;
+		$view->config    = $this->_config;
+		$view->title     = $this->_area['title'];
+		$view->primary   = $primary;
+		$view->versionid = $versionid;
 
 		// Get messages	and errors
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$view->setError($this->getError());
 		}
 
 		$arr = array(
@@ -527,10 +535,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				'name'   =>'list'
 			)
 		);
-		$view->model 		= $this->model;
-		$view->option 		= $this->_option;
-		$view->dataviewer 	= $this->dataviewer;
-		$view->list 		= $list_u;
+		$view->model      = $this->model;
+		$view->option     = $this->_option;
+		$view->dataviewer = $this->dataviewer;
+		$view->list       = $list_u;
 
 		return array('html' => $view->loadTemplate());
 	}
@@ -674,9 +682,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 			$table['repo'] = array(
 				'prj_alias' => $this->model->get('alias'),
-				'wd' => trim($dir, '/'),
-				'base' => '/projects/' . $this->model->get('alias') . '/files/?action=download&subdir=' . trim($dir, '/'),
-				'sub_dirs' => $sub_dirs
+				'wd'        => trim($dir, '/'),
+				'base'      => '/projects/' . $this->model->get('alias') . '/files/?action=download&subdir=' . trim($dir, '/'),
+				'sub_dirs'  => $sub_dirs
 			);
 
 			// Check if expert mode CSV
@@ -925,16 +933,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$file 	= Request::getVar('file', false);
-		$dir 	= Request::getVar('dir', '');
-		$title 	= Request::getVar('title', '');
-		$desc 	= Request::getVar('desc', '');
-		$db_id 	= Request::getVar('db_id', '');
-		$d 		= Request::getVar('dd', false);
-		$d 		= json_decode($d, true);
+		$file  = Request::getVar('file', false);
+		$dir   = Request::getVar('dir', '');
+		$title = Request::getVar('title', '');
+		$desc  = Request::getVar('desc', '');
+		$db_id = Request::getVar('db_id', '');
+		$d     = Request::getVar('dd', false);
+		$d     = json_decode($d, true);
 
-		$db 	= $this->get_ds_db($this->model->get('id'));
-		$table 	= array();
+		$db    = $this->get_ds_db($this->model->get('id'));
+		$table = array();
 
 		// Add new or Recreate
 		$recreate = ($db_id != '') ? true : false;
@@ -1359,30 +1367,30 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	{
 		if (!$identifier || $project == NULL)
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID') );
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID'));
 			return false;
 		}
 
-		$db 	=  App::get('db');
-		$ds_db 	= $this->get_ds_db($project->get('id'));
+		$db    = App::get('db');
+		$ds_db = $this->get_ds_db($project->get('id'));
 
 		// Load database record
 		$objPD = new \Components\Projects\Tables\Database($db);
 		if (!$objPD->loadRecord($identifier))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_LOAD_RECORD') );
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_LOAD_RECORD'));
 			return false;
 		}
 
 		$dd = json_decode($objPD->data_definition, true);
 
 		// Get last version
-		$objPDV = new \Components\Projects\Tables\DatabaseVersion($db);
+		$objPDV  = new \Components\Projects\Tables\DatabaseVersion($db);
 		$version = $objPDV->getMaxVersion($objPD->database_name) + 1;
 
 		// Start cloning
 		$orig_table = $dd['table'];
-		$new_table = $orig_table . '_' . $version;
+		$new_table  = $orig_table . '_' . $version;
 
 		$dd['table'] = $new_table;
 
@@ -1405,7 +1413,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		// Make new version record
 		$objPDV->database_name   = $objPD->database_name;
-		$objPDV->version 		 = $version;
+		$objPDV->version         = $version;
 		$objPDV->data_definition = $dd;
 
 		$objPDV->store();
@@ -1435,24 +1443,24 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	{
 		if (!$identifier || $project == NULL)
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID') );
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID'));
 			return false;
 		}
 
 		if ($version === NULL || trim($version) == '')
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_INVALID_VERSION') );
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_INVALID_VERSION'));
 			return false;
 		}
 
-		$db 	=  App::get('db');
-		$ds_db 	= $this->get_ds_db($project->get('id'));
+		$db    =  App::get('db');
+		$ds_db = $this->get_ds_db($project->get('id'));
 
 		// Load database record
 		$objPD = new \Components\Projects\Tables\Database($db);
 		if (!$objPD->loadRecord($identifier))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_LOAD_RECORD') );
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_LOAD_RECORD'));
 			return false;
 		}
 
@@ -1484,20 +1492,20 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Create database if it doesn't exist
 		$sql = "CREATE DATABASE IF NOT EXISTS " . 'prj_db_' . $id;
 
-		$opt['driver'] 		= 'mysqli';
-		$opt['host'] 		= $this->params->get('db_host');
-		$opt['user'] 		= $this->params->get('db_user');
-		$opt['password'] 	= $this->params->get('db_password');
-		$opt['prefix'] 		= '';
+		$opt['driver']   = 'mysqli';
+		$opt['host']     = $this->params->get('db_host');
+		$opt['user']     = $this->params->get('db_user');
+		$opt['password'] = $this->params->get('db_password');
+		$opt['prefix']   = '';
 
-		$db =  JDatabase::getInstance($opt);
+		$db = JDatabase::getInstance($opt);
 
 		$db->setQuery($sql);
 		$db->query();
 
 		$opt['database'] = 'prj_db_' . $id;
 
-		$db =  JDatabase::getInstance($opt);
+		$db = JDatabase::getInstance($opt);
 
 		return $db;
 	}
