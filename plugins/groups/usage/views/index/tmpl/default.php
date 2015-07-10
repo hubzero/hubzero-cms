@@ -49,8 +49,8 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 			<div id="page_view_settings">
 				<form name="page_selector" action="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=usage'); ?>" method="get">
 					<select name="pid" id="page_view_selector">
-						<option value=""<?php if($this->pid == '') { echo "selected"; } ?>>All Group Page Views</option>
-						<?php foreach($this->pages as $page) : ?>
+						<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>All Group Page Views</option>
+						<?php foreach ($this->pages as $page) : ?>
 							<?php $sel = ($this->pid == $page['id']) ? "selected" : ""; ?>
 							<option <?php echo $sel; ?> value="<?php echo $page['id']; ?>"><?php echo $page['title']; ?></option>
 						<?php endforeach; ?>
