@@ -1221,7 +1221,7 @@ class Create extends SiteController
 				if ($this->config->get('autoapprove_content_check') == 1)
 				{
 					require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'resource.php');
-					$item = new \Components\Reosurces\Models\Resource($id);
+					$item = new \Components\Resources\Models\Resource($id);
 
 					if (count($item->children()) < 1)
 					{
