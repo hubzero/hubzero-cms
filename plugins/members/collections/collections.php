@@ -1705,6 +1705,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields['id'] = intval($fields['id']);
 
 		// Bind new content
 		$row = new CollectionsModelCollection();
