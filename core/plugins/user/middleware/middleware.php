@@ -28,7 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('JPATH_BASE') or die;
+// No direct access
+defined('_HZEXEC_') or die();
 
 /**
  * User plugin for updating quotas and session limits
@@ -62,7 +63,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php');
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php');
 
-				$row = new UsersQuotas($db);
+				$row = new \Components\Members\Tables\UsersQuotas($db);
 
 				// Check for an existing quota record
 				$db->setQuery("SELECT * FROM `#__users_quotas` WHERE `user_id`=" . $userId);
