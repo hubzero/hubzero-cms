@@ -88,7 +88,7 @@ class Billboard extends Relational
 		                   ->first()
 		                   ->ordering;
 
-		return $result;
+		return $result ? $result : 1;
 	}
 
 	/**
