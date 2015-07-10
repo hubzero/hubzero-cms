@@ -46,10 +46,16 @@ class JFormFieldLanguage extends JFormFieldList
 			$client = 'site';
 		}
 
+		$path = PATH_APP . DS . 'bootstrap' . DS . $client;
+		if (!is_dir($path))
+		{
+			$path = PATH_CORE . DS . 'bootstrap' . DS . $client;
+		}
+
 		// Merge any additional options in the XML definition.
 		$options = array_merge(
 			parent::getOptions(),
-			JLanguageHelper::createLanguageList($this->value, constant('JPATH_' . strtoupper($client)), true, true)
+			JLanguageHelper::createLanguageList($this->value, $path, true, true)
 		);
 
 		return $options;
