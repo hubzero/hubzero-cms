@@ -277,15 +277,15 @@ $router->rules('build')->append('groups', function ($uri)
 });
 
 /*
-| SEF Groups
+| Start
 |
-| Remove the base URI path. This will strip everything up to the bas
+| Turn limitstart into start
 */
 $router->rules('build')->append('limit', function ($uri)
 {
-	if ($limitstart = $uri->getVar('limitstart'))
+	if ($uri->hasVar('limitstart'))
 	{
-		$uri->setVar('start', (int) $limitstart);
+		$uri->setVar('start', (int) $uri->getVar('limitstart'));
 		$uri->delVar('limitstart');
 	}
 
@@ -319,6 +319,21 @@ $router->rules('parse')->append('prep', function ($uri)
 
 	// Set the route
 	$uri->setPath(trim($path , '/'));
+});
+
+/*
+| Start
+|
+| Turn start into limitstart
+*/
+$router->rules('parse')->append('limit', function ($uri)
+{
+	if ($limitstart = $uri->getVar('start'))
+	{
+		$uri->setVar('limitstart', (int) $limitstart);
+		$uri->delVar('start');
+		\App::get('router')->forget('start');
+	}
 });
 
 /*
