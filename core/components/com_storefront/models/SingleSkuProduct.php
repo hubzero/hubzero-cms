@@ -31,8 +31,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+include_once(__DIR__ . DS . 'Product.php');
+include_once(__DIR__ . DS . 'Sku.php');
 
 /**
  *

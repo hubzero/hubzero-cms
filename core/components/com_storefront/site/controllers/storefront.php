@@ -43,7 +43,7 @@ class StorefrontControllerStorefront extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
 		// Get the task

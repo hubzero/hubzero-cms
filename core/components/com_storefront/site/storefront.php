@@ -38,7 +38,7 @@ if (!User::get('proEnabled'))
 }
 
 //require needed files
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
 
 //build controller path and name
 $controllerName = Request::getCmd('controller', '');
@@ -48,12 +48,12 @@ if (empty($controllerName))
 	// Load default controller if no controller provided
 	$controllerName = 'storefront';
 }
-elseif (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	App::abort(404, Lang::txt('Page Not Found'));
 }
 
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'StorefrontController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute

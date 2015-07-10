@@ -31,8 +31,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+include_once(__DIR__ . DS . 'Warehouse.php');
+include_once(__DIR__ . DS . 'Sku.php');
 
 /**
  *
@@ -331,7 +331,7 @@ class StorefrontModelProduct
 	{
 		$this->verify();
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		include_once(__DIR__ . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		return($warehouse->addProduct($this));
@@ -345,7 +345,7 @@ class StorefrontModelProduct
 	 */
 	public function update()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		include_once(__DIR__ . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		return($warehouse->updateProduct($this));
