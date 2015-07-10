@@ -69,6 +69,8 @@ $router->rules('build')->append('base', function ($uri)
 */
 $router->rules('parse')->append('prep', function ($uri)
 {
+	\App::get('router')->forget('option');
+
 	// Get the path
 	$path = $uri->getPath();
 
