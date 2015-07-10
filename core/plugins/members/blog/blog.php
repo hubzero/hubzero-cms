@@ -684,7 +684,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new \Hubzero\Plugin\View('default', 'delete');
+			$view = $this->view('default', 'delete');
 			$view->option = $this->option;
 			$view->member = $this->member;
 			$view->task   = $this->task;
