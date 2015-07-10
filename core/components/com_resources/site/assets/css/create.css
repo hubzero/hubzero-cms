@@ -218,6 +218,11 @@
 	a.delete:hover {
 		color: #c00;
 	}
+	.icon-public:before {
+		content: "\2191";
+		font-family: "Fontcons";
+		margin-right: 5em;
+	}
 	.up:before {
 		content: "\2191";
 		font-family: "Fontcons";
@@ -231,6 +236,14 @@
 	a.order:hover {
 		border: none;
 		color: #111;
+	}
+	.access {
+	}
+	.access-registered {
+		color: #c00;
+	}
+	.access-public {
+		color: green;
 	}
 	.com_resources .meta-container {
 		margin: 0 0 3em 0;

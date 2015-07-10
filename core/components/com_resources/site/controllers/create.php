@@ -961,7 +961,7 @@ class Create extends SiteController
 		$row->group_owner = Request::getVar('group_owner', '');
 		$row->access = Request::getInt('access', 0);
 
-		if ($row->access > 0 && !$row->group_owner)
+		if ($row->access > 2 && !$row->group_owner)
 		{
 			$this->setError(Lang::txt('Please select a group to restrict access to.'));
 			$this->step--;

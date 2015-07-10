@@ -71,6 +71,14 @@ $this->css('create.css')
 		?>
 		<p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EDIT_TITLE_EXPLANATION'); ?></p>
 		<table class="list">
+			<thead>
+				<tr>
+					<th><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></th>
+					<th><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS'); ?></th>
+					<th colspan="2"><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_ORDER'); ?></th>
+					<th><?php echo Lang::txt('JACTION_DELETE'); ?></th>
+				</tr>
+			</thead>
 			<tbody>
 			<?php
 			foreach ($this->children as $child)
@@ -118,6 +126,15 @@ $this->css('create.css')
 							<?php echo $this->escape($child->title); ?>
 						</span>
 						<?php echo ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $url . '</span>'; ?>
+					</td>
+					<td>
+						<?php
+						$cs = ($child->access == 1 ? 'registered' : 'public');
+						$st = ($child->access == 1 ? 0 : 1);
+						?>
+						<a class="access-<?php echo $cs; ?> access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $st; ?>&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')); ?>">
+							<span><?php echo Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_REGISTERED' : 'COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></span>
+						</a>
 					</td>
 					<td class="u">
 						<?php

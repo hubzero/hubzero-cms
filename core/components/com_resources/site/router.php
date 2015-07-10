@@ -47,7 +47,7 @@ class Router extends Base
 	{
 		$segments = array();
 
-		if (!empty($query['task']) && in_array($query['task'], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder')))
+		if (!empty($query['task']) && in_array($query['task'], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder', 'access')))
 		{
 			if (!empty($query['task']))
 			{
@@ -124,7 +124,7 @@ class Router extends Base
 		{
 			$vars['task'] = $segments[0];
 		}
-		elseif (in_array($segments[0], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder')))
+		elseif (in_array($segments[0], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder', 'access')))
 		{
 			$vars['task'] = $segments[0];
 			$vars['controller'] = 'create';
@@ -182,8 +182,8 @@ class Router extends Base
 					}
 				break;
 				case 'play':     $vars['task'] = 'play';     break;
-				case 'watch':	 $vars['task'] = 'watch';	 break;
-				case 'video':	 $vars['task'] = 'video';	 break;
+				case 'watch':    $vars['task'] = 'watch';    break;
+				case 'video':    $vars['task'] = 'video';    break;
 				//case 'license':  $vars['task'] = 'license';  break;
 				case 'citation': $vars['task'] = 'citation'; break;
 				case 'feed.rss': $vars['task'] = 'feed';     break;

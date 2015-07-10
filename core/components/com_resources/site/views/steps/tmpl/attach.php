@@ -66,6 +66,11 @@ $this->css('create.css')
 		<div class="explaination">
 			<h4><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_WHAT_ARE_ATTACHMENTS'); ?></h4>
 			<p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>
+			<h4><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS'); ?></h4>
+			<p>
+				<strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
+				<strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?>
+			</p>
 		</div>
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></legend>

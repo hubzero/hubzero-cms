@@ -1041,6 +1041,62 @@ class Attachments extends SiteController
 	}
 
 	/**
+	 * Change access on an entry
+	 *
+	 * @return  void
+	 */
+	public function accessTask()
+	{
+		// Incoming parent ID
+		$pid = Request::getInt('pid', 0);
+		if (!$pid)
+		{
+			$this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
+			$this->displayTask($pid);
+			return;
+		}
+
+		// Incoming child ID
+		$id = Request::getInt('id', 0);
+		if (!$id)
+		{
+			$this->setError(Lang::txt('CONTRIBUTE_NO_CHILD_ID'));
+			$this->displayTask($pid);
+			return;
+		}
+
+		// Load resource info
+		$row = new Resource($this->database);
+		$row->load($id);
+
+		if (!$row)
+		{
+			$this->setError(Lang::txt('CONTRIBUTE_NO_CHILD_ID'));
+			$this->displayTask($pid);
+			return;
+		}
+
+		$access = Request::getInt('access', 0);
+		if (!in_array($access, array(0, 1)))
+		{
+			$access = 0;
+		}
+
+		$row->access = $access;
+
+		// Store new content
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+			$this->displayTask($pid);
+			return;
+		}
+
+		// Push through to the attachments view
+		$this->displayTask($pid);
+	}
+
+	/**
 	 * Display a list of attachments
 	 *
 	 * @param      integer $id Resource ID

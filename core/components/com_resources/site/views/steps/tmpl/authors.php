@@ -31,8 +31,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$accesses = array('Public','Registered','Special','Protected','Private');
-
 $this->css('create.css')
      ->js('create.js');
 ?>
@@ -80,11 +78,12 @@ $this->css('create.css')
 						<select name="group_owner" id="group_owner">
 							<option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
 							<?php
-							if ($this->groups && count($this->groups) > 0) {
+							if ($this->groups && count($this->groups) > 0)
+							{
 								foreach ($this->groups as $group)
 								{
 								?>
-								<option value="<?php echo $group->cn; ?>"<?php if ($this->row->group_owner == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+								<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($this->row->group_owner == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
 								<?php
 								}
 							}
@@ -96,28 +95,23 @@ $this->css('create.css')
 					<label for="access">
 						<?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo Lang::txt('COM_CONTRIBUTE_OPTIONAL'); ?></span>
 						<select name="access" id="access">
-						<?php
-						for ($i=0, $n=count( $accesses ); $i < $n; $i++)
-						{
-							if ($accesses[$i] != 'Registered' && $accesses[$i] != 'Special') {
-							?>
-							<option value="<?php echo $i; ?>"<?php if ($this->row->access == $i) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_'.strtoupper($accesses[$i])); ?></option>
-							<?php
-							}
-						}
-						?>
+							<option value="0"<?php if ($this->row->access == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></option>
+							<option value="1"<?php if ($this->row->access == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></option>
+							<option value="3"<?php if ($this->row->access == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></option>
+							<option value="4"<?php if ($this->row->access == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></option>
 						</select>
 					</label>
 				</div>
 			</div>
 			<p>
 				<strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
+				<strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?><br />
 				<strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?><br />
 				<strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
 			</p>
 		<?php } else { ?>
 			<p class="information">
-				<?php echo Lang::txt('Once you have joined one or more groups you may restrict access to this contribution to one of your groups.'); ?>
+				<?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_JOIN'); ?>
 			</p>
 		<?php } ?>
 		</fieldset><div class="clear"></div>
