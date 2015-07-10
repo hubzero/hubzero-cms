@@ -34,6 +34,7 @@ use Components\Support\Helpers\ACL;
 use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
+use Components\Support\Models\Tags;
 use Components\Support\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Browser\Detector;
