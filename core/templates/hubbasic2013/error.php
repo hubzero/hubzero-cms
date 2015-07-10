@@ -57,29 +57,29 @@ $cls = array(
 		<title><?php echo Config::get('sitename') . ' - ' . (in_array($this->error->getCode(), array(404, 403, 500)) ? $this->error->getCode() : 500); ?></title>
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/templates/<?php echo $this->template; ?>/css/main.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/templates/<?php echo $this->template; ?>/css/error.css" />
 		<?php if ($this->debug) { ?>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/plugins/system/debug/assets/css/debug.css" />
 		<?php } ?>
 		<?php if (Config::get('application_env', 'production') != 'production') { ?>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/modules/mod_application_env/assets/css/mod_application_env.css" />
 		<?php } ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
-		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
+		<link rel="stylesheet" type="text/css" media="print" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/templates/<?php echo $this->template; ?>/css/print.css" />
 
 		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
 		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.ui.js', false, true, true); ?>"></script>
 		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.fancybox.js', false, true, true); ?>"></script>
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.js"></script>
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/core/modules/mod_reportproblems/assets/js/mod_reportproblems.js"></script>
+		<script type="text/javascript" src="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/templates/<?php echo $this->template; ?>/js/hub.js"></script>
+		<script type="text/javascript" src="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/modules/mod_reportproblems/assets/js/mod_reportproblems.js"></script>
 
-		<!--[if lt IE 9]><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script><![endif]-->
+		<!--[if lt IE 9]><script type="text/javascript" src="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/js/html5.js"></script><![endif]-->
 
-		<!--[if IE 10]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie10.css" /><![endif]-->
-		<!--[if IE 9]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" /><![endif]-->
-		<!--[if IE 8]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" /><![endif]-->
-		<!--[if IE 7]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" /><![endif]-->
+		<!--[if IE 10]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/browser/ie10.css" /><![endif]-->
+		<!--[if IE 9]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/browser/ie9.css" /><![endif]-->
+		<!--[if IE 8]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/browser/ie8.css" /><![endif]-->
+		<!--[if IE 7]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/browser/ie7.css" /><![endif]-->
 	</head>
 	<body>
 		<?php echo Module::position('notices'); ?>
