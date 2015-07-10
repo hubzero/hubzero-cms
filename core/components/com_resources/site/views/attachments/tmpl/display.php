@@ -33,9 +33,11 @@ defined('_HZEXEC_') or die();
 
 $this->css('create.css')
      ->js('create.js');
+
+$hideform = Request::getInt('hideform', 0);
 ?>
 	<div id="small-page">
-		<?php if (!Request::getInt('hideform', 0)) { ?>
+		<?php if (!$hideform) { ?>
 		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<label>
@@ -132,14 +134,14 @@ $this->css('create.css')
 						$cs = ($child->access == 1 ? 'registered' : 'public');
 						$st = ($child->access == 1 ? 0 : 1);
 						?>
-						<a class="access-<?php echo $cs; ?> access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $st; ?>&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')); ?>">
+						<a class="access-<?php echo $cs; ?> access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $st; ?>&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>" title="<?php echo Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')); ?>">
 							<span><?php echo Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_REGISTERED' : 'COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></span>
 						</a>
 					</td>
 					<td class="u">
 						<?php
 						if ($i > 0 || ($i+0 > 0)) {
-							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up&amp;hideform=' . $hideform . '" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 						} else {
 							echo '&nbsp;';
 						}
@@ -148,14 +150,14 @@ $this->css('create.css')
 					<td class="d">
 						<?php
 						if ($i < $n-1 || $i+0 < $n-1) {
-							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down&amp;hideform=' . $hideform . '" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 						} else {
 							echo '&nbsp;';
 						}
 						?>
 					</td>
 					<td class="t">
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>">
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>">
 							<span><?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?></span>
 						</a>
 					</td>

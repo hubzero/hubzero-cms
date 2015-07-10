@@ -52,14 +52,14 @@ jQuery(document).ready(function(jq){
 					'</div>'
 				);
 
-			iframe.on('load', function() {
+			/*iframe.on('load', function() {
 				iframe.contents().find('.list .up').each(function(index) {
 					$(this).attr('href',  $(this).attr('href') + '&hideform=1')
 				});
 				iframe.contents().find('.list .down').each(function(index) {
 					$(this).attr('href',  $(this).attr('href') + '&hideform=1')
 				});
-			});
+			});*/
 
 			iframe.attr('src', iframe.attr('src') + '&hideform=1&t=');
 		}
