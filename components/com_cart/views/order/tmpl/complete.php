@@ -62,7 +62,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				foreach ($transactionItems as $sId => $item)
 				{
 					$info = $item['info'];
-					$skuMeta = $item['meta'];
 					$action = '';
 					
 
@@ -76,9 +75,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					else {
 						$status = 'Purchased';
 						
-						if (!empty($skuMeta['purchaseNote']))
+						if (!empty($item['meta']['purchaseNote']))
 						{
-							$action = $skuMeta['purchaseNote'];
+							$action = $item['meta']['purchaseNote'];
 						}
 					}
 

@@ -66,6 +66,14 @@ class CartControllerCheckout extends ComponentController
 		parent::execute();
 	}
 
+	public function displayTask()
+	{
+
+		JError::raiseError(404, JText::_('COM_CART_NO_CHECKOUT_STEP_FOUND'));
+		return;
+
+	}
+
 	/**
 	 * Checkout entry point. Begin checkout -- check, create, or update transaction and redirect to the next step
 	 *
@@ -78,7 +86,6 @@ class CartControllerCheckout extends ComponentController
 
 		// This is a starting point in checkout process. All existing transactions for this user
 		// have to be removed and a new one has to be created.
-
 		// Do the final check of the cart
 
 		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
@@ -103,7 +110,7 @@ class CartControllerCheckout extends ComponentController
 			$cart->redirect('home');
 		}
 
-		// Redirect to the appropriate step
+		// Redirect to the final step if transaction is ready to go to the payment phase (???)
 		$cart->redirect('continue');
 
 		//$this->printTransaction($transactionInfo);
@@ -130,8 +137,89 @@ class CartControllerCheckout extends ComponentController
 		}
 
 		// Redirect to the next step
-		$nextStep = $cart->getNextCheckoutStep();
+		$nextStep = $cart->getNextCheckoutStep()->step;
 		$cart->redirect($nextStep);
+	}
+
+	/**
+	 * User agreement acceptance
+	 *
+	 * @return     void
+	 */
+	public function eulaTask()
+	{
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		$cart = new CartModelCurrentCart();
+
+		$errors = array();
+
+		$transaction = $cart->liftTransaction();
+
+		if (!$transaction)
+		{
+			// Redirect to cart if transaction cannot be lifted
+			$cart->redirect('home');
+		}
+
+		$nextStep = $cart->getNextCheckoutStep();
+
+		// Double check that the current step is indeed EULA, redirect if needed
+		if ($nextStep->step != 'eula')
+		{
+			$cart->redirect($nextStep->step);
+		}
+
+		// Get the SKU id of the item being displayed (from meta)
+		$sId = $nextStep->meta;
+
+		// Get the eula text for the product (EULAs are assigned to products, not SKUS)
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+		$skuInfo = $warehouse->getSkuInfo($sId)['info'];
+
+		$this->view->productInfo = $skuInfo;
+
+		// Get product id
+		$pId = $skuInfo->pId;
+		// Get EULA
+		$productEula = $warehouse->getProductMeta($pId)['eula']->pmValue;
+
+		$this->view->productEula = $productEula;
+
+
+		$eulaSubmitted = JRequest::getVar('submitEula', false, 'post');
+
+		if ($eulaSubmitted)
+		{
+			// check if agreed
+			$eulaAccepted = JRequest::getVar('acceptEula', false, 'post');
+
+			if (!$eulaAccepted)
+			{
+				$errors[] = array(JText::_('COM_CART_MUST_ACCEPT_EULA'), 'error');
+			}
+			else {
+				// Save item's meta
+				$itemMeta = new stdClass();
+				$itemMeta->eulaAccepted = true;
+				$itemMeta->machinesInstalled = 'n/a';
+				$cart->setTransactionItemMeta($sId, json_encode($itemMeta));
+
+				// Mark this step as completed
+				$cart->setStepStatus('eula', $sId);
+
+				// All good, continue
+				$nextStep = $cart->getNextCheckoutStep()->step;
+				$cart->redirect($nextStep);
+			}
+		}
+
+		if (!empty($errors))
+		{
+			$this->view->notifications = $errors;
+		}
+
+		$this->view->display();
 	}
 
 	/**
@@ -172,6 +260,14 @@ class CartControllerCheckout extends ComponentController
 			$cart->redirect('home');
 		}
 
+		$nextStep = $cart->getNextCheckoutStep();
+
+		// Double check that the current step is indeed shipping, redirect if needed
+		if ($nextStep->step != 'shipping')
+		{
+			$cart->redirect($nextStep->step);
+		}
+
 		// handle non-ajax form submit
 		$shippingInfoSubmitted = JRequest::getVar('submitShippingInfo', false, 'post');
 
@@ -201,7 +297,7 @@ class CartControllerCheckout extends ComponentController
 
 			$cart->setStepStatus('shipping');
 
-			$nextStep = $cart->getNextCheckoutStep();
+			$nextStep = $cart->getNextCheckoutStep()->step;
 			$cart->redirect($nextStep);
 		}
 
@@ -247,7 +343,7 @@ class CartControllerCheckout extends ComponentController
 		$token = $cart->getToken();
 
 		// Check if there are any steps missing. Redirect if needed
-		$nextStep = $cart->getNextCheckoutStep();
+		$nextStep = $cart->getNextCheckoutStep()->step;
 
 		if ($nextStep != 'summary')
 		{
@@ -282,7 +378,7 @@ class CartControllerCheckout extends ComponentController
 		$transaction->token = $cart->getToken();
 
 		// Check if there are any steps missing. Redirect if needed
-		$nextStep = $cart->getNextCheckoutStep();
+		$nextStep = $cart->getNextCheckoutStep()->step;
 
 		if ($nextStep != 'summary')
 		{
@@ -345,7 +441,7 @@ class CartControllerCheckout extends ComponentController
 	private function printTransaction($t)
 	{
 		echo '<div class="cartSection">';
-		foreach ($t as $k => $v)
+		foreach($t as $k => $v)
 		{
 			echo '<p>';
 			echo $v['info']->pName;

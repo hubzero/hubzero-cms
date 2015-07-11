@@ -201,7 +201,9 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 */
 	public function getProductInfo($pId, $showInactive = false)
 	{
-		$sql = "SELECT p.* FROM `#__storefront_products` p WHERE p.`pId` = {$pId}";
+		$sql = "SELECT p.*, pt.ptName, pt.ptModel FROM `#__storefront_products` p
+ 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
+ 				WHERE p.`pId` = " . $this->_db->quote($pId);
 
 		if (!$showInactive)
 		{
@@ -212,6 +214,32 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$product = $this->_db->loadObject();
 
 		return $product;
+	}
+
+	/**
+	 * Get product meta information
+	 *
+	 * @param	int			Product ID
+	 * @param  	bool		Flag whether to show inactive product info
+	 * @return 	object		Product info
+	 */
+	public function getProductMeta($pId, $showInactive = false)
+	{
+		$sql = "SELECT pm.pmKey, pm.pmValue
+				FROM `#__storefront_product_meta` pm
+ 				LEFT JOIN `#__storefront_products` p ON pm.pId = p.pId
+ 				WHERE pm.`pId` = " . $this->_db->quote($pId);
+
+		if (!$showInactive)
+		{
+			$sql .= " AND p.`pActive` = 1";
+		}
+
+		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+		$productMeta = $this->_db->loadObjectList('pmKey');
+
+		return $productMeta;
 	}
 
 	/**
@@ -399,6 +427,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				ORDER BY s.`sId`";
 
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$this->_db->execute();
 		$found = $this->_db->getNumRows();
 

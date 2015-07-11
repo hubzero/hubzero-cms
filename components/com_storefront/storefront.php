@@ -37,9 +37,10 @@ jimport('joomla.application.component.view');
 
 // enable only if PRO is enabled
 $juser = JFactory::getUser();
-if(!$juser->proEnabled)
+$proPluginEnabled = JPluginHelper::isEnabled('system', 'pro');
+if($proPluginEnabled && !$juser->proEnabled)
 {
-    JError::raiseError(404, JText::_('Component is not available at this time'));
+	JError::raiseError(404, JText::_('Component is not available at this time'));
 }
 
 //require needed files

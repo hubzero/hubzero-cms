@@ -134,11 +134,10 @@ class CartControllerOrder extends ComponentController
 	 */
 	public function placeTask()
 	{
-		// Get the current active trancsaction
+		// Get the current active transaction
 		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();
-		//print_r($transaction); die;
 
 		if (!$transaction)
 		{
@@ -353,6 +352,8 @@ class CartControllerOrder extends ComponentController
 
 		// Send emails to customer and admin
 		$logger->emailOrderComplete($tInfo->info);
+
+		return true;
 	}
 
 }

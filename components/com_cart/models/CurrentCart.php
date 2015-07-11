@@ -382,16 +382,23 @@ class CartModelCurrentCart extends CartModelCart
 	public function getNextCheckoutStep()
 	{
 		// Get DB steps for this transaction
-		$sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId DESC";
+		$sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId DESC";
 		$this->_db->setQuery($sql);
-		$nextStep = $this->_db->loadResult();
+		$nextStep = $this->_db->loadObject();
 
-		if (!$nextStep)
+		// Intitialize stepInfo
+		$stepInfo = new stdClass();
+
+		if (empty($nextStep))
 		{
-			$nextStep = 'summary';
+			$stepInfo->step = 'summary';
+		}
+		else {
+			$stepInfo->step = $nextStep->tsStep;
+			$stepInfo->meta = $nextStep->tsMeta;
 		}
 
-		return $nextStep;
+		return $stepInfo;
 	}
 
 	/**
@@ -634,6 +641,24 @@ class CartModelCurrentCart extends CartModelCart
 	}
 
 	/**
+	 * Set the meta information for a given transaction item
+	 *
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @param mixed		meta	Meta info
+	 * @return void
+	 */
+	public function setTransactionItemMeta($sId, $meta)
+	{
+		$sql = "UPDATE `#__cart_transaction_items` SET
+				`tiMeta` = " . $this->_db->quote($meta) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId) . "
+				AND `sId` = " . $this->_db->quote($sId);
+
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+	}
+
+	/**
 	 * Gets all transaction related info about current cart transaction
 	 *
 	 * @param void
@@ -809,21 +834,19 @@ class CartModelCurrentCart extends CartModelCart
 	 * Mark step for current transaction as completed (default) or not-completed
 	 *
 	 * @param 	string Step
+	 * @param 	mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA steps for each SKU)
 	 * @param 	bool Completed (true) ar not completed (false)
 	 * @return 	bool
 	 */
-	public function setStepStatus($step, $status = true)
+	public function setStepStatus($step, $meta = '', $status = true)
 	{
-		$allowedSteps = array('shipping');
-
-		if (!in_array($step, $allowedSteps))
-		{
-			return false;
-		}
-
 		$sql = "UPDATE `#__cart_transaction_steps`
 				SET `tsStatus` = " .  $this->_db->quote($status) . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
+		if (!empty($meta))
+		{
+			$sql .= "AND `tsMeta` = '{$meta}'";
+		}
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
@@ -1938,13 +1961,16 @@ class CartModelCurrentCart extends CartModelCart
 		// Add cart items to transaction
 		$sqlValues = '';
 
-		// Initialize required steps
-		$steps = array();
+		// Initialize required steps, split it into logical parts
+		$preSteps = array();
+		$postSteps = array();
 
 		require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		$transactionSubtotalAmount = 0;
+
+		//print_r($cartItems); die;
 
 		foreach ($cartItems as $sId => $skuInfo)
 		{
@@ -1956,10 +1982,32 @@ class CartModelCurrentCart extends CartModelCart
 
 			$transactionSubtotalAmount += ($skuInfo['info']->sPrice * $skuInfo['cartInfo']->qty);
 
-			// check steps
-			if ($skuInfo['info']->ptId == 1 && !in_array('shipping', $steps))
+			/* Steps */
+
+			// EULA: for software, license agreement may be needed, if so, add the step for each product
+
+			// get product type
+			$productInfo = $warehouse->getProductInfo($skuInfo['info']->pId);
+			// if soft, check if EULA is needed
+			if ($productInfo->ptModel == 'software')
 			{
-				$steps[] = 'shipping';
+				$productMeta = $warehouse->getProductMeta($skuInfo['info']->pId);
+				// If EULA is needed, add step, note the EULA required for each SKU, so for multiple SKUs of the same product, multiple EULA will be required
+				if (!empty($productMeta['eulaRequired']) && $productMeta['eulaRequired']->pmValue)
+				{
+					$step = new stdClass();
+					$step->name = 'eula';
+					$step->meta = $sId;
+					$preSteps[] = $step;
+				}
+			}
+
+			// shipping: if any of the products require shipping, add the shipping step
+			if ($skuInfo['info']->ptId == 1 && !in_array('shipping', $postSteps))
+			{
+				$step = new stdClass();
+				$step->name = 'shipping';
+				$postSteps[] = $step;
 			}
 
 			// lock items
@@ -1971,10 +2019,13 @@ class CartModelCurrentCart extends CartModelCart
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
+		// merge pre- and post- steps to ensure the correct order
+		$steps = array_merge($preSteps, $postSteps);
 		// populate steps
 		foreach ($steps as $step)
 		{
-			$sql = "INSERT INTO `#__cart_transaction_steps` (`tId`, `tsStep`) VALUES ({$this->cart->tId}, '{$step}')";
+			$sql = "INSERT INTO `#__cart_transaction_steps` (`tId`, `tsStep`, `tsMeta`)
+					VALUES ({$this->cart->tId}, '{$step->name}', '{$step->meta}')";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 		}
