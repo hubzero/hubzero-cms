@@ -19,11 +19,13 @@ String.prototype.nohtml = function () {
 
 var scrp = null;
 var _DEBUG = 0;
+var container = null;
+var isActive = true;
 
 jQuery(document).ready(function(jq){
-	var $ = jq,
-		container = $('#posts'),
-		isActive = true;
+	var $ = jq;
+
+	container = $('#posts');
 
 	_DEBUG = $('#system-debug').length;
 
@@ -306,4 +308,13 @@ jQuery(document).ready(function(jq){
 	$("#ajax-uploader-list").sortable({
 		handle: '.asset-handle'
 	});
+});
+
+$(window).load(function() {
+	// Run Masonry to fix images loaded after DOM ready
+	if (isActive) {
+		container.masonry({
+			itemSelector: '.post'
+		});
+	}
 });
