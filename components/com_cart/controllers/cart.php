@@ -66,7 +66,7 @@ class CartControllerCart extends ComponentController
 	{
 		$cart = new CartModelCurrentCart();
 
-        // Initialize errors array
+		// Initialize errors array
 		$errors = array();
 
 		// Update cart if needed

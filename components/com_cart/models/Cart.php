@@ -118,7 +118,7 @@ abstract class CartModelCart
 	 */
 	public function getSavedShippingAddresses($uId)
 	{
-		if(!Cart_Helper::isNonNegativeInt($uId, false))
+		if (!Cart_Helper::isNonNegativeInt($uId, false))
 		{
 			throw new Exception(JGLOBAL_AUTH_USER_NOT_FOUND);
 		}
@@ -438,7 +438,7 @@ abstract class CartModelCart
 	 */
 	public static function verifySecurityToken($token, $tId)
 	{
-		if(!Cart_Helper::isNonNegativeInt($tId, false))
+		if (!Cart_Helper::isNonNegativeInt($tId, false))
 		{
 			throw new Exception(JText::_('COM_CART_NO_TRANSACTION_FOUND'));
 		}
@@ -673,7 +673,7 @@ abstract class CartModelCart
 
 		$affectedRows = $db->getAffectedRows();
 
-		if(!$affectedRows) {
+		if (!$affectedRows) {
 			return false;
 		}
 		return true;
