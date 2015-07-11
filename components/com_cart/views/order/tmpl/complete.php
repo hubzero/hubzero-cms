@@ -63,7 +63,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$info = $item['info'];
 					$action = '';
-					
 
 					// If course
 					if ($info->ptId == 20)
@@ -74,7 +73,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 					else {
 						$status = 'Purchased';
-						
 						if (!empty($item['meta']['purchaseNote']))
 						{
 							$action = $item['meta']['purchaseNote'];

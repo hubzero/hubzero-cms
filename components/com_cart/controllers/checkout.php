@@ -441,7 +441,7 @@ class CartControllerCheckout extends ComponentController
 	private function printTransaction($t)
 	{
 		echo '<div class="cartSection">';
-		foreach($t as $k => $v)
+		foreach ($t as $k => $v)
 		{
 			echo '<p>';
 			echo $v['info']->pName;

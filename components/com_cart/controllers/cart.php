@@ -101,7 +101,7 @@ class CartControllerCart extends ComponentController
 			}
 			else
 			{
-				if(!is_array($skus))
+				if (!is_array($skus))
 				{
 					$skus = array($skus => 1);
 				}
