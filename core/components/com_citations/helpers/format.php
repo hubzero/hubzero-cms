@@ -30,6 +30,8 @@
 
 namespace Components\Citations\Helpers;
 
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+
 use Components\Citations\Tables\Association;
 use Components\Citations\Tables\Type;
 use Hubzero\Utility\String;
@@ -187,6 +189,11 @@ class Format
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
 		$hub_url  = rtrim(\Request::base(), '/');
+
+		if (is_object($citation))
+		{
+			$citation = $citation->toObject();
+		}
 
 		$c_type = 'journal';
 
@@ -390,7 +397,7 @@ class Format
 
 		// Add more to coins
 
-		$tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;
+		$tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;;
 		$cite = strtr($tmpl, $replace_values);
 
 		// Strip empty tags
