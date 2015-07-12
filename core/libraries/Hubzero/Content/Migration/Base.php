@@ -260,7 +260,7 @@ class Base
 		if ($creds = $this->getRootCredentials())
 		{
 			// Instantiate a config object
-			$jconfig = new \JConfig();
+			$jconfig = new \Config();
 
 			$db = \JDatabase::getInstance(
 				array(
