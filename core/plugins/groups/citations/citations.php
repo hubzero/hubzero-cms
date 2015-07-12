@@ -33,16 +33,21 @@ defined('_HZEXEC_') or die();
 
 // include needed libs
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'citation.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'author.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
 
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Author;
+use Components\Citations\Models\Type;
+
+
 
 
 /**
@@ -176,8 +181,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// instantiate citations object and get count
-		$obj = new \Components\Citations\Tables\Citation($this->database);
-		$total = $obj->getCount(array(
+		//$obj = new \Components\Citations\Tables\Citation($this->database);
+		/*$total = $obj->getCount(array(
 			'scope'    => 'group',
 			'scope_id' => $group->gidNumber
 		), true);
@@ -185,6 +190,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		//set metadata for menu
 		$arr['metadata']['count'] = $total;
 		$arr['metadata']['alert'] = '';
+
+		*/
 
 		// Return the output
 		return $arr;
@@ -209,45 +216,31 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->isManager           = ($this->authorized == 'manager') ? true : false;
 
 		// Instantiate a new citations object
-		$citations = new \Components\Citations\Tables\Citation($this->database);
+
+		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
+
+		//get applied filters
+		$view->filters = $obj['filters'];
+
+		//get filtered citations
+		$view->citations = $obj['citations']->rows();
 
 		//get the earliest year we have citations for
-		$view->earliest_year = $citations->getEarliestYear();
-
-		// Incoming
-		$view->filters = array();
-
-		//search/filtering params
-		$view->filters['scope']           = 'group';
-		$view->filters['scope_id']        = $this->group->get('gidNumber');
-		$view->filters['id']			  = Request::getInt('id', 0);
-		$view->filters['tag']             = trim(Request::getVar('tag', '', 'request', 'none', 2));
-		$view->filters['search']          = Request::getVar('search', '');
-		$view->filters['type']            = Request::getVar('type', '');
-		$view->filters['author']          = Request::getVar('author', '');
-		$view->filters['publishedin']     = Request::getVar('publishedin', '');
-		$view->filters['year_start']      = Request::getInt('year_start', $view->earliest_year);
-		$view->filters['year_end']        = Request::getInt('year_end', date("Y"));
-		$view->filters['filter']          = Request::getVar('filter', '');
-		$view->filters['sort']            = Request::getVar('sort', 'year DESC');
-		$view->filters['reftype']         = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$view->filters['geo']             = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$view->filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-		$view->filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
-		$view->filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
-		$view->filters['limit']			  = Request::getInt('limit', 10);
-		$view->filters['start']			  = Request::getInt('start', 0);
+		$view->earliest_year = 2001;
+		//$view->earliest_year = $citations->getEarliestYear();
 
 		// Affiliation filter
-		$view->filter = array(
+		$view->filters['filter'] = array(
 			'all'    => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
 			'aff'    => Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'),
-			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED')
+			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'),
+			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
 		);
-		if (!in_array($view->filters['filter'], array_keys($view->filter)))
+
+		/*if (!in_array($view->filters['filter'], array_keys($view->filter)))
 		{
 			$view->filters['filter'] = '';
-		}
+		} */
 
 		// Sort Filter
 		$view->sorts = array(
@@ -258,10 +251,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			'author ASC'   => Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR'),
 			'journal ASC'  => Lang::txt('PLG_GROUPS_CITATIONS_JOURNAL')
 		);
-		if (!in_array($view->filters['sort'], array_keys($view->sorts)))
+		/*if (!in_array($view->filters['sort'], array_keys($view->sorts)))
 		{
 			$view->filters['sort'] = 'created DESC';
-		}
+		} */
 
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
@@ -287,7 +280,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//Convert upload dates to correct time format
-		if ($view->filters['startuploaddate'] == '0000-00-00'
+		/*if ($view->filters['startuploaddate'] == '0000-00-00'
 			|| $view->filters['startuploaddate'] == '0000-00-00 00:00:00'
 			|| $view->filters['startuploaddate'] == '')
 		{
@@ -318,12 +311,16 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			);
 			return;
 		}
+		*/
 
 		// Get record count
-		$view->total = $citations->getCount($view->filters, $view->isManager);
+		//$view->total = $view->citations->count();
+		//$view->total = 10;
+
+		$view->citationTemplate = 'apa';
 
 		// check to see if super group has any additional filters
-		if ($this->group->isSuperGroup() && file_exists($this->_superGroupHelper()))
+		/*if ($this->group->isSuperGroup() && file_exists($this->_superGroupHelper()))
 		{
 			// load helper
 			require_once($this->_superGroupHelper());
@@ -337,13 +334,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			//override sortings
 			$view->filters['sort'] = $helper->getCustomSort();
 
-		}
+		} */
 
 		// get the citations
-		$view->citations = $citations->getRecords($view->filters, $view->isManager);
+		//$view->citations = $citations->getRecords($view->filters, $view->isManager);
 
 		// get the default citation format
-		$groupParams = json_decode($this->group->get('params'));
+		/*$groupParams = json_decode($this->group->get('params'));
 		if (array_keys( (array) $groupParams , 'citation_format') && $groupParams['citations_format'] != "")
 		{
 			//use the group setting
@@ -354,7 +351,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			//use the hub default
 			$citationsFormat = new \Components\Citations\Tables\Format($this->database);
 			$view->citationTemplate = $citationsFormat->getDefaultFormat()->format;
-		}
+		} */
+
+		$view->filters['search'] = "";
+		$view->filters['type'] = '';
+		$view->filters['tag'] = '';
+		$view->filters['author'] = '';
+		$view->filters['publishedin'] = '';
+		$view->filters['year_start'] = '';
+		$view->filters['year_end'] = '';
+		$view->filters['startuploaddate'] = '';
+		$view->filters['enduploaddate'] = '';
+		$view->filters['sort'] = '';
 
 		// get the preferred labeling scheme
 		$view->label = null;
@@ -386,9 +394,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// config
 		$view->config = Component::params('com_citations');
 
-		// Add some data to our view for form filtering/sorting
-		$ct = new \Components\Citations\Tables\Type($this->database);
-		$view->types = $ct->getType();
+		// types
+		$ct = \Components\Citations\Models\Type::all();
+		$view->types = $ct;
 
 		// OpenURL
 		$openURL = $this->_handleOpenURL();
@@ -447,15 +455,15 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//get the citation types
-		$citationsType = new \Components\Citations\Tables\Type($this->database);
-		$view->types = $citationsType->getType();
+		$citationsType = \Components\Citations\Models\Type::all();
+		$view->types = $citationsType->rows()->toObject();
 
 		$fields = array();
 		foreach ($view->types as $type)
 		{
-			if (isset($type['fields']))
+			if (isset($type->fields))
 			{
-				$f = $type['fields'];
+				$f = $type->fields;
 				if (strpos($f, ',') !== false)
 				{
 					$f = str_replace(',', "\n", $f);
@@ -464,7 +472,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$f = array_map('trim', explode("\n", $f));
 				$f = array_values(array_filter($f));
 
-				$fields[strtolower(str_replace(' ', '', $type['type_title']))] = $f;
+				$fields[strtolower(str_replace(' ', '', $type->type_title))] = $f;
 			}
 		}
 
@@ -474,6 +482,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			'type'       => '',
 			'type_title' => ' - Select a Type &mdash;'
 		));
+
+		$view->types[0] = (object) $view->types[0];
 
 		// Incoming - expecting an array id[]=4232
 		$id = Request::getInt('id', 0);
@@ -498,8 +508,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load the object
-		$view->row = new \Components\Citations\Tables\Citation($this->database);
-		$view->row->load($id);
+		$view->row = \Components\Citations\Models\Citation::oneorNew($id);
 
 		//make sure title isnt too long
 		$maxTitleLength = 30;
@@ -877,6 +886,68 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		return false;
+	}
+
+	/**
+	 * Applies filters to Citations model and returns applied filters
+	 * @param array  $filters array of POST values
+	 * @return  array sanitized and validated filter values
+	 */
+	private function _filterHandler($filters = array(),  $scope_id = 0)
+	{
+		$citations = \Components\Citations\Models\Citation::all();
+		// require citations
+		if (!$citations)
+		{
+			return false;
+		}
+
+		// get the ones for this group
+		$scope = 'group';
+
+		$citations->where('scope', '=', $scope);
+		$citations->where('scope_id', '=', $scope_id);
+
+		// for search: $query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) > 0)";
+		if (count($filters) > 0)
+		{
+			foreach ($filters as $filter => $value)
+			{
+				if ($filter != 'search' && $value != "")
+				{
+					$citations->where($filter, '=', $value);
+				}
+			}
+
+			return array('citations' => $citations, 'filters' => $filters);
+
+		}
+		else
+		{
+			return array('citations' => $citations, 'filters' => array());
+		}
+
+		//search/filtering params
+		/*$view->filters['scope']           = 'group';
+		$view->filters['scope_id']        = $this->group->get('gidNumber');
+		$view->filters['id']			  = Request::getInt('id', 0);
+		$view->filters['tag']             = trim(Request::getVar('tag', '', 'request', 'none', 2));
+		$view->filters['search']          = Request::getVar('search', '');
+		$view->filters['type']            = Request::getVar('type', '');
+		$view->filters['author']          = Request::getVar('author', '');
+		$view->filters['publishedin']     = Request::getVar('publishedin', '');
+		$view->filters['year_start']      = Request::getInt('year_start', $view->earliest_year);
+		$view->filters['year_end']        = Request::getInt('year_end', date("Y"));
+		$view->filters['filter']          = Request::getVar('filter', '');
+		$view->filters['sort']            = Request::getVar('sort', 'year DESC');
+		$view->filters['reftype']         = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$view->filters['geo']             = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$view->filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		$view->filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
+		$view->filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
+		$view->filters['limit']			  = Request::getInt('limit', 10);
+		$view->filters['start']			  = Request::getInt('start', 0);*/
+
 	}
 
 }

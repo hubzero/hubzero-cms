@@ -97,8 +97,8 @@ $pid = Request::getInt('publication', 0);
 								<?php
 									foreach ($this->types as $t)
 									{
-										$sel = ($this->row->type == $t['id']) ? "selected=\"selected\"" : "";
-										echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
+										$sel = ($this->row->type == $t->id) ? "selected=\"selected\"" : "";
+										echo "<option {$sel} value=\"{$t->id}\">{$t->type_title}</option>";
 									}
 								?>
 							</select>

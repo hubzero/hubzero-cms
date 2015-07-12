@@ -34,6 +34,11 @@ defined('_HZEXEC_') or die();
 $this->css('citations.css')
 	 ->js();
 
+
+
+
+
+
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 
 if (isset($this->messages))
@@ -68,7 +73,7 @@ if (isset($this->messages))
 					<input class="entry-search-submit" type="submit" value="Search" /> <!-- search button -->
 					<fieldset class="entry-search"> <!-- text box container -->
 						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+						<input type="text" name="filters[search]" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- /.container .data-entry -->
 
@@ -106,11 +111,11 @@ if (isset($this->messages))
 						$formatter->setTemplate($this->citationTemplate);
 
 						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-						$counter = $this->filters['start'] + 1;
+						/*$counter = $this->filters['start'] + 1;
 						if ($counter == '')
 						{
 							$counter = 1;
-						}
+						} */
 					?> <!-- end counter and formatter logic -->
 					<table class="citations entries">
 						<thead>
@@ -134,10 +139,13 @@ if (isset($this->messages))
 									<?php if ($this->label != "none") : ?>
 										<td class="citation-label <?php echo $this->citations_label_class; ?>">
 											<?php
+												/**
+												 * @TODO replace with Relational
+												 **/
 												$type = "";
 												foreach ($this->types as $t) {
-													if ($t['id'] == $cite->type) {
-														$type = $t['type_title'];
+													if ($t->id == $cite->type) {
+														$type = $t->type_title;
 													}
 												}
 												$type = ($type != "") ? $type : "Generic";
@@ -228,7 +236,7 @@ if (isset($this->messages))
 										<?php endif; ?>
 									</td>
 								</tr>
-								<?php $counter++; ?>
+								<?php //$counter++; ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
@@ -237,7 +245,7 @@ if (isset($this->messages))
 					<?php endif; ?>
 					<?php
 						// Initiate paging
-						$pageNav = $this->pagination(
+						/*$pageNav = $this->pagination(
 							$this->total,
 							$this->filters['start'],
 							$this->filters['limit']
@@ -270,7 +278,7 @@ if (isset($this->messages))
 							}
 						}
 
-						echo $pageNav->render();
+						echo $pageNav->render();*/
 					?>
 					<div class="clearfix"></div>
 				</div><!-- /.container -->
@@ -279,11 +287,11 @@ if (isset($this->messages))
 				<fieldset>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TYPE'); ?>
-						<select name="type" id="type">
+						<select name="filters[type]" id="type">
 							<option value=""><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></option>
 							<?php foreach ($this->types as $t) : ?>
-								<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
-								<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
+								<?php $sel = ($this->filters['type'] == $t->id) ? "selected=\"selected\"" : ""; ?>
+								<option <?php echo $sel; ?> value="<?php echo $t->id; ?>"><?php echo $t->type_title; ?></option>
 							<?php endforeach; ?>
 						</select>
 					</label>
@@ -294,40 +302,40 @@ if (isset($this->messages))
 							if (count($tf) > 0) : ?>
 								<?php echo $tf[0]; ?>
 							<?php else: ?>
-								<input type="text" name="tag" value="<?php echo $this->filters['tag']; ?>" />
+								<input type="text" name="filter[tag]" value="<?php echo $this->filters['tag']; ?>" />
 							<?php endif; ?>
 					</label>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORED_BY'); ?>
-						<input type="text" name="author" value="<?php echo $this->filters['author']; ?>" />
+						<input type="text" name="filter[author]" value="<?php echo $this->filters['author']; ?>" />
 					</label>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISHED_IN'); ?>
-						<input type="text" name="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
+						<input type="text" name="filter[publishedin]" value="<?php echo $this->filters['publishedin']; ?>" />
 					</label>
 					<label for="year_start">
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_YEAR'); ?><br />
-						<input type="text" name="year_start" class="half" value="<?php echo $this->filters['year_start']; ?>" />
+						<input type="text" name="filter[year_start]" class="half" value="<?php echo $this->filters['year_start']; ?>" />
 						to
-						<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
+						<input type="text" name="filter[year_end]" class="half" value="<?php echo $this->filters['year_end']; ?>" />
 					</label>
 					<?php if ($this->isManager) { ?>
 						<fieldset>
 							<label>
 								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN'); ?>
-								<input type="text" name="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
+								<input type="text" name="filter[startuploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
 								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
 							<label>
 								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
-								<input type="text" name="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
+								<input type="text" name="filter[enduploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
 								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
 						</fieldset>
 					<?php } ?>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
-						<select name="sort" id="sort" class="">
+						<select name="filter[sort]" id="sort" class="">
 							<?php foreach ($this->sorts as $k => $v) : ?>
 								<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
 								if (($this->isManager !== true) && ($v == "Date uploaded"))
