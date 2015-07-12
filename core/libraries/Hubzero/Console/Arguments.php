@@ -155,7 +155,7 @@ class Arguments
 	{
 		if (isset($this->raw) && count($this->raw) > 0)
 		{
-			$class = $this->raw[1] ? $this->raw[1] : 'help';
+			$class = isset($this->raw[1]) ? $this->raw[1] : 'help';
 			$task  = (isset($this->raw[2]) && substr($this->raw[2], 0, 1) != "-") ? $this->raw[2] : 'execute';
 
 			$this->class = self::routeCommand($class);
