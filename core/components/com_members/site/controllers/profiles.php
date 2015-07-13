@@ -207,6 +207,10 @@ class Profiles extends SiteController
 		if (count($rows) > 0)
 		{
 			$default = DS . trim($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'), DS);
+			if ($default == '/components/com_members/assets/img/profile.gif')
+			{
+				$default = '/core/components/com_members/site/assets/img/profile.gif';
+			}
 			$default = \Hubzero\User\Profile\Helper::thumbit($default);
 			foreach ($rows as $row)
 			{
