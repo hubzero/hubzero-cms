@@ -108,13 +108,14 @@ HUB.Geosearch = {
 
 					break;
 					case "event":
+						console.log(event);
 						// get the data for the popup view
 						var title = data.event.title;
 						var content = data.event.content;
 						var start =  data.event.publish_up;
 						var end = data.event.publish_down;
 						var location = data.event.adresse_info;
-						var link = "/events/event/" + data.event.id;
+						var link = "/events/details/" + data.event.id;
 
 						//contruct the popup view
 						html += '<div class="event-popup">'; // classes for styling, because CSS

@@ -110,7 +110,6 @@ class Eventsv1_0 extends ApiController
 					/* WHERE publish_up <= UTC_TIMESTAMP() */
 					WHERE state=1
 					AND approved=1
-					AND scope='event'
 					AND id={$eventID}";
 
 		$database->setQuery($query);
