@@ -225,7 +225,7 @@ class Profiles extends SiteController
 
 					if (file_exists(PATH_APP . $thumb))
 					{
-						$picture = $thumb;
+						$picture = substr(PATH_APP, strlen(PATH_ROOT)) . $thumb;
 					}
 				}
 
