@@ -102,7 +102,7 @@ class CollectionsModelItemContent extends CollectionsModelItem
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Joomla' . DS . 'database' . DS . 'table' . DS . 'content.php');
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'content.php');
 
 		$article = new JTableContent($this->_db);
 		$article->load($id);
