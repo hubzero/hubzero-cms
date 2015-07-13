@@ -96,7 +96,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 	public function doajaxuploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
+		//JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		//allowed extensions for uplaod
 		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
@@ -247,7 +247,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 	public function ajaxuploadsaveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		//get the user id
 		$id = JRequest::getInt('id', 0);
