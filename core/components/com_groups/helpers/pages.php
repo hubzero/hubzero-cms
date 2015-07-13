@@ -213,7 +213,7 @@ class Pages
 
 		// if we dont have segments that means were on the
 		// overview page
-		if (count($segments) == 2
+		if (count($segments) == 0
 			|| $segments[0] == 'overview')
 		{
 			return $homePage;
