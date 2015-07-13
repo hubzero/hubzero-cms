@@ -447,8 +447,11 @@ class Projects extends AdminController
 			// Html email
 			$from['multipart'] = md5(date('U'));
 
-			// Get message body
-			$eview 					= new \Hubzero\Component\View( array('name'=>'emails', 'layout' => 'admin_plain' ) );
+			// Message body
+			$eview = new \Hubzero\Mail\View(array(
+				'name'   => 'emails',
+				'layout' => 'admin_plain'
+			));
 			$eview->option 			= $this->_option;
 			$eview->subject 		= $subject;
 			$eview->action 			= $action;
@@ -456,7 +459,7 @@ class Projects extends AdminController
 			$eview->message			= $message;
 
 			$body = array();
-			$body['plaintext'] 	= $eview->loadTemplate();
+			$body['plaintext'] 	= $eview->loadTemplate(false);
 			$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
 
 			// HTML email

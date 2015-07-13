@@ -25,13 +25,15 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = Request::root();
+$base = rtrim(Request::base(), '/');
+$base = rtrim(str_replace('/administrator', '', $base), '/');
+
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-$message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') ."\n";
-$message .= '-------------------------------' ."\n";
+$message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') . "\n";
+$message .= '-------------------------------' . "\n";
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
 
 if ($this->project->isProvisioned())
@@ -56,13 +58,13 @@ if ($this->project->isPublic())
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 }
-$message .= '-------------------------------' ."\n\n";
+$message .= '-------------------------------' . "\n\n";
 
 // Append a message
 if ($this->message)
 {
-	$message .= $this->message ."\n";
-	$message .= '-------------------------------' ."\n\n";
+	$message .= $this->message . "\n";
+	$message .= '-------------------------------' . "\n\n";
 }
 
 $message = str_replace('<br />', '', $message);

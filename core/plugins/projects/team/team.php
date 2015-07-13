@@ -1044,10 +1044,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	public function sendInviteEmail(
 		$uid = 0, $email = '', $code = '',
-		$role = 0, $model = '', $option = ''
+		$role = 0, $model = '', $option = 'com_projects'
 	)
 	{
-		$uid   = $uid ? $uid : User::get('id');
+		$uid   = $uid ? $uid : 0;
 		$email = $email ? $email : User::get('email');
 
 		if (!$email || (!$uid && !$code))
@@ -1073,9 +1073,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set up email config
-		$from = array();
-		$from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($option));
-		$from['email'] = Config::get('mailfrom');
+		$from = array(
+			'name'      => Config::get('sitename') . ' ' . Lang::txt(strtoupper($option)),
+			'email'     => Config::get('mailfrom'),
+			'multipart' => md5(date('U'))
+		);
 
 		// Email message subject
 		if ($model->isProvisioned())
@@ -1089,36 +1091,32 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 
 			$subject 	= $uid
-						? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_SUBJECT_ADDED_PROV')
-						: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_SUBJECT_INVITE_PROV');
+						? Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED_PROV')
+						: Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE_PROV');
 		}
 		else
 		{
 			$subject = $uid
-					? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_SUBJECT_ADDED') . ' ' . $model->get('alias')
-					: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_SUBJECT_INVITE') . ' ' . $model->get('alias');
+					? Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $model->get('alias')
+					: Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $model->get('alias');
 		}
 
-		// Message body for HUB user
-		$eview = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'projects',
-				'element'	=>'team',
-				'name'		=>'emails',
-				'layout'	=>'invite_plain'
-			)
-		);
+		// Message body
+		$eview = new \Hubzero\Mail\View(array(
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
+			'name'      => 'emails',
+			'layout'    => 'invite_plain'
+		));
 
 		$eview->option 			= $option;
-		$eview->model 		    = $model;
+		$eview->project 		= $model;
 		$eview->code 			= $code;
 		$eview->email 			= $email;
 		$eview->uid			    = $uid;
 		$eview->role			= $role;
 		$eview->pub 			= isset($pub) ? $pub : '';
-		$eview->delimiter  		= '';
 
-		$message['plaintext'] 	= $eview->loadTemplate();
+		$message['plaintext'] 	= $eview->loadTemplate(false);
 		$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
 
 		// HTML email
@@ -1137,7 +1135,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			if (\Components\Projects\Helpers\Html::email($email, Config::get('sitename') . ': ' . $subject, $message, $from))
+			if (\Components\Projects\Helpers\Html::email(
+				$email,
+				Config::get('sitename') . ': ' . $subject,
+				$message,
+				$from
+				)
+			)
 			{
 				return true;
 			}

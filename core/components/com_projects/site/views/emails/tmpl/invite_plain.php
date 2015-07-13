@@ -26,6 +26,8 @@
 defined('_HZEXEC_') or die();
 
 $base = rtrim(Request::base(), '/');
+$base = rtrim(str_replace('/administrator', '', $base), '/');
+
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
 

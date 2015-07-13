@@ -66,8 +66,9 @@ class Owner extends \JTable
 		{
 			$query  =  "SELECT CASE o.role WHEN 0 THEN 4 WHEN 1 THEN 1
 						WHEN 2 THEN 2 WHEN 3 THEN 3 END
-						FROM $this->_tbl AS o WHERE o.userid=intval($uid)
-						AND o.projectid=" . $this->_db->quote($projectid);
+						FROM $this->_tbl AS o WHERE o.userid="
+						. $this->_db->quote($uid)
+						. " AND o.projectid=" . $this->_db->quote($projectid);
 		}
 		else
 		{

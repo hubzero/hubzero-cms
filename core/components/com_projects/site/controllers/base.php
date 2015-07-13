@@ -520,7 +520,7 @@ class Base extends SiteController
 			if ($member->userid && $member->userid != User::get('id') )
 			{
 				$eview->uid = $member->userid;
-				$message['plaintext'] 	= $eview->loadTemplate();
+				$message['plaintext'] 	= $eview->loadTemplate(false);
 				$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
@@ -540,7 +540,7 @@ class Base extends SiteController
 					array(
 						'projects_member_added',
 						$subject_active,
-						$message,
+						$message['plaintext'],
 						$from,
 						array($member->userid),
 						$this->_option

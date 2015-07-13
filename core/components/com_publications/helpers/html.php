@@ -1149,7 +1149,7 @@ class Html
 		$from['multipart'] = md5(date('U'));
 
 		// Get message body
-		$eview = new \Hubzero\Component\View(array(
+		$eview = new \Hubzero\Mail\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 			'name'   => 'emails',
 			'layout' => '_plain'
@@ -1160,7 +1160,7 @@ class Html
 		$eview->subject			= $subject;
 
 		$body = array();
-		$body['plaintext'] 	= $eview->loadTemplate();
+		$body['plaintext'] 	= $eview->loadTemplate(false);
 		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
 
 		// HTML email

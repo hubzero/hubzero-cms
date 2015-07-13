@@ -1004,28 +1004,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					.' (id ' . $pub->get('id') . ')', $pub->get('id'), 'publication',
 				   Route::url($pub->link('edit')), 'publication', 1 );
 		}
-
-		// Notify project managers
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
-		$managers = $objO->getIds($this->model->get('id'), 1, 1);
-		if (!empty($managers) && !$this->model->isProvisioned())
-		{
-			$sef = Route::url($pub->link());
-			$sef = trim($sef, DS);
-
-			\Components\Projects\Helpers\Html::sendHUBMessage(
-				'com_projects',
-				$this->model,
-				$managers,
-				Lang::txt('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STARTED'),
-				'projects_admin_notice',
-				'publication',
-				User::get('name') . ' '
-					. Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-					.' (id ' . $pub->get('id') . ')' . ' - ' . Request::base()
-					. $sef . '/?version=' . $pub->get('version_number')
-			);
-		}
 	}
 
 	/**

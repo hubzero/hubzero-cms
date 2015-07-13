@@ -974,8 +974,10 @@ class Html extends Object
 				$message->addPart($body_html, 'text/html');
 			}
 
-			$message->send();
-			return true;
+			if ($message->send())
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -1263,7 +1265,7 @@ class Html extends Object
 	public static function sendHUBMessage(
 		$option, $project,
 		$addressees = array(), $subject = '',
-		$component = '', $layout = '',
+		$component = '', $layout = 'admin',
 		$message = '', $reviewer = '')
 	{
 		if (!$layout || !$subject || !$component || empty($addressees))
@@ -1285,8 +1287,8 @@ class Html extends Object
 		// Html email
 		$from['multipart'] = md5(date('U'));
 
-		// Get message body
-		$eview          = new \Hubzero\Component\View(array(
+		// Message body
+		$eview = new \Hubzero\Mail\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
 			'name'      => 'emails',
 			'layout'    => $layout . '_plain'
@@ -1298,7 +1300,7 @@ class Html extends Object
 		$eview->reviewer		= $reviewer;
 
 		$body = array();
-		$body['plaintext'] 	= $eview->loadTemplate();
+		$body['plaintext'] 	= $eview->loadTemplate(false);
 		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
 
 		// HTML email

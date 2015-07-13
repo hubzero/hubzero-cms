@@ -256,14 +256,11 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 **/
 	private function _sendEmail($subscriber, $message, $subject, $url)
 	{
-		$eview = new \Hubzero\Plugin\View(
-			array(
-				'folder'  =>'publications',
-				'element' =>'watch',
-				'name'    =>'emails',
-				'layout'  =>'_plain'
-			)
-		);
+		$eview = new \Hubzero\Mail\View(array(
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'name'   => 'emails',
+			'layout' => 'watch_plain'
+		));
 		$eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
 		$eview->message     = $message;
 		$eview->subject     = $subject;
@@ -283,11 +280,11 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 			$email = $user ? $user->get('email') : $email;
 		}
 
-		$plain = $eview->loadTemplate();
+		$plain = $eview->loadTemplate(false);
 		$plain = str_replace("\n", "\r\n", $plain);
 
 		// HTML
-		$eview->setLayout('_html');
+		$eview->setLayout('watch_html');
 
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
