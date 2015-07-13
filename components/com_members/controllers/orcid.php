@@ -244,7 +244,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 * Fetch...
 	 *
 	 * @param   boolean  $is_return
-	 * @todo  ORCiD's API does not return the best results. Search first name, last name, and email individually
+	 * @todo    ORCiD's API does not return the best results. Search first name, last name, and email individually
 	 * @return  void
 	 */
 	public function fetchTask($is_return = false)
@@ -313,7 +313,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		}
 
 		// combine
-		$records = array_merge($fnames, $lnames, $emails);
+		$records = array_merge((array)$fnames, (array)$lnames, (array)$emails);
 
 		ob_end_clean();
 		ob_start();
