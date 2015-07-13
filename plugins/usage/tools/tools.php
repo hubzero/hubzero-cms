@@ -68,7 +68,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	{
 		$html = '';
 
-		$sql = "SELECT * FROM #__stats_topvals WHERE top = '" . $s_top . "' AND datetime = '" . $dthis . "-00' AND period = '" . $period . "' ORDER BY rank";
+		$sql = "SELECT * FROM #__stats_topvals WHERE top = " . $database->quote($s_top) . " AND datetime = " . $database->quote($dthis) . "-00' AND period = " . $database->quote($period) . " ORDER BY rank";
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
@@ -678,7 +678,11 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$period = JRequest::getVar('period', '12');
 		$dthis  = JRequest::getVar('dthis', date('Y') . '-'.date('m'));
-		$s_top  = JRequest::getVar('top', '2');
+		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
+		{
+			$dthis = date('Y') . '-'.date('m');
+		}
+		$s_top  = JRequest::getInt('top', '2');
 
 		$html = '';
 
@@ -692,6 +696,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<label>' . "\n";
 		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
 		$html .= "\t\t\t" . '<select name="top">' . "\n";
+
+		$data = array();
 
 		$sql = "SELECT * FROM #__stats_tops ORDER BY id";
 		$database->setQuery($sql);
