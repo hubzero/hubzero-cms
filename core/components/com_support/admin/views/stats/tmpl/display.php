@@ -38,7 +38,8 @@ Toolbar::spacer();
 Toolbar::help('stats');
 
 Html::behavior('framework');
-$this->css();
+
+$this->css('stats');
 
 $database = App::get('db');
 $sql = "SELECT status
@@ -124,7 +125,7 @@ function getMonthName($month)
 $base = str_replace('/administrator', '', Request::base(true));
 $base = rtrim($base, '/');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div id="ticket-stats">
 		<fieldset id="filter-bar" class="support-stats-filter">
 			<label for="ticket-group">

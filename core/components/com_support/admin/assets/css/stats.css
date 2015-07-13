@@ -1,0 +1,144 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_support/admin/assets/css/stats.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Stats */
+	#ticket-stats h3 {
+		display: none;
+	}
+	#ticket-stats .col h3 {
+		display: block;
+		margin-top: 0;
+		border-bottom: 1px solid #ccc;
+	}
+
+	.legend table {
+		background: transparent;
+		width: auto;
+		border: none;
+	}
+	.legend table tr {
+		background: transparent;
+	}
+	.legend table td {
+		padding: 0.2em;
+		background: transparent;
+		border: none;
+	}
+
+	#flotTip {
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: #111111;
+		background: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#111111));
+		background: -webkit-linear-gradient(#333333, #111111);
+		background: -moz-linear-gradient(center top, #333333 0%, #111111 100%);
+		background: -moz-gradient(center top, #333333 0%, #111111 100%);
+		background: -o-linear-gradient(#333333, #111111);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333,endColorstr=#111111);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333, endColorstr=#111111)";
+		font-size: 0.85em;
+		padding: 0.5em 1em;
+		color: #eee;
+	}
+
+	.breakdown {
+		padding: 2em;
+	}
+
+	.support-stats-filter {
+		 text-align: right;
+	}
+	.support-stats-overview {
+		border: none;
+		margin: 0;
+	}
+	.support-stats-overview thead th {
+		color: #999;
+		font-weight: normal;
+		border-bottom: none;
+		padding: 0 1em 0.4em 0;
+		border: none;
+	}
+	.support-stats-overview tbody td {
+		padding: 0 1em 0.4em 0;
+		font-size: 2.5em;
+		line-height: 1;
+		font-weight: normal;
+		color: #777;
+		border: none;
+	}
+	.support-stats-overview thead tr th:first-child,
+	.support-stats-overview thead tr td:first-child,
+	.support-stats-overview tbody tr th:first-child,
+	.support-stats-overview tbody tr td:first-child {
+		padding-left: 0;
+	}
+	.entry-content .support-stats-overview {
+		margin-top: 1.5em;
+	}
+	.entry-content .support-stats-overview tbody td {
+		font-size: 2em;
+	}
+
+	.support-stats-overview tbody td.block {
+		color: #b18fbc;
+		color: #777;
+	}
+	.support-stats-overview tbody td.critical {
+		color: red;
+	}
+	.support-stats-overview thead th.major {
+		padding-right: 0;
+	}
+	.support-stats-overview tbody td.major {
+		color: #ce7d7d;
+		padding-right: 0;
+	}
+	.support-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 12px;
+		line-height: 12px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+	}
+	.entry-content .support-stats-overview tbody td span {
+		margin: 0 1em 0 0;
+	}
+
+	.entry-head {
+		position: relative;
+		margin: 0;
+	}
+	.entry-rank {
+		position: absolute;
+		top: 0;
+		right: 0;
+		font-size: 1.5em;
+		line-height: 1;
+		margin: 0;
+		padding: 0;
+		color: #666;
+	}
+	.entry-title {
+		margin-top: 0;
+	}
+	.entry-member-photo {
+		float: left;
+		margin: 0 1em 1em 0;
+		padding: 0;
+	}
+	.entry-member-photo img {
+		width: 40px;
+		height: 40px;
+	}
+	.entry-title span {
+		color: #999;
+	}
