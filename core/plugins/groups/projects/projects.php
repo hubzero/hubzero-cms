@@ -225,8 +225,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($projects as $project)
 			{
-				$this->model->table()->reconcileGroups($project->id, $project->owned_by_group);
-				$this->model->table()->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+				$this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group);
+				$this->model->table('Owner')->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
 			}
 		}
 	}
