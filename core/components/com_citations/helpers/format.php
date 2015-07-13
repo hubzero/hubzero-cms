@@ -190,11 +190,6 @@ class Format
 		$hub_name = \Config::get('sitename');
 		$hub_url  = rtrim(\Request::base(), '/');
 
-		if (is_object($citation))
-		{
-			$citation = $citation->toObject();
-		}
-
 		$c_type = 'journal';
 
 		$db = \App::get('db');
