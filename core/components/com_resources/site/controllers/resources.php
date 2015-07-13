@@ -960,8 +960,13 @@ class Resources extends SiteController
 	public function videoTask()
 	{
 		//get the request vars
-		$parent = Request::getInt('id', '');
+		$parent = Request::getInt('id', 0);
 		$child  = Request::getVar('resid', '');
+
+		if (!$parent || !$child)
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
 
 		//load resource
 		$activechild = new Resource($this->database);
@@ -974,8 +979,14 @@ class Resources extends SiteController
 		}
 
 		//get manifest
-		$manifest = $this->getVideoManifestForResource( $activechild );
-		$manifest = json_decode(file_get_contents( PATH_APP . $manifest));
+		$manifest = $this->getVideoManifestForResource($activechild);
+
+		if (!file_exists(PATH_APP . $manifest))
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
+
+		$manifest = json_decode(file_get_contents(PATH_APP . $manifest));
 
 		//media tracking object
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatracking.php');
