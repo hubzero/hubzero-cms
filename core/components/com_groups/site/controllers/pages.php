@@ -138,7 +138,8 @@ class Pages extends Base
 		$this->view->title  = Lang::txt('COM_GROUPS_PAGES_MANAGE') . ': ' . $this->group->get('description');
 
 		// get view notifications
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->notifications = $this->getNotifications();
+		$this->view->notifications = ($this->view->notifications) ? $this->view->notifications : array();
 		$this->view->group         = $this->group;
 		$this->view->config        = $this->config;
 
@@ -229,7 +230,8 @@ class Pages extends Base
 		$this->_buildPathway();
 
 		// get view notifications
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->notifications = $this->getNotifications();
+		$this->view->notifications = ($this->view->notifications) ? $this->view->notifications : array();
 		$this->view->group         = $this->group;
 		$this->view->config        = $this->config;
 
@@ -477,7 +479,8 @@ class Pages extends Base
 		$this->_buildPathway();
 
 		// get view notifications
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->notifications = $this->getNotifications();
+		$this->view->notifications = ($this->view->notifications) ? $this->view->notifications : array();
 		$this->view->group         = $this->group;
 
 		//display layout

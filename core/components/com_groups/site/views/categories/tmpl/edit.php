@@ -49,7 +49,7 @@ if ($this->category->get('id'))
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="icon-prev prev btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>">
+			<li><a class="icon-prev prev btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#categories'); ?>">
 				<?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_MANAGE_PAGES'); ?>
 			</a></li>
 		</ul>

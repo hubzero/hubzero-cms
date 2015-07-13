@@ -85,7 +85,7 @@ class Archive extends Model
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new Category($result);
+							$results[$key] = new Page\Category($result);
 						}
 					}
 					$this->_categories = new ItemList($results);

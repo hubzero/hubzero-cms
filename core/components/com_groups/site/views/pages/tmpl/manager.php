@@ -33,7 +33,7 @@ defined('_HZEXEC_') or die();
 
 // add styles & scripts
 $this->css()
-	 ->js()
+     ->js()
      ->css('jquery.fancyselect.css', 'system')
      ->js('jquery.fancyselect', 'system')
      ->js('jquery.nestedsortable', 'system');
@@ -75,10 +75,10 @@ if (file_exists(PATH_CORE . DS . $this->group->getBasePath() . DS . 'pages' . DS
 
 	<div class="group-page-manager">
 		<ul class="tabs clearfix">
-			<li><a data-tab="pages" href="#pages"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
-			<li><a data-tab="categories" href="#categories"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
+			<li><a data-tab="pages" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages#pages'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
+			<li><a data-tab="categories" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages#categories'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
 			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-				<li><a data-tab="modules" href="#modules"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
+				<li><a data-tab="modules" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages#modules'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
 			<?php endif ;?>
 		</ul>
 
