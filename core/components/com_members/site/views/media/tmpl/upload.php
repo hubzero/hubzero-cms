@@ -52,18 +52,24 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 	$size = filesize(PATH_APP . $path . $pic);
 	list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . $pic);
 
-	$picture->src    = $path . $pic;
+	$picture->src    = substr(PATH_APP, strlen(PATH_ROOT)) . $path . $pic;
 	$picture->name   = $pic;
 	$picture->size   = \Hubzero\Utility\Number::formatBytes($size);
 	$picture->width  = $width . ' <abbr title="pixels">px</abbr>';
 	$picture->height = $height . ' <abbr title="pixels">px</abbr>';
+}
+
+$default = $this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif');
+if ($default == '/components/com_members/assets/img/profile.gif')
+{
+	$default = '/core/components/com_members/site/assets/img/profile.gif';
 }
 ?>
 <div id="ajax-upload-container">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data">
 		<h2><?php echo Lang::txt('Upload a New Profile Picture'); ?></h2>
 		<div id="ajax-upload-left">
-			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $this->escape($picture->name); ?>" data-default-pic="<?php echo $this->escape($this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')); ?>" />
+			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $this->escape($picture->name); ?>" data-default-pic="<?php echo $this->escape($default); ?>" />
 			<?php if ($this->profile->get("picture") != '') : ?>
 				<a href="#" id="remove-picture"><?php echo Lang::txt('[Remove Picture]'); ?></a>
 			<?php endif; ?>
@@ -78,15 +84,15 @@ if ($pic && file_exists(PATH_APP . $path . $pic))
 					</tr>
 					<tr>
 						<td class="key"><?php echo Lang::txt('Size:'); ?></td>
-						<td id="picture-size"><?php echo $this->escape($picture->size); ?></td>
+						<td id="picture-size"><?php echo $picture->size; ?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo Lang::txt('Width:'); ?></td>
-						<td id="picture-width"><?php echo $this->escape($picture->width); ?></td>
+						<td id="picture-width"><?php echo $picture->width; ?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo Lang::txt('Height:'); ?></td>
-						<td id="picture-height"><?php echo $this->escape($picture->height); ?></td>
+						<td id="picture-height"><?php echo $picture->height; ?></td>
 					</tr>
 				</tbody>
 			</table>

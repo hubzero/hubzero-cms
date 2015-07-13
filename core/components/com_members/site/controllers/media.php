@@ -241,7 +241,7 @@ class Media extends SiteController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => str_replace($uploadDirectory, '', $final_file),
-			'directory' => str_replace(PATH_APP, '', $uploadDirectory)
+			'directory' => str_replace(PATH_ROOT, '', $uploadDirectory)
 		));
 	}
 
@@ -298,8 +298,16 @@ class Media extends SiteController
 			return;
 		}
 
-		$size = filesize(PATH_APP . $dir . $file);
-		list($width, $height) = getimagesize(PATH_APP . $dir . $file);
+		$dir  = '/' . trim($dir, '/') . '/';
+		$file = ltrim($file, '/');
+
+		if (!file_exists(PATH_ROOT . $dir . $file))
+		{
+			return;
+		}
+
+		$size = filesize(PATH_ROOT . $dir . $file);
+		list($width, $height) = getimagesize(PATH_ROOT . $dir . $file);
 
 		$result = array();
 		$result['src']    = $dir . $file;
