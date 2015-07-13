@@ -68,7 +68,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	{
 		$html = '';
 
-		$sql = "SELECT * FROM #__stats_topvals WHERE top = '" . $s_top . "' AND datetime = '" . $dthis . "-00' AND period = '" . $period . "' ORDER BY rank";
+		$sql = "SELECT * FROM `#__stats_topvals` WHERE top = " . $database->quote($s_top) . " AND datetime = " . $database->quote($dthis) . "-00' AND period = " . $database->quote($period) . " ORDER BY rank";
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
@@ -173,7 +173,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html = '';
 		$count = 1;
 
-		$sql = 'SELECT DISTINCT id, title, published, ranking FROM #__resources WHERE published = "1" AND standalone = "1" AND type = "7" AND access != "4" AND access != "1" ORDER BY ranking DESC';
+		$sql = 'SELECT DISTINCT id, title, published, ranking FROM `#__resources` WHERE published = "1" AND standalone = "1" AND type = "7" AND access != "4" AND access != "1" ORDER BY ranking DESC';
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
@@ -235,7 +235,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	{
 		$html = '';
 
-		$sql = 'SELECT COUNT(DISTINCT c.id) FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1"';
+		$sql = 'SELECT COUNT(DISTINCT c.id) FROM `#__resources` r, `#__citations` c, `#__citations_assoc` ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1"';
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 
@@ -258,7 +258,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		}
 
 		$count = 1;
-		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1" GROUP BY r.id ORDER BY citations DESC';
+		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM `#__resources` r, `#__citations` c, `#__citations_assoc` ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1" GROUP BY r.id ORDER BY citations DESC';
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
@@ -678,7 +678,11 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$period = Request::getVar('period', '12');
 		$dthis  = Request::getVar('dthis', date('Y') . '-'.date('m'));
-		$s_top  = Request::getVar('top', '2');
+		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
+		{
+			$dthis = date('Y') . '-'.date('m');
+		}
+		$s_top  = Request::getInt('top', '2');
 
 		$html = '';
 
@@ -693,7 +697,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t\t".Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
 		$html .= "\t\t\t" . '<select name="top">' . "\n";
 
-		$sql = "SELECT * FROM #__stats_tops ORDER BY id";
+		$sql = "SELECT * FROM `#__stats_tops` ORDER BY id";
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 		if ($results)
