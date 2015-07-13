@@ -317,7 +317,7 @@ class Orcid extends SiteController
 		}
 
 		// combine
-		$records = array_merge($fnames, $lnames, $emails);
+		$records = array_merge((array)$fnames, (array)$lnames, (array)$emails);
 
 		ob_end_clean();
 		ob_start();
