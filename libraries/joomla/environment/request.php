@@ -550,9 +550,9 @@ class JRequest
 	 * @deprecated  12.1 Use JSession::checkToken() instead.
 	 * @since       11.1
 	 */
-	public static function checkToken($method = 'post')
+	public static function checkToken($method = 'post', $capture = false)
 	{
-		return JSession::checkToken($method);
+		return JSession::checkToken($method, $capture);
 
 		$token = JSession::getFormToken();
 		if (!self::getVar($token, '', $method, 'alnum'))

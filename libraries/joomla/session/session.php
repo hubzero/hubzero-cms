@@ -333,7 +333,8 @@ class JSession extends JObject
 				return $result;
 			}
 
-			throw new Exception(JText::_('JINVALID_TOKEN'), 403);
+			//throw new Exception(JText::_('JINVALID_TOKEN'), 403);
+			JError::raiseError(403, JText::_('JINVALID_TOKEN'));
 		}
 
 		return $result;
