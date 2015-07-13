@@ -870,9 +870,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							$img = '';
 							$citizenship = '';
-							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
+							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(Request::base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
+								$img = '<img src="' . rtrim(Request::base(true), '/') . '/core/components/' . $this->option . '/site/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name
@@ -971,9 +971,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							$img = '';
 							$residence = '';
-							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
+							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(Request::base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
+								$img = '<img src="' . rtrim(Request::base(true), '/') . '/core/components/' . $this->option . '/site/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name
