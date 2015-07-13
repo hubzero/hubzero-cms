@@ -30,9 +30,9 @@ $base = rtrim(str_replace('/administrator', '', $base), '/');
 
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 
-$projectUrl  = rtrim($base, '/') . '/' . trim($sef, '/')
+$projectUrl  = rtrim($base, '/') . '/' . trim($sef, '/');
 $sef 		.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
-$link        = rtrim($base, '/') . '/' . trim($sef, '/')
+$link        = rtrim($base, '/') . '/' . trim($sef, '/');
 
 // Main message
 if ($this->uid == $this->project->get('created_by_user') && !$this->project->isProvisioned())
