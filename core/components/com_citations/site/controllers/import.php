@@ -33,22 +33,17 @@ namespace Components\Citations\Site\Controllers;
 use Components\Citations\Tables\Citation;
 use Components\Citations\Tables\Type;
 use Components\Citations\Tables\Tags;
-use Components\Citations\Models\Importer;
 use Hubzero\Component\SiteController;
 use Exception;
 use Filesystem;
 use Pathway;
 use Request;
 use Notify;
-use Config;
 use Route;
 use Event;
 use User;
 use Date;
 use Lang;
-use App;
-
-include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'importer.php');
 
 /**
  * Citations controller class for importing citation entries
@@ -71,13 +66,6 @@ class Import extends SiteController
 			);
 			return;
 		}
-
-		$this->importer = new Importer(
-			App::get('db'),
-			App::get('filesystem'),
-			App::get('config')->get('tmp_path') . DS . 'citations',
-			App::get('session')->getId()
-		);
 
 		$this->registerTask('import_upload', 'upload');
 		$this->registerTask('import_review', 'review');
@@ -131,8 +119,7 @@ class Import extends SiteController
 		$this->_buildPathway();
 
 		//citation temp file cleanup
-		//$this->_citationCleanup();
-		$this->importer->cleanup();
+		$this->_citationCleanup();
 
 		// Instantiate a new view
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
@@ -159,7 +146,7 @@ class Import extends SiteController
 
 		// make sure we have a file
 		$filename = $file->getClientOriginalName();
-		if ($filename == '')
+		if ($filename == "")
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
@@ -201,27 +188,51 @@ class Import extends SiteController
 			return;
 		}
 
-		if (!isset($citations[0]['attention']))
+		// get the session object
+		$session   = App::get('session');
+		$sessionid = $session->getId();
+
+		// write the citation data to files
+		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+
+		// in the case that the tmp directory does not exist, create it otherwise this breaks.
+		if (!is_dir($this->getTmpPath()))
 		{
-			$citations[0]['attention'] = '';
+			\Filesystem::makeDirectory($this->getTmpPath(), 0755);
 		}
 
-		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
+		if (isset($citations[0]['attention']))
 		{
-			Notify::error(Lang::txt('Unable to write temporary file.'));
+			$file1 = \Filesystem::write($p1, serialize($citations[0]['attention']));
+		}
+		else
+		{
+			$file1 = \Filesystem::write($p1, '');
 		}
 
-		if (!$this->importer->writeRequiresNoAttention($citations[0]['no_attention']))
-		{
-			Notify::error(Lang::txt('Unable to write temporary file.'));
-		}
+		$file2 = \Filesystem::write($p2, serialize($citations[0]['no_attention']));
 
 		//get group ID
 		$group = Request::getVar('group');
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=import_review' . ($group ? '&group=' . $group : ''))
-		);
+		if (isset($group) && $group != '')
+		{
+			// review imported citations
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=import_review&group=' . $group)
+			);
+		}
+		else
+		{
+			// review imported citations
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=import_review')
+			);
+		}
+		die;
+		return;
+
 	}
 
 	/**
@@ -231,20 +242,53 @@ class Import extends SiteController
 	 */
 	public function reviewTask()
 	{
-		$citations_require_attention    = $this->importer->readRequiresAttention();
-		$citations_require_no_attention = $this->importer->readRequiresNoAttention();
+		// get the session object
+		$session   = App::get('session');
+		$sessionid = $session->getId();
+
+		// get the citations
+		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$citations_require_attention    = null;
+		$citations_require_no_attention = null;
+		if (file_exists($p1))
+		{
+			$citations_require_attention    = unserialize(Filesystem::read($p1));
+		}
+		if (file_exists($p2))
+		{
+			$citations_require_no_attention = unserialize(Filesystem::read($p2));
+		}
 
 		$group = Request::getVar('group');
 
-		// make sure we have some citations
-		if (!$citations_require_attention && !$citations_require_no_attention)
+		if (isset($group) && $group != '')
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=import' . ($group ? '&group=' . $group : '')),
-				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-				'error'
-			);
-			return;
+			$this->view->group = $group;
+
+			// make sure we have some citations
+			if (!$citations_require_attention && !$citations_require_no_attention)
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&task=import&group=' . $group),
+					Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+					'error'
+				);
+				return;
+			}
+		}
+		else
+		{
+			// make sure we have some citations
+			if (!$citations_require_attention && !$citations_require_no_attention)
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&task=import'),
+					Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+					'error'
+				);
+				return;
+			}
 		}
 
 		// Set the page title
@@ -252,6 +296,9 @@ class Import extends SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
+
+		// include tag handler
+		//require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 		// Instantiate a new view
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
@@ -272,8 +319,15 @@ class Import extends SiteController
 	 */
 	public function saveTask()
 	{
-		$cites_require_attention    = $this->importer->readRequiresAttention();
-		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
+		// get the session object
+		$session   = App::get('session');
+		$sessionid = $session->getId();
+
+		// read in contents of citations file
+		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$cites_require_attention    = unserialize(Filesystem::read($p1));
+		$cites_require_no_attention = unserialize(Filesystem::read($p2));
 
 		// action for citations needing attention
 		$citations_action_attention = Request::getVar('citation_action_attention', array());
@@ -293,23 +347,201 @@ class Import extends SiteController
 		}
 
 		// vars
+		$citations_saved     = array();
+		$citations_not_saved = array();
+		$citations_error     = array();
+		$now = Date::toSql();
+		$user = User::get('id');
 		$allow_tags   = $this->config->get('citation_allow_tags', 'no');
 		$allow_badges = $this->config->get('citation_allow_badges', 'no');
 
-		$this->importer->set('user', User::get('id'));
-		if ($group = Request::getVar('group'))
+		// loop through each citation that required attention from user
+		if ($cites_require_attention)
 		{
-			$this->importer->set('scope', 'group');
-			$this->importer->set('scope_id', $group);
-		}
-		$this->importer->setTags($allow_tags == 'yes');
-		$this->importer->setBadges($allow_badges == 'yes');
+			foreach ($cites_require_attention as $k => $cra)
+			{
+				$cc = new Citation($this->database);
 
-		// Process
-		$results = $this->importer->process(
-			$citations_action_attention,
-			$citations_action_no_attention
-		);
+				// add a couple of needed keys
+				$cra['uid'] = $user;
+				$cra['created'] = $now;
+
+				// reset tags and badges
+				$tags = '';
+				$badges = '';
+
+				// remove errors
+				unset($cra['errors']);
+
+				// if tags were sent over
+				if (array_key_exists('tags', $cra))
+				{
+					$tags = $cra['tags'];
+					unset($cra['tags']);
+				}
+
+				// if badges were sent over
+				if (array_key_exists('badges', $cra))
+				{
+					$badges = $cra['badges'];
+					unset($cra['badges']);
+				}
+
+				//take care fo type
+				$ct = new Type($this->database);
+				$types = $ct->getType();
+
+				$type = '';
+				foreach ($types as $t)
+				{
+					if (strtolower($t['type_title']) == strtolower($cra['type']))
+					{
+						$type = $t['id'];
+					}
+				}
+				$cra['type'] = ($type) ? $type : '1';
+
+				switch ($citations_action_attention[$k])
+				{
+					case 'overwrite':
+						$cra['id'] = $cra['duplicate'];
+					break;
+
+					case 'both':
+					break;
+
+					case 'discard':
+						$citations_not_saved[] = $cra;
+						continue 2;
+					break;
+				}
+
+				// remove duplicate flag
+				unset($cra['duplicate']);
+
+				//sets group if set
+				$group = Request::getVar('group');
+				if (isset($group) && $group != '')
+				{
+					$cra['gid'] = $group;
+					$cra['scope'] = 'group';
+				}
+
+				// save the citation
+				if (!$cc->save($cra))
+				{
+					$citations_error[] = $cra;
+				}
+				else
+				{
+					// tags
+					if ($allow_tags == 'yes' && isset($tags))
+					{
+						$this->_tagCitation($user, $cc->id, $tags, '');
+					}
+
+					// badges
+					if ($allow_badges == 'yes' && isset($badges))
+					{
+						$this->_tagCitation($user, $cc->id, $badges, 'badge');
+					}
+
+					// add the citattion to the saved
+					$citations_saved[] = $cc->id;
+				}
+			}
+		}
+
+		//
+		if ($cites_require_no_attention)
+		{
+			foreach ($cites_require_no_attention as $k => $crna)
+			{
+				// new citation object
+				$cc = new Citation($this->database);
+
+				// add a couple of needed keys
+				$crna['uid'] = $user;
+				$crna['created'] = $now;
+
+				// reset tags and badges
+				$tags = '';
+				$badges = '';
+
+				// remove errors
+				unset($crna['errors']);
+
+				// if tags were sent over
+				if (array_key_exists('tags', $crna))
+				{
+					$tags = $crna['tags'];
+					unset($crna['tags']);
+				}
+
+				// if badges were sent over
+				if (array_key_exists('badges', $crna))
+				{
+					$badges = $crna['badges'];
+					unset($crna['badges']);
+				}
+
+				// verify we haad this one checked to be submitted
+				if ($citations_action_no_attention[$k] != 1)
+				{
+					$citations_not_saved[] = $crna;
+					continue;
+				}
+
+				// take care fo type
+				$ct = new Type($this->database);
+				$types = $ct->getType();
+
+				$type = '';
+				foreach ($types as $t)
+				{
+					// TODO: undefined index type? I just suppressed the error b/c I'm not sure what the logic is supposed to be /SS
+					if (strtolower($t['type_title']) == strtolower($crna['type']))
+					{
+						$type = $t['id'];
+					}
+				}
+				$crna['type'] = ($type) ? $type : '1';
+
+				// remove duplicate flag
+				unset($crna['duplicate']);
+
+				//sets group if set
+				$group = Request::getVar('group');
+				if (isset($group) && $group != '')
+				{
+					$crna['gid'] = $group;
+					$crna['scope'] = 'group';
+				}
+
+				// save the citation
+				if (!$cc->save($crna))
+				{
+					$citations_error[] = $crna;
+				}
+				else
+				{
+					// tags
+					if ($allow_tags == 'yes' && isset($tags))
+					{
+						$this->_tagCitation($user, $cc->id, $tags, '');
+					}
+
+					// badges
+					if ($allow_badges == 'yes' && isset($badges))
+					{
+						$this->_tagCitation($user, $cc->id, $badges, 'badge');
+					}
+
+					// add the citattion to the saved
+					$citations_saved[] = $cc->id;
+				}
+			}
+		}
 
 		if (isset($group) && $group != '')
 		{
@@ -318,30 +550,30 @@ class Import extends SiteController
 			$cn = $gob->getName($group);
 
 			App::redirect(
-				Route::url('index.php?option=com_groups&cn=' . $cn . '&active=citations&action=dashboard')
+				Route::url('index.php?option=com_groups' . DS . $cn . DS . 'citations&action=dashboard')
 			);
 		}
 		else
 		{
 			// success message a redirect
 			Notify::success(
-				Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($results['saved'])),
+				Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
 				'citations'
 			);
 
 			// if we have citations not getting saved
-			if (count($results['not_saved']) > 0)
+			if (count($citations_not_saved) > 0)
 			{
 				Notify::warning(
-					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($results['not_saved'])),
+					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
 					'citations'
 				);
 			}
 
-			if (count($results['error']) > 0)
+			if (count($citations_error) > 0)
 			{
 				Notify::error(
-					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($results['error'])),
+					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
 					'citations'
 				);
 			}
@@ -350,12 +582,13 @@ class Import extends SiteController
 			$session = App::get('session');
 
 			//ids of sessions saved and not saved
-			$session->set('citations_saved', $results['saved']);
-			$session->set('citations_not_saved', $results['not_saved']);
-			$session->set('citations_error', $results['error']);
+			$session->set('citations_saved', $citations_saved);
+			$session->set('citations_not_saved', $citations_not_saved);
+			$session->set('citations_error', $citations_error);
 
 			//delete the temp files that hold citation data
-			$this->importer->cleanup(true);
+			Filesystem::delete($p1);
+			Filesystem::delete($p2);
 
 			//redirect
 			App::redirect(
@@ -431,6 +664,62 @@ class Import extends SiteController
 
 		//display view
 		$this->view->display();
+	}
+
+	/**
+	 * Add tags to a citation
+	 *
+	 * @param   integer  $userid      User ID
+	 * @param   integer  $objectid    Citation ID
+	 * @param   string   $tag_string  Comma separated list of tags
+	 * @param   string   $label       Label
+	 * @return  void
+	 */
+	protected function _tagCitation($userid, $objectid, $tag_string, $label)
+	{
+		if ($tag_string)
+		{
+			$ct = new Tags($objectid);
+			$ct->setTags($tag_string, $userid, 0, 1, $label);
+		}
+	}
+
+	/**
+	 * Delete old files
+	 *
+	 * @return  void
+	 */
+	protected function _citationCleanup()
+	{
+		$p = $this->getTmpPath();
+
+		if (is_dir($p))
+		{
+			$tmp = \Filesystem::files($p);
+
+			if ($tmp)
+			{
+				foreach ($tmp as $t)
+				{
+					$ft = filemtime($p . DS . $t);
+
+					if ($ft < strtotime("-1 DAY"))
+					{
+						Filesystem::delete($p . DS . $t);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Method to build and set the document title
+	 *
+	 * @return  void
+	 */
+	protected function getTmpPath()
+	{
+		return Config::get('tmp_path') . DS . 'citations';
 	}
 
 	/**

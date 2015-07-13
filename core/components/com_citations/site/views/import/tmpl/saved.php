@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author	Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -32,12 +32,11 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->js();
+	 ->js();
 
 //citation params
-$label    = $this->config->get('citation_label', 'number');
-$rollover = $this->config->get('citation_rollover', 'no');
-
+$label = $this->config->get("citation_label", "number");
+$rollover = $this->config->get("citation_rollover", "no");
 $citationsFormat = new \Components\Citations\Helpers\Format($this->database);
 $template = $citationsFormat->getDefaultFormat();
 
@@ -45,138 +44,101 @@ $template = $citationsFormat->getDefaultFormat();
 $batch_download = $this->config->get("citation_batch_download", 1);
 
 //do we want to number li items
-if ($label == 'none')
-{
-	$citations_label_class = ' no-label';
+if ($label == "none") {
+	$citations_label_class = " no-label";
+} elseif ($label == "type") {
+	$citations_label_class = " type-label";
+} elseif ($label == "both") {
+	$citations_label_class = " both-label";
 }
-elseif ($label == 'type')
-{
-	$citations_label_class = ' type-label';
-}
-elseif ($label == 'both')
-{
-	$citations_label_class = ' both-label';
-}
-else
-{
-	$citations_label_class = ' both-label';
+else{
+	$citations_label_class = " both-label";
 }
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li>
-				<a class="icon-browse browse btn" href="<?php echo Route::url('index.php?option=com_citations&task=add'); ?>">
-					<?php echo Lang::txt('COM_CITATIONS_BACK'); ?>
-				</a>
-			</li>
-			<li>
-				<a class="btn icon-upload" href="<?php echo Route::url('index.php?option='.$this->option.'&task=import'); ?>">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?>
-				</a>
-			</li>
-		</ul>
-	</div>
 </header>
 
 <section id="import" class="section">
-	<div class="section-inner">
+
+	<?php
+		foreach ($this->messages as $message) {
+			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+		}
+	?>
+
+	<ul id="steps">
+		<li><a href="<?php echo Request::base(true); ?>/citations/import" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
+		<li><a href="<?php echo Request::base(true); ?>/citations/import_review" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
+		<li><a href="<?php echo Request::base(true); ?>/citations/import_saved" class="active"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
+	</ul><!-- / #steps -->
+
+	<?php if (count($this->citations) > 0) : ?>
 		<?php
-			foreach ($this->messages as $message)
-			{
-				echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
-			}
+			$formatter = new \Components\Citations\Helpers\Format();
+			$formatter->setTemplate($template);
+
+			$counter = 1;
 		?>
-
-		<ul id="steps">
-			<li>
-				<a href="<?php echo Request::base(true); ?>/citations/import" class="passed">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo Request::base(true); ?>/citations/import_review" class="passed">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo Request::base(true); ?>/citations/import_saved" class="active">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
-				</a>
-			</li>
-		</ul><!-- / #steps -->
-
-		<?php if (count($this->citations) > 0) : ?>
-			<?php
-				$formatter = new \Components\Citations\Helpers\Format();
-				$formatter->setTemplate($template);
-
-				$counter = 1;
-			?>
-
-			<h3><?php echo Lang::txt('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
-
-			<table class="citations">
-				<tbody>
-					<?php foreach ($this->citations as $cite) : ?>
-						<tr>
-							<?php if ($label != "none") : ?>
-								<td class="citation-label <?php echo $this->escape($citations_label_class); ?>">
-									<?php
-										$type = '';
-										foreach ($this->types as $t)
-										{
-											if ($t['id'] == $cite->type)
-											{
-												$type = $t['type_title'];
-											}
+		<div style="float:right;" class="back-links">
+			<a href="<?php echo Request::base(true); ?>/citations/import"><?php echo Lang::txt('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?></a> | <a href="<?php echo Request::base(true); ?>/citations/browse"><?php echo Lang::txt('COM_CITATIONS_IMPORT_BROWSE_ALL'); ?></a>
+		</div>
+		<h3><?php echo Lang::txt('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
+		<table class="citations">
+			<tbody>
+				<?php foreach ($this->citations as $cite) : ?>
+					<tr>
+						<?php if ($label != "none") : ?>
+							<td class="citation-label <?php echo $citations_label_class; ?>">
+								<?php
+									$type = "";
+									foreach ($this->types as $t) {
+										if ($t['id'] == $cite->type) {
+											$type = $t['type_title'];
 										}
-										$type = ($type != '') ? $type : 'Generic';
+									}
+									$type = ($type != '') ? $type : "Generic";
 
-										switch ($label)
-										{
-											case 'number':
-												echo "<span class=\"number\">{$counter}.</span>";
-												break;
-											case 'type':
-												echo "<span class=\"type\">{$type}</span>";
-												break;
-											case 'both':
-												echo "<span class=\"number\">{$counter}.</span>";
-												echo "<span class=\"type\">{$type}</span>";
-												break;
-										}
-									?>
-								</td>
-							<?php endif; ?>
-							<td class="citation-container">
-								<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
-
-								<?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
-									<div class="citation-notes">
-										<p><?php echo nl2br($cite->abstract); ?></p>
-									</div>
-								<?php endif; ?>
-
-								<div class="citation-details">
-									<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
-
-									<?php if ($this->config->get('citation_show_badges', 'no') == 'yes') : ?>
-										<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
-									<?php endif; ?>
-
-									<?php if ($this->config->get('citation_show_tags', 'no') == 'yes') : ?>
-										<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
-									<?php endif; ?>
-								</div>
+									switch ($label)
+									{
+										case 'number':
+											echo "<span class=\"number\">{$counter}.</span>";
+											break;
+										case 'type':
+											echo "<span class=\"type\">{$type}</span>";
+											break;
+										case 'both':
+											echo "<span class=\"number\">{$counter}.</span>";
+											echo "<span class=\"type\">{$type}</span>";
+											break;
+									}
+								?>
 							</td>
-						</tr>
-						<?php $counter++; ?>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		<?php endif; ?>
-	</div>
+						<?php endif; ?>
+						<td class="citation-container">
+							<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
+
+							<?php if ($rollover == "yes" && $cite->abstract != "") : ?>
+								<div class="citation-notes"><p><?php echo nl2br($cite->abstract); ?></p></div>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
+							<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
+
+							<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+								<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+							<?php endif; ?>
+
+							<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+								<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<?php $counter++; ?>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	<?php endif; ?>
 </section><!-- / .section -->
