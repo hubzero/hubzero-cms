@@ -97,7 +97,7 @@ $pid = JRequest::getInt('publication', 0);
 			<div class="grid">
 				<div class="col span6">
 					<label for="type">
-						<?php echo JText::_('COM_CITATIONS_TYPE'); ?>: <span class="required"><?php echo JRequest::_('JOPTION_REQUIRED'); ?></span>
+						<?php echo JText::_('COM_CITATIONS_TYPE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span>
 						<select name="fields[type]" id="type">
 							<option value=""> <?php echo JText::_('COM_CITATIONS_TYPE_SELECT'); ?></option>
 							<?php
@@ -180,7 +180,7 @@ $pid = JRequest::getInt('publication', 0);
 			</label>
 
 			<label for="title">
-				<?php echo JText::_('COM_CITATIONS_TITLE_CHAPTER'); ?>: <span class="required"><?php echo JRequest::_('JOPTION_REQUIRED'); ?></span>
+				<?php echo JText::_('COM_CITATIONS_TITLE_CHAPTER'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span>
 				<input type="text" name="fields[title]" id="title" size="30" maxlength="250" value="<?php echo $this->escape($this->row->title); ?>" />
 			</label>
 
