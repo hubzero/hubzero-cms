@@ -238,7 +238,7 @@ class Setup extends Base
 		$current = array_search($this->section, $setupSteps);
 		if ($new && $current > 0)
 		{
-			// Error
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
 		}
 

@@ -501,7 +501,10 @@ class Base extends SiteController
 		$subject_pending = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->model->get('alias');
 
 		// Message body
-		$eview = new \Hubzero\Component\View( array('name'=>'emails', 'layout' =>'invite_plain') );
+		$eview = new \Hubzero\Mail\View(array(
+			'name'   => 'emails',
+			'layout' => 'invite_plain'
+		));
 		$eview->option 			= $this->_option;
 		$eview->project 		= $this->model;
 		$eview->delimiter  		= '';

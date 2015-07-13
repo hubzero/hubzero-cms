@@ -459,6 +459,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_TEAM_NO_NAMES_SUPPLIED') );
 			}
+			else
+			{
+				return;
+			}
 		}
 		else
 		{
@@ -755,6 +759,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$url  = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&task=';
 			$url .= $setup ? 'setup' : 'edit';
 			$url .= '&active=team';
+
 			App::redirect(Route::url($url));
 			return;
 		}

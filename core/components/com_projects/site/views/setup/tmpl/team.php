@@ -86,6 +86,7 @@ $this->view('_title')
 				<?php } ?>
 			</div>
 			<fieldset>
+				<legend><?php echo Lang::txt('COM_PROJECTS_ADD_TEAM'); ?></legend>
 				<?php 
 				// Display form fields
 				$this->view('_form')
@@ -96,7 +97,6 @@ $this->view('_title')
 				     ->set('section', $this->section)
 				     ->display();
 				?>
-				<legend><?php echo Lang::txt('COM_PROJECTS_ADD_TEAM'); ?></legend>
 				<div id="cbody">
 					<?php echo $this->content; ?>
 				</div>

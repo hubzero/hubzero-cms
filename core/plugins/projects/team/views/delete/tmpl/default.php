@@ -39,11 +39,13 @@ $self = in_array($this->aid, $this->checked) ? 1 : 0;
 <?php
 if (!$this->getError()) {
 ?>
-<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->model->link()); ?>">
-	<fieldset >
+<form id="hubForm-ajax" method="get" action="<?php echo Route::url($this->model->link('team') . '&action=deleteit'); ?>">
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="action" value="deleteit" />
+		<input type="hidden" name="controller" value="projects" />
 		<input type="hidden" name="active" value="team" />
+		<input type="hidden" name="ajax" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p class="anote"><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE_TEAM_MEMBERS_NOTE'); ?></p>
 		<p><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE_TEAM_MEMBERS_CONFIRM'); ?></p>

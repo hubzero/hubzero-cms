@@ -25,23 +25,23 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = Request::root();
+$base = rtrim(Request::base(), '/');
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
-$link = rtrim($base, DS) . DS . trim($sef, DS);
+$link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 if ($this->uid == $this->project->get('created_by_user'))
 {
 	$message  = Lang::txt('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
 	$message .= "\n";
-	$message .= '-------------------------------'."\n";
+	$message .= '-------------------------------' . "\n";
 }
 else {
-	$message  = $this->project->owner('name').' ';
+	$message  = $this->project->owner('name') . ' ';
 	$message .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
 	$message .= ' "' . $this->project->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
 	$message .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
-	$message .= '-------------------------------'."\n";
+	$message .= '-------------------------------' . "\n";
 }
 
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title')
@@ -52,21 +52,21 @@ $message .= $this->project->groupOwner()
 			 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 			 : $this->project->owner('name');
 $message .= "\n";
-$message .= Lang::txt('COM_PROJECTS_EMAIL_URL').': ' . $link . "\n\n";
+$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n\n";
 
 $sef .= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
-$link = rtrim($base, DS) . DS . trim($sef, DS);
+$link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 if ($this->uid)
 {
-	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT') . "\n";
 }
 else
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . Config::get('sitename') . ' ';
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
-$message .= $link ."\n\n";
+$message .= $link . "\n\n";
 
 $message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
