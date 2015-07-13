@@ -95,6 +95,7 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 				else // otherwise, send to profile to fill in missing info
 				{
 					Request::setVar('option', 'com_members');
+					Request::setVar('task',   'view');
 					Request::setVar('id',      User::get('id'));
 					Request::setVar('active', 'profile');
 				}
