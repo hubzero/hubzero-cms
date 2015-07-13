@@ -173,8 +173,13 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			// Do we need to perform any actions?
 			if ($action)
 			{
-				$action = strtolower(trim($action));
+				if (is_numeric($action))
+				{
+					Request::setVar('member', $action);
+					$action = 'profile';
+				}
 
+				$action = strtolower(trim($action));
 				if (!method_exists($this, $action))
 				{
 					App::abort(404, Lang::txt('PLG_GROUPS_MESSAGES_ERROR_ACTION_NOTFOUND'));
@@ -1404,6 +1409,116 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// all good
 		return true;
+	}
+
+	/**
+	 * Display a member's profile
+	 *
+	 * @return  void
+	 */
+	private function profile()
+	{
+		if (!$this->group->isSuperGroup())
+		{
+			return;
+		}
+
+		$id = Request::getInt('member', 0);
+		$profile = \Hubzero\User\Profile::getInstance($id);
+
+		if (!$profile)
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_PROFILE_NOT_FOUND'));
+		}
+
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+
+		// Find out which fields are hidden, optional, or required
+		$registration = new \Hubzero\Base\Object();
+		$registration->Fullname     = $this->_registrationField('registrationFullname','RRRR','edit');
+		$registration->Email        = $this->_registrationField('registrationEmail','RRRR','edit');
+		$registration->URL          = $this->_registrationField('registrationURL','HHHH','edit');
+		$registration->Phone        = $this->_registrationField('registrationPhone','HHHH','edit');
+		$registration->Employment   = $this->_registrationField('registrationEmployment','HHHH','edit');
+		$registration->Organization = $this->_registrationField('registrationOrganization','HHHH','edit');
+		$registration->Citizenship  = $this->_registrationField('registrationCitizenship','HHHH','edit');
+		$registration->Residency    = $this->_registrationField('registrationResidency','HHHH','edit');
+		$registration->Sex          = $this->_registrationField('registrationSex','HHHH','edit');
+		$registration->Disability   = $this->_registrationField('registrationDisability','HHHH','edit');
+		$registration->Hispanic     = $this->_registrationField('registrationHispanic','HHHH','edit');
+		$registration->Race         = $this->_registrationField('registrationRace','HHHH','edit');
+		$registration->Interests    = $this->_registrationField('registrationInterests','HHHH','edit');
+		$registration->Reason       = $this->_registrationField('registrationReason','HHHH','edit');
+		$registration->OptIn        = $this->_registrationField('registrationOptIn','HHHH','edit');
+		$registration->address      = $this->_registrationField('registrationAddress','OOOO','edit');
+		$registration->ORCID        = $this->_registrationField('registrationORCID','OOOO','edit');
+
+		// Set the page title
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($profile->get('name'))));
+
+		$params = Plugin::params('members', 'profile');
+		$params->merge(new \Hubzero\Config\Registry($profile->get('params')));
+
+		// Display form asking for a reason to deny membership
+		$view = $this->view('default', 'profile');
+		$view->option       = $this->_option;
+		$view->group        = $this->group;
+		$view->authorized   = $this->authorized;
+		$view->profile      = $profile;
+		$view->registration = $registration;
+		$view->params       = $params;
+		$view->membership_control = $this->membership_control;
+
+		$this->_output = $view->loadTemplate();
+	}
+
+	/**
+	 * Return if a field is required, option, read only, or hidden
+	 *
+	 * @param   string  $name     Property name
+	 * @param   string  $default  Default property value
+	 * @param   string  $task     Task to look up value for
+	 * @return  string
+	 */
+	private function _registrationField($name, $default, $task = 'create')
+	{
+		switch ($task)
+		{
+			case 'register':
+			case 'create': $index = 0; break;
+			case 'proxy':  $index = 1; break;
+			case 'update': $index = 2; break;
+			case 'edit':   $index = 3; break;
+			default:       $index = 0; break;
+		}
+
+		$hconfig    = Component::params('com_members');
+		$default    = str_pad($default, 4, '-');
+		$configured = $hconfig->get($name);
+
+		if (empty($configured))
+		{
+			$configured = $default;
+		}
+		$length = strlen($configured);
+		if ($length > $index)
+		{
+			$value = substr($configured, $index, 1);
+		}
+		else
+		{
+			$value = substr($default, $index, 1);
+		}
+
+		switch ($value)
+		{
+			case 'R': return(REG_REQUIRED);
+			case 'O': return(REG_OPTIONAL);
+			case 'U': return(REG_READONLY);
+			case 'H':
+			case '-':
+			default : return(REG_HIDE);
+		}
 	}
 }
 

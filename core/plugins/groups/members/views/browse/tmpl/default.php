@@ -223,7 +223,7 @@ $option = 'com_groups';
 								if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser))
 								{
 									$inviteemail = true;
-									$pic = rtrim(Request::base(true), '/') . '/components/com_groups/assets/img/emailthumb.png';
+									$pic = rtrim(Request::base(true), '/') . '/core/components/com_groups/site/assets/img/emailthumb.png';
 								}
 								else if (!is_object($u))
 								{
@@ -260,6 +260,8 @@ $option = 'com_groups';
 								{
 									$cls .= ' me';
 								}
+
+								$url = $this->group->isSuperGroup() ? 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&scope=' . $u->get('uidNumber') : $u->getLink();
 						?>
 						<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 							<td class="photo">
@@ -275,7 +277,7 @@ $option = 'com_groups';
 									<span class="status"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 								<?php } else { ?>
 									<span class="name">
-										<?php if ($u->get('public')) { ?><a href="<?php echo Route::url($u->getLink()); ?>"><?php } ?>
+										<?php if ($u->get('public')) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?>
 											<?php
 												//handles the comma
 												$surname = $u->get('surname');

@@ -1,0 +1,72 @@
+/**
+ * @package     hubzero-cms
+ * @file        /core/plugins/groups/members/profile.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.member-profile {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-bottom: 1px solid #efefef;
+	}
+	.member-profile li {
+		overflow: hidden;
+		margin: 0;
+		padding: 1em;
+		border-top: 1px solid #efefef;
+		position: relative;
+	}
+	.member-profile li .field-content {
+		width: 95%;
+		float: left;
+	}
+	.member-profile li .field-content .key {
+		float: left;
+		position: relative;
+		width: 20%;
+		margin: 0 2% 0 3%;
+		padding: 0;
+		font-weight: bold;
+		color: #777;
+	}
+	.member-profile li .field-content .value {
+		float: left;
+		width: 75%;
+		color: #222;
+	}
+	.member-profile li.profile-bio p:first-child {
+		margin-top: 0;
+	}
+
+/* Member Address */
+	.member-address-form {
+	}
+	.member-address-form fieldset legend {
+		padding: 0.5em 2% !important;
+		width: 96% !important;
+	}
+	.member-address-form fieldset p {
+		margin: 0 !important;
+		padding: 1em !important;
+	}
+	.icon-locate:before {
+		content: "\f041";
+	}
+	.section .address-links {
+		display: none;
+	}
+	.section.active .address-links {
+		display: block;
+	}
+	.profile-address .grid {
+		padding: 20px 0 0 0;
+		margin: 20px 0 0 0;
+		border-top: 1px solid #efefef;
+	}
+	.profile-address .grid:first-child {
+		margin: 0;
+		padding: 0;
+		border-top: none;
+	}

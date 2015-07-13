@@ -950,4 +950,72 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 	}
 
+	/**
+	 * Return a list of citations for a specific user
+	 *
+	 * @param   object  $group    Current group
+	 * @param   object  $profile  USer profile
+	 * @return  string
+	 */
+	public function onGroupMemberAfter($group, $profile)
+	{
+		$view = $this->view('default', 'member');
+		$view->group    = $group;
+		$view->option   = 'com_groups';
+		$view->task     = $this->_name;
+		$view->database = App::get('db');
+		$view->title    = Lang::txt(strtoupper($this->_name));
+
+		$view->citationTemplate = 'apa';
+
+		$view->filters['search'] = "";
+		$view->filters['type'] = '';
+		$view->filters['tag'] = '';
+		$view->filters['author'] = '';
+		$view->filters['publishedin'] = '';
+		$view->filters['year_start'] = '';
+		$view->filters['year_end'] = '';
+		$view->filters['startuploaddate'] = '';
+		$view->filters['enduploaddate'] = '';
+		$view->filters['sort'] = '';
+
+		// get the preferred labeling scheme
+		$view->label = null;
+
+		switch ($view->label)
+		{
+			case 'none':
+				$view->citations_label_class = 'no-label';
+			break;
+			case 'number':
+				$view->citations_label_class = 'number-label';
+			break;
+			case 'type':
+				$view->citations_label_class = 'type-label';
+			break;
+			case 'both':
+			default:
+				$view->citations_label_class = 'both-label';
+			break;
+		}
+
+		// enable coins support
+		$view->coins = 1;
+
+		// config
+		$view->config = Component::params('com_citations');
+
+		// types
+		$view->types = \Components\Citations\Models\Type::all();
+
+		// OpenURL
+		$openURL = $this->_handleOpenURL();
+		$view->openurl['link'] = $openURL['link'];
+		$view->openurl['text'] = $openURL['text'];
+		$view->openurl['icon'] = $openURL['icon'];
+
+		$view->citations = array();
+
+		return $view->loadTemplate();
+	}
 }
