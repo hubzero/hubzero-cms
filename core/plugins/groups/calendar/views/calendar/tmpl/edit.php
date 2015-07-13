@@ -68,18 +68,20 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 	</li>
 </ul>
 
-
 <div class="grid">
 	<div class="col <?php echo ($showImport) ? 'span9' : 'span12'; ?>">
-		<form name="editevent" action="index.php" method="post" id="hubForm" class="full">
+		<form name="editevent" action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar'); ?>" method="post" id="hubForm" class="full">
 			<fieldset>
 				<legend><?php echo $formTitle; ?></legend>
-				<label><?php echo Lang::txt('Title:'); ?> <span class="required">Required</span>
+
+				<label for="event_title">
+					<?php echo Lang::txt('Title:'); ?> <span class="required">Required</span>
 					<input type="text" name="event[title]" id="event_title" value="<?php echo $this->escape($this->event->get('title')); ?>" />
 				</label>
 
 				<?php if (count($this->calendars) > 0 || $this->authorized == 'manager') : ?>
-					<label><?php echo Lang::txt('Calendar:'); ?> <span class="optional">Optional</span>
+					<label for="event-calendar-picker">
+						<?php echo Lang::txt('Calendar:'); ?> <span class="optional">Optional</span>
 						<select name="event[calendar_id]" id="event-calendar-picker">
 							<option value=""><?php echo Lang::txt('- Select Calendar for Event &mdash;'); ?></option>
 							<?php foreach ($this->calendars as $calendar) : ?>
@@ -90,35 +92,39 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 						<?php if ($this->authorized == 'manager') : ?>
 							<span class="hint">
-								Need a new calendar? <a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">Click here!</a>
+								<?php echo Lang::txt('Need a new calendar?'); ?> <a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">Click here!</a>
 							</span>
 						<?php endif; ?>
 					</label>
 				<?php endif; ?>
 
-				<label><?php echo Lang::txt('Details:'); ?> <span class="optional">Optional</span>
-					<textarea name="content" id="event_content" rows="10"><?php echo $this->event->get('content'); ?></textarea>
+				<label for="event_content">
+					<?php echo Lang::txt('Details:'); ?> <span class="optional">Optional</span>
+					<textarea name="content" id="event_content" rows="10"><?php echo $this->escape($this->event->get('content')); ?></textarea>
 					<span class="hint"><?php echo Lang::txt('Limited HTML allowed (a, iframe, strong, em, u)'); ?></span>
 				</label>
 
-				<label><?php echo Lang::txt('Location:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="event[adresse_info]" id="event_location" value="<?php echo $this->event->get('adresse_info'); ?>" />
+				<label for="event_location">
+					<?php echo Lang::txt('Location:'); ?> <span class="optional">Optional</span>
+					<input type="text" name="event[adresse_info]" id="event_location" value="<?php echo $this->escape($this->event->get('adresse_info')); ?>" />
 				</label>
 
-				<label><?php echo Lang::txt('Contact:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="event[contact_info]" value="<?php echo $this->event->get('contact_info'); ?>" />
-					<span class="hint">Accepts names and email addresses. (ex. John Doe john_doe@domain.com)</span>
+				<label for="event-contact_info">
+					<?php echo Lang::txt('Contact:'); ?> <span class="optional">Optional</span>
+					<input type="text" name="event[contact_info]" id="event-contact_info" value="<?php echo $this->escape($this->event->get('contact_info')); ?>" />
+					<span class="hint"><?php echo Lang::txt('Accepts names and email addresses. (ex. John Doe john_doe@domain.com)'); ?></span>
 				</label>
 
-				<label><?php echo Lang::txt('Website:'); ?> <span class="optional">Optional</span>
-					<input type="text" name="event[extra_info]" id="event_website" value="<?php echo $this->event->get('extra_info'); ?>" />
+				<label for="event_website">
+					<?php echo Lang::txt('Website:'); ?> <span class="optional">Optional</span>
+					<input type="text" name="event[extra_info]" id="event_website" value="<?php echo $this->escape($this->event->get('extra_info')); ?>" />
 				</label>
 
 				<fieldset>
-					<legend>
-						<?php echo Lang::txt('Date &amp; Time Settings'); ?>
-					</legend>
-					<label for="event_start"><?php echo Lang::txt('Start:'); ?> <span class="required">Required</span>
+					<legend><?php echo Lang::txt('Date &amp; Time Settings'); ?></legend>
+
+					<label for="event_start">
+						<?php echo Lang::txt('Start:'); ?> <span class="required">Required</span>
 						<?php
 							$start           = Request::getVar('start', '', 'get');
 							$publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
@@ -131,12 +137,13 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							}
 						?>
 						<div class="input-group">
-							<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $publish_up_date; ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
-							<input type="text" name="event[publish_up_time]" id="event_start_time" value="<?php echo $publish_up_time; ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $this->escape($publish_up_date); ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[publish_up_time]" id="event_start_time" value="<?php echo $this->escape($publish_up_time); ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
 						</div>
 					</label>
 
-					<label for="event_end"><?php echo Lang::txt('End:'); ?> <span class="optional">Optional</span>
+					<label for="event_end">
+						<?php echo Lang::txt('End:'); ?> <span class="optional">Optional</span>
 						<?php
 							$end               = Request::getVar('end', '', 'get');
 							$publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
@@ -149,11 +156,12 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							}
 						?>
 						<div class="input-group">
-							<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $publish_down_date; ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
-							<input type="text" name="event[publish_down_time]" id="event_end_time" value="<?php echo $publish_down_time; ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $this->escape($publish_down_date); ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[publish_down_time]" id="event_end_time" value="<?php echo $this->escape($publish_down_time); ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
 						</div>
 					</label>
-					<label>
+
+					<label for="event_allday">
 						<input type="hidden" name="event[allday]" value="0" />
 						<input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1" <?php if ($this->event->get('allday')) { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('All day event'); ?>
 						<span class="hint"><?php echo Lang::txt(' - can span multiple days'); ?></span>
@@ -163,7 +171,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<legend>
 						<?php echo Lang::txt('Timezone Settings'); ?>
 					</legend>
-					<label><?php echo Lang::txt('Timezone:'); ?> <span class="optional">Optional</span>
+					<label>
+						<?php echo Lang::txt('Timezone:'); ?> <span class="optional">Optional</span>
 						<?php
 							$timezone = $this->event->get('time_zone');
 							$timezone = (isset($timezone)) ? $timezone: -5;
@@ -185,7 +194,9 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<legend>
 						<?php echo Lang::txt('Repeating Settings'); ?>
 					</legend>
-					<label><?php echo Lang::txt('Recurrence:'); ?> <span class="optional">Optional</span>
+
+					<label>
+						<?php echo Lang::txt('Recurrence:'); ?> <span class="optional">Optional</span>
 						<select name="reccurance[freq]" class="event_recurrence_freq">
 							<?php foreach ($freqs as $k => $v) : ?>
 								<?php $sel = ($repeating['freq'] == $k) ? 'selected="selected"' : ''; ?>
@@ -195,7 +206,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					</label>
 
 					<div class="reccurance-options options-daily">
-						<label for=""><?php echo Lang::txt('Repeat Every:'); ?><br />
+						<label>
+							<?php echo Lang::txt('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][daily]" class="daily-days event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
@@ -207,7 +219,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					</div>
 
 					<div class="reccurance-options options-weekly">
-						<label for=""><?php echo Lang::txt('Repeat Every:'); ?><br />
+						<label>
+							<?php echo Lang::txt('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][weekly]" class="weekly-weeks event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
@@ -219,7 +232,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					</div>
 
 					<div class="reccurance-options options-monthly">
-						<label for=""><?php echo Lang::txt('Repeat Every:'); ?><br />
+						<label>
+							<?php echo Lang::txt('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][monthly]" class="monthly-months event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
@@ -231,7 +245,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					</div>
 
 					<div class="reccurance-options options-yearly">
-						<label for=""><?php echo Lang::txt('Repeat Every:'); ?><br />
+						<label>
+							<?php echo Lang::txt('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][yearly]" class="yearly-years event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 								<?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
@@ -269,7 +284,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					</label>
 
 					<div id="registration-fields" class="<?php if ($ckd == '') { echo ' hide'; } ?>">
-						<label><?php echo Lang::txt('Deadline:'); ?> <span class="required">Required for Registration Tab to Appear</span>
+						<label for="event_registerby">
+							<?php echo Lang::txt('Deadline:'); ?> <span class="required"><?php echo Lang::txt('Required for Registration Tab to Appear'); ?></span>
 							<?php
 								$register_by = '';
 								if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00')
@@ -277,19 +293,21 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 									$register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
 								}
 							?>
-							<input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $register_by; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $this->escape($register_by); ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
 							<span class="hint"><?php echo Lang::txt('Deadlines are on Eastern Standard Time (EST).'); ?></span>
 						</label>
 
-						<label><?php echo Lang::txt('Event Admin Email:'); ?> <span class="optional">Optional</span>
-							<input type="text" name="event[email]" value="<?php echo $this->event->get('email'); ?>" />
+						<label>
+							<?php echo Lang::txt('Event Admin Email:'); ?> <span class="optional">Optional</span>
+							<input type="text" name="event[email]" value="<?php echo $this->escape($this->event->get('email')); ?>" />
 							<span class="hint">
 								<?php echo Lang::txt('A copy of event registrations will get sent to this event\'s admin email address.'); ?>
 							</span>
 						</label>
 
-						<label><?php echo Lang::txt('Password:'); ?> <span class="optional">Optional</span>
-							<input type="text" name="event[restricted]" value="<?php echo $this->event->get('restricted'); ?>" />
+						<label>
+							<?php echo Lang::txt('Password:'); ?> <span class="optional">Optional</span>
+							<input type="text" name="event[restricted]" value="<?php echo $this->escape($this->event->get('restricted')); ?>" />
 							<span class="hint">
 								<?php echo Lang::txt('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.') ; ?>
 							</span>
@@ -304,10 +322,12 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 			<?php endif; ?>
 
 			<input type="hidden" name="option" value="com_groups" />
-			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 			<input type="hidden" name="active" value="calendar" />
 			<input type="hidden" name="action" value="save" />
 			<input type="hidden" name="event[id]" value="<?php echo $this->event->get('id'); ?>" />
+			<?php echo Html::input('token'); ?>
+
 			<br class="clear" />
 			<p class="submit">
 				<input type="submit" name="event_submit" value="<?php echo $submitBtn; ?>" />
@@ -317,7 +337,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 	<?php if ($showImport) : ?>
 		<div class="col span3 omega">
-			<form name="importevent" action="index.php" method="post" id="hubForm" enctype="multipart/form-data">
+			<form name="importevent" action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar'); ?>" method="post" id="hubForm" enctype="multipart/form-data">
 				<fieldset>
 					<legend><?php echo Lang::txt('Import Event'); ?></legend>
 

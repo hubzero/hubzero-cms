@@ -110,6 +110,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$this->option     = $option;
 		$this->action     = $action;
 		$this->access     = $access;
+		$this->event = null;
 
 		//if we want to return content
 		if ($returnhtml)
@@ -532,7 +533,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->params     = $this->params;
 
 		//load com_events params file for registration fields
-		$view->registrationFields = new JParameter(
+		$view->registrationFields = new \Hubzero\Html\Parameter(
 			$view->event->get('params'),
 			PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
 		);
@@ -572,6 +573,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function save()
 	{
+		Request::checkToken();
+
 		//get request vars
 		$event              = Request::getVar('event', array(), 'post');
 		$event['time_zone'] = Request::getVar('time_zone', -5);
@@ -652,6 +655,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$eventsModelEvent->bind($event))
 		{
 			$this->setError($eventsModelEvent->getError());
+			$this->event = $eventsModelEvent;
+			return $this->edit();
+		}
+
+		if (isset($event['content']) && $event['content'])
+		{
+			$event['content'] = \Hubzero\Utility\Sanitize::clean($event['content']);
+		}
+
+		if (isset($event['extra_info']) && $event['extra_info'] && ! \Hubzero\Utility\Validate::url($event['extra_info']))
+		{
+			$this->setError('Website entered does not appear to be a valid URL.');
 			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
