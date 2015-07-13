@@ -61,12 +61,16 @@ if ($this->role_filter)
 $option = 'com_groups';
 ?>
 <?php if ($this->membership_control == 1) { ?>
-	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+	<?php //if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<ul id="page_options">
 			<li>
+				<?php if ($this->authorized == 'manager'
+					|| $this->authorized == 'admin'
+					|| \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
 				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
 					<?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
 				</a>
+				<?php endif; ?>
 				<?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
 					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>">
 						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
@@ -74,7 +78,7 @@ $option = 'com_groups';
 				<?php endif; ?>
 			</li>
 		</ul>
-	<?php } ?>
+	<?php //} ?>
 <?php } ?>
 
 <div class="section">
