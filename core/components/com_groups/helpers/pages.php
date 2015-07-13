@@ -124,7 +124,7 @@ class Pages
 
 	/**
 	 * Is page Active based on current segment
-	 * 
+	 *
 	 * @param  [type]  $page [description]
 	 * @return boolean       [description]
 	 */
@@ -136,7 +136,7 @@ class Pages
 
 	/**
 	 * Get Current Route Segments
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	private static function getCurrentPathSegments()
@@ -187,7 +187,7 @@ class Pages
 	/**
 	 * Get True Group Tab
 	 *
-	 * Since we trick the overview tab to allow for displaying group pages, 
+	 * Since we trick the overview tab to allow for displaying group pages,
 	 * php pages, group login, or group components, this allows us to get the true active tab
 	 * for use with displaying the correct content
 	 *
@@ -211,9 +211,9 @@ class Pages
 		});
 		$prevPage = $homePage = $temp[0];
 
-		// if we dont have segments that means were on the 
+		// if we dont have segments that means were on the
 		// overview page
-		if (count($segments) == 0
+		if (count($segments) == 2
 			|| $segments[0] == 'overview')
 		{
 			return $homePage;
@@ -716,7 +716,7 @@ class Pages
 
 	/**
 	 * Function to determine if content contains wiki syntax
-	 * 
+	 *
 	 * @param  [type]  $content [description]
 	 * @return boolean          [description]
 	 */
@@ -726,7 +726,7 @@ class Pages
 		$content = trim($content);
 
 		// First, remove <pre> tags
-		//   This is in case the content is HTML but contains a block of 
+		//   This is in case the content is HTML but contains a block of
 		//   sample wiki markup.
 		$content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
 
@@ -811,7 +811,7 @@ class Pages
 
 		// return content
 		// add HTML format handler. Basically if php is in content lets make sure wiki handler doesnt touch it.
-		// addresses cases where html an html tag not the first string in the content block 
+		// addresses cases where html an html tag not the first string in the content block
 		return $formatHandler . $document;
 	}
 
