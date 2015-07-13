@@ -992,6 +992,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$parent = JRequest::getInt("id", "");
 		$child = JRequest::getVar("resid", "");
 
+		if (!$parent || !$child)
+		{
+			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
+
 		//load resource
 		$activechild = new ResourcesResource($this->database);
 		$activechild->load($child);
@@ -1004,6 +1009,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		//get manifest
 		$manifest = $this->getVideoManifestForResource( $activechild );
+
+		if (!file_exists(PATH_APP . $manifest))
+		{
+			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
+
 		$manifest = json_decode( file_get_contents( JPATH_ROOT . $manifest ) );
 
 		//media tracking object
