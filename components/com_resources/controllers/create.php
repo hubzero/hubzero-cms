@@ -265,6 +265,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// If so, it means we're at least past step 1
 		if (isset($_POST['step']))
 		{
+			if (!method_exists($this, $preprocess))
+			{
+				JError::raiseError(404, JText::_('Unknown step.'));
+			}
+
 			// Perform any preprocessing
 			$this->$preprocess();
 		}
