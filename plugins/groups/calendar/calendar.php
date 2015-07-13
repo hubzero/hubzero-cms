@@ -590,6 +590,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function save()
 	{
+		JSession::checkToken() or die();
+
 		//get request vars
 		$event              = JRequest::getVar('event', array(), 'post');
 		$event['time_zone'] = JRequest::getVar('time_zone', -5);
@@ -671,6 +673,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$eventsModelEvent->bind($event))
 		{
 			$this->setError($eventsModelEvent->getError());
+			$this->event = $eventsModelEvent;
+			return $this->edit();
+		}
+
+		if (isset($event['content']) && $event['content'])
+		{
+			$event['content'] = \Hubzero\Utility\Sanitize::clean($event['content']);
+		}
+
+		if (isset($event['extra_info']) && $event['extra_info'] && ! \Hubzero\Utility\Validate::url($event['extra_info']))
+		{
+			$this->setError('Website entered does not appear to be a valid URL.');
 			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
