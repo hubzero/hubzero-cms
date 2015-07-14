@@ -216,7 +216,7 @@ class Mailinglist extends SiteController
 			//mail confirmation email and save subscription
 			if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
 			{
-				$newsletterMailinglistEmail = new MailListEmail($this->database);
+				$newsletterMailinglistEmail = new MailinglistEmail($this->database);
 				$newsletterMailinglistEmail->save($subscription);
 			}
 		}
@@ -265,7 +265,7 @@ class Mailinglist extends SiteController
 					//mail confirmation email and save subscription
 					if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
 					{
-						$newsletterMailinglistEmail = new MailListEmail($this->database);
+						$newsletterMailinglistEmail = new MailinglistEmail($this->database);
 						$newsletterMailinglistEmail->save($subscription);
 					}
 				}
@@ -276,7 +276,7 @@ class Mailinglist extends SiteController
 		foreach ($mylists as $mylist)
 		{
 			//instantiate newsletter mailing email
-			$newsletterMailinglistEmail = new MailListEmail($this->database);
+			$newsletterMailinglistEmail = new MailinglistEmail($this->database);
 			$newsletterMailinglistEmail->load($mylist->id);
 
 			//do we want to mark as active or mark as unsubscribed
@@ -581,7 +581,7 @@ class Mailinglist extends SiteController
 		}
 
 		//instantiate mailing list email object and load based on id
-		$newsletterMailinglistEmail = new MailListEmail($this->database);
+		$newsletterMailinglistEmail = new MailinglistEmail($this->database);
 		$newsletterMailinglistEmail->load($mailinglistEmail->id);
 
 		//set that we are now confirmed
@@ -636,7 +636,7 @@ class Mailinglist extends SiteController
 		}
 
 		//instantiate mailing list email object and load based on id
-		$newsletterMailinglistEmail = new MailListEmail($this->database);
+		$newsletterMailinglistEmail = new MailinglistEmail($this->database);
 		$newsletterMailinglistEmail->load($mailinglistEmail->id);
 
 		//unsubscribe & unconfirm email
