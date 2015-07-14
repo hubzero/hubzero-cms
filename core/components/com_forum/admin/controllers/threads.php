@@ -34,6 +34,7 @@ use Hubzero\Component\AdminController;
 use Components\Forum\Tables\Section;
 use Components\Forum\Tables\Category;
 use Components\Forum\Tables\Post;
+use Components\Forum\Tables\Attachment;
 use Components\Forum\Admin\Models\AdminThread;
 use Components\Forum\Models\Tags;
 use Components\Forum\Models\Manager;
