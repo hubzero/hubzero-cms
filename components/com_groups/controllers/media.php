@@ -449,7 +449,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	public function doUpload()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// var to hold potential error
 		$returnObj          = new stdClass;

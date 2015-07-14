@@ -148,9 +148,9 @@ if ($this->page->get('id'))
 								//'autoGrowMinHeight'           => 500,
 								'height'                      => '500px',
 								'fileBrowserWindowWidth'      => 1200,
-								'fileBrowserBrowseUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component'),
-								'fileBrowserImageBrowseUrl'   => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component'),
-								'fileBrowserUploadUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ckeditorupload&tmpl=component'),
+								'fileBrowserBrowseUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . JSession::getFormToken() . '=1', false),
+								'fileBrowserImageBrowseUrl'   => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . JSession::getFormToken() . '=1', false),
+								'fileBrowserUploadUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ckeditorupload&tmpl=component&' . JSession::getFormToken() . '=1', false),
 								'allowPhpTags'                => $allowPhp,
 								'allowScriptTags'             => $allowScripts
 							);
