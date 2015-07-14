@@ -197,7 +197,7 @@ HUB.ProjectTeam = {
 						{
 							for (var k = 0; k < bgroups.length; k++)
 							{
-								$(item).attr('href', $(item).attr('href') + '?group[]=' + bgroups[k]);
+								$(item).attr('href', $(item).attr('href') + '&group[]=' + bgroups[k]);
 							}
 						}
 						var href = $(item).attr('href');
