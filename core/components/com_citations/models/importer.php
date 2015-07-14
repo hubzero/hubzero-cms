@@ -22,11 +22,10 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author	Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since	 Class available since release 1.3.2
+ * @package    hubzero-cms
+ * @author     Shawn Rice <zooley@purdue.edu>
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Components\Citations\Models;
@@ -34,15 +33,29 @@ namespace Components\Citations\Models;
 use Components\Citations\Tables\Citation;
 use Components\Citations\Tables\Type;
 use Components\Citations\Tables\Tags;
+use Hubzero\Utility\Date;
 use Hubzero\Base\Object;
-use Filesystem;
-use Date;
+use App;
 
 /**
  * Citation importer
  */
-class Import extends Object
+class Importer extends Object
 {
+	/**
+	 * Database connection
+	 *
+	 * @var  object
+	 */
+	protected $database = null;
+
+	/**
+	 * Filesystem
+	 *
+	 * @var  object
+	 */
+	protected $filesystem = null;
+
 	/**
 	 * The tmp file path
 	 *
@@ -51,24 +64,67 @@ class Import extends Object
 	protected $path = null;
 
 	/**
-	 * The session ID
+	 * Unique string
 	 *
 	 * @var  string
 	 */
-	protected $session = null;
+	protected $hash = null;
+
+	/**
+	 * Allow tags?
+	 *
+	 * @var  boolean
+	 */
+	protected $tags = false;
+
+	/**
+	 * Allow badges?
+	 *
+	 * @var  boolean
+	 */
+	protected $badges = false;
 
 	/**
 	 * Defines a one to one relationship with citation
 	 *
-	 * @param   string  $path
-	 * @param   string  $session
+	 * @param   object   $database
+	 * @param   object   $filesystem
+	 * @param   string   $path
+	 * @param   string   $hash
+	 * @param   boolean  $tags
+	 * @param   boolean  $badges
 	 * @return  void
 	 */
-	public function __construct($path, $session)
+	public function __construct($database, $filesystem, $path, $hash = null, $tags = false, $badges = false)
 	{
-		$this->setTmpPath($path);
+		if (!$database)
+		{
+			$database = App::get('db');
+		}
 
-		$this->session = $session;
+		if (!$filesystem)
+		{
+			$filesystem = App::get('filesystem');
+		}
+
+		if (!$path)
+		{
+			$path = App::get('config')->get('tmp_path') . DS . 'citations';
+		}
+
+		if (!$hash)
+		{
+			$hash = App::get('session')->getId();
+		}
+
+		$this->database   = $database;
+		$this->filesystem = $filesystem;
+
+		$this->setTmpPath($path);
+		$this->setHash($hash);
+
+		$this->setTags($tags);
+		$this->setBadges($badges);
 	}
 
 	/**
@@ -86,7 +142,7 @@ class Import extends Object
 			return;
 		}
 
-		$tmp = Filesystem::files($p);
+		$tmp = $this->filesystem->files($p);
 
 		if ($tmp)
 		{
@@ -96,25 +152,67 @@ class Import extends Object
 
 				if ($ft < strtotime("-1 DAY") || $force)
 				{
-					Filesystem::delete($p . DS . $t);
+					$this->filesystem->delete($p . DS . $t);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Get a list of citations requiring attention
+	 * Set if tags are allowed
 	 *
-	 * @return  array
+	 * @param   boolean  $val
+	 * @return  object
+	 */
+	public function setTags($val)
+	{
+		$this->tags = $val;
+
+		return $this;
+	}
+
+	/**
+	 * Set if badges are allowed
+	 *
+	 * @param   boolean  $val
+	 * @return  object
+	 */
+	public function setBadges($val)
+	{
+		$this->badges = $val;
+
+		return $this;
+	}
+
+	/**
+	 * Set the path to temp files
+	 *
+	 * @param   string  $path
+	 * @return  object
 	 */
 	public function setTmpPath($path)
 	{
 		if (!is_dir($path))
 		{
-			Filesystem::makeDirectory($path, 0755);
+			$this->filesystem->makeDirectory($path, 0755);
 		}
 
 		$this->path = $path;
+
+		return $this;
+	}
+
+	/**
+	 * Set a unique hash (for tmp file names)
+	 *
+	 * @param   string  $hash
+	 * @return  object
+	 */
+	public function setHash($hash)
+	{
+		$this->hash = (string) $hash;
+
+		return $this;
 	}
 
 	/**
@@ -134,7 +232,7 @@ class Import extends Object
 	 */
 	protected function getRequiresAttentionPath()
 	{
-		return $this->getTmpPath() . DS . 'citations_require_attention_' . $this->session . '.txt';
+		return $this->getTmpPath() . DS . 'citations_require_attention_' . $this->hash . '.txt';
 	}
 
 	/**
@@ -146,7 +244,7 @@ class Import extends Object
 	{
 		$p = $this->getRequiresAttentionPath();
 
-		return Filesystem::write($p, serialize($data));
+		return $this->filesystem->write($p, serialize($data));
 	}
 
 	/**
@@ -162,7 +260,7 @@ class Import extends Object
 
 		if (file_exists($p))
 		{
-			$citations = unserialize(Filesystem::read($p));
+			$citations = unserialize($this->filesystem->read($p));
 		}
 
 		return $citations;
@@ -175,7 +273,7 @@ class Import extends Object
 	 */
 	protected function getRequiresNoAttentionPath()
 	{
-		return $this->getTmpPath() . DS . 'citations_require_no_attention_' . $this->session . '.txt';
+		return $this->getTmpPath() . DS . 'citations_require_no_attention_' . $this->hash . '.txt';
 	}
 
 	/**
@@ -187,7 +285,7 @@ class Import extends Object
 	{
 		$p = $this->getRequiresNoAttentionPath();
 
-		return Filesystem::write($p, serialize($data));
+		return $this->filesystem->write($p, serialize($data));
 	}
 
 	/**
@@ -203,7 +301,7 @@ class Import extends Object
 
 		if (file_exists($p))
 		{
-			$citations = unserialize(Filesystem::read($p));
+			$citations = unserialize($this->filesystem->read($p));
 		}
 
 		return $citations;
@@ -212,6 +310,8 @@ class Import extends Object
 	/**
 	 * Get a list of citations requiring attention
 	 *
+	 * @param   array  $action_attention
+	 * @param   array  $action_no_attention
 	 * @return  array
 	 */
 	public function process($action_attention = array(), $action_no_attention = array())
@@ -222,10 +322,10 @@ class Import extends Object
 			'error'     => array()
 		);
 
-		$now    = Date::toSql();
-		$user   = $this->get('user');
-		$tags   = $this->get('tags');
-		$badges = $this->get('badges');
+		$now      = with(new Date('now'))->toSql();
+		$user     = $this->get('user');
+		$scope    = $this->get('scope');
+		$scope_id = $this->get('scope_id');
 
 		// loop through each citation that required attention from user
 		if ($cites_require_attention = $this->readRequiresAttention())
@@ -292,12 +392,12 @@ class Import extends Object
 				unset($cra['duplicate']);
 
 				//sets group if set
-				if ($scope = $this->get('scope'))
+				if ($scope)
 				{
 					$cra['scope'] = $scope;
 				}
 
-				if ($scope_id = $this->get('scope_id'))
+				if ($scope_id)
 				{
 					$cra['scope_id'] = $scope_id;
 				}
@@ -310,13 +410,13 @@ class Import extends Object
 				else
 				{
 					// tags
-					if ($allow_tags == 'yes' && isset($tags))
+					if ($this->tags && isset($tags))
 					{
 						$this->tag($user, $cc->id, $tags, '');
 					}
 
 					// badges
-					if ($allow_badges == 'yes' && isset($badges))
+					if ($this->badges && isset($badges))
 					{
 						$this->tag($user, $cc->id, $badges, 'badge');
 					}
@@ -384,12 +484,15 @@ class Import extends Object
 				// remove duplicate flag
 				unset($crna['duplicate']);
 
-				//sets group if set
-				$group = Request::getVar('group');
-				if (isset($group) && $group != '')
+				// sets group if set
+				if ($scope)
 				{
-					$crna['gid'] = $group;
-					$crna['scope'] = 'group';
+					$cra['scope'] = $scope;
+				}
+
+				if ($scope_id)
+				{
+					$cra['scope_id'] = $scope_id;
 				}
 
 				// save the citation
@@ -400,13 +503,13 @@ class Import extends Object
 				else
 				{
 					// tags
-					if ($allow_tags == 'yes' && isset($tags))
+					if ($this->tags && isset($tags))
 					{
 						$this->tag($user, $cc->id, $tags, '');
 					}
 
 					// badges
-					if ($allow_badges == 'yes' && isset($badges))
+					if ($this->badges && isset($badges))
 					{
 						$this->tag($user, $cc->id, $badges, 'badge');
 					}
