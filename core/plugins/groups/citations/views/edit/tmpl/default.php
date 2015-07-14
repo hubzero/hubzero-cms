@@ -59,7 +59,7 @@ foreach ($this->badges as $badge)
 }
 
 $tags_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', implode(",", $t))));
-$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b)))); 
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b))));
 
 //get the referrer
 $backLink = Route::url('index.php?option=' . $this->_name);
