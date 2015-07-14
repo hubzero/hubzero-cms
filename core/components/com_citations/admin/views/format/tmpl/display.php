@@ -71,6 +71,12 @@ $jQ(document).ready(function(e) {
 		var customOption = formatSelector.find('option[value=custom]');
 		customOption.attr('data-format', formatBox.val());
 	});
+
+	$jQ(function($) {
+		$('tr').click(function() {
+			$('#format-string').val($('#format-string').val() + $(this).attr('id'));
+		});
+	}); 
 });
 </script>
 
@@ -111,7 +117,7 @@ $jQ(document).ready(function(e) {
 
 						foreach ($keys as $k => $v)
 						{
-							echo "<tr><td>{$v}</td><td>{$k}</td></tr>";
+							echo "<tr id='{$v}'><td>{$v}</td><td>{$k}</td></tr>";
 						}
 					?>
 				</tbody>
