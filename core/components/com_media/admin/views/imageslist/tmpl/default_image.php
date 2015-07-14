@@ -15,7 +15,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 ?>
 		<div class="item">
 			<a href="javascript:ImageManager.populateFields('<?php echo $this->_tmp_img->path_relative; ?>')" title="<?php echo $this->_tmp_img->name; ?>" >
-				<img src="<?php echo Request::root(); ?>/core/components/com_media/admin/assets/<?php echo $this->baseURL.'/'.$this->_tmp_img->path_relative; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->_tmp_img->title, MediaHelper::parseSize($this->_tmp_img->size)); ?>" height="<?php echo $this->_tmp_img->height_60; ?>" width"<?php echo $this->_tmp_img->width_60; ?>" />
+				<img src="<?php echo $this->baseURL.'/'.$this->_tmp_img->path_relative; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->_tmp_img->title, MediaHelper::parseSize($this->_tmp_img->size)); ?>" height="<?php echo $this->_tmp_img->height_60; ?>" width="<?php echo $this->_tmp_img->width_60; ?>" />
 				<span title="<?php echo $this->_tmp_img->name; ?>"><?php echo $this->_tmp_img->title; ?></span>
 			</a>
 		</div>
