@@ -72,7 +72,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 		</div>
 		<form action="index.php" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
 			<fieldset>
-				<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ajaxupload&no_html=1'); ?>">
+				<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ajaxupload&no_html=1&' . JSession::getFormToken() . '=1'); ?>">
 					<noscript>
 						<p><input type="file" name="upload" id="upload" /></p>
 						<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
