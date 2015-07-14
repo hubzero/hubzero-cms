@@ -406,6 +406,11 @@ class Sessions extends SiteController
 						// Fail if $value isn't prefixed with a whitelisted directory
 						foreach ($params_whitelist as $wl)
 						{
+							if (empty($wl))
+							{
+								continue;
+							}
+
 							$wl = rtrim($wl,'/') . '/';  // make sure we compare against a full path element
 
 							if (strncmp($wl,$value,strlen($wl)) === 0)
