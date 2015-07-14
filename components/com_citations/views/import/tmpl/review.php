@@ -231,6 +231,7 @@ $no_show = array("errors","duplicate");
 			<input type="submit" name="submit" value="<?php echo JText::_('COM_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
 		</p>
 
+		<?php echo JHTML::_('form.token'); ?>
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<?php if (isset($this->group) && $this->group != ''): ?>
 			<input type="hidden" name="group" value="<?php echo $this->group; ?>" />

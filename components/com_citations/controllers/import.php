@@ -134,6 +134,9 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	 */
 	public function uploadTask()
 	{
+		// Check for request forgeries
+		JSession::checkToken() or jexit('Invalid Token');
+
 		// get file
 		$file = JRequest::getVar('citations_file', null, 'files', 'array');
 
@@ -299,6 +302,9 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JSession::checkToken() or jexit('Invalid Token');
+
 		// get the session object
 		$session = JFactory::getSession();
 		$sessionid = $session->getId();
