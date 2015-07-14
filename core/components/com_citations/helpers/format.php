@@ -559,9 +559,10 @@ class Format
 		// do we have a title
 		if (isset($citation->title) && $citation->title != '')
 		{
-			if ($citation_type->type == 'journalarticle')
+			if ($citation_type->type == 'journal')
 			{
 				$query[] = 'atitle=' . str_replace(' ', '+', $citation->title);
+				$query[] = 'title=' . str_replace(' ', '+', $citation->journal);
 			}
 			else
 			{
@@ -594,7 +595,7 @@ class Format
 			}
 
 			// append to url as issn if journal otherwise as isbn
-			if ($citation_type->type == 'journalarticle')
+			if ($citation_type->type == 'journal')
 			{
 				$query[] = 'issn=' . $issn_isbn;
 			}
