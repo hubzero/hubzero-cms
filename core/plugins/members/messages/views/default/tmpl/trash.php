@@ -53,7 +53,7 @@ $this->css()
 				}
 			?>
 		</select>
-		<input class="option" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
+		<input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 	</div>
 
 	<div id="actions">
@@ -64,7 +64,7 @@ $this->css()
 			<option value="delete"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_DELETE'); ?></option>
 		</select>
 		<input type="hidden"name="activetab" value="trash" />
-		<input class="option" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
+		<input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
 	<br class="clear" />
 

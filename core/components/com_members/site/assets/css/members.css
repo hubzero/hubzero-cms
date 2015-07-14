@@ -524,6 +524,9 @@
 	.message-member a:hover {
 		border: none;
 	}
+	select.option {
+		padding: 5px;
+	}
 
 /* Entries */
 	.com_members .entries thead th {

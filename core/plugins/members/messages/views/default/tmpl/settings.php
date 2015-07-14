@@ -39,7 +39,7 @@ $this->css()
 		<input type="hidden" name="action" value="savesettings" />
 		<table class="settings">
 			<caption>
-				<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
+				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
 			</caption>
 			<thead>
 				<tr>
@@ -52,7 +52,7 @@ $this->css()
 			<tfoot>
 				<tr>
 					<td colspan="<?php echo (count($this->notimethods) + 1); ?>">
-						<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
+						<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
 					</td>
 				</tr>
 			</tfoot>

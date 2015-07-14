@@ -64,7 +64,7 @@ $this->css();
 				<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 			</label>
 			<p class="submit">
-				<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SEND'); ?>" />
+				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SEND'); ?>" />
 			</p>
 		</div>
 	</fieldset>
