@@ -742,7 +742,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Double-check that the user can view this session.
 		if (!$session->exists())
 		{
-			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
+			JError::raiseError(404, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
 			return;
 		}
 
@@ -876,7 +876,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Ensure we found an active session
 		if (!$row->sesstoken)
 		{
-			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
+			JError::raiseError(404, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 			return;
 		}
 
@@ -892,7 +892,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$rows = $mv->loadViewperm($sess, $owner);
 		if (count($rows) != 1)
 		{
-			JError::raiseError(500, JText::sprintf('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
+			JError::raiseError(404, JText::sprintf('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
 			break;
 		}
 		foreach ($users as $user)
@@ -984,7 +984,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 			if (!$ms->sesstoken)
 			{
-				JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
+				JError::raiseError(404, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 				return;
 			}
 		}
@@ -1056,7 +1056,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		if (!is_object($row) || !$row->appname)
 		{
-			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
+			JError::raiseError(404, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
 			return;
 		}
 
@@ -1091,7 +1091,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Ensure we found an active session
 		if (!$row->sesstoken)
 		{
-			JError::raiseError(500, JText::_('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess . '. ' . JText::_('MW_SESSION_NOT_FOUND_EXPLANATION'));
+			JError::raiseError(404, JText::_('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess . '. ' . JText::_('MW_SESSION_NOT_FOUND_EXPLANATION'));
 			return;
 		}
 
