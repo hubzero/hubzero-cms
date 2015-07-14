@@ -58,7 +58,7 @@ Document::addScriptDeclaration($script);
 				<?php echo $this->form->getInput('ordering'); ?>
 			</div>
 
-			<?php if ((string) $this->item->xml->name != 'Login Form'): ?>
+			<?php if ($this->item->xml && (string) $this->item->xml->name != 'Login Form'): ?>
 				<div class="col width-50 fltlft">
 					<div class="input-wrap">
 						<?php echo $this->form->getLabel('published'); ?><br />
@@ -71,12 +71,12 @@ Document::addScriptDeclaration($script);
 						<?php echo $this->form->getLabel('access'); ?><br />
 						<?php echo $this->form->getInput('access'); ?>
 					</div>
-			<?php if ((string) $this->item->xml->name != 'Login Form'): ?>
+			<?php if ($this->item->xml && (string) $this->item->xml->name != 'Login Form'): ?>
 				</div>
 				<div class="clr"></div>
 			<?php endif; ?>
 
-			<?php if ((string) $this->item->xml->name != 'Login Form'): ?>
+			<?php if ($this->item->xml && (string) $this->item->xml->name != 'Login Form'): ?>
 				<div class="col width-50 fltlft">
 					<div class="input-wrap">
 						<?php echo $this->form->getLabel('publish_up'); ?><br />
