@@ -34,10 +34,12 @@ defined('_HZEXEC_') or die();
 $this->css('citations.css')
 	 ->js();
 
-
-
-
-
+/*
+foreach ($this->citations as $cite)
+{
+	echo($cite->formatted());
+}
+*/
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 
@@ -168,10 +170,7 @@ if (isset($this->messages))
 									<?php endif; ?>
 									<td class="citation-container">
 										<?php
-											$formatted = $cite->formatted
-												? $cite->formatted
-												: $formatter->formatCitation($cite,
-													$this->filters['search'], $this->coins, $this->config);
+											$formatted = $cite->formatted();
 
 											if ($cite->doi)
 											{
