@@ -145,7 +145,7 @@ class Request extends BaseRequest
 			break;
 
 			case 'files':
-				$result = $this->file($key, $default);
+				/*$result = $this->file($key, $default);
 				if ($type == 'array')
 				{
 					$res = array(
@@ -157,6 +157,7 @@ class Request extends BaseRequest
 					);
 					if ($result)
 					{
+						var_dump($_FILES); die();
 						$res = array(
 							'name'      => $result->getClientOriginalName(),
 							'tmp_name'  => $result->getPathName(),
@@ -166,8 +167,18 @@ class Request extends BaseRequest
 						);
 					}
 					$result = $res;
+				}*/
+				$result = null;
+				if (isset($_FILES[$key]) && $_FILES[$key] !== null)
+				{
+					$result = $_FILES[$key];
 				}
-				return ($result !== null ? $result : $default);
+				$result = ($result !== null ? $result : $default);
+				if ($type == 'array')
+				{
+					$result = (array) $result;
+				}
+				return $result;
 			break;
 
 			case 'post':
