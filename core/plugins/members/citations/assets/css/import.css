@@ -1,0 +1,305 @@
+/**
+ * @package	 hubzero-cms
+ * @file		components/com_citations/citations.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_citations CSS
+	-- -- -- -- -- -- --
+
+*/
+ 
+/* Citations Import */
+	#steps {
+		margin: 20px 0 0 0;
+		list-style: none;
+		overflow: hidden;
+	}
+	#steps li {
+		float: left;
+		margin: 0;
+	}
+	#steps li a {
+		display: block;
+		padding: 10px;
+		background: #efefef;
+		border: 1px solid #ccc;
+		color: #ccc;
+		font-size: 24px;
+		font-weight: bold;
+		line-height: 24px;
+		margin-right: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+		border-radius: 5px;
+		min-width: 150px;
+	}
+	#steps li a span {
+		display: block;
+		font-size: 12px;
+		line-height: 18px;
+		font-weight: normal;
+	}
+	#steps li a.active {
+		background: #ee8c00;
+		color: #FFF;
+	}
+	#steps li a.passed {
+		background: #a1cb99;
+		color: #e1f0de;
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-left: 60px;
+	}
+
+/* Upload List */
+	.upload-list {
+		margin-top: 20px;
+		border: 1px solid #CCC;
+		border-collapse: separate;
+	}
+
+/* Table Head */
+	.upload-list thead th {
+		background: #efefef;
+		font-size: 14px;
+		color: #000;
+	}
+	.upload-list thead th:nth-child(odd),
+	.upload-list tbody td:nth-child(odd) {
+		border-right: 1px solid #CCC;
+		width: 2%;
+	}
+
+/* Table Body */
+	.upload-list tbody tr:nth-child(even) {
+		background: #f5f5f5;
+	}
+	.upload-list tbody tr:hover {
+		background-color: #fff7db;
+	}
+	.upload-list tbody tr.active {
+		background: #fff7db;
+	}
+	.upload-list tbody tr:nth-child(even).active {
+		background: #fcf0c5;
+	}
+	.upload-list tbody tr.active .click-more {
+		color: #000;
+	}
+
+/* Citation Title */
+	.upload-list .citation-title {
+		font-weight: bold;
+		color: #777;
+	}
+	.upload-list .citation-title:hover {
+		cursor: pointer;
+	}
+
+/* Click More */
+	.upload-list tbody tr .click-more {
+		visibility: hidden;
+		padding-left: 20px;
+		text-transform: uppercase;
+		color: #ccc;
+		font-size: 0.85em;
+		font-weight: bold;
+	}
+	.upload-list tbody tr:hover .click-more {
+		visibility: visible;
+	}
+
+/* Citation Details */
+	.upload-list .citation-details {
+		border: 1px solid #ccc;
+		background-color: #fff;
+		border-collapse: separate;
+		padding: 0;
+		text-indent: 0;
+		margin: 1% 0;
+		font-size: 0.9em;
+	}
+	.upload-list .citation-details thead th {
+		border-right: none;
+		font-size: 0.9em;
+	}
+	.upload-list .citation-details .key {
+		text-transform: uppercase;
+		font-weight: bold;
+		color: #444;
+		width: 15%;
+	}
+	.upload-list .citation-details tbody tr:nth-child(even):hover {
+		background: #f5f5f5;
+	} 
+	.upload-list .citation-details tbody tr:hover {
+		background-color: transparent;
+	}
+
+/* Users attention required box */
+	.require-action thead th {
+		color: #F00;
+		background: #fdeaea;
+	}
+	.require-action .citation-details thead th {
+		color: #444;
+		background: #efefef;
+	}
+	.require-action .citation-details tbody td {
+		border-bottom: 1px solid #ccc;
+	}
+	.require-action .citation-details th.options {
+		background: #444;
+		color: #fff;
+		font-weight: normal;
+		font-size: 1em;
+	}
+	.require-action .citation-details th.options label {
+		margin-right: 15px;
+	}
+
+/* Difference Table */
+	.require-action .citation-differences,
+	.require-action .citation-differences tbody td {
+		border: none;
+		padding: 0;
+	}
+	.require-action .citation-differences tbody tr {
+		background: transparent;
+	}
+	.require-action .citation-details .citation-differences tbody tr:hover {
+		background: transparent;
+	}
+	.require-action .citation-differences tbody td:nth-child(odd) {
+		width: 10%;
+		padding-right: 1%;
+		text-align: right;
+	}
+	.require-action .citation-differences tbody td span {
+		margin: 0;
+		color: #555;
+	}
+	.require-action .citation-differences .insert {
+		border: 1px solid #DAE6DA;
+		background: #F2FFF2;
+		color: #360;
+		text-decoration: underline;
+	}
+	.require-action .citation-differences .delete {
+		border: 1px solid #EFCCC2; 
+		background: #FFF2EF;
+		color: #CC0000;
+		padding: 0;
+		text-decoration: line-through;
+	}
+
+	/*#hubForm.add-citation .group {
+		padding: 0 0 0 5em;
+	}
+	#hubForm.add-citation .threeup {
+		padding-left: 0;
+	}
+	#hubForm.add-citation .group label {
+		padding-bottom: 1.5em;
+	}*/
+	
+	.withBatchDownload .aside {
+		padding-top: 150px !important;
+	}
+	#download-batch {
+		position:absolute;
+		top:30px;
+		right:0;
+		padding:1em;
+		width:185px;
+		margin:0 30px 0 0;
+	}
+	
+	form .hint {
+		font-size:0.85em;
+		color:#999;
+	}
+	form .aside input.half {
+		width:44%;
+	}
+
+	.main.citation-section {
+		padding-top:0;
+	}
+	.citation-section .section:nth-of-type(1) {
+		padding-top:0;
+	}
+	.citation-section .section:nth-of-type(1) h3 {
+		display:none;
+	}
+	
+	/* Citation Meta Data Table */
+	table.citation {
+		border-bottom:none;
+	}
+	table.citation th,
+	table.citation td {
+		padding-bottom: 15px;
+	}
+	table.citation th {
+		text-align: right;
+		color: #999;
+		white-space: nowrap;
+		border-bottom:none;
+		font-weight:normal;
+		width:200px;
+	}
+	table.citation td {
+		border-bottom:none;
+		padding-right: 1.5em;
+	}
+	table.citation .tags {
+		margin-top:0;
+	}
+	table.citation .badges a,
+	.citation-details .badges a,
+	.citation-details .badges a:hover {
+		background-color:#8e6e59 !important;
+		color:#FFF !important;
+	}
+	table.citation .badges a:before,
+	.citation-details .badges a:before,
+	.citation-details .badges a:hover:before {
+		border-color: transparent #8e6e59 transparent transparent !important;
+	}
+	table.citation ul {
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	table.citation ul li:first-child {
+		margin:0;
+	}
+	.eprint:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+		content:'\f016';
+		color:#9D261D;
+	}
+	.locate:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+		content:'\f002';
+	}
+	.citation-citation {
+		margin:0 0 30px 30px;
+		padding:20px;
+		background:#efefef;
+		box-shadow:inset 0 0 5px #aaa;
+		border-radius:5px;
+	}
+	.citation-citation .download {
+		margin:10px 0 0 0;
+	}

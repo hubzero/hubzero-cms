@@ -119,6 +119,26 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			$this->action = Request::getCmd('action', 'browse');
 
+			if (!$this->params->get('access-manage'))
+			{
+				$this->action = 'browse';
+			}
+
+			if (in_array($this->action, array('import', 'upload', 'review', 'process', 'finish')))
+			{
+				include_once(Component::path('com_citations') . DS . 'models' . DS . 'importer.php');
+
+				$this->importer = new \Components\Citations\Models\Importer(
+					App::get('db'),
+					App::get('filesystem'),
+					App::get('config')->get('tmp_path') . DS . 'citations',
+					App::get('session')->getId()
+				);
+				$this->importer->set('scope', 'member');
+				$this->importer->set('scope_id', $this->member->get('uidNumber'));
+				$this->importer->set('user', $this->member->get('uidNumber'));
+			}
+
 			// Run task based on action
 			switch ($this->action)
 			{
@@ -127,7 +147,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				case 'edit':   $arr['html'] .= $this->editAction();      break;
 				case 'delete': $arr['html'] .= $this->deleteAction();    break;
 				case 'browse': $arr['html'] .= $this->browseAction();    break;
-				//case 'import': $arr['html'] .= $this->importAction();    break;
+
+				case 'import':  $arr['html'] .= $this->importAction();   break;
+				case 'upload':  $arr['html'] .= $this->uploadAction();   break;
+				case 'review':  $arr['html'] .= $this->reviewAction();   break;
+				case 'process': $arr['html'] .= $this->processAction();  break;
+				case 'finish':  $arr['html'] .= $this->finishAction();   break;
+
 				default:       $arr['html'] .= $this->browseAction(); break;
 			}
 		}
@@ -731,5 +757,284 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			'warning'
 		);
 		return;
+	}
+
+	/**
+	 * Display a form for importing citations
+	 *
+	 * @return  void
+	 */
+	private function importAction()
+	{
+		//are we allowing importing
+		$config = Component::params('com_citations');
+		$importParam = $config->get('citation_bulk_import', 1);
+
+		// If importing is turned off go to intro page
+		if (!$importParam)
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name)
+			);
+			return;
+		}
+
+		$view = $this->view('display', 'import');
+
+		// push objects to the view
+		$view->member   = $this->member;
+		$view->option   = $this->option;
+		$view->database = $this->database;
+		$view->config   = $config;
+		$view->isAdmin  = $this->params->get('access-manage');
+
+		// citation temp file cleanup
+		$this->importer->cleanup();
+
+		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+
+		$view->messages = Notify::messages('plg_citations');
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Upload a file
+	 *
+	 * @return  void
+	 */
+	private function uploadAction()
+	{
+		// get file
+		$file = Request::file('citations_file');
+
+		// make sure we have a file
+		$filename = $file->getClientOriginalName();
+		if ($filename == '')
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE'),
+				'error'
+			);
+			return;
+		}
+
+		// make sure file is under 4MB
+		if ($file->getSize() > 4000000)
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_FILE_TOO_BIG'),
+				'error'
+			);
+			return;
+		}
+
+		// make sure we dont have any file errors
+		if ($file->getError() > 0)
+		{
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
+		}
+
+		// call the plugins
+		$citations = Event::trigger('citation.onImport' , array($file));
+		$citations = array_values(array_filter($citations));
+
+		// did we get citations from the citation plugins
+		if (!$citations)
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_PROCESS_FAILURE'),
+				'error'
+			);
+			return;
+		}
+
+		if (!isset($citations[0]['attention']))
+		{
+			$citations[0]['attention'] = '';
+		}
+
+		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
+		{
+			Notify::error(Lang::txt('Unable to write temporary file.'));
+		}
+
+		if (!$this->importer->writeRequiresNoAttention($citations[0]['no_attention']))
+		{
+			Notify::error(Lang::txt('Unable to write temporary file.'));
+		}
+
+		App::redirect(
+			Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=review')
+		);
+	}
+
+	/**
+	 * Review import items
+	 *
+	 * @return  void
+	 */
+	private function reviewAction()
+	{
+		$citations_require_attention    = $this->importer->readRequiresAttention();
+		$citations_require_no_attention = $this->importer->readRequiresNoAttention();
+
+		// make sure we have some citations
+		if (!$citations_require_attention && !$citations_require_no_attention)
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				'error'
+			);
+			return;
+		}
+
+		$view = $this->view('review', 'import');
+		$view->citations_require_attention    = $citations_require_attention;
+		$view->citations_require_no_attention = $citations_require_no_attention;
+
+		$view->messages = Notify::messages('plg_citations');
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Process import selections
+	 *
+	 * @return  void
+	 */
+	private function processAction()
+	{
+		$cites_require_attention    = $this->importer->readRequiresAttention();
+		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
+
+		// action for citations needing attention
+		$citations_action_attention    = Request::getVar('citation_action_attention', array());
+
+		// action for citations needing no attention
+		$citations_action_no_attention = Request::getVar('citation_action_no_attention', array());
+
+		// check to make sure we have citations
+		if (!$cites_require_attention && !$cites_require_no_attention)
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				'error'
+			);
+			return;
+		}
+
+		// vars
+		$config = Component::params('com_citations');
+		$allow_tags   = $config->get('citation_allow_tags', 'no');
+		$allow_badges = $config->get('citation_allow_badges', 'no');
+
+		$this->importer->setTags($allow_tags == 'yes');
+		$this->importer->setBadges($allow_badges == 'yes');
+
+		// Process
+		$results = $this->importer->process(
+			$citations_action_attention,
+			$citations_action_no_attention
+		);
+
+		// success message a redirect
+		Notify::success(
+			Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_RESULTS_SAVED', count($results['saved'])),
+			'plg_citations'
+		);
+
+		// if we have citations not getting saved
+		if (count($results['not_saved']) > 0)
+		{
+			Notify::warning(
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($results['not_saved'])),
+				'plg_citations'
+			);
+		}
+
+		if (count($results['error']) > 0)
+		{
+			Notify::error(
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($results['error'])),
+				'plg_citations'
+			);
+		}
+
+		//get the session object
+		$session = App::get('session');
+
+		//ids of sessions saved and not saved
+		$session->set('citations_saved', $results['saved']);
+		$session->set('citations_not_saved', $results['not_saved']);
+		$session->set('citations_error', $results['error']);
+
+		//delete the temp files that hold citation data
+		$this->importer->cleanup(true);
+
+		//redirect
+		App::redirect(
+			Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=saved')
+		);
+	}
+
+	/**
+	 * Show the results of the import
+	 *
+	 * @return  void
+	 */
+	private function finishAction()
+	{
+		// Get the session object
+		$session = App::get('session');
+
+		// Get the citations
+		$citations_saved     = $session->get('citations_saved');
+		$citations_not_saved = $session->get('citations_not_saved');
+		$citations_error     = $session->get('citations_error');
+
+		// Check to make sure we have citations
+		if (!$citations_saved && !$citations_not_saved)
+		{
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				'error'
+			);
+			return;
+		}
+
+		$view = $this->view('saved', 'import');
+		$view->config    = $this->config;
+		$view->database  = $this->database;
+		$view->filters   = array(
+			'start'  => 0,
+			'search' => ''
+		);
+		$view->citations = array();
+
+		foreach ($citations_saved as $cs)
+		{
+			$cc = new Citation($this->database);
+			$cc->load($cs);
+			$view->citations[] = $cc;
+		}
+
+		$view->openurl['link'] = '';
+		$view->openurl['text'] = '';
+		$view->openurl['icon'] = '';
+
+		//take care fo type
+		$ct = new Type($this->database);
+		$view->types = $ct->getType();
+
+		$view->messages = Notify::messages('plg_citations');
+
+		return $view->loadTemplate();
 	}
 }
