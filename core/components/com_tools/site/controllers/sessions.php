@@ -729,7 +729,7 @@ class Sessions extends SiteController
 		// Double-check that the user can view this session.
 		if (!$session->exists())
 		{
-			App::abort(500, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
 			return;
 		}
 
@@ -863,7 +863,7 @@ class Sessions extends SiteController
 		// Ensure we found an active session
 		if (!$row->sesstoken)
 		{
-			App::abort(500, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 			return;
 		}
 
@@ -879,7 +879,7 @@ class Sessions extends SiteController
 		$rows = $mv->loadViewperm($sess, $owner);
 		if (count($rows) != 1)
 		{
-			App::abort(500, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
 			break;
 		}
 		foreach ($users as $user)
@@ -971,7 +971,7 @@ class Sessions extends SiteController
 
 			if (!$ms->sesstoken)
 			{
-				App::abort(500, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
+				App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 				return;
 			}
 		}
@@ -1043,7 +1043,7 @@ class Sessions extends SiteController
 
 		if (!is_object($row) || !$row->appname)
 		{
-			App::abort(500, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
 			return;
 		}
 
@@ -1078,7 +1078,7 @@ class Sessions extends SiteController
 		// Ensure we found an active session
 		if (!$row->sesstoken)
 		{
-			App::abort(500, Lang::txt('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess . '. ' . Lang::txt('MW_SESSION_NOT_FOUND_EXPLANATION'));
+			App::abort(404, Lang::txt('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess . '. ' . Lang::txt('MW_SESSION_NOT_FOUND_EXPLANATION'));
 			return;
 		}
 
