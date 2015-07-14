@@ -36,8 +36,10 @@ $this->css()->js();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 
-$allow_tags = $this->config->get("citation_allow_tags", "no");
-$allow_badges = $this->config->get("citation_allow_badges", "no");
+//$allow_tags = $this->config->get("citation_allow_tags", "no");
+$allow_tags = "no";
+$allow_badges = "no";
+//$allow_badges = $this->config->get("citation_allow_badges", "no");
 
 $fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
 $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
@@ -57,7 +59,7 @@ foreach ($this->badges as $badge)
 }
 
 $tags_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', implode(",", $t))));
-$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b))));
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b)))); 
 
 //get the referrer
 $backLink = Route::url('index.php?option=' . $this->_name);
@@ -80,7 +82,6 @@ $pid = Request::getInt('publication', 0);
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
-
 		<form action="<?php echo Route::url($base . '?action=save'); ?>" method="post" id="hubForm" class="add-citation">
 			<div class="explaination">
 				<p id="applicableFields"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DETAILS_DESC'); ?></p>
@@ -342,7 +343,7 @@ $pid = Request::getInt('publication', 0);
 			</label>
 			<label for="formatted">
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT_CITATION'); ?>:
-			<textarea name="formatted" id="formatted" rows="8" cols="10"><?php echo stripslashes($this->row->formatted); ?></textarea>
+			<textarea name="formatted" id="formatted" rows="8" cols="10"><?php //echo stripslashes($this->row->formatted); ?></textarea>
 			</label>
 			</fieldset><div class="clear"></div>
 

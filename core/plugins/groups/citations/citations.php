@@ -180,18 +180,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// instantiate citations object and get count
-		//$obj = new \Components\Citations\Tables\Citation($this->database);
-		/*$total = $obj->getCount(array(
-			'scope'    => 'group',
-			'scope_id' => $group->gidNumber
-		), true);
-
 		//set metadata for menu
-		$arr['metadata']['count'] = $total;
+		$arr['metadata']['count'] = \Components\Citations\Models\Citation::all()
+			->where('scope', '=', 'group')
+			->where('scope_id', '=', $this->group->get('gidNumber'))
+			->count();
 		$arr['metadata']['alert'] = '';
-
-		*/
 
 		// Return the output
 		return $arr;
@@ -227,7 +221,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		//get the earliest year we have citations for
 		$view->earliest_year = 2001;
-		//$view->earliest_year = $citations->getEarliestYear();
 
 		// Affiliation filter
 		$view->filters['filter'] = array(
@@ -236,11 +229,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'),
 			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
 		);
-
-		/*if (!in_array($view->filters['filter'], array_keys($view->filter)))
-		{
-			$view->filters['filter'] = '';
-		} */
 
 		// Sort Filter
 		$view->sorts = array(
@@ -251,10 +239,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			'author ASC'   => Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR'),
 			'journal ASC'  => Lang::txt('PLG_GROUPS_CITATIONS_JOURNAL')
 		);
-		/*if (!in_array($view->filters['sort'], array_keys($view->sorts)))
-		{
-			$view->filters['sort'] = 'created DESC';
-		} */
 
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
@@ -279,79 +263,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$session->set('idlist', $view->filters['idlist']);
 		}
 
-		//Convert upload dates to correct time format
-		/*if ($view->filters['startuploaddate'] == '0000-00-00'
-			|| $view->filters['startuploaddate'] == '0000-00-00 00:00:00'
-			|| $view->filters['startuploaddate'] == '')
-		{
-			$view->filters['startuploaddate'] = '0000-00-00 00:00:00';
-		}
-		else
-		{
-			$view->filters['startuploaddate'] = Date::of($view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
-		}
-		if ($view->filters['enduploaddate'] == '0000-00-00'
-			|| $view->filters['enduploaddate'] == '0000-00-00 00:00:00'
-			|| $view->filters['enduploaddate'] == '')
-		{
-			$view->filters['enduploaddate'] = Date::modify('+1 DAY')->format('Y-m-d 00:00:00');
-		}
-		else
-		{
-			$view->filters['enduploaddate'] = Date::of($view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
-		}
-
-		//Make sure the end date for the upload search isn't before the start date
-		if ($view->filters['startuploaddate'] > $view->filters['enduploaddate'])
-		{
-			App::redirect(
-				Route::url('index.php?option=com_citations&task=browse'),
-				Lang::txt('PLG_GROUPS_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
-				'error'
-			);
-			return;
-		}
-		*/
-
-		// Get record count
-		//$view->total = $view->citations->count();
-		//$view->total = 10;
-
 		$view->citationTemplate = 'apa';
 
-		// check to see if super group has any additional filters
-		/*if ($this->group->isSuperGroup() && file_exists($this->_superGroupHelper()))
-		{
-			// load helper
-			require_once($this->_superGroupHelper());
-
-			// build helper name
-			$helperClass =  $this->_name . 'SuperGroupHelper';
-
-			// instantiate the helper class
-			$helper = new $helperClass($this->database);
-
-			//override sortings
-			$view->filters['sort'] = $helper->getCustomSort();
-
-		} */
-
-		// get the citations
-		//$view->citations = $citations->getRecords($view->filters, $view->isManager);
-
-		// get the default citation format
-		/*$groupParams = json_decode($this->group->get('params'));
-		if (array_keys( (array) $groupParams , 'citation_format') && $groupParams['citations_format'] != "")
-		{
-			//use the group setting
-			$view->citationTemplate = $groupParams['citations_format'];
-		}
-		else
-		{
-			//use the hub default
-			$citationsFormat = new \Components\Citations\Tables\Format($this->database);
-			$view->citationTemplate = $citationsFormat->getDefaultFormat()->format;
-		} */
 
 		$view->filters['search'] = "";
 		$view->filters['type'] = '';
@@ -440,20 +353,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
 		$view->config  = Component::params('com_citations');
 
-		// are we allowing user to add citation
-		$allowImport = $view->config->get('citation_import', 1);
-		if ($allowImport == 0
-			|| ($allowImport == 2 && User::get('usertype') != 'Super Administrator'))
-		{
-			// Redirect
-			App::redirect(
-				Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&active=' . $this->_name . '&action=browse', false),
-				Lang::txt('PLG_GROUPS_CITATION_EDIT_NOTALLOWED'),
-				'warning'
-			);
-			return;
-		}
-
 		//get the citation types
 		$citationsType = \Components\Citations\Models\Type::all();
 		$view->types = $citationsType->rows()->toObject();
@@ -475,15 +374,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$fields[strtolower(str_replace(' ', '', $type->type_title))] = $f;
 			}
 		}
-
-		// add an empty value for the first type
-		array_unshift($view->types, array(
-			'id'         => 0,
-			'type'       => '',
-			'type_title' => ' - Select a Type &mdash;'
-		));
-
-		$view->types[0] = (object) $view->types[0];
 
 		// Incoming - expecting an array id[]=4232
 		$id = Request::getInt('id', 0);
@@ -597,104 +487,79 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$badges = trim(Request::getVar('badges', ''));
 		unset($c['badges']);
 
+		//var_dump($c); die;
+
 		// Bind incoming data to object
-		$row = new \Components\Citations\Tables\Citation($this->database);
-		if (!$row->bind($c))
-		{
-			$this->setError($row->getError());
-			$this->_browse();
-			return;
-		}
+		//$row = new \Components\Citations\Models\Citation($this->database);
+		$citation = \Components\Citations\Models\Citation::oneOrNew(Request::getInt('id'))
+			->set(array(
+				'type' => Request::getInt('type'),
+				'cite' => Request::getVar('cite'),
+				'ref_type' => Request::getVar('ref_type'),
+				'date_submit' => Request::getVar('date_submit'),
+				'date_accept' => Request::getVar('date_accept'),
+				'date_publish' => Request::getVar('date_publish'),
+				'year' => Request::getVar('year'),
+				'month' => Request::getVar('month'),
+				'author' => Request::getVar('author'),
+				'author_address' => Request::getVar('author_address'),
+				'editor' => Request::getVar('editor'),
+				'title' => Request::getVar('title'),
+				'booktitle' => Request::getVar('booktitle'),
+				'short_title' => Request::getVar('short_title'),
+				'journal' => Request::getVar('journal'),
+				'volume' => Request::getVar('volume'),
+				'number' => Request::getVar('number'),
+				'pages' => Request::getVar('pages'),
+				'isbn' => Request::getVar('isbn'),
+				'doi' => Request::getVar('doi'),
+				'call_number' => Request::getVar('call_number'),
+				'accession_number' => Request::getVar('accession_number'),
+				'series' => Request::getVar('series'),
+				'edition' => Request::getVar('edition'),
+				'school' => Request::getVar('school'),
+				'publisher' => Request::getVar('publisher'),
+				'institution' => Request::getVar('institution'),
+				'address' => Request::getVar('address'),
+				'location' => Request::getVar('location'),
+				'howpublished' => Request::getVar('howpublished'),
+				'url' => Request::getVar('uri'),
+				'eprint' => Request::getVar('eprint'),
+				'abstract' => Request::getVar('abstract'),
+				'keywords' => Request::getVar('keywords'),
+				'research_notes' => Request::getVar('research_notes'),
+				'language' => Request::getVar('language'),
+				'label' => Request::getVar('label'),
+				//'format_type' => Request::getVar('format_type'),
+				'uid' => Request::getVar('uid')
+			));
 
 		// New entry so set the created date
-		if (!$row->id)
+		/*if (!$row->id)
 		{
 			$row->created = Date::toSql();
-		}
-
-		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = Request::getVar('uri', '', 'post');
-
-		// Check content for missing required data
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->_edit($group);
-			return;
-		}
+		}*/
 
 		// Store new content
-		if (!$row->store())
+		if (!$citation->save())
 		{
-			$this->setError($row->getError());
-			$this->_edit($group);
+			$this->setError($citation->getError());
+			$this->_edit();
 			return;
-		}
-
-		// Incoming associations
-		$arr     = Request::getVar('assocs', array());
-		$ignored = array();
-
-		foreach ($arr as $a)
-		{
-			$a = array_map('trim', $a);
-
-			// Initiate extended database class
-			$assoc = new \Components\Citations\Tables\Association($this->database);
-
-			//check to see if we should delete
-			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
-			{
-				// Delete the row
-				if (!$assoc->delete($a['id']))
-				{
-					$this->setError($assoc->getError());
-					$this->_browse();
-					return;
-				}
-			}
-			else if ($a['tbl'] != '' || $a['oid'] != '')
-			{
-				$a['cid'] = $row->id;
-
-				// bind the data
-				if (!$assoc->bind($a))
-				{
-					$this->setError($assoc->getError());
-					$this->_browse();
-					return;
-				}
-
-				// Check content
-				if (!$assoc->check())
-				{
-					$this->setError($assoc->getError());
-					$this->_browse();
-					return;
-				}
-
-				// Store new content
-				if (!$assoc->store())
-				{
-					$this->setError($assoc->getError());
-					$this->_browse();
-					return;
-				}
-			}
 		}
 
 		$this->config = Component::params('com_citations');
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
-			$ct1 = new \Components\Tags\Models\Cloud($row->id, 'citations');
+			$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 			$ct1->setTags($tags, User::get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
-			$ct1 = new \Components\Tags\Models\Cloud($row->id, 'citations');
+			$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 		}
 
@@ -713,80 +578,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 * @param      array $assocs
 	 * @return     void
 	 */
-	public function isPubAuthor($assocs)
-	{
-		if (!$assocs)
-		{
-			return false;
-		}
-		if (!is_file(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php'))
-		{
-			return false;
-		}
-
-		// include libs
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
-
-		// Get connections to publications
-		foreach ($assocs as $entry)
-		{
-			if ($entry->tbl == 'publication')
-			{
-				$pubID = $entry->oid;
-				$objP = new \Components\Publications\Tables\Publication($this->database);
-
-				if ($objP->load($pubID))
-				{
-					$objO = new \Components\Projects\Tables\Owner($this->database);
-
-					if ($objO->isOwner(User::get('id'), $objP->project_id))
-					{
-						return true;
-					}
-				}
-			}
-		}
-
+	public function isPubAuthor()
+	{	/**
+		*@TODO Implement
+		**/
 		return false;
-	}
-
-	/**
-	 * Return a path to super group override
-	 *
-	 * @param   string  $name  Plugin name
-	 * @return  string
-	 */
-	public function _superGroupViewOverride($name)
-	{
-		// get groups config
-		$groupsConfig = Component::params('com_groups');
-
-		// build base path
-		$base = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
-
-		// return path
-		return $base . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'plugins' . DS . $this->_name . DS . $name;
-	}
-
-
-	/**
-	 * Return a path to super group helper
-	 *
-	 * @return  string
-	 */
-	public function _superGroupHelper()
-	{
-		// get groups config
-		$groupsConfig = Component::params('com_groups');
-
-		// build base path
-		$base = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
-
-		// build helper path
-		$helperPath =  $base . DS . $this->group->get('gidNumber') . DS . 'libraries' . DS . $this->_name . DS . 'helper.php';
-
-		return $helperPath;
 	}
 
 	/**
@@ -801,17 +597,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);
-		return;
-	}
-
-	/**
-	 * Redirect to citation importer
-	 *
-	 * @return  void
-	 */
-	private function _import()
-	{
-		App::redirect(Route::url('index.php?option=com_citations&controller=import&group=' . $group->get('gidNumber')));
 		return;
 	}
 
