@@ -448,7 +448,7 @@ class Media extends Base
 	 */
 	public function doUpload()
 	{
-		Request::checkToken();
+		Request::checkToken(['get', 'post']);
 
 		// var to hold potential error
 		$returnObj          = new \stdClass;
