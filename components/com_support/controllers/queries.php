@@ -424,7 +424,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 			{
 				// Output messsage and redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets',
 					JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
 				);
 				return;
