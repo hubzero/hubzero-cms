@@ -31,8 +31,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
-     ->js();
+$this->css('import.css')
+     ->js('import.js');
 
 //citation params
 $label    = $this->config->get('citation_label', 'number');
@@ -61,25 +61,18 @@ else
 {
 	$citations_label_class = ' both-label';
 }
-?>
-<header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
 
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li>
-				<a class="icon-browse browse btn" href="<?php echo Route::url('index.php?option=com_citations&task=add'); ?>">
-					<?php echo Lang::txt('COM_CITATIONS_BACK'); ?>
-				</a>
-			</li>
-			<li>
-				<a class="btn icon-upload" href="<?php echo Route::url('index.php?option='.$this->option.'&task=import'); ?>">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?>
-				</a>
-			</li>
-		</ul>
-	</div>
-</header>
+$base = $this->member->getLink() . '&active=citations';
+?>
+<div id="content-header-extra">
+	<ul id="useroptions">
+		<li>
+			<a class="icon-browse browse btn" href="<?php echo Route::url($base); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BACK'); ?>
+			</a>
+		</li>
+	</ul>
+</div>
 
 <section id="import" class="section">
 	<div class="section-inner">
@@ -92,18 +85,18 @@ else
 
 		<ul id="steps">
 			<li>
-				<a href="<?php echo Request::base(true); ?>/citations/import" class="passed">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
+				<a href="<?php echo Route::url($base . '&task=import'); ?>" class="passed">
+					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo Request::base(true); ?>/citations/import_review" class="passed">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
+				<a href="<?php echo Route::url($base . '&task=review'); ?>" class="passed">
+					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo Request::base(true); ?>/citations/import_saved" class="active">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
+				<a href="<?php echo Route::url($base . '&task=saved'); ?>" class="active">
+					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
 				</a>
 			</li>
 		</ul><!-- / #steps -->
@@ -116,7 +109,7 @@ else
 				$counter = 1;
 			?>
 
-			<h3><?php echo Lang::txt('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
+			<h3><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_SUCCESS'); ?></h3>
 
 			<table class="citations">
 				<tbody>

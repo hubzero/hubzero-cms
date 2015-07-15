@@ -124,7 +124,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$this->action = 'browse';
 			}
 
-			if (in_array($this->action, array('import', 'upload', 'review', 'process', 'finish')))
+			if (in_array($this->action, array('import', 'upload', 'review', 'process', 'saved')))
 			{
 				include_once(Component::path('com_citations') . DS . 'models' . DS . 'importer.php');
 
@@ -137,6 +137,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$this->importer->set('scope', 'member');
 				$this->importer->set('scope_id', $this->member->get('uidNumber'));
 				$this->importer->set('user', $this->member->get('uidNumber'));
+				$this->importer->set('published', 1);
 			}
 
 			// Run task based on action
@@ -152,7 +153,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				case 'upload':  $arr['html'] .= $this->uploadAction();   break;
 				case 'review':  $arr['html'] .= $this->reviewAction();   break;
 				case 'process': $arr['html'] .= $this->processAction();  break;
-				case 'finish':  $arr['html'] .= $this->finishAction();   break;
+				case 'saved':   $arr['html'] .= $this->savedAction();   break;
 
 				default:       $arr['html'] .= $this->browseAction(); break;
 			}
@@ -856,6 +857,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			$citations[0]['attention'] = '';
 		}
+		if (!isset($citations[0]['no_attention']))
+		{
+			$citations[0]['no_attention'] = '';
+		}
 
 		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
 		{
@@ -896,6 +901,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view = $this->view('review', 'import');
 		$view->citations_require_attention    = $citations_require_attention;
 		$view->citations_require_no_attention = $citations_require_no_attention;
+
+		$view->member   = $this->member;
+		$view->option   = $this->option;
+		$view->database = $this->database;
+		$view->isAdmin  = $this->params->get('access-manage');
 
 		$view->messages = Notify::messages('plg_citations');
 
@@ -988,7 +998,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  void
 	 */
-	private function finishAction()
+	private function savedAction()
 	{
 		// Get the session object
 		$session = App::get('session');
@@ -1010,9 +1020,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		$view = $this->view('saved', 'import');
-		$view->config    = $this->config;
-		$view->database  = $this->database;
-		$view->filters   = array(
+		$view->member   = $this->member;
+		$view->option   = $this->option;
+		$view->isAdmin  = $this->params->get('access-manage');
+		$view->config   = Component::params('com_citations');
+		$view->database = $this->database;
+		$view->filters  = array(
 			'start'  => 0,
 			'search' => ''
 		);
@@ -1020,7 +1033,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		foreach ($citations_saved as $cs)
 		{
-			$cc = new Citation($this->database);
+			$cc = new \Components\Citations\Tables\Citation($this->database);
 			$cc->load($cs);
 			$view->citations[] = $cc;
 		}
@@ -1030,7 +1043,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->openurl['icon'] = '';
 
 		//take care fo type
-		$ct = new Type($this->database);
+		$ct = new \Components\Citations\Tables\Type($this->database);
 		$view->types = $ct->getType();
 
 		$view->messages = Notify::messages('plg_citations');

@@ -79,8 +79,11 @@ if (isset($this->messages))
 ?>
 <div id="content-header-extra">
 	<?php if ($this->isAdmin) : ?>
-		<a class="btn icon-add" href="<?php echo Route::url($base . '&action=add'); ?>">
+		<a class="btn icon-add" href="<?php echo Route::url($base . '&task=add'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SUBMIT_CITATION'); ?>
+		</a>
+		<a class="btn icon-upload" href="<?php echo Route::url($base . '&task=import'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT'); ?>
 		</a>
 	<?php endif; ?>
 </div>
@@ -140,8 +143,8 @@ if (isset($this->messages))
 						</li>
 					</ul>
 
-					<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
-					<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
+					<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
+					<input type="hidden" name="referer" value="<?php echo $this->escape(@$_SERVER['HTTP_REFERER']); ?>" />
 
 					<?php if (count($this->citations) > 0) : ?>
 						<?php
@@ -237,7 +240,7 @@ if (isset($this->messages))
 												echo $formatted; ?>
 											<?php
 												//get this citations rollover param
-												$params = new JParameter($cite->params);
+												$params = new \Hubzero\Html\Parameter($cite->params);
 												$citation_rollover = $params->get('rollover', $rollover);
 											?>
 											<?php if ($citation_rollover && $cite->abstract != "") : ?>

@@ -32,7 +32,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css('import.css')
-     ->js();
+     ->js('import.js');
 
 $base = $this->member->getLink() . '&active=citations';
 ?>
@@ -43,29 +43,38 @@ $base = $this->member->getLink() . '&active=citations';
 		<?php } ?>
 
 		<ul id="steps">
-			<li><a href="<?php echo Route::url($base . '&action=import'); ?>" class="active"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
+			<li><a href="<?php echo Route::url($base . '&task=import'); ?>" class="active"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
 			<li><a><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
 			<li><a><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
 		</ul><!-- / #steps -->
 
-		<form id="hubForm" class="full" enctype="multipart/form-data" method="post" action="<?php echo Route::url($base . '&action=upload'); ?>">
+		<form id="hubForm" class="full" enctype="multipart/form-data" method="post" action="<?php echo Route::url($base . '&task=upload'); ?>">
 			<fieldset>
 				<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>:</legend>
 
-				<label for="citations_file">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>: <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-					<input type="file" name="citations_file" id="citations_file" />
-					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_MAX'); ?></span>
-				</label>
-
-				<p>
-					<strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_ACCEPTABLE'); ?></strong><br />
-					<?php echo implode($this->accepted_files, '<br />'); ?>
-				</p>
+				<div class="grid">
+					<div class="col span6">
+						<label for="citations_file">
+							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>: <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+							<input type="file" name="citations_file" id="citations_file" />
+							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_MAX'); ?></span>
+						</label>
+					</div>
+					<div class="col span6 omega">
+						<p>
+							<strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_ACCEPTABLE'); ?></strong><br />
+							<?php echo implode($this->accepted_files, '<br />'); ?>
+						</p>
+					</div>
+				</div>
 			</fieldset>
 
 			<p class="submit">
-				<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>" />
+				<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>" />
+
+				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
+					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CANCEL'); ?>
+				</a>
 			</p>
 
 			<?php echo Html::input('token'); ?>

@@ -322,10 +322,11 @@ class Importer extends Object
 			'error'     => array()
 		);
 
-		$now      = with(new Date('now'))->toSql();
-		$user     = $this->get('user');
-		$scope    = $this->get('scope');
-		$scope_id = $this->get('scope_id');
+		$now       = with(new Date('now'))->toSql();
+		$user      = $this->get('user');
+		$scope     = $this->get('scope');
+		$scope_id  = $this->get('scope_id');
+		$published = $this->get('published', null);
 
 		// loop through each citation that required attention from user
 		if ($cites_require_attention = $this->readRequiresAttention())
@@ -400,6 +401,11 @@ class Importer extends Object
 				if ($scope_id)
 				{
 					$cra['scope_id'] = $scope_id;
+				}
+
+				if (!is_null($published))
+				{
+					$cra['published'] = $published;
 				}
 
 				// save the citation
@@ -487,12 +493,17 @@ class Importer extends Object
 				// sets group if set
 				if ($scope)
 				{
-					$cra['scope'] = $scope;
+					$crna['scope'] = $scope;
 				}
 
 				if ($scope_id)
 				{
-					$cra['scope_id'] = $scope_id;
+					$crna['scope_id'] = $scope_id;
+				}
+
+				if (!is_null($published))
+				{
+					$crna['published'] = $published;
 				}
 
 				// save the citation

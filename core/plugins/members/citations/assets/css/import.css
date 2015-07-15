@@ -12,10 +12,14 @@
 	-- -- -- -- -- -- --
 
 */
- 
+	#page_content section.section,
+	section.section>.section-inner {
+		width: 100%;
+		display: block;
+	}
 /* Citations Import */
 	#steps {
-		margin: 20px 0 0 0;
+		margin: 1.8em 0 0 0;
 		list-style: none;
 		overflow: hidden;
 	}
@@ -25,25 +29,25 @@
 	}
 	#steps li a {
 		display: block;
-		padding: 10px;
+		padding: 0.4em;
 		background: #efefef;
 		border: 1px solid #ccc;
 		color: #ccc;
-		font-size: 24px;
+		font-size: 1.8em;
 		font-weight: bold;
-		line-height: 24px;
-		margin-right: 5px;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		-ms-border-radius: 5px;
-		-o-border-radius: 5px;
-		border-radius: 5px;
-		min-width: 150px;
+		line-height: 1;
+		margin-right: 0.4em;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		min-width: 6em;
 	}
 	#steps li a span {
 		display: block;
-		font-size: 12px;
-		line-height: 18px;
+		font-size: 0.6em;
+		line-height: 1.8em;
 		font-weight: normal;
 	}
 	#steps li a.active {
