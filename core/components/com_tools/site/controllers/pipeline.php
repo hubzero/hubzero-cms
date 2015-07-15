@@ -2330,7 +2330,7 @@ class Pipeline extends SiteController
 	{
 		$token = md5(uniqid());
 
-		$fname = '/tmp/license' . $toolname . $token . 'txt';
+		$fname = '/tmp/license' . $toolname . $token . '.txt';
 		$handle = fopen($fname, "w");
 
 		fwrite($handle, $this->_output);
@@ -2340,6 +2340,7 @@ class Pipeline extends SiteController
 
 		if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output))
 		{
+			unlink($fname);
 			return false;
 		}
 		else

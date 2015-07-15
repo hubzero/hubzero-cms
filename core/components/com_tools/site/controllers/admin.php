@@ -731,7 +731,8 @@ class Admin extends SiteController
 				}
 			}
 
-			$fname = DS . 'tmp' . DS . 'license' . $this->_toolid . '-r' . $status['revision'] . 'txt';
+			$token = md5(uniqid());
+			$fname = '/tmp/license' . $this->_toolid . '-r' . $status['revision'] . '-' . $token . '.txt';
 			$handle = fopen($fname, "w");
 			fwrite($handle, $status['license']);
 			fclose($handle);
@@ -743,8 +744,11 @@ class Admin extends SiteController
 			if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_VERSION_FINALIZED')))
 			{
 				$out .= " invoke script failure";
+				unlink($fname);
 				return false;
 			}
+
+			unlink($fname);
 
 			if ($this->getError())
 			{
