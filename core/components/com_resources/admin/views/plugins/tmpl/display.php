@@ -38,10 +38,15 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::publishList();
 	Toolbar::unpublishList();
 }
+
+include_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<?php echo $this->states; ?>
+		<select name="state" class="inputbox" onchange="this.form.submit()">
+			<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+			<?php echo Html::select('options', \Components\Plugins\Admin\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
+		</select>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
@@ -102,7 +107,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	//$access    = $this->grid('access', $row, $i);
 	//$checked = $this->grid('checkedout', $row, $i);
-	$published = $this->grid('published', $row, $i);
+	$published = Html::grid('published', $row->enabled, $i, '', false);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
 
