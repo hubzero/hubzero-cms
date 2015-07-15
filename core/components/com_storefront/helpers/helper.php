@@ -40,15 +40,18 @@ class StorefrontHelper
 
 }
 
-/**
- * Dump system message (debugging function)
- *
- * @param      mixed var: whatever needs to be ptinted
- * @return     void
- */
-function dump($var)
+if (!function_exists('dump'))
 {
-	echo '<br>----<br>';
-	print_r($var);
-	echo '<br>----<br>';
+	/**
+	 * Dump system message (debugging function)
+	 *
+	 * @param      mixed var: whatever needs to be ptinted
+	 * @return     void
+	 */
+	function dump($var)
+	{
+		echo '<br>----<br>';
+		print_r($var);
+		echo '<br>----<br>';
+	}
 }

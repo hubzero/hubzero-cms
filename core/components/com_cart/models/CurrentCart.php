@@ -865,7 +865,8 @@ class CartModelCurrentCart extends CartModelCart
 	public function applyCoupon($cnId)
 	{
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$coupon = StorefrontModelCoupons::getCouponInfo($cnId, true, true, true, true);
+		$cmodel = new StorefrontModelCoupons;
+		$coupon = $cmodel->getCouponInfo($cnId, true, true, true, true);
 
 		if (!$coupon->info->itemCoupon)
 		{
@@ -941,7 +942,8 @@ class CartModelCurrentCart extends CartModelCart
 
 		// Get coupon types
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$coupons = StorefrontModelCoupons::getCouponsInfo($cnIds);
+		$cmodel = new StorefrontModelCoupons;
+		$coupons = $cmodel->getCouponsInfo($cnIds);
 
 		return $coupons;
 	}
