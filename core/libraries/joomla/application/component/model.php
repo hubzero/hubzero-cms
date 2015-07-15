@@ -297,6 +297,24 @@ abstract class JModel extends JObject
 	 */
 	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
+		if (is_object($query))
+		{
+			if ($query instanceof \Hubzero\Database\Query)
+			{
+				$query->limit($limit);
+				$query->start($start);
+			}
+			else if (!($this->_db instanceof JDatabase))
+			{
+				$query = $query->__toString();
+				if ($limit > 0 || $limitstart > 0)
+				{
+					$query .= ' LIMIT ' . $limitstart . ', ' . $limit;
+					$limit = 0;
+					$limitstart = 0;
+				}
+			}
+		}
 		$this->_db->setQuery($query, $limitstart, $limit);
 		$result = $this->_db->loadObjectList();
 
