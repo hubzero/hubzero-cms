@@ -110,7 +110,7 @@ class Archive extends Object
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new \Components\Resources\Model\Import\Hook($result);
+							$results[$key] = new \Components\Resources\Models\Import\Hook($result);
 						}
 					}
 					$this->_hooks = new ItemList($results);
