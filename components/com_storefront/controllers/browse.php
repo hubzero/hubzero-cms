@@ -71,6 +71,10 @@ class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 				$executed = true;
 				$this->browseCollection($cId);
 			}
+			else
+			{
+				JError::raiseError(404, JText::_('Collection Not Found'));
+			}
 		}
 
 		if (!$executed)

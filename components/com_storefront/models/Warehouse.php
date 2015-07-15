@@ -440,6 +440,12 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				$skuMeta = array();
 			}
 
+			// Fix the NULL price
+			if ($row->sPrice == '')
+			{
+				$row->sPrice = 0;
+			}
+
 			if (!empty($row->oName))
 			{
 				$skuoptions[$row->oId] = $row->oName;
@@ -650,7 +656,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		$skuInfo = $this->getSkuInfo($sId);
-		//print_r($skuInfo); die;
 
 		$sku->setId($sId);
 		$sku->setPrice($skuInfo['info']->sPrice);
@@ -1260,8 +1265,9 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$sql .= " AND c.`cType` = '{$collectionType}'";
 
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql;
 		$res = $this->_db->loadObjectList();
+
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
 
 		return $res;
 	}

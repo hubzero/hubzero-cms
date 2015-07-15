@@ -78,6 +78,7 @@ class CartControllerCheckout extends ComponentController
 
 		// This is a starting point in checkout process. All existing transactions for this user
 		// have to be removed and a new one has to be created.
+
 		// Do the final check of the cart
 
 		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
@@ -102,7 +103,7 @@ class CartControllerCheckout extends ComponentController
 			$cart->redirect('home');
 		}
 
-		// Redirect to the final step if transaction is ready to go to the payment phase (???)
+		// Redirect to the appropriate step
 		$cart->redirect('continue');
 
 		//$this->printTransaction($transactionInfo);

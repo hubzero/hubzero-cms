@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 /**
- * Product type handler. Parent class for all type handlers.
+ * Custom handler. Parent class for all custom handlers.
  */
 class Custom_Handler
 {
