@@ -52,12 +52,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 		<input type="hidden" name="action" value="deletecollection" />
-		<input type="hidden" name="board" value="<?php echo $this->collection->get('id'); ?>" />
+		<input type="hidden" name="board" value="<?php echo $this->escape($this->collection->get('id')); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 		<?php echo JHTML::_('form.token'); ?>
