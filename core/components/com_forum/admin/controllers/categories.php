@@ -261,7 +261,7 @@ class Categories extends AdminController
 		if (!$model->scope)
 		{
 			$section = new Section($this->database);
-			$section->load($filters['section_id']);
+			$section->load($fields['section_id']);
 			$model->scope    = $section->scope;
 			$model->scope_id = $section->scope_id;
 		}
