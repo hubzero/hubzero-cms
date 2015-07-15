@@ -931,15 +931,23 @@ class Threads extends SiteController
 				{
 					$this->config->set('access-edit-own-' . $assetType, $val);
 				}
+
+				$this->config->set('access-delete-' . $assetType, true);
+				$val = User::authorise('core.delete' . $at, $asset);
+				if ($val !== null)
+				{
+					$this->config->set('access-delete-' . $assetType, $val);
+				}
 			}
 			else
 			{
 				$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
 				$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
+				$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
 			}
 
-			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			//$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
 			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 		}
 	}

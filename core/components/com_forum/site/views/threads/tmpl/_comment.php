@@ -96,7 +96,7 @@ defined('_HZEXEC_') or die();
 						)
 					) { ?>
 				<p class="comment-options">
-					<?php if ($this->comment->get('parent') && $this->config->get('access-delete-post')) { ?>
+					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
 						<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
 							--><?php echo Lang::txt('COM_FORUM_DELETE'); ?><!--
 						--></a>
