@@ -240,7 +240,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 					$cid = Request::getVar('cid', 0);
 					if ($cid)
 					{
-						Request::setVar('id', $cid);
+						Request::setVar('comment', $cid);
 					}
 				break;
 
@@ -329,7 +329,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$canDelete = 1;
 
 		// Get page
-		$view->page = $this->note->page($this->_pagename, $scope);
+		$view->page    = $this->note->page($this->_pagename, $scope);
 		$view->content = NULL;
 		$exists = $view->page->get('id') ? true : false;
 

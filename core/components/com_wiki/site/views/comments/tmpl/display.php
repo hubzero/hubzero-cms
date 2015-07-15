@@ -156,7 +156,7 @@ if (!$this->sub)
 	</div>
 </section><!-- / .main section -->
 
-<?php if (isset($this->mycomment) && is_a($this->mycomment, 'WikiModelComment')) { ?>
+<?php if (isset($this->mycomment) && $this->mycomment instanceof \Components\Wiki\Models\Comment) { ?>
 <section class="below section">
 	<form action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" id="commentform" class="section-inner">
 		<div class="subject">
