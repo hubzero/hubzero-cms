@@ -42,6 +42,25 @@
 	border: none;
 }
 
+.templateTable {
+	font-size: 9pt;
+	width: 100%;
+	cursor: pointer;
+}
+
+#templateExplaination {
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 5px;
+	width: 100%;
+	float: left;
+}
+
+.clickable  tr {
+	cursor: pointer;
+}
+
 #download-batch {
 	padding:10px;
 }
