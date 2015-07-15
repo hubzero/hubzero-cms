@@ -145,7 +145,7 @@ class Record extends Object
 		// check custom field if we have that on
 		if ($this->_options['requiredfields'] && isset($this->record->type->id))
 		{
-			$resourcesElements = new \ResourcesElements((array) $this->record->custom, $this->record->type->customFields);
+			$resourcesElements = new \Components\Resources\Models\Elements((array) $this->record->custom, $this->record->type->customFields);
 			foreach ($resourcesElements->getSchema()->fields as $field)
 			{
 				$value = $resourcesElements->get($field->label);
@@ -330,7 +330,7 @@ class Record extends Object
 		// bind custom fields to types custom fields
 		if (isset($this->record->type->id))
 		{
-			$resourcesElements = new \ResourcesElements((array) $this->raw->custom_fields, $this->record->type->customFields);
+			$resourcesElements = new \Components\Resources\Models\Elements((array) $this->raw->custom_fields, $this->record->type->customFields);
 			$customFieldsHtml  = $resourcesElements->toDatabaseHtml();
 
 			// add all custom fields to custom object
