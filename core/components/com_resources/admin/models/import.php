@@ -30,7 +30,7 @@
 
 namespace Components\Resources\Models;
 
-use Components\Resources\Models\Import;
+use Components\Resources\Models\Import\Run;
 use Components\Resources\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
