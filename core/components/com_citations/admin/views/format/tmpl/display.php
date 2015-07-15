@@ -75,6 +75,7 @@ $jQ(document).ready(function(e) {
 	$jQ(function($) {
 		$('tr').click(function() {
 			$('#format-string').val($('#format-string').val() + $(this).attr('id'));
+			$('#format-string').focus();
 		});
 	}); 
 });
