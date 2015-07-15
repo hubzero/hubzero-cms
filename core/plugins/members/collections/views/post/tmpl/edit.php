@@ -215,14 +215,14 @@ $this->css()
 	<?php } ?>
 	</fieldset>
 
-	<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $item->get('id'); ?>" />
-	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
-	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
-	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
-	<input type="hidden" name="fields[access]" id="field-access" value="<?php echo $item->get('access', 0); ?>" />
+	<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($item->get('id')); ?>" />
+	<input type="hidden" name="fields[created]" value="<?php echo $this->escape($item->get('created')); ?>" />
+	<input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($item->get('created_by')); ?>" />
+	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $this->escape($dir); ?>" />
+	<input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->escape($item->get('access', 0)); ?>" />
 
-	<input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
-	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />
+	<input type="hidden" name="post[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
+	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->escape($this->entry->get('item_id')); ?>" />
 
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

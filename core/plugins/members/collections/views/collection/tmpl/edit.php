@@ -93,12 +93,12 @@ $this->css();
 		</div>
 	</fieldset>
 
-	<input type="hidden" name="fields[id]" value="<?php echo $this->entry->get('id'); ?>" />
-	<input type="hidden" name="fields[object_id]" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
+	<input type="hidden" name="fields[object_id]" value="<?php echo $this->escape($this->member->get('uidNumber')); ?>" />
 	<input type="hidden" name="fields[object_type]" value="member" />
-	<input type="hidden" name="fields[created]" value="<?php echo $this->entry->get('created'); ?>" />
-	<input type="hidden" name="fields[created_by]" value="<?php echo $this->entry->get('created_by'); ?>" />
-	<input type="hidden" name="fields[state]" value="<?php echo $this->entry->get('state'); ?>" />
+	<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
+	<input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
+	<input type="hidden" name="fields[state]" value="<?php echo $this->escape($this->entry->get('state')); ?>" />
 
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
