@@ -432,7 +432,7 @@ class Queries extends SiteController
 			{
 				// Output messsage and redirect
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets', false),
 					Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
 				);
 				return;
