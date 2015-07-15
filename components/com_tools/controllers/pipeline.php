@@ -2369,7 +2369,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	{
 		$token = md5(uniqid());
 
-		$fname = '/tmp/license' . $toolname . $token . 'txt';
+		$fname = '/tmp/license' . $toolname . $token . '.txt';
 		$handle = fopen($fname, "w");
 
 		fwrite($handle, $this->_output);
@@ -2379,6 +2379,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output))
 		{
+			unlink($fname);
 			return false;
 		}
 		else

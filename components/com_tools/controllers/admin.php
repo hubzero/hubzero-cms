@@ -730,7 +730,8 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				}
 			}
 
-			$fname = DS . 'tmp' . DS . 'license' . $this->_toolid . '-r' . $status['revision'] . 'txt';
+			$token = md5(uniqid());
+			$fname = '/tmp/license' . $this->_toolid . '-r' . $status['revision'] . '-' . $token . '.txt';
 			$handle = fopen($fname, "w");
 			fwrite($handle, $status['license']);
 			fclose($handle);
@@ -742,8 +743,11 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_VERSION_FINALIZED')))
 			{
 				$out .= " invoke script failure";
+				unlink($fname);
 				return false;
 			}
+
+			unlink($fname);
 
 			if ($this->getError())
 			{
