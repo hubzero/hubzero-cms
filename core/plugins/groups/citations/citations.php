@@ -38,7 +38,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'author.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
 
 use Components\Tags\Models\Tag;
@@ -46,8 +46,7 @@ use Components\Tags\Models\Cloud;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
-
-
+use Components\Citations\Models\Format;
 
 
 /**
@@ -173,9 +172,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				case 'save':     $arr['html'] .= $this->_save();		break;
 				case 'add':      $arr['html'] .= $this->_edit();		break;
 				case 'edit':     $arr['html'] .= $this->_edit();		break;
-				case 'delete':   $arr['html'] .= $this->_delete();			break;
-				case 'browse':	 $arr['html'] .= $this->_browse();	break;
-				case 'import': 	 $arr['html'] .= $this->_import(); 	break;
+				case 'delete':   $arr['html'] .= $this->_delete();		break;
+				case 'browse':	 $arr['html'] .= $this->_browse();		break;
+				case 'import': 	 $arr['html'] .= $this->_import(); 		break;
+				case 'settings': $arr['html'] .= $this->_settings();		break;
 				default:         $arr['html'] .= $this->_browse();
 			}
 		}
@@ -229,6 +229,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'),
 			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
 		);
+
+		$view->filters['activeFilter'] = '';
 
 		// Sort Filter
 		$view->sorts = array(
@@ -571,6 +573,60 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 		return;
 	}
+
+	/**
+	 * Settings for group citations 
+	 *
+	 * @param null
+	 * @return void
+	 * 
+	 *
+	 */
+	private function _settings()
+	{
+		if ($_POST)
+		{
+			var_dump("saving data"); die;
+		}
+		else
+		{
+			//instansiate the view
+			$view = $this->view('default', 'settings');
+
+			// pass the group through
+			$view->group = $this->group;
+
+			//get group settings
+			$params = json_decode($this->group->get('params'));
+
+			$view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
+			$view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
+			$view->citationsFormat = (isset($params->citationsFormat) ? $params->Format : "apa");
+
+			//get formats 
+			$view->formats = \Components\Citations\Models\Format::all()->rows()->toObject();
+			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
+			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail(2);
+
+			// Output HTML
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+
+			return $view->loadTemplate();
+		}
+	}
+
+	/**
+	 * [getCitationConfig description]
+	 * @return [type] [description]
+	 */
+	private function getCitationConfig()
+	{
+
+	}
+
 
 	/**
 	 * Determine if user is part of publication project and is allowed to edit citation
