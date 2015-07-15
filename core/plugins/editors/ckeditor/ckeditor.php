@@ -108,6 +108,17 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGetInsertMethod($id)
 	{
+		$js = "
+			function jInsertEditorText( text, editor ) {
+				CKEDITOR.instances[editor].updateElement();
+				var content = document.getElementById(editor).value;
+				content = content + text;
+				CKEDITOR.instances[editor].setData(content);
+			}
+		";
+
+		Document::addScriptDeclaration($js);
+
 		return true;
 	}
 
@@ -441,7 +452,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 				$template = $db->loadResult();
 			}
 
-			$app = substr(PATH_APP, strlen(PATH_CORE));
+			$app = substr(PATH_APP, strlen(PATH_ROOT));
 
 			// vars to hold css
 			$css          = array();
