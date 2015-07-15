@@ -54,7 +54,11 @@ class Sync extends \Hubzero\Base\Object
 		$this->_uid     = User::get('id');
 
 		$this->params   = Plugin::params( 'projects', 'files' );
-		$this->_logPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'logs');
+		$this->_logPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'logs', false);
+		if (!is_dir($this->_logPath))
+		{
+			Filesystem::makeDirectory($this->_logPath, 0755, true, true);
+		}
 		$this->_path    = $this->model->repo()->get('path');
 	}
 
@@ -977,10 +981,6 @@ class Sync extends \Hubzero\Base\Object
 			if (empty($this->_logPath))
 			{
 				return false;
-			}
-			if (!is_dir($this->_logPath))
-			{
-				Filesystem::makeDirectory($this->_logPath);
 			}
 			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
 		}

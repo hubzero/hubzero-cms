@@ -432,7 +432,8 @@ class Connect extends Object
 			if (!$refresh_token || $reauth)
 			{
 				$authUrl = $this->createAuthUrl('google', $return);
-				header('Location: ' . $authUrl);
+				//header('Location: ' . $authUrl);
+				App::redirect($authUrl);
 				return;
 			}
 		}
@@ -2237,7 +2238,7 @@ class Connect extends Object
 				'approval_prompt=' . urlencode($config['approvalPrompt'])
 			);
 
-			$return = $return ? $return : Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=files');
+			$return = $return ? $return : Route::url($this->model->link('files'));
 
 			$array = array(
 				'alias'	 => $this->model->get('alias'),

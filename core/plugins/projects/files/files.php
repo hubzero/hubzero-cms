@@ -306,7 +306,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$arr['html'] 	= $this->syncStatus();
 					break;
 				case 'sync_error':
-					$arr['html'] 	= $this->_syncError();
+					$arr['html'] 	= $this->syncError();
 					break;
 			}
 		}
@@ -376,6 +376,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->subdir = '';
 		}
 
+		// Do we have any changes to report?
+		$this->onAfterUpdate();
+
 		// Load member params
 		$member = $this->model->member(true);
 		$view->oparams = new \Hubzero\Config\Registry($member->params);
@@ -419,9 +422,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Retrieve items
 		$view->items = $this->repo->filelist($view->params);
-
-		// Do we have any changes to report?
-		$this->onAfterUpdate();
 
 		$view->publishing	= false; // do not show publishing info
 		$view->title		= $this->_area['title'];
@@ -648,12 +648,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						}
 					}
 				}
-			}
-
-			// Force sync
-			if ($this->repo->isLocal())
-			{
-				$this->model->saveParam('google_sync_queue', 1);
 			}
 		}
 
@@ -3113,6 +3107,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$activity = '';
 		$message  = '';
 		$ref      = '';
+		$sync     = 0;
 
 		$model = $model ? $model : $this->model;
 
@@ -3162,6 +3157,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$uploadParts = explode(',', $uploaded);
 			$updateParts = explode(',', $updated);
+			$sync        = 1;
 
 			if ($uploaded)
 			{
@@ -3216,6 +3212,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			// Save referenced files
 			$ref = $deleted;
+			$sync = 1;
 
 			$delParts = explode(',', $deleted);
 
@@ -3230,6 +3227,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			// Save referenced files
 			$ref = $restored;
+			$sync = 1;
 
 			$resParts = explode(',', $restored);
 
@@ -3286,6 +3284,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (strlen($parsedRef) > 255)
 			{
 				$parsedRef = \Components\Projects\Helpers\Html::shortenText($parsedRef);
+			}
+
+			// Force sync
+			if ($sync)
+			{
+				$this->model->saveParam('google_sync_queue', 1);
 			}
 
 			// Record activity

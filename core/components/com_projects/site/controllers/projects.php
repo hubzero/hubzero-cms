@@ -984,8 +984,9 @@ class Projects extends Base
 				return;
 			}
 			$return  = Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->model->get('alias') . '&active=files&action=connect&service='
-				. $service . '&code=' . $code);
+				. $this->model->get('alias') . '&active=files&action=connect');
+			$return .= '?service=' . $service;
+			$return .= '&code=' . $code;
 		}
 		elseif (isset($json->return))
 		{

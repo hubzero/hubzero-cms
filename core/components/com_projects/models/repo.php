@@ -666,6 +666,7 @@ class Repo extends Object
 		else
 		{
 			$type = $file->get('type');
+			$item = $file->get('name');
 		}
 		if (!$params['file']->exists())
 		{
