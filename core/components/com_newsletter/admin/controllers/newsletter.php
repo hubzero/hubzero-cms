@@ -827,6 +827,7 @@ class Newsletter extends AdminController
 		//$mailHeaders .= "List-Unsubscribe: <mailto:{{UNSUBSCRIBE_MAILTO_LINK}}>, <{{UNSUBSCRIBE_LINK}}>";
 
 		//set mail args
+		$mailArgs = '';
 		//$mailArgs = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
 
 		//are we sending test mailing
