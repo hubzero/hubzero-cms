@@ -14,8 +14,8 @@ function dv_list()
 {
 	global $com_name, $conf;
 
-	JToolBarHelper::title( Lang::txt('Database List' ), 'databases');
-	JToolBarHelper::preferences(Request::getcmd('option'), '500');
+	Toolbar::title(Lang::txt('Database List'), 'databases');
+	Toolbar::preferences(Request::getcmd('option'), '500');
 
 
 	$base = $conf['dir_base'];
@@ -26,22 +26,21 @@ function dv_list()
 	array_pop($list);
 
 ?>
-	<table class="adminlist" summary="">
+	<table class="adminlist">
 		<thead>
-		 	<tr>
-		 		<th width="50px">#</th>
+			<tr>
+				<th width="50px">#</th>
 				<th width="40%">Name</th>
 				<th>Config</th>
 				<th width="30%">Data Views</th>
 			</tr>
 		</thead>
-
 		<tbody>
 <?php
-
 	$c = 0;
 
-	foreach ($list as $item) {
+	foreach ($list as $item)
+	{
 		chdir($base);
 		$id = explode('/', $item);
 		$id = $id[1];
