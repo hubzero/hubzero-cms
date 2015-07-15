@@ -114,7 +114,7 @@ if ($comment)
 	<tbody>
 		<tr>
 			<td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
-				<p style="display: block; border: 1px solid #c8e3c2; background: #eafbe6; margin:0; padding: 1em;">?</p>
+				<p style="display: block; border: 1px solid #c8e3c2; background: #eafbe6; margin:0; padding: 1em;">&#10003;</p>
 			</td>
 			<td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
 				<table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
