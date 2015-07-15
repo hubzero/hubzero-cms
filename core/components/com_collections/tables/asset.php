@@ -84,6 +84,8 @@ class Asset extends \JTable
 			$this->type = 'file';
 		}
 
+		$this->state = intval($this->state);
+
 		if (!$this->id)
 		{
 			$this->created    = Date::toSql();

@@ -197,6 +197,9 @@ class Collection extends \JTable
 			$this->access = 0;
 		}
 
+		$this->access    = intval($this->access);
+		$this->state     = intval($this->state);
+
 		$tbl = new self($this->_db);
 		$tbl->load($this->alias, $this->object_id, $this->object_type);
 

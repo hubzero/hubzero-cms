@@ -73,6 +73,10 @@ class Item extends \JTable
 			$this->access = 0;
 		}
 
+		$this->access    = intval($this->access);
+		$this->state     = intval($this->state);
+		$this->object_id = intval($this->object_id);
+
 		if (!$this->id)
 		{
 			$this->created    = Date::toSql();
