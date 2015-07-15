@@ -215,10 +215,13 @@ li a#upload-start:hover {
 #uploadform,
 #upload-noflash {
 	margin: 0  0 10px 0;
-	border: 1px #ccc solid;
+	border: none;
 	padding: 5px !important;
 	text-align: left;
 	font-size:11px
+}
+.image-controls {
+	background: #eee;
 }
 #upload-noflash {
 		border:0

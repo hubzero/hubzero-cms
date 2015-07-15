@@ -31,6 +31,25 @@ body {
 	line-height: 90px;
 	background: #fff !important;
 }
+.item a.folder-item:before {
+	width: 80px;
+	height: 1em;
+	line-height: 1;
+	overflow: hidden;
+	border: none;
+	font-size: 4em;
+	color: #fadd80;
+	text-align: center;
+	font-family: "Fontcons";
+	content: "\f07b";
+}
+.item a.folder-item:hover:before {
+	content: "\f07c";
+}
+.item a.folder-item:hover {
+	border: none;
+	text-decoration: none;
+}
 
 .item img {
 	display: inline;

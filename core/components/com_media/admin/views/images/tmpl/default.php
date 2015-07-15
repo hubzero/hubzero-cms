@@ -15,11 +15,12 @@ var image_base_path = '<?php $params = Component::params('com_media');
 echo $params->get('image_path', 'images');?>/';
 </script>
 <h2 class="modal-title"><?php echo Lang::txt('COM_MEDIA'); ?></h2>
+
 <form action="<?php echo Route::url('index.php?option=com_media&asset=' . Request::getCmd('asset') . '&author=' . Request::getCmd('author'));?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo Html::asset('image', 'media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
 	</div>
-	<fieldset>
+	<fieldset class="image-controls">
 		<div class="fltlft">
 			<label for="folder"><?php echo Lang::txt('COM_MEDIA_DIRECTORY') ?></label>
 			<?php echo $this->folderList; ?>
@@ -73,17 +74,16 @@ echo $params->get('image_path', 'images');?>/';
 		<input type="hidden" id="dirPath" name="dirPath" />
 		<input type="hidden" id="f_file" name="f_file" />
 		<input type="hidden" id="tmpl" name="component" />
-
 	</fieldset>
 </form>
 
 <?php if (User::authorise('core.create', 'com_media')): ?>
-	<form action="<?php echo Request::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;asset=<?php echo Request::getCmd('asset');?>&amp;author=<?php echo Request::getCmd('author');?>&amp;view=images" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+	<form action="<?php echo Request::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo Session::getFormToken();?>=1&amp;asset=<?php echo Request::getCmd('asset');?>&amp;author=<?php echo Request::getCmd('author');?>&amp;view=images" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 		<fieldset id="uploadform">
 			<legend><?php echo $this->config->get('upload_maxsize')=='0' ? Lang::txt('COM_MEDIA_UPLOAD_FILES_NOLIMIT') : Lang::txt('COM_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?></legend>
 			<fieldset id="upload-noflash" class="actions">
 				<label for="upload-file" class="hidelabeltxt"><?php echo Lang::txt('COM_MEDIA_UPLOAD_FILE'); ?></label>
-				<input type="file" id="upload-file" name="Filedata[]" multiple />
+				<input type="file" id="upload-file" name="Filedata[]" multiple="multiple" />
 				<label for="upload-submit" class="hidelabeltxt"><?php echo Lang::txt('COM_MEDIA_START_UPLOAD'); ?></label>
 				<input type="submit" id="upload-submit" value="<?php echo Lang::txt('COM_MEDIA_START_UPLOAD'); ?>"/>
 			</fieldset>
