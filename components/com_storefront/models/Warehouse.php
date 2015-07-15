@@ -181,7 +181,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
 		$sql .= " WHERE p.`pActive` = 1";
 
-		foreach	($this->lookupCollections as $cId)
+		foreach ($this->lookupCollections as $cId)
 		{
 			$sql .= " AND c.`cId` = " . $this->_db->quote($cId);
 		}
