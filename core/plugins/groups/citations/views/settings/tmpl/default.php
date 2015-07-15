@@ -86,8 +86,8 @@ $jQ(document).ready(function(e) {
 			<!-- Citation sources -->
 			<div class="explaination">
 			<p>
-				Choose where the citations are being sourced from.
-			</p>
+			    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SOURCE_EXPLAIN'); ?> 
+            </p>
 			</div>
 
 			<fieldset>
@@ -96,19 +96,19 @@ $jQ(document).ready(function(e) {
 				<div class="grid">
 					<div class="col span6">
 						<label for="display-members">
-						<?php echo Lang::txt('Select which sources of citations to display.'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SELECT_SOURCES'); ?>
 						<select name="display" id="display-sources">
-							<option value="group"><?php echo Lang::txt('Display group-attributed citations only.'); ?></option>
-							<option value="member"><?php echo Lang::txt('Display group-attributed and group member-attributed citations.'); ?></option>
+							<option value="group"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DISPLAY_GROUPS'); ?></option>
+							<option value="member"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DISPLAY_MEMBERS'); ?></option>
 						</select>
 						</label>
 					</div>
 					<div class="col span6 omega">
-					<p id="applicableFields"><?php //echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS'); ?>
-						Group-attributed citations are those that are explicitly uploaded to the group.
+					<p id="applicableFields">
+                        <?php echo Lang::txt('PLG_GROUPS_CITATIONS_GROUP_ATTRIB'); ?>
 					</p>
 					<p>
-						Member-attributed citations are those that belong to members of the group who have uploaded their own citations.
+                        <?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBER_ATTRIB'); ?> 
 					</p>
 					</div>
 				</div>
@@ -116,18 +116,17 @@ $jQ(document).ready(function(e) {
 			<div class="clear"></div>
 
 			<div class="explaination">
-				<p><?php //echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS'); ?>
-					<!-- Set group-level options for the display and presentation of citation information. -->
-					The bibilographic style for presenting citations within this group.
+				<p>
+                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_FORMAT_EXPLAIN'); ?>	
 				</p>
 			</div>
 			<fieldset>
-				<legend><?php echo Lang::txt('Citation Format'); ?></legend>
+				<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?></legend>
 
 				<div class="grid">
 					<div class="col span7">
 						<label for="cite">
-							<?php echo Lang::txt('Citation Format'); ?>:
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?>:
 								<select name="format" id="format-selector">
 									<option value="custom" data-format="">Custom for Group</option>
 									<?php foreach ($this->formats as $format): ?>
@@ -148,7 +147,7 @@ $jQ(document).ready(function(e) {
 
 					</div>
 					<div class="col span4 omega">
-						<span id="templateExplaination"> Click the key to insert into format. </span>
+						<span id="templateExplaination"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CLICK_TABLE'); ?></span>
 						<table class="templateTable">
 							<thead>
 								<tr class="clickable">

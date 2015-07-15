@@ -31,6 +31,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+//echo "<pre>";
+//var_dump($this->filters); die;
+
 $this->css('citations.css')
 	 ->js();
 
@@ -53,7 +56,7 @@ if (isset($this->messages))
 		<a class="btn icon-upload" href="<?php echo Route::url($base. '&action=import'); ?>">
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_CITATION'); ?>
 		</a>
-		<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=import'); ?>">
+		<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=settings'); ?>">
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SET_FORMAT'); ?>
 		</a>
 	<?php endif; ?>
@@ -95,7 +98,7 @@ if (isset($this->messages))
 								}
 							}
 						?>
-						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
+						<li><a <?php if ($this->filters['activeFilter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
 						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
 						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
 					</ul>
