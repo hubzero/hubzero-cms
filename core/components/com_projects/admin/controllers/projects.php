@@ -367,14 +367,14 @@ class Projects extends AdminController
 				break;
 
 				case 'suspend':
-					$model->set('title', 0);
+					$model->set('state', 0);
 					$what           = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
 					$subject       .= Lang::txt('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
 					$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SUSPENDED');
 				break;
 
 				case 'reinstate':
-					$model->set('title', 1);
+					$model->set('state', 1);
 					$what = $suspended
 						? Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED')
 						: Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_ACTIVATED');
@@ -471,6 +471,8 @@ class Projects extends AdminController
 			Event::trigger( 'xmessage.onSendMessage',
 				array( 'projects_admin_notice', $subject, $body, $from, $managers, $this->_option ));
 		}
+
+		\Notify::message($this->_message, 'success');
 
 		// Redirect to edit view?
 		if ($redirect)

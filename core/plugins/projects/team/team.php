@@ -1027,10 +1027,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 	}
 
-	//----------------------------------------
-	// Messaging
-	//----------------------------------------
-
 	/**
 	 * Send invite email
 	 *
@@ -1127,9 +1123,18 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($uid)
 		{
 			// Send HUB message
-			if (Event::trigger( 'xmessage.onSendMessage', array( 'projects_member_added',
-				$subject, $message, $from,
-				array($uid), $option ))) {
+			if (Event::trigger( 'xmessage.onSendMessage',
+				array(
+					'projects_member_added',
+					$subject,
+					$message,
+					$from,
+					array($uid),
+					$option
+					)
+				)
+			)
+			{
 				return true;
 			}
 		}

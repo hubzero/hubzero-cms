@@ -1151,8 +1151,8 @@ class Html
 		// Get message body
 		$eview = new \Hubzero\Mail\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-			'name'   => 'emails',
-			'layout' => '_plain'
+			'name'      => 'emails',
+			'layout'    => '_plain'
 		));
 
 		$eview->publication 	= $publication;

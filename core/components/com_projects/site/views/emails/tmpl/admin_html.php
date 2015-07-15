@@ -156,7 +156,7 @@ if ($this->project->config()->get('sdata_group', 0) && $this->reviewer == 'sensi
 					<tbody>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Project:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->project->get('title') . '(' . $this->project->get('alias') . ')'; ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->project->get('title') . ' (' . $this->project->get('alias') . ')'; ?></td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>

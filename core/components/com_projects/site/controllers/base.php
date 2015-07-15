@@ -540,7 +540,7 @@ class Base extends SiteController
 					array(
 						'projects_member_added',
 						$subject_active,
-						$message['plaintext'],
+						$message,
 						$from,
 						array($member->userid),
 						$this->_option
@@ -553,7 +553,7 @@ class Base extends SiteController
 				$eview->code 	= $member->invited_code;
 				$eview->email 	= $member->invited_email;
 
-				$message['plaintext'] 	= $eview->loadTemplate();
+				$message['plaintext'] 	= $eview->loadTemplate(false);
 				$message['plaintext'] 	= str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
