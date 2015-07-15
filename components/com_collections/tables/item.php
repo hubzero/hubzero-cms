@@ -70,6 +70,10 @@ class CollectionsTableItem extends JTable
 			$this->access = 0;
 		}
 
+		$this->access    = intval($this->access);
+		$this->state     = intval($this->state);
+		$this->object_id = intval($this->object_id);
+
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{

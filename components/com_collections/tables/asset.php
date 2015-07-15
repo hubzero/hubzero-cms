@@ -76,6 +76,8 @@ class CollectionsTableAsset extends JTable
 			$this->type = 'file';
 		}
 
+		$this->state = intval($this->state);
+
 		if (!$this->id)
 		{
 			$this->created    = JFactory::getDate()->toSql();
