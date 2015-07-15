@@ -112,7 +112,7 @@ jQuery(document).ready(function($){
 			</div>
 			<div class="input-wrap">
 				<label for="billboard[text]"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
-				<?php echo $this->editor('billboard[text]', $this->escape(stripslashes($this->row->text)), 45, 13, 'billboard-text'); ?>
+				<?php echo $this->editor('billboard[text]', $this->escape(stripslashes($this->row->text)), 45, 13, 'billboard-text', ['buttons' => false]); ?>
 			</div>
 		</fieldset>
 	</div>
