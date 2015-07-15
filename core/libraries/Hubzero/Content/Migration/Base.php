@@ -32,6 +32,7 @@ namespace Hubzero\Content\Migration;
 
 use Hubzero\Config\Registry;
 use Hubzero\Config\Processor;
+use Hubzero\Database\Driver;
 
 /**
  * Base migration class
@@ -259,17 +260,14 @@ class Base
 
 		if ($creds = $this->getRootCredentials())
 		{
-			// Instantiate a config object
-			$jconfig = new \Config();
-
-			$db = \JDatabase::getInstance(
+			$db = Driver::getInstance(
 				array(
-					'driver'   => 'pdo',
-					'host'     => $jconfig->host,
+					'driver'   => \Config::get('dbtype'),
+					'host'     => \Config::get('host'),
 					'user'     => $creds['user'],
 					'password' => $creds['password'],
-					'database' => $jconfig->db,
-					'prefix'   => 'jos_'
+					'database' => \Config::get('db'),
+					'prefix'   => \Config::get('dbprefix')
 				)
 			);
 
