@@ -57,6 +57,9 @@ class Format extends Relational
 	 **/
 	public $orderBy = 'name';
 
+
+	protected $table = '#__citations_format';
+
 	/**
 	 * Fields and their validation criteria
 	 *
@@ -87,5 +90,50 @@ class Format extends Relational
 	public function citation()
 	{
 		return $this->belongsToOne('Citation', 'id', 'format');
+	}
+
+
+	public function getTemplateKeys()
+	{
+	    $template_keys =  array(
+			"type" => "{TYPE}",
+			"cite" => "{CITE KEY}",
+			"ref_type" => "{REF TYPE}",
+			"date_submit" => "{DATE SUBMITTED}",
+			"date_accept" => "{DATE ACCEPTED}",
+			"date_publish" => "{DATE PUBLISHED}",
+			"author" => "{AUTHORS}",
+			"editor" => "{EDITORS}",
+			"title" => "{TITLE/CHAPTER}",
+			"booktitle" => "{BOOK TITLE}",
+			"chapter" => "{CHAPTER}",
+			"journal" => "{JOURNAL}",
+			"journaltitle" => "{JOURNAL TITLE}",
+			"volume" => "{VOLUME}",
+			"number" => "{ISSUE/NUMBER}",
+			"pages" => "{PAGES}",
+			"isbn" => "{ISBN/ISSN}",
+			"issn" => "{ISSN}",
+			"doi" => "{DOI}",
+			"series" => "{SERIES}",
+			"edition" => "{EDITION}",
+			"school" => "{SCHOOL}",
+			"publisher" => "{PUBLISHER}",
+			"institution" => "{INSTITUTION}",
+			"address" => "{ADDRESS}",
+			"location" => "{LOCATION}",
+			"howpublished" => "{HOW PUBLISHED}",
+			"url" => "{URL}",
+			"eprint" => "{E-PRINT}",
+			"note" => "{TEXT SNIPPET/NOTES}",
+			"organization" => "{ORGANIZATION}",
+			"abstract" => "{ABSTRACT}",
+			"year" => "{YEAR}",
+			"month" => "{MONTH}",
+			"search_string" => "{SECONDARY LINK}",
+			"sec_cnt" => "{SECONDARY COUNT}"
+		);
+
+		return $template_keys;
 	}
 }
