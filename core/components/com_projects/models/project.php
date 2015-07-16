@@ -1199,7 +1199,7 @@ class Project extends Model
 			break;
 
 			case 'thumb':
-				$link = $this->_base . '&task=media';
+				$link = $this->_base . '&controller=media&media=thumb';
 			break;
 
 			case 'stamp':

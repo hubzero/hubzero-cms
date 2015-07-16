@@ -466,10 +466,13 @@ class Media extends Base
 			return false;
 		}
 
-		$path    = trim($this->config->get('imagepath', '/site/projects'), DS)
-				. DS . $this->model->get('alias') . DS . 'images';
-		$default = PATH_CORE . DS . trim($this->config->get('masterpic',
-				'components/com_projects/site/assets/img/projects-large.gif'), DS);
+		$path    = trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
+		$masterpic = trim($this->config->get('masterpic', 'components/com_projects/site/assets/img/projects-large.gif'), DS);
+		if ($masterpic == 'components/com_projects/assets/img/projects-large.gif')
+		{
+			$masterpic = 'components/com_projects/site/assets/img/projects-large.gif';
+		}
+		$default = PATH_CORE . DS . $masterpic;
 
 		$default = is_file($default ) ? $default : NULL;
 
@@ -493,10 +496,9 @@ class Media extends Base
 		}
 
 		$src     = '';
-		$path    = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS)
-				. DS . $this->model->get('alias') . DS . 'images';
+		$path    = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS) . DS . $this->model->get('alias') . DS . 'images';
 
-		if (file_exists( $path . DS . 'thumb.png' ))
+		if (file_exists($path . DS . 'thumb.png'))
 		{
 			return $path . DS . 'thumb.png';
 		}
@@ -504,12 +506,17 @@ class Media extends Base
 		if ($this->model->get('picture'))
 		{
 			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
-			$src = $thumb && file_exists( $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
+			$src = $thumb && file_exists($path . DS . $thumb) ? $path . DS . $thumb : NULL;
 		}
+
 		if (!$src)
 		{
-			$src = PATH_CORE . DS . trim($this->config->get('defaultpic',
-					'components/com_projects/site/assets/img/project.png'), DS);
+			$path = trim($this->config->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
+			if ($path == 'components/com_projects/assets/img/project.png')
+			{
+				$path = 'components/com_projects/site/assets/img/project.png';
+			}
+			$src = PATH_CORE . DS . $path;
 		}
 
 		return $src;
