@@ -49,47 +49,50 @@ $this->css();
 </header>
 
 <section class="main section">
-	<?php
-		foreach ($this->notifications as $notification)
-		{
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
-	?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
-		<div class="explaination">
-			<h3><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_TITLE'); ?></h3>
-			<p><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_DESC'); ?></p>
-			<p><img src="<?php echo Request::base(true); ?>/core/components/com_groups/site/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" style="border:3px solid #aaa;" />
-		</div>
-		<fieldset>
-			<legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>
+	<div class="section-inner">
+		<?php
+			foreach ($this->notifications as $notification)
+			{
+				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+			}
+		?>
+		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
+			<div class="explaination">
+				<h3><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_TITLE'); ?></h3>
+				<p><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_DESC'); ?></p>
+				<p><img src="<?php echo Request::base(true); ?>/core/components/com_groups/site/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" style="border:3px solid #aaa;" />
+			</div>
+			<fieldset>
+				<legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>
 
-	 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC',$this->group->get('description')); ?></p>
+		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC',$this->group->get('description')); ?></p>
 
-			<label>
-				<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
-				<?php
-					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'logins', 'acmembers')));
-					if (count($mc) > 0) {
-						echo $mc[0];
-					} else { ?>
-						<input type="text" name="logins" id="acmembers" value="" size="35" />
-					<?php } ?>
-				<span class="hint"><?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS_HINT'); ?></span>
-			</label>
-			<label for="msg">
-				<?php echo Lang::txt('COM_GROUPS_INVITE_MESSAGE'); ?>
-				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape(stripslashes($this->msg)); ?></textarea>
-			</label>
-		</fieldset>
-		<div class="clear"></div>
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="membership" />
-		<input type="hidden" name="task" value="doinvite" />
-		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-		<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
-		<p class="submit">
-			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_INVITE_BTN_TEXT'); ?>" />
-		</p>
-	</form>
+				<label>
+					<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
+					<?php
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'logins', 'acmembers')));
+						if (count($mc) > 0) {
+							echo $mc[0];
+						} else { ?>
+							<input type="text" name="logins" id="acmembers" value="" size="35" />
+						<?php } ?>
+					<span class="hint"><?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS_HINT'); ?></span>
+				</label>
+				<label for="msg">
+					<?php echo Lang::txt('COM_GROUPS_INVITE_MESSAGE'); ?>
+					<textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape(stripslashes($this->msg)); ?></textarea>
+				</label>
+			</fieldset>
+			<div class="clear"></div>
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="membership" />
+			<input type="hidden" name="task" value="doinvite" />
+			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+			<?php echo Html::input('token'); ?>
+			<p class="submit">
+				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_INVITE_BTN_TEXT'); ?>" />
+			</p>
+		</form>
+	</div>
 </section><!-- / .main section -->

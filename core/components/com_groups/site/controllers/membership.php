@@ -73,7 +73,6 @@ class Membership extends Base
 		);
 	}
 
-
 	/**
 	 *  Method to display invite box
 	 *
@@ -149,7 +148,6 @@ class Membership extends Base
 		$this->view->display();
 	}
 
-
 	/**
 	 * Method to parse and send invites
 	 *
@@ -163,6 +161,8 @@ class Membership extends Base
 			$this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN'));
 			return;
 		}
+
+		Request::checkToken();
 
 		//check to make sure we have  cname
 		if (!$this->cn)
@@ -351,11 +351,11 @@ class Membership extends Base
 
 		// Message body for HUB user
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'invite'));
-		$eview->option = $this->_option;
+		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
-		$eview->group = $this->view->group;
-		$eview->msg = $msg;
+		$eview->user     = User::getRoot();
+		$eview->group    = $this->view->group;
+		$eview->msg      = $msg;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
@@ -391,12 +391,12 @@ class Membership extends Base
 		{
 			// Message body for HUB user
 			$eview2 = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'inviteemail'));
-			$eview2->option = $this->_option;
+			$eview2->option   = $this->_option;
 			$eview2->sitename = Config::get('sitename');
-			$eview2->user = User::getRoot();
-			$eview2->group = $this->view->group;
-			$eview2->msg = $msg;
-			$eview2->token = $mbr['token'];
+			$eview2->user     = User::getRoot();
+			$eview2->group    = $this->view->group;
+			$eview2->msg      = $msg;
+			$eview2->token    = $mbr['token'];
 			$html = $eview2->loadTemplate();
 			$html = str_replace("\n", "\r\n", $html);
 
@@ -469,7 +469,6 @@ class Membership extends Base
 		// Redirect back to view group
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
 	}
-
 
 	/**
 	 * Accept Group Invite Method
