@@ -48,7 +48,7 @@ $this->js('posts')
 			<div class="col span-half omega">
 				<h3><?php echo Lang::txt('COM_FEEDAGGREGATOR_HOW_TO_READ_AGGREGATOR'); ?></h3>
 				<p><?php echo Lang::txt('COM_FEEDAGGREGATOR_HOW_TO_READ_AGGREGATOR_DESC'); ?></p>
-				<p><a href="#feedbox" class="feed-btn btn-success fancybox-inline"><?php echo Lang::txt('COM_FEEDAGGREGATOR_GENERATE_FEED'); ?></a></p>
+				<p><a href="<?php echo Route::url('index.php?option=com_feedaggregator#feedbox'); ?>" class="feed-btn btn-success fancybox-inline"><?php echo Lang::txt('COM_FEEDAGGREGATOR_GENERATE_FEED'); ?></a></p>
 			</div>
 		</div>
 	</div><!-- / .subject -->

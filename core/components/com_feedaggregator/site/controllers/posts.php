@@ -262,6 +262,14 @@ class Posts extends SiteController
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 					$data = curl_exec($ch);
+					curl_close($ch);
+
+					if (!$data)
+					{
+						Notify::warning(Lang::txt('COM_FEEDAGGREGATOR_ERROR_READING_FEED', $feed->url));
+						continue;
+					}
+
 					$page = simplexml_load_string(utf8_encode($data));
 
 					if (isset($page->entry) == TRUE)
@@ -329,14 +337,17 @@ class Posts extends SiteController
 
 			// Output messsage and redirect
 			App::redirect(
-				'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
+				Route::url('index.php?option=' . $this->_option . '&controller=posts&filterby=all', false),
 				Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
 			);
 		} //end try
 		catch (Exception $e)
 		{
-			echo $e . '<br /><br />';
-			exit();
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=posts&filterby=all', false),
+				$e->getMessage(),
+				'error'
+			);
 		}
 	}
 
