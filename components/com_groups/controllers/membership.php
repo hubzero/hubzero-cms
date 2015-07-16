@@ -91,6 +91,11 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Load the group page
 		$this->view->group = \Hubzero\User\Group::getInstance( $this->cn );
 
+		if (!$this->view->group)
+		{
+			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
+		}
+
 		//check if group is approved
 		if ($this->view->group->get('approved') == 0)
 		{
