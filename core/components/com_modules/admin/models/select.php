@@ -112,7 +112,7 @@ class ModulesModelSelect extends JModelList
 
 		// Initialise variables.
 		$client = \Hubzero\Base\ClientManager::client($this->getState('filter.client_id', 0));
-		$client->path = PATH_ROOT;
+		$client->path = PATH_CORE;
 		$lang   = Lang::getRoot();
 
 		// Loop through the results to add the XML metadata,
