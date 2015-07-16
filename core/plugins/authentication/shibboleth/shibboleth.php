@@ -24,6 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Steven Snyder <snyder13@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,39 +32,57 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Hubzero\Utility\Cookie;
+
 /**
  * Authentication Plugin class for Shibboleth/InCommon
  */
 class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 {
-	const DNS = '8.8.8.8'; // nameserver used to look up user's network to see if we can automatically match them with their id provider
-
-	private function log($msg, $data = '')
+	/**
+	 * Logs data to the shibboleth debug log
+	 *
+	 * @param   string         $msg   the message to log
+	 * @param   string|object  $data  additional data to log
+	 * @return  void
+	 **/
+	private function log($msg, $data='')
 	{
-		static $fh = NULL;
-		if ($fh === NULL)
+		if ($this->params->get('debug_enabled', false))
 		{
-			$fh = fopen($this->params->get('debug_location', '/var/log/apache2/php/shibboleth.log'), 'a+');
-		}
-		if (!isset($_COOKIE['shib-dbg-token']))
-		{
-			$token = base64_encode(uniqid());
-			setcookie('shib-dbg-token', $token, time()+60*60*24);
-		}
-		else
-		{
-			$token = $_COOKIE['shib-dbg-token'];
-		}
-		if (@fwrite($fh, "$token - $msg"))
-		{
-			if ($data !== '')
+			if (!\Log::has('shib'))
 			{
-				@fwrite($fh, ":\t" . (is_string($data) ? $data : json_encode($data)) . "\n");
+				$location = $this->params->get('debug_location', '/var/log/apache2/php/shibboleth.log');
+				$location = explode(DS, $location);
+				$file     = array_pop($location);
+
+				\Log::register('shib', [
+					'path'   => implode(DS, $location),
+					'file'   => $file,
+					'level'  => 'info',
+					'format' => "%datetime% %message%\n"
+				]);
+			}
+
+			// Create a token to identify related log entries
+			if (!$cookie = Cookie::eat('shib-dbg-token'))
+			{
+				$token = base64_encode(uniqid());
+				Cookie::bake('shib-dbg-token', time()+60*60*24, ['shib-dbg-token' => $token]);
 			}
 			else
 			{
-				@fwrite($fh, "\n");
+				$token = $cookie->{'shib-dbg-token'};
 			}
+
+			$toBeLogged = "{$token} - {$msg}";
+
+			if (!empty($data))
+			{
+				$toBeLogged .= ":\t" . (is_string($data) ? $data : json_encode($data));
+			}
+
+			\Log::logger('shib')->info("$toBeLogged");
 		}
 	}
 
@@ -164,7 +183,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		return $inst;
 	}
 
-	public function getInstitutionByEntityId($eid, $key = NULL)
+	public static function getInstitutionByEntityId($eid, $key = NULL)
 	{
 		foreach (self::getInstitutions() as $inst)
 		{
@@ -249,7 +268,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// saved id provider? use it as the default
 		$prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : NULL;
 		if (!$prefill && // no cookie
-				($host = self::gethostbyaddr_timeout(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], self::DNS)) && // can get a host
+				($host = self::gethostbyaddr_timeout(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $this->params->get('dns', '8.8.8.8'))) && // can get a host
 				preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma))
 		{ // hostname lookup seems php jsonrational (not an ip address, has a few dots in it
 			// try to look up a provider to pre-select based on the user's hostname
@@ -287,8 +306,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		$html[] = '<option class="placeholder">'.$h($title).'</option>';
 		foreach (self::getInstitutions() as $idp)
 		{
-			error_log($idp['label'].': '.$idp['entity_id']);
-			$logo = $idp['logo_data'] ? '<img src="'.$idp['logo_data'].'" />' : '<span class="logo-placeholder"></span>';
+			$logo = (isset($idp['logo_data']) && $idp['logo_data']) ? '<img src="'.$idp['logo_data'].'" />' : '<span class="logo-placeholder"></span>';
 			$html[] = '<option '.($prefill == $idp['entity_id'] ? 'selected="selected" ' : '').'value="'.$a($idp['entity_id']).'" data-content="'.$a($logo.' '.$h($idp['label'])).'">'.$h($idp['label']).'</option>';
 		}
 		$html[] = '</select>';
@@ -442,7 +460,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		//
 		// we don't use the session store because we'd like it to outlive the
 		// session so we can suggest this idp next time
-		setcookie('shib-entity-id', $_GET['idp']);
+		setcookie('shib-entity-id', $_GET['idp'], time()+60*60*24, '/');
 		// send the request to mod_shib.
 		//
 		// this path should be set up in your configuration something like this:

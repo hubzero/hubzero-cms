@@ -35,12 +35,28 @@ HUBzero is a registered trademark of Purdue University.
 	<version>1.5</version>
 	<description>Handles user authentication with Shibboleth/InCommon</description>
 	<files>
-		<filename plugin="pucas">shibboleth.php</filename>
+		<filename plugin="shibboleth">shibboleth.php</filename>
 	</files>
-	<config>	
+	<config>
 		<fields name="params" addfieldpath="/plugins/authentication/shibboleth/fields">
+			<fieldset name="basic">
+				<field name="site_login" type="radio" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_SITELOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="admin_login" type="radio" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_ADMINLOGIN_LABEL" default="0" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_ADMINLOGIN_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="dns" type="text" size="15" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_DNS_LABEL" default="8.8.8.8" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_DNS_DESC" />
+			</fieldset>
 			<fieldset name="Debug">
-				<field name="testkey" type="text" size="20" label="Testing mode key" description="Enter a key here to hide the plugin unless that key is set in the URL parameters (for example, at https://yourhub.org/login?yourkey). Useful if you would like to test your installation before opening it up to all your users. Clear this field to show the form for everyone." />
+				<field name="debug_enabled" type="radio" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_ENABLE_DEBUGGING_LABEL" default="0" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_ENABLE_DEBUGGING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="debug_location" type="text" size="35" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_DEBUG_LOCATION_LABEL" default="/var/log/apache2/php/shibboleth.log" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_DEBUG_LOCATION_DESC" />
+				<field name="testkey" type="text" size="20" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_TESTING_MODE_LABEL" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_TESTING_MODE_DESC" />
 			</fieldset>
 			<fieldset name="Links">
 				<field name="links" type="links" default="[]" />
@@ -51,4 +67,3 @@ HUBzero is a registered trademark of Purdue University.
 		</fields>
 	</config>
 </extension>
-
