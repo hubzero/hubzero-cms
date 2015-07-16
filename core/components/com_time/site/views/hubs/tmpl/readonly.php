@@ -33,6 +33,8 @@ defined('_HZEXEC_') or die();
 
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
 
+Html::behavior('core');
+
 $this->css()
      ->css('hubs')
      ->js('hubs')

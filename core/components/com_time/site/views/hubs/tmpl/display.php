@@ -31,6 +31,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+Html::behavior('core');
+
 $this->css()
      ->css('hubs')
      ->js('hubs');
