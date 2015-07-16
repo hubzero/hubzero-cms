@@ -1306,7 +1306,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Display the main listing
-		return $this->_browse();
+		$app = JFactory::getApplication();
+		$app->redirect($this->member->getLink() . '&active=' . $this->_name);
 	}
 
 	/**
