@@ -268,7 +268,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// saved id provider? use it as the default
 		$prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : NULL;
 		if (!$prefill && // no cookie
-				($host = self::gethostbyaddr_timeout(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $this->params->get('dns', '8.8.8.8'))) && // can get a host
+				($host = self::gethostbyaddr_timeout(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $params->get('dns', '8.8.8.8'))) && // can get a host
 				preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma))
 		{ // hostname lookup seems php jsonrational (not an ip address, has a few dots in it
 			// try to look up a provider to pre-select based on the user's hostname
