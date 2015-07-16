@@ -719,7 +719,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
-		if (!$profile->get('name'))
+		if (!$profile || !$profile->get('name'))
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_task)),
