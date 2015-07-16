@@ -1684,8 +1684,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
-			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-			return $this->_browse();
+			App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 		}
 
 		// Output HTML
