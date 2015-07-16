@@ -103,6 +103,11 @@ class Membership extends Base
 		// Load the group page
 		$this->view->group = Group::getInstance($this->cn);
 
+		if (!$this->view->group)
+		{
+			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+		}
+
 		//check if group is approved
 		if ($this->view->group->get('approved') == 0)
 		{
