@@ -880,6 +880,8 @@ class Membership extends Base
 			return;
 		}
 
+		Request::checkToken();
+
 		//check to make sure we have  cname
 		if (!$this->cn)
 		{
