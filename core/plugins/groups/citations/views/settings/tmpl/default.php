@@ -86,7 +86,7 @@ $jQ(document).ready(function(e) {
 			<!-- Citation sources -->
 			<div class="explaination">
 			<p>
-			    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SOURCE_EXPLAIN'); ?> 
+			    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SOURCE_EXPLAIN'); ?>
             </p>
 			</div>
 
@@ -108,7 +108,7 @@ $jQ(document).ready(function(e) {
                         <?php echo Lang::txt('PLG_GROUPS_CITATIONS_GROUP_ATTRIB'); ?>
 					</p>
 					<p>
-                        <?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBER_ATTRIB'); ?> 
+                        <?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBER_ATTRIB'); ?>
 					</p>
 					</div>
 				</div>
@@ -117,7 +117,7 @@ $jQ(document).ready(function(e) {
 
 			<div class="explaination">
 				<p>
-                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_FORMAT_EXPLAIN'); ?>	
+                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_FORMAT_EXPLAIN'); ?>
 				</p>
 			</div>
 			<fieldset>
@@ -128,7 +128,9 @@ $jQ(document).ready(function(e) {
 						<label for="cite">
 							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?>:
 								<select name="citation-format" id="format-selector">
+								<?php if ($this->customFormat != true): ?>
 									<option value="custom" data-format="">Custom for Group</option>
+								<?php endif; ?>
 									<?php foreach ($this->formats as $format): ?>
 										<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
 											<?php echo $format->style; ?>

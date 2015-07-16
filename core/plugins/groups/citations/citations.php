@@ -585,19 +585,21 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _settings()
 	{
-	if ($_POST)
-	{
-	  $display = Request::getVar('display', '');
-	  $format = Request::getVar('citation-format', '');
-	  $params = json_decode($this->group->get('params'));
+		if ($_POST)
+		{
+			$display = Request::getVar('display', '');
+			$format = Request::getVar('citation-format', '');
+			$params = json_decode($this->group->get('params'));
+
+			// if the setting a custom group citation type
 			if ($format == "custom")
 			{
 				// craft a clever name
-				$name =  "custom-" . $this->group->cn;
-				$params->citationsFormat = isset($params->citationsFormat) ? $params->citationsFormat : '';
+				$name =  "custom-group-" . $this->group->cn;
+				$params->citationFormat = isset($params->citationFormat) ? $params->citationFormat : '';
 
 				// create new format
-				$citationFormat = \Components\Citations\Models\Format::oneOrNew($params->citationsFormat)->set(array(
+				$citationFormat = \Components\Citations\Models\Format::oneOrNew($params->citationFormat)->set(array(
 				'format'	  => Request::getVar('template'),
 				'style'		  => $name
 				));
@@ -607,13 +609,20 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				//update group
 				$params->citationFormat = $citationFormat->id;
+			}
+			else
+			{
+				// returned value from format select box
+				$params->citationFormat = $format;
+			}
+
+			// update the group parameters
 			$gParams = new Registry($params);
 			$gParams->merge($params);
 			$this->group->set('params', $gParams->toString());
 			$this->group->update();
 
-				}
-	}
+		}
 		else
 		{
 			//instansiate the view
@@ -633,6 +642,16 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->formats = \Components\Citations\Models\Format::all()->rows()->toObject();
 			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
 			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
+			$view->customFormat = false;
+
+			// the name of the custom format
+			$name = "custom-group-" . $this->group->cn;
+
+			// helps prevent creating more than one custom format per group
+			if ($view->currentFormat->style == $name)
+			{
+				$view->customFormat = true;
+			}
 
 			// Output HTML
 			foreach ($this->getErrors() as $error)
