@@ -1686,7 +1686,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$event->state = 2;
+		$event->state = 0;
 		$event->store();
 
 		// Delete the event
