@@ -111,7 +111,7 @@ class UriBase extends Middleware
 			return $this->traverse($request, $value);
 		}
 
-		if (!in_array($key, $this->keys))
+		if (!in_array($key, $this->keys, true))
 		{
 			return $value;
 		}
