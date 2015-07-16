@@ -703,7 +703,7 @@ class Profiles extends SiteController
 		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
-		if (!$profile->get('name'))
+		if (!$profile || !$profile->get('name'))
 		{
 			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
