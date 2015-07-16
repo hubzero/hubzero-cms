@@ -199,7 +199,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
-
 		//initialize the view
 		$view = $this->view('default', 'browse');
 		// push objects to the view
@@ -211,7 +210,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->isManager		   = ($this->authorized == 'manager') ? true : false;
 
 		// Instantiate a new citations object
-
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
 
 		//get applied filters
@@ -616,11 +614,24 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$params->citationFormat = $format;
 			}
 
+			// more parameters for citations
+			$params->display = Request::getVar('display', '');
+			$params->include_coins = Request::getVar('include_coins', '');
+			$params->coins_only = Request::getVar('coins_only', '');
+
 			// update the group parameters
 			$gParams = new Registry($params);
 			$gParams->merge($params);
 			$this->group->set('params', $gParams->toString());
 			$this->group->update();
+
+			// redirect after save
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_SAVED'),
+				'success'
+			);
+			return;
 
 		}
 		else
@@ -665,13 +676,27 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * [getCitationConfig description]
-	 * @return [type] [description]
+	 * @return [object] [description]
 	 */
-	private function getCitationConfig()
+	private function getCitationConfig($group)
 	{
+		if (isset($group))
+		{
+			$params = json_decode($group->get('params'));
 
+			return $params;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
+	private function saveConfig($params = null)
+	{
+
+
+	}
 
 	/**
 	 * Determine if user is part of publication project and is allowed to edit citation
@@ -799,10 +824,43 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($filters as $filter => $value)
 			{
-				if ($filter != 'search' && $value != "")
+				// yay sanitization
+				$value = \Hubzero\Utility\Sanitize::clean($value);
+
+				if ($filter != 'search' && $filter != 'sort' && $value != "")
 				{
-					$citations->where($filter, '=', $value);
+					if ($filter == 'author')
+					{
+						$citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
+					}
+					else
+					{
+						$citations->where($filter, '=', $value);
+					}
 				}
+
+				// Take filters and apply them to the tasks
+				if ($filter == "search" && $value != "")
+				{
+					$terms = preg_split('/\s+/', $value);
+					$collection = array();
+					$columns = array('author', 'title', 'isbn', 'doi', 'publisher', 'abstract');
+					foreach($columns as $column)
+					{
+						foreach ($terms as $term)
+						{
+							// copy the original item
+							$cite = $citations;
+
+							// do some searching
+							$cite->where($column, 'LIKE', "%{$term}%", 'and', 1);
+
+							// put for collection later
+							array_push($collection, $cite);
+						}
+					}
+				}
+
 			}
 
 			return array('citations' => $citations, 'filters' => $filters);
@@ -833,6 +891,349 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
 		$view->filters['limit']			  = Request::getInt('limit', 10);
 		$view->filters['start']			  = Request::getInt('start', 0);*/
+
+		/*
+				if (!isset($filter['published']))
+		{
+			$filter['published'] = array(1);
+		}
+
+		$query = " WHERE r.published IN (" . implode(',', $filter['published']) . ")";
+
+		//search term match
+		if (isset($filter['search']) && $filter['search'] != '')
+		{
+			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) > 0)";
+
+			//if ($admin = true)
+			//{
+			//	$query .= " OR LOWER(u.username) = " . $this->_db->quote(strtolower($filter['search'])) . "
+			//				OR r.uid = " . $this->_db->quote($filter['search']);
+			//}
+		}
+
+		//tag search
+		if (isset($filter['tag']) && $filter['tag'] != '')
+		{
+			//if we have multiple tags we must explode them
+			if (strstr($filter['tag'], ","))
+			{
+				$tags = array_filter(array_map('trim',explode(',', $filter['tag'])));
+			}
+			else
+			{
+				$tags = array($filter['tag']);
+			}
+
+			//prevent SQL injection
+			foreach ($tags as &$tag)
+			{
+				$tag = $this->_db->quote($tag);
+			}
+
+			$query .= " AND tago.tbl='citations' AND tag.tag IN (" . implode(",", $tags) . ")";
+		}
+
+		//type filter
+		if (isset($filter['type']) && $filter['type'] != '')
+		{
+			$query .= " AND r.type=" . $this->_db->quote($filter['type']);
+		}
+
+		//author filter
+		if (isset($filter['author']) && $filter['author'] != '')
+		{
+			$query .= " AND r.author LIKE " . $this->_db->quote('%' . $filter['author'] . '%');
+		}
+
+		//published in filter
+		if (isset($filter['publishedin']) && $filter['publishedin'] != '')
+		{
+			$query .= " AND (r.booktitle LIKE " . $this->_db->quote('%' . $filter['publishedin'] . '%') . " OR r.journal LIKE " . $this->_db->quote('%' . $filter['publishedin'] . '%') . ")";
+		}
+
+		//year filter
+		if (isset($filter['year_start']) && is_numeric($filter['year_start']) && $filter['year_start'] > 0)
+		{
+			$query .= " AND (r.year >=" . $this->_db->quote($filter['year_start']) . " OR r.year IS NULL OR r.year=0)";
+		}
+		if (isset($filter['year_end']) && is_numeric($filter['year_end']) && $filter['year_end'] > 0)
+		{
+			$query .= " AND (r.year <=" . $this->_db->quote($filter['year_end']) . " OR r.year IS NULL OR r.year=0)";
+		}
+		if (isset($filter['startuploaddate']) && isset($filter['enduploaddate']))
+		{
+			$query .= " AND r.created >= " . $this->_db->quote($filter['startuploaddate']) . " AND r.created <= " . $this->_db->quote($filter['enduploaddate']);
+		}
+
+		//affiated? filter
+		if (isset($filter['filter']) && $filter['filter'] != '')
+		{
+			if ($filter['filter'] == 'aff')
+			{
+				$query .= " AND r.affiliated=1";
+			}
+			else
+			{
+				$query .= " AND r.affiliated=0";
+			}
+		}
+
+		//reference type check
+		if (isset($filter['reftype']))
+		{
+			// make sure its valid
+			if (!is_array($filter['reftype']))
+			{
+				throw new Exception(Lang::txt('Citations: Invalid search param "reftype"'), 500);
+			}
+
+			if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
+			 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
+			 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
+			 && (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1))
+			{
+				// Show all
+			}
+			else
+			{
+				$query .= " AND";
+				$multi = 0;
+				$o = 0;
+				foreach ($filter['reftype'] as $g)
+				{
+					if ($g == 1)
+					{
+						$multi++;
+					}
+				}
+
+				if ($multi)
+				{
+					$query .= " (";
+				}
+				if (isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
+				{
+					$query .= " ((ref_type LIKE '%R%' OR ref_type LIKE '%N%' OR ref_type LIKE '%S%') AND ref_type NOT LIKE '%E%')";
+					if ($multi)
+					{
+						$o = 1;
+					}
+				}
+				if (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
+				{
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ((ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%') AND ref_type LIKE '%E%')";
+				}
+				if (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
+				{
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " (ref_type LIKE '%R%E%' OR ref_type LIKE '%E%R%' AND ref_type LIKE '%N%E%' OR ref_type LIKE '%E%N%' OR ref_type LIKE '%S%E%' OR ref_type LIKE '%E%S%')";
+				}
+				if (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1)
+				{
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ((ref_type LIKE '%C%' OR ref_type LIKE '%A%' OR ref_type LIKE '%HD%' OR ref_type LIKE '%I%') AND (ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%' AND ref_type NOT LIKE '%E%'))";
+				}
+				if ($multi)
+				{
+					$query .= ")";
+				}
+			}
+		}
+
+		//author affiliation filter
+		if (isset($filter['aff']))
+		{
+			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
+			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
+			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1))
+			{
+				// Show all
+			}
+			else
+			{
+				$query .= " AND ca.cid=r.id AND";
+				$multi = 0;
+				$o = 0;
+				foreach ($filter['aff'] as $g)
+				{
+					if ($g == 1)
+					{
+						$multi++;
+					}
+				}
+				if ($multi)
+				{
+					$query .= " (";
+				}
+				if (isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
+				{
+					$query .= " (ca.orgtype LIKE '%education%' OR ca.orgtype LIKE 'university%')";
+					if ($multi)
+					{
+						$o = 1;
+					}
+				}
+				if (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
+				{
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ca.orgtype LIKE '%industry%'";
+				}
+				if (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)
+				{
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ca.orgtype LIKE '%government%'";
+				}
+				if ($multi)
+				{
+					$query .= ")";
+				}
+			}
+		}
+
+		//author geo filter
+		if (isset($filter['geo']))
+		{
+			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
+			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
+			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
+			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1))
+			{
+				// Show all
+			}
+			else
+			{
+				$query .= " AND ca.cid=r.id AND";
+
+				$multi = 0;
+				$o = 0;
+				foreach ($filter['geo'] as $g)
+				{
+					if ($g == 1)
+					{
+						$multi++;
+					}
+				}
+				if ($multi)
+				{
+					$query .= " (";
+				}
+				if (isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
+				{
+					$query .= " LOWER(ca.countryresident) = 'us'";
+					if ($multi)
+					{
+						$o = 1;
+					}
+				}
+				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
+				{
+					$countries = Geocode::getCountriesByContinent('na');
+					$c = implode("','",$countries);
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " LOWER(ca.countryresident) IN ('" . strtolower($c) . "')";
+				}
+				if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
+				{
+					$countries = Geocode::getCountriesByContinent('eu');
+					$c = implode("','", $countries);
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " LOWER(ca.countryresident) IN ('" . strtolower($c) . "')";
+				}
+				if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)
+				{
+					$countries = Geocode::getCountriesByContinent('as');
+					$c = implode("','", $countries);
+					if ($multi)
+					{
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " LOWER(ca.countryresident) IN ('" . strtolower($c) . "')";
+				}
+				if ($multi)
+				{
+					$query .= ")";
+				}
+			}
+		}
+
+		if (isset($filter['id']) && $filter['id'] > 0)
+		{
+			$query .= " AND r.id=" . $filter['id'];
+		}
+
+		// scope & scope Id
+		if (isset($filter['scope']) && $filter['scope'] != '')
+		{
+			$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
+		}
+		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
+		{
+			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
+		}
+
+		//group by
+		if (isset($filter['tag']) && $filter['tag'] != '')
+		{
+			$query .= " GROUP BY r.id HAVING uniques=" . count($tags);
+		}
+
+		//if we had a search term lets order by search match
+		if (isset($filter['search']) && $filter['search'] != '')
+		{
+			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) DESC";
+			$filter['sort'] = '';
+		}
+
+		//sort filter
+		if (isset($filter['sort']) && $filter['sort'] != '')
+		{
+			if (isset($filter['search']) && $filter['search'] != '')
+			{
+				$query .= ", " . $filter['sort'];
+			}
+			else
+			{
+				$query .= " ORDER BY " . $filter['sort'];
+			}
+		}
+
+		//limit
+		if (isset($filter['limit']) && $filter['limit'] > 0)
+		{
+			$query .= " LIMIT " . intval($filter['start']) . "," . intval($filter['limit']);
+		}
+		 */
 
 	}
 
