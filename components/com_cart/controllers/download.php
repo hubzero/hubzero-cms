@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Product viewing controller class
  */
-class StorefrontControllerDownload extends \Hubzero\Component\SiteController
+class CartControllerDownload extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -43,7 +43,7 @@ class StorefrontControllerDownload extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
 		parent::execute();
@@ -57,8 +57,29 @@ class StorefrontControllerDownload extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$token = JRequest::getVar('p0');
-		die('hio');
+		// Get the transaction ID
+		$tId  = JRequest::getCmd('task', '');
+
+		// Get the SKU ID
+		$sId = JRequest::getVar('p0');
+
+		print_r($tId);
+		echo ' - ';
+		print_r($sId); die;
+
+		// Check if the transaction is complete and belongs to the user and is active
+
+		// Check if the product is valid and downloadable; find the file
+
+		// Path and file name
+		$dir = JPATH_ROOT . DS . 'media' . DS . 'software';
+		$file = $dir . DS . 'download1.txt';
+
+		// Serve up the file
+		$xserver = new \Hubzero\Content\Server();
+		$xserver->filename($file);
+		$xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
+		exit;
 	}
 }
 
