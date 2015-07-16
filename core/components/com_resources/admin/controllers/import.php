@@ -162,13 +162,13 @@ class Import extends AdminController
 		$iparams = new \Hubzero\Config\Registry($this->import->get('params'));
 
 		// bind incoming params
-		$iparams->bind($params);
+		$iparams->parse($params);
 
 		// set params on import object
 		$this->import->set('params', $iparams->toString());
 
 		// bind input to model
-		if (!$this->import->bind( $import ))
+		if (!$this->import->bind($import))
 		{
 			$this->setError($this->import->getError());
 			return $this->editTask();
