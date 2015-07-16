@@ -76,7 +76,6 @@ HTML::behavior('core');
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<form action="<?php echo Route::url($this->base . '&task=save'); ?>" method="post">
-				<div class="title"><?php echo Lang::txt('COM_TIME_HUBS_' . strtoupper($this->task)) . ': ' . $this->row->name; ?></div>
 				<div class="grouping" id="name-group">
 					<label for="name"><?php echo Lang::txt('COM_TIME_HUBS_NAME'); ?>:</label>
 					<input type="text" name="name" id="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
