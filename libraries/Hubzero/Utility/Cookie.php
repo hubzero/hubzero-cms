@@ -47,12 +47,26 @@ class Cookie
 	 **/
 	public static function bake($namespace, $lifetime, $data=array())
 	{
-		$hash   = \JUtility::getHash(\JFactory::getApplication()->getName() . ':' . $namespace);
+		$name   = \JFactory::getApplication()->getName();
+		$hash   = \JUtility::getHash($name . ':' . $namespace);
 		$crypt  = new \JSimpleCrypt();
 		$cookie = $crypt->encrypt(serialize($data));
 
+		// Determine whether cookie should be 'secure' or not
+		$secure   = false;
+		$forceSsl = \JFactory::getConfig()->get('force_ssl', false);
+
+		if ($name == 'site' && $forceSsl >= 1)
+		{
+			$secure = true;
+		}
+		else if ($name == 'administrator' && $forceSsl == 2)
+		{
+			$secure = true;
+		}
+
 		// Set the actual cookie
-		setcookie($hash, $cookie, $lifetime, '/');
+		setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
 	}
 
 	/**

@@ -90,7 +90,20 @@ class PollController extends JController
 		}
 		else
 		{
-			setcookie($cookieName, '1', time() + $poll->lag);
+			// Determine whether cookie should be 'secure' or not
+			$secure   = false;
+			$forceSsl = JFactory::getConfig()->get('force_ssl', false);
+
+			if ($app->getName() == 'site' && $forceSsl >= 1)
+			{
+				$secure = true;
+			}
+			else if ($app->getName() == 'administrator' && $forceSsl == 2)
+			{
+				$secure = true;
+			}
+
+			setcookie($cookieName, '1', time() + $poll->lag, '/', '', $secure, true);
 
 			require_once(JPATH_COMPONENT . DS . 'models' . DS . 'poll.php');
 			$model = new PollModelPoll();

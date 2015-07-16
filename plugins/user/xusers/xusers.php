@@ -172,7 +172,21 @@ class plgUserXusers extends JPlugin
 		$tracker['ssid'] = $session->get('tracker.ssid', $tracker['sid']);
 		$cookie = $crypt->encrypt(serialize($tracker));
 		$lifetime = time() + 365*24*60*60*10;
-		setcookie($hash, $cookie, $lifetime, '/');
+
+		// Determine whether cookie should be 'secure' or not
+		$secure   = false;
+		$forceSsl = JFactory::getConfig()->get('force_ssl', false);
+
+		if (JFactory::getApplication()->getName() == 'site' && $forceSsl >= 1)
+		{
+			$secure = true;
+		}
+		else if (JFactory::getApplication()->getName() == 'administrator' && $forceSsl == 2)
+		{
+			$secure = true;
+		}
+
+		setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
 
 		/* Mark registration as incomplete so it gets checked on next page load */
 

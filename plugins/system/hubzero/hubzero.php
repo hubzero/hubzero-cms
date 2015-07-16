@@ -176,7 +176,21 @@ class plgSystemHubzero extends JPlugin
 			$tracker['ssid'] = $session->get('tracker.ssid');
 			$cookie = $crypt->encrypt(serialize($tracker));
 			$lifetime = time() + 365*24*60*60*10;
-			setcookie($hash, $cookie, $lifetime, '/');
+
+			// Determine whether cookie should be 'secure' or not
+			$secure   = false;
+			$forceSsl = JFactory::getConfig()->get('force_ssl', false);
+
+			if ($app->getName() == 'site' && $forceSsl >= 1)
+			{
+				$secure = true;
+			}
+			else if ($app->getName() == 'administrator' && $forceSsl == 2)
+			{
+				$secure = true;
+			}
+
+			setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
 		}
 
 		// all page loads set apache log data
