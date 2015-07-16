@@ -115,6 +115,38 @@ $jQ(document).ready(function(e) {
 			</fieldset>
 			<div class="clear"></div>
 
+			<!-- Coins and other other options -->
+			<div class="explaination">
+			<p>
+				<?php echo Lang::txt('What are COinS?\n'); ?>
+			    <a href="http://ocoins.info/" target="_blank" alt="read more about COiNS"> <?php echo Lang::txt('Read more about COinS.'); ?></a>
+            </p>
+			</div>
+
+			<fieldset>
+				<legend><?php echo Lang::txt('COinS Options'); ?></legend>
+
+				<div class="grid">
+					<div class="col span6">
+						<label for="display-members">
+						<?php echo Lang::txt('Include COinS'); ?>
+						<select name="include_coins" id="include-coins">
+							<option value="no"><?php echo Lang::txt('No'); ?></option>
+							<option value="yes"><?php echo Lang::txt('Yes'); ?></option>
+						</select>
+						</label>
+					</div>
+					<div class="col span6 omega">
+					<label for="display-members">
+						<?php echo Lang::txt('COinS Only'); ?>
+						<select name="coins_only" id="coins-only">
+							<option value="no"><?php echo Lang::txt('No'); ?></option>
+							<option value="yes"><?php echo Lang::txt('Yes'); ?></option>
+						</select>
+					</label>
+					</div>
+			</fieldset>
+			<div class="clear"></div>
 			<div class="explaination">
 				<p>
                     <?php echo Lang::txt('PLG_GROUPS_CITATIONS_FORMAT_EXPLAIN'); ?>

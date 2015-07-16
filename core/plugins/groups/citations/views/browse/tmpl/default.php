@@ -103,7 +103,7 @@ if (isset($this->messages))
 						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
 					</ul>
 				<div class="clearfix"></div> <!-- clearfix for spacing -->
-				<?php if (count($this->citations) > 0) : ?>
+				<?php if ($this->citations->count() > 0) : ?>
 					<?php
 						$formatter = new \Components\Citations\Helpers\Format();
 						$formatter->setTemplate($this->citationTemplate);
@@ -236,7 +236,7 @@ if (isset($this->messages))
 						</tbody>
 					</table>
 					<?php else : ?>
-					<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
 					<?php
 						// Initiate paging
@@ -297,40 +297,40 @@ if (isset($this->messages))
 							if (count($tf) > 0) : ?>
 								<?php echo $tf[0]; ?>
 							<?php else: ?>
-								<input type="text" name="filter[tag]" value="<?php echo $this->filters['tag']; ?>" />
+								<input type="text" name="filters[tag]" value="<?php echo $this->filters['tag']; ?>" />
 							<?php endif; ?>
 					</label>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORED_BY'); ?>
-						<input type="text" name="filter[author]" value="<?php echo $this->filters['author']; ?>" />
+						<input type="text" name="filters[author]" value="<?php echo $this->filters['author']; ?>" />
 					</label>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISHED_IN'); ?>
-						<input type="text" name="filter[publishedin]" value="<?php echo $this->filters['publishedin']; ?>" />
+						<input type="text" name="filters[publishedin]" value="<?php echo $this->filters['publishedin']; ?>" />
 					</label>
 					<label for="year_start">
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_YEAR'); ?><br />
-						<input type="text" name="filter[year_start]" class="half" value="<?php echo $this->filters['year_start']; ?>" />
+						<input type="text" name="filters[year_start]" class="half" value="<?php echo $this->filters['year_start']; ?>" />
 						to
-						<input type="text" name="filter[year_end]" class="half" value="<?php echo $this->filters['year_end']; ?>" />
+						<input type="text" name="filters[year_end]" class="half" value="<?php echo $this->filters['year_end']; ?>" />
 					</label>
 					<?php if ($this->isManager) { ?>
 						<fieldset>
 							<label>
 								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN'); ?>
-								<input type="text" name="filter[startuploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
+								<input type="text" name="filters[startuploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
 								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
 							<label>
 								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
-								<input type="text" name="filter[enduploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
+								<input type="text" name="filters[enduploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
 								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
 						</fieldset>
 					<?php } ?>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
-						<select name="filter[sort]" id="sort" class="">
+						<select name="filters[sort]" id="sort" class="">
 							<?php foreach ($this->sorts as $k => $v) : ?>
 								<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
 								if (($this->isManager !== true) && ($v == "Date uploaded"))
