@@ -60,10 +60,10 @@ $jQ(document).ready(function(e) {
 	// Thanks Zach Weidner!
 	$jQ(function($) {
 		$('tr').click(function() {
-			if ( $('select[name="format"]').find('option[value="custom"]').attr("selected") != "selected" )
+			if ( $('select[name="citation-format"]').find('option[value="custom"]').attr("selected") != "selected" )
 			{
 				// force custom format
-				$('select[name="format"]').find('option[value="custom"]').attr("selected",true);
+				$('select[name="citation-format"]').find('option[value="custom"]').attr("selected",true);
 
 				// clear out the textarea
 				$('#format-string').val('');
@@ -127,7 +127,7 @@ $jQ(document).ready(function(e) {
 					<div class="col span7">
 						<label for="cite">
 							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?>:
-								<select name="format" id="format-selector">
+								<select name="citation-format" id="format-selector">
 									<option value="custom" data-format="">Custom for Group</option>
 									<?php foreach ($this->formats as $format): ?>
 										<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
