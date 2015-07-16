@@ -56,8 +56,21 @@ class Cookie
 		);
 		$cookie = $crypt->encrypt(serialize($data));
 
+		// Determine whether cookie should be 'secure' or not
+		$secure   = false;
+		$forceSsl = \Config::get('force_ssl', false);
+
+		if (\App::isAdmin() && $forceSsl >= 1)
+		{
+			$secure = true;
+		}
+		else if (\App::isSite() && $forceSsl == 2)
+		{
+			$secure = true;
+		}
+
 		// Set the actual cookie
-		setcookie($hash, $cookie, $lifetime, '/');
+		setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
 	}
 
 	/**

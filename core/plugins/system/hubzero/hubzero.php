@@ -158,7 +158,21 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 
 			$cookie = $crypt->encrypt(serialize($tracker));
 			$lifetime = time() + 365*24*60*60*10;
-			setcookie($hash, $cookie, $lifetime, '/');
+
+			// Determine whether cookie should be 'secure' or not
+			$secure   = false;
+			$forceSsl = \Config::get('force_ssl', false);
+
+			if (\App::isAdmin() && $forceSsl >= 1)
+			{
+				$secure = true;
+			}
+			else if (\App::isSite() && $forceSsl == 2)
+			{
+				$secure = true;
+			}
+
+			setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
 		}
 
 		// all page loads set apache log data

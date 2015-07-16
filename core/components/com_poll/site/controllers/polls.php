@@ -324,7 +324,20 @@ class Polls extends SiteController
 		}
 		else
 		{
-			setcookie($cookieName, '1', time() + $poll->lag);
+			// Determine whether cookie should be 'secure' or not
+			$secure   = false;
+			$forceSsl = \Config::get('force_ssl', false);
+
+			if (\App::isAdmin() && $forceSsl >= 1)
+			{
+				$secure = true;
+			}
+			else if (\App::isSite() && $forceSsl == 2)
+			{
+				$secure = true;
+			}
+
+			setcookie($cookieName, '1', time() + $poll->lag, '/', '', $secure, true);
 
 			$poll->vote($poll_id, $option_id);
 
@@ -332,7 +345,6 @@ class Polls extends SiteController
 		}
 
 		// set Itemid id for links
-		$app = \JFactory::getApplication();
 		$menu   = \App::get('menu');
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
