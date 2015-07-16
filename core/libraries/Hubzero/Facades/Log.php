@@ -42,7 +42,7 @@ class Log extends Facade
 	 */
 	protected static function getAccessor()
 	{
-		return 'log.debug';
+		return 'log';
 	}
 
 	/**
@@ -53,13 +53,15 @@ class Log extends Facade
 	 */
 	public static function auth($message)
 	{
-		if (static::$app->has('log.auth'))
+		$instance = static::getRoot();
+
+		if ($instance->has('auth'))
 		{
-			$logger = static::$app->get('log.auth');
+			$logger = $instance->logger('auth');
 		}
 		else
 		{
-			$logger = static::getRoot();
+			$logger = $instance->logger();
 		}
 
 		return $logger->info($message);
@@ -73,13 +75,15 @@ class Log extends Facade
 	 */
 	public static function spam($message)
 	{
-		if (static::$app->has('log.spam'))
+		$instance = static::getRoot();
+
+		if ($instance->has('spam'))
 		{
-			$logger = static::$app->get('log.spam');
+			$logger = $instance->logger('spam');
 		}
 		else
 		{
-			$logger = static::getRoot();
+			$logger = $instance->logger();
 		}
 
 		return $logger->info($message);

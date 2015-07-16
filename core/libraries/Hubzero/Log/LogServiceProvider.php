@@ -31,8 +31,6 @@
 namespace Hubzero\Log;
 
 use Hubzero\Base\ServiceProvider;
-use Hubzero\Log\Writer;
-use Monolog\Logger as Monolog;
 
 /**
  * Event service provider
@@ -46,88 +44,25 @@ class LogServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->registerDebugLog();
-
-		$this->registerAuthLog();
-
-		$this->registerSpamLog();
-	}
-
-	/**
-	 * Register the debug log.
-	 *
-	 * @return  void
-	 */
-	public function registerDebugLog()
-	{
-		$this->app['log.debug'] = function($app)
+		$this->app['log'] = function($app)
 		{
-			$log = new Writer(
-				new Monolog($app['config']->get('application_env')),
-				$app['dispatcher']
-			);
+			$manager = new Manager($app);
 
-			$path = $app['config']->get('log_path');
-			if (is_dir('/var/log/hubzero'))
-			{
-				$path = '/var/log/hubzero';
-			}
+			$manager->register('debug', array(
+				'file' => 'cmsdebug.log',
+			));
 
-			$log->useFiles($path . DS . 'cmsdebug.log', 'debug', '', 'Y-m-d H:i:s', 0640);
+			$manager->register('auth', array(
+				'file'   => 'cmsauth.log',
+				'level'  => 'info',
+				'format' => "%datetime% %message%\n",
+			));
 
-			return $log;
-		};
-	}
+			$manager->register('spam', array(
+				'file' => 'cmsspam.log'
+			));
 
-	/**
-	 * Register the auth log.
-	 *
-	 * @return  void
-	 */
-	public function registerAuthLog()
-	{
-		$this->app['log.auth'] = function($app)
-		{
-			$log = new Writer(
-				new Monolog($app['config']->get('application_env')),
-				$app['dispatcher']
-			);
-
-			$path = $app['config']->get('log_path');
-			if (is_dir('/var/log/hubzero'))
-			{
-				$path = '/var/log/hubzero';
-			}
-
-			$log->useFiles($path . DS . 'cmsauth.log', 'info', "%datetime% %message%\n", 'Y-m-d H:i:s', 0640);
-
-			return $log;
-		};
-	}
-
-	/**
-	 * Register the spam log.
-	 *
-	 * @return  void
-	 */
-	public function registerSpamLog()
-	{
-		$this->app['log.spam'] = function($app)
-		{
-			$log = new Writer(
-				new Monolog($app['config']->get('application_env')),
-				$app['dispatcher']
-			);
-
-			$path = $app['config']->get('log_path');
-			if (is_dir('/var/log/hubzero'))
-			{
-				$path = '/var/log/hubzero';
-			}
-
-			$log->useFiles($path . DS . 'cmsspam.log', 'debug', '', 'Y-m-d H:i:s', 0640);
-
-			return $log;
+			return $manager;
 		};
 	}
 }

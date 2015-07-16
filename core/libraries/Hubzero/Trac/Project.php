@@ -104,7 +104,7 @@ class Project
 	 */
 	private function logDebug($msg)
 	{
-		$xlog = \App::get('log.debug');
+		$xlog = \App::get('log')->logger('debug');
 		$xlog->debug($msg);
 	}
 
@@ -456,8 +456,6 @@ class Project
 	 */
 	public function __get($property = null)
 	{
-		$xlog = \App::get('log.debug');
-
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
 			if (empty($property))

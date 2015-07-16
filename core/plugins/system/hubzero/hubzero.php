@@ -146,7 +146,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id  = (empty($tracker['user_id']))  ? 0   : $tracker['user_id'];
 
-			App::get('log.auth')->info($username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' detect');
+			App::get('log')->logger('auth')->info($username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' detect');
 
 			// set new tracking cookie with current data
 			$tracker = array();
@@ -187,7 +187,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLoginFailure($response)
 	{
-		App::get('log.auth')->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
+		App::get('log')->logger('auth')->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
 		apache_note('auth','invalid');
 

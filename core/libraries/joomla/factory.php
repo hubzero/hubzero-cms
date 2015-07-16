@@ -609,9 +609,9 @@ abstract class JFactory
 	{
 		if (class_exists('\\App'))
 		{
-			if ($log = \App::get('log.debug'))
+			if (\App::has('log'))
 			{
-				return $log;
+				return \App::get('log')->logger('debug');
 			}
 		}
 
@@ -647,9 +647,9 @@ abstract class JFactory
 	{
 		if (class_exists('\\App'))
 		{
-			if ($log = \App::get('log.auth'))
+			if (\App::has('log'))
 			{
-				return $log;
+				return \App::get('log')->logger('auth');
 			}
 		}
 

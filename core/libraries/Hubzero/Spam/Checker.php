@@ -282,7 +282,7 @@ class Checker
 	 */
 	protected function log($isSpam, $data)
 	{
-		if (!\App::has('log.spam'))
+		if (!\App::has('log'))
 		{
 			return;
 		}
@@ -305,7 +305,8 @@ class Checker
 			$from
 		);
 
-		$logger = \App::get('log.spam');
-		$logger->info(implode(' ', $info));
+		\App::get('log')
+			->logger('spam')
+			->info(implode(' ', $info));
 	}
 }

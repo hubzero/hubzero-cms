@@ -134,7 +134,7 @@ class Domain
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  \App::get('log.debug');
+		$xlog = \App::get('log')->logger('debug');
 		$xlog->debug($msg);
 	}
 

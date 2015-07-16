@@ -25,7 +25,7 @@ class  plgSystemLog extends \Hubzero\Plugin\Plugin
 				$errorlog['status']  = $response['type'] . " CANCELED: ";
 				$errorlog['comment'] = $response['error_message'];
 
-				App::get('log.auth')->info(implode('', $errorlog));
+				App::get('log')->logger('auth')->info(implode('', $errorlog));
 			break;
 
 			case \Hubzero\Auth\Status::FAILURE:
@@ -39,14 +39,14 @@ class  plgSystemLog extends \Hubzero\Plugin\Plugin
 					$errorlog['comment'] = $response['error_message'];
 				}
 
-				App::get('log.auth')->info(implode('', $errorlog));
+				App::get('log')->logger('auth')->info(implode('', $errorlog));
 			break;
 
 			default:
 				$errorlog['status']  = $response['type'] . " UNKNOWN ERROR: ";
 				$errorlog['comment'] = $response['error_message'];
 
-				App::get('log.auth')->info(implode('', $errorlog));
+				App::get('log')->logger('auth')->info(implode('', $errorlog));
 			break;
 		}
 	}
