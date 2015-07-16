@@ -84,7 +84,7 @@ class ImportHooks extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$id = Request::getVar('id', array());
+		$id = Request::getVar('id', array(0));
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : null;

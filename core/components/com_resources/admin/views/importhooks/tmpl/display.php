@@ -53,8 +53,8 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset class="adminform">
-		<table class="admintable">
+	<fieldset>
+		<table class="adminlist">
 			<thead>
 				<tr>
 					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->hooks->count(); ?>);" /></th>
@@ -71,7 +71,9 @@ function submitbutton(pressbutton)
 								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
 							</td>
 							<td>
-								<?php echo $this->escape($hook->get('name')); ?> <br />
+								<a href="<?php echo Route::url('index.php?option=com_resources&controller=importhooks&task=edit&id=' . $hook->get('id')); ?>">
+									<?php echo $this->escape($hook->get('name')); ?>
+								</a><br />
 								<span class="hint">
 									<?php echo nl2br($this->escape($hook->get('notes'))); ?>
 								</span>
@@ -97,7 +99,7 @@ function submitbutton(pressbutton)
 					<?php endforeach; ?>
 				<?php else : ?>
 					<tr>
-						<td colspan="4"><?php echo Lang::txt('Currently there are no import hooks.'); ?></td>
+						<td colspan="4"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_NONE_FOUND'); ?></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>
