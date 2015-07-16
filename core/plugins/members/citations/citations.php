@@ -767,6 +767,17 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function importAction()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (!$this->params->get('access-manage'))
+		{
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+		}
+
 		//are we allowing importing
 		$config = Component::params('com_citations');
 		$importParam = $config->get('citation_bulk_import', 1);
@@ -794,7 +805,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
 
-		$view->messages = Notify::messages('plg_citations');
+		$view->messages = Notify::messages('plg_members_citations');
 
 		return $view->loadTemplate();
 	}
@@ -806,6 +817,19 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function uploadAction()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (!$this->params->get('access-manage'))
+		{
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+		}
+
+		Request::checkToken();
+
 		// get file
 		$file = Request::file('citations_file');
 
@@ -864,12 +888,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
 		{
-			Notify::error(Lang::txt('Unable to write temporary file.'));
+			Notify::error(Lang::txt('Unable to write temporary file.'), 'plg_members_citations');
 		}
 
 		if (!$this->importer->writeRequiresNoAttention($citations[0]['no_attention']))
 		{
-			Notify::error(Lang::txt('Unable to write temporary file.'));
+			Notify::error(Lang::txt('Unable to write temporary file.'), 'plg_members_citations');
 		}
 
 		App::redirect(
@@ -884,6 +908,17 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function reviewAction()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (!$this->params->get('access-manage'))
+		{
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+		}
+
 		$citations_require_attention    = $this->importer->readRequiresAttention();
 		$citations_require_no_attention = $this->importer->readRequiresNoAttention();
 
@@ -907,7 +942,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->database = $this->database;
 		$view->isAdmin  = $this->params->get('access-manage');
 
-		$view->messages = Notify::messages('plg_citations');
+		$view->messages = Notify::messages('plg_members_citations');
 
 		return $view->loadTemplate();
 	}
@@ -919,6 +954,19 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function processAction()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (!$this->params->get('access-manage'))
+		{
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+		}
+
+		Request::checkToken();
+
 		$cites_require_attention    = $this->importer->readRequiresAttention();
 		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
 
@@ -1000,6 +1048,17 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function savedAction()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			return $this->loginAction();
+		}
+
+		if (!$this->params->get('access-manage'))
+		{
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+		}
+
 		// Get the session object
 		$session = App::get('session');
 
@@ -1046,7 +1105,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$ct = new \Components\Citations\Tables\Type($this->database);
 		$view->types = $ct->getType();
 
-		$view->messages = Notify::messages('plg_citations');
+		$view->messages = Notify::messages('plg_members_citations');
 
 		return $view->loadTemplate();
 	}

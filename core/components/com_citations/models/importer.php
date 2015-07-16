@@ -30,12 +30,14 @@
 
 namespace Components\Citations\Models;
 
-use Components\Citations\Tables\Citation;
-use Components\Citations\Tables\Type;
-use Components\Citations\Tables\Tags;
+use Components\Citations\Tables;
 use Hubzero\Utility\Date;
 use Hubzero\Base\Object;
 use App;
+
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'citation.php');
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tags.php');
 
 /**
  * Citation importer
@@ -333,7 +335,7 @@ class Importer extends Object
 		{
 			foreach ($cites_require_attention as $k => $cra)
 			{
-				$cc = new Citation($this->database);
+				$cc = new Tables\Citation($this->database);
 
 				// add a couple of needed keys
 				$cra['uid']     = $user;
@@ -361,7 +363,7 @@ class Importer extends Object
 				}
 
 				//take care fo type
-				$ct = new Type($this->database);
+				$ct = new Tables\Type($this->database);
 				$types = $ct->getType();
 
 				$type = '';
@@ -438,7 +440,7 @@ class Importer extends Object
 			foreach ($cites_require_no_attention as $k => $crna)
 			{
 				// new citation object
-				$cc = new Citation($this->database);
+				$cc = new Tables\Citation($this->database);
 
 				// add a couple of needed keys
 				$crna['uid'] = $user;
@@ -473,7 +475,7 @@ class Importer extends Object
 				}
 
 				// take care fo type
-				$ct = new Type($this->database);
+				$ct = new Tables\Type($this->database);
 				$types = $ct->getType();
 
 				$type = '';
@@ -549,7 +551,7 @@ class Importer extends Object
 	{
 		if ($tag_string)
 		{
-			$ct = new Tags($objectid);
+			$ct = new Tables\Tags($objectid);
 			$ct->setTags($tag_string, $userid, 0, 1, $label);
 		}
 	}
