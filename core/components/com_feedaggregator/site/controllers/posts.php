@@ -36,6 +36,7 @@ use Guzzle\Http\Client;
 use Exception;
 use Document;
 use Request;
+use Notify;
 use Route;
 use User;
 use Lang;
@@ -248,11 +249,11 @@ class Posts extends SiteController
 		$model = new Models\Posts;
 		$savedURLS = $model->loadURLs();
 
-		try
+		foreach ($feeds as $feed)
 		{
-			foreach ($feeds as $feed)
+			if ($feed->enabled == 1 && filter_var($feed->url, FILTER_VALIDATE_URL) == TRUE)
 			{
-				if ($feed->enabled == 1 && filter_var($feed->url, FILTER_VALIDATE_URL) == TRUE)
+				try
 				{
 					$ch = curl_init();
 
@@ -266,7 +267,7 @@ class Posts extends SiteController
 
 					if (!$data)
 					{
-						Notify::warning(Lang::txt('COM_FEEDAGGREGATOR_ERROR_READING_FEED', $feed->url));
+						$this->setError(Lang::txt('COM_FEEDAGGREGATOR_ERROR_READING_FEED', $feed->url));
 						continue;
 					}
 
@@ -332,23 +333,21 @@ class Posts extends SiteController
 							}
 						}
 					} //end foreach
-				}//end if
-			}
-
-			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=posts&filterby=all', false),
-				Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
-			);
-		} //end try
-		catch (Exception $e)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=posts&filterby=all', false),
-				$e->getMessage(),
-				'error'
-			);
+				} //end try
+				catch (Exception $e)
+				{
+					$this->setError(Lang::txt('COM_FEEDAGGREGATOR_ERROR_READING_FEED', $feed->url));
+					continue;
+				}
+			}//end if
 		}
+
+		// Output messsage and redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=posts&filterby=all', false),
+			($this->getError() ? implode('<br />', $this->getErrors()) : Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')),
+			($this->getError() ? 'warning' : 'passed')
+		);
 	}
 
 	/**
