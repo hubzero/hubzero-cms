@@ -1699,7 +1699,7 @@ class Events extends SiteController
 			return;
 		}
 
-		$event->state = 2;
+		$event->state = 0; //unpublish the event
 		$event->store();
 
 		// Delete the event
