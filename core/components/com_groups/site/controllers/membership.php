@@ -61,11 +61,23 @@ class Membership extends Base
 		parent::execute();
 	}
 
+	/**
+	 * Default method
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->cn)
+		);
+	}
+
 
 	/**
 	 *  Method to display invite box
 	 *
-	 * @return
+	 * @return  void
 	 */
 	public function inviteTask()
 	{
@@ -134,9 +146,9 @@ class Membership extends Base
 
 
 	/**
-	 *  Method to parse and send invites
+	 * Method to parse and send invites
 	 *
-	 * @return
+	 * @return  void
 	 */
 	public function doinviteTask()
 	{
@@ -455,9 +467,9 @@ class Membership extends Base
 
 
 	/**
-	 *  Accept Group Invite Method
+	 * Accept Group Invite Method
 	 *
-	 * @return
+	 * @return  void
 	 */
 	public function acceptTask()
 	{
@@ -631,9 +643,9 @@ class Membership extends Base
 	}
 
 	/**
-	 *  Cancel Membership Task
+	 * Cancel Membership Task
 	 *
-	 * @return
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -734,9 +746,9 @@ class Membership extends Base
 
 
 	/**
-	 *  Join Group Method
+	 * Join Group Method
 	 *
-	 * @return
+	 * @return  void
 	 */
 	public function joinTask()
 	{
@@ -832,7 +844,7 @@ class Membership extends Base
 	/**
 	 * Show request membership form
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function requestTask()
 	{
@@ -853,7 +865,7 @@ class Membership extends Base
 	/**
 	 * Add membership request for user
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function dorequestTask()
 	{
