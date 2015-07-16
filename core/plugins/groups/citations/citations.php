@@ -576,11 +576,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Settings for group citations 
+	 * Settings for group citations
 	 *
 	 * @param null
 	 * @return void
-	 * 
+	 *
 	 *
 	 */
 	private function _settings()
@@ -592,10 +592,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	  $params = json_decode($this->group->get('params'));
 			if ($format == "custom")
 			{
-				// craft a clever name 
+				// craft a clever name
 				$name =  "custom-" . $this->group->cn;
 				$params->citationsFormat = isset($params->citationsFormat) ? $params->citationsFormat : '';
-				
+
 				// create new format
 				$citationFormat = \Components\Citations\Models\Format::oneOrNew($params->citationsFormat)->set(array(
 				'format'	  => Request::getVar('template'),
@@ -604,7 +604,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				//save format
 				$citationFormat->save();
-		
+
 				//update group
 				$params->citationFormat = $citationFormat->id;
 			$gParams = new Registry($params);
@@ -629,7 +629,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
-			//get formats 
+			//get formats
 			$view->formats = \Components\Citations\Models\Format::all()->rows()->toObject();
 			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
 			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
