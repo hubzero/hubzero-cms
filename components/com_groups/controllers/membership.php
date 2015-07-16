@@ -49,6 +49,18 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		parent::execute();
 	}
 
+	/**
+	 * Default method
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_groups&cn=' . $this->cn)
+		);
+	}
+
 
 	/**
 	 *  Method to display invite box
