@@ -154,6 +154,9 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			return;
 		}
 
+		// Check for request forgeries
+		JSession::checkToken() or jexit('Invalid Token');
+
 		//check to make sure we have  cname
 		if (!$this->cn)
 		{
@@ -877,6 +880,9 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_REQUEST'));
 			return;
 		}
+
+		// Check for request forgeries
+		JSession::checkToken() or jexit('Invalid Token');
 
 		//check to make sure we have  cname
 		if (!$this->cn)

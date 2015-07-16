@@ -91,6 +91,7 @@ $dispatcher = JDispatcher::getInstance();
 		<input type="hidden" name="task" value="doinvite" />
 		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+		<?php echo JHTML::_('form.token'); ?>
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_GROUPS_INVITE_BTN_TEXT'); ?>" />
 		</p>
