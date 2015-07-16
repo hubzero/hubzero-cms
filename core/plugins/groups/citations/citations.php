@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
+ * @author	  Alissa Nedossekina <alisa@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -70,11 +70,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	public function &onGroupAreas()
 	{
 		$area = array(
-			'name'             => $this->_name,
-			'title'            => Lang::txt('PLG_GROUPS_CITATIONS'),
+			'name'			   => $this->_name,
+			'title'			   => Lang::txt('PLG_GROUPS_CITATIONS'),
 			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon'             => '275D'
+			'icon'			   => '275D'
 		);
 		return $area;
 	}
@@ -82,24 +82,24 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a group view (this will be some form of HTML)
 	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param	   object  $group	   Current group
+	 * @param	   string  $option	   Name of the component
+	 * @param	   string  $authorized User's authorization level
+	 * @param	   integer $limit	   Number of records to pull
+	 * @param	   integer $limitstart Start of records to pull
+	 * @param	   string  $action	   Action to perform
+	 * @param	   array   $access	   What can be accessed
+	 * @param	   array   $areas	   Active area(s)
+	 * @return	   array
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$returnhtml = true;
-		$active     = 'citations';
+		$active		= 'citations';
 
 		// The output array we're returning
 		$arr = array(
-			'html'     => '',
+			'html'	   => '',
 			'metadata' => ''
 		);
 
@@ -123,11 +123,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Set some variables so other functions have access
 		$this->authorized = $authorized;
-		$this->members    = $members;
-		$this->group      = $group;
-		$this->option     = $option;
-		$this->action     = $action;
-		$this->access     = $access;
+		$this->members	  = $members;
+		$this->group	  = $group;
+		$this->option	  = $option;
+		$this->action	  = $action;
+		$this->access	  = $access;
 
 		//if we want to return content
 		if ($returnhtml)
@@ -170,14 +170,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			//run task based on action
 			switch ($this->action)
 			{
-				case 'save':     $arr['html'] .= $this->_save();		break;
-				case 'add':      $arr['html'] .= $this->_edit();		break;
-				case 'edit':     $arr['html'] .= $this->_edit();		break;
-				case 'delete':   $arr['html'] .= $this->_delete();		break;
+				case 'save':	 $arr['html'] .= $this->_save();		break;
+				case 'add':		 $arr['html'] .= $this->_edit();		break;
+				case 'edit':	 $arr['html'] .= $this->_edit();		break;
+				case 'delete':	 $arr['html'] .= $this->_delete();		break;
 				case 'browse':	 $arr['html'] .= $this->_browse();		break;
-				case 'import': 	 $arr['html'] .= $this->_import(); 		break;
+				case 'import':	 $arr['html'] .= $this->_import();		break;
 				case 'settings': $arr['html'] .= $this->_settings();		break;
-				default:         $arr['html'] .= $this->_browse();
+				default:		 $arr['html'] .= $this->_browse();
 			}
 		}
 
@@ -195,7 +195,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of all citations, with filtering&search options.
 	 *
-	 * @return     string HTML
+	 * @return	   string HTML
 	 */
 	private function _browse()
 	{
@@ -203,12 +203,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		//initialize the view
 		$view = $this->view('default', 'browse');
 		// push objects to the view
-		$view->group             = $this->group;
-		$view->option            = $this->option;
-		$view->task              = $this->_name;
-		$view->database          = $this->database;
-		$view->title             = Lang::txt(strtoupper($this->_name));
-		$view->isManager           = ($this->authorized == 'manager') ? true : false;
+		$view->group			 = $this->group;
+		$view->option			 = $this->option;
+		$view->task				 = $this->_name;
+		$view->database			 = $this->database;
+		$view->title			 = Lang::txt(strtoupper($this->_name));
+		$view->isManager		   = ($this->authorized == 'manager') ? true : false;
 
 		// Instantiate a new citations object
 
@@ -225,8 +225,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Affiliation filter
 		$view->filters['filter'] = array(
-			'all'    => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
-			'aff'    => Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'),
+			'all'	 => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
+			'aff'	 => Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'),
 			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'),
 			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
 		);
@@ -332,7 +332,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display the form allowing to edit a citation
 	 *
-	 * @return     string HTML
+	 * @return	   string HTML
 	 */
 	private function _edit()
 	{
@@ -391,7 +391,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($id)
 		{
 			$view->assocs = $assoc->getRecords(array('cid' => $id), $view->isManager);
-			$pubAuthor    = $this->isPubAuthor($view->assocs);
+			$pubAuthor	  = $this->isPubAuthor($view->assocs);
 		}
 
 		// Is user authorized to edit citations?
@@ -461,7 +461,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return	   void
 	 */
 	private function _save()
 	{
@@ -585,11 +585,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _settings()
 	{
-    if ($_POST)
-    {
-      $display = Request::getVar('display', '');
-      $format = Request::getVar('citation-format', '');
-      $params = json_decode($this->group->get('params'));
+	if ($_POST)
+	{
+	  $display = Request::getVar('display', '');
+	  $format = Request::getVar('citation-format', '');
+	  $params = json_decode($this->group->get('params'));
 			if ($format == "custom")
 			{
 				// craft a clever name 
@@ -598,22 +598,22 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				
 				// create new format
 				$citationFormat = \Components\Citations\Models\Format::oneOrNew($params->citationsFormat)->set(array(
-                'format'      => Request::getVar('template'),
-                'style'       => $name
+				'format'	  => Request::getVar('template'),
+				'style'		  => $name
 				));
 
 				//save format
 				$citationFormat->save();
-        
+		
 				//update group
 				$params->citationFormat = $citationFormat->id;
-		    $gParams = new Registry($params);
-		    $gParams->merge($params);
-		    $this->group->set('params', $gParams->toString());
-		    $this->group->update();
+			$gParams = new Registry($params);
+			$gParams->merge($params);
+			$this->group->set('params', $gParams->toString());
+			$this->group->update();
 
 				}
-    }
+	}
 		else
 		{
 			//instansiate the view
@@ -657,8 +657,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Determine if user is part of publication project and is allowed to edit citation
 	 *
-	 * @param      array $assocs
-	 * @return     void
+	 * @param	   array $assocs
+	 * @return	   void
 	 */
 	public function isPubAuthor()
 	{	/**
@@ -670,7 +670,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Redirect to login form
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	private function _loginTask()
 	{
@@ -685,7 +685,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Uses URL to determine OpenURL server
 	 *
-	 * @return  object $openURL
+	 * @return	object $openURL
 	 */
 	private function _handleOpenURL()
 	{
@@ -758,7 +758,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Applies filters to Citations model and returns applied filters
 	 * @param array  $filters array of POST values
-	 * @return  array sanitized and validated filter values
+	 * @return	array sanitized and validated filter values
 	 */
 	private function _filterHandler($filters = array(),  $scope_id = 0)
 	{
@@ -795,21 +795,21 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//search/filtering params
-		/*$view->filters['scope']           = 'group';
-		$view->filters['scope_id']        = $this->group->get('gidNumber');
+		/*$view->filters['scope']			= 'group';
+		$view->filters['scope_id']		  = $this->group->get('gidNumber');
 		$view->filters['id']			  = Request::getInt('id', 0);
-		$view->filters['tag']             = trim(Request::getVar('tag', '', 'request', 'none', 2));
-		$view->filters['search']          = Request::getVar('search', '');
-		$view->filters['type']            = Request::getVar('type', '');
-		$view->filters['author']          = Request::getVar('author', '');
-		$view->filters['publishedin']     = Request::getVar('publishedin', '');
-		$view->filters['year_start']      = Request::getInt('year_start', $view->earliest_year);
-		$view->filters['year_end']        = Request::getInt('year_end', date("Y"));
-		$view->filters['filter']          = Request::getVar('filter', '');
-		$view->filters['sort']            = Request::getVar('sort', 'year DESC');
-		$view->filters['reftype']         = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$view->filters['geo']             = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$view->filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		$view->filters['tag']			  = trim(Request::getVar('tag', '', 'request', 'none', 2));
+		$view->filters['search']		  = Request::getVar('search', '');
+		$view->filters['type']			  = Request::getVar('type', '');
+		$view->filters['author']		  = Request::getVar('author', '');
+		$view->filters['publishedin']	  = Request::getVar('publishedin', '');
+		$view->filters['year_start']	  = Request::getInt('year_start', $view->earliest_year);
+		$view->filters['year_end']		  = Request::getInt('year_end', date("Y"));
+		$view->filters['filter']		  = Request::getVar('filter', '');
+		$view->filters['sort']			  = Request::getVar('sort', 'year DESC');
+		$view->filters['reftype']		  = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$view->filters['geo']			  = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$view->filters['aff']			  = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
 		$view->filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
 		$view->filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
 		$view->filters['limit']			  = Request::getInt('limit', 10);
@@ -820,18 +820,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return a list of citations for a specific user
 	 *
-	 * @param   object  $group    Current group
-	 * @param   object  $profile  USer profile
-	 * @return  string
+	 * @param	object	$group	  Current group
+	 * @param	object	$profile  USer profile
+	 * @return	string
 	 */
 	public function onGroupMemberAfter($group, $profile)
 	{
 		$view = $this->view('default', 'member');
-		$view->group    = $group;
-		$view->option   = 'com_groups';
-		$view->task     = $this->_name;
+		$view->group	= $group;
+		$view->option	= 'com_groups';
+		$view->task		= $this->_name;
 		$view->database = App::get('db');
-		$view->title    = Lang::txt(strtoupper($this->_name));
+		$view->title	= Lang::txt(strtoupper($this->_name));
 
 		$view->citationTemplate = 'apa';
 
