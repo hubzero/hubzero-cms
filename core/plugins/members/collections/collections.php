@@ -1114,7 +1114,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Display the main listing
-		return $this->_browse();
+		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
 	}
 
 	/**
