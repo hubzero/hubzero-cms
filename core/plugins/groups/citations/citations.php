@@ -845,7 +845,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					$terms = preg_split('/\s+/', $value);
 					$collection = array();
 					$columns = array('author', 'title', 'isbn', 'doi', 'publisher', 'abstract');
-					foreach($columns as $column)
+					foreach ($columns as $column)
 					{
 						foreach ($terms as $term)
 						{
