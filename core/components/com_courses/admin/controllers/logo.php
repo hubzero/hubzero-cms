@@ -215,7 +215,7 @@ class Logo extends AdminController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(PATH_APP, '', $path),
+			'directory' => str_replace(PATH_ROOT, '', $path),
 			'id'        => $id,
 			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
 			'width'     => $width,
@@ -422,7 +422,7 @@ class Logo extends AdminController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => '',
-			'directory' => str_replace(PATH_APP, '', $path),
+			'directory' => str_replace(PATH_ROOT, '', $path),
 			'id'        => $id,
 			'size'      => 0,
 			'width'     => 0,
@@ -575,8 +575,6 @@ class Logo extends AdminController
 		$this->view->id = $id;
 
 		$this->view->type = strtolower(Request::getWord('type', ''));
-
-		$this->view->file = $course->get('logo');
 
 		// Build the file path
 		$this->view->dir  = $id;

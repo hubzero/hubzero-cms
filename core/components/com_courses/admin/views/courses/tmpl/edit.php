@@ -240,20 +240,20 @@ function submitbutton(pressbutton)
 				$this_size = 0;
 				if ($logo)
 				{
-					$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
+					$path = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
 
-					$this_size = filesize(PATH_APP . $path . DS . $file);
-					list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $file);
-					$pic = $this->row->get('logo');
+					$this_size = filesize(PATH_ROOT . $path . DS . $file);
+					list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $path . DS . $file);
+					$pic = $file;
 				}
 				else
 				{
-					$pic = 'blank.png';
-					$path = '/components/com_courses/admin/assets/img';
+					$pic  = 'blank.png';
+					$path = '/core/components/com_courses/admin/assets/img';
 				}
 				?>
 				<div id="img-container">
-					<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
+					<img id="img-display" src="<?php echo rtrim(Request::root(true), '/') . $path . '/' . $pic; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($logo); ?>" />
 				</div>
 				<table class="formed">
@@ -285,7 +285,7 @@ function submitbutton(pressbutton)
 					</tbody>
 				</table>
 
-				<script type="text/javascript" src="../core/assets/js/jquery.fileuploader.js"></script>
+				<script type="text/javascript" src="<?php echo rtrim(Request::root(true), '/'); ?>/core/assets/js/jquery.fileuploader.js"></script>
 				<script type="text/javascript">
 				String.prototype.nohtml = function () {
 					if (this.indexOf('?') == -1) {
@@ -324,7 +324,7 @@ function submitbutton(pressbutton)
 						var el = $(this);
 						$.getJSON(el.attr('href').nohtml(), {}, function(response) {
 							if (response.success) {
-								$('#img-display').attr('src', '../core/components/com_courses/admin/assets/img/blank.png');
+								$('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_courses/admin/assets/img/blank.png');
 								$('#img-name').text('[ none ]');
 								$('#img-size').text('0');
 								$('#img-width').text('0');

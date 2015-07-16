@@ -76,7 +76,7 @@ defined('_HZEXEC_') or die();
 		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 ?>
 				<tr>
-					<td rowspan="6"><img src="<?php echo '../' . substr($this->path, strlen(PATH_CORE . '/')) . DS . $this->file; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
+					<td rowspan="6"><img src="<?php echo rtrim(Request::root(true), '/') . substr($this->path, strlen(PATH_ROOT)) . DS . $this->file; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
 					<td><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</td>
 					<td><?php echo $this->file; ?></td>
 				</tr>
