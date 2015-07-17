@@ -1481,6 +1481,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _savecollection()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Login check
 		if (User::isGuest())
 		{
