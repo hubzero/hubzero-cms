@@ -266,6 +266,11 @@ class Create extends SiteController
 		$preprocess = 'step_' . strtolower($steps[$pre]) . '_process';
 		$activestep = 'step_' . strtolower($steps[$step]);
 
+		if (!method_exists($this, $activestep))
+		{
+			App::abort(404, Lang::txt('Unknown step.'));
+		}
+
 		// Set the layout to the current step
 		$this->setView('steps', strtolower($steps[$step]));
 
