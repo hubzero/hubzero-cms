@@ -1432,7 +1432,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel || !JRequest::checkToken())
+		if (!$process || !$confirmdel)
 		{
 			if ($process && !$confirmdel)
 			{
@@ -1471,6 +1471,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 			return $view->loadTemplate();
 		}
+
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		$msg = JText::_('PLG_GROUPS_COLLECTIONS_POST_DELETED');
 		$type = 'passed';
@@ -1807,6 +1809,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 			return $view->loadTemplate();
 		}
+
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Mark the entry as deleted
 		$collection->set('state', 2);
