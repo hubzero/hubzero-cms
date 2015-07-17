@@ -1,6 +1,6 @@
 //
 // @package     hubzero-cms
-// @file        templates/kameleon/less/component.less
+// @file        templates/kameleon/less/error.less
 // @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
 // @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 //
@@ -16,7 +16,7 @@
 @import "_fonts.less"; // Fontcons defines available icons
 
 // Grid system and page structure
-@import "_grid.less";
+//@import "_grid.less";
 
 // Components: Alerts
 @import "_notifications.less";
@@ -124,9 +124,65 @@
 	}
 
 // Structure
-	@import "_header.less";
-	@import "_menus.less";
-	@import "_toolbar.less";
+	h1 {
+		display: none;
+	}
+	a.btn {
+		display: block;
+		*zoom: 1;
+		padding: 0.7em 0.91em 0.7em 0.91em;
+		margin-bottom: 0;
+		font-size: 1em;
+		line-height: 1;
+		outline: 0;
+		text-align: center;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		cursor: pointer;
+		position: relative;
+		color: #555;
+		border: 1px solid #ccc;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		background-clip: padding-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+	}
+	a.btn:hover {
+		background-color: #222;
+		border: 1px solid #222;
+		color: #fff;
+	}
+	.main-navigation {
+		padding: 1.61803399em 2.33606798em 1.61803399em 2.33606798em;
+		margin: 0;
+		color: #aaa;
+		font-size: 0.95em;
+		border-bottom: 1px solid #dadada;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+		background: white;
+	}
+	.main-navigation .dashboard {
+		float: left;
+	}
+	.main-navigation .help {
+		float: right;
+	}
+	.main-navigation:before,
+	.main-navigation:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
 
 	#wrap {
 		margin: 0;
@@ -135,7 +191,6 @@
 	}
 	#component-content {
 		position: relative;
-		padding-top: 5.4em;
 		.clearfix();
 	}
 
@@ -144,18 +199,18 @@
 // Error Message
 	#errorbox {
 		padding: 1.61803399em 2.23606798em 1.61803399em 2.23606798em;
-		margin: 0;
+		margin: 2.23606798em auto 4.5em auto;
 		position: relative;
 		z-index: 1;
 
-		h3 {
+		.error-code {
 			position: relative;
-			font-size: 18em;
+			font-size: 14em;
 			text-align: center;
 			color: #ddd;
 			margin: 0;
-			padding: 0.11em 0;
-			line-height: 1.2em;
+			padding: 0;
+			line-height: 1;
 			font-weight: 300;
 		}
 	}
@@ -225,11 +280,18 @@
 		}
 	}
 
+	html.rtl body,
+	html.rtl .error {
+		text-align: right;
+	}
+
 // For smaller screens
-@media only screen and (max-width: 868px) {
-	.col {
-		float: none;
-		width: auto;
-		margin: 0;
+@media (min-width: 30em) {
+	#errorbox {
+		max-width: 33em;
+
+		.error-code {
+			font-size: 18em;
+		}
 	}
 }

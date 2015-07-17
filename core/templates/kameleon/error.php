@@ -43,6 +43,8 @@ $browser = new \Hubzero\Browser\Detector();
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction; ?> ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
+		<meta name="viewport" content="width=device-width" />
+
 		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . DS . 'css' . DS . 'error.css'); ?>" />
 
 		<!--[if lt IE 9]>
@@ -59,60 +61,22 @@ $browser = new \Hubzero\Browser\Detector();
 	<body id="error-body">
 		<header id="header" role="banner">
 			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
-
-			<ul class="user-options">
-				<li data-title="<?php echo Lang::txt('TPL_KAMELEON_LOG_OUT'); ?>">
-					<?php
-					//Display an harcoded logout
-					$task = Request::getCmd('task');
-
-					$logoutLink = Route::url('index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1');
-					if ($task == 'edit' || $task == 'editA' || Request::getInt('hidemainmenu')) :
-						$logoutLink = '';
-					endif;
-
-					$output = array();
-					$output[] = '<a class="logout" href="' . $logoutLink . '">' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '</a>';
-
-					// Reverse rendering order for rtl display.
-					if ($this->direction == 'rtl') :
-						$output = array_reverse($output);
-					endif;
-
-					// Output the items.
-					foreach ($output as $item) :
-						echo $item;
-					endforeach;
-					?>
-				</li>
-			</ul>
 		</header><!-- / #header -->
 
 		<div id="wrap">
 			<nav role="navigation" class="main-navigation">
-				<div class="inner-wrap">
-					<ul id="menu">
-						<li><a href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?></a></li>
-						<li><a href="<?php echo Route::url('index.php?option=com_help'); ?>"><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></a></li>
-					</ul>
-				</div>
+				<a class="btn dashboard" href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?></a>
+				<a class="btn help" href="<?php echo Route::url('index.php?option=com_help'); ?>"><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></a>
 			</nav><!-- / .main-navigation -->
 
-			<section id="component-content">
-				<div id="toolbar-box" class="toolbar-box">
-					<div class="pagetitle icon-48-alert">
-						<h2><?php echo Lang::txt('TPL_KAMELEON_ERROR_OCCURRED'); ?></h2>
-					</div>
-				</div><!-- / #toolbar-box -->
-
+			<main id="component-content">
 				<div id="errorbox">
-					<div class="col width-50 fltlft">
-						<h3 class="error-code"><?php echo $this->error->getCode() ?></h3>
-					</div>
-					<div class="col width-50 fltrt">
-						<p class="error"><?php echo $this->error->getMessage(); ?></p>
-					</div>
-					<div class="clr"></div>
+					<h2 class="error-code"><?php echo $this->error->getCode() ?></h2>
+					<p class="error"><?php echo $this->error->getMessage(); ?></p>
+
+					<noscript>
+						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
+					</noscript>
 				</div>
 
 				<?php if ($this->debug) { ?>
@@ -120,11 +84,7 @@ $browser = new \Hubzero\Browser\Detector();
 						<?php echo $this->renderBacktrace(); ?>
 					</div>
 				<?php } ?>
-
-				<noscript>
-					<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
-				</noscript>
-			</section><!-- / #component-content -->
+			</main><!-- / #component-content -->
 		</div><!-- / #wrap -->
 
 		<footer id="footer">
@@ -135,7 +95,7 @@ $browser = new \Hubzero\Browser\Detector();
 				<p class="promotion">
 					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', App::version()); ?>
 				</p>
-			</section><!-- / .basement -->
+			</section>
 		</footer><!-- / #footer -->
 	</body>
 </html>
