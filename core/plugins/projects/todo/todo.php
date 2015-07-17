@@ -364,7 +364,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Append breadcrumbs
 		Pathway::append(
-				stripslashes($view->row->get('content')),
+				stripslashes(\Hubzero\Utility\String::truncate($view->row->get('content'), 40)),
 				Route::url($this->model->link('todo')
 					. '&action=view&todoid=' . $todoid)
 		);
@@ -926,11 +926,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			// Record activity
 			if ($objC->id )
 			{
-				$what = Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM');
-				$url = '#tr_' . $parent_activity; // same-page link
-				$aid = $this->model->recordActivity(
-					Lang::txt('PLG_PROJECTS_TODO_COMMENTED') . ' '
-					. Lang::txt('PLG_PROJECTS_TODO_ON') . ' ' . $what,
+				$what = Lang::txt('COM_PROJECTS_TODO_ITEM');
+				$url  = Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid);
+				$aid  = $this->model->recordActivity(
+					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
 					$objC->id, $what, $url, 'quote', 0 );
 			}
 

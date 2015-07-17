@@ -209,6 +209,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!empty($sections))
 		{
+			// Show subscription to feed (new)
+			$subscribe = Event::trigger( 'projects.onProjectMember', array( $this->model));
+			$html .= !empty($subscribe[0]) ? $subscribe[0] : NULL;
+
 			foreach ($sections as $section)
 			{
 				$html .= !empty($section) ? $section : NULL;
@@ -1013,8 +1017,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					? Lang::txt('COM_PROJECTS_BLOG_POST')
 					: Lang::txt('COM_PROJECTS_AN_ACTIVITY');
 				$what = $tbl == 'todo' ? Lang::txt('COM_PROJECTS_TODO_ITEM') : $what;
-				$url = '#tr_' . $parent_activity; // same-page link
-				$aid = $this->model->recordActivity(
+				$url  = $tbl == 'todo' ? Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid) : Route::url($this->model->link('feed')) . '#tr_' . $parent_activity; // same-page link
+				$aid  = $this->model->recordActivity(
 					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
 					$objC->id, $what, $url, 'quote', 0
 				);
