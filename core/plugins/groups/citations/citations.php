@@ -591,17 +591,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 			$params = json_decode($this->group->get('params'));
 
-			// if the setting a custom group citation type
-			if ($format == "custom")
-			{
-				// craft a clever name
-				$name =  "custom-group-" . $this->group->cn;
-				$params->citationFormat = isset($params->citationFormat) ? $params->citationFormat : '';
+			// craft a clever name
+			$name =  "custom-group-" . $this->group->cn;
 
-				// create new format
-				$citationFormat = \Components\Citations\Models\Format::oneOrNew($params->citationFormat)->set(array(
-				'format'	  => Request::getVar('template'),
-				'style'		  => $name
+			// fetch or create new format
+			$citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
+
+			// if the setting a custom group citation type
+			if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew()))
+			{
+				$citationFormat->set(array(
+					'format'	  => Request::getVar('template'),
+					'style'		  => $name
 				));
 
 				//save format
