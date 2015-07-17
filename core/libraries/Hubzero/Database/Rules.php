@@ -26,7 +26,7 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database;
@@ -39,10 +39,10 @@ class Rules
 	/**
 	 * Do validation checks on provided data
 	 *
-	 * @param  array $data  the fields to validate
-	 * @param  array $rules the rules upon which to validate
-	 * @return array|bool
-	 * @since  1.3.2
+	 * @param   array       $data   the fields to validate
+	 * @param   array       $rules  the rules upon which to validate
+	 * @return  array|bool
+	 * @since   2.0.0
 	 **/
 	public static function validate($data, $rules)
 	{
@@ -52,7 +52,14 @@ class Rules
 		{
 			if (array_key_exists($k, $rules))
 			{
-				if (strpos($rules[$k], '|'))
+				if (is_callable($rules[$k]))
+				{
+					if ($error = call_user_func_array($rules[$k], [$data]))
+					{
+						$errors[] = $error;
+					}
+				}
+				else if (strpos($rules[$k], '|'))
 				{
 					$rule = explode('|', $rules[$k]);
 				}
@@ -61,13 +68,16 @@ class Rules
 					$rule = array($rules[$k]);
 				}
 
-				foreach ($rule as $r)
+				if (isset($rule))
 				{
-					if (method_exists(__CLASS__, $r))
+					foreach ($rule as $r)
 					{
-						if ($error = self::$r($k, $v))
+						if (method_exists(__CLASS__, $r))
 						{
-							$errors[] = $error;
+							if ($error = self::$r($k, $v))
+							{
+								$errors[] = $error;
+							}
 						}
 					}
 				}
@@ -80,10 +90,10 @@ class Rules
 	/**
 	 * Checks that var isn't empty
 	 *
-	 * @param  string $key the field name
-	 * @param  mixed  $var the field content
-	 * @return bool|string
-	 * @since  1.3.2
+	 * @param   string       $key  the field name
+	 * @param   mixed        $var  the field content
+	 * @return  bool|string
+	 * @since   2.0.0
 	 **/
 	private static function notempty($key, $var)
 	{
@@ -93,10 +103,10 @@ class Rules
 	/**
 	 * Checks that var is positive
 	 *
-	 * @param  string $key the field name
-	 * @param  mixed  $var the field content
-	 * @return bool|string
-	 * @since  1.3.2
+	 * @param   string       $key  the field name
+	 * @param   mixed        $var  the field content
+	 * @return  bool|string
+	 * @since   2.0.0
 	 **/
 	private static function positive($key, $var)
 	{
@@ -106,10 +116,10 @@ class Rules
 	/**
 	 * Checks that var is non-zero
 	 *
-	 * @param  string $key the field name
-	 * @param  mixed  $var the field content
-	 * @return bool|string
-	 * @since  1.3.2
+	 * @param   string       $key  the field name
+	 * @param   mixed        $var  the field content
+	 * @return  bool|string
+	 * @since   2.0.0
 	 **/
 	private static function nonzero($key, $var)
 	{
@@ -119,10 +129,10 @@ class Rules
 	/**
 	 * Checks that var is alphabetical
 	 *
-	 * @param  string $key the field name
-	 * @param  mixed  $var the field content
-	 * @return bool|string
-	 * @since  1.3.2
+	 * @param   string       $key  the field name
+	 * @param   mixed        $var  the field content
+	 * @return  bool|string
+	 * @since   2.0.0
 	 **/
 	private static function alpha($key, $var)
 	{
@@ -132,10 +142,10 @@ class Rules
 	/**
 	 * Checks that var is phone
 	 *
-	 * @param  string $key the field name
-	 * @param  mixed  $var the field content
-	 * @return bool|string
-	 * @since  1.3.2
+	 * @param   string       $key  the field name
+	 * @param   mixed        $var  the field content
+	 * @return  bool|string
+	 * @since   2.0.0
 	 **/
 	private static function phone($key, $var)
 	{
@@ -145,10 +155,10 @@ class Rules
 	/**
 	 * Checks that var is email
 	 *
-	 * @param  string $key the field name
-	 * @param  mixed  $var the field content
-	 * @return bool|string
-	 * @since  1.3.2
+	 * @param   string       $key  the field name
+	 * @param   mixed        $var  the field content
+	 * @return  bool|string
+	 * @since   2.0.0
 	 **/
 	private static function email($key, $var)
 	{
