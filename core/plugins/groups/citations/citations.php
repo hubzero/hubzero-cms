@@ -207,8 +207,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->task				 = $this->_name;
 		$view->database			 = $this->database;
 		$view->title			 = Lang::txt(strtoupper($this->_name));
-		$view->isManager		   = ($this->authorized == 'manager') ? true : false;
-
+		$view->isManager		 = ($this->authorized == 'manager') ? true : false;
+		// is there a better way to handle group configurations?
+		$view->config			 = (array) json_decode($this->group->get('params'));
 		// Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
 
@@ -279,7 +280,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->filters['sort'] = '';
 
 		// get the preferred labeling scheme
-		$view->label = null;
+		$view->label = "both";
 
 		if ($view->label == "none")
 		{
@@ -306,7 +307,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->coins = 1;
 
 		// config
-		$view->config = Component::params('com_citations');
+		//$view->config = Component::params('com_citations');
 
 		// types
 		$ct = \Components\Citations\Models\Type::all();
@@ -352,7 +353,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// push objects to view
 		$view->group   = $this->group;
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
-		$view->config  = Component::params('com_citations');
+		$view->config  = json_decode($this->group->get('params'));
 
 		//get the citation types
 		$citationsType = \Components\Citations\Models\Type::all();
@@ -587,6 +588,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			$display = Request::getVar('display', '');
 			$format = Request::getVar('citation-format', '');
+
 			$params = json_decode($this->group->get('params'));
 
 			// if the setting a custom group citation type
@@ -1290,7 +1292,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->coins = 1;
 
 		// config
-		$view->config = Component::params('com_citations');
+		//$view->config = Component::params('com_citations');
 
 		// types
 		$view->types = \Components\Citations\Models\Type::all();

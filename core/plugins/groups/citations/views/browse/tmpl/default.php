@@ -30,7 +30,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
 //echo "<pre>";
 //var_dump($this->filters); die;
 
@@ -101,20 +100,15 @@ if (isset($this->messages))
 						<li><a <?php if ($this->filters['activeFilter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
 						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
 						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
+						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
+
 					</ul>
 				<div class="clearfix"></div> <!-- clearfix for spacing -->
 				<?php if ($this->citations->count() > 0) : ?>
 					<?php
 						$formatter = new \Components\Citations\Helpers\Format();
 						$formatter->setTemplate($this->citationTemplate);
-
-						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-						/*$counter = $this->filters['start'] + 1;
-						if ($counter == '')
-						{
-							$counter = 1;
-						} */
-					?> <!-- end counter and formatter logic -->
+					?> <!-- end formatter logic -->
 					<table class="citations entries">
 						<thead>
 							<tr>
@@ -151,13 +145,13 @@ if (isset($this->messages))
 												switch ($this->label)
 												{
 													case "number":
-														echo "<span class=\"number\">{$counter}.</span>";
+														echo "<span class=\"number\">{$cite->id}.</span>";
 														break;
 													case "type":
 														echo "<span class=\"type\">{$type}</span>";
 														break;
 													case "both":
-														echo "<span class=\"number\">{$counter}. </span>";
+														echo "<span class=\"number\">{$cite->id}. </span>";
 														echo "<span class=\"type\">{$type}</span>";
 														break;
 												}
@@ -166,7 +160,7 @@ if (isset($this->messages))
 									<?php endif; ?>
 									<td class="citation-container">
 										<?php
-											$formatted = $cite->formatted();
+											$formatted = $cite->formatted($this->config);
 
 											if ($cite->doi)
 											{
@@ -216,17 +210,20 @@ if (isset($this->messages))
 								<tr>
 									<td <?php if ($this->label == "none") { echo 'colspan="3"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
 										<?php
-											$singleCitationView = $this->config->get('citation_single_view', 0);
+											$singleCitationView = 1;
+											//$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
 											{
 												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
 											}
 										?>
-										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+										<?php if (0): ?>
+										<?php //if ($this->config->get("citation_show_badges","no") == "yes") : ?>
 											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 										<?php endif; ?>
 
-										<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+										<?php if (0): ?>
+										<?php //if ($this->config->get("citation_show_tags","no") == "yes") : ?>
 											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
 										<?php endif; ?>
 									</td>
