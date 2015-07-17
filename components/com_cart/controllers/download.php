@@ -46,6 +46,15 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
+		$this->juser = JFactory::getUser();
+
+		// Check if they're logged in
+		if ($this->juser->get('guest'))
+		{
+			$this->login('Please login to continue');
+			return;
+		}
+
 		parent::execute();
 	}
 
@@ -58,28 +67,87 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		// Get the transaction ID
-		$tId  = JRequest::getCmd('task', '');
+		$tId  = JRequest::getInt('task', '');
 
 		// Get the SKU ID
 		$sId = JRequest::getVar('p0');
 
 		print_r($tId);
 		echo ' - ';
-		print_r($sId); die;
+		print_r($sId);
+		echo ' -- '; //die;
 
 		// Check if the transaction is complete and belongs to the user and is active
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Cart.php');
+		$transaction = CartModelCart::getTransactionFacts($tId);
+		$transaction = $transaction->info;
+
+		$tStatus = $transaction->tStatus;
+		$crtId = $transaction->crtId;
+
+		// get cart user
+		$cartUser = CartModelCart::getCartUser($crtId);
+		$currentUser = $this->juser->id;
+
+		// Error if needed
+		if ($tStatus !== 'completed')
+		{
+			JError::raiseError(401, JText::_('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'));
+			return;
+		}
+		elseif ($cartUser != $currentUser)
+		{
+			JError::raiseError(401, JText::_('COM_CART_DOWNLOAD_NOT_AUTHORIZED'));
+			return;
+		}
+
 
 		// Check if the product is valid and downloadable; find the file
 
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+		$sku = $warehouse->getSkuInfo($sId);
+		$productType = $sku['info']->ptId;
+		$downloadFile = $sku['meta']['downloadFile'];
+
+		// Error if needed
+		if ($productType != 30 || empty($downloadFile))
+		{
+			JError::raiseError(400, JText::_('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOABLE'));
+			return;
+		}
+
 		// Path and file name
 		$dir = JPATH_ROOT . DS . 'media' . DS . 'software';
-		$file = $dir . DS . 'download1.txt';
+		$file = $dir . DS . $downloadFile;
+
+		if (!file_exists($file))
+		{
+			JError::raiseError(404, JText::_('COM_CART_DOWNLOAD_FILE_NOT_FOUND'));
+			return;
+		}
 
 		// Serve up the file
 		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($file);
 		$xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
 		exit;
+	}
+
+	/**
+	 * Redirect to login page
+	 *
+	 * @return void
+	 */
+	private function login($message = '')
+	{
+		$return = base64_encode($_SERVER['REQUEST_URI']);
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_users&view=login&return=' . $return),
+			$message,
+			'warning'
+		);
+		return;
 	}
 }
 

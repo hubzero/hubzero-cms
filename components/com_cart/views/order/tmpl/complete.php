@@ -47,6 +47,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<section class="section">
 		<?php
 
+		//print_r($this->transactionInfo); die;
+
 			if (!empty($this->transactionInfo))
 			{
 
@@ -64,12 +66,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$info = $item['info'];
 					$action = '';
 
+					//print_r($item); die;
+
 					// If course
 					if ($info->ptId == 20)
 					{
 						$status = 'Registered';
 						$action = '<a href="' . JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId']);
 						$action .= '">Go to the course page</a>';
+					}
+					// If software
+					if ($info->ptId == 30)
+					{
+						$status = 'Ready';
+						$action = '<a href="' . JRoute::_('index.php?option=com_cart/download/' . $this->transactionInfo->tId . '/' . $info->sId);
+						$action .= '" target="_blank">Download</a>';
 					}
 					else {
 						$status = 'Purchased';
