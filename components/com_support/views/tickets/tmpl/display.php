@@ -92,22 +92,24 @@ $this->css()
 									</span>
 								<?php } ?>
 								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
-									<?php foreach ($folder->queries as $query) { ?>
-										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-											<a class="aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
-												<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
-											</a>
-											<?php if ($this->acl->check('read', 'tickets')) { ?>
-												<span class="query-options">
-													<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
-														<?php echo JText::_('JACTION_DELETE'); ?>
-													</a>
-													<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-														<?php echo JText::_('JACTION_EDIT'); ?>
-													</a>
-												</span>
-											<?php } ?>
-										</li>
+									<?php if (isset($folder->queries) && is_array($folder->queries)) { ?>
+										<?php foreach ($folder->queries as $query) { ?>
+											<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
+												<a class="aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
+													<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
+												</a>
+												<?php if ($this->acl->check('read', 'tickets')) { ?>
+													<span class="query-options">
+														<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+															<?php echo JText::_('JACTION_DELETE'); ?>
+														</a>
+														<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+															<?php echo JText::_('JACTION_EDIT'); ?>
+														</a>
+													</span>
+												<?php } ?>
+											</li>
+										<?php } ?>
 									<?php } ?>
 								</ul>
 							</li>
