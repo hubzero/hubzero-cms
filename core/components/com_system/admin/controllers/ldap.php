@@ -102,19 +102,19 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::deleteAllGroups();
 
-		$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'), 'info');
+		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
+			Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
+			Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
 		}
 		elseif (isset($result['success']))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']), 'passed');
+			Notify::info(Lang::txt('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']));
 		}
 
 		App::redirect(
@@ -131,19 +131,19 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::deleteAllUsers();
 
-		$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'), 'info');
+		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
+			Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
+			Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
 		}
 		elseif (isset($result['success']))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']), 'passed');
+			Notify::info(Lang::txt('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']));
 		}
 
 		App::redirect(
@@ -160,19 +160,19 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::syncAllGroups();
 
-		$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'), 'info');
+		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
+			Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
+			Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
 		}
 		elseif (isset($result['success']))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']), 'passed');
+			Notify::info(Lang::txt('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
 		}
 
 		App::redirect(
@@ -189,22 +189,19 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::syncAllUsers();
 
-		$this->setMessage(
-			Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'),
-			'info'
-		);
+		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
+			Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]));
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
+			Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
 		}
 		elseif (isset($result['success']))
 		{
-			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']), 'passed');
+			Notify::info(Lang::txt('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
 		}
 
 		App::redirect(

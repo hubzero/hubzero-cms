@@ -69,7 +69,7 @@ $loggeduser = User::getRoot();
 				<th class="nowrap priority-3">
 					<?php echo Html::grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap">
+				<th class="nowrap priority-2">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_ENABLED', 'a.block', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap">
@@ -138,7 +138,7 @@ $loggeduser = User::getRoot();
 				<td class="center priority-3">
 					<?php echo $this->escape($item->username); ?>
 				</td>
-				<td class="center">
+				<td class="center priority-2">
 					<?php if ($canChange) : ?>
 						<?php if ($loggeduser->id != $item->id) : ?>
 							<?php echo Html::grid('boolean', $i, !$item->block, 'users.unblock', 'users.block'); ?>

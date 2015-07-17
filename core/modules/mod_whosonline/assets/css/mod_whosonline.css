@@ -24,3 +24,26 @@
 		color: #f00;
 		text-decoration: none;
 	}
+
+	.mod_whosonline .client {
+		display: inline-block;
+		width: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	.mod_whosonline .client:before {
+		content: attr(data-client);
+		margin-right: 2em;
+		text-transform: uppercase;
+	}
+@media (min-width: 30em) {
+	.mod_whosonline .client {
+		overflow: auto;
+		white-space: normal;
+		width: auto;
+	}
+	.mod_whosonline .client:before {
+		content: "";
+		display: none;
+	}
+}

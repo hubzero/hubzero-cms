@@ -200,7 +200,7 @@ jQuery(document).ready(function($){
 	// Display system messages in Growl-like way
 	var msg = $('#system-message-container');
 	if (msg.length && msg.html().replace(/\s+/, '') != '') {
-		if (msg.find('dd.error, dd.warning').length) {
+		if (msg.find('dd.error, dd.warning, dd.info').length) {
 			$.growl.settings.displayTimeout = 0;
 		} else {
 			msg.find('dd.message').each(function(i, el) {

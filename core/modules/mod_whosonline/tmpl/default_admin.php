@@ -71,8 +71,10 @@ $editAuthorized = User::authorize('com_users', 'manage');
 			<tr>
 				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_USER'); ?></td>
 				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_LOCATION'); ?></th>
-				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_ACTIVITY'); ?></th>
-				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_LOGOUT'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('MOD_WHOSONLINE_COL_ACTIVITY'); ?></th>
+				<?php if ($editAuthorized) { ?>
+					<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_LOGOUT'); ?></th>
+				<?php } ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -99,30 +101,30 @@ $editAuthorized = User::authorize('com_users', 'manage');
 							<td>
 								<?php
 									$clientInfo = \Hubzero\Base\ClientManager::client($row->client_id);
-									echo ucfirst($clientInfo->name);
+									echo '<span class="client client-' . $clientInfo->name . '" data-client="' . substr($clientInfo->name, 0, 1) . '">' . ucfirst($clientInfo->name) . '</span>';
 								?>
 							</td>
-							<td>
+							<td class="priority-3">
 								<?php echo Lang::txt('MOD_WHOSONLINE_HOURS_AGO', (time() - $row->time)/3600.0); ?>
 							</td>
-							<td>
-								<?php if ($editAuthorized) { ?>
+							<?php if ($editAuthorized) { ?>
+								<td>
 									<a class="force-logout" href="<?php echo Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid .'&'. Session::getFormToken() .'=1'); ?>">
 										<span><?php echo Lang::txt('JLOGOUT'); ?></span>
 									</a>
-								<?php } ?>
-							</td>
+								</td>
+							<?php } ?>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<tr>
-					<td colspan="4" class="view-all">
+					<td colspan="<?php echo ($editAuthorized ? 4 : 3); ?>" class="view-all">
 						<a href="<?php echo Route::url('index.php?option=com_members&controller=whosonline'); ?>"><?php echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL'); ?></a>
 					</td>
 				</tr>
 			<?php else : ?>
 				<tr>
-					<td colspan="4">
+					<td colspan="<?php echo ($editAuthorized ? 4 : 3); ?>">
 						<?php echo Lang::txt('MOD_WHOSONLINE_NO_RESULTS'); ?>
 					</td>
 				</tr>
