@@ -181,7 +181,7 @@
 	.activity-item:hover .quote .m_options {
 		display: none;
 	}
-	.infofeed .activity:before {
+	.com_projects .infofeed .activity:before {
 		color: #CCC;
 	}
 	.infofeed .admin:before {
