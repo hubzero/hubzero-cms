@@ -75,6 +75,11 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		//load profile from id
 		$this->view->profile = \Hubzero\User\Profile::getInstance($id);
 
+		if (!$this->view->profile)
+		{
+			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
+		}
+
 		//instantiate view and pass needed vars
 		$this->view->setLayout('upload');
 		$this->view->config = $this->config;
