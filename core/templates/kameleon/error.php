@@ -37,21 +37,13 @@ Lang::load('tpl_' . $this->template, __DIR__);
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction; ?> ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction; ?> ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction; ?> ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction; ?> ie ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $this->direction . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
 		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . DS . 'css' . DS . 'error.css'); ?>" />
-
-		<?php if ($this->direction == 'rtl') : ?>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/common/rtl.css" />
-		<?php endif; ?>
-
-		<?php if (Config::get('debug')) : ?>
-			<link type="text/css" rel="stylesheet" href="<?php echo str_replace('/core', '', $this->baseurl); ?>/core/assets/css/debug.css" />
-		<?php endif; ?>
 
 		<!--[if lt IE 9]>
 			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/js/html5.js"></script>
