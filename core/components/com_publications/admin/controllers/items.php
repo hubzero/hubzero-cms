@@ -1010,7 +1010,7 @@ class Items extends AdminController
 						if ( $objC->id )
 						{
 							$what = Lang::txt('COM_PROJECTS_AN_ACTIVITY');
-							$curl = '#tr_'.$aid; // same-page link
+							$curl = Route::url($project->link('feed')) . '#tr_'.$aid; // same-page link
 							$caid = $project->recordActivity(
 							Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON')
 								. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1
