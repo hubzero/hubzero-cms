@@ -141,7 +141,7 @@ $this->css()
 							<time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a title="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox'); ?>">
+							<a title="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1'); ?>">
 								<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'); ?>
 							</a>
 						</td>

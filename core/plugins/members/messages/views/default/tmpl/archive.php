@@ -137,7 +137,7 @@ $this->css()
 						$date = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 						//delete link
-						$del_link = Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive');
+						$del_link = Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive&' . Session::getFormToken() . '=1');
 						$delete = '<a title="' . Lang::txt('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . Lang::txt('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
 					?>
 

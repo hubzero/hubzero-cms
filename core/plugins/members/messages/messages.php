@@ -632,7 +632,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			Request::checkToken();
+			Request::checkToken(['get', 'post']);
 
 			foreach ($mids as $mid)
 			{
@@ -683,7 +683,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			Request::checkToken();
+			Request::checkToken(['get', 'post']);
 
 			foreach ($mids as $mid)
 			{
@@ -724,7 +724,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			Request::checkToken();
+			Request::checkToken(['get', 'post']);
 
 			foreach ($mids as $mid)
 			{
@@ -797,7 +797,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			Request::checkToken();
+			Request::checkToken(['get', 'post']);
 
 			foreach ($mids as $mid)
 			{
@@ -837,7 +837,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($ids) > 0)
 		{
 			// Check for request forgeries
-			Request::checkToken();
+			Request::checkToken(['get', 'post']);
 
 			foreach ($ids as $mid)
 			{
@@ -878,7 +878,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($ids) > 0)
 		{
 			// Check for request forgeries
-			Request::checkToken();
+			Request::checkToken(['get', 'post']);
 
 			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
 			$database = App::get('db');
