@@ -982,6 +982,30 @@ class Project extends Model
 			}
 			return $this->_tblType;
 		}
+		if ($name == 'Blog')
+		{
+			if (!isset($this->_tblBlog))
+			{
+				$this->_tblBlog = new Tables\Blog($this->_db);
+			}
+			return $this->_tblBlog;
+		}
+		if ($name == 'Comment')
+		{
+			if (!isset($this->_tblComment))
+			{
+				$this->_tblComment = new Tables\Comment($this->_db);
+			}
+			return $this->_tblComment;
+		}
+		if ($name == 'Todo')
+		{
+			if (!isset($this->_tblTodo))
+			{
+				$this->_tblTodo = new Tables\Todo($this->_db);
+			}
+			return $this->_tblTodo;
+		}
 
 		return $this->_tbl;
 	}
@@ -1050,7 +1074,7 @@ class Project extends Model
 		{
 			$refid = $refid ? $refid : $this->get('id');
 
-			return $this->_tblActivity->recordActivity(
+			$aid = $this->_tblActivity->recordActivity(
 				$this->get('id'),
 				User::get('id'),
 				$activity,
@@ -1062,6 +1086,13 @@ class Project extends Model
 				$admin,
 				$managers_only
 			);
+
+			// Notify subscribers
+			if ($aid && !User::isGuest() && !$this->isProvisioned())
+			{
+				Event::trigger('projects.onWatch', array( $this, $class, array($aid), User::get('id')));
+			}
+			return $aid;
 		}
 
 		return false;
