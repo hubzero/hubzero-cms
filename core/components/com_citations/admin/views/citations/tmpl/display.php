@@ -186,10 +186,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td class="priority-4">
 					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . Lang::txt('JYES') . '</span></span>'; } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->scope == '' ? Lang::txt('Hub') : $this->escape($row->scope)); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->scope_id == 0 ? Lang::txt('N/A') : $this->escape($row->scope_id)); ?>
 				</td>
 			</tr>

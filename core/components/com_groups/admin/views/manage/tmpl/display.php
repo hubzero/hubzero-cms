@@ -117,12 +117,12 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-6"><?php echo $this->grid('sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_CN', 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MEMBERS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES'); ?></th>
 			</tr>
@@ -184,10 +184,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row->cn); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-6">
 					<?php echo $this->escape($row->gidNumber); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->cn); ?>">
 							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field" style="color:#bbb;">' . Lang::txt('COM_GROUPS_NONE') . '</span>'); ?>
@@ -207,10 +207,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php echo $this->escape($row->cn); ?>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $type; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<?php if ($row->published) { ?>
 						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNPUBLISH'); ?>">
@@ -227,7 +227,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php } ?>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<?php if (!$group->get('approved')) { ?>
 						<a class="jgrid state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>">

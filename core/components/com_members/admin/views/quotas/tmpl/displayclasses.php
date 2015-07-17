@@ -54,12 +54,12 @@ Toolbar::help('quotaclasses');
 		<thead>
 		 	<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
+				<th class="priority-5"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ALIAS'); ?></th>
-				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?></th>
+				<th class="priority-3"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?></th>
 				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?></th>
-				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_FILES'); ?></th>
-				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_FILES'); ?></th>
+				<th class="priority-3"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_FILES'); ?></th>
+				<th class="priority-2"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_FILES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -87,7 +87,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->id); ?>
 					</a>
@@ -97,16 +97,16 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php echo $this->escape($row->alias); ?>
 					</a>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $this->escape($row->soft_blocks); ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->hard_blocks); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $this->escape($row->soft_files); ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $this->escape($row->hard_files); ?>
 				</td>
 			</tr>

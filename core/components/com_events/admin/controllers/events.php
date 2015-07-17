@@ -523,11 +523,6 @@ class Events extends AdminController
 	 */
 	private function _clean($string)
 	{
-		if (get_magic_quotes_gpc())
-		{
-			$string = stripslashes($string);
-		}
-
 		// strip out any KL_PHP, script, style, HTML comments
 		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $string);
 		$string = preg_replace("'<head[^>]*?>.*?</head>'si", '', $string);

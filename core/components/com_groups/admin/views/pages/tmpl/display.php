@@ -69,13 +69,13 @@ function submitbutton(pressbutton)
 </script>
 
 <?php
-	require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php';
+	require_once __DIR__ . DS . 'menu.php';
 ?>
 
 <?php if ($this->needsAttention->count() > 0) : ?>
 	<table class="adminlist attention">
 		<thead>
-		 	<tr>
+			<tr>
 				<th>(<?php echo $this->needsAttention->count(); ?>) <?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION'); ?></th>
 				<th><?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_VIEW'); ?></th>
 				<th><?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_CHECKS'); ?></th>
@@ -126,7 +126,6 @@ function submitbutton(pressbutton)
 									<?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
 								</a>
 							</li>
-
 						</ol>
 					</td>
 					<td width="20%">
@@ -152,12 +151,12 @@ function submitbutton(pressbutton)
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
 	<table class="adminlist">
 		<thead>
-		 	<tr>
+			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->pages->count();?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_STATE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_HOME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_HOME'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -194,18 +193,18 @@ function submitbutton(pressbutton)
 					switch ($page->get('state'))
 					{
 						case 0:
-							echo  Lang::txt('COM_GROUPS_PAGES_STATE_UNPUBLISHED');
+							echo '<span class="state unpublish"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_UNPUBLISHED') . '</span></span>';
 						break;
 						case 1:
-							echo  Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED');
+							echo '<span class="state publish"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED') . '</span></span>';
 						break;
 						case 2:
-							echo Lang::txt('COM_GROUPS_PAGES_STATE_DELETED');
+							echo '<span class="state trashed"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_DELETED') . '</span></span>';
 						break;
 					}
 					?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php
 						if ($page->get('home'))
 						{
@@ -213,7 +212,7 @@ function submitbutton(pressbutton)
 						}
 					?>
 				</td>
-				<td><?php echo $page->versions()->count(); ?></td>
+				<td class="priority-4"><?php echo $page->versions()->count(); ?></td>
 			</tr>
 	<?php endforeach; ?>
 <?php else : ?>

@@ -85,6 +85,9 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 				<div class="input-wrap">
 					<label for="field-order"><?php echo Lang::txt('COM_GROUPS_PAGES_PARENT'); ?>:</label><br />
 					<select name="page[parent]" id="field-order">
+						<?php if (!count($this->pages)) { ?>
+						<option value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_TEMPLATE_OPTION_NULL'); ?></option>
+						<?php } ?>
 						<?php foreach ($this->pages as $page) : ?>
 							<?php if ($page->get('id') == $this->page->get('id')) { continue; } ?>
 							<?php $sel = ($this->page->get('parent') == $page->get('id')) ? 'selected="selected"' : ''; ?>
@@ -167,13 +170,13 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 	</div>
 
 	<div class="col width-50 fltrt">
-		<?php if ($this->page->get('id')) : ?>
 			<table class="meta">
 				<tbody>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_PAGES_OWNER'); ?></th>
 						<td><?php echo $this->group->get('description'); ?></td>
 					</tr>
+		<?php if ($this->page->get('id')) : ?>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_PAGES_ID'); ?></th>
 						<td><?php echo $this->page->get('id'); ?></td>
@@ -208,10 +211,10 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 							?>
 						</td>
 					</tr>
-
+		<?php endif; ?>
 				</tbody>
 			</table>
-
+		<?php if ($this->page->get('id')) : ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?></span></legend>
 

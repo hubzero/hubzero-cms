@@ -36,19 +36,19 @@ Toolbar::title(Lang::txt('CITATION') . ': ' . Lang::txt('CITATION_STATS'), 'cita
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo Lang::txt('YEAR'); ?></th>
-				<th><?php echo Lang::txt('AFFILIATED'); ?></th>
-				<th><?php echo Lang::txt('NONAFFILIATED'); ?></th>
-				<th><?php echo Lang::txt('TOTAL'); ?></th>
+				<th scope="col"><?php echo Lang::txt('YEAR'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('AFFILIATED'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('NONAFFILIATED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('TOTAL'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($this->stats as $year => $amt) { ?>
 			<tr>
 				<th><?php echo $year; ?></th>
-				<td><?php echo $amt['affiliate']; ?></td>
-				<td><?php echo $amt['non-affiliate']; ?></td>
-				<td><span style="color:#c00;"><?php echo (intval($amt['affiliate']) + intval($amt['non-affiliate'])); ?></span></td>
+				<td class="priority-2"><?php echo $amt['affiliate']; ?></td>
+				<td class="priority-2"><?php echo $amt['non-affiliate']; ?></td>
+				<td><?php echo (intval($amt['affiliate']) + intval($amt['non-affiliate'])); ?></td>
 			</tr>
 		<?php } ?>
 		</tbody>

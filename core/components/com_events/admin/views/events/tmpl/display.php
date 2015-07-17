@@ -75,13 +75,13 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_PAGES'); ?></th>
 			</tr>
 		</thead>
@@ -110,7 +110,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = &$this->rows[$i];
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td>
+				<td class="priority-5">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
@@ -131,12 +131,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<span>
 						<?php echo $this->escape($row->category); ?>
 					</span>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php
 					$now = Date::toSql();
 					$alt = Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
@@ -175,10 +175,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } ?>
 				</td>
-				<td style="white-space: nowrap;">
+				<td class="priority-4" style="white-space: nowrap;">
 					<?php echo $times; ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php if ($row->scope == 'group') : ?>
 						<?php
 							$group = \Hubzero\User\Group::getInstance($row->scope_id);

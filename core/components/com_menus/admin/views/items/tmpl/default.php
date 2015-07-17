@@ -83,7 +83,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 				<th class="priority-5">
 					<?php echo Lang::txt('JGRID_HEADING_MENU_ITEM_TYPE'); ?>
 				</th>
-				<th>
+				<th class="priority-2">
 					<?php echo Html::grid('sort', 'COM_MENUS_HEADING_HOME', 'a.home', $listDirn, $listOrder); ?>
 				</th>
 				<?php
@@ -173,7 +173,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 						<?php echo $this->escape($item->item_type); ?>
 					</span>
 				</td>
-				<td class="center">
+				<td class="center priority-2">
 					<?php if ($item->type == 'component') : ?>
 						<?php if ($item->language=='*' || $item->home=='0'):?>
 							<?php echo Html::grid('isdefault', $item->home, $i, 'items.', ($item->language != '*' || !$item->home) && $canChange);?>
