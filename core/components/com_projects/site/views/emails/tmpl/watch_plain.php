@@ -32,7 +32,7 @@ $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 $sef  = Route::url($this->project->link('alias'));
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
-$message  = $this->subject . "\n"; 
+$message  = $this->subject . "\n";
 $message .= '===============================' . "\n";
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') . ')' . "\n";
 $message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
