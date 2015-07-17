@@ -128,6 +128,34 @@ class Watch extends \JTable
 			$where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
 		}
 
+		if (isset($filters['area']) && trim($filters['area']) != '')
+		{
+			$where[] = "c.params LIKE " . $this->_db->quote('%' . trim($filters['area']) . '=1%');
+		}
+
+		if (isset($filters['frequency']) && trim($filters['frequency']) != '')
+		{
+			switch ($filters['frequency'])
+			{
+				case 'immediate':
+				default:
+					$where[] = "(c.params LIKE '%frequency=immediate%' OR c.params NOT LIKE '%frequency=%')";
+				break;
+
+				case 'weekly':
+					$where[] = "(c.params LIKE '%frequency=weekly%')";
+				break;
+
+				case 'daily':
+					$where[] = "(c.params LIKE '%frequency=daily%')";
+				break;
+			}
+		}
+		else
+		{
+			$where[] = "(c.params LIKE '%frequency=immediate%' OR c.params NOT LIKE '%frequency=%')";
+		}
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
