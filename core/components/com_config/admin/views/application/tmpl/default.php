@@ -92,7 +92,7 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 				<div class="width-60 fltlft">
 					<?php echo $this->loadTemplate('server'); ?>
 					<?php echo $this->loadTemplate('locale'); ?>
-					<?php echo $this->loadTemplate('ftp'); ?>
+					<?php //echo $this->loadTemplate('ftp'); ?>
 				</div>
 				<div class="width-40 fltrt">
 					<?php echo $this->loadTemplate('database'); ?>
