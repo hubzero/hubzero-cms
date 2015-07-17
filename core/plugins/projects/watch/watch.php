@@ -204,6 +204,9 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _save()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Login required
 		if (User::isGuest() || !$this->project->exists())
 		{

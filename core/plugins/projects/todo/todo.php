@@ -384,6 +384,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function save()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$listcolor	= Request::getVar('list', '');
 		$content	= Request::getVar('content', '');

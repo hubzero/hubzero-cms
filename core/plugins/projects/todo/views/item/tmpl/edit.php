@@ -105,6 +105,7 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 				</div>
 			</div>
 		</section>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>
 </div>

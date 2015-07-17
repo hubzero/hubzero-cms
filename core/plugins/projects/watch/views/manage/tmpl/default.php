@@ -68,6 +68,7 @@ $this->css();
 				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_WATCH_SAVE'); ?>" />
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_WATCH_CANCEL'); ?>" />
 			</p>
+			<?php echo Html::input('token'); ?>
 		</fieldset>
 	</form>
 </div>
