@@ -487,7 +487,7 @@ class Owner extends \JTable
 		$online   	= isset($filters['online']) 	? $filters['online'] : 0;
 		$status    	= isset($filters['status']) 	? $filters['status'] : 'active';
 		$sortby  	= isset($filters['sortby']) 	? $filters['sortby'] : 'name';
-		$sortdir 	= isset($filters['sortdir']) && $filters['sortdir'] == 'DESC' 	? 'DESC' : 'ASC';
+		$sortdir    = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
 		$limit   	= isset($filters['limit']) 		? $filters['limit'] : 0;
 		$limitstart = isset($filters['start']) 		? $filters['start'] : 0;
 		$select 	= isset($filters['select']) 	? $filters['select'] : '';

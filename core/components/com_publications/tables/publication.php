@@ -321,7 +321,7 @@ class Publication extends \JTable
 		if (!isset($filters['count']) or $filters['count'] == 0)
 		{
 			$query  .= " ORDER BY ";
-			$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
+			$sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
 
 			switch ($sortby)
 			{

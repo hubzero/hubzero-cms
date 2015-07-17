@@ -249,8 +249,8 @@ class Project extends \JTable
 
 		if (!$filters['count'])
 		{
-			$sort = '';
-			$sortdir = isset($filters['sortdir']) && $filters['sortdir'] == 'DESC'  ? 'DESC' : 'ASC';
+			$sort    = '';
+			$sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
 
 			switch ($sortby)
 			{
@@ -459,7 +459,7 @@ class Project extends \JTable
 		{
 			$sort = '';
 			$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';
-			$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
+			$sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
 
 			switch ($sortby)
 			{

@@ -142,7 +142,7 @@ class Todo extends \JTable
 		{
 			$sort = '';
 			$sortby	 = isset($filters['sortby']) ? $filters['sortby'] : 'priority';
-			$sortdir = isset($filters['sortdir']) && $filters['sortdir'] == 'DESC' ? 'DESC' : 'ASC';
+			$sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
 
 			switch ($sortby)
 			{

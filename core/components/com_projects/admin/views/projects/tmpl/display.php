@@ -46,6 +46,7 @@ if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
 }
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
