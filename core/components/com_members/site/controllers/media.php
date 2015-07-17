@@ -82,6 +82,11 @@ class Media extends SiteController
 		//load profile from id
 		$this->view->profile = \Hubzero\User\Profile::getInstance($id);
 
+		if (!$this->view->profile)
+		{
+			App::abort(404, Lang::txt('MEMBERS_NO_ID'));
+		}
+
 		//instantiate view and pass needed vars
 		$this->view->config = $this->config;
 
