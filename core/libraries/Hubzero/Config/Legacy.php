@@ -58,10 +58,6 @@ class Legacy extends Registry
 			'helpurl',
 			'debug',
 			'debug_lang',
-			'sef',
-			'sef_rewrite',
-			'sef_suffix',
-			'sef_groups',
 			'feed_limit',
 			'feed_email',
 			'secret',
@@ -75,9 +71,7 @@ class Legacy extends Registry
 			'force_ssl',
 			'offset',
 			'sitename',
-			'sitename_pagetitles',
 			'robots',
-			'unicodeslugs',
 			'captcha',
 			'access'
 		),
@@ -130,6 +124,14 @@ class Legacy extends Registry
 			'offline_image',
 			'offline_message',
 			'offline'
+		),
+		'seo' => array(
+			'sef',
+			'sef_rewrite',
+			'sef_suffix',
+			'sef_groups',
+			'unicodeslugs',
+			'sitename_pagetitles'
 		),
 		'session' => array(
 			'session_handler',
