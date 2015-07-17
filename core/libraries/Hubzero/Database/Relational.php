@@ -721,6 +721,21 @@ class Relational implements \IteratorAggregate
 	}
 
 	/**
+	 * Adds a new rule to the validation set
+	 *
+	 * @param   string  $key   the field to which the rule applies
+	 * @param   mixed   $rule  the rule to add
+	 * @return  $this
+	 * @since   1.3.2
+	 **/
+	public function addRule($key, $rule)
+	{
+		$this->rules[$key] = $rule;
+
+		return $this;
+	}
+
+	/**
 	 * Get total number of rows
 	 *
 	 * @return int
