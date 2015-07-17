@@ -310,7 +310,5 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError('Failed to mail %s', $email);
 		}
-
-		$mailed[] = $email;
 	}
 }
