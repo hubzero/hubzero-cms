@@ -140,7 +140,7 @@ $this->css()
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 
 						//delete link
-						$del_link = JRoute::_($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive');
+						$del_link = JRoute::_($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive&' . JSession::getFormToken() . '=1');
 						$delete = '<a title="' . JText::_('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
 
 						//special action

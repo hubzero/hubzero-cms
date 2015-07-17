@@ -704,7 +704,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 			foreach ($mids as $mid)
 			{
@@ -755,7 +755,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 			foreach ($mids as $mid)
 			{
@@ -796,7 +796,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 			foreach ($mids as $mid)
 			{
@@ -869,7 +869,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($mids) > 0)
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 			foreach ($mids as $mid)
 			{
@@ -909,7 +909,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($ids) > 0)
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 			foreach ($ids as $mid)
 			{
@@ -950,7 +950,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($ids) > 0)
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 			$sql = "DELETE FROM `#__xmessage_seen` WHERE `uid`=" . $member->get('uidNumber') . " AND `mid` IN(" . implode(',', $ids) . ")";
 			$database = JFactory::getDBO();
