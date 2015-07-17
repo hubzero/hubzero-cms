@@ -172,7 +172,21 @@ class Activity extends \JTable
 		}
 		if ($id)
 		{
-			$query  .= " AND a.id=" . $this->_db->quote($id);
+			if (is_array($id))
+			{
+				$query  .= " AND a.id IN ( ";
+				$tquery = '';
+				foreach ($id as $a)
+				{
+					$tquery .= "'" . intval($a) . "',";
+				}
+				$tquery = substr($tquery, 0, strlen($tquery) - 1);
+				$query .= $tquery . ") ";
+			}
+			elseif (intval($id))
+			{
+				$query  .= " AND a.id=" . $this->_db->quote($id);
+			}
 		}
 
 		$query  .= " AND a.state != 2 ";
