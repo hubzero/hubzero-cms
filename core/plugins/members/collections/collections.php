@@ -1235,7 +1235,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel || !Request::checkToken())
+		if (!$process || !$confirmdel)
 		{
 			if ($process && !$confirmdel)
 			{
@@ -1265,6 +1265,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 			return $view->loadTemplate();
 		}
+
+		Request::checkToken();
 
 		$msg = Lang::txt('Post deleted.');
 		$type = 'passed';
@@ -1580,6 +1582,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 			return $view->loadTemplate();
 		}
+
+		Request::checkToken();
 
 		// Mark the entry as deleted
 		$collection->set('state', 2);
