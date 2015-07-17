@@ -153,7 +153,7 @@ class Watch extends \JTable
 		}
 		else
 		{
-			$where[] = "(c.params LIKE '%frequency=immediate%' OR c.params NOT LIKE '%frequency=%')";
+			$where[] = "(c.params IS NULL OR c.params LIKE '%frequency=immediate%' OR c.params NOT LIKE '%frequency=%')";
 		}
 
 		if (count($where) > 0)
