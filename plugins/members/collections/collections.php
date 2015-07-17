@@ -1693,6 +1693,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _savecollection()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Login check
 		if ($this->juser->get('guest'))
 		{
