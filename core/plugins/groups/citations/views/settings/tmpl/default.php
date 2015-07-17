@@ -33,7 +33,6 @@
 //defined('_HZEXEC_') or die();
 
 $this->css()->js();
-
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 ?>
 
@@ -60,13 +59,16 @@ $jQ(document).ready(function(e) {
 	// Thanks Zach Weidner!
 	$jQ(function($) {
 		$('tr').click(function() {
-			if ( $('select[name="citation-format"]').find('option[value="custom"]').attr("selected") != "selected" )
+			if ( ($('select[name="citation-format"]').find('option[value="custom"]').attr("selected") != "selected"))
 			{
 				// force custom format
 				$('select[name="citation-format"]').find('option[value="custom"]').attr("selected",true);
 
-				// clear out the textarea
-				$('#format-string').val('');
+			}
+			if ($('select[name="citation-format"] option:contains(custom-group-<?php echo $this->group->get('cn'); ?>)').attr("selected") != "selected")
+			{
+					// force the existing custom group format to be selected
+					$('select[name="citation-format"] option:contains(custom-group-<?php echo $this->group->get('cn'); ?>)').attr("selected", true);
 			}
 
 			$('#format-string').val($('#format-string').val() + $(this).attr('id'));
@@ -160,7 +162,7 @@ $jQ(document).ready(function(e) {
 						<label for="cite">
 							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?>:
 								<select name="citation-format" id="format-selector">
-								<?php if ($this->customFormat != true): ?>
+								<?php if ($this->customFormat === false): ?>
 									<option value="custom" data-format="">Custom for Group</option>
 								<?php endif; ?>
 									<?php foreach ($this->formats as $format): ?>

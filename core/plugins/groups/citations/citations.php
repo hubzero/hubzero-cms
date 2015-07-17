@@ -210,6 +210,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->isManager		 = ($this->authorized == 'manager') ? true : false;
 		// is there a better way to handle group configurations?
 		$view->config			 = (array) json_decode($this->group->get('params'));
+
 		// Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
 
@@ -656,7 +657,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->formats = \Components\Citations\Models\Format::all()->rows()->toObject();
 			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
 			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
-			$view->customFormat = false;
+
+			// get the name of the current format (see if it's custom)
+			$custom = \Components\Citations\Models\Format::all()->where('style', '=', "custom-group-" . $this->group->get('cn'))->count();
+			if ($custom > 0)
+			{
+				$view->customFormat = true;
+			}
+			else
+			{
+				$view->customFormat = false;
+			}
+
 
 			// the name of the custom format
 			$name = "custom-group-" . $this->group->cn;
