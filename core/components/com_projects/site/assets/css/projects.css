@@ -1837,6 +1837,23 @@
 		font-weight: normal;
 	}
 
+/* Icon for new icon
+--------------------------------------------- */
+	span.new-item {
+		display: inline-block;
+	}
+	span.new-item:after {
+		color: orange;
+		border: 1px solid orange;
+		background: #fbf7e1;
+		content: "new";
+		text-transform: uppercase;
+		font-size: 0.7em;
+		padding: 0.2em 0.7em;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+	}
+
 /* 	Fixes for smaller screens
 --------------------------------------------- */
 
