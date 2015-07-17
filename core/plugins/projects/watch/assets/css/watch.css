@@ -1,0 +1,76 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/publications/watch/assets/css/watch.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Publications Watch plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+.watch {
+	background: #f8ffff;
+	background: -moz-linear-gradient(top, #f8ffff, #FFFFFF);
+	border: 2px solid #d4eeed;
+	padding: 0.5em 1em 0.5em 1em;
+	margin: 0 0 2em 0;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 90%;
+	line-height: 1.3em;
+}
+.watch.watching {
+	background: #ecffe8;
+	background: -moz-linear-gradient(top, #ecffe8, #FFFFFF);
+	border: 2px solid #cbe1c6;
+	color: green;
+}
+.watch a {
+	border: none;
+}
+.watch:before {
+	width: 32px;
+	height: 32px;
+	font-size: 32px;
+	font-family: 'Fontcons';
+	color: #c4d2d6;
+	content: "\f029";
+	float: left;
+	padding: 0.5em 0.2em;
+}
+.watch.watching:before {
+	color: #93c089;
+	content: "\f029";
+}
+.cat-icon {
+	width: 20px;
+	padding: 0 2em 0 1em;
+	margin: 0;
+}
+.cat-icon span {
+	position: absolute;
+	width: 20px;
+}
+#hubForm-ajax p {
+	font-size: 90%;
+	margin: 1em 0;
+}
+.delivery {
+	margin-top: 1em;
+	padding: 1em;
+	background: #f8ffff;
+	background: -moz-linear-gradient(top, #f8ffff, #FFFFFF);
+	border-top: 2px solid #d4eeed;
+	border-bottom: 2px solid #d4eeed;
+}
+#hubForm-ajax .delivery p {
+	margin: 0;
+}
+.delivery i {
+	color: #666;
+}
