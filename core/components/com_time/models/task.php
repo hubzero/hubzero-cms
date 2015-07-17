@@ -26,7 +26,7 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Components\Time\Models;
@@ -43,32 +43,46 @@ class Task extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = 'time';
 
 	/**
 	 * Default order by for fetch
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'name';
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
+	 * @var  array
 	 **/
-	protected $rules = array(
+	protected $rules = [
 		'name'   => 'notempty',
 		'hub_id' => 'notempty'
-	);
+	];
+
+	/**
+	 * Sets up additional custom rules
+	 *
+	 * @return  void
+	 * @since   2.0.0
+	 **/
+	public function setup()
+	{
+		$this->addRule('end_date', function($data)
+		{
+			return $data['end_date'] >= $data['start_date'] ? false : 'The task cannot end before it begins';
+		});
+	}
 
 	/**
 	 * Defines a one to many relationship with records
 	 *
-	 * @return \Hubzero\Database\Relationship\oneToMany
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relationship\OneToMany
+	 * @since   2.0.0
 	 **/
 	public function records()
 	{
@@ -78,8 +92,8 @@ class Task extends Relational
 	/**
 	 * Defines the inverse relationship between a task and a hub
 	 *
-	 * @return \Hubzero\Database\Relationship\belongsTo
-	 * @author 
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 * @since   2.0.0
 	 **/
 	public function hub()
 	{
@@ -89,8 +103,8 @@ class Task extends Relational
 	/**
 	 * Defines a belongs to one relationship between task and liaison
 	 *
-	 * @return \Hubzero\Database\Relationship\BelongsToOne
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 * @since   2.0.0
 	 **/
 	public function liaison()
 	{
@@ -100,8 +114,8 @@ class Task extends Relational
 	/**
 	 * Defines a belongs to one relationship between task and assignee
 	 *
-	 * @return \Hubzero\Database\Relationship\BelongsToOne
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 * @since   2.0.0
 	 **/
 	public function assignee()
 	{
@@ -111,8 +125,8 @@ class Task extends Relational
 	/**
 	 * Returns only the active tasks
 	 *
-	 * @return \Hubzero\Database\Row version row object
-	 * @since 1.3.2
+	 * @return  \Hubzero\Database\Row version row object
+	 * @since   2.0.0
 	 **/
 	public function helperAreActive()
 	{
