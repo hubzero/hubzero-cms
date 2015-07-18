@@ -124,7 +124,7 @@ class Activity extends \JTable
 		$limit   	= isset($filters['limit']) ? $filters['limit'] : 0;
 		$limitstart = isset($filters['start']) ? $filters['start'] : 0;
 		$class 		= isset($filters['class']) ? $filters['class'] : '';
-		$sortdir    = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC'  ? 'DESC' : 'ASC';
+		$sortdir    = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'ASC'  ? 'ASC' : 'DESC';
 		$managers 	= isset($filters['managers']) ? $filters['managers'] : 0;
 		$role 		= isset($filters['role']) ? $filters['role'] : 0;
 		$id 		= isset($filters['id']) ? $filters['id'] : 0;
