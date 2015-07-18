@@ -122,6 +122,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 					<input type="hidden" name="active" value="todo" />
 					<input type="hidden" name="itemid" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="parent_activity" value="<?php echo $this->row->get('activityid'); ?>" />
+					<?php echo Html::input('token'); ?>
 					<p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_COMMENT'); ?>" /></p>
 			</div>
 		</form>

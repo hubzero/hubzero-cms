@@ -885,6 +885,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _saveComment()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check permission
 		if (!$this->model->access('content'))
 		{
