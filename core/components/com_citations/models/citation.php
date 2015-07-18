@@ -89,9 +89,20 @@ class Citation extends Relational
 		return $this->oneToMany('Author', 'cid', 'id');
 	}
 
+	/**
+	 * Defines a one to many relationship with authors
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
 	public function relatedType()
 	{
 		return $this->belongsToOne('Type', 'type', 'id');
+	}
+
+	public function tags()
+	{
+		return $this->manyToMany('Tag', '#__tags_object', 'objectid', 'tagid');
 	}
 
 
@@ -455,6 +466,5 @@ class Citation extends Relational
 			return false;
 		}
 	}
-
 
 } //end Citation Class
