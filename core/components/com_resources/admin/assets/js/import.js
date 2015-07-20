@@ -113,6 +113,9 @@ jQuery(document).ready(function(jq){
 		};
 
 		this.setProgress = function( newValue ) {
+			if (isNaN(newValue)) {
+				newValue = 0;
+			}
 			$('.progress').progressbar("value", newValue);
 			$('.progress-percentage').html(Math.round(newValue) + '%');
 		}

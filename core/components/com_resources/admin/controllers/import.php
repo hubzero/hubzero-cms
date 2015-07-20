@@ -211,11 +211,15 @@ class Import extends AdminController
 		// if we have a file
 		if (is_array($file) && $file['size'] > 0 && $file['error'] == 0)
 		{
-			$ext = strtoloweR(Filesystem::extension($file['name']));
+			$ext = strtolower(Filesystem::extension($file['name']));
 			if (!in_array($ext, array('csv', 'xml')))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
 				return $this->editTask();
+			}
+			if (!is_dir($this->import->fileSpacePath()))
+			{
+				Filesystem::makeDirectory($this->import->fileSpacePath());
 			}
 			move_uploaded_file($file['tmp_name'], $this->import->fileSpacePath() . DS . $file['name']);
 			$this->import->set('file', $file['name']);
@@ -402,8 +406,8 @@ class Import extends AdminController
 
 		// build array of data to return
 		$data = array(
-			'processed' => $run->get('processed'),
-			'total'     => $run->get('count')
+			'processed' => (int) $run->get('processed'),
+			'total'     => (int) $run->get('count')
 		);
 
 		// return progress update
