@@ -152,7 +152,7 @@ jQuery(document).ready(function(jq){
 			this.checker = setInterval(function(){
 				$.getJSON('index.php?option=com_resources&controller=import&task=progress&id=' + $('input[name="id"]').val(), function(data) {
 					var percent = 0;
-					if (data) {
+					if (data && typeof data.processed !== 'undefined' && typeof data.total !== 'undefined') {
 						var percent = (data.processed / data.total) * 100;
 					}
 					self.setProgress( percent );
