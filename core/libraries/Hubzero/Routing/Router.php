@@ -198,10 +198,11 @@ class Router
 			}
 		}
 
-		//$this->bind($uri->getQuery(true));
+		$vars = array_merge($uri->getQuery(true), $this->vars());
 
-		//return $this->vars();
-		return array_merge($uri->getQuery(true), $this->vars());
+		$this->bind($vars);
+
+		return $this->vars();
 	}
 
 	/**
