@@ -11,13 +11,13 @@ if (!jq) {
 
 jQuery(document).ready(function(jq){
 	var $ = jq;
-	
+
 	var ResourceImport = new function() {
 		this.timer     = null;
 		this.checker   = null;
 		this.timeout   = $('.countdown').attr('data-timeout');
 		this.isPaused  = false;
-	
+
 		this.init = function() {
 			if ($('.countdown').length)
 			{
@@ -26,10 +26,10 @@ jQuery(document).ready(function(jq){
 				this.progress();
 				this.attachLeaveHandler();
 			}
-			
+
 			this.hooks();
 		};
-		
+
 		this.countdown = function() {
 			var self = this;
 			this.isPaused = false;
@@ -75,7 +75,7 @@ jQuery(document).ready(function(jq){
 				})
 				.on('click', '.start-real', function(event) {
 					event.preventDefault();
-					
+
 					self.setProgress(0);
 					$('.results').replaceWith('<div class="results"></div>');
 					$('.results-stats').html('');
@@ -100,29 +100,29 @@ jQuery(document).ready(function(jq){
 				this.endCountdown();
 			}
 		};
-		
+
 		this.endCountdown = function() {
 			clearInterval(this.timer);
 			this.timer = null;
 		};
-		
+
 		this.progress = function() {
 			$('.progress').progressbar({
 				value: 0.01
 			});
 		};
-		
+
 		this.setProgress = function( newValue ) {
 			$('.progress').progressbar("value", newValue);
 			$('.progress-percentage').html(Math.round(newValue) + '%');
 		}
-	
+
 		this.startImport = function() {
 			var self = this;
 
 			// disable buttons
 			$('.countdown-actions button').attr('disabled', 'disabled');
-			
+
 			// start processing
 			$.ajax({
 				type: 'post',
@@ -146,16 +146,18 @@ jQuery(document).ready(function(jq){
 
 			this.startImportProgressChecker();
 		};
-		
+
 		this.startImportProgressChecker = function() {
 			var self = this;
 			this.checker = setInterval(function(){
 				$.getJSON('index.php?option=com_resources&controller=import&task=progress&id=' + $('input[name="id"]').val(), function(data) {
-					var percent = (data.processed / data.total) * 100;
+					var percent = 0;
+					if (data) {
+						var percent = (data.processed / data.total) * 100;
+					}
 					self.setProgress( percent );
 				});
 			}, 100);
-			
 		};
 
 		this.stopImportProgressChecker = function() {
@@ -204,7 +206,7 @@ jQuery(document).ready(function(jq){
 
 			// Capitalize first char
 			Handlebars.registerHelper('ucfirst', function(data) {
-  				return data.charAt(0).toUpperCase() + data.slice(1);
+				return data.charAt(0).toUpperCase() + data.slice(1);
 			});
 
 			// output resource data
@@ -240,11 +242,11 @@ jQuery(document).ready(function(jq){
 				html += '<tr><th width="20%">Attribs</th><td><pre>' +  Handlebars.helpers.print_json_data.call(this, record.resource.attribs) + '</pre></td></tr>';
 				html += '<tr><th width="20%">Alias</th><td>' + record.resource.alias + '</td></tr>';
 				html += '<tr><th width="20%">Ranking</th><td>' + record.resource.ranking + '</td></tr>';
-				
+
 				html += '</table>';
 				return html;
 			});
-			
+
 			// output resource data
 			Handlebars.registerHelper('child_resource_data', function(children, options) {
 				var html = '<table>';
@@ -265,13 +267,13 @@ jQuery(document).ready(function(jq){
 			pos -= 50;
 			$("html, body").delay(1000).animate({ scrollTop: pos + "px" }, 2000);
 		};
-		
+
 		this.attachLeaveHandler = function() {
 			window.onbeforeunload = function() {
-			  return "Are you sure you want to leave?";
+				return "Are you sure you want to leave?";
 			};
 		};
-		
+
 		this.detachLeaveHandler = function() {
 			window.onbeforeunload = null;
 		};
@@ -314,6 +316,6 @@ jQuery(document).ready(function(jq){
 			});
 		}
 	};
-	
+
 	ResourceImport.init();
 });
