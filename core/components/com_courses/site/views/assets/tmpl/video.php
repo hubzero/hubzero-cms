@@ -129,7 +129,7 @@ if ($type == 'hubpresenter')
 	$contents = file_get_contents($media_path);
 
 	// Content folder
-	$content_folder = ltrim(rtrim($media_dir, DS), PATH_APP);
+	$content_folder = ltrim(substr(rtrim($media_dir, DS), strlen(PATH_ROOT)), DS);
 
 	// Decode the json formatted manifest so we can use the information
 	$presentation = json_decode($contents);
@@ -154,7 +154,7 @@ if ($type == 'hubpresenter')
 	$local_subs = array();
 	if (is_dir($content_folder))
 	{
-		$local_subs = Filesystem::files(PATH_APP . DS . $content_folder, '.srt|.SRT', true, false);
+		$local_subs = Filesystem::files(PATH_ROOT . DS . $content_folder, '.srt|.SRT', true, false);
 	}
 
 	// add local subtitles too
@@ -298,7 +298,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							if (substr($subtitle->source, 0, 4) != 'http')
 							{
 								$source   = $base . $source;
-								$modified = filemtime(PATH_APP . $source);
+								$modified = filemtime(PATH_ROOT . $source);
 							}
 							else
 							{
@@ -699,11 +699,11 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									<?php
 										// Use thumb if possible
 										$thumb = '';
-										if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP.DS.$content_folder.DS.$slide->thumb))
+										if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_ROOT.DS.$content_folder.DS.$slide->thumb))
 										{
 											$thumb = $content_folder.DS.$slide->thumb;
 										}
-										else if (!is_array($slide->media) && file_exists(PATH_APP.DS.$content_folder.DS.$slide->media))
+										else if (!is_array($slide->media) && file_exists(PATH_ROOT.DS.$content_folder.DS.$slide->media))
 										{
 											$thumb = $content_folder.DS.$slide->media;
 										}
