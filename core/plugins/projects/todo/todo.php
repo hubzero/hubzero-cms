@@ -788,7 +788,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$newid = Request::getInt('newid', 0);
 		$oldid = Request::getInt('oldid', 0);
-		$items = Request::getVar( 'item', array(), 'request', 'array' );
+		$items = Request::getVar( 'item', array());
 
 		if ($newid && $oldid)
 		{

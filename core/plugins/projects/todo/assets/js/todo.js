@@ -66,7 +66,7 @@ HUB.ProjectTodo = {
 				});
 			});
 		}
-		
+
 		// Confirm check-off
 		if ($('.confirm-checkoff').length) {
 			$('.confirm-checkoff').each(function(i, item) {
@@ -122,17 +122,11 @@ HUB.ProjectTodo = {
 						}
 		            });
 
-					var action = 'index.php?option=com_projects&id='+ $('#pid').val()
-					+ '&active=todo&action=sortitems&ajax=1&no_html=1&list='+ $('#list').val() + stringDiv;
+					var action = '/projects/'+ $('#pid').val()
+					+ '/todo/sortitems?ajax=1&no_html=1&list='+ $('#list').val() + stringDiv;
 
-					$.get( action, {}, function(data) {
-						/*if(data)
-						{
-							$('#plg-content').html(data);
-							HUB.ProjectTodo.initialize();
-						}*/
-					});
-			   	}
+					$.get( action, {}, function(data) {});
+				}
 			});
 		}
 
