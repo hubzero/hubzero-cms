@@ -66,8 +66,16 @@ $prev_month = clone($this_date);
 $prev_month->addMonths( -1 );
 $next_month = clone($this_date);
 $next_month->addMonths( +1 );
-$prev = Route::url( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
-$next = Route::url( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
+if ($this_date->year > date('Y') - 10) {
+	$prev = Route::url( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
+} else {
+	$prev = "javascript:void(0);";
+}
+if ($this_date->year < date('Y') + 10) {
+	$next = Route::url( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
+} else {
+	$next = "javascript:void(0);";
+}
 
 $content  = '<table class="ecalendar">'."\n";
 $content .= ' <caption>';
