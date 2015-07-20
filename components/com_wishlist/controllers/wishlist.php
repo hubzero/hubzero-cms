@@ -176,7 +176,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// Incoming
 		$id     = JRequest::getInt('id', $params->get('id', 0));
 		$refid  = JRequest::getInt('rid', $params->get('rid', 1));
-		$cat   	= JRequest::getVar('category', $params->get('category', 'general'));
+		$cat   	= JRequest::getWord('category', $params->get('category', 'general'));
 		$saved  = JRequest::getInt('saved', 0);
 
 		// are we viewing this from within a plugin?
