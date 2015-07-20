@@ -943,7 +943,12 @@ class Pipeline extends SiteController
 		// set vars
 		$tool = Request::getVar('tool', array(), 'post');
 		$tool = array_map('trim', $tool);
-		$tool = array_map(array('Request', '_cleanVar'), $tool); // Sanitize the input a bit
+		// Sanitize the input a bit
+		$noHtmlFilter = \JFilterInput::getInstance();
+		foreach ($tool as $i => $var)
+		{
+			$tool[$i] = $noHtmlFilter->clean($var);
+		}
 
 		$today = Date::toSql();
 
@@ -951,12 +956,12 @@ class Pipeline extends SiteController
 		$dev_suffix   = $this->config->get('dev_suffix', '_dev');
 
 		// pass data from forms
-		$id = Request::getInt('toolid', 0);
+		$id             = Request::getInt('toolid', 0);
 		$this->_action  = Request::getVar('action', '');
-		$comment     = Request::getVar('comment', '');
-		$editversion = Request::getVar('editversion', 'dev', 'post');
-		//$toolname    = strtolower($tool['toolname']);
-		$oldstatus   = array();
+		$comment        = Request::getVar('comment', '');
+		$editversion    = Request::getVar('editversion', 'dev', 'post');
+		//$toolname     = strtolower($tool['toolname']);
+		$oldstatus      = array();
 
 		// Create a Tool Version object
 		$objV = new \Components\Tools\Tables\Version($this->database);
@@ -978,7 +983,7 @@ class Pipeline extends SiteController
 		{
 			// display form with errors
 			//$title = Lang::txt(strtoupper($this->_option)).': '.Lang::txt('COM_TOOLS_EDIT_TOOL');
-			Document::setTitle($title);
+			//Document::setTitle($title);
 			if (is_array($err))
 			{
 				foreach ($err as $error)
@@ -1036,7 +1041,7 @@ class Pipeline extends SiteController
 		if ($hztv)
 		{
 			$oldstatus = $hztv->toArray();
-			$oldstatus['toolstate'] = $hzt->state;
+			$oldstatus['toolstate']    = $hzt->state;
 			$oldstatus['membergroups'] = $tool['membergroups'];
 
 			if ($id)
