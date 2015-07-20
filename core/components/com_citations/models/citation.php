@@ -467,4 +467,36 @@ class Citation extends Relational
 		}
 	}
 
+
+	/**
+	 * Output a tagcloud of tags associated with a citation
+	 *
+	 * @param   object  $citation  Citation
+	 * @param   object  $database  JDatabase
+	 * @return  string  HTML
+	 */
+	public function tagCloud()
+	{
+		if ($this->tags()->count() > 0)
+		{
+			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
+
+			$html  = '<ul class="tags">';
+			foreach ($this->tags as $tag)
+			{
+				$cls = ($tag->admin) ? 'admin' : '';
+
+				//display tag if not admin tag or if admin tag and user is adminstrator
+				if (!$tag->admin || ($tag->admin && $isAdmin))
+				{
+					$html .= '<li class="' . $cls . '"><a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
+				}
+
+			}
+			$html .= '</ul>';
+			return $html;
+		}
+	}
+
+
 } //end Citation Class

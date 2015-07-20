@@ -220,9 +220,8 @@ if (isset($this->messages))
 											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 										<?php endif; ?>
 
-										<?php if (0): ?>
-										<?php //if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+										<?php if (1): ?>
+											<?php echo $cite->tagCloud(); ?>
 										<?php endif; ?>
 									</td>
 								</tr>
