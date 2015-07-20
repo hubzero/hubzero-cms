@@ -242,29 +242,32 @@ class Wish extends \JTable
 
 		$sort = 'ws.status ASC, ws.proposed DESC';
 		// list  sorting
-		switch ($filters['sortby'])
+		if (isset($filters['sortby']))
 		{
-				case 'date':
-					$sort = 'ws.status ASC, ws.proposed DESC';
-				break;
-				case 'ranking':
-					$sort = 'ws.status ASC, ranked, ws.ranking DESC, positive DESC, ws.proposed DESC';
-				break;
-				case 'feedback':
-					$sort = 'positive DESC, ws.status ASC';
-				break;
-				case 'bonus':
-					$sort = 'ws.status ASC, bonus DESC, positive DESC, ws.ranking DESC, ws.proposed DESC';
-				break;
-				case 'latestcomment':
-					$sort = 'latestcomment DESC, ws.status ASC';
-				break;
-				case 'submitter':
-					$sort = 'xp.name ASC';
-				break;
-				default:
-					$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
-				break;
+			switch ($filters['sortby'])
+			{
+					case 'date':
+						$sort = 'ws.status ASC, ws.proposed DESC';
+					break;
+					case 'ranking':
+						$sort = 'ws.status ASC, ranked, ws.ranking DESC, positive DESC, ws.proposed DESC';
+					break;
+					case 'feedback':
+						$sort = 'positive DESC, ws.status ASC';
+					break;
+					case 'bonus':
+						$sort = 'ws.status ASC, bonus DESC, positive DESC, ws.ranking DESC, ws.proposed DESC';
+					break;
+					case 'latestcomment':
+						$sort = 'latestcomment DESC, ws.status ASC';
+					break;
+					case 'submitter':
+						$sort = 'xp.name ASC';
+					break;
+					default:
+						$sort = 'ws.accepted DESC, ws.status ASC, ws.proposed DESC';
+					break;
+			}
 		}
 
 		$sql = $fullinfo
@@ -286,7 +289,7 @@ class Wish extends \JTable
 			$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 			$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
 
-			if ($filters['sortby'] == 'latestcomment')
+			if (isset($filters['sortby']) && $filters['sortby'] == 'latestcomment')
 			{
 				$sql .= "\n (SELECT MAX(CC.created) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.item_type='wish' GROUP BY CC.referenceid) AS latestcomment, ";
 			}
@@ -341,7 +344,7 @@ class Wish extends \JTable
 			$sql .= "\n OR (ws.granted_vid = '" . $filters['versionid'] . "') ";
 		}
 
-		if ($fullinfo)
+		if ($fullinfo && isset($filters['filterby']))
 		{
 			// list  filtering
 			switch ($filters['filterby'])
