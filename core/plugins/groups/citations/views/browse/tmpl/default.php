@@ -30,8 +30,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-//echo "<pre>";
-//var_dump($this->filters); die;
 
 $this->css('citations.css')
 	 ->js();
