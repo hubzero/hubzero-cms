@@ -503,6 +503,11 @@ class View
 	 */
 	private static function stylesheetsForUrl($url)
 	{
+		if ($stylesheets = \Cache::get('groups.' . $url))
+		{
+			return $stylesheets;
+		}
+
 		// get contents of main group page
 		// we need to get all css files loaded on this page.
 		$ch = curl_init();
@@ -544,6 +549,8 @@ class View
 			}
 			$stylesheets[] = (string) $s->attributes()->href;
 		}
+
+		\Cache::put('groups.' . $url, $stylesheets, 15);
 
 		//return stylesheets
 		return $stylesheets;
