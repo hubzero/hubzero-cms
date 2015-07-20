@@ -57,6 +57,8 @@ class StorefrontModelProduct
 	{
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
+
+		$this->data = new stdClass();
 	}
 
 	/**
@@ -260,6 +262,33 @@ class StorefrontModelProduct
 			return NULL;
 		}
 		return $this->data->tagline;
+	}
+
+	/**
+	 * Set product access level
+	 *
+	 * @param	int		Product access level
+	 * @return	bool		true
+	 */
+	public function setAccessLevel($accessLevel)
+	{
+		$this->data->accessLevel = $accessLevel;
+		return true;
+	}
+
+	/**
+	 * Get product access level
+	 *
+	 * @param	void
+	 * @return	int		Product access level
+	 */
+	public function getAccessLevel()
+	{
+		if (empty($this->data->accessLevel))
+		{
+			return 0;
+		}
+		return $this->data->accessLevel;
 	}
 
 	/**

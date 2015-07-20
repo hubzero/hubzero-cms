@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           administrator/components/com_kb/config.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<config>
+	<fieldset name="basic">
+		<field name="show_date" type="list" default="2" label="COM_KB_SHOW_DATE_LABEL" description="COM_KB_SHOW_DATE_DESC">
+			<option value="0">COM_KB_SHOW_DATE_HIDE</option>
+			<option value="1">COM_KB_SHOW_DATE_CREATED</option>
+			<option value="2">COM_KB_SHOW_DATE_MODIFIED</option>
+		</field>
+		<field name="allow_comments" type="list" default="1" label="COM_KB_ALLOW_COMMENTS_LABEL" description="COM_KB_ALLOW_COMMENTS_DESC">
+			<option value="0">COM_KB_DISALLOW</option>
+			<option value="1">COM_KB_ALLOW</option>
+		</field>
+		<field name="close_comments" type="list" default="year" label="COM_KB_CLOSE_COMMENTS_LABEL" description="COM_KB_CLOSE_COMMENTS_DESC">
+			<option value="never">COM_KB_FEED_CLOSE_NEVER</option>
+			<option value="now">COM_KB_FEED_CLOSE_NOW</option>
+			<option value="day">COM_KB_FEED_CLOSE_DAY</option>
+			<option value="week">COM_KB_FEED_CLOSE_WEEK</option>
+			<option value="month">COM_KB_FEED_CLOSE_MONTH</option>
+			<option value="6months">COM_KB_FEED_CLOSE_6MONTHS</option>
+			<option value="year">COM_KB_FEED_CLOSE_YEAR</option>
+		</field>
+		<field name="feeds_enabled" type="list" default="1" label="COM_KB_FEED_ENABLED_LABEL" description="COM_KB_FEED_ENABLED_DESC">
+			<option value="0">COM_KB_DISABLED</option>
+			<option value="1">COM_KB_ENABLED</option>
+		</field>
+		<field name="feed_entries" type="list" default="partial" label="COM_KB_FEED_ENTRIES_LABEL" description="COM_KB_FEED_ENTRIES_DESC">
+			<option value="full">COM_KB_FEED_ENTRIES_FULL</option>
+			<option value="partial">COM_KB_FEED_ENTRIES_PARTIAL</option>
+		</field>
+	</fieldset>
+</config>
+

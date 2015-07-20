@@ -46,6 +46,9 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
+		$user = JFactory::getUser();
+		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
+
 		parent::execute();
 	}
 
@@ -57,11 +60,13 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$pId = $this->warehouse->productExists(JRequest::getVar('product', ''));
-		if (!$pId)
+		$pInfo = $this->warehouse->checkProduct(JRequest::getVar('product', ''));
+
+		if (!$pInfo->status)
 		{
-			JError::raiseError(404, JText::_('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
+			JError::raiseError($pInfo->errorCode, JText::_($pInfo->message));
 		}
+		$pId = $pInfo->pId;
 
 		$this->view->pId = $pId;
 		$this->view->css();

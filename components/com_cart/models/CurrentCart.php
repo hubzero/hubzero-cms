@@ -56,12 +56,15 @@ class CartModelCurrentCart extends CartModelCart
 	{
 		parent::__construct();
 
+		// Get user
+		$juser = JFactory::getUser();
+
+		//Set the user scope
+		$this->warehouse->addAccessLevels($juser->getAuthorisedViewLevels());
+
 		$this->cart = new stdClass();
 
 		/* Load current user cart */
-
-		// Get user
-		$juser = JFactory::getUser();
 
 		/* Check if there is a session or cookie cart */
 
@@ -947,8 +950,7 @@ class CartModelCurrentCart extends CartModelCart
 			elseif ($coupon->info->cnObject == 'product')
 			{
 				// Check product SKUs
-				include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-				$warehouse = new StorefrontModelWarehouse();
+				$warehouse = $this->warehouse;
 				$productOptions = $warehouse->getProductOptions($couponObject->cnoObjectId);
 
 				// See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to add if there are several of them)
@@ -1394,8 +1396,7 @@ class CartModelCurrentCart extends CartModelCart
 				$itemInfo = $item['info'];
 
 				// Get product type
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-				$warehouse = new StorefrontModelWarehouse();
+				$warehouse = $this->warehouse();
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
 
@@ -1460,8 +1461,7 @@ class CartModelCurrentCart extends CartModelCart
 		$allSkuInfo = $items->allSkuInfo;
 		$skus = $items->skus;
 
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = $this->warehouse;
 
 		$skuInfo = $warehouse->getSkusInfo($skus);
 
@@ -1965,8 +1965,7 @@ class CartModelCurrentCart extends CartModelCart
 		$preSteps = array();
 		$postSteps = array();
 
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = $this->warehouse;
 
 		$transactionSubtotalAmount = 0;
 
@@ -2082,8 +2081,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// lock transaction items
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = $this->warehouse;
 
 		foreach ($tItems as $sId => $item)
 		{

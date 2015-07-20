@@ -30,6 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Helper.php');
 
 /**
@@ -67,6 +68,8 @@ abstract class CartModelCart
 
 		// Load language file
 		JFactory::getLanguage()->load('com_cart');
+
+		$this->warehouse = new StorefrontModelWarehouse();
 	}
 
 	/**
@@ -297,21 +300,27 @@ abstract class CartModelCart
 			$skuCartInfo->crtiQty = 0;
 		}
 
-		// Get SKU pricing and inventory level & policies
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
-		$allSkuInfo = $warehouse->getSkusInfo(array($sId));
+		// Get SKU pricing and inventory level & policies as well as permissions to access products
+		$warehouse = $this->warehouse;
+		try
+		{
+			$allSkuInfo = $warehouse->getSkuInfo($sId, false);
+		}
+		catch (Exception $e)
+		{
+			throw new Exception(JText::_($e->getMessage()));
+		}
 
 		if (empty($allSkuInfo))
 		{
 			throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
 		}
 
-		$skuInfo = $allSkuInfo[$sId]['info'];
+		$skuInfo = $allSkuInfo['info'];
 		$skuName = $skuInfo->pName;
-		if (!empty($allSkuInfo[$sId]['options']) && count($allSkuInfo[$sId]['options']))
+		if (!empty($allSkuInfo['options']) && count($allSkuInfo['options']))
 		{
-			foreach ($allSkuInfo[$sId]['options'] as $oName)
+			foreach ($allSkuInfo['options'] as $oName)
 			{
 				$skuName .= ', ' . $oName;
 			}
@@ -327,7 +336,7 @@ abstract class CartModelCart
 				{
 					throw new Exception($skuInfo->pName . JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
 				}
-				// Check if there is this project already in the cart (different SKU)
+				// Check if there is this product already in the cart (different SKU)
 				$allSkus = $warehouse->getProductSkus($skuInfo->pId);
 				foreach ($allSkus as $skuId)
 				{
@@ -409,6 +418,7 @@ abstract class CartModelCart
 		// keep the qty value if syncing
 
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$this->_db->query();
 	}
 

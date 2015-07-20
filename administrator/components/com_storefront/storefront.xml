@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package		hubzero-cms
+@file		   administrator/components/com_kb/kb.xml
+@copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
+@license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install type="component" version="1.0">
+	<name>Storefront</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Manage a storefront</description>
+	<files>
+		<filename>router.php</filename>
+		<filename>controller.php</filename>
+		<filename>kb.css</filename>
+		<filename>kb.php</filename>
+		<filename>kb.html.php</filename>
+		<filename>images/arrow.gif</filename>
+		<filename>images/minus_small.gif</filename>
+		<filename>images/plus_small.gif</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_kb.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>Storefront</menu>
+		<files>
+			<filename>controller.php</filename>
+			<filename>kb.html.php</filename>
+			<filename>kb.php</filename>
+			<filename>tables/kb.article.php</filename>
+			<filename>tables/kb.category.php</filename>
+			<filename>tables/kb.helpful.php</filename>
+			<filename>views/article/tmpl/default.php</filename>
+			<filename>views/article/tmpl/default.xml</filename>
+			<filename>views/articles/tmpl/default.php</filename>
+			<filename>views/articles/tmpl/default.xml</filename>
+			<filename>views/categories/tmpl/default.php</filename>
+			<filename>views/categories/tmpl/default.xml</filename>
+			<filename>views/category/tmpl/default.php</filename>
+			<filename>views/category/tmpl/default.xml</filename>
+			<filename>views/category/tmpl/delete.php</filename>
+			<filename>views/category/tmpl/delete.xml</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_storefront.ini</language>
+			<language tag="en-GB">en-GB.com_storefront.menu.ini</language>
+		</languages>
+	</administration>
+	<params>
+		<param name="uploadpath" type="text" menu="hide" default="/site/kb" label="Upload path" description="File path for uploads" />
+		<param name="show_authors" type="list" default="1" label="Authors" description="Show/Hide the authors of posts">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="allow_comments" type="list" default="1" label="Comments" description="Allow/Disallow comments on entries">
+			<option value="0">Disallow</option>
+			<option value="1">Allow</option>
+		</param>
+		<param name="close_comments" type="list" default="year" label="Close Comments" description="Auto-close comments on entries">
+			<option value="never">Never</option>
+			<option value="week">After 1 week</option>
+			<option value="month">After 1 month</option>
+			<option value="6months">After 6 months</option>
+			<option value="year">After 1 year</option>
+		</param>
+		<param name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
+			<option value="0">Disabled</option>
+			<option value="1">Enabled</option>
+		</param>
+		<param name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
+			<option value="full">Full</option>
+			<option value="partial">Partial</option>
+		</param>
+		<param name="show_date" type="list" default="3" label="Date" description="Show/Hide the entry date">
+			<option value="0">Hide</option>
+			<option value="1">Created</option>
+			<option value="2">Modified</option>
+			<option value="3">Published</option>
+		</param>
+	</params>
+</install>

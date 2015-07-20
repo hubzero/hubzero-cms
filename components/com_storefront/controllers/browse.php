@@ -44,7 +44,10 @@ class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 	public function execute()
 	{
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
-		$this->warehouse = new StorefrontModelWarehouse();
+		$this->warehouse = new StorefrontModelWarehouse('setCurrentUserScope');
+
+		$user = JFactory::getUser();
+		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
 
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();

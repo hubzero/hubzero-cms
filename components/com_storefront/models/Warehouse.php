@@ -49,6 +49,9 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 */
 	var $lookupCollections = NULL;
 
+	// Access levels scope (what is allowed to display)
+	var $accessLevelsScope = false;
+
 	// Database instance
 	var $db = NULL;
 
@@ -65,7 +68,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
 	}
-
 
 	/* ------------------------------------- Instance config functions ----------------------------------------------- */
 
@@ -91,6 +93,18 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	{
 		$this->lookupCollections[] = NULL;
 	}
+
+	/**
+	 * Add access level scope for entities having access property (currently products only)
+	 *
+	 * @param  array Access levels IDs
+	 * @return void
+	 */
+	public function addAccessLevels($accessLevels)
+	{
+		$this->accessLevelsScope = array_merge(array('NULL', 0), $accessLevels);
+	}
+
 
 
 	/* ------------------------------------- Main working functions ----------------------------------------------- */
@@ -125,11 +139,11 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Check if product exists
-	 *
-	 * @param  	int		product ID or alias
-	 * @return 	int 	pId on success, null if no match found
-	 */
+ * Check if product exists
+ *
+ * @param  	int		product ID or alias
+ * @return 	int 	pId on success, null if no match found
+ */
 	public function productExists($product, $showInactive = false)
 	{
 		// Integer is a pID, string must be an alias
@@ -154,6 +168,58 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	}
 
 	/**
+	 * Check if product exists and can be viewed by the current user
+	 *
+	 * @param  	int		product ID or alias
+	 * @return 	int 	pId on success, null if no match found
+	 */
+	public function checkProduct($product, $showInactive = false)
+	{
+		// Integer is a pID, string must be an alias
+		if (is_numeric($product))
+		{
+			$lookupField = 'pId';
+		}
+		else {
+			$lookupField = 'pAlias';
+		}
+
+		$sql = "SELECT `pId`, `access` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
+		if (!$showInactive)
+		{
+			$sql .= " AND p.`pActive` = 1";
+		}
+
+		$this->_db->setQuery($sql);
+		$pInfo = $this->_db->loadObject();
+
+		$response = new stdClass();
+
+		$response->status = 1;
+		if (empty($pInfo))
+		{
+			$response->status = 0;
+			$response->errorCode = 404;
+			$response->message = 'COM_STOREFRONT_PRODUCT_NOT_FOUND';
+			return $response;
+		}
+
+		// Check if the product can be viewed (if access level scope is set)
+		if ($this->accessLevelsScope)
+		{
+			if(!in_array($pInfo->access, $this->accessLevelsScope)) {
+				$response->status = 0;
+				$response->errorCode = 403;
+				$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
+				return $response;
+			}
+		}
+
+		$response->pId = $pInfo->pId;
+		return $response;
+	}
+
+	/**
 	 * Check if coupon exists
 	 *
 	 * @param  	string		coupon code
@@ -175,18 +241,44 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param  void
 	 * @return void
 	 */
-	public function getProducts()
+	public function getProducts($return = 'rows', $showOnlyActive = true)
 	{
 		$sql = "SELECT DISTINCT p.* FROM `#__storefront_products` p
 				JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
-		$sql .= " WHERE p.`pActive` = 1";
+		$sql .= " WHERE 1";
 
-		foreach ($this->lookupCollections as $cId)
+		if (!$showOnlyActive)
 		{
-			$sql .= " AND c.`cId` = " . $this->_db->quote($cId);
+			$sql .= " AND `pActive` = 1";
+		}
+
+		// Filter by collections
+		if ($this->lookupCollections)
+		{
+			foreach ($this->lookupCollections as $cId)
+			{
+				$sql .= " AND c.`cId` = " . $this->_db->quote($cId);
+			}
+		}
+		// Filter by authorized view levels (if current user scope is set)
+		if ($this->accessLevelsScope)
+		{
+			$sql .= " AND (p.`access` IS NULL OR p.`access` IN(";
+			$accessLevels = '0';
+			foreach ($this->accessLevelsScope as $avl)
+			{
+				$accessLevels .= ', ' . $avl;
+			}
+			$sql .= $accessLevels;
+			$sql .= '))';
 		}
 
 		$this->_db->setQuery($sql);
+		$this->_db->execute();
+		if ($return == 'count')
+		{
+			return($this->_db->getNumRows());
+		}
 		$products = $this->_db->loadObjectList();
 
 		return $products;
@@ -505,10 +597,22 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param 	int 		SKU ID
 	 * @return 	array 		info
 	 */
-	public function getSkuInfo($sId)
+	public function getSkuInfo($sId , $showInactive = true)
 	{
-		$info = $this->getSkusInfo(array($sId), true);
-		return($info[$sId]);
+		$sInfo = $this->getSkusInfo(array($sId), $showInactive);
+		$sInfo = $sInfo[$sId];
+
+		//print_r($sInfo);die;
+
+		// Check if the product can be viewed (if access level scope is set)
+		if ($this->accessLevelsScope)
+		{
+			if(!in_array($sInfo['info']->access, $this->accessLevelsScope)) {
+				throw new Exception(JText::_('COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED') . ': ' . $sInfo['info']->pName . ', ' . $sInfo['info']->oName);
+			}
+		}
+
+		return($sInfo);
 	}
 
 	/**
@@ -639,7 +743,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			$sku = $this->getSku($sId, $productType);
 			$product->addSku($sku);
 		}
-
 		$product->verify();
 
 		return $product;
@@ -727,7 +830,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	/**
 	 * Update existing product
 	 *
-	 * @param	StorefrontModelProduct 	Instance of a product to add
+	 * @param	StorefrontModelProduct 	Instance of a product to update
 	 * @return	int							product ID
 	 */
 	public function updateProduct($product)
@@ -832,7 +935,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				`pName` = " . $this->_db->quote($product->getName()) . ",
 				`pTagline` = " . $this->_db->quote($product->getTagline()) . ",
 				`pDescription` = " . $this->_db->quote($product->getDescription()) . ",
-				`pActive` = " . $product->getActiveStatus();
+				`pActive` = " . $product->getActiveStatus() . ",
+				`access` = " . $this->_db->quote($product->getAccessLevel());
 
 
 		// Set pId if needed if adding new product
