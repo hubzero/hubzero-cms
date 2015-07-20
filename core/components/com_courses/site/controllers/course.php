@@ -36,6 +36,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Base\Object;
 use Hubzero\Content\Server;
 use Exception;
+use stdClass;
 use Pathway;
 use Request;
 use Config;
