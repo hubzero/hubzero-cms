@@ -26,7 +26,7 @@ class Migration20150202134839PlgAntispam extends Base
 				$this->db->setQuery("SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND `element`=" . $this->db->quote($plg));
 				if ($id = $this->db->loadResult())
 				{
-					$this->db->setQuery("UPDATE `#__extensions` SET `folder`='antispam' AND `name`=" . $this->db->quote('plg_antispam_' . $plg) . " WHERE `extension_id`=" . $this->db->quote($id));
+					$this->db->setQuery("UPDATE `#__extensions` SET `folder`='antispam', `name`=" . $this->db->quote('plg_antispam_' . $plg) . " WHERE `extension_id`=" . $this->db->quote($id));
 					$this->db->query();
 				}
 				else
@@ -102,7 +102,7 @@ class Migration20150202134839PlgAntispam extends Base
 				$this->db->setQuery("SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' AND `folder`='antispam' AND `element`=" . $this->db->quote($plg));
 				if ($id = $this->db->loadResult())
 				{
-					$this->db->setQuery("UPDATE `#__extensions` SET `folder`='content' AND `name`=" . $this->db->quote('plg_content_' . $plg) . " WHERE `extension_id`=" . $this->db->quote($id));
+					$this->db->setQuery("UPDATE `#__extensions` SET `folder`='content', `name`=" . $this->db->quote('plg_content_' . $plg) . " WHERE `extension_id`=" . $this->db->quote($id));
 					$this->db->query();
 				}
 				else
