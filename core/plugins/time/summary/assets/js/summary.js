@@ -36,6 +36,20 @@ jQuery(document).ready(function( $ ) {
 			var plot   = false;
 			var data   = [];
 			var mapped = [];
+			var ticks  = [];
+			var name   = function ( plot, canvasContext ) {
+				var xaxis  = plot.getXAxes()[0],
+					yaxis  = plot.getYAxes()[0],
+					offset = plot.getPlotOffset();
+
+				for (var i = 0; i < ticks.length; i++) {
+					var text    = ticks[i][1];
+					var y       = ticks[i][0];
+					var yPos    = yaxis.p2c(y) + offset.top + 4;
+
+					canvasContext.fillText(text, 8, yPos);
+				}
+			};
 			var draw   = function () {
 				$('.charts .tasks-bar').css({
 					'width'  : $('.charts').width(),
@@ -43,8 +57,7 @@ jQuery(document).ready(function( $ ) {
 				});
 
 				if (!plot) {
-					var ticks  = [];
-					var max    = 0;
+					var max = 0;
 
 					$.each(data, function ( i, val ) {
 						mapped.push([val.hours, i]);
@@ -65,14 +78,15 @@ jQuery(document).ready(function( $ ) {
 						},
 						yaxis: {
 							tickLength: 0,
-							ticks: ticks
+							ticks: ticks,
+							show: false
 						},
 						xaxis: {
 							show: true,
 							tickSize: (max > 15) ? Math.round(max / 15) : max,
 							tickFormatter: function formatter(val, axis) {
 								if (val === 0) {
-									return val + ' hours(s)';
+									return val + ' hrs(s)';
 								} else {
 									return val;
 								}
@@ -83,6 +97,9 @@ jQuery(document).ready(function( $ ) {
 							borderWidth: 0,
 							hoverable: true,
 							clickable: true
+						},
+						hooks: {
+							draw: [name]
 						}
 					};
 

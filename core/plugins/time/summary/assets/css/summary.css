@@ -21,20 +21,20 @@
 	box-sizing: border-box;
 }
 .plg_time_summary h3 {
-	margin-left: 15px;
+	margin-left: 20px;
 }
 .plg_time_summary .charts {
 	display: table-cell;
 }
 .plg_time_summary .tasks-bar {
-	margin: 15px;
+	margin: 20px;
 }
 .plg_time_summary .report {
 	background: #F9F9F9;
 	border-top: 1px solid #CCCCCC;
 }
 .plg_time_summary .reports {
-	margin: 15px;
+	margin: 20px;
 	background: #FFFFFF;
 }
 .plg_time_summary .report-hub,
