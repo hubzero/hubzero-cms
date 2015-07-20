@@ -151,7 +151,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		{
 			$lookupField = 'pId';
 		}
-		else {
+		else
+		{
 			$lookupField = 'pAlias';
 		}
 
@@ -180,7 +181,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		{
 			$lookupField = 'pId';
 		}
-		else {
+		else
+		{
 			$lookupField = 'pAlias';
 		}
 
@@ -207,7 +209,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// Check if the product can be viewed (if access level scope is set)
 		if ($this->accessLevelsScope)
 		{
-			if(!in_array($pInfo->access, $this->accessLevelsScope)) {
+			if (!in_array($pInfo->access, $this->accessLevelsScope))
+			{
 				$response->status = 0;
 				$response->errorCode = 403;
 				$response->message = 'COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED';
@@ -607,7 +610,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// Check if the product can be viewed (if access level scope is set)
 		if ($this->accessLevelsScope)
 		{
-			if(!in_array($sInfo['info']->access, $this->accessLevelsScope)) {
+			if (!in_array($sInfo['info']->access, $this->accessLevelsScope))
+			{
 				throw new Exception(JText::_('COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED') . ': ' . $sInfo['info']->pName . ', ' . $sInfo['info']->oName);
 			}
 		}

@@ -204,9 +204,11 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		try {
 			$obj->updateProduct($fields['pId'], $fields);
 		}
-		catch(Exception $e)
+		catch (Exception $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			// Get the product
+			$product = $obj->product($fields['pId']);
 			$this->editTask($product);
 			return;
 		}
@@ -220,8 +222,8 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . ($articles ? '&id=0' : ''),
-				JText::_('COM_STOREFRONT_CATEGORY_SAVED')
+				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_STOREFRONT_PRODUCT_SAVED')
 			);
 			return;
 		}

@@ -107,13 +107,15 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 * @param      int $pId Product ID
 	 * @return     mixed product info
 	 */
-	public function product($pId) {
+	public function product($pId)
+	{
 		$warehouse = new StorefrontModelWarehouse();
 		$pInfo = $warehouse->getProductInfo($pId, true);
 		return $pInfo;
 	}
 
-	public function _product($pId, $info = 'full') {
+	public function _product($pId, $info = 'full')
+	{
 		$warehouse = new StorefrontModelWarehouse();
 		$pInfo = $warehouse->getProduct($pId);
 		if ($info == 'info-only')
@@ -130,7 +132,8 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 * @param      array 	$fields New info
 	 * @return     throws exception
 	 */
-	public function updateProduct($pId, $fields) {
+	public function updateProduct($pId, $fields)
+	{
 		$warehouse = new StorefrontModelWarehouse();
 		$product = $warehouse->getProduct($pId);
 		$product->setName($fields['pName']);
