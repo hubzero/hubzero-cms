@@ -211,6 +211,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 				{
 					$lname = '<a href="' . Route::url('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 				}
+				$cat = '';
+				$sec = '';
 				foreach ($this->sections as $section)
 				{
 					if ($section->categories)
