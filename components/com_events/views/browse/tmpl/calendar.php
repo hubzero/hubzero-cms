@@ -170,7 +170,7 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 	} else {
 		$content .= $d;
 	}
-    $content .= '</td>'."\n";
+	$content .= '</td>'."\n";
 	$rd++;
 
 	// Check if Next week row
