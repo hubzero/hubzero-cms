@@ -67,8 +67,19 @@ $prev_month = clone($this_date);
 $prev_month->addMonths( -1 );
 $next_month = clone($this_date);
 $next_month->addMonths( +1 );
-$prev = JRoute::_( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
-$next = JRoute::_( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
+error_log($this_date->year,0);
+error_log(date('Y')-10, 0);
+error_log($this_date->year - date('Y'), 0);
+if ($this_date->year > date('Y') - 10) {
+	$prev = JRoute::_( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
+} else {
+	$prev = "javascript:void(0);";
+}
+if ($this_date->year < date('Y') + 10) {
+	$next = JRoute::_( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
+} else {
+	$next = "javascript:void(0);";
+}
 
 $content  = '<table class="ecalendar">'."\n";
 $content .= ' <caption>';

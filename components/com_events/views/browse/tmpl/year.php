@@ -108,8 +108,8 @@ $this->css();
 				$next_year = clone($this_date);
 				$next_year->addMonths( +12 );
 				?>
-				<a class="prv" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR'); ?>">&lsaquo;</a>
-				<a class="nxt" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTYEAR'); ?>">&rsaquo;</a>
+				<a class="prv" href="<?php if ($this->year > (date('Y') - 10)) { echo JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task)); } else { echo "javascript:void(0);"; } ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR'); ?>">&lsaquo;</a>
+				<a class="nxt" href="<?php if ($this->year < date('Y') + 10) { echo JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task)); } else { echo "javascript:void(0);"; } ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTYEAR'); ?>">&rsaquo;</a>
 				<?php echo $this->year; ?>
 			</p>
 		</div><!-- / .calendarwrap -->
