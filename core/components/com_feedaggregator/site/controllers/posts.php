@@ -169,6 +169,7 @@ class Posts extends SiteController
 					break;
 				} //end switch
 			} //end foreach
+			$this->view->messages = Notify::messages($this->_option);
 			$this->view->posts = $posts;
 			$this->view->title = Lang::txt('COM_FEEDAGGREGATOR');
 			$this->view->display();
@@ -342,11 +343,15 @@ class Posts extends SiteController
 			}//end if
 		}
 
+		if ($this->getError())
+		{
+			Notify::warning(implode('<br />', $this->getErrors()), $this->_option);
+		}
+
 		// Output messsage and redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=posts&filterby=all', false),
-			($this->getError() ? implode('<br />', $this->getErrors()) : Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')),
-			($this->getError() ? 'warning' : 'passed')
+			Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
 		);
 	}
 

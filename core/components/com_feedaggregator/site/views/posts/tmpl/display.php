@@ -64,6 +64,12 @@ $this->js('posts')
 	<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 		<div id="page-main">
 
+			<?php if (count($this->messages) > 0) : ?>
+				<?php foreach ($this->messages as $message) : ?>
+					<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
+				<?php endforeach; ?>
+			<?php endif; ?>
+
 		<?php if (count($this->posts) > 0):?>
 			<div class="container">
 				<ul class="entries-menu filter-options">
