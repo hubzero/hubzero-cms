@@ -194,7 +194,7 @@ class Wishlists extends SiteController
 		// Incoming
 		$id     = Request::getInt('id', $params->get('id', 0));
 		$refid  = Request::getInt('rid', $params->get('rid', 1));
-		$cat   	= Request::getVar('category', $params->get('category', 'general'));
+		$cat   	= Request::getWord('category', $params->get('category', 'general'));
 		$saved  = Request::getInt('saved', 0);
 
 		// are we viewing this from within a plugin?
