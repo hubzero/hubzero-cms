@@ -62,7 +62,7 @@ class Handler
 	 */
 	public function info($message, $domain = null)
 	{
-		$this->message($message, 'info');
+		$this->message($message, 'info', $domain);
 
 		return $this;
 	}
@@ -76,7 +76,7 @@ class Handler
 	 */
 	public function success($message, $domain = null)
 	{
-		$this->message($message, 'success');
+		$this->message($message, 'success', $domain);
 
 		return $this;
 	}
@@ -90,7 +90,7 @@ class Handler
 	 */
 	public function error($message, $domain = null)
 	{
-		$this->message($message, 'error');
+		$this->message($message, 'error', $domain);
 
 		return $this;
 	}
@@ -104,7 +104,7 @@ class Handler
 	 */
 	public function warning($message, $domain = null)
 	{
-		$this->message($message, 'warning');
+		$this->message($message, 'warning', $domain);
 
 		return $this;
 	}
