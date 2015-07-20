@@ -86,7 +86,10 @@ function submitbutton(pressbutton)
 					<option value=""><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL'); ?></option>
 					<?php if (isset($this->files)): ?>
 						<?php foreach ($this->files as $file): ?>
-							<?php $sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
+							<?php
+							$file = ltrim($file, DS);
+							$sel = ($this->import->get('file') == $file) ? 'selected="selected"' : '';
+							?>
 							<option <?php echo $sel; ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
 						<?php endforeach; ?>
 					<?php endif; ?>
@@ -300,11 +303,12 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELDSET_UPLOAD'); ?></span></legend>
 
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint=".csv, .xml">
 				<label for="field-file">
 					<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATAFILEUPLOAD'); ?>
 				</label>
 				<input type="file" name="file" id="field-file" />
+				<span>.csv, .xml</span>
 			</div>
 		</fieldset>
 	</div>

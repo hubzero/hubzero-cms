@@ -211,6 +211,12 @@ class Import extends AdminController
 		// if we have a file
 		if (is_array($file) && $file['size'] > 0 && $file['error'] == 0)
 		{
+			$ext = strtoloweR(Filesystem::extension($file['name']));
+			if (!in_array($ext, array('csv', 'xml')))
+			{
+				$this->setError(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
+				return $this->editTask();
+			}
 			move_uploaded_file($file['tmp_name'], $this->import->fileSpacePath() . DS . $file['name']);
 			$this->import->set('file', $file['name']);
 		}
