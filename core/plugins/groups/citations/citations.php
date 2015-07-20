@@ -40,6 +40,8 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tag.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tagobject.php');
 
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
@@ -471,29 +473,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$this->_loginTask();
 		}
 
-		//get the posted vars
-		$c = $_POST;
-		if (isset($c['format_type']))
-		{
-			$c['format'] = $c['format_type'];
-		}
-
 		// set scope & scope id in save so no one can mess with hidden form inputs
-		$c['scope']    = 'group';
-		$c['scope_id'] = $this->group->get('gidNumber');
+		$scope = 'group';
+		$scope_id = $this->group->get('gidNumber');
 
 		//get tags
 		$tags = trim(Request::getVar('tags', ''));
-		unset($c['tags']);
 
 		//get badges
 		$badges = trim(Request::getVar('badges', ''));
-		unset($c['badges']);
 
-		//var_dump($c); die;
-
-		// Bind incoming data to object
-		//$row = new \Components\Citations\Models\Citation($this->database);
+		// get the citation (single) or create a new one
 		$citation = \Components\Citations\Models\Citation::oneOrNew(Request::getInt('id'))
 			->set(array(
 				'type' => Request::getInt('type'),
@@ -533,15 +523,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'research_notes' => Request::getVar('research_notes'),
 				'language' => Request::getVar('language'),
 				'label' => Request::getVar('label'),
-				//'format_type' => Request::getVar('format_type'),
-				'uid' => Request::getVar('uid')
+				'uid' => User::get('id'),
+				'created' => Date::toSql(),
+				'scope' => $scope,
+				'scope_id' => $scope_id
 			));
-
-		// New entry so set the created date
-		/*if (!$row->id)
-		{
-			$row->created = Date::toSql();
-		}*/
 
 		// Store new content
 		if (!$citation->save())
@@ -551,20 +537,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->config = Component::params('com_citations');
 		//check if we are allowing tags
-		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
-		{
-			$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
-			$ct1->setTags($tags, User::get('id'), 0, 1, '');
-		}
+		$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
+		$ct1->setTags($tags, User::get('id'), 0, 1, '');
 
 		//check if we are allowing badges
-		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
-		{
-			$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
-			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
-		}
+		$ct2 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
+		$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 
 		// redirect after save
 		App::redirect(
@@ -659,24 +638,19 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
 
 			// get the name of the current format (see if it's custom)
-			$custom = \Components\Citations\Models\Format::all()->where('style', '=', "custom-group-" . $this->group->get('cn'))->count();
+			// the name of the custom format
+			$name = "custom-group-" . $this->group->cn;
+
+			$custom = \Components\Citations\Models\Format::all()->where('style', 'LIKE', $name)->count();
 			if ($custom > 0)
 			{
+				// show the menu entry for the custom
 				$view->customFormat = true;
 			}
 			else
 			{
+				// show menu item for new custom format
 				$view->customFormat = false;
-			}
-
-
-			// the name of the custom format
-			$name = "custom-group-" . $this->group->cn;
-
-			// helps prevent creating more than one custom format per group
-			if ($view->currentFormat->style == $name)
-			{
-				$view->customFormat = true;
 			}
 
 			// Output HTML
