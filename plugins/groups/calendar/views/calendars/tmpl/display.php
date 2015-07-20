@@ -69,10 +69,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<tr>
 					<td><?php echo $calendar->get('title'); ?></td>
 					<td>
+						<?php
+						$colors = array('red','orange','yellow','green','blue','purple','brown');
+						if (!in_array($calendar->get('color'), $colors))
+						{
+							$calendar->set('color', '');
+						}
+						?>
 						<?php if ($calendar->get('color')): ?>
-							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->get('color'); ?>.png" />
+							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->get('color'); ?>.png" alt="" />
 						<?php else: ?>
-							<img src="/plugins/groups/calendar/images/swatch-gray.png" />
+							<img src="/plugins/groups/calendar/images/swatch-gray.png" alt="" />
 						<?php endif; ?>
 					</td>
 					<td>

@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
 			<select name="calendar[color]">
 				<option value="">- Select Color &mdash;</option>
-				<?php foreach($colors as $color) : ?>
+				<?php foreach ($colors as $color) : ?>
 					<?php $sel = ($this->calendar->get('color') == $color) ? 'selected="selected"' : ''; ?>
 					<option <?php echo $sel; ?> value="<?php echo $color; ?>"><?php echo ucfirst($color); ?></option>
 				<?php endforeach; ?>
@@ -88,4 +88,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<input type="hidden" name="active" value="calendar" />
 	<input type="hidden" name="action" value="savecalendar" />
 	<input type="hidden" name="calendar[id]" value="<?php echo $this->calendar->get('id'); ?>" />
+	<?php echo JHTML::_('form.token'); ?>
 </form>
