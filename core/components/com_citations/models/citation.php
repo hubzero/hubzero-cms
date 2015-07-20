@@ -467,6 +467,32 @@ class Citation extends Relational
 		}
 	}
 
+	/**
+	 * Citation links and badges
+	 *
+	 * @param   array   $openurl   Data to append
+	 * @return  string
+	 */
+	public function citationDetails($openurl = array())
+	{
+		$html  = '';
+
+		// are we allowing downloading
+		$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&format=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+		$html .= '<span> | </span>';
+		$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&format=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+
+		// if we have an open url link and we want to use open urls
+		if ($openurl['link'])
+		{
+			$html .= '<span> | </span>' . self::citationOpenUrl($openurl, $citation);
+		}
+
+		// citation association - to HUB resources
+	//	$html .= $this->citationAssociation($config, $citation);
+
+		return $html;
+	}
 
 	/**
 	 * Output a tagcloud of tags associated with a citation

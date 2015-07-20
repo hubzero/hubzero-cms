@@ -113,7 +113,7 @@ if (isset($this->messages))
 								<th class="batch">
 									<input type="checkbox" class="checkall-download" />
 								</th>
-								<th colspan="5"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
+								<th colspan="6"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
 							</tr>
 							<?php if ($this->isManager) : ?>
 								<tr class="hidden"></tr>
@@ -206,13 +206,13 @@ if (isset($this->messages))
 									<?php endif; ?>
 								</tr>
 								<tr>
-									<td <?php if ($this->label == "none") { echo 'colspan="3"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
+									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="5"'; } ?> class="citation-details">
 										<?php
-											$singleCitationView = 1;
+											$singleCitationView = 0;
 											//$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
 											{
-												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
+												echo $cite->citationDetails($this->openurl);
 											}
 										?>
 										<?php if (0): ?>
