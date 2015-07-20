@@ -70,16 +70,16 @@ defined('_HZEXEC_') or die();
 					<td><?php echo $calendar->get('title'); ?></td>
 					<td>
 						<?php
-						$colors = array('red','orange','yellow','green','blue','purple','brown')
+						$colors = array('red','orange','yellow','green','blue','purple','brown');
 						if (!in_array($calendar->get('color'), $colors))
 						{
 							$calendar->set('color', '');
 						}
 						?>
 						<?php if ($calendar->get('color')): ?>
-							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
+							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" alt="" />
 						<?php else: ?>
-							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" />
+							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="" />
 						<?php endif; ?>
 					</td>
 					<td>
