@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
