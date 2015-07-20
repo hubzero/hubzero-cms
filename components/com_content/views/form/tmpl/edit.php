@@ -13,6 +13,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 JHtml::_('behavior.formvalidation');
+JHtml::_('script', 'system/core.js', false, true);
 
 // Create shortcut to parameters.
 $params = $this->state->get('params');
