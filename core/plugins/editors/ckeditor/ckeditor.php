@@ -146,6 +146,9 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			$id = $name;
 		}
 
+		$col = $col ?: 35;
+		$row = $row ?: 10;
+
 		if (!isset($params['class']))
 		{
 			$params['class'] = array();
