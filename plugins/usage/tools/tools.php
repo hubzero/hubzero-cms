@@ -68,7 +68,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	{
 		$html = '';
 
-		$sql = "SELECT * FROM #__stats_topvals WHERE top = " . $database->quote($s_top) . " AND datetime = " . $database->quote($dthis) . "-00' AND period = " . $database->quote($period) . " ORDER BY rank";
+		$sql = "SELECT * FROM #__stats_topvals WHERE top = " . $database->quote($s_top) . " AND datetime = " . $database->quote($dthis . '-00') . " AND period = " . $database->quote($period) . " ORDER BY rank";
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
