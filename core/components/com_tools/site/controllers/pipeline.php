@@ -1711,7 +1711,7 @@ class Pipeline extends SiteController
 		}
 
 		// Get team
-		$team = ContribtoolHelper::transform($status['developers'], 'uidNumber');
+		$team = \Components\Tools\Helpers\Utils::transform($status['developers'], 'uidNumber');
 
 		// Get admins
 		$admins = array();
