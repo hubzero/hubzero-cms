@@ -83,9 +83,16 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<label for="event-calendar-picker">
 						<?php echo Lang::txt('Calendar:'); ?> <span class="optional">Optional</span>
 						<select name="event[calendar_id]" id="event-calendar-picker">
-							<option value=""><?php echo Lang::txt('- Select Calendar for Event &mdash;'); ?></option>
+							<option value=""><?php echo Lang::txt('&mdash; Select Calendar for Event &mdash;'); ?></option>
+							<?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
 							<?php foreach ($this->calendars as $calendar) : ?>
-								<?php $sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : ''; ?>
+								<?php
+								if (!in_array($calendar->get('color'), $colors))
+								{
+									$calendar->set('color', '');
+								}
+								$sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : '';
+								?>
 								<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
 							<?php endforeach; ?>
 						</select>

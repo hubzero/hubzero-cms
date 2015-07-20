@@ -69,6 +69,13 @@ defined('_HZEXEC_') or die();
 				<tr>
 					<td><?php echo $calendar->get('title'); ?></td>
 					<td>
+						<?php
+						$colors = array('red','orange','yellow','green','blue','purple','brown')
+						if (!in_array($calendar->get('color'), $colors))
+						{
+							$calendar->set('color', '');
+						}
+						?>
 						<?php if ($calendar->get('color')): ?>
 							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" />
 						<?php else: ?>

@@ -1578,6 +1578,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function saveCalendar()
 	{
+		Request::checkToken();
+
 		//get request vars
 		$calendarInput = Request::getVar('calendar',array());
 
@@ -1588,6 +1590,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$calendarInput['scope']    = 'group';
 		$calendarInput['scope_id'] = $this->group->get('gidNumber');
 		$calendarInput['url']      = trim($calendarInput['url']);
+
+		$colors = array('red','orange','yellow','green','blue','purple','brown');
+		if (!in_array($calendarInput['color'], $colors))
+		{
+			$calendarInput['color'] = '';
+		}
 
 		//is this a remote calendar url
 		if ($calendarInput['url'] != '' && filter_var($calendarInput['url'], FILTER_VALIDATE_URL))
