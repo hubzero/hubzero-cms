@@ -398,8 +398,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_remoteService,
 				$this->subdir
 			);
+			$forceSync = $this->get('forceSync', $this->model->params->get('google_sync_queue', 0));
 
-			$view->sync 		 = $sync == 2 ? 0 : $this->model->params->get('google_sync_queue', 0);
+			$view->sync 		 = $sync == 2 ? 0 : $forceSync;
 			$view->rSync 		 = new Sync($this->_connect);
 			$view->sharing 		 = 1;
 		}
@@ -3117,20 +3118,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$jsession = App::get('session');
 
 			// Get values from session
-			$updated 	= $jsession->get('projects.' . $this->model->get('alias') . '.updated');
-			$uploaded 	= $jsession->get('projects.' . $this->model->get('alias') . '.uploaded');
-			$failed 	= $jsession->get('projects.' . $this->model->get('alias') . '.failed');
-			$deleted 	= $jsession->get('projects.' . $this->model->get('alias') . '.deleted');
-			$restored 	= $jsession->get('projects.' . $this->model->get('alias') . '.restored');
-			$expanded 	= $jsession->get('projects.' . $this->model->get('alias') . '.expanded');
+			$updated 	= $jsession->get('projects.' . $model->get('alias') . '.updated');
+			$uploaded 	= $jsession->get('projects.' . $model->get('alias') . '.uploaded');
+			$failed 	= $jsession->get('projects.' . $model->get('alias') . '.failed');
+			$deleted 	= $jsession->get('projects.' . $model->get('alias') . '.deleted');
+			$restored 	= $jsession->get('projects.' . $model->get('alias') . '.restored');
+			$expanded 	= $jsession->get('projects.' . $model->get('alias') . '.expanded');
 
 			// Clean up session values
-			$jsession->set('projects.' . $this->model->get('alias') . '.failed', '');
-			$jsession->set('projects.' . $this->model->get('alias') . '.updated', '');
-			$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
-			$jsession->set('projects.' . $this->model->get('alias') . '.deleted', '');
-			$jsession->set('projects.' . $this->model->get('alias') . '.restored', '');
-			$jsession->set('projects.' . $this->model->get('alias') . '.expanded', '');
+			$jsession->set('projects.' . $model->get('alias') . '.failed', '');
+			$jsession->set('projects.' . $model->get('alias') . '.updated', '');
+			$jsession->set('projects.' . $model->get('alias') . '.uploaded', '');
+			$jsession->set('projects.' . $model->get('alias') . '.deleted', '');
+			$jsession->set('projects.' . $model->get('alias') . '.restored', '');
+			$jsession->set('projects.' . $model->get('alias') . '.expanded', '');
 		}
 		else
 		{
@@ -3288,7 +3289,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Force sync
 			if ($sync)
 			{
-				$this->model->saveParam('google_sync_queue', 1);
+				//$this->model->saveParam('google_sync_queue', 1);
+				$this->set('forceSync', 1);
 			}
 
 			// Record activity
