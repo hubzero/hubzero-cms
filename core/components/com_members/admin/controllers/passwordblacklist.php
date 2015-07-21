@@ -30,6 +30,7 @@
 
 namespace Components\Members\Admin\Controllers;
 
+use Components\Members\Tables;
 use Hubzero\Component\AdminController;
 use Request;
 use Config;
