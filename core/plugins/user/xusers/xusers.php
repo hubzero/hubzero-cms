@@ -118,6 +118,13 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		// correct apache log data
 		apache_note('auth','login');
 
+		// Log attempt to the database
+		Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
+		[
+			'username' => $xuser->get('username'),
+			'status'   => 'success'
+		]);
+
 		// update session tracking with new data
 		$session = App::get('session');
 
@@ -592,6 +599,25 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$user->delete();
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * Hook for login failure
+	 *
+	 * @param   unknown  $response
+	 * @return  boolean
+	 */
+	public function onUserLoginFailure($response)
+	{
+		// Log attempt to the database
+		Hubzero\User\User::blank()->logger()->auth()->set(
+		[
+			'user_id'  => 0,
+			'username' => isset($response['username']) ? $response['username'] : '[unknown]',
+			'status'   => 'failure'
+		])->save();
 
 		return true;
 	}
