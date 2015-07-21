@@ -137,7 +137,7 @@
 			last="20"
 			step="1"
 			default="10">
-			</field>
+		</field>
 		<field
 			name="reset_time"
 			type="integer"
@@ -147,7 +147,27 @@
 			last="24"
 			step="1"
 			default="1">
-			</field>
+		</field>
+		<field
+			name="login_attempts_limit"
+			type="integer"
+			label="COM_USERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_COUNT_LABEL"
+			description="COM_USERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_COUNT_DESC"
+			first="0"
+			last="20"
+			step="1"
+			default="10">
+		</field>
+		<field
+			name="login_attempts_timeframe"
+			type="integer"
+			label="COM_USERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_TIMEFRAME_LABEL"
+			description="COM_USERS_CONFIG_FIELD_FRONTEND_LOGIN_ATTEMPTS_TIMEFRAME_DESC"
+			first="1"
+			last="24"
+			step="1"
+			default="1">
+		</field>
 	</fieldset>
 
  	<fieldset
