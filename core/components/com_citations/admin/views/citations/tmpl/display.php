@@ -181,10 +181,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->year); ?>
 				</td>
 				<td class="priority-4">
-					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>' . Lang::txt('JYES') . '</span></span>'; } ?>
+					<?php if ($row->affiliated == 1) : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=affiliate&id=' . $row->id); ?>"><span class="state publish"><span><?php echo Lang::txt('NO'); ?></span></span></a>
+					<?php else : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=affiliate&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo Lang::txt('YES'); ?></span></span></a>
+					<?php endif; ?>
 				</td>
 				<td class="priority-4">
-					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . Lang::txt('JYES') . '</span></span>'; } ?>
+						<?php if ($row->fundedby == 1) : ?>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fund&id=' . $row->id); ?>"><span class="state publish"><span><?php echo Lang::txt('NO'); ?></span></span></a>
+						<?php else : ?>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fund&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo Lang::txt('YES'); ?></span></span></a>
+						<?php endif; ?>
 				</td>
 				<td class="priority-4">
 					<?php echo ($row->scope == '' ? Lang::txt('Hub') : $this->escape($row->scope)); ?>
@@ -193,10 +201,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->scope_id == 0 ? Lang::txt('N/A') : $this->escape($row->scope_id)); ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+		<?php
+		$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

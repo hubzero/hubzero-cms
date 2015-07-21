@@ -54,7 +54,7 @@ class Citations extends AdminController
 	/**
 	 * List citations
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function displayTask()
 	{
@@ -105,7 +105,7 @@ class Citations extends AdminController
 	/**
 	 * Create a new citation
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function addTask()
 	{
@@ -115,7 +115,7 @@ class Citations extends AdminController
 	/**
 	 * Edit a citation
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function editTask()
 	{
@@ -225,7 +225,7 @@ class Citations extends AdminController
 	/**
 	 * Publish a citation
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function publishTask()
 	{
@@ -259,7 +259,7 @@ class Citations extends AdminController
 	/**
 	 * Unpublish a citation
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function unpublishTask()
 	{
@@ -290,10 +290,82 @@ class Citations extends AdminController
 		);
 	}
 
+		/*
+		* Toggle affliliation 
+		*
+		* @return void
+		*/
+		public function affiliateTask()
+		{
+				// get the id of the citation
+				$id = Request::getInt('id', '');
+				$row = new Citation($this->database);
+				$row->load($id);
+
+				// toggle the affiliation
+				if ($row->affiliated == 1)
+				{
+						$row->affiliated = 0;
+				}
+				elseif ($row->affiliated == 0)
+				{
+						$row->affiliated = 1;
+				}
+
+				if (!$row->save($row))
+				{
+						$this->setError($row->getError());
+						$this->displayTask();
+						return;
+				}
+
+				// Redirect
+				App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('CITATION_AFFILIATED')
+				);
+		}
+
+		/*
+		* Toggle fundedby 
+		*
+		* @return void
+		*/
+		public function fundTask()
+		{
+				// get the id of the citation
+				$id = Request::getInt('id', '');
+				$row = new Citation($this->database);
+				$row->load($id);
+
+				// toggle the affiliation
+				if ($row->fundedby == 1)
+				{
+						$row->fundedby = 0;
+				}
+				elseif ($row->fundedby == 0)
+				{
+						$row->fundedby = 1;
+				}
+
+				if (!$row->save($row))
+				{
+						$this->setError($row->getError());
+						$this->displayTask();
+						return;
+				}
+
+				// Redirect
+				App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('CITATION_FUNDED')
+				);
+		}
+
 	/**
 	 * Display stats for citations
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function statsTask()
 	{
@@ -308,7 +380,7 @@ class Citations extends AdminController
 	/**
 	 * Save a citation
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function saveTask()
 	{
@@ -319,9 +391,21 @@ class Citations extends AdminController
 		$exclude  = Request::getVar('exclude', '', 'post');
 		$rollover = Request::getInt("rollover", 0);
 		$this->tags	 = Request::getVar('tags', '');
-		$this->badges   = Request::getVar('badges', '');
+		$this->badges	= Request::getVar('badges', '');
 		$this->sponsors = Request::getVar('sponsors', array(), 'post');
-
+		
+		// toggle the affiliation
+		if (!isset($citation['affiliated']) || $citation['affiliated'] == NULL)
+		{
+				$citation['affiliated'] = 0;
+		}
+		
+		// toggle fundeby
+		if (!isset($citation['fundedby']) || $citation['fundedby'] == NULL)
+		{
+				$citation['fundedby'] = 0;
+		}
+		
 		// Bind incoming data to object
 		$row = new Citation($this->database);
 		if (!$row->bind($citation))
@@ -427,9 +511,9 @@ class Citations extends AdminController
 	/**
 	 * Check if an array has any values set other than $ignored values
 	 *
-	 * @param   array	$b		Array to check
-	 * @param   array	$ignored  Values to ignore
-	 * @return  boolean  True if empty
+	 * @param	array	$b		Array to check
+	 * @param	array	$ignored  Values to ignore
+	 * @return	boolean  True if empty
 	 */
 	private function _isEmpty($b, $ignored=array())
 	{
@@ -459,7 +543,7 @@ class Citations extends AdminController
 	/**
 	 * Remove one or more citations
 	 *
-	 * @return  void
+	 * @return	void
 	 */
 	public function removeTask()
 	{
@@ -518,8 +602,8 @@ class Citations extends AdminController
 	/**
 	 * Get the params for a citation
 	 *
-	 * @param   integer  $citation  Citation ID
-	 * @return  integer
+	 * @param	integer  $citation	Citation ID
+	 * @return	integer
 	 */
 	private function _getParams($citation = 0)
 	{
