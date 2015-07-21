@@ -22,10 +22,10 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author	  Shawn Rice <zooley@purdue.edu>
+ * @package		hubzero-cms
+ * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -39,7 +39,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * List citations
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function displayTask()
 	{
@@ -69,7 +69,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			'sort',
 			'created DESC'
 		));
-		$this->view->filters['search']	   = urldecode(trim($app->getUserStateFromRequest(
+		$this->view->filters['search']		 = urldecode(trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
@@ -114,7 +114,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new citation
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function addTask()
 	{
@@ -124,7 +124,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a citation
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function editTask()
 	{
@@ -300,13 +300,13 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		);
 	}
 
-  /** 
-  * Toggle affliliation 
-  *
-  * @return void
-  */
-  public function affiliateTask()
-  {
+	/** 
+	* Toggle affliliation 
+	*
+	* @return void
+	*/
+	public function affiliateTask()
+	{
 	// get the id of the citation
 	$id = JRequest::getInt('id', '');
 	$row = new CitationsCitation($this->database);
@@ -315,11 +315,11 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	// toggle the affiliation
 	if ($row->affiliated == 1)
 	{
-	  $row->affiliated = 0;
+		$row->affiliated = 0;
 	}
 	elseif ($row->affiliated == 0)
 	{
-	  $row->affiliated = 1;
+		$row->affiliated = 1;
 	}
 
 	if (!$row->save($row))
@@ -339,7 +339,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Display stats for citations
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function statsTask()
 	{
@@ -363,7 +363,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Save a citation
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function saveTask()
 	{
@@ -490,9 +490,9 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Check if an array has any values set other than $ignored values
 	 *
-	 * @param	   array $b		  Array to check
-	 * @param	   array $ignored Values to ignore
-	 * @return	   boolean True if empty
+	 * @param		 array $b			Array to check
+	 * @param		 array $ignored Values to ignore
+	 * @return		 boolean True if empty
 	 */
 	private function _isEmpty($b, $ignored=array())
 	{
@@ -522,7 +522,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more citations
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function removeTask()
 	{
@@ -581,7 +581,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	   void
+	 * @return		 void
 	 */
 	public function cancelTask()
 	{
@@ -594,8 +594,8 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	/**
 	 * Get the params for a citation
 	 *
-	 * @param	   integer $citation Citation ID
-	 * @return	   integer
+	 * @param		 integer $citation Citation ID
+	 * @return		 integer
 	 */
 	private function _getParams($citation = 0)
 	{
