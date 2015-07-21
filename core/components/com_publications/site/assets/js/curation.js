@@ -92,7 +92,7 @@ HUB.PublicationsCuration = {
 		{
 			return false;
 		}
-		
+
 		checkers.each(function(i, item) 
 		{
 			$(item).on('click', function(e) 
@@ -105,6 +105,7 @@ HUB.PublicationsCuration = {
 				
 				if ($(item).hasClass('checker-fail'))
 				{
+					e.preventDefault();
 					// Load box to ask why
 					HUB.PublicationsCuration.drawFailBox($(item).parent());
 				}
