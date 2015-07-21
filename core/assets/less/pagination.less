@@ -16,6 +16,7 @@
 	background-image: none;
 	list-style: none;
 	line-height: @baseLineHeight;
+
 	li {
 		float: left;
 		margin: 0;
@@ -23,8 +24,12 @@
 		background-image: none;
 		list-style: none;
 	}
+	.limit,
 	.counter {
-		float: right;
+		float: none;
+		padding: (@baseFontSize / 3) 0;
+	}
+	.counter {
 		padding: 0;
 		color: @paginationColor;
 	}
@@ -48,5 +53,18 @@
 	label {
 		display: inline;
 		width: auto;
+	}
+}
+
+@media (min-width: 40em) {
+	.list-footer {
+		.counter,
+		.limit {
+			float: right;
+			padding: 0 (@baseFontSize / 3);
+		}
+		.limit {
+			padding-right: @baseFontSize;
+		}
 	}
 }
