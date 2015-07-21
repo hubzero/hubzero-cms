@@ -342,7 +342,7 @@ class Blacklist
 		$words[] = self::simple_l33t($word);
 		$words[] = strrev( self::simple_l33t($word) );
 
-		$query = "SELECT 1 FROM #__password_blacklist WHERE word IN (\"";
+		$query = "SELECT 1 FROM `#__password_blacklist` WHERE word IN (";
 
 		// Make sure words are quoted
 		foreach ($words as &$word)
@@ -350,9 +350,9 @@ class Blacklist
 			$word = $db->quote($word);
 		}
 
-		$query .= implode($words,'","');
+		$query .= implode($words,',');
 
-		$query .= "\");";
+		$query .= ");";
 
 		$db->setQuery($query);
 
