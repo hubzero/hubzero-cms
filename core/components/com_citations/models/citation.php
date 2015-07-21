@@ -105,7 +105,6 @@ class Citation extends Relational
 		return $this->manyToMany('Tag', '#__tags_object', 'objectid', 'tagid');
 	}
 
-
 	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	public function formatted($config = array('format' => 'apa'), $highlight = NULL, $include_coins = false, $coins_only = false)
 	{
@@ -495,6 +494,32 @@ class Citation extends Relational
 	}
 
 	/**
+	 * Output a tagcloud of badges associated with a citation
+	 *
+	 * @param   object  $citation  Citation
+	 * @param   object  $database  JDatabase
+	 * @return  string  HTML
+	 */
+	public static function badgeCloud()
+	{
+		$html = '';
+
+		$html = '<ul class="tags badges">';
+		foreach ($this->tags as $badge)
+		{
+			if ($tga->tagObject->label == "badge")
+			{
+				$html .= '<li><a href="#">' . stripslashes($badge['raw_tag']) . '</a></li>';
+			}
+		}
+
+		$html .= "</ul>";
+
+		return $html;
+	}
+
+
+	/**
 	 * Output a tagcloud of tags associated with a citation
 	 *
 	 * @param   object  $citation  Citation
@@ -510,14 +535,17 @@ class Citation extends Relational
 			$html  = '<ul class="tags">';
 			foreach ($this->tags as $tag)
 			{
-				$cls = ($tag->admin) ? 'admin' : '';
-
-				//display tag if not admin tag or if admin tag and user is adminstrator
-				if (!$tag->admin || ($tag->admin && $isAdmin))
+				if ($tag->tagObject->label == NULL)
 				{
-					$html .= '<li class="' . $cls . '"><a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
-				}
 
+					$cls = ($tag->admin) ? 'admin' : '';
+
+					//display tag if not admin tag or if admin tag and user is adminstrator
+					if (!$tag->admin || ($tag->admin && $isAdmin))
+					{
+						$html .= '<li class="' . $cls . '"><a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
+					}
+				}
 			}
 			$html .= '</ul>';
 			return $html;

@@ -208,14 +208,9 @@ if (isset($this->messages))
 								<tr>
 									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="5"'; } ?> class="citation-details">
 										<?php
-											$singleCitationView = 0;
-											//$singleCitationView = $this->config->get('citation_single_view', 0);
-											if (!$singleCitationView)
-											{
-												echo $cite->citationDetails($this->openurl);
-											}
+											echo $cite->citationDetails($this->openurl);
 										?>
-										<?php if (0): ?>
+										<?php if (1): ?>
 										<?php //if ($this->config->get("citation_show_badges","no") == "yes") : ?>
 											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 										<?php endif; ?>
