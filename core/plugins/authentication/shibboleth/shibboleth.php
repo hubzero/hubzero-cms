@@ -87,87 +87,36 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Thanks, helpful PHP.net commenter. I don't want to use gethostbyaddr()
-	 * directly and potentially DOS the login page because the DNS server is
-	 * being a jerk.
+	 * Looks up a hostname by ip address to see if we can infer and institution
 	 *
-	 * I want the hostname to see if I can automatically match people up with
-	 * their institutions when they're on its network.
-	 */
-	private static function gethostbyaddr_timeout($ip, $dns, $timeout = 2)
+	 * We use this instead of standard php function gethostbyaddr because we need
+	 * the timeout to prevent load issues.
+	 *
+	 * @param   string        $ip       the ip address to look up
+	 * @param   string|array  $dns      the dns server to use
+	 * @param   int           $timeout  the timeout after which requests should expire
+	 * @return  string
+	 **/
+	private static function getHostByAddress($ip, $dns, $timeout=2)
 	{
-		$ip = is_array($ip) ? $ip[0] : $ip;
-		// random transaction number (for routers etc to get the reply back)
-		$data = rand(0, 99);
-		// trim it to 2 bytes
-		$data = substr($data, 0, 2);
-		// request header
-		$data .= "\1\0\0\1\0\0\0\0\0\0";
-		// split IP up
-		$bits = explode(".", $ip);
-		// error checking
-		if (count($bits) != 4)
+		try
 		{
-			return "ERROR";
+			$resolver = new Net_DNS2_Resolver(['nameservers' => (array) $dns, 'timeout' => $timeout]);
+			$result   = $resolver->query($ip, 'PTR');
 		}
-		// there is probably a better way to do this bit...
-		// loop through each segment
-		for ($x = 3; $x >= 0; $x--)
-		{
-			// needs a byte to indicate the length of each segment of the request
-			switch (strlen($bits[$x]))
-			{
-				case 1: $data .= "\1"; break;
-				case 2: $data .= "\2"; break;
-				case 3: $data .= "\3"; break;
-				default: return NULL;
-			}
-			// and the segment itself
-			$data .= $bits[$x];
-		}
-		// and the final bit of the request
-		$data .= "\7in-addr\4arpa\0\0\x0C\0\1";
-		// create UDP socket
-		$handle = @fsockopen("udp://$dns", 53);
-		// send our request (and store request size so we can cheat later)
-		$requestsize=@fwrite($handle, $data);
-
-		@socket_set_timeout($handle, $timeout);
-		// hope we get a reply
-		$response = @fread($handle, 1000);
-		@fclose($handle);
-		if ($response == "")
+		catch (Net_DNS2_Exception $e)
 		{
 			return $ip;
 		}
-		// find the response type
-		$type = @unpack("s", substr($response, $requestsize+2));
-		if ($type[1] == 0x0C00)
+
+		if ($result
+		 && isset($result->answer)
+		 && count($result->answer) > 0
+		 && isset($result->answer[0]->ptrdname))
 		{
-			// set up our variables
-			$host="";
-			$len = 0;
-			// set our pointer at the beginning of the hostname
-			// uses the request size from earlier rather than work it out
-			$position=$requestsize+12;
-			// reconstruct hostname
-			do
-			{
-				// get segment size
-				$len = unpack("c", substr($response, $position));
-				// null terminated string, so length 0 = finished
-				if ($len[1] == 0)
-				{
-					// return the hostname, without the trailing .
-					return substr($host, 0, strlen($host) -1);
-				}
-				// add segment to our host
-				$host .= substr($response, $position+1, $len[1]) . ".";
-				// move pointer on to the next segment
-				$position += $len[1] + 1;
-			}
-			while ($len != 0);
+			return $result->answer[0]->ptrdname;
 		}
+
 		return $ip;
 	}
 
@@ -268,7 +217,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// saved id provider? use it as the default
 		$prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : NULL;
 		if (!$prefill && // no cookie
-				($host = self::gethostbyaddr_timeout(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $params->get('dns', '8.8.8.8'))) && // can get a host
+				($host = self::getHostByAddress(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $params->get('dns', '8.8.8.8'))) && // can get a host
 				preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma))
 		{ // hostname lookup seems php jsonrational (not an ip address, has a few dots in it
 			// try to look up a provider to pre-select based on the user's hostname
