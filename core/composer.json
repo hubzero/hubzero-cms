@@ -77,6 +77,7 @@
         "mandrill/mandrill": "1.0.*",
         "phpdocumentor/reflection-docblock": "2.0.4",
         "bshaffer/oauth2-server-php": "v1.4",
+        "pear/net_dns2": "1.4.*",
         "hubzero/orcid-php": "dev-master"
     },
     "autoload": {

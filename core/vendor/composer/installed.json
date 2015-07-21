@@ -1469,7 +1469,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/7593bb1cad225ff64343b7f9fd33d4cb1af187ef",
+            "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/4d959803cae6c9c8cfa3df677b8d09753949889c",
             "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
             "shasum": ""
         },
@@ -1527,7 +1527,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
+            "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/b184ab8efe2e8468ce39ec2a8f4ef8a6765d16a7",
             "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
             "shasum": ""
         },
@@ -1548,5 +1548,50 @@
             "BSD New"
         ],
         "description": "Library for ORCID web services"
+    },
+    {
+        "name": "pear/net_dns2",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mikepultz/netdns2.git",
+            "reference": "ba0ede1df70ed98591a14efc88fb9097eafaf541"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/ba0ede1df70ed98591a14efc88fb9097eafaf541",
+            "reference": "ba0ede1df70ed98591a14efc88fb9097eafaf541",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.1.2"
+        },
+        "time": "2015-04-13 00:55:32",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Net_DNS2": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-2-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Mike Pultz",
+                "email": "mike@mikepultz.com",
+                "homepage": "http://mikepultz.com/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Native PHP5 DNS Resolver and Updater Library",
+        "homepage": "http://netdns2.com/",
+        "keywords": [
+            "dns",
+            "network"
+        ]
     }
 ]

@@ -15,6 +15,7 @@ return array(
     'PHPQRCode' => array($vendorDir . '/aferrandini/phpqrcode/lib'),
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
     'OAuth2' => array($vendorDir . '/bshaffer/oauth2-server-php/src'),
+    'Net_DNS2' => array($vendorDir . '/pear/net_dns2'),
     'Mandrill' => array($vendorDir . '/mandrill/mandrill/src'),
     'Hubzero' => array($baseDir . '/libraries'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
