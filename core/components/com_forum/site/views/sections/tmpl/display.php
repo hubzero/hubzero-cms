@@ -125,7 +125,7 @@ $this->css()
 									$row->set('section_alias', $section->get('alias'));
 									?>
 									<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
-										<th scope="row">
+										<th class="priority-5" scope="row">
 											<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 										</th>
 										<td>
@@ -138,13 +138,13 @@ $this->css()
 												</span>
 											</span>
 										</td>
-										<td>
+										<td class="priority-3">
 											<span><?php echo $row->count('threads'); ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?>
 											</span>
 										</td>
-										<td>
+										<td  class="priority-3">
 											<span><?php echo $row->count('posts'); ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_POSTS'); ?>

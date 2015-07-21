@@ -95,7 +95,7 @@ $this->css()
 									}
 									?>
 									<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
-										<th>
+										<th class="priority-5" scope="row">
 											<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 										</th>
 										<td>
@@ -109,13 +109,13 @@ $this->css()
 												<?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
 											</span>
 										</td>
-										<td>
+										<td class="priority-4">
 											<span><?php echo Lang::txt('COM_FORUM_SECTION'); ?></span>
 											<span class="entry-details section-name">
 												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
 											</span>
 										</td>
-										<td>
+										<td class="priority-3">
 											<span><?php echo Lang::txt('COM_FORUM_CATEGORY'); ?></span>
 											<span class="entry-details category-name">
 												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>

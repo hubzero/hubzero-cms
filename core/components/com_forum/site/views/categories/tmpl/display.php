@@ -149,7 +149,7 @@ $this->category->set('section_alias', $this->filters['section']);
 									$row->set('section', $this->filters['section']);
 									?>
 									<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
-										<th>
+										<th class="priority-5" scope="row">
 											<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 										</th>
 										<td>
@@ -163,13 +163,13 @@ $this->category->set('section_alias', $this->filters['section']);
 												<?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
 											</span>
 										</td>
-										<td>
+										<td class="priority-4">
 											<span><?php echo ($row->posts('count')); ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_COMMENTS'); ?>
 											</span>
 										</td>
-										<td>
+										<td class="priority-3">
 											<span><?php echo Lang::txt('COM_FORUM_LAST_POST'); ?></span>
 											<span class="entry-details">
 												<?php

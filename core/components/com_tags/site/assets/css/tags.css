@@ -167,11 +167,6 @@
 		font-family: "Fontcons";
 	}
 
-/* [!] HACKS - IE 7 and older */
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf02c;</small>');
-	}
-
 /* Related tags */
 	#related h3 {
 		display: block;
@@ -194,7 +189,9 @@
 		margin: 0;
 		height: 0;
 	}
-	#parents, #children, #co-tagged {
+	#parents,
+	#children,
+	#co-tagged {
 		width: 33%;
 		float: left;
 	}

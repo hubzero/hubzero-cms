@@ -175,27 +175,27 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						$cls  = ($row->isclosed())   ? 'answered' : '';
 						$cls  = ($row->isReported()) ? 'flagged'  : $cls;
 						$cls .= ($row->get('created_by') == User::get('id')) ? ' mine' : '';
-					?>
+						?>
 							<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
-								<th>
+								<th class="priority-5" scope="row">
 									<span class="entry-id"><?php echo $row->get('id'); ?></span>
 								</th>
 								<td>
-								<?php if (!$row->isReported()) { ?>
-									<a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
-										<?php echo $this->escape($row->subject('clean')); ?>
-									</a><br />
-								<?php } else { ?>
-									<span class="entry-title">
-										<?php echo Lang::txt('COM_ANSWERS_QUESTION_UNDER_REVIEW'); ?>
-									</span><br />
-								<?php } ?>
+									<?php if (!$row->isReported()) { ?>
+										<a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
+											<?php echo $this->escape($row->subject('clean')); ?>
+										</a><br />
+									<?php } else { ?>
+										<span class="entry-title">
+											<?php echo Lang::txt('COM_ANSWERS_QUESTION_UNDER_REVIEW'); ?>
+										</span><br />
+									<?php } ?>
 									<span class="entry-details">
-										<?php echo Lang::txt('COM_ANSWERS_ASKED_BY', $name); ?>
-										<span class="entry-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
-										<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
-										<span class="entry-date-on"><?php echo Lang::txt('COM_ANSWERS_DATETIME_ON'); ?></span>
-										<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+										<?php echo Lang::txt('COM_ANSWERS_ASKED_BY', $name) . ' '; ?>
+										<span class="entry-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?> </span>
+										<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time> </span>
+										<span class="entry-date-on"><?php echo Lang::txt('COM_ANSWERS_DATETIME_ON'); ?> </span>
+										<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time> </span>
 										<span class="entry-details-divider">&bull;</span>
 										<span class="entry-state">
 											<?php echo ($row->get('state')==1) ? Lang::txt('COM_ANSWERS_STATE_CLOSED') : Lang::txt('COM_ANSWERS_STATE_OPEN'); ?>
@@ -208,29 +208,29 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 										</span>
 									</span>
 								</td>
-							<?php if ($this->config->get('banking')) { ?>
-								<td class="reward">
-								<?php if ($row->get('reward')) { ?>
-									<span class="entry-reward">
-										<?php echo $row->get('points'); ?>
-										<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
-											<?php echo Lang::txt('COM_ANSWERS_POINTS'); ?>
-										</a>
-									</span>
+								<?php if ($this->config->get('banking')) { ?>
+									<td class="priority-3 reward">
+										<?php if ($row->get('reward')) { ?>
+											<span class="entry-reward">
+												<?php echo $row->get('points'); ?>
+												<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
+													<?php echo Lang::txt('COM_ANSWERS_POINTS'); ?>
+												</a>
+											</span>
+										<?php } ?>
+									</td>
 								<?php } ?>
-								</td>
-							<?php } ?>
-								<td class="voting">
+								<td class="priority-4 voting">
 									<span class="vote-like">
-									<?php if (User::isGuest()) { ?>
-										<span class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
-											<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
-										</span>
-									<?php } else { ?>
-										<a class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $row->get('helpful')); ?>">
-											<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
-										</a>
-									<?php } ?>
+										<?php if (User::isGuest()) { ?>
+											<span class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
+												<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
+											</span>
+										<?php } else { ?>
+											<a class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $row->get('helpful')); ?>">
+												<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
+											</a>
+										<?php } ?>
 									</span>
 								</td>
 							</tr>
@@ -275,14 +275,14 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 					<?php echo Lang::txt('COM_ANSWERS_GET_STARTED_HELP', Route::url('index.php?option=com_help&component=answers&page=index')); ?>
 				</p>
 			</div><!-- / .container -->
-		<?php if ($this->config->get('banking')) { ?>
-			<div class="container">
-				<h3><?php echo Lang::txt('COM_ANSWERS_EARN_POINTS'); ?></h3>
-				<p>
-					<?php echo Lang::txt('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo Lang::txt('COM_ANSWERS_LEARN_MORE'); ?></a>.
-				</p>
-			</div><!-- / .container -->
-		<?php } ?>
+			<?php if ($this->config->get('banking')) { ?>
+				<div class="container">
+					<h3><?php echo Lang::txt('COM_ANSWERS_EARN_POINTS'); ?></h3>
+					<p>
+						<?php echo Lang::txt('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo Lang::txt('COM_ANSWERS_LEARN_MORE'); ?></a>.
+					</p>
+				</div><!-- / .container -->
+			<?php } ?>
 		</aside><!-- / .aside -->
 	</div><!-- / .section-inner -->
 </section><!-- / .main section -->

@@ -105,14 +105,14 @@ $this->css()
 							<th scope="col">
 								<?php echo Lang::txt('COM_TAGS_TAG'); ?>
 							</th>
-							<th scope="col">
+							<th class="priority-3" scope="col">
 								<?php echo Lang::txt('COM_TAGS_COL_ALIAS'); ?>
 							</th>
-						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-							<th scope="col" colspan="2">
-								<?php echo Lang::txt('COM_TAGS_COL_ACTION'); ?>
-							</th>
-						<?php } ?>
+							<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+								<th scope="col" colspan="2">
+									<?php echo Lang::txt('COM_TAGS_COL_ACTION'); ?>
+								</th>
+							<?php } ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -130,25 +130,25 @@ $this->css()
 										<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 									</a>
 								</td>
-								<td>
+								<td class="priority-3">
 									<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>'; ?>
 								</td>
-							<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-								<td>
-									<?php if ($this->config->get('access-delete-tag')) { ?>
-										<a class="icon-delete delete delete-tag" data-confirm="<?php echo Lang::txt('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-											<?php echo Lang::txt('JACTION_DELETE'); ?>
-										</a>
-									<?php } ?>
-								</td>
-								<td>
-									<?php if ($this->config->get('access-edit-tag')) { ?>
-										<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))); ?>">
-											<?php echo Lang::txt('JACTION_EDIT'); ?>
-										</a>
-									<?php } ?>
-								</td>
-							<?php } ?>
+								<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+									<td>
+										<?php if ($this->config->get('access-delete-tag')) { ?>
+											<a class="icon-delete delete delete-tag" data-confirm="<?php echo Lang::txt('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+												<?php echo Lang::txt('JACTION_DELETE'); ?>
+											</a>
+										<?php } ?>
+									</td>
+									<td>
+										<?php if ($this->config->get('access-edit-tag')) { ?>
+											<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))); ?>">
+												<?php echo Lang::txt('JACTION_EDIT'); ?>
+											</a>
+										<?php } ?>
+									</td>
+								<?php } ?>
 							</tr>
 							<?php
 						}
@@ -156,12 +156,12 @@ $this->css()
 					else
 					{
 						?>
-							<tr class="odd">
-								<td colspan="<?php echo ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2); ?>">
-									<?php echo Lang::txt('COM_TAGS_NO_RESULTS'); ?>
-								</td>
-							</tr>
-							<?php
+						<tr class="odd">
+							<td colspan="<?php echo ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2); ?>">
+								<?php echo Lang::txt('COM_TAGS_NO_RESULTS'); ?>
+							</td>
+						</tr>
+						<?php
 					}
 					?>
 					</tbody>
