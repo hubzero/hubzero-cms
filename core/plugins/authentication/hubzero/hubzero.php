@@ -116,6 +116,14 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			$result = $result[0];
 		}
 
+		// Now make sure they haven't made too many failed login attempts
+		if (\Hubzero\User\User::oneOrFail($result->id)->hasExceededLoginLimit())
+		{
+			$response->status = \Hubzero\Auth\Status::FAILURE;
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_TOO_MANY_ATTEMPTS');
+			return false;
+		}
+
 		if ($result)
 		{
 			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true))
