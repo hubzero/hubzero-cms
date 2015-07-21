@@ -3190,7 +3190,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$message = 'updated ';
 					$u = 0;
 					foreach ($updateParts as $part)
 					{
