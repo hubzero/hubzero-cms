@@ -168,7 +168,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td><?php echo $this->escape($row->year); ?></td>
 				<td>
-					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>' . JText::_('JYES') . '</span></span>'; } ?>
+                <?php if ($row->affiliated == 1) : ?>
+                        <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=affiliate&id=' . $row->id); ?>"><span class="state publish"><span><?php echo JText::_('UNPUBLISH'); ?></span></span></a>
+                        <?php else : ?>
+                        <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=affiliate&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo JText::_('PUBLISH'); ?></span></span></a>
+                <?php endif; ?>
+
 				</td>
 				<td>
 					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . JText::_('JYES') . '</span></span>'; } ?>

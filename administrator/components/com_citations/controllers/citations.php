@@ -300,6 +300,42 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		);
 	}
 
+  /** 
+   * Toggle affliliation 
+   *
+   * @return void
+   */
+   public function affiliateTask()
+   {
+    // get the id of the citation
+    $id = JRequest::getInt('id', '');
+    $row = new CitationsCitation($this->database);
+    $row->load($id);
+
+    // toggle the affiliation
+    if ($row->affiliated == 1)
+    {
+      $row->affiliated = 0;
+    }
+    elseif ($row->affiliated == 0)
+    {
+      $row->affiliated = 1;
+    }
+
+    if (!$row->save($row))
+		{
+			$this->setError($row->getError());
+			$this->displayTask();
+			return;
+		}
+
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('CITATION_UNPUBLISHED')
+		);
+	}
+
 	/**
 	 * Display stats for citations
 	 *
@@ -371,6 +407,10 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			$this->editTask();
 			return;
 		}
+
+    //affiliated and funded
+    $row->affiliated = JRequest::getInt('citation[affiliated]', 0);
+    $row->fundedby = JRequest::getInt('citation[fundedby]', 0);
 
 		// Store new content
 		if (!$row->store())
