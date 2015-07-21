@@ -84,7 +84,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<ol class="results">
 			<?php foreach ($this->results as $res) : ?>
 				<li>
-					<?php $before = $this->app->triggerEvent('onBeforeSearchRender' . $res->get_plugin(), array($res)); ?>
+					<?php $before = Event::trigger('search.onBeforeSearchRender' . $res->get_plugin(), array($res)); ?>
 					<p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_highlighted_title(); ?></a></p>
 					<div class="summary">
 						<?php if ($res->has_metadata()): ?>
