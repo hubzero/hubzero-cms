@@ -2498,6 +2498,14 @@ System styles
 		width: auto;
 		margin-right: 0;
 	}
+	#content-header-extra {
+		position: static;
+		right: auto;
+		top: auto;
+		text-align: left;
+		min-width: 5em;
+		padding: 0 30px 30px 30px;
+	}
 }
 
 @media (max-width: 450px) {

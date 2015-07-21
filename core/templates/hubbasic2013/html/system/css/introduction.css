@@ -273,3 +273,16 @@
 	#introduction + .section {
 		padding: 0 30px 30px 30px;
 	}
+@media (max-width: 600px) {
+	#introduction {
+		padding: 25px 15px 25px 15px;
+	}
+	#introduction .clear:before,
+	#introduction .clear:after,
+	#introduction>.grid>.omega:before,
+	#introduction>.grid>.omega:after,
+	#introduction:before,
+	#introduction:after {
+		display: none;
+	}
+}
