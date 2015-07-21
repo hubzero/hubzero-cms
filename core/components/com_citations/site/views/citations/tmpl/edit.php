@@ -471,6 +471,9 @@ $pid = Request::getInt('publication', 0);
 
 			<input type="hidden" name="fields[uid]" value="<?php echo $this->row->uid; ?>" />
 			<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->row->created); ?>" />
+			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->row->scope); ?>" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->row->scope_id); ?>" />
+			<input type="hidden" name="fields[published]" value="<?php echo ($this->row->id ? $this->escape($this->row->published) : 1); ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
