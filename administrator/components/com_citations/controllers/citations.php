@@ -301,12 +301,12 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	}
 
   /** 
-   * Toggle affliliation 
-   *
-   * @return void
-   */
-   public function affiliateTask()
-   {
+  * Toggle affliliation 
+  *
+  * @return void
+  */
+  public function affiliateTask()
+  {
 	// get the id of the citation
 	$id = JRequest::getInt('id', '');
 	$row = new CitationsCitation($this->database);
