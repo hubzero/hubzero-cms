@@ -393,19 +393,19 @@ class Citations extends AdminController
 		$this->tags	 = Request::getVar('tags', '');
 		$this->badges	= Request::getVar('badges', '');
 		$this->sponsors = Request::getVar('sponsors', array(), 'post');
-		
+
 		// toggle the affiliation
 		if (!isset($citation['affiliated']) || $citation['affiliated'] == NULL)
 		{
 				$citation['affiliated'] = 0;
 		}
-		
+
 		// toggle fundeby
 		if (!isset($citation['fundedby']) || $citation['fundedby'] == NULL)
 		{
 				$citation['fundedby'] = 0;
 		}
-		
+
 		// Bind incoming data to object
 		$row = new Citation($this->database);
 		if (!$row->bind($citation))
