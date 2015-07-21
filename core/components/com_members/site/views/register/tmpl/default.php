@@ -262,10 +262,6 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						</ul>
 					<?php } ?>
 				<?php } ?>
-
-				<?php if ($this->config->get('passwordMeter')) { ?>
-					<input type="hidden" id="passmeter" value="on" />
-				<?php } ?>
 			</fieldset>
 			<div class="clear"></div>
 		<?php } ?>

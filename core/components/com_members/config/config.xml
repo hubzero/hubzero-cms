@@ -93,10 +93,6 @@ HUBzero is a registered trademark of Purdue University.
 	</fieldset>
 	<fieldset name="registration">
 		<field name="ConfirmationReturn" type="text" menu="hide" default="" label="Confirmation Return URL" description="Redirect here after confirming email..." />
-		<field name="passwordMeter" type="radio" default="1" label="Password Strength Meter" description="Show a password strength indicator or not">
-			<option value="0">Off</option>
-			<option value="1">On</option>
-		</field>
 		<field name="registrationUsername"         type="text" menu="hide" default="RRUU" label="Username" description="" />
 		<field name="registrationPassword"         type="text" menu="hide" default="RRUU" label="Password" description="" />
 		<field name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />

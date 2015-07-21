@@ -470,22 +470,6 @@ HUB.Register = {
 			}
 		}
 
-		var passmtr = $('#passmeter');
-		var passwd = $('#password');
-		if (passmtr.length && passwd.length) {
-			$('<span id="meter-container"></span>').insertAfter(passwd);
-
-			if (passwd.val() != '') {
-				HUB.Register.checkPass();
-			} else {
-				$('<span id="passwd-meter" style="width:0%" class="bad"><span>Strength</span></span>').appendTo('#meter-container');
-			}
-
-			passwd.keyup(function(event) {
-				var timer = setTimeout('HUB.Register.checkPass()',200);
-			});
-		}
-
 		var userlogin = $('#userlogin');
 		var usernameStatusAfter = $('#userlogin');
 
@@ -505,19 +489,6 @@ HUB.Register = {
 		}
 
 		HUB.Register.fetchOrcid();
-	},
-
-	checkPass: function() {
-		var $ = HUB.Register.jQuery;
-
-		if ($('#userlogin')) {
-			usernm = $('#userlogin').val();
-		}
-		passwd = $('#password').val();
-
-		$.post($('#base_uri').val() + '/members/register/passwordstrength?no_html=1', {'format': 'raw', 'pass':passwd, 'user':usernm}, function(data) {
-			$('#meter-container').html(data);
-		});
 	},
 
 	checkLogin: function() {
