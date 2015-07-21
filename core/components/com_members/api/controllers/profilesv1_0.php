@@ -403,13 +403,6 @@ class Profilesv1_0 extends ApiController
 			$userid   = (!is_null($registry)) ? $registry->get('com_users.reset.user', null) : null;
 		}
 
-		$result = \Hubzero\User\Profile::getInstance($userid);
-
-		if ($result === false)
-		{
-			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
-		}
-
 		// Get the password rules
 		$password_rules = \Hubzero\Password\Rule::getRules();
 

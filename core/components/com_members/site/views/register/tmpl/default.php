@@ -234,7 +234,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 						<?php } ?>
 					</div>
 					<?php if (count($this->password_rules) > 0) { ?>
-						<ul>
+						<ul id="passrules">
 							<?php foreach ($this->password_rules as $rule)
 							{
 								if (!empty($rule))
@@ -245,7 +245,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 										$err = in_array($rule, $this->xregistration->_invalid['password']);
 									}
 
-									echo '<li' . ($err ? ' class="error"' : '') . '>' . $rule . '</li>' . "\n";
+									echo '<li' . ($err ? ' class="error"' : ' class="empty"') . '>' . $rule . '</li>' . "\n";
 								}
 							}
 							if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password']))

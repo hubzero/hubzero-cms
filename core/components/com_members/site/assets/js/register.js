@@ -472,6 +472,29 @@ HUB.Register = {
 
 		var userlogin = $('#userlogin');
 		var usernameStatusAfter = $('#userlogin');
+		var passwd = $('#password');
+		var passrule = $('#passrules');
+
+		if (passwd.length > 0 && passrule.length > 0) {
+			passwd.on('keyup', function(){
+				// Create an ajax call to check the potential password
+				$.ajax({
+					url: "/api/members/checkpass",
+					type: "POST",
+					data: "password1="+passwd.val(),
+					dataType: "json",
+					cache: false,
+					success: function(json) {
+						if(json.html.length > 0 && passwd.val() !== '') {
+							passrule.html(json.html);
+						} else {
+							// Probably deleted password, so reset classes
+							passrule.find('li').switchClass('error passed', 'empty', 200);
+						}
+					}
+				});
+			});
+		}
 
 		if (userlogin.length > 0) {
 			usernameStatusAfter.after('<p class="hint" id="usernameStatus">&nbsp;</p>');

@@ -17,42 +17,33 @@
 		margin-top: 3.5em;
 	}
 
-/* Password strength checker */
-	#meter-container {
-		position: relative; /* IE is dumb */
-		display: block;
-		border: 1px solid #ccc;
-		padding: 2px;
-		margin: 0.3em 0;
+/* Password rules styles */
+	#hubForm ul#passrules {
+		list-style: none;
+		margin: 0 2em;
 	}
-	#meter-container #passwd-meter { 
-		display: block;
+	#hubForm ul#passrules li {
+		margin: 5px 0;
+		padding: 2px 2px 2px 20px;
 		position: relative;
-		text-align: center; 
-		color: #333;
-		height: 2em;
-		line-height: 2em;
 	}
-	#meter-container .bad {
-		background: #E2998B;
+	#hubForm ul#passrules li:before {
+		left: 4px;
+		top: 7px;
 	}
-	#meter-container .mediocre {
-		background: #FFB430;
-	}
-	#meter-container .good {
-		background: #74b134;
-	}
-	#meter-container .strong {
-		background: #B1D632;
-	}
-	#meter-container #passwd-meter span {
+	#hubForm ul#passrules li.empty:before {
 		position: absolute;
-		left: 1em;
-		font-size: 85%;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		color: #777;
+		left: 0;
+		top: 0;
+		content: "\2192";
 	}
+	#hubForm ul#passrules li.error {
+		font-weight: bold;
+	}
+	#hubForm ul#passrules li.passed {
+		text-decoration: line-through;
+	}
+
 	#hubForm label#botcheck-label {
 		display: none;
 	}
