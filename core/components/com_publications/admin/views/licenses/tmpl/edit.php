@@ -155,20 +155,6 @@ function submitbutton(pressbutton)
 					<label for="field-agreement0"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
 				</div>
 			</fieldset>
-
-			<fieldset>
-				<legend><?php echo Lang::txt('Apps only'); ?></legend>
-
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('Is this license applicable to apps publications only?'); ?>">
-					<span class="hint"><?php echo Lang::txt('Is this license applicable to apps publications only?'); ?></span>
-
-					<input class="option" name="apps_only" id="field-apps_only1" type="radio" value="1" <?php echo $this->row->apps_only == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-apps_only1"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
-					<br />
-					<input class="option" name="apps_only" id="field-apps_only0" type="radio" value="0" <?php echo $this->row->apps_only == 0 ? 'checked="checked"' : ''; ?> />
-					<label for="field-apps_only0"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
-				</div>
-			</fieldset>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
