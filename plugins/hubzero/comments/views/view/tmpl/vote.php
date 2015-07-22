@@ -91,7 +91,7 @@ if (!$no_html) { ?>
 <p class="comment-voting voting">
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
-		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by') || !$this->params->get('access-vote-comment')) { ?>
+		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by')) { ?>
 			<span class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('positive', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
 			</span>
