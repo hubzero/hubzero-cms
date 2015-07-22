@@ -285,7 +285,7 @@ $defaultCountries = array(
 		<p>We'll award you with <strong><?php echo $awardPer; ?></strong> points for each question you answer. You can use these points towards items in the site <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
 	<?php endif; ?>
 	<form action="" method="post">
-		<ol>
+		<ol class="top">
 				<?php if (isset($row['orgtype'])): ?>
 				<li>
 					<label for="orgtype">Which item best describes your organizational affiliation? </label>
@@ -442,6 +442,7 @@ $defaultCountries = array(
 									}
 									foreach ($countries as $c)
 									{
+										$c = (array)$c;
 										echo '<option value="' . $c['code'] . '"';
 										if (strtoupper($country) == strtoupper($c['code']))
 										{
@@ -557,7 +558,7 @@ $defaultCountries = array(
 					</li>
 				<?php endif; ?>
 			</ol>
-		<p>
+		<p class="submit">
 			<input type="hidden" name="incremental-registration" value="update" />
 			<button type="submit" name="submit" value="submit" type="submit">Submit</button>
 			<button type="submit" name="submit" value="opt-out" type="submit">Ask me later</button>

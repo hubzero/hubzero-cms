@@ -16,6 +16,7 @@
 		margin-top: 0;
 		margin-left: 0;
 		padding: 0 !important;
+		list-style: none;
 	}
 	#name-inp span {
 		display: inline-block;
@@ -23,10 +24,10 @@
 		text-align: right;
 	}
 	.indented {
-		margin-left: 4em;
+		margin-left: 2em;
 	}
 	#questions input[type="text"] {
-		width: 400px;
+		width: 200px;
 	}
 /* Page curl */
 	#curl {
@@ -80,18 +81,18 @@
 /* Questions */
 	#questions {
 		z-index: 1000;
-		position: fixed;
 		background: #fff;
 		padding: 20px;
 		min-width: 40%;
-		margin-left: 15%;
-		margin-right: 15%;
 		box-shadow: 10px 10px 5px #222;
 		border-radius: 15px;
 		text-align: center;
+		position: fixed;
 		overflow: auto;
-		top: 20px;
-		bottom: 40px;
+		top: 10px;
+		bottom: 10px;
+		left: 10px;
+		right: 20px;
 	}
 	#questions strong {
 		padding-left: 17px;
@@ -102,6 +103,19 @@
 		border-radius: 10px;
 		text-align: left;
 		padding: 15px;
-		margin-right: 4em;
 		list-style-position: inside;
+	}
+	#questions p {
+		margin: 0;
+	}
+	#questions p.submit {
+		position: fixed;
+		bottom: 20px;
+		right: 45px;
+	}
+	#questions p.submit button {
+		padding: 6px;
+	}
+	#questions ol.top {
+		padding-bottom: 2em;
 	}
