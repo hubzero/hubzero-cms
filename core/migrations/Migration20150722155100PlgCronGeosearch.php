@@ -25,7 +25,7 @@ class Migration20150722155100PlgCronGeosearch extends Base
 			{
 				$this->addPluginEntry('cron', 'geosearch');
 			}
-    }
+		}
 }
 
 	/**
