@@ -152,6 +152,12 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$questionID = JRequest::getVar('rid');
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
+		// clean input
+		array_walk($comment, function(&$field, $key)
+		{
+			$field = \Hubzero\Utility\Sanitize::clean($field);
+		});
+
 		if (!$comment['item_id'])
 		{
 			JError::raiseError(500, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
@@ -841,10 +847,9 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 
 		// clean input
-		array_walk($fields, function($field, $key)
+		array_walk($fields, function(&$field, $key)
 		{
-			$fields[$key] = \Hubzero\Utility\Sanitize::stripScripts($field);
-			$fields[$key] = \Hubzero\Utility\Sanitize::clean($field);
+			$field = \Hubzero\Utility\Sanitize::clean($field);
 		});
 
 		// Initiate class and bind posted items to database fields
@@ -1162,6 +1167,12 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$response = JRequest::getVar('response', array(), 'post', 'none', 2);
+
+		// clean input
+		array_walk($response, function(&$field, $key)
+		{
+			$field = \Hubzero\Utility\Sanitize::clean($field);
+		});
 
 		// Initiate class and bind posted items to database fields
 		$row = new AnswersModelResponse($response['id']);
