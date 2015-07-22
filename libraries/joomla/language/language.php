@@ -770,7 +770,7 @@ class JLanguage extends JObject
 
 			// Load overrides
 			// Only load overrides if the original file was loaded
-			if ($result)
+			/*if ($result)
 			{
 				$basePath = JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate();
 
@@ -780,7 +780,7 @@ class JLanguage extends JObject
 
 				// Load the language file
 				$resultOverride = $this->loadLanguage($filenameOverride, $extension);
-			}
+			}*/
 		}
 
 		return $result;
