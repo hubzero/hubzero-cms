@@ -573,6 +573,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->filters['collection_id'] = $view->collection->get('id');
 
+		$view->filters['sort'] = Request::getWord('sort', $view->collection->get('sort'));
+		if (!in_array($view->filters['sort'], array('created', 'ordering')))
+		{
+			$view->filters['sort'] = 'created';
+		}
+		$view->filters['sort_Dir'] = ($view->filters['sort'] == 'ordering' ? 'asc' : 'desc');
+
 		$count = array(
 			'count' => true,
 			'collection_id' => $view->collection->get('id')

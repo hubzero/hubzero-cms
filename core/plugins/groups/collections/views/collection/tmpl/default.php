@@ -42,6 +42,10 @@ if (!$this->collection->get('layout'))
 	$this->collection->set('layout', 'grid');
 }
 $viewas = Request::getWord('viewas', $this->collection->get('layout'));
+if (!in_array($viewas, array('grid', 'list')))
+{
+	$viewas = 'grid';
+}
 ?>
 
 <ul id="page_options">
@@ -96,9 +100,13 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 					<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
 				</a> -->
 			<?php } ?>
-			<span class="view-options">
-				<a href="<?php echo Route::url($base . '&viewas=grid'); ?>" class="icon-grid<?php if ($viewas == 'grid') { echo ' selected'; } ?>" data-view="view-grid" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW'); ?></a>
-				<a href="<?php echo Route::url($base . '&viewas=list'); ?>" class="icon-list<?php if ($viewas == 'list') { echo ' selected'; } ?>" data-view="view-list" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW'); ?></a>
+			<span class="options sort-options">
+				<a href="<?php echo Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas); ?>" class="icon-created<?php if ($this->filters['sort'] == 'created') { echo ' selected'; } ?>" data-view="sort-created" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT'); ?></a>
+				<a href="<?php echo Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas); ?>" class="icon-ordering<?php if ($this->filters['sort'] == 'ordering') { echo ' selected'; } ?>" data-view="sort-ordering" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT'); ?></a>
+			</span>
+			<span class="options view-options">
+				<a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid'); ?>" class="icon-grid<?php if ($viewas == 'grid') { echo ' selected'; } ?>" data-view="view-grid" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW'); ?></a>
+				<a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list'); ?>" class="icon-list<?php if ($viewas == 'list') { echo ' selected'; } ?>" data-view="view-list" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW'); ?></a>
 			</span>
 		</p>
 	<?php } ?>
@@ -119,7 +127,7 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 			?>
 				<div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $row->get('id')); ?>">
 					<div class="content">
-						<?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->collection->get('sort') == 'ordering') { ?>
+						<?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
 							<div class="sort-handle tooltips" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GRAB_TO_REORDER'); ?>"></div>
 						<?php } ?>
 						<?php
@@ -236,6 +244,8 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 			$pageNav->setAdditionalUrlParam('active', 'collections');
 			$pageNav->setAdditionalUrlParam('scope', $this->scope);
+			$pageNav->setAdditionalUrlParam('viewas', $viewas);
+			$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
 			echo $pageNav->render();
 		}
 		?>

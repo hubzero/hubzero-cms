@@ -472,6 +472,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		$view->filters['sort'] = Request::getWord('sort', $view->collection->get('sort'));
+		if (!in_array($view->filters['sort'], array('created', 'ordering')))
+		{
+			$view->filters['sort'] = 'created';
+		}
+		$view->filters['sort_Dir'] = ($view->filters['sort'] == 'ordering' ? 'asc' : 'desc');
+
 		$count = array(
 			'count'  => true,
 			'state'  => 1,

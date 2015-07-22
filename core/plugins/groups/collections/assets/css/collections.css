@@ -631,10 +631,10 @@
 	}
 
 	/* Layout icons */
-	p.overview .view-options {
+	p.overview .options {
 		text-align: right;
 	}
-	p.overview .view-options a {
+	p.overview .options a {
 		display: inline-block;
 		width: 1em;
 		height: 1em;
@@ -646,20 +646,29 @@
 		line-height: 1;
 		border: none;
 	}
-	p.overview .view-options a:hover,
-	p.overview .view-options a.selected {
+	p.overview .options a:hover,
+	p.overview .options a.selected {
 		color: #333;
 		border: none;
 	}
-	p.overview .view-options a:before {
+	p.overview .options a:before {
 		text-align: center;
 		display: inline-block;
+	}
+	p.overview .options a.icon-ordering {
+		margin-left: 1em;
 	}
 	.icon-grid:before {
 		content: "\f00a";
 	}
 	.icon-list:before {
 		content: "\f039";
+	}
+	.icon-created:before {
+		content: "\f160"; /* \21E3\231B */
+	}
+	.icon-ordering:before {
+		content: "\f162";
 	}
 
 /* Instructions */

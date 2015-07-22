@@ -91,6 +91,7 @@ $this->css();
 				</label>
 			</div>
 		</div>
+		<p class="hint"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SORT_DETAILS'); ?></p>
 	</fieldset>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
