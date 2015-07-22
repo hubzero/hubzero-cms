@@ -170,6 +170,12 @@ class Questions extends SiteController
 		$questionID = Request::getVar('rid');
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
+		// clean input
+		array_walk($comment, function(&$field, $key)
+		{
+			$field = \Hubzero\Utility\Sanitize::clean($field);
+		});
+
 		if (!$comment['item_id'])
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'), 500);
@@ -850,10 +856,9 @@ class Questions extends SiteController
 		}
 
 		// clean input
-		array_walk($fields, function($field, $key)
+		array_walk($fields, function(&$field, $key)
 		{
-			$fields[$key] = Sanitize::stripScripts($field);
-			$fields[$key] = Sanitize::clean($field);
+			$field = \Hubzero\Utility\Sanitize::clean($field);
 		});
 
 		// Initiate class and bind posted items to database fields
@@ -1166,6 +1171,12 @@ class Questions extends SiteController
 
 		// Incoming
 		$response = Request::getVar('response', array(), 'post', 'none', 2);
+
+		// clean input
+		array_walk($response, function(&$field, $key)
+		{
+			$field = \Hubzero\Utility\Sanitize::clean($field);
+		});
 
 		// Initiate class and bind posted items to database fields
 		$row = new Response($response['id']);
