@@ -99,7 +99,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_KB_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->row->get('description'))), 50, 10, 'field-description'); ?>
+				<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->row->get('description'))), 50, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 			</div>
 		</fieldset>
 	</div>

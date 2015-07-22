@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-fulltxt"><?php echo Lang::txt('COM_KB_BODY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), 60, 30, 'field-fulltxt'); ?>
+				<?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), 60, 30, 'field-fulltxt', array('buttons' => array('pagebreak', 'readmore', 'article'))); ?>
 			</div>
 
 			<div class="input-wrap">
