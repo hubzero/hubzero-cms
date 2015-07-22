@@ -78,6 +78,9 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="bootstrapck">Bootstrap CK</option>
 					<option value="office2013">Office 2013</option>
 				</field>
+				<field name="filebrowserBrowseUrl" type="text" size="5" default="" label="File Browser URL" description="The location of an external file browser that should be launched when the Browse Server button is pressed." />
+				<field name="filebrowserImageBrowseUrl" type="text" size="5" default="" label="Image Browser URL" description="The location of an external file browser that should be launched when the Browse Server button is pressed in the Image dialog window." />
+				<field name="filebrowserUploadUrl" type="text" size="5" default="" label="File Upload URL" description="The location of the script that handles file uploads." />
 			</fieldset>
 		</fields>
 	</config>
