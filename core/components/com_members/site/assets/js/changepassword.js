@@ -30,7 +30,7 @@ HUB.MembersChangePassword = {
 		var passsave = $('#password-change-save');
 
 		// Keep this disabled until API is more widely deployed
-		/*password.on('keyup', function(){
+		password.on('keyup', function(){
 			// Create an ajax call to check the potential password
 			$.ajax({
 				url: "/api/members/checkpass",
@@ -49,7 +49,7 @@ HUB.MembersChangePassword = {
 					}
 				}
 			});
-		});*/
+		});
 
 		passsave.on('click', function(e){
 			e.preventDefault();

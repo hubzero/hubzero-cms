@@ -611,6 +611,33 @@
 		padding: 0.5em 0;
 	}
 
+/* Password rules styling */
+	.com_members ul#passrules {
+		list-style: none;
+		margin: 0 2em;
+	}
+	.com_members ul#passrules li {
+		margin: 5px 0;
+		padding: 2px 2px 2px 20px;
+		position: relative;
+	}
+	.com_members ul#passrules li:before {
+		left: 4px;
+		top: 7px;
+	}
+	.com_members ul#passrules li.empty:before {
+		position: absolute;
+		left: 0;
+		top: 0;
+		content: "\2192";
+	}
+	.com_members ul#passrules li.error {
+		font-weight: bold;
+	}
+	.com_members ul#passrules li.passed {
+		text-decoration: line-through;
+	}
+
 /* [!] IE 7 Fixes */
 	.com_members #page_identity img {
 		*border: 1px solid #aaa;

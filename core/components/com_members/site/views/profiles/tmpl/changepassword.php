@@ -120,7 +120,7 @@ $this->css()
 								$err = '';
 							}
 
-							$mclass = ($err)  ? ' class="error"' : '';
+							$mclass = ($err)  ? ' class="error"' : ' class="empty"';
 							echo "\t\t\t<li $mclass>".$rule."</li>\n";
 						}
 					}
