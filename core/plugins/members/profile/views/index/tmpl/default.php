@@ -195,6 +195,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<input type="hidden" name="option" value="com_members" />
 				<input type="hidden" name="id" value="<?php echo User::get("id"); ?>" />
 				<input type="hidden" name="task" value="save" />
+        <?php echo Html::input('token'); ?> 
 			</form>
 		</div>
 	<?php endif; ?>
