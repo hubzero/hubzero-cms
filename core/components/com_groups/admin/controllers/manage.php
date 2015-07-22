@@ -441,6 +441,30 @@ class Manage extends AdminController
 		$uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 		// get the source path
+		$srcTplPath = null;
+
+		$db = \App::get('db');
+		$query = $db->getQuery(true);
+		$query->select('s.id, s.home, s.template, s.params, e.protected');
+		$query->from('#__template_styles as s');
+		$query->where('s.client_id = 0');
+		$query->where('e.enabled = 1');
+		$query->where('s.home = 1');
+		$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id');
+		$db->setQuery($query);
+		$template = $db->loadObject();
+		if ($template)
+		{
+			foreach (array(PATH_APP, PATH_CORE) as $path)
+			{
+				if (is_dir($path . DS . 'templates' . DS . $template->template . DS . 'super'))
+				{
+					$srcTplPath = $path . DS . 'templates' . DS . $template->template . DS . 'super';
+					break;
+				}
+			}
+		}
+
 		$srcPath = dirname(dirname(__DIR__)) . DS . 'super' . DS . 'default' . DS . '.';
 
 		// create group folder if one doesnt exist
@@ -459,6 +483,13 @@ class Manage extends AdminController
 			return;
 		}
 
+		// We need to handle templates a little differently
+		if ($srcTplPath)
+		{
+			$uploadTplPath = $uploadPath . DS . 'template';
+			shell_exec("cp -rf $srcTplPath $uploadTplPath 2>&1");
+		}
+
 		// copy over default template recursively
 		// must have  /. at the end of source path to get all items in that directory
 		// also doesnt overwrite already existing files/folders
@@ -471,7 +502,7 @@ class Manage extends AdminController
 
 		// get all current users granted permissionss
 		$this->database->setQuery("SHOW GRANTS FOR CURRENT_USER();");
-		$grants = $this->database->loadResultArray();
+		$grants = $this->database->loadColumn();
 
 		// look at all current users granted permissions
 		$canCreateSuperGroupDB = false;
