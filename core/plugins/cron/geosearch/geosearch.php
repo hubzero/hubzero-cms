@@ -54,11 +54,6 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				'name'	 => 'getLocationData',
 				'label'	=> Lang::txt('PLG_CRON_GEOSEARCH_GET_LOCATION_DATA'),
 				'params' => ''
-			),
-			array(
-				'name'	 => 'sendGroupAnnouncements',
-				'label'	=> Lang::txt('PLG_CRON_GEOSEARCH_UPDATE_LOCATION_DATA'),
-				'params' => ''
 			)
 		);
 
