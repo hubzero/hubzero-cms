@@ -236,7 +236,7 @@ if ($this->wishlist->exists())
 								}
 								?>
 								<tr class="<?php echo $state; ?>">
-									<th class="<?php echo $status; ?>">
+									<th class="priority-5 <?php echo $status; ?>">
 										<span class="entry-id"><?php echo $item->get('id'); ?></span>
 									</th>
 									<td>
@@ -263,7 +263,7 @@ if ($this->wishlist->exists())
 								<?php } ?>
 									</td>
 								<?php if (!$item->isReported() && $this->wishlist->get('banking')) { ?>
-									<td class="reward">
+									<td class="priority-5 reward">
 										<span class="entry-reward">
 										<?php if ($item->get('bonus') > 0 && ($item->isOpen() or $item->isAccepted())) { ?>
 											<a class="bonus tooltips" href="<?php echo Route::url($item->link('addbonus', $filters)); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$item->get('bonusgivenby').' '.Lang::txt('COM_WISHLIST_MULTIPLE_USERS').' '.Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->get('bonus').' '.Lang::txt('COM_WISHLIST_POINTS').' '.Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>">
@@ -280,7 +280,7 @@ if ($this->wishlist->exists())
 									</td>
 								<?php } ?>
 								<?php if (!$item->isReported()) { ?>
-									<td class="voting">
+									<td class="priority-4 voting">
 										<?php
 										$this->view('_vote')
 										     ->set('option', $this->option)
@@ -293,7 +293,7 @@ if ($this->wishlist->exists())
 										     ->display();
 										?>
 									</td>
-									<td class="ranking">
+									<td class="priority-3 ranking">
 										<?php
 										$html = '';
 										switch ($item->get('status'))
