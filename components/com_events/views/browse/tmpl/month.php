@@ -108,9 +108,38 @@ $this->css()
 				$prev_year->addMonths( -12 );
 				$next_year = clone($this_date);
 				$next_year->addMonths( +12 );
+				$database = JFactory::getDBO();
+				$sql = "SELECT MIN(publish_up) min, MAX(publish_down) max FROM `#__events` as e
+								WHERE `scope`='event'
+								AND `state`=1
+								AND `approved`=1";
+				$database->setQuery($sql);
+				$rows = $database->loadObjectList();
+				$first_event_time = new DateTime($rows[0]->min);
+				$last_event_time = new DateTime($rows[0]->max);
+				$this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
+				//get a DateTime for one month before currently viewed and disable URL if required
+				$this_datetime->sub(new DateInterval("P1Y")); 
+				if ($this_datetime > $first_event_time) {
+					$prev = JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
+					$prev_text = JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR');
+				} else {
+					$prev = "javascript:void(0);";
+					$prev_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR');
+				}
+				//get a DateTime for one month after currently viewed and disable URL if required
+				$this_datetime->add(new DateInterval("P2Y"));
+				if ($this_datetime < $last_event_time) {
+					$next = JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
+					$next_text = JText::_('EVENTS_CAL_LANG_NEXTYEAR');
+				} else {
+					$next = "javascript:void(0);";
+					$next_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_NEXTYEAR');
+				}
+
 				?>
-				<a class="prv" href="<?php if ($this->year > (date('Y') - 10)) { echo JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task)); } else { echo "javascript:void(0);"; } ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR'); ?>">&lsaquo;</a>
-				<a class="nxt" href="<?php if ($this->year < date('Y') + 10) { echo JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task)); } else { echo "javascript:void(0);"; } ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTYEAR'); ?>">&rsaquo;</a>
+				<a class="prv" href="<?php echo $prev;?>" title="<?php echo $prev_text; ?>">&lsaquo;</a>
+				<a class="nxt" href="<?php echo $next;?>" title="<?php echo $next_text; ?>">&rsaquo;</a>
 				<?php echo $this->year; ?>
 			</p>
 		</div><!-- / .calendarwrap -->
