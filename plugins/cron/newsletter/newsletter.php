@@ -127,7 +127,7 @@ class plgCronNewsletter extends JPlugin
 
 			// create unsubscribe link
 			$unsubscribeMailtoLink = '';
-			$unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . $queuedEmail->email . '&t=' . $emailToken;
+			$unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . urlencode($queuedEmail->email) . '&t=' . $emailToken;
 
 			// add unsubscribe link - placeholder & in header (must do after adding tracking!!)
 			$queuedEmail->html_body = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->html_body);

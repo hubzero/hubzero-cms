@@ -268,10 +268,10 @@ class NewsletterHelper
 		$body .= $mailinglistObject->description . PHP_EOL . PHP_EOL . PHP_EOL;
 		$body .= "========================================================================" . PHP_EOL . PHP_EOL;
 		$body .= "Click this link to CONFIRM your subscription:" . PHP_EOL;
-		$body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/confirm?e=' . $emailAddress . '&t=' . $token . PHP_EOL . PHP_EOL;
+		$body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/confirm?e=' . urlencode($emailAddress) . '&t=' . $token . PHP_EOL . PHP_EOL;
 		$body .= "------------------------------------------------------------------------" . PHP_EOL . PHP_EOL;
 		$body .= "Click this link to REMOVE this email from the mailing list:" . PHP_EOL;
-		$body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/remove?e=' . $emailAddress . '&t=' . $token . PHP_EOL . PHP_EOL;
+		$body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/remove?e=' . urlencode($emailAddress) . '&t=' . $token . PHP_EOL . PHP_EOL;
 		$body .= "========================================================================";
 
 		// create new message

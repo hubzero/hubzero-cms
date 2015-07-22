@@ -321,7 +321,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		$this->view->setLayout('unsubscribe');
 
 		//get request vars
-		$email = JRequest::getVar('e', '');
+		$email = urldecode(JRequest::getVar('e', ''));
 		$token = JRequest::getVar('t', '');
 
 		//parse token
@@ -434,7 +434,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	public function doUnsubscribeTask()
 	{
 		//get request vars
-		$email 		= JRequest::getVar('e', '');
+		$email 		= urldecode(JRequest::getVar('e', ''));
 		$token 		= JRequest::getVar('t', '');
 		$reason 	= JRequest::getVar('reason', '');
 		$reason_alt = JRequest::getVar('reason-alt', '');
@@ -535,7 +535,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	public function confirmTask()
 	{
 		//get request vars
-		$email = JRequest::getVar('e', '');
+		$email = urldecode(JRequest::getVar('e', ''));
 		$token = JRequest::getVar('t', '');
 
 		//make sure we have an email
@@ -584,7 +584,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	public function removeTask()
 	{
 		//get request vars
-		$email = JRequest::getVar('e', '');
+		$email = urldecode(JRequest::getVar('e', ''));
 		$token = JRequest::getVar('t', '');
 
 		//make sure we have an email
