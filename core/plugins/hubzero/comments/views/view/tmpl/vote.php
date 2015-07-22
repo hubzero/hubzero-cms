@@ -101,7 +101,7 @@ if (!$no_html) { ?>
 		<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
-		<?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by') || !$this->params->get('access-vote-comment')) { ?>
+		<?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
 			<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
 				<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
 			</span>
