@@ -48,7 +48,7 @@ use Hubzero\Error\Exception\RuntimeException;
  * // @FIXME: handle content that needs to be parsed (wiki/html)
  * // @FIXME: handle dates
  */
-class Relational implements \IteratorAggregate
+class Relational implements \IteratorAggregate, \ArrayAccess
 {
 	/*
 	 * Errors trait for error message handling
@@ -832,6 +832,63 @@ class Relational implements \IteratorAggregate
 	public function getIterator()
 	{
 		return $this->copy()->rows();
+	}
+
+	/**
+	 * Sets the atrributes key with value
+	 *
+	 * @param  array|string $key   the key to set, or array of key/value pairs
+	 * @param  mixed        $value the value to set if key is string
+	 * @return void
+	 * @since  1.3.2
+	 **/
+	public function offsetSet($key, $value)
+	{
+		if (is_array($key) || is_object($key))
+		{
+			foreach ($key as $k => $v)
+			{
+				$this->attributes[$k] = $v;
+			}
+		}
+		else
+		{
+			$this->attributes[$key] = $value;
+		}
+	}
+
+	/**
+	 * Checks to see if the requested attribute is set on the model
+	 *
+	 * @return bool
+	 * @since  1.3.2
+	 **/
+	public function offsetExists($key)
+	{
+		return $this->hasAttribute($key);
+	}
+
+	/**
+	 * Unsets the requested attribute from the model
+	 *
+	 * @return void
+	 * @since  1.3.2
+	 **/
+	public function offsetUnset($key)
+	{
+		unset($this->attributes[$key]);
+	}
+
+	/**
+	 * Gets an attribute by key
+	 *
+	 * @param  string $key the attribute key to get
+	 * @return mixed
+	 * @since  1.3.2
+	 **/
+	public function offsetGet($key)
+	{
+		return $this->get($key);
 	}
 
 	/**
