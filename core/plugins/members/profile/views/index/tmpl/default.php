@@ -195,7 +195,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<input type="hidden" name="option" value="com_members" />
 				<input type="hidden" name="id" value="<?php echo User::get("id"); ?>" />
 				<input type="hidden" name="task" value="save" />
-        <?php echo Html::input('token'); ?> 
+				<?php echo Html::input('token'); ?>
 			</form>
 		</div>
 	<?php endif; ?>
@@ -245,7 +245,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							<a href="#" class="edit-profile-close">&times;</a>
 							-->
 							<div class="section-edit-content">
-								<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
+								<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registation="password" data-section-profile="password">
 									<span class="section-edit-errors"></span>
 									<label for="password">
 										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
@@ -266,7 +266,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 									<input type="hidden" name="task" value="changepassword" />
 									<input type="hidden" name="no_html" value="1" />
-                  <?php echo Html::input('token'); ?>
+									<?php echo Html::input('token'); ?>
 								</form>
 							</div>
 						</div>
