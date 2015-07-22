@@ -2126,13 +2126,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Remove main flag from previous default version
-			if ($main && $main_vid && $main_vid != $pub->version->id)
+			if ($main && $main_vid && $main_vid != $pub->version->get('id'))
 			{
 				$pub->version->removeMainFlag($main_vid);
 			}
 
 			// Mark as curated
-			$pub->version->saveParam($pub->version->id, 'curated', 1);
+			$pub->version->saveParam($pub->version->get('id'), 'curated', 1);
 		}
 
 		// OnAfterPublish

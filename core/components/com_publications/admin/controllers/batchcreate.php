@@ -270,15 +270,8 @@ class Batchcreate extends AdminController
 		// Get type params
 		$mType = $mt->getType($mastertype);
 
-		// Use new curation flow?
-		$this->useBlocks  = $this->config->get('curation', 0);
-		$curationModel 	  = NULL;
-
 		// Get curation model for the type
-		if ($this->useBlocks)
-		{
-			$curationModel = new \Components\Publications\Models\Curation($mType->curation);
-		}
+		$curationModel = new \Components\Publications\Models\Curation($mType->curation);
 
 		// Get defaults from manifest
 		$title = $curationModel && isset($curationModel->_manifest->params->default_title)
