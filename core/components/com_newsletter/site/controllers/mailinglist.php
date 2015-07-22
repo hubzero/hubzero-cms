@@ -329,7 +329,7 @@ class Mailinglist extends SiteController
 		$this->view->setLayout('unsubscribe');
 
 		//get request vars
-		$email = Request::getVar('e', '');
+		$email = urldecode(Request::getVar('e', ''));
 		$token = Request::getVar('t', '');
 
 		//parse token
@@ -450,7 +450,7 @@ class Mailinglist extends SiteController
 	public function doUnsubscribeTask()
 	{
 		//get request vars
-		$email      = Request::getVar('e', '');
+		$email      = urldecode(Request::getVar('e', ''));
 		$token      = Request::getVar('t', '');
 		$reason     = Request::getVar('reason', '');
 		$reason_alt = Request::getVar('reason-alt', '');
@@ -563,7 +563,7 @@ class Mailinglist extends SiteController
 	public function confirmTask()
 	{
 		//get request vars
-		$email = Request::getVar('e', '');
+		$email = urldecode(Request::getVar('e', ''));
 		$token = Request::getVar('t', '');
 
 		//make sure we have an email
@@ -618,7 +618,7 @@ class Mailinglist extends SiteController
 	public function removeTask()
 	{
 		//get request vars
-		$email = Request::getVar('e', '');
+		$email = urldecode(Request::getVar('e', ''));
 		$token = Request::getVar('t', '');
 
 		//make sure we have an email
