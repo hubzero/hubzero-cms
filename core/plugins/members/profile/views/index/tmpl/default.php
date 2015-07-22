@@ -159,10 +159,23 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 	<?php if (isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
 		<div id="usage-agreement-popup">
-			<form action="index.php" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
+			<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
 				<h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
 				<div id="usage-agreement-box">
-					<iframe id="usage-agreement" src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>
+					<?php /*<iframe id="usage-agreement" src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>*/ ?>
+					<div id="usage-agreement">
+						<?php
+						$db = App::get('db');
+						$db->setQuery("SELECT * FROM `#__content` WHERE `alias`=" . $db->quote('terms'));
+						$page = $db->loadObject();
+						if ($page && $page->id)
+						{
+							$params = new \Hubzero\Config\Registry($page->attribs);
+							$results = Event::trigger('content.onContentPrepare', array ('com_content.article', &$page, &$params, 0));
+							echo $page->introtext;
+						}
+						?>
+					</div>
 					<div id="usage-agreement-last-chance">
 						<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ARE_YOU_SURE'); ?></h3>
 						<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ARE_YOU_SURE_EXPLANATION'); ?></p>
