@@ -265,6 +265,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 									<input type="hidden" name="task" value="changepassword" />
 									<input type="hidden" name="no_html" value="1" />
+                  <?php echo Html::input('token'); ?>
 								</form>
 							</div>
 						</div>
