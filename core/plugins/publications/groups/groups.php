@@ -51,9 +51,13 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onPublicationSubAreas( $publication )
 	{
-		$areas = array(
-			'groups' => Lang::txt('PLG_PUBLICATIONS_GROUPS')
-		);
+		$areas = array();
+		if ($publication->category()->_params->get('plg_groups', 1) == 1)
+		{
+			$areas = array(
+				'groups' => Lang::txt('PLG_PUBLICATIONS_GROUPS')
+			);
+		}
 		return $areas;
 	}
 
@@ -71,6 +75,14 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 			'html'     => '',
 			'metadata' => ''
 		);
+
+		// Check if our area is in the array of areas we want to return results for
+		$areas = array('groups');
+		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
+		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		{
+			return false;
+		}
 
 		if (!$publication->groupOwner())
 		{

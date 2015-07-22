@@ -51,9 +51,13 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onPublicationSubAreas( $publication )
 	{
-		$areas = array(
-			'related' => Lang::txt('PLG_PUBLICATION_RELATED')
-		);
+		$areas = array();
+		if ($publication->category()->_params->get('plg_related', 1) == 1)
+		{
+			$areas = array(
+				'related' => Lang::txt('PLG_PUBLICATION_RELATED')
+			);
+		}
 		return $areas;
 	}
 
@@ -71,6 +75,14 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 			'html'=>'',
 			'metadata'=>''
 		);
+
+		// Check if our area is in the array of areas we want to return results for
+		$areas = array('related');
+		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
+		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		{
+			return false;
+		}
 
 		$database = App::get('db');
 

@@ -51,9 +51,13 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onPublicationSubAreas( $publication )
 	{
-		$areas = array(
-			'watch' => Lang::txt('PLG_PUBLICATION_WATCH')
-		);
+		$areas = array();
+		if ($publication->category()->_params->get('plg_watch', 1) == 1)
+		{
+			$areas = array(
+				'watch' => Lang::txt('PLG_PUBLICATION_WATCH')
+			);
+		}
 		return $areas;
 	}
 
@@ -72,6 +76,14 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 			'metadata'=> '',
 			'name'    => 'watch'
 		);
+
+		// Check if our area is in the array of areas we want to return results for
+		$areas = array('watch');
+		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
+		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		{
+			return false;
+		}
 
 		// Only show for logged-in users
 		if (User::isGuest())

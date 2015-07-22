@@ -51,9 +51,13 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onPublicationSubAreas( $publication )
 	{
-		$areas = array(
-			'recommendations' => Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS')
-		);
+		$areas = array();
+		if ($publication->category()->_params->get('plg_recommendations', 1) == 1)
+		{
+			$areas = array(
+				'recommendations' => Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS')
+			);
+		}
 		return $areas;
 	}
 
@@ -72,6 +76,14 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 			'metadata'=>'',
 			'name'    =>'recommendations'
 		);
+
+		// Check if our area is in the array of areas we want to return results for
+		$areas = array('recommendations');
+		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
+		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		{
+			return false;
+		}
 
 		// Get some needed libraries
 		include_once(PATH_CORE . DS . 'plugins' . DS . 'publications'
