@@ -78,7 +78,7 @@ $last_event_time = new DateTime($rows[0]->max);
 $this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
 
 //get a DateTime for one month before currently viewed and disable URL if required
-$this_datetime->sub(new DateInterval("P1M")); 
+$this_datetime->sub(new DateInterval("P1M"));
 if ($this_datetime > $first_event_time) {
 	$prev = JRoute::_( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
 	$prev_text = JText::_('EVENTS_CAL_LANG_PREVIOUSMONTH');
