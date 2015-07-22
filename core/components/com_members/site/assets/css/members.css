@@ -162,7 +162,7 @@
 		content: "";
 		position: absolute;
 		top: 0px;
-		right: -1em;
+		right: -0.9em;
 		z-index: 444;
 		border-top: 1.175em solid transparent;
 		border-right: none;
