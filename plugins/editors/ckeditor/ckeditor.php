@@ -109,6 +109,17 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onGetInsertMethod($id)
 	{
+		$js = "
+			function jInsertEditorText( text, editor ) {
+				CKEDITOR.instances[editor].updateElement();
+				var content = document.getElementById(editor).value;
+				content = content + text;
+				CKEDITOR.instances[editor].setData(content);
+			}
+		";
+
+		JFactory::getDocument()->addScriptDeclaration($js);
+
 		return true;
 	}
 
