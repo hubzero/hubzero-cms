@@ -66,21 +66,38 @@ $prev_month = clone($this_date);
 $prev_month->addMonths( -1 );
 $next_month = clone($this_date);
 $next_month->addMonths( +1 );
-if ($this_date->year > date('Y') - 10) {
-	$prev = Route::url( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
+$sql = "SELECT MIN(publish_up) min, MAX(publish_down) max FROM `#__events` as e
+				WHERE `scope`='event'
+				AND `state`=1
+				AND `approved`=1";
+$database->setQuery($sql);
+$rows = $database->loadObjectList();
+$first_event_time = new DateTime($rows[0]->min);
+$last_event_time = new DateTime($rows[0]->max);
+$this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
+
+//check for events before the first of this month
+if ($this_datetime > $first_event_time) {
+	$prev = JRoute::_( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
+	$prev_text = JText::_('EVENTS_CAL_LANG_PREVIOUSMONTH');
 } else {
 	$prev = "javascript:void(0);";
+	$prev_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_PREVIOUSMONTH');
 }
-if ($this_date->year < date('Y') + 10) {
-	$next = Route::url( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
+//get a DateTime for one month after currently viewed and disable URL if required
+$this_datetime->add(new DateInterval("P1M"));
+if ($this_datetime <= $last_event_time) {
+	$next = JRoute::_( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
+	$next_text = JText::_('EVENTS_CAL_LANG_NEXTMONTH');
 } else {
 	$next = "javascript:void(0);";
+	$next_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_NEXTMONTH');
 }
 
 $content  = '<table class="ecalendar">'."\n";
 $content .= ' <caption>';
 if ($this->shownav) {
-	$content .= '<a class="prv" href="'.$prev.'" title="'.Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH').'">&lsaquo;</a> <a class="nxt" href="'.$next.'" title="'.Lang::txt('EVENTS_CAL_LANG_NEXTMONTH').'">&rsaquo;</a> ';
+	$content .= '<a class="prv" href="'.$prev.'" title="'.$prev_text.'">&lsaquo;</a> <a class="nxt" href="'.$next.'" title="'.$next_text.'">&rsaquo;</a> ';
 }
 $content .= \Components\Events\Helpers\Html::getMonthName($cal_month).'</caption>'."\n";
 $content .= ' <thead>'."\n";
