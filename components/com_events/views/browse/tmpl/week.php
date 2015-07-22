@@ -162,9 +162,8 @@ $this->css();
 				$rows = $database->loadObjectList();
 				$first_event_time = new DateTime($rows[0]->min);
 				$last_event_time = new DateTime($rows[0]->max);
-				$this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
-				//get a DateTime for one month before currently viewed and disable URL if required
-				$this_datetime->sub(new DateInterval("P1Y"));
+				$this_datetime = new DateTime($this->year . '-' . '01-01');
+				//get a DateTime for the first day of the year and check if there's an event earlier
 				if ($this_datetime > $first_event_time) {
 					$prev = JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
 					$prev_text = JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR');
@@ -173,8 +172,8 @@ $this->css();
 					$prev_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR');
 				}
 				//get a DateTime for one month after currently viewed and disable URL if required
-				$this_datetime->add(new DateInterval("P2Y"));
-				if ($this_datetime < $last_event_time) {
+				$this_datetime->add(new DateInterval("P1Y"));
+				if ($this_datetime <= $last_event_time) {
 					$next = JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
 					$next_text = JText::_('EVENTS_CAL_LANG_NEXTYEAR');
 				} else {

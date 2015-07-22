@@ -77,8 +77,7 @@ $first_event_time = new DateTime($rows[0]->min);
 $last_event_time = new DateTime($rows[0]->max);
 $this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
 
-//get a DateTime for one month before currently viewed and disable URL if required
-$this_datetime->sub(new DateInterval("P1M"));
+//check for events before the first of this month
 if ($this_datetime > $first_event_time) {
 	$prev = JRoute::_( 'index.php?option='.$this->option.'&'. $prev_month->toDateURL($this->task) );
 	$prev_text = JText::_('EVENTS_CAL_LANG_PREVIOUSMONTH');
@@ -87,8 +86,8 @@ if ($this_datetime > $first_event_time) {
 	$prev_text = JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_PREVIOUSMONTH');
 }
 //get a DateTime for one month after currently viewed and disable URL if required
-$this_datetime->add(new DateInterval("P2M"));
-if ($this_datetime < $last_event_time) {
+$this_datetime->add(new DateInterval("P1M"));
+if ($this_datetime <= $last_event_time) {
 	$next = JRoute::_( 'index.php?option='.$this->option.'&'. $next_month->toDateURL($this->task) );
 	$next_text = JText::_('EVENTS_CAL_LANG_NEXTMONTH');
 } else {
