@@ -31,6 +31,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+
+use Components\Time\Models\Record;
+use Components\Time\Models\Permissions;
+
 /**
  * Plugin for adding time records from a support ticket
  */
@@ -51,54 +57,16 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTicketComment($ticket)
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
-
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
-
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
-
-		$permissions = new TimeModelPermissions('com_time');
-		if (!$permissions->can('save', 'records'))
+		// Check permissions
+		$permissions = new Permissions('com_time');
+		if (!$permissions->can('save.records'))
 		{
 			return;
 		}
 
-		$db = App::get('db');
-
-		$view = $this->view('default', 'create');
+		$view         = $this->view('default', 'create');
 		$view->ticket = $ticket;
-
-		$record = new TimeRecords($db);
-		$view->row = $record->getRecord(0);
-
-		if (strstr($view->row->time, '.') !== false)
-		{
-			list($hrs, $mins) = explode('.', $view->row->time);
-		}
-		else
-		{
-			$hrs = $view->row->time;
-			$mins = 0;
-		}
-
-		if (empty($view->row->user_id))
-		{
-			// Set some defaults
-			$view->row->user_id = User::get('id');
-			$view->row->uname   = User::get('name');
-			$view->row->date    = gmdate('Y-m-d');
-		}
-
-		$view->htimelist = TimeHTML::buildTimeListHours($hrs);
-		$view->mtimelist = TimeHTML::buildTimeListMins($mins);
-		$view->hubslist  = TimeHTML::buildHubsList('records', $view->row->hid);
-		$view->tasklist  = TimeHTML::buildTasksList($view->row->task_id, 'records', $view->row->hid, $view->row->pactive);
+		$view->row    = Record::blank();
 
 		return $view->loadTemplate();
 	}
@@ -112,49 +80,46 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTicketUpdate($ticket, $comment)
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
-
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
-
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
-
-		$permissions = new TimeModelPermissions('com_time');
+		// Check permissions
+		$permissions = new Permissions('com_time');
 		if (!$permissions->can('save.records'))
 		{
 			return;
 		}
 
-		$db = App::get('db');
+		// Create object
+		$record = Record::blank()->set(
+		[
+			'task_id'     => Request::getInt('task_id'),
+			'user_id'     => User::get('id'),
+			'time'        => Request::getInt('htime') . '.' . Request::getInt('mtime'),
+			'date'        => Date::of(Request::getVar('date') . ' 8:00:00', Config::get('offset'))->toSql(),
+			'description' => $comment->get('comment')
+		]);
 
-		// Incoming posted data
-		$record = Request::getVar('records', array(), 'post');
-		$record = array_map('trim', $record);
-
-		// Combine the time entry
-		$record['user_id']     = User::get('id');
-		$record['time']        = $record['htime'] . '.' . $record['mtime'];
-		$record['date']        = Date::of($record['date'], Config::get('offset'))->toSql();
-		$record['description'] = $comment->get('comment');
+		// Set end based on start + time length
+		$record->set('end', date('Y-m-d H:i:s', (strtotime($record->date) + ($record->time*3600))));
 
 		// Don't attempt to save a record if no time or task was chosen
-		if (!$record['time'] || !$record['task_id'])
+		if (!$record->time || $record->time == 0.0 || !$record->task_id)
 		{
 			return;
 		}
 
-		// Create object and store new content
-		$records = new TimeRecords($db);
-
-		if (!$records->save($record))
+		if (!$record->save())
 		{
-			// Something went wrong...return errors (probably from 'check')
-			Notify::error(App::get('debug') ? $records->getError() : Lang::txt('Failed to save time record.'));
+			if (Config::get('debug'))
+			{
+				// Something went wrong...return errors
+				foreach ($record->getErrors() as $error)
+				{
+					Notify::error($error);
+				}
+			}
+			else
+			{
+				Notify::error(Lang::txt('Failed to save time record.'));
+			}
 		}
 	}
 }

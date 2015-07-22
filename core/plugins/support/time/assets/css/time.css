@@ -8,15 +8,16 @@
 /* --------------------------
 	Edit Page
 ----------------------------- */
-	#plg_time_records #time-group span {
+	.plg_support_time .time-group span {
 		padding-top: 1em;
 		position: relative;
 		display: block;
 	}
-	#plg_time_records #time-group select {
+	.plg_support_time .time-group div {
 		width: 45%;
 		margin-right: 5%;
+		float: left;
 	}
-	#plg_time_records #time-group select:last-child {
+	.plg_support_time .time-group div:last-child {
 		margin-right: 0;
 	}
