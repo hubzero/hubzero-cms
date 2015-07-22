@@ -49,29 +49,29 @@ class Types extends AdminController
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit'] = Request::getState(
-			$this->_option . '.categories.limit',
+			$this->_option . '.types.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = Request::getState(
-			$this->_option . '.categories.limitstart',
+			$this->_option . '.types.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
 		$this->view->filters['search'] = trim(Request::getState(
-			$this->_option . '.categories.search',
+			$this->_option . '.types.search',
 			'search',
 			''
 		));
 		$this->view->filters['sort'] = trim(Request::getState(
-			$this->_option . '.categories.sort',
+			$this->_option . '.types.sort',
 			'filter_order',
 			'id'
 		));
 		$this->view->filters['sort_Dir'] = trim(Request::getState(
-			$this->_option . '.categories.sortdir',
+			$this->_option . '.types.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
@@ -647,12 +647,7 @@ class Types extends AdminController
 	 */
 	public function editTask( $row = null )
 	{
-		// Use new curation flow?
-		$useBlocks  = $this->config->get('curation', 0);
-		if ($useBlocks)
-		{
-			$this->view->setLayout('curation');
-		}
+		$this->view->setLayout('curation');
 
 		if ($row)
 		{
@@ -675,23 +670,18 @@ class Types extends AdminController
 			$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 			$this->view->row->load($id);
 
-			// Get curation
-			if ($useBlocks)
-			{
-				$this->view->curation = new \Components\Publications\Models\Curation(
-					$this->view->row->curation
-				);
+			$this->view->curation = new \Components\Publications\Models\Curation(
+				$this->view->row->curation
+			);
 
-				// Get blocks model
-				$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+			// Get blocks model
+			$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
-				// Get available blocks
-				$this->view->blocks = $blocksModel->getBlocks('*',
-					" WHERE status=1",
-					" ORDER BY ordering, id"
-				);
-
-			}
+			// Get available blocks
+			$this->view->blocks = $blocksModel->getBlocks('*',
+				" WHERE status=1",
+				" ORDER BY ordering, id"
+			);
 		}
 
 		// Set any errors
@@ -736,9 +726,6 @@ class Types extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Use new curation flow?
-		$useBlocks  = $this->config->get('curation', 0);
-
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
@@ -763,7 +750,7 @@ class Types extends AdminController
 		}
 
 		// Save curation config
-		if ($useBlocks && $row->id)
+		if ($row->id)
 		{
 			// Incoming
 			$curatorGroup = Request::getVar('curatorgroup', '');

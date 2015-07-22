@@ -114,13 +114,29 @@ class Category extends \JTable
 					? 'WHERE C.state=' . $filters['state'] : " WHERE C.state=1 ";
 		}
 
-		$orderby = isset($filters['sort']) ? $filters['sort'] : "name";
-		$order_dir = isset($filters['sort_Dir']) ? $filters['sort_Dir'] : "ASC";
-		$query .= " ORDER BY C.".$orderby." ".$order_dir." ";
+		$orderby  = isset($filters['sort']) ? $filters['sort'] : "name";
+		$orderDir = isset($filters['sort_Dir']) && strtoupper($filters['sort_Dir']) == 'DESC' ? 'DESC' : 'ASC';
+		switch ($orderby)
+		{
+			case 'name':
+			default:
+				$query .= ' ORDER BY C.name ' . $orderDir;
+
+				break;
+			case 'id':
+				$query .= ' ORDER BY C.id ' . $orderDir;
+				break;
+			case 'state':
+				$query .= ' ORDER BY C.state ' . $orderDir;
+				break;
+			case 'contributable':
+				$query .= ' ORDER BY C.contributable ' . $orderDir;
+				break;
+		}
 
 		if (isset($filters['start']) && isset($filters['limit']))
 		{
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		$this->_db->setQuery( $query );
