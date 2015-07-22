@@ -181,6 +181,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<input type="hidden" name="option" value="com_members" />
 				<input type="hidden" name="id" value="<?php echo $juser->get("id"); ?>" />
 				<input type="hidden" name="task" value="save" />
+        <?php echo JHTML::_('form.token'); ?>
 			</form>
 		</div>
 	<?php endif; ?>
