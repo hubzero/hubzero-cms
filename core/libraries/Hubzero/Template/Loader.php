@@ -121,15 +121,25 @@ class Loader
 	}
 
 	/**
-	 * Make sure component name follows naming conventions
+	 * Load a template by client
 	 *
-	 * @param   string   $name       The template name
 	 * @param   integer  $client_id  The client to load the tmeplate for
 	 * @return  string
 	 */
-	public function load($name = null, $client_id = 0)
+	public function load($client_id = null)
 	{
-		$method = 'get' . ucfirst($this->app['client']->name) . 'Template';
+		if (!is_null($client_id))
+		{
+			$client = \Hubzero\Base\ClientManager::client($client_id, (! is_numeric($client_id)));
+		}
+		else
+		{
+			$client = $this->app['client'];
+		}
+
+		$name = $client->name;
+
+		$method = 'get' . ucfirst($name) . 'Template';
 
 		if (method_exists($this, $method))
 		{
