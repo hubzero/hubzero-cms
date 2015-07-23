@@ -76,7 +76,7 @@ class QueryTest extends Database
 		]);
 
 		// There are two default users in the seed data, and adding a new one should a rowcount of 3
-		$this->assertEquals(3, $this->getConnection()->getRowCount('users'), 'Push did not return the expected row count of 3');
+		$this->assertEquals(5, $this->getConnection()->getRowCount('users'), 'Push did not return the expected row count of 5');
 	}
 
 	/**
@@ -121,7 +121,7 @@ class QueryTest extends Database
 		// Try to update an existing row
 		$query->remove('users', 'id', 1);
 
-		$this->assertEquals(1, $this->getConnection()->getRowCount('users'), 'Remove did not return the expected row count of 1');
+		$this->assertEquals(3, $this->getConnection()->getRowCount('users'), 'Remove did not return the expected row count of 3');
 	}
 
 	/**
