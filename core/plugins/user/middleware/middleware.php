@@ -94,7 +94,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 						$cids = $db->loadObjectList();
 					}
 					// Loop through each usergroup and find the highest quota values
-					foreach ($cids as $cls);
+					foreach ($cids as $cls)
 					{
 						$cls->hard_blocks = intval($cls->hard_blocks);
 						$cls->soft_blocks = intval($cls->soft_blocks);
