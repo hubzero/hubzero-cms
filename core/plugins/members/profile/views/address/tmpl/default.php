@@ -92,7 +92,7 @@ else
 
 		//end column
 		$formattedAddresses .= '</div><!-- /#end address col -->';
-		if ((($k+1) % 3 == 0) && count($addresses) > 3)
+		if ((($k+1) % 3 == 0) && count($this->addresses) > 3)
 		{
 			$formattedAddresses .= '</div>';
 			$formattedAddresses .= '<div class="grid cf">';
