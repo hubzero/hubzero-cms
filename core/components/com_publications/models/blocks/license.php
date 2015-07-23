@@ -323,9 +323,6 @@ class License extends Base
 		// Start status
 		$status 	 = new \Components\Publications\Models\Status();
 
-		// Get version params
-		$pubParams = new \Hubzero\Config\Registry( $pub->params );
-
 		$status->status = 1;
 
 		// Load license class
@@ -333,7 +330,7 @@ class License extends Base
 
 		if ($pub->license_type && $objL->load($pub->license_type))
 		{
-			$agreement = $pubParams->get('licenseagreement');
+			$agreement = $pub->params->get('licenseagreement');
 
 			// Missing agreement?
 			if ($objL->agreement == 1 && !$agreement)

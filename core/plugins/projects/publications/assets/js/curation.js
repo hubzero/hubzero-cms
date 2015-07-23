@@ -1050,7 +1050,7 @@ HUB.ProjectPublicationsDraft = {
 		else
 		{
 			HUB.ProjectPublicationsDraft.changeElementStatus(element, 'incomplete', required);
-			$(element).addClass('el-partial');
+			//$(element).addClass('el-partial');
 		}
 	},
 
