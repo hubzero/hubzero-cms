@@ -747,8 +747,8 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	</div>
 <?php elseif ($type == 'standalone') : ?>
 	<?php
-		$path = $path . DS . $this->model->get('url');
-		$ext  = strtolower(Filesystem::extension(PATH_APP . $path));
+		$path = DS . trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . DS . ltrim($path . DS . $this->model->get('url'), DS);
+		$ext  = strtolower(Filesystem::extension(PATH_ROOT . $path));
 
 		Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 		Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
