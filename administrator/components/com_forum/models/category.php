@@ -38,7 +38,7 @@ class ForumModelAdminCategory extends JModelAdmin
 		{
 			$pk = intval($pk[0]);
 		}
-		$this->setState($this->getName().'.id', $pk);
+		$this->setState('category.id', $pk); //$this->getName() . '.id'
 
 		// Load the parameters.
 		$value = JComponentHelper::getParams($this->option);

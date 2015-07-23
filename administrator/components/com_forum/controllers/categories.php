@@ -280,6 +280,10 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		}
 		asort($this->view->sections);
 
+		JFactory::getApplication()->setUserState('com_forum.edit.category.data', array(
+			'id'       => $this->view->row->get('id'),
+			'asset_id' => $this->view->row->get('asset_id')
+		));
 		$m = new ForumModelAdminCategory();
 		$this->view->form = $m->getForm();
 
@@ -303,9 +307,22 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
+		JFactory::getApplication()->setUserState('com_forum.edit.category.data', null);
+
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+
+		// Bind the rules.
+		$data = JRequest::getVar('jform', array(), 'post');
+		if (isset($data['rules']) && is_array($data['rules']))
+		{
+			$model = new ForumModelAdminCategory();
+			$form = $model->getForm($data, false);
+			$validData = $model->validate($form, $data);
+
+			$fields['rules'] = $validData['rules'];
+		}
 
 		// Initiate extended database class
 		$model = new ForumTableCategory($this->database);

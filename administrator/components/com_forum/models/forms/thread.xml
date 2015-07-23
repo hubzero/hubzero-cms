@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_forum/models/forms/thread.xml
+@file           components/com_forum/models/forms/thread.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -30,6 +30,6 @@ HUBzero is a registered trademark of Purdue University.
 <form>
 	<fieldset>
 		<field name="asset_id" type="hidden" filter="unset"/>
-		<field name="rules" type="rules" label="JFIELD_RULES_LABEL" translate_label="false" class="inputbox" filter="rules" component="com_forum" section="category" validate="rules" />
+		<field name="rules" type="rules" label="JFIELD_RULES_LABEL" translate_label="false" class="inputbox" filter="rules" component="com_forum" section="thread" validate="rules" />
 	</fieldset>
 </form>

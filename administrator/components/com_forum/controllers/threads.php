@@ -490,6 +490,10 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 		asort($this->view->sections);
 
+		JFactory::getApplication()->setUserState('com_forum.edit.thread.data', array(
+			'id'       => $this->view->row->get('id'),
+			'asset_id' => $this->view->row->get('asset_id')
+		));
 		$m = new ForumModelAdminThread();
 		$this->view->form = $m->getForm();
 
@@ -516,9 +520,22 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
+		JFactory::getApplication()->setUserState('com_forum.edit.thread.data', null);
+
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
+
+		// Bind the rules.
+		$data = JRequest::getVar('jform', array(), 'post');
+		if (isset($data['rules']) && is_array($data['rules']))
+		{
+			$model = new ForumModelAdminThread();
+			$form = $model->getForm($data, false);
+			$validData = $model->validate($form, $data);
+
+			$fields['rules'] = $validData['rules'];
+		}
 
 		if ($fields['id'])
 		{

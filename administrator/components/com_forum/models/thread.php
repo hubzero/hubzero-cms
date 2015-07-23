@@ -37,7 +37,7 @@ class ForumModelAdminThread extends JModelAdmin
 		if (!empty($pk)) {
 			$pk = intval($pk[0]);
 		}
-		$this->setState($this->getName().'.id', $pk);
+		$this->setState('thread.id', $pk); //$this->getName() . '.id'
 
 		// Load the parameters.
 		$value = JComponentHelper::getParams($this->option);

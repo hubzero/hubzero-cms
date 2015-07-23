@@ -152,6 +152,10 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			$this->view->row->set('created_by', $this->juser->get('id'));
 		}
 
+		JFactory::getApplication()->setUserState('com_forum.edit.section.data', array(
+			'id'       => $this->view->row->get('id'),
+			'asset_id' => $this->view->row->get('asset_id')
+		));
 		$m = new ForumModelAdminSection();
 		$this->view->form = $m->getForm();
 
@@ -185,9 +189,22 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
+		JFactory::getApplication()->setUserState('com_forum.edit.section.data', null);
+
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+
+		// Bind the rules.
+		$data = JRequest::getVar('jform', array(), 'post');
+		if (isset($data['rules']) && is_array($data['rules']))
+		{
+			$model = new ForumModelAdminSection();
+			$form = $model->getForm($data, false);
+			$validData = $model->validate($form, $data);
+
+			$fields['rules'] = $validData['rules'];
+		}
 
 		// Initiate extended database class
 		$row = new ForumModelSection($fields['id']);
