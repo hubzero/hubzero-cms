@@ -195,7 +195,7 @@ switch ($this->level)
 		if (!User::isGuest()) {
 			$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 			// Get the groups the user has access to
-			$usersgroups = \Components\Resources\Controllers\Resources::getUsersGroups($xgroups);
+			$usersgroups = \Components\Resources\Site\Controllers\Resources::getUsersGroups($xgroups);
 		} else {
 			$usersgroups = array();
 		}
