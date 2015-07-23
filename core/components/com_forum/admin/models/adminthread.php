@@ -57,7 +57,7 @@ class AdminThread extends \JModelAdmin
 		{
 			$pk = intval($pk[0]);
 		}
-		$this->setState($this->getName() . '.id', $pk);
+		$this->setState('thread.id', $pk); //$this->getName() . '.id'
 
 		// Load the parameters.
 		$value = \Component::params($this->option);

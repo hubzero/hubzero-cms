@@ -30,6 +30,6 @@ HUBzero is a registered trademark of Purdue University.
 <form>
 	<fieldset>
 		<field name="asset_id" type="hidden" filter="unset"/>
-		<field name="rules" type="rules" label="JFIELD_RULES_LABEL" translate_label="false" class="inputbox" filter="rules" component="com_forum" section="category" validate="rules" />
+		<field name="rules" type="rules" label="JFIELD_RULES_LABEL" translate_label="false" class="inputbox" filter="rules" component="com_forum" section="section" validate="rules" />
 	</fieldset>
 </form>

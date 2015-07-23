@@ -57,7 +57,7 @@ class AdminSection extends \JModelAdmin
 		{
 			$pk = intval($pk[0]);
 		}
-		$this->setState($this->getName() . '.id', $pk);
+		$this->setState('section.id', $pk); //$this->getName() . '.id'
 
 		// Load the parameters.
 		$value = \Component::params($this->option);
@@ -91,7 +91,7 @@ class AdminSection extends \JModelAdmin
 	 * @param   array   $config  Configuration array for model. Optional.
 	 * @return  object  A database object
 	 */
-	public function getTable($type = 'Section', $prefix = 'ForumTable', $config = array())
+	public function getTable($type = 'Section', $prefix = '\\Components\\Forum\\Tables\\', $config = array())
 	{
 		$db = \App::get('db');
 		return new \Components\Forum\Tables\Section($db); //JTable::getInstance($type, $prefix, $config);

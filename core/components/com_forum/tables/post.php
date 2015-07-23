@@ -115,6 +115,36 @@ class Post extends \JTable
 	}
 
 	/**
+	 * Overloaded bind function.
+	 *
+	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore.
+	 * @return  mixed  Null if operation was satisfactory, otherwise returns an error
+	 */
+	public function bind($src, $ignore = array())
+	{
+		// Bind the rules.
+		if (is_object($src))
+		{
+			if (isset($src->rules) && is_array($src->rules))
+			{
+				$rules = new \JAccessRules($src->rules);
+				$this->setRules($rules);
+			}
+		}
+		else if (is_array($src))
+		{
+			if (isset($src['rules']) && is_array($src['rules']))
+			{
+				$rules = new \JAccessRules($src['rules']);
+				$this->setRules($rules);
+			}
+		}
+
+		return parent::bind($src, $ignore);
+	}
+
+	/**
 	 * Load a record by its alias and bind data to $this
 	 *
 	 * @param   string   $oid  Record alias

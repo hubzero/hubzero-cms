@@ -227,6 +227,10 @@ class Categories extends AdminController
 		}
 		asort($this->view->sections);
 
+		\User::setState('com_forum.edit.category.data', array(
+			'id'       => $this->view->row->get('id'),
+			'asset_id' => $this->view->row->get('asset_id')
+		));
 		$m = new AdminCategory();
 		$this->view->form = $m->getForm();
 
@@ -246,9 +250,22 @@ class Categories extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		\User::setState('com_forum.edit.category.data', null);
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+
+		// Bind the rules.
+		$data = Request::getVar('jform', array(), 'post');
+		if (isset($data['rules']) && is_array($data['rules']))
+		{
+			$model = new AdminCategory();
+			$form = $model->getForm($data, false);
+			$validData = $model->validate($form, $data);
+
+			$fields['rules'] = $validData['rules'];
+		}
 
 		// Initiate extended database class
 		$model = new Category($this->database);

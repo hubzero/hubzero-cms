@@ -149,6 +149,10 @@ class Sections extends AdminController
 			$this->view->row->set('created_by', User::get('id'));
 		}
 
+		\User::setState('com_forum.edit.section.data', array(
+			'id'       => $this->view->row->get('id'),
+			'asset_id' => $this->view->row->get('asset_id')
+		));
 		$m = new AdminSection();
 		$this->view->form = $m->getForm();
 
@@ -178,9 +182,22 @@ class Sections extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		\User::setState('com_forum.edit.section.data', null);
+
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
+
+		// Bind the rules.
+		$data = Request::getVar('jform', array(), 'post');
+		if (isset($data['rules']) && is_array($data['rules']))
+		{
+			$model = new AdminSection();
+			$form = $model->getForm($data, false);
+			$validData = $model->validate($form, $data);
+
+			$fields['rules'] = $validData['rules'];
+		}
 
 		// Initiate extended database class
 		$row = new Section($fields['id']);
