@@ -161,6 +161,7 @@ if (!$this->question->get('anonymous'))
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="deleteq" />
+							<?php echo Html::input('token'); ?>
 
 							<p class="submit">
 								<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_ANSWERS_YES_DELETE'); ?>" />
@@ -196,6 +197,7 @@ if (!$this->question->get('anonymous'))
 					<?php
 					$tags = $this->question->tags('array', 1);
 					$resource = null;
+					$publication = null;
 
 					foreach ($tags as $tag)
 					{
