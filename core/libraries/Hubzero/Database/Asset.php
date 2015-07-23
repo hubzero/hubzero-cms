@@ -129,7 +129,7 @@ class Asset
 				{
 					$asset->name = $me->getAssetName();
 					$asset->store();
-				}, $this->model->getTableName() . '.new');
+				}, $this->model->getTableName() . '_new');
 		}
 
 		// Return the id
