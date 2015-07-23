@@ -156,7 +156,7 @@ class DocumentServiceProvider extends Middleware
 
 		if ($this->app->isSite())
 		{
-			$document->setBase(htmlspecialchars($request->base()));
+			$document->setBase(htmlspecialchars($request->current()));
 		}
 		$document->setBuffer($response->getContent(), 'component');
 		$document->parse($params);
