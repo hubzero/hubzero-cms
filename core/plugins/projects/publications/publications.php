@@ -130,7 +130,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $model, $action = '', $areas = null )
+	public function onProject( $model, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
@@ -1920,7 +1920,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication model
-		$pub  = new \Components\Publications\Models\Publication( $pid, $version);
+		$pub  = new \Components\Publications\Models\Publication($pid, $version);
 
 		// Error loading publication record
 		if (!$pub->exists())
@@ -1997,6 +1997,35 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if ($pubdate > $tenYearsFromNow)
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO') );
+			}
+		}
+
+		// Contact info is required for repositories
+		if ($pub->config()->get('repository'))
+		{
+			$contact = Request::getVar('contact', array(), 'post');
+
+			if (!$contact || empty($contact))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INFO_MISSING'));
+			}
+
+			foreach (array('name', 'email', 'phone') as $key)
+			{
+				if (!isset($contact[$key]) || !$contact[$key])
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INFO_MISSING'));
+				}
+			}
+
+			if (!\Hubzero\Utility\Validate::email($contact['email']))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INVALID_EMAIL'));
+			}
+
+			if (!\Hubzero\Utility\Validate::phone($contact['phone']))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INVALID_PHONE'));
 			}
 		}
 

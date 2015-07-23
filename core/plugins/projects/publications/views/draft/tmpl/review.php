@@ -154,25 +154,59 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 							$submitter .= '<option value="' . $this->pub->submitter()->user_id . '">' . $this->pub->submitter()->name . '</option>' . "\n";
 							$submitter .= '</select>';
 						}
-					?>
-					<label>
-						<span class="review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
-					</label>
+						?>
+						<label>
+							<span class="review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
+						</label>
 					<?php } ?>
+
+					<?php if ($this->pub->config()->get('repository')) { ?>
+						<?php
+						$name  = '';
+						$email = '';
+						$phone = '';
+
+						if ($this->pub->submitter())
+						{
+							$profile = \Hubzero\User\Profile::getInstance($this->pub->submitter()->user_id);
+							if ($profile)
+							{
+								$name  = $profile->get('name');
+								$email = $profile->get('email');
+								$phone = $profile->get('phone');
+							}
+						}
+						?>
+						<h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT'); ?></h6>
+						<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'); ?></p>
+						<label for="contact_name">
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+							<input type="text" name="contact[name]" id="contact_name" value="<?php echo $this->escape($name); ?>" />
+						</label>
+						<label for="contact_email">
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+							<input type="text" name="contact[email]" id="contact_email" value="<?php echo $this->escape($email); ?>" />
+						</label>
+						<label for="contact_phone">
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+							<input type="text" name="contact[phone]" id="contact_phone" value="<?php echo $this->escape($phone); ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE_HINT'); ?>" />
+						</label>
+					<?php } ?>
+
 					<?php if ($requireDoi == 2 && !$this->pub->doi) { 	// Choice of publish/post  ?>
-					<h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_OR_PUBLISH'); ?></h6>
-					<label>
-						<input class="option" name="action" type="radio" value="publish" checked="checked" />
-						<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
-						<span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'); ?></span>
-					</label>
-					<label>
-						<input class="option" name="action" type="radio" value="post" />
-						<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
-						<span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
-					</label>
+						<h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_OR_PUBLISH'); ?></h6>
+						<label>
+							<input class="option" name="action" type="radio" value="publish" checked="checked" />
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
+							<span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'); ?></span>
+						</label>
+						<label>
+							<input class="option" name="action" type="radio" value="post" />
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
+							<span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
+						</label>
 					<?php } else { ?>
-					<input type="hidden" name="action" value="publish" />
+						<input type="hidden" name="action" value="publish" />
 					<?php } ?>
 				</div>
 			</div>
