@@ -339,7 +339,8 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 
 				if (!$format)
 				{
-					throw new InvalidArgumentException('JLIB_REGISTRY_EXCEPTION_LOAD_FORMAT_CLASS', 500);
+					//throw new InvalidArgumentException('JLIB_REGISTRY_EXCEPTION_LOAD_FORMAT_CLASS', 500);
+					return false;
 				}
 			}
 
