@@ -170,7 +170,10 @@ class Newsletter extends AdminController
 		if ($id)
 		{
 			$newsletterNewsletter = new Letter($this->database);
-			$this->view->newsletter = $newsletterNewsletter->getNewsletters($id);
+			if ($letter = $newsletterNewsletter->getNewsletters($id))
+			{
+				$this->view->newsletter = $letter;
+			}
 
 			// get primary stories
 			$newsletterPrimaryStory = new PrimaryStory($this->database);
