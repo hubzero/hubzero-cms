@@ -331,17 +331,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		{
 			foreach ($this->forwards as $forward)
 			{
-				// See if the relationship already exists
-				if (!$this->getRelationship($forward))
-				{
-					// Get the child rows/row and set them back on the model as a relationship for future use
-					$rows = call_user_func_array(array($this, $forward), array())->rows();
-					$this->addRelationship($forward, $rows);
-				}
-
 				// We take the first one we find, so in theory, if multiple forwards exist with
 				// the same name, you'd have to prioritize them somehow.
-				if ($var = $this->getRelationship($forward)->$name)
+				if ($var = $this->makeRelationship($name)->getRelationship($forward)->$name)
 				{
 					return $var;
 				}
@@ -351,15 +343,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		// Finally, we'll assume we're looking for a relationship
 		if (in_array($name, $this->methods))
 		{
-			// See if the relationship already exists
-			if (!$this->getRelationship($name))
-			{
-				// Get the child rows/row and set them back on the model as a relationship for future use
-				$rows = call_user_func_array(array($this, $name), array())->rows();
-				$this->addRelationship($name, $rows);
-			}
-
-			return $this->getRelationship($name);
+			return $this->makeRelationship($name)->getRelationship($name);
 		}
 	}
 
@@ -1698,6 +1682,26 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public function getRelationship($name)
 	{
 		return isset($this->relationships[$name]) ? $this->relationships[$name] : null;
+	}
+
+	/**
+	 * Establishes a relationship, fetching the rows as needed
+	 *
+	 * @param  string $name the name of the relationship
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function makeRelationship($name)
+	{
+		// See if the relationship already exists
+		if (!$this->getRelationship($name))
+		{
+			// Get the child rows/row and set them back on the model as a relationship for future use
+			$rows = call_user_func_array(array($this, $name), array())->rows();
+			$this->addRelationship($name, $rows);
+		}
+
+		return $this;
 	}
 
 	/**
