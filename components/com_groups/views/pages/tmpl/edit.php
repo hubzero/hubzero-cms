@@ -309,7 +309,7 @@ if ($this->page->get('id'))
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="pages" />
-		<input type="hidden" name="return" value="<?php echo JRequest::getVar('return', '','get'); ?>" />
+		<input type="hidden" name="return" value="<?php echo $this->escape(JRequest::getVar('return', '','get')); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
 </section>
