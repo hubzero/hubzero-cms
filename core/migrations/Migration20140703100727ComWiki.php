@@ -29,7 +29,7 @@ class Migration20140703100727ComWiki extends Base
 
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('wiki', 'wikicomment')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 

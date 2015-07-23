@@ -411,7 +411,7 @@ class Version
 		}
 
 		$db->setQuery("SELECT instance FROM #__tool_version WHERE $where_clause;");
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 
 		return $result;
 	}
@@ -1132,7 +1132,7 @@ class Version
 						$result = $db->loadAssocList();
 					}
 					else
-						$result = $db->loadResultArray();
+						$result = $db->loadColumn();
 
 					if ($result !== false)
 					{

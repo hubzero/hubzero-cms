@@ -522,7 +522,7 @@ class Create extends SiteController
 				INNER JOIN #__tags t ON t.id = f.tag_id
 				WHERE fr.resource_type_id = ' . $type
 			);
-			if (!($labels = $this->database->loadResultArray()))
+			if (!($labels = $this->database->loadColumn()))
 			{
 				return array();
 			}
@@ -1119,7 +1119,7 @@ class Create extends SiteController
 							INNER JOIN #__tags_object to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
 							WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
 						);
-						$parent_id = $this->database->loadResultArray();
+						$parent_id = $this->database->loadColumn();
 					}
 					$fas[$tag[2]]['actual_depth'] = max($depth, $fas[$tag[2]]['actual_depth']);
 				}

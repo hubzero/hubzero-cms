@@ -303,7 +303,7 @@ class Relationships extends AdminController
 		{
 			$this->database->setQuery("SELECT raw_tag FROM `#__tags` WHERE raw_tag LIKE " . $this->database->quote('%' . $_GET['term'] . '%'));
 			$later = array();
-			foreach ($this->database->loadResultArray() as $tag)
+			foreach ($this->database->loadColumn() as $tag)
 			{
 				$tag = stripslashes($tag);
 				if (strpos($tag, $_GET['term']) === 0)
@@ -535,7 +535,7 @@ class Relationships extends AdminController
 				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = ' . $tag['id']
 			);
-			$rv['labeled'] = $this->database->loadResultArray();
+			$rv['labeled'] = $this->database->loadColumn();
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
@@ -543,7 +543,7 @@ class Relationships extends AdminController
 				INNER JOIN `#__tags` t ON t.id = to1.objectid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.tagid = ' . $tag['id']
 			);
-			$rv['labels'] = $this->database->loadResultArray();
+			$rv['labels'] = $this->database->loadColumn();
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
@@ -551,7 +551,7 @@ class Relationships extends AdminController
 				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.objectid = ' . $tag['id']
 			);
-			$rv['parents'] = $this->database->loadResultArray();
+			$rv['parents'] = $this->database->loadColumn();
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
@@ -559,7 +559,7 @@ class Relationships extends AdminController
 				INNER JOIN `#__tags` t ON t.id = to1.objectid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id']
 			);
-			$rv['children'] = $this->database->loadResultArray();
+			$rv['children'] = $this->database->loadColumn();
 			$rv['description'] = stripslashes($rv['description']);
 
 			return $rv;

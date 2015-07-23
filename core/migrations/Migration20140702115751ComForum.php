@@ -19,7 +19,7 @@ class Migration20140702115751ComForum extends Base
 		{
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('forum')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 

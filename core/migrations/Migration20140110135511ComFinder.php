@@ -27,7 +27,7 @@ class Migration20140110135511ComFinder extends Base
 
 			$query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_finder';";
 			$this->db->setQuery($query);
-			if ($results = $this->db->loadResultArray())
+			if ($results = $this->db->loadColumn())
 			{
 				$query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
 				$this->db->setQuery($query);

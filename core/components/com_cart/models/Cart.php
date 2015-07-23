@@ -564,7 +564,7 @@ abstract class CartModelCart
 		}
 
 		$allSkuInfo = $db->loadObjectList('sId');
-		$skus = $db->loadResultArray();
+		$skus = $db->loadColumn();
 
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();

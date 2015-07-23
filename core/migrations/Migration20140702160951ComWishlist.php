@@ -19,7 +19,7 @@ class Migration20140702160951ComWishlist extends Base
 		{
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('wish')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 
@@ -33,7 +33,7 @@ class Migration20140702160951ComWishlist extends Base
 		{
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('itemcomment', 'wishcomment')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 

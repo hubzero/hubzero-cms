@@ -203,7 +203,7 @@ function get_dd($db_id)
 	//$sql = 'SELECT username FROM #__datastores ds LEFT JOIN #__users u ON (u.id = ds.created_by)';
 	$sql = "SELECT username FROM #__datastore_users ds LEFT JOIN #__users u ON (u.id = ds.value AND ds.type='user') WHERE ds.id = " . $db_id['name'];
 	$db->setQuery($sql);
-	$managers = $db->loadResultArray();
+	$managers = $db->loadColumn();
 
 	if (!isset($dd['acl'])) {
 		$dd['acl']['allowed_users'] = $managers;

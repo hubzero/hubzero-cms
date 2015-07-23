@@ -19,7 +19,7 @@ class Migration20150427221158ComSupport extends Base
 		{
 			$query = "SELECT id FROM `#__support_statuses` WHERE `open`=1";
 			$this->db->setQuery($query);
-			$open = $this->db->loadResultArray();
+			$open = $this->db->loadColumn();
 
 			if (count($open))
 			{

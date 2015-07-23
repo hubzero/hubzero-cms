@@ -19,7 +19,7 @@ class Migration20140702130951ComAnswers extends Base
 		{
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('question')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 
@@ -33,7 +33,7 @@ class Migration20140702130951ComAnswers extends Base
 		{
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('answer')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 
@@ -47,7 +47,7 @@ class Migration20140702130951ComAnswers extends Base
 		{
 			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('itemcomment', 'answercomment')";
 			$this->db->setQuery($query);
-			if ($ids = $this->db->loadResultArray())
+			if ($ids = $this->db->loadColumn())
 			{
 				$ids = array_map('intval', $ids);
 

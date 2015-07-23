@@ -21,7 +21,7 @@ class Migration20141110232014ComMembers extends Base
 				  WHERE (`givenName` = '' OR `givenName` IS NULL)
 				  AND (`surname` = '' OR `surname` IS NULL);";
 		$this->db->setQuery($query);
-		$result = $this->db->loadResultArray();
+		$result = $this->db->loadColumn();
 
 		// fix each name
 		foreach ($result as $uidNumber)

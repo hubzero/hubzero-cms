@@ -154,7 +154,7 @@ class Profiles extends SiteController
 									WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
 
 							$this->database->setQuery($query);
-							$members = $this->database->loadResultArray();
+							$members = $this->database->loadColumn();
 						}
 
 						if (!$members || empty($members))

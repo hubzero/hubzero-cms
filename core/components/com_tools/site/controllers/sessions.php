@@ -652,7 +652,7 @@ class Sessions extends SiteController
 			$middleware = new \Components\Tools\Models\Middleware();
 
 			$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
-			$middleware->set('allowed', $this->database->loadResultArray());
+			$middleware->set('allowed', $this->database->loadColumn());
 
 			if ($zone = $middleware->zoning($app->ip, $middleware->get('allowed')))
 			{
@@ -1059,7 +1059,7 @@ class Sessions extends SiteController
 		$tv = new \Components\Tools\Tables\Version($this->database);
 		$tv->loadFromInstance($row->appname);
 		$this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
-		$this->view->middleware->set('allowed', $this->database->loadResultArray());
+		$this->view->middleware->set('allowed', $this->database->loadColumn());
 
 		$this->view->zone = $this->view->middleware->zone($row->zone_id);
 

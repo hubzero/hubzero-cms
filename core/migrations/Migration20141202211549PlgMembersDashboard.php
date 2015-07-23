@@ -33,7 +33,7 @@ class Migration20141202211549PlgMembersDashboard extends Base
 		// get top 6 modules
 		$sql = "SELECT id FROM `#__modules` WHERE `position`='memberDashboard' AND `published`=1 AND `client_id`=0 ORDER BY `ordering` LIMIT 6;";
 		$this->db->setQuery($sql);
-		$modules = $this->db->loadResultArray();
+		$modules = $this->db->loadColumn();
 
 		// array to hold new defaults
 		$defaults = array();

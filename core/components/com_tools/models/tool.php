@@ -212,7 +212,7 @@ class Tool
 		$db = \App::get('db');
 
 		$db->setQuery("SELECT toolname FROM `#__tool`;");
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -805,7 +805,7 @@ class Tool
 
 					$db->setQuery($query);
 
-					$result = $db->loadResultArray();
+					$result = $db->loadColumn();
 
 					if ($result !== false)
 					{

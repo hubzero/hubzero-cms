@@ -115,7 +115,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = {$dd['project']}";
 		$db = App::get('db');
 		$db->setQuery($sql);
-		$dd['acl']['allowed_users'] = $db->loadResultArray();
+		$dd['acl']['allowed_users'] = $db->loadColumn();
 
 		// Curators
 		if (isset($dd['publication_state']))

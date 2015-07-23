@@ -55,7 +55,7 @@ class Version
 
 			$db->setQuery($query);
 
-			$result = $db->loadResultArray();
+			$result = $db->loadColumn();
 
 			if ($result === false)
 			{
