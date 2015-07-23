@@ -44,10 +44,10 @@ if (count($matches) > 0)
 	}
 }
 
-// Get block properties
-$complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
+// Get block/element properties
 $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
-$required = $this->pub->curation('blocks', $this->master->blockId, 'required');
+$complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
+$required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $this->elementId)->params->required;
 
 $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
@@ -83,7 +83,12 @@ $coming = $this->pub->_curationModel->isComing($this->master->block, $this->mast
 $last   = ($this->order == $this->total) ? 1 : 0;
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus(
+	$this->pub,
+	$this->master->blockId,
+	$this->elementId,
+	'author'
+);
 
 $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
 
@@ -183,7 +188,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 					case 'text':
 					default:
 						$output .= '<input type="text" name="' . $field . '" id="pub-' . $elName
-							. '" value="' . $this->escape($value) . '" ' . $size.' ' . $placeholder . ' />';
+							. '" value="' . $this->escape($value) . '" ' . $size .' ' . $placeholder . ' />';
 
 					break;
 				}

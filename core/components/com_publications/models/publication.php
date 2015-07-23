@@ -649,6 +649,13 @@ class Publication extends Object
 								return $this->_curationModel->_progress->blocks->$blockId->status->status;
 								break;
 
+							case 'elementStatus':
+								if ($elementId && isset($this->_curationModel->_progress->blocks->$blockId->status->elements->$elementId))
+								{
+									return $this->_curationModel->_progress->blocks->$blockId->status->elements->$elementId->status;
+								}
+								break;
+
 							case 'elements':
 								if ($elementId)
 								{

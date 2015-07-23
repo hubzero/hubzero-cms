@@ -25,10 +25,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// Get block properties
-$complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
+// Get block/element properties
 $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
-$required = $this->pub->curation('blocks', $this->master->blockId, 'required');
+$complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
+$required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $this->elementId)->params->required;
 
 $elName   		= 'content-element' . $this->elementId;
 $max 	  		= $this->manifest->params->max;
