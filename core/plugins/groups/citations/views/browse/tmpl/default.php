@@ -389,9 +389,10 @@ if (isset($this->messages))
 					<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
 					<input type="hidden" name="action" value="browse" />
 
-					<p class="submit">
-						<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_FILTER'); ?>" />
-					</p>
+					<div class="btn-cluster">
+						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_FILTER'); ?>" />
+						<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations'); ?>" class="btn">Reset</a>
+					</div>
 				</fieldset>
 				<fieldset id="download-batch">
 					<strong><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>

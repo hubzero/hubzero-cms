@@ -80,3 +80,12 @@
 		margin-right: 0;
 	}
 }
+
+.btn-cluster {
+	padding: 5px 15px 15px 5px;
+	margin-left:auto;
+	margin-right: auto;
+	float:left;
+	width: 100%;
+	text-align: center;
+	}
