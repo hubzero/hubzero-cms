@@ -246,12 +246,19 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 
 			if ($address != "")
 			{
-				$location = $geocode->locate($address);
-				$createMarker = new stdClass;
-				$createMarker->location = $location;
-				$createMarker->scope = $marker['scope'];
-				$createMarker->scope_id = $marker['scope_id'];
-				array_push($createMarkers, $createMarker);
+				try
+				{
+					$location = $geocode->locate($address);
+					$createMarker = new stdClass;
+					$createMarker->location = $location;
+					$createMarker->scope = $marker['scope'];
+					$createMarker->scope_id = $marker['scope_id'];
+					array_push($createMarkers, $createMarker);
+				}
+				catch (Exception $e)
+				{
+					continue; //skip bad locations
+				}
 			}
 		} //end foreach
 
