@@ -98,8 +98,9 @@ if (isset($this->messages))
 						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
 						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
 						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
+						<?php if ($this->config['display'] != "group"): ?>
 						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
-
+						<?php endif; ?>
 					</ul>
 				<div class="clearfix"></div> <!-- clearfix for spacing -->
 				<?php if ($this->citations->count() > 0) : ?>
