@@ -194,8 +194,8 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 								</tr>
 								<?php } ?>
 								<tr>
-									<th style="text-align: center; padding: 0.5em 1em; <?php if (count($activities) > 0) echo 'border-bottom: 1px solid #e9e9e9;'; ?>"></th>
-									<td style="text-align: center; padding: 0.5em 1em; <?php if (count($activities) > 0) echo 'border-bottom: 1px solid #e9e9e9;'; ?>" width="100%" align="left"></td>
+									<th style="text-align: center; padding: 0.5em 1em; <?php if (count($this->activities) > 0) echo 'border-bottom: 1px solid #e9e9e9;'; ?>"></th>
+									<td style="text-align: center; padding: 0.5em 1em; <?php if (count($this->activities) > 0) echo 'border-bottom: 1px solid #e9e9e9;'; ?>" width="100%" align="left"></td>
 								</tr>
 						<?php }
 							?>
