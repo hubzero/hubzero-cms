@@ -53,21 +53,21 @@ class Mysql
 	/**
 	 * The syntax element containers
 	 **/
-	private $select = [];
-	private $insert = '';
-	private $ignore = false;
-	private $update = '';
-	private $delete = '';
-	private $set    = [];
-	private $values = [];
-	private $from   = [];
-	private $join   = [];
-	private $where  = [];
-	private $group  = [];
-	private $having = [];
-	private $order  = [];
-	private $start  = '';
-	private $limit  = '';
+	protected $select = [];
+	protected $insert = '';
+	protected $ignore = false;
+	protected $update = '';
+	protected $delete = '';
+	protected $set    = [];
+	protected $values = [];
+	protected $from   = [];
+	protected $join   = [];
+	protected $where  = [];
+	protected $group  = [];
+	protected $having = [];
+	protected $order  = [];
+	protected $start  = '';
+	protected $limit  = '';
 
 	/**
 	 * Constructs query syntax class, setting database connection
