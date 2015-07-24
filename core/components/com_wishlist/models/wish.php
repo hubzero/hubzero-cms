@@ -603,7 +603,8 @@ class Wish extends Base
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
+					//throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
+					throw new RuntimeException("Lang::txt('Invalid category of "%s"', $scope)", 404);
 				}
 				include_once($path);
 			}
