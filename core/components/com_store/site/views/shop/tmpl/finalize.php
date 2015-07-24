@@ -45,7 +45,7 @@ $this->css()
 				<?php if ($this->getError()) { ?>
 					<p class="error"><?php echo $this->getError(); ?></p>
 				<?php } ?>
-				<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+				<form id="storeForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="store-wrap">
 					<fieldset>
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -63,16 +63,16 @@ $this->css()
 						<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : User::get('email'); ?>" />
 						<input type="hidden" name="comments" value="<?php echo (isset($this->posted['comments'])) ? $this->escape($this->posted['comments']) : ''; ?>" />
 
-						<h3><?php echo Lang::txt('COM_STORE_ORDER_WILL_SHIP'); ?></h3>
+						<h2><?php echo Lang::txt('COM_STORE_ORDER_WILL_SHIP'); ?></h2>
 						<pre><?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape(User::get('name')); ?>
 
 <?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?>
 
-<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(\Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'))); ?></pre>
-						<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo Lang::txt('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
+<?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(\Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'))); ?>
+						</pre>
 					</fieldset>
 					<fieldset>
-						<h3><?php echo Lang::txt('COM_STORE_CONTACT_INFO'); ?></h3>
+						<h4><?php echo Lang::txt('COM_STORE_CONTACT_INFO'); ?></h4>
 						<p>
 							<?php if (isset($this->posted['phone'])) { ?>
 								<?php echo Lang::txt('Phone'); ?>: <?php echo $this->posted['phone']; ?><br />
@@ -82,15 +82,18 @@ $this->css()
 							<?php } ?>
 						</p>
 					</fieldset>
+					<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo Lang::txt('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
 					<?php if (isset($this->posted['comments']) && $this->posted['comments'] != '') { ?>
 						<fieldset>
 							<legend><?php echo Lang::txt('COM_STORE_ADDITIONAL_COMMENTS'); ?></legend>
 							<p><?php echo $this->posted['comments']; ?></p>
 						</fieldset>
 					<?php } ?>
-					<p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=empty'); ?>" class="actionlink"><?php echo Lang::txt('COM_STORE_CANCEL_ORDER'); ?></a></p>
 					<div class="clear"></div>
-					<p class="process"><input type="submit" class="button finalize_order" value="finalize" /></p>
+					<p class="submit">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=empty'); ?>" class="btn"><?php echo Lang::txt('COM_STORE_CANCEL_ORDER'); ?></a>
+						<input type="submit" class="btn btn-primary" value="<?php echo ucfirst(Lang::txt('COM_STORE_FINALIZE')); ?>" />
+					</p>
 				</form>
 			</div><!-- / #cartcontent -->
 

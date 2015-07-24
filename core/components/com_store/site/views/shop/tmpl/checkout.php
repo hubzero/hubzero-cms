@@ -36,6 +36,12 @@ $this->css()
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-prev btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_STORE_BACK_STOREFRONT'); ?></a>
+			<a class="icon-basket btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart'); ?>"><?php echo Lang::txt('COM_STORE_CART'); ?></a>
+		</p>
+	</div><!-- / #content-header-extra -->
 </header>
 
 <section class="main section">
@@ -105,8 +111,8 @@ $this->css()
 						</label>
 					</fieldset>
 					<p class="submit">
-						<input type="submit" class="btn" value="<?php echo Lang::txt('Confirm order'); ?>" />
-						<span>(<?php echo Lang::txt('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
+						<span class="reassure">(<?php echo Lang::txt('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
+						<input type="submit" class="btn btn-primary" value="<?php echo ucfirst(Lang::txt('COM_STORE_CONFIRM')); ?>" />
 					</p>
 				</form>
 			</div>

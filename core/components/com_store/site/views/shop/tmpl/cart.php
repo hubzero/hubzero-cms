@@ -39,8 +39,8 @@ $this->css()
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-prev storefront btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_STORE_STOREFRONT'); ?></a>
-			<a class="icon-points mypoints btn" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_STORE_MY_POINTS'); ?></a>
+			<a class="icon-prev btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_STORE_STOREFRONT'); ?></a>
+			<a class="icon-points btn" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_STORE_MY_POINTS'); ?></a>
 		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -50,12 +50,11 @@ $this->css()
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
-
+		<?php if ($this->msg) { ?>
+			<p class="passed"><?php echo $this->msg; ?></p>
+		<?php } ?>
 		<div class="grid break4">
 			<div id="cartcontent" class="col span8">
-			<?php if ($this->msg) { ?>
-				<p class="passed"><?php echo $this->msg; ?></p>
-			<?php } ?>
 
 			<?php if ($this->rows) { ?>
 				<p>
@@ -63,7 +62,7 @@ $this->css()
 					&nbsp;<a href="<?php echo Route::url('index.php?option=' . $this->option); ?>" ><?php echo Lang::txt('COM_STORE_CONTINUE'); ?></a>
 				</p>
 
-				<form id="myCart" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart'); ?>">
+				<form id="myCart" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart'); ?>" class="store-wrap">
 					<input type="hidden" name="action" value="" />
 					<input type="hidden" name="task" value="checkout" />
 					<input type="hidden" name="funds" id="funds" value="<?php echo $this->funds; ?>" />
@@ -77,7 +76,7 @@ $this->css()
 								<th><?php echo Lang::txt('COM_STORE_AVAILABILITY'); ?></th>
 								<th><?php echo Lang::txt('COM_STORE_QUANTITY'); ?>*</th>
 								<th><?php echo Lang::txt('COM_STORE_SIZE'); ?></th>
-								<th><a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_STORE_WHAT_ARE_POINTS'); ?>" class="coin"><?php echo Lang::txt('COM_STORE_WHAT_ARE_POINTS'); ?></a></th>
+								<th><a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_STORE_WHAT_ARE_POINTS'); ?>" class="tooltips points"></a></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -124,7 +123,7 @@ $this->css()
 								<?php } else { ?>
 									1 
 								<?php } ?>
-									<span class="removeitem"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=remove&item=' . $row->itemid); ?>" title="<?php echo Lang::txt('COM_STORE_REMOVE_FROM_CART'); ?>"><?php echo Lang::txt('COM_STORE_REMOVE_FROM_CART'); ?></a></span>
+									<span class="removeitem"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=remove&item=' . $row->itemid); ?>" class="tooltips" title="<?php echo Lang::txt('COM_STORE_REMOVE_FROM_CART'); ?>"></a></span>
 								</td>
 								<td>
 								<?php if (count($sizes)>0) { ?>
@@ -154,10 +153,10 @@ $this->css()
 
 					<p class="process">
 					<?php if ($this->funds >= $total && intval($total) > 0) { ?>
-						<input type="submit" class="button checkout" value="checkout" /></p>
 						<span class="reassure">(<?php echo Lang::txt('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
+						<input type="submit" class="btn btn-primary" value="<?php echo ucfirst(Lang::txt('COM_STORE_CHECKOUT')); ?>" />
 					<?php } else { ?>
-						<span class="button checkout_disabled">&nbsp;</span>
+						<span class="btn btn-disabled"><?php echo ucfirst(Lang::txt('COM_STORE_CHECKOUT')); ?></span>
 					<?php } ?>
 					</p>
 				</form>

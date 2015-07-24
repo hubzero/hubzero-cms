@@ -77,11 +77,11 @@ class Html
 		{
 			if ($category == 'service')
 			{
-				$html = '<img src="' . \Request::base(true). '/core/components/' . $option . '/site/assets/img/premiumservice.gif" alt="' . Lang::txt('COM_STORE_PREMIUM_SERVICE') . '" />';
+				$html = '<span class="nophoto"></span>';
 			}
 			else
 			{
-				$html = '<img src="' . \Request::base(true). '/core/components/' . $option . '/site/assets/img/nophoto.gif" alt="' . Lang::txt('COM_STORE_MSG_NO_PHOTO') . '" />';
+				$html = '<span class="nophoto premium"></span>';
 			}
 		}
 

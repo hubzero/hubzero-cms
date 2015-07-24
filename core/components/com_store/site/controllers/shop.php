@@ -548,19 +548,17 @@ class Shop extends SiteController
 		// Empty cart
 		$item->deleteCartItem('', User::get('id'), 'all');
 
-		$this->view->infolink = $this->infolink;
-
-		// Output HTML
-		$this->view->orderid = $orderid;
-
-		foreach ($this->getErrors() as $error)
+		if ($this->getError())
 		{
-			$this->view->setError($error);
+			\Notify::message($this->getError(), 'error');
+		}
+		else
+		{
+			\Notify::message(Lang::txt('COM_STORE_SUCCESS_MESSAGE', $orderid), 'success');
 		}
 
-		$this->view
-			->setLayout('completed')
-			->display();
+		App::redirect(Route::url('index.php?option=' . $this->_option));
+		return;
 	}
 
 	/**
