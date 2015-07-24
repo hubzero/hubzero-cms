@@ -367,13 +367,19 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 				$msg = '';
 				if (!empty($ids))
 				{
+					$db = JFactory::getDBO();
+					$tbl = new WikiTableRevision($db);
+
 					foreach ($ids as $id)
 					{
 						// Load the revision
 						$revision = new WikiModelRevision($id);
 
+						$pageid = ($pageid ? $pageid : $revision->get('pageid'));
+
 						// Get a count of all approved revisions
-						$count = $revision->getRevisionCount();
+						$tbl->pageid = $pageid;
+						$count = $tbl->getRevisionCount();
 
 						// Can't delete - it's the only approved version!
 						if ($count <= 1)
