@@ -237,20 +237,26 @@ class Relationship
 	}
 
 	/**
-	 * Associates the rows provided back to the model by way of their proper keys
+	 * Associates the model provided back to the model by way of their proper keys
 	 *
-	 * @param  array $rows
-	 * @return array
+	 * Because this is a singular relationship, we never expect to have more than one
+	 * model at at time.
+	 *
+	 * @param  object  $model    the model to associate
+	 * @param  closure $callback a callback to potentially append additional data
+	 * @return object
 	 * @since  1.3.2
 	 **/
-	public function associate($rows)
+	public function associate($model, $callback)
 	{
-		foreach ($rows as $model)
+		$model->set($this->relatedKey, $this->model->getPkValue());
+
+		if (isset($callback) && is_callable($callback))
 		{
-			$model->set($this->relatedKey, $this->model->getPkValue());
+			call_user_func_array($callback, [$model]);
 		}
 
-		return $rows;
+		return $model;
 	}
 
 	/**
@@ -265,9 +271,7 @@ class Relationship
 		$related = $this->related;
 		$model   = $related::newFromResults($data);
 
-		$model->set($this->relatedKey, $this->model->getPkValue());
-
-		return $model->save();
+		return $this->associate($model)->save();
 	}
 
 	/**

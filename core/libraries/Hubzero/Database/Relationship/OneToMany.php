@@ -50,6 +50,35 @@ class OneToMany extends Relationship
 	}
 
 	/**
+	 * Associates the models provided back to the model by way of their proper keys
+	 *
+	 * Because this is a one to many relationship, we could be setting either one
+	 * or many items on the related side at a given time.  We must then be prepared
+	 * to loop over the items.  
+	 *
+	 * @param  object|array  $models   a single model or array of models to associate
+	 * @param  closure       $callback a callback to potentially append additional data
+	 * @return object|array
+	 * @since  1.3.2
+	 **/
+	public function associate($models, $callback=null)
+	{
+		if (is_array($models) || $models instanceof \Hubzero\Database\Rows)
+		{
+			foreach ($models as $model)
+			{
+				parent::associate($model, $callback);
+			}
+		}
+		else
+		{
+			parent::associate($models, $callback);
+		}
+
+		return $models;
+	}
+
+	/**
 	 * Saves new related models with the given data
 	 *
 	 * @param  array $data an array of datasets being saved to new models

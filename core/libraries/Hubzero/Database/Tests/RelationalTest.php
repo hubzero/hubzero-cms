@@ -34,6 +34,8 @@ namespace Hubzero\Database\Tests;
 use Hubzero\Test\Database;
 use Hubzero\Database\Tests\Mock\User;
 use Hubzero\Database\Tests\Mock\Post;
+use Hubzero\Database\Tests\Mock\Group;
+use Hubzero\Database\Tests\Mock\Project;
 
 /**
  * Base relational model tests
@@ -202,6 +204,43 @@ class RelationalTest extends Database
 	}
 
 	/**
+	 * Tests that a oneShiftsToMany relationship properly grabs the many side of the relationship
+	 *
+	 * @return void
+	 **/
+	public function testOneShiftsToManyReturnsRelationship()
+	{
+		$this->assertCount(3, Group::oneOrFail(1)->members, 'Model should have returned a count of 3 members for group 1');
+	}
+
+	/**
+	 * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
+	 *
+	 * @return void
+	 **/
+	public function testOneShiftsToManyCanBeConstrainedByCount()
+	{
+		$projects = Project::all()->whereRelatedHasCount('members', 3)->rows();
+
+		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 3 or more members');
+	}
+
+	/**
+	 * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
+	 *
+	 * @return void
+	 **/
+	public function testOneShiftsToManyCanBeConstrained()
+	{
+		$projects = Project::all()->whereRelatedHas('members', function($members)
+		{
+			$members->whereEquals('user_id', 3);
+		})->rows();
+
+		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with a member whose user_id is 3');
+	}
+
+	/**
 	 * Tests that an including call can properly preload a simple one to many relationship
 	 *
 	 * @return void
@@ -211,6 +250,18 @@ class RelationalTest extends Database
 		$users = User::all()->including('posts')->rows()->first();
 
 		$this->assertNotNull($users->getRelationship('posts'), 'Model should have had a relationship named posts defined');
+	}
+
+	/**
+	 * Tests that an including call can properly preload a one shifts to many relationship
+	 *
+	 * @return void
+	 **/
+	public function testIncludingOneShiftsToManyPreloadsRelationship()
+	{
+		$projects = Project::all()->including('members')->rows()->first();
+
+		$this->assertNotNull($projects->getRelationship('members'), 'Model should have had a relationship named members defined');
 	}
 
 	/**
@@ -239,5 +290,45 @@ class RelationalTest extends Database
 
 		$this->assertCount(1, $users->seek(1)->posts, 'Model should have had 1 post that met the constraint');
 		$this->assertCount(0, $users->seek(2)->posts, 'Model should have had 0 posts that met the constraint');
+	}
+
+	/**
+	 * Tests that an including call can be constrained on a one shifts to many relationship
+	 *
+	 * @return void
+	 **/
+	public function testIncludingOneShiftsToManyCanBeConstrained()
+	{
+		$projects = Project::all()->including(['members', function($posts)
+		{
+			$posts->whereEquals('user_id', 1);
+		}])->rows();
+
+		$this->assertCount(1, $projects->seek(1)->members, 'Model should have had 1 member that met the constraint');
+		$this->assertCount(1, $projects->seek(2)->members, 'Model should have had 1 member that met the constraint');
+	}
+
+	/**
+	 * Tests to make sure saving a one to many relationship properly sets the associated field on the related side
+	 *
+	 * @return void
+	 **/
+	public function testSaveOneToManyAssociatesRelated()
+	{
+		User::oneOrFail(1)->posts()->save(['content' => 'This is a test post']);
+
+		$this->assertArrayHasKey('user_id', User::oneOrFail(1)->posts->last(), 'Saved item should have automatically included a user_id');
+	}
+
+	/**
+	 * Tests to make sure saving a one shifts to many relationship properly sets the associated fields on the related side
+	 *
+	 * @return void
+	 **/
+	public function testSaveOneShiftsToManyAssociatesRelated()
+	{
+		Project::oneOrFail(1)->members()->save(['user_id' => 2]);
+
+		$this->assertCount(4, Project::oneOrFail(1)->members, 'Saved item should have automatically included a scope and scope_id');
 	}
 }

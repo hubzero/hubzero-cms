@@ -36,6 +36,7 @@ use Hubzero\Database\Relationship\OneToMany;
 use Hubzero\Database\Relationship\ManyToMany;
 use Hubzero\Database\Relationship\OneToManyThrough;
 use Hubzero\Database\Relationship\OneToOne;
+use Hubzero\Database\Relationship\OneShiftsToMany;
 
 use Hubzero\Error\Exception\BadMethodCallException;
 use Hubzero\Error\Exception\RuntimeException;
@@ -1478,6 +1479,28 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	}
 
 	/**
+	 * Retrieves a one shifts to many model relationship
+	 *
+	 * This is very similar to a one to many relationship, except that we also need to 
+	 * constrain by a scope type.  Additionally, the related key is actually most likely
+	 * static (scope_id), rather than dynamic based on the model name.
+	 *
+	 * @param   string       $model       the name of the model to relate to the current one
+	 * @param   string|null  $relatedKey  the foreign key used to associate the many back to the model
+	 * @param   string|null  $shifter     the many side field used to differentiate/shift models
+	 * @param   string|null  $thisKey     the local key used to associate the many back to the model
+	 * @return  \Hubzero\Database\Relationship\OneShiftsToMany
+	 * @since   1.3.2
+	 **/
+	public function oneShiftsToMany($model, $relatedKey='scope_id', $shifter='scope', $thisKey=null)
+	{
+		// Default the keys if not set
+		$thisKey = $thisKey ?: $this->getPrimaryKey();
+
+		return new OneShiftsToMany($this, $this->resolve($model), $thisKey, $relatedKey, $shifter);
+	}
+
+	/**
 	 * Retrieves a many to many model relationship
 	 *
 	 * @param  string $model the name of the model to relate to the current one
@@ -1553,6 +1576,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Attaches the given model(s) to the current one via its relationship
 	 *
+	 * This is kind of like calling save on an individual relationship,
+	 * except that we're attaching the models back to the parent entity.
+	 * This is helpful if you're going to call saveAndPropagate and want
+	 * to pass the parent object back to a view in the event of a save error.
+	 *
 	 * @param  string $relationship the relationship to invoke
 	 * @param  array|object $models the model or models to attach
 	 * @return $this
@@ -1560,14 +1588,27 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 **/
 	public function attach($relationship, $models)
 	{
-		$rows = new Rows;
-
-		foreach ((array)$models as $model)
+		// If we have an array, we'll put it into a rows object
+		// (like we would if we were fetching the results from the db)
+		if (is_array($models))
 		{
-			$rows->push($model);
+			$rows = new Rows;
+
+			foreach ($models as $model)
+			{
+				$rows->push($model);
+			}
+		}
+		else
+		{
+			// Otherwise it's just a single model
+			$rows = $models;
 		}
 
-		$this->addRelationship($relationship, $this->$relationship()->associate($rows));
+		// Get our rows associated according to their relationship type
+		// This means we add related keys, etc to the passed in rows
+		$rows = $this->$relationship()->associate($rows);
+		$this->addRelationship($relationship, $rows);
 
 		return $this;
 	}
