@@ -775,4 +775,15 @@ class Pdo extends Driver
 		// @FIXME: this isn't guaranteed to work on select statements in mysql
 		return $this->statement->rowCount();
 	}
+
+	/**
+	 * Detects the driver syntax
+	 *
+	 * @return string
+	 * @since  2.0.0
+	 **/
+	protected function detectSyntax()
+	{
+		return $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
+	}
 }

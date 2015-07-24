@@ -146,6 +146,13 @@ abstract class Driver
 	protected $database;
 
 	/**
+	 * The database driver syntax
+	 *
+	 * @var string
+	 **/
+	protected $syntax = null;
+
+	/**
 	 * Constructs a new object, setting some class properties
 	 *
 	 * @param array $options list of options used to configure the connection
@@ -245,6 +252,7 @@ abstract class Driver
 	public function setConnection($connection)
 	{
 		$this->connection = $connection;
+		$this->setSyntax($this->detectSyntax());
 
 		return $this;
 	}
@@ -967,6 +975,31 @@ abstract class Driver
 	}
 
 	/**
+	 * Grabs the syntax
+	 *
+	 * @return string
+	 * @since  2.0.0
+	 */
+	public function getSyntax()
+	{
+		return $this->syntax;
+	}
+
+	/**
+	 * Sets the syntax
+	 *
+	 * @param  string  $syntax  the syntax being used based on the connection
+	 * @return $this
+	 * @since  2.0.0
+	 */
+	public function setSyntax($syntax)
+	{
+		$this->syntax = $syntax;
+
+		return $this;
+	}
+
+	/**
 	 * Gets the total number of SQL statements executed by the database driver
 	 *
 	 * @return int
@@ -1399,4 +1432,12 @@ abstract class Driver
 	 * @since  2.0.0
 	 **/
 	abstract public function getAutoIncrement($table);
+
+	/**
+	 * Detects the driver syntax
+	 *
+	 * @return string
+	 * @since  2.0.0
+	 **/
+	abstract protected function detectSyntax();
 }
