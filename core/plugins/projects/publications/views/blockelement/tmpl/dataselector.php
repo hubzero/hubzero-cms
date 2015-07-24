@@ -35,7 +35,6 @@ defined('_HZEXEC_') or die();
 $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
 $required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $this->elementId)->params->required;
-
 $elName   = 'element' . $this->elementId;
 
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
@@ -93,7 +92,7 @@ $elementUrl = Route::url($this->pub->link('editversion') . '&section='
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
+echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-subject withhandler">

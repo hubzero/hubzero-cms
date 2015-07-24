@@ -148,7 +148,6 @@ HUB.ProjectFilesFileSelect = {
 			if (response)
 			{
 				$(output).html(response);
-
 			}
 			else
 			{
@@ -159,7 +158,6 @@ HUB.ProjectFilesFileSelect = {
 			jQuery(document).trigger('ajaxLoad');
 
 		});
-
 	},
 
 	enableSave: function()

@@ -1117,6 +1117,9 @@
 	.handler-controls .hint {
 		padding: 0 0 1em 0;
 	}
+	.handler-controls p {
+		padding: 1.5em 0;
+	}
 	.handler-controls .pub-info-pop {
 		margin-top: -2em;
 		float: none;

@@ -34,7 +34,8 @@ if (!$this->ajax)
 $attModel = new \Components\Publications\Models\Attachments($this->database);
 
 // Filter URL
-$filterUrl = Route::url( $this->publication->link('editversionid') . '&active=files&action=filter&p=' . $this->props . '&ajax=1&no_html=1');
+$route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
+$filterUrl = Route::url($route) . '?action=filter&amp;pid=' . $this->publication->get('id') . '&amp;vid=' . $this->publication->get('version_id') . '&amp;p=' . $this->props . '&amp;ajax=1&amp;no_html=1';
 
 $elId 	 = $this->element;
 
@@ -244,27 +245,12 @@ if ($this->items)
 		<input type="hidden" name="no_html" value="1" />
 	</fieldset>
 	<div id="status-box"></div>
-	<?php if ($this->model->isProvisioned()) { ?>
-		<input type="hidden" name="provisioned" id="provisioned" value="1" />
-		<input type="hidden" name="task" value="submit" />
-	<div class="asset-uploader">
-		<h5 class="add"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROV_UPLOAD'); ?>
-			<span class="abox-controls">
-				<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success" id="f-upload"  />
-			</span>
-		</h5>
-		<div id="ajax-uploader" data-action="<?php echo Route::url( $this->publication->link('edit') . '&active=files&action=save&no_html=1&ajax=1'); ?>" >
-			<label class="addnew">
-				<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-			</label>
-			<div id="upload-body">
-				<ul id="u-selected" class="qq-upload-list">
-				</ul>
-			</div>
-		</div>
-	</div>
-	<?php } else { ?>
+
 	<div id="quick-upload" class="quick-uploader">
+		<?php if ($this->model->isProvisioned()) { ?>
+			<input type="hidden" name="provisioned" id="provisioned" value="1" />
+			<input type="hidden" name="task" value="submit" />
+		<?php } ?>
 		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
 
 		<label>
@@ -282,6 +268,6 @@ if ($this->items)
 		<?php } ?>
 		<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
 	</div>
-	<?php } ?>
+
 	</form>
 </div>

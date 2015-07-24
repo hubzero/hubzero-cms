@@ -622,13 +622,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$results = $this->repo->insert($params);
 
 		// Register changes for active projects
-		if (!empty($results) && !$this->model->isProvisioned())
+		if (!empty($results))
 		{
 			foreach ($results as $updateType => $files)
 			{
 				foreach ($files as $file)
 				{
-					$this->registerUpdate($updateType, $file);
+					if (!$this->model->isProvisioned())
+					{
+						$this->registerUpdate($updateType, $file);
+					}
+
 					// Ajax requires output right here
 					if ($ajaxUpload)
 					{
