@@ -918,6 +918,9 @@
 	.replacements label {
 		padding: 0.5em 0;
 	}
+	.draft-review p {
+		padding: 0 0 1em 0;
+	}
 /*
 --------------------------------------------- */
 	.starred {

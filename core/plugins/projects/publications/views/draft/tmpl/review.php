@@ -25,6 +25,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->css('jquery.datepicker.css', 'system')
+	 ->css('jquery.timepicker.css', 'system')
+	 ->js('jquery.timepicker', 'system');
+
 $complete = $this->pub->curation('complete');
 $params   = $this->pub->curation('params');
 
@@ -180,15 +184,15 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 						<h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT'); ?></h6>
 						<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'); ?></p>
 						<label for="contact_name">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 							<input type="text" name="contact[name]" id="contact_name" value="<?php echo $this->escape($name); ?>" />
 						</label>
 						<label for="contact_email">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 							<input type="text" name="contact[email]" id="contact_email" value="<?php echo $this->escape($email); ?>" />
 						</label>
 						<label for="contact_phone">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 							<input type="text" name="contact[phone]" id="contact_phone" value="<?php echo $this->escape($phone); ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE_HINT'); ?>" />
 						</label>
 					<?php } ?>
