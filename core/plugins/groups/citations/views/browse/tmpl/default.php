@@ -331,60 +331,6 @@ if (isset($this->messages))
 							<?php endforeach; ?>
 						</select>
 					</label>
-					<fieldset>
-						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE'); ?></legend>
-						<label>
-							<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
-						</label>
-					</fieldset>
-					<fieldset>
-						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
-						<label>
-							<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
-						</label>
-					</fieldset>
-					<fieldset>
-						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
-						<label>
-							<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
-						</label>
-						<label>
-							<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> />
-							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
-						</label>
-					</fieldset>
-
 					<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
 					<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
 					<input type="hidden" name="action" value="browse" />
