@@ -301,7 +301,6 @@ if (isset($this->messages))
 						<input type="text" name="filters[year_end]" class="half" value="<?php echo $this->filters['year_end']; ?>" />
 					</label>
 					<?php if ($this->isManager) { ?>
-						<fieldset>
 							<label>
 								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN'); ?>
 								<input type="text" name="filters[startuploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
@@ -312,7 +311,6 @@ if (isset($this->messages))
 								<input type="text" name="filters[enduploaddate]" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
 								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
-						</fieldset>
 					<?php } ?>
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
