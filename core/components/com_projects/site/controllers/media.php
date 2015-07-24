@@ -110,7 +110,7 @@ class Media extends Base
 		}
 
 		// Make the filename safe
-		$file = \Components\Projects\Helpers\Html::makeSafeFile($file);
+		$file = Filesystem::clean($file);
 
 		// Check project exists
 		if (!$this->model->exists())

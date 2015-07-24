@@ -151,7 +151,7 @@ class Git extends Models\Adapter
 			}
 
 			// Load basic file metadata
-			$file = new Models\File(trim($item), $this->_path);
+			$file = new Models\File($item, $this->_path);
 
 			// Search filter applied
 			if ($filter

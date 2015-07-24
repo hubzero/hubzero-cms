@@ -335,7 +335,7 @@ class Repo extends Object
 		$remotes   = isset($params['remoteConnections']) ? $params['remoteConnections'] : array();
 
 		$localPath = $dirPath ? $dirPath . DS . $item : $item;
-		$file = new Models\File(trim($localPath), $path);
+		$file = new Models\File($localPath, $path);
 		$file->set('type', $type);
 		if ($type == 'folder')
 		{
@@ -455,7 +455,7 @@ class Repo extends Object
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
 
 		$newDir    = isset($params['newDir']) ? $params['newDir'] : NULL; // New directory name
-		$newDir    = Helpers\Html::makeSafeDir($newDir);
+		$newDir    = Filesystem::cleanPath($newDir);
 		$localDirPath = $dirPath ? $dirPath . DS . $newDir : $newDir;
 
 		// Check that we have directory to create
@@ -774,11 +774,11 @@ class Repo extends Object
 		// Make dir/file name safe
 		if ($type == 'folder')
 		{
-			$to = Helpers\Html::makeSafeDir($to);
+			$to = Filesystem::cleanPath($to);
 		}
 		else
 		{
-			$to = Helpers\Html::makeSafeFile($to);
+			$to = Filesystem::clean($to);
 		}
 
 		// Compare new and old name
@@ -1004,7 +1004,7 @@ class Repo extends Object
 		$allowReplace = isset($params['allowReplace']) ? $params['allowReplace'] : true;
 		$update       = isset($params['update']) ? $params['update'] : true;
 
-		$file         = Helpers\Html::makeSafeFile(basename($dataPath));
+		$file         = Filesystem::clean(basename($dataPath));
 		$localPath    = $dirPath ? $dirPath . DS . $file : $file;
 
 		$where  = $target . DS . $file;
@@ -1121,7 +1121,7 @@ class Repo extends Object
 		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
 		$expand      = isset($params['expand']) ? $params['expand'] : false;
 
-		$file        = Helpers\Html::makeSafeFile($file);
+		$file        = Filesystem::clean(trim($file));
 		$localPath   = $dirPath ? $dirPath . DS . $file : $file;
 		$exists      = false;
 
@@ -1159,7 +1159,7 @@ class Repo extends Object
 			}
 
 			// File object
-			$fileObject        = new Models\File(trim($localPath), $this->get('path'));
+			$fileObject        = new Models\File($localPath, $this->get('path'));
 			$params['file']    = $fileObject;
 			$params['replace'] = $exists;
 
@@ -1269,9 +1269,9 @@ class Repo extends Object
 			}
 
 			// Clean up filename
-			$safe_dir  = $a_dir && $a_dir != '.' ? Helpers\Html::makeSafeDir($a_dir) : '';
+			$safe_dir  = $a_dir && $a_dir != '.' ? Filesystem::cleanPath($a_dir) : '';
 			$safe_dir  = trim($safe_dir, DS);
-			$safe_file = Helpers\Html::makeSafeFile($file);
+			$safe_file = Filesystem::clean($file);
 
 			$skipDir = false;
 			if (is_array($reserved) && $safe_dir && in_array(strtolower($safe_dir), $reserved))

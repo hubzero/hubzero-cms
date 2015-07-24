@@ -3315,27 +3315,25 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		foreach ($checked as $key => $value)
 		{
-			$value = trim($value);
-			if ($value == '')
+			if (trim($value) == '')
 			{
 				unset($checked[$key]);
 			}
 			else
 			{
-				$checked[$key] = trim($value);
+				$checked[$key] = $value;
 			}
 		}
 
 		foreach ($folders as $key => $value)
 		{
-			$value = trim($value);
-			if ($value == '')
+			if (trim($value) == '')
 			{
 				unset($folders[$key]);
 			}
 			else
 			{
-				$folders[$key] = trim($value);
+				$folders[$key] = $value;
 			}
 		}
 

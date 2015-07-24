@@ -187,6 +187,21 @@ class Html extends Object
 	}
 
 	/**
+	 * Makes path name safe to use.
+	 * Filesystem::cleanDirectory() is too limiting
+	 *
+	 * @access	public
+	 * @param	string The full path to sanitize.
+	 * @return	string The sanitized string.
+	 */
+	public static function makeSafeDir($path)
+	{
+		$ds = (DS == '\\') ? '\\' . DS : DS;
+		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
+		return preg_replace($regex, '', $path);
+	}
+
+	/**
 	 * Get file extension
 	 *
 	 * @param      string $file
@@ -807,33 +822,6 @@ class Html extends Object
 	}
 
 	/**
-	 * Makes file name safe to use
-	 *
-	 * @param string $file The name of the file [not full path]
-	 * @return string The sanitized string
-	 */
-	public static function makeSafeFile($file)
-	{
-	//	$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
-		$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#');
-		return preg_replace($regex, '', $file);
-	}
-
-	/**
-	 * Makes path name safe to use.
-	 *
-	 * @access	public
-	 * @param	string The full path to sanitise.
-	 * @return	string The sanitised string.
-	 */
-	public static function makeSafeDir($path)
-	{
-		$ds = (DS == '\\') ? '\\' . DS : DS;
-		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
-		return preg_replace($regex, '', $path);
-	}
-
-	/**
 	 * Get admin notes
 	 *
 	 * @param      string $notes
@@ -842,7 +830,7 @@ class Html extends Object
 	 */
 	public static function getAdminNotes($notes = '', $reviewer = '')
 	{
-		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
+		preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes, $matches);
 		$ntext = '';
 		if (count($matches) > 0)
 		{
@@ -869,7 +857,7 @@ class Html extends Object
 	 */
 	public static function getAdminNoteCount($notes = '', $reviewer = '')
 	{
-		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
+		preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes, $matches);
 
 		if (count($matches) > 0)
 		{
@@ -891,8 +879,8 @@ class Html extends Object
 	 */
 	public static function parseAdminNote($note = '', $reviewer = '', $showmeta = 1, $shorten = 0)
 	{
-		$note = str_replace('<nb:'.$reviewer.'>','', $note);
-		$note = str_replace('</nb:'.$reviewer.'>','', $note);
+		$note = str_replace('<nb:' . $reviewer . '>','', $note);
+		$note = str_replace('</nb:' . $reviewer . '>','', $note);
 
 		preg_match("#<meta>(.*?)</meta>#s", $note, $matches);
 		if (count($matches) > 0)
@@ -906,8 +894,8 @@ class Html extends Object
 			}
 			if ($showmeta)
 			{
-				$meta = str_replace('<meta>','' , $meta);
-				$meta = str_replace('</meta>','', $meta);
+				$meta = str_replace('<meta>', '', $meta);
+				$meta = str_replace('</meta>', '', $meta);
 
 				$note  .= '<span class="block mini faded">' . $meta . '</span>';
 			}
@@ -927,7 +915,7 @@ class Html extends Object
 	public static function getLastAdminNote($notes = '', $reviewer = '')
 	{
 		$match = '';
-		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
+		preg_match_all("#<nb:" . $reviewer . ">(.*?)</nb:" . $reviewer . ">#s", $notes, $matches);
 
 		if (count($matches) > 0)
 		{

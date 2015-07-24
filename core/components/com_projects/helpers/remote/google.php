@@ -718,10 +718,10 @@ class Google extends Object
 
 					if (!preg_match("/.folder/", $doc['mimeType']))
 					{
-						$title = \Components\Projects\Helpers\Html::makeSafeFile($doc['title']);
+						$title = Filesystem::clean($doc['title']);
 
 						// Get file extention
-						$ext = \Components\Projects\Helpers\Html::getFileExtension($title);
+						$ext = Filesystem::extension($title);
 
 						if ($converted)
 						{
@@ -736,7 +736,7 @@ class Google extends Object
 					}
 					else
 					{
-						$title = \Components\Projects\Helpers\Html::makeSafeDir($doc['title']);
+						$title = Filesystem::cleanPath($doc['title']);
 						$type = 'folder';
 					}
 
@@ -931,7 +931,7 @@ class Google extends Object
 						continue;
 					}
 
-					$title = \Components\Projects\Helpers\Html::makeSafeDir($item['title']);
+					$title = Filesystem::cleanPath($item['title']);
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 					$status = $item['labels']['trashed'] ? 'D' : 'A';
 
@@ -1033,7 +1033,7 @@ class Google extends Object
 
 					if (!preg_match("/.folder/", $item['mimeType']))
 					{
-						$title = \Components\Projects\Helpers\Html::makeSafeFile($item['title']);
+						$title = Filesystem::clean($item['title']);
 
 						if ($converted)
 						{
@@ -1048,7 +1048,7 @@ class Google extends Object
 					}
 					else
 					{
-						$title = \Components\Projects\Helpers\Html::makeSafeDir($item['title']);
+						$title = Filesystem::cleanPath($item['title']);
 						$type = 'folder';
 					}
 
