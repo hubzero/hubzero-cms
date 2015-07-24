@@ -57,7 +57,7 @@ class ManyToMany extends OneToManyThrough
 			foreach ($ids as $id)
 			{
 				$data  = [$this->associativeLocal => $localKeyValue, $this->associativeRelated => $id];
-				$query = with(new Query)->push($this->associativeTable, $data, true);
+				$query = $this->model->getQuery()->push($this->associativeTable, $data, true);
 			}
 		}
 
@@ -77,7 +77,7 @@ class ManyToMany extends OneToManyThrough
 		if (is_array($ids))
 		{
 			// Get a query instance
-			$query = new Query;
+			$query = $this->model->getQuery();
 
 			// Get the parent primary key value
 			$localKeyValue = $this->model->getPkValue();

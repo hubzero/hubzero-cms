@@ -584,6 +584,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	}
 
 	/**
+	 * Gets a fresh query object
+	 *
+	 * @return \Hubzero\Database\Query
+	 * @since  1.3.2
+	 **/
+	public function getQuery()
+	{
+		return new Query(self::$connection);
+	}
+
+	/**
 	 * Sets a fresh query object on the model, seeding it with helpful defaults
 	 *
 	 * @return $this
@@ -591,7 +602,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 **/
 	private function newQuery()
 	{
-		$this->query = with(new Query(self::$connection))->select('*')->from($this->getTableName());
+		$this->query = $this->getQuery()->select('*')->from($this->getTableName());
 		return $this;
 	}
 
