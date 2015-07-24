@@ -105,7 +105,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 
 		$database = App::get('db');
 
-		$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
+		$groups = array_map(array($database, 'escape'), $authz->get_group_names());
 		$viewlevels = implode(',', User::getAuthorisedViewLevels());
 
 		if ($groups)

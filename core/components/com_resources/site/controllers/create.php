@@ -526,7 +526,7 @@ class Create extends SiteController
 			{
 				return array();
 			}
-			$labels = '\'' . implode('\', \'', array_map(array($this->database, 'getEscaped'), $labels)) . '\'';
+			$labels = '\'' . implode('\', \'', array_map(array($this->database, 'escape'), $labels)) . '\'';
 		}
 
 		$this->database->setQuery(
