@@ -31,8 +31,8 @@
 
 namespace Hubzero\Database;
 
-// @FIXME: dynamically determine syntax from connection
-use Hubzero\Database\Syntax\Mysql as Syntax;
+use Hubzero\Database\Syntax\Mysql;
+use Hubzero\Database\Syntax\Sqlite;
 
 /**
  * Database query class
@@ -650,6 +650,7 @@ class Query
 	private function reset()
 	{
 		// Reset the syntax element
-		$this->syntax = new Syntax($this->connection);
+		$syntax       = '\\Hubzero\\Database\\Syntax\\' . ucfirst($this->connection->getSyntax());
+		$this->syntax = new $syntax($this->connection);
 	}
 }
