@@ -336,13 +336,19 @@ class Revisions extends AdminController
 				$msg = '';
 				if (!empty($ids))
 				{
+					$db = App::get('db');
+					$tbl = new Tables\Revision($db);
+
 					foreach ($ids as $id)
 					{
 						// Load the revision
 						$revision = new Revision($id);
 
+						$pageid = ($pageid ? $pageid : $revision->get('pageid'));
+
 						// Get a count of all approved revisions
-						$count = $revision->getRevisionCount();
+						$tbl->pageid = $pageid;
+						$count = $tbl->getRevisionCount();
 
 						// Can't delete - it's the only approved version!
 						if ($count <= 1)
