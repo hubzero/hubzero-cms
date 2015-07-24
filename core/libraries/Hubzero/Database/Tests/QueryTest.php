@@ -75,7 +75,7 @@ class QueryTest extends Database
 			'email' => 'newuser@gmail.com'
 		]);
 
-		// There are two default users in the seed data, and adding a new one should a rowcount of 3
+		// There are 4 default users in the seed data, and adding a new one should a rowcount of 5
 		$this->assertEquals(5, $this->getConnection()->getRowCount('users'), 'Push did not return the expected row count of 5');
 	}
 
