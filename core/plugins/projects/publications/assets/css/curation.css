@@ -501,7 +501,7 @@
 
 /* Review
 --------------------------------------------- */
-	.review-prompt {
+	.draftflow .review-prompt {
 		padding: 1em 2em;
 		margin: 1em 1em 1em 0;
 		border: 4px solid #d8f1d0;
