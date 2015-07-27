@@ -177,7 +177,8 @@ class Collection extends Base
 	 */
 	public function setup($object_id, $object_type)
 	{
-		Lang::load('com_collections');
+		Lang::load('com_collections', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
+		Lang::load('com_collections', \Component::path('com_collections') . DS . 'site');
 
 		$result = array(
 			'id'          => 0,
