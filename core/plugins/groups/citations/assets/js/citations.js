@@ -12,5 +12,11 @@ if (!jq) {
 jQuery(document).ready(function (jq) {
 	var $ = jq;
 
-	
+	// toggle download markers.
+	$('.checkall-download').click(function() {
+		var checked = $(this).prop('checked');
+		$('.download-marker').each(function() {
+			$(this).prop('checked', checked);
+			});
+		});
 });
