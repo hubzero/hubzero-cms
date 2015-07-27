@@ -985,10 +985,13 @@ class Items extends AdminController
 			$newpath = Utilities::buildUploadPath($path . DS . $dir_id);
 
 			// Attempt to rename the temp directory
-			$result = \Filesystem::move($tmppath, $newpath);
-			if ($result !== true)
+			if (\Filesystem::exists($tmppath))
 			{
-				$this->setError($result);
+				$result = \Filesystem::move($tmppath, $newpath);
+				if ($result !== true)
+				{
+					$this->setError($result);
+				}
 			}
 
 			$row->path = str_replace($tmpid, Html::niceidformat($row->id), $row->path);
