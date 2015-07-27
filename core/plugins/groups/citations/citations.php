@@ -829,7 +829,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					}
 				} //end if not search & not sort & non-empty value
 
-				// for searching 
+				// for searching
 				if ($filter == "search" && $value != "")
 				{
 					$terms = preg_split('/\s+/', $value);
@@ -870,7 +870,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$cite = clone $citations;
 				foreach ($cite as $c)
 				{
-					foreach($c->tags as $tag)
+					foreach ($c->tags as $tag)
 					{
 						if ($tag->tag == $value)
 						{
@@ -881,14 +881,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				//remove duplicates
 				$collection = array_unique($collection);
-				
+
 				//get the tagged ones
 				$citations->whereIn('id', $collection);
 				}
-			
 		} //end foreach filters as filter
 
-			
 			return array('citations' => $citations, 'filters' => $filters);
 		}
 		else
