@@ -224,7 +224,7 @@ class Terms extends \JModel
 		$partial = '';
 		$sign = '';
 		$raw = trim(strtolower($this->raw));
-		if (preg_match('/^([_.a-z:]+):/', $raw, $match))
+		if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match))
 		{
 			$this->section = explode(':', $match[1]);
 			$raw = preg_replace('/^'.preg_quote($match[1]).':/', '', $raw);
