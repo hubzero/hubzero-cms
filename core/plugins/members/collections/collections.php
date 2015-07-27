@@ -728,7 +728,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			'state'       => 1,
 			'object_id'   => $this->member->get('uidNumber'),
 			'object_type' => 'member',
-			'access'      => -1
+			'access'      => -1,
+			'sort'        => 'created',
+			'sort_Dir'    => 'desc'
 		);
 
 		// Filters for returning results

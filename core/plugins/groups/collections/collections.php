@@ -766,7 +766,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'state'       => 1,
 			'object_type' => 'group',
 			'object_id'   => $this->group->get('gidNumber'),
-			'user_id'     => User::get('id')
+			'user_id'     => User::get('id'),
+			'sort'        => 'created',
+			'sort_Dir'    => 'desc'
 		);
 
 		// Filters for returning results
