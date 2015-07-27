@@ -78,7 +78,7 @@ class Extras extends Base
 				'name' 			=> 'extras',
 				'label' 		=> 'Extras',
 				'title' 		=> 'Publication Gallery and Supporting Docs',
-				'draftHeading' 	=> 'Let\'s jazz up publication page',
+				'draftHeading' 	=> 'Let\'s jazz up the publication page',
 				'draftTagline'	=> 'Add images/supporting docs:',
 				'about'			=> '',
 				'adminTips'		=> '',
