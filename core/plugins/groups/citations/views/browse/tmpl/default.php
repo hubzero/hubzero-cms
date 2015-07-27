@@ -155,7 +155,7 @@ if (isset($this->messages))
 									<?php endif; ?>
 									<td class="citation-container">
 										<?php
-											$formatted = $cite->formatted($this->config);
+											$formatted = $cite->formatted($this->config, $this->filters['search']);
 
 											if ($cite->doi)
 											{
