@@ -739,7 +739,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 **/
 	public function total()
 	{
-		$total = $this->select($this->getPrimaryKey(), 'count', true)->rows()->first()->count;
+		$total = $this->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', true)->rows()->first()->count;
 		$this->reset();
 
 		return $total;
