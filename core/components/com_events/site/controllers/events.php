@@ -677,9 +677,9 @@ class Events extends SiteController
 		$row->load($id);
 
 		// Ensure we have an event
-		if (!$row)
+		if (!$row || !$row->id)
 		{
-			throw new Exception(Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_THIS_DAY'), 500);
+			App::abort(404, Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_THIS_DAY'));
 		}
 
 		//is this a group rescricted event
