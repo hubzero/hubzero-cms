@@ -584,7 +584,7 @@ class Questions extends SiteController
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 			// Get tags of interest
-			$mt = new \MembersModelTags(User::get('id'));
+			$mt = new \Components\Members\Models\Tags(User::get('id'));
 			$mytags  = $mt->render('string');
 
 			$this->view->filters['tag']  = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytags;
