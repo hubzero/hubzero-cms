@@ -382,6 +382,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$fields['publish_down'] = Date::of(strtotime(str_replace('@', '', $fields['publish_down'])))->toSql();
 		}
 
+		if ($fields['publish_up'] > $fields['publish_down'])
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'));
+			return $this->_edit($fields);
+		}
+
 		//announcement model
 		$announcement = new \Hubzero\Item\Announcement($this->database);
 
