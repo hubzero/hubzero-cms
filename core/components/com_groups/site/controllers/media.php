@@ -293,7 +293,7 @@ class Media extends Base
 		$this->view->relpath = Request::getVar('path', '/');
 
 		// make sure we default to uploads folder for non-super groups
-		if ($this->group->get('type') != 3 && $this->view->relpath == '')
+		if ($this->group->get('type') != 3 && (!$this->view->relpath || $this->view->relpath == '/'))
 		{
 			$this->view->relpath = '/uploads';
 		}
