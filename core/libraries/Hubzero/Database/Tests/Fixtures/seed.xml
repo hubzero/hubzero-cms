@@ -94,25 +94,30 @@
 		<column>id</column>
 		<column>post_id</column>
 		<column>tag_id</column>
+		<column>tagged</column>
 		<row>
 			<value>1</value>
 			<value>1</value>
 			<value>1</value>
+			<value></value>
 		</row>
 		<row>
 			<value>2</value>
 			<value>1</value>
 			<value>2</value>
+			<value></value>
 		</row>
 		<row>
 			<value>3</value>
 			<value>1</value>
 			<value>3</value>
+			<value></value>
 		</row>
 		<row>
 			<value>4</value>
 			<value>2</value>
 			<value>1</value>
+			<value></value>
 		</row>
 	</table>
 	<table name="posts">
