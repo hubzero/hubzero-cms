@@ -418,7 +418,7 @@ class Authors extends Base
 			$objO->store();
 
 			$owner 				 = $objO->id;
-			$sendInvite 		 = $email ? 1 : 0;
+			$sendInvite 		 = ($email || $uid) ? 1 : 0;
 		}
 
 		// Now we do need owner record
@@ -464,7 +464,7 @@ class Authors extends Base
 		$this->_parent->set('_update', 1);
 
 		// (Re)send email invitation
-		if ($sendInvite && $email)
+		if ($sendInvite && ($email || $uid))
 		{
 			// Get project model
 			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
@@ -611,9 +611,9 @@ class Authors extends Base
 				$objO->invited_email = $email;
 				$objO->invited_name  = $row->name;
 				$objO->userid 		 = $row->user_id;
-				$sendInvite 		 = 1;
-				$objO->invited_code = $code;
+				$objO->invited_code  = $code;
 				$objO->store();
+				$sendInvite = 1;
 			}
 		}
 
