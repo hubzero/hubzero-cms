@@ -106,7 +106,7 @@ class License extends Base
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
-		$view->showControls	= 2;
+		$view->showControls = 4;
 
 		if ($this->getError())
 		{

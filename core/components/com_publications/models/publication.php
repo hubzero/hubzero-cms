@@ -1641,7 +1641,16 @@ class Publication extends Object
 	 */
 	public function store($check=true)
 	{
-		// Do nothing here yet.
+		if ($this->masterExists())
+		{
+			$this->publication->store();
+			if (!$this->publication->getError())
+			{
+				return true;
+			}
+			$this->setError($this->publication->getError());
+			return false;
+		}
 	}
 
 	/**

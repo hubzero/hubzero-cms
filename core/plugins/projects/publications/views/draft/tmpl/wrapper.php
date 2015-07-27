@@ -79,13 +79,13 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
 
 						<?php
 						if ($this->active != 'review') { ?>
-						<div class="submit-area <?php echo $this->showControls == 2 ? ' extended' : ''; ?>" id="submit-area">
+						<div class="submit-area <?php echo ($this->showControls == 2 || $this->showControls == 4) ? ' extended' : ''; ?>" id="submit-area">
 							<?php if (!$isFirst && $this->showControls && $this->showControls != 3) { ?>
 								<span class="button-wrapper bw-previous icon-prev">
 									<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" />
 								</span>
 							<?php } ?>
-							<?php if ($this->showControls && $this->showControls != 3) { ?>
+							<?php if ($this->showControls == 4 || $this->showControls == 1) { ?>
 							<span class="button-wrapper icon-apply">
 								<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />
 							</span>

@@ -131,7 +131,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 							}
 							$used[] = $g->gidNumber;
 							?>
-							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->_project->groupOwner('id') == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->groupOwner('id') == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
 						<?php } ?>
 					</select>
 				<?php } else { ?>

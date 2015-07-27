@@ -124,7 +124,7 @@ class Content extends Base
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
 		$view->showControls	= isset($master->params->collapse_elements)
-							&& $master->params->collapse_elements == 1 ? 3 : 1;
+							&& $master->params->collapse_elements == 1 ? 3 : 2;
 		$view->status		= $status;
 		$view->master		= $master;
 
@@ -157,12 +157,14 @@ class Content extends Base
 		// Make sure we have current attachments
 		$pub->attachments();
 
+		$collapse = $this->_manifest->params->collapse_elements == 0 ? 0 : 1;
+
 		// Save each element
 		$saved = 0;
 		foreach ($this->_manifest->elements as $id => $element)
 		{
 			// Are we saving just one element?
-			if ($elementId && $id != $elementId)
+			if ($elementId && $id != $elementId && $collapse)
 			{
 				continue;
 			}

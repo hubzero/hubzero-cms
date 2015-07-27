@@ -39,6 +39,7 @@ $elName   = 'element' . $this->elementId;
 
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
 $coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
+$coming = $this->collapse ? $coming : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
 $max    = $this->manifest->params->max;
 

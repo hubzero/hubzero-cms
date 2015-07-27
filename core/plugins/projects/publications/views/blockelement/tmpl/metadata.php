@@ -80,6 +80,7 @@ $class = $value ? ' be-complete' : '';
 // Determine if current element is active/ not yet filled/ last in order
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
 $coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
+$coming = $this->collapse ? $coming : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
 
 // Get curator status

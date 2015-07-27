@@ -161,8 +161,9 @@ class Description extends Base
 		}
 
 		// Track changes
-		$changed = 0;
-		$missed  = 0;
+		$changed  = 0;
+		$missed   = 0;
+		$collapse = $this->_manifest->params->collapse_elements == 0 ? 0 : 1;
 
 		// Incoming
 		$nbtags = Request::getVar( 'nbtag', array(), 'request', 'array' );
@@ -182,7 +183,7 @@ class Description extends Base
 		foreach ($this->_manifest->elements as $id => $element)
 		{
 			// Are we saving just one element?
-			if ($elementId && $id != $elementId)
+			if ($elementId && $id != $elementId && $collapse)
 			{
 				continue;
 			}
@@ -266,7 +267,7 @@ class Description extends Base
 		}
 
 		// Report error
-		if ($missed && $this->_manifest->params->collapse_elements == 0)
+		if ($missed && $collapse == 0)
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 		}

@@ -106,7 +106,8 @@ class Authors extends Base
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
-		$view->showControls	= 2;
+		$showGroupOwner     = isset($this->_manifest->params->group_owner) ? $this->_manifest->params->group_owner : '';
+		$view->showControls = $showGroupOwner ? 4 : 2;
 
 		if ($this->getError())
 		{
@@ -229,13 +230,8 @@ class Authors extends Base
 
 		if ($saveGroupOwner)
 		{
-			$objP = new \Components\Publications\Tables\Publication( $this->_parent->_db );
-
-			if ($objP->load($pub->id))
-			{
-				$objP->group_owner = $group_owner;
-				$objP->store();
-			}
+			$pub->publication->group_owner = $group_owner;
+			$pub->publication->store();
 		}
 	}
 
@@ -779,7 +775,12 @@ class Authors extends Base
 				'about'			=> '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
 				'adminTips'		=> '',
 				'elements' 		=> array(),
-				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'submitter' => 1, 'group_owner' => 0 )
+				'params'		=> array(
+					'required'          => 1,
+					'published_editing' => 0,
+					'submitter'         => 1,
+					'group_owner'       => 0
+				)
 			);
 
 			return json_decode(json_encode($manifest), FALSE);
