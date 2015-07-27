@@ -61,7 +61,7 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$authorization = 'state = 1 || state = 2';
+			$authorization = 'state IN (1,2)';
 		}
 
 		$now = Date::toSql();
