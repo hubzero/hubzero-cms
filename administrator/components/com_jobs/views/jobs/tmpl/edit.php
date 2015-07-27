@@ -104,11 +104,15 @@ function submitbutton(pressbutton)
 		form.submit();
 		return;
 	}
+	
 
-	// do field validation
+	// for ckeditor values
+	var descriptionEditor = $('#cke_description').find(".cke_inner").children().eq(1).children().eq(1).contents().find("body").text();
+
+	// field validation
 	if (form.title.value == ''){
 		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_TITLE'); ?>');
-	} else if (form.description.value == ''){
+	} else if (form.description.value == '' && descriptionEditor == ''){
 		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_DESCRIPTION'); ?>');
 	} else if (form.companyLocation.value == ''){
 		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_LOCATION'); ?>');
