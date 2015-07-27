@@ -647,7 +647,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$row->load($id);
 
 		// Ensure we have an event
-		if (!$row)
+		if (!$row || !$row->id)
 		{
 			JError::raiseError(404, JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_THIS_DAY'));
 			return;
