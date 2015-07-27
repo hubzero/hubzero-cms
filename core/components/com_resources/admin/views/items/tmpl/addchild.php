@@ -33,8 +33,9 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ADD_CHILD'), 'addedit.png' );
 Toolbar::cancel();
 
+Request::setVar('hidemainmenu', 1);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<h3><?php echo stripslashes($this->parent->title); ?></h3>
 
 	<fieldset class="adminform">
@@ -42,25 +43,23 @@ Toolbar::cancel();
 
 		<?php if ($this->getError()) { echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>'; } ?>
 
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td>
-						<input type="radio" name="method" id="child_create" value="create" checked="checked" />
-						<label for="child_create"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_CREATE'); ?></label>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="method" id="child_existing" value="existing" />
-						<label for="child_existing"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_EXISTING'); ?></label> - <?php echo Lang::txt('COM_RESOURCES_FIELD_RESOURCE_ID'); ?>: <input type="text" name="childid" id="childid" value="" />
-					</td>
-				</tr>
-				<tr>
-					<td><input type="submit" name="Submit" value="<?php echo Lang::txt('COM_RESOURCES_NEXT'); ?>" /></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="col width-50 fltlft">
+			<div class="input-wrap">
+				<input type="radio" name="method" id="child_create" value="create" checked="checked" />
+				<label for="child_create"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_CREATE'); ?></label>
+			</div>
+		</div>
+		<div class="col width-50 fltrt">
+			<div class="input-wrap">
+				<input type="radio" name="method" id="child_existing" value="existing" />
+				<label for="child_existing"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_EXISTING'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<label for="childid"><?php echo Lang::txt('COM_RESOURCES_FIELD_RESOURCE_ID'); ?>:</label>
+				<input type="text" name="childid" id="childid" value="" />
+			</div>
+		</div>
+		<div class="clr"></div>
 
 		<input type="hidden" name="step" value="2" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
@@ -70,4 +69,6 @@ Toolbar::cancel();
 
 		<?php echo Html::input('token'); ?>
 	</fieldset>
+
+	<p class="align-center"><input type="submit" name="Submit" value="<?php echo Lang::txt('COM_RESOURCES_NEXT'); ?>" /></p>
 </form>
