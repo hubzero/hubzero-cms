@@ -1,32 +1,32 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package		hubzero-cms
- * @author		Alissa Nedossekina <alisa@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
- * @license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
+	* HUBzero CMS
+	*
+	* Copyright 2005-2015 Purdue University. All rights reserved.
+	*
+	* This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+	*
+	* The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+	* software: you can redistribute it and/or modify it under the terms of
+	* the GNU Lesser General Public License as published by the Free Software
+	* Foundation, either version 3 of the License, or (at your option) any
+	* later version.
+	*
+	* HUBzero is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU Lesser General Public License for more details.
+	*
+	* You should have received a copy of the GNU Lesser General Public License
+	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	*
+	* HUBzero is a registered trademark of Purdue University.
+	*
+	* @package		hubzero-cms
+	* @author		Alissa Nedossekina <alisa@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
+	* @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+	* @license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+	*/
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -53,8 +53,8 @@ use Components\Citations\Models\Format;
 
 
 /**
- * Groups plugin class for citations
- */
+	* Groups plugin class for citations
+	*/
 class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 {
 	/**
@@ -150,7 +150,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				//check if guest and force login if plugin access is registered or members
 				if (User::isGuest()
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
-				{
+					{
 					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 
 					App::redirect(
@@ -805,7 +805,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$citations->where('scope', '=', $scope);
 		$citations->where('scope_id', '=', $scope_id);
 
-		// for search: $query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) > 0)";
 		/*
 		 * I am so sorry for whomever inherits this mess. I'll probably end up maintaining this
 		 * for the next 10 years or so. I owe you one.
@@ -818,7 +817,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$value = \Hubzero\Utility\Sanitize::clean($value);
 
 				// we handle things differently in search and sorting
-				if ($filter != 'search' && $filter != 'sort' && $value != "")
+				if ($filter != 'search' && $filter != 'sort' && $filter!= 'tag' && $value != "")
 				{
 					if ($filter == 'author')
 					{
@@ -828,7 +827,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					{
 						$citations->where($filter, '=', $value);
 					}
-				}
+				} //end if not search & not sort & non-empty value
 
 				// for searching 
 				if ($filter == "search" && $value != "")
@@ -864,9 +863,32 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					$citations->whereIn('id', $collection);
 			} //end searching
 
+			// for tags
+			if ($filter == "tag")
+			{
+				$collection = array();
+				$cite = clone $citations;
+				foreach ($cite as $c)
+				{
+					foreach($c->tags as $tag)
+					{
+						if ($tag->tag == $value)
+						{
+							array_push($collection, $c->id);
+						}
+					}
+				}
 
-		}
+				//remove duplicates
+				$collection = array_unique($collection);
+				
+				//get the tagged ones
+				$citations->whereIn('id', $collection);
+				}
+			
+		} //end foreach filters as filter
 
+			
 			return array('citations' => $citations, 'filters' => $filters);
 		}
 		else

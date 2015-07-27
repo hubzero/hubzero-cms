@@ -279,7 +279,7 @@ if (isset($this->messages))
 					<label>
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>:
 						<?php
-							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'filters[tag]', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
 							if (count($tf) > 0) : ?>
 								<?php echo $tf[0]; ?>
 							<?php else: ?>
