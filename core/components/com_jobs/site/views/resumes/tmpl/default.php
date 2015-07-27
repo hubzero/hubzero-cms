@@ -91,15 +91,10 @@ defined('_HZEXEC_') or die();
 				?>
 				<li>
 				<?php
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'members',
-						'element' => 'resume',
-						'name'    => 'resume',
-						'layout'  => 'seeker'
-					)
-				);
-				$params = new \Hubzero\Config\Registry($plugin->params);
+				$this->controller = '';
+				$this->task = 'resumes';
+				$view = $this->view('seeker');
+				$params = new \Hubzero\Config\Registry(Plugin::params('members', 'resume'));
 
 				$view->seeker   = $seeker;
 				$view->emp      = $emp;
@@ -128,7 +123,7 @@ defined('_HZEXEC_') or die();
 		$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
 		$pageNav->setAdditionalUrlParam('type', $this->filters['type']);
 		$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-		echo $this->pageNav->getListFooter();
+		echo $this->pageNav->render();
 		?>
 		</div><!-- / .subject -->
 		<div class="aside">
