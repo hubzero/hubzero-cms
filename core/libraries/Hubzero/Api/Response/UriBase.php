@@ -121,6 +121,6 @@ class UriBase extends Middleware
 			return $value;
 		}
 
-		return rtrim(str_replace('/api', '', $request->base()), '/') . '/' . ltrim($value, '/');
+		return rtrim(str_replace('/api', '', $request->root()), '/') . '/' . ltrim($value, '/');
 	}
 }
