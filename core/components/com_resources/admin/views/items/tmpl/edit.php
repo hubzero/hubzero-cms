@@ -217,7 +217,7 @@ function popratings()
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
 					<label for="attrib-timeof"><?php echo Lang::txt('COM_RESOURCES_FIELD_TIME'); ?>:</label><br />
-					<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? Date::of($time)->toLocal('Y-m-d H:i:s') : ''; ?>" placeholder="<?php echo Date::of('not')->toLocal('Y-m-d H:i:s'); ?>" />
+					<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? Date::of($time)->toLocal('Y-m-d H:i:s') : ''; ?>" placeholder="<?php echo Date::of()->toLocal('Y-m-d H:i:s'); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
