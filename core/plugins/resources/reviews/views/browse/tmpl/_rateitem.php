@@ -34,6 +34,11 @@ defined('_HZEXEC_') or die();
 $dcls = '';
 $lcls = '';
 
+if ($this->item->get('user_id') == User::get('id'))
+{
+	$this->item->set('vote', null);
+}
+
 if ($vote = $this->item->get('vote'))
 {
 	switch ($vote)
@@ -70,7 +75,7 @@ else
 }
 ?>
 <?php if (!$this->item->get('vote')) { ?>
-	<?php if (User::isGuest()) { ?>
+	<?php if (User::isGuest() || $this->item->get('user_id') == User::get('id')) { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 				<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
