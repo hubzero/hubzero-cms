@@ -295,7 +295,14 @@ class Polls extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$post = Request::get('post');
+		$post = array(
+			'id' => Request::getInt('id', 0, 'post'),
+			'title' => Request::getVar('title', '', 'post'),
+			'alias' => Request::getVar('alias', '', 'post'),
+			'lag' => Request::getVar('lag', '', 'post'),
+			'published' => Request::getVar('published', '', 'post'),
+			'open' => Request::getVar('open', '', 'post'),
+		);
 
 		// Save the poll parent information
 		$db = \App::get('db');
@@ -320,7 +327,7 @@ class Polls extends AdminController
 		$row->checkin();
 
 		// Save the poll options
-		$options = \Hubzero\Utility\Arr::getValue($post, 'polloption', array(), 'array');
+		$options = Request::getVar('polloption', array(), 'post');
 
 		foreach ($options as $i => $text)
 		{
