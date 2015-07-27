@@ -238,18 +238,6 @@ class Orders extends AdminController
 		$this->database->setQuery($sql);
 		$tmpl = $this->database->loadResult();
 
-		// Use header image? tcpdf config needs to be adjusted
-		/*
-		if (is_file(PATH_CORE . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png'))
-		{
-			$logo = PATH_CORE . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png';
-		}
-		else
-		{
-			$logo =  dirname(dirname(__DIR__)) . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'hub-store-logo.png';
-		}
-		*/
-
 		// set default header data
 		$pdf->SetHeaderData(NULL, 0, strtoupper($receipt_title). ' - #' . $id, NULL, array(84, 94, 124), array(146, 152, 169));
 		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
@@ -405,13 +393,11 @@ class Orders extends AdminController
 		Request::checkToken();
 
 		$statusmsg = '';
-		$email = 1; // turn emailing on/off
-		$emailbody = '';
 
-		$data = array_map('trim', $_POST);
+		$data   = array_map('trim', $_POST);
 		$action = (isset($data['action'])) ? $data['action'] : '';
-		$id = ($data['id']) ? $data['id'] : 0 ;
-		$cost = intval($data['total']);
+		$id     = ($data['id']) ? $data['id'] : 0 ;
+		$cost   = intval($data['total']);
 
 		if ($id)
 		{
@@ -419,22 +405,12 @@ class Orders extends AdminController
 			$row = new Order($this->database);
 			$row->load($id);
 			$row->notes = \Hubzero\Utility\Sanitize::clean($data['notes']);
-			$hold = $row->total;
+			$hold       = $row->total;
 			$row->total = $cost;
 
 			// get user bank account
-			//$xprofile = \Hubzero\User\Profile::getInstance($row->uid);
 			$xprofile = User::getInstance($row->uid);
 			$BTL_Q = new Teller($this->database, $xprofile->get('id'));
-
-			// start email message
-			$emailbody .= Lang::txt('COM_STORE_THANKYOU').' '.Lang::txt('COM_STORE_IN_THE').' '.Config::get('sitename').' '.Lang::txt('COM_STORE_STORE').'!'."\r\n\r\n";
-			$emailbody .= Lang::txt('COM_STORE_EMAIL_UPDATE').':'."\r\n";
-			$emailbody .= '----------------------------------------------------------'."\r\n";
-			$emailbody .= Lang::txt('COM_STORE_ORDER').' '.Lang::txt('COM_STORE_NUM').': '. $id ."\r\n";
-			$emailbody .= "\t".Lang::txt('COM_STORE_ORDER').' '.Lang::txt('COM_STORE_TOTAL').': '. $cost ."\r\n";
-			$emailbody .= "\t\t".Lang::txt('COM_STORE_PLACED').': '. Date::of($row->ordered)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n";
-			$emailbody .= "\t\t".Lang::txt('COM_STORE_STATUS').': ';
 
 			switch ($action)
 			{
@@ -445,7 +421,7 @@ class Orders extends AdminController
 					$BTL_Q->credit_adjustment($adjusted);
 
 					// remove hold
-					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
+					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='" . $id . "' AND uid=" . intval($row->uid);
 					$this->database->setQuery($sql);
 					if (!$this->database->query())
 					{
@@ -454,7 +430,7 @@ class Orders extends AdminController
 					// debit account
 					if ($cost > 0)
 					{
-						$BTL_Q->withdraw($cost, Lang::txt('COM_STORE_BANKING_PURCHASE').' #'.$id, 'store', $id);
+						$BTL_Q->withdraw($cost, Lang::txt('COM_STORE_BANKING_PURCHASE').' #' . $id, 'store', $id);
 					}
 
 					// update order information
@@ -470,7 +446,7 @@ class Orders extends AdminController
 					$BTL_Q->credit_adjustment($adjusted);
 
 					// remove hold
-					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
+					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='" . $id . "' AND uid=" . intval($row->uid);
 					$this->database->setQuery($sql);
 					if (!$this->database->query())
 					{
@@ -505,46 +481,47 @@ class Orders extends AdminController
 				throw new Exception($row->getError(), 500);
 			}
 
-			switch ($row->status)
-			{
-				case 0: ;
-					$emailbody .= ' ' . Lang::txt('COM_STORE_IN_PROCESS') . "\r\n";
-					break;
-				case 1:
-					$emailbody .= ' '.strtolower(Lang::txt('COM_STORE_COMPLETED')).' '.Lang::txt('COM_STORE_ON').' '.Date::of($row->status_changed)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
-					$emailbody .= Lang::txt('COM_STORE_EMAIL_PROCESSED').'.'."\r\n";
-					break;
-				case 2:
-				default:
-					$emailbody .= ' '.strtolower(Lang::txt('COM_STORE_CANCELLED')).' '.Lang::txt('COM_STORE_ON').' '.Date::of($row->status_changed)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
-					$emailbody .= Lang::txt('COM_STORE_EMAIL_CANCELLED').'.'."\r\n";
-					break;
-			}
-
-			if ($data['message'])
-			{ // add custom message
-				$emailbody .= $data['message']."\r\n";
-			}
-
 			// send email
 			if ($action || $data['message'])
 			{
-				if ($email)
+				if (\Hubzero\Utility\Validate::email($row->email))
 				{
-					$admin_email = Config::get('mailfrom');
-					$subject     = Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE') . ': ' . Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
-					$from        = Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE');
-
 					$message = new \Hubzero\Mail\Message();
-					$message->setSubject($subject)
-					        ->addTo($row->email)
-					        ->addFrom($admin_email, $from)
-					        ->setPriority('normal')
-					        ->setBody($emailbody);
+					$message->setSubject(Config::get('sitename') . ' '
+						. Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT', $id));
+					$message->addFrom(
+						Config::get('mailfrom'),
+						Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE')
+					);
 
-					$message->addHeader('X-Mailer', 'PHP/' . phpversion())
-					        ->addHeader('X-Component', $this->_option);
+					// Plain text email
+					$eview = new \Hubzero\Mail\View(array(
+						'name'   => 'emails',
+						'layout' => '_plain'
+					));
+					$eview->option     = $this->_option;
+					$eview->controller = $this->_controller;
+					$eview->orderid    = $id;
+					$eview->cost       = $cost;
+					$eview->row        = $row;
+					$eview->action     = $action;
+					$eview->message    = \Hubzero\Utility\Sanitize::stripAll($data['message']);
 
+					$plain = $eview->loadTemplate(false);
+					$plain = str_replace("\n", "\r\n", $plain);
+
+					$message->addPart($plain, 'text/plain');
+
+					// HTML email
+					$eview->setLayout('_html');
+
+					$html = $eview->loadTemplate();
+					$html = str_replace("\n", "\r\n", $html);
+
+					$message->addPart($html, 'text/html');
+
+					// Send e-mail
+					$message->setTo(array($row->email));
 					$message->send();
 				}
 			}

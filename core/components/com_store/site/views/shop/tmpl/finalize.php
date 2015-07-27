@@ -85,7 +85,7 @@ $this->css()
 					<p><a class="actionlink" href="javascript:void(0);" id="change_address"><?php echo Lang::txt('COM_STORE_CHANGE_ADDRESS'); ?></a></p>
 					<?php if (isset($this->posted['comments']) && $this->posted['comments'] != '') { ?>
 						<fieldset>
-							<legend><?php echo Lang::txt('COM_STORE_ADDITIONAL_COMMENTS'); ?></legend>
+							<h4><?php echo Lang::txt('COM_STORE_ADDITIONAL_COMMENTS'); ?></h4>
 							<p><?php echo $this->posted['comments']; ?></p>
 						</fieldset>
 					<?php } ?>
@@ -94,6 +94,7 @@ $this->css()
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart&action=empty'); ?>" class="btn"><?php echo Lang::txt('COM_STORE_CANCEL_ORDER'); ?></a>
 						<input type="submit" class="btn btn-primary" value="<?php echo ucfirst(Lang::txt('COM_STORE_FINALIZE')); ?>" />
 					</p>
+					<?php echo Html::input('token'); ?>
 				</form>
 			</div><!-- / #cartcontent -->
 

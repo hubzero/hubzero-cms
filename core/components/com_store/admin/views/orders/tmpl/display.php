@@ -108,16 +108,20 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = &$this->rows[$i];
 
 	$status = '';
+	$class  = 'completed-item';
 	switch ($row->status)
 	{
 		case '1':
 			$status = strtolower(Lang::txt('COM_STORE_COMPLETED'));
 		break;
 		case '0':
-			$status = '<span class="yes">' . strtolower(Lang::txt('COM_STORE_NEW')) . '</span>';
+		default:
+			$status = strtolower(Lang::txt('COM_STORE_NEW'));
+			$class  = 'new-item';
 		break;
 		case '2':
-			$status = '<span style="color:#999;">' . strtolower(Lang::txt('COM_STORE_CANCELLED')) . '</span>';
+			$status = strtolower(Lang::txt('COM_STORE_CANCELLED'));
+			$class  = 'cancelled-item';
 		break;
 	}
 ?>
@@ -128,7 +132,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
-					<?php echo $status; ?>
+					<span class="<?php echo $class; ?>"><?php echo $status; ?></span>
 				</td>
 				<td class="priority-4">
 					<?php echo $this->escape(stripslashes($row->itemtitles)); ?>

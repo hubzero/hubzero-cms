@@ -45,18 +45,21 @@ Toolbar::help('order');
 $order_date = (intval($this->row->ordered) <> 0) ? Date::of($this->row->ordered)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL ;
 $status_changed = (intval($this->row->status_changed) <> 0) ? Date::of($this->row->status_changed)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL;
 
+$class  = 'completed-item';
 switch ($this->row->status)
 {
-	case 0:
-		$status = '<span class="yes">' . strtolower(Lang::txt('COM_STORE_NEW')) . '</span>';
-		break;
-	case 1:
-		$status = 'completed';
-		break;
-	case 2:
+	case '1':
+		$status = strtolower(Lang::txt('COM_STORE_COMPLETED'));
+	break;
+	case '0':
 	default:
-		$status = 'cancelled';
-		break;
+		$status = strtolower(Lang::txt('COM_STORE_NEW'));
+		$class  = 'new-item';
+	break;
+	case '2':
+		$status = strtolower(Lang::txt('COM_STORE_CANCELLED'));
+		$class  = 'cancelled-item';
+	break;
 }
 
 ?>
@@ -119,62 +122,68 @@ function submitbutton(pressbutton)
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STORE_PROCESS_ORDER'); ?></span></legend>
-
 			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_STORE_STATUS'); ?>:</label><br />
-				<?php echo $status ?>
+				<table>
+					<tbody>
+						<tr>
+							<th><?php echo Lang::txt('COM_STORE_STATUS'); ?>:</th>
+							<td><span class="<?php echo $class; ?>"><?php echo $status; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_STORE_ORDER_PLACED'); ?>:</th>
+							<td><?php echo $order_date ?></td>
+						</tr>
+						<?php if ($this->row->status != 0) { ?>
+							<tr>
+								<th><?php echo Lang::txt('COM_STORE_ORDER') . ' ' . $status; ?>:</th>
+								<td><?php echo $status_changed ?></td>
+							</tr>
+						<?php } ?>
+						<tr>
+							<th><?php echo Lang::txt('COM_STORE_ORDER') . ' ' . Lang::txt('COM_STORE_TOTAL'); ?>:</th>
+							<td><label><?php if ($this->row->status == 0) { ?>
+									<input type="text" name="total" value="<?php echo $this->row->total ?>"  />
+								<?php } else { ?>
+									<?php echo $this->row->total ?>
+									<input type="hidden" name="total" value="<?php echo $this->row->total ?>"  />
+								<?php } ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_STORE_CURRENCY'); ?>:</th>
+							<td><?php echo Lang::txt('COM_STORE_POINTS'); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_STORE_CURRENT_BALANCE'); ?>:</th>
+							<td><?php echo Lang::txt('<strong>%s</strong> points', $this->funds); ?></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_STORE_ORDER_PLACED'); ?>:</label><br />
-				<?php echo $order_date ?>
-			</div>
-
-		<?php if ($this->row->status != 0) { ?>
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_STORE_ORDER') . ' ' . $status; ?>:</label><br />
-				<?php echo $status_changed ?>
-			</div>
-		<?php } ?>
-
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_STORE_ORDER') . ' ' . Lang::txt('COM_STORE_TOTAL'); ?>:</label><br />
-			<?php if ($this->row->status == 0) { ?>
-				<input type="text" name="total" value="<?php echo $this->row->total ?>"  /> <?php echo Lang::txt('COM_STORE_POINTS'); ?>
-			<?php } else { ?>
-				<?php echo $this->row->total ?> <?php echo Lang::txt('COM_STORE_POINTS'); ?>
-				<input type="hidden" name="total" value="<?php echo $this->row->total ?>"  />
-			<?php } ?>
-			</div>
-
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_STORE_CURRENT_BALANCE'); ?>:</label><br />
-				<?php echo Lang::txt('<strong>%s</strong> points', $this->funds); ?>
-			</div>
-
+		</fieldset>
 		<?php if ($this->row->status == 0) { ?>
-			<fieldset>
-				<legend><?php echo Lang::txt('COM_STORE_MANAGE_ORDER'); ?></legend>
-				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-message" value="message" />
-					<label for="field-action-message"><?php echo Lang::txt('COM_STORE_ORDER_ON_HOLD'); ?></label>
-				</div>
-				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-complete_order" value="complete_order" />
-					<label for="field-action-complete_order"><?php echo Lang::txt('COM_STORE_PROCESS_TRANSACTION'); ?></label>
-				</div>
-				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-cancel_order" value="cancel_order" />
-					<label for="field-action-cancel_order"><?php echo Lang::txt('COM_STORE_RELEASE_FUNDS'); ?></label>
-				</div>
-			</fieldset>
+		<fieldset class="adminform">
+			<legend><?php echo Lang::txt('COM_STORE_MANAGE_ORDER'); ?></legend>
+			<div class="input-wrap">
+				<input type="radio" name="action" id="field-action-message" value="message" />
+				<label for="field-action-message"><?php echo Lang::txt('COM_STORE_ORDER_ON_HOLD'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<input type="radio" name="action" id="field-action-complete_order" value="complete_order" />
+				<label for="field-action-complete_order"><?php echo Lang::txt('COM_STORE_PROCESS_TRANSACTION'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<input type="radio" name="action" id="field-action-cancel_order" value="cancel_order" />
+				<label for="field-action-cancel_order"><?php echo Lang::txt('COM_STORE_RELEASE_FUNDS'); ?></label>
+			</div>
 
 			<div class="input-wrap">
 				<label for="field-message"><?php echo Lang::txt('COM_STORE_SEND_A_MSG'); ?>:</label><br />
 				<textarea name="message" id="field-message" cols="30" rows="5"></textarea>
 			</div>
-		<?php } ?>
 		</fieldset>
+		<?php } ?>
 	</div>
 	<div class="clr"></div>
 

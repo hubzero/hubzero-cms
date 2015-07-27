@@ -73,7 +73,7 @@ $this->css()
 
 						<label for="country">
 							<?php echo Lang::txt('COM_STORE_COUNTRY'); ?> <span class="required"><?php echo Lang::txt('COM_STORE_REQUIRED'); ?></span>
-							<select name="country" id="country">
+							<select name="country" id="country" class="input-select">
 								<option value=""><?php echo Lang::txt('(select from list)'); ?></option>
 								<?php 
 								$countries = \Hubzero\Geocode\Geocode::countries();
@@ -114,6 +114,7 @@ $this->css()
 						<span class="reassure">(<?php echo Lang::txt('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
 						<input type="submit" class="btn btn-primary" value="<?php echo ucfirst(Lang::txt('COM_STORE_CONFIRM')); ?>" />
 					</p>
+					<?php echo Html::input('token'); ?>
 				</form>
 			</div>
 

@@ -412,6 +412,9 @@ class Shop extends SiteController
 	 */
 	public function finalizeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Set page title
 		$this->_buildTitle();
 
@@ -449,11 +452,10 @@ class Shop extends SiteController
 		}
 
 		// Get shipping info
-		$shipping = array_map('trim',$_POST);
+		$shipping = array_map('trim', $_POST);
 
 		// make sure email address is valid
-		$validemail = $this->_checkValidEmail($shipping['email']);
-		$email = ($validemail) ? $shipping['email'] : User::get('email');
+		$email = \Hubzero\Utility\Validate::email($shipping['email']) ? $shipping['email'] : User::get('email');
 
 		// Format posted info
 		$details  = Lang::txt('COM_STORE_SHIP_TO') . ':' . "\r\n";
@@ -468,7 +470,7 @@ class Shop extends SiteController
 		}
 		$details .= $email . "\r\n";
 		$details .= '----------------------------------------------------------' . "\r\n";
-		$details .= Lang::txt('COM_STORE_DETAILS').': ';
+		$details .= Lang::txt('COM_STORE_DETAILS') . ': ';
 		$details .= ($shipping['comments']) ? "\r\n" . (Sanitize::stripAll($shipping['comments'])) : 'N/A';
 
 		// Register a new order
@@ -514,35 +516,43 @@ class Shop extends SiteController
 			$BTL = new Teller($this->database, User::get('id'));
 			$BTL->hold($order->total, Lang::txt('COM_STORE_BANKING_HOLD'), 'store', $orderid);
 
-			// Compose confirmation "from"
-			$hub = array(
-				'email' => Config::get('mailfrom'),
-				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject(Config::get('sitename') . ' '
+				. Lang::txt('COM_STORE_EMAIL_SUBJECT_NEW_ORDER', $orderid));
+			$message->addFrom(
+				Config::get('mailfrom'),
+				Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
 			);
 
-			// Compose confirmation subject
-			$subject = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_STORE_ORDER') . ' #' . $orderid;
-
-			// Compose confirmation message
-			$eview = new \Hubzero\Component\View(array(
+			// Plain text email
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
-				'layout' => 'confirmation'
+				'layout' => 'confirmation_plain'
 			));
-			$eview->option = $this->_option;
-			$eview->sitename = Config::get('sitename');
-			$eview->orderid = $orderid;
-			$eview->cost = $cost;
-			$eview->now = $now;
-			$eview->details = $details;
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->orderid    = $orderid;
+			$eview->cost       = $cost;
+			$eview->shipping   = $shipping;
+			$eview->details    = $details;
+			$eview->items      = $items;
 
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
+			$plain = $eview->loadTemplate(false);
+			$plain = str_replace("\n", "\r\n", $plain);
 
-			// Send confirmation
-			if (!Event::trigger('xmessage.onSendMessage', array('store_notifications', $subject, $message, $hub, array(User::get('id')), $this->_option)))
-			{
-				$this->setError(Lang::txt('COM_STORE_ERROR_MESSAGE_FAILED'));
-			}
+			$message->addPart($plain, 'text/plain');
+
+			// HTML email
+			$eview->setLayout('confirmation_html');
+
+			$html = $eview->loadTemplate();
+			$html = str_replace("\n", "\r\n", $html);
+
+			$message->addPart($html, 'text/html');
+
+			// Send e-mail
+			$message->setTo(array(User::get('email')));
+			$message->send();
 		}
 
 		// Empty cart
@@ -568,6 +578,9 @@ class Shop extends SiteController
 	 */
 	public function processTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check authorization
 		if (User::isGuest())
 		{

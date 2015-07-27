@@ -63,28 +63,28 @@ $row = $this->row;
  </tbody>
 </table>
 <div style="height: 50px;"></div>
-<h4><?php echo Lang::txt('COM_STORE_Order Details'); ?></h4>
+<h4><?php echo Lang::txt('COM_STORE_ORDER_DETAILS'); ?></h4>
 <table>
 	<tbody>
 		<tr>
-			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_Customer') . ': '; ?></td>
-			<td><?php echo $customer->get('name').' ('.$customer->get('username').') '; ?></td>
+			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_CUSTOMER') . ': '; ?></td>
+			<td><?php echo $customer->get('name'); ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_Email') . ': '; ?></td>
+			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_EMAIL') . ': '; ?></td>
 			<td><?php echo $customer->get('email'); ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_Order ID') . ': '; ?></td>
+			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_ORDER_ID') . ': '; ?></td>
 			<td><?php echo $row->id; ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_Order placed') . ': '; ?></td>
-			<td><?php echo Date::of($row->ordered)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1')); ?></td>
+			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_ORDER_PLACED') . ': '; ?></td>
+			<td><?php echo Date::of($row->ordered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_Order completed') . ': '; ?></td>
-			<td><?php echo Date::toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1')); ?></td>
+			<td style="color: #525f6b;"><?php echo Lang::txt('COM_STORE_ORDER_COMPLETED') . ': '; ?></td>
+			<td><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 		</tr>
  </tbody>
 </table>
@@ -92,21 +92,21 @@ $row = $this->row;
 <table>
 	<thead>
 		<tr style="background-color: #e7eaec;">
-			<th><?php echo Lang::txt('COM_STORE_Ordered Item(s)'); ?></th>
-			<th><?php echo Lang::txt('COM_STORE_Price'); ?></th>
+			<th><?php echo Lang::txt('COM_STORE_ORDERED_ITEMS'); ?></th>
+			<th><?php echo Lang::txt('COM_STORE_PRICE'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 <?php foreach ($this->orderitems as $o) { ?>
 	<tr>
-		<td><?php echo $k.'. ['.$o->category.$o->itemid.'] ' . $o->title. ' (x'.$o->quantity.')'; echo ($o->selectedsize) ? ' - size '.$o->selectedsize : ''; ?></td>
-		<td><?php echo $o->price*$o->quantity.' '.Lang::txt('COM_STORE_points'); ?></td>
+		<td><?php echo $k . '. [' . $o->category . $o->itemid . '] ' . $o->title . ' (x' . $o->quantity . ')'; echo ($o->selectedsize) ? ' - size ' . $o->selectedsize : ''; ?></td>
+		<td><?php echo $o->price*$o->quantity . ' ' . Lang::txt('COM_STORE_POINTS'); ?></td>
 	</tr>
 
 <?php } ?>
 	<tr>
-		<td style="font-weight: bold; text-align: right;"><?php echo Lang::txt('COM_STORE_Total: ') . '&nbsp;'; ?></td>
-		<td style="font-weight: bold;"><?php echo $row->total.' '.Lang::txt('COM_STORE_points'); ?></td>
+		<td style="font-weight: bold; text-align: right;"><?php echo Lang::txt('COM_STORE_TOTAL') . ': &nbsp;'; ?></td>
+		<td style="font-weight: bold;"><?php echo $row->total . ' ' . Lang::txt('COM_STORE_POINTS'); ?></td>
 	</tr>
 	</tbody>
 </table>
