@@ -32,8 +32,8 @@
 defined('_HZEXEC_') or die();
 
 // get base url
-$groupLink  = rtrim(Request::base(), '/') . '/' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'));
-$acceptLink = rtrim(Request::base(), '/') . '/' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept');
+$groupLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')), '/');
+$acceptLink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept'), '/');
 
 // tell who just invited them on which hub
 $message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->user->get('name'), $this->sitename)."\n\n";
