@@ -221,6 +221,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public $renew = [];
 
 	/**
+	 * Any associative elements
+	 *
+	 * @var object
+	 **/
+	public $associated = null;
+
+	/**
 	 * Constructs an object instance
 	 *
 	 * @return void
@@ -595,6 +602,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	}
 
 	/**
+	 * Gets a fresh structure object
+	 *
+	 * @return \Hubzero\Database\Structure
+	 * @since  1.3.2
+	 **/
+	public function getStructure()
+	{
+		return new Structure(self::$connection);
+	}
+
+	/**
 	 * Sets a fresh query object on the model, seeding it with helpful defaults
 	 *
 	 * @return $this
@@ -615,6 +633,31 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public function hasAttribute($key)
 	{
 		return isset($this->attributes[$key]);
+	}
+
+	/**
+	 * Grabs all of the model attributes
+	 *
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function getAttributes()
+	{
+		return $this->attributes;
+	}
+
+	/**
+	 * Removes an attribute
+	 *
+	 * @param  string $key the attribute to remove
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function removeAttribute($key)
+	{
+		$this->offsetUnset($key);
+
+		return $this;
 	}
 
 	/**
