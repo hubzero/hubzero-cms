@@ -331,4 +331,35 @@ class RelationalTest extends Database
 
 		$this->assertCount(4, Project::oneOrFail(1)->members, 'Saved item should have automatically included a scope and scope_id');
 	}
+
+	/**
+	 * Tests to make sure connecting a many to many properly creates the relationship
+	 *
+	 * @return void
+	 **/
+	public function testConnectManyToManyCreatesAssociation()
+	{
+		// Tag post 2 with tag 3
+		Post::oneOrFail(2)->tags()->connect([3]);
+
+		$this->assertCount(2, Post::oneOrFail(2)->tags, 'Post should have had a total of 2 tags');
+	}
+
+	/**
+	 * Tests to make sure connecting a many to many can also add additional fields to the intermediary table
+	 *
+	 * @return void
+	 **/
+	public function testConnectManyToManyCanAddAdditionalFields()
+	{
+		// Tag post 2 with tag 4
+		$now = \Date::toSql();
+		Post::oneOrFail(3)->tags()->connect([1 => ['tagged' => $now]]);
+
+		$result = Post::oneOrFail(3)->tags->seek(1);
+
+		$this->assertFalse($result->hasAttribute('tagged'), 'Post should not have had an attributed for "tagged"');
+		$this->assertArrayHasKey('tagged', (array)$result->associated, 'Post should have had an associated key of "tagged"');
+		$this->assertEquals($now, $result->associated->tagged, 'Post tagged date should have equaled ' . $now);
+	}
 }
