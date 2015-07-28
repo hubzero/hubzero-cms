@@ -105,6 +105,6 @@ switch ($this->which)
 <?php } else { ?>
 	<div class="entries">
 		<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
-		<p class="noprojects"><?php echo Lang::txt('PLG_GROUPS_NO_PROJECTS'); ?></p>
+		<p class="noprojects"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_NO_PROJECTS'); ?></p>
 	</div>
 <?php } ?>
