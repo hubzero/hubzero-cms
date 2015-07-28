@@ -465,6 +465,9 @@ class Authors extends Base
 			// Get project model
 			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
+			// Load component language file
+			Lang::load('com_projects') || Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
+
 			// Plugin params
 			$plugin_params = array(
 				$uid,
