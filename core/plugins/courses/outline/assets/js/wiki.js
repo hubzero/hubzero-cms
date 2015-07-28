@@ -73,8 +73,10 @@ jQuery(document).ready(function($) {
 	});
 
 	$('.edit-form').submit(function ( e ) {
-		for ( var instance in CKEDITOR.instances ) {
-			CKEDITOR.instances[instance].updateElement();
+		if (typeof CKEDITOR !== 'undefined') {
+			for ( var instance in CKEDITOR.instances ) {
+				CKEDITOR.instances[instance].updateElement();
+			}
 		}
 	});
 
