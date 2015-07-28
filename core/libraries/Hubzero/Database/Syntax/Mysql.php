@@ -641,7 +641,8 @@ class Mysql
 		{
 			foreach ($data as $field)
 			{
-				$results[$field->Field] = preg_replace("/[(0-9)]/", '', $field->Type);
+				// @FIXME: should we try to normalize types too?
+				$results[$field->Field] = $field->Type;
 			}
 		}
 		// If we want the whole field data object add that to the list
@@ -649,7 +650,14 @@ class Mysql
 		{
 			foreach ($data as $field)
 			{
-				$results[$field->Field] = $field;
+				$results[$field->Field] =
+				[
+					'name'      => $field->Field,
+					'type'      => $field->Type,
+					'allownull' => ($field->Null == 'NO') ? false : true,
+					'default'   => $field->Default,
+					'pk'        => ($field->Key == 'PRI') ? true : false
+				];
 			}
 		}
 

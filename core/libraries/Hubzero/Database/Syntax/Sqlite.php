@@ -76,7 +76,8 @@ class Sqlite extends Mysql
 		{
 			foreach ($data as $field)
 			{
-				$results[$field->name] = preg_replace("/[(0-9)]/", '', $field->type);
+				// @FIXME: should we try to normalize types too?
+				$results[$field->name] = $field->type;
 			}
 		}
 		// If we want the whole field data object add that to the list
@@ -84,7 +85,14 @@ class Sqlite extends Mysql
 		{
 			foreach ($data as $field)
 			{
-				$results[$field->name] = $field;
+				$results[$field->name] =
+				[
+					'name'      => $field->name,
+					'type'      => $field->type,
+					'allownull' => $field->notnull ? false : true,
+					'default'   => $field->dflt_value,
+					'pk'        => $field->pk ? true : false
+				];
 			}
 		}
 

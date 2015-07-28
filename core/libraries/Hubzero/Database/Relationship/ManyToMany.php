@@ -51,7 +51,7 @@ class ManyToMany extends OneToManyThrough
 		// Now remove any associative fields
 		foreach ($rows as $row)
 		{
-			$associatives = new \StdClass();
+			$associatives = new \stdClass();
 
 			foreach ($row->getAttributes() as $k => $v)
 			{
