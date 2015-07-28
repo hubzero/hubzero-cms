@@ -39,6 +39,74 @@ use Hubzero\Database\Query;
 class ManyToMany extends OneToManyThrough
 {
 	/**
+	 * Fetches the results of relationship
+	 *
+	 * @return \Hubzero\Database\Relational
+	 * @since  1.3.2
+	 **/
+	public function rows()
+	{
+		$rows = parent::rows();
+
+		// Now remove any associative fields
+		foreach ($rows as $row)
+		{
+			$associatives = new \StdClass();
+
+			foreach ($row->getAttributes() as $k => $v)
+			{
+				if (strpos($k, 'associative_') === 0)
+				{
+					$key = substr($k, 12);
+					$associatives->$key = $v;
+					$row->removeAttribute($k);
+				}
+			}
+
+			if (!empty($associatives))
+			{
+				$row->associated = $associatives;
+			}
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * Joins the related table together with the intermediate table for the pending query
+	 *
+	 * This is primarily used when we're getting the related results and we need to work
+	 * our way backwards through the intermediate table.
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function mediate()
+	{
+		parent::mediate();
+
+		// We also want to grab any associative fields at this time, rather than having to come back for them later
+		// To do that, we'll prefix the columns and then strip them after the query
+		$columns = $this->model->getStructure()->getTableColumns($this->associativeTable);
+
+		// Get rid of known columns (don't use a primary key other than id and you'll be fine here!)
+		if (isset($columns['id'])) unset($columns['id']);
+		unset($columns[$this->associativeLocal]);
+		unset($columns[$this->associativeRelated]);
+
+		// Add remaining fields to our select statement
+		if (count($columns) > 0)
+		{
+			foreach ($columns as $column => $type)
+			{
+				$this->related->select($this->associativeTable . '.' . $column, 'associative_' . $column);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Connects the provided identifiers back to the parent model by way of associative entities
 	 *
 	 * This will add a new entry, irrelevant of whether or not a comparable entry is already there.
@@ -54,9 +122,16 @@ class ManyToMany extends OneToManyThrough
 		if (is_array($ids) && count($ids) > 0)
 		{
 			$localKeyValue = $this->model->getPkValue();
-			foreach ($ids as $id)
+			foreach ($ids as $id => $associative)
 			{
-				$data  = [$this->associativeLocal => $localKeyValue, $this->associativeRelated => $id];
+				// Build base data
+				$id   = (is_array($associative)) ? $id : $associative;
+				$data = [$this->associativeLocal => $localKeyValue, $this->associativeRelated => $id];
+
+				// If we have associative data, include that in the query
+				if (is_array($associative)) $data = array_merge($data, $associative);
+
+				// Save data
 				$query = $this->model->getQuery()->push($this->associativeTable, $data, true);
 			}
 		}
