@@ -211,7 +211,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->title			 = Lang::txt(strtoupper($this->_name));
 		$view->isManager		 = ($this->authorized == 'manager') ? true : false;
 		// is there a better way to handle group configurations?
-		$view->config			 = (array) json_decode($this->group->get('params'));
+		$view->config			 = new \Hubzero\Config\Registry($this->group->get('params'));
 
 		// Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
