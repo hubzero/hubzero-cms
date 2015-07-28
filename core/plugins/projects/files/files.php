@@ -341,10 +341,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->params = array(
 			'limit'                => $model->config()->get('sidebox_limit', 5),
 			'start'                => 0,
-			'sortby'               => 'date',
+			'sortby'               => 'modified',
 			'sortdir'              => 'DESC',
 			'getParents'           => false,
-			'getChildren'          => true
+			'getChildren'          => false
 		);
 
 		// Retrieve items
