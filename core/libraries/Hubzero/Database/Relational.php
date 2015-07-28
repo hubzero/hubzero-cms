@@ -166,6 +166,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	protected $pk = 'id';
 
 	/**
+	 * Fields that have content that can/should be parsed
+	 *
+	 * @var array
+	 **/
+	protected $parsed = [];
+
+	/**
 	 * Fields and their validation criteria
 	 *
 	 * @var array
@@ -274,6 +281,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		// See if method is available as a transformer on current class
 		if ($this->hasTransformer($name)) return $this->callTransformer($name, $arguments);
 
+		// Check if it is a parsable field (i.e. wiki/html)
+		if ($this->isParsable($name)) return $this->parse($name, (isset($arguments[0])) ? $arguments[0] : 'parsed');
+
 		// See if we need to call a query method
 		if (in_array($name, get_class_methods($this->query)))
 		{
@@ -327,6 +337,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	{
 		// First, see if a transformer is available on the model
 		if ($this->hasTransformer($name)) return $this->callTransformer($name);
+
+		// Check if it is a parsable field (i.e. wiki/html)
+		if ($this->isParsable($name)) return $this->parse($name);
 
 		// Next check for an attribute on the model
 		if (isset($this->attributes[$name]))
@@ -556,6 +569,47 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public function callTransformer($name, $arguments=array())
 	{
 		return call_user_func_array(array($this, 'transform' . ucfirst($this->snakeToCamel($name))), $arguments);
+	}
+
+	/**
+	 * Checks to see if the given field is one to be parsed
+	 *
+	 * @param  string $field the field to check
+	 * @return bool
+	 * @since  1.3.2
+	 **/
+	public function isParsable($field)
+	{
+		return in_array($field, $this->parsed);
+	}
+
+	/**
+	 * Parses content string as directed
+	 *
+	 * @param   string  $field  the field to parse
+	 * @param   string  $as     the format to return state in
+	 * @return  string
+	 * @since   1.3.2
+	 **/
+	public function parse($field, $as='parsed')
+	{
+		switch (strtolower($as))
+		{
+			case 'parsed':
+				$content = isset($this->_notesParsed) ? $this->_notesParsed : null;
+				if (isset($content)) return $content;
+
+				$this->_notesParsed = Html::content('prepare', $this->attributes[$field]);
+
+				return $this->parse($field, strtolower($as));
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->attributes[$field]);
+				return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
 	}
 
 	/**
