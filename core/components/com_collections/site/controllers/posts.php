@@ -42,6 +42,7 @@ use Request;
 use Route;
 use Lang;
 use User;
+use App;
 
 /**
  * Controller class for collection posts
@@ -60,6 +61,19 @@ class Posts extends SiteController
 		$this->registerTask('comment', 'post');
 
 		parent::execute();
+	}
+
+	/**
+	 * Redirect to login page
+	 *
+	 * @return  void
+	 */
+	public function loginTask()
+	{
+		$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+		App::redirect(
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+		);
 	}
 
 	/**
