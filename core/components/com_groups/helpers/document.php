@@ -75,7 +75,11 @@ class Document extends Object
 				unset($attribs['type']);
 				$params = $attribs;
 
-				$this->_tags[$matches[0][$i]] = array( 'type' => $type, 'name' => $name, 'params' => $params );
+				$this->_tags[$matches[0][$i]] = array(
+					'type'   => $type,
+					'name'   => $name,
+					'params' => $params
+				);
 			}
 		}
 
@@ -101,7 +105,7 @@ class Document extends Object
 		foreach ($this->_tags as $tag => $props)
 		{
 			$replace[] = $tag;
-			$with[]    = $this->_getBuffer($tag, $props['type'], $props['name'], $props['params'] );
+			$with[]    = $this->_getBuffer($tag, $props['type'], $props['name'], $props['params']);
 		}
 
 		// replace group includes
@@ -148,7 +152,7 @@ class Document extends Object
 		}
 
 		// class name for renderer
-		$renderClass = '\Components\Groups\Helpers\DocumentRenderer' . ucfirst($type);
+		$renderClass = '\\Components\\Groups\\Helpers\\Document\\Renderer\\' . ucfirst($type);
 
 		// if we dont already have the class instantiated
 		if (!class_exists($renderClass))
