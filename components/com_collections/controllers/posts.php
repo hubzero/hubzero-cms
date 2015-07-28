@@ -53,10 +53,18 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * View a post
+	 * Redirect to login page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
+	public function loginTask()
+	{
+		$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
+		);
+	}
+
 	/**
 	 * Display a post
 	 *
