@@ -26,15 +26,14 @@
 defined('_HZEXEC_') or die();
 
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
-$link = $base . DS . trim(Route::url($this->model->link('editversion')), DS);
-$pubLink = $base . DS . trim(Route::url($this->model->link('version')), DS);
+$link = $base . '/projects/' . $this->model->project()->get('alias') . '/publications/' . $this->model->get('id');
+$pubLink = $base . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number');
 
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";
 $message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' "' . $this->model->title . '" (id #' . $this->model->id . ')' . "\n";
 $message .= Lang::txt('COM_PUBLICATIONS_EMAIL_URL') . ': ' . $pubLink . "\n";
-$message .= '-------------------------------' . "\n";
-$message .= Lang::txt('COM_PUBLICATIONS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
+$message .= Lang::txt('COM_PUBLICATIONS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias');
 
 if ($this->project->isProvisioned())
 {

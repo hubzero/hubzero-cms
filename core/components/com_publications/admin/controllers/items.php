@@ -693,9 +693,6 @@ class Items extends AdminController
 		$requireDoi = isset($this->model->_curationModel->_manifest->params->require_doi)
 					? $this->model->_curationModel->_manifest->params->require_doi : 0;
 
-		// Get DOI service
-		$doiService = new Models\Doi($this->model);
-
 		// Incoming updates
 		$title 			= trim(Request::getVar( 'title', '', 'post' ));
 		$title 			= htmlspecialchars($title);
@@ -765,6 +762,9 @@ class Items extends AdminController
 		$this->model->version->license_text = trim(Request::getVar( 'license_text', '', 'post' ));
 		$this->model->version->license_type = Request::getInt( 'license_type', 0, 'post' );
 		$this->model->version->access       = Request::getInt( 'access', 0, 'post' );
+
+		// Get DOI service
+		$doiService = new Models\Doi($this->model);
 
 		// DOI manually entered?
 		$doi = trim(Request::getVar( 'doi', '', 'post' ));
@@ -1119,7 +1119,10 @@ class Items extends AdminController
 				? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
 
 			// Get message body
-			$eview 					= new \Hubzero\Component\View( array('name'=>'emails', 'layout' => 'admin_plain' ) );
+			$eview = new \Hubzero\Mail\View(array(
+				'name'      => 'emails',
+				'layout'    => 'admin_plain'
+			));
 			$eview->option 			= $this->_option;
 			$eview->subject 		= $subject;
 			$eview->action 			= $action;
@@ -1128,7 +1131,7 @@ class Items extends AdminController
 			$eview->project			= $this->model->project();
 
 			$body = array();
-			$body['plaintext'] 	= $eview->loadTemplate();
+			$body['plaintext'] 	= $eview->loadTemplate(false);
 			$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
 
 			// HTML email
