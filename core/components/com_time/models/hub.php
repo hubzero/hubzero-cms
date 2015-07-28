@@ -32,8 +32,6 @@
 namespace Components\Time\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Utility\String;
-use Hubzero\Base\Object;
 
 /**
  * Hubs database model
@@ -64,6 +62,15 @@ class Hub extends Relational
 	protected $rules = array(
 		'name'    => 'notempty',
 		'liaison' => 'notempty'
+	);
+
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var array
+	 **/
+	protected $parsed = array(
+		'notes'
 	);
 
 	/**
@@ -131,51 +138,5 @@ class Hub extends Relational
 	{
 		$time = $this->records()->select('SUM(time)', 'time')->rows()->first()->time;
 		return $time ? $time : 0;
-	}
-
-	/**
-	 * Gets the content of the notes entry
-	 *
-	 * @param  string  $as      Format to return state in [text, number]
-	 * @param  integer $shorten Number of characters to shorten text to
-	 * @return string
-	 * @since  1.3.2
-	 */
-	public function transformNotes($as='parsed', $shorten=0)
-	{
-		$as = strtolower($as);
-
-		switch ($as)
-		{
-			case 'parsed':
-				$content = isset($this->_notesParsed) ? $this->_notesParsed : null;
-				if (isset($content))
-				{
-					if ($shorten)
-					{
-						$content = String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
-				}
-
-				$this->_notesParsed = Html::content('prepare', $this->get('notes'));
-
-				return $this->notes($as, $shorten);
-			break;
-
-			case 'raw':
-			default:
-				$content = '';
-
-				$content = stripslashes($this->get('notes'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = String::truncate($content, $shorten);
-				}
-
-				return $content;
-			break;
-		}
 	}
 }
