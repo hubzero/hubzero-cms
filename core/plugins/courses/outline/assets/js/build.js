@@ -39,16 +39,20 @@ jQuery(document).ready(function($) {
 				// Do nothing
 				// This should be overwritten per request
 			},
+			400: function ( data, textStatus, jqXHR ) {
+				// Display the error message
+				HUB.CoursesOutline.message.show($.parseJSON(data.responseText).message);
+			},
 			401: function ( data, textStatus, jqXHR ) {
 				// Display the error message
-				HUB.CoursesOutline.message.show(data.responseText);
+				HUB.CoursesOutline.message.show($.parseJSON(data.responseText).message);
 			},
 			404: function ( data, textStatus, jqXHR ) {
 				HUB.CoursesOutline.message.show('Method not found. Ensure the hub API has been configured');
 			},
 			500: function ( data, textStatus, jqXHR ) {
 				// Display the error message
-				HUB.CoursesOutline.message.show(data.responseText);
+				HUB.CoursesOutline.message.show($.parseJSON(data.responseText).message);
 			}
 		}
 	});
