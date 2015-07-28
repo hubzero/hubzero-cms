@@ -121,6 +121,7 @@ class Content extends Handler
 		$course->offering($offering_alias);
 
 		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
+		$url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
 		$files = array(
 			'asset_id'       => $asset->get('id'),
@@ -240,6 +241,7 @@ class Content extends Handler
 		$course->offering($offering_alias);
 
 		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
+		$url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
 		$files = array(
 			'asset_id'       => $asset->get('id'),
