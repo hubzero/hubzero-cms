@@ -693,6 +693,9 @@ class Items extends AdminController
 		$requireDoi = isset($this->model->_curationModel->_manifest->params->require_doi)
 					? $this->model->_curationModel->_manifest->params->require_doi : 0;
 
+		// Get DOI service
+		$doiService = new Models\Doi($this->model);
+
 		// Incoming updates
 		$title 			= trim(Request::getVar( 'title', '', 'post' ));
 		$title 			= htmlspecialchars($title);
@@ -802,9 +805,6 @@ class Items extends AdminController
 		// Update DOI with latest information
 		if ($this->model->version->doi && !$action)
 		{
-			// Get DOI service
-			$doiService = new Models\Doi($this->model);
-
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
@@ -847,9 +847,6 @@ class Items extends AdminController
 						: Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
 
 					$this->model->version->state = 1;
-
-					// Get DOI service
-					$doiService = new Models\Doi($this->model);
 
 					// Is service enabled? - Issue/update a DOI
 					if ($doiService->on())
