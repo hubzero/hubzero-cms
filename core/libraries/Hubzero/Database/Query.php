@@ -53,7 +53,7 @@ class Query
 	 *
 	 * @var object
 	 **/
-	private $syntax = null;
+	protected $syntax = null;
 
 	/**
 	 * The query results cache
@@ -589,14 +589,18 @@ class Query
 	 * @return mixed
 	 * @since  1.3.2
 	 **/
-	public function query($query, $structure='rows')
+	public function query($query, $structure=null)
 	{
 		// Check the type of query to decide what to return
 		list($type) = explode(' ', $query, 2);
+		$type       = strtolower($type);
+
+		// Default structure if needed
+		if ($type == 'select' && is_null($structure)) $structure = 'rows';
 
 		$this->connection->prepare($query)->bind($this->syntax->getBindings());
 
-		$result = (strtolower($type) == 'select')
+		$result = (isset($structure))
 		        ? $this->connection->{constant('self::' . strtoupper($structure))}()
 		        : $this->connection->query();
 

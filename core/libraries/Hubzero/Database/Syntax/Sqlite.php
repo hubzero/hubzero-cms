@@ -46,4 +46,48 @@ class Sqlite extends Mysql
 	{
 		return 'INSERT ' . (($this->ignore) ? 'OR IGNORE ' : '') . 'INTO ' . $this->connection->quoteName($this->insert);
 	}
+
+	/**
+	 * Returns the proper query for generating a list of table columns per this syntax
+	 *
+	 * @param   string  $table  the name of the database table
+	 * @return  array
+	 * @since   2.0.0
+	 */
+	public function getColumnsQuery($table)
+	{
+		return 'PRAGMA table_info(' . $this->connection->quoteName($table) . ')';
+	}
+
+	/**
+	 * Normalizes the results of the above query
+	 *
+	 * @param   array  $data      the raw column data
+	 * @param   bool   $typeOnly  true (default) to only return field types
+	 * @return  array
+	 * @since   2.0.0
+	 **/
+	public function normalizeColumns($data, $typeOnly=true)
+	{
+		$results = [];
+
+		// If we only want the type as the value add just that to the list
+		if ($typeOnly)
+		{
+			foreach ($data as $field)
+			{
+				$results[$field->name] = preg_replace("/[(0-9)]/", '', $field->type);
+			}
+		}
+		// If we want the whole field data object add that to the list
+		else
+		{
+			foreach ($data as $field)
+			{
+				$results[$field->name] = $field;
+			}
+		}
+
+		return $results;
+	}
 }
