@@ -158,25 +158,7 @@ class Hub extends Relational
 					return $content;
 				}
 
-				$config = array(
-					'option'   => 'com_time',
-					'scope'    => 'time',
-					'pagename' => 'hubs',
-					'pageid'   => $this->id,
-					'filepath' => '',
-					'domain'   => $this->id
-				);
-
-				$object  = new Object;
-				$object->set('notes', stripslashes($this->get('notes')));
-
-				\Event::trigger('content.onContentPrepare', array(
-					'com_time.hub.notes',
-					&$object,
-					&$config
-				));
-
-				$this->_notesParsed = $object->get('notes');
+				$this->_notesParsed = Html::content('prepare', $this->get('notes'));
 
 				return $this->notes($as, $shorten);
 			break;
