@@ -706,7 +706,7 @@ class Registration
 		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
 		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
 		$registrationAddress = $this->registrationField('registrationAddress','OOOO',$task);
-		$registrationORCID = $this->registrationField('registrationORCID','OOOO',$task);
+		$registrationORCID = $this->registrationField('registrationORCID','HHHO',$task);
 
 		if ($task == 'update')
 		{
