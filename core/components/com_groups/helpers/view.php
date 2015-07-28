@@ -481,6 +481,11 @@ class View
 	 */
 	public static function getPageCss($group)
 	{
+		// [!] (zooley) 07/2015
+		//     This causes extreme performance issues under certain situations
+		//     Bypassing until a better solution can be found.
+		return array();
+
 		// load stylesheets from specific group first
 		$url = rtrim(str_replace('administrator', '', Request::base()), '/') . '/groups/' . $group->get('cn');
 		$stylesheets = self::stylesheetsForUrl($url);
