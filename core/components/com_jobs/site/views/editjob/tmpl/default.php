@@ -32,11 +32,6 @@ defined('_HZEXEC_') or die();
 
 	/* Post New Job / Edit Job Form */
 
-	// load some classes
-	$sitename = Config::get('sitename');
-
-	$jobsHtml = new \Components\Jobs\Helpers\Html();
-
 	$job = $this->job;
 	$employer = $this->employer;
 	$profile = $this->profile;
@@ -159,11 +154,11 @@ defined('_HZEXEC_') or die();
 
 			<label>
 				<?php echo Lang::txt('COM_JOBS_EDITJOB_CATEGORY'); ?>:
-				<?php echo $jobsHtml->formSelect('cid', $this->cats, $job->cid, '', ''); ?>
+				<?php echo \Components\Jobs\Helpers\Html::formSelect('cid', $this->cats, $job->cid, '', ''); ?>
 			</label>
 			<label>
 				<?php echo Lang::txt('COM_JOBS_EDITJOB_TYPE'); ?>:
-				<?php echo $jobsHtml->formSelect('type', $this->types, $job->type, '', ''); ?>
+				<?php echo \Components\Jobs\Helpers\Html::formSelect('type', $this->types, $job->type, '', ''); ?>
 			</label>
 			<div class="grid">
 				<div class="col span6">

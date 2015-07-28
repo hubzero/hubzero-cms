@@ -30,14 +30,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-	$sitename = Config::get('sitename');
-
-	$jobsHtml = new \Components\Jobs\Helpers\Html();
-
-	// get some configs
-	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
-	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
-
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -45,15 +37,15 @@ defined('_HZEXEC_') or die();
 	<div id="content-header-extra">
 		<ul id="useroptions">
 		<?php if (User::isGuest()) { ?>
-			<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a href="'.Route::url('index.php?option='.$this->option.'&task=view&action=login') . '">'.Lang::txt('COM_JOBS_ACTION_LOGIN').'</a> '.Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+			<li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view&action=login') . '">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
-			<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-			<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
+			<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
 		<?php } else if ($this->admin) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-				<a class="myjobs btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
+				<a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
 		<?php } else { ?>
-			<li><a class="myresume btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
+			<li><a class="myresume btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
 		<?php } ?>
 		</ul>
 	</div><!-- / #content-header-extra -->
@@ -64,7 +56,7 @@ defined('_HZEXEC_') or die();
 	<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 
-	<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=confirm'); ?>" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=confirm'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 				<p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_EMPLOYER_INFO') ?></p>
 		</div>
@@ -92,9 +84,6 @@ defined('_HZEXEC_') or die();
 			<p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_PICK') ?></p>
 			<h4><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_NEXT_STEP') ?></h4>
 			<p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_PAYMENT') ?></p>
-		<?php if ($promoline) { ?>
-			<p class="promo"><?php echo $promoline; ?></p>
-		<?php } ?>
 		</div>
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_DETAILS'); ?></legend>
@@ -114,18 +103,18 @@ defined('_HZEXEC_') or die();
 					if ($thissub) {
 						$length = $this->subscription->status==0 ? $this->subscription->pendingunits : $this->subscription->units;
 						$expires  = $this->subscription->expires > $now && $this->subscription->status==1 ?  '<p class="yes">' : '<p class="no">';
-						$expires .= Lang::txt( 'COM_JOBS_YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.Lang::txt( 'COM_JOBS_SUBSCRIPTION' ).' ';
+						$expires .= Lang::txt( 'COM_JOBS_YOUR' ) . ' ' . $length . '-' . $this->services[$i]->unitmeasure . ' ' . Lang::txt( 'COM_JOBS_SUBSCRIPTION' ) . ' ';
 						if ($this->subscription->status==1) {
 							$expires .= $this->subscription->expires > $now ? strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' )) ;
-							$expires .= ' '.Lang::txt( 'COM_JOBS_ON' ).' '.Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'.';
+							$expires .= ' ' . Lang::txt( 'COM_JOBS_ON' ) . ' '.Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '.';
 						}
 						else {
 							$expires .= Lang::txt( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;
 						}
 
-						$expires .= '</p>'."\n";
-						$expires .= $this->subscription->expires > $now ? ' <a href="'.Route::url('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid).'" class="cancelit" id="showconfirm">[ '.Lang::txt( 'COM_JOBS_SUBSCRIPTION_CANCEL_THIS' ).' ]</a>' : '';
-						$expires .= $this->subscription->pendingunits > 0 && $this->subscription->status==1  ? '<p class="no">'.Lang::txt( 'COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING' ).'</p>' :'';
+						$expires .= '</p>' . "\n";
+						$expires .= $this->subscription->expires > $now ? ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid) . '" class="cancelit" id="showconfirm">[ ' . Lang::txt( 'COM_JOBS_SUBSCRIPTION_CANCEL_THIS' ) . ' ]</a>' : '';
+						$expires .= $this->subscription->pendingunits > 0 && $this->subscription->status==1  ? '<p class="no">' . Lang::txt( 'COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING' ) . '</p>' :'';
 
 					}
 
@@ -143,50 +132,49 @@ defined('_HZEXEC_') or die();
 						$unitsize = $unitsize + $this->services[$i]->unitsize;
 					}
 
-					$unitsChoice = $jobsHtml->formSelect('units_'.$this->services[$i]->id, $units_select, '', "option units");
+					$unitsChoice = \Components\Jobs\Helpers\Html::formSelect('units_' . $this->services[$i]->id, $units_select, '', "option units");
 					$iniprice = $thissub ? 0 : $this->services[$i]->unitprice;
 
-					$html .= '<div class="bindtogether product">'."\n";
-					$html .= '  <input class="option service" type="radio" name="serviceid" id="service_'.$this->services[$i]->id.'" value="'.$this->services[$i]->id.'" ';
+					$html .= '<div class="bindtogether product">' . "\n";
+					$html .= '  <input class="option service" type="radio" name="serviceid" id="service_' . $this->services[$i]->id . '" value="' . $this->services[$i]->id . '" ';
 					if ($thissub or ($this->subscription->serviceid==0 && $i==0) )
 					{
 						$html .= 'checked="checked"';
 					}
 					$html .= ' /> ';
-					$html .= $this->services[$i]->title.' - <span class="priceline">'.$this->services[$i]->currency.' '.$this->services[$i]->unitprice.'  '.Lang::txt( 'COM_JOBS_PER' ).' '.$this->services[$i]->unitmeasure.'</span>'."\n";
-					$html .= '<span> '.$this->services[$i]->description.'</span>'."\n";
+					$html .= $this->services[$i]->title . ' - <span class="priceline">' . $this->services[$i]->currency . ' ' . $this->services[$i]->unitprice.'  ' . Lang::txt( 'COM_JOBS_PER' ) . ' ' . $this->services[$i]->unitmeasure . '</span>' . "\n";
+					$html .= '<span> ' . $this->services[$i]->description.'</span>' . "\n";
 
-					$html .= '<div class="subdetails" id="plan_'.$this->services[$i]->id.'">'."\n";
+					$html .= '<div class="subdetails" id="plan_' . $this->services[$i]->id . '">' . "\n";
 					$html .= $thissub ? $expires : '';
 					if ($thissub or ($this->subscription->serviceid==0 && $i==0))
 					{
-						$html .= $jobsHtml->confirmscreen(Route::url('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), Route::url('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid));
+						$html .= \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid));
 					}
 
 					$html .= '<label> ';
 					$html .= $thissub ? Lang::txt( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW' ) : Lang::txt( 'COM_JOBS_ACTION_SIGN_UP' );
-					$html .= ' '.Lang::txt( 'for' ).' '."\n";
+					$html .= ' ' . Lang::txt( 'for' ) . ' ' . "\n";
 					$html .= $unitsChoice;
-					$html .= $this->services[$i]->unitmeasure.'(s) </label>'."\n";
-					$html .= '<span class="totalprice">'.Lang::txt( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ).' ';
-					$html .= $thissub ? strtolower(Lang::txt( 'COM_JOBS_NEW' )).' ' : '';
-					$html .= Lang::txt( 'COM_JOBS_SUBSCRIBE_PAYMENT_WILL_BE' ).' <span class="no">'.$this->services[$i]->currency.'</span> <span id="injecttotal_'.$this->services[$i]->id.'"> '.$iniprice.'</span>';
-					$html .= '.</span>'."\n";
+					$html .= $this->services[$i]->unitmeasure.'(s) </label>' . "\n";
+					$html .= '<span class="totalprice">' . Lang::txt( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ) . ' ';
+					$html .= $thissub ? strtolower(Lang::txt( 'COM_JOBS_NEW' )) . ' ' : '';
+					$html .= Lang::txt( 'COM_JOBS_SUBSCRIBE_PAYMENT_WILL_BE' ) . ' <span class="no">' . $this->services[$i]->currency . '</span> <span id="injecttotal_' . $this->services[$i]->id . '"> ' . $iniprice . '</span>';
+					$html .= '.</span>' . "\n";
 
 					// GOOGLE Checkout (TBD)
-					$html .= '<input type="hidden" class="product-price" value="'.$this->escape($this->services[$i]->unitprice).'" />'."\n";
-					$html .= '<input type="hidden" class="product-title" value="'.$this->escape($this->services[$i]->title).'" />'."\n";
-					//$html .= '<div  role="button" alt="Add to cart" tabindex="0" class="googlecart-add-button"> </div>';
+					$html .= '<input type="hidden" class="product-price" value="' . $this->escape($this->services[$i]->unitprice) . '" />' . "\n";
+					$html .= '<input type="hidden" class="product-title" value="' . $this->escape($this->services[$i]->title) . '" />' . "\n";
 
-					$html .= '</div>'."\n";
-					$html .= '</div>'."\n";
-					$html .= '<input type="hidden" name="price_'.$this->services[$i]->id.'" id="price_'.$this->services[$i]->id.'" value="'.$this->escape($this->services[$i]->unitprice).'" />'."\n";
+					$html .= '</div>' . "\n";
+					$html .= '</div>' . "\n";
+					$html .= '<input type="hidden" name="price_' . $this->services[$i]->id . '" id="price_' . $this->services[$i]->id . '" value="' . $this->escape($this->services[$i]->unitprice) . '" />' . "\n";
 				}
 				echo $html;
 				$btn = $this->subscription->id ? Lang::txt( 'COM_JOBS_SUBSCRIPTION_SAVE' ) : Lang::txt( 'COM_JOBS_SUBSCRIPTION_PROCESS_ORDER' );
 			?>
 			<label for="contact">
-				<?php echo Lang::txt( 'COM_JOBS_SUBSCRIPTION_CONTACT_PHONE' ).': <span class="required">'.Lang::txt( 'COM_JOBS_REQUIRED_WITH_PAYMENT' ).'</span>'; ?>
+				<?php echo Lang::txt( 'COM_JOBS_SUBSCRIPTION_CONTACT_PHONE' ) . ': <span class="required">' . Lang::txt( 'COM_JOBS_REQUIRED_WITH_PAYMENT' ) . '</span>'; ?>
 				<input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15" value="<?php echo $this->escape($this->subscription->contact); ?>" />
 			</label>
 
@@ -199,11 +187,3 @@ defined('_HZEXEC_') or die();
 	</form>
 	<div class="clear"></div>
 </section>
-
-<?php if (1==2) { // GOOGLE Checkout (TBD) ?>
-<script id="googlecart-script" type="text/javascript"
-	src="http://checkout.google.com/seller/gsc/v2/cart.js?mid=MERCHANT_ID"
-	aid="UA-8883888-8"
-	currency="USD">
-</script>
-<?php } ?>

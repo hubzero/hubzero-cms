@@ -33,8 +33,6 @@ defined('_HZEXEC_') or die();
 	$cats 		= $this->cats;
 	$types 		= $this->types;
 
-	$jobsHtml = new \Components\Jobs\Helpers\Html();
-
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -47,11 +45,10 @@ defined('_HZEXEC_') or die();
 			<?php if ($filters['filterby'] == 'shortlisted') { ?>
 			<li><a class="complete btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo Lang::txt('All Candidates'); ?></a></li>
 			<?php } else { ?>
-			<li><a class="icon-list shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo Lang::txt('Candidate Shortlist'); ?></a></li>
+			<li><a class="icon-list shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('Candidate Shortlist'); ?></a></li>
 			<?php } ?>
 		<?php } else {  ?>
 			<li>
-				<!-- <?php echo Lang::txt('You are logged in as a site administrator.'); ?> -->
 				<a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('Administrator Dashboard'); ?></a>
 			</li>
 		<?php } ?>
@@ -78,7 +75,7 @@ defined('_HZEXEC_') or die();
 					$html .= ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
 				}
 				$html .= ' ';
-				$html .= $filters['filterby']=='shortlisted' ? Lang::txt('shortlisted').' ' : '';
+				$html .= $filters['filterby'] == 'shortlisted' ? Lang::txt('shortlisted') . ' ' : '';
 				$html .= strtolower(Lang::txt('candidates'));
 				echo $html;
 				?>
@@ -143,11 +140,11 @@ defined('_HZEXEC_') or die();
 				</label>
 				<label>
 					<?php echo Lang::txt('Category sought'); ?>:
-					<?php echo $jobsHtml->formSelect('category', $cats, $filters['category'], '', ''); ?>
+					<?php echo \Components\Jobs\Helpers\Html::formSelect('category', $cats, $filters['category'], '', ''); ?>
 				</label>
 				<label>
 					<?php echo Lang::txt('Type sought'); ?>:
-					<?php echo $jobsHtml->formSelect('type', $types, $filters['type'], '', ''); ?>
+					<?php echo \Components\Jobs\Helpers\Html::formSelect('type', $types, $filters['type'], '', ''); ?>
 				</label>
 				<label>
 					<input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" />

@@ -30,14 +30,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-	/* Mini-login screen for employers */
-
-	$sitename = Config::get('sitename');
-	// get some configs
-	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
-	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
-	$maxads = $this->config->get('maxads') ? $this->config->get('maxads') : 3;
-
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -49,10 +41,10 @@ defined('_HZEXEC_') or die();
 		<div class="grid process_steps">
 			<div class="col span-third">
 				<div class="current">
-					<h3><span>1</span> <?php echo Lang::txt('COM_JOBS_STEP_LOGIN').' '.Lang::txt('COM_JOBS_TO').' '.$sitename; ?></h3>
+					<h3><span>1</span> <?php echo Lang::txt('COM_JOBS_STEP_LOGIN') . ' ' . Lang::txt('COM_JOBS_TO') . ' ' . Config::get('sitename'); ?></h3>
 				</div>
 
-				<p><?php echo Lang::txt('COM_JOBS_LOGIN_NO_ACCOUNT').' <a href="' . Route::url('index.php?option=com_members&controller=register') . '">'.Lang::txt('COM_JOBS_LOGIN_REGISTER_NOW').'</a>. '.Lang::txt('COM_JOBS_LOGIN_IT_IS_FREE'); ?></p>
+				<p><?php echo Lang::txt('COM_JOBS_LOGIN_NO_ACCOUNT') . ' <a href="' . Route::url('index.php?option=com_members&controller=register') . '">' . Lang::txt('COM_JOBS_LOGIN_REGISTER_NOW') . '</a>. ' . Lang::txt('COM_JOBS_LOGIN_IT_IS_FREE'); ?></p>
 			</div>
 
 			<div class="col span-third">
@@ -61,11 +53,11 @@ defined('_HZEXEC_') or die();
 				</div>
 
 				<p>
-					<?php echo Lang::txt('COM_JOBS_INTRO_TO_ACCESS').' '; ?>
-					<?php echo Lang::txt('COM_JOBS_EMPLOYER_SERVICES').' '; ?>
-					<?php echo Lang::txt('COM_JOBS_INTRO_SUBSCRIPTION_REQUIRED').' '.Lang::txt('COM_JOBS_INTRO_HOW_TO_SUBSCRIBE'); ?>
+					<?php echo Lang::txt('COM_JOBS_INTRO_TO_ACCESS') . ' '; ?>
+					<?php echo Lang::txt('COM_JOBS_EMPLOYER_SERVICES') . ' '; ?>
+					<?php echo Lang::txt('COM_JOBS_INTRO_SUBSCRIPTION_REQUIRED') . ' ' . Lang::txt('COM_JOBS_INTRO_HOW_TO_SUBSCRIBE'); ?>
 				</p>
-				<?php echo $promoline ? '<p class="promo">'.$promoline.'</p>' : ''; ?>
+
 			</div>
 
 			<div class="col span-third omega">
@@ -76,12 +68,12 @@ defined('_HZEXEC_') or die();
 				<p>
 					<?php
 					echo ($this->task=='addjob')
-							? Lang::txt('COM_JOBS_INTRO_POST_UP_TO').' '.$maxads.' '.Lang::txt('COM_JOBS_INTRO_POST_DETAILS')
-							: Lang::txt('COM_JOBS_INTRO_BROWSE_INFO').' '.Lang::txt('COM_JOBS_INTRO_BROWSE_DETAILS'); ?>
+							? Lang::txt('COM_JOBS_INTRO_POST_UP_TO') . ' ' . $this->config->get('maxads', 3) . ' ' . Lang::txt('COM_JOBS_INTRO_POST_DETAILS')
+							: Lang::txt('COM_JOBS_INTRO_BROWSE_INFO') . ' ' . Lang::txt('COM_JOBS_INTRO_BROWSE_DETAILS'); ?>
 					<?php
 					echo ($this->task=='addjob')
-							? '<img src="'.Request::base(true).'/core/components/'.$this->option.'/site/assets/img/helper_job_search.gif" alt="'.Lang::txt('COM_JOBS_ACTION_POST_JOB').'" />'
-							: '<img src="'.Request::base(true).'/core/components/'.$this->option.'/site/assets/img/helper_browse_resumes.gif" alt="'.Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
+							? '<img src="' . Request::base(true) . '/core/components/' . $this->option . '/site/assets/img/helper_job_search.gif" alt="' . Lang::txt('COM_JOBS_ACTION_POST_JOB') . '" />'
+							: '<img src="' . Request::base(true) . '/core/components/' . $this->option . '/site/assets/img/helper_browse_resumes.gif" alt="' . Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES') . '" />';
 					?>
 				</p>
 			</div>

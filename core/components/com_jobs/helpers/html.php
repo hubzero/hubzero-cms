@@ -30,39 +30,6 @@
 
 namespace Components\Jobs\Helpers;
 
-if (!defined('n'))
-{
-	/**
-	 * Shortcut constant for tabs
-	 */
-	define('t', "\t");
-
-	/**
-	 * Shortcut constant for new lines
-	 */
-	define('n', "\n");
-
-	/**
-	 * Shortcut constant for line returns
-	 */
-	define('r', "\r");
-
-	/**
-	 * Shortcut constant for break tags
-	 */
-	define('br', '<br />');
-
-	/**
-	 * Shortcut constant for space character
-	 */
-	define('sp', '&#160;');
-
-	/**
-	 * Shortcut constant for ampersand
-	 */
-	define('a', '&amp;');
-}
-
 /**
  * Jobs helper class for misc. HTML
  */
@@ -74,7 +41,7 @@ class Html
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
-	public function txt_unpee($pee)
+	public static function txt_unpee($pee)
 	{
 		$pee = str_replace("\t", '', $pee);
 		$pee = str_replace('</p><p>', '', $pee);
@@ -93,7 +60,7 @@ class Html
 	 * @param      string $action    Action the confirmation is for
 	 * @return     string HTML
 	 */
-	public function confirmscreen($returnurl, $actionurl, $action='cancelsubscription')
+	public static function confirmscreen($returnurl, $actionurl, $action = 'cancelsubscription')
 	{
 		$html  = '<div class="confirmwrap">' . "\n";
 		$html .= "\t" . '<div class="confirmscreen">' . "\n";
@@ -149,17 +116,4 @@ class Html
 		$out .= '</select>' . "\n";
 		return $out;
 	}
-
-	/**
-	 * Returns a wiki syntax reference table
-	 *
-	 * @return     string HTML
-	 */
-	public function wikiHelp()
-	{
-		$out  = '';
-
-		return $out;
-	}
 }
-
