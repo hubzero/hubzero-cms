@@ -108,8 +108,7 @@ class Publications extends SiteController
 		$this->_logging = $this->config->get('enable_logs', 1);
 
 		// Are we allowing contributions
-		$this->_contributable = Plugin::isEnabled('projects', 'publications')
-			&& $this->config->get('contribute', 0) ? true : false;
+		$this->_contributable = Plugin::isEnabled('projects', 'publications') ? true : false;
 	}
 
 	/**

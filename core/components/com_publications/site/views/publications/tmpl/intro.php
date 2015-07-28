@@ -50,7 +50,7 @@ $this->css('introduction.css', 'system')
 <div class="clear block">&nbsp;</div>
 <section class="section intropage">
 	<div class="grid">
-		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
+		<div class="col <?php echo (!User::isGuest() && $this->contributable) ? 'span4' : 'span6';  ?>">
 			<h3><?php echo Lang::txt('Recent Publications'); ?></h3>
 			<?php if ($this->results && count($this->results) > 0) {
 				// Display List of items
@@ -62,7 +62,7 @@ $this->css('introduction.css', 'system')
 				echo ('<p class="noresults">'.Lang::txt('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
 			} ?>
 		</div>
-		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6 omega';  ?>">
+		<div class="col <?php echo (!User::isGuest() && $this->contributable) ? 'span4' : 'span6 omega';  ?>">
 			<h3><?php echo Lang::txt('COM_PUBLICATIONS_PUPULAR'); ?></h3>
 			<?php if ($this->best && count($this->best) > 0)
 			{ 		// Display List of items
@@ -74,7 +74,7 @@ $this->css('introduction.css', 'system')
 				echo ('<p class="noresults">'.Lang::txt('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
 			} ?>
 		</div>
-		<?php if ($this->contributable) { ?>
+		<?php  if (!User::isGuest() && $this->contributable) { ?>
 		<div class="col span4 omega">
 			<h3><?php echo Lang::txt('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
 			<p><?php echo Lang::txt('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
