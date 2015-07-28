@@ -886,13 +886,14 @@ class Items extends AdminController
 					{
 						$this->model->version->accepted = Date::toSql();
 
+						$this->model->version->published_up  = $published_up
+											? Date::of($published_up, Config::get('offset'))->toSql()
+											: Date::toSql();
+
 						// Get and save manifest and its version
 						$versionNumber = $this->model->_curationModel->checkCurationVersion();
 						$this->model->version->set('curation', json_encode($this->model->_curationModel->_manifest));
 						$this->model->version->set('curation_version_id', $versionNumber);
-
-						// Mark as curated/non-curated
-						$this->model->version->saveParam($this->model->version->id, 'curated', 1);
 
 						// Check if publication is within grace period (published status)
 						$gracePeriod = $this->config->get('graceperiod', 0);
@@ -918,7 +919,7 @@ class Items extends AdminController
 
 					if (!$this->getError())
 					{
-						$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM').' ';
+						$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 						$output .= $action == 'publish'
 							? Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
 							: Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
@@ -929,7 +930,7 @@ class Items extends AdminController
 					$this->model->version->state = $state ? $state : 4;
 					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
 					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
-					$output .= ' '.Lang::txt('COM_PUBLICATIONS_ITEM').' ';
+					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
 					break;
 
@@ -939,7 +940,7 @@ class Items extends AdminController
 					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_UNPUBLISHED');
 					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
 
-					$output .= ' '.Lang::txt('COM_PUBLICATIONS_ITEM').' ';
+					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
 					break;
 			}
@@ -966,7 +967,7 @@ class Items extends AdminController
 						  . ' ' . $this->model->version->version_label .' '
 						  . Lang::txt('COM_PUBLICATIONS_OF') . ' '
 						  . strtolower(Lang::txt('publication')) . ' "'
-						  . $pubtitle.'" ';
+						  . $pubtitle . '" ';
 
 				// Build return url
 				$link 	= '/projects/' . $project->get('alias') . '/publications/'
@@ -1007,7 +1008,7 @@ class Items extends AdminController
 						if ( $objC->id )
 						{
 							$what = Lang::txt('COM_PROJECTS_AN_ACTIVITY');
-							$curl = Route::url($project->link('feed')) . '#tr_'.$aid; // same-page link
+							$curl = Route::url($project->link('feed')) . '#tr_' . $aid; // same-page link
 							$caid = $project->recordActivity(
 							Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON')
 								. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1
@@ -1064,7 +1065,8 @@ class Items extends AdminController
 		if ($redirect)
 		{
 			App::redirect(
-				$url,
+				Route::url('index.php?option=' . $this->_option . '&controller='
+					. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $this->model->get('version_number'), false),
 				$output
 			);
 		}
