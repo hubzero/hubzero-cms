@@ -150,7 +150,7 @@ class Assetv1_0 extends base
 		}
 		else
 		{
-			App::abort(500, 'No assets given');
+			App::abort(400, 'No assets given');
 		}
 
 		// Initiate our file handler
@@ -163,7 +163,7 @@ class Assetv1_0 extends base
 		// Check for errors in response
 		if (array_key_exists('error', $return))
 		{
-			App::abort(500, $return['error']);
+			App::abort(400, $return['error']);
 		}
 
 		// Return message
@@ -205,7 +205,7 @@ class Assetv1_0 extends base
 		// Check for errors in response
 		if (is_array($return) && array_key_exists('error', $return))
 		{
-			App::abort(500, $return['error']);
+			App::abort(400, $return['error']);
 		}
 
 		// Return message
@@ -247,7 +247,7 @@ class Assetv1_0 extends base
 		// Check for errors in response
 		if (is_array($return) && array_key_exists('error', $return))
 		{
-			App::abort(500, $return['error']);
+			App::abort(400, $return['error']);
 		}
 
 		// Return message
