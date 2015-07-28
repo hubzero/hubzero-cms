@@ -148,7 +148,7 @@ class Postsv1_0 extends ApiController
 				$obj = new stdClass;
 				$obj->id        = $entry->get('id');
 				$obj->title     = $entry->get('title', $item->get('title'));
-				$obj->type      = $item->get('type');;
+				$obj->type      = $item->get('type');
 				$obj->posted    = $entry->get('created');
 				$obj->author    = $entry->creator()->get('name');
 				$obj->uri       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));

@@ -60,8 +60,8 @@ if (!User::isGuest())
 }
 else
 {
-	$like_title    = Lang::txt('COM_ANSWERS_VOTE_LIKE_LOGIN');;
-	$dislike_title = Lang::txt('COM_ANSWERS_VOTE_DISLIKE_LOGIN');;
+	$like_title    = Lang::txt('COM_ANSWERS_VOTE_LIKE_LOGIN');
+	$dislike_title = Lang::txt('COM_ANSWERS_VOTE_DISLIKE_LOGIN');
 	$cls = ' tooltips';
 }
 ?>

@@ -817,7 +817,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		// Use user name as file name
 		$default_title  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
-		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));;
+		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));
 
 		// Initiate a new content server and serve up the file
 		$xserver = new \Hubzero\Content\Server();

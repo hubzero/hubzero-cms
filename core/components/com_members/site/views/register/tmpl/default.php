@@ -480,7 +480,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$message = (!empty($this->xregistration->_invalid['org'])) ? '<span class="error">' . $this->xregistration->_invalid['org'] . '</span>' : '';
 					?>
 					<label for="org"<?php echo ($message) ? ' class="fieldWithErrors"' : ''; ?>>
-						<?php echo Lang::txt('COM_MEMBERS_REGISTER_ORGANIZATION'); ?>: <?php echo ($this->registrationOrganization == REG_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';; ?>
+						<?php echo Lang::txt('COM_MEMBERS_REGISTER_ORGANIZATION'); ?>: <?php echo ($this->registrationOrganization == REG_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<select name="org" id="org">
 							<option value=""<?php if (!$org_known) { echo ' selected="selected"'; } ?>><?php echo ($org_known) ? Lang::txt('COM_MEMBERS_REGISTER_OTHER_NONE') : Lang::txt('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
 							<?php foreach ($orgs as $org) { ?>
