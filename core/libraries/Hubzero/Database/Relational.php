@@ -46,7 +46,6 @@ use Hubzero\Error\Exception\RuntimeException;
  *
  * @uses \Hubzero\Error\Exception\BadMethodCallException to handle calls to undefined methods
  * @uses \Hubzero\Error\Exception\RuntimeException       to handle scenarios with undefined rows
- * // @FIXME: handle content that needs to be parsed (wiki/html)
  * // @FIXME: handle dates
  */
 class Relational implements \IteratorAggregate, \ArrayAccess
@@ -596,12 +595,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		switch (strtolower($as))
 		{
 			case 'parsed':
-				$content = isset($this->_notesParsed) ? $this->_notesParsed : null;
-				if (isset($content)) return $content;
+				$property = "_{$field}Parsed";
 
-				$this->_notesParsed = Html::content('prepare', $this->attributes[$field]);
+				if (!isset($this->$property))
+				{
+					$this->$property = Html::content('prepare', $this->attributes[$field]);
+				}
 
-				return $this->parse($field, strtolower($as));
+				return $this->$property;
 			break;
 
 			case 'raw':
