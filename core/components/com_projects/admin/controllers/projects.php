@@ -441,7 +441,7 @@ class Projects extends AdminController
 		{
 			// Email config
 			$from 			= array();
-			$from['name']  	= Config::get('sitename').' ' . Lang::txt('COM_PROJECTS');
+			$from['name']  	= Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
 			$from['email'] 	= Config::get('mailfrom');
 
 			// Html email
@@ -506,7 +506,15 @@ class Projects extends AdminController
 			// Ensure we found an account
 			if ($profile)
 			{
-				$this->model->table('Owner')->saveOwners ( $this->model->get('id'), User::get('id'), $profile->get('uidNumber'), 0, $role, $status = 1, 0);
+				$this->model->table('Owner')->saveOwners (
+					$this->model->get('id'),
+					User::get('id'),
+					$profile->get('uidNumber'),
+					0,
+					$role,
+					$status = 1,
+					0
+				);
 			}
 		}
 	}

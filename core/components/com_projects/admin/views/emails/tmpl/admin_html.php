@@ -29,11 +29,7 @@ defined('_HZEXEC_') or die();
 $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.6em; text-align: left;';
 
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
-$projectUrl = $base . DS . trim(Route::url($this->project->link()), DS);
-$browseLink = $base . DS . trim(Route::url('index.php?option=' . $this->option . '&task=browse'), DS);
-
-$sef 		= Route::url($this->project->link());
-$link 		= rtrim($base, '/') . '/' . trim($sef, '/');
+$link = $base . '/projects/' . $this->project->get('alias');
 
 // Get the actual message
 $comment = $this->message;
@@ -144,7 +140,7 @@ else
 						<?php } ?>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $projectUrl; ?></a></td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
 						</tr>
 					</tbody>
 				</table>

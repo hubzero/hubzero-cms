@@ -26,7 +26,7 @@
 defined('_HZEXEC_') or die();
 
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
-$projectUrl = $base . DS . trim(Route::url($this->project->link()), DS);
+$projectUrl = $base . '/projects/' . $this->project->get('alias');
 
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";

@@ -148,7 +148,6 @@ function submitbutton(pressbutton)
 
 					$cloud = new \Components\Projects\Models\Tags($row->id);
 					$tags  = $cloud->render('cloud');
-					$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';
 
 					$params = new \Hubzero\Config\Registry( $row->params );
 					$quota  = $params->get('quota', $this->defaultQuota);
@@ -157,7 +156,7 @@ function submitbutton(pressbutton)
 				<tr class="<?php echo "row$k"; ?>">
 					<td><?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?></td>
 					<td><?php echo $row->id; ?></td>
-					<td><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
+					<td><?php echo '<img src="' . rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media' . '" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
 					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
 						<strong><?php echo stripslashes($row->alias); ?></strong>
