@@ -126,6 +126,12 @@ class Assetgroupv1_0 extends base
 		$assetGroup->set('title', Request::getString('title', $title));
 		$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 
+		// Save the asset group
+		if (!$assetGroup->get('title'))
+		{
+			App::abort(400, 'No title provided');
+		}
+
 		$state = Request::getInt('state', null);
 		if (!is_null($state))
 		{
