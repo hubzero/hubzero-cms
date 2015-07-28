@@ -38,13 +38,14 @@ $pubconfig = Component::params( 'com_publications' );
 				<span><a href="/members/myaccount/projects" class="btn"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_PROJECTS'); ?></a></span>
 			</p>
 		</div>
-
+<?php if ($pubconfig->get('contribute', 0)) { ?>
 		<div class="contrib-start simple">
 			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_OUTSIDE'); ?></p>
 			<p class="submitarea">
 				<span><a href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=files'); ?>" class="btn btn-primary"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FILES'); ?></a></span>
 			</p>
 		</div>
+<?php } ?>
 	</div>
 	<div class="col span8 omega">
 		<?php if (User::isGuest())
