@@ -1113,7 +1113,7 @@ class Items extends AdminController
 			// Email all the contributors
 			$from = array();
 			$from['email'] = Config::get('mailfrom');
-			$from['name']  = Config::get('sitename') . ' ' . Lang::txt('PUBLICATIONS');
+			$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
 
 			$subject = $subject
 				? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
