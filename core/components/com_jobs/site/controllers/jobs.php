@@ -52,6 +52,7 @@ use Event;
 use Route;
 use Lang;
 use Date;
+use ZipArchive;
 
 /**
  * Jobs controller class for postings
@@ -88,17 +89,18 @@ class Jobs extends SiteController
 	 */
 	public function execute()
 	{
-		$this->_banking  = $this->config->get('banking', 0);
-		$this->_industry = $this->config->get('industry', '');
-		$this->_allowsubscriptions = $this->config->get('allowsubscriptions', 0);
+		// Set configs
+		$this->_banking            = $this->config->get('banking', 0);
+		$this->_industry           = $this->config->get('industry', '');
+		$this->_allowSubscriptions = $this->config->get('allowsubscriptions', 0);
 
 		// Get admin priviliges
 		self::authorize_admin();
 
 		// Get employer priviliges
-		if ($this->_allowsubscriptions)
+		if ($this->_allowSubscriptions)
 		{
-			self::authorize_employer();
+			self::authorize_employer($this->_admin);
 		}
 		else
 		{
@@ -182,14 +184,14 @@ class Jobs extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$comtitle  = Lang::txt(strtoupper($this->_option));
-		$comtitle .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
+		$title  = Lang::txt(strtoupper($this->_option));
+		$title .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
 
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-				$comtitle,
-				'index.php?option=' . $this->_option
+				$title,
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 		if ($this->_task)
@@ -199,15 +201,15 @@ class Jobs extends SiteController
 				case 'browse':
 					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_BROWSE'),
-						'index.php?option=' . $this->_option . '&task=browse'
+						Route::url('index.php?option=' . $this->_option . '&task=browse')
 					);
 				break;
 				case 'all':
-					if (!$this->_allowsubscriptions)
+					if (!$this->_allowSubscriptions)
 					{
 						Pathway::append(
 							Lang::txt(strtoupper($this->_option) . '_BROWSE'),
-							'index.php?option=' . $this->_option . '&task=browse'
+							Route::url('index.php?option=' . $this->_option . '&task=browse')
 						);
 					}
 				break;
@@ -225,43 +227,43 @@ class Jobs extends SiteController
 				case 'apply':
 					Pathway::append(
 						$this->_jobtitle,
-						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode)
 					);
 					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_APPLY'),
-						'index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobcode)
 					);
 				break;
 				case 'editapp':
 					Pathway::append(
 						$this->_jobtitle,
-						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode)
 					);
 					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_EDITAPP'),
-						'index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobcode)
 					);
 				break;
 				case 'job':
 					Pathway::append(
 						$this->_jobtitle,
-						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode)
 					);
 				break;
 				case 'editjob':
 					Pathway::append(
 						$this->_jobtitle,
-						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode)
 					);
 					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_EDITJOB'),
-						'index.php?option=' . $this->_option . '&task=editjob&code=' . $this->_jobcode
+						Route::url('index.php?option=' . $this->_option . '&task=editjob&code=' . $this->_jobcode)
 					);
 				break;
 				default:
 					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-						'index.php?option=' . $this->_option . '&task=' . $this->_task
+						Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 				break;
 			}
@@ -337,8 +339,12 @@ class Jobs extends SiteController
 	 */
 	public function view()
 	{
+		// Incoming
+		$subscriptioncode = Request::getVar('employer', '');
+		$action = Request::getVar('action', '');
+
 		// Push some styles to the template
-		$this->css('introduction.css', 'system'); // component, stylesheet name, look in media system dir
+		$this->css('introduction.css', 'system');
 		$this->css();
 
 		// Push some scripts to the template
@@ -350,13 +356,10 @@ class Jobs extends SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Do we need to list only jobs from a specified employer?
-		$subscriptioncode = Request::getVar('employer', '');
 		$employer = new Employer($this->database);
 		$thisemployer = $subscriptioncode ? $employer->getEmployer(0, $subscriptioncode) : '';
 
-		// get action
-		$action = Request::getVar('action', '');
+		// Login?
 		if ($action == 'login' && User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_JOBS_MSG_PLEASE_LOGIN_OPTIONS');
@@ -364,7 +367,7 @@ class Jobs extends SiteController
 			return;
 		}
 
-		if (!User::isGuest() && ($this->_task == 'browse' or !$this->_allowsubscriptions))
+		if (!User::isGuest() && ($this->_task == 'browse' or !$this->_allowSubscriptions))
 		{
 			// save incoming prefs
 			$this->updatePrefs($this->database, User::getRoot(), 'job');
@@ -381,13 +384,13 @@ class Jobs extends SiteController
 		$obj = new Job($this->database);
 
 		// Get jobs
-		$adminoptions = ($this->_task != 'browse' && $this->_allowsubscriptions)  ? 0 : $this->_admin;
+		$adminoptions = ($this->_task != 'browse' && $this->_allowSubscriptions)  ? 0 : $this->_admin;
 		$jobs = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptioncode);
 
 		$total = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptioncode, 1);
 
 		// Initiate paging
-		$jtotal = ($this->_task != 'browse' && $this->_allowsubscriptions) ? count($jobs) : $total;
+		$jtotal = ($this->_task != 'browse' && $this->_allowSubscriptions) ? count($jobs) : $total;
 		$pageNav = new \Hubzero\Pagination\Paginator(
 			$jtotal,
 			$filters['start'],
@@ -395,25 +398,24 @@ class Jobs extends SiteController
 		);
 
 		// Output HTML
-		if ($this->_task != 'browse' && $this->_allowsubscriptions)
+		if ($this->_task != 'browse' && $this->_allowSubscriptions)
 		{
 			// Component introduction
-			$view = new View(array('name'=>'intro'));
-			$view->title = $this->_title;
-			$view->config = $this->config;
-			$view->option = $this->_option;
-			$view->emp = $this->_emp;
-			$view->guest = User::isGuest();
-			$view->admin = $this->_admin;
+			$view = new View(array('name' => 'intro'));
+			$view->title       = $this->_title;
+			$view->config      = $this->config;
+			$view->option      = $this->_option;
+			$view->emp         = $this->_emp;
+			$view->guest       = User::isGuest();
+			$view->admin       = $this->_admin;
 			$view->masteradmin = $this->_masteradmin;
-			$view->pageNav = $pageNav;
-			$view->allowsubscriptions = $this->_allowsubscriptions;
-			$view->msg = $this->_msg;
+			$view->pageNav     = $pageNav;
+			$view->msg         = $this->_msg;
 			$view->display();
 		}
 
 		// Jobs list
-		$view = new View(array('name'=>'jobs'));
+		$view = new View(array('name' => 'jobs'));
 		$view->title = $this->_title;
 		$view->config = $this->config;
 		$view->option = $this->_option;
@@ -423,9 +425,9 @@ class Jobs extends SiteController
 		$view->masteradmin = $this->_masteradmin;
 		$view->total = $jtotal;
 		$view->pageNav = $pageNav;
-		$view->allowsubscriptions = $this->_allowsubscriptions;
+		$view->allowsubscriptions = $this->_allowSubscriptions;
 		$view->jobs = $jobs;
-		$view->mini = ($this->_task == 'browse' or !$this->_allowsubscriptions) ? 0 : 1;
+		$view->mini = ($this->_task == 'browse' or !$this->_allowSubscriptions) ? 0 : 1;
 		$view->database = $this->database;
 		$view->filters = $filters;
 		$view->subscriptioncode = $subscriptioncode;
@@ -451,7 +453,7 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			if ($this->_allowsubscriptions)
+			if ($this->_allowSubscriptions)
 			{
 				$this->intro_employer();
 			}
@@ -516,7 +518,7 @@ class Jobs extends SiteController
 			$view->option      = $this->_option;
 			$view->display();
 		}
-		else if ($this->_allowsubscriptions)
+		else if ($this->_allowSubscriptions)
 		{
 			// need to subscribe first
 			$employer = new Employer($this->database);
@@ -576,7 +578,7 @@ class Jobs extends SiteController
 		$this->_buildPathway();
 
 		// Push some styles to the template
-		$this->css();
+		$this->csss();
 
 		// Push some scripts to the template
 		$this->js();
@@ -638,7 +640,7 @@ class Jobs extends SiteController
 		$view->title = $this->_title;
 		$view->config = $this->config;
 		$view->subscription = $subscription;
-		$view->allowsubscriptions = $this->_allowsubscriptions;
+		$view->allowsubscriptions = $this->_allowSubscriptions;
 		$view->employer = $employer;
 		$view->services = $services;
 		$view->funds = $funds;
@@ -1183,7 +1185,7 @@ class Jobs extends SiteController
 		$view->seeker = $seeker;
 		$view->admin = $this->_admin;
 		$view->masteradmin = $this->_masteradmin;
-		$view->allowsubscriptions = $this->_allowsubscriptions;
+		$view->allowsubscriptions = $this->_allowSubscriptions;
 		$view->error = $this->_error;
 		$view->application = $ja;
 		$view->task = $this->_task;
@@ -1398,7 +1400,7 @@ class Jobs extends SiteController
 		$view->msg_passed = $this->_msg_passed;
 		$view->admin = $this->_admin;
 		$view->masteradmin = $this->_masteradmin;
-		$view->allowsubscriptions = $this->_allowsubscriptions;
+		$view->allowsubscriptions = $this->_allowSubscriptions;
 		$view->error = $this->_error;
 		$view->task = $this->_task;
 		$view->option = $this->_option;
@@ -1608,7 +1610,7 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			if ($this->_allowsubscriptions)
+			if ($this->_allowSubscriptions)
 			{
 				$this->intro_employer();
 			}
@@ -2007,7 +2009,7 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			if ($this->_allowsubscriptions)
+			if ($this->_allowSubscriptions)
 			{
 				$this->intro_employer();
 			}
@@ -2021,7 +2023,7 @@ class Jobs extends SiteController
 		// Check authorization
 		if (!$this->_admin && !$this->_emp)
 		{
-			if ($this->_allowsubscriptions)
+			if ($this->_allowSubscriptions)
 			{
 				$this->intro_employer();
 			}
