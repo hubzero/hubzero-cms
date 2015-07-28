@@ -262,7 +262,7 @@ class Base
 		{
 			$db = Driver::getInstance(
 				array(
-					'driver'   => \Config::get('dbtype'),
+					'driver'   => (\Config::get('dbtype') == 'mysql') ? 'pdo' : \Config::get('dbtype'),
 					'host'     => \Config::get('host'),
 					'user'     => $creds['user'],
 					'password' => $creds['password'],
