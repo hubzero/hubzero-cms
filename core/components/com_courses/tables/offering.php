@@ -134,6 +134,11 @@ class Offering extends \JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 		$this->makeAliasUnique();
+		if (is_numeric($this->alias))
+		{
+			$this->setError(Lang::txt('Alias must contain at least one non-numeric character.'));
+			return false;
+		}
 
 		if (!$this->id)
 		{
