@@ -1179,7 +1179,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->view->section  = $this->model->section($sectionAlias, $this->model->get('scope'), $this->model->get('scope_id'));
-
 		if (!$this->view->section->exists())
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
@@ -1211,12 +1210,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$this->view->post->set('scope', $this->model->get('scope'));
 			$this->view->post->set('created_by', User::get('id'));
 		}
-		// - IMPORTANT - ONLY the original commenter can change the content.
-		// Group Managers can only delete OR report for abuse.
-		elseif ($this->view->post->get('created_by') != User::get('id') || !$this->params->get('access-edit-thread'))
+		elseif ($this->view->post->get('created_by') != User::get('id') && !$this->params->get('access-edit-thread'))
 		{
-			App::redirect(Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category),
-			Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'), 'error');
+			App::redirect(Route::url($this->base . '&scope=' . $section . '/' . $category));
 			return;
 		}
 
@@ -1457,7 +1453,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					->set('thread', $ethread)
 					->set('post', $epost);
 
-				$plain = $eview->loadTemplate();
+				$plain = $eview->loadTemplate(false);
 				$msg['plaintext'] = str_replace("\n", "\r\n", $plain);
 
 				// HTML

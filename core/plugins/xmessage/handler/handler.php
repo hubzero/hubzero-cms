@@ -163,19 +163,20 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Store the message in the database
+		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
+
 		// Do we have a subject line? If not, create it from the message
-		if (!$subject && $message)
+		if (!$subject && $xmessage->message)
 		{
-			$subject = substr($message, 0, 70);
+			$subject = substr($xmessage->message, 0, 70);
 			if (strlen($subject) >= 70)
 			{
 				$subject .= '...';
 			}
 		}
-
-		// Store the message in the database
 		$xmessage->subject    = $subject;
-		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
+
 		$xmessage->created    = Date::toSql();
 		$xmessage->created_by = User::get('id');
 		$xmessage->component  = $component;
