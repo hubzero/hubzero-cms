@@ -732,7 +732,7 @@ class File extends Object
 		}
 
 		// Directory where images are stored
-		$basePath = "core/plugins/projects/files/assets/img/";
+		$basePath = "/core/plugins/projects/files/assets/img/";
 		return $basename ? basename($icon) :  $basePath . $icon . '.gif';
 	}
 
