@@ -184,6 +184,7 @@ class File extends Handler
 		$course         = new \Components\Courses\Models\Course($course_id);
 
 		$url = Route::url('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
+		$url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
 		$return_info = array(
 			'asset_id'       => $this->assoc['asset_id'],
