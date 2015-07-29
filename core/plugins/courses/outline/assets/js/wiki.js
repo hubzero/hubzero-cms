@@ -21,6 +21,8 @@ if (!jq) {
 }
 
 jQuery(document).ready(function($) {
+	Hubzero.initApi();
+
 	$('.fileupload').fileupload({
 		dropZone: $('.wiki-files-upload'),
 		dataType: 'json',

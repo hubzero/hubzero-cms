@@ -31,6 +31,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Html::behavior('core');
+
 // Load asset if applicable
 $id     = Request::getInt('asset_id', null);
 $asset  = new \Components\Courses\Models\Asset($id);
@@ -99,8 +101,8 @@ $assets = array();
 			<div class="wiki-files-available-wrapper">
 				<div class="wiki-files-available">
 					<?php $path = $asset->path($this->course->get('id')); ?>
-					<?php if ($path && is_dir(PATH_CORE . $path)) : ?>
-						<?php $files = array_diff(scandir(PATH_CORE . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
+					<?php if ($path && is_dir(PATH_APP . $path)) : ?>
+						<?php $files = array_diff(scandir(PATH_APP . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
 						<ul class="wiki-files-list">
 							<?php foreach ($files as $file) : ?>
 								<li class="wiki-file">
