@@ -42,7 +42,7 @@ if ($this->uid == $this->project->get('created_by_user') && !$this->project->isP
 elseif ($this->project->isProvisioned())
 {
 	$pub = isset($this->pub) ? $this->pub : $this->project->getPublication();
-	$subtitle .= User::get('id')
+	$subtitle = User::get('id')
 			? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ADDED_AS_PUB_AUTHOR')
 			: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_INVITED_AS_PUB_AUTHOR');
 	$subtitle .= ' "' . $pub->title . '"';
