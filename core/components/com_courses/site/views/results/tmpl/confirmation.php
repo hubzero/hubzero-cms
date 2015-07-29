@@ -49,15 +49,15 @@ $dep  = $this->dep;
 <section class="main section">
 	<p>Completed <?php echo Date::of($resp->getEndTime())->toLocal('r'); ?></p>
 	<?php if ($this->dep->getResultsClosed() == 'details'): ?>
-		<p>Detailed results will be available <?php echo ($dep->getEndTime()) ? Date::of($dep->getEndTime())->toLocal('r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(Date::of('now'))) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
+		<p>Detailed results will be available <?php echo ($dep->getEndTime()) ? Date::of($dep->getEndTime())->toLocal('r') . " (about " . \Components\Courses\Helpers\Form::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(Date::of('now'))) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
 	<?php elseif ($this->dep->getResultsClosed() == 'score'): ?>
-		<p>Your score will be available <?php echo ($dep->getEndTime()) ? Date::of($dep->getEndTime())->toLocal('r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(Date::of('now'))) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
+		<p>Your score will be available <?php echo ($dep->getEndTime()) ? Date::of($dep->getEndTime())->toLocal('r') . " (about " . \Components\Courses\Helpers\Form::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(Date::of('now'))) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
 	<?php endif; ?>
 	<?php if ($this->dep->getAllowedAttempts() > 1) : ?>
 		<?php $attempt = $resp->getAttemptNumber(); ?>
 		<p>
 			You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-			This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
+			This was your <strong><?php echo \Components\Courses\Helpers\Form::toOrdinal((int)$attempt) ?></strong> attempt.
 		</p>
 		<form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
@@ -67,7 +67,7 @@ $dep  = $this->dep;
 					View another completed attempt:
 					<select name="attempt">
 						<?php foreach ($completedAttempts as $completedAttempt) : ?>
-							<option value="<?php echo $completedAttempt ?>"<?php echo ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>><?php echo FormHelper::toOrdinal($completedAttempt) ?> attempt</option>
+							<option value="<?php echo $completedAttempt ?>"<?php echo ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>><?php echo \Components\Courses\Helpers\Form::toOrdinal($completedAttempt) ?> attempt</option>
 						<?php endforeach; ?>
 					</select>
 					<input class="btn btn-secondary" type="submit" value="GO" />

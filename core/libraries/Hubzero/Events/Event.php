@@ -280,6 +280,16 @@ class Event implements ArrayAccess, Serializable, Countable
 	}
 
 	/**
+	 * Resume the event propagation.
+	 *
+	 * @return  void
+	 */
+	public function resume()
+	{
+		$this->stopped = false;
+	}
+
+	/**
 	 * Tell if the event propagation is stopped.
 	 *
 	 * @return  boolean  True if stopped, false otherwise.

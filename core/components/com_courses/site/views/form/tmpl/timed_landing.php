@@ -31,11 +31,11 @@
 defined('_HZEXEC_') or die();
 ?>
 <p>
-	You have <strong><?php echo FormHelper::timeDiff($realLimit*60) ?></strong> to complete this form.
+	You have <strong><?php echo \Components\Courses\Helpers\Form::timeDiff($realLimit*60) ?></strong> to complete this form.
 	There are <strong><?php echo $this->pdf->getQuestionCount() ?></strong> questions.
 	<?php if ($this->dep->getAllowedAttempts() > 1) : ?>
 		You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-		This is your <strong><?php echo FormHelper::toOrdinal((int)$this->resp->getAttemptNumber()) ?></strong> attempt.
+		This is your <strong><?php echo \Components\Courses\Helpers\Form::toOrdinal((int)$this->resp->getAttemptNumber()) ?></strong> attempt.
 	<?php endif; ?>
 </p>
 <?php if ($realLimit == $limit): ?>

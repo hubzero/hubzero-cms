@@ -60,7 +60,7 @@ $version = $record['summary']['version'];
 		<?php $attempt = $resp->getAttemptNumber(); ?>
 		<p>
 			You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-			This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
+			This was your <strong><?php echo \Components\Courses\Helpers\Form::toOrdinal((int)$attempt) ?></strong> attempt.
 		</p>
 		<form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
@@ -70,7 +70,7 @@ $version = $record['summary']['version'];
 					View another completed attempt:
 					<select name="attempt">
 						<?php foreach ($completedAttempts as $completedAttempt) : ?>
-							<option value="<?php echo $completedAttempt ?>"<?php echo ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>><?php echo FormHelper::toOrdinal($completedAttempt) ?> attempt</option>
+							<option value="<?php echo $completedAttempt ?>"<?php echo ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>><?php echo \Components\Courses\Helpers\Form::toOrdinal($completedAttempt) ?> attempt</option>
 						<?php endforeach; ?>
 					</select>
 					<input class="btn btn-secondary" type="submit" value="GO" />
