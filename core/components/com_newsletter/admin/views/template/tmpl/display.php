@@ -65,10 +65,14 @@ Toolbar::preferences($this->option, '550');
 							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
-							<?php echo $template->name; ?>
 							<?php if (!$template->editable) : ?>
+								<?php echo $template->name; ?>
 								<br />
 								<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE_OR_DELETABLE'); ?></span>
+							<?php else: ?>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $template->id); ?>">
+									<?php echo $template->name; ?>
+								</a>
 							<?php endif; ?>
 						</td>
 					</tr>

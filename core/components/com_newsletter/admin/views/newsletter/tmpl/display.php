@@ -106,8 +106,14 @@ Joomla.submitbutton = function(pressbutton)
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
-						<td><?php echo $this->escape($newsletter->name); ?></td>
-						<td class="priority-3"><?php echo ($newsletter->type == 'html') ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML') : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?></td>
+						<td>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $newsletter->id); ?>">
+								<?php echo $this->escape($newsletter->name); ?>
+							</a>
+						</td>
+						<td class="priority-3">
+							<?php echo ($newsletter->type == 'html') ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML') : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?>
+						</td>
 						<td class="priority-4">
 							<?php
 								$activeTemplate = '';

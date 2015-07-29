@@ -158,8 +158,11 @@ class Newsletter extends AdminController
 		$this->view->templates = $newsletterTemplate->getTemplates();
 
 		// get the request vars
-		$ids = Request::getVar("id", array());
-		$id = (isset($ids[0])) ? $ids[0] : null;
+		$id = Request::getVar('id', array(0));
+		if (is_array($id))
+		{
+			$id = (isset($id[0]) ? $id[0] : null);
+		}
 
 		if ($task == 'add')
 		{

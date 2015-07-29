@@ -93,8 +93,11 @@ class Template extends AdminController
 		$this->view->template->template = null;
 
 		//get request vars
-		$ids = Request::getVar("id", array());
-		$id = (isset($ids[0])) ? $ids[0] : null;
+		$id = Request::getVar('id', array(0));
+		if (is_array($id))
+		{
+			$id = (isset($id[0]) ? $id[0] : null);
+		}
 
 		//are we editing or adding a new tempalte
 		if ($id)
