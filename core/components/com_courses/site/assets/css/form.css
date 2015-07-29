@@ -42,6 +42,9 @@ label {
 .courses-form form {
 	margin-top: 65px;
 }
+.courses-form #deployment {
+	margin-top: 20px;
+}
 #group-box {
 	opacity: 0.5;
 	background: #ddd;

@@ -36,9 +36,6 @@ $this->css('form.css')
      ->js('deploy.js')
      ->js('jquery.tablesorter.min', 'system');
 ?>
-<header id="content-header" class="full">
-	<h2>Deploy: <?php echo $this->escape($this->title) ?></h2>
-</header>
 
 <section class="main section courses-form">
 	<form action="<?php echo Route::url($this->base); ?>" method="post" id="deployment">
