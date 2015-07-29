@@ -30,11 +30,14 @@
 
 namespace Hubzero\Mail;
 
+use Hubzero\Document\Type\Html;
+use App;
+
 /**
  * Mail template class.
  * Loads template files for HTML-based emails
  */
-class Template extends \JDocumentHTML
+class Template extends Html
 {
 	/**
 	 * Outputs the template to the browser.
@@ -50,22 +53,30 @@ class Template extends \JDocumentHTML
 	{
 		if (!isset($params['template']))
 		{
-			if (\App::isAdmin())
+			if (App::isAdmin())
 			{
-				$db = \App::get('db');
-				$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`=0 AND `home`=1");
-				$params['template']  = $db->loadResult();
-				$params['directory'] = PATH_CORE . DS . 'templates';
+				$db = App::get('db');
+				$db->setQuery("SELECT s.`template`, e.protected FROM `#__template_styles` AS s INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` WHERE s.`client_id`=0 AND s.`home`=1");
+				$result = $db->loadResult();
 			}
 			else
 			{
-				$params['template']  = \App::get('template')->template;
-				$params['directory'] = (\App::get('template')->protected ? PATH_CORE : PATH_APP) . DS . 'templates';
+				$result = App::get('template');
 			}
+
+			$params['template']  = $result->template;
+			$params['directory'] = ($result->protected ? PATH_CORE : PATH_APP) . DS . 'templates';
 		}
+
 		if (!isset($params['file']))
 		{
 			$params['file'] = 'email.php';
+		}
+
+		if (!file_exists($params['directory'] . DS . $params['template'] . DS . $params['file']))
+		{
+			$params['template']  = 'system';
+			$params['directory'] = PATH_CORE . DS . 'templates';
 		}
 
 		$this->_caching = $caching;
@@ -82,11 +93,14 @@ class Template extends \JDocumentHTML
 
 		if (class_exists('\Pelago\Emogrifier') && $data)
 		{
+			$data = str_replace('&#', '{_ANDNUM_}', $data);
 			$emogrifier = new \Pelago\Emogrifier();
+			$emogrifier->preserveEncoding = true;
 			$emogrifier->setHtml($data);
 			//$emogrifier->setCss($css);
 
 			$data = $emogrifier->emogrify();
+			$data = str_replace('{_ANDNUM_}', '&#', $data);
 		}
 
 		return $data;
