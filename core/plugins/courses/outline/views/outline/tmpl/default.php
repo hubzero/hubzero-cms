@@ -339,9 +339,9 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															{
 																$crumb = $a->get('url');
 
-																if ($crumb && strlen($crumb) == PdfFormDeployment::CRUMB_LEN)
+																if ($crumb && strlen($crumb) == \Components\Courses\Models\PdfFormDeployment::CRUMB_LEN)
 																{
-																	$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+																	$dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
 
 																	if ($dep && $dep->getState() == 'pending')
 																	{
