@@ -246,7 +246,7 @@ if ($this->wishlist->exists())
 										</a>
 										<br />
 										<span class="entry-details">
-											<?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
+											<?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name . ' '; ?>
 											<span class="entry-date-at"><?php echo Lang::txt('COM_WISHLIST_AT'); ?></span>
 											<span class="entry-time"><time datetime="<?php echo $item->proposed(); ?>"><?php echo $item->proposed('time'); ?></time></span>
 											<span class="entry-date-on"><?php echo Lang::txt('COM_WISHLIST_ON'); ?></span>
