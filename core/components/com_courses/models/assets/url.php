@@ -126,7 +126,7 @@ class Url extends Content
 			if (isset($matches[2]) && !empty($matches[2]))
 			{
 				$content  = '';
-				$content .= '<iframe width="560" height="315" src="http://www.youtube.com/embed/';
+				$content .= '<iframe width="560" height="315" src="https://www.youtube.com/embed/';
 				$content .= $matches[2];
 				$content .= '?rel=0" frameborder="0" allowfullscreen></iframe>';
 				return array('type'=>'content', 'value'=>$content);
