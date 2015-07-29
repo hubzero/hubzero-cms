@@ -1265,8 +1265,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$firstBlock    = $pub->_curationModel->_blocks->$blockId->name;
 
 			// Redirect to first block
-			App::redirect(Route::url($pub->link('edit')
-				. '&move=continue&step=' . $blockId . '&section=' . $firstBlock));
+			App::redirect(htmlspecialchars_decode(Route::url($pub->link('editversion')
+				. '&move=continue&step=' . $blockId . '&section=' . $firstBlock)));
 			return;
 		}
 		else
@@ -2734,7 +2734,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				{
 					// Checkin into repo
 					$this->model->repo()->call('checkin', array(
-						'file' => $this->model->repo()->getMetadata($filename, 'file', array())
+						'file' => $this->model->repo()->getMetadata($file, 'file', array())
 						)
 					);
 					$checkedin++;
