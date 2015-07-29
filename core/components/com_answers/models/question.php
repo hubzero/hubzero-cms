@@ -191,7 +191,7 @@ class Question extends Base
 			$BT = new Transaction($this->_db);
 			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
 
-			$AE = new Economy($this->_db);
+			$AE = new Helpers\Economy($this->_db);
 
 			$this->set('marketvalue', round($AE->calculate_marketvalue($this->get('id'), 'maxaward')));
 			$this->set('maxaward', round(2* $this->get('marketvalue', 0)/3 + $this->get('reward', 0)));
