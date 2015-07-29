@@ -781,7 +781,7 @@ class Question extends Base
 			else
 			{
 				// Calculate and distribute earned points
-				$AE = new Economy($this->_db);
+				$AE = new Helpers\Economy($this->_db);
 				$AE->distribute_points(
 					$this->get('id'),
 					$this->get('created_by'),
