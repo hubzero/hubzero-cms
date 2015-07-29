@@ -645,7 +645,7 @@ class Profiles extends SiteController
 
 		// Set the page title
 		$title  = Lang::txt(strtoupper($this->_name));
-		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
+		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)) : '';
 
 		Document::setTitle($title);
 
