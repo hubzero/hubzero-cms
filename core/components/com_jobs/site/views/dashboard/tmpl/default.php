@@ -63,7 +63,7 @@ defined('_HZEXEC_') or die();
 				: Lang::txt('N/A');
 
 	// site admins
-	if ($this->masteradmin)
+	if ($this->masterAdmin)
 	{
 		$this->subscription->code = Lang::txt(' N/A');
 		$this->service->title = Lang::txt('COM_JOBS_NOTICE_ADMIN_UNLIMITED_ACCESS');
@@ -75,7 +75,7 @@ defined('_HZEXEC_') or die();
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
-	<?php if ($this->emp && !$this->masteradmin) { ?>
+	<?php if ($this->emp && !$this->masterAdmin) { ?>
 		<div id="content-header-extra">
 			<ul id="useroptions">
 				<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
@@ -85,16 +85,6 @@ defined('_HZEXEC_') or die();
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php }
-	if ($this->msg_warning) { ?>
-		<p class="warning"><?php echo $this->msg_warning; ?></p>
-	<?php }
-	if ($this->msg_passed) { ?>
-		<p class="passed"><?php echo $this->msg_passed; ?></p>
-	<?php } ?>
-
 	<div class="grid">
 		<div class="col span6">
 			<div id="activities">
@@ -127,7 +117,7 @@ defined('_HZEXEC_') or die();
 
 				<p class="reg">
 					<span><?php echo Lang::txt('COM_JOBS_DASHBOARD_YOU_HAVE_CURRENTLY') . ' ' . $this->activejobs.' ' . Lang::txt('COM_JOBS_DASHBOARD_PUBLISHED_ADS');
-					if (!$this->masteradmin) { ?> <br /><?php echo $allowed_ads . ' ' . Lang::txt('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED'); } ?></span>
+					if (!$this->masterAdmin) { ?> <br /><?php echo $allowed_ads . ' ' . Lang::txt('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED'); } ?></span>
 				</p>
 				<?php if (count($this->myjobs) > 0) {
 				foreach ($this->myjobs as $mj) { ?>
@@ -144,7 +134,7 @@ defined('_HZEXEC_') or die();
 					</p>
 				<?php }
 				} ?>
-			<?php if ($this->subscription->status == 1 or $this->masteradmin) { ?>
+			<?php if ($this->subscription->status == 1 or $this->masterAdmin) { ?>
 				<p class="reg">
 					<a class="add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_DASHBOARD_AD_NEW_JOB'); ?></a>
 				</p>
@@ -161,7 +151,7 @@ defined('_HZEXEC_') or die();
 				<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_STATUS'); ?></span>
 				<p class="<?php echo $class; ?>"><?php echo $status; ?></p>
 
-				<?php if (!$this->masteradmin) { ?>
+				<?php if (!$this->masterAdmin) { ?>
 					<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_LENGTH'); ?></span>
 					<p><?php echo $length . '-' . $this->service->unitmeasure . $pending; ?></p>
 

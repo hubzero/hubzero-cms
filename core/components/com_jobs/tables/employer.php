@@ -105,25 +105,25 @@ class Employer extends \JTable
 	 * Get an employer
 	 *
 	 * @param      integer $uid              User ID
-	 * @param      string  $subscriptioncode Subscription code
+	 * @param      string  $subscriptionCode Subscription code
 	 * @return     mixed False if errors, Array upon success
 	 */
-	public function getEmployer($uid = NULL, $subscriptioncode = NULL)
+	public function getEmployer($uid = NULL, $subscriptionCode = NULL)
 	{
-		if ($uid === NULL or $subscriptioncode === NULL)
+		if ($uid === NULL or $subscriptionCode === NULL)
 		{
 			return false;
 		}
 		$query  = "SELECT e.* ";
 		$query .= "FROM #__jobs_employers AS e  ";
-		if ($subscriptioncode == 'admin')
+		if ($subscriptionCode == 'admin')
 		{
 			$query .= "WHERE e.uid = 1";
 		}
-		else if ($subscriptioncode)
+		else if ($subscriptionCode)
 		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-			$query .= "WHERE s.code=" . $this->_db->quote($subscriptioncode);
+			$query .= "WHERE s.code=" . $this->_db->quote($subscriptionCode);
 		}
 		else if ($uid)
 		{

@@ -56,7 +56,7 @@ defined('_HZEXEC_') or die();
 		<ul id="useroptions">
 		<?php if (User::isGuest()) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
+		<?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
 			<li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
 			<li><a class="icon-list shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
 			<li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
@@ -79,15 +79,7 @@ defined('_HZEXEC_') or die();
 ?>
 
 <section class="main section">
-	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php }
-	if ($this->msg_warning) { ?>
-		<p class="warning"><?php echo $this->msg_warning; ?></p>
-	<?php }
-	if ($this->msg_passed) { ?>
-		<p class="passed"><?php echo $this->msg_passed; ?></p>
-	<?php }
+	<?php
 		if ($owner)
 		{
 			// admin status message

@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if ($this->guest) { ?>
+		<?php if (User::isGuest()) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
 			<li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>

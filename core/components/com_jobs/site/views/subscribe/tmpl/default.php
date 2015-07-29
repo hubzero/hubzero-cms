@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 		<ul id="useroptions">
 		<?php if (User::isGuest()) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view&action=login') . '">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
+		<?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
 			<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
 			<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
 		<?php } else if ($this->admin) { ?>

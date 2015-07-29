@@ -33,13 +33,11 @@ defined('_HZEXEC_') or die();
 	/* Jobs List */
 	$jobs               = $this->jobs;
 	$option             = $this->option;
-	$jobs               = $this->jobs;
 	$filters            = $this->filters;
-	$allowsubscriptions = $this->allowsubscriptions;
 
-	if ($this->subscriptioncode && $this->thisemployer)
+	if ($this->subscriptionCode && $this->employer)
 	{
-		$this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->thisemployer->companyName;
+		$this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->employer->companyName;
 	}
 
 	$html  = '';
@@ -53,9 +51,9 @@ defined('_HZEXEC_') or die();
 
 			<div id="content-header-extra">
 				<ul id="useroptions">
-				<?php if ($this->guest) { ?>
+				<?php if (User::isGuest()) { ?>
 					<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a class="btn" href="' . Route::url('index.php?option=' . $option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-				<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
+				<?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
 					<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
 					<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
 				<?php } else if ($this->admin) { ?>
@@ -71,7 +69,7 @@ defined('_HZEXEC_') or die();
 		</header><!-- / #content-header -->
 
 		<section class="main section">
-		<?php if ($this->allowsubscriptions) { ?>
+		<?php if ($this->config->get('allowsubscriptions', 0)) { ?>
 			<div class="subject">
 		<?php } ?>
 				<form method="get" action="<?php echo Route::url('index.php?option=' . $option . '&task=browse'); ?>">
@@ -258,15 +256,15 @@ defined('_HZEXEC_') or die();
 			<p>
 				<?php
 				echo Lang::txt('COM_JOBS_NO_JOBS_FOUND');
-				if ($this->subscriptioncode)
+				if ($this->subscriptionCode)
 				{
-					if ($this->thisemployer)
+					if ($this->employer)
 					{
-						echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->thisemployer->companyName . ' (' . $this->subscriptioncode . ')';
+						echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->employer->companyName . ' (' . $this->subscriptionCode . ')';
 					}
 					else
 					{
-						echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->subscriptioncode . ')';
+						echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->subscriptionCode . ')';
 					}
 					echo '. <a href="' . Route::url('index.php?option=' . $option . '&task=browse') . '"">' . Lang::txt('COM_JOBS_ACTION_BROWSE_ALL_JOBS') . '</a>';
 				}
@@ -280,7 +278,7 @@ defined('_HZEXEC_') or die();
 		$pagenavhtml = $this->pageNav->render();
 		$pagenavhtml = str_replace('jobs/?', 'jobs/browse/?', $pagenavhtml);
 		echo $pagenavhtml;
-		if ($allowsubscriptions) { ?>
+		if ($this->config->get('allowsubscriptions', 0)) { ?>
 				</form>
 			</div><!-- / .subject -->
 			<aside class="aside minimenu">
