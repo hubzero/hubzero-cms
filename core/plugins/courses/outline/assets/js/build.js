@@ -661,33 +661,8 @@ HUB.CoursesOutline = {
 							break;
 
 							default :
-								$.fancybox({
-									type: 'iframe',
-									autoSize: false,
-									width: ($(window).width())*5/6,
-									height: ($(window).height())*5/6,
-									href: t.attr('href'),
-									beforeLoad: function() {
-										setTimeout(function(){
-											if (!loaded) {
-												$.fancybox.close();
-												window.open(t.attr('href'), '_blank');
-											}
-										},5000);
-									},
-									afterLoad: function( upcoming, current ) {
-										loaded = true;
-
-										// Check to make sure the iframe actually loaded some content...if not, open a new window with the page
-										// Try to account for x-frame-options preventing iframe loading
-										try {
-											var body = $(upcoming.content[0]).contents().find('body').html().length;
-										} catch(err) {
-											window.open(t.attr('href'), '_blank');
-											$.fancybox.close();
-										}
-									}
-								});
+								var attribs = 'height=' + ($(window).height())*5/6 + ',width=' + ($(window).width())*5/6;
+								window.open(t.attr('href'), '_blank', attribs).focus();
 							break;
 						}
 					}
