@@ -2275,8 +2275,8 @@ class Wishlists extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getVar('upload', '', 'files', 'array');
-		if (!$file['name'])
+		$file = Request::getVar('upload', array(), 'files', 'array');
+		if (!isset($file['name']) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_FILE'));
 			return '';
