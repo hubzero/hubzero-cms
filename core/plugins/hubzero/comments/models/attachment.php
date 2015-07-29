@@ -227,7 +227,7 @@ class Attachment extends Model
 
 			case 'permalink':
 			default:
-				$link = rtrim(Request::base(), '/') . '/site/comments/' . $this->get('comment_id') . '/' . $this->get('filename');
+				$link = rtrim(Request::base(), '/') . substr(PATH_APP, strlen(PATH_ROOT)) . '/site/comments/' . $this->get('comment_id') . '/' . $this->get('filename');
 			break;
 		}
 
