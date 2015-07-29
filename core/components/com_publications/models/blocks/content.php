@@ -157,14 +157,12 @@ class Content extends Base
 		// Make sure we have current attachments
 		$pub->attachments();
 
-		$collapse = $this->_manifest->params->collapse_elements == 0 ? 0 : 1;
-
 		// Save each element
 		$saved = 0;
 		foreach ($this->_manifest->elements as $id => $element)
 		{
 			// Are we saving just one element?
-			if ($elementId && $id != $elementId && $collapse)
+			if ($elementId && $id != $elementId)
 			{
 				continue;
 			}
