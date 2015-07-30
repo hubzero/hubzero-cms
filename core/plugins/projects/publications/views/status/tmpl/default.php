@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -103,16 +109,15 @@ if ($revertAllowed && $this->pub->accepted())
 <?php if ($this->project->access('content')) { ?>
 <div id="pub-body" class="<?php echo $this->pub->versionAlias; ?>">
 <?php } ?>
-	<div id="pub-editor">
+	<div id="pub-editor" class="grid">
 		<?php if (!$this->project->access('content')) { ?>
-		<div id="c-pane" class="columns">
+		<div id="c-pane" class="col span12 omega">
 			<div class="c-inner draftflow">
 		<?php } else { ?>
-		<div class="two columns first" id="c-selector">
-		 	<div class="c-inner">
+		<div class="col span6" id="c-selector">
+			<div class="c-inner">
 		<?php } ?>
-				<h4><?php echo $this->pub->title . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->pub->get('version_label') . ' (' . $status . ')</span>'; ?>
-				</h4>
+				<h4><?php echo $this->pub->title . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->pub->get('version_label') . ' (' . $status . ')</span>'; ?></h4>
 				<table class="tbl-panel">
 					<tbody>
 						<tr>
@@ -194,8 +199,8 @@ if ($revertAllowed && $this->pub->accepted())
 			</div>
 		</div>
 		<?php if ($this->project->access('content')) { ?>
-		<div class="two columns second" id="c-output">
-		 	<div class="c-inner">
+		<div class="col span6 omega" id="c-output">
+			<div class="c-inner">
 				<h4>
 				<?php if ($this->pub->isDev() || $this->pub->isPending()) { ?>
 					<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT'); ?>

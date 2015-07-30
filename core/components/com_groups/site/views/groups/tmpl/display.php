@@ -133,7 +133,7 @@ $this->css('introduction.css', 'system')
 						<p><?php echo Lang::txt('COM_GROUPS_INTRO_FIND_GROUP_SEARCH_HELP'); ?></p>
 					</fieldset>
 				</form>
-			</div><!-- / .two columns first -->
+			</div><!-- / .col -->
 			<div class="col span6 omega">
 				<div class="browse">
 					<p>

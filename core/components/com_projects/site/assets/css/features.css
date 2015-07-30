@@ -22,7 +22,7 @@
 #feature-section .feature:nth-child(2n-2) {
 	background: #faeefe;
 }
-.feature .first h3 {
+.feature h3 {
 	margin: 0;
 	margin-left: 1.5em;
 	margin-top: 1em;
@@ -30,56 +30,58 @@
 	font-size: 150%;
 	line-height: 1.5em;
 }
-#feature-section .feature:nth-child(2n-2) .first h3 {
+#feature-section .feature:nth-child(2n-2) h3 {
 	color: #b3acb6;
 }
-.feature .second p {
+.feature p {
 	padding: 1em 3em 1em 1em;
 }
-.feature .second p.f-about {
+.feature>.grid>.col>p.f-about {
 	margin: 0 0 1em 0;
+	padding-top: 1em;
 }
-.feature #feature-blog .second p.f-about {
+.feature #feature-blog p.f-about {
 	margin-bottom: -2em;
 }
-.feature .second, .feature .thrid {
+.feature>.grid>.span6 {
 	background: #fffef9;
 }
-.feature .second {
+.feature>.grid>.span6 {
 	border-right: 4px solid #FFF;
 	border-left: 4px solid #FFF;
 }
 .feature .columns .second {
 	border: none;
 }
-.feature .columns .first, .feature .columns .second, .feature .columns .first p, .feature .columns .second p {
+.feature .col,
+.feature p {
 	padding-top: 0;
 	margin-top: 0;
 }
-.feature .columns p.sub {
+.feature p.sub {
 	margin: 0;
 	font-weight: bold;
 	color: #000;
 }
-.feature .columns .columns {
+.feature .grid .grid {
 	margin: 2em 0 0 0;
 }
-.feature .columns ul {
+.feature ul {
 	margin: -1em 2em 2em 2em;
 	padding: 0;
 }
-.feature .columns ul.f-updates {
+.feature ul.f-updates {
 	list-style: none;
 	margin-left: 1em;
 }
-.feature .columns ul.f-updates li {
+.feature ul.f-updates li {
 	background-position: 0 2px;
 	margin-left: 0;
 }
 .feature .suggest {
 	margin-top: 0.5em;
 	display: block;
-	width: auto;	
+	width: auto;
 }
 .feature .suggest a {
 	border: 3px solid #ede1cf;
@@ -91,12 +93,13 @@
 	color: #FFF;
 	background: #e28c0c;
 }
-.feature .ima {
+.feature p.ima {
 	border: 3px solid #ede1cf;
 	padding: 1em 1em 1em 1em;
 	margin-left: 3em;
+	margin-top: 1em;
 	width: 32px;
-	height: 32px;	
+	height: 32px;
 	text-align: center;
 	background: #FFFFFF;
 	-webkit-border-radius: 10px;
@@ -105,13 +108,14 @@
 	-o-border-radius: 10px;
 	border-radius: 10px;
 }
-.feature .wip {
+.feature p.wip {
 	margin: 0;
 	margin-left: 2em;
 	font-size: 110%;
 	font-weight: bold;
+	padding: 0;
 }
-.feature .ima:before {
+.feature p.ima:before {
 	content: "";
 	width: 40px;
 	height: 40px;
@@ -122,7 +126,7 @@
 	margin: 0;
 	margin-left: -0.5em;
 	margin-top: 0.1em;
-}	
+}
 .feature #feature-todo {
 	background: url("../img/screenshots/todo.jpg") right top no-repeat;
 }
