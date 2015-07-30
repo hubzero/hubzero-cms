@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
-				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')),  35, 10, 'field-description', array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')),  35, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_TAGS_HINT'); ?>">
