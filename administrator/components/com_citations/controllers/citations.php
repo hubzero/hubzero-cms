@@ -377,6 +377,17 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		$this->badges = trim(JRequest::getVar('badges', ''));
 		$this->sponsors = JRequest::getVar('sponsors', array(), 'post');
 
+		// for checkboxes
+		if (!isset($citation['affiliated']))
+		{
+			$citation['affiliated'] = 0;
+		}
+		
+		if (!isset($citation['fundedby']))
+		{
+			$citation['fundeby'] = 0;
+		}
+
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
 		if (!$row->bind($citation))
@@ -407,10 +418,6 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			$this->editTask();
 			return;
 		}
-
-	//affiliated and funded
-	$row->affiliated = JRequest::getInt('citation[affiliated]', 0);
-	$row->fundedby = JRequest::getInt('citation[fundedby]', 0);
 
 		// Store new content
 		if (!$row->store())
