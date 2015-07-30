@@ -32,6 +32,7 @@ namespace Components\BillBoards\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Billboard;
+use Components\Billboards\Models\Collection;
 use Request;
 use Route;
 use Lang;
@@ -128,6 +129,14 @@ class BillBoards extends AdminController
 
 		// Create object
 		$billboard = Billboard::oneOrNew($data['id'])->set($data);
+
+		// Check to make sure collection exists
+		$collection = Collection::oneOrNew($billboard->collection_id);
+		if ($collection->isNew())
+		{
+			$collection->set('name', 'Default Collection')->save();
+			$billboard->set('collection_id', $collection->id);
+		}
 
 		if (!$billboard->save())
 		{

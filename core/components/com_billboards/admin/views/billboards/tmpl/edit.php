@@ -85,11 +85,16 @@ jQuery(document).ready(function($){
 			<div class="input-wrap">
 				<label for="billboardcollection"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_COLLECTION'); ?>:</label><br />
 				<select name="billboard[collection_id]">
-					<?php foreach (Collection::all() as $collection) : ?>
-						<option value="<?php echo $collection->id; ?>"<?php echo ($collection->id == $this->row->collection_id) ? ' selected="selected"' : ''; ?>>
-							<?php echo $collection->name; ?>
-						</option>
-					<?php endforeach; ?>
+					<?php $collections = Collection::all()->rows(); ?>
+					<?php if ($collections->count() > 0) : ?>
+						<?php foreach ($collections as $collection) : ?>
+							<option value="<?php echo $collection->id; ?>"<?php echo ($collection->id == $this->row->collection_id) ? ' selected="selected"' : ''; ?>>
+								<?php echo $collection->name; ?>
+							</option>
+						<?php endforeach; ?>
+					<?php else : ?>
+						<option value="0">Default Collection</option>
+					<?php endif; ?>
 				</select>
 			</div>
 			<div class="input-wrap">
