@@ -797,6 +797,9 @@ class Items extends AdminController
 				case 4:
 					$action = 'revert';
 					break;
+				case 7:
+					$action = 'wip';
+					break;
 			}
 
 			$this->model->version->state = $state;
@@ -942,6 +945,14 @@ class Items extends AdminController
 
 					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
+					break;
+
+				case 'wip':
+					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_REQUESTED_CHANGES');
+					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REQUESTED_CHANGES');
+
+					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
+					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REQUESTED_CHANGES');
 					break;
 			}
 		}

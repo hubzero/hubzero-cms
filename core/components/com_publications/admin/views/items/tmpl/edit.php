@@ -348,7 +348,6 @@ function popratings()
 			<option value="4"<?php echo ($this->model->get('state') == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></option>
 			<option value="5"<?php echo ($this->model->get('state') == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
 			<option value="7"<?php echo ($this->model->get('state') == 7) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
-			<option value="10"<?php echo ($this->model->get('state') == 10) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
 			<option value="1"<?php echo ($this->model->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
 			<option value="0"<?php echo ($this->model->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
 			<option value="2"<?php echo ($this->model->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
