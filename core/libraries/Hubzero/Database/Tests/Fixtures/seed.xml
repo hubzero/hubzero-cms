@@ -90,6 +90,50 @@
 			<value>2</value>
 		</row>
 	</table>
+	<table name="permission_object">
+		<column>id</column>
+		<column>permission_id</column>
+		<column>scope</column>
+		<column>scope_id</column>
+		<column>permitted</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>group</value>
+			<value>1</value>
+			<value></value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>1</value>
+			<value>project</value>
+			<value>1</value>
+			<value></value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>2</value>
+			<value>member</value>
+			<value>1</value>
+			<value></value>
+		</row>
+	</table>
+	<table name="permissions">
+		<column>id</column>
+		<column>name</column>
+		<row>
+			<value>1</value>
+			<value>read</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>write</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>execute</value>
+		</row>
+	</table>
 	<table name="post_tag">
 		<column>id</column>
 		<column>post_id</column>
