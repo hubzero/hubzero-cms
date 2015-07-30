@@ -382,7 +382,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		{
 			$citation['affiliated'] = 0;
 		}
-		
+
 		if (!isset($citation['fundedby']))
 		{
 			$citation['fundeby'] = 0;
