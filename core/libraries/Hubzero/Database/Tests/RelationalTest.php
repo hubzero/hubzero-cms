@@ -36,6 +36,7 @@ use Hubzero\Database\Tests\Mock\User;
 use Hubzero\Database\Tests\Mock\Post;
 use Hubzero\Database\Tests\Mock\Group;
 use Hubzero\Database\Tests\Mock\Project;
+use Hubzero\Database\Tests\Mock\Tag;
 
 /**
  * Base relational model tests
@@ -356,6 +357,20 @@ class RelationalTest extends Database
 		Post::oneOrFail(2)->tags()->disconnect([3]);
 
 		$this->assertCount(1, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 1 tags');
+	}
+
+	/**
+	 * Tests to make sure many to many save automatically connects
+	 *
+	 * @return void
+	 **/
+	public function testManyToManySaveAutomaticallyConnects()
+	{
+		// Tag post 2 with tag 3
+		Post::oneOrFail(2)->tags()->save(['name' => 'automatically created']);
+
+		$this->assertCount(1, Tag::whereEquals('name', 'automatically created')->rows(), 'A tag with the name of "automatically created" should exist');
+		$this->assertCount(2, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 2 tags');
 	}
 
 	/**

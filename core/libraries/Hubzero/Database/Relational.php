@@ -1129,7 +1129,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		if ($this->isNew())
 		{
 			$this->set($this->getPrimaryKey(), $result);
-			Event::trigger($this->getTableName() . '.new', ['model' => $this]);
+			Event::trigger($this->getTableName() . '_new', ['model' => $this]);
 		}
 
 		return $result;

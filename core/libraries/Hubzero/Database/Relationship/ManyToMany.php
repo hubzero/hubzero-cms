@@ -73,6 +73,28 @@ class ManyToMany extends OneToManyThrough
 	}
 
 	/**
+	 * Associates the model provided back to the model by way of their proper keys
+	 *
+	 * @param  object  $model    the model to associate
+	 * @param  closure $callback a callback to potentially append additional data
+	 * @return object
+	 * @since  1.3.2
+	 **/
+	public function associate($model, $callback=null)
+	{
+		$relationship = $this;
+		Event::listen(
+			function($event) use ($model, $relationship)
+			{
+				$relationship->connect([$model->id]);
+			},
+			$model->getTableName() . '_new'
+		);
+
+		return $model;
+	}
+
+	/**
 	 * Joins the related table together with the intermediate table for the pending query
 	 *
 	 * This is primarily used when we're getting the related results and we need to work

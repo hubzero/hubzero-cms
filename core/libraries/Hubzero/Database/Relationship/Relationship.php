@@ -247,7 +247,7 @@ class Relationship
 	 * @return object
 	 * @since  1.3.2
 	 **/
-	public function associate($model, $callback)
+	public function associate($model, $callback=null)
 	{
 		$model->set($this->relatedKey, $this->model->getPkValue());
 
