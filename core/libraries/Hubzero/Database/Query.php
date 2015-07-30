@@ -157,6 +157,17 @@ class Query
 	}
 
 	/**
+	 * Purges the query cache
+	 *
+	 * @return void
+	 * @since  1.3.2
+	 **/
+	public static function purgeCache()
+	{
+		self::$cache = array();
+	}
+
+	/**
 	 * Applies a select field to the pending query
 	 *
 	 * @param  string $column the column to select

@@ -105,6 +105,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	private static $connection = null;
 
 	/**
+	 * Whether or not we're caching query results
+	 *
+	 * @var string
+	 **/
+	private $noCache = false;
+
+	/**
 	 * The relationships on this model
 	 *
 	 * @var array
@@ -401,6 +408,46 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public static function setDefaultConnection($connection)
 	{
 		self::$connection = $connection;
+	}
+
+	/**
+	 * Disables query caching
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function disableCaching()
+	{
+		$this->noCache = true;
+
+		return $this;
+	}
+
+	/**
+	 * Enables query caching
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function enableCaching()
+	{
+		$this->noCache = false;
+
+		return $this;
+	}
+
+	/**
+	 * Purges the query cache
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function purgeCache()
+	{
+		$query = $this->query;
+		$query::purgeCache();
+
+		return $this;
 	}
 
 	/**
@@ -866,7 +913,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public function rows()
 	{
 		// Fetch the results
-		$rows = $this->rowsFromRaw($this->query->fetch());
+		$rows = $this->rowsFromRaw($this->query->fetch('rows', $this->noCache));
 		$rows = $this->parseIncluding($rows);
 
 		// Set a few things on the rows object that might be helpful
