@@ -42,6 +42,8 @@ $filters = array(
 );
 
 $first = $this->model->entries('first', $filters);
+
+$rows = $this->model->entries('list', $this->filters);
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -103,120 +105,120 @@ $first = $this->model->entries('first', $filters);
 				} ?>
 				</h3>
 
-		<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
-				<ol class="blog-entries">
-				<?php
-				$cls = 'even';
-				foreach ($rows as $row)
-				{
-					$cls = ($cls == 'even') ? 'odd' : 'even';
-
-					if ($row->ended())
+				<?php if ($rows->total() > 0) { ?>
+					<ol class="blog-entries">
+					<?php
+					$cls = 'even';
+					foreach ($rows as $row)
 					{
-						$cls .= ' expired';
-					}
-				?>
-					<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
-						<article>
-							<h4 class="entry-title">
-								<a href="<?php echo Route::url($row->link()); ?>">
-									<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-								</a>
-							<?php if (User::get('id') == $row->get('created_by')) { ?>
-								<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('COM_BLOG_EDIT'); ?>">
-									<?php echo Lang::txt('COM_BLOG_EDIT'); ?>
-								</a>
-								<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
-									<?php echo Lang::txt('COM_BLOG_DELETE'); ?>
-								</a>
-							<?php } ?>
-							</h4>
-							<dl class="entry-meta">
-								<dt>
-									<span>
-										<?php echo Lang::txt('COM_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
-									</span>
-								</dt>
-								<dd class="date">
-									<time datetime="<?php echo $row->published(); ?>">
-										<?php echo $row->published('date'); ?>
-									</time>
-								</dd>
-								<dd class="time">
-									<time datetime="<?php echo $row->published(); ?>">
-										<?php echo $row->published('time'); ?>
-									</time>
-								</dd>
-							<?php if ($this->config->get('show_authors')) { ?>
-								<dd class="author">
-									<?php if ($row->creator()->get('public')) { ?>
-										<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-											<?php echo $this->escape(stripslashes($row->get('name'))); ?>
-										</a>
-									<?php } else { ?>
-										<?php echo $this->escape(stripslashes($row->get('name'))); ?>
-									<?php } ?>
-								</dd>
-							<?php } ?>
-							<?php if ($row->get('allow_comments') == 1) { ?>
-								<dd class="comments">
-									<a href="<?php echo Route::url($row->link('comments')); ?>">
-										<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
-									</a>
-								</dd>
-							<?php } else { ?>
-								<dd class="comments">
-									<span>
-										<?php echo Lang::txt('COM_BLOG_COMMENTS_OFF'); ?>
-									</span>
-								</dd>
-							<?php } ?>
-							<?php if (User::get('id') == $row->get('created_by')) { ?>
-								<dd class="state <?php echo $row->state('text'); ?>">
-									<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
-								</dd>
-							<?php } ?>
-							</dl>
-							<div class="entry-content">
-							<?php if ($this->config->get('cleanintro', 1)) { ?>
-								<p>
-									<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
-								</p>
-							<?php } else { ?>
-								<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
-							<?php } ?>
-							</div>
-						</article>
-					</li>
-				<?php } ?>
-				</ol>
+						$cls = ($cls == 'even') ? 'odd' : 'even';
 
-				<?php
-				$pageNav = $this->pagination(
-					$this->model->entries('count', $this->filters),
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				$pageNav->setAdditionalUrlParam('year', $this->filters['year']);
-				$pageNav->setAdditionalUrlParam('month', $this->filters['month']);
-				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-				echo $pageNav->render();
-				?>
-		<?php } else { ?>
-				<p class="warning"><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
+						if ($row->ended())
+						{
+							$cls .= ' expired';
+						}
+					?>
+						<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
+							<article>
+								<h4 class="entry-title">
+									<a href="<?php echo Route::url($row->link()); ?>">
+										<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+									</a>
+									<?php if (User::get('id') == $row->get('created_by')) { ?>
+										<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('COM_BLOG_EDIT'); ?>">
+											<?php echo Lang::txt('COM_BLOG_EDIT'); ?>
+										</a>
+										<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+											<?php echo Lang::txt('COM_BLOG_DELETE'); ?>
+										</a>
+									<?php } ?>
+								</h4>
+								<dl class="entry-meta">
+									<dt>
+										<span>
+											<?php echo Lang::txt('COM_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
+										</span>
+									</dt>
+									<dd class="date">
+										<time datetime="<?php echo $row->published(); ?>">
+											<?php echo $row->published('date'); ?>
+										</time>
+									</dd>
+									<dd class="time">
+										<time datetime="<?php echo $row->published(); ?>">
+											<?php echo $row->published('time'); ?>
+										</time>
+									</dd>
+									<?php if ($this->config->get('show_authors')) { ?>
+										<dd class="author">
+											<?php if ($row->creator()->get('public')) { ?>
+												<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
+													<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+												</a>
+											<?php } else { ?>
+												<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+											<?php } ?>
+										</dd>
+									<?php } ?>
+									<?php if ($row->get('allow_comments') == 1) { ?>
+										<dd class="comments">
+											<a href="<?php echo Route::url($row->link('comments')); ?>">
+												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
+											</a>
+										</dd>
+									<?php } else { ?>
+										<dd class="comments">
+											<span>
+												<?php echo Lang::txt('COM_BLOG_COMMENTS_OFF'); ?>
+											</span>
+										</dd>
+									<?php } ?>
+									<?php if (User::get('id') == $row->get('created_by')) { ?>
+										<dd class="state <?php echo $row->state('text'); ?>">
+											<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+										</dd>
+									<?php } ?>
+								</dl>
+								<div class="entry-content">
+									<?php if ($this->config->get('cleanintro', 1)) { ?>
+										<p>
+											<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
+										</p>
+									<?php } else { ?>
+										<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
+									<?php } ?>
+								</div>
+							</article>
+						</li>
+					<?php } ?>
+					</ol>
+
+					<?php
+					$pageNav = $this->pagination(
+						$this->model->entries('count', $this->filters),
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('year', $this->filters['year']);
+					$pageNav->setAdditionalUrlParam('month', $this->filters['month']);
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+					echo $pageNav->render();
+					?>
+				<?php } else { ?>
+					<p class="warning"><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
+				<?php } ?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 
 		<aside class="aside">
-		<?php if ($this->config->get('access-create-entry')) { ?>
-			<p>
-				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
-					<?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
-				</a>
-			</p>
-		<?php } ?>
+			<?php if ($this->config->get('access-create-entry')) { ?>
+				<p>
+					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+						<?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
+					</a>
+				</p>
+			<?php } ?>
 
 			<div class="container blog-entries-years">
 				<h4><?php echo Lang::txt('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
@@ -280,19 +282,19 @@ $first = $this->model->entries('first', $filters);
 
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
-			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
-				<ol>
-				<?php foreach ($popular as $row) { ?>
-					<li>
-						<a href="<?php echo Route::url($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-					</li>
+				<?php if ($popular = $this->model->entries('popular')) { ?>
+					<ol>
+					<?php foreach ($popular as $row) { ?>
+						<li>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</a>
+						</li>
+					<?php } ?>
+					</ol>
+				<?php } else { ?>
+					<p><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
-			<?php } else { ?>
-				<p><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
-			<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 		</aside><!-- / .aside -->
 	</form>
