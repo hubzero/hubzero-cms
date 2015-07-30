@@ -57,21 +57,28 @@ if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 
 	foreach ($this->tickets['critical'] as $ticket)
 	{
-		if (!$ticket->summary)
+		if (!$this->config->get('email_terse'))
 		{
-			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70)
+			if (!$ticket->summary)
 			{
-				$ticket->summary .= '...';
+				$ticket->summary = substr($ticket->report, 0, 70);
+				if (strlen($ticket->summary) >= 70)
+				{
+					$ticket->summary .= '...';
+				}
+				if (!trim($ticket->summary))
+				{
+					$ticket->summary = Lang::txt('(no content found)');
+				}
 			}
-			if (!trim($ticket->summary))
-			{
-				$ticket->summary = Lang::txt('(no content found)');
-			}
+			$ticket->summary = str_replace("\r", "", $ticket->summary);
+			$ticket->summary = str_replace("\t", " ", $ticket->summary);
+			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 		}
-		$ticket->summary = str_replace("\r", "", $ticket->summary);
-		$ticket->summary = str_replace("\t", " ", $ticket->summary);
-		$ticket->summary = str_replace("\n", " ", $ticket->summary);
+		else
+		{
+			$ticket->summary = Lang::txt('COM_SUPPORT_TICKET');
+		}
 
 		$sef = Route::url($base . $ticket->id);
 
@@ -88,21 +95,28 @@ if (isset($this->tickets['major']) && count($this->tickets['major']) > 0)
 
 	foreach ($this->tickets['major'] as $ticket)
 	{
-		if (!$ticket->summary)
+		if (!$this->config->get('email_terse'))
 		{
-			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70)
+			if (!$ticket->summary)
 			{
-				$ticket->summary .= '...';
+				$ticket->summary = substr($ticket->report, 0, 70);
+				if (strlen($ticket->summary) >= 70)
+				{
+					$ticket->summary .= '...';
+				}
+				if (!trim($ticket->summary))
+				{
+					$ticket->summary = Lang::txt('(no content found)');
+				}
 			}
-			if (!trim($ticket->summary))
-			{
-				$ticket->summary = Lang::txt('(no content found)');
-			}
+			$ticket->summary = str_replace("\r", "", $ticket->summary);
+			$ticket->summary = str_replace("\t", " ", $ticket->summary);
+			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 		}
-		$ticket->summary = str_replace("\r", "", $ticket->summary);
-		$ticket->summary = str_replace("\t", " ", $ticket->summary);
-		$ticket->summary = str_replace("\n", " ", $ticket->summary);
+		else
+		{
+			$ticket->summary = Lang::txt('COM_SUPPORT_TICKET');
+		}
 
 		$sef = Route::url($base . $ticket->id);
 
@@ -130,21 +144,28 @@ foreach ($this->tickets as $severity => $tickets)
 
 	foreach ($tickets as $ticket)
 	{
-		if (!$ticket->summary)
+		if (!$this->config->get('email_terse'))
 		{
-			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70)
+			if (!$ticket->summary)
 			{
-				$ticket->summary .= '...';
+				$ticket->summary = substr($ticket->report, 0, 70);
+				if (strlen($ticket->summary) >= 70)
+				{
+					$ticket->summary .= '...';
+				}
+				if (!trim($ticket->summary))
+				{
+					$ticket->summary = Lang::txt('(no content found)');
+				}
 			}
-			if (!trim($ticket->summary))
-			{
-				$ticket->summary = Lang::txt('(no content found)');
-			}
+			$ticket->summary = str_replace("\r", "", $ticket->summary);
+			$ticket->summary = str_replace("\t", " ", $ticket->summary);
+			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 		}
-		$ticket->summary = str_replace("\r", "", $ticket->summary);
-		$ticket->summary = str_replace("\t", " ", $ticket->summary);
-		$ticket->summary = str_replace("\n", " ", $ticket->summary);
+		else
+		{
+			$ticket->summary = Lang::txt('COM_SUPPORT_TICKET');
+		}
 
 		$sef = Route::url($base . $ticket->id);
 

@@ -155,6 +155,7 @@ $this->css(
 									-webkit-background-size: 30px 30px;
 									-moz-background-size: 30px 30px;
 									background-size: 30px 30px;">
+<?php if (!$this->config->get('email_terse')) { ?>
 		<thead class="mobilehide">
 			<tr>
 				<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
@@ -162,121 +163,134 @@ $this->css(
 				</th>
 			</tr>
 		</thead>
+<?php } ?>
 		<tbody>
 			<tr>
 				<td width="100%" style="padding: 8px;">
 					<div id="ticket-number" style="float: left; width: 5em; font-size: 2.5em; font-weight: bold; text-align: center; padding: 30px;" align="center">
 						<a href="<?php echo $link; ?>">#<?php echo $this->ticket->get('id'); ?></a>
 					</div>
-					<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
-						<tbody>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->ticket->created('time'), $this->ticket->created('date')); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('name', Lang::txt('COM_SUPPORT_UNKNOWN')); ?> <?php echo $this->ticket->get('login') ? '(' . $this->ticket->get('login') . ')' : ''; ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('severity'); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->status(); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->tags('string'); ?></td>
-							</tr>
-							<?php /*<tr class="mobilehide">
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
-							</tr>*/ ?>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-<?php if ($this->comment->isPrivate()) { ?>
-	<!-- Start Spacer -->
-	<table class="tbl-private" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<td height="30">
-					<div style="text-align: center; font-size: 85%; display: block; padding: 1em; margin: 2em 0 0 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; background: #fdf7f6; color: #ecada2;"><?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?></div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- End Spacer -->
-<?php } ?>
-
-	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<th style="text-align: left;" align="left"><?php echo ($this->comment->creator('id') ? $this->comment->creator('name') . ' (' . $this->comment->creator('username') . ')' : Lang::txt('JADMINISTRATOR')); ?></th>
-				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
-			</tr>
-			<tr>
-				<td colspan="2" style="padding: 0 2em;">
-					<?php
-						if ($this->comment->changelog() && count($this->comment->changelog()->lists()) >  0)
-						{
-						?>
-						<table id="ticket-updates" width="100%" style="border-collapse: collapse; border-top: 1px solid #e1e1e1; margin: 1em 0 2em 0; color: #616161;" cellpadding="0" cellspacing="0" border="0">
+					<?php if (!$this->config->get('email_terse')) { ?>
+						<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 							<tbody>
-								<?php
-								$clog = '';
-								foreach ($this->comment->changelog()->lists() as $type => $log)
-								{
-									if (is_array($log) && count($log) > 0)
-									{
-
-										foreach ($log as $items)
-										{
-											$clog .= '<tr class="' . $type . '">';
-											if ($type == 'changes')
-											{
-												$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left">' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', '<span style="color: #4e7ac7;">' . $items->field . '</span>', '<b style="color: #333;">' . $items->before . '</b>', '<b style="color: #333;">' . $items->after . '</b>') . '</td>';
-											}
-											else if ($type == 'notifications')
-											{
-												$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', '</span> ' . $items->name, $items->role, $items->address) . '</td>';
-											}
-											$clog .= '</tr>';
-										}
-									}
-								}
-								echo $clog;
-								?>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->ticket->created('time'), $this->ticket->created('date')); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('name', Lang::txt('COM_SUPPORT_UNKNOWN')); ?> <?php echo $this->ticket->get('login') ? '(' . $this->ticket->get('login') . ')' : ''; ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('severity'); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->status(); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->tags('string'); ?></td>
+								</tr>
+								<?php /*<tr class="mobilehide">
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+								</tr>*/ ?>
 							</tbody>
 						</table>
-						<?php
-						}
-					?>
-					<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->comment->content('parsed'); ?></p>
-					<?php if ($this->comment->attachments()->total()) { ?>
-						<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
-							<?php
-							foreach ($this->comment->attachments() as $attachment)
-							{
-								if (!trim($attachment->get('description')))
-								{
-									$attachment->set('description', $attachment->get('filename'));
-								}
-								echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a class="' . ($attachment->isImage() ? 'img' : 'file') . '" data-filename="' . $attachment->get('filename') . '" href="' . $base . '/' . ltrim(Route::url($attachment->link()), '/') . '">' . $attachment->get('description') . '</a></p>';
-							}
-							?>
-						</div><!-- / .comment-body -->
+					<?php } else { ?>
+						<table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
+							<tbody>
+								<tr>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('COM_SUPPORT_NOTIFY_TICKET_UPDATED', $this->ticket->get('id'), $link); ?></td>
+								</tr>
+							</tbody>
+						</table>
 					<?php } ?>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+
+<?php if (!$this->config->get('email_terse')) { ?>
+	<?php if ($this->comment->isPrivate()) { ?>
+		<!-- Start Spacer -->
+		<table class="tbl-private" width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tbody>
+				<tr>
+					<td height="30">
+						<div style="text-align: center; font-size: 85%; display: block; padding: 1em; margin: 2em 0 0 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; background: #fdf7f6; color: #ecada2;"><?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- End Spacer -->
+	<?php } ?>
+
+		<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
+			<tbody>
+				<tr>
+					<th style="text-align: left;" align="left"><?php echo ($this->comment->creator('id') ? $this->comment->creator('name') . ' (' . $this->comment->creator('username') . ')' : Lang::txt('JADMINISTRATOR')); ?></th>
+					<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding: 0 2em;">
+						<?php
+							if ($this->comment->changelog() && count($this->comment->changelog()->lists()) >  0)
+							{
+							?>
+							<table id="ticket-updates" width="100%" style="border-collapse: collapse; border-top: 1px solid #e1e1e1; margin: 1em 0 2em 0; color: #616161;" cellpadding="0" cellspacing="0" border="0">
+								<tbody>
+									<?php
+									$clog = '';
+									foreach ($this->comment->changelog()->lists() as $type => $log)
+									{
+										if (is_array($log) && count($log) > 0)
+										{
+
+											foreach ($log as $items)
+											{
+												$clog .= '<tr class="' . $type . '">';
+												if ($type == 'changes')
+												{
+													$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left">' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', '<span style="color: #4e7ac7;">' . $items->field . '</span>', '<b style="color: #333;">' . $items->before . '</b>', '<b style="color: #333;">' . $items->after . '</b>') . '</td>';
+												}
+												else if ($type == 'notifications')
+												{
+													$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', '</span> ' . $items->name, $items->role, $items->address) . '</td>';
+												}
+												$clog .= '</tr>';
+											}
+										}
+									}
+									echo $clog;
+									?>
+								</tbody>
+							</table>
+							<?php
+							}
+						?>
+						<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->comment->content('parsed'); ?></p>
+						<?php if ($this->comment->attachments()->total()) { ?>
+							<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
+								<?php
+								foreach ($this->comment->attachments() as $attachment)
+								{
+									if (!trim($attachment->get('description')))
+									{
+										$attachment->set('description', $attachment->get('filename'));
+									}
+									echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a class="' . ($attachment->isImage() ? 'img' : 'file') . '" data-filename="' . $attachment->get('filename') . '" href="' . $base . '/' . ltrim(Route::url($attachment->link()), '/') . '">' . $attachment->get('description') . '</a></p>';
+								}
+								?>
+							</div><!-- / .comment-body -->
+						<?php } ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+<?php } ?>
 
 	<!-- Start Spacer -->
 	<table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">

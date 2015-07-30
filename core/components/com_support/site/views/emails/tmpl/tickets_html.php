@@ -153,6 +153,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						<td width="75%" style="padding: 8px;">
 							<table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0" border="0">
 								<tbody>
+								<?php if (!$this->config->get('email_terse')) { ?>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
 										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
@@ -169,6 +170,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
 										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo ($tags ? $tags : '--'); ?></td>
 									</tr>
+								<?php } ?>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
 										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
@@ -244,6 +246,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						<td width="75%" style="padding: 8px;">
 							<table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
 								<tbody>
+								<?php if (!$this->config->get('email_terse')) { ?>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
 										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
@@ -260,6 +263,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
 										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo ($tags ? $tags : '--'); ?></td>
 									</tr>
+								<?php } ?>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
 										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
@@ -359,7 +363,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							#<?php echo $ticket->id; ?>
 						</td>
 						<td width="75%" colspan="2" style="font-weight: normal; padding: 8px 8px 0 8px; text-align: left;" align="left">
-							<?php echo $this->escape($ticket->summary); ?>
+							<?php echo (!$this->config->get('email_terse') ? $this->escape($ticket->summary) : Lang::txt('COM_SUPPORT_TICKET')); ?>
 						</td>
 					</tr>
 					<tr>

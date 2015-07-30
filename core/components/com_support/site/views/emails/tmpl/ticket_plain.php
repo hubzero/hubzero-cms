@@ -48,42 +48,49 @@ else
 }
 $link = $base . '/' . trim($sef, '/');
 
-$usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
-if ($this->ticket->submitter('id'))
+if (!$this->config->get('email_terse'))
 {
-	jimport( 'joomla.user.helper' );
-	$usertype = implode(', ', JUserHelper::getUserGroups($this->ticket->submitter('id')));
-}
-
-$message = '';
-if ($this->delimiter)
-{
-	$message .= $this->delimiter . "\n";
-	$message .= Lang::txt('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
-	$message .= 'Message from ' . rtrim(Request::base(), '/') . '/support / Ticket #' . $this->ticket->get('id') . "\n";
-}
-$message .= '----------------------------'."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE')).': '.$usertype."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL')).': '. $this->ticket->get('email') ."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_IP_HOSTNAME')).': '. $this->ticket->get('ip') .' ('.$this->ticket->get('hostname').')' ."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_OS')).': '. $this->ticket->get('os') . "\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_BROWSER')).': '. $this->ticket->get('browser') . "\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_UAS')).': '. $this->ticket->get('uas') . "\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_COOKIES')).': ' . ($this->ticket->get('cookies') ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED')) . "\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_REFERRER')).': '. $this->ticket->get('referrer') . "\n";
-$message .= '----------------------------'."\n\n";
-$message .= $this->ticket->content('clean');
-if ($this->ticket->attachments()->total() > 0)
-{
-	$message .= "\n\n";
-	foreach ($this->ticket->attachments() as $attachment)
+	$usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
+	if ($this->ticket->submitter('id'))
 	{
-		$message .= $base . '/' . trim(Route::url($attachment->link()), '/') . "\n";
+		jimport('joomla.user.helper');
+		$usertype = implode(', ', \JUserHelper::getUserGroups($this->ticket->submitter('id')));
 	}
+
+	$message = '';
+	if ($this->delimiter)
+	{
+		$message .= $this->delimiter . "\n";
+		$message .= Lang::txt('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
+		$message .= 'Message from ' . rtrim(Request::base(), '/') . '/support / Ticket #' . $this->ticket->get('id') . "\n";
+	}
+	$message .= '----------------------------'."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE')).': '.$usertype."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL')).': '. $this->ticket->get('email') ."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_IP_HOSTNAME')).': '. $this->ticket->get('ip') .' ('.$this->ticket->get('hostname').')' ."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_OS')).': '. $this->ticket->get('os') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_BROWSER')).': '. $this->ticket->get('browser') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_UAS')).': '. $this->ticket->get('uas') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_COOKIES')).': ' . ($this->ticket->get('cookies') ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED')) . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_REFERRER')).': '. $this->ticket->get('referrer') . "\n";
+	$message .= '----------------------------'."\n\n";
+	$message .= $this->ticket->content('clean');
+	if ($this->ticket->attachments()->total() > 0)
+	{
+		$message .= "\n\n";
+		foreach ($this->ticket->attachments() as $attachment)
+		{
+			$message .= $base . '/' . trim(Route::url($attachment->link()), '/') . "\n";
+		}
+	}
+}
+else
+{
+	$message .= Lang::txt('COM_SUPPORT_NOTIFY_TICKET_CREATED', $this->ticket->get('id'), $link) . "\n";
 }
 
 $message = preg_replace('/\n{3,}/', "\n\n", $message);

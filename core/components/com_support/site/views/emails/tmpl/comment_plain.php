@@ -60,49 +60,58 @@ if ($this->delimiter)
 	$message .= Lang::txt('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
 	$message .= 'Message from ' . $base . '/support / Ticket #' . $this->ticket->get('id') . "\n";
 }
+
 $message .= '----------------------------'."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS')).': '.$this->ticket->status()."\n";
-$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS')).': '.$this->ticket->tags('string')."\n";
-$message .= '----------------------------'."\n\n";
-if ($this->comment->isPrivate())
+
+if (!$this->config->get('email_terse'))
 {
-	$message .= '!! ' . Lang::txt('COM_SUPPORT_COMMENT_PRIVATE') . " !!\n";
-}
-$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator('name') . '(' . $this->comment->creator('username') . ")\n";
-$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created() . "\n\n";
-if ($this->comment->changelog()->lists())
-{
-	foreach ($this->comment->changelog()->lists() as $type => $log)
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS')).': '.$this->ticket->status()."\n";
+	$message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS')).': '.$this->ticket->tags('string')."\n";
+	$message .= '----------------------------'."\n\n";
+	if ($this->comment->isPrivate())
 	{
-		if (is_array($log) && count($log) > 0)
+		$message .= '!! ' . Lang::txt('COM_SUPPORT_COMMENT_PRIVATE') . " !!\n";
+	}
+	$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator('name') . '(' . $this->comment->creator('username') . ")\n";
+	$message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created() . "\n\n";
+	if ($this->comment->changelog()->lists())
+	{
+		foreach ($this->comment->changelog()->lists() as $type => $log)
 		{
-			foreach ($log as $items)
+			if (is_array($log) && count($log) > 0)
 			{
-				if ($type == 'changes')
+				foreach ($log as $items)
 				{
-					$message .= ' * ' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items->field, $items->before, $items->after) . "\n";
+					if ($type == 'changes')
+					{
+						$message .= ' * ' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items->field, $items->before, $items->after) . "\n";
+					}
+					else if ($type == 'notifications')
+					{
+						$message  .= ' * ' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $items->role, $items->name, $items->address) . "\n";
+					}
 				}
-				else if ($type == 'notifications')
-				{
-					$message  .= ' * ' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $items->role, $items->name, $items->address) . "\n";
-				}
+				$message .= "\n";
 			}
-			$message .= "\n";
+		}
+	}
+	$message .= $this->comment->content('clean');
+	if ($this->comment->attachments()->total() > 0)
+	{
+		$message .= "\n\n";
+		foreach ($this->comment->attachments() as $attachment)
+		{
+			$message .= $base . '/' . trim(Route::url($attachment->link()), '/') . "\n";
 		}
 	}
 }
-$message .= $this->comment->content('clean');
-if ($this->comment->attachments()->total() > 0)
+else
 {
-	$message .= "\n\n";
-	foreach ($this->comment->attachments() as $attachment)
-	{
-		$message .= $base . '/' . trim(Route::url($attachment->link()), '/') . "\n";
-	}
+	$message .= Lang::txt('COM_SUPPORT_NOTIFY_TICKET_UPDATED', $this->ticket->get('id'), $link) . "\n";
 }
 
 $message = preg_replace('/\n{3,}/', "\n\n", $message);

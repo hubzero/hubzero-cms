@@ -1125,6 +1125,7 @@ class Tickets extends SiteController
 			$eview->option     = $this->_option;
 			$eview->controller = $this->_controller;
 			$eview->ticket     = $row;
+			$eview->config     = $this->config;
 			$eview->delimiter  = '';
 
 			$plain = $eview->loadTemplate(false);
@@ -1228,6 +1229,10 @@ class Tickets extends SiteController
 				if (count($rowc->to()))
 				{
 					$allowEmailResponses = $this->config->get('email_processing');
+					if ($this->config->get('email_terse'))
+					{
+						$allowEmailResponses = false;
+					}
 					if ($allowEmailResponses)
 					{
 						try
@@ -1259,6 +1264,7 @@ class Tickets extends SiteController
 					$eview->controller = $this->_controller;
 					$eview->comment    = $rowc;
 					$eview->ticket     = $row;
+					$eview->config     = $this->config;
 					$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
 					$message['plaintext'] = $eview->loadTemplate(false);
@@ -1804,6 +1810,10 @@ class Tickets extends SiteController
 			if (count($rowc->to()))
 			{
 				$allowEmailResponses = $this->config->get('email_processing');
+				if ($this->config->get('email_terse'))
+				{
+					$allowEmailResponses = false;
+				}
 				if ($allowEmailResponses)
 				{
 					try
@@ -1836,6 +1846,7 @@ class Tickets extends SiteController
 				$eview->controller = $this->_controller;
 				$eview->comment    = $rowc;
 				$eview->ticket     = $row;
+				$eview->config     = $this->config;
 				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
 				$message['plaintext'] = $eview->loadTemplate(false);

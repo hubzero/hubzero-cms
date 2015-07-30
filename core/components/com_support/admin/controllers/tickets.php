@@ -515,6 +515,10 @@ class Tickets extends AdminController
 		$webpath = trim($this->config->get('webpath'), '/');
 
 		$allowEmailResponses = $this->config->get('email_processing');
+		if ($this->config->get('email_terse'))
+		{
+			$allowEmailResponses = false;
+		}
 		if ($allowEmailResponses)
 		{
 			try
@@ -552,6 +556,7 @@ class Tickets extends AdminController
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
 				$eview->ticket     = $row;
+				$eview->config     = $this->config;
 				$eview->delimiter  = '';
 
 				$plain = $eview->loadTemplate(false);
@@ -725,6 +730,7 @@ class Tickets extends AdminController
 				$eview->controller = $this->_controller;
 				$eview->comment    = $rowc;
 				$eview->ticket     = $row;
+				$eview->config     = $this->config;
 				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
 				$message['plaintext'] = $eview->loadTemplate(false);

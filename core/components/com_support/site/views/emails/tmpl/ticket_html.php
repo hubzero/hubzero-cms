@@ -65,8 +65,8 @@ switch ($this->ticket->get('severity'))
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
 if ($this->ticket->submitter('id'))
 {
-	jimport( 'joomla.user.helper' );
-	$usertype = implode(', ', JUserHelper::getUserGroups($this->ticket->submitter('id')));
+	jimport('joomla.user.helper');
+	$usertype = implode(', ', \JUserHelper::getUserGroups($this->ticket->submitter('id')));
 }
 
 $this->css(
@@ -171,55 +171,66 @@ $this->css(
 					<div id="ticket-number" style="float: left; width: 5em; font-size: 2.5em; font-weight: bold; text-align: center; padding: 30px;" align="center">
 						<a href="<?php echo $link; ?>">#<?php echo $this->ticket->get('id'); ?></a>
 					</div>
-					<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
-						<tbody>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->ticket->created('time'), $this->ticket->created('date')); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('name', Lang::txt('COM_SUPPORT_UNKNOWN')); ?> <?php echo $this->ticket->get('login') ? '(' . $this->ticket->get('login') . ')' : ''; ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $usertype; ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_EMAIL'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('email')); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_IP_HOSTNAME'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('ip')) . ' (' . $this->escape($this->ticket->get('hostname')) . ')'; ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_OS'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('os')); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_BROWSER'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('browser')); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_UAS'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('uas')); ?></td>
-							</tr>
-							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_REFERRER'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('referrer')); ?></td>
-							</tr>
-							<?php /*<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
-							</tr>*/ ?>
-						</tbody>
-					</table>
+					<?php if (!$this->config->get('email_terse')) { ?>
+						<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+							<tbody>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->ticket->created('time'), $this->ticket->created('date')); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('name', Lang::txt('COM_SUPPORT_UNKNOWN')); ?> <?php echo $this->ticket->get('login') ? '(' . $this->ticket->get('login') . ')' : ''; ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $usertype; ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_EMAIL'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('email')); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_IP_HOSTNAME'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('ip')) . ' (' . $this->escape($this->ticket->get('hostname')) . ')'; ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_OS'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('os')); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_BROWSER'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('browser')); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_UAS'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('uas')); ?></td>
+								</tr>
+								<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_REFERRER'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('referrer')); ?></td>
+								</tr>
+								<?php /*<tr>
+									<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+								</tr>*/ ?>
+							</tbody>
+						</table>
+					<?php } else { ?>
+						<table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
+							<tbody>
+								<tr>
+									<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo Lang::txt('COM_SUPPORT_NOTIFY_TICKET_CREATED', $this->ticket->get('id'), $link); ?></td>
+								</tr>
+							</tbody>
+						</table>
+					<?php } ?>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
+<?php if (!$this->config->get('email_terse')) { ?>
 	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>
@@ -243,6 +254,7 @@ $this->css(
 			</tr>
 		</tbody>
 	</table>
+<?php } ?>
 
 	<!-- Start Spacer -->
 	<table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">
