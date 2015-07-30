@@ -123,6 +123,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		$params = $job->get('params');
 
 		$database = App::get('db');
+		$sconfig = Component::params('com_support');
 
 		$slc = "SELECT id, login, email, name FROM `#__support_tickets` AS t";
 		$upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(Date::toSql());
@@ -420,6 +421,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 					$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
 					$eview->boundary   = $from['multipart'];
 					$eview->comment    = $comment;
+					$eview->config     = $sconfig;
 					$eview->ticket     = $row;
 
 					$plain = $eview->loadTemplate(false);
@@ -574,6 +576,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			$eview->controller = 'tickets';
 			$eview->tickets    = $tickets;
 			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+			$eview->config     = $sconfig;
 			$eview->tickets    = $usertickets;
 
 			$plain = $eview->loadTemplate(false);
@@ -980,6 +983,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
 			$eview->boundary   = $from['multipart'];
 			$eview->tickets    = $results;
+			$eview->config     = $sconfig;
 
 			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
