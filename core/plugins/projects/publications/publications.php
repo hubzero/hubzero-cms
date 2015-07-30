@@ -2159,9 +2159,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$pub->version->removeMainFlag($main_vid);
 			}
-
-			// Mark as curated
-			$pub->version->saveParam($pub->version->get('id'), 'curated', 1);
 		}
 
 		// OnAfterPublish

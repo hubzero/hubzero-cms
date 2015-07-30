@@ -431,7 +431,11 @@ class Version extends \JTable
 		$query .= $unpublish ? ", state = 0 " : "";
 		$query .= "WHERE id=" . $this->_db->quote($vid) . " AND main = 1 LIMIT 1 ";
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
+		if ($this->_db->getError())
+		{
+			return false;
+		}
+		return true;
 	}
 
 	/**
