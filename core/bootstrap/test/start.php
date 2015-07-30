@@ -89,9 +89,9 @@ $app = new Hubzero\Base\Application;
 | Detect The Application Client
 |--------------------------------------------------------------------------
 |
-| Laravel takes a dead simple approach to your application environments
-| so you can just specify a machine name or HTTP host that matches a
-| given environment, then we will automatically detect it for you.
+| Here, we try to automatically detect the client type being called. This
+| will determine the set of services, facades, etc. that get loaded
+| further on in the application lifecycle.
 |
 */
 
