@@ -65,6 +65,7 @@ class Questions extends SiteController
 		$this->config->set('banking', \Component::params('com_members')->get('bankAccounts'));
 
 		$this->registerTask('__default', 'search');
+		$this->registerTask('display', 'search');
 		$this->registerTask('latest', 'latest.rss');
 
 		parent::execute();
@@ -120,16 +121,6 @@ class Questions extends SiteController
 		}
 
 		Document::setTitle($this->view->title);
-	}
-
-	/**
-	 * Display the latest entries
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		return $this->searchTask();
 	}
 
 	/**

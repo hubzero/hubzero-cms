@@ -27,7 +27,7 @@
 		text-align: right;
 	}
 
-	.entry-date-at, 
+	.entry-date-at,
 	.entry-date-on {
 		visibility: visible;
 		display: inline;
@@ -41,18 +41,13 @@
 		content: "\f086";
 		color: #a284db;
 	}
-	.entries .answered {
-		background: #fcf9ff;
+	.entries .answered .entry-state {
+		color: #a284db;
 	}
 	.entries .flagged .entry-id:before {
 		content: "\2691";
 	}
-	.entries .mine {
-		background: #ffe;
-	}
-	.entries .mine .entry-id:before {
-		color: #cea638;
-	}
+
 	p.voting {
 		float: right;
 		min-width: 10em;
@@ -317,17 +312,13 @@
 		font-weight: 600;
 		line-height: 1.2em;
 	}
-	#useroptions li {
-		white-space: nowrap; 
-		overflow: visible;
-	}
-	.subtitle {
+	/*.subtitle {
 		margin: -1em 1.5em 1.5em 1.3em;
 		font-weight: normal;
 	}
 	.spacer {
 		padding: 0 1em 0 1em;
-	}
+	}*/
 	.myquestions {
 		padding-bottom: 0.2em; 
 		margin-left: -1.5em;
