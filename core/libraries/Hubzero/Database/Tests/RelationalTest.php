@@ -346,6 +346,19 @@ class RelationalTest extends Database
 	}
 
 	/**
+	 * Tests to make sure disconnecting a many to many properly destroys the relationship
+	 *
+	 * @return void
+	 **/
+	public function testDisconnectManyToManyDestroysAssociation()
+	{
+		// Tag post 2 with tag 3
+		Post::oneOrFail(2)->tags()->disconnect([3]);
+
+		$this->assertCount(1, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 1 tags');
+	}
+
+	/**
 	 * Tests to make sure connecting a many to many can also add additional fields to the intermediary table
 	 *
 	 * @return void

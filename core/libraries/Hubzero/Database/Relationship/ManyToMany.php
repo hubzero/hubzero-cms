@@ -140,6 +140,28 @@ class ManyToMany extends OneToManyThrough
 	}
 
 	/**
+	 * Removes the relationship between the two sides of the many to many
+	 * (not deleting either of the actual sides of the models themselves)
+	 *
+	 * @param  array $ids the identifiers to remove from the associative table
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function disconnect($ids)
+	{
+		if (is_array($ids) && count($ids) > 0)
+		{
+			$query = $this->model->getQuery();
+			$query->delete($this->associativeTable)
+			      ->whereEquals($this->associativeLocal, $this->model->getPkValue())
+			      ->whereIn($this->associativeRelated, $ids)
+			      ->execute();
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Syncs the provided identifiers back to the parent model by way of associative entities,
 	 * deleting ones that should no longer be there, and adding ones that are missing.
 	 *
