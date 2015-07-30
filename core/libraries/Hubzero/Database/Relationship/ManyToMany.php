@@ -31,8 +31,6 @@
 
 namespace Hubzero\Database\Relationship;
 
-use Hubzero\Database\Query;
-
 /**
  * Database many to many relationship
  */
