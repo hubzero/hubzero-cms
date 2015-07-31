@@ -273,7 +273,7 @@ class Respondent extends \JTable
 			return false;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . intval($event_id));
-		return $this->_db->loadObjectList();
+		return $this->_db->query();
 	}
 
 	/**
