@@ -33,8 +33,8 @@ defined('_HZEXEC_') or die();
 
 $dcls = '';
 $lcls = '';
-
-if (!strstr($this->url, 'index.php'))
+$this->url = preg_replace('/\#[^\#]*$/', '', $this->url);
+if (!strstr($this->url, '?'))
 {
 	$this->url .= '?';
 }
