@@ -9,7 +9,8 @@
 	border-top: none;
 }
 .com_courses ol.entries>li {
-	padding: 1em 0 1em 180px;
+	padding-top: 1em;
+	padding-bottom: 1em;
 }
 .com_courses ol.entries>li.no-results {
 	padding: 30px;

@@ -12,7 +12,7 @@
 		list-style: none;
 	}
 	ol.entries > li {
-		padding: 30px 0 30px 180px;
+		padding: 30px 0;
 		border: none;
 		border-top: 1px solid #ccc;
 		border-top: 1px solid rgba(0, 0, 0, 0.075);
@@ -53,8 +53,6 @@
 		display: block;
 		margin: 0;
 		padding: 0;
-		width: 150px;
-		height: 80px;
 		overflow: hidden;
 		-webkit-border-radius: 0.25em;
 		   -moz-border-radius: 0.25em;
@@ -63,9 +61,6 @@
 		        border-radius: 0.25em;
 		background: #f1f1f1;
 		text-align: center;
-		position: absolute;
-		left: 0;
-		top: 30px;
 	}
 	p.course-identity span:after {
 		content: "\f09c";
@@ -136,12 +131,20 @@
 		border: none;
 		color: inherit;
 	}
-	/*.course-group img {
-		position: absolute;
-		left: 2em;
-		top: 1.9em;
-	}*/
 	.course-group p.course-group-img {
 		float: left;
 		margin: 0 1.5em 0 0;
 	}
+
+@media (min-width: 40em) {
+	ol.entries > li {
+		padding-left: 180px;
+	}
+	p.course-identity {
+		width: 150px;
+		height: 80px;
+		position: absolute;
+		left: 0;
+		top: 30px;
+	}
+}
