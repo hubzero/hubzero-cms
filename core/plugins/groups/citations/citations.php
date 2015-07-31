@@ -823,6 +823,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					{
 						$citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
 					}
+					elseif  ($filter == 'publishedin')
+					{
+						$citations->where('date_publish', 'LIKE', "%{$value}-%");
+					}
 					else
 					{
 						$citations->where($filter, '=', $value);
@@ -864,7 +868,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			} //end searching
 
 			// for tags
-			if ($filter == "tag")
+			if ($filter == "tag" && $value != "")
 			{
 				$collection = array();
 				$cite = clone $citations;
