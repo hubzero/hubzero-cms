@@ -157,7 +157,7 @@ class Post extends Base
 					if (substr($key, 0, strlen('item_')) == 'item_')
 					{
 						$nk = substr($key, strlen('item_'));
-						$item->$nk = $oid[$key];
+						$item->$nk = $data[$key];
 						continue;
 					}
 					if (!array_key_exists($key, $properties))
