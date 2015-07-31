@@ -111,6 +111,7 @@ class ManyToMany extends OneToManyThrough
 
 		// Get rid of known columns (don't use a primary key other than id and you'll be fine here!)
 		if (isset($columns['id'])) unset($columns['id']);
+		if (isset($this->shifter)) unset($columns[$this->shifter]);
 		unset($columns[$this->associativeLocal]);
 		unset($columns[$this->associativeRelated]);
 
@@ -141,12 +142,11 @@ class ManyToMany extends OneToManyThrough
 	{
 		if (is_array($ids) && count($ids) > 0)
 		{
-			$localKeyValue = $this->model->getPkValue();
 			foreach ($ids as $id => $associative)
 			{
 				// Build base data
 				$id   = (is_array($associative)) ? $id : $associative;
-				$data = [$this->associativeLocal => $localKeyValue, $this->associativeRelated => $id];
+				$data = array_merge($this->getConnectionData(), [$this->associativeRelated => $id]);
 
 				// If we have associative data, include that in the query
 				if (is_array($associative)) $data = array_merge($data, $associative);
@@ -160,22 +160,37 @@ class ManyToMany extends OneToManyThrough
 	}
 
 	/**
+	 * Generates the connection data needed to create the associative entry
+	 *
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getConnectionData()
+	{
+		return [$this->associativeLocal => $this->model->getPkValue()];
+	}
+
+	/**
 	 * Removes the relationship between the two sides of the many to many
 	 * (not deleting either of the actual sides of the models themselves)
 	 *
-	 * @param  array $ids the identifiers to remove from the associative table
+	 * @param  array   $ids        the identifiers to remove from the associative table
+	 * @param  closure $constraint additional constraints to place on the query
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function disconnect($ids)
+	public function disconnect($ids, $constraint=null)
 	{
 		if (is_array($ids) && count($ids) > 0)
 		{
 			$query = $this->model->getQuery();
 			$query->delete($this->associativeTable)
 			      ->whereEquals($this->associativeLocal, $this->model->getPkValue())
-			      ->whereIn($this->associativeRelated, $ids)
-			      ->execute();
+			      ->whereIn($this->associativeRelated, $ids);
+
+			if (isset($constraint) && is_callable($constraint)) call_user_func_array($constraint, [$query]);
+
+			$query->execute();
 		}
 
 		return $this;

@@ -37,6 +37,7 @@ use Hubzero\Database\Relationship\ManyToMany;
 use Hubzero\Database\Relationship\OneToManyThrough;
 use Hubzero\Database\Relationship\OneToOne;
 use Hubzero\Database\Relationship\OneShiftsToMany;
+use Hubzero\Database\Relationship\ManyShiftsToMany;
 
 use Hubzero\Error\Exception\BadMethodCallException;
 use Hubzero\Error\Exception\RuntimeException;
@@ -1681,6 +1682,28 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		$relatedKey       = $relatedKey       ?: strtolower($related->getModelName()) . '_id';
 
 		return new ManyToMany($this, $related, $associativeTable, $thisKey, $relatedKey);
+	}
+
+	/**
+	 * Retrieves a many shifts to many model relationship
+	 *
+	 * @param   string       $model             the name of the model to relate to the current one
+	 * @param   string       $associativeTable  the name of the intermediate table used to associate model->related
+	 * @param   string|null  $thisKey           the local key used on the associative table
+	 * @param   string       $shifter           the many side field used to differentiate/shift models
+	 * @param   string       $relatedKey        the related key used on the associative table
+	 * @return  \Hubzero\Database\Relationship\ManyShiftsToMany
+	 * @since   1.3.2
+	 **/
+	public function manyShiftsToMany($model, $associativeTable=null, $thisKey='scope_id', $shifter='scope', $relatedKey=null)
+	{
+		$related = $this->resolve($model);
+
+		// Default the keys and table if not set
+		$associativeTable = $associativeTable ?: '#__' . strtolower($related->getModelName()) . '_object';
+		$relatedKey       = $relatedKey       ?: strtolower($related->getModelName()) . '_id';
+
+		return new ManyShiftsToMany($this, $related, $associativeTable, $thisKey, $relatedKey, $shifter);
 	}
 
 	/**
