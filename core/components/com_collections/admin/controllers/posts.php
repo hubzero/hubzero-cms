@@ -192,9 +192,9 @@ class Posts extends AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(Request::getVar('tags', '')));
+		//$row->tag(trim(Request::getVar('tags', '')));
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
 			return $this->editTask($row);
 		}
