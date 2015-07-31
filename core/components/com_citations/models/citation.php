@@ -226,7 +226,7 @@ class Citation extends Relational
 	        if (!$this->keyExistsOrIsNotEmpty($k, $this))
 	        {
 	            $replace_values[$v] = '';
-	        } 
+	        }
 	        else
 	        {
 	            $replace_values[$v] = $this->$k;
