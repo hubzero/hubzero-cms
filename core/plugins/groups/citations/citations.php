@@ -823,7 +823,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					{
 						$citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
 					}
-					elseif  ($filter == 'publishedin')
+					elseif ($filter == 'publishedin')
 					{
 						$citations->where('date_publish', 'LIKE', "%{$value}-%");
 					}
