@@ -106,15 +106,18 @@ class Citation extends Relational
 	}
 
 	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
-	public function formatted($config = array('format' => 'apa'), $highlight = NULL, $include_coins = false, $coins_only = false)
+	public function formatted($config = array('format' => 'apa'), $highlight = NULL)
 	{
 	    //get hub specific details
 	    $hub_name = \Config::get('sitename');
 	    $hub_url  = rtrim(\Request::base(), '/');
 
+			//get scope specific details
+			$coins_only = isset($config['coins_only']) ? $config['coins_only'] : "no";
+			$include_coins = isset($config['include_coins']) ? $config['include_coins'] : "no";
 	    $c_type = 'journal';
 
-		$type = $this->relatedType->type;
+			$type = $this->relatedType->type;
 
 	    switch (strtolower($type))
 	    {
@@ -149,59 +152,88 @@ class Citation extends Relational
 		$template = $format->format;
 
 		//get the template keys
-	    $template_keys =  array(
-			"type" => "{TYPE}",
-			"cite" => "{CITE KEY}",
-			"ref_type" => "{REF TYPE}",
-			"date_submit" => "{DATE SUBMITTED}",
-			"date_accept" => "{DATE ACCEPTED}",
-			"date_publish" => "{DATE PUBLISHED}",
-			"author" => "{AUTHORS}",
-			"editor" => "{EDITORS}",
-			"title" => "{TITLE/CHAPTER}",
-			"booktitle" => "{BOOK TITLE}",
-			"chapter" => "{CHAPTER}",
-			"journal" => "{JOURNAL}",
-			"journaltitle" => "{JOURNAL TITLE}",
-			"volume" => "{VOLUME}",
-			"number" => "{ISSUE/NUMBER}",
-			"pages" => "{PAGES}",
-			"isbn" => "{ISBN/ISSN}",
-			"issn" => "{ISSN}",
-			"doi" => "{DOI}",
-			"series" => "{SERIES}",
-			"edition" => "{EDITION}",
-			"school" => "{SCHOOL}",
-			"publisher" => "{PUBLISHER}",
-			"institution" => "{INSTITUTION}",
-			"address" => "{ADDRESS}",
-			"location" => "{LOCATION}",
-			"howpublished" => "{HOW PUBLISHED}",
-			"url" => "{URL}",
-			"eprint" => "{E-PRINT}",
-			"note" => "{TEXT SNIPPET/NOTES}",
-			"organization" => "{ORGANIZATION}",
-			"abstract" => "{ABSTRACT}",
-			"year" => "{YEAR}",
-			"month" => "{MONTH}",
-			"search_string" => "{SECONDARY LINK}",
-			"sec_cnt" => "{SECONDARY COUNT}"
-		);
+		 $template_keys =  array(
+		 "type" => "{TYPE}",
+		 "cite" => "{CITE KEY}",
+		 "ref_type" => "{REF TYPE}",
+		 "date_submit" => "{DATE SUBMITTED}",
+		 "date_accept" => "{DATE ACCEPTED}",
+		 "date_publish" => "{DATE PUBLISHED}",
+		 "author" => "{AUTHORS}",
+		 "editor" => "{EDITORS}",
+		 "title" => "{TITLE/CHAPTER}",
+		 "booktitle" => "{BOOK TITLE}",
+		 "chapter" => "{CHAPTER}",
+		 "journal" => "{JOURNAL}",
+		 "journaltitle" => "{JOURNAL TITLE}",
+		 "volume" => "{VOLUME}",
+		 "number" => "{ISSUE/NUMBER}",
+		 "pages" => "{PAGES}",
+		 "isbn" => "{ISBN/ISSN}",
+		 "issn" => "{ISSN}",
+		 "doi" => "{DOI}",
+		 "series" => "{SERIES}",
+		 "edition" => "{EDITION}",
+		 "school" => "{SCHOOL}",
+		 "publisher" => "{PUBLISHER}",
+		 "institution" => "{INSTITUTION}",
+		 "address" => "{ADDRESS}",
+		 "location" => "{LOCATION}",
+		 "howpublished" => "{HOW PUBLISHED}",
+		 "url" => "{URL}",
+		 "eprint" => "{E-PRINT}",
+		 "note" => "{TEXT SNIPPET/NOTES}",
+		 "organization" => "{ORGANIZATION}",
+		 "abstract" => "{ABSTRACT}",
+		 "year" => "{YEAR}",
+		 "month" => "{MONTH}",
+		 "search_string" => "{SECONDARY LINK}",
+		 "sec_cnt" => "{SECONDARY COUNT}"
+	 );
+		/**
+		 * Values used by COINs
+		*
+		* @var  array
+		*/
+	 $coins_keys = array(
+		 'title'        => 'rft.atitle',
+		 'journaltitle' => 'rft.jtitle',
+		 'date_publish' => 'rft.date',
+		 'volume'       => 'rft.volume',
+		 'number'       => 'rft.issue',
+		 'pages'        => 'rft.pages',
+		 'issn'         => 'rft.issn',
+		 'isbn'         => 'rft.isbn',
+		 'type'         => 'rft.genre',
+		 'author'       => 'rft.au',
+		 'url'          => 'rft_id',
+		 'doi'          => 'rft_id=info:doi/',
+		 'author'       => 'rft.au'
+	 );
 
+	 /**
+		* Default formats
+		*
+		* @var  array
+		*/
+	$default_format = array(
+		 'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
+		 'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
+	 );
+			// form the formatted citation
 	    foreach ($template_keys as $k => $v)
 	    {
-	        /*if (!keyExistsOrIsNotEmpty($k, $this))
+	        if (!$this->keyExistsOrIsNotEmpty($k, $this))
 	        {
 	            $replace_values[$v] = '';
-	        } */
-	        //else
-	        //{
+	        } 
+	        else
+	        {
 	            $replace_values[$v] = $this->$k;
 
 	            //add to coins data if we can but not authors as that will get processed below
-	            /*if (in_array($k, array_keys($this->_coins_keys)) && $k != 'author')
+	            if (in_array($k, array_keys($coins_keys)) && $k != 'author')
 	            {
-
 	                //key specific
 	                switch ($k)
 	                {
@@ -221,7 +253,7 @@ class Citation extends Relational
 	                    default:
 	                        $coins_data[] = $this->_coins_keys[$k] . '=' . $this->$k;
 	                }
-	            }*/
+	            }
 
 	            if ($k == 'author')
 	            {
@@ -267,7 +299,7 @@ class Citation extends Relational
 	            if ($k == 'title')
 	            {
 	                $url_format = isset($config['citation_url']) ? $config['citation_url'] : 'url';
-					$custom_url = isset($config['citation_custom_url']) ? $config['citation_custom_url'] : '';
+									$custom_url = isset($config['citation_custom_url']) ? $config['citation_custom_url'] : '';
 
 	                $url = $this->url;
 	                if ($url_format == 'custom' && $custom_url != '')
@@ -320,7 +352,7 @@ class Citation extends Relational
 
 	                //do we want to display single citation
 	                //$singleCitationView = $config('citation_single_view', 0);
-					$singleCitationView = isset($config['citation_single_view']) ? $config['citation_single_view'] : 0;
+									$singleCitationView = isset($config['citation_single_view']) ? $config['citation_single_view'] : 0;
 
 	                if ($singleCitationView && isset($this->id))
 	                {
@@ -338,12 +370,12 @@ class Citation extends Relational
 	            {
 	                $replace_values[$v] = "pg: " . $this->$k;
 	            }
-	        //}
+	        }
 	    }
 
 	    // Add more to coins
 
-	    $tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;
+	    $tmpl = isset($template) ? $template : $default_template;
 	    $cite = strtr($tmpl, $replace_values);
 
 	    // Strip empty tags
@@ -423,10 +455,10 @@ class Citation extends Relational
 	    $cite = ($highlight) ? String::highlight($cite, $highlight) : $cite;
 
 	    // if we want coins add them
-	    if ($include_coins || $coins_only)
+	    if ($include_coins == "yes"|| $coins_only == "yes")
 	    {
 	        $coins = '<span class="Z3988" title="' . $coins_data . '"></span>';
-	        if ($coins_only == true)
+	        if ($coins_only == "yes")
 	        {
 	            return $coins;
 	        }
@@ -449,7 +481,9 @@ class Citation extends Relational
 	 */
 	public static function keyExistsOrIsNotEmpty($key, $row)
 	{
-		if (isset($row->$key))
+		//$value = $row->$key;
+		$value = true;
+		if (isset($value))
 		{
 			if ($row->$key != '' && $row->$key != '0' && $row->$key != '0000-00-00 00:00:00')
 			{

@@ -133,8 +133,8 @@ $jQ(document).ready(function(e) {
 						<label for="display-members">
 						<?php echo Lang::txt('Include COinS'); ?>
 						<select name="include_coins" id="include-coins">
-							<option value="no"><?php echo Lang::txt('No'); ?></option>
-							<option value="yes"><?php echo Lang::txt('Yes'); ?></option>
+							<option value="no" <?php echo ($this->include_coins == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
+							<option value="yes" <?php echo ($this->include_coins == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
 						</select>
 						</label>
 					</div>
@@ -142,8 +142,8 @@ $jQ(document).ready(function(e) {
 					<label for="display-members">
 						<?php echo Lang::txt('COinS Only'); ?>
 						<select name="coins_only" id="coins-only">
-							<option value="no"><?php echo Lang::txt('No'); ?></option>
-							<option value="yes"><?php echo Lang::txt('Yes'); ?></option>
+							<option value="no" <?php echo ($this->coins_only == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
+							<option value="yes" <?php echo ($this->coins_only == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
 						</select>
 					</label>
 					</div>
