@@ -56,7 +56,7 @@
 .entries .roles .roles-list a {
 	color: #777;
 	border-bottom: 1px dotted #777;
-}	
+}
 .entries .roles .roles-list a:hover {
 	color: #000;
 	border-bottom: none;
@@ -79,7 +79,7 @@
 	display: none;
 }
 .entries .manager .status,
-.group_members .groups tbody .manager .status { 
+.group_members .groups tbody .manager .status {
 	float: right;
 	display: block;
 	background-color: #F17;
@@ -173,6 +173,9 @@
 }
 .aside a.role {
 	margin-right:0;
+}
+.aside a.edit-role + a.role {
+	margin-right: 5em;
 }
 .aside a.edit-role:before,
 .aside a.remove-role:before {
