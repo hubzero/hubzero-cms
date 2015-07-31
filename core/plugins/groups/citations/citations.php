@@ -248,7 +248,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Sort Filter
 		$view->sorts = array(
-			'sec_cnt DESC' => Lang::txt('PLG_GROUPS_CITATIONS_CITEDBY'),
+			//'sec_cnt DESC' => Lang::txt('PLG_GROUPS_CITATIONS_CITEDBY'),
 			'year DESC'		 => Lang::txt('PLG_GROUPS_CITATIONS_YEAR'),
 			'created DESC' => Lang::txt('PLG_GROUPS_CITATIONS_NEWEST'),
 			'title ASC'		 => Lang::txt('PLG_GROUPS_CITATIONS_TITLE'),
@@ -896,8 +896,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				//get the tagged ones
 				$citations->whereIn('id', $collection);
-				}
-		} //end foreach filters as filter
+		 } // end if tags
+
+		 if ($filter == "sort" && $value != "")
+		 {
+			$clause = explode(" ", $value);
+			$citations->order($clause[0], $clause[1]);
+		 }
+	} //end foreach filters as filter
 
 			return array('citations' => $citations, 'filters' => $filters);
 		}
