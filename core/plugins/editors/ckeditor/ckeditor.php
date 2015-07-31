@@ -302,7 +302,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		static $template;
 
 		// merge incoming params with
-		$this->params->parse($params);
+		$this->params->merge($params);
 
 		// object to hold our final config
 		$config                                = new stdClass;

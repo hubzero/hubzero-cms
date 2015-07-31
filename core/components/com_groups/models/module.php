@@ -116,7 +116,7 @@ class Module extends Model
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ModuleMenu($result);
+							$results[$key] = new Module\Menu($result);
 						}
 					}
 					else
