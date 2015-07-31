@@ -85,40 +85,33 @@
 		font-weight: normal;
 	}
 	/* Accepted */
-	.ideas tbody tr.accepted {
-		background: #ffe;
-	}
 	.ideas tbody tr.accepted .entry-id:before {
 		content: "\f078";
+		color: #f9b96f;
 	}
 	/* Granted */
 	.ideas tbody tr.granted .entry-id:before {
 		content: "\2714";
 		font-size: 1.2em;
-	}
-	.ideas tbody tr.granted {
-		background: #f7fef4;
+		color: #a3ca60;
 	}
 	/* Rejected */
 	.ideas tbody tr.rejected .entry-id:before {
 		content: "\2716";
 		font-size: 1.2em;
-	}
-	.ideas tbody tr.rejected {
-		background: #fff6f4;
+		color: #dd5555;
 	}
 	/* Flagged */
 	.ideas tbody tr.flagged .entry-id:before {
 		content: "\2691";
 		font-size: 1.2em;
+		color: #dd5555;
 	}
 	/* Withdrawn */
-	.ideas tbody tr.withdrawn {
-		background: #f1f1f1;
-	}
 	.ideas tbody tr.withdrawn .entry-id:before {
 		content: "\2298";
 		font-size: 1.2em;
+		color: #ccc;
 	}
 	/* Private */
 	.ideas tbody tr.private {

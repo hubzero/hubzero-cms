@@ -17,10 +17,7 @@
 	#introduction:after {
 		content: "\f072";
 	}
-/* [!] HACKS - IE 7 and older */
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf072;</small>');
-	}
+
 /* Sections */
 	.com_wiki .subject {
 		margin-top: 1em;
@@ -868,11 +865,6 @@
 	}
 	.wikipage h2 span {
 		color: #333;
-	}
-	.wikipage h1, 
-	.wikipage h2, 
-	.wikipage h3 {
-		margin-left: -18px;
 	}
 	.wikipage ul,
 	.wikipage ol {
