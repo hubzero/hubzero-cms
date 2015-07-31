@@ -841,7 +841,7 @@ class Course extends Base
 				list($width, $height) = getimagesize(PATH_APP . $path);
 				$size['width']  = $width;
 				$size['height'] = $height;
-				$path = \Request::base(true) . $path;
+				//$path = \Request::base(true) . substr(PATH_APP, strlen(PATH_ROOT)) . $path;
 
 				if ($rtrn == 'url')
 				{
