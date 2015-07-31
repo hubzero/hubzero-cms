@@ -827,6 +827,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					{
 						$citations->where('date_publish', 'LIKE', "%{$value}-%");
 					}
+					elseif ($filter == 'year_start')
+					{
+						$citations->where('year', '>=', $value);
+					}
+					elseif ($filter == 'year_end')
+					{
+						$citations->where('year', '<=', $value);
+					}
 					else
 					{
 						$citations->where($filter, '=', $value);
