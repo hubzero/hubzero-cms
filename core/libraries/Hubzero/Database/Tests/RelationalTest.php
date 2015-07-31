@@ -33,6 +33,8 @@ namespace Hubzero\Database\Tests;
 
 use Hubzero\Test\Database;
 use Hubzero\Database\Tests\Mock\User;
+use Hubzero\Database\Tests\Mock\Member;
+use Hubzero\Database\Tests\Mock\Permission;
 use Hubzero\Database\Tests\Mock\Post;
 use Hubzero\Database\Tests\Mock\Group;
 use Hubzero\Database\Tests\Mock\Project;
@@ -215,6 +217,16 @@ class RelationalTest extends Database
 	}
 
 	/**
+	 * Tests that a manyShiftsToMany relationship properly grabs the many (right) side of the relationship
+	 *
+	 * @return void
+	 **/
+	public function testManyShiftsToManyReturnsRelationship()
+	{
+		$this->assertCount(1, Group::oneOrFail(1)->permissions, 'Model should have returned a count of 1 permissions for group 1');
+	}
+
+	/**
 	 * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
 	 *
 	 * @return void
@@ -224,6 +236,18 @@ class RelationalTest extends Database
 		$projects = Project::all()->whereRelatedHasCount('members', 3)->rows();
 
 		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 3 or more members');
+	}
+
+	/**
+	 * Tests that the local/left side of the ms2m relationship can be properly constrained by the related/right side
+	 *
+	 * @return void
+	 **/
+	public function testManyShiftsToManyCanBeConstrainedByCount()
+	{
+		$projects = Project::all()->whereRelatedHasCount('permissions', 1)->rows();
+
+		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 1 or more permissions');
 	}
 
 	/**
@@ -239,6 +263,21 @@ class RelationalTest extends Database
 		})->rows();
 
 		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with a member whose user_id is 3');
+	}
+
+	/**
+	 * Tests that the local/left side of the ms2m relationship can be properly constrained by the related/right side
+	 *
+	 * @return void
+	 **/
+	public function testManyShiftsToManyCanBeConstrained()
+	{
+		$projects = Project::all()->whereRelatedHas('permissions', function($permissions)
+		{
+			$permissions->whereEquals('name', 'read');
+		})->rows();
+
+		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with read permissions');
 	}
 
 	/**
@@ -263,6 +302,18 @@ class RelationalTest extends Database
 		$projects = Project::all()->including('members')->rows()->first();
 
 		$this->assertNotNull($projects->getRelationship('members'), 'Model should have had a relationship named members defined');
+	}
+
+	/**
+	 * Tests that an including call can properly preload a many shifts to many relationship
+	 *
+	 * @return void
+	 **/
+	public function testIncludingManyShiftsToManyPreloadsRelationship()
+	{
+		$projects = Project::all()->including('permissions')->rows()->first();
+
+		$this->assertNotNull($projects->getRelationship('permissions'), 'Model should have had a relationship named permissions defined');
 	}
 
 	/**
@@ -310,6 +361,22 @@ class RelationalTest extends Database
 	}
 
 	/**
+	 * Tests that an including call can be constrained on a many shifts to many relationship
+	 *
+	 * @return void
+	 **/
+	public function testIncludingManyShiftsToManyCanBeConstrained()
+	{
+		$projects = Project::all()->including(['permissions', function($permissions)
+		{
+			$permissions->whereEquals('name', 'read');
+		}])->rows();
+
+		$this->assertCount(1, $projects->seek(1)->permissions, 'Model should have had 1 permission that met the constraint');
+		$this->assertCount(0, $projects->seek(2)->permissions, 'Model should have had 0 permissions that met the constraint');
+	}
+
+	/**
 	 * Tests to make sure saving a one to many relationship properly sets the associated field on the related side
 	 *
 	 * @return void
@@ -347,6 +414,19 @@ class RelationalTest extends Database
 	}
 
 	/**
+	 * Tests to make sure connecting a many shifts to many properly creates the relationship
+	 *
+	 * @return void
+	 **/
+	public function testConnectManyShiftsToManyCreatesAssociation()
+	{
+		// Tag post 2 with tag 3
+		Member::oneOrFail(1)->permissions()->connect([1]);
+
+		$this->assertCount(2, Member::oneOrFail(1)->permissions, 'Member should have had a total of 2 permissions');
+	}
+
+	/**
 	 * Tests to make sure disconnecting a many to many properly destroys the relationship
 	 *
 	 * @return void
@@ -357,6 +437,19 @@ class RelationalTest extends Database
 		Post::oneOrFail(2)->tags()->disconnect([3]);
 
 		$this->assertCount(1, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 1 tags');
+	}
+
+	/**
+	 * Tests to make sure disconnecting a many shifts to many properly destroys the relationship
+	 *
+	 * @return void
+	 **/
+	public function testDisconnectManyShiftsToManyDestroysAssociation()
+	{
+		// Tag post 2 with tag 3
+		Member::oneOrFail(1)->permissions()->disconnect([1]);
+
+		$this->assertCount(1, Member::oneOrFail(1)->purgeCache()->permissions, 'Member should have had a total of 1 permissions');
 	}
 
 	/**
@@ -371,6 +464,20 @@ class RelationalTest extends Database
 
 		$this->assertCount(1, Tag::whereEquals('name', 'automatically created')->rows(), 'A tag with the name of "automatically created" should exist');
 		$this->assertCount(2, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 2 tags');
+	}
+
+	/**
+	 * Tests to make sure many shifts to many save automatically connects
+	 *
+	 * @return void
+	 **/
+	public function testManyShiftsToManySaveAutomaticallyConnects()
+	{
+		// Tag post 2 with tag 3
+		Member::oneOrFail(1)->permissions()->save(['name' => 'do awesome stuff']);
+
+		$this->assertCount(1, Permission::whereEquals('name', 'do awesome stuff')->rows(), 'A permission with the name of "do awesome stuff" should exist');
+		$this->assertCount(2, Member::oneOrFail(1)->purgeCache()->permissions, 'Member should have had a total of 2 permissions');
 	}
 
 	/**
@@ -389,5 +496,22 @@ class RelationalTest extends Database
 		$this->assertFalse($result->hasAttribute('tagged'), 'Post should not have had an attributed for "tagged"');
 		$this->assertArrayHasKey('tagged', (array)$result->associated, 'Post should have had an associated key of "tagged"');
 		$this->assertEquals($now, $result->associated->tagged, 'Post tagged date should have equaled ' . $now);
+	}
+
+	/**
+	 * Tests to make sure connecting a many shifts to many can also add additional fields to the intermediary table
+	 *
+	 * @return void
+	 **/
+	public function testConnectManyShiftsToManyCanAddAdditionalFields()
+	{
+		$now = \Date::toSql();
+		Group::oneOrFail(1)->permissions()->connect([2 => ['permitted' => $now]]);
+
+		$result = Group::oneOrFail(1)->permissions->seek(2);
+
+		$this->assertFalse($result->hasAttribute('permitted'), 'Group should not have had an attributed for "permitted"');
+		$this->assertArrayHasKey('permitted', (array)$result->associated, 'Group should have had an associated key of "permitted"');
+		$this->assertEquals($now, $result->associated->permitted, 'Group permitted date should have equaled ' . $now);
 	}
 }

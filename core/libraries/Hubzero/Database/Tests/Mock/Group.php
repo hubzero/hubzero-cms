@@ -48,4 +48,14 @@ class Group extends Relational
 	{
 		return $this->oneShiftsToMany('Member');
 	}
+
+	/**
+	 * Many shifts to many relationship with permissions
+	 *
+	 * @return \Hubzero\Database\Relationship\ManyShiftsToMany
+	 **/
+	public function permissions()
+	{
+		return $this->manyShiftsToMany('Permission');
+	}
 }

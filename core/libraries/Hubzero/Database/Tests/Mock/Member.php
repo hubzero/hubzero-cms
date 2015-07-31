@@ -39,4 +39,13 @@ use Hubzero\Database\Relational;
  */
 class Member extends Relational
 {
+	/**
+	 * Many shifts to many relationship with permissions
+	 *
+	 * @return \Hubzero\Database\Relationship\ManyShiftsToMany
+	 **/
+	public function permissions()
+	{
+		return $this->manyShiftsToMany('Permission');
+	}
 }
