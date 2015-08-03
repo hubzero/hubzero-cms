@@ -172,17 +172,25 @@ class CartControllerCheckout extends ComponentController
 		// Get the SKU id of the item being displayed (from meta)
 		$sId = $nextStep->meta;
 
-		// Get the eula text for the product (EULAs are assigned to products, not SKUS)
+		// Get the eula text for the product or EULA (EULAs are assigned to products, and if needed, SKUS)
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
-		$skuInfo = $warehouse->getSkuInfo($sId)['info'];
+		$skuInfo = $warehouse->getSkuInfo($sId);
 
-		$this->view->productInfo = $skuInfo;
+		$this->view->productInfo = $skuInfo['info'];
 
-		// Get product id
-		$pId = $skuInfo->pId;
-		// Get EULA
-		$productEula = $warehouse->getProductMeta($pId)['eula']->pmValue;
+		// Check if there is SKU EULA set
+		if (!empty($skuInfo['meta']['eula']))
+		{
+			$productEula = $skuInfo['meta']['eula'];
+		}
+		else
+		{
+			// Get product id
+			$pId = $skuInfo['info']->pId;
+			// Get EULA
+			$productEula = $warehouse->getProductMeta($pId)['eula']->pmValue;
+		}
 
 		$this->view->productEula = $productEula;
 

@@ -32,12 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Controller class for knowledge base categories
+ * Controller class for knowledge base collections
  */
-class StorefrontControllerProducts extends \Hubzero\Component\AdminController
+class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Display a list of all categories
+	 * Display a list of all collections
 	 *
 	 * @return  void
 	 */
@@ -81,21 +81,12 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		$obj = new StorefrontModelArchive();
 
 		// Get record count
-		$this->view->total = $obj->products('count', $this->view->filters);
+		$this->view->total = $obj->collections('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $obj->products('list', $this->view->filters);
+		$this->view->rows  = $obj->collections('list', $this->view->filters);
 
-		// For all records here get SKUs
-		$skus = new stdClass();
-		$warehouse = new StorefrontModelWarehouse();
-		foreach ($this->view->rows as $r)
-		{
-			$key = $r->pId;
-			$skus->$key = count($warehouse->getProductSkus($r->pId));
-		}
-
-		$this->view->skus = $skus;
+		//print_r($this->view->rows); die;
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -139,18 +130,9 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		$obj = new StorefrontModelArchive();
-		// Get types
-		$this->view->types = $obj->getProductTypes();
-
-		// Get active collections
-		$this->view->collections = $obj->collections('list', array('active' => 1, 'sort' => 'cType'));
-
-		// Get all active option groups
-		$this->view->optionGroups = $obj->optionGroups('list', array('active' => 1, 'sort' => 'ogName'));
 
 		if (is_object($row))
 		{
-			$id = $row->getId();
 			$this->view->row = $row;
 			$this->view->task = 'edit';
 		}
@@ -164,12 +146,9 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			// Load product
-			$this->view->row = $obj->product($id);
+			// Load category
+			$this->view->row = $obj->category($id);
 		}
-
-		// Get product active groups
-		$this->view->productOptionGroups = $obj->getProductOptionGroups($id);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -207,15 +186,13 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 
-		if (!isset($fields['collections'])) {
-			$fields['collections'] = array();
-		}
+		//print_r($fields); die;
 
 		$obj = new StorefrontModelArchive();
 
 		// Save product
 		try {
-			$product = $obj->updateProduct($fields['pId'], $fields);
+			$obj->updateProduct($fields['pId'], $fields);
 		}
 		catch (Exception $e)
 		{
@@ -226,8 +203,10 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Save option groups
-		$obj->saveProductOptionGroups($fields['pId'], $fields['optionGroups']);
+		if (!isset($fields['access']))
+		{
+			//$row->set('access', JRequest::getInt('access', 0, 'post'));
+		}
 
 		if ($redirect)
 		{
@@ -238,6 +217,9 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
+
+		// Get the product
+		$product = $obj->product($fields['pId']);
 
 		$this->editTask($product);
 	}
@@ -321,79 +303,6 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Set the access level of an article to 'public'
-	 *
-	 * @return     void
-	 */
-	public function accesspublicTask()
-	{
-		return $this->accessTask(0);
-	}
-
-	/**
-	 * Set the access level of an article to 'registered'
-	 *
-	 * @return     void
-	 */
-	public function accessregisteredTask()
-	{
-		return $this->accessTask(1);
-	}
-
-	/**
-	 * Set the access level of an article to 'special'
-	 *
-	 * @return     void
-	 */
-	public function accessspecialTask()
-	{
-		return $this->accessTask(2);
-	}
-
-	/**
-	 * Set the access level of an article
-	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
-	 */
-	public function accessTask($access=0)
-	{
-		// Incoming
-		$id = JRequest::getInt('id', 0);
-
-		// Make sure we have an ID to work with
-		if (!$id)
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_STOREFRONT_NO_ID'),
-				'error'
-			);
-			return;
-		}
-
-		// Load the article
-		$row = new StorefrontModelCategory($id);
-		$row->set('access', $access);
-
-		// Check and store the changes
-		if (!$row->store(true))
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
-
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-		);
-	}
-
-	/**
 	 * Calls stateTask to publish entries
 	 *
 	 * @return     void
@@ -419,7 +328,7 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 	 * @param      integer $state State to set
 	 * @return     void
 	 */
-	public function stateTask($state=0)
+	public function stateTask($state = 0)
 	{
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -442,9 +351,9 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 
 		foreach ($ids as $pId)
 		{
-			// Save product
+			// Save category
 			try {
-				$obj->updateProduct($pId, array('state' => $state));
+				$obj->updateCategory($pId, array('state' => $state));
 			}
 			catch (Exception $e)
 			{

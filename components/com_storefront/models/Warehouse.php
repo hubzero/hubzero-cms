@@ -36,6 +36,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'CourseOffering.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Collection.php');
 
 /**
  *
@@ -109,41 +110,198 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 	/* ------------------------------------- Main working functions ----------------------------------------------- */
 
+	/**
+	 * Get a collection
+	 *
+	 * @param	int							collection ID
+	 * @return	StorefrontModelCollection 	Instance of a collection
+	 */
+	public function getCollection($cId)
+	{
+		$collection = new StorefrontModelCollection();
+
+		// Get all product info
+		$collectionInfo = $this->getCollectionInfo($cId, true);
+
+		//print_r($collectionInfo); die;
+
+		$collection->setType($collectionInfo->cType);
+		$collection->setId($collectionInfo->cId);
+		$collection->setName($collectionInfo->cName);
+		$collection->setActiveStatus($collectionInfo->cActive);
+
+		$collection->verify();
+
+		return $collection;
+	}
 
 	/**
-	 * Get all non-empty (those that have at least one active product) root (no parents) product category collections
+	 * Get collection information
+	 *
+	 * @param	int			Collection ID
+	 * @param  	bool		Flag whether to show inactive collection info
+	 * @return 	object		Collection info
+	 */
+	public function getCollectionInfo($cId, $showInactive = false)
+	{
+		$sql = "SELECT * FROM `#__storefront_collections` c
+ 				WHERE c.`cId` = " . $this->_db->quote($cId);
+
+		if (!$showInactive)
+		{
+			$sql .= " AND `cActive` = 1";
+		}
+
+		$this->_db->setQuery($sql);
+		$collection = $this->_db->loadObject();
+
+		return $collection;
+	}
+
+
+	/**
+	 * Get all non-empty (those that have at least one active product) root (no parents) product 'category' collections
+	 *
+	 * @param  	string 	What to return (count or rows)
+	 * @param	array 	Filters
+	 * @return 	void
+	 */
+	public function getRootCategories($return = 'rows', $filters = false)
+	{
+		return $this->_getCollections('category', $filters);
+	}
+
+	/**
+	 * Get all root (no parents) product 'category' collections
 	 *
 	 * @param  void
 	 * @return void
 	 */
-	public function getRootCategories()
+	public function getCategories($rtrn='list', $filters = array())
 	{
-		return $this->_getCollections('category');
+		$filters['collectionType'] = 'category';
+		return $this->_getAllCollections($rtrn, $filters);
+	}
+
+	public function getCollections($rtrn='list', $filters = array())
+	{
+		return $this->_getAllCollections($rtrn, $filters);
 	}
 
 	/**
 	 * Check if collection exists
 	 *
-	 * @param  $c -- collection ID (+ alias in the future)
-	 * @return int cId on success, false if no match found
+	 * @param  	int		collection ID
+	 * @return 	int 	cId on success, null if no match found
 	 */
-	public function collectionExists($c)
+	public function collectionExists($cId, $showInactive = false)
 	{
-		$sql = "SELECT cId FROM `#__storefront_collections` c WHERE c.`cId` = " . $this->_db->quote($c) . " AND c.`cActive` = 1";
+		$sql = "SELECT `cId` FROM `#__storefront_collections` c WHERE c.`cId` = " . $this->_db->quote($cId);
+		if (!$showInactive)
+		{
+			$sql .= " AND c.`cActive` = 1";
+		}
 
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql; die;
 		$cId = $this->_db->loadResult();
 
 		return $cId;
 	}
 
 	/**
- * Check if product exists
- *
- * @param  	int		product ID or alias
- * @return 	int 	pId on success, null if no match found
- */
+	 * Add collection
+	 *
+	 * @param	StorefrontModelCollection
+	 * @return	void
+	 */
+	public function addCollection($collection)
+	{
+		return $this->doCollection($collection, 'add');
+	}
+
+	/**
+	 * Update existing collection
+	 *
+	 * @param	StorefrontModelCollection
+	 * @return	void
+	 */
+	public function updateCollection($collection)
+	{
+		return $this->doCollection($collection, 'update');
+	}
+
+	/**
+	 * Handle collection actions (add, update)
+	 *
+	 * @param	StorefrontModelCollection
+	 * @param 	string
+	 * @return	string							category ID
+	 */
+	private function doCollection($collection, $action) {
+		$allowedActions = array('add', 'update');
+
+		// Check everything
+		$cId = $collection->getId();
+
+		if(!in_array($action, $allowedActions)) {
+			throw new Exception(JText::_('Bad action. Why would you try to do something like that anyway?'));
+		}
+
+		if($action == 'update') {
+			// Check if the ID is set
+			if(empty($cId)) {
+				throw new Exception(JText::_('Cannot update collection: no collection ID set.'));
+			}
+
+			// check if category exists
+			if(!$this->collectionExists($cId, true)) {
+				throw new Exception(JText::_('Cannot update collection: collection does not exist.'));
+			}
+		} elseif($action == 'add') {
+			if($this->collectionExists($cId, true)) {
+				throw new Exception(JText::_('Cannot add collection: collection already exists.'));
+			} elseif(empty($cId)) {
+				throw new Exception(JText::_('Cannot add collection: the new ID must be provided.'));
+			}
+		}
+
+		// ### Do the collection
+
+		if($action == 'update') {
+			$sql = "UPDATE `#__storefront_collections` SET ";
+		} elseif($action == 'add') {
+			$sql = "INSERT INTO `#__storefront_collections` SET ";
+		}
+
+		$sql .= "
+				`cName` = " . $this->_db->quote($collection->getName()) . ",
+				`cActive` = " . $this->_db->quote($collection->getActiveStatus()) . ",
+				`cType` = " . $this->_db->quote($collection->getType());
+
+		// Set pId if needed if adding new product
+		if($action == 'add' && !empty($cId)) {
+			$sql .= ",
+				`cId` = " . $this->_db->quote($collection->getId());
+		}
+
+		// Add WHERE if updating product
+		if($action == 'update') {
+			$sql .= " WHERE `cId` = " . $this->_db->quote($collection->getId());
+		}
+
+		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
+		$this->_db->query();
+
+		return ($cId);
+	}
+
+	/**
+	 * Check if product exists
+	 *
+	 * @param  	int		product ID or alias
+	 * @return 	int 	pId on success, null if no match found
+	 */
 	public function productExists($product, $showInactive = false)
 	{
 		// Integer is a pID, string must be an alias
@@ -244,13 +402,14 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param  void
 	 * @return void
 	 */
-	public function getProducts($return = 'rows', $showOnlyActive = true)
+	public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
 	{
-		$sql = "SELECT DISTINCT p.* FROM `#__storefront_products` p
-				JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
+		$sql = "SELECT DISTINCT p.*, pt.ptName FROM `#__storefront_products` p
+				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
+				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
 		$sql .= " WHERE 1";
 
-		if (!$showOnlyActive)
+		if ($showOnlyActive)
 		{
 			$sql .= " AND `pActive` = 1";
 		}
@@ -275,8 +434,41 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			$sql .= $accessLevels;
 			$sql .= '))';
 		}
+		// Filter by filters
+		//print_r($filters);
+
+		if (isset($filters['sort']))
+		{
+
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'pName';
+			}
+			if ($filters['sort'] == 'state')
+			{
+				$filters['sort'] = 'pActive';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
 
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
 		$this->_db->execute();
 		if ($return == 'count')
 		{
@@ -313,6 +505,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 	/**
 	 * Get product meta information
+	 * TODO Rewrite to use Product Class
 	 *
 	 * @param	int			Product ID
 	 * @param  	bool		Flag whether to show inactive product info
@@ -335,6 +528,18 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$productMeta = $this->_db->loadObjectList('pmKey');
 
 		return $productMeta;
+	}
+
+	/**
+	 * Set product meta information
+	 *
+	 * @param	int			Product ID
+	 * @param  	bool		Flag whether to show inactive product info
+	 * @return 	object		Product info
+	 */
+	public function setProductMeta($pId, $meta)
+	{
+		StorefrontModelProduct::setMeta($pId, $meta);
 	}
 
 	/**
@@ -421,6 +626,56 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		return $ret;
 	}
 
+	// Get all option groups (for admin)
+	public function getOptionGroups($rtrn = 'list', $filters = array())
+	{
+		$sql = "SELECT og.*
+				FROM `#__storefront_option_groups` og
+				WHERE 1";
+
+		// Filter by filters
+		//print_r($filters);
+		if (isset($filters['active']) && $filters['active'] == 1)
+		{
+			$sql .= " AND ogActive = 1";
+		}
+
+		if (isset($filters['sort']))
+		{
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+		else {
+			$sql .= " ORDER BY ogName";
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
+		$this->_db->setQuery($sql);
+		$this->_db->execute();
+		if ($rtrn == 'count')
+		{
+			return($this->_db->getNumRows());
+		}
+
+		$res = $this->_db->loadObjectList();
+		//print_r($res); die;
+
+		return $res;
+	}
+
 	/**
 	 * Get SKU mapping to the provided options
 	 *
@@ -494,7 +749,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param 	bool 		Flag whether to show inactive SKU and product info
 	 * @return 	array 		info
 	 */
-	public function getSkusInfo($skus, $showInactive = false)
+	public function getSkusInfo($skus, $showInactive = false, $filters = false)
 	{
 		$sqlIn = '(0';
 		foreach ($skus as $sId)
@@ -518,13 +773,47 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				AND p.`pActive` = 1
 				AND s.`sActive` = 1 ";
 		}
-		$sql .= "
-				ORDER BY s.`sId`";
+
+		// Filter by filters
+		//print_r($filters);
+
+		if (isset($filters['sort']))
+		{
+
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'sSku';
+			}
+			if ($filters['sort'] == 'state')
+			{
+				$filters['sort'] = 'sActive';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+		else
+		{
+			$sql .= " ORDER BY s.`sId`";
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
 
 		$this->_db->setQuery($sql);
 		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$this->_db->execute();
-		$found = $this->_db->getNumRows();
 
 		$rawSkusInfo = $this->_db->loadObjectList();
 
@@ -625,10 +914,22 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param	int			product id
 	 * @return	array 		collections
 	 */
-	public function getProductSkus($pId)
+	public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true)
 	{
-		$sql = "SELECT `sId` FROM `#__storefront_skus` WHERE `sActive` = 1 AND `pId` = " . $this->_db->quote($pId);
+		$sql = "SELECT `sId` FROM `#__storefront_skus` WHERE 1";
+		if ($showOnlyActive)
+		{
+			$sql .= " AND `sActive` = 1";
+		}
+		$sql .= " AND `pId` = " . $this->_db->quote($pId);
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+
+		$this->_db->execute();
+		if ($return == 'count')
+		{
+			return($this->_db->getNumRows());
+		}
 		$res = $this->_db->loadResultArray();
 
 		return $res;
@@ -668,6 +969,21 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	}
 
 	/**
+	 * Get product types
+	 *
+	 * @param	int					product type ID
+	 * @return	array 				info
+	 */
+	public function getProductTypes()
+	{
+		$sql = "SELECT * FROM `#__storefront_product_types`";
+
+		$this->_db->setQuery($sql);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
+
+	/**
 	 * Get product type info
 	 *
 	 * @param	int					product type ID
@@ -692,6 +1008,12 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	{
 		$course = $this->getProduct($courseId, 'course');
 		return $course;
+	}
+
+	public function newProduct()
+	{
+		$product = new StorefrontModelProduct();
+		return $product;
 	}
 
 	/**
@@ -728,8 +1050,11 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$product->setId($productInfo->pId);
 		$product->setName($productInfo->pName);
 		$product->setDescription($productInfo->pDescription);
+		$product->setFeatures($productInfo->pFeatures);
 		$product->setTagline($productInfo->pTagline);
 		$product->setActiveStatus($productInfo->pActive);
+		$product->setAccessLevel($productInfo->access);
+		$product->setAllowMultiple($productInfo->pAllowMultiple);
 
 		// Get collections
 		$collections = $this->_getProductCollections($pId);
@@ -792,8 +1117,11 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		$skuInfo = $this->getSkuInfo($sId);
+		//print_r($skuInfo); die;
 
 		$sku->setId($sId);
+		$sku->setProductId($skuInfo['info']->pId);
+		$sku->setName($skuInfo['info']->sSku);
 		$sku->setPrice($skuInfo['info']->sPrice);
 		$sku->setAllowMultiple($skuInfo['info']->sAllowMultiple);
 		$sku->setTrackInventory($skuInfo['info']->sTrackInventory);
@@ -939,7 +1267,9 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				`pName` = " . $this->_db->quote($product->getName()) . ",
 				`pTagline` = " . $this->_db->quote($product->getTagline()) . ",
 				`pDescription` = " . $this->_db->quote($product->getDescription()) . ",
-				`pActive` = " . $product->getActiveStatus() . ",
+				`pFeatures` = " . $this->_db->quote($product->getFeatures()) . ",
+				`pAllowMultiple` = " . $this->_db->quote($product->getAllowMultiple()) . ",
+				`pActive` = " . $this->_db->quote($product->getActiveStatus()) . ",
 				`access` = " . $this->_db->quote($product->getAccessLevel());
 
 
@@ -966,7 +1296,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 
 		// ### Do SKUs
-
 		$skus = $product->getSkus();
 
 		// Remember all sId used
@@ -974,93 +1303,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		foreach ($skus as $sku)
 		{
-			// Get sId
-			$sId = $sku->getId();
-
-			// If no sID set -- this is a new SKU -- create a new record
-			if (empty($sId))
-			{
-				$sql = "INSERT INTO `#__storefront_skus` SET ";
-			}
-			// If sId is set -- update the existing SKU
-			else
-			{
-				$sql = "UPDATE `#__storefront_skus` SET ";
-			}
-
-			$sql .= "
-						`pId` = " . $this->_db->quote($pId) . ",
-						`sPrice` = " . $this->_db->quote($sku->getPrice()) . ",
-						`sAllowMultiple` = " . $sku->getAllowMultiple() . ",
-						`sTrackInventory` = " . $sku->getTrackInventory() . ",
-						`sInventory` = " . $sku->getInventoryLevel() . ",
-						`sEnumerable` = " . $sku->getEnumerable() . ",
-						`sActive` = " . $sku->getActiveStatus();
-
-			if (!empty($sId))
-			{
-				$sql .= " WHERE `sId` = " . $this->_db->quote($sId);
-			}
-
-			$this->_db->setQuery($sql);
-			//echo '<br>'; echo $this->_db->_sql;
-			$this->_db->query();
-			if (empty($sId))
-			{
-				$sId = $this->_db->insertid();
-			}
+			$sId = $this->saveSku($sku);
 			$activeSIds[] = $sId;
-
-			// Do SKU meta (if any)
-			$skuMeta = $sku->getMeta();
-
-			$activeMetaIds = array();
-
-			if (!empty($skuMeta))
-			{
-				// Go through each meta key and insert/update it, remembering the affected ID
-				foreach ($skuMeta as $k => $v)
-				{
-					$sql = "SET @skuMetaId := 0";
-					$this->_db->setQuery($sql);
-					$this->_db->query();
-					//echo '<br>'; echo $this->_db->_sql;
-
-					$sql = "INSERT INTO `#__storefront_sku_meta` SET
-							`sId` = " . $this->_db->quote($sId) . ",
-							`smKey` = " . $this->_db->quote($k) . ",
-							`smValue` = " . $this->_db->quote($v) . "
-							ON DUPLICATE KEY UPDATE
-							`smId` = (@skuMetaId := `smId`),
-							`sId` = " . $this->_db->quote($sId) . ",
-							`smKey` = " . $this->_db->quote($k) . ",
-							`smValue` = " . $this->_db->quote($v);
-
-					$this->_db->setQuery($sql);
-					$this->_db->query();
-					//echo '<br>'; echo $this->_db->_sql;
-
-					$sql = "SELECT IF(@skuMetaId = 0, LAST_INSERT_ID(), @skuMetaId)";
-					$this->_db->setQuery($sql);
-					$this->_db->query();
-					//echo '<br>'; echo $this->_db->_sql;
-
-					$activeMetaIds[] = $this->_db->loadResult();
-				}
-			}
-
-			// Delete unused Meta info: everything not affected above
-			$deleteSql = '(0';
-			foreach ($activeMetaIds as $metaId)
-			{
-				$deleteSql .= ", " . $this->_db->quote($metaId);
-			}
-			$deleteSql .= ')';
-
-			$sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = " . $this->_db->quote($sId) . " AND `smId` NOT IN {$deleteSql}";
-			$this->_db->setQuery($sql);
-			//echo '<br>'; echo $this->_db->_sql; die;
-			$this->_db->query();
 		}
 
 		// Delete unused SKUs
@@ -1120,6 +1364,97 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$return = new stdClass();
 		$return->pId = $pId;
 		return $return;
+	}
+
+	public function saveSku($sku) {
+		// Get sId
+		$sId = $sku->getId();
+
+		// If no sID set -- this is a new SKU -- create a new record
+		if (empty($sId))
+		{
+			$sql = "INSERT INTO `#__storefront_skus` SET ";
+		}
+		// If sId is set -- update the existing SKU
+		else
+		{
+			$sql = "UPDATE `#__storefront_skus` SET ";
+		}
+
+		$sql .= "
+						`pId` = " . $sku->getProductId() . ",
+						`sPrice` = " . $this->_db->quote($sku->getPrice()) . ",
+						`sAllowMultiple` = " . $sku->getAllowMultiple() . ",
+						`sTrackInventory` = " . $sku->getTrackInventory() . ",
+						`sInventory` = " . $sku->getInventoryLevel() . ",
+						`sEnumerable` = " . $sku->getEnumerable() . ",
+						`sActive` = " . $sku->getActiveStatus();
+
+		if (!empty($sId))
+		{
+			$sql .= " WHERE `sId` = " . $this->_db->quote($sId);
+		}
+
+		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+		$this->_db->query();
+		if (empty($sId))
+		{
+			$sId = $this->_db->insertid();
+		}
+
+		// Do SKU meta (if any)
+		$skuMeta = $sku->getMeta();
+
+		$activeMetaIds = array();
+
+		if (!empty($skuMeta))
+		{
+			// Go through each meta key and insert/update it, remembering the affected ID
+			foreach ($skuMeta as $k => $v)
+			{
+				$sql = "SET @skuMetaId := 0";
+				$this->_db->setQuery($sql);
+				$this->_db->query();
+				//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
+
+				$sql = "INSERT INTO `#__storefront_sku_meta` SET
+							`sId` = " . $this->_db->quote($sId) . ",
+							`smKey` = " . $this->_db->quote($k) . ",
+							`smValue` = " . $this->_db->quote($v) . "
+							ON DUPLICATE KEY UPDATE
+							`smId` = (@skuMetaId := `smId`),
+							`sId` = " . $this->_db->quote($sId) . ",
+							`smKey` = " . $this->_db->quote($k) . ",
+							`smValue` = " . $this->_db->quote($v);
+
+				$this->_db->setQuery($sql);
+				$this->_db->query();
+				//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
+
+				$sql = "SELECT IF(@skuMetaId = 0, LAST_INSERT_ID(), @skuMetaId)";
+				$this->_db->setQuery($sql);
+				$this->_db->query();
+				//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
+
+				$activeMetaIds[] = $this->_db->loadResult();
+			}
+		}
+
+		// Delete unused Meta info: everything not affected above
+		$deleteSql = '(0';
+		foreach ($activeMetaIds as $metaId)
+		{
+			$deleteSql .= ", " . $this->_db->quote($metaId);
+		}
+		$deleteSql .= ')';
+
+		$sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = " . $this->_db->quote($sId) . " AND `smId` NOT IN {$deleteSql}";
+		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
+		$this->_db->query();
+
+		return $sId;
 	}
 
 	/**
@@ -1391,7 +1726,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param  $collectionType -- type of collection, category by default
 	 * @return void
 	 */
-	private function _getCollections($collectionType = 'category')
+	private function _getCollections($collectionType = 'category', $filters = false)
 	{
 		$sql = "SELECT DISTINCT c.`cId`, c.`cName`
 				FROM `#__storefront_collections` c
@@ -1403,7 +1738,76 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		$this->_db->setQuery($sql);
 		$res = $this->_db->loadObjectList();
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
 
+		return $res;
+	}
+
+	/**
+	 * Get all including empty root (no parents) collections
+	 * TODO: implement subcategories
+	 *
+	 * @param  $collectionType -- type of collection, category by default
+	 * @return void
+	 */
+	private function _getAllCollections($return = 'list', $filters = array())
+	{
+		$sql = "SELECT c.*
+				FROM `#__storefront_collections` c
+				WHERE c.`cParent` IS NULL";
+
+		// Filter by filters
+		//print_r($filters);
+		if (isset($filters['collectionType']))
+		{
+			$sql .= " AND c.`cType` = '{$filters['collectionType']}'";
+		}
+
+		if (isset($filters['active']))
+		{
+			$sql .= " AND cActive = 1";
+		}
+
+		if (isset($filters['sort']))
+		{
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'cName';
+			}
+			if ($filters['sort'] == 'state')
+			{
+				$filters['sort'] = 'cActive';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+		else {
+			$sql .= " ORDER BY cType";
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
+		$this->_db->setQuery($sql);
+		$this->_db->execute();
+		if ($return == 'count')
+		{
+			return($this->_db->getNumRows());
+		}
+
+		$res = $this->_db->loadObjectList();
 		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
 
 		return $res;

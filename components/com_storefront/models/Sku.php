@@ -42,6 +42,7 @@ class StorefrontModelSku
 {
 
 	var $data;
+	var $db;
 
 	/**
 	 * Contructor
@@ -52,6 +53,7 @@ class StorefrontModelSku
 	public function __construct()
 	{
 		$this->data = new stdClass();
+		$this->db = JFactory::getDBO();
 	}
 
 	/**
@@ -60,14 +62,14 @@ class StorefrontModelSku
 	 * @param	double		price
 	 * @return	bool		true on success, exception otherwise
 	 */
-	public function setPrice($productPrice)
+	public function setPrice($price)
 	{
-		if (!is_numeric($productPrice))
+		if (!is_numeric($price))
 		{
 			throw new Exception(JText::_('Price must be numeric'));
 		}
 
-		$this->data->price = $productPrice;
+		$this->data->price = $price;
 		return true;
 	}
 
@@ -75,6 +77,38 @@ class StorefrontModelSku
 	{
 		return $this->data->price;
 	}
+
+	public function setName($skuName)
+	{
+		$this->data->name = $skuName;
+		return true;
+	}
+
+	public function getName()
+	{
+		return $this->data->name;
+	}
+
+	public function setWeight($weight)
+	{
+		if (!is_numeric($weight))
+		{
+			throw new Exception(JText::_('Weight must be numeric'));
+		}
+
+		$this->data->weight = $weight;
+		return true;
+	}
+
+	public function getWeight()
+	{
+		if (empty($this->data->weight))
+		{
+			return NULL;
+		}
+		return $this->data->weight;
+	}
+
 
 	/**
 	 * Set ID
@@ -97,12 +131,62 @@ class StorefrontModelSku
 		return $this->data->id;
 	}
 
+	public function setProductId($pId)
+	{
+		if (!is_numeric($pId))
+		{
+			throw new Exception(JText::_('Price must be numeric'));
+		}
+		$this->data->pId = $pId;
+		return true;
+	}
+
+	public function getProductId()
+	{
+		if (empty($this->data->pId))
+		{
+			return NULL;
+		}
+		return $this->data->pId;
+	}
+
 	public function verify()
 	{
 		if (!isset($this->data->price) || !is_numeric($this->data->price))
 		{
 			throw new Exception(JText::_('No SKU price'));
 		}
+		if (!isset($this->data->pId) || !is_numeric($this->data->pId))
+		{
+			throw new Exception(JText::_('No SKU Product Set'));
+		}
+	}
+
+	// TODO: Move saving logic here from warehouse
+	public function save()
+	{
+		$this->verify();
+
+		// Save options
+		if (isset($this->data->options))
+		{
+			$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `sId` = ' . $this->db->quote($this->getId());
+			$this->db->setQuery($sql);
+			$this->db->query();
+
+			foreach ($this->data->options as $oId)
+			{
+				$sql = 'INSERT INTO `#__storefront_sku_options` (`sId`, `oId`)
+						VALUES (' . $this->db->quote($this->getId()) . ', ' . $this->db->quote($oId) . ')';
+				$this->db->setQuery($sql);
+				$this->db->query();
+			}
+		}
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+
+		return($warehouse->saveSku($this));
 	}
 
 	public function setAllowMultiple($allowMultiple)
@@ -235,10 +319,7 @@ class StorefrontModelSku
 
 	public function getMeta()
 	{
-		if (!empty($this->data->meta))
-		{
-			return $this->data->meta;
-		}
+		return $this->data->meta;
 	}
 
 	/*
@@ -262,6 +343,24 @@ class StorefrontModelSku
 		}
 
 		return false;
+	}
+
+	public function getOptions()
+	{
+		if (!isset($this->data->options))
+		{
+			$sql = 'SELECT oId';
+			$sql .= ' FROM `#__storefront_sku_options` WHERE `sId` = ' . $this->db->quote($this->getId());
+			$this->db->setQuery($sql);
+			$this->data->options = $this->db->loadColumn();
+		}
+		return $this->data->options;
+	}
+
+	// Overwrites all options
+	public function setOptions($options)
+	{
+		$this->data->options = $options;
 	}
 
 }

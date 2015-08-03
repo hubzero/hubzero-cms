@@ -34,7 +34,7 @@ $canDo = StorefrontHelperPermissions::getActions('product');
 
 $text = ($this->task == 'edit' ? JText::_('COM_STOREFRONT_EDIT') : JText::_('COM_STOREFRONT_NEW'));
 
-JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': ' . JText::_('COM_STOREFRONT_PRODUCT') . ': ' . $text, 'kb.png');
+JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': ' . JText::_('COM_STOREFRONT_SKU') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -69,24 +69,66 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[pName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+				<input type="text" name="fields[sSku]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-pTagline"><?php echo JText::_('COM_STOREFRONT_TAGLINE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[pTagline]" id="field-pTagline" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getTagline())); ?>" />
+				<label for="field-title"><?php echo JText::_('COM_STOREFRONT_PRICE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<input type="text" name="fields[sPrice]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getPrice())); ?>" />
 			</div>
 
-			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('COM_STOREFRONT_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), '', '', 50, 10, false, 'field-description'); ?>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-features"><?php echo JText::_('COM_STOREFRONT_FEATURES'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), '', '', 50, 10, false, 'field-features'); ?>
-			</div>
+			<?php
+			if ($this->pInfo->ptId == 1) {
+			?>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo JText::_('COM_STOREFRONT_WEIGHT'); ?>:</label><br/>
+					<input type="text" name="fields[pWeight]" id="field-title" size="30" maxlength="100"
+						   value="<?php echo $this->escape(stripslashes($this->row->getWeight())); ?>"/>
+				</div>
+			<?php
+			}
+			?>
 		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo 'Product options'; ?></span></legend>
+
+			<?php
+			foreach ($this->allOptions as $optionGroup)
+			{
+			?>
+				<div class="input-wrap">
+					<label for="field-options-<?php echo $optionGroup->ogId; ?>"><?php echo $optionGroup->ogName; ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+
+					<select name="fields[options][]" id="field-options-<?php echo $optionGroup->ogId; ?>">
+						<option value="">-- please select an option --</option>
+					<?php
+					foreach ($optionGroup->options as $option)
+					{
+					?>
+						<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) { echo ' selected="selected"'; } ?>><?php echo $option->oName ?></option>
+					<?php
+					}
+					?>
+					</select>
+				</div>
+			<?php
+			}
+			?>
+		</fieldset>
+
+		<?php
+		// Product type specific meta options
+
+		if ($this->pInfo->ptModel == 'software')
+		{
+			$view = new \Hubzero\Component\View(array('name'=>'meta', 'layout' => 'sku-software'));
+			$view->row = $this->row;
+			$view->display();
+		}
+
+		?>
+
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
@@ -95,7 +137,14 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo JText::_('COM_STOREFRONT_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->getId(); ?>
-						<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
+						<input type="hidden" name="fields[sId]" id="field-sid" value="<?php echo $this->escape($this->row->getId()); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('COM_STOREFRONT_PRODUCT'); ?>:</th>
+					<td>
+						<?php echo $this->pInfo->pName; ?>
+						<input type="hidden" name="pId" id="pid" value="<?php echo $this->escape($this->pInfo->pId); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -105,29 +154,24 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_STOREFRONT_OPTIONS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('COM_STOREFRONT_TYPE'); ?>:</label>
-				<select name="fields[ptId]" id="field-state">
-					<?php
-
-					foreach ($this->types as $type)
-					{
-						?>
-						<option value="<?php echo $type->ptId; ?>"<?php if ($this->row->getType() == $type->ptId) { echo ' selected="selected"'; } ?>><?php echo $type->ptName; ?></option>
-						<?php
-					}
-
-					?>
-				</select>
-			</div>
-
-			<p><a href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options</a> (save product first if you updated the type)</p>
-
-			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
-				<select name="fields[pAllowMultiple]" id="field-state">
+				<label for="field-sAllowMultiple"><?php echo JText::_('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
+				<select name="fields[sAllowMultiple]" id="field-pAllowMultiple">
 					<option value="0"<?php if ($this->row->getAllowMultiple() == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_NO'); ?></option>
 					<option value="1"<?php if ($this->row->getAllowMultiple() == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_YES'); ?></option>
 				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
+				<select name="fields[sTrackInventory]" id="field-sTrackInventory">
+					<option value="0"<?php if ($this->row->getTrackInventory() == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_NO'); ?></option>
+					<option value="1"<?php if ($this->row->getTrackInventory() == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_YES'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
+				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="100" value="<?php echo $this->row->getInventoryLevel(); ?>" />
 			</div>
 		</fieldset>
 
@@ -142,63 +186,7 @@ function submitbutton(pressbutton)
 					<option value="2"<?php if ($this->row->getActiveStatus() == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
-			<div class="input-wrap">
-				<label for="field-access"><?php echo JText::_('COM_STOREFRONT_ACCESS_LEVEL'); ?>:</label>
-				<?php
-				echo JHtml::_('access.level', 'fields[access]', $this->row->getAccessLevel());
 
-				?>
-			</div>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo 'Collections'; ?></span></legend>
-
-			<div class="input-wrap">
-				<ul class="checklist catgories">
-					<?php
-					$collections = $this->row->getCollections();
-
-					//print_r($this->collections); die;
-
-					foreach ($this->collections as $cat)
-					{
-					?>
-						<li>
-							<input type="checkbox" name="fields[collections][]" <?php if(in_array($cat->cId, $collections)) { echo 'checked';} ?> value="<?php echo $cat->cId; ?>"
-								   id="collection_<?php echo $cat->cId; ?>">
-							<label for="collection_<?php echo $cat->cId; ?>">
-								<?php echo $cat->cName; ?>
-							</label>
-						</li>
-					<?php
-					}
-					?>
-				</ul>
-			</div>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo 'Product option groups'; ?></span></legend>
-
-			<div class="input-wrap">
-				<ul class="checklist optionGroups">
-					<?php
-					foreach ($this->optionGroups as $og)
-					{
-					?>
-						<li>
-							<input type="checkbox" name="fields[optionGroups][]" <?php if(in_array($og->ogId, $this->productOptionGroups)) { echo 'checked';} ?> value="<?php echo $og->ogId; ?>"
-								   id="optionGroup_<?php echo $og->ogId; ?>">
-							<label for="optionGroup_<?php echo $og->ogId; ?>">
-								<?php echo $og->ogName; ?>
-							</label>
-						</li>
-					<?php
-					}
-					?>
-				</ul>
-			</div>
 		</fieldset>
 
 	</div>

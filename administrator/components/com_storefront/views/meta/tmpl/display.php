@@ -79,7 +79,6 @@ function submitbutton(pressbutton)
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_PRODUCT_TYPE', 'ptName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col">SKUs</th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
@@ -151,16 +150,6 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php echo $row->ptName; ?>
-				</td>
-				<td>
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=skus&task=display&id=' . $row->pId); ?>" title="View SKUs">
-							<span><?php $key = $row->pId; echo $this->skus->$key; ?></span>
-						</a>
-					<?php } else { ?>
-						<span><?php $key = $row->pId; echo $this->skus->$key; ?></span>
-					</span>
-					<?php } ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>

@@ -43,7 +43,7 @@ require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'Archive.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = JRequest::getCmd('controller', 'categories');
+$controllerName = JRequest::getCmd('controller', 'products');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'products';
@@ -55,9 +55,9 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'products'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_STOREFRONT_CATEGORIES'),
-	'index.php?option=com_storefront&controller=categories&id=0',
-	$controllerName == 'categories'
+	JText::_('COM_STOREFRONT_COLLECTIONS'),
+	'index.php?option=com_storefront&controller=collections&id=0',
+	$controllerName == 'collections'
 );
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
