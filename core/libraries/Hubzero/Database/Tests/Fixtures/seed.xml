@@ -117,6 +117,62 @@
 			<value>1</value>
 			<value></value>
 		</row>
+		<row>
+			<value>4</value>
+			<value>2</value>
+			<value>group</value>
+			<value>1</value>
+			<value></value>
+		</row>
+		<row>
+			<value>5</value>
+			<value>1</value>
+			<value>group</value>
+			<value>2</value>
+			<value></value>
+		</row>
+		<row>
+			<value>6</value>
+			<value>3</value>
+			<value>member</value>
+			<value>1</value>
+			<value></value>
+		</row>
+		<row>
+			<value>7</value>
+			<value>1</value>
+			<value>member</value>
+			<value>2</value>
+			<value></value>
+		</row>
+		<row>
+			<value>8</value>
+			<value>1</value>
+			<value>member</value>
+			<value>3</value>
+			<value></value>
+		</row>
+		<row>
+			<value>9</value>
+			<value>1</value>
+			<value>project</value>
+			<value>2</value>
+			<value></value>
+		</row>
+		<row>
+			<value>10</value>
+			<value>2</value>
+			<value>project</value>
+			<value>1</value>
+			<value></value>
+		</row>
+		<row>
+			<value>11</value>
+			<value>3</value>
+			<value>project</value>
+			<value>3</value>
+			<value></value>
+		</row>
 	</table>
 	<table name="permissions">
 		<column>id</column>
@@ -194,6 +250,10 @@
 		<row>
 			<value>2</value>
 			<value>Break Stuff</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>Make new Stuff</value>
 		</row>
 	</table>
 	<table name="tags">

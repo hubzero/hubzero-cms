@@ -223,7 +223,7 @@ class RelationalTest extends Database
 	 **/
 	public function testManyShiftsToManyReturnsRelationship()
 	{
-		$this->assertCount(1, Group::oneOrFail(1)->permissions, 'Model should have returned a count of 1 permissions for group 1');
+		$this->assertCount(2, Group::oneOrFail(1)->permissions, 'Model should have returned a count of 2 permissions for group 1');
 	}
 
 	/**
@@ -245,9 +245,9 @@ class RelationalTest extends Database
 	 **/
 	public function testManyShiftsToManyCanBeConstrainedByCount()
 	{
-		$projects = Project::all()->whereRelatedHasCount('permissions', 1)->rows();
+		$projects = Project::all()->whereRelatedHasCount('permissions', 2)->rows();
 
-		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 1 or more permissions');
+		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 2 or more permissions');
 	}
 
 	/**
@@ -277,7 +277,7 @@ class RelationalTest extends Database
 			$permissions->whereEquals('name', 'read');
 		})->rows();
 
-		$this->assertCount(1, $projects, 'Model should have returned a count of 1 project with read permissions');
+		$this->assertCount(2, $projects, 'Model should have returned a count of 2 project with read permissions');
 	}
 
 	/**
@@ -373,7 +373,7 @@ class RelationalTest extends Database
 		}])->rows();
 
 		$this->assertCount(1, $projects->seek(1)->permissions, 'Model should have had 1 permission that met the constraint');
-		$this->assertCount(0, $projects->seek(2)->permissions, 'Model should have had 0 permissions that met the constraint');
+		$this->assertCount(0, $projects->seek(3)->permissions, 'Model should have had 0 permissions that met the constraint');
 	}
 
 	/**
@@ -423,7 +423,7 @@ class RelationalTest extends Database
 		// Tag post 2 with tag 3
 		Member::oneOrFail(1)->permissions()->connect([1]);
 
-		$this->assertCount(2, Member::oneOrFail(1)->permissions, 'Member should have had a total of 2 permissions');
+		$this->assertCount(3, Member::oneOrFail(1)->permissions, 'Member should have had a total of 3 permissions');
 	}
 
 	/**
@@ -449,7 +449,7 @@ class RelationalTest extends Database
 		// Tag post 2 with tag 3
 		Member::oneOrFail(1)->permissions()->disconnect([1]);
 
-		$this->assertCount(1, Member::oneOrFail(1)->purgeCache()->permissions, 'Member should have had a total of 1 permissions');
+		$this->assertCount(2, Member::oneOrFail(1)->purgeCache()->permissions, 'Member should have had a total of 2 permissions');
 	}
 
 	/**
@@ -477,7 +477,7 @@ class RelationalTest extends Database
 		Member::oneOrFail(1)->permissions()->save(['name' => 'do awesome stuff']);
 
 		$this->assertCount(1, Permission::whereEquals('name', 'do awesome stuff')->rows(), 'A permission with the name of "do awesome stuff" should exist');
-		$this->assertCount(2, Member::oneOrFail(1)->purgeCache()->permissions, 'Member should have had a total of 2 permissions');
+		$this->assertCount(3, Member::oneOrFail(1)->purgeCache()->permissions, 'Member should have had a total of 3 permissions');
 	}
 
 	/**
@@ -506,9 +506,9 @@ class RelationalTest extends Database
 	public function testConnectManyShiftsToManyCanAddAdditionalFields()
 	{
 		$now = \Date::toSql();
-		Group::oneOrFail(1)->permissions()->connect([2 => ['permitted' => $now]]);
+		Group::oneOrFail(1)->permissions()->connect([3 => ['permitted' => $now]]);
 
-		$result = Group::oneOrFail(1)->permissions->seek(2);
+		$result = Group::oneOrFail(1)->permissions->seek(3);
 
 		$this->assertFalse($result->hasAttribute('permitted'), 'Group should not have had an attributed for "permitted"');
 		$this->assertArrayHasKey('permitted', (array)$result->associated, 'Group should have had an associated key of "permitted"');
