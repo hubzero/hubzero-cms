@@ -699,12 +699,18 @@ class ModulesModelModule extends JModelAdmin
 			$this->_cache[$pk]->assignment = $assignment;
 
 			// Get the module XML.
-			$client = JApplicationHelper::getClientInfo($table->client_id);
-			$path   = JPath::clean($client->path.'/modules/'.$table->module.'/'.$table->module.'.xml');
+			//$client = \Hubzero\Base\ClientManager::client($table->client_id);
+			//$path   = JPath::clean($client->path.'/modules/'.$table->module.'/'.$table->module.'.xml');
+			$patha  = JPath::clean(PATH_APP.'/modules/'.$table->module.'/'.$table->module.'.xml');
+			$pathc  = JPath::clean(PATH_CORE.'/modules/'.$table->module.'/'.$table->module.'.xml');
 
-			if (file_exists($path))
+			if (file_exists($patha))
 			{
-				$this->_cache[$pk]->xml = simplexml_load_file($path);
+				$this->_cache[$pk]->xml = simplexml_load_file($patha);
+			}
+			elseif (file_exists($pathc))
+			{
+				$this->_cache[$pk]->xml = simplexml_load_file($pathc);
 			}
 			else
 			{
@@ -789,14 +795,26 @@ class ModulesModelModule extends JModelAdmin
 		$clientId = $this->getState('item.client_id');
 		$module   = $this->getState('item.module');
 
-		$client   = JApplicationHelper::getClientInfo($clientId);
-		$formFile = JPath::clean($client->path.'/modules/'.$module.'/'.$module.'.xml');
+		$client   = \Hubzero\Base\ClientManager::client($clientId);
+		//$formFile = JPath::clean($client->path.'/modules/'.$module.'/'.$module.'.xml');
+		$formFile = null;
+		$patha  = JPath::clean(PATH_APP.'/modules/'.$module.'/'.$module.'.xml');
+		$pathc  = JPath::clean(PATH_CORE.'/modules/'.$module.'/'.$module.'.xml');
+		if (file_exists($patha))
+		{
+			$formFile = $patha;
+		}
+		elseif (file_exists($pathc))
+		{
+			$formFile = $pathc;
+		}
 
 		// Load the core and/or local language file(s).
-			$lang->load($module, $client->path, null, false, true)
-		||	$lang->load($module, $client->path . '/modules/' . $module, null, false, true);
+		$lang->load($module, PATH_APP . '/bootstrap/' . $client->name, null, false, true) ||
+		$lang->load($module, PATH_APP . '/modules/' . $module, null, false, true) ||
+		$lang->load($module, PATH_CORE . '/modules/' . $module, null, false, true);
 
-		if (file_exists($formFile))
+		if ($formFile)
 		{
 			// Get the module form.
 			if (!$form->loadFile($formFile, false, '//config'))
@@ -820,7 +838,6 @@ class ModulesModelModule extends JModelAdmin
 				$this->helpKey = $helpKey ? $helpKey : $this->helpKey;
 				$this->helpURL = $helpURL ? $helpURL : $this->helpURL;
 			}
-
 		}
 
 		// Trigger the default form events.
