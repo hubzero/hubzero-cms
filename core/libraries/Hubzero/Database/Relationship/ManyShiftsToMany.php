@@ -63,14 +63,22 @@ class ManyShiftsToMany extends ManyToMany
 	}
 
 	/**
-	 * Constrains the relationship content to the applicable rows on the related model
+	 * Joins the related table together with the intermediate table for the pending query
 	 *
-	 * @return  object
-	 * @since   2.0.0
+	 * This is primarily used when we're getting the related results and we need to work
+	 * our way backwards through the intermediate table.
+	 *
+	 * @return $this
+	 * @since  1.3.2
 	 **/
-	public function constrain()
+	public function mediate()
 	{
-		return parent::constrain()->whereEquals($this->associativeTable . '.' . $this->shifter, strtolower($this->model->getModelName()));
+		parent::mediate();
+
+		// Add this where clause in mediation as it's really a factor of the join itself
+		$this->related->whereEquals($this->associativeTable . '.' . $this->shifter, strtolower($this->model->getModelName()));
+
+		return $this;
 	}
 
 	/**
@@ -94,19 +102,6 @@ class ManyShiftsToMany extends ManyToMany
 			        ->group($associativeLocal)
 			        ->having('COUNT(*)', '>=', $count);
 		});
-	}
-
-	/**
-	 * Gets the relations that will be seeded on to the provided rows
-	 *
-	 * @param  array   $keys       the keys for which to fetch related items
-	 * @param  closure $constraint the constraint function to limit related items
-	 * @return array
-	 * @since  1.3.2
-	 **/
-	protected function getRelations($keys, $constraint=null)
-	{
-		return parent::getRelations($keys, $constraint)->whereEquals($this->associativeTable . '.' . $this->shifter, strtolower($this->model->getModelName()));
 	}
 
 	/**
