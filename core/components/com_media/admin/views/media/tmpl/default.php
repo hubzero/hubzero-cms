@@ -60,7 +60,7 @@ defined('_HZEXEC_') or die();
 
 			<?php if (User::authorise('core.create', 'com_media')):?>
 			<!-- File Upload Form -->
-			<form action="<?php echo Route::url('index.php?option=com_media&task=file.upload&tmpl=component&' . $this->session->getName().'='.$this->session->getId() . '&' . Session::getFormToken() . '=1&format=html'); ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+			<form action="<?php echo Route::url('index.php?option=com_media&task=file.upload&tmpl=component&' . $this->session->getName().'='.$this->session->getId() . '&' . Session::getFormToken() . '=1', true, true); ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 				<fieldset id="uploadform">
 					<legend><?php echo $this->config->get('upload_maxsize')=='0' ? Lang::txt('COM_MEDIA_UPLOAD_FILES_NOLIMIT') : Lang::txt('COM_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?></legend>
 					<fieldset id="upload-noflash" class="actions">
