@@ -715,7 +715,7 @@ class Section extends Base
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new SectionCode($result);
+					$results[$key] = new Section\Code($result);
 				}
 			}
 			else
