@@ -89,7 +89,7 @@ class ContentViewArticles extends JViewLegacy
 			Toolbar::divider();
 			Toolbar::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
 			Toolbar::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			Toolbar::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
+			//Toolbar::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
 			Toolbar::divider();
 			Toolbar::archiveList('articles.archive');
 			Toolbar::checkin('articles.checkin');

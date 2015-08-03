@@ -64,51 +64,51 @@ $saveOrder = $listOrder == 'a.ordering';
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th>
 					<?php echo Html::grid('sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
-				<th class="priority-4" width="5%">
+				<?php /*<th class="priority-4">
 					<?php echo Html::grid('sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, NULL, 'desc'); ?>
-				</th>
-				<th class="priority-2" width="10%">
+				</th>*/ ?>
+				<th class="priority-2">
 					<?php echo Html::grid('sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
 				</th>
-				<th class="priority-3" width="10%">
+				<th class="priority-3">
 					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'articles.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="10%" class="priority-4">
+				<th class="priority-4">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-6">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="priority-5">
+				<th class="priority-5">
 					<?php echo Html::grid('sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
 				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
-				<th width="5%">
+				<th>
 					<?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th> -->
-				<th width="5%" class="priority-6">
+				<th class="priority-6">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="priority-5 nowrap">
+				<th class="priority-5 nowrap">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="15">
+				<td colspan="10">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
@@ -143,9 +143,9 @@ $saveOrder = $listOrder == 'a.ordering';
 				<td class="center">
 					<?php echo Html::grid('published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
-				<td class="priority-4 center">
+				<?php /*<td class="priority-4 center">
 					<?php echo Html::contentadministrator('featured', $item->featured, $i, $canChange); ?>
-				</td>
+				</td>*/ ?>
 				<td class="priority-2 center">
 					<?php echo $this->escape($item->category_title); ?>
 				</td>

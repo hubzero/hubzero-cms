@@ -37,11 +37,11 @@ class ContentHelper
 			Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
 			Route::url('index.php?option=com_categories&extension=com_content'),
 			$vName == 'categories');
-		Submenu::addEntry(
+		/*Submenu::addEntry(
 			Lang::txt('COM_CONTENT_SUBMENU_FEATURED'),
 			Route::url('index.php?option=com_content&view=featured'),
 			$vName == 'featured'
-		);
+		);*/
 	}
 
 	/**
