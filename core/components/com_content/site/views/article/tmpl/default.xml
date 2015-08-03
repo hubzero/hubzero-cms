@@ -12,7 +12,7 @@
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="request">
 		<fieldset name="request"
-			addfieldpath="/components/com_content/admin/models/fields">
+			addfieldpath="/core/components/com_content/admin/models/fields">
 
 			<field name="id" type="modal_article"
 				label="COM_CONTENT_FIELD_SELECT_ARTICLE_LABEL"
