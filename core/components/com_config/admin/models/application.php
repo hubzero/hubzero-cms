@@ -248,13 +248,16 @@ class Application extends JModelForm
 		//$config = new Registry($data);
 
 		// Overwrite the old FTP credentials with the new ones.
-		$temp = \Config::getRoot();
-		$temp->set('ftp.ftp_enable', $data['ftp']['ftp_enable']);
-		$temp->set('ftp.ftp_host', $data['ftp']['ftp_host']);
-		$temp->set('ftp.ftp_port', $data['ftp']['ftp_port']);
-		$temp->set('ftp.ftp_user', $data['ftp']['ftp_user']);
-		$temp->set('ftp.ftp_pass', $data['ftp']['ftp_pass']);
-		$temp->set('ftp.ftp_root', $data['ftp']['ftp_root']);
+		if (isset($data['ftp']))
+		{
+			$temp = \Config::getRoot();
+			$temp->set('ftp.ftp_enable', $data['ftp']['ftp_enable']);
+			$temp->set('ftp.ftp_host', $data['ftp']['ftp_host']);
+			$temp->set('ftp.ftp_port', $data['ftp']['ftp_port']);
+			$temp->set('ftp.ftp_user', $data['ftp']['ftp_user']);
+			$temp->set('ftp.ftp_pass', $data['ftp']['ftp_pass']);
+			$temp->set('ftp.ftp_root', $data['ftp']['ftp_root']);
+		}
 
 		// Clear cache of com_config component.
 		$this->cleanCache('_system');
