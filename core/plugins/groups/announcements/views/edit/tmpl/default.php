@@ -84,8 +84,7 @@ $this->js()
 								$publish_up = $this->announcement->get('publish_up');
 								if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 								{
-									$publish_up = Date::of($publish_up)->format('Y-m-d H:i:s');
-									$publish_up = date("m/d/Y @ g:i a", strtotime($publish_up));
+									$publish_up = Date::of($publish_up)->toLocal('m/d/Y @ g:i a');
 								}
 							?>
 							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($publish_up); ?>" />
@@ -99,8 +98,7 @@ $this->js()
 								$publish_down = $this->announcement->get('publish_down');
 								if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 								{
-									$publish_down = Date::of($publish_down)->format('Y-m-d H:i:s');
-									$publish_down = date("m/d/Y @ g:i a", strtotime($publish_down));
+									$publish_down = Date::of($publish_down)->toLocal('m/d/Y @ g:i a');
 								}
 							?>
 							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($publish_down); ?>" />
