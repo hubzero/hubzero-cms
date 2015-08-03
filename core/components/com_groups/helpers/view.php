@@ -615,6 +615,11 @@ class View
 	 */
 	public static function handleCustomError(Exception $error)
 	{
+		$lerror = new \Hubzero\Error\Exception\LegacyException($error->getMessage(), $error->getCode(), null, null, $error->getTrace());
+		$lerror->set('line', $error->getLine());
+		$lerror->set('file', $error->getFile());
+		//$lerror = new \Hubzero\Error\Exception\LegacyException($error->getMessage(), $error->getCode(), $error);
+
 		// get error template
 		// must wrap in output buffer to capture contents since returning content through output method returns to the
 		// method that called handleSuperGroupError with call_user_func
@@ -622,7 +627,7 @@ class View
 		$template = new Template();
 		$template->set('group', \Hubzero\User\Group::getInstance(Request::getVar('cn', '')))
 			     ->set('tab', Request::getVar('active','overview'))
-			     ->set('error', $error)
+			     ->set('error', $lerror)
 			     ->parse()
 			     ->render();
 
@@ -636,14 +641,19 @@ class View
 		$document->addStylesheet('/core/assets/css/debug.css');
 		$document->addStylesheet('/core/components/com_groups/site/assets/css/groups.css');
 		$document->setBuffer($errorTemplate, array('type'=>'component', 'name' => ''));
-		$fullTemplate = $document->render(false, array('template' => 'hubbasic2013', 'file'=>'group.php'));
+		$fullTemplate = $document->render(false, array(
+			'template'  => 'system',
+			'file'      => 'group.php',
+			'directory' => PATH_CORE . DS . 'templates',
+			'baseurl'   => rtrim(\Request::root(true), '/') . '/core'
+		));
 
 		// echo to screen
 		$response = App::get('response');
 		$response->headers->set('Cache-Control', 'no-cache', false);
 		$response->headers->set('Pragma', 'no-cache');
 		$response->headers->set('Content-Type', 'text/html');
-		$response->headers->set('status', $error->getCode() . ' ' . str_replace("\n", ' ', $error->getMessage()));
+		$response->headers->set('status', $lerror->getCode() . ' ' . str_replace("\n", ' ', $lerror->getMessage()));
 		$response->setContent($fullTemplate);
 		$response->send();
 

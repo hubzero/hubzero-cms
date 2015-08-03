@@ -24,8 +24,8 @@ Document::addScript($base . DS . 'assets/js/main.js');
 </script>
 <div class="super-group-body-wrap group-<?php echo $this->group->get('cn'); ?>">
 	<div class="super-group-body error-page">
-		<div class="error-message"><?php echo $this->error->get('message'); ?></div>
-		<div class="error-num"><?php echo $this->error->get('code'); ?></div>
+		<div class="error-message"><?php echo $this->error->getMessage(); ?></div>
+		<div class="error-num"><?php echo $this->error->getCode(); ?></div>
 
 		<ul class="error-options cf">
 			<li>

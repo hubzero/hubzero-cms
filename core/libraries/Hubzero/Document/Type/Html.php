@@ -504,7 +504,7 @@ class Html extends Base
 	protected function _fetchTemplate($params = array())
 	{
 		// Check
-		$directory = isset($params['directory']) ? $params['directory'] : 'templates';
+		$directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
 
 		$template = preg_replace('/[^A-Z0-9_\.-]/i', '', $params['template']);
 		$file     = preg_replace('/[^A-Z0-9_\.-]/i', '', $params['file']);
