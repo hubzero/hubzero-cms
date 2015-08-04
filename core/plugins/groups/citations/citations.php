@@ -780,7 +780,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->group = $this->group;
 		$view->messages = NULL;
 		$config  = json_decode($this->group->get('params'));
-		
+
 		Request::checkToken();
 
 		$cites_require_attention    = $this->importer->readRequiresAttention();
