@@ -373,13 +373,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//format publish up
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
 		{
-			$fields['publish_up'] = Date::of(strtotime(str_replace('@', '', $fields['publish_up'])), Config::get('offset'))->toSql();
+			$fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
 		}
 
 		//format publish down
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00')
 		{
-			$fields['publish_down'] = Date::of(strtotime(str_replace('@', '', $fields['publish_down'])), Config::get('offset'))->toSql();
+			$fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
 		}
 
 		if ($fields['publish_up'] > $fields['publish_down'])
