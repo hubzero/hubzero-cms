@@ -267,7 +267,9 @@ function submitbutton(pressbutton)
 					<option value=""><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL'); ?></option>
 					<?php if (isset($this->files)): ?>
 						<?php foreach ($this->files as $file): ?>
-							<?php $sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
+							<?php
+							$file = ltrim($file, DS);
+							$sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
 							<option <?php echo $sel; ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
 						<?php endforeach; ?>
 					<?php endif; ?>
