@@ -883,7 +883,7 @@ class Pages
 		}
 
 		// get group css
-		$pageCss = \Components\Groups\Helpers\View::GetPageCss($group);
+		$pageCss = View::getPageCss($group);
 
 		$css = '';
 		foreach ($pageCss as $p)

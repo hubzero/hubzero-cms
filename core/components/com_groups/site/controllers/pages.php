@@ -218,7 +218,10 @@ class Pages extends Base
 		));
 
 		// get stylesheets for editor
-		$this->view->stylesheets = Helpers\View::getPageCss($this->group);
+		// [!] (zooley) 07/2015
+		//     This causes extreme performance issues under certain situations
+		//     Bypassing until a better solution can be found.
+		$this->view->stylesheets = array(); //Helpers\View::getPageCss($this->group);
 
 		// get page templates
 		$this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
