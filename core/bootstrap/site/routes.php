@@ -496,7 +496,7 @@ $router->rules('parse')->append('menu', function ($uri)
 */
 $router->rules('parse')->append('content', function ($uri)
 {
-	if ($uri->get('option') && $uri->get('option') != 'com_content')
+	if ($uri->getVar('option') && $uri->getVar('option') != 'com_content')
 	{
 		return;
 	}
