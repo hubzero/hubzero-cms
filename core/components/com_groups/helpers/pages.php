@@ -898,6 +898,7 @@ class Pages
 					<head>
 						<title>' . $group->get('description') . '</title>
 						' . $css . '
+						<style>#system-debug { display: none !important; }</style>
 					</head>
 					<body class="group-page-preview">
 						' . $content . '

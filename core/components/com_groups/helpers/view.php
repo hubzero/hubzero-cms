@@ -512,9 +512,12 @@ class View
 		// we need to get all css files loaded on this page.
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		$html = curl_exec($ch);
 		$info = curl_getinfo($ch);
 		curl_close($ch);
@@ -633,7 +636,7 @@ class View
 		// bootstrap document
 		// add custom error template as component buffer
 		$document = App::get('document');
-		$document->addStylesheet('/core/assets/css/debug.css');
+		$document->addStylesheet('/core/plugins/system/debug/assets/css/debug.css');
 		$document->addStylesheet('/core/components/com_groups/site/assets/css/groups.css');
 		$document->setBuffer($errorTemplate, array('type'=>'component', 'name' => ''));
 		$fullTemplate = $document->render(false, array(
