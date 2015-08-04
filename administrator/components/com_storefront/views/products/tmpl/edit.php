@@ -165,7 +165,7 @@ function submitbutton(pressbutton)
 					{
 					?>
 						<li>
-							<input type="checkbox" name="fields[collections][]" <?php if(in_array($cat->cId, $collections)) { echo 'checked';} ?> value="<?php echo $cat->cId; ?>"
+							<input type="checkbox" name="fields[collections][]" <?php if (in_array($cat->cId, $collections)) { echo 'checked';} ?> value="<?php echo $cat->cId; ?>"
 								   id="collection_<?php echo $cat->cId; ?>">
 							<label for="collection_<?php echo $cat->cId; ?>">
 								<?php echo $cat->cName; ?>
@@ -188,7 +188,7 @@ function submitbutton(pressbutton)
 					{
 					?>
 						<li>
-							<input type="checkbox" name="fields[optionGroups][]" <?php if(in_array($og->ogId, $this->productOptionGroups)) { echo 'checked';} ?> value="<?php echo $og->ogId; ?>"
+							<input type="checkbox" name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) { echo 'checked';} ?> value="<?php echo $og->ogId; ?>"
 								   id="optionGroup_<?php echo $og->ogId; ?>">
 							<label for="optionGroup_<?php echo $og->ogId; ?>">
 								<?php echo $og->ogName; ?>

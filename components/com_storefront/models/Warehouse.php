@@ -237,39 +237,51 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param 	string
 	 * @return	string							category ID
 	 */
-	private function doCollection($collection, $action) {
+	private function doCollection($collection, $action)
+	{
 		$allowedActions = array('add', 'update');
 
 		// Check everything
 		$cId = $collection->getId();
 
-		if(!in_array($action, $allowedActions)) {
+		if (!in_array($action, $allowedActions))
+		{
 			throw new Exception(JText::_('Bad action. Why would you try to do something like that anyway?'));
 		}
 
-		if($action == 'update') {
+		if ($action == 'update')
+		{
 			// Check if the ID is set
-			if(empty($cId)) {
+			if (empty($cId))
+			{
 				throw new Exception(JText::_('Cannot update collection: no collection ID set.'));
 			}
 
 			// check if category exists
-			if(!$this->collectionExists($cId, true)) {
+			if (!$this->collectionExists($cId, true))
+			{
 				throw new Exception(JText::_('Cannot update collection: collection does not exist.'));
 			}
-		} elseif($action == 'add') {
-			if($this->collectionExists($cId, true)) {
+		}
+		elseif ($action == 'add')
+		{
+			if ($this->collectionExists($cId, true))
+			{
 				throw new Exception(JText::_('Cannot add collection: collection already exists.'));
-			} elseif(empty($cId)) {
+			}
+			elseif(empty($cId))
+			{
 				throw new Exception(JText::_('Cannot add collection: the new ID must be provided.'));
 			}
 		}
 
 		// ### Do the collection
-
-		if($action == 'update') {
+		if ($action == 'update')
+		{
 			$sql = "UPDATE `#__storefront_collections` SET ";
-		} elseif($action == 'add') {
+		}
+		elseif ($action == 'add')
+		{
 			$sql = "INSERT INTO `#__storefront_collections` SET ";
 		}
 
@@ -279,13 +291,15 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				`cType` = " . $this->_db->quote($collection->getType());
 
 		// Set pId if needed if adding new product
-		if($action == 'add' && !empty($cId)) {
+		if ($action == 'add' && !empty($cId))
+		{
 			$sql .= ",
 				`cId` = " . $this->_db->quote($collection->getId());
 		}
 
 		// Add WHERE if updating product
-		if($action == 'update') {
+		if ($action == 'update')
+		{
 			$sql .= " WHERE `cId` = " . $this->_db->quote($collection->getId());
 		}
 
@@ -1366,7 +1380,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		return $return;
 	}
 
-	public function saveSku($sku) {
+	public function saveSku($sku)
+	{
 		// Get sId
 		$sId = $sku->getId();
 

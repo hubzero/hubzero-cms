@@ -84,7 +84,8 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 * @param      int $pId Product ID
 	 * @return     mixed product info
 	 */
-	public function product($pId) {
+	public function product($pId)
+	{
 		$warehouse = new StorefrontModelWarehouse();
 
 		if ($pId)
@@ -264,7 +265,8 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		}
 	}
 
-	public function sku($sId) {
+	public function sku($sId)
+	{
 		$warehouse = new StorefrontModelWarehouse();
 
 		if ($sId)
