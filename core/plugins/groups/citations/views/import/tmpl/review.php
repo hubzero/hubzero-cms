@@ -48,12 +48,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 ?>
 <section id="import" class="section">
 	<div class="section-inner">
+		<?php if ($this->messages): ?>
 		<?php
 			foreach ($this->messages as $message)
 			{
 				echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 			}
 		?>
+		<?php endif; ?>
 
 		<ul id="steps">
 			<li><a href="<?php echo Route::url($base . '&action=import'); ?>" class="passed"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>

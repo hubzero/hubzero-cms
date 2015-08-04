@@ -38,10 +38,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 ?>
 <section id="import" class="section">
 	<div class="section-inner">
-		<?php foreach ($this->messages as $message) { ?>
-			<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
-		<?php } ?>
-
+		<?php if ($this->messages): ?>
+		<?php //foreach ($this->messages as $message) { ?>
+			<p class="<?php //echo $message['type']; ?>"><?php echo $message['message']; ?></p>
+		<?php //} ?>
+		<?php endif; ?>
 		<ul id="steps">
 			<li><a href="<?php echo Route::url($base . '&action=import'); ?>" class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
 			<li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>

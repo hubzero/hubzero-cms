@@ -30,7 +30,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
 // include needed libs
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'citation.php');
@@ -42,6 +41,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tag.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tagobject.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'importer.php');
 
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
@@ -50,8 +50,7 @@ use Components\Citations\Models\Citation;
 use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
-
-
+use Components\Citations\Models\Importer;
 /**
 	* Groups plugin class for citations
 	*/
@@ -131,6 +130,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$this->action		= $action;
 		$this->access		= $access;
 
+		$this->importer = new Importer(
+			App::get('db'),
+			App::get('filesystem'),
+			App::get('config')->get('tmp_path') . DS . 'citations',
+			App::get('session')->getId()
+		);
+
+
 		//if we want to return content
 		if ($returnhtml)
 		{
@@ -178,7 +185,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				case 'delete':	 $arr['html'] .= $this->_delete();		break;
 				case 'browse':	 $arr['html'] .= $this->_browse();		break;
 				case 'import':	 $arr['html'] .= $this->_import();		break;
-				case 'settings': $arr['html'] .= $this->_settings();		break;
+				case 'upload': 	$arr['html'] .= $this->_upload();			break;
+				case 'settings': $arr['html'] .= $this->_settings();	break;
+				case 'process': $arr['html']	.= $this->_process(); 	break;
 				default:		 $arr['html'] .= $this->_browse();
 			}
 		}
@@ -661,6 +670,212 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Import task 
+	 * @return [object] [description]
+	 */
+	private function _import()
+	{
+		//instansiate the view
+		$view = $this->view('display', 'import');
+		$view->group = $this->group;
+		$view->messages = NULL;
+		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+
+		return $view->loadTemplate();
+
+	}
+	/**
+	 * Upload task 
+	 * @return [object] [description]
+	 */
+	private function _upload()
+	{
+		//instansiate the view
+		$view = $this->view('review', 'import');
+		$view->group = $this->group;
+		$view->messages = NULL;
+
+		Request::checkToken();
+
+		// get file
+		$file = Request::file('citations_file');
+
+		// make sure we have a file
+		$filename = $file->getClientOriginalName();
+		if ($filename == '')
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=import'),
+				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE'),
+				'error'
+			);
+			return;
+		}
+
+		// make sure file is under 4MB
+		if ($file->getSize() > 4000000)
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=import'),
+				Lang::txt('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
+				'error'
+			);
+			return;
+		}
+
+		// make sure we dont have any file errors
+		if ($file->getError() > 0)
+		{
+			throw new Exception(Lang::txt('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
+		}
+
+		// call the plugins
+		$citations = Event::trigger('citation.onImport' , array($file));
+		$citations = array_values(array_filter($citations));
+
+		// did we get citations from the citation plugins
+		if (!$citations)
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=import'),
+				Lang::txt('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
+				'error'
+			);
+			return;
+		}
+
+		if (!isset($citations[0]['attention']))
+		{
+			$citations[0]['attention'] = '';
+		}
+
+		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
+		{
+			Notify::error(Lang::txt('Unable to write temporary file.'));
+		}
+
+		if (!$this->importer->writeRequiresNoAttention($citations[0]['no_attention']))
+		{
+			Notify::error(Lang::txt('Unable to write temporary file.'));
+		}
+
+		$view->citations_require_attention = $citations[0]['attention'];
+		$view->citations_require_no_attention = $citations[0]['no_attention'];
+
+		//get group ID
+		$group = Request::getVar('group');
+
+		return $view->loadTemplate();
+
+	}
+
+	/**
+	 * Upload task 
+	 * @return [object] [description]
+	 */
+	private function _process()
+	{
+		//instansiate the view
+		$view = $this->view('saved', 'import');
+		$view->group = $this->group;
+		$view->messages = NULL;
+		$config  = json_decode($this->group->get('params'));
+		
+		Request::checkToken();
+
+		$cites_require_attention    = $this->importer->readRequiresAttention();
+		$cites_require_no_attention = $this->importer->readRequiresNoAttention();
+
+		// action for citations needing attention
+		$citations_action_attention = Request::getVar('citation_action_attention', array());
+
+		// action for citations needing no attention
+		$citations_action_no_attention = Request::getVar('citation_action_no_attention', array());
+
+		// check to make sure we have citations
+		if (!$cites_require_attention && !$cites_require_no_attention)
+		{
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=import'),
+				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				'error'
+			);
+			return;
+		}
+
+		// vars
+		$allow_tags   = "yes";
+		$allow_badges = "yes";
+
+		$this->importer->set('user', User::get('id'));
+		if ($group = Request::getVar('group'))
+		{
+			$this->importer->set('scope', 'group');
+			$this->importer->set('scope_id', $group);
+		}
+		$this->importer->setTags($allow_tags == 'yes');
+		$this->importer->setBadges($allow_badges == 'yes');
+
+		// Process
+		$results = $this->importer->process(
+			$citations_action_attention,
+			$citations_action_no_attention
+		);
+
+		if (isset($group) && $group != '')
+		{
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			$gob = new \Components\Groups\Tables\Group($this->database);
+			$cn = $gob->getName($group);
+
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $cn . '&active=citations&action=dashboard')
+			);
+		}
+		else
+		{
+			// success message a redirect
+			Notify::success(
+				Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($results['saved'])),
+				'citations'
+			);
+
+			//view variables
+			$view->citations_require_attention = $citations_action_attention;
+			$view->citation_require_no_attention = $citation_action_no_attention;
+
+			// if we have citations not getting saved
+			if (count($results['not_saved']) > 0)
+			{
+				Notify::warning(
+					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($results['not_saved'])),
+					'citations'
+				);
+			}
+
+			if (count($results['error']) > 0)
+			{
+				Notify::error(
+					Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($results['error'])),
+					'citations'
+				);
+			}
+
+			//get the session object
+			$session = App::get('session');
+
+			//ids of sessions saved and not saved
+			$session->set('citations_saved', $results['saved']);
+			$session->set('citations_not_saved', $results['not_saved']);
+			$session->set('citations_error', $results['error']);
+
+			//delete the temp files that hold citation data
+			$this->importer->cleanup(true);
+
+			return $view->loadTemplate();
+	 }
+}
+/**
 	 * [getCitationConfig description]
 	 * @return [object] [description]
 	 */
