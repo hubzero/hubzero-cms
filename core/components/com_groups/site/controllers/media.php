@@ -205,10 +205,12 @@ class Media extends Base
 		//load group object
 		$hubzeroGroup = Group::getInstance($this->cn);
 
+		$base = substr(PATH_APP, strlen(PATH_ROOT));
+
 		$html = '<ul>';
 		foreach ($tree as $treeLevel)
 		{
-			$folder       = str_replace('/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
+			$folder       = str_replace($base . '/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
 			$nodeToggle   = '<span class="tree-folder-toggle-spacer"></span>';
 			$childrenHtml = '';
 
@@ -259,10 +261,12 @@ class Media extends Base
 		// load group object
 		$hubzeroGroup = Group::getInstance($this->cn);
 
+		$base = substr(PATH_APP, strlen(PATH_ROOT));
+
 		$options = '';
 		foreach ($tree as $treeLevel)
 		{
-			$value = str_replace('/app/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
+			$value = str_replace($base . '/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
 			$text  = str_repeat('&lfloor;', substr_count($value, '/'));
 			$parts = explode('/', $value);
 			$text .= ' ' . array_pop($parts);

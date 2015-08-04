@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 		<legend><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE_FOLDER'); ?></legend>
 		<label>
 			<?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE_CURRENT_FOLDER'); ?>:
-			<input type="text" name="current" value="<?php echo $this->folder; ?>" readonly="readonly" />
+			<input type="text" name="current" value="<?php echo $this->escape($this->folder); ?>" readonly="readonly" />
 		</label>
 		<label>
 			<?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE_MOVE_TO'); ?>:

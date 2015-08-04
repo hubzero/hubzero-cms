@@ -40,9 +40,9 @@ $fileInfo = pathinfo($this->file);
 		<legend><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME_FILE'); ?></legend>
 		<label>
 			<?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME_CURRENT_NAME'); ?>:<br />
-			<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
+			<input type="hidden" name="file" value="<?php echo $this->escape($this->file); ?>" />
 
-			<input type="text" name="name" value="<?php echo $fileInfo['basename']; ?>" />
+			<input type="text" name="name" value="<?php echo $this->escape($fileInfo['basename']); ?>" />
 		</label>
 		<p class="controls">
 			<?php echo Html::input('token'); ?>

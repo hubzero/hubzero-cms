@@ -116,6 +116,8 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 
 		<?php foreach ($this->files as $file) : ?>
 			<?php
+				$file = ltrim($file, DS);
+
 				// build file path
 				$filePath    = $this->path . DS . $file;
 				$relFilePath = $this->relpath . DS . $file;
