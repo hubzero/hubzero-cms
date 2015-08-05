@@ -175,6 +175,10 @@ foreach ($this->rows as $row)
 	//$publish_up->setTimezone(Config::get('offset'));
 	//$publish_down->setTimezone(Config::get('offset'));
 
+	$alt  = Lang::txt('JUNPUBLISHED');
+	$cls  = 'unpublish';
+	$task = 'publish';
+
 	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1)
 	{
 		$alt  = Lang::txt('JPUBLISHED');
@@ -204,6 +208,12 @@ foreach ($this->rows as $row)
 		$alt  = Lang::txt('JTRASHED');
 		$task = 'publish';
 		$cls  = 'trash';
+	}
+	else if ($row->get('state') == 2)
+	{
+		$alt  = Lang::txt('COM_BLOG_FIELD_STATE_REGISTERED');
+		$task = 'publish';
+		$cls  = 'publish';
 	}
 
 	$times = '';
