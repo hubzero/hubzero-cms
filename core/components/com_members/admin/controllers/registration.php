@@ -108,6 +108,19 @@ class Registration extends AdminController
 		$component->params = $params->toString();
 		$component->store();
 
+		if (App::get('config')->get('caching'))
+		{
+			$handler = App::get('config')->get('cache_handler');
+
+			App::get('config')->set($handler, array(
+				'cachebase' => PATH_APP . '/cache/site'
+			));
+
+			$cache = new \Hubzero\Cache\Manager(\App::getRoot());
+			$cache->storage($handler);
+			$cache->clean('_system');
+		}
+
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_REGISTRATION_SAVED')
