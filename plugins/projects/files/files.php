@@ -1265,7 +1265,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Make the filename safe
 		$filename = urldecode($filename);
-		$filename = ProjectsHtml::makeSafeFile($filename);
+		$filename = ProjectsHtml::makeSafeFile(trim($filename));
 
 		$fName 	  = $ext ? $filename . '.' . $ext : $filename;
 
@@ -1532,7 +1532,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Make the filename safe
 				if ($file)
 				{
-					$file = ProjectsHtml::makeSafeFile($file);
+					$file = ProjectsHtml::makeSafeFile(trim($file));
 				}
 
 				// Get file extention
@@ -1801,7 +1801,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Clean up filename
 				$safe_dir = $a_dir && $a_dir != '.' ? ProjectsHtml::makeSafeDir($a_dir) : '';
-				$safe_file= ProjectsHtml::makeSafeFile($a_file);
+				$safe_file= ProjectsHtml::makeSafeFile(trim($a_file));
 
 				$skipDir = 0;
 				if ($safe_dir && in_array(strtolower($safe_dir), $reserved))
@@ -1934,7 +1934,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Clean up filename
 				$safe_dir = $a_dir ? ProjectsHtml::makeSafeDir($a_dir) : '';
-				$safe_file= ProjectsHtml::makeSafeFile($a_file);
+				$safe_file= ProjectsHtml::makeSafeFile(trim($a_file));
 				$safename = $safe_dir && !$skipDir ? $safe_dir . DS . $safe_file : $safe_file;
 				$afile 	  = $subdir ? $subdir . DS . $safename : $safename;
 				$adir 	  = $subdir ? $subdir . DS . $safe_dir : $safe_dir;
@@ -3253,11 +3253,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Make dir/file name safe
 		if ($rename == 'dir')
 		{
-			$newname = ProjectsHtml::makeSafeDir($newname);
+			$newname = ProjectsHtml::makeSafeDir(trim($newname));
 		}
 		else
 		{
-			$newname = ProjectsHtml::makeSafeFile($newname);
+			$newname = ProjectsHtml::makeSafeFile(trim($newname));
 		}
 
 		// Compare new and old name
@@ -7044,7 +7044,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$newpath = $newExt ? $newpath : $newpath . '.' . $oldExt;
 
 		$newdir  = dirname($newpath) == '.' ? '' : dirname($newpath) . DS;
-		$newname = ProjectsHtml::makeSafeFile(basename($newpath));
+		$newname = ProjectsHtml::makeSafeFile(basename(trim($newpath)));
 		$newpath = $newdir . $newname;
 
 		// Compare new and old name
@@ -7198,7 +7198,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$dataPath = urldecode($dataPath);
 
 			// Figure destination
-			$file 		= ProjectsHtml::makeSafeFile(basename($dataPath));
+			$file 		= ProjectsHtml::makeSafeFile(basename(trim($dataPath)));
 			$localPath	= $this->subdir ? $this->subdir . DS . $file : $file;
 			$fullPath	= $this->prefix . $this->path . DS . $localPath;
 
@@ -7318,7 +7318,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				for ($i=0; $i < count($files['name']); $i++)
 				{
 					$file = $files['name'][$i];
-					$file = ProjectsHtml::makeSafeFile($file);
+					$file = ProjectsHtml::makeSafeFile(trim($file));
 					$assets[] = $this->subdir ? $this->subdir . DS . $file : $file;
 				}
 			}
