@@ -134,7 +134,7 @@ class Cache extends \JModelList
 		$client  = \Hubzero\Base\ClientManager::client($this->getState('clientId'));
 
 		\App::get('config')->set($handler, array(
-			'cachebase' => PATH_APP . '/app/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->getState('clientId') == 1 ? 'admin' : 'site')
+			'cachebase' => PATH_APP . '/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->getState('clientId') == 1 ? 'admin' : 'site')
 		));
 
 		$cache = new \Hubzero\Cache\Manager(\App::getRoot());
