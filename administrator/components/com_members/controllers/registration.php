@@ -102,6 +102,12 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 		$component->params = $params->__toString();
 		$component->store();
 
+		$cache = JCache::getInstance('callback', array(
+			'defaultgroup' => '_system',
+			'cachebase'    => JFactory::getConfig()->get('cache_path', JPATH_SITE . '/cache')
+		));
+		$cache->clean();
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('COM_MEMBERS_REGISTRATION_SAVED')
