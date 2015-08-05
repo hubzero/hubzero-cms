@@ -432,7 +432,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				}
 
 				// Remove record of reason wanting to join group
-				$reason = new GroupsReason($database);
+				$reason = new Components\Groups\Tables\Reason($database);
 				$reason->deleteReason($targetuser->get('id'), $this->group->get('gidNumber'));
 
 				// Are they approved for membership?
