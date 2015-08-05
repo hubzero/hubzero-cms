@@ -807,12 +807,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$allow_tags   = "yes";
 		$allow_badges = "yes";
 
+		//var_dump($this->group->get('gidNumber')); die; 
 		$this->importer->set('user', User::get('id'));
-		if ($group = Request::getVar('group'))
-		{
-			$this->importer->set('scope', 'group');
-			$this->importer->set('scope_id', $group);
-		}
+		$this->importer->set('scope', 'group');
+		$this->importer->set('scope_id', $this->group->get('gidNumber'));
 		$this->importer->setTags($allow_tags == 'yes');
 		$this->importer->setBadges($allow_badges == 'yes');
 
@@ -841,8 +839,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			);
 
 			//view variables
-			$view->citations_require_attention = $citations_action_attention;
-			$view->citation_require_no_attention = $citation_action_no_attention;
+			$view->citations_require_attention = (isset($citations_action_attention) ? $citations_action_attention : null);
+			$view->citation_require_no_attention = (isset($citation_action_no_attention) ?  $citations_action_no_attention : null);
 
 			// if we have citations not getting saved
 			if (count($results['not_saved']) > 0)
@@ -872,7 +870,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			//delete the temp files that hold citation data
 			$this->importer->cleanup(true);
 
-			return $view->loadTemplate();
+			// redirect after save
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
+				'success'
+			);
+			return;
 	 }
 }
 /**
