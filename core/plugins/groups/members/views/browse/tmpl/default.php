@@ -353,7 +353,7 @@ $option = 'com_groups';
 
 								if ($this->filter == 'pending') {
 									$database = App::get('db');
-									$row = new GroupsReason($database);
+									$row = new Components\Groups\Tables\Reason($database);
 									$row->loadReason($u->get('uidNumber'), $this->group->gidNumber);
 
 									if ($row)
