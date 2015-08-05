@@ -64,9 +64,14 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 		}
 
 		// simple performance check to determine whether bot should process further
-		if (strpos($article->text, 'loadposition') === false && strpos($article->text, 'loadmodule') === false)
+		if (isset($article->text) && strpos($article->text, 'loadposition') === false && strpos($article->text, 'loadmodule') === false)
 		{
 			return true;
+		}
+		elseif (!isset($article->text) && isset($article->introtext))
+		{
+			// for terms of service
+			$article->text = $article->introtext;
 		}
 
 		// expression to search for (positions)
