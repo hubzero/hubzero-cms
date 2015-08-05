@@ -249,6 +249,29 @@ class Setup extends Base
 			return;
 		}
 
+		// Get group ID
+		if ($this->_gid)
+		{
+			// Load the group
+			$this->group = \Hubzero\User\Group::getInstance( $this->_gid );
+
+			// Ensure we found the group info
+			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_NO_GROUP_FOUND'), 404);
+				return;
+			}
+			$this->_gid = $this->group->get('gidNumber');
+			$this->model->set('owned_by_group', $this->_gid);
+
+			// Make sure we have up-to-date group membership information
+			if ($this->model->exists())
+			{
+				$objO = $this->model->table('Owner');
+				$objO->reconcileGroups($this->model->get('id'));
+			}
+		}
+
 		// Check authorization
 		if ($this->model->exists() && !$this->model->access('owner'))
 		{
