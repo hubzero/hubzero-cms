@@ -40,8 +40,8 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 <!-- Load content selection browser //-->
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : ''; ?>">
-			<div class="element_editing grid">
-				<div class="pane-wrapper col span8">
+			<div class="element_editing">
+				<div class="pane-wrapper">
 					<span class="checker">&nbsp;</span>
 					<label id="<?php echo $elName; ?>-lbl">
 						<?php if ($required) { ?><span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
@@ -56,19 +56,16 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else {
-							echo '<textarea name="tags" id="tags" rows="6" cols="35">'. $this->pub->getTagsForEditing() .'</textarea>'."\n";
+							echo '<textarea name="tags" id="tags" rows="6" cols="35">' . $this->pub->getTagsForEditing() . '</textarea>' . "\n";
 						}
 						?>
-				</div>
-				<div class="col span3 omega block-aside">
-					<div class="block-info"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ABOUT_TAGS'); ?></p></div>
 				</div>
 			</div>
 </div>
 <?php if ($this->categories && count($this->categories) > 1) { ?>
 <div class="blockelement el-optional el-complete">
-	<div class="element_editing grid">
-		<div class="pane-wrapper col span8">
+	<div class="element_editing">
+		<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
 				<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
 		<?php foreach ($this->categories as $cat)

@@ -666,7 +666,7 @@
 		display: block;
 		clear: right;
 	}
-	#pub-editor .columns {
+	#pub-editor .col, #pub-editor .columns {
 		padding: 0;
 		margin: 0;
 		width: 50%;
@@ -674,12 +674,12 @@
 		-moz-border-radius: 20px 20px 0 0;
 		border-radius: 20px 20px 0 0;
 	}
-	#pub-editor .columns {
+	#pub-editor .col, #pub-editor .columns {
 		padding-bottom: 300em;
 	    margin-bottom: -300em;
 	}
 	#pub-editor {
-		border-bottom: 1px solid #d3c3b4;
+		border-bottom: 1px solid #d3c3b4 !important;
 		overflow: hidden;
 		width: 100%;
 		min-width: 600px;
@@ -706,13 +706,15 @@
 	#pub-editor #c-output {
 		background: #fdfdfb url("../img/bigarrow.gif") left 6em no-repeat;
 		border: 1px solid #d3c3b4;
-		margin-left: -4px;
+		margin-left: -1px;
 	}
+	#pub-editor .col h4,
 	#pub-editor .columns h4 {
 		font-size: 130%;
 		padding-left: 0;
 		margin-bottom: 0.5em;
 	}
+	#pub-editor .col h5m
 	#pub-editor .columns h5 {
 		margin: 2em 0 0.5em 0;
 		color: #000;
@@ -1357,28 +1359,6 @@
 	}
 	.maypublish .prominent {
 		color: green;
-	}
-	.draft_incomplete .pub-review-content {
-		border-color: #e9c9ba;
-	}
-	.pub-review-content .columns {
-		margin-top: -1em;
-	}
-	.pub-review-content  {
-		font-size: 1em;
-	}
-	.pub-review-content .columns .columns {
-		margin-top: 0;
-	}
-	.pub-review-label {
-		color: #666;
-		border-bottom: 1px dotted #CCC;
-		margin-bottom: 1em;
-		font-size: 0.8em;
-	}
-	.pub-review-content h4 {
-		margin-left: 0 !important;
-		padding-left: 0 !important;
 	}
 	.summary {
 		font-size: 85%;
