@@ -75,7 +75,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 			<?php foreach ($segments as $segment) : ?>
 				<?php $folder .= DS . $segment; ?>
 				<li class="divider"><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH'); ?></li>
-				<li><a data-folder="<?php echo $folder; ?>" href="javascript:(void);"><?php echo $segment; ?></a></li>
+				<li><a data-folder="<?php echo $this->escape($folder); ?>" href="javascript:(void);"><?php echo $this->escape($segment); ?></a></li>
 			<?php endforeach; ?>
 		</ul>
 		<div class="buttons"></div>
@@ -106,7 +106,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 						$renameFolderPath   = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=renamefolder&folder=' .  $dataFolder . '&tmpl=component');
 						$deleteFolderPath   = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component');
 					?>
-					<a href="javascript:void(0);" data-action-delete="<?php echo $deleteFolderPath; ?>" data-action-rename="<?php echo $renameFolderPath; ?>" data-action-move="<?php echo $moveFolderPath; ?>" data-folder="<?php echo $dataFolder; ?>"><?php echo $folder; ?></a>
+					<a href="javascript:void(0);" data-action-delete="<?php echo $deleteFolderPath; ?>" data-action-rename="<?php echo $renameFolderPath; ?>" data-action-move="<?php echo $moveFolderPath; ?>" data-folder="<?php echo $this->escape($dataFolder); ?>"><?php echo $this->escape($folder); ?></a>
 				</div>
 				<div class="modified">
 					--
@@ -125,15 +125,14 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 				// get file info & stats
 				$fileInfo   = @pathInfo($filePath);
 				$filesize   = @filesize($filePath);
-				$dimensions = @getimagesize( $filePath );
+				$dimensions = @getimagesize($filePath);
 				$modified   = @filemtime($filePath);
-
 
 				// formatted results
 				$extension           = $fileInfo['extension'];
-				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes( $filesize );
+				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes($filesize);
 				$formattedDimensions = $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px';
-				$formattedModified   = date('m/d/Y g:ia', $modified);
+				$formattedModified   = Date::of($modified)->toLocal('m/d/Y g:ia');
 
 				// is this file an image
 				$isImage   = (in_array($extension, array('jpg','jpeg','png','gif','bmp','tiff'))) ? true : false;
