@@ -63,6 +63,8 @@ if (isset($this->messages))
 <div id="citations-introduction">
 	<div class="instructions">
 	<h2 id="instructions-title">Group Citations</h2>
+	<p id="noCitations"> <?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+	<?php if ($this->isManager): ?>
 	<p id="who">A group manager may:</p>
 	<ul>
 		<li>
@@ -93,6 +95,7 @@ if (isset($this->messages))
 		</div>
 			</li>
  </ul>
+ <?php endif; ?>
 </div><!-- / .instructions -->
 	<div class="questions">
 	<p><strong>What is a group citation?</strong></p>

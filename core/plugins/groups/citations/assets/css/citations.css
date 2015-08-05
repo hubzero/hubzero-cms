@@ -136,6 +136,11 @@
 		margin-top: 0;
 		padding: 10px 30px 30px 30px;
 		}
+
+#noCitations {
+	text-align: center;
+	font-size: 12pt;
+	}
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1080px) {
 	.group_citations .aside,
