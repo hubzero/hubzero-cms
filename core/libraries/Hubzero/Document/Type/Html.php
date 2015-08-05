@@ -511,7 +511,9 @@ class Html extends Base
 
 		if (!file_exists($directory . DS . $template . DS . $file))
 		{
-			$template = 'system';
+			$directory = PATH_CORE . '/templates';
+			$template  = 'system';
+			$params['baseurl'] = str_replace('/app', '/core', $params['baseurl']);
 		}
 
 		// Load the language file for the template
