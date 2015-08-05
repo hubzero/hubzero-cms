@@ -260,7 +260,15 @@ class Entry extends \JTable
 					$where[] = "m.state=0";
 				break;
 				case 'all':
-					$where[] = "m.state>=0";
+					if (!\App::isAdmin() && (!isset($filters['scope']) || !$filters['scope']))
+					{
+						// This means we're pulling entries for all scopes
+						$where[] = "((m.state>=0 AND m.scope=" . $this->_db->quote('site') . ") OR (m.state>0 AND m.scope!=" . $this->_db->quote('site') . "))";
+					}
+					else
+					{
+						$where[] = "m.state>=0";
+					}
 				break;
 				case 'trashed':
 					$where[] = "m.state<0";
