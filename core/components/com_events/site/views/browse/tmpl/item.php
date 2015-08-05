@@ -33,6 +33,23 @@ defined('_HZEXEC_') or die();
 
 // get the timezone name from offset
 $timezone = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
+if ($timezone === false)
+{
+	$timezone = null;
+
+	$offset = $this->row->time_zone*3600; // convert hour offset to seconds
+	$abbrarray = timezone_abbreviations_list();
+	foreach ($abbrarray as $abbr)
+	{
+		foreach ($abbr as $city)
+		{
+			if ($city['offset'] == $offset)
+			{
+				$timezone = $city['timezone_id'];
+			}
+		}
+	}
+}
 
 $this->row->content = stripslashes($this->row->content);
 $this->row->content = str_replace('<br />','',$this->row->content);
