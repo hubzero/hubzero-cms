@@ -212,6 +212,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	{
 		//initialize the view
 		$view = $this->view('default', 'browse');
+
 		// push objects to the view
 		$view->group			 = $this->group;
 		$view->option			 = $this->option;
@@ -225,6 +226,27 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
 
+		$count = clone $obj['citations'];
+		$count = $count->count();
+		$display = $view->config->get('display');
+
+		// for first-time use
+		if ($count == 0 && $view->isManager && !isset($display))
+		{
+			// have a group manager set the settings
+			App::redirect(
+			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=settings'),
+			 Lang::txt('Please elect your settings for this group.'),
+			 'warning'
+			 );
+		}
+		elseif ($count ==0 && $view->isManager);
+		{
+			$view = $this->view('intro', 'browse');
+			$view->group = $this->group;
+			$view->isManager = ($this->authorized == 'manager') ? true : false;
+		}
+	
 		//get applied filters
 		$view->filters = $obj['filters'];
 
@@ -1183,9 +1205,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// enable coins support
 		$view->coins = 1;
-
-		// config
-		//$view->config = Component::params('com_citations');
 
 		// types
 		$view->types = \Components\Citations\Models\Type::all();
