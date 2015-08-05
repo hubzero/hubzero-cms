@@ -386,6 +386,15 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
 		$view->config  = json_decode($this->group->get('params'));
 
+		if ($view->isManager == false)
+		{
+			App::redirect(
+			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+			 Lang::txt('This function can only be performed by a group manager.'),
+			 'warning'
+			 );
+		}
+
 		//get the citation types
 		$citationsType = \Components\Citations\Models\Type::all();
 		$view->types = $citationsType->rows()->toObject();
@@ -702,12 +711,22 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->group = $this->group;
 		$view->messages = NULL;
 		$view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
+		$view->isManager = ($this->authorized == 'manager') ? true : false;
+
+		if ($view->isManager == false)
+		{
+			App::redirect(
+			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+			 Lang::txt('This function can only be performed by a group manager.'),
+			 'warning'
+			 );
+		}
 
 		return $view->loadTemplate();
 
 	}
 	/**
-	 * Upload task 
+	 * Upload task
 	 * @return [object] [description]
 	 */
 	private function _upload()
@@ -901,44 +920,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return;
 	 }
 }
-/**
-	 * [getCitationConfig description]
-	 * @return [object] [description]
-	 */
-	private function getCitationConfig($group)
-	{
-		if (isset($group))
-		{
-			$params = json_decode($group->get('params'));
 
-			return $params;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	private function saveConfig($params = null)
-	{
-
-
-	}
-
-	/**
-	 * Determine if user is part of publication project and is allowed to edit citation
-	 *
-	 * @param		 array $assocs
-	 * @return		 void
-	 */
-	public function isPubAuthor()
-	{	/**
-		*@TODO Implement
-		**/
-		return false;
-	}
-
-	/**
+	 /**
 	 * Redirect to login form
 	 *
 	 * @return	void
