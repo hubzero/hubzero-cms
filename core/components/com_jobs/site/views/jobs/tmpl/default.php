@@ -30,272 +30,102 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-	/* Jobs List */
-	$jobs               = $this->jobs;
-	$option             = $this->option;
-	$filters            = $this->filters;
+if ($this->subscriptionCode && $this->employer)
+{
+	$this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->employer->companyName;
+}
 
-	if ($this->subscriptionCode && $this->employer)
-	{
-		$this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->employer->companyName;
-	}
+?>
+<header id="content-header">
+	<h2><?php echo $this->mini ? Lang::txt('COM_JOBS_LATEST_POSTINGS') : $this->title; ?></h2>
 
-	$html  = '';
-	$now = Date::toSql();
-
-	if (!$this->mini)
-	{
-		?>
-		<header id="content-header">
-			<h2><?php echo $this->title; ?></h2>
-
-			<div id="content-header-extra">
-				<ul id="useroptions">
-				<?php if (User::isGuest()) { ?>
-					<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a class="btn" href="' . Route::url('index.php?option=' . $option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-				<?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
-					<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-					<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
-				<?php } else if ($this->admin) { ?>
-					<li>
-						<?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-						<a class="icon-dashboard btn" href="<?php echo Route::url('index.php?option=' . $option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
-					</li>
-				<?php } else { ?>
-					<li><a class="myresume btn" href="<?php echo Route::url('index.php?option=' . $option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
-				<?php } ?>
-				</ul>
-			</div><!-- / #content-header-extra -->
-		</header><!-- / #content-header -->
-
-		<section class="main section">
-		<?php if ($this->config->get('allowsubscriptions', 0)) { ?>
-			<div class="subject">
-		<?php } ?>
-				<form method="get" action="<?php echo Route::url('index.php?option=' . $option . '&task=browse'); ?>">
-					<?php
-					$sortbys = array(
-						'category' => Lang::txt('COM_JOBS_CATEGORY'),
-						'opendate' => Lang::txt('COM_JOBS_POSTED_DATE'),
-						'type'     => Lang::txt('COM_JOBS_TYPE')
-					);
-					$filterbys = array(
-						'all'   => Lang::txt('COM_JOBS_ALL'),
-						'open'  => Lang::txt('COM_JOBS_ACTIVE'),
-						'closed'=> Lang::txt('COM_JOBS_EXPIRED')
-					);
-					?>
-					<div class="jobs_controls">
-						<fieldset>
-							<label>
-								<?php echo Lang::txt('COM_JOBS_ACTION_SEARCH_BY_KEYWORDS'); ?>:<span class="questionmark tooltips" title="<?php echo Lang::txt('COM_JOBS_TIP_SEARCH_JOBS_BY_KEYWORDS'); ?>"></span>
-								<input type="text" name="q" value="<?php echo $this->escape($filters['search']); ?>" />
-							</label>
-							<input type="submit" value="<?php echo Lang::txt('COM_JOBS_GO'); ?>" />
-							<input type="hidden" name="limitstart" value="0" />
-							<input type="hidden" name="performsearch" value="1" />
-						</fieldset>
-						<div class="note_total">
-							<?php
-							// show how many
-							$totalnote = Lang::txt('COM_JOBS_NOTICE_DISPLAYING').' ';
-							if ($filters['start'] == 0)
-							{
-								$totalnote .= ($this->pageNav->total > count($jobs)) ? ' ' . Lang::txt('COM_JOBS_NOTICE_TOP') . ' ' . count($jobs) .' ' . Lang::txt('COM_JOBS_NOTICE_OUT_OF') . ' ' . $this->pageNav->total : strtolower(Lang::txt('COM_JOBS_ALL')) . ' ' . count($jobs);
-							}
-							else
-							{
-								$totalnote .= ($filters['start'] + 1);
-								$totalnote .= ' - ';
-								$totalnote .= $filters['start'] + count($jobs);
-								$totalnote .=' out of ' . $this->pageNav->total;
-							}
-							$totalnote .= ' ' . Lang::txt('COM_JOBS_NOTICE_JOB_OPENINGS');
-							?>
-						</div>
-					</div>
-	<?php } else { ?>
-		<section class="main section">
-			<h3><?php echo Lang::txt('COM_JOBS_LATEST_POSTINGS'); ?></h3>
-	<?php } ?>
-
-			<?php if (count($jobs) > 0) { ?>
-				<?php
-				$jt = new Components\Jobs\Tables\JobType ( $this->database );
-				$jc = new Components\Jobs\Tables\JobCategory ( $this->database );
-
-				$sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
-
-				$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
-				?>
-				<table class="postings">
-					<thead>
-						<tr class="headings">
-							<th<?php if ($this->filters['sortby'] == 'title') {  echo ' class="activesort"'; } ?>>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task) . '/?sortby=title&sortdir=' . $sortbyDir . '&q=' . $this->filters['search']; ?>" class="re_sort">
-									<?php echo Lang::txt('COM_JOBS_TABLE_JOB_TITLE'); ?>
-								</a>
-							</th>
-						<?php if ($this->admin && !$this->emp && !$this->mini) { ?>
-							<th><?php echo Lang::txt('COM_JOBS_TABLE_STATUS'); ?></th>
-						<?php } ?>
-							<th><?php echo Lang::txt('COM_JOBS_TABLE_COMPANY'); ?></th>
-							<th><?php echo Lang::txt('COM_JOBS_TABLE_LOCATION'); ?></th>
-							<th<?php if ($this->filters['sortby'] == 'category') { echo ' class="activesort"'; } ?>>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task).'/?sortby=category&amp;sortdir=' . $sortbyDir . '&amp;q=' . $this->filters['search']; ?>" class="re_sort">
-									<?php echo Lang::txt('COM_JOBS_TABLE_CATEGORY'); ?>
-								</a>
-							</th>
-							<th<?php if ($this->filters['sortby'] == 'type') { echo ' class="activesort"'; } ?>>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task) . '/?sortby=type&amp;sortdir=' . $sortbyDir. '&amp;q=' . $this->filters['search']; ?>" class="re_sort">
-									<?php echo Lang::txt('COM_JOBS_TABLE_TYPE'); ?>
-								</a>
-							</th>
-							<th<?php if ($this->filters['sortby'] == 'opendate') { echo ' class="activesort"'; } ?>>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task) . '/?sortby=opendate&amp;sortdir=' . $sortbyDir . '&amp;q=' . $this->filters['search']; ?>" class="re_sort">
-									<?php echo Lang::txt('COM_JOBS_TABLE_POSTED'); ?>
-								</a>
-							</th>
-							<th>
-								<?php echo Lang::txt('COM_JOBS_TABLE_APPLY_BY'); ?>
-							</th>
-						<?php if ($filters['search']) { ?>
-							<th><?php echo Lang::txt('COM_JOBS_TABLE_RELEVANCE'); ?></th>
-						<?php } ?>
-						</tr>
-					</thead>
-					<tbody>
-					<?php
-					for ($i=0, $n=count( $jobs ); $i < $n; $i++)
-					{
-						$model = new Components\Jobs\Models\Job($jobs[$i]);
-
-						$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? Date::of($jobs[$i]->closedate)->toLocal('d&\nb\sp;M&\nb\sp;y') : 'ASAP';
-						if ($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
-						{
-							$closedate = 'closed';
-						}
-						$curtype = $jt->getType($jobs[$i]->type);
-						$curcat = $jc->getCat($jobs[$i]->cid);
-
-						// compute relevance to search keywords
-						if ($filters['search'])
-						{
-							$relscore = $jobs[$i]->keywords > 0 ? floor(($jobs[$i]->keywords * 100) / $maxscore) : 0;
-						}
-
-						// what's the job status?
-						if ($this->admin && !$this->emp && !$this->mini)
-						{
-							$status = '';
-							$class =  '';
-							switch ( $jobs[$i]->status )
-							{
-								case 0:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
-											$class  = 'post_pending';
-											break;
-								case 1:     $status =  $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
-											? Lang::txt('COM_JOBS_JOB_STATUS_INVALID')
-											: Lang::txt('COM_JOBS_JOB_STATUS_ACTIVE');
-											$class  = $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
-											? 'post_invalidsub'
-											: 'post_active';
-											break;
-								case 3:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE');
-											$class  = 'post_inactive';
-											break;
-								case 4:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_DRAFT');
-											$class  = 'post_draft';
-											break;
-							}
-						}
-						?>
-						<tr>
-							<td class="jobtitle">
-								<a href="<?php echo Route::url('index.php?option=' . $option . '&task=job&code=' . $jobs[$i]->code); ?>" title="<?php echo $model->content('clean', 250); ?>">
-									<?php echo $jobs[$i]->title; ?>
-								</a>
-							</td>
-						<?php if ($this->admin && !$this->emp && !$this->mini) { ?>
-							<td <?php echo $class ? 'class="' . $class . '"' : ''; ?>>
-								<?php echo $status; ?>
-							</td>
-						<?php } ?>
-							<td>
-								<?php echo $jobs[$i]->companyName; ?>
-							</td>
-							<td>
-								<?php echo $jobs[$i]->companyLocation.', '.$jobs[$i]->companyLocationCountry; ?>
-							</td>
-							<td class="secondary"><?php echo $curcat; ?></td>
-							<td class="secondary"><?php echo $curtype; ?></td>
-							<td class="secondary">
-								<span class="datedisplay"><?php echo Date::of($jobs[$i]->added)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
-							</td>
-							<td>
-								<?php if ($jobs[$i]->applied) { ?>
-									<span class="alreadyapplied">
-										<?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON'); ?> <span class="datedisplay"><?php echo Date::of($jobs[$i]->applied)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
-									</span>
-								<?php } else if ($jobs[$i]->withdrawn) { ?>
-									<span class="withdrawn">
-										<?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON'); ?> <span class="datedisplay"><?php echo Date::of($jobs[$i]->withdrawn)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
-									</span>
-								<?php } else { ?>
-									<?php echo $closedate ? '<span class="datedisplay">' . $closedate . '</span>' : ''; ?>
-								<?php } ?>
-							</td>
-						<?php if ($filters['search']) { ?>
-							<td class="relevancescore <?php echo $relscore > 0 ? 'yes' : 'no'; ?>"><?php echo $relscore; ?> %</td>
-						<?php } ?>
-						</tr>
-					<?php } ?>
-					</tbody>
-				</table>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+		<?php if (User::isGuest()) { ?>
+			<li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a class="btn" href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+		<?php } else if ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
+			<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
+		<?php } else if ($this->admin) { ?>
+			<li>
+				<?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
+				<a class="icon-dashboard btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+			</li>
 		<?php } else { ?>
-			<p>
-				<?php
-				echo Lang::txt('COM_JOBS_NO_JOBS_FOUND');
-				if ($this->subscriptionCode)
-				{
-					if ($this->employer)
-					{
-						echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->employer->companyName . ' (' . $this->subscriptionCode . ')';
-					}
-					else
-					{
-						echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->subscriptionCode . ')';
-					}
-					echo '. <a href="' . Route::url('index.php?option=' . $option . '&task=browse') . '"">' . Lang::txt('COM_JOBS_ACTION_BROWSE_ALL_JOBS') . '</a>';
-				}
-				?>
-			</p>
+			<li><a class="myresume btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
 		<?php } ?>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
 
-	<?php if (!$this->mini) { ?>
+<section class="main section">
+	<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+			<?php
+			$sortbys = array(
+				'category' => Lang::txt('COM_JOBS_CATEGORY'),
+				'opendate' => Lang::txt('COM_JOBS_POSTED_DATE'),
+				'type'     => Lang::txt('COM_JOBS_TYPE')
+			);
+			$filterbys = array(
+				'all'   => Lang::txt('COM_JOBS_ALL'),
+				'open'  => Lang::txt('COM_JOBS_ACTIVE'),
+				'closed'=> Lang::txt('COM_JOBS_EXPIRED')
+			);
+			?>
+	<?php if (count($this->jobs) > 0) { ?>
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
+				<fieldset class="entry-search">
+					<legend></legend>
+					<label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
+					<input type="hidden" name="limitstart" value="0" />
+					<input type="hidden" name="performsearch" value="1" />
+				</fieldset>
+				<div class="clearfix"></div>
+				<div class="container-block">
+		<?php // Display List of items
+
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'site',
+				'name'      => 'jobs',
+				'layout'    => '_list'
+				)
+			);
+			$view->set('option', $this->option)
+		     ->set('filters', $this->filters)
+		     ->set('config', $this->config)
+		     ->set('task', $this->task)
+		     ->set('emp', $this->emp)
+		     ->set('mini', $this->mini)
+			 ->set('jobs', $this->jobs)
+		     ->set('admin', $this->admin)
+		     ->display();
+		?>
+				</div>
+			</div>
+		<?php } else { ?>
+		<p>
 		<?php
-		// Insert page navigation
-		$pagenavhtml = $this->pageNav->render();
-		$pagenavhtml = str_replace('jobs/?', 'jobs/browse/?', $pagenavhtml);
-		echo $pagenavhtml;
-		if ($this->config->get('allowsubscriptions', 0)) { ?>
-				</form>
-			</div><!-- / .subject -->
-			<aside class="aside minimenu">
-				<div class="container">
-					<h3><?php echo Lang::txt('COM_JOBS_EMPLOYERS'); ?></h3>
-					<ul>
-						<li><a href="<?php echo Route::url('index.php?option=' . $option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_POST_JOB'); ?></a></li>
-						<li><a href="<?php echo Route::url('index.php?option=' . $option . '&task=resumes'); ?>"><?php echo Lang::txt('COM_JOBS_BROWSE_RESUMES'); ?></a></li>
-					</ul>
-				</div>
-				<div class="container">
-					<h3><?php echo Lang::txt('COM_JOBS_SEEKERS'); ?></h3>
-					<ul>
-						<li><a href="<?php echo Route::url('index.php?option=' . $option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_POST_RESUME'); ?></a></li>
-					</ul>
-				</div>
-			</aside><!-- / .aside -->
+		echo Lang::txt('COM_JOBS_NO_JOBS_FOUND');
+		if ($this->subscriptionCode)
+		{
+			if ($this->employer)
+			{
+				echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->employer->companyName . ' (' . $this->subscriptionCode . ')';
+			}
+			else
+			{
+				echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->subscriptionCode . ')';
+			}
+			echo '. <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse') . '"">' . Lang::txt('COM_JOBS_ACTION_BROWSE_ALL_JOBS') . '</a>';
+		}
+		?>
+		</p>
 		<?php } ?>
-	<?php } ?>
-	</section>
+		<?php
+		$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+		echo $this->pageNav->render();
+		?>
+	</form>
+</section>

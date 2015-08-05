@@ -59,20 +59,19 @@ defined('_HZEXEC_') or die();
 
 <?php if ($this->config->get('allowsubscriptions', 0)) { ?>
 <section id="introduction" class="section">
-	<div class="grid">
-		<div class="col span12 omega">
+	<div id="introbody">
 		<div class="grid">
-			<div class="col span-third">
-				<p class="intronote"><?php echo Lang::txt('COM_JOBS_TIP_ENJOY_COMMUNITY_EXPOSURE') . ' '.Config::get('sitename') . '. ' . Lang::txt('COM_JOBS_TIP_SERVICES_FREE'); echo ' ' . Lang::txt('COM_JOBS_TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
+			<div class="col span4">
+				<p class="intronote"><?php echo Lang::txt('COM_JOBS_TIP_ENJOY_COMMUNITY_EXPOSURE', Config::get('sitename')); ?></p>
 			</div>
-			<div class="col span-third">
+			<div class="col span4">
 				<h3><?php echo Lang::txt('COM_JOBS_EMPLOYERS'); ?></h3>
 				<ul>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES'); ?></a></li>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_ACTION_POST_JOB'); ?></a></li>
 				</ul>
 			</div>
-			<div class="col span-third omega">
+			<div class="col span4 omega">
 				<h3><?php echo Lang::txt('COM_JOBS_SEEKERS'); ?></h3>
 
 				<ul>
@@ -80,8 +79,7 @@ defined('_HZEXEC_') or die();
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_ACTION_POST_RESUME'); ?></a></li>
 				</ul>
 			</div>
-		</div>
-		</div>
-	</div><!-- / .grid -->
+		</div><!-- / .grid -->
+	</div>
 </section><!-- / #introduction.section -->
 <?php } ?>

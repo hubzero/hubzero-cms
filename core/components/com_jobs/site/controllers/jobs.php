@@ -378,26 +378,44 @@ class Jobs extends SiteController
 			$view->pageNav     = $pageNav;
 			$view->msg         = $this->_msg;
 			$view->display();
+
+			// Show latest jobs
+			$view = new View(array('name' => 'jobs', 'layout' => 'latest'));
+			$view->set('option', $this->_option)
+		     ->set('filters', $filters)
+		     ->set('config', $this->config)
+		     ->set('task', $this->_task)
+		     ->set('emp', $this->_emp)
+			 ->set('jobs', $jobs)
+		     ->set('admin', $this->admin)
+		     ->display();
+		}
+		else
+		{
+			// Jobs list
+			$view = new View(array(
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'site',
+				'name'      => 'jobs',
+				'layout'    => 'default'
+				)
+			);
+			$view->title            = $this->_title;
+			$view->config           = $this->config;
+			$view->option           = $this->_option;
+			$view->emp              = $this->_emp;
+			$view->admin            = $this->_admin;
+			$view->total            = $jtotal;
+			$view->pageNav          = $pageNav;
+			$view->jobs             = $jobs;
+			$view->mini             = 0;
+			$view->filters          = $filters;
+			$view->subscriptionCode = $subscriptionCode;
+			$view->employer         = $employer;
+			$view->task             = $this->_task;
+
+			$view->display();
 		}
 
-		// Jobs list
-		$view = new View(array('name' => 'jobs'));
-		$view->title            = $this->_title;
-		$view->config           = $this->config;
-		$view->option           = $this->_option;
-		$view->emp              = $this->_emp;
-		$view->admin            = $this->_admin;
-		$view->total            = $jtotal;
-		$view->pageNav          = $pageNav;
-		$view->jobs             = $jobs;
-		$view->mini             = ($this->_task == 'browse' or !$this->_allowSubscriptions) ? 0 : 1;
-		$view->database         = $this->database;
-		$view->filters          = $filters;
-		$view->subscriptionCode = $subscriptionCode;
-		$view->employer         = $employer;
-		$view->task             = $this->_task;
-
-		$view->display();
 		return;
 	}
 
@@ -417,16 +435,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			if ($this->_allowSubscriptions)
-			{
-				App::redirect(
-					Route::url('index.php?option=com_jobs&task=intro')
-				);
-			}
-			else
-			{
-				$this->login();
-			}
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -526,9 +536,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs&task=intro')
-			);
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -641,9 +650,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs&task=intro')
-			);
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -857,9 +865,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs&task=intro')
-			);
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -921,9 +928,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs&task=intro')
-			);
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -1040,41 +1046,6 @@ class Jobs extends SiteController
 		$this->view->setName('dashboard')
 					->setLayout('default')
 					->display();
-	}
-
-	/**
-	 * Intro screen for employers before they login
-	 *
-	 * @return     void
-	 */
-	public function introTask()
-	{
-		// Set page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->css();
-
-		// Output HTML
-		$view = new View(array('name' => 'introemp'));
-		$view->title    = $this->_title;
-		$view->config   = $this->config;
-		$view->task     = $this->_task;
-		$view->option   = $this->_option;
-		$view->banking  = $this->_banking;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			\Notify::error($this->getError());
-		}
-
-		$view->display();
-
-		return;
 	}
 
 	/**
@@ -1429,9 +1400,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			App::redirect(
-				Route::url('index.php?option=com_jobs&task=intro')
-			);
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -1623,16 +1593,8 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			if ($this->_allowSubscriptions)
-			{
-				App::redirect(
-					Route::url('index.php?option=com_jobs&task=intro')
-				);
-			}
-			else
-			{
-				$this->login();
-			}
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
@@ -2027,35 +1989,17 @@ class Jobs extends SiteController
 		// Login required
 		if (User::isGuest())
 		{
-			if ($this->_allowSubscriptions)
-			{
-				App::redirect(
-					Route::url('index.php?option=com_jobs&task=intro')
-				);
-			}
-			else
-			{
-				$this->login();
-			}
+			\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+			$this->login();
 			return;
 		}
 
 		// Check authorization
 		if (!$this->_admin && !$this->_emp)
 		{
-			if ($this->_allowSubscriptions)
-			{
-				App::redirect(
-					Route::url('index.php?option=com_jobs&task=intro')
-				);
-			}
-			else
-			{
-				App::redirect(
-					Route::url('index.php?option=com_jobs&task=subscribe')
-				);
-			}
-			return;
+			App::redirect(
+				Route::url('index.php?option=com_jobs&task=subscribe')
+			);
 		}
 
 		// Incoming

@@ -532,74 +532,7 @@
 	.minimenu p {
 		font-size: 85%;
 	}
-/* Intro Steps */
-	.process_steps .col>div {
-		border-bottom: 3px solid #cccccc;
-	}
-	.process_steps .col>div.current {
-		border-bottom: 3px solid #f6c896;
-	}
-	.process_steps h3 {
-		color: #999999;
-		padding: 0 0 0.2em 0;
-	}
-	.current h3 {
-		color: #a35807;
-	}
-	.process_steps h3 span,
-	.countc {
-		background: #eef3fc;
-		border: 1px solid #cccccc;
-		-webkit-border-radius: 15px;
-		-moz-border-radius: 15px;
-		-ms-border-radius: 15px;
-		-o-border-radius: 15px;
-		border-radius: 15px;
-	}
-	.countc {
-		padding: 0.2em 0.5em 0.2em 0.5em;
-		color: #a35807;
-		background: #feefdf;
-		border: 1px solid #a8753f;
-	}
-	.current  h3 span {
-		color: #a35807;
-		background: #feefdf;
-		border: 1px solid #a8753f;
-	}
-	.process_steps h3 span {
-		font-size: 120%;
-		margin-right: 0.5em;
-		padding: 0.2em 0.5em 0.2em 0.5em;
-		position: relative;
-		top: 0.6em;
-	}
-	.fourcol div,
-	.com_jobs .four {
-		width: 25%;
-		margin: 0;
-		padding: 0;
-	}
-	.threecol div,
-	.com_jobs .three {
-		width: 33.2%;
-		margin: 0;
-		padding: 0;
-	}
-	.sub {
-		color: #ce9252;
-	}
-	.com_jobs .first,
-	.com_jobs .second,
-	.com_jobs .third,
-	.com_jobs .fourth {
-	}
-	.com_jobs .second div,
-	.com_jobs .third div,
-	.com_jobs .fourth div {
-		padding: 0;
-		margin-left: 3.3em;
-	}
+
 /* Apply */
 /* Dashboard */
 	#subinfo {
@@ -1175,6 +1108,9 @@
 	}
 
 /* Introductory screen */
+	#introbody {
+		padding: 1em;
+	}
 	#introduction:after {
 		content: "\f022";
 	}
@@ -1207,9 +1143,8 @@
 	}
 
 /* Table sort */
-	.re_sort {
-		padding-right: 1em;
-		background: url("/core/components/com_jobs/site/assets/img/j_arrow_down.gif") right center no-repeat;
+	table.postings {
+		margin-bottom: 2em;
 	}
 	table.postings th,
 	table.postings th a {
