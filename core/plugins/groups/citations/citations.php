@@ -246,7 +246,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->group = $this->group;
 			$view->isManager = ($this->authorized == 'manager') ? true : false;
 		}
-	
+
 		//get applied filters
 		$view->filters = $obj['filters'];
 
