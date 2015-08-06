@@ -144,10 +144,10 @@ if (!$no_html)
 			</ul><!-- /#page_menu -->
 
 			<?php
-				$thumb = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '_th.gif';
-				$full = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
+				$thumb = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '_th.gif';
+				$full = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
 			?>
-			<?php if (file_exists(PATH_APP . $thumb)) : ?>
+			<?php if (file_exists(PATH_ROOT . $thumb)) : ?>
 				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
 					<img src="<?php echo $thumb; ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
 				</a>
@@ -166,7 +166,7 @@ if (!$no_html)
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: Change your password" href="<?php echo Route::url($this->profile->getLink('changepassword')); ?>">
+						<a class="password tooltips" id="change-password" title="<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: <?php echo Lang::txt('Change your password'); ?>" href="<?php echo Route::url($this->profile->getLink('changepassword')); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>
 						</a>
 					</li>
