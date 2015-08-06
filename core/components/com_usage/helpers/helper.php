@@ -30,6 +30,9 @@
 
 namespace Components\Usage\Helpers;
 
+use Exception;
+use App;
+
 /**
  * Usage helper class
  */
@@ -61,19 +64,24 @@ class Helper
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == ''))
 			{
-				$instance = \App::get('db');
+				$instance = App::get('db');
 			}
 			else
 			{
-				$instance = \JDatabase::getInstance($options);
-				if ($instance instanceof \Exception)
+				try
 				{
-					$instance = \App::get('db');
+					$options['driver'] = ($options['driver'] == 'mysql') ? 'pdo' : $options['driver'];
+
+					$instance = \Hubzero\Database\Driver::getInstance($options);
+				}
+				catch (Exception $e)
+				{
+					$instance = App::get('db');
 				}
 			}
 		}
 
-		if ($instance instanceof \Exception)
+		if ($instance instanceof Exception)
 		{
 			return null;
 		}
