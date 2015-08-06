@@ -201,7 +201,7 @@ function submitbutton(pressbutton)
 							<tr>
 								<th><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</th>
 								<td>
-									<span id="img-name"><?php echo $this->row->params('logo', Lang::txt('COM_COURSES_NONE')); ?></span>
+									<span id="img-name"><?php echo ($pic && $pic != 'blank.png' ? $pic : Lang::txt('COM_COURSES_NONE')); ?></span>
 								</td>
 								<td>
 									<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
