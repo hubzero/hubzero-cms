@@ -238,10 +238,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-		 	//initialize the view
-		 	$view = $this->view('default', 'browse');
+			//initialize the view
+			$view = $this->view('default', 'browse');
 
-		 	// push objects to the view
+			// push objects to the view
 			$view->group			 = $this->group;
 			$view->option			 = $this->option;
 			$view->task				 = $this->_name;
@@ -602,7 +602,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 **/
 	 private function _publish()
 	 {
-	 		//verify that the user is a manager.
+			//verify that the user is a manager.
 			$isManager = ($this->authorized == 'manager') ? true : false;
 			if (!$isManager)
 			{
@@ -630,9 +630,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						'success'
 					);
 					return;
-				}	
+				}
 			}
-			else 
+			else
 			{
 				//error, no such citation
 			}
@@ -648,7 +648,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 **/
 	 private function _delete()
 	 {
-	 		//verify that the user is a manager.
+			//verify that the user is a manager.
 			$isManager = ($this->authorized == 'manager') ? true : false;
 			if (!$isManager)
 			{
@@ -676,9 +676,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						'success'
 					);
 					return;
-				}	
+				}
 			}
-			else 
+			else
 			{
 				//error, no such citation
 			}
