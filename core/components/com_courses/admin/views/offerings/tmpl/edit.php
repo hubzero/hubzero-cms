@@ -175,9 +175,12 @@ function submitbutton(pressbutton)
 					{
 						$path = $this->row->logo('path');
 
-						$this_size = filesize(PATH_APP . $path . DS . $logo);
-						list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
-						$pic = $logo;
+						if (file_exists(PATH_APP . $path . DS . $logo))
+						{
+							$this_size = filesize(PATH_APP . $path . DS . $logo);
+							list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
+							$pic = $logo;
+						}
 					}
 					else
 					{
