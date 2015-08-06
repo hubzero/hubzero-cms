@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-$default = DS . trim($this->config->get('defaultpic'), DS);
+$default = '/core/components/com_members/site/assets/img/profile.gif';//DS . trim($this->config->get('defaultpic'), DS);
 $default = \Hubzero\User\Profile\Helper::thumbit($default);
 
 $base = str_replace('/administrator', '', Request::base(true));
@@ -196,12 +196,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	if ($row->picture)
 	{
-		$thumb  = DS . trim($this->config->get('webpath'), DS);
+		$thumb  = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('webpath'), DS);
 		$thumb .= DS . \Hubzero\User\Profile\Helper::niceidformat($row->uidNumber);
 		$thumb .= DS . ltrim($row->picture, DS);
 		$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 
-		if (file_exists(PATH_APP . $thumb))
+		if (file_exists(PATH_ROOT . $thumb))
 		{
 			$picture = $thumb;
 		}
