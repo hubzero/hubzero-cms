@@ -82,11 +82,10 @@ HUB.Groups = {
 	{
 		var $ = this.jQuery;
 
-		$('.cancel').click(function(){
-			return confirm('Are you sure you want to leave this group?');
+		$('.cancel').on('click', function(){
+			return confirm('Are you sure you want to leave this page?');
 		});
 	},
-
 
 	//-----
 
@@ -99,13 +98,13 @@ HUB.Groups = {
 				metawidth = meta.outerWidth(true),
 				alrt = $(this).find(".alrt");
 
-			if(alrt.length)
+			if (alrt.length)
 			{
-				if(metawidth > 20)
+				if (metawidth > 20)
 				{
 					alrt.css("right", 33+(metawidth-20));
 				}
-				else if(metawidth < 20 && metawidth != 0)
+				else if (metawidth < 20 && metawidth != 0)
 				{
 					alrt.css("right", 33-(20-metawidth));
 				}
@@ -123,19 +122,19 @@ HUB.Groups = {
 			invites = $(".invites"),
 			requests = $(".requests");
 
-		if(invites.length)
+		if (invites.length)
 		{
 			invites.addClass("hide");
 			content += invites.html();
 		}
 
-		if(requests.length)
+		if (requests.length)
 		{
 			requests.addClass("hide");
 			content += requests.html();
 		}
 
-		if(content != "")
+		if (content != "")
 		{
 			var timeout = setTimeout(function() {
 				$.fancybox({
@@ -166,14 +165,14 @@ HUB.Groups = {
 			toggleSwitch = $("#toggle_description");
 
 
-		if(toggleSwitch.length)
+		if (toggleSwitch.length)
 		{
 			toggleSwitch.removeClass('hide');
 
 			toggleSwitch.bind("click", function(e) {
 				e.preventDefault();
 
-				if(publicDesc.hasClass("hide"))
+				if (publicDesc.hasClass("hide"))
 				{
 					toggleSwitch.html('Show Private Description (-)');
 				}
@@ -214,11 +213,11 @@ HUB.Groups = {
 		var logo = "",
 			logoSelecter = $("#group_logo");
 
-		if(logoSelecter.length)
+		if (logoSelecter.length)
 		{
 			$('#group-logo-label').on("change", "#group_logo", function(e) {
 
-				if(this.value == "")
+				if (this.value == "")
 				{
 					logo = '<img src="/core/components/com_groups/site/assets/img/group_default_logo.png" />';
 				}
