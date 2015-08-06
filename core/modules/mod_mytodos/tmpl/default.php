@@ -34,7 +34,9 @@ defined('_HZEXEC_') or die();
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
 	<h4>
-		<?php echo Lang::txt('MOD_MYTODOS_ASSIGNED'); ?>
+		<a href="<?php echo Route::url('index.php?option=com_projects'); ?>">
+			<?php echo Lang::txt('MOD_MYTODOS_ASSIGNED'); ?>
+		</a>
 	</h4>
 	<?php if (count($this->rows) <= 0) { ?>
 		<p><em><?php echo Lang::txt('MOD_MYTODOS_NO_TODOS'); ?></em></p>
