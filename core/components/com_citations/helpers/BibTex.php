@@ -383,7 +383,7 @@ class Structures_BibTex
 		} else {
 			$error = new PEAR;
 			$error = $error->raiseError('Unbalanced parenthesis');
-			return $error; 
+			return $error;
 		}
 	}
 

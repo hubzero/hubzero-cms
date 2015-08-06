@@ -232,44 +232,7 @@ if (isset($this->messages))
 					<?php else : ?>
 						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
-					<?php
-						echo $this->citations->pagination; 
-						// Initiate paging
-						/*$pageNav = $this->pagination(
-							$this->total,
-							$this->filters['start'],
-							$this->filters['limit']
-						);
-						$pageNav->setAdditionalUrlParam('option', 'com_groups');
-						$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-						$pageNav->setAdditionalUrlParam('active', 'citations');
-
-						foreach ($this->filters as $key => $value)
-						{
-							switch ($key)
-							{
-								case 'limit':
-								case 'idlist';
-								case 'start':
-								break;
-
-								case 'reftype':
-								case 'aff':
-								case 'geo':
-									foreach ($value as $k => $v)
-									{
-										$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
-									}
-								break;
-
-								default:
-									$pageNav->setAdditionalUrlParam($key, $value);
-								break;
-							}
-						}
-
-						echo $pageNav->render();*/
-					?>
+					<?php echo $this->citations->pagination; ?>
 					<div class="clearfix"></div>
 				</div><!-- /.container -->
 			</div><!-- /.subject -->
