@@ -170,20 +170,25 @@ function submitbutton(pressbutton)
 					<?php
 					$width  = 0;
 					$height = 0;
-					$this_size = 0;
+					$fsize  = 0;
 
 					$pic  = 'blank.png';
 					$path = '/core/components/com_courses/admin/assets/img';
 
 					if ($logo)
 					{
-						$path = $this->row->logo('path');
+						$pathl = substr(PATH_APP, strlen(PATH_ROOT)) . $this->row->logo('path');
 
-						if (file_exists(PATH_APP . $path . DS . $logo))
+						if (file_exists(PATH_ROOT . $pathl . DS . $logo))
 						{
-							$this_size = filesize(PATH_APP . $path . DS . $logo);
-							list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
-							$pic = $logo;
+							$fsize = filesize(PATH_ROOT . $pathl . DS . $logo);
+							list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $logo);
+							$pic  = $logo;
+							$path = $pathl;
+						}
+						else
+						{
+							$logo = null;
 						}
 					}
 					?>
@@ -204,7 +209,7 @@ function submitbutton(pressbutton)
 							</tr>
 							<tr>
 								<th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
-								<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+								<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($fsize); ?></span></td>
 								<td></td>
 							</tr>
 							<tr>

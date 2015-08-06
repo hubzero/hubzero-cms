@@ -237,19 +237,26 @@ function submitbutton(pressbutton)
 				<?php
 				$width = 0;
 				$height = 0;
-				$this_size = 0;
+				$fsize = 0;
+
+				$pic  = 'blank.png';
+				$path = '/core/components/com_courses/admin/assets/img';
+
 				if ($logo)
 				{
-					$path = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
+					$pathl = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
 
-					$this_size = filesize(PATH_ROOT . $path . DS . $file);
-					list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $path . DS . $file);
-					$pic = $file;
-				}
-				else
-				{
-					$pic  = 'blank.png';
-					$path = '/core/components/com_courses/admin/assets/img';
+					if (file_exists(PATH_ROOT . $pathl . DS . $logo))
+					{
+						$this_size = filesize(PATH_ROOT . $pathl . DS . $file);
+						list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $file);
+						$pic  = $file;
+						$path = $pathl;
+					}
+					else
+					{
+						$logo = null;
+					}
 				}
 				?>
 				<div id="img-container">
@@ -269,7 +276,7 @@ function submitbutton(pressbutton)
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
-							<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+							<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($fsize); ?></span></td>
 							<td></td>
 						</tr>
 						<tr>
