@@ -171,6 +171,10 @@ function submitbutton(pressbutton)
 					$width  = 0;
 					$height = 0;
 					$this_size = 0;
+
+					$pic  = 'blank.png';
+					$path = '/core/components/com_courses/admin/assets/img';
+
 					if ($logo)
 					{
 						$path = $this->row->logo('path');
@@ -181,11 +185,6 @@ function submitbutton(pressbutton)
 							list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
 							$pic = $logo;
 						}
-					}
-					else
-					{
-						$pic  = 'blank.png';
-						$path = '/core/components/com_courses/admin/assets/img';
 					}
 					?>
 					<div id="img-container">
