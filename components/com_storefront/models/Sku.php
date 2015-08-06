@@ -233,9 +233,11 @@ class StorefrontModelSku
 		$this->data->meta[$key] = $val;
 	}
 
-	public function getMeta()
-	{
-		return $this->data->meta;
+	public function getMeta() {
+		if (!empty($this->data->meta))
+		{
+			return $this->data->meta;
+		}
 	}
 
 	/*
