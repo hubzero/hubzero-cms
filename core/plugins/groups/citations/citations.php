@@ -183,6 +183,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				case 'add':		 $arr['html'] .= $this->_edit();		break;
 				case 'edit':	 $arr['html'] .= $this->_edit();		break;
 				case 'delete':	 $arr['html'] .= $this->_delete();		break;
+				case 'publish': $arr['html'] .= $this->_publish(); 	break;
 				case 'browse':	 $arr['html'] .= $this->_browse();		break;
 				case 'import':	 $arr['html'] .= $this->_import();		break;
 				case 'upload': 	$arr['html'] .= $this->_upload();			break;
@@ -210,28 +211,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
-		//initialize the view
-		$view = $this->view('default', 'browse');
-
-		// push objects to the view
-		$view->group			 = $this->group;
-		$view->option			 = $this->option;
-		$view->task				 = $this->_name;
-		$view->database			 = $this->database;
-		$view->title			 = Lang::txt(strtoupper($this->_name));
-		$view->isManager		 = ($this->authorized == 'manager') ? true : false;
-		// is there a better way to handle group configurations?
-		$view->config			 = new \Hubzero\Config\Registry($this->group->get('params'));
-
-		// Instantiate a new citations object
+		 // Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->group->get('gidNumber'));
 
 		$count = clone $obj['citations'];
 		$count = $count->count();
-		$display = $view->config->get('display');
+		$isManager		 = ($this->authorized == 'manager') ? true : false;
+		$config =  new \Hubzero\Config\Registry($this->group->get('params'));
+		$display = $config->get('display');
 
 		// for first-time use
-		if ($count == 0 && $view->isManager && !isset($display))
+		if ($count == 0 && $isManager && !isset($display))
 		{
 			// have a group manager set the settings
 			App::redirect(
@@ -240,12 +230,28 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			 'warning'
 			 );
 		}
-		elseif ($count ==0 && $view->isManager);
+		elseif ((int) $count == 0 && $isManager && isset($display))
 		{
 			$view = $this->view('intro', 'browse');
 			$view->group = $this->group;
 			$view->isManager = ($this->authorized == 'manager') ? true : false;
 		}
+		else
+		{
+		 	//initialize the view
+		 	$view = $this->view('default', 'browse');
+
+		 	// push objects to the view
+			$view->group			 = $this->group;
+			$view->option			 = $this->option;
+			$view->task				 = $this->_name;
+			$view->database			 = $this->database;
+			$view->title			 = Lang::txt(strtoupper($this->_name));
+			$view->isManager		 = ($this->authorized == 'manager') ? true : false;
+			$view->config			 = $config;
+
+		}
+
 
 		//get applied filters
 		$view->filters = $obj['filters'];
@@ -337,9 +343,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// enable coins support
 		$view->coins = 1;
 
-		// config
-		//$view->config = Component::params('com_citations');
-
 		// types
 		$ct = \Components\Citations\Models\Type::all();
 		$view->types = $ct;
@@ -384,13 +387,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// push objects to view
 		$view->group	 = $this->group;
 		$view->isManager = ($this->authorized == 'manager') ? true : false;
-		$view->config  = json_decode($this->group->get('params'));
+		$view->config  = new \Hubzero\Config\Registry($this->group->get('params'));
+
 
 		if ($view->isManager == false)
 		{
 			App::redirect(
 			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-			 Lang::txt('This function can only be performed by a group manager.'),
+			 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
 			 'warning'
 			 );
 		}
@@ -430,7 +434,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($id)
 		{
 			$view->assocs = $assoc->getRecords(array('cid' => $id), $view->isManager);
-			$pubAuthor		= $this->isPubAuthor($view->assocs);
 		}
 
 		// Is user authorized to edit citations?
@@ -590,6 +593,96 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 		return;
 	}
+	/**
+	 * Publish method for group citations
+	 *
+	 * @param null
+	 * @return void
+	 *
+	 **/
+	 private function _publish()
+	 {
+	 		//verify that the user is a manager.
+			$isManager = ($this->authorized == 'manager') ? true : false;
+			if (!$isManager)
+			{
+				//redirect to browse with admonishment
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
+					'warning'
+				);
+				return;
+			}
+
+			$id = Request::getVar('id', 0);
+
+			if ($id != 0)
+			{
+				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+				$citation->set('published',  $citation::STATE_PUBLISHED);
+
+				if ($citation->save())
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_PUBLISHED'),
+						'success'
+					);
+					return;
+				}	
+			}
+			else 
+			{
+				//error, no such citation
+			}
+		} //end _publish()
+
+
+	/**
+	 * Delete method for group citations
+	 *
+	 * @param null
+	 * @return void
+	 *
+	 **/
+	 private function _delete()
+	 {
+	 		//verify that the user is a manager.
+			$isManager = ($this->authorized == 'manager') ? true : false;
+			if (!$isManager)
+			{
+				//redirect to browse with admonishment
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
+					'warning'
+				);
+				return;
+			}
+
+			$id = Request::getVar('id', 0);
+
+			if ($id != 0)
+			{
+				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+				$citation->set('published', $citation::STATE_DELETED);
+
+				if ($citation->save())
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
+						'success'
+					);
+					return;
+				}	
+			}
+			else 
+			{
+				//error, no such citation
+			}
+		} //end _delete()
 
 	/**
 	 * Settings for group citations
@@ -790,6 +883,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$citations[0]['attention'] = '';
 		}
 
+		if (!isset($citations[0]['no_attention']))
+		{
+			$citations[0]['no_attention'] = '';
+		}
+
 		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
 		{
 			Notify::error(Lang::txt('Unable to write temporary file.'));
@@ -820,7 +918,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view = $this->view('saved', 'import');
 		$view->group = $this->group;
 		$view->messages = NULL;
-		$config  = json_decode($this->group->get('params'));
+		$config  = new \Hubzero\Config\Registry($this->group->get('params'));
 
 		Request::checkToken();
 
@@ -1028,16 +1126,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		$citations->where('scope', '=', $scope);
 		$citations->where('scope_id', '=', $scope_id);
+		$citations->where('published', '!=', '2'); // don't include deleted citations
 
-		/*
-		 * I am so sorry for whomever inherits this mess. I'll probably end up maintaining this
-		 * for the next 10 years or so. I owe you one.
-		 */
 		if (count($filters) > 0)
 		{
 			foreach ($filters as $filter => $value)
 			{
-				// yay sanitization
+				// sanitization
 				$value = \Hubzero\Utility\Sanitize::clean($value);
 
 				// we handle things differently in search and sorting
@@ -1122,12 +1217,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$citations->whereIn('id', $collection);
 		 } // end if tags
 
-		 if ($filter == "sort" && $value != "")
-		 {
-			$clause = explode(" ", $value);
-			$citations->order($clause[0], $clause[1]);
-		 }
-	} //end foreach filters as filter
+			if ($filter == "sort" && $value != "")
+			{
+				$clause = explode(" ", $value);
+				$citations->order($clause[0], $clause[1]);
+			}
+		} //end foreach filters as filter
 
 			return array('citations' => $citations, 'filters' => $filters);
 		}

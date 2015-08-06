@@ -119,7 +119,9 @@ if (isset($this->messages))
 						<tbody>
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
-								<tr class="citation-row">
+							<?php if (($cite->published == $cite::STATE_PUBLISHED && !$this->isManager) ||
+										($this->isManager)): ?>
+								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 									</td>
@@ -202,13 +204,16 @@ if (isset($this->messages))
 										<td class="col-edit"><a href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?>
 										</a></td>
+										<td class="col-delete"><a class="protected" href="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>">
+											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>
+										</a></td>
+										<td class="col-publish"><a href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>">
+											<?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?>
+										</a></td>
 									<?php endif; ?>
 								</tr>
 								<tr>
-									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="5"'; } ?> class="citation-details">
-										<?php
-											echo $cite->citationDetails($this->openurl);
-										?>
+									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="6"'; } ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
 										<?php if (1): ?>
 										<?php //if ($this->config->get("citation_show_badges","no") == "yes") : ?>
 											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
@@ -217,9 +222,10 @@ if (isset($this->messages))
 										<?php if (1): ?>
 											<?php echo $cite->tagCloud(); ?>
 										<?php endif; ?>
+										<?php	echo $cite->citationDetails($this->openurl); ?>
 									</td>
 								</tr>
-								<?php //$counter++; ?>
+							<?php endif; ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>

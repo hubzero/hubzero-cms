@@ -21,11 +21,17 @@
 .citation-row {
 	margin-bottom: 40px;
 }
+.citation-row.unpublished {
+	background-color:	#FFFAC0; 
+}
 .citations .citation-label .type {
 	font-weight: bold;
 }
 .citation-details {
 	background-color: rgba(245, 245, 245, 0.33);
+}
+.citation-details a {
+	margin-top: 5px;
 }
 .citation-details .badges {
 	float: right;
@@ -37,9 +43,15 @@
 .citation-details .badges a:before {
 	border-color: transparent #8e6e59 transparent transparent !important;
 }
+.citation-details .tags {
+	margin-bottom: 6px;
+}
 .citation-details .tags li {
 	padding: 0;
 	border: none;
+}
+.unpublished-details {
+ background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10px, #F9F3AD 20px );
 }
 
 .templateTable {
