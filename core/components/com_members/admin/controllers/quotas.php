@@ -431,15 +431,17 @@ class Quotas extends AdminController
 		}
 
 		// Save class/access-group association
-		if (isset($fields['groups']))
+		if (!isset($fields['groups']))
 		{
-			if (!$row->setGroupIds($fields['groups']))
-			{
-				$this->view->task = 'editClass';
-				$this->setError($row->getError());
-				$this->editClassTask($row->id);
-				return;
-			}
+			$fields['groups'] = array();
+		}
+
+		if (!$row->setGroupIds($fields['groups']))
+		{
+			$this->view->task = 'editClass';
+			$this->setError($row->getError());
+			$this->editClassTask($row->id);
+			return;
 		}
 
 		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'));
