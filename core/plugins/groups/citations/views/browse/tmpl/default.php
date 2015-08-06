@@ -233,6 +233,7 @@ if (isset($this->messages))
 						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
 					<?php
+						echo $this->citations->pagination; 
 						// Initiate paging
 						/*$pageNav = $this->pagination(
 							$this->total,

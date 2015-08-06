@@ -197,6 +197,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$arr['metadata']['count'] = \Components\Citations\Models\Citation::all()
 			->where('scope', '=', 'group')
 			->where('scope_id', '=', $this->group->get('gidNumber'))
+			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
 			->count();
 		$arr['metadata']['alert'] = '';
 
@@ -252,12 +253,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		}
 
-
 		//get applied filters
 		$view->filters = $obj['filters'];
 
 		//get filtered citations
-		$view->citations = $obj['citations']->rows();
+		$view->citations = $obj['citations']->paginated()->rows();
 
 		//get the earliest year we have citations for
 		$view->earliest_year = 2001;
@@ -620,13 +620,25 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			if ($id != 0)
 			{
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-				$citation->set('published',  $citation::STATE_PUBLISHED);
 
+				// toggle the state
+				if ($citation->published != $citation::STATE_PUBLISHED)
+				{
+					$citation->set('published',  $citation::STATE_PUBLISHED);
+					$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
+				}
+				else
+				{
+					$citation->set('published', $citation::STATE_UNPUBLISHED);
+					$string = 'PLG_GROUPS_CITATIONS_CITATION_UNPUBLISHED';
+				}
+
+				//save the state
 				if ($citation->save())
 				{
 					App::redirect(
 						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_PUBLISHED'),
+						Lang::txt($string),
 						'success'
 					);
 					return;
