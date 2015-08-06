@@ -381,7 +381,9 @@ class Structures_BibTex
 			$this->content = '';
 			return true;
 		} else {
-			return PEAR::raiseError('Unbalanced parenthesis');
+			$error = new PEAR;
+			$error = $error->raiseError('Unbalanced parenthesis');
+			return $error; 
 		}
 	}
 

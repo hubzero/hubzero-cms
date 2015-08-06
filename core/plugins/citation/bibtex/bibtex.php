@@ -92,20 +92,23 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		for ($i=0;$i<count($citations); $i++)
 		{
 			$authors = array();
-			$auths   = $citations[$i]['author'];
-			foreach ($auths as $a)
+			$auths   = isset($citations[$i]['author']) ? $citations[$i]['author'] : '';
+			if ($auths != '')
 			{
-				if (isset($a['jr']) && $a['jr'] != '')
-				{
-					$authors[] = $a['last'] . ' ' . $a['jr'] . ', ' . $a['first'];
-				}
-				else
-				{
-					$authors[] = $a['last'] . ', ' . $a['first'];
-				}
-			}
-			$citations[$i]['author'] = implode('; ', $authors);
-		}
+			 foreach ($auths as $a)
+			 {
+				 if (isset($a['jr']) && $a['jr'] != '')
+				 {
+					 $authors[] = $a['last'] . ' ' . $a['jr'] . ', ' . $a['first'];
+				 }
+				 else
+				 {
+					 $authors[] = $a['last'] . ', ' . $a['first'];
+				 }
+			 }
+			 $citations[$i]['author'] = implode('; ', $authors);
+			} //end if 
+		 }
 
 		//array to hold final citataions
 		$final = array();
