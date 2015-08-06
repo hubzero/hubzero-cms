@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="col width-50 fltrt">
 			<label for="sort"><?php echo Lang::txt('SORT'); ?>: </label>
-			<select name="sort" id="sort">
+			<select name="sort" id="sort" onchange="document.adminForm.submit();">
 				<option value="created DESC"<?php if ($this->filters['sort'] == 'created DESC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('DATE'); ?></option>
 				<option value="year"<?php if ($this->filters['sort'] == 'year') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('YEAR'); ?></option>
 				<option value="type"<?php if ($this->filters['sort'] == 'type') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TYPE'); ?></option>
