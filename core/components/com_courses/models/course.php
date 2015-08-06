@@ -994,7 +994,7 @@ class Course extends Base
 
 					$dest .= '/' . $file;
 
-					if (!Filesystem::copy($src, $dest, PATH_APP))
+					if (!Filesystem::copy(PATH_APP . $src, PATH_APP . $dest))
 					{
 						$this->setError(Lang::txt('Failed to copy course logo.'));
 					}
