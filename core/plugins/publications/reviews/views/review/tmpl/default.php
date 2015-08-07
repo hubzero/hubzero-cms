@@ -125,9 +125,6 @@ else
 					<p>
 						<strong><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_KEEP_POLITE'); ?></strong>
 					</p>
-					<p>
-						<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONTENT_FORMATTING_NOTES'); ?>
-					</p>
 				</div>
 			</fieldset>
 		<div class="clear"></div>
