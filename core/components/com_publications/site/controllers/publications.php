@@ -898,7 +898,7 @@ class Publications extends SiteController
 	public function citationTask()
 	{
 		// Incoming
-		$format = Request::getVar( 'format', 'bibtex' );
+		$format = Request::getVar( 'type', 'bibtex' );
 
 		// Get our model and load publication data
 		$this->model = new Models\Publication($this->_identifier, $this->_version);

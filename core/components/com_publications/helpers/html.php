@@ -369,9 +369,9 @@ class Html
 			if (!$pub->isDev())
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
-				$html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&format=bibtex&no_html=1') . '" title="'
+				$html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&type=bibtex&no_html=1') . '" title="'
 					. Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-				$html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&format=endnote&no_html=1') . '" title="'
+				$html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&type=endnote&no_html=1') . '" title="'
 					. Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
 				$html .= "\t\t" . '</p>'."\n";
 			}
