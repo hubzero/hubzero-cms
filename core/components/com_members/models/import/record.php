@@ -335,14 +335,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				$newUsertype = $db->loadResult();
 			}
 
-			$date = Date::of('now');
 			$user = User::getRoot();
 			$user->set('username', $this->_profile->get('username'));
 			$user->set('name', $this->_profile->get('name'));
 			$user->set('email', $this->_profile->get('email'));
 			$user->set('id', 0);
 			$user->set('groups', array($newUsertype));
-			$user->set('registerDate', $date->toMySQL());
+			$user->set('registerDate', Date::of('now')->toSql());
 			$user->set('password', $this->raw->password);
 			$user->set('password_clear', $this->raw->password);
 			$user->save();
