@@ -99,8 +99,8 @@ function submitbutton(pressbutton)
 				// Initiate paging
 				echo $this->pagination(
 					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
+					$this->start,
+					$this->limit
 				);
 			?></td>
 			</tr>

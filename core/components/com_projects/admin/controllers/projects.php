@@ -119,6 +119,9 @@ class Projects extends AdminController
 			'quota'      => Request::getVar('quota', 'all', 'post')
 		);
 
+		$this->view->limit = $this->view->filters['limit'];
+		$this->view->start = $this->view->filters['start'];
+
 		// Retrieve all records when filtering by quota (no paging)
 		if ($this->view->filters['quota'] != 'all')
 		{
@@ -156,13 +159,13 @@ class Projects extends AdminController
 			$this->view->total = $counter > 0 ? $counter : 0;
 
 			// Fix up paging after filter
-			if (count($rows) > $limit)
+			if (count($rows) > $this->view->limit)
 			{
 				$k = 0;
 
 				for ($i=0, $n=count( $rows ); $i < $n; $i++)
 				{
-					if ($k < $start || $k >= ($limit + $start))
+					if ($k < $this->view->start || $k >= ($this->view->limit + $this->view->start))
 					{
 						unset($rows[$i]);
 					}
