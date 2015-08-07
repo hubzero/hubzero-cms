@@ -17,15 +17,6 @@
 		content: "\f02c";
 	}
 
-/* Submenu */
-	.entries-menu:after {
-		content: "."; 
-		display: block; 
-		height: 2.5em; 
-		clear: left; 
-		visibility: hidden;
-	}
-
 /* Item listing */
 	.container .results {
 		border: none;
