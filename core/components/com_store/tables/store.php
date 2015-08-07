@@ -102,8 +102,8 @@ class Store extends \JTable
 
 		switch ($filters['sortby'])
 		{
-			case 'pricelow':  $query .= " ORDER BY C.price DESC, C.publish_up ASC"; break;
-			case 'pricehigh': $query .= " ORDER BY C.price ASC, C.publish_up ASC"; break;
+			case 'pricelow':  $query .= " ORDER BY C.price DESC"; break;
+			case 'pricehigh': $query .= " ORDER BY C.price ASC"; break;
 			case 'date':      $query .= " ORDER BY C.created DESC"; break;
 			case 'category':  $query .= " ORDER BY C.category DESC"; break;
 			case 'type':      $query .= " ORDER BY C.type DESC"; break;
