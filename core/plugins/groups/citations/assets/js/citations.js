@@ -22,9 +22,7 @@ jQuery(document).ready(function (jq) {
 	
 	$('.protected').click(function(e) {
 		var prompt = confirm('Are you sure you want to delete this citation?');
-		console.log(prompt);
 		var url = $(this).attr('href');
-		console.log(url);
 		if (prompt === true)
 		{
 			
@@ -33,7 +31,29 @@ jQuery(document).ready(function (jq) {
 		{
 			e.preventDefault();
 		}
-
 	});
+
+	$('.bulk').click(function() {
+		var citationIDs = $('.download-marker:checked').map(function()
+			{
+				return $(this).val();
+			}).get();
 		
+		var url = $(this).attr('data-link');
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: {citationIDs : citationIDs},
+			success: function(result){
+					if (result = citationIDs)
+					{ 
+						location.reload();
+					}
+				},
+			error: function(result){
+				console.log(result);
+			}
+		});
+	});
 });

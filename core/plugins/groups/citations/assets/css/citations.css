@@ -53,6 +53,15 @@
 .unpublished-details {
  background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10px, #F9F3AD 20px );
 }
+.admin {
+	padding: 10px 10px 10px 10px;	
+	background-color: gray;
+	margin: 5px 0 15px 0;
+}
+
+.admin .btn a {
+	
+}
 
 .templateTable {
 	font-size: 9pt;

@@ -628,8 +628,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 
 			$id = Request::getVar('id', 0);
+			$citationIDs = Request::getVar('citationIDs', array());
+			$bulk = Request::getVar('bulk', false);
 
-			if ($id != 0)
+			if ($id != 0 && !$bulk)
 			{
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 
@@ -656,10 +658,42 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					return;
 				}
 			}
+			elseif ((bool)$bulk)
+			{
+				/***
+				 * @TODO move to API, possible use of whereIn()?
+				 ***/
+				$published = array();
+				//error, no such citation
+				foreach ($citationIDs as $id)
+				{
+					$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+					// toggle the state
+					if ($citation->published != $citation::STATE_PUBLISHED)
+					{
+						$citation->set('published',  $citation::STATE_PUBLISHED);
+					}
+					else
+					{
+						$citation->set('published', $citation::STATE_UNPUBLISHED);
+					}
+				
+					//save the state
+					if ($citation->save())
+					{
+						array_push($published, $id);
+					}
+				}		
+					echo json_encode($published);
+					exit();
+			}
 			else
 			{
-				//error, no such citation
+				echo "nothing";
 			}
+
+			return;
 		} //end _publish()
 
 

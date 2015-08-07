@@ -114,19 +114,15 @@ if (isset($this->messages))
 							</tr>
 							<?php if ($this->isManager) : ?>
 								<tr class="hidden">
-				<div class="admin">
-					<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
-					</a>
-					<a class="btn icon-upload" href="<?php echo Route::url($base. '&action=import'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_CITATION'); ?>
-					</a>
-					<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=settings'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SET_FORMAT'); ?>
-					</a>
-					</td>
-
-	
+									<div class="admin">
+										<a class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
+											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH_SELECTED'); ?>
+										</a>
+										<a class="btn icon-delete protected bulk" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
+											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE_SELECTED'); ?>
+										</a>
+										</td>
+									</div>
 								</tr>
 							<?php endif; ?>
 						</thead>
