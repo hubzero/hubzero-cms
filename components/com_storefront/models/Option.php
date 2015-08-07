@@ -72,7 +72,8 @@ class StorefrontModelOption
 
 		$this->db->setQuery($sql);
 		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-		if($oInfo = $this->db->loadObject()) {
+		if ($oInfo = $this->db->loadObject())
+		{
 			$this->setId($oInfo->oId);
 			$this->setOptionGroupId($oInfo->ogId);
 			$this->setName($oInfo->oName);
