@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/components/com_resources/resources.js
+ * @file        administrator/components/com_members/assets/js/import.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -145,7 +145,10 @@ jQuery(document).ready(function(jq){
 			var self = this;
 			this.checker = setInterval(function(){
 				$.getJSON($('.countdown-actions').attr('data-progress'), function(data) {
-					var percent = (data.processed / data.total) * 100;
+					var percent = 0;
+					if (data && typeof data.processed !== 'undefined' && typeof data.total !== 'undefined') {
+						percent = (data.processed / data.total) * 100;
+					}
 					self.setProgress(percent);
 				});
 			}, 100);
