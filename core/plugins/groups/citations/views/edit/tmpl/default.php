@@ -68,18 +68,10 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 	$backLink = $_SERVER['HTTP_REFERER'];
 }
 
-$pid = Request::getInt('publication', 0);
 ?>
 
 <div id="browsebox" class="frm">
 	<!--  <section class="main section">  -->
-	<?php if ($pid) { ?>
-		<h3>
-			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FOR'); ?>
-			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLICATION') . ' #' . $pid; ?>
-		</h3>
-	<?php } ?>
-
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
@@ -332,25 +324,6 @@ $pid = Request::getInt('publication', 0);
 		</fieldset>
 		<div class="clear"></div>
 
-		<fieldset>
-			<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT'); ?>:</legend>
-
-			<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT_HINT'); ?></p>
-
-			<label for="format_type">
-				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT_FORMAT'); ?>:
-				<select id="format_type" name="format_type">
-					<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT_APA'); ?></option>
-					<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT_IEEE'); ?></option>
-				</select>
-			</label>
-
-			<label for="formatted">
-				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_MANUALLY_FORMAT_CITATION'); ?>:
-				<textarea name="formatted" id="formatted" rows="8" cols="10"><?php //echo $this->escape(stripslashes($this->row->formatted)); ?></textarea>
-			</label>
-		</fieldset><div class="clear"></div>
-
 		<?php if ($allow_tags == "yes" || $allow_badges == "yes"): ?>
 			<fieldset>
 				<legend><?php echo $fieldset_label; ?></legend>
@@ -390,73 +363,6 @@ $pid = Request::getInt('publication', 0);
 				<?php endif; ?>
 			</fieldset><div class="clear"></div>
 		<?php endif; ?>
-
-		<?php if ($pid) { ?>
-			<input type="hidden" name="assocs[0][oid]" value="<?php echo $this->escape($pid); ?>" />
-			<input type="hidden" name="assocs[0][tbl]" value="publication" />
-			<input type="hidden" name="assocs[0][id]" value="0" />
-		<?php } else { ?>
-			<div class="explaination">
-				<p><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ASSOCIATION_DESC'); ?></p>
-			</div>
-			<fieldset>
-				<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FOR'); ?></legend>
-
-				<div class="field-wrap">
-				<table id="assocs">
-					<thead>
-						<tr>
-							<th><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TYPE'); ?></th>
-							<th><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ID'); ?></th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr>
-							<td colspan="3"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ADD_A_ROW'); ?></a></td>
-						</tr>
-					</tfoot>
-					<tbody>
-					<?php
-					$r = count($this->assocs);
-					if ($r > 5) {
-						$n = $r;
-					} else {
-						$n = 5;
-					}
-					for ($i = 0; $i < $n; $i++)
-					{
-						if ($r == 0 || !isset($this->assocs[$i]))
-						{
-							$this->assocs[$i] = new stdClass;
-							$this->assocs[$i]->id = NULL;
-							$this->assocs[$i]->cid = NULL;
-							$this->assocs[$i]->oid = NULL;
-							$this->assocs[$i]->type = NULL;
-							$this->assocs[$i]->tbl = NULL;
-						}
-						echo "\t\t\t" . '  <tr>' . "\n";
-						echo "\t\t\t" . '   <td><select name="assocs[' . $i . '][tbl]">' . "\n";
-						echo ' <option value=""';
-						echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"' : '';
-						echo '>' . Lang::txt('PLG_GROUPS_CITATIONS_SELECT') . '</option>' . "\n";
-						echo ' <option value="resource"';
-						echo ($this->assocs[$i]->tbl == 'resource') ? ' selected="selected"' : '';
-						echo '>' . Lang::txt('PLG_GROUPS_CITATIONS_RESOURCE') . '</option>' . "\n";
-						echo ' <option value="publication"';
-						echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"' : '';
-						echo '>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLICATION') . '</option>' . "\n";
-						echo '</select></td>' . "\n";
-						echo "\t\t\t" . '   <td><input type="text" name="assocs[' . $i . '][oid]" value="' . $this->escape($this->assocs[$i]->oid) . '" />' . "\n";
-						echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][id]" value="' . $this->escape($this->assocs[$i]->id) . '" />' . "\n";
-						echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][cid]" value="' . $this->escape($this->assocs[$i]->cid) . '" /></td>' . "\n";
-						echo "\t\t\t" . '  </tr>' . "\n";
-					}
-					?>
-					</tbody>
-				</table>
-				</div>
-			</fieldset><div class="clear"></div>
-		<?php } ?>
 
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATION'); ?></legend>
