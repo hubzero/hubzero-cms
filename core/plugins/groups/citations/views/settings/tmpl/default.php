@@ -117,12 +117,38 @@ $jQ(document).ready(function(e) {
 			</fieldset>
 			<div class="clear"></div>
 
+			<!-- Badge and Tag options -->
+			<fieldset>
+				<legend><?php echo Lang::txt('Badges and Tags Options'); ?></legend>
+
+				<div class="grid">
+					<div class="col span6">
+						<label for="display-members">
+						<?php echo Lang::txt('Display Tags'); ?>
+						<select name="citations_show_tags" id="show_tags">
+							<option value="yes" <?php echo ($this->citations_show_tags == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
+							<option value="no" <?php echo ($this->citations_show_tags == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
+						</select>
+						</label>
+					</div>
+					<div class="col span6 omega">
+					<label for="display-members">
+						<?php echo Lang::txt('Show Badges'); ?>
+						<select name="citations_show_badges" id="show_badges">
+							<option value="yes" <?php echo ($this->citations_show_badges == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
+							<option value="no" <?php echo ($this->citations_show_badges == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
+						</select>
+					</label>
+					</div>
+			</fieldset>
+			<div class="clear"></div>
+
 			<!-- Coins and other other options -->
 			<div class="explaination">
 			<p>
 				<?php echo Lang::txt('What are COinS?\n'); ?>
 			    <a href="http://ocoins.info/" target="_blank" alt="read more about COiNS"> <?php echo Lang::txt('Read more about COinS.'); ?></a>
-            </p>
+			</p>
 			</div>
 
 			<fieldset>
@@ -151,7 +177,7 @@ $jQ(document).ready(function(e) {
 			<div class="clear"></div>
 			<div class="explaination">
 				<p>
-                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_FORMAT_EXPLAIN'); ?>
+					 <?php echo Lang::txt('PLG_GROUPS_CITATIONS_FORMAT_EXPLAIN'); ?>
 				</p>
 			</div>
 			<fieldset>

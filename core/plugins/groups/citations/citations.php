@@ -755,6 +755,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$params->display = Request::getVar('display', '');
 			$params->include_coins = Request::getVar('include_coins', '');
 			$params->coins_only = Request::getVar('coins_only', '');
+			$params->citations_show_tags = Request::getVar('citations_show_tags', '');
+			$params->citations_show_badges = Request::getVar('citations_show_badges', '');
 
 			// update the group parameters
 			$gParams = new Registry($params);
@@ -784,6 +786,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 			$view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
 			$view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
+			$view->citations_show_tags = (isset($params->citations_show_tags) ? $params->citations_show_tags: "true");
+			$view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges: "true");
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
 			//get formats
