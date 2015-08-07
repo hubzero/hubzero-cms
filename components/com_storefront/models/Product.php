@@ -43,6 +43,7 @@ class StorefrontModelProduct
 {
 	// Product data container
 	var $data;
+	private $db;
 
 	// Product SKUs
 	var $skus = array();
@@ -59,6 +60,7 @@ class StorefrontModelProduct
 		JFactory::getLanguage()->load('com_storefront');
 
 		$this->data = new stdClass();
+		$this->db = JFactory::getDBO();
 	}
 
 	/**
@@ -469,10 +471,73 @@ class StorefrontModelProduct
 	 */
 	public function update()
 	{
+		$this->verify();
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		return($warehouse->updateProduct($this));
+	}
+
+	/**
+	 * Delete the product
+	 *
+	 * @param	void
+	 * @return 	true on success, throws exception on failure
+	 */
+	public function delete()
+	{
+		$this->verify();
+
+		// Delete product record
+		$sql = 'DELETE FROM `#__storefront_products` WHERE `pId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		//print_r($this->db->replacePrefix($this->db->getQuery()));
+		$this->db->query();
+
+		// Delete product-related files (product image)
+		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $this->getId();
+		$dir = JPATH_ROOT . $imgWebPath;
+
+		if (file_exists($dir))
+		{
+			$it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+			$files = new RecursiveIteratorIterator($it,
+				RecursiveIteratorIterator::CHILD_FIRST);
+			foreach($files as $file) {
+				if ($file->isDir()){
+					rmdir($file->getRealPath());
+				} else {
+					unlink($file->getRealPath());
+				}
+			}
+			rmdir($dir);
+		}
+
+		// Delete all SKUs
+		$skus = $this->getSkus();
+		foreach ($skus as $sku)
+		{
+			//print_r($sku);
+			$sku->delete();
+		}
+
+		// Delete product-collection relations
+		$sql = 'DELETE FROM `#__storefront_product_collections` WHERE `pId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		$this->db->query();
+
+		// Delete product meta
+		$sql = 'DELETE FROM `#__storefront_product_meta` WHERE `pId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		$this->db->query();
+
+		// Delete prduct-option groups relations
+		$sql = 'DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		$this->db->query();
+
+		//
 	}
 
 	/* ************************************* Static functions ***************************************************/

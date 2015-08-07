@@ -92,9 +92,27 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		foreach ($this->view->rows as $r)
 		{
 			$key = $r->pId;
-			$skus->$key = count($warehouse->getProductSkus($r->pId));
+			$allSkus = $warehouse->getProductSkus($r->pId, 'all', false);
+
+			// Count how many active and how many inactive SKUs there are
+			$skuCounter = new stdClass();
+			$skuCounter->active = 0;
+			$skuCounter->inactive = 0;
+			foreach ($allSkus as $skuInfo)
+			{
+				if ($skuInfo->sActive)
+				{
+					$skuCounter->active++;
+				}
+				else
+				{
+					$skuCounter->inactive++;
+				}
+			}
+			$skus->$key = $skuCounter;
 		}
 
+		//print_r($skus); die;
 		$this->view->skus = $skus;
 
 		// Initiate paging
@@ -227,8 +245,10 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		}
 
 		// Save option groups
-		$obj->saveProductOptionGroups($fields['pId'], $fields['optionGroups']);
-
+		if (!empty($fields['optionGroups']))
+		{
+			$obj->saveProductOptionGroups($fields['pId'], $fields['optionGroups']);
+		}
 		if ($redirect)
 		{
 			// Redirect
@@ -261,12 +281,11 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 
 				// Incoming
 				$id = JRequest::getVar('id', array(0));
-				if (is_array($id) && !empty($id))
+				if (!is_array($id) && !empty($id))
 				{
-					$id = $id[0];
+					$id = array($id);
 				}
-
-				$this->view->id = $id;
+				$this->view->pIds = $id;
 
 				// Set any errors
 				if ($this->getError())
@@ -283,10 +302,11 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 				JRequest::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$id = JRequest::getInt('id', 0);
+				$pIds = JRequest::getVar('pIds', 0);
+				//print_r($sId); die;
 
-				// Make sure we have an ID to work with
-				if (!$id)
+				// Make sure we have IDs to work with
+				if (empty($pIds))
 				{
 					$this->setRedirect(
 						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -296,27 +316,45 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 					return;
 				}
 
-				$msg = null;
-				$typ = null;
+				$delete = JRequest::getVar('delete', 0);
 
-				// Delete the category
-				$category = new StorefrontModelCategory($id);
-
-				// Check if we're deleting collection and all FAQs or just the collection page
-				$category->set('delete_action', JRequest::getVar('action', 'removefaqs'));
-				if (!$category->delete())
+				$msg = "Delete canceled";
+				$type = 'error';
+				if ($delete)
 				{
-					$msg = $category->getError();
-					$typ = 'error';
+					// Do the delete
+					$obj = new StorefrontModelArchive();
+
+					foreach ($pIds as $pId)
+					{
+						// Delete SKU
+						try
+						{
+							$product = $obj->product($pId);
+							$product->delete();
+						}
+						catch (Exception $e)
+						{
+							$this->setRedirect(
+								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
+								$e->getMessage(),
+								$type
+							);
+							return;
+						}
+					}
+
+					$msg = "Product(s) deleted";
+					$type = 'message';
 				}
 
 				// Set the redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
 					$msg,
-					$typ
+					$type
 				);
-			break;
+				break;
 		}
 	}
 

@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = StorefrontHelperPermissions::getActions('product');
+$canDo = StorefrontHelperPermissions::getActions('category');
 
-JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': SKUs', 'kb.png');
-if ($canDo->get('core.admin'))
+JToolBarHelper::title(JText::_('COM_STOREFRONT'), 'kb.png');
+if (0  && $canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
@@ -57,9 +57,7 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 //JToolBarHelper::spacer();
-//JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('categories');
+//JToolBarHelper::help('categories');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -80,6 +78,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">Options (published)</th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
@@ -96,9 +95,7 @@ $i = 0;
 
 foreach ($this->rows as $row)
 {
-	//print_r($row); die;
-	//$row =& $this->rows[$i];
-	switch ($row->sActive)
+	switch ($row->ogActive)
 	{
 		case 1:
 			$class = 'publish';
@@ -117,40 +114,43 @@ foreach ($this->rows as $row)
 			break;
 	}
 
-	if (!$row->access)
-	{
-		$color_access = 'public';
-		$task_access  = 'accessregistered';
-	}
-	elseif ($row->access == 1)
-	{
-		$color_access = 'registered';
-		$task_access  = 'accessspecial';
-	}
-	else
-	{
-		$color_access = 'special';
-		$task_access  = 'accesspublic';
-	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sId; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->ogId; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->sId); ?>" title="<?php echo JText::_('COM_STOREFRONT_EDIT_SKU'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->sSku)); ?></span>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->ogId); ?>" title="<?php echo JText::_('COM_STOREFRONT_EDIT_CATEGORY'); ?>">
+						<span><?php echo $this->escape(stripslashes($row->ogName)); ?></span>
 					</a>
 				<?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($row->sSku)); ?></span>
+						<span><?php echo $this->escape(stripslashes($row->ogName)); ?></span>
 					</span>
 				<?php } ?>
 				</td>
 				<td>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=options&task=display&id=' . $row->ogId); ?>" title="View Options">
+							<span><?php
+							$key = $row->ogId;
+							$countInfo = $this->options->$key;
+							echo $countInfo->active + $countInfo->inactive;
+							if ($countInfo->active + $countInfo->inactive > 0)
+							{
+								echo ' (' . $countInfo->active . ')';
+							}
+							?></span>
+						</a>
+					<?php } else { ?>
+						<span><?php $key = $row->ogId; echo $this->options->$key; ?></span>
+					</span>
+					<?php } ?>
+				</td>
+				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->sId) . '&pId=' . $row->pId; ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->ogId); ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -171,7 +171,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />

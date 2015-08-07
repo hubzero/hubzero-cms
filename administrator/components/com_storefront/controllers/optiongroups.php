@@ -32,12 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Controller class for knowledge base categories
+ * Controller class for knowledge base collections
  */
-class StorefrontControllerSkus extends \Hubzero\Component\AdminController
+class StorefrontControllerOptiongroups extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Display a list of all categories
+	 * Display a list of all option groups
 	 *
 	 * @return  void
 	 */
@@ -46,10 +46,6 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 		// Get configuration
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
-
-		// Get product ID
-		$pId = JRequest::getVar('id', array(0));
-		$this->view->pId = $pId;
 
 		// Get filters
 		$this->view->filters = array(
@@ -79,16 +75,48 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 			0,
 			'int'
 		);
+
 		//print_r($this->view->filters);
 
 		$obj = new StorefrontModelArchive();
 
 		// Get record count
-		$this->view->total = $obj->skus('count', $pId, $this->view->filters);
+		$this->view->total = $obj->optionGroups('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $obj->skus('list', $pId, $this->view->filters);
+		$this->view->rows = $obj->optionGroups('list', $this->view->filters);
 		//print_r($this->view->rows); die;
+
+		// For all records here get options
+		$options = new stdClass();
+		$warehouse = new StorefrontModelWarehouse();
+		foreach ($this->view->rows as $r)
+		{
+			$key = $r->ogId;
+			$allOptions = $warehouse->getOptionGroupOptions($key, 'rows', false);
+
+			//print_r($allOptions); die;
+
+			// Count how many active and how many inactive options there are
+			$optionCounter = new stdClass();
+			$optionCounter->active = 0;
+			$optionCounter->inactive = 0;
+			foreach ($allOptions as $optionInfo)
+			{
+				if ($optionInfo->oActive)
+				{
+					$optionCounter->active++;
+				}
+				else
+				{
+					$optionCounter->inactive++;
+				}
+			}
+			$options->$key = $optionCounter;
+		}
+
+		//print_r($options); die;
+		$this->view->options = $options;
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -127,7 +155,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 	 *
 	 * @return  void
 	 */
-	public function editTask($row = null)
+	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
@@ -135,13 +163,6 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 
 		if (is_object($row))
 		{
-			$id = $row->getId();
-			// If this is a new SKU, set product ID
-			if (!$id)
-			{
-				$pId = JRequest::getVar('pId');
-				$row->setProductId($pId);
-			}
 			$this->view->row = $row;
 			$this->view->task = 'edit';
 		}
@@ -155,32 +176,9 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			// Get SKU
-			$row = $obj->sku($id);
-			$this->view->row = $row;
-
-			// If this is a new SKU, set product ID
-			if (!$id)
-			{
-				$pId = JRequest::getVar('pId');
-				$row->setProductId($pId);
-			}
+			// Load option group
+			$this->view->row = $obj->optionGroup($id);
 		}
-
-		//print_r($row); die;
-
-		// Get product's info
-		$pId = $row->getProductId();
-		$warehouse = new StorefrontModelWarehouse();
-		$pInfo = $warehouse->getProductInfo($pId, true);
-		$this->view->pInfo = $pInfo;
-		//print_r($pInfo); die;
-
-		// Get available product-defined option groups and options
-		$this->view->allOptions = $obj->getProductOptions($pId);
-
-		// Get current SKU options
-		$this->view->options = $row->getOptions();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -210,57 +208,42 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 	 * @param   boolean  $redirect  Redirect the page after saving
 	 * @return  void
 	 */
-	public function saveTask($redirect = true)
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
+
 		//print_r($fields); die;
 
-		// Get SKU
+		// Update record(s)
 		$obj = new StorefrontModelArchive();
-		$sku = $obj->sku($fields['sId']);
 
-		// If this is a new SKU, set product ID
-		if (!$fields['sId'])
-		{
-			$pId = JRequest::getVar('pId');
-			$sku->setProductId($pId);
-		}
-
-		// Save SKU
 		try {
-			$sku = $obj->updateSku($sku, $fields);
+			$optionGroup = $obj->updateOptionGroup($fields['ogId'], $fields);
 		}
 		catch (Exception $e)
 		{
-			//echo $e->getMessage(); die;
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			// Get the sku
-			$sku = $obj->sku($fields['sId']);
-			//print_r($sku); die;
-			$this->editTask($sku);
+			// Get the product
+			$optionGroup = $obj->optionGroup($fields['ogId']);
+			$this->editTask($optionGroup);
 			return;
-		}
-
-		if (!isset($fields['access']))
-		{
-			//$row->set('access', JRequest::getInt('access', 0, 'post'));
 		}
 
 		if ($redirect)
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . JRequest::getInt('pId', 0),
-				JText::_('COM_STOREFRONT_PRODUCT_SAVED')
+				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_STOREFRONT_OPTION_GROUP_SAVED')
 			);
 			return;
 		}
 
-		$this->editTask($sku);
+		$this->editTask($optionGroup);
 	}
 
 	/**
@@ -274,8 +257,6 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 		$step = JRequest::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
-		$pId = JRequest::getVar('pId');
-
 		// What step are we on?
 		switch ($step)
 		{
@@ -288,9 +269,8 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 				{
 					$id = array($id);
 				}
-				$this->view->sId = $id;
 
-				$this->view->pId = $pId;
+				$this->view->ogId = $id;
 
 				// Set any errors
 				if ($this->getError())
@@ -307,14 +287,14 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 				JRequest::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$sIds = JRequest::getVar('sId', 0);
-				//print_r($sId); die;
+				$ogIds = JRequest::getVar('ogId', 0);
+				//print_r($oIds); die;
 
-				// Make sure we have an ID to work with
-				if (empty($sIds))
+				// Make sure we have ID(s) to work with
+				if (empty($ogIds))
 				{
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
 						JText::_('COM_STOREFRONT_NO_ID'),
 						'error'
 					);
@@ -330,18 +310,18 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 					// Do the delete
 					$obj = new StorefrontModelArchive();
 
-					foreach ($sIds as $sId)
+					foreach ($ogIds as $ogId)
 					{
-						// Delete SKU
+						// Delete option group
 						try
 						{
-							$sku = $obj->sku($sId);
-							$sku->delete();
+							$optionGroup = $obj->optionGroup($ogId);
+							$optionGroup->delete();
 						}
 						catch (Exception $e)
 						{
 							$this->setRedirect(
-								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
+								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
 								$e->getMessage(),
 								$type
 							);
@@ -349,17 +329,17 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 						}
 					}
 
-					$msg = "SKU(s) deleted";
+					$msg = "Option group(s) deleted";
 					$type = 'message';
 				}
 
 				// Set the redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
 					$msg,
 					$type
 				);
-			break;
+				break;
 		}
 	}
 
@@ -389,12 +369,12 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 	 * @param      integer $state State to set
 	 * @return     void
 	 */
-	public function stateTask($state=0)
+	public function stateTask($state = 0)
 	{
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$pId = JRequest::getVar('pId', 0);
+		//print_r($ids); die;
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -410,13 +390,11 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 		// Update record(s)
 		$obj = new StorefrontModelArchive();
 
-		foreach ($ids as $sId)
+		foreach ($ids as $ogId)
 		{
-			// Save SKU
-			try
-			{
-				$sku = $obj->sku($sId);
-				$obj->updateSku($sku, array('state' => $state));
+			// Save category
+			try {
+				$obj->updateOptionGroup($ogId, array('state' => $state));
 			}
 			catch (Exception $e)
 			{
@@ -441,7 +419,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId,
+			'index.php?option='.$this->_option . '&controller=' . $this->_controller,
 			$message
 		);
 	}
@@ -455,7 +433,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . JRequest::getInt('pId', 0)
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 }

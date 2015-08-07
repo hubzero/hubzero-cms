@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = StorefrontHelperPermissions::getActions('product');
 
-JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': SKUs', 'kb.png');
+JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': Option Group Options', 'kb.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -73,7 +73,6 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
@@ -98,7 +97,7 @@ foreach ($this->rows as $row)
 {
 	//print_r($row); die;
 	//$row =& $this->rows[$i];
-	switch ($row->sActive)
+	switch ($row->oActive)
 	{
 		case 1:
 			$class = 'publish';
@@ -116,41 +115,25 @@ foreach ($this->rows as $row)
 			$alt = JText::_('COM_STOREFRONT_UNPUBLISHED');
 			break;
 	}
-
-	if (!$row->access)
-	{
-		$color_access = 'public';
-		$task_access  = 'accessregistered';
-	}
-	elseif ($row->access == 1)
-	{
-		$color_access = 'registered';
-		$task_access  = 'accessspecial';
-	}
-	else
-	{
-		$color_access = 'special';
-		$task_access  = 'accesspublic';
-	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sId; ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->oId; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->sId); ?>" title="<?php echo JText::_('COM_STOREFRONT_EDIT_SKU'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->sSku)); ?></span>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->oId); ?>" title="<?php echo JText::_('COM_STOREFRONT_EDIT_OPTION'); ?>">
+						<span><?php echo $this->escape(stripslashes($row->oName)); ?></span>
 					</a>
 				<?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($row->sSku)); ?></span>
+						<span><?php echo $this->escape(stripslashes($row->oName)); ?></span>
 					</span>
 				<?php } ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->sId) . '&pId=' . $row->pId; ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->oId) . '&ogId=' . $row->ogId; ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -171,7 +154,7 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
+	<input type="hidden" name="ogId" value="<?php echo $this->ogId; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />

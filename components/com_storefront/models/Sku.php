@@ -40,9 +40,8 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
  */
 class StorefrontModelSku
 {
-
 	var $data;
-	var $db;
+	private $db;
 
 	/**
 	 * Contructor
@@ -66,7 +65,8 @@ class StorefrontModelSku
 	{
 		if (!is_numeric($price))
 		{
-			throw new Exception(JText::_('Price must be numeric'));
+			$price = 0;
+			//throw new Exception(JText::_('Price must be numeric'));
 		}
 
 		$this->data->price = $price;
@@ -75,6 +75,10 @@ class StorefrontModelSku
 
 	public function getPrice()
 	{
+		if (empty($this->data->price))
+		{
+			return NULL;
+		}
 		return $this->data->price;
 	}
 
@@ -86,6 +90,10 @@ class StorefrontModelSku
 
 	public function getName()
 	{
+		if (empty($this->data->name))
+		{
+			return NULL;
+		}
 		return $this->data->name;
 	}
 
@@ -167,6 +175,12 @@ class StorefrontModelSku
 	{
 		$this->verify();
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+
+		$sId = $warehouse->saveSku($this);
+		$this->setId($sId);
+
 		// Save options
 		if (isset($this->data->options))
 		{
@@ -176,17 +190,81 @@ class StorefrontModelSku
 
 			foreach ($this->data->options as $oId)
 			{
-				$sql = 'INSERT INTO `#__storefront_sku_options` (`sId`, `oId`)
+				if ($oId && $oId > 0)
+				{
+					$sql = 'INSERT INTO `#__storefront_sku_options` (`sId`, `oId`)
 						VALUES (' . $this->db->quote($this->getId()) . ', ' . $this->db->quote($oId) . ')';
-				$this->db->setQuery($sql);
-				$this->db->query();
+					$this->db->setQuery($sql);
+					$this->db->query();
+				}
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		return $sId;
+	}
 
-		return($warehouse->saveSku($this));
+	/**
+	 * Delete a SKU and everything related to it
+	 *
+	 * @param	void
+	 * @return	bool	true on success, exception otherwise
+	 */
+	public function delete()
+	{
+		$this->verify();
+
+		// Delete the SKU record
+		$sql = 'DELETE FROM `#__storefront_skus` WHERE `sId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		//print_r($this->db->replacePrefix($this->db->getQuery()));
+		$this->db->query();
+
+		// Delete the SKU-related files
+		//	-- SKU image
+		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $this->getProductId() . DS . $this->getId();
+		$dir = JPATH_ROOT . $imgWebPath;
+
+		if (file_exists($dir))
+		{
+			$it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+			$files = new RecursiveIteratorIterator($it,
+				RecursiveIteratorIterator::CHILD_FIRST);
+			foreach($files as $file) {
+				if ($file->isDir()){
+					rmdir($file->getRealPath());
+				} else {
+					unlink($file->getRealPath());
+				}
+			}
+			rmdir($dir);
+		}
+
+		//	-- SKU downloadFile (?)
+		if ($this->getMeta('downloadFile'))
+		{
+			// Path and file name
+			$dir = JPATH_ROOT . DS . 'media' . DS . 'software';
+			$file = $dir . DS . $this->getMeta('downloadFile');
+
+			if (file_exists($file))
+			{
+				// unlink($file);
+			}
+		}
+
+		// Delete the SKU meta
+		$sql = 'DELETE FROM `#__storefront_sku_meta` WHERE `sId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		$this->db->query();
+
+		// Delete the SKU options
+		$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `sId` = ' . $this->db->quote($this->getId());
+		$this->db->setQuery($sql);
+		$this->db->query();
+
+		// TODO Check if the parent product has any SKUs left and mark it unpublished if needed (?)
+
+		return true;
 	}
 
 	public function setAllowMultiple($allowMultiple)
@@ -237,7 +315,7 @@ class StorefrontModelSku
 
 	public function setInventoryLevel($inventoryLevel)
 	{
-		if (!is_numeric($inventoryLevel))
+		if (!is_numeric($inventoryLevel) && $inventoryLevel != 'DEFAULT')
 		{
 			throw new Exception(JText::_('Bad inventory level value'));
 		}
@@ -317,8 +395,20 @@ class StorefrontModelSku
 		$this->data->meta[$key] = $val;
 	}
 
-	public function getMeta()
+	public function getMeta($key = false)
 	{
+		if (!isset($this->data->meta))
+		{
+			return NULL;
+		}
+		if (!empty($key))
+		{
+			if (!empty($this->data->$key))
+			{
+				return $this->data->key;
+			}
+			return false;
+		}
 		return $this->data->meta;
 	}
 

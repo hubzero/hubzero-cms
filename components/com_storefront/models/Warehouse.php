@@ -416,7 +416,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param  void
 	 * @return void
 	 */
-	public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
+	public function getProducts ($return = 'rows', $showOnlyActive = true, $filters = false)
 	{
 		$sql = "SELECT DISTINCT p.*, pt.ptName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
@@ -512,6 +512,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$product = $this->_db->loadObject();
 
 		return $product;
@@ -654,6 +655,21 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			$sql .= " AND ogActive = 1";
 		}
 
+		if (isset($filters['ids']) && !empty($filters['ids']))
+		{
+			if (!is_array($filters['ids']))
+			{
+				$filters['ids'] = array($filters['ids']);
+			}
+
+			$sql .= " AND ogId IN (0";
+			foreach ($filters['ids'] as $ogId)
+			{
+				$sql .= ', ' . $ogId;
+			}
+			$sql .= ")";
+		}
+
 		if (isset($filters['sort']))
 		{
 			$sql .= " ORDER BY " . $filters['sort'];
@@ -684,8 +700,39 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			return($this->_db->getNumRows());
 		}
 
+		//$res = $this->_db->loadObjectList('ogId');
 		$res = $this->_db->loadObjectList();
 		//print_r($res); die;
+
+		return $res;
+	}
+
+	/**
+	 * Get all options for the option group (for admin)
+	 *
+	 * @param	int			option group ID
+	 * @return	array 		options IDs
+	 */
+	public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true)
+	{
+		$sql = "SELECT * FROM `#__storefront_options` WHERE 1";
+		if ($showOnlyActive)
+		{
+			$sql .= " AND `oActive` = 1";
+		}
+		$sql .= " AND `ogId` = " . $this->_db->quote($ogId);
+		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
+
+		$this->_db->execute();
+		if ($return == 'count')
+		{
+			$res = $this->_db->getNumRows();
+		}
+		else
+		{
+			$res = $this->_db->loadObjectList();
+		}
 
 		return $res;
 	}
@@ -926,11 +973,20 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * Get product SKU IDs
 	 *
 	 * @param	int			product id
-	 * @return	array 		collections
+	 * @return	array 		SKU IDs
 	 */
 	public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true)
 	{
-		$sql = "SELECT `sId` FROM `#__storefront_skus` WHERE 1";
+		$sql = "SELECT";
+		if ($return == 'all')
+		{
+			$sql .= " *";
+		}
+		else
+		{
+			$sql .= " `sId`";
+		}
+		$sql .= " FROM `#__storefront_skus` WHERE 1";
 		if ($showOnlyActive)
 		{
 			$sql .= " AND `sActive` = 1";
@@ -942,9 +998,16 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$this->_db->execute();
 		if ($return == 'count')
 		{
-			return($this->_db->getNumRows());
+			$res = $this->_db->getNumRows();
 		}
-		$res = $this->_db->loadResultArray();
+		elseif ($return == 'all')
+		{
+			$res = $this->_db->loadObjectList();
+		}
+		else
+		{
+			$res = $this->_db->loadResultArray();
+		}
 
 		return $res;
 	}
@@ -1037,7 +1100,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param	string						product type
 	 * @return	StorefrontModelProduct 	Instance of a product
 	 */
-	public function getProduct($pId, $productType = 'product')
+	public function getProduct($pId, $productType = 'product', $showOnlyActiveSkus = true)
 	{
 		$allowedProductTypes = array('product', 'course');
 
@@ -1078,7 +1141,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		// Get SKUs
-		$skus = $this->getProductSkus($pId);
+		$skus = $this->getProductSkus($pId, 'rows', $showOnlyActiveSkus);
 
 		// Add SKUs to product
 		foreach ($skus as $sId)
@@ -1110,6 +1173,17 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		//echo $this->_db->_sql;
 		$this->_db->query();
 		return($this->_db->loadResult());
+	}
+
+	/**
+	 * Create and return a new SKU
+	 *
+	 * @param	void
+	 * @return	StorefrontModelSku 		Instance of a SKU
+	 */
+	public function newSku() {
+		$sku = new StorefrontModelSku();
+		return $sku;
 	}
 
 	/**
@@ -1398,6 +1472,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		$sql .= "
 						`pId` = " . $sku->getProductId() . ",
+						`sSku` = " . $this->_db->quote($sku->getName()) . ",
 						`sPrice` = " . $this->_db->quote($sku->getPrice()) . ",
 						`sAllowMultiple` = " . $sku->getAllowMultiple() . ",
 						`sTrackInventory` = " . $sku->getTrackInventory() . ",

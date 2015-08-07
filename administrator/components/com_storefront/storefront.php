@@ -59,6 +59,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_storefront&controller=collections&id=0',
 	$controllerName == 'collections'
 );
+JSubMenuHelper::addEntry(
+	JText::_('COM_STOREFRONT_OPTION_GROUPS'),
+	'index.php?option=com_storefront&controller=optiongroups&id=0',
+	$controllerName == 'optiongroups'
+);
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'StorefrontController' . ucfirst($controllerName);

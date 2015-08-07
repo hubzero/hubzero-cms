@@ -34,7 +34,7 @@ $canDo = StorefrontHelperPermissions::getActions('product');
 
 $text = ($this->task == 'edit' ? JText::_('COM_STOREFRONT_EDIT') : JText::_('COM_STOREFRONT_NEW'));
 
-JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': ' . JText::_('COM_STOREFRONT_SKU') . ': ' . $text, 'kb.png');
+JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': ' . JText::_('COM_STOREFRONT_OPTION') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -69,25 +69,9 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[sSku]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+				<input type="text" name="fields[oName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 			</div>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_STOREFRONT_PRICE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[sPrice]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getPrice())); ?>" />
-			</div>
-
-			<?php
-			if ($this->pInfo->ptId == 1) {
-			?>
-				<div class="input-wrap">
-					<label for="field-title"><?php echo JText::_('COM_STOREFRONT_WEIGHT'); ?>:</label><br/>
-					<input type="text" name="fields[pWeight]" id="field-title" size="30" maxlength="100"
-						   value="<?php echo $this->escape(stripslashes($this->row->getWeight())); ?>"/>
-				</div>
-			<?php
-			}
-			?>
 		</fieldset>
 
 		<?php
@@ -124,18 +108,6 @@ function submitbutton(pressbutton)
 		}
 		?>
 
-		<?php
-		// Product type specific meta options
-
-		if ($this->pInfo->ptModel == 'software')
-		{
-			$view = new \Hubzero\Component\View(array('name'=>'meta', 'layout' => 'sku-software'));
-			$view->row = $this->row;
-			$view->display();
-		}
-
-		?>
-
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
@@ -144,43 +116,18 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo JText::_('COM_STOREFRONT_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->getId(); ?>
-						<input type="hidden" name="fields[sId]" id="field-sid" value="<?php echo $this->escape($this->row->getId()); ?>" />
+						<input type="hidden" name="fields[oId]" id="field-oid" value="<?php echo $this->escape($this->row->getId()); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_STOREFRONT_PRODUCT'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_STOREFRONT_OPTION_GROUP'); ?>:</th>
 					<td>
-						<?php echo $this->pInfo->pName; ?>
-						<input type="hidden" name="pId" id="pid" value="<?php echo $this->escape($this->pInfo->pId); ?>" />
+						<?php echo $this->ogInfo->ogName; ?>
+						<input type="hidden" name="fields[ogId]" id="field-ogid" value="<?php echo $this->escape($this->ogInfo->ogId); ?>" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_STOREFRONT_OPTIONS'); ?></span></legend>
-
-			<div class="input-wrap">
-				<label for="field-sAllowMultiple"><?php echo JText::_('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
-				<select name="fields[sAllowMultiple]" id="field-pAllowMultiple">
-					<option value="0"<?php if ($this->row->getAllowMultiple() == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getAllowMultiple() == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
-				<select name="fields[sTrackInventory]" id="field-sTrackInventory">
-					<option value="0"<?php if ($this->row->getTrackInventory() == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_NO'); ?></option>
-					<option value="1"<?php if ($this->row->getTrackInventory() == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_YES'); ?></option>
-				</select>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
-				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="100" value="<?php echo $this->row->getInventoryLevel(); ?>" />
-			</div>
-		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_STOREFRONT_PARAMETERS'); ?></span></legend>

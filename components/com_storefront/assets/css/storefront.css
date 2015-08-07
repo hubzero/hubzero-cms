@@ -1,3 +1,11 @@
+.productImages {
+	text-align: center;
+}
+
+.productImages img {
+	max-width: 600px;
+}
+
 .productImages a {
     border-bottom: 0;
 }

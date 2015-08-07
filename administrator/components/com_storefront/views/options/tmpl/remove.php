@@ -49,7 +49,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('Are you sure you want to delete all selected SKUs?'); ?></th>
+				<th><?php echo JText::_('Are you sure you want to delete all selected options?'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -68,12 +68,12 @@ function submitbutton(pressbutton)
 
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<?php
-		foreach ($this->sId as $sId)
+		foreach ($this->oId as $oId)
 		{
-			echo '<input type="hidden" name="sId[]" value="' . $sId . '" />';
+			echo '<input type="hidden" name="oId[]" value="' . $oId . '" />';
 		}
 	?>
-	<input type="hidden" name="pId" value="<?php echo $this->pId; ?>">
+	<input type="hidden" name="ogId" value="<?php echo $this->ogId; ?>">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 

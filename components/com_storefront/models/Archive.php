@@ -38,7 +38,7 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function products($rtrn='list', $filters=array(), $clear=false)
+	public function products($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		if (!isset($filters['sort']))
 		{
@@ -55,6 +55,9 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 				if (!isset($this->_products_count) || !is_numeric($this->_products_count) || $clear)
 				{
 					$warehouse = new StorefrontModelWarehouse();
+					// Reset limit, since all records count is needed here
+					unset($filters['limit']);
+
 					$this->_products_count = $warehouse->getProducts('count', false, $filters);
 				}
 				return $this->_products_count;
@@ -90,7 +93,7 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 
 		if ($pId)
 		{
-			$product = $warehouse->getProduct($pId);
+			$product = $warehouse->getProduct($pId, 'product', false);
 		}
 		else {
 			$product = $warehouse->newProduct();
@@ -260,6 +263,7 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 					}
 					$results = $resultsPlain;
 				}
+
 				$this->_products = new \Hubzero\Base\ItemList($results);
 				return $this->_products;
 		}
@@ -273,7 +277,8 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		{
 			$sku = $warehouse->getSku($sId);
 		}
-		else {
+		else
+		{
 			$sku = $warehouse->newSku();
 		}
 
@@ -283,15 +288,12 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Update SKU info
 	 *
-	 * @param      int 		$sId SKU ID
+	 * @param      int 		$sku SKU
 	 * @param      array 	$fields New info
 	 * @return     throws exception
 	 */
-	public function updateSku($sId, $fields)
+	public function updateSku($sku, $fields)
 	{
-		$warehouse = new StorefrontModelWarehouse();
-		$sku = $warehouse->getSku($sId);
-
 		//print_r($fields); die;
 
 		if (isset($fields['sPrice']))
@@ -306,7 +308,7 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		{
 			$sku->setTrackInventory($fields['sTrackInventory']);
 		}
-		if (isset($fields['sInventory']))
+		if (isset($fields['sInventory']) && $fields['sInventory'])
 		{
 			$sku->setInventoryLevel($fields['sInventory']);
 		}
@@ -332,8 +334,90 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 			}
 		}
 
+		//print_r($sku); die;
+
 		$sku->save();
 		return $sku;
+	}
+
+	/* *************************************** */
+	// Options
+
+	/**
+	 * Get a count or list of options
+	 *
+	 * @param      string  	$rtrn	What data to return
+	 * @param      int   	$ogId 	Option group Id
+	 * @param      array   	$filters Filters to apply to data retrieval
+	 * @return     mixed
+	 */
+	public function options($rtrn = 'rows', $ogId, $filters = array())
+	{
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir']  = 'ASC';
+		}
+
+		$warehouse = new StorefrontModelWarehouse();
+
+		switch (strtolower($rtrn))
+		{
+			case 'count':
+				return $warehouse->getOptionGroupOptions($ogId, 'count', false);
+				break;
+
+			case 'list':
+			case 'rows':
+			case 'results':
+			default:
+				if (!$results = $warehouse->getOptionGroupOptions($ogId, 'rows', false))
+				{
+					$results = array();
+				}
+
+				return new \Hubzero\Base\ItemList($results);
+		}
+	}
+
+	public function option($oId)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Option.php');
+		$option = new StorefrontModelOption($oId);
+
+		//print_r(($option)); die;
+		return $option;
+	}
+
+	/**
+	 * Update option info
+	 *
+	 * @param      int 		Option ID
+	 * @param      array 	$fields New info
+	 * @return     throws exception
+	 */
+	public function updateOption($oId, $fields)
+	{
+		$option = $this->option($oId);
+
+		if (isset($fields['oName']))
+		{
+			$option->setName($fields['oName']);
+		}
+		if (isset($fields['state']))
+		{
+			$option->setActiveStatus($fields['state']);
+		}
+		if (isset($fields['ogId']))
+		{
+			$option->setOptionGroupId($fields['ogId']);
+		}
+
+		$option->save();
+		return $option;
 	}
 
 	/* *************************************** */
@@ -415,6 +499,15 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		}
 	}
 
+	public function optionGroup($ogId)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
+		$optionGroup = new StorefrontModelOptionGroup($ogId);
+
+		//print_r(($optionGroup)); die;
+		return $optionGroup;
+	}
+
 	public function optionGroups($rtrn='list', $filters=array())
 	{
 		if (isset($filters['sort']))
@@ -454,6 +547,33 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 				return $categories;
 				break;
 		}
+	}
+
+	/**
+	 * Update option group info
+	 *
+	 * @param      int 		$ogId Option Group ID
+	 * @param      array 	$fields New info
+	 * @return     throws exception
+	 */
+	public function updateOptionGroup($ogId, $fields)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
+		$optionGroup = new StorefrontModelOptionGroup($ogId);
+
+		//print_r($fields);die;
+
+		if (isset($fields['ogName']))
+		{
+			$optionGroup->setName($fields['ogName']);
+		}
+		if (isset($fields['state']))
+		{
+			$optionGroup->setActiveStatus($fields['state']);
+		}
+
+		$optionGroup->save();
+		return $optionGroup;
 	}
 
 	public function getProductOptionGroups($pId)
