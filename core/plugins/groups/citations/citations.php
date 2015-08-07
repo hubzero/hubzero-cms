@@ -593,6 +593,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 		return;
 	}
+
 	/**
 	 * Publish method for group citations
 	 *
@@ -876,7 +877,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file));
+		$citations = Event::trigger('citation.onImport' , array($file, 'group', $this->group->get('gidNumber'))); 
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
@@ -1138,7 +1139,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		$citations->where('scope', '=', $scope);
 		$citations->where('scope_id', '=', $scope_id);
-		$citations->where('published', '!=', '2'); // don't include deleted citations
+		$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
 
 		if (count($filters) > 0)
 		{

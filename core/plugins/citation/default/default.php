@@ -59,11 +59,10 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 	 * @param   array  $file
 	 * @return  array
 	 */
-	public function onImport($file)
+	public function onImport($file, $scope = NULL, $scope_id = NULL)
 	{
 		//array of acceptable file types
 		$acceptable = array('txt');
-
 		//get the file extension
 		$extension = $file->getClientOriginalExtension();
 
@@ -88,7 +87,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 				'size'     => $file->getClientSize()
 			);
 
-			$return = event::trigger('citation.onImport' , array($new_file));
+			$return = event::trigger('citation.onImport' , array($new_file), $scope, $scope_id);
 			return $return[0];
 		}
 	}

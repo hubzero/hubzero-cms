@@ -59,7 +59,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	 * @param   array  $file
 	 * @return  array
 	 */
-	public function onImport($file)
+	public function onImport($file, $scope = NULL, $scope_id = NULL)
 	{
 		//endnote format
 		$active = 'enw';
@@ -343,7 +343,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	 * @param   array    $citation
 	 * @return  integer
 	 */
-	protected function checkDuplicateCitation($citation)
+	protected function checkDuplicateCitation($citation, $scope = NULL, $scope_id = NULL)
 	{
 		// vars
 		$title = '';
@@ -368,7 +368,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$db = App::get('db');
 
 		// query
-		$sql = "SELECT id, title, doi, isbn FROM `#__citations`";
+		$sql = "SELECT id, title, doi, isbn, scope, scope_id FROM `#__citations`";
 
 		// set the query
 		$db->setQuery($sql);
@@ -383,35 +383,72 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 			$title = $r->title;
 			$doi   = $r->doi;
 			$isbn  = $r->isbn;
+			$cScope = $r->scope;
+			$cScope_id = $r->scope_id;
 
-			// match titles based on percect param
-			similar_text($title, $citation['title'], $similar);
-			if ($similar >= $title_match)
+			if (!isset($scope))
 			{
-				$title_does_match = true;
-			}
+				// match titles based on percect param
+				similar_text($title, $citation['title'], $similar);
+				if ($similar >= $title_match)
+				{
+					$title_does_match = true;
+				}
 
-			// direct matches on doi
-			if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match))
+				// direct matches on doi
+				if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match))
+				{
+					$match = $id;
+					break;
+				}
+
+				// direct matches on isbn
+				if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match))
+				{
+					$match = $id;
+					break;
+				}
+
+				if ($title_does_match)
+				{
+					$match = $id;
+					break;
+				}
+			}
+			elseif (isset($scope) && isset($scope_id))
 			{
-				$match = $id;
-				break;
-			}
+				//matching within a scope domain
+				if ($cScope == $scope && $cScope_id == $scope_id)
+				{
+					// match titles based on percect param
+					similar_text($title, $citation['title'], $similar);
+					if ($similar >= $title_match)
+					{
+						$title_does_match = true;
+					}
 
-			// direct matches on isbn
-			if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match))
-			{
-				$match = $id;
-				break;
-			}
+					// direct matches on doi
+					if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match))
+					{
+						$match = $id;
+						break;
+					}
 
-			if ($title_does_match)
-			{
-				$match = $id;
-				break;
-			}
-		}
+					// direct matches on isbn
+					if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match))
+					{
+						$match = $id;
+						break;
+					}
 
+					if ($title_does_match)
+					{
+						$match = $id;
+						break;
+					}
+				}
+			}
+		} // end foreach result as r
 		return $match;
 	}
 
