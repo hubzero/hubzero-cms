@@ -160,8 +160,8 @@ class Quote extends \JTable
 
 			case 'list':
 			default:
-				$filters['sort']     = isset($filters['sort'])     ?: '`date`';
-				$filters['sort_Dir'] = isset($filters['sort_Dir']) ?: 'DESC';
+				$filters['sort']     = isset($filters['sort'])     ? $filters['sort'] : '`date`';
+				$filters['sort_Dir'] = isset($filters['sort_Dir']) ? $filters['sort_Dir'] : 'DESC';
 
 				if ($filters['sort_Dir'])
 				{
