@@ -119,8 +119,6 @@ if (isset($this->messages))
 						<tbody>
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
-							<?php if (($cite->published == $cite::STATE_PUBLISHED && !$this->isManager) ||
-										($this->isManager)): ?>
 								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
@@ -225,7 +223,6 @@ if (isset($this->messages))
 										<?php	echo $cite->citationDetails($this->openurl); ?>
 									</td>
 								</tr>
-							<?php endif; ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>

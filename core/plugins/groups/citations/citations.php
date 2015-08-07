@@ -256,8 +256,19 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		//get applied filters
 		$view->filters = $obj['filters'];
 
-		//get filtered citations
-		$view->citations = $obj['citations']->paginated()->rows();
+		// only display published citations to non-managers.	
+		if ($view->isManager)
+		{
+			//get filtered citations
+			$view->citations = $obj['citations']->paginated()->rows();
+		}
+		else
+		{
+			$view->citations = $obj['citations']
+				->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+				->paginated()
+				->rows();
+		}
 
 		//get the earliest year we have citations for
 		$view->earliest_year = 2001;
