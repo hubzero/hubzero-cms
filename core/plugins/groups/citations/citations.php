@@ -877,7 +877,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file, 'group', $this->group->get('gidNumber'))); 
+		$citations = Event::trigger('citation.onImport' , array($file, 'group', $this->group->get('gidNumber')));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
