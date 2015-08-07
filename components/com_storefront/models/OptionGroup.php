@@ -71,15 +71,14 @@ class StorefrontModelOptionGroup
  				WHERE og.`ogId` = " . $this->db->quote($ogId);
 
 		$this->db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-		if ($ogInfo = $this->db->loadObject()) 
+		if ($ogInfo = $this->db->loadObject())
 		{
 			$this->setId($ogInfo->ogId);
 			$this->setName($ogInfo->ogName);
 			$this->setActiveStatus($ogInfo->ogActive);
 		}
 	}
-	
+
 	/**
 	 * Set ID
 	 *
@@ -261,7 +260,8 @@ class StorefrontModelOptionGroup
 		$this->db->query();
 	}
 
-	public function getOptions() {
+	public function getOptions()
+	{
 		if (!empty($this->data->options))
 		{
 			return $this->data->options;
@@ -285,7 +285,8 @@ class StorefrontModelOptionGroup
 		return $this->data->options;
 	}
 
-	public function addOption($option) {
+	public function addOption($option)
+	{
 		$this->data->options[$option->getId()] = $option;
 	}
 

@@ -504,10 +504,14 @@ class StorefrontModelProduct
 			$it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
 			$files = new RecursiveIteratorIterator($it,
 				RecursiveIteratorIterator::CHILD_FIRST);
-			foreach($files as $file) {
-				if ($file->isDir()){
+			foreach ($files as $file)
+			{
+				if ($file->isDir())
+				{
 					rmdir($file->getRealPath());
-				} else {
+				}
+				else
+				{
 					unlink($file->getRealPath());
 				}
 			}

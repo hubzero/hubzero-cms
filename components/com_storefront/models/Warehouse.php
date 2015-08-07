@@ -269,7 +269,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			{
 				throw new Exception(JText::_('Cannot add collection: collection already exists.'));
 			}
-			elseif(empty($cId))
+			elseif (empty($cId))
 			{
 				throw new Exception(JText::_('Cannot add collection: the new ID must be provided.'));
 			}
@@ -1181,7 +1181,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param	void
 	 * @return	StorefrontModelSku 		Instance of a SKU
 	 */
-	public function newSku() {
+	public function newSku()
+	{
 		$sku = new StorefrontModelSku();
 		return $sku;
 	}

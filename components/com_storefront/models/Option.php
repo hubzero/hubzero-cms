@@ -72,15 +72,14 @@ class StorefrontModelOption
 
 		$this->db->setQuery($sql);
 		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
-		if ($oInfo = $this->db->loadObject())
-		{
+		if($oInfo = $this->db->loadObject()) {
 			$this->setId($oInfo->oId);
 			$this->setOptionGroupId($oInfo->ogId);
 			$this->setName($oInfo->oName);
 			$this->setActiveStatus($oInfo->oActive);
 		}
 	}
-	
+
 	/**
 	 * Set ID
 	 *
@@ -270,7 +269,8 @@ class StorefrontModelOption
 	 * @param	void
 	 * @return	bool	true on success, exception otherwise
 	 */
-	public function delete() {
+	public function delete()
+	{
 		// Delete the option record
 		$sql = 'DELETE FROM `#__storefront_options` WHERE `oId` = ' . $this->db->quote($this->getId());
 		$this->db->setQuery($sql);
