@@ -39,9 +39,32 @@ class Reader implements Iterator
 {
 	const ROW_LENGTH = 0;
 
+	/**
+	 * CSV file
+	 *
+	 * @var  string
+	 */
 	private $file;
+
+	/**
+	 * CSV field delimiter
+	 *
+	 * @var  string
+	 */
 	private $delimiter;
+
+	/**
+	 * Current row position
+	 *
+	 * @var  integer
+	 */
 	private $position;
+
+	/**
+	 * Cached list of headers
+	 *
+	 * @var  array
+	 */
 	private $headers;
 
 	/**
@@ -64,9 +87,9 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Get the current XML node
+	 * Get the first row of headers
 	 *
-	 * @return  object  XML node as a stdClass
+	 * @return  object  Row as a stdClass
 	 */
 	public function headers()
 	{
@@ -91,9 +114,9 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Get the current XML node
+	 * Get the current row
 	 *
-	 * @return  object  XML node as a stdClass
+	 * @return  object  Row as a stdClass
 	 */
 	public function current()
 	{
@@ -117,6 +140,9 @@ class Reader implements Iterator
 		$object = new stdClass;
 		foreach ($this->headers as $k => $header)
 		{
+			$header = trim($header);
+			$header = ($header ?: 'COLUMN');
+
 			if (strpos($header, ':'))
 			{
 				$parts = explode(':', $header);
@@ -148,7 +174,7 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Go to the next Node that matches our key
+	 * Go to the next row that matches our key
 	 *
 	 * @return  void
 	 */
@@ -158,7 +184,7 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Move to the first node that matches our key
+	 * Move to the first row that matches our key
 	 *
 	 * @return  void
 	 */
@@ -169,7 +195,7 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Is our current node valid
+	 * Is our current row valid
 	 *
 	 * @return  boolean  Is valid?
 	 */
