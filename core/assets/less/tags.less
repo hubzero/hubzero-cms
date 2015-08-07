@@ -12,117 +12,95 @@
 	.tags {
 		margin-left: 1.2em;
 		font-size: 0.85em !important;
-
+		border: none !important;
 
 		li {
 			display: inline-block !important;
 			.ie7-inline-block();
-			margin: 0.2em 1.2em 0.2em 0 !important;
-
-			a {
-				position: relative;
-				display: inline-block !important;
-				.ie7-inline-block();
-				border: 0;
-				line-height: 1 !important;
-				margin: 0 !important;
-				background: @tagBackground !important;
-				color: @tagColor !important;
-				padding: 0.6em 0.5em 0.7em 0.5em !important;
-				.border-radius(@tagBorderRadius);
-
-				small.tag-before,
-				&:before {
-					content: "";
-					border-color: transparent @tagBackground transparent transparent !important;
-					border-style: dashed solid dashed dashed !important;
-					border-width: 1.15em 1.15em 1.15em 0 !important;
-					height: 0;
-					width: 0;
-					display: block;
-					overflow: hidden;
-					position: absolute;
-					top: 0 !important;
-					left: -1.08em !important;
-					margin: 0 !important;
-					padding: 0 !important;
-				}
-				small.tag-after,
-				&:after {
-					content: "";
-					height: 0.375em;
-					width: 0.375em;
-					display: block;
-					position: absolute;
-					top: 1em;
-					left: -0.3em;
-					background-color: #f6f6f6;
-					.border-radius(0.375em);
-				}
-
-				span {
-					background-color: @tagCountBackground;
-					background-color: rgba(255, 255, 255, 0.2);
-					display: inline-block;
-					.ie7-inline-block();
-					margin: -0.6em -0.5em -0.7em 0.4em;
-					padding: 0.6em 0.5em 0.7em 0.5em;
-					.border-radius(@tagBorderRadius);
-				}
-
-				&:hover {
-					color: @tagColorHover !important;
-					background: @tagBackgroundHover !important;
-				}
-				&:hover span {
-					background-color: @tagCountBackgroundHover;
-					#translucent > .background(@white, 0.2);
-				}
-				&:hover small.tag-before,
-				&:hover:before {
-					border-color: transparent @tagBackgroundHover transparent transparent !important;
-				}
-			}
-		}
-		.admin a {
-			color: @tagAdminColor !important;
-			background: @tagAdminBackground !important;
-			&:hover {
-				color: @tagAdminColorHover !important;
-				background: @tagAdminBackgroundHover !important;
-			}
-			&:before {
-				border-color: transparent @tagAdminBackground transparent transparent !important;
-			}
-			&:hover:before {
-				border-color: transparent @tagAdminBackgroundHover transparent transparent !important;
-			}
+			margin: 0.2em 0 !important;
+			border: none !important;
 		}
 	}
 
-/* [!] HACK - IE 7 and older */
-	.tags li a {
-		*zoom: ~"expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class=tag-before></small>' + this.innerHTML + '<small class=tag-after>&bull;</small>')";
+	.tags li a,
+	.tag {
+		position: relative;
+		display: inline-block !important;
+		.ie7-inline-block();
+		border: 0;
+		line-height: 1 !important;
+		margin: 0 0 0 1.2em !important;
+		background: @tagBackground !important;
+		color: @tagColor !important;
+		padding: 0.6em 0.5em 0.7em 0.5em !important;
+		.border-radius(@tagBorderRadius);
+
+		small.tag-before,
+		&:before {
+			content: "";
+			border-color: transparent @tagBackground transparent transparent !important;
+			border-style: dashed solid dashed dashed !important;
+			border-width: 1.15em 1.15em 1.15em 0 !important;
+			height: 0;
+			width: 0;
+			display: block;
+			overflow: hidden;
+			position: absolute;
+			top: 0 !important;
+			left: -1.08em !important;
+			margin: 0 !important;
+			padding: 0 !important;
+		}
+		small.tag-after,
+		&:after {
+			content: "";
+			height: 0.375em;
+			width: 0.375em;
+			display: block;
+			position: absolute;
+			top: 1em;
+			left: -0.3em;
+			background-color: #f6f6f6;
+			.border-radius(0.375em);
+		}
+
+		span {
+			background-color: @tagCountBackground;
+			background-color: rgba(255, 255, 255, 0.2);
+			display: inline-block;
+			.ie7-inline-block();
+			margin: -0.6em -0.5em -0.7em 0.4em;
+			padding: 0.6em 0.5em 0.7em 0.5em;
+			.border-radius(@tagBorderRadius);
+		}
+
+		&:hover {
+			color: @tagColorHover !important;
+			background: @tagBackgroundHover !important;
+			border: none;
+		}
+		&:hover span {
+			background-color: @tagCountBackgroundHover;
+			#translucent > .background(@white, 0.2);
+		}
+		&:hover small.tag-before,
+		&:hover:before {
+			border-color: transparent @tagBackgroundHover transparent transparent !important;
+		}
 	}
-	.tags li a small.tag-after {
-		*background-color: transparent;
-		*color: #fff;
-		*font-size: 18px;
-		*line-height: 12px;
-		*top: 7px;
-		*left: -4px;
-	}
-	.tags li {
-		*display: inline !important;
-	}
-	.tags li a {
-		*line-height: 1em !important;
-	}
-	.tags li a span {
-		*background-color: @tagCountBackground;
-		*padding: 6px 6px 6px 6px !important;
-		*margin: -6px -6px -7px 4px;
-	}
-	.tags li a:hover span {
-		*background-color: @tagCountBackgroundHover;
+
+	.tags li.admin a,
+	.tag.admin {
+		color: @tagAdminColor !important;
+		background: @tagAdminBackground !important;
+		&:hover {
+			color: @tagAdminColorHover !important;
+			background: @tagAdminBackgroundHover !important;
+		}
+		&:before {
+			border-color: transparent @tagAdminBackground transparent transparent !important;
+		}
+		&:hover:before {
+			border-color: transparent @tagAdminBackgroundHover transparent transparent !important;
+		}
 	}

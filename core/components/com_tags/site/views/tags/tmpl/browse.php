@@ -39,7 +39,7 @@ $this->css()
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-tag tag btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+			<a class="icon-tag btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 				<?php echo Lang::txt('COM_TAGS_MORE_TAGS'); ?>
 			</a>
 		</p>
@@ -124,9 +124,9 @@ $this->css()
 						{
 							$cls = ($cls == 'even' ? 'odd' : 'even');
 							?>
-							<tr class="<?php echo $cls . ($row->get('admin') ? ' admin' : ''); ?>">
+							<tr class="<?php echo $cls; ?>">
 								<td>
-									<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+									<a class="tag <?php echo ($row->get('admin') ? ' admin' : ''); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
 										<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 									</a>
 								</td>

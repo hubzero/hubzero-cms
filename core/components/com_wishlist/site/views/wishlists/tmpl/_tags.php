@@ -107,7 +107,7 @@ defined('_HZEXEC_') or die();
 
 				$tll[$tag->get('tag')] .= '<span style="font-size: ' . round($size, 1) . 'em;">';
 			}
-			$tll[$tag->get('tag')] .= '<a href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
+			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))
 			{
 				$tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';
