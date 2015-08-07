@@ -64,14 +64,14 @@ include_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' .
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PLUGIN_NAME', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PUBLISHED', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PUBLISHED', 'p.enabled', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col" class="priority-2">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ORDER', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 					<?php echo $this->grid('order', $this->rows); ?>
 				</th>
 				<th scope="col" class="priority-3">
-					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ACCESS', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ACCESS', 'access_level', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
 					<?php echo Lang::txt('COM_RESOURCES_COL_MANAGE'); ?>
