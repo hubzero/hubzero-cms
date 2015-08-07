@@ -678,13 +678,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					{
 						$citation->set('published', $citation::STATE_UNPUBLISHED);
 					}
-				
+
 					//save the state
 					if ($citation->save())
 					{
 						array_push($published, $id);
 					}
-				}		
+				}
 					echo json_encode($published);
 					exit();
 			}
