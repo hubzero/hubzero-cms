@@ -518,7 +518,7 @@ class Citation extends Relational
 		// if we have an open url link and we want to use open urls
 		if ($openurl['link'])
 		{
-			$html .= '<span> | </span>' . self::citationOpenUrl($openurl, $citation);
+			$html .= '<span> | </span>' . self::citationOpenUrl($openurl, $this);
 		}
 
 		// citation association - to HUB resources

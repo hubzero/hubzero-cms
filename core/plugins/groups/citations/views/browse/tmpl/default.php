@@ -113,7 +113,21 @@ if (isset($this->messages))
 								<th colspan="6"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
 							</tr>
 							<?php if ($this->isManager) : ?>
-								<tr class="hidden"></tr>
+								<tr class="hidden">
+				<div class="admin">
+					<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
+					</a>
+					<a class="btn icon-upload" href="<?php echo Route::url($base. '&action=import'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_CITATION'); ?>
+					</a>
+					<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=settings'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SET_FORMAT'); ?>
+					</a>
+					</td>
+
+	
+								</tr>
 							<?php endif; ?>
 						</thead>
 						<tbody>
