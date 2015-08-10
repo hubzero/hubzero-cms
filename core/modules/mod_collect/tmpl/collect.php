@@ -55,7 +55,7 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 		<?php } ?>
 
 		<div class="grid">
-			<div class="col span-half">
+			<div class="col span5">
 				<label for="field-collection">
 					<?php echo Lang::txt('MOD_COLLECT_SELECT_COLLECTION'); ?>
 					<select name="collectible[collection_id]" id="field-collection">
@@ -101,9 +101,11 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 				</label>
 			</div>
 
-			<p class="or"><?php echo Lang::txt('MOD_COLLECT_OR'); ?></p>
+			<div class="col span2">
+				<p class="or"><?php echo Lang::txt('MOD_COLLECT_OR'); ?></p>
+			</div>
 
-			<div class="col span-half omega">
+			<div class="col span5 omega">
 				<label for="field-collection_title">
 					<?php echo Lang::txt('MOD_COLLECT_CREATE_COLLECTION'); ?>
 					<input type="text" name="collectible[title]" id="field-collection_title" />

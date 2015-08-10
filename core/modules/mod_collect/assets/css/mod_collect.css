@@ -43,10 +43,7 @@
 		padding-right: 1em;
 	}
 	#sbox-content #hubForm .grid .or {
-		position: absolute;
-		bottom: 2em;
-		left: 50%;
-		margin-left: -0.75em;
+		font-weight: bold;
 	}
 	#sbox-content .in-collections ul {
 		list-style: none;
