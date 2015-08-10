@@ -54,6 +54,8 @@ class Configuration extends Base implements CommandInterface
 	 *
 	 * Sets/updates config vars, creating .muse config file as needed
 	 *
+	 * @museDescription Sets the defined key/value pair and saves it into the user's configuration
+	 *
 	 * @return void
 	 **/
 	public function set()
@@ -113,15 +115,11 @@ class Configuration extends Base implements CommandInterface
 				These will, for example, be used to fill in docblock stubs when
 				using the scaffolding command.'
 			)
+			->addTasks($this)
 			->addArgument(
-				'--name',
-				'Set your preferred name.',
+				'--{keyName}',
+				'Sets the variable keyName to the given value.',
 				'Example: --name="John Doe"'
-			)
-			->addArgument(
-				'--email',
-				'Set your preferred email address.',
-				'Example: --name=john.doe@gmail.com'
 			);
 	}
 }

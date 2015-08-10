@@ -58,6 +58,7 @@ class Cache extends Base implements CommandInterface
 		$this->output
 		     ->getHelpOutput()
 		     ->addOverview('Cache Management')
+		     ->addTasks($this)
 		     ->render();
 	}
 
@@ -65,6 +66,8 @@ class Cache extends Base implements CommandInterface
 	 * Clear all Cache
 	 *
 	 * @return void
+	 *
+	 * @museDescription Clears all cached items in document root cache directory
 	 */
 	public function clear()
 	{

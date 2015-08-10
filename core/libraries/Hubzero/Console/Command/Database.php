@@ -55,7 +55,8 @@ class Database extends Base implements CommandInterface
 	 * Dump the database
 	 *
 	 * @return void
-	 * @author
+	 *
+	 * @museDescription Dumps the current site database into a file in the users home directory
 	 **/
 	public function dump()
 	{
@@ -108,6 +109,8 @@ class Database extends Base implements CommandInterface
 	 * Load a database dump
 	 *
 	 * @return void
+	 *
+	 * @museDescription Loads the provided database into the hubs currently configured database
 	 **/
 	public function load()
 	{
@@ -176,8 +179,12 @@ class Database extends Base implements CommandInterface
 		$this
 			->output
 			->addOverview(
-				'Database utility functions.'
+				'Database utility functions for migrating and restoring database backups.
+				The necessity for this function arose primarily from the need to copy
+				a production database down to development environments without overwriting
+				certain development configuration with inappropriate production values.'
 			)
+			->addTasks($this)
 			->addArgument(
 				'--include-table: Include a specific table',
 				'Specify a given table to be included in the dump. This primarily
@@ -188,7 +195,7 @@ class Database extends Base implements CommandInterface
 				'--all-tables: Include all tables',
 				'By default, the database dump does not include non-prefixed tables
 				(example: host, display, etc...). This option can be used to include
-				these tables. Use with caution when planning to evenutally load this
+				these tables. Use with caution when planning to eventually load this
 				data into another host (ex: dev) as it rarely makes sense to reload
 				tool sessions into another environment.'
 			)

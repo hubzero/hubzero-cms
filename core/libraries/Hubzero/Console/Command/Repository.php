@@ -119,6 +119,8 @@ class Repository extends Base implements CommandInterface
 	 * Check the current status of the repository
 	 *
 	 * @return void
+	 *
+	 * @museDescription  Checks the current status of the repository for upgrade eligibility
 	 **/
 	public function status()
 	{
@@ -185,6 +187,8 @@ class Repository extends Base implements CommandInterface
 	 * Repository log
 	 *
 	 * @return void
+	 *
+	 * @museDescription  Shows the past and pending changelog for the repository
 	 **/
 	public function log()
 	{
@@ -245,6 +249,8 @@ class Repository extends Base implements CommandInterface
 	 * Update the repository
 	 *
 	 * @return void
+	 *
+	 * @museDescription  Updates the repository, by default performing a dry run
 	 **/
 	public function update()
 	{
@@ -381,6 +387,8 @@ class Repository extends Base implements CommandInterface
 	 * Rollback to last (or named) checkpoint
 	 *
 	 * @return void
+	 *
+	 * @museDescription  Rolls the repository back to the last checkpoint
 	 **/
 	public function rollback()
 	{
@@ -430,6 +438,8 @@ class Repository extends Base implements CommandInterface
 	 * Do some repository cleanup
 	 *
 	 * @return void
+	 *
+	 * @museDescription  Performs cleanup operations including deleting automatic tags and stashes (if applicable)
 	 **/
 	public function clean()
 	{
@@ -484,6 +494,8 @@ class Repository extends Base implements CommandInterface
 	 * Run syntax checker on changed files
 	 *
 	 * @return void
+	 *
+	 * @museDescription  Verifies the validity of the syntax of any pending changes
 	 **/
 	public function syntax()
 	{
@@ -602,6 +614,7 @@ class Repository extends Base implements CommandInterface
 			->output
 			->addOverview(
 				'Repository management functions.'
-			);
+			)
+			->addTasks($this);
 	}
 }

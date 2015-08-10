@@ -72,6 +72,8 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Add an entry to the extension table
 	 *
+	 * @museDescription Adds a new extension to the extensions table
+	 *
 	 * @return void
 	 **/
 	public function add()
@@ -81,6 +83,8 @@ class Extension extends Base implements CommandInterface
 
 	/**
 	 * Delete an entry from the extension table
+	 *
+	 * @museDescription Deletes an existing entry from the extensions table
 	 *
 	 * @return void
 	 **/
@@ -92,6 +96,8 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Install an extension
 	 *
+	 * @museDescription Installs an extension, adding it if it hasn't been already
+	 *
 	 * @return void
 	 **/
 	public function install()
@@ -102,6 +108,8 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Enable an extension
 	 *
+	 * @museDescription Enables an existing extension
+	 *
 	 * @return void
 	 **/
 	public function enable()
@@ -111,6 +119,8 @@ class Extension extends Base implements CommandInterface
 
 	/**
 	 * Disable an extension
+	 *
+	 * @museDescription Disables an existing extension
 	 *
 	 * @return void
 	 **/
@@ -275,10 +285,6 @@ class Extension extends Base implements CommandInterface
 			->addOverview(
 				'Extension management utility functions.'
 			)
-			->addArgument(
-				'--name: extension name',
-				'The name of the extension with which you want to work.',
-				'Example: --name=com_awesome'
-			);
+			->addTasks($this);
 	}
 }
