@@ -95,7 +95,7 @@ defined('_HZEXEC_') or die();
 			$append = '&tags=' . $tag->get('tag');
 
 			$tll[$tag->get('tag')]  = '<li' . $class . '>';
-			$tll[$tag->get('tag')] .= '<a href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
+			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
 			$tll[$tag->get('tag')] .= '</li>';
 		}
 		else
