@@ -27,16 +27,14 @@ jQuery(document).ready(function(jq){
 
 		$("<option />", {
 			"value"   : "",
-			"text"    : el.attr('data-label') //"Filter by ..."
+			"text"    : el.attr('data-label')
 		}).appendTo(select);
 
 		el.find("a").each(function() {
 			var elm = $(this);
-			//console.log(elm.hasClass('active'));
 			var opts = {
 				"value"   : elm.attr("href"),
-				"text"    : elm.text()/*,
-				"selected": (elm.hasClass('active') ? "selected" : 'false')*/
+				"text"    : elm.text()
 			};
 			if (elm.hasClass('active')) {
 				opts.selected = 'selected';
@@ -49,21 +47,6 @@ jQuery(document).ready(function(jq){
 		select.appendTo(li);
 		li.appendTo(el);
 	});
-	/*$("<select />").addClass('.').appendTo(".entries-menu");
-
-	$("<option />", {
-		"selected": "selected",
-		"value"   : "",
-		"text"    : "Filter by ..."
-	}).appendTo(".entries-menu select");
-
-	$(".entries-menu a").each(function() {
-		var el = $(this);
-		$("<option />", {
-			"value"   : el.attr("href"),
-			"text"    : el.text()
-		}).appendTo(".entries-menu select");
-	});*/
 
 	// due date
 	if ($('#nodue').length > 0) { 

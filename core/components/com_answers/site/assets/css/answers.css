@@ -375,3 +375,20 @@
 	.submit input + a {
 		margin-left: 2em;
 	}
+
+/* Responsive */
+	.container .js li {
+		display: none;
+	}
+	.container .js li.option-select {
+		display: block;
+	}
+
+@media (min-width: 50em) {
+	.container .js li {
+		display: block;
+	}
+	.container .js li.option-select {
+		display: none;
+	}
+}

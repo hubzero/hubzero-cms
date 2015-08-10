@@ -124,45 +124,45 @@ $this->css()
 			<?php } ?>
 
 			<div class="container">
-				<?php
-				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-				$qs .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
-				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
-				?>
-				<ul class="entries-menu order-options">
-					<li>
-						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
-					</li>
-					<li>
-						<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
-					</li>
-					<?php if ($this->config->get('show_ranking')) { ?>
-					<li>
-						<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
-					</li>
-					<?php } ?>
-				</ul>
-
-				<?php if (count($this->types) > 0) { ?>
-					<ul class="entries-menu filter-options">
+				<nav class="entries-filters">
+					<?php
+					$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+					$qs .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
+					$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+					?>
+					<ul class="entries-menu order-options">
 						<li>
-							<select name="type" id="filter-type">
-								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
-								<?php foreach ($this->types as $item) { ?>
-									<?php
-									if ($item->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
-									{
-										continue;
-									}
-									?>
-									<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
-								<?php } ?>
-							</select>
+							<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
 						</li>
+						<li>
+							<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+						</li>
+						<?php if ($this->config->get('show_ranking')) { ?>
+						<li>
+							<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
+						</li>
+						<?php } ?>
 					</ul>
-				<?php } ?>
 
-				<div class="clearfix"></div>
+					<?php if (count($this->types) > 0) { ?>
+						<ul class="entries-menu filter-options">
+							<li>
+								<select name="type" id="filter-type">
+									<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
+									<?php foreach ($this->types as $item) { ?>
+										<?php
+										if ($item->id == 7 && !Component::isEnabled('com_tools', true))
+										{
+											continue;
+										}
+										?>
+										<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
+									<?php } ?>
+								</select>
+							</li>
+						</ul>
+					<?php } ?>
+				</nav>
 
 				<div class="container-block">
 					<?php if ($this->results) { ?>

@@ -116,18 +116,19 @@ $this->css('browse.css');
 			<?php } ?>
 
 			<div class="container">
-				<?php
-				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-				$qs .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
-				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
-				$qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
-				?>
-				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_TITLE'); ?></a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_ALIAS'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_ALIAS'); ?></a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=popularity' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_POPULARITY'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_POPULARITY'); ?></a></li>
-				</ul>
-				<div class="clearfix"></div>
+				<nav class="entries-filters">
+					<?php
+					$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+					$qs .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
+					$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+					$qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
+					?>
+					<ul class="entries-menu order-options">
+						<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_TITLE'); ?></a></li>
+						<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_ALIAS'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_ALIAS'); ?></a></li>
+						<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=popularity' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_POPULARITY'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_POPULARITY'); ?></a></li>
+					</ul>
+				</nav>
 
 				<h3>
 					<?php

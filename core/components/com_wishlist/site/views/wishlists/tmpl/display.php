@@ -147,35 +147,37 @@ if ($this->wishlist->exists())
 					</div><!-- / .container data-entry -->
 
 					<div class="container">
-						<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_WISHLIST_SORT'); ?>">
-						<?php if ($this->wishlist->get('admin')) { ?>
-							<li><a class="sort-ranking<?php if ($this->filters['sortby'] == 'ranking') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=ranking&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_RANKING'); ?></a></li>
-						<?php } ?>
-						<?php if ($this->wishlist->get('banking')) { ?>
-							<li><a class="sort-bonus<?php if ($this->filters['sortby'] == 'bonus') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=bonus&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_BONUS'); ?></a></li>
-						<?php } ?>
-							<li><a class="sort-feedback<?php if ($this->filters['sortby'] == 'feedback') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=feedback&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK'); ?></a></li>
-							<li><a class="sort-submitter<?php if ($this->filters['sortby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=submitter&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER'); ?></a></li>
-							<li><a class="sort-date<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=date&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?></a></li>
-						</ul>
+						<nav class="entries-filters">
+							<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_WISHLIST_SORT'); ?>">
+								<?php if ($this->wishlist->get('admin')) { ?>
+									<li><a class="sort-ranking<?php if ($this->filters['sortby'] == 'ranking') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=ranking&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_RANKING'); ?></a></li>
+								<?php } ?>
+								<?php if ($this->wishlist->get('banking')) { ?>
+									<li><a class="sort-bonus<?php if ($this->filters['sortby'] == 'bonus') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=bonus&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_BONUS'); ?></a></li>
+								<?php } ?>
+								<li><a class="sort-feedback<?php if ($this->filters['sortby'] == 'feedback') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=feedback&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_FEEDBACK'); ?></a></li>
+								<li><a class="sort-submitter<?php if ($this->filters['sortby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=submitter&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_SUBMITTER'); ?></a></li>
+								<li><a class="sort-date<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=date&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_DATE'); ?></a></li>
+							</ul>
 
-						<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_WISHLIST_FILTER'); ?>">
-							<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=all&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_ALL'); ?></a></li>
-							<li><a class="filter-open<?php if ($this->filters['filterby'] == 'open') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=open&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_OPEN'); ?></a></li>
-							<li><a class="filter-accepted<?php if ($this->filters['filterby'] == 'accepted') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=accepted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_ACCEPTED'); ?></a></li>
-							<li><a class="filter-rejected<?php if ($this->filters['filterby'] == 'rejected') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=rejected&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_REJECTED'); ?></a></li>
-							<li><a class="filter-granted<?php if ($this->filters['filterby'] == 'granted') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=granted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_GRANTED'); ?></a></li>
-						<?php if (!User::isGuest()) { ?>
-							<li><a class="filter-submitter<?php if ($this->filters['filterby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=submitter&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_SUBMITTER'); ?></a></li>
-						<?php } ?>
-						<?php if ($this->wishlist->access('manage')) { //1 or 2?>
-							<li><a class="filter-public<?php if ($this->filters['filterby'] == 'public') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=public&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_PUBLIC'); ?></a></li>
-							<li><a class="filter-private<?php if ($this->filters['filterby'] == 'private') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=private&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_PRIVATE'); ?></a></li>
-							<?php if ($this->wishlist->access('own')) { // 2?>
-								<li><a class="filter-mine<?php if ($this->filters['filterby'] == 'mine') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=mine&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_MINE'); ?></a></li>
-							<?php } ?>
-						<?php } ?>
-						</ul>
+							<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_WISHLIST_FILTER'); ?>">
+								<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=all&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_ALL'); ?></a></li>
+								<li><a class="filter-open<?php if ($this->filters['filterby'] == 'open') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=open&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_OPEN'); ?></a></li>
+								<li><a class="filter-accepted<?php if ($this->filters['filterby'] == 'accepted') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=accepted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_ACCEPTED'); ?></a></li>
+								<li><a class="filter-rejected<?php if ($this->filters['filterby'] == 'rejected') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=rejected&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_REJECTED'); ?></a></li>
+								<li><a class="filter-granted<?php if ($this->filters['filterby'] == 'granted') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=granted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_GRANTED'); ?></a></li>
+								<?php if (!User::isGuest()) { ?>
+									<li><a class="filter-submitter<?php if ($this->filters['filterby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=submitter&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_SUBMITTER'); ?></a></li>
+								<?php } ?>
+								<?php if ($this->wishlist->access('manage')) { //1 or 2?>
+									<li><a class="filter-public<?php if ($this->filters['filterby'] == 'public') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=public&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_PUBLIC'); ?></a></li>
+									<li><a class="filter-private<?php if ($this->filters['filterby'] == 'private') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=private&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_PRIVATE'); ?></a></li>
+									<?php if ($this->wishlist->access('own')) { // 2?>
+										<li><a class="filter-mine<?php if ($this->filters['filterby'] == 'mine') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=mine&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_MINE'); ?></a></li>
+									<?php } ?>
+								<?php } ?>
+							</ul>
+						</nav>
 
 						<table class="ideas entries">
 							<caption>

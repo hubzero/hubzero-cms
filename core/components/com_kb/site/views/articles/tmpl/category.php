@@ -62,18 +62,20 @@ $this->css()
 				</div><!-- / .container -->
 
 				<div class="container">
-					<ul class="entries-menu">
-						<li>
-							<a<?php echo ($this->filters['sort'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->category->link() . '&sort=popularity'); ?>" title="<?php echo Lang::txt('COM_KB_SORT_BY_POPULAR'); ?>">
-								<?php echo Lang::txt('COM_KB_SORT_POPULAR'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['sort'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->category->link() . '&sort=recent'); ?>" title="<?php echo Lang::txt('COM_KB_SORT_BY_RECENT'); ?>">
-								<?php echo Lang::txt('COM_KB_SORT_RECENT'); ?>
-							</a>
-						</li>
-					</ul>
+					<nav class="entries-filters">
+						<ul class="entries-menu">
+							<li>
+								<a<?php echo ($this->filters['sort'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->category->link() . '&sort=popularity'); ?>" title="<?php echo Lang::txt('COM_KB_SORT_BY_POPULAR'); ?>">
+									<?php echo Lang::txt('COM_KB_SORT_POPULAR'); ?>
+								</a>
+							</li>
+							<li>
+								<a<?php echo ($this->filters['sort'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->category->link() . '&sort=recent'); ?>" title="<?php echo Lang::txt('COM_KB_SORT_BY_RECENT'); ?>">
+									<?php echo Lang::txt('COM_KB_SORT_RECENT'); ?>
+								</a>
+							</li>
+						</ul>
+					</nav>
 
 					<table class="articles entries">
 						<caption>

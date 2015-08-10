@@ -62,27 +62,28 @@ $total = $this->model->entries('count', $this->filters);
 			</fieldset>
 		</div>
 		<div class="container">
-			<?php
-			$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-			$qs .= ($this->filters['start'] ? '&limitstart=' . $this->escape($this->filters['start']) : '');
-			$qs .= ($this->filters['limit'] ? '&limit=' . $this->escape($this->filters['limit']) : '');
-			$qs .= '&sortdir=' . $sortbyDir;
-			if ($this->filters['reviewer'])
-			{
-				$qs .= '&reviewer=' . $this->filters['reviewer'];
-			}
-			?>
-			<ul class="entries-menu order-options">
-				<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
-				<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
-			</ul>
-		<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
-			<ul class="entries-menu filter-options">
-				<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=all&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_ALL')); ?></a></li>
-				<li><a class="filter-pending<?php if ($this->filters['filterby'] == 'pending') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=pending&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_PENDING')); ?></a></li>
-			</ul>
-		<?php } ?>
-			<div class="clearfix"></div>
+			<nav class="entries-filters">
+				<?php
+				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+				$qs .= ($this->filters['start'] ? '&limitstart=' . $this->escape($this->filters['start']) : '');
+				$qs .= ($this->filters['limit'] ? '&limit=' . $this->escape($this->filters['limit']) : '');
+				$qs .= '&sortdir=' . $sortbyDir;
+				if ($this->filters['reviewer'])
+				{
+					$qs .= '&reviewer=' . $this->filters['reviewer'];
+				}
+				?>
+				<ul class="entries-menu order-options">
+					<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
+				</ul>
+				<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
+					<ul class="entries-menu filter-options">
+						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=all&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_ALL')); ?></a></li>
+						<li><a class="filter-pending<?php if ($this->filters['filterby'] == 'pending') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=pending&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_PENDING')); ?></a></li>
+					</ul>
+				<?php } ?>
+			</nav>
 			<div class="container-block">
 			<?php
 			if ($rows = $this->model->entries('list', $this->filters))

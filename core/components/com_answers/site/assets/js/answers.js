@@ -15,6 +15,38 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	$('.entries-menu').each(function(i, el){
+		el = $(el);
+		el.addClass('js');
+
+		var select = $("<select />").on('change', function() {
+			window.location = $(this).find("option:selected").val();
+		});
+
+		$("<option />", {
+			"value"   : "",
+			"text"    : el.attr('data-label')
+		}).appendTo(select);
+
+		el.find("a").each(function() {
+			var elm = $(this),
+				opts = {
+					"value"   : elm.attr("href"),
+					"text"    : elm.text()
+				};
+
+			if (elm.hasClass('active')) {
+				opts.selected = 'selected';
+			}
+			$("<option />", opts).appendTo(select);
+		});
+
+		var li = $("<li />").addClass('option-select');
+
+		select.appendTo(li);
+		li.appendTo(el);
+	});
+
 	$('a.reply').on('click', function (e) {
 		e.preventDefault();
 

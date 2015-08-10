@@ -72,13 +72,15 @@ $this->js('posts')
 
 		<?php if (count($this->posts) > 0):?>
 			<div class="container">
-				<ul class="entries-menu filter-options">
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=all'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_ALL'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'new') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_NEW'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'review') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=review'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_REVIEW'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=approved'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_APPROVED'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=removed'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_REMOVED'); ?></a></li>
-				</ul>
+				<nav class="entries-filters">
+					<ul class="entries-menu filter-options">
+						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=all'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_ALL'); ?></a></li>
+						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'new') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_NEW'); ?></a></li>
+						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'review') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=review'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_REVIEW'); ?></a></li>
+						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=approved'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_APPROVED'); ?></a></li>
+						<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&filterby=removed'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_FILTER_REMOVED'); ?></a></li>
+					</ul>
+				</nav>
 
 				<table class="ideas entries feedtable">
 					<caption><?php echo Lang::txt('COM_FEEDAGGREGATOR_SHOWING_POSTS', $this->filters['filterby']); ?></caption>

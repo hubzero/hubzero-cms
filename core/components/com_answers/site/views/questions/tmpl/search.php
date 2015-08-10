@@ -32,6 +32,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
+     ->js()
      ->js('vote.js');
 
 if (!$this->filters['filterby'])
@@ -103,43 +104,45 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 			<?php } ?>
 
 				<div class="container">
-					<ul class="entries-menu order-options">
-					<?php if ($this->config->get('banking')) { ?>
-						<li>
-							<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=rewards&sortdir=' . $sortdir); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
-								<?php echo Lang::txt('COM_ANSWERS_SORT_REWARDS'); ?>
-							</a>
-						</li>
-					<?php } ?>
-						<li>
-							<a<?php echo ($this->filters['sortby'] == 'votes') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=votes&sortdir=' . $sortdir); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SORT_POPULAR_TITLE'); ?>">
-								<?php echo Lang::txt('COM_ANSWERS_SORT_POPULAR'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=date&sortdir=' . $sortdir); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SORT_RECENT_TITLE'); ?>">
-								<?php echo Lang::txt('COM_ANSWERS_SORT_RECENT'); ?>
-							</a>
-						</li>
-					</ul>
+					<nav class="entries-filters">
+						<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_ANSWERS_SORT'); ?>">
+						<?php if ($this->config->get('banking')) { ?>
+							<li>
+								<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=rewards&sortdir=' . $sortdir); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_SORT_REWARDS'); ?>
+								</a>
+							</li>
+						<?php } ?>
+							<li>
+								<a<?php echo ($this->filters['sortby'] == 'votes') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=votes&sortdir=' . $sortdir); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SORT_POPULAR_TITLE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_SORT_POPULAR'); ?>
+								</a>
+							</li>
+							<li>
+								<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=date&sortdir=' . $sortdir); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SORT_RECENT_TITLE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_SORT_RECENT'); ?>
+								</a>
+							</li>
+						</ul>
 
-					<ul class="entries-menu filter-options">
-						<li>
-							<a<?php echo ($this->filters['filterby'] == 'all' || $this->filters['filterby'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=all&sortby=' . urlencode($this->filters['sortby'])); ?>" title="<?php echo Lang::txt('COM_ANSWERS_FILTER_ALL_TITLE'); ?>">
-								<?php echo Lang::txt('COM_ANSWERS_FILTER_ALL'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['filterby'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=open&sortby=' . urlencode($this->filters['sortby'])); ?>" title="<?php echo Lang::txt('COM_ANSWERS_FILTER_OPEN_TITLE'); ?>">
-								<?php echo Lang::txt('COM_ANSWERS_FILTER_OPEN'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['filterby'] == 'closed') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=closed&sortby=' . urlencode($this->filters['sortby'])); ?>" title="<?php echo Lang::txt('COM_ANSWERS_FILTER_CLOSED_TITLE'); ?>">
-								<?php echo Lang::txt('COM_ANSWERS_FILTER_CLOSED'); ?>
-							</a>
-						</li>
-					</ul>
+						<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_ANSWERS_FILTER'); ?>">
+							<li>
+								<a<?php echo ($this->filters['filterby'] == 'all' || $this->filters['filterby'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=all&sortby=' . urlencode($this->filters['sortby'])); ?>" title="<?php echo Lang::txt('COM_ANSWERS_FILTER_ALL_TITLE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_FILTER_ALL'); ?>
+								</a>
+							</li>
+							<li>
+								<a<?php echo ($this->filters['filterby'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=open&sortby=' . urlencode($this->filters['sortby'])); ?>" title="<?php echo Lang::txt('COM_ANSWERS_FILTER_OPEN_TITLE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_FILTER_OPEN'); ?>
+								</a>
+							</li>
+							<li>
+								<a<?php echo ($this->filters['filterby'] == 'closed') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=closed&sortby=' . urlencode($this->filters['sortby'])); ?>" title="<?php echo Lang::txt('COM_ANSWERS_FILTER_CLOSED_TITLE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_FILTER_CLOSED'); ?>
+								</a>
+							</li>
+						</ul>
+					</nav>
 
 					<table class="questions entries">
 						<caption>

@@ -79,28 +79,30 @@ $this->category->set('section_alias', $this->filters['section']);
 				</div><!-- / .container -->
 
 				<div class="container">
-					<ul class="entries-menu order-options">
-						<li>
-							<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>">
-								<?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
-							</a>
-						</li>
-						<li>
-							<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>">
-								<?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
-							</a>
-						</li>
-						<li>
-							<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>">
-								<?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
-							</a>
-						</li>
-						<li>
-							<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>">
-								<?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
-							</a>
-						</li>
-					</ul>
+					<nav class="entries-filters">
+						<ul class="entries-menu order-options">
+							<li>
+								<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>">
+									<?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
+								</a>
+							</li>
+							<li>
+								<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>">
+									<?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
+								</a>
+							</li>
+							<li>
+								<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>">
+									<?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
+								</a>
+							</li>
+							<li>
+								<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC')); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>">
+									<?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
+								</a>
+							</li>
+						</ul>
+					</nav>
 
 					<table class="entries">
 						<caption>

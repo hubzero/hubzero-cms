@@ -88,40 +88,42 @@ $this->css()
 			}
 			?>
 			<div class="container">
-				<ul class="entries-menu order-options">
-					<li>
-						<a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=name'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY_NAME'); ?>">
-							<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_NAME'); ?>
-						</a>
-					</li>
-					<li>
-						<a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=organization'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY_ORG'); ?>">
-							<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_ORG'); ?>
-						</a>
-					</li>
-					<?php if ($this->contribution_counting) { ?>
-					<li>
-						<a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=contributions'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY_CONTRIBUTIONS'); ?>">
-							<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_CONTRIBUTIONS'); ?>
-						</a>
-					</li>
-					<?php } ?>
-				</ul>
+				<nav class="entries-filters">
+					<ul class="entries-menu order-options">
+						<li>
+							<a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=name'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY_NAME'); ?>">
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_NAME'); ?>
+							</a>
+						</li>
+						<li>
+							<a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=organization'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY_ORG'); ?>">
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_ORG'); ?>
+							</a>
+						</li>
+						<?php if ($this->contribution_counting) { ?>
+						<li>
+							<a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=contributions'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_BY_CONTRIBUTIONS'); ?>">
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_CONTRIBUTIONS'); ?>
+							</a>
+						</li>
+						<?php } ?>
+					</ul>
 
-				<ul class="entries-menu filter-options">
-					<li>
-						<a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_BY_ALL'); ?>">
-							<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_ALL'); ?>
-						</a>
-					</li>
-					<?php if ($this->contribution_counting) { ?>
-					<li>
-						<a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_BY_CONTRIBUTORS'); ?>">
-							<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_CONTRIBUTORS'); ?>
-						</a>
-					</li>
-					<?php } ?>
-				</ul>
+					<ul class="entries-menu filter-options">
+						<li>
+							<a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_BY_ALL'); ?>">
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_ALL'); ?>
+							</a>
+						</li>
+						<?php if ($this->contribution_counting) { ?>
+						<li>
+							<a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_BY_CONTRIBUTORS'); ?>">
+								<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_CONTRIBUTORS'); ?>
+							</a>
+						</li>
+						<?php } ?>
+					</ul>
+				</nav>
 
 				<table class="members entries">
 					<caption>

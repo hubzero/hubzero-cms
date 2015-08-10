@@ -98,6 +98,7 @@ $this->css()
 				</div>
 			<?php } ?>
 			<div class="container">
+			<nav class="entries-filters">
 				<?php
 				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 				$qs .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
@@ -122,7 +123,7 @@ $this->css()
 						</li>
 					</ul>
 				<?php } ?>
-			<div class="clearfix"></div>
+			</nav>
 			<div class="container-block">
 			<?php
 			if ($this->results)

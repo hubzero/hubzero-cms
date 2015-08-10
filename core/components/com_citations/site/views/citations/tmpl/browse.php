@@ -93,33 +93,34 @@ if ($label == "none") {
 				</fieldset>
 			</div><!-- /.container .data-entry -->
 			<div class="container">
-				<ul class="entries-menu filter-options">
-					<?php
-						$queryString = "";
-						$exclude = array("filter");
-						foreach ($this->filters as $k => $v)
-						{
-							if ($v != "" && !in_array($k, $exclude))
+				<nav class="entries-filters">
+					<ul class="entries-menu filter-options">
+						<?php
+							$queryString = "";
+							$exclude = array("filter");
+							foreach ($this->filters as $k => $v)
 							{
-								if (is_array($v))
+								if ($v != "" && !in_array($k, $exclude))
 								{
-									foreach ($v as $k2 => $v2)
+									if (is_array($v))
 									{
-										$queryString .= "&{$k}[{$k2}]={$v2}";
+										foreach ($v as $k2 => $v2)
+										{
+											$queryString .= "&{$k}[{$k2}]={$v2}";
+										}
+									}
+									else
+									{
+										$queryString .= "&{$k}={$v}";
 									}
 								}
-								else
-								{
-									$queryString .= "&{$k}={$v}";
-								}
 							}
-						}
-					?>
-					<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></a></li>
-					<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('COM_CITATIONS_AFFILIATED'); ?></a></li>
-					<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
-				</ul>
-				<div class="clearfix"></div>
+						?>
+						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></a></li>
+						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('COM_CITATIONS_AFFILIATED'); ?></a></li>
+						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
+					</ul>
+				</nav>
 
 				<?php if (count($this->citations) > 0) : ?>
 					<?php

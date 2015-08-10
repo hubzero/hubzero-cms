@@ -59,28 +59,30 @@ $this->css()
 			</div><!-- / .container -->
 
 			<div class="container">
-				<ul class="entries-menu sort-options">
-					<li>
-						<?php
-							$filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
+				<nav class="entries-filters">
+					<ul class="entries-menu sort-options">
+						<li>
+							<?php
+								$filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
 
-							$cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
-							$url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
-						?>
-						<a class="<?php echo $cls . ($cls ? $this->filters['sort_Dir'] : 'asc'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
-							<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
-						</a>
-					</li>
-					<li>
-						<?php
-							$cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag') ? 'active ' : '';
-							$url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
-						?>
-						<a class="<?php echo $cls . ($cls ? $this->filters['sort_Dir'] : 'asc'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
-							<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
-						</a>
-					</li>
-				</ul>
+								$cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
+								$url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
+							?>
+							<a class="<?php echo $cls . ($cls ? $this->filters['sort_Dir'] : 'asc'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
+								<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
+							</a>
+						</li>
+						<li>
+							<?php
+								$cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag') ? 'active ' : '';
+								$url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
+							?>
+							<a class="<?php echo $cls . ($cls ? $this->filters['sort_Dir'] : 'asc'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
+								<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
+							</a>
+						</li>
+					</ul>
+				</nav>
 
 				<table class="entries" id="taglist">
 					<caption>
