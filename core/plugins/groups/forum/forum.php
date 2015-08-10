@@ -479,7 +479,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$this->view->edit = Request::getVar('section', '');
 
-		$this->view->sections = $this->model->sections('list', array('state' => 1));
+		$this->view->sections = $this->model->sections('list', $this->view->filters);
 
 		$this->view->model = $this->model;
 
