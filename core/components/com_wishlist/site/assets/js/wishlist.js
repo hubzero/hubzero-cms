@@ -16,6 +16,55 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	// Create the dropdown base
+	$('.entries-menu').each(function(i, el){
+		el = $(el);
+		el.addClass('js');
+
+		var select = $("<select />").on('change', function() {
+			window.location = $(this).find("option:selected").val();
+		});
+
+		$("<option />", {
+			"value"   : "",
+			"text"    : el.attr('data-label') //"Filter by ..."
+		}).appendTo(select);
+
+		el.find("a").each(function() {
+			var elm = $(this);
+			//console.log(elm.hasClass('active'));
+			var opts = {
+				"value"   : elm.attr("href"),
+				"text"    : elm.text()/*,
+				"selected": (elm.hasClass('active') ? "selected" : 'false')*/
+			};
+			if (elm.hasClass('active')) {
+				opts.selected = 'selected';
+			}
+			$("<option />", opts).appendTo(select);
+		});
+
+		var li = $("<li />").addClass('option-select');
+
+		select.appendTo(li);
+		li.appendTo(el);
+	});
+	/*$("<select />").addClass('.').appendTo(".entries-menu");
+
+	$("<option />", {
+		"selected": "selected",
+		"value"   : "",
+		"text"    : "Filter by ..."
+	}).appendTo(".entries-menu select");
+
+	$(".entries-menu a").each(function() {
+		var el = $(this);
+		$("<option />", {
+			"value"   : el.attr("href"),
+			"text"    : el.text()
+		}).appendTo(".entries-menu select");
+	});*/
+
 	// due date
 	if ($('#nodue').length > 0) { 
 		$('#nodue').on('click', function() {
