@@ -59,9 +59,9 @@
 	margin: 5px 0 15px 0;
 }
 
-.admin .btn a {
-	
-}
+.admin a.btn, .btn {
+	border-color: #5F5E5E;
+	}
 
 .templateTable {
 	font-size: 9pt;

@@ -118,7 +118,7 @@ if (isset($this->messages))
 										<a class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH_SELECTED'); ?>
 										</a>
-										<a class="btn icon-delete protected bulk" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
+										<a class="btn btn-danger icon-delete protected bulk" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE_SELECTED'); ?>
 										</a>
 										</td>
