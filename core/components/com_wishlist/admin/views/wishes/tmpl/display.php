@@ -117,7 +117,7 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_WISHLIST_PROPOSED', 'proposed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_WISHLIST_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_WISHLIST_ACCESS', 'private', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_WISHLIST_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_WISHLIST_COMMENTS', 'numreplies', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
