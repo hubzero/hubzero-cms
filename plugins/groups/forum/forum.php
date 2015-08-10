@@ -798,7 +798,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'state'      => 1,
 			'access'     => 0
 		);
-		
+
 		if (!$this->juser->get('guest'))
 		{
 			$this->view->filters['access'] = array(0, 1, 3);
