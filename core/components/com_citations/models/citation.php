@@ -597,16 +597,13 @@ class Citation extends Relational
 	{
 		$html = "";
 
-		$database = \App::get('db');
-
 		$text  = $openurl['text'];
 		$icon  = $openurl['icon'];
 		$link  = $openurl['link'];
 		$query = array();
 
 		// citation type
-		$citation_type = new Type($database);
-		$citation_type->load($citation->type);
+		$citation_type = $citation->relatedType;	
 
 		// do we have a title
 		if (isset($citation->title) && $citation->title != '')
