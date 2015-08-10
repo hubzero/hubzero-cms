@@ -789,7 +789,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			 }
 			 else
 			 {
-			 		App::redirect(
+					App::redirect(
 						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
 						Lang::txt('PLG_GROUPS_CITATIONS_NO_SUCH_CITATION'),
 						'error'
@@ -797,7 +797,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					return;
 				}
 				 return;
-					
+
 		} //end _delete()
 
 	/**
