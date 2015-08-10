@@ -50,13 +50,13 @@ class LanguagesViewOverrides extends JViewLegacy
 	 *
 	 * @since		2.5
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Get data from the model
-		$this->state			= $this->get('State');
-		$this->items			= $this->get('Overrides');
-		$this->languages	= $this->get('Languages');
-		$this->pagination	= $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Overrides');
+		$this->languages  = $this->get('Languages');
+		$this->pagination = $this->get('Pagination');
 
 		// Check for errors
 		if (count($errors = $this->get('Errors')))
@@ -86,17 +86,17 @@ class LanguagesViewOverrides extends JViewLegacy
 
 		if ($canDo->get('core.create'))
 		{
-			JToolbarHelper::addNew('override.add');
+			Toolbar::addNew('override.add');
 		}
 
 		if ($canDo->get('core.edit') && $this->pagination->total)
 		{
-			JToolbarHelper::editList('override.edit');
+			Toolbar::editList('override.edit');
 		}
 
 		if ($canDo->get('core.delete') && $this->pagination->total)
 		{
-			JToolbarHelper::deleteList('', 'overrides.delete');
+			Toolbar::deleteList('', 'overrides.delete');
 		}
 
 		if ($canDo->get('core.admin'))

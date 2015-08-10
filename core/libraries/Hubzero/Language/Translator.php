@@ -1141,32 +1141,35 @@ class Translator extends Object
 	{
 		$languages = array();
 
-		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
-
-		foreach ($iterator as $file)
+		if (is_dir($dir))
 		{
-			$langs    = array();
-			$fileName = $file->getFilename();
+			$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
 
-			if (!$file->isFile() || !preg_match("/^([-_A-Za-z]*)\.xml$/", $fileName))
+			foreach ($iterator as $file)
 			{
-				continue;
-			}
+				$langs    = array();
+				$fileName = $file->getFilename();
 
-			try
-			{
-				$metadata = self::parseXMLLanguageFile($file->getRealPath());
-
-				if ($metadata)
+				if (!$file->isFile() || !preg_match("/^([-_A-Za-z]*)\.xml$/", $fileName))
 				{
-					$lang = str_replace('.xml', '', $fileName);
-					$langs[$lang] = $metadata;
+					continue;
 				}
 
-				$languages = array_merge($languages, $langs);
-			}
-			catch (\RuntimeException $e)
-			{
+				try
+				{
+					$metadata = self::parseXMLLanguageFile($file->getRealPath());
+
+					if ($metadata)
+					{
+						$lang = str_replace('.xml', '', $fileName);
+						$langs[$lang] = $metadata;
+					}
+
+					$languages = array_merge($languages, $langs);
+				}
+				catch (\RuntimeException $e)
+				{
+				}
 			}
 		}
 

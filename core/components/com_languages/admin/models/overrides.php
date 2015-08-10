@@ -57,7 +57,8 @@ class LanguagesModelOverrides extends JModelList
 		}
 
 		// Parse the override.ini file in oder to get the keys and strings
-		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
+		//$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
+		$filename = PATH_APP . DS . 'bootstrap' . DS . $this->getState('filter.client') .DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 		$strings = LanguagesHelper::parseFile($filename);
 
 		// Consider the odering
@@ -199,8 +200,21 @@ class LanguagesModelOverrides extends JModelList
 
 		// Get all languages of frontend and backend
 		$languages = array();
-		$site_languages  = Lang::getKnownLanguages(JPATH_SITE);
-		$admin_languages = Lang::getKnownLanguages(JPATH_ADMINISTRATOR);
+
+		$site_languages  = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'site');
+		$admin_languages = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'administrator');
+		foreach ($site_languages as $tag => $language)
+		{
+			$languages[$tag.'0'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JSITE'));
+		}
+		foreach ($admin_languages as $tag => $language)
+		{
+			$languages[$tag.'1'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JADMINISTRATOR'));
+		}
+
+		// Overwrite core languages with any installed ones
+		$site_languages  = Lang::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . 'site');
+		$admin_languages = Lang::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . 'administrator');
 
 		// Create a single array of them
 		foreach ($site_languages as $tag => $language)
@@ -243,7 +257,8 @@ class LanguagesModelOverrides extends JModelList
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
 		// Parse the override.ini file in oder to get the keys and strings
-		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
+		//$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
+		$filename = PATH_APP . DS . 'bootstrap' . DS . $this->getState('filter.client').DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 		$strings = LanguagesHelper::parseFile($filename);
 
 		// Unset strings that shall be deleted
@@ -255,14 +270,16 @@ class LanguagesModelOverrides extends JModelList
 			}
 		}
 
-		foreach ($strings as $key => $string) {
+		foreach ($strings as $key => $string)
+		{
 			$strings[$key] = str_replace('"', '"_QQ_"', $string);
 		}
 
 		// Write override.ini file with the left strings
 		$registry = new \Hubzero\Config\Registry($strings);
 
-		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
+		//$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
+		$filename = PATH_APP . DS . 'bootstrap' . DS . $this->getState('filter.client').DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 
 		if (!Filesystem::write($filename, $registry->toString('INI')))
 		{
