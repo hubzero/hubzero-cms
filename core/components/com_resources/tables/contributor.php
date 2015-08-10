@@ -379,24 +379,6 @@ class Contributor extends \JTable
 		$sql .= (count($w) > 0) ? "WHERE " : "";
 		$sql .= implode(" AND ", $w);
 
-		if (!isset($filters['sort']) || !$filters['sort'])
-		{
-			$filters['sort'] = 'name';
-		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		if (isset($filters['limit']) && $filters['limit'] != '')
-		{
-			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
-		}
-
 		return $sql;
 	}
 
@@ -424,6 +406,23 @@ class Contributor extends \JTable
 	public function getAuthorRecords($filters=array())
 	{
 		$query = "SELECT DISTINCT m.authorid, m.name, (SELECT COUNT(DISTINCT w.subid) FROM $this->_tbl AS w WHERE w.authorid = m.authorid) AS resources " . $this->buildQuery($filters);
+		if (!isset($filters['sort']) || !$filters['sort'])
+		{
+			$filters['sort'] = 'name';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		if (isset($filters['limit']) && $filters['limit'] != '')
+		{
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
