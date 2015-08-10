@@ -603,7 +603,7 @@ class Citation extends Relational
 		$query = array();
 
 		// citation type
-		$citation_type = $citation->relatedType;	
+		$citation_type = $citation->relatedType;
 
 		// do we have a title
 		if (isset($citation->title) && $citation->title != '')
