@@ -707,7 +707,15 @@ class Page extends \JTable
 		}
 		if (!isset($filters['count']) || !$filters['count'])
 		{
-			if (isset($filters['sortby']) && $filters['sortby'] != '')
+			if (isset($filters['sort']) && $filters['sort'] != '')
+			{
+				if (in_array($filters['sort'], $this->getFields()))
+				{
+					$filters['sort'] = 't.' . $filters['sort'];
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+			}
+			else if (isset($filters['sortby']) && $filters['sortby'] != '')
 			{
 				$query .= " ORDER BY t." . $filters['sortby'];
 			}
