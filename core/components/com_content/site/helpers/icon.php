@@ -23,16 +23,16 @@ class JHtmlIcon
 	{
 		$url = 'index.php?option=com_content&task=article.add&return='.base64_encode(urlencode(Request::current(true))).'&a_id=0&catid=' . $category->id;
 
-		if ($params->get('show_icons'))
+		/*if ($params->get('show_icons'))
 		{
 			$text = Html::asset('image', 'new.png', Lang::txt('JNEW'), NULL, true);
 		}
 		else
 		{
 			$text = Lang::txt('JNEW').'&#160;';
-		}
+		}*/
 
-		$button =  '<a href="' . Route::url($url) . '">' . $text . '</a>';
+		$button =  '<a href="' . Route::url($url) . '">' . Lang::txt('JNEW') . '</a>';
 
 		$output = '<span class="hasTip" title="'.Lang::txt('COM_CONTENT_CREATE_ARTICLE').'">'.$button.'</span>';
 		return $output;
@@ -49,19 +49,19 @@ class JHtmlIcon
 
 		$status = 'width=400,height=350,menubar=yes,resizable=yes';
 
-		if ($params->get('show_icons'))
+		/*if ($params->get('show_icons'))
 		{
 			$text = Html::asset('image', 'emailButton.png', Lang::txt('JGLOBAL_EMAIL'), NULL, true);
 		}
 		else
 		{
 			$text = '&#160;'.Lang::txt('JGLOBAL_EMAIL');
-		}
+		}*/
 
 		$attribs['title']   = Lang::txt('JGLOBAL_EMAIL');
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
 
-		$output = '<a href="' . Route::url($url) . '" ' . \Hubzero\Utility\Arr::toString($attribs) . '>' . $text . '</a>';
+		$output = '<a href="' . Route::url($url) . '" ' . \Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
 		return $output;
 	}
 
@@ -113,7 +113,7 @@ class JHtmlIcon
 		{
 			$icon = 'edit_unpublished.png';
 		}
-		$text = Html::asset('image', $icon, Lang::txt('JGLOBAL_EDIT'), NULL, true);
+		$text = Lang::txt('JGLOBAL_EDIT'); //Html::asset('image', $icon, Lang::txt('JGLOBAL_EDIT'), NULL, true);
 
 		if ($article->state == 0)
 		{
@@ -146,14 +146,14 @@ class JHtmlIcon
 		$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 
 		// checks template image directory for image, if non found default are loaded
-		if ($params->get('show_icons'))
+		/*if ($params->get('show_icons'))
 		{
 			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
 		}
 		else
-		{
+		{*/
 			$text = Lang::txt('JGLOBAL_ICON_SEP') .'&#160;'. Lang::txt('JGLOBAL_PRINT') .'&#160;'. Lang::txt('JGLOBAL_ICON_SEP');
-		}
+		//}
 
 		$attribs['title']   = Lang::txt('JGLOBAL_PRINT');
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
@@ -165,14 +165,14 @@ class JHtmlIcon
 	static function print_screen($article, $params, $attribs = array())
 	{
 		// checks template image directory for image, if non found default are loaded
-		if ($params->get('show_icons'))
+		/*if ($params->get('show_icons'))
 		{
 			$text = Html::asset('image', 'printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
 		}
 		else
-		{
+		{*/
 			$text = Lang::txt('JGLOBAL_ICON_SEP') .'&#160;'. Lang::txt('JGLOBAL_PRINT') .'&#160;'. Lang::txt('JGLOBAL_ICON_SEP');
-		}
+		//}
 		return '<a href="#" onclick="window.print();return false;">'.$text.'</a>';
 	}
 }

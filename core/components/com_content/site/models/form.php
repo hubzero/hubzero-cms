@@ -55,9 +55,10 @@ class ContentModelForm extends ContentModelArticle
 	 *
 	 * @return	mixed	Content item data object on success, false on failure.
 	 */
-	public function getItem($itemId = null)
+	public function &getItem($pk = NULL)
 	{
 		// Initialise variables.
+		$itemId = $pk;
 		$itemId = (int) (!empty($itemId)) ? $itemId : $this->getState('article.id');
 
 		// Get a row instance.
