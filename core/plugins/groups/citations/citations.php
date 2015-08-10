@@ -774,7 +774,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				 foreach ($citationIDs as $id)
 				 {
-				 		$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+						$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 						$citation->set('published', $citation::STATE_DELETED);
 
 						//update the record
