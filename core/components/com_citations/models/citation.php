@@ -586,5 +586,122 @@ class Citation extends Relational
 		}
 	}
 
+	/**
+	 * Output a citation's OpenURL
+	 *
+	 * @param   array   $openurl   OpenURL data
+	 * @param   object  $citation  Citation
+	 * @return  string  HTML
+	 */
+	public static function citationOpenUrl($openurl, $citation)
+	{
+		$html = "";
+
+		$database = \App::get('db');
+
+		$text  = $openurl['text'];
+		$icon  = $openurl['icon'];
+		$link  = $openurl['link'];
+		$query = array();
+
+		// citation type
+		$citation_type = new Type($database);
+		$citation_type->load($citation->type);
+
+		// do we have a title
+		if (isset($citation->title) && $citation->title != '')
+		{
+			if ($citation_type->type == 'journal')
+			{
+				$query[] = 'atitle=' . str_replace(' ', '+', $citation->title);
+				$query[] = 'title=' . str_replace(' ', '+', $citation->journal);
+			}
+			else
+			{
+				$query[] = 'title=' . str_replace(' ', '+', $citation->title);
+			}
+		}
+
+		// do we have a doi to append?
+		if (isset($citation->doi) && $citation->doi != '')
+		{
+			$query[] = 'doi=' . $citation->doi;
+		}
+
+		// do we have an issn or isbn to append?
+		if (isset($citation->isbn) && $citation->isbn != '')
+		{
+			// get the issn/isbn in db
+			$issn_isbn = $citation->isbn;;
+
+			// check to see if we need to do any special processing to the issn/isbn before outputting
+			if (strstr($issn_isbn, "\r\n"))
+			{
+				$issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
+				$issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
+			}
+			elseif (strstr($issn_isbn, ' '))
+			{
+				$issn_isbn = array_filter(array_values(explode(' ', $issn_isbn)));
+				$issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
+			}
+
+			// append to url as issn if journal otherwise as isbn
+			if ($citation_type->type == 'journal')
+			{
+				$query[] = 'issn=' . $issn_isbn;
+			}
+			else
+			{
+				$query[] = 'isbn=' . $issn_isbn;
+			}
+		}
+
+		// do we have a date/year to append?
+		if (isset($citation->year) && $citation->year != '')
+		{
+			$query[] = 'date=' . $citation->year;
+		}
+
+		// to we have an issue/number to append?
+		if (isset($citation->number) && $citation->number != '')
+		{
+			$query[] = 'issue=' . $citation->number;
+		}
+
+		// do we have a volume to append?
+		if (isset($citation->volume) && $citation->volume != '')
+		{
+			$query[] = 'volume=' . $citation->volume;
+		}
+
+		// do we have pages to append?
+		if (isset($citation->pages) && $citation->pages != '')
+		{
+			$query[] = 'pages=' . $citation->pages;
+		}
+
+		// do we have a link with some data to send to resolver?
+		if (count($query) > 0)
+		{
+
+			// checks for already-appended ?
+			if (substr($link, -1, 1) != "?")
+			{
+				$link .= "?";
+			}
+
+			//add parts to url
+			$link .= implode("&", $query);
+
+			// do we have an icon or just using text as the link
+			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" />' : $text;
+
+			// final link
+			$html .= '<a rel="external nofollow" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+		}
+
+		return $html;
+	}
 
 } //end Citation Class
