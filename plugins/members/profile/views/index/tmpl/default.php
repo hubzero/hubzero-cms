@@ -181,7 +181,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<input type="hidden" name="option" value="com_members" />
 				<input type="hidden" name="id" value="<?php echo $juser->get("id"); ?>" />
 				<input type="hidden" name="task" value="save" />
-        <?php echo JHTML::_('form.token'); ?>
+				<?php echo JHTML::_('form.token'); ?>
 			</form>
 		</div>
 	<?php endif; ?>
@@ -252,6 +252,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 									<input type="hidden" name="task" value="changepassword" />
 									<input type="hidden" name="no_html" value="1" />
+									<?php echo JHTML::_('form.token'); ?>
 								</form>
 							</div>
 						</div>
