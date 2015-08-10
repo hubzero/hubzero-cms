@@ -68,13 +68,7 @@ class Help extends Output
 	public function addOverview($text)
 	{
 		$this
-			->addLine(
-				'Overview:',
-				array(
-					'color'       => 'yellow',
-					'indentation' => 0
-				)
-			)
+			->addSection('Overview')
 			->addParagraph(
 				$text,
 				array(
@@ -82,6 +76,76 @@ class Help extends Output
 				)
 			)
 			->addSpacer();
+
+		return $this;
+	}
+
+	/**
+	 * Adds help output tasks section
+	 *
+	 * @param   object  $command  the command to introspect for tasks
+	 * @return  $this
+	 * @since   2.0.0
+	 **/
+	public function addTasks($command)
+	{
+		$this->addSection('Tasks');
+
+		$class = new \ReflectionClass($command);
+		$tasks = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+		if ($tasks && count($tasks) > 0)
+		{
+			$list = [];
+			$max  = 0;
+
+			foreach ($tasks as $task)
+			{
+				if (!$task->isConstructor() && $task->name != 'execute' && $task->name != 'help')
+				{
+					$comment     = $task->getDocComment();
+					$description = 'no description available';
+
+					// Check for help ignore flag
+					preg_match('/@museDescription ([[:alnum:] ,\.()\-\'\/]*)/', $comment, $matched);
+
+					if ($matched && isset($matched[1]))
+					{
+						$description = trim($matched[1]);
+					}
+
+					$list[] = [
+						'name'        => $task->name,
+						'description' => $description
+					];
+
+					$max    = ($max > strlen($task->name)) ? $max : strlen($task->name);
+				}
+			}
+
+			if (count($list) > 0)
+			{
+				foreach ($list as $item)
+				{
+					$this->addString($item['name'], [
+						'color'       => 'blue',
+						'indentation' => 2
+					]);
+
+					$this->addString(str_repeat(' ', ($max - strlen($item['name']))) . '   ');
+					$this->addLine($item['description']);
+				}
+			}
+			else
+			{
+				$this->addLine('There are no tasks available for this command', [
+					'color'       => 'red',
+					'indentation' => 2
+				]);
+			}
+		}
+
+		$this->addSpacer();
 
 		return $this;
 	}
@@ -101,14 +165,7 @@ class Help extends Output
 	{
 		if (!$this->hasArgumentsSection)
 		{
-			$this->addLine(
-				'Arguments:',
-				array(
-					'color'       => 'yellow',
-					'indentation' => 0
-				)
-			);
-
+			$this->addSection('Arguments');
 			$this->hasArgumentsSection = true;
 		}
 
