@@ -350,8 +350,8 @@ class Credentials extends SiteController
 
 
 		// Get the user object
-		try 
-		{	
+		try
+		{
 			$user  = \Hubzero\User\User::oneOrFail($id);
 		}
 		catch (Exception $e)
@@ -362,7 +362,7 @@ class Credentials extends SiteController
 				'warning'
 			);
 			return;
-		} 
+		}
 		$parts = explode(':', $user->tokens()->latest()->token);
 		$crypt = $parts[0];
 
