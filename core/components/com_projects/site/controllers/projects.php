@@ -648,7 +648,6 @@ class Projects extends Base
 		$this->view->params     = $this->model->params;
 		$this->view->model 		= $this->model;
 		$this->view->reviewer 	= $reviewer;
-		$this->view->project    = $this->model->project();
 		$this->view->title  	= $this->title;
 		$this->view->active 	= $this->active;
 		$this->view->task 		= $this->_task;
