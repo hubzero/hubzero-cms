@@ -264,19 +264,22 @@ jQuery(document).ready(function($){
 								$param->addElementPath(PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->element);
 								//$out = $param->render('params', $event['params']);
 								$html = array();
-								foreach ($param->getParams('params', $event['params']) as $p)
+								if ($prm = $param->getParams('params', $event['params']))
 								{
-									$html[] = '<div class="input-wrap">';
-									if ($p[0])
+									foreach ($prm as $p)
 									{
-										$html[] = $p[0];
-										$html[] = $p[1];
+										$html[] = '<div class="input-wrap">';
+										if ($p[0])
+										{
+											$html[] = $p[0];
+											$html[] = $p[1];
+										}
+										else
+										{
+											$html[] = $p[1];
+										}
+										$html[] = '</div>';
 									}
-									else
-									{
-										$html[] = $p[1];
-									}
-									$html[] = '</div>';
 								}
 
 								$out = (!empty($html) ? implode("\n", $html) : $out);
