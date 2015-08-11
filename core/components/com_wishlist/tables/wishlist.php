@@ -438,20 +438,6 @@ class Wishlist extends \JTable
 		$sql .= (count($w) > 0) ? "WHERE " : "";
 		$sql .= implode(" AND ", $w);
 
-		if (!isset($filters['sort']) || !$filters['sort'])
-		{
-			$filters['sort'] = 'title';
-		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		if (isset($filters['limit']) && $filters['limit'] != '')
-		{
-			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}
-
 		return $sql;
 	}
 
@@ -479,6 +465,20 @@ class Wishlist extends \JTable
 	public function getRecords($filters=array())
 	{
 		$query = "SELECT m.*, u.name, (SELECT COUNT(*) FROM `#__wishlist_item` AS w WHERE w.wishlist = m.id) AS wishes " . $this->buildQuery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort'])
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		if (isset($filters['limit']) && $filters['limit'] != '')
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
