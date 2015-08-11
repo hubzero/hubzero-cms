@@ -33,6 +33,7 @@ namespace Components\Newsletter\Admin\Controllers;
 use Components\Newsletter\Tables\Mailing as NewsletterMailing;
 use Components\Newsletter\Tables\MailingRecipient;
 use Components\Newsletter\Tables\MailingRecipientAction;
+use Components\Newsletter\Tables\Newsletter;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
@@ -94,7 +95,7 @@ class Mailing extends AdminController
 		$this->view->recipients = $newsletterMailingRecipient->getRecipients($id, 'sent');
 
 		//instantiate newsletter object
-		$newsletterNewsletter = new NewsletterNewsletter($this->database);
+		$newsletterNewsletter = new Newsletter($this->database);
 		$newsletterNewsletter->load($mailing->nid);
 
 		//make sure we are supposed to be tracking
