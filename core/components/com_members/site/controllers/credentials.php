@@ -348,8 +348,21 @@ class Credentials extends SiteController
 		// Get the token and user id from the confirmation process
 		$id  = User::getState('com_users.reset.user', null);
 
+
 		// Get the user object
-		$user  = \Hubzero\User\User::oneOrFail($id);
+		try 
+		{	
+			$user  = \Hubzero\User\User::oneOrFail($id);
+		}
+		catch (Exception $e)
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
+				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'),
+				'warning'
+			);
+			return;
+		} 
 		$parts = explode(':', $user->tokens()->latest()->token);
 		$crypt = $parts[0];
 
