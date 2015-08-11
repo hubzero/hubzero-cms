@@ -67,6 +67,7 @@
 		margin-top: 20px;
 		border: 1px solid #CCC;
 		border-collapse: separate;
+		max-width: 100%;
 	}
 
 /* Table Head */
@@ -189,12 +190,16 @@
 	.require-action .citation-differences tbody td span {
 		margin: 0;
 		color: #555;
+		width: 100%
 	}
 	.require-action .citation-differences .insert {
 		border: 1px solid #DAE6DA;
 		background: #F2FFF2;
 		color: #360;
 		text-decoration: underline;
+		max-width: 800px;
+		overflow: hidden;
+		overflow-text: ellipsis;
 	}
 	.require-action .citation-differences .delete {
 		border: 1px solid #EFCCC2; 

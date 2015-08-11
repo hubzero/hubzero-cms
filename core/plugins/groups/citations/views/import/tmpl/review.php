@@ -42,7 +42,7 @@ $citations_require_attention    = $this->citations_require_attention;
 $citations_require_no_attention = $this->citations_require_no_attention;
 
 //dont show array
-$no_show = array('errors', 'duplicate');
+$no_show = array('errors', 'duplicate', 'bdsk-file-1');
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 ?>
@@ -155,7 +155,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 																					case 'tags':	echo $tags;				break;
 																					case 'badges':	echo $badges;			break;
 																					default:
-																						if (in_array($k, $cc->getFields()))
+																						if (in_array($k, array_keys($cc->getFields())))
 																						{
 																							echo html_entity_decode(nl2br($cc->$k));
 																						}
