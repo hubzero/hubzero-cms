@@ -24,12 +24,12 @@ class Migration20150916164629ComStorefront extends Base
 
 		if (!is_dir(JPATH_ROOT . DS . trim($downloadFolder, DS)))
 		{
-			mkdir(JPATH_ROOT . DS . trim($downloadFolder, DS));
+			mkdir(JPATH_ROOT . DS . trim($downloadFolder, DS), 0775, true);
 		}
 
 		if (!is_dir(JPATH_ROOT . DS . trim($imagesFolder, DS)))
 		{
-			mkdir(JPATH_ROOT . DS . trim($imagesFolder, DS));
+			mkdir(JPATH_ROOT . DS . trim($imagesFolder, DS), 0775, true);
 		}
 
 		$this->saveParams('com_storefront', $params);
