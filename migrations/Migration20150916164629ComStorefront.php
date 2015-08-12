@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for dropping the steps index
  **/
-class Migration20150916164629ComCart extends Base
+class Migration20150916164629ComStorefront extends Base
 {
 	/**
 	 * Up
