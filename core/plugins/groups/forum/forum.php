@@ -468,10 +468,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'state'      => 1,
 			'access'     => 0
 		);
-		if (!User::isGuest())
-		{
-			$this->view->filters['access'] = array(0, 1, 3);
-		}
+		/*
+		 * Commented out, see ticket QUBES #311
+		 * Kevin Wojkovich - 8/12/2015
+		 *
+		 */
+		//if (!User::isGuest())
+		//{
+		//	$this->view->filters['access'] = array(0, 1, 3);
+		//}
 		if (in_array(User::get('id'), $this->members))
 		{
 			$this->view->filters['access'] = array(0, 1, 3, 4);
