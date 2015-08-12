@@ -123,14 +123,23 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
+		$attribs = array('style' => $this->params->def('style', 'none'));
+
 		$regex = "/style\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 
-		if (!preg_match($regex, $options, $style))
+		if (preg_match($regex, $options, $style))
 		{
-			$style[2] = $this->params->def('style', 'xhtml');
+			$attribs['style'] = $style[2];
 		}
 
-		return \Module::position($position[2], $style[2]);
+		$regex = "/params\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
+
+		if (preg_match($regex, $options, $params))
+		{
+			$attribs['params'] = $params[2];
+		}
+
+		return \Module::position($position[2], $attribs);
 	}
 
 	/**

@@ -191,10 +191,15 @@ class Loader
 	 */
 	public function position($position, $style='none')
 	{
+		if (!is_array($style))
+		{
+			$style = array('style' => $style);
+		}
+
 		$contents = '';
 		foreach ($this->byPosition($position) as $mod)
 		{
-			$contents .= $this->render($mod, array('style' => $style));
+			$contents .= $this->render($mod, $style);
 		}
 
 		return $contents;
@@ -209,9 +214,14 @@ class Loader
 	 */
 	public function name($name, $style='none')
 	{
+		if (!is_array($style))
+		{
+			$style = array('style' => $style);
+		}
+
 		return $this->render(
 			$this->byName($name),
-			array('style' => $style)
+			$style
 		);
 	}
 
@@ -255,6 +265,15 @@ class Loader
 
 		// Get module parameters
 		$params = new Registry($module->params);
+
+		if (isset($attribs['params']))
+		{
+			$customparams = new Registry(html_entity_decode($attribs['params'], ENT_COMPAT, 'UTF-8'));
+
+			$params->merge($customparams);
+
+			$module->params = $params->toString();
+		}
 
 		// Get module path
 		$module->module = preg_replace('/[^A-Z0-9_\.-]/i', '', $module->module);
