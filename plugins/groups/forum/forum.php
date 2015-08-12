@@ -475,10 +475,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'access'     => 0
 		);
 
-		if (!$this->juser->get('guest'))
-		{
-			$this->view->filters['access'] = array(0, 1, 3);
-		}
+		/*
+		 * See ticket Qubes #311
+		 * Kevin Wojkovich - 8/12/2015
+		 */
+		//if (!$this->juser->get('guest'))
+		//{
+		//	$this->view->filters['access'] = array(0, 1, 3);
+		//}
 		if (in_array($this->juser->get('id'), $this->members))
 		{
 			$this->view->filters['access'] = array(0, 1, 3, 4);
