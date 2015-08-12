@@ -128,7 +128,7 @@ $no_show = array("errors","duplicate");
 										<tbody>
 											<?php foreach (array_keys($c) as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
-												<?php if (isset($c[$k]) && isset($cc->$k)): ?>
+												<?php if (isset($c[$k]) && $c[$k] != '' && isset($cc->$k) && $cc->$k != ''): ?>
 													<tr>
 														<td class="key">
 															<?php echo str_replace("_", " ", $k); ?>
