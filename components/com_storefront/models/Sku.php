@@ -54,7 +54,7 @@ class StorefrontModelSku
 		$this->data = new stdClass();
 		$this->db = JFactory::getDBO();
 
-		if (isset($sId) && is_numeric($sId))
+		if (isset($sId) && is_numeric($sId) && $sId)
 		{
 			$this->load($sId);
 		}

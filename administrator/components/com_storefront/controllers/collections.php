@@ -147,7 +147,7 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 			}
 
 			// Load category
-			$this->view->row = $obj->category($id);
+			$this->view->row = $obj->collection($id);
 		}
 
 		// Set any errors
@@ -243,12 +243,12 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 
 				// Incoming
 				$id = JRequest::getVar('id', array(0));
-				if (is_array($id) && !empty($id))
+				if (!is_array($id) && !empty($id))
 				{
-					$id = $id[0];
+					$id = array($id);
 				}
 
-				$this->view->id = $id;
+				$this->view->cId = $id;
 
 				// Set any errors
 				if ($this->getError())
@@ -265,10 +265,10 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 				JRequest::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$id = JRequest::getInt('id', 0);
+				$cIds = JRequest::getInt('cId', 0);
 
 				// Make sure we have an ID to work with
-				if (!$id)
+				if (empty($cIds))
 				{
 					$this->setRedirect(
 						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -278,27 +278,45 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 					return;
 				}
 
-				$msg = null;
-				$typ = null;
+				$delete = JRequest::getVar('delete', 0);
 
-				// Delete the category
-				$category = new StorefrontModelCategory($id);
-
-				// Check if we're deleting collection and all FAQs or just the collection page
-				$category->set('delete_action', JRequest::getVar('action', 'removefaqs'));
-				if (!$category->delete())
+				$msg = "Delete canceled";
+				$type = 'error';
+				if ($delete)
 				{
-					$msg = $category->getError();
-					$typ = 'error';
+					// Do the delete
+					$obj = new StorefrontModelArchive();
+
+					foreach ($cIds as $cId)
+					{
+						// Delete option group
+						try
+						{
+							$collection = $obj->collection($cId);
+							$collection->delete();
+						}
+						catch (Exception $e)
+						{
+							$this->setRedirect(
+								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
+								$e->getMessage(),
+								$type
+							);
+							return;
+						}
+					}
+
+					$msg = "Collection(s) deleted";
+					$type = 'message';
 				}
 
 				// Set the redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
 					$msg,
-					$typ
+					$type
 				);
-			break;
+				break;
 		}
 	}
 

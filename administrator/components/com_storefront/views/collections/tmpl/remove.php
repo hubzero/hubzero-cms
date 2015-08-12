@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_KB'), 'kb.png');
+JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': Delete Collection', 'kb.png');
 JToolBarHelper::cancel();
 
 ?>
@@ -49,30 +49,30 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('COM_KB_CHOOSE_DELETE_OPTION'); ?></th>
+				<th><?php echo JText::_('Are you sure you want to delete all selected collections?'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>
-					<input type="radio" name="action" id="action_delete" value="deletefaqs" checked="checked" />
-					<label for="action_delete"><?php echo JText::_('COM_KB_DELETE_ALL'); ?></label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="radio" name="action" id="action_remove" value="removefaqs" />
-					<label for="action_remove"><?php echo JText::_('COM_KB_DELETE_ONLY_CATEGORY'); ?></label>
-				</td>
-			</tr>
-			<tr>
-				<td><input type="submit" name="Submit" value="<?php echo JText::_('COM_KB_NEXT'); ?>" /></td>
-			</tr>
+		<tr>
+			<td>
+				<input type="checkbox" name="delete" value="delete"
+					   id="field-delete">
+				<label for="field-delete">I'm positive. Go ahead and do the delete.</label>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="submit" name="Submit" value="<?php echo JText::_('COM_STOREFRONT_NEXT'); ?>" /></td>
+		</tr>
 		</tbody>
 	</table>
 
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+	<?php
+	foreach ($this->cId as $cId)
+	{
+		echo '<input type="hidden" name="cId[]" value="' . $cId . '" />';
+	}
+	?>
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 

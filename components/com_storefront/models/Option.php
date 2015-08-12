@@ -53,7 +53,7 @@ class StorefrontModelOption
 		$this->data = new stdClass();
 		$this->db = JFactory::getDBO();
 
-		if (isset($oId) && is_numeric($oId))
+		if (isset($oId) && is_numeric($oId) && $oId)
 		{
 			$this->load($oId);
 		}

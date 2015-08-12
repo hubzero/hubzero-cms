@@ -62,7 +62,7 @@ class StorefrontModelProduct
 		$this->data = new stdClass();
 		$this->db = JFactory::getDBO();
 
-		if (isset($pId) && is_numeric($pId))
+		if (isset($pId) && is_numeric($pId) && $pId)
 		{
 			$this->setId($pId);
 			$this->load();

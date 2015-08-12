@@ -48,12 +48,35 @@ class StorefrontModelCollection
 	 * @param  void
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($cId = false)
 	{
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
 
 		$this->data = new stdClass();
+
+		if (isset($cId))
+		{
+			$this->load($cId);
+		}
+	}
+
+	public function load($cId)
+	{
+		$warehouse = new StorefrontModelWarehouse();
+		$cInfo = $warehouse->getCollectionInfo($cId, true);
+
+		if ($cInfo)
+		{
+			$this->setId($cInfo->cId);
+			$this->setName($cInfo->cName);
+			$this->setActiveStatus($cInfo->cActive);
+			$this->setType($cInfo->cType);
+		}
+		else
+		{
+			throw new Exception(JText::_('Error loading collection'));
+		}
 	}
 
 	/**

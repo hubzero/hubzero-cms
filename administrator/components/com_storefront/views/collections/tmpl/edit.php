@@ -34,7 +34,7 @@ $canDo = StorefrontHelperPermissions::getActions('product');
 
 $text = ($this->task == 'edit' ? JText::_('COM_STOREFRONT_EDIT') : JText::_('COM_STOREFRONT_NEW'));
 
-JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': ' . JText::_('COM_STOREFRONT_CATEGORY') . ': ' . $text, 'kb.png');
+JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': ' . JText::_('COM_STOREFRONT_COLLECTION') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[cName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->cName)); ?>" />
+				<input type="text" name="fields[cName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 			</div>
 
 		</fieldset>
@@ -89,8 +89,8 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('COM_STOREFRONT_ID'); ?>:</th>
 					<td>
-						<?php echo $this->row->cId; ?>
-						<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->pId); ?>" />
+						<?php echo $this->row->getId(); ?>
+						<input type="hidden" name="fields[cId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -102,9 +102,9 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-state"><?php echo JText::_('COM_STOREFRONT_PUBLISH'); ?>:</label>
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->cActive == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
-					<option value="1"<?php if ($this->row->cActive == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('JPUBLISHED'); ?></option>
-					<option value="2"<?php if ($this->row->cActive == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
+					<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->row->getActiveStatus() == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
 		</fieldset>

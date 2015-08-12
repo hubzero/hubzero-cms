@@ -488,6 +488,17 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		}
 	}
 
+	/**
+	 * Get collection
+	 */
+	public function collection($cId)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Collection.php');
+		$collection = new StorefrontModelCollection($cId);
+
+		return $collection;
+	}
+
 	public function collections($rtrn='list', $filters=array())
 	{
 		if (!isset($filters['sort']))
