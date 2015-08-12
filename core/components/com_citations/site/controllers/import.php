@@ -208,6 +208,11 @@ class Import extends SiteController
 			$citations[0]['attention'] = '';
 		}
 
+		if (!isset($citations[0]['no_attention']))
+		{
+			$citations[0]['no_attention'] = '';
+
+		}
 		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
 		{
 			Notify::error(Lang::txt('Unable to write temporary file.'));
