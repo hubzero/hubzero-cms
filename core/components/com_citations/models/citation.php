@@ -569,7 +569,7 @@ class Citation extends Relational
 			$html  = '<ul class="tags">';
 			foreach ($this->tags as $tag)
 			{
-				if ($tag->tagObject->label == NULL && $tag->tagObject->tbl == 'citations')
+				if ($tag->tagObject->label == NULL )
 				{
 
 					$cls = ($tag->admin) ? 'admin' : '';
