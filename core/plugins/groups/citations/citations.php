@@ -677,6 +677,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				 * @TODO move to API, possible use of whereIn()?
 				 ***/
 				$published = array();
+				$citationIDs = explode(',',$citationIDs);
+				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
+
 				//error, no such citation
 				foreach ($citationIDs as $id)
 				{
@@ -699,16 +702,23 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						array_push($published, $id);
 					}
 				}
-					echo json_encode($published);
-					exit();
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt($string),
+						'success'
+					);
+					return;
 			}
 			else
 			{
-				echo "nothing";
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+					'error'
+				);
+				return;
 			}
-
-			return;
-		} //end _publish()
+	 } //end _publish()
 
 
 	/**
@@ -735,7 +745,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 			// get the variables 
 			$id = Request::getVar('id', 0);
-			$citationIDs = Request::getVar('citationIDs', array());
+			$citationIDs = Request::getVar('citationIDs', '' );
 			$bulk = Request::getVar('bulk', false);
 
 			// for single citation operation
@@ -772,6 +782,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				 ***/
 				 $deleted  = array();
 
+				 $citationIDs = explode(',',$citationIDs);
+
 				 foreach ($citationIDs as $id)
 				 {
 						$citation = \Components\Citations\Models\Citation::oneOrFail($id);
@@ -784,8 +796,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 							array_push($deleted, $id);
 						}
 					}
-						echo json_encode($deleted);
-						exit();
+
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
+						'success'
+					);
+					return;
 			 }
 			 else
 			 {

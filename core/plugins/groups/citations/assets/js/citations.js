@@ -40,20 +40,8 @@ jQuery(document).ready(function (jq) {
 			}).get();
 		
 		var url = $(this).attr('data-link');
+		url = url + '&citationIDs=' + citationIDs.join(',');
+		window.location = url;
 
-		$.ajax({
-			type: "POST",
-			url: url,
-			data: {citationIDs : citationIDs},
-			success: function(result){
-					if (result = citationIDs)
-					{ 
-						location.reload();
-					}
-				},
-			error: function(result){
-				console.log(result);
-			}
-		});
 	});
 });
