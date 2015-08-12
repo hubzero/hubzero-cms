@@ -39,23 +39,30 @@ $this->css();
 
 <h3 class="heading"><?php echo Lang::txt('PLG_GROUPS_PROJECTS'); ?></h3>
 
+<ul id="page_options" class="pluginOptions">
+	<li>
+		<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
+		</a>
+	</li>
+</ul>
+
 <section class="main section" id="s-projects">
-	<div class="subject">
-		<div class="entries-filters">
-			<ul class="entries-menu">
-				<li>
-					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-					</a>
-				</li>
-			</ul>
-		</div>
 		<div class="container">
+			<div class="entries-filters">
+				<ul class="entries-menu">
+					<li>
+						<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
+						</a>
+					</li>
+					<li>
+						<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+						</a>
+					</li>
+				</ul>
+			</div>
 			<div id="myprojects">
 				<?php
 				if ($this->which == 'all')
@@ -80,16 +87,4 @@ $this->css();
 				?>
 			</div>
 		</div>
-	</div><!-- /.subject -->
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo Lang::txt('PLG_GROUPS_PROJECTS_CREATE'); ?></h3>
-			<p><?php echo Lang::txt('PLG_GROUPS_PROJECTS_CREATE_EXPLANATION'); ?></p>
-			<p><a class="icon-add btn" href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?></a></p>
-		</div>
-		<div class="container">
-			<h3><?php echo Lang::txt('PLG_GROUPS_PROJECTS_EXPLORE'); ?></h3>
-			<p><?php echo Lang::txt('PLG_GROUPS_PROJECTS_EXPLORE_EXPLANATION', Route::url('index.php?option=com_projects&task=browse'), Route::url('index.php?option=com_projects&task=features')); ?></p>
-		</div>
-	</div><!-- / .aside -->
 </section><!-- /.main section -->

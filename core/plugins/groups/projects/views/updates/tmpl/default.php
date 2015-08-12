@@ -34,8 +34,16 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 ?>
+
+<ul id="page_options" class="pluginOptions">
+	<li>
+		<a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
+		</a>
+	</li>
+</ul>
+
 <section class="main section" id="s-projects">
-	<div class="subject">
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
@@ -49,22 +57,9 @@ $this->css();
 			</ul>
 		</div>
 
-			<div id="project-updates">
-				<?php
-				echo $this->content;
-				?>
-			</div>
-
-	</div><!-- / .subject -->
-	<div class="aside">
-		<div class="container">
-			<h3><?php echo Lang::txt('PLG_GROUPS_PROJECTS_CREATE'); ?></h3>
-			<p><?php echo Lang::txt('PLG_GROUPS_PROJECTS_CREATE_EXPLANATION'); ?></p>
-			<p><a class="icon-add btn" href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?></a></p>
+		<div id="project-updates">
+			<?php
+			echo $this->content;
+			?>
 		</div>
-		<div class="container">
-			<h3><?php echo Lang::txt('PLG_GROUPS_PROJECTS_EXPLORE'); ?></h3>
-			<p><?php echo Lang::txt('PLG_GROUPS_PROJECTS_EXPLORE_EXPLANATION', Route::url('index.php?option=com_projects&task=browse'), Route::url('index.php?option=com_projects&task=features')); ?></p>
-		</div>
-	</div><!-- / .aside -->
 </section>

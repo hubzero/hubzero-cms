@@ -185,17 +185,6 @@
 	#introduction .omega li {
 		border: none;
 	}
-	/*.myprojects {
-		margin-bottom: 3em;
-	}*/
-	.myprojects .first h2 {
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border-top: 2px solid #e0e0d7;
-		border-bottom: none;
-	}
 	#content .browse {
 		position: relative;
 		padding: 0.5em 0.5em;

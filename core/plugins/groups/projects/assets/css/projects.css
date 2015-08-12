@@ -9,25 +9,11 @@
 		display:none;
 	}
 
-	#myprojects {
-		padding: 0 1em 1em 0;
-	}
-	#s-projects {
-		margin-top: 1em;
-		border: 4px solid #f7f7f7;
-		padding-top: 0;
-	}
-	.container h3 a {
-		color: #333;
-	}
-
 /* Entries Menu */
 	#s-projects .entries-filters {
 		overflow: hidden;
 		margin: 0;
 		margin-bottom: 0.5em;
-		background: #f7f7f7;
-		padding: 0.5em 1em;
 	}
 	#s-projects .entries-menu {
 		list-style: none;
@@ -96,7 +82,10 @@
 		border: 1px solid #e2e2e2;
 	}
 	table.listing td {
-		border-bottom: 1px dotted #ececec;
+		border-bottom: 1px solid #ececec;
+	}
+	table.listing tbody tr:last-child {
+		border: none;
 	}
 	.listing span.setup a, #projects-admin span.setup {
 		color: #e4942d;
@@ -286,4 +275,7 @@
 	}
 	.hidden {
 		display: none !important;
+	}
+	.activity-item {
+		background: #FFFFFF;
 	}

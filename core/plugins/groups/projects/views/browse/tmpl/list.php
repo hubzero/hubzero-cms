@@ -39,8 +39,8 @@ switch ($this->which)
 }
 ?>
 <?php if (count($this->rows) > 0) { ?>
-	<table class="listing entries">
-		<caption><?php echo $title . ' (' . count($this->rows) . ')'; ?></caption>
+	<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
+	<table class="listing">
 		<thead>
 			<tr>
 				<th class="th_image" colspan="2"></th>
@@ -80,13 +80,16 @@ switch ($this->which)
 							if ($row->isActive()) {
 								$html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
 							}
-							else if ($row->inSetup()) {
+							else if ($row->inSetup())
+							{
 									$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
 							}
-							else if ($row->isInactive()) {
+							else if ($row->isInactive())
+							{
 								$html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
 							}
-							else if ($row->isPending()) {
+							else if ($row->isPending())
+							{
 								$html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
 							}
 						}
@@ -105,6 +108,6 @@ switch ($this->which)
 <?php } else { ?>
 	<div class="entries">
 		<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
-		<p class="noprojects"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_NO_PROJECTS'); ?></p>
+		<p class="noresults"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_NO_PROJECTS'); ?></p>
 	</div>
 <?php } ?>
