@@ -57,7 +57,7 @@ class DublinCore implements Schema
 	 * 
 	 * @var  string
 	 */
-	public static $schema = 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
+	public static $schema = 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
 
 	/**
 	 * Schema namespace
@@ -247,7 +247,7 @@ class DublinCore implements Schema
 							->attr('xmlns:' . self::$prefix, self::$ns)
 							->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
 							->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-							->attr('xsi:schemaLocation', self::$schema)
+							->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema)
 							->element('dc:description', $this->escape($set[2]))->end()
 						->end()
 					->end();
@@ -293,9 +293,17 @@ class DublinCore implements Schema
 	 */
 	public function record($result, $metadata=true)
 	{
-		$this->response
+		if ($metadata)
+		{
+			$this->response
 				->element('record')
 					->element('header');
+		}
+		else
+		{
+			$this->response
+				->element('header');
+		}
 
 		if (!empty($result->identifier))
 		{
@@ -330,7 +338,7 @@ class DublinCore implements Schema
 						->attr('xmlns:' . self::$prefix, self::$ns)
 						->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
 						->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-						->attr('xsi:schemaLocation', self::$schema);
+						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
 
 			$dcs = array(
 				'title',
@@ -389,9 +397,9 @@ class DublinCore implements Schema
 
 			$this->response->end() // End oai_dc:dc
 						->end(); // End metadata
-		}
 
-		$this->response->end(); // End record
+			$this->response->end(); // End record
+		}
 
 		return $this;
 	}
