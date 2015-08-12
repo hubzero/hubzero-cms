@@ -156,8 +156,15 @@ $this->css('introduction.css', 'system')
 				<div class="col span9 omega">
 					<div class="clearfix top">
 						<?php
-							$mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array();
-							echo \Hubzero\User\Group\Helper::listGroups('My Groups',$this->config,$mygroups_members,2,true,true,0); ?>
+						$mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array();
+						$this->view('_list')
+						     ->set('name', 'My Groups')
+						     ->set('config', $this->config)
+						     ->set('groups', $mygroups_members)
+						     ->set('display_private_description', true)
+						     ->set('description_char_limit', 0)
+						     ->display();
+						?>
 					</div>
 				</div><!-- / .col span9 omega -->
 			</div><!-- / .grid -->
@@ -172,7 +179,13 @@ $this->css('introduction.css', 'system')
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
 					<div class="clearfix top">
-						<?php echo \Hubzero\User\Group\Helper::listGroups('Interesting Groups',$this->config,$this->interestinggroups,2,true,false,150); ?>
+						<?php
+						$this->view('_list')
+						     ->set('name', 'Interesting Groups')
+						     ->set('config', $this->config)
+						     ->set('groups', $this->interestinggroups)
+						     ->display();
+						?>
 					</div>
 				</div><!-- / .col span9 omega -->
 			</div><!-- / .grid -->
@@ -186,7 +199,13 @@ $this->css('introduction.css', 'system')
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<div class="clearfix top">
-					<?php echo \Hubzero\User\Group\Helper::listGroups('Popular Groups',$this->config,$this->populargroups,2,true,false,150); ?>
+					<?php
+					$this->view('_list')
+					     ->set('name', 'Popular Groups')
+					     ->set('config', $this->config)
+					     ->set('groups', $this->populargroups)
+					     ->display();
+					?>
 				</div>
 			</div><!-- / .col span9 omega -->
 		</div><!-- / .grid -->
@@ -199,7 +218,13 @@ $this->css('introduction.css', 'system')
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<div class="clearfix top">
-					<?php echo \Hubzero\User\Group\Helper::listGroups('Featured Groups',$this->config,$this->featuredgroups,2,true,false,150); ?>
+					<?php
+					$this->view('_list')
+					     ->set('name', 'Featured Groups')
+					     ->set('config', $this->config)
+					     ->set('groups', $this->featuredgroups)
+					     ->display();
+					?>
 				</div>
 			</div><!-- / .col span9 omega -->
 		</div><!-- / .grid -->
