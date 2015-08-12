@@ -10,9 +10,9 @@
 	com_publications CSS
 	-- -- -- -- -- -- --
 */
-	.com_publications .inner {
+	/*.com_publications .inner {
 		background: #FFFFFF;
-	}
+	}*/
 	.com_publications .aside  {
 		border: none;
 	}

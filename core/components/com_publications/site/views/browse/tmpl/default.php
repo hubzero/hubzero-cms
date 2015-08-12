@@ -126,7 +126,7 @@ $this->css()
 			</nav>
 			<div class="container-block">
 			<?php
-			if ($this->results)
+			if ($this->results && $this->results->count() > 0)
 			{
 				// Display List of items
 				$this->view('_list')
