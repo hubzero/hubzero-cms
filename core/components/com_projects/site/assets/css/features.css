@@ -63,8 +63,14 @@
 .feature .grid .grid {
 	margin: 2em 0 0 0;
 }
+.feature .about {
+	padding: 1em 2em;
+}
+.feature h4 {
+	margin: 2em 0 1em 1em;
+}
 .feature ul {
-	margin: -1em 2em 2em 2em;
+	margin: 0 2em 2em 2em;
 	padding: 0;
 }
 .feature ul.f-updates {
