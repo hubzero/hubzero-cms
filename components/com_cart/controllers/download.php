@@ -72,11 +72,6 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		// Get the SKU ID
 		$sId = JRequest::getVar('p0');
 
-		print_r($tId);
-		echo ' - ';
-		print_r($sId);
-		echo ' -- '; //die;
-
 		// Check if the transaction is complete and belongs to the user and is active
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Cart.php');
 		$transaction = CartModelCart::getTransactionFacts($tId);
@@ -101,7 +96,6 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 			return;
 		}
 
-
 		// Check if the product is valid and downloadable; find the file
 
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
@@ -117,6 +111,26 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		$db = JFactory::getDBO();
+
+		// Check if there is a limit on how many times the product can be downloaded
+
+		// Get the number of downloads allowed
+		$allowedDownloads = $sku;
+		if (isset($sku['meta']['downloadLimit']) && $sku['meta']['downloadLimit'] && is_numeric($sku['meta']['downloadLimit']))
+		{
+			$sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads` WHERE `uId` = {$currentUser} AND `sId` = {$sId}";
+			$db->setQuery($sql);
+			$downloadsCount = $db->loadResult();
+
+			if ($downloadsCount >= $sku['meta']['downloadLimit'])
+			{
+				$messages = array(array('Download limit exceeded', 'error'));
+				$this->messageTask($messages);
+				return;
+			}
+		}
+
 		// Path and file name
 		$dir = JPATH_ROOT . DS . 'media' . DS . 'software';
 		$file = $dir . DS . $downloadFile;
@@ -127,11 +141,26 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Log the download
+		$sql = "INSERT INTO `#__cart_downloads` SET
+				`uId` = " . $currentUser . ",
+				`sId` = " . $sId . ",
+				`dDownloaded` = NOW()";
+		$db->setQuery($sql);
+		$db->query();
+
 		// Serve up the file
 		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($file);
 		$xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
 		exit;
+	}
+
+	public function messageTask($notifications)
+	{
+		$this->setView('download', 'message');
+		$this->view->notifications = $notifications;
+		$this->view->display();
 	}
 
 	/**
