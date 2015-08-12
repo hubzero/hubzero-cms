@@ -102,7 +102,7 @@ class Citation extends Relational
 
 	public function tags()
 	{
-		return $this->manyToMany('Tag', '#__tags_object', 'objectid', 'tagid')->where('tbl', '=', 'citations');
+		return $this->manyToMany('Tag', '#__tags_object', 'objectid', 'tagid');
 	}
 
 	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
