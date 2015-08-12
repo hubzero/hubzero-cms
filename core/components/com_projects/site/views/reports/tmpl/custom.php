@@ -88,8 +88,8 @@ $filter = Request::getVar( 'searchterm', '');
 					</div>
 				</div>
 				<h6><?php echo Lang::txt('Include the following information:'); ?></h6>
-				<div class="groupblock element-choice">
-					<div class="columns three first">
+				<div class="groupblock element-choice grid">
+					<div class="col span4">
 						<label class="block">
 							<input type="checkbox" name="data[]" value="id" checked="checked" /> <?php echo Lang::txt('Publication ID'); ?>
 						</label>
@@ -106,7 +106,7 @@ $filter = Request::getVar( 'searchterm', '');
 							<input type="checkbox" name="data[]" value="doi" checked="checked" /> <?php echo Lang::txt('DOI url'); ?>
 						</label>
 					</div>
-					<div class="columns three second">
+					<div class="col span4">
 						<label class="block">
 							<input type="checkbox" name="data[]" value="downloads" checked="checked" /> <?php echo Lang::txt('Number of downloads'); ?>
 						</label>

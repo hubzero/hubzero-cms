@@ -191,12 +191,12 @@
 		margin-bottom: 3em;
 		padding: 1em;
 	}
-	#pubintro .columns h4 {
+	#pubintro .col h4 {
 		margin-top: 2em;
 		padding: 0 1em;
 		height: 3em;
 	}
-	#pubintro .columns {
+	#pub .columns {
 		min-height: 200px;
 		overflow: visible;
 		border: none;
@@ -212,13 +212,13 @@
 		-moz-border-radius: 15px;
 		border-radius: 15px;
 	}
-	#pubintro .first {
+	#pubintro .step-one {
 		background: transparent url("../img/intro_step_one.png") center 5em no-repeat;
 	}
-	#pubintro .second {
+	#pubintro .step-two {
 		background: transparent url("../img/intro_step_two.png") center 5em no-repeat;
 	}
-	#pubintro .third {
+	#pubintro .step-three {
 		background: transparent url("../img/intro_step_three.png") center 5em no-repeat;
 	}
 	#pubintro p {
