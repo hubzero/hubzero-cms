@@ -692,7 +692,7 @@
 /* Group Options */
 	#group_options {
 		list-style: none;
-		margin: 1em 2em 0 2em;
+		margin: 1em 25px 0 25px;
 		padding: 0;
 		position: relative;
 	}
@@ -706,13 +706,9 @@
 	#group_options .login {
 		display: block;
 		background: #e07a15;
-		font-size: 14px;
-		font-weight: 200;
-		padding: 5px 15px;
-		border: 1px solid #a85e15;
-		border-radius: 5px;
+		border-color: #a85e15;
 		color: #FFF;
-		text-align: center;
+		text-shadow: none;
 	}
 	#group_options .invited:hover,
 	#group_options .join:hover,
@@ -725,75 +721,36 @@
 	#group_options .closed {
 		display: block;
 		background: #eee;
-		font-size: 14px;
-		font-weight: 200;
-		padding: 5px 15px;
-		border: 1px solid #bbb;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		border-color: #bbb;
 		color: #777;
+		text-shadow: none;
 	}
 	#page_options .pending {
 		color: #A30;
 	}
-	#group_options .member,
-	#group_options .manager {
-		width: 100%;
-	}
-	#group_options .member > a,
-	#group_options .manager > a {
+	#group_options .btn-group {
 		display: block;
-		float: left;
-		padding-left: 20px;
-		padding-right: 20px;
-		font-size: 14px;
-		font-weight: 200;
+	}
+	#group_options .btn-group > a {
+		width: 83%;
+	}
+
+	#group_options .btn-group > .btn {
+		border-color: #000;
 		background: #444;
 		color: rgba(20,208,0,1.0);
 		text-shadow: none;
-		border: 1px solid #000;
 		box-shadow: none;
 	}
 	#group_options .manager > a {
 		color: #F17;
 	}
-	#group_options .dropdown-toggle {
-		background: #444;
-		text-shadow: none;
-		border: 1px solid #000;
-		box-shadow: none;
-		height: 2.9em;
-	}
-	html.chrome #group_options .dropdown-toggle {
-		height: 3em;
-	}
-	@-moz-document url-prefix() {
-		#group_options .dropdown-toggle {
-			height: 3em;
-		}
-	}
-	#group_options .dropdown-toggle:hover {
-		background: #222;
-	}
 	#group_options .dropdown-toggle:before {
-		margin-top: 0.5em;
 		border-color: #FFF transparent transparent transparent;
-	}
-	.dropdown-menu a {
-		color: #444;
-	}
-	.dropdown-menu a:hover {
-		color: #ffffff;
-		text-decoration: none;
-		background-color: #777;
-		border: none;
 	}
 	.dropdown-menu li a:before {
 		font-family: 'Fontcons';
-		padding-right: 5px;
+		padding-right: 0.2em;
 	}
 	.dropdown-menu li a.group-invite:before    { content: '\271A'; }
 	.dropdown-menu li a.group-edit:before      { content: '\2699'; }
@@ -836,25 +793,13 @@
 		     -o-border-radius: 0;
 		        border-radius: 0;
 	}
-	#group_options .member,
-	#group_options .manager {
-		background: #444;
-	}
-	#group_options .btn-group>a,
-	#group_options .btn-group>span {
-		border-color: transparent;
-	}
-	#group_options .btn-group span.dropdown-toggle {
-		height: 3.8em;
-	}
 	#group_options .btn-group>a:before {
 		content: "\2699";
 		font-family: "Fontcons";
 		margin-right: 5em;
-		font-size: 1.8em;
 	}
 	#group_options .btn-group>a {
-		width: 1.2em;
+		width: 2.8em;
 		overflow: hidden;
 	}
 	#page_info {

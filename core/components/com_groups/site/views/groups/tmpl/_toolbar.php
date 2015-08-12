@@ -57,12 +57,12 @@ if ($this->group->isSuperGroup())
 <ul <?php echo $this->classOrId; ?>>
 	<?php if (User::isGuest() == 1) : ?>
 		<li>
-			<a class="login" href="<?php echo $loginLink; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
+			<a class="login btn" href="<?php echo $loginLink; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
 		</li>
 	<?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
-				<a class="invited" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
+				<a class="invited btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
 					<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
 				</a>
 			</li>
@@ -78,7 +78,7 @@ if ($this->group->isSuperGroup())
 	<?php elseif ($this->group->get('join_policy') == 0 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
-				<a class="join" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+				<a class="join btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 			</li>
 		<?php endif; ?>
 	<?php elseif ($this->group->get('join_policy') == 1 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
@@ -87,7 +87,7 @@ if ($this->group->isSuperGroup())
 				<li><span class="pending"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_PENDING'); ?></span></li>
 			<?php else : ?>
 				<li>
-					<a class="request" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_REQUEST'); ?></a>
+					<a class="request btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_REQUEST'); ?></a>
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
@@ -96,7 +96,7 @@ if ($this->group->isSuperGroup())
 		<?php $canCancel = (($isManager && count($this->group->get("managers")) > 1) || (!$isManager && in_array(User::get("id"), $this->group->get("members")))) ? true : false; ?>
 		<li>
 			<div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
-				<a href="javascript:void(0);" class="btn">
+				<a class="btn" href="javascript:void(0);">
 					<?php echo Lang::txt('COM_GROUPS_GROUP'); ?> <?php echo ($isManager) ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER') : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER') ?>
 				</a>
 				<span class="btn dropdown-toggle"></span>
