@@ -45,7 +45,8 @@ class Integrity
 		$warehouse = new StorefrontModelWarehouse();
 		$skuMatch = $warehouse->mapSku($sku->getProductId(), $sku->getOptions(), false);
 
-		if($skuMatch && $skuMatch != $sku->getId()) {
+		if ($skuMatch && $skuMatch != $sku->getId())
+		{
 			$return->status = 'error';
 			$return->errors[] = 'There is already a SKU with the identical set of options. Each SKU must have a unique set of options.';
 		}
