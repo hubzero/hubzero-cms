@@ -57,22 +57,23 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php endif; ?>
 
 		<div class="container">
-				<?php
-				$total  = $this->results->get_plugin_list_count();
-				$offset = $this->results->get_offset();
-				$limit  = $this->results->get_limit();
-				$limit  = ($limit == 0) ? ($limit+1) : $limit;
-				$current_page = $offset / $limit + 1;
-				$total_pages  = ceil($total / $limit);
-				?>
-				<h3>
-					<?php echo Lang::txt('COM_SEARCH_RESULTS'); ?>
-					<span>(<?php echo Lang::txt('COM_SEARCH_RESULTS_PAGE_OF', $current_page, $total_pages); ?>)</span>
-				</h3>
+			<?php
+			$total  = $this->results->get_plugin_list_count();
+			$offset = $this->results->get_offset();
+			$limit  = $this->results->get_limit();
+			$limit  = ($limit == 0) ? ($limit+1) : $limit;
+			$current_page = $offset / $limit + 1;
+			$total_pages  = ceil($total / $limit);
+			?>
+			<h3>
+				<?php echo Lang::txt('COM_SEARCH_RESULTS'); ?>
+				<span>(<?php echo Lang::txt('COM_SEARCH_RESULTS_PAGE_OF', $current_page, $total_pages); ?>)</span>
+			</h3>
+
 			<?php if (($tags = $this->results->get_tags())): ?>
 				<ol class="tags">
 					<?php foreach ($tags as $tag): ?>
-					<li><a href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
+						<li><a class="tag" href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
 					<?php endforeach; ?>
 				</ol>
 			<?php endif; ?>

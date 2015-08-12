@@ -11,16 +11,17 @@
 		border-top: 1px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		background: #fff;
-		padding: 10px 5px 10px 28px;
+		padding: 1em 0.5em;
 		margin: 0;
 		min-height: 1.5em;
 	}
 	.container ol.tags:after {
-		content: "."; 
-		display: block; 
-		height: 0; 
-		clear: left; 
+		content: "";
+		display: table;
+		height: 0;
+		clear: left;
 		visibility: hidden;
+		line-height: 0;
 	}
 	.container ol .section {
 		padding: 0;
@@ -53,14 +54,14 @@
 	.results li {
 		padding: 0.5em 1em;
 	}
-	.results .title { 
-		font-weight: bold; 
+	.results .title {
+		font-weight: bold;
 		margin-left: 0;
 	}
 	.results .url {
-		clear: left; 
+		clear: left;
 		margin: 0;
-		padding: 0 0 0.5em 1em; 
+		padding: 0 0 0.5em 1em;
 		font-size: 85%;
 	}
 	.results .url a {
@@ -105,6 +106,7 @@
 	.shifted {
 		margin-left: 58px;
 	}
+
 /* Events */
 	.event-date {
 		margin: 0 !important;
@@ -146,26 +148,26 @@
 		text-align: center;
 		text-transform: uppercase;
 	}
+
 /* Children */
 	.child-types,
-	.child-types li,  
-	.child-types h3, 
-	.child-result, 
+	.child-types li,
+	.child-types h3,
+	.child-result,
 	.child-result li {
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
 	}
 	.child-types li {
-		border: 0; 
+		border: 0;
 	}
 	.child-types {
 		background: #fff;
-		
 		padding: 6px !important;
 		clear: left;
 	}
-	.child-types, 
+	.child-types,
 	.child-result {
 		margin-left: 2em;
 	}
@@ -206,8 +208,9 @@
 	.odd {
 		background: #f8f8f8;
 	}
+
 /* Pagination */
-	.search-per-page, 
+	.search-per-page,
 	.search-pages {
 		margin: 0;
 		padding: 0;
@@ -222,9 +225,9 @@
 		padding: 0.2em 0.5em;
 		background: #fff;
 	}
-	.search-pages a, 
-	.search-pages a:link, 
-	.search-pages a:active, 
+	.search-pages a,
+	.search-pages a:link,
+	.search-pages a:active,
 	.search-pages a:visited {
 		border: 1px solid #6699cc;
 		color: #6699cc;
@@ -238,19 +241,4 @@
 	}
 	.search-per-page {
 		text-align: right;
-	}
-
-/* IE 7 Hacks */
-	html>body .search-pages {
-		*float: left;
-	}
-	html>body .container fieldset #terms {
-		*width: 80%;
-	}
-	html>body .search-per-page, 
-	html>body .search-pages {
-		*width: 50%;
-	}
-	html>body .aside {
-		*padding-top: 2em;
 	}
