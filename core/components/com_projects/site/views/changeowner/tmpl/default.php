@@ -37,7 +37,7 @@ $title = $this->escape($this->model->get('title'));
 	<section class="main section">
 		<?php
 		$this->view('_header', 'projects')
-		     ->set('project', $this->model->project())
+		     ->set('model', $this->model)
 		     ->set('showPic', 0)
 		     ->set('showPrivacy', 0)
 		     ->set('goBack', 0)

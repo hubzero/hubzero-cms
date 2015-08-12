@@ -124,7 +124,7 @@ $this->css()
 					</ul>
 				<?php } ?>
 			</nav>
-			<div class="container-block">
+
 			<?php
 			if ($this->results && $this->results->count() > 0)
 			{
@@ -139,7 +139,7 @@ $this->css()
 			} else { ?>
 				<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
 			<?php } ?>
-			</div>
+
 			<?php
 
 			$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);

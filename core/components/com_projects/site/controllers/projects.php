@@ -1263,7 +1263,7 @@ class Projects extends Base
 			$this->view->ajax 		= Request::getInt( 'ajax', 0 );
 			$this->view->title 		= $this->title;
 			$this->view->option 	= $this->_option;
-			$this->view->project	= $this->model->project();
+			$this->view->model		= $this->model;
 			$this->view->params		= $params;
 			$this->view->config 	= $this->config;
 			$this->view->database 	= $this->database;

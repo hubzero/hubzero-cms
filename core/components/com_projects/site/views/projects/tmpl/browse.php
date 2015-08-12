@@ -84,7 +84,7 @@ $total = $this->model->entries('count', $this->filters);
 					</ul>
 				<?php } ?>
 			</nav>
-			<div class="container-block">
+
 			<?php
 			if ($rows = $this->model->entries('list', $this->filters))
 			{
@@ -137,7 +137,6 @@ $total = $this->model->entries('count', $this->filters);
 					}
 				}
 			} ?>
-			</div>
 		</div>
 	</section><!-- / .main section -->
 </form>

@@ -35,16 +35,15 @@ if ($this->reviewer == 'sponsored')
 			Lang::txt('COM_PROJECTS_SAVE_SPS') ;
 }
 else {
-	$title = $this->project->state == 5
+	$title = $this->model->isPending()
 			? Lang::txt('COM_PROJECTS_REVIEW_PROJECT_HIPAA')
 			: Lang::txt('COM_PROJECTS_REVIEW_PROJECT_HIPAA_SAVE');
-	$b_action = $this->project->state == 5
+	$b_action = $this->model->isPending()
 			? Lang::txt('COM_PROJECTS_SAVE_HIPAA')
 			: Lang::txt('COM_PROJECTS_SAVE');
 }
 
-$profile = \Hubzero\User\Profile::getInstance($this->project->created_by_user);
-$notes = \Components\Projects\Helpers\Html::getAdminNotes($this->project->admin_notes, $this->reviewer);
+$notes = \Components\Projects\Helpers\Html::getAdminNotes($this->model->get('admin_notes'), $this->reviewer);
 
 ?>
 <?php if (!$this->ajax) { ?>
@@ -62,12 +61,12 @@ if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } ?>
 
-<?php if ($this->project->id) { ?>
+<?php if ($this->model->exists()) { ?>
 
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
 
 	<fieldset>
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="task" value="process" />
 		<input type="hidden" name="ajax" value="1" />
@@ -77,11 +76,11 @@ if ($this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	</fieldset>
 	<div class="info_blurb">
-		<div class="pthumb"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" /></div>
+		<div class="pthumb"><img src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" /></div>
 		<div class="pinfo">
 			<p class="info_title">
-			<?php echo $this->project->title; ?> (<span class="aliasname"><?php echo $this->project->alias; ?></span>)</p>
-			<p class="info_title"><span class="italic"><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $profile->get('name'); ?></span></p>
+			<?php echo $this->model->get('title'); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
+			<p class="info_title"><span class="italic"><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
 		</div>
 	</div>
 
@@ -140,7 +139,7 @@ if ($this->getError()) {
 		</table>
 	</div>
 	<?php } ?>
-	<?php if ($this->project->state == 5 && $this->reviewer == 'sensitive') { ?>
+	<?php if ($this->model->isPending() && $this->reviewer == 'sensitive') { ?>
 	 <div>
 		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
 	 </div>
