@@ -22,6 +22,24 @@ if (!jq) {
 
 jQuery(document).ready(function($){
 
+	// see if the user checks citations needing attention
+	var attention = false;
+	$("#review-input").click(function(e)
+	{
+		if ( $.find('.require-action').length > 0 )
+		{
+			var v = confirm('Are you sure you want to overwrite with the new import?');
+			if (v === true)
+			{
+				$('#hubForm').submit();
+			}
+			else
+			{	
+				e.preventDefault()
+			}
+		}
+	});
+
 	//click to show citation details
 	$(".upload-list .citation-title").each(function(i) {
 		$(this).on("click", function(e) {
@@ -36,6 +54,7 @@ jQuery(document).ready(function($){
 			}
 
 			table.toggle();
+			attention = true; //yeah the looked at one at least.
 			parent.toggleClass("active");
 		});
 	});

@@ -237,7 +237,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 			<?php endif; ?>
 
 			<p class="submit">
-				<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
+				<input type="submit" class="btn btn-success" id="review-input" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
 					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CANCEL'); ?>
