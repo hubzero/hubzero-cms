@@ -61,6 +61,7 @@ class User extends Base implements CommandInterface
 		$this->output
 		     ->getHelpOutput()
 		     ->addOverview('General user functions for manipulating hub users.')
+		     ->addTasks($this)
 		     ->render();
 	}
 
@@ -68,6 +69,7 @@ class User extends Base implements CommandInterface
 	 * Merge two user accounts into one
 	 *
 	 * @TODO: middleware tables?
+	 * @museDescription Merges two users together, disabling the source user
 	 *
 	 * @return void
 	 **/
@@ -236,7 +238,7 @@ class User extends Base implements CommandInterface
 								}
 								catch (\Hubzero\Database\Exception\QueryFailedException $e)
 								{
-									if ($e->getCode() == '23000')
+									if ($e->getPrevious()->getCode() == '23000')
 									{
 										$this->output->addLine("Ignoring {$table}.{$column} due to integrity constraint violation", 'warning');
 										continue 2;
@@ -271,6 +273,8 @@ class User extends Base implements CommandInterface
 
 	/**
 	 * Reverse the merge process (via logs, not by mirroring the merge process)
+	 *
+	 * @museDescription Unmerges a previous merge, reenabling the source user
 	 *
 	 * @return void
 	 **/
@@ -392,9 +396,11 @@ class User extends Base implements CommandInterface
 	/**
 	 * Block a user (probably because of spamming)
 	 *
+	 * @museDescription Disables a user completely, without deleting
+	 *
 	 * @return void
 	 **/
-	public function block()
+	public function disable()
 	{
 		$this->output->addLine('Not implemented', 'warning');
 	}
