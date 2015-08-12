@@ -137,7 +137,7 @@ if ($this->config->get('access-manage-section')) {
 			<?php if ($section->categories('list', $filters)->total() > 0) { ?>
 				<?php foreach ($section->categories() as $row) { ?>
 					<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
-						<th scope="row">
+						<th class="priority-5" scope="row">
 							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 						</th>
 						<td>
@@ -150,13 +150,13 @@ if ($this->config->get('access-manage-section')) {
 								</span>
 							</span>
 						</td>
-						<td>
+						<td class="priority-4">
 							<span><?php echo $row->count('threads'); ?></span>
 							<span class="entry-details">
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_DISCUSSIONS'); ?>
 							</span>
 						</td>
-						<td>
+						<td class="priority-4">
 							<span><?php echo ($row->count('threads') ? $row->count('posts') : 0); ?></span>
 							<span class="entry-details">
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_POSTS'); ?>
@@ -284,6 +284,7 @@ if ($this->config->get('access-manage-section')) {
 
 							<input type="hidden" name="action" value="savememberoptions" />
 							<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
+							<?php echo Html::input('token'); ?>
 
 							<div class="edit-forum-options-actions">
 								<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
@@ -299,6 +300,7 @@ if ($this->config->get('access-manage-section')) {
 							<input type="hidden" name="action" value="savememberoptions" />
 							<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
 							<input type="hidden" name="postsaveredirect" value="<?php echo Route::url($base); ?>" />
+							<?php echo Html::input('token'); ?>
 
 							<label class="option" for="recvpostemail">
 								<input type="checkbox" class="option" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) { echo ' checked="checked"'; } ?> />

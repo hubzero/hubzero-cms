@@ -274,22 +274,8 @@
 		width: 5.75em;
 		text-align: right;
 	}
-/* Article Listing 
-	.main h3,
-	.below h3 {
-		font-weight: normal;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		margin: 1em 0 1em 0;
-		padding: 0.5em 0 0.5em 0;
-		border-bottom: 1px solid #efefef;
-	}
-	.main h3.thread-title,
-	.below h3.post-comment-title {
-		margin-right: 235px;
-	}*/
 
-	/* Forum settings dialog */
+/* Forum settings dialog */
 	.edit-forum-options-panel {
 		display: none;
 		position: absolute;
@@ -347,22 +333,3 @@
 		margin-right: 0;
 	}
 }
-/* IE 7 fixes */
-	html>body .group_forum .entries .edit, 
-	html>body .group_forum .entries .delete {
-		*zoom: 1;
-		*display: inline;
-		*text-indent: 20px;
-		*line-height: 16px;
-	}
-	html>body .group_forum .entries caption .edit, 
-	html>body .group_forum .entries caption .delete {
-		*margin-top: -1.5em;
-		*background-position: 0 0;
-	}
-	html>body .group_forum .thread-data .container h3 .starter-point, 
-	html>body .group_forum .thread-data .container h4 .starter-point, 
-	html>body .group_forum .aside .container h3 .starter-point, 
-	html>body .group_forum .aside .container h4 .starter-point {
-		*bottom: -16px;
-	}

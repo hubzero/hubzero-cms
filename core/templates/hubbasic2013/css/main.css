@@ -1869,7 +1869,7 @@
 	}
 	.entries li,
 	.results li {
-		border-bottom: 1px solid #dadada;
+		border-bottom: 1px solid #efefef;
 		padding: 1em 0 1em 1em;
 		margin: 0;
 		list-style: none;
@@ -1933,6 +1933,24 @@
 		content: '\f023';
 		margin-right: 0.2em;
 		color: #555;
+	}
+	.container .results {
+		border: none;
+		background: #fff;
+		margin: 0;
+		padding: 0;
+		clear: left;
+	}
+	.container .results li {
+		padding: 0.5em 1em;
+		border-top: 1px solid #efefef;
+		border-bottom: none;
+	}
+	.container-block>.results {
+		margin: 0 -15px;
+	}
+	.container-block>.results li {
+		padding: 0.5em 1em 0.5em 2em;
 	}
 
 /* 5 star Reviews */

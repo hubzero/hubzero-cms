@@ -200,10 +200,10 @@ class Helper
 		}
 
 		//var to hold html
-		$html = '';
+		$html = '<div class="grid">';
 
 		//var to hold count
-		$count = 0;
+		$count = 1;
 		$totalCount = 0;
 
 		//get current user object
@@ -218,23 +218,22 @@ class Helper
 			$gt = new \Components\Groups\Models\Tags();
 
 			//var to hold group description
-			$description = "";
+			$description = '';
 
 			//get the column were on
-			switch ($count)
+			$cls = '';
+			if ($count == $num_columns)
 			{
-				case 0: $cls = "first";  break;
-				case 1: $cls = "second"; break;
-				case 2: $cls = "third";  break;
-				case 3: $cls = "fourth"; break;
+				$count = 0;
+				$cls = 'omega';
 			}
 
 			//how many columns are we showing
 			switch ($num_columns)
 			{
-				case 2: $columns = "two";   break;
-				case 3: $columns = "three"; break;
-				case 4: $columns = "four";  break;
+				case 2: $columns = 'span6'; break;
+				case 3: $columns = 'span4'; break;
+				case 4: $columns = 'span3'; break;
 			}
 
 			//if we want to display private description and if we have a private description
@@ -248,7 +247,7 @@ class Helper
 			}
 
 			//are we a group manager
-			$isManager = (in_array($user->get("id"), $hg->get('managers'))) ? true : false;
+			$isManager = (in_array($user->get('id'), $hg->get('managers'))) ? true : false;
 
 			//are we publised
 			$isPublished = ($hg->get('published')) ? true : false;
@@ -273,7 +272,7 @@ class Helper
 			$logo = $hg->getLogo();
 
 			//build the html
-			$html .= "<div class=\"{$columns} columns {$cls} no-top-border\">";
+			$html .= "<div class=\"{$columns} col {$cls}\">";
 				$html .= "<div class=\"group-list\">";
 					if ($display_logos)
 					{
@@ -325,7 +324,7 @@ class Helper
 			$totalCount++;
 
 			//move to next line depending on num columns
-			if (($cls == 'second' && $columns == 'two')
+			/*if (($cls == 'second' && $columns == 'two')
 			 || ($cls == 'third' && $columns == 'three')
 			 || ($cls == 'fourth' && $columns == 'four'))
 			{
@@ -334,8 +333,10 @@ class Helper
 				{
 					$html .= '<br class="clear" /><hr />';
 				}
-			}
+			}*/
 		}
+
+		$html .= '</div>';
 
 		return $html;
 	}

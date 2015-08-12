@@ -106,7 +106,7 @@ $rows = $this->model->entries('list', $this->filters);
 				</h3>
 
 				<?php if ($rows->total() > 0) { ?>
-					<ol class="blog-entries">
+					<ol class="blog-entries entries">
 					<?php
 					$cls = 'even';
 					foreach ($rows as $row)

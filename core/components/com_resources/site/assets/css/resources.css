@@ -101,38 +101,6 @@
 	}
 
 	/* Item listing */
-	.com_resources .container .container-block {
-		margin: 0;
-		padding: 0;
-		border: 2px solid #e9e9e9;
-		background: #fff;
-	}
-	.com_resources .container .category-wrap {
-		margin: 0;
-		padding: 0;
-		border: none;
-	}
-	.com_resources .container .results {
-		border: none;
-		background: #fff;
-		margin: 0;
-		padding: 0;
-		clear: left;
-	}
-	.com_resources .container .results li {
-		padding: 0.5em 1em;
-		border-top: 1px solid #efefef;
-		border-bottom: none;
-	}
-	.com_resources .container .results p {
-		margin-left: 1em;
-	}
-	.com_resources .container .results p.title {
-		margin-left: 0;
-	}
-	.com_resources .filter-options {
-		width: 60%;
-	}
 
 	.order-options a:before {
 		content: "\2193";

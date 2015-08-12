@@ -84,28 +84,30 @@ $this->css()
 		<?php } ?>
 
 		<div class="container">
-			<ul class="entries-menu order-options">
-				<li>
-					<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created')); ?>" href="<?php echo Route::url($base . '&sortby=created&sortdir=' . sortDir($this->filters, 'created')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
-					</a>
-				</li>
-				<li>
-					<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity')); ?>" href="<?php echo Route::url($base . '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
-					</a>
-				</li>
-				<li>
-					<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies')); ?>" href="<?php echo Route::url($base . '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
-					</a>
-				</li>
-				<li>
-					<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC')); ?>" href="<?php echo Route::url($base . '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
-					</a>
-				</li>
-			</ul>
+			<nav class="entries-filters">
+				<ul class="entries-menu order-options">
+					<li>
+						<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created')); ?>" href="<?php echo Route::url($base . '&sortby=created&sortdir=' . sortDir($this->filters, 'created')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
+						</a>
+					</li>
+					<li>
+						<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity')); ?>" href="<?php echo Route::url($base . '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
+						</a>
+					</li>
+					<li>
+						<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies')); ?>" href="<?php echo Route::url($base . '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
+						</a>
+					</li>
+					<li>
+						<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC')); ?>" href="<?php echo Route::url($base . '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
+						</a>
+					</li>
+				</ul>
+			</nav>
 
 			<table class="entries">
 				<caption>
@@ -158,7 +160,7 @@ $this->css()
 					}
 					?>
 					<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
-						<th>
+						<th class="priority-5">
 							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 						</th>
 						<td>
@@ -172,13 +174,13 @@ $this->css()
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
 							</span>
 						</td>
-						<td>
+						<td class="priority-4">
 							<span><?php echo ($row->posts('count')); ?></span>
 							<span class="entry-details">
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_COMMENTS'); ?>
 							</span>
 						</td>
-						<td>
+						<td class="priority-3">
 							<span><?php echo Lang::txt('PLG_GROUPS_FORUM_LAST_POST'); ?></span>
 							<span class="entry-details">
 						<?php
