@@ -56,14 +56,17 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 
 		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', \JURI::base())), '/');
 
+		$edate = $this->config->get('edate');
+		$edate = ($edate ? strtotime($edate) : time());
+
 		$service = new \Components\Oaipmh\Models\Service($metadata);
 		$service->set('metadataPrefix', $metadata)
 				->set('repositoryName', $this->config->get('repository_name', \JFactory::getConfig()->get('sitename')))
 				->set('baseURL', $hubname)
 				->set('protocolVersion', '2.0')
-				->set('adminEmail', $this->config->get('email'))
-				->set('earliestDatestamp', $this->config->get('edate'))
-				->set('deletedRecord', $this->config->get('del'))
+				->set('adminEmail', $this->config->get('email', \JFactory::getConfig()->get('mailfrom')))
+				->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
+				->set('deletedRecord', strtolower($this->config->get('del')))
 				->set('granularity', $igran)
 				->set('max', $this->config->get('max', 500))
 				->set('limit', $this->config->get('limig', 50))
