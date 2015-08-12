@@ -68,19 +68,20 @@ $this->css();
 
 	<div class="container" id="courses-container">
 		<form method="get" action="<?php echo Route::url($base); ?>">
-
-			<ul class="entries-menu order-options">
-				<li>
-					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">
-						<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>
-					</a>
-				</li>
-				<li>
-					<a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'); ?>">
-						<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>
-					</a>
-				</li>
-			</ul>
+			<nav class="entries-filters">
+				<ul class="entries-menu order-options">
+					<li>
+						<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">
+							<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'); ?>">
+							<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>
+						</a>
+					</li>
+				</ul>
+			</nav>
 
 			<table class="courses entries">
 				<caption>

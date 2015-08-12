@@ -47,9 +47,9 @@
 
 /* Point transactions table */
 	.com_members .transactions thead th {
-		padding: 10px;
+		text-align: left;
 	}
-	.com_members .transactions .withdraw {	
+	.com_members .transactions .withdraw {
 		color: red;
 	}
 	.com_members .transactions .deposit {
@@ -60,16 +60,4 @@
 	}
 	.com_members .transactions .numerical-data {
 		text-align: right;
-	}
-	.com_members .transactions tbody tr:nth-child(even) td {
-		background:#efefef;
-	}
-	.com_members .transactions .odd .highlight {
-		background-color: #eee;
-	}
-	.com_members .transactions .even .highlight {
-		background-color: #f8f8f8;
-	}
-	.com_members .transactions .odd {
-		background-color: #f6f6f1;
 	}

@@ -51,33 +51,35 @@ $this->css();
 
 <?php if ($this->total) { ?>
 	<div class="container">
-		<ul class="entries-menu filter-options">
-			<li>
-				<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
-				</a>
-			</li>
-			<li>
-				<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=managers'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
-				</a>
-			</li>
-			<li>
-				<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=members'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
-				</a>
-			</li>
-			<li>
-				<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=applicants'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
-				</a>
-			</li>
-			<li>
-				<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=invitees'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
-				</a>
-			</li>
-		</ul>
+		<nav class="entries-filters">
+			<ul class="entries-menu filter-options">
+				<li>
+					<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=managers'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=members'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=applicants'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&filter=invitees'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
+					</a>
+				</li>
+			</ul>
+		</nav>
 
 		<table class="groups entries">
 			<caption>
@@ -129,7 +131,7 @@ $this->css();
 					$published = ($group->published) ? true : false;
 			?>
 				<tr class=" <?php echo (!$published) ? 'notpublished' : '' ?>">
-					<th>
+					<th class="priority-5">
 						<span class="entry-id"><?php echo $group->gidNumber; ?></span>
 					</th>
 					<td>
@@ -146,7 +148,7 @@ $this->css();
 							<span class="entry-alias"><?php echo $this->escape($group->cn); ?></span>
 						</span>
 					</td>
-					<td>
+					<td class="priority-4">
 						<?php
 							if ($published) :
 								switch ($group->join_policy)
@@ -160,7 +162,7 @@ $this->css();
 							endif;
 						?>
 					</td>
-					<td>
+					<td class="priority-3">
 						<?php if ($published) : ?>
 							<span class="<?php echo $status; ?> status">
 								<?php
@@ -176,7 +178,7 @@ $this->css();
 							</span>
 						<?php endif; ?>
 					</td>
-					<td>
+					<td class="priority-4">
 						<?php if (!$published) : ?>
 							<span class="not-published status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
 						<?php elseif ($approved) : ?>
