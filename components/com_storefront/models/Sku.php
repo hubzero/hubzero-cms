@@ -49,10 +49,55 @@ class StorefrontModelSku
 	 * @param  void
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($sId = false)
 	{
 		$this->data = new stdClass();
 		$this->db = JFactory::getDBO();
+
+		if (isset($sId) && is_numeric($sId))
+		{
+			$this->load($sId);
+		}
+	}
+
+	/**
+	 * Load existing SKU
+	 *
+	 * @param	int			SKU ID
+	 * @return	bool		true on success, exception otherwise
+	 */
+	public function load($sId)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+		$skuInfo = $warehouse->getSkuInfo($sId);
+		//print_r($skuInfo); die;
+
+		if ($skuInfo)
+		{
+			$this->setId($sId);
+			$this->setProductId($skuInfo['info']->pId);
+			$this->setName($skuInfo['info']->sSku);
+			$this->setPrice($skuInfo['info']->sPrice);
+			$this->setAllowMultiple($skuInfo['info']->sAllowMultiple);
+			$this->setTrackInventory($skuInfo['info']->sTrackInventory);
+			$this->setInventoryLevel($skuInfo['info']->sInventory);
+			$this->setEnumerable($skuInfo['info']->sEnumerable);
+			$this->setActiveStatus($skuInfo['info']->sActive);
+
+			// Set meta
+			if (!empty($skuInfo['meta']))
+			{
+				foreach ($skuInfo['meta'] as $key => $val)
+				{
+					$this->addMeta($key, $val);
+				}
+			}
+		}
+		else
+		{
+			throw new Exception(JText::_('Error loading SKU'));
+		}
 	}
 
 	/**
@@ -162,11 +207,37 @@ class StorefrontModelSku
 	{
 		if (!isset($this->data->price) || !is_numeric($this->data->price))
 		{
-			throw new Exception(JText::_('No SKU price'));
+			throw new Exception(JText::_('No SKU price set'));
 		}
 		if (!isset($this->data->pId) || !is_numeric($this->data->pId))
 		{
 			throw new Exception(JText::_('No SKU Product Set'));
+		}
+
+		// Verify that the SKU has all options set (one option from each option group assigned to the parent product)
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
+		$productOptionGroups = StorefrontModelProduct::optionGroups($this->getProductId());
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Option.php');
+
+		// Init the set options array()
+		$optionGroupOptionsSet = array();
+		foreach ($this->getOptions() as $oId)
+		{
+			$option = new StorefrontModelOption($oId);
+			$optionGroupId = $option->getOptionGroupId();
+
+			if (in_array($optionGroupId, $productOptionGroups))
+			{
+				$optionGroupOptionsSet[] = $optionGroupId;
+			}
+		}
+
+		// At this point option groups options set must be the same as the product options groups, throw exception if not
+		$missingOptions = array_diff($productOptionGroups, $optionGroupOptionsSet);
+		if (!empty($missingOptions))
+		{
+			throw new Exception(JText::_('Not all product options are set'));
 		}
 	}
 

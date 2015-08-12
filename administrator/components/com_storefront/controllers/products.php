@@ -195,6 +195,8 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 			$this->view->setError($error);
 		}
 
+		$this->view->config = $this->config;
+
 		// Output the HTML
 		$this->view
 			->setLayout('edit')

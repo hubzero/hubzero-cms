@@ -61,26 +61,37 @@ defined('_JEXEC') or die( 'Restricted access' );
 				echo '<h2>Order summary</h2>';
 				echo '<table id="cartContents">';
 				echo '<tr><th>Item</th><th>Status</th><th>Notes</th></tr>';
+
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+				$warehouse = new StorefrontModelWarehouse();
+
 				foreach ($transactionItems as $sId => $item)
 				{
 					$info = $item['info'];
 					$action = '';
 
+					$productType = $warehouse->getProductTypeInfo($item['info']->ptId)['ptName'];
 					//print_r($item); die;
 
 					// If course
-					if ($info->ptId == 20)
+					if ($productType == 'Course')
 					{
 						$status = 'Registered';
 						$action = '<a href="' . JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId']);
 						$action .= '">Go to the course page</a>';
 					}
 					// If software
-					if ($info->ptId == 30)
+					elseif ($productType == 'Software Download')
 					{
 						$status = 'Ready';
 						$action = '<a href="' . JRoute::_('index.php?option=com_cart/download/' . $this->transactionInfo->tId . '/' . $info->sId);
 						$action .= '" target="_blank">Download</a>';
+
+						if (isset($item['meta']['serial']) && !empty($item['meta']['serial']))
+						{
+							$action .= "<br>";
+							$action .= " Serial number: <strong>" . $item['meta']['serial'] . '</strong>';
+						}
 					}
 					else {
 						$status = 'Purchased';

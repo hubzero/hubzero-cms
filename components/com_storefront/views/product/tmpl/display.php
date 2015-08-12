@@ -58,26 +58,29 @@ if (!empty($this->notifications))
 			<div class="col span6">
 
 				<?php
-					if (!empty($this->productImg))
-					{
-						echo '<div class="productImages">';
-					}
 
-					if (!strstr($this->productImg[0], 'noimage'))
-                    {
-                        echo '<a href="' . $this->productImg[0] . '"';
-                        echo ' rel="lightbox">';
-                    }
-                    echo '<img src="' . $this->productImg[0] . '" />';
-                    if (!strstr($this->productImg[0], 'noimage'))
-                    {
-                        echo '</a>';
-                    }
+				$imgPath = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->pId . DS;
 
-					if (!empty($this->productImg))
-					{
-						echo '</div>';
-					}
+				if (empty($this->product->images))
+				{
+					$imgPath = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS;
+					$image = new stdClass();
+					$image->imgName = 'noimage.png';
+					$this->product->images[0] = $image;
+				}
+
+				echo '<div class="productImages">';
+				if (!strstr($this->product->images[0]->imgName, 'noimage'))
+				{
+					echo '<a href="' . $imgPath . $this->product->images[0]->imgName . '"';
+					echo ' rel="lightbox">';
+				}
+				echo '<img src="' . $imgPath . $this->product->images[0]->imgName . '" />';
+				if (!strstr($this->product->images[0]->imgName, 'noimage'))
+				{
+					echo '</a>';
+				}
+				echo '</div>';
 
 				?>
 

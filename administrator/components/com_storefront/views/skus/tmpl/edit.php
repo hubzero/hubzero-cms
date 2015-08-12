@@ -59,6 +59,21 @@ function submitbutton(pressbutton)
 	} else {
 		submitform(pressbutton);
 	}
+
+	<?php
+	if ($this->pInfo->ptModel == 'software')
+	{
+ 	?>
+
+	if (document.getElementById('field-download-file').value == ''){
+		alert("<?php echo 'Download file cannot be empty' ?>");
+	} else {
+		submitform(pressbutton);
+	}
+
+	<?php
+	}
+	?>
 }
 </script>
 

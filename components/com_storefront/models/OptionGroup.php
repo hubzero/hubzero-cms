@@ -77,6 +77,10 @@ class StorefrontModelOptionGroup
 			$this->setName($ogInfo->ogName);
 			$this->setActiveStatus($ogInfo->ogActive);
 		}
+		else
+		{
+			throw new Exception(JText::_('Error loading option group'));
+		}
 	}
 
 	/**

@@ -157,6 +157,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 
 			// Get SKU
 			$row = $obj->sku($id);
+			//print_r($row);
 			$this->view->row = $row;
 
 			// If this is a new SKU, set product ID
@@ -233,6 +234,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 		// Save SKU
 		try {
 			$sku = $obj->updateSku($sku, $fields);
+			//print_r($sku); die;
 		}
 		catch (Exception $e)
 		{

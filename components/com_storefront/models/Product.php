@@ -51,16 +51,70 @@ class StorefrontModelProduct
 	/**
 	 * Constructor
 	 *
-	 * @param  void
+	 * @param  int		Product ID
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($pId = false)
 	{
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
 
 		$this->data = new stdClass();
 		$this->db = JFactory::getDBO();
+
+		if (isset($pId) && is_numeric($pId))
+		{
+			$this->setId($pId);
+			$this->load();
+		}
+	}
+
+	/**
+	 * Load existing product
+	 *
+	 * @param	void
+	 * @return	bool		true on success, exception otherwise
+	 */
+	private function load()
+	{
+		// Get all product info
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+		$productInfo = $warehouse->getProductInfo($this->getId(), true);
+
+		if ($productInfo)
+		{
+			$this->setType($productInfo->ptId);
+			$this->setName($productInfo->pName);
+			$this->setDescription($productInfo->pDescription);
+			$this->setFeatures($productInfo->pFeatures);
+			$this->setTagline($productInfo->pTagline);
+			$this->setActiveStatus($productInfo->pActive);
+			$this->setAccessLevel($productInfo->access);
+			$this->setAllowMultiple($productInfo->pAllowMultiple);
+			$this->setImages($productInfo->images);
+
+			// Get collections
+			$collections = $warehouse->getProductCollections($this->getId());
+			foreach ($collections as $cId)
+			{
+				$this->addToCollection($cId);
+			}
+
+			// Get SKUs
+			$skus = $warehouse->getProductSkus($this->getId(), 'rows', false);
+
+			// Add SKUs to a product
+			foreach ($skus as $sId)
+			{
+				$sku = $warehouse->getSku($sId);
+				$this->addSku($sku);
+			}
+		}
+		else
+		{
+			throw new Exception(JText::_('Error loading product'));
+		}
 	}
 
 	/**
@@ -300,6 +354,109 @@ class StorefrontModelProduct
 	}
 
 	/**
+	 * Set product images
+	 *
+	 * @param	array		Product images
+	 * @return	bool		true
+	 */
+	public function setImages($img)
+	{
+		$this->data->images = $img;
+		return true;
+	}
+
+	public function setImage($img)
+	{
+		$image = new stdClass();
+		$image->imgName = $img;
+		$this->data->images = array($image);
+		return true;
+	}
+
+	/**
+	 * Add product images
+	 *
+	 * @param	array		Product images
+	 * @return	bool		true
+	 */
+	public function addImages($img)
+	{
+		$this->data->images = array_merge($this->data->images, $img);
+		return true;
+	}
+
+	/**
+	 * Add primary image
+	 *
+	 * @param	string		Product image name
+	 * @return	bool		true
+	 */
+	public function addImage($img)
+	{
+		if (!empty($this->data->images[0]))
+		{
+			$this->data->images[] = $this->data->images[0];
+		}
+		$image = new stdClass();
+		$image->imgName = $img;
+		$this->data->images[0] = $image;
+		return true;
+	}
+
+	/**
+	 * Get product image
+	 *
+	 * @param	void
+	 * @return	array		Product image
+	 */
+	public function getImages()
+	{
+		if (empty($this->data->images))
+		{
+			return NULL;
+		}
+		return $this->data->images;
+	}
+
+	public function getImage()
+	{
+		if (empty($this->data->images))
+		{
+			return NULL;
+		}
+		return $this->data->images[0];
+	}
+
+	/**
+	 * Remove image
+	 *
+	 * @param	int			Image ID
+	 * @return	bool		Succes of Failure
+	 */
+	public function removeImage($imgId)
+	{
+		if (empty($this->data->images))
+		{
+			return false;
+		}
+
+		foreach ($this->data->images as $key => $img)
+		{
+			if ($imgId == $img->imgId)
+			{
+				unset($this->data->images[$key]);
+
+				// Remove the actual file
+				$jconfig = JFactory::getConfig();
+				$path = JPATH_ROOT . DS . trim($jconfig->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->getId();
+
+				JFile::delete($path . DS . $img->imgName);
+				return true;
+			}
+		}
+	}
+
+	/**
 	 * Set product tagline
 	 *
 	 * @param	string		Product tagline
@@ -476,7 +633,11 @@ class StorefrontModelProduct
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
-		return($warehouse->updateProduct($this));
+		$return = $warehouse->updateProduct($this);
+
+		$this->load();
+
+		return($return);
 	}
 
 	/**
@@ -595,6 +756,20 @@ class StorefrontModelProduct
 				$db->query();
 			}
 		}
+	}
+
+	public static function optionGroups($pId)
+	{
+		$db = JFactory::getDBO();
+
+		$sql = "SELECT ogId
+				FROM `#__storefront_product_option_groups` pog
+				WHERE pId = {$pId}";
+
+		$db->setQuery($sql);
+		$db->execute();
+		$optionGroups = $db->loadColumn();
+		return $optionGroups;
 	}
 
 }

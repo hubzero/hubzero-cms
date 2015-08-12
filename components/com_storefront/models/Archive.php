@@ -272,16 +272,23 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	public function sku($sId)
 	{
 		$warehouse = new StorefrontModelWarehouse();
-
 		if ($sId)
 		{
-			$sku = $warehouse->getSku($sId);
+			$skuInfo = $warehouse->getSkuInfo($sId);
+			$productType = $warehouse->getProductTypeInfo($skuInfo['info']->ptId)['ptName'];
+		}
+
+		// Initialize the correct SKU
+		if (!empty($productType) && $productType == 'Software Download')
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
+			$sku = new StorefrontModelSoftwareSku($sId);
 		}
 		else
 		{
-			$sku = $warehouse->newSku();
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			$sku = new StorefrontModelSku($sId);
 		}
-
 		return $sku;
 	}
 
@@ -335,6 +342,22 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		}
 
 		//print_r($sku); die;
+		//throw new Exception('wow');
+
+		// Before saving SKU, check the for possible conflicts (integrity check)
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
+		$integrityCheck = Integrity::skuIntegrityCheck($sku);
+
+		if ($integrityCheck->status != 'ok')
+		{
+			$errorMessage = "Integrity check error:";
+			foreach ($integrityCheck->errors as $error)
+			{
+				$errorMessage .= '<br>' . $error;
+			}
+
+			throw new Exception($errorMessage);
+		}
 
 		$sku->save();
 		return $sku;

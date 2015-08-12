@@ -221,6 +221,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			$doc->addScriptDeclaration($js);
 		}
 
+		/*
 		// Get images (if any), gets all images from /site/storefront/products/$pId
 		$allowedImgExt = array('jpg', 'gif', 'png');
 		$productImg = array();
@@ -250,6 +251,9 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			$productImg[] = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . 'noimage.png';
 		}
 		$this->view->productImg = $productImg;
+		*/
+
+		$this->view->config = $this->config;
 
 		$this->view->productAvailable = $productAvailable;
 

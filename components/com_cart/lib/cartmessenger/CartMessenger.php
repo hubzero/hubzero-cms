@@ -112,7 +112,6 @@ class CartMessenger extends \Hubzero\Component\SiteController
 		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
-		$meta = unserialize($transactionInfo->tiMeta);
 		//print_r($items); die;
 
 		// Build emails
@@ -158,17 +157,35 @@ class CartMessenger extends \Hubzero\Component\SiteController
 		$summary .= "\n\nItems ordered:";
 		$summary .= "\n--------------------\n";
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
+
 		foreach ($items as $k => $item)
 		{
 			$itemInfo = $item['info'];
 			$cartInfo = $item['cartInfo'];
+			$itemMeta = $item['meta'];
+
+			//print_r($item); die;
+
+			$productType = $warehouse->getProductTypeInfo($itemInfo->ptId)['ptName'];
 
 			// If course, generate a link to the course
 			$action = false;
-			if ($itemInfo->ptId == 20)
+			if ($productType == 'Course')
 			{
 				$action = ' Go to the course page at: ' .
-				$action .= JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId'] . '/' . $item['meta']['offeringId'], true, -1);
+				$action .= JRoute::_('index.php?option=com_courses/' . $itemMeta['courseId'] . '/' . $itemMeta['offeringId'], true, -1);
+			}
+			elseif ($productType == 'Software Download')
+			{
+				$action = ' Download at: ' .
+				$action .= JRoute::_('index.php?option=com_cart/download/' . $transactionInfo->tId . '/' . $itemInfo->sId, true, -1);
+				if (isset($itemMeta['serial']) && !empty($itemMeta['serial']))
+				{
+					$action .= "\n\t";
+					$action .= " Serial number: " . $itemMeta['serial'];
+				}
 			}
 
 			$summary .= "$cartInfo->qty x ";

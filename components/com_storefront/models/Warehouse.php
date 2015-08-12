@@ -515,6 +515,18 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$product = $this->_db->loadObject();
 
+		// Get product image(s)
+		if (!empty($product))
+		{
+			$sql = "SELECT imgId, imgName FROM `#__storefront_images`
+					WHERE `imgObject` = 'product'
+					AND `imgObjectId` = " . $this->_db->quote($pId) . "
+					ORDER BY `imgPrimary` DESC";
+			$this->_db->setQuery($sql);
+			$images = $this->_db->loadObjectList();
+			$product->images = $images;
+		}
+
 		return $product;
 	}
 
@@ -740,11 +752,12 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	/**
 	 * Get SKU mapping to the provided options
 	 *
-	 * @param $pId Product ID
-	 * @param $options Selected options (optional for products with no options)
-	 * @return SKU ID
+	 * @param 	$pId 						Product ID
+	 * @param 	$options 					Selected options (optional for products with no options)
+	 * @param 	$throwExceptionOnNomatch	Should the exception be thrown if no match found (default: true)
+	 * @return 	SKU ID
 	 */
-	public function mapSku($pId, $options)
+	public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
 	{
 		// Find the number of options required for this product
 		//$sql = "SELECT COUNT(pog.`ogId`) FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '{$pId}'";
@@ -800,7 +813,11 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		// no match
-		throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
+		if ($throwExceptionOnNomatch)
+		{
+			throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
+		}
+		return false;
 	}
 
 	/**
@@ -1132,9 +1149,10 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$product->setActiveStatus($productInfo->pActive);
 		$product->setAccessLevel($productInfo->access);
 		$product->setAllowMultiple($productInfo->pAllowMultiple);
+		$product->setImages($productInfo->images);
 
 		// Get collections
-		$collections = $this->_getProductCollections($pId);
+		$collections = $this->getProductCollections($pId);
 		foreach ($collections as $cId)
 		{
 			$product->addToCollection($cId);
@@ -1231,8 +1249,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 				$sku->addMeta($key, $val);
 			}
 		}
-
-		$sku->verify();
 
 		return $sku;
 	}
@@ -1450,6 +1466,35 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
+		// ### Do images
+		$images = $product->getImages();
+
+		// First delete all old references
+		$sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'product' AND `imgObjectId` = " . $this->_db->quote($pId);
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+
+		if (!empty($images))
+		{
+			$firstImage = true;
+			foreach ($images as $key => $img)
+			{
+				$primary = 0;
+				if ($firstImage)
+				{
+					$primary = 1;
+					$firstImage = false;
+				}
+				$sql = "INSERT INTO `#__storefront_images` SET
+						`imgName` = " . $this->_db->quote($img->imgName) . ",
+						`imgObject` = 'product',
+						`imgObjectId` = " . $this->_db->quote($pId) . ",
+						`imgPrimary` = " . $primary;
+				$this->_db->setQuery($sql);
+				$this->_db->query();
+			}
+		}
+
 		$return = new stdClass();
 		$return->pId = $pId;
 		return $return;
@@ -1580,7 +1625,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$product->setActiveStatus($productInfo->pActive);
 
 		// Get collections
-		$collections = $this->_getProductCollections($pId);
+		$collections = $this->getProductCollections($pId);
 		foreach ($collections as $cId)
 		{
 			$product->addToCollection($cId);
@@ -1910,7 +1955,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * @param	int			product id
 	 * @return	array 		collections
 	 */
-	private function _getProductCollections($pId)
+	public function getProductCollections($pId)
 	{
 		$sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $this->_db->quote($pId);
 		$this->_db->setQuery($sql);

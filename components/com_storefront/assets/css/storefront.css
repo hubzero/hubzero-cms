@@ -1,9 +1,8 @@
 .productImages {
 	text-align: center;
-}
-
-.productImages img {
 	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .productImages a {
