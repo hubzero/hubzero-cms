@@ -31,7 +31,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css();
+$this->css()
+     ->js('browse');
 ?>
 
 <header id="content-header">
@@ -80,7 +81,7 @@ $this->css();
 						$fltrs .= ($this->filters['policy']) ? '&policy=' . $this->filters['policy'] : '';
 						$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
 					?>
-					<ul class="entries-menu order-options">
+					<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT'); ?>">
 						<li><a class="sort-title<?php echo ($this->filters['sortby'] == 'title') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_GROUPS_GROUP_TITLE'); ?></a></li>
 						<li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS'); ?>"><?php echo Lang::txt('COM_GROUPS_GROUP_ALIAS'); ?></a></li>
 					</ul>
@@ -89,7 +90,7 @@ $this->css();
 					$fltrs .= ($this->filters['sortby']) ? '&sortby=' . $this->filters['sortby'] : '';
 					$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
 					?>
-					<ul class="entries-menu filter-options">
+					<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW'); ?>">
 						<li><a class="filter-all<?php echo ($this->filters['policy'] == '') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_ALL'); ?>"><?php echo Lang::txt('JALL'); ?></a></li>
 						<li><a class="filter-open<?php echo ($this->filters['policy'] == 'open') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=open' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></a></li>
 						<li><a class="filter-restricted<?php echo ($this->filters['policy'] == 'restricted') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW_WITH_POLICY', Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED')); ?>"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></a></li>
@@ -207,7 +208,7 @@ $this->css();
 							}
 					?>
 						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
-							<th>
+							<th class="priority-4">
 								<span class="entry-id"><?php echo $group->gidNumber; ?></span>
 							</th>
 							<td>
@@ -216,7 +217,7 @@ $this->css();
 									<span class="entry-alias"><?php echo $group->cn; ?></span>
 								</span>
 							</td>
-							<td>
+							<td class="priority-2">
 								<?php
 								switch ($group->join_policy)
 								{
@@ -228,7 +229,7 @@ $this->css();
 								}
 								?>
 							</td>
-							<td>
+							<td class="priority-3">
 								<span class="<?php echo $status; ?> status"><?php
 									switch ($status)
 									{

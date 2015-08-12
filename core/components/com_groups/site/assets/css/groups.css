@@ -4,9 +4,7 @@
 #introduction:after {
 	content: "\f042";
 }
-#introduction {
-	*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf042;</small>');  /* [!] HACKS - IE 7 and older */
-}
+
 .group-list {
 	overflow: hidden;
 	margin: 10px 0 0 0;
@@ -138,42 +136,17 @@
 	color: #fff;
 	white-space: nowrap;
 }
-.groups tbody .member {
+.groups tbody .status.member {
 	background-color: #66AA00;
 }
-.groups tbody .manager {
+.groups tbody .status.manager {
 	background-color: #ff1177;
 }
-.groups tbody .pending {
+.groups tbody .status.pending {
 	background-color: #AA3300;
 }
-.groups tbody .invitee {
+.groups tbody .status.invitee {
 	background-color: #aaaaaa;
-}
-.groups tbody tr.pending,
-.groups tbody tr.member,
-.groups tbody tr.manager,
-.groups tbody tr.invitee {
-	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
-	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
-	background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
-	background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
-	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
-	-webkit-background-size: 30px 30px;
-	-moz-background-size: 30px 30px;
-	background-size: 30px 30px;
-}
-.groups tbody tr.pending {
-	background-color: #ffe;
-}
-.groups tbody tr.member {
-	background-color: #F3FDF0;
-}
-.groups tbody tr.manager {
-	background-color: #FFF2EF;
-}
-.groups tbody tr.invitee {
-	background-color: #F9F9F9;
 }
 .groups tbody .join-policy {
 	font-size: 85%;
@@ -204,6 +177,22 @@
 	background-color: #c00;
 }
 
+/* Responsive */
+	.container .js li {
+		display: none;
+	}
+	.container .js li.option-select {
+		display: block;
+	}
+
+@media (min-width: 50em) {
+	.container .js li {
+		display: block;
+	}
+	.container .js li.option-select {
+		display: none;
+	}
+}
 
 /*===========================================
 	Unapproved Group
