@@ -104,7 +104,7 @@ if (!empty($this->notifications))
 				}
 
 				$out = false;
-				if(!$this->inStock)
+				if (!$this->inStock)
 				{
 					$priceRange = 'Out of stock';
 					$out = true;
@@ -175,7 +175,7 @@ if (!empty($this->notifications))
 					</div>
 
 					<?php
-					if($this->inStock && $this->productAvailable)
+					if ($this->inStock && $this->productAvailable)
 					{
 						?>
 						<p class="submit">

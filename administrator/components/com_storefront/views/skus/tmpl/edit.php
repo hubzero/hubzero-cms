@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 	<?php
 	if ($this->pInfo->ptModel == 'software')
 	{
- 	?>
+	?>
 
 	if (document.getElementById('field-download-file').value == ''){
 		alert("<?php echo 'Download file cannot be empty' ?>");

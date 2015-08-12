@@ -32,17 +32,17 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 
 class Integrity
 {
-    /**
-     * Constructor
-     */
-    public static function skuIntegrityCheck($sku)
-    {
-        $return = new stdClass();
+	/**
+	 * Constructor
+	 */
+	public static function skuIntegrityCheck($sku)
+	{
+		$return = new stdClass();
 		$return->status = 'ok';
 		$return->errors = array();
 
-        // Check if there are other SKUs that have the same set of options
-        $warehouse = new StorefrontModelWarehouse();
+		// Check if there are other SKUs that have the same set of options
+		$warehouse = new StorefrontModelWarehouse();
 		$skuMatch = $warehouse->mapSku($sku->getProductId(), $sku->getOptions(), false);
 
 		if($skuMatch && $skuMatch != $sku->getId()) {
@@ -51,5 +51,5 @@ class Integrity
 		}
 
 		return $return;
-    }
+	}
 }
