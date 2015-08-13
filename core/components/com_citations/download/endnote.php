@@ -260,7 +260,7 @@ class Endnote extends Downloadable
 
 		//get the endnote import params
 		//we want to get the endnote key used for importing badges to export them
-		$endnote_import_plugin_params = \Plugin::params('endnote', 'citation');
+		$endnote_import_plugin_params = \Hubzero\Plugin\Plugin::getParams('endnote', 'citation');
 		$custom_tags = explode("\n", $endnote_import_plugin_params->get('custom_tags'));
 
 		$citation_endnote_tags = array();
@@ -279,7 +279,7 @@ class Endnote extends Downloadable
 		}
 
 		//if we found a key to export badges then add to export
-		if ($row->badges && !in_array('badges', $exclude) && $citation_badges_key != '')
+		if (isset($row->badges) && $row->badges && !in_array('badges', $exclude) && $citation_badges_key != '')
 		{
 			$doc .= $citation_badges_key . ' ' . $row->badges;
 		}
