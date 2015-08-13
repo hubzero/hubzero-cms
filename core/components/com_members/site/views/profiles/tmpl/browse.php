@@ -316,9 +316,9 @@ $this->css()
 							}
 					?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
-							<th class="entry-img">
+							<td class="entry-img">
 								<img width="50" height="50" src="<?php echo $p; ?>" alt="<?php echo Lang::txt('COM_MEMBERS_BROWSE_AVATAR', $this->escape($name)); ?>" />
-							</th>
+							</td>
 							<td>
 								<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">
 									<?php echo $name; ?>
@@ -330,7 +330,7 @@ $this->css()
 								</span>
 							<?php } ?>
 							</td>
-							<td>
+							<td class="priority-4">
 								<?php if ($this->contribution_counting) { ?>
 								<!-- rcount: <?php echo $row->rcount; ?> -->
 								<span class="activity"><?php echo $row->resource_count . ' Resources, ' . $row->wiki_count . ' Topics'; ?></span>

@@ -126,7 +126,9 @@ $this->css()
 					<?php } ?>
 				</h3>
 
-			<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
+			<?php
+			$rows = $this->model->entries('list', $this->filters);
+			if ($rows->total()) { ?>
 				<ol class="blog-entries entries">
 				<?php
 				$cls = 'even';
@@ -239,91 +241,95 @@ $this->css()
 			</div>
 		</div><!-- / .subject -->
 		<aside class="aside">
-		<?php if ($first->exists()) { ?>
-			<div class="container">
-				<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
-				<ul>
-					<?php
-						$start = intval(substr($first->get('publish_up'), 0, 4));
-						$now = date("Y");
-						$m = array(
-							'JANUARY',
-							'FEBRUARY',
-							'MARCH',
-							'APRIL',
-							'MAY',
-							'JUNE',
-							'JULY',
-							'AUGUST',
-							'SEPTEMBER',
-							'OCTOBER',
-							'NOVEMBER',
-							'DECEMBER'
-						);
-					?>
-					<?php for ($i=$now, $n=$start; $i >= $n; $i--) : ?>
-						<li>
-							<a href="<?php echo Route::url($base . '&task=' . $i); ?>">
-								<?php echo $i; ?>
-							</a>
-							<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) : ?>
-								<ul>
-									<?php $months = ($i == $now) ? date("m") : 12; ?>
-									<?php for ($k=0, $z=$months; $k < $z; $k++) : ?>
-										<li>
-											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&task=' . $i . '/' . sprintf("%02d", ($k+1), 1)); ?>">
-												<?php echo Lang::txt($m[$k]); ?>
-											</a>
-										</li>
-									<?php endfor; ?>
-								</ul>
-							<?php endif; ?>
-						</li>
-					<?php endfor; ?>
-				</ul>
-			</div>
-		<?php } ?>
+			<?php if ($first->exists()) { ?>
+				<div class="container">
+					<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
+					<ul>
+						<?php
+							$start = intval(substr($first->get('publish_up'), 0, 4));
+							$now = date("Y");
+							$m = array(
+								'JANUARY',
+								'FEBRUARY',
+								'MARCH',
+								'APRIL',
+								'MAY',
+								'JUNE',
+								'JULY',
+								'AUGUST',
+								'SEPTEMBER',
+								'OCTOBER',
+								'NOVEMBER',
+								'DECEMBER'
+							);
+						?>
+						<?php for ($i=$now, $n=$start; $i >= $n; $i--) : ?>
+							<li>
+								<a href="<?php echo Route::url($base . '&task=' . $i); ?>">
+									<?php echo $i; ?>
+								</a>
+								<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) : ?>
+									<ul>
+										<?php $months = ($i == $now) ? date("m") : 12; ?>
+										<?php for ($k=0, $z=$months; $k < $z; $k++) : ?>
+											<li>
+												<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&task=' . $i . '/' . sprintf("%02d", ($k+1), 1)); ?>">
+													<?php echo Lang::txt($m[$k]); ?>
+												</a>
+											</li>
+										<?php endfor; ?>
+									</ul>
+								<?php endif; ?>
+							</li>
+						<?php endfor; ?>
+					</ul>
+				</div>
+			<?php } ?>
 
-		<?php
-		$limit = $this->filters['limit'];
-		$this->filters['limit'] = 5;
-		?>
+			<?php
+			$limit = $this->filters['limit'];
+			$this->filters['limit'] = 5;
+			?>
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
-			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
-				<ol>
-				<?php foreach ($popular as $row) { ?>
-					<li>
-						<a href="<?php echo Route::url($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-					</li>
+				<?php
+				$popular = $this->model->entries('popular', $this->filters);
+				if ($popular->count()) { ?>
+					<ol>
+					<?php foreach ($popular as $row) { ?>
+						<li>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</a>
+						</li>
+					<?php } ?>
+					</ol>
+				<?php } else { ?>
+					<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
-			<?php } else { ?>
-				<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-			<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 
 			<div class="container blog-recent-entries">
 				<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
-			<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
-				<ol>
-				<?php foreach ($recent as $row) { ?>
-					<li>
-						<a href="<?php echo Route::url($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-					</li>
+				<?php
+				$recent = $this->model->entries('recent', $this->filters);
+				if ($recent->count()) { ?>
+					<ol>
+					<?php foreach ($recent as $row) { ?>
+						<li>
+							<a href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</a>
+						</li>
+					<?php } ?>
+					</ol>
+				<?php } else { ?>
+					<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
-			<?php } else { ?>
-				<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-			<?php } ?>
 			</div><!-- / .blog-recent-entries -->
-		<?php
-		$this->filters['limit'] = $limit;
-		?>
+			<?php
+			$this->filters['limit'] = $limit;
+			?>
 		</aside><!-- / .aside -->
 	</section>
 </form>
