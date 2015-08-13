@@ -114,7 +114,7 @@ $this->css()
 					<?php endif; ?>
 				</h3>
 			<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
-				<ol class="blog-entries">
+				<ol class="blog-entries entries">
 			<?php
 				$cls = 'even';
 				foreach ($rows as $row)

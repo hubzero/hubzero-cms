@@ -82,7 +82,7 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
 		<div class="container cf">
 			<nav class="entries-filters">
-				<ul class="entries-menu order-options">
+				<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY'); ?>">
 					<?php if ($this->admin) { ?>
 					<li>
 						<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.priority, f.toolname') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS'); ?>">
@@ -120,7 +120,7 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 					<?php } ?>
 				</ul>
 
-				<ul class="entries-menu filter-options">
+				<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER'); ?>">
 					<li>
 						<a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_ALL'); ?>">
 							<?php echo Lang::txt('COM_TOOLS_ALL'); ?>
@@ -155,10 +155,10 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 				</caption>
 				<thead>
 					<tr>
-						<th scope="col"></th>
+						<th scope="col" class="priority-5"></th>
 						<th scope="col"><?php echo Lang::txt('COM_TOOLS_TITLE'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_TOOLS_ALIAS'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_TOOLS_STATUS'); ?></th>
+						<th scope="col" class="priority-4"><?php echo Lang::txt('COM_TOOLS_ALIAS'); ?></th>
+						<th scope="col" class="priority-3"><?php echo Lang::txt('COM_TOOLS_STATUS'); ?></th>
 						<!-- <th scope="col"><?php echo Lang::txt('COM_TOOLS_LAST_STATUS_CHANGE'); ?></th> -->
 						<th scope="col"><?php echo Lang::txt('COM_TOOLS_LINKS'); ?></th>
 					</tr>
@@ -177,7 +177,7 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 					\Components\Tools\Helpers\Html::getStatusName($row->state, $status);
 				?>
 					<tr class="<?php echo strtolower($status); if (!$this->admin) { echo (' user-submitted'); } ?>">
-						<th>
+						<th class="priority-5">
 							<span class="entry-id">
 								<?php echo $this->escape($row->id); ?>
 							</span>
@@ -191,12 +191,12 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 								<span class="entry-date"><?php echo Date::of($row->registered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 							</span>
 						</td>
-						<td>
+						<td class="priority-4">
 							<a class="entry-alias" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $row->toolname); ?>">
 								<?php echo $this->escape($row->toolname); ?>
 							</a>
 						</td>
-						<td style="white-space: nowrap;">
+						<td class="priority-3">
 							<a class="entry-status" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $row->toolname); ?>">
 								<?php echo $status; ?>
 							</a><br />
@@ -205,29 +205,29 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 							</span>
 						</td>
 						<td style="white-space: nowrap;" <?php if (!\Components\Tools\Helpers\Html::toolEstablished($row->state)) { echo ' class="disabled_links" ';} ?>>
-						<?php if (!\Components\Tools\Helpers\Html::toolActive($row->state)) { ?>
-							<span class="entry-page">
-								<?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
-							</span>
-						<?php } else { ?>
-							<a class="entry-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $row->toolname); ?>">
-								<?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
-							</a>
-						<?php } ?>
-							|
-							<a class="entry-history" href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->ticketid); ?>">
-								<?php echo strtolower(Lang::txt('COM_TOOLS_HISTORY')); ?>
-							</a>
-							|
-						<?php if (strtolower($status) == 'abandoned') { ?>
-							<span class="entry-wiki">
-								<?php echo strtolower(Lang::txt('COM_TOOLS_PROJECT')); ?>
-							</span>
-						<?php } else { ?>
-							<a class="entry-wiki" href="<?php echo $developer_url . $project_path . $row->toolname; ?>/wiki" rel="external">
-								<?php echo strtolower(Lang::txt('COM_TOOLS_PROJECT')); ?>
-							</a>
-						<?php } ?>
+							<?php if (!\Components\Tools\Helpers\Html::toolActive($row->state)) { ?>
+								<span class="entry-page">
+									<?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
+								</span>
+							<?php } else { ?>
+								<a class="entry-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $row->toolname); ?>">
+									<?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
+								</a>
+							<?php } ?>
+								|
+								<a class="entry-history" href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->ticketid); ?>">
+									<?php echo strtolower(Lang::txt('COM_TOOLS_HISTORY')); ?>
+								</a>
+								|
+							<?php if (strtolower($status) == 'abandoned') { ?>
+								<span class="entry-wiki">
+									<?php echo strtolower(Lang::txt('COM_TOOLS_PROJECT')); ?>
+								</span>
+							<?php } else { ?>
+								<a class="entry-wiki" href="<?php echo $developer_url . $project_path . $row->toolname; ?>/wiki" rel="external">
+									<?php echo strtolower(Lang::txt('COM_TOOLS_PROJECT')); ?>
+								</a>
+							<?php } ?>
 						</td>
 					</tr>
 				<?php

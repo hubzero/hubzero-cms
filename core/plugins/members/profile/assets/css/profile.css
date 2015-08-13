@@ -218,12 +218,12 @@
 	#profile li.section.hidden {
 	}
 	#profile li.section.hidden .key {
-		color:rgba(0,0,0,0.3);
+		color: rgba(0,0,0,0.3);
 		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
 		filter: alpha(opacity=40);
 	}
 	#profile li.section.hidden .value {
-		color:rgba(0,0,0,0.3);
+		color: rgba(0,0,0,0.3);
 		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
 		filter: alpha(opacity=40);
 	}
@@ -240,8 +240,7 @@
 	}
 	/* Private Section */
 	#profile li.section.private {
-		background:none;
-		background:#efefef url("/media/system/images/light-stripes.png") repeat 0 0; 
+		background: #efefef url("/core/assets/images/light-stripes.png") repeat 0 0; 
 	}
 	#profile li.section.private .key {
 	}
@@ -556,10 +555,10 @@
 	}
 	#award-info strong {
 		padding-left: 17px;
-		background: url('/components/com_store/site/assets/img/coin.gif') no-repeat top left;
+		background: url('/core/components/com_store/site/assets/img/coin.gif') no-repeat top left;
 	}
 	#award-info .opt-out {
-		background: url('/components/com_support/site/assets/img/delete.png') no-repeat top left #f3f3f3;
+		background: url('/core/components/com_support/site/assets/img/delete.png') no-repeat top left #f3f3f3;
 		padding-left: 20px;
 		margin-left: auto;
 		margin-right: auto;
@@ -569,7 +568,7 @@
 		position: fixed;
 		bottom: 1em;
 		right: 1em;
-		background: url('/components/com_store/site/assets/img/wallet.png') no-repeat 10px -12px #fdf6ba;
+		background: url('/core/components/com_store/site/assets/img/wallet.png') no-repeat 10px -12px #fdf6ba;
 		padding-left: 65px;
 		border: 2px solid #ffba00;
 		width: 100px;
@@ -580,7 +579,7 @@
 	}
 	#wallet span {
 		padding-left: 17px;
-		background: url('/components/com_store/site/assets/img/coin.gif') no-repeat 0 4px;
+		background: url('/core/components/com_store/site/assets/img/coin.gif') no-repeat 0 4px;
 		line-height: 40px;
 	}
 
@@ -589,15 +588,9 @@
 	}
 
 /* Member Address */
-	.member-address-form {
-	}
-	.member-address-form fieldset legend {
-		padding: 0.5em 2% !important;
-		width: 96% !important;
-	}
 	.member-address-form fieldset p {
-		margin: 0 !important;
-		padding: 1em !important;
+		margin: 0;
+		padding: 1em;
 	}
 	.icon-locate:before {
 		content: "\f041";

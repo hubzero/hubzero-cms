@@ -67,8 +67,8 @@ $this->css()
 	     ->display();
 	?>
 
-	<fieldset class="filters">
-		<div class="input-group">
+	<section class="section filters">
+		<field class="input-group">
 			<span class="input-cell">
 				<label for="filter-search">
 					<span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
@@ -78,8 +78,8 @@ $this->css()
 			<span class="input-cell">
 				<input type="submit" class="btn" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
 			</span>
-		</div>
-	</fieldset>
+		</fieldset>
+	</section>
 
 	<section class="main section">
 		<?php if ($this->rows->total() > 0) { ?>

@@ -82,10 +82,10 @@ $this->css();
 		</nav>
 
 		<table class="groups entries">
-			<caption>
+			<?php /*<caption>
 				<?php echo Lang::txt('PLG_MEMBERS_GROUPS_YOURS'); ?>
 				<span>(<?php echo count($this->groups); ?>)</span>
-			</caption>
+			</caption>*/ ?>
 			<tbody>
 			<?php
 			if ($this->groups)

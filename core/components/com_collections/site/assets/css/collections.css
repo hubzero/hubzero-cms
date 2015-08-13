@@ -31,30 +31,30 @@
 	}
 
 /* Filter bar */
-	fieldset.filters {
+	.filters {
 		padding: 30px;
 		margin: 0;
 		border-bottom: 1px solid #ccc;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	fieldset.filters .input-group {
+	.filters .input-group {
 		display: table;
 		width: 100%;
 	}
-	fieldset.filters .input-cell {
+	.filters .input-cell {
 		display: table-cell;
 	}
-	fieldset.filters .input-cell:first-child {
+	.filters .input-cell:first-child {
 		width: 100%;
 	}
-	fieldset.filters label span {
+	.filters label span {
 		display: none;
 	}
-	fieldset.filters .input-cell input[type="text"] {
+	.filters .input-cell input[type="text"] {
 		width: 100%;
 	}
-	fieldset.filters .input-cell .btn,
-	fieldset.filters .input-cell input[type="submit"] {
+	.filters .input-cell .btn,
+	.filters .input-cell input[type="submit"] {
 		margin-left: 1em;
 	}
 

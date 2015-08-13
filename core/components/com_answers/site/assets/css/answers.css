@@ -377,18 +377,21 @@
 	}
 
 /* Responsive */
-	.container .js li {
+	.subject .js li {
 		display: none;
 	}
-	.container .js li.option-select {
+	.subject .js li.option-select {
 		display: block;
 	}
 
 @media (min-width: 50em) {
-	.container .js li {
+	.subject .js li {
 		display: block;
 	}
-	.container .js li.option-select {
+	.subject .user-options.js li {
+		display: inline;
+	}
+	.subject .js li.option-select {
 		display: none;
 	}
 }

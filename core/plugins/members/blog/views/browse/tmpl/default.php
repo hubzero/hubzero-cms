@@ -142,74 +142,76 @@ $this->css()
 					}
 					?>
 					<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
-						<h4 class="entry-title">
-							<a href="<?php echo Route::url($row->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-							</a>
-						</h4>
-						<dl class="entry-meta">
-							<dt>
-								<span>
-									<?php echo Lang::txt('PLG_MEMBERS_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
-								</span>
-							</dt>
-							<dd class="date">
-								<time datetime="<?php echo $row->published(); ?>">
-									<?php echo $row->published('date'); ?>
-								</time>
-							</dd>
-							<dd class="time">
-								<time datetime="<?php echo $row->published(); ?>">
-									<?php echo $row->published('time'); ?>
-								</time>
-							</dd>
-							<dd class="author">
-								<?php if ($row->creator('public')) { ?>
-									<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-										<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
-									</a>
-								<?php } else { ?>
-									<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
-								<?php } ?>
-							</dd>
-							<?php if ($row->get('allow_comments') == 1) { ?>
-								<dd class="comments">
-									<a href="<?php echo Route::url($row->link('comments')); ?>">
-										<?php echo Lang::txt('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
-									</a>
-								</dd>
-							<?php } else { ?>
-								<dd class="comments">
+						<article>
+							<h4 class="entry-title">
+								<a href="<?php echo Route::url($row->link()); ?>">
+									<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+								</a>
+							</h4>
+							<dl class="entry-meta">
+								<dt>
 									<span>
-										<?php echo Lang::txt('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
+										<?php echo Lang::txt('PLG_MEMBERS_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
 									</span>
+								</dt>
+								<dd class="date">
+									<time datetime="<?php echo $row->published(); ?>">
+										<?php echo $row->published('date'); ?>
+									</time>
 								</dd>
-							<?php } ?>
-							<?php if (User::get('id') == $row->get('created_by')) { ?>
-								<dd class="state <?php echo $row->state('text'); ?>">
-									<?php echo Lang::txt('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+								<dd class="time">
+									<time datetime="<?php echo $row->published(); ?>">
+										<?php echo $row->published('time'); ?>
+									</time>
 								</dd>
-							<?php } ?>
-							<dd class="entry-options">
-							<?php if (User::get('id') == $row->get('created_by')) { ?>
-								<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
-									<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>
-								</a>
-								<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
-									<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>
-								</a>
-							<?php } ?>
-							</dd>
-						</dl>
-						<div class="entry-content">
-							<?php if ($this->config->get('cleanintro', 1)) { ?>
-								<p>
-									<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
-								</p>
-							<?php } else { ?>
-								<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
-							<?php } ?>
-						</div>
+								<dd class="author">
+									<?php if ($row->creator('public')) { ?>
+										<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
+											<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+										</a>
+									<?php } else { ?>
+										<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+									<?php } ?>
+								</dd>
+								<?php if ($row->get('allow_comments') == 1) { ?>
+									<dd class="comments">
+										<a href="<?php echo Route::url($row->link('comments')); ?>">
+											<?php echo Lang::txt('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
+										</a>
+									</dd>
+								<?php } else { ?>
+									<dd class="comments">
+										<span>
+											<?php echo Lang::txt('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
+										</span>
+									</dd>
+								<?php } ?>
+								<?php if (User::get('id') == $row->get('created_by')) { ?>
+									<dd class="state <?php echo $row->state('text'); ?>">
+										<?php echo Lang::txt('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+									</dd>
+								<?php } ?>
+								<dd class="entry-options">
+								<?php if (User::get('id') == $row->get('created_by')) { ?>
+									<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
+										<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>
+									</a>
+									<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
+										<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>
+									</a>
+								<?php } ?>
+								</dd>
+							</dl>
+							<div class="entry-content">
+								<?php if ($this->config->get('cleanintro', 1)) { ?>
+									<p>
+										<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
+									</p>
+								<?php } else { ?>
+									<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
+								<?php } ?>
+							</div>
+						</article>
 					</li>
 				<?php } ?>
 				</ol>
