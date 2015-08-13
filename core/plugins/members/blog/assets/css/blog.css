@@ -24,43 +24,25 @@
 		float: right;
 		font-size: 0.85em;
 	}
-	ol.blog-entries {
-		list-style-type: none !important;
-		border: 2px solid #e9e9e9;
-		border-top: none;
-		background-color: #fff;
-		margin: 0;
-		padding: 0;
-	}
-	ol.blog-entries h4 {
-		margin: 1em 0;
-		line-height: 1em;
-	}
-	ol.blog-entries > li {
-		clear: left;
-		margin: 0 !important;
-		padding: 0 1em;
-		border-top: 1px solid #efefef;
-		position: relative;
-	}
-	ol.blog-entries .odd {
-		background: transparent;
-	}
-	ol.blog-entries li li {
-	    margin-left: 20px;
-	}
-	ol.blog-entries .expired .entry-title:before {
+	.blog-entries .expired .entry-title:before {
 		content: "\f070";
 		font-family: "Fontcons";
+		font-weight: normal;
 	}
-	ol.blog-entries .expired .entry-content {
-		color: #ccc;
+	.blog-entries .expired .entry-content {
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
+		filter: alpha(opacity=35);
+		opacity: 0.35;
 	}
-	ol.blog-entries dl.entry-meta {
+	.blog-entries dl.entry-meta {
 		margin: 0.5em 0;
 		padding: 0;
 		color: #999;
-		font-size: 11px;
+		font-size: 0.85em;
+	}
+	/* Metadata */
+	dl.entry-meta {
+		position: relative;
 	}
 	dl.entry-meta dt {
 		display: none;
@@ -78,27 +60,13 @@
 		color: #111;
 		border-bottom: 1px solid #111;
 	}
-	ol.blog-entries .name {
-		color: #777;
-		font-size: 12px;
-	}
-	.com_blog .entry-author {
-		color: #aaa;
-		font-size: 85%;
-		margin: -0.5em 0 0 0;
-		padding: 0;
-	}
-	ol.blog-entries li dl.entry-meta dt a.comment-counter:link,
-	ol.blog-entries li dl.entry-meta dt a.comment-counter:visited,
-	ol.blog-entries li dl.entry-meta dt a.comment-counter:active {
+	.blog-entries li dl.entry-meta dt a.comment-counter:link,
+	.blog-entries li dl.entry-meta dt a.comment-counter:visited,
+	.blog-entries li dl.entry-meta dt a.comment-counter:active {
 		color: #999 !important;
 	}
-	ol.blog-entries li dl.entry-meta dt a.comment-counter:hover {
+	.blog-entries li dl.entry-meta dt a.comment-counter:hover {
 		color: #ff6600 !important;
-	}
-
-	dl.entry-meta {
-		position: relative;
 	}
 	dl.entry-meta dd.entry-options a {
 		margin-left: 1.5em;
@@ -168,14 +136,14 @@
 	.private {
 		background-image: none;
 	}
-	.entry .tags {
+	/*.entry .tags {
 		margin: 2em 0 0 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
 	}
 	.entry .tags li {
 		margin: 0;
-	}
+	}*/
 	h2.entry-title {
 		font-weight: normal;
 		position: relative;
