@@ -27,35 +27,18 @@
 	#page_container {
 		margin: 0;
 		padding: 0;
-		display: table;
-		table-layout: fixed;
-		*padding-left: 215px;
-		*display: block;
 	}
 	#page_sidebar {
 		background: #e1e1e1;
 		background: rgba(0, 0, 0, 0.1);
-		display: table-cell;
-		width: 215px;
-		min-width: 215px;
-		vertical-align: top;
-		*display: block;
-		*margin-left: -215px;
-		*float: left;
 	}
 	#page_main {
-		z-index: 555;
-		display: table-cell;
-		vertical-align: top;
-		width: 100%;
-		*display: block;
-		*width: auto;
-		*float: left;
+		position: relative;
 	}
 
 /* Indentity */
 	#page_identity {
-		display: block;
+		display: none;
 		margin: 25px 25px 0px 25px;
 		padding: 0;
 		position: relative;
@@ -92,7 +75,7 @@
 /* Menu */ 
 	#page_menu {
 		list-style: none;
-		margin: 25px 0;
+		margin: 0;
 		padding: 0;
 	}
 	#page_menu li {
@@ -290,6 +273,20 @@
 		letter-spacing: 0.1em;
 		text-shadow: 0px 1px 1px #eb5f60;
 		border-bottom: 1px solid #a62525;
+	}
+
+	#page_menu li.option-select {
+		padding: 0.4em 2em;
+	}
+	#page_menu.js li {
+		display: none;
+	}
+	#page_menu.js li.option-select,
+	#page_menu.js li.option-select select {
+		display: block;
+	}
+	#page_menu.js li.option-select select {
+		width: 100%;
 	}
 
 /* Member options */
@@ -638,17 +635,6 @@
 		text-decoration: line-through;
 	}
 
-/* [!] IE 7 Fixes */
-	.com_members #page_identity img {
-		*border: 1px solid #aaa;
-	}
-	.com_members #page_menu li {
-		*padding-left: 25px;
-	}
-	.com_members #page_menu li .alrt {
-		*display: none;
-	}
-
 /* Members Browse Statistics */
 	.com_members .aside .container table {
 		border: none;
@@ -668,6 +654,38 @@
 	}
 
 /* Responsive */
+@media (min-width: 40em) {
+	#page_identity {
+		display: block;
+	}
+	#page_container {
+		display: table;
+		table-layout: fixed;
+	}
+	#page_sidebar {
+		display: table-cell;
+		width: 215px;
+		min-width: 215px;
+		vertical-align: top;
+	}
+	#page_main {
+		z-index: 555;
+		display: table-cell;
+		vertical-align: top;
+		width: 100%;
+		position: static;
+	}
+	#page_menu {
+		margin: 25px 0;
+	}
+	#page_menu.js li {
+		display: block;
+	}
+	#page_menu.js li.option-select {
+		display: none;
+	}
+}
+/*
 @media (max-width: 800px) {
 	#page_identity {
 		padding: 0;
@@ -737,4 +755,4 @@
 		-webkit-font-smoothing: antialiased;
 		text-align: center;
 	}
-}
+}*/

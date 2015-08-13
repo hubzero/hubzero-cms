@@ -21,6 +21,42 @@ jQuery(document).ready(function($){
 		return;
 	}
 
+	var el = $('#page_menu');
+	if (el.length) {
+		el.addClass('js');
+
+		var select = $("<select />").on('change', function() {
+			window.location = $(this).find("option:selected").val();
+		});
+
+		$("<option />", {
+			"value"   : "",
+			"text"    : 'Select ...' //el.attr('data-label')
+		}).appendTo(select);
+
+		el.find("a").each(function() {
+			var elm = $(this);
+
+			if (elm.hasClass('alrt')) {
+				return;
+			}
+
+			var opts = {
+				"value"   : elm.attr("href"),
+				"text"    : elm.text()
+			};
+			if ($(elm.parent()).hasClass('active')) {
+				opts.selected = 'selected';
+			}
+			$("<option />", opts).appendTo(select);
+		});
+
+		var li = $("<li />").addClass('option-select');
+
+		select.appendTo(li);
+		li.appendTo(el);
+	}
+
 	//move the modules button to top
 	if ($("#personalize")) {
 		$("#personalize").appendTo($("#page_options"));
@@ -59,7 +95,7 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	$("#page_menu li").each(function(index){
+	/*$("#page_menu li").each(function(index){
 		var meta = $(this).find(".meta"),
 			metawidth = meta.outerWidth(true),
 			alrt = $(this).find(".alrt");
@@ -71,7 +107,7 @@ jQuery(document).ready(function($){
 				alrt.css("right", 33-(20-metawidth));
 			}
 		} 
-	});
+	});*/
 
 	$("#member-stats-graph").fancybox({
 		fitToView: true,
