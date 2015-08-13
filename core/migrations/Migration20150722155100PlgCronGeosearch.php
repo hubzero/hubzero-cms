@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding basic antispam plugin.
+ * Migration script for adding GeoSearch cron plugin.
  **/
 class Migration20150722155100PlgCronGeosearch extends Base
 {
@@ -26,7 +26,7 @@ class Migration20150722155100PlgCronGeosearch extends Base
 				$this->addPluginEntry('cron', 'geosearch');
 			}
 		}
-}
+	}
 
 	/**
 	 * Down
