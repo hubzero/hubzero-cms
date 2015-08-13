@@ -110,15 +110,16 @@ if (isset($this->messages))
 	<section class="main section">
 		<form action="<?php echo Route::url(JURI::current()); ?>" id="citeform" method="get" class="section-inner <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 
-				<div class="container data-entry">
-					<input class="entry-search-submit" type="submit" value="Search" />
-					<fieldset class="entry-search">
-						<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
-					</fieldset>
-				</div><!-- /.container .data-entry -->
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search" />
+				<fieldset class="entry-search">
+					<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+				</fieldset>
+			</div><!-- /.container .data-entry -->
 
-				<div class="container">
+			<div class="container">
+				<nav class="entries-filters">
 					<ul class="entries-menu sort-options">
 						<?php foreach ($this->sorts as $k => $v) : ?>
 						<li>
@@ -142,210 +143,211 @@ if (isset($this->messages))
 							</label>
 						</li>
 					</ul>
+				</nav>
 
-					<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
-					<input type="hidden" name="referer" value="<?php echo $this->escape(@$_SERVER['HTTP_REFERER']); ?>" />
+				<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
+				<input type="hidden" name="referer" value="<?php echo $this->escape(@$_SERVER['HTTP_REFERER']); ?>" />
 
-					<?php if (count($this->citations) > 0) : ?>
-						<?php
-							$formatter = new \Components\Citations\Helpers\Format();
-							$formatter->setTemplate($template);
+				<?php if (count($this->citations) > 0) : ?>
+					<?php
+						$formatter = new \Components\Citations\Helpers\Format();
+						$formatter->setTemplate($template);
 
-							// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-							$counter = $this->filters['start'] + 1;
-							if ($counter == '')
-							{
-								$counter = 1;
-							}
-						?>
-						<table class="citations entries">
-							<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
-							<?php if ($batch_download) : ?>
-							<thead>
+						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
+						$counter = $this->filters['start'] + 1;
+						if ($counter == '')
+						{
+							$counter = 1;
+						}
+					?>
+					<table class="citations entries">
+						<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
+						<?php if ($batch_download) : ?>
+						<thead>
+							<tr>
+								<th class="batch">
+									<input type="checkbox" class="checkall-download" />
+								</th>
+								<th colspan="3">
+									<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?>
+								</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<td colspan="4">
+									<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_AS'); ?>
+									<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" /> |
+									<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
+								</td>
+							</tr>
+						</tfoot>
+						<?php endif; ?>
+						<tbody>
+							<?php $x = 0; ?>
+							<?php foreach ($this->citations as $cite) : ?>
 								<tr>
-									<th class="batch">
-										<input type="checkbox" class="checkall-download" />
-									</th>
-									<th colspan="3">
-										<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?>
-									</th>
-								</tr>
-							</thead>
-							<tfoot>
-								<tr>
-									<td colspan="4">
-										<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_AS'); ?>
-										<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" /> |
-										<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
-									</td>
-								</tr>
-							</tfoot>
-							<?php endif; ?>
-							<tbody>
-								<?php $x = 0; ?>
-								<?php foreach ($this->citations as $cite) : ?>
-									<tr>
-										<?php if ($batch_download) : ?>
-											<td class="batch">
-												<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
-											</td>
-										<?php endif; ?>
+									<?php if ($batch_download) : ?>
+										<td class="batch">
+											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+										</td>
+									<?php endif; ?>
 
-										<?php if ($label != "none") : ?>
-											<td class="citation-label <?php echo $citations_label_class; ?>">
-												<?php
-													$type = '';
-													foreach ($this->types as $t)
-													{
-														if ($t['id'] == $cite->type)
-														{
-															$type = $t['type_title'];
-														}
-													}
-													$type = ($type != "") ? $type : "Generic";
-
-													switch ($label)
-													{
-														case "number":
-															echo "<span class=\"number\">{$counter}.</span>";
-															break;
-														case "type":
-															echo "<span class=\"type\">{$type}</span>";
-															break;
-														case "both":
-															echo "<span class=\"number\">{$counter}. </span>";
-															echo "<span class=\"type\">{$type}</span>";
-															break;
-													}
-												?>
-											</td>
-										<?php endif; ?>
-										<td class="citation-container">
-											<?php if (isset($cite->custom3)) : ?>
-												<div class="identifier"><?php echo $cite->custom3; ?></div>
-											<?php endif; ?>
+									<?php if ($label != "none") : ?>
+										<td class="citation-label <?php echo $citations_label_class; ?>">
 											<?php
-												$formatted = $cite->formatted
-													? $cite->formatted
-													: $formatter->formatCitation($cite,
-														$this->filters['search'], $coins, $this->config);
-
-												if ($cite->doi)
+												$type = '';
+												foreach ($this->types as $t)
 												{
-													$formatted = str_replace('doi:' . $cite->doi,
-														'<a href="' . $cite->url . '" rel="external">'
-														. 'doi:' . $cite->doi . '</a>', $formatted);
+													if ($t['id'] == $cite->type)
+													{
+														$type = $t['type_title'];
+													}
 												}
+												$type = ($type != "") ? $type : "Generic";
 
-												echo $formatted; ?>
-											<?php
-												//get this citations rollover param
-												$params = new \Hubzero\Html\Parameter($cite->params);
-												$citation_rollover = $params->get('rollover', $rollover);
+												switch ($label)
+												{
+													case "number":
+														echo "<span class=\"number\">{$counter}.</span>";
+														break;
+													case "type":
+														echo "<span class=\"type\">{$type}</span>";
+														break;
+													case "both":
+														echo "<span class=\"number\">{$counter}. </span>";
+														echo "<span class=\"type\">{$type}</span>";
+														break;
+												}
 											?>
-											<?php if ($citation_rollover && $cite->abstract != "") : ?>
-												<div class="citation-notes">
-													<?php
-														$cs = new \Components\Citations\Tables\Sponsor($this->database);
-														$sponsors = $cs->getCitationSponsor($cite->id);
-														$final = "";
-														if ($sponsors)
+										</td>
+									<?php endif; ?>
+									<td class="citation-container">
+										<?php if (isset($cite->custom3)) : ?>
+											<div class="identifier"><?php echo $cite->custom3; ?></div>
+										<?php endif; ?>
+										<?php
+											$formatted = $cite->formatted
+												? $cite->formatted
+												: $formatter->formatCitation($cite,
+													$this->filters['search'], $coins, $this->config);
+
+											if ($cite->doi)
+											{
+												$formatted = str_replace('doi:' . $cite->doi,
+													'<a href="' . $cite->url . '" rel="external">'
+													. 'doi:' . $cite->doi . '</a>', $formatted);
+											}
+
+											echo $formatted; ?>
+										<?php
+											//get this citations rollover param
+											$params = new \Hubzero\Html\Parameter($cite->params);
+											$citation_rollover = $params->get('rollover', $rollover);
+										?>
+										<?php if ($citation_rollover && $cite->abstract != "") : ?>
+											<div class="citation-notes">
+												<?php
+													$cs = new \Components\Citations\Tables\Sponsor($this->database);
+													$sponsors = $cs->getCitationSponsor($cite->id);
+													$final = "";
+													if ($sponsors)
+													{
+														foreach ($sponsors as $s)
 														{
-															foreach ($sponsors as $s)
+															$sp = $cs->getSponsor($s);
+															if ($sp)
 															{
-																$sp = $cs->getSponsor($s);
-																if ($sp)
-																{
-																	$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
-																}
+																$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
 															}
 														}
-													?>
-													<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
-														<?php $final = substr($final, 0, -2); ?>
-														<p class="sponsor"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
-													<?php endif; ?>
-													<p><?php echo nl2br($cite->abstract); ?></p>
-												</div>
-											<?php endif; ?>
-
-											<?php
-												$singleCitationView = $this->config->get('citation_single_view', 0);
-												if (!$singleCitationView)
-												{
-													echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
-												}
-											?>
-											<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
-											<?php endif; ?>
-
-											<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-												<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
-											<?php endif; ?>
-										</td>
-										<?php if ($this->isAdmin === true) : ?>
-											<td class="col-options">
-												<a class="delete icon-delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($base . '&action=delete&citation=' . $cite->id); ?>">
-													<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
-												</a>
-												<a class="edit icon-edit" href="<?php echo Route::url($base . '&action=edit&citation=' . $cite->id); ?>">
-													<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
-												</a>
-											</td>
+													}
+												?>
+												<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+													<?php $final = substr($final, 0, -2); ?>
+													<p class="sponsor"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
+												<?php endif; ?>
+												<p><?php echo nl2br($cite->abstract); ?></p>
+											</div>
 										<?php endif; ?>
-									</tr>
-									<?php $counter++; ?>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php else : ?>
-						<table class="citations entries">
-							<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
-							<tbody>
-								<tr>
-									<td>
-										<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+
+										<?php
+											$singleCitationView = $this->config->get('citation_single_view', 0);
+											if (!$singleCitationView)
+											{
+												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
+											}
+										?>
+										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+										<?php endif; ?>
+
+										<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+										<?php endif; ?>
 									</td>
+									<?php if ($this->isAdmin === true) : ?>
+										<td class="col-options">
+											<a class="delete icon-delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($base . '&action=delete&citation=' . $cite->id); ?>">
+												<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
+											</a>
+											<a class="edit icon-edit" href="<?php echo Route::url($base . '&action=edit&citation=' . $cite->id); ?>">
+												<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
+											</a>
+										</td>
+									<?php endif; ?>
 								</tr>
-							</tbody>
-						</table>
-					<?php endif; ?>
-					<?php
-						// Initiate paging
-						$pageNav = $this->pagination(
-							$this->total,
-							$this->filters['start'],
-							$this->filters['limit']
-						);
-						$pageNav->setAdditionalUrlParam('task', 'browse');
-						foreach ($this->filters as $key => $value)
+								<?php $counter++; ?>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php else : ?>
+					<table class="citations entries">
+						<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
+						<tbody>
+							<tr>
+								<td>
+									<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				<?php endif; ?>
+				<?php
+					// Initiate paging
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('task', 'browse');
+					foreach ($this->filters as $key => $value)
+					{
+						switch ($key)
 						{
-							switch ($key)
-							{
-								case 'limit':
-								case 'idlist';
-								case 'start':
-								break;
+							case 'limit':
+							case 'idlist';
+							case 'start':
+							break;
 
-								case 'reftype':
-								case 'aff':
-								case 'geo':
-									foreach ($value as $k => $v)
-									{
-										$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
-									}
-								break;
+							case 'reftype':
+							case 'aff':
+							case 'geo':
+								foreach ($value as $k => $v)
+								{
+									$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
+								}
+							break;
 
-								default:
-									$pageNav->setAdditionalUrlParam($key, $value);
-								break;
-							}
+							default:
+								$pageNav->setAdditionalUrlParam($key, $value);
+							break;
 						}
-						echo $pageNav->render();
-					?>
-					<div class="clearfix"></div>
-				</div><!-- /.container -->
+					}
+					echo $pageNav->render();
+				?>
+				<div class="clearfix"></div>
+			</div><!-- /.container -->
 		</form>
 	</section>
 
