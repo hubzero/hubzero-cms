@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/system/memberhome/memberhome.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2015 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+	<name>System - Member Home Page</name>
+	<author>HUBzero</author>
+	<creationDate>August 2015</creationDate>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>http://hubzero.org</authorUrl>
+	<version>1.0</version>
+	<description>PLG_SYSTEM_MEMBERHOME_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="memberhome">memberhome.php</filename>
+		<filename>index.html</filename>
+		<folder>assets</folder>
+		<folder>fields</folder>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_system_memberhome.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_memberhome.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="customize">
+				<field name="menuId" type="menuitem" default="0" class="chzn-color-state" required="1" label="PLG_SYSTEM_MEMBERHOME_FIELD_MENUID_LABEL" description="PLG_SYSTEM_MEMBERHOME_FIELD_MENUID_DESC">
+					<option	value="0">PLG_SYSTEM_MEMBERHOME_DEFAULT_LABEL</option>
+				</field>
+				<!--
+				<field name="ignore_urls" type="textarea" rows="10" default="" label="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_URLS_LABEL" description="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_URLS_DESC" />
+				<field name="ignore_options" type="textarea" rows="10" default="" label="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_OPTIONS_LABEL" description="PLG_SYSTEM_MEMBERHOME_FIELD_IGNORE_OPTIONS_DESC" />
+				-->
+			</fieldset>
+		</fields>
+	</config>
+</extension>
