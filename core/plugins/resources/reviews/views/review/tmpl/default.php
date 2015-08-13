@@ -71,6 +71,8 @@ else
 			<input type="hidden" name="action" value="savereview" />
 			<input type="hidden" name="active" value="reviews" />
 
+			<?php echo Html::input('token'); ?>
+
 			<?php if ($this->banking) {	?>
 				<p class="help"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_DID_YOU_KNOW_YOU_CAN'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EARN_POINTS'); ?></a> <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FOR_REVIEWS'); ?>? <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EARN_POINTS_EXP'); ?></p>
 			<?php } ?>

@@ -111,7 +111,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Perform some text cleaning, etc.
-		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
+		$row->content    = \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->content));
 		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created    = ($row->id ? $row->created : Date::toSql());
@@ -321,6 +321,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function savereview()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$resource_id = Request::getInt('resource_id', 0);
 
@@ -348,7 +351,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		{
 			$row->state = 1;
 		}
-		$row->comment   = \Hubzero\Utility\Sanitize::clean($row->comment);
+		$row->comment   = \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->comment));
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created && $row->created != '0000-00-00 00:00:00') ? $row->created : Date::toSql();
 
