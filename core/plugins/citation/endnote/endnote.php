@@ -74,7 +74,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		}
 
 		//get the file contents
-		$raw_citations = file($file->getFilename());
+		$raw_citations = file($file->getPathname());
 
 		//process the uploaded citation data
 		return $this->onImportProcessEndnote($raw_citations);
@@ -123,9 +123,11 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 		// remove empty citations
 		$raw_citations = array_values(array_filter($raw_citations));
+		echo "<pre>";
 
 		foreach ($raw_citations as $k => $rc)
 		{
+			$raw_citations[$k] = NULL;
 			foreach ($rc as $r => $line)
 			{
 				$raw_citations[$k] .= $line . "\r\n";
