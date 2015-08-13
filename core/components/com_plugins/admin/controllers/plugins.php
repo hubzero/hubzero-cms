@@ -312,7 +312,7 @@ class Plugins extends AdminController
 		{
 			case 'apply':
 				// Set the record data in the session.
-				$recordId = $model->getState($this->context . '.id');
+				//$recordId = $model->getState($this->context . '.id');
 				$this->holdEditId($context, $recordId);
 				User::setState($context . '.data', null);
 				$model->checkout($recordId);
