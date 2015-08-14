@@ -353,9 +353,6 @@ $pid = Request::getInt('publication', 0);
 		</fieldset><div class="clear"></div>
 
 		<?php if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
-			<div class="explaination">
-				<p></p>
-			</div>
 			<fieldset>
 				<legend><?php echo $fieldset_label; ?></legend>
 				<?php if ($allow_tags == "yes") : ?>
@@ -393,69 +390,70 @@ $pid = Request::getInt('publication', 0);
 			<input type="hidden" name="assocs[0][tbl]" value="publication" />
 			<input type="hidden" name="assocs[0][id]" value="0" />
 		<?php } else { ?>
-		<div class="explaination">
-			<p><?php echo Lang::txt('COM_CITATIONS_ASSOCIATION_DESC'); ?></p>
-		</div>
-		<fieldset>
-			<legend><?php echo Lang::txt('COM_CITATIONS_CITATION_FOR'); ?></legend>
-
-			<div class="field-wrap">
-			<table id="assocs">
-				<thead>
-					<tr>
-						<th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
-						<th><?php echo Lang::txt('COM_CITATIONS_ID'); ?></th>
-						<!--<th><?php //echo Lang::txt('TABLE'); ?></th>-->
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="3"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('COM_CITATIONS_ADD_A_ROW'); ?></a></td>
-					</tr>
-				</tfoot>
-				<tbody>
-				<?php
-						$r = count($this->assocs);
-						if ($r > 5) {
-							$n = $r;
-						} else {
-							$n = 5;
-						}
-						for ($i=0; $i < $n; $i++)
-						{
-							if ($r == 0 || !isset($this->assocs[$i]))
-							{
-								$this->assocs[$i] = new stdClass;
-								$this->assocs[$i]->id   = NULL;
-								$this->assocs[$i]->cid  = NULL;
-								$this->assocs[$i]->oid  = NULL;
-								$this->assocs[$i]->type = NULL;
-								$this->assocs[$i]->tbl  = NULL;
-							}
-
-							echo "\t\t\t".'  <tr>'."\n";
-							echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";
-							echo ' <option value=""';
-							echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('COM_CITATIONS_SELECT').'</option>'."\n";
-							echo ' <option value="resource"';
-							echo ($this->assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('COM_CITATIONS_RESOURCE').'</option>'."\n";
-							echo ' <option value="publication"';
-							echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
-							echo '>'.Lang::txt('COM_CITATIONS_PUBLICATION').'</option>'."\n";
-							echo '</select></td>'."\n";
-							echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
-							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
-							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
-							echo "\t\t\t".'</tr>'."\n";
-						}
-				?>
-				</tbody>
-			</table>
+			<div class="explaination">
+				<p><?php echo Lang::txt('COM_CITATIONS_ASSOCIATION_DESC'); ?></p>
 			</div>
-		</fieldset><div class="clear"></div>
+			<fieldset>
+				<legend><?php echo Lang::txt('COM_CITATIONS_CITATION_FOR'); ?></legend>
+
+				<div class="field-wrap">
+					<table id="assocs">
+						<thead>
+							<tr>
+								<th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
+								<th><?php echo Lang::txt('COM_CITATIONS_ID'); ?></th>
+								<!--<th><?php //echo Lang::txt('TABLE'); ?></th>-->
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<td colspan="3"><a href="#" class="btn icon-add" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('COM_CITATIONS_ADD_A_ROW'); ?></a></td>
+							</tr>
+						</tfoot>
+						<tbody>
+						<?php
+								$r = count($this->assocs);
+								if ($r > 5) {
+									$n = $r;
+								} else {
+									$n = 5;
+								}
+								for ($i=0; $i < $n; $i++)
+								{
+									if ($r == 0 || !isset($this->assocs[$i]))
+									{
+										$this->assocs[$i] = new stdClass;
+										$this->assocs[$i]->id   = NULL;
+										$this->assocs[$i]->cid  = NULL;
+										$this->assocs[$i]->oid  = NULL;
+										$this->assocs[$i]->type = NULL;
+										$this->assocs[$i]->tbl  = NULL;
+									}
+
+									echo "\t\t\t".'  <tr>'."\n";
+									echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";
+									echo ' <option value=""';
+									echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"': '';
+									echo '>'.Lang::txt('COM_CITATIONS_SELECT').'</option>'."\n";
+									echo ' <option value="resource"';
+									echo ($this->assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
+									echo '>'.Lang::txt('COM_CITATIONS_RESOURCE').'</option>'."\n";
+									echo ' <option value="publication"';
+									echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
+									echo '>'.Lang::txt('COM_CITATIONS_PUBLICATION').'</option>'."\n";
+									echo '</select></td>'."\n";
+									echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
+									echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
+									echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
+									echo "\t\t\t".'</tr>'."\n";
+								}
+						?>
+						</tbody>
+					</table>
+				</div>
+			</fieldset><div class="clear"></div>
 		<?php } ?>
+
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_CITATIONS_AFFILIATION'); ?></legend>
 
