@@ -84,18 +84,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Return data on a group view (this will be some form of HTML)
-	 *
-	 * @param		 object  $group		 Current group
-	 * @param		 string  $option		 Name of the component
-	 * @param		 string  $authorized User's authorization level
-	 * @param		 integer $limit		 Number of records to pull
-	 * @param		 integer $limitstart Start of records to pull
-	 * @param		 string  $action		 Action to perform
-	 * @param		 array	 $access		 What can be accessed
-	 * @param		 array	 $areas		 Active area(s)
-	 * @return		 array
-	 */
+	* Return data on a group view (this will be some form of HTML)
+	*
+	* @param		 object  $group		 Current group
+	* @param		 string  $option		 Name of the component
+	* @param		 string  $authorized User's authorization level
+	* @param		 integer $limit		 Number of records to pull
+	* @param		 integer $limitstart Start of records to pull
+	* @param		 string  $action		 Action to perform
+	* @param		 array	 $access		 What can be accessed
+	* @param		 array	 $areas		 Active area(s)
+	* @return		 array
+	*/
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$returnhtml = true;
