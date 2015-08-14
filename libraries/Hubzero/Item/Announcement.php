@@ -422,6 +422,7 @@ class Announcement extends \JTable
 
 			// set message details and send
 			$message->setSubject($subject)
+					->addReplyTo($from['email'], $from['name'])
 					->addFrom($from['email'], $from['name'])
 					->setTo($email, $name)
 					->addPart($plain, 'text/plain')
