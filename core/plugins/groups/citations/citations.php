@@ -57,7 +57,7 @@ use Components\Citations\Models\Importer;
 class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 {
 
-	protected $PLUGIN_SCOPE = 'group';
+	const PLUGIN_SCOPE = 'group';
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -119,10 +119,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//creat database object
+		// get database object
 		$this->database = App::get('db');
 
-		//get the group members
+		// get the group members
 		$members = $group->get('members');
 
 		// Set some variables so other functions have access
@@ -141,23 +141,23 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 
 
-		//if we want to return content
+		// if we want to return content
 		if ($returnhtml)
 		{
-			//set group members plugin access level
+			// set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//if were not trying to subscribe
+			// if were not trying to subscribe
 			if ($this->action != 'subscribe')
 			{
-				//if set to nobody make sure cant access
+				// if set to nobody make sure cant access
 				if ($group_plugin_acl == 'nobody')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 
-				//check if guest and force login if plugin access is registered or members
+				// check if guest and force login if plugin access is registered or members
 				if (User::isGuest()
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 					{
@@ -171,7 +171,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					return;
 				}
 
-				//check to see if user is member and plugin access requires members
+				// check to see if user is member and plugin access requires members
 				if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
@@ -179,7 +179,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			//run task based on action
+			// run task based on action
 			switch ($this->action)
 			{
 				case 'save':	 $arr['html'] .= $this->_save();		break;
@@ -196,9 +196,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//set metadata for menu
+		// set metadata for menu
 		$arr['metadata']['count'] = \Components\Citations\Models\Citation::all()
-			->where('scope', '=', $this->PLUGIN_SCOPE)
+			->where('scope', '=', self::PLUGIN_SCOPE)
 			->where('scope_id', '=', $this->group->get('gidNumber'))
 			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
 			->count();
@@ -242,7 +242,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			//initialize the view
+			// initialize the view
 			$view = $this->view('default', 'browse');
 
 			// push objects to the view
@@ -256,13 +256,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		}
 
-		//get applied filters
+		// get applied filters
 		$view->filters = $obj['filters'];
 
 		// only display published citations to non-managers.	
 		if ($view->isManager)
 		{
-			//get filtered citations
+			// get filtered citations
 			$view->citations = $obj['citations']->paginated()->rows();
 		}
 		else
@@ -273,7 +273,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				->rows();
 		}
 
-		//get the earliest year we have citations for
+		// get the earliest year we have citations for
 		$view->earliest_year = 2001;
 
 		// Affiliation filter
@@ -383,10 +383,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _edit()
 	{
-		//create view object
+		// create view object
 		$view = $this->view('default', 'edit');
 
-		//appends view override if this is a supergroup
+		// appends view override if this is a supergroup
 		if ($this->group->isSuperGroup())
 		{
 			$view->addTemplatePath($this->_superGroupViewOverride('edit'));
@@ -413,7 +413,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			 );
 		}
 
-		//get the citation types
+		// get the citation types
 		$citationsType = \Components\Citations\Models\Type::all();
 		$view->types = $citationsType->rows()->toObject();
 
@@ -459,7 +459,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Load the object
 		$view->row = \Components\Citations\Models\Citation::oneorNew($id);
 
-		//make sure title isnt too long
+		// make sure title isnt too long
 		$maxTitleLength = 30;
 		$shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
 			? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
@@ -479,7 +479,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Set the page title
 		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
 
-		//push jquery to doc
+		// push jquery to doc
 		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
@@ -494,13 +494,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// It's new - no associations to get
 			$view->assocs = array();
 
-			//tags & badges
+			// tags & badges
 			$view->tags		= array();
 			$view->badges = array();
 		}
 		else
 		{
-			//tags & badges
+			// tags & badges
 			$view->tags		= \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
 			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
 		}
@@ -531,10 +531,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		//$scope = 'group';
 		$scope_id = $this->group->get('gidNumber');
 
-		//get tags
+		// get tags
 		$tags = trim(Request::getVar('tags', ''));
 
-		//get badges
+		// get badges
 		$badges = trim(Request::getVar('badges', ''));
 
 		// get the citation (single) or create a new one
@@ -579,7 +579,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'label' => Request::getVar('label'),
 				'uid' => User::get('id'),
 				'created' => Date::toSql(),
-				'scope' => $this->PLUGIN_SCOPE,
+				'scope' => self::PLUGIN_SCOPE,
 				'scope_id' => $scope_id
 			));
 
@@ -591,11 +591,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		//check if we are allowing tags
+		// check if we are allowing tags
 		$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 		$ct1->setTags($tags, User::get('id'), 0, 1, '');
 
-		//check if we are allowing badges
+		// check if we are allowing badges
 		$ct2 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 		$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 
@@ -617,11 +617,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 **/
 	 private function _publish()
 	 {
-			//verify that the user is a manager.
+			// verify that the user is a manager.
 			$isManager = ($this->authorized == 'manager') ? true : false;
 			if (!$isManager)
 			{
-				//redirect to browse with admonishment
+				// redirect to browse with admonishment
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
 					Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
@@ -650,8 +650,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					$string = 'PLG_GROUPS_CITATIONS_CITATION_UNPUBLISHED';
 				}
 
-				//save the state
-				if ($citation->save() && $citation->scope == $this->PLUGIN_SCOPE
+				// save the state
+				if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE 
 						&& $citation->scope_id == $this->group->get('gidNumber'))
 				{
 					App::redirect(
@@ -680,7 +680,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$citationIDs = explode(',',$citationIDs);
 				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 
-				//error, no such citation
+				// error, no such citation
 				foreach ($citationIDs as $id)
 				{
 					$citation = \Components\Citations\Models\Citation::oneOrFail($id);
@@ -695,8 +695,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						$citation->set('published', $citation::STATE_UNPUBLISHED);
 					}
 
-					//save the state
-					if ($citation->save() && $citation->scope == $this->PLUGIN_SCOPE
+					// save the state
+					if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE 
 						&& $citation->scope_id == $this->group->get('gidNumber'))
 					{
 						array_push($published, $id);
@@ -718,7 +718,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				);
 				return;
 			}
-	 } //end _publish()
+	 } // end _publish()
 
 
 	/**
@@ -730,11 +730,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 **/
 	 private function _delete()
 	 {
-			//verify that the user is a manager.
+			// verify that the user is a manager.
 			$isManager = ($this->authorized == 'manager') ? true : false;
 			if (!$isManager)
 			{
-				//redirect to browse with admonishment
+				// redirect to browse with admonishment
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
 					Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
@@ -754,7 +754,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 				$citation->set('published', $citation::STATE_DELETED);
 
-				if ($citation->save() && $citation->scope == $this->PLUGIN_SCOPE
+				if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE 
 						&& $citation->scope_id == $this->group->get('gidNumber'))
 				{
 					App::redirect(
@@ -789,8 +789,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 						$citation->set('published', $citation::STATE_DELETED);
 
-						//update the record
-						if ($citation->save() && $citation->scope == $this->PLUGIN_SCOPE
+						// update the record
+						if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE 
 						&& $citation->scope_id == $this->group->get('gidNumber'))
 						{
 							array_push($deleted, $id);
@@ -815,7 +815,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 				 return;
 
-		} //end _delete()
+		} // end _delete()
 
 	/**
 	 * Settings for group citations
@@ -848,10 +848,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					'style'			=> $name
 				));
 
-				//save format
+				// save format
 				$citationFormat->save();
 
-				//update group
+				// update group
 				$params->citationFormat = $citationFormat->id;
 			}
 			else
@@ -884,13 +884,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			//instansiate the view
+			// instansiate the view
 			$view = $this->view('default', 'settings');
 
 			// pass the group through
 			$view->group = $this->group;
 
-			//get group settings
+			// get group settings
 			$params = json_decode($this->group->get('params'));
 
 			$view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
@@ -899,7 +899,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges: "true");
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
-			//get formats
+			// get formats
 			$view->formats = \Components\Citations\Models\Format::all()->rows()->toObject();
 			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
 			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
@@ -936,7 +936,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _import()
 	{
-		//instansiate the view
+		// instansiate the view
 		$view = $this->view('display', 'import');
 		$view->group = $this->group;
 		$view->messages = NULL;
@@ -961,7 +961,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _upload()
 	{
-		//instansiate the view
+		// instansiate the view
 		$view = $this->view('review', 'import');
 		$view->group = $this->group;
 		$view->messages = NULL;
@@ -1038,7 +1038,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->citations_require_attention = $citations[0]['attention'];
 		$view->citations_require_no_attention = $citations[0]['no_attention'];
 
-		//get group ID
+		// get group ID
 		$group = Request::getVar('group');
 
 		return $view->loadTemplate();
@@ -1051,7 +1051,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _process()
 	{
-		//instansiate the view
+		// instansiate the view
 		$view = $this->view('saved', 'import');
 		$view->group = $this->group;
 		$view->messages = NULL;
@@ -1113,7 +1113,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'citations'
 			);
 
-			//view variables
+			// view variables
 			$view->citations_require_attention = (isset($citations_action_attention) ? $citations_action_attention : null);
 			$view->citation_require_no_attention = (isset($citation_action_no_attention) ?  $citations_action_no_attention : null);
 
@@ -1134,15 +1134,15 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				);
 			}
 
-			//get the session object
+			// get the session object
 			$session = App::get('session');
 
-			//ids of sessions saved and not saved
+			// ids of sessions saved and not saved
 			$session->set('citations_saved', $results['saved']);
 			$session->set('citations_not_saved', $results['not_saved']);
 			$session->set('citations_error', $results['error']);
 
-			//delete the temp files that hold citation data
+			// delete the temp files that hold citation data
 			$this->importer->cleanup(true);
 
 			// redirect after save
@@ -1177,10 +1177,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _handleOpenURL()
 	{
-		//get the users id to make lookup
+		// get the users id to make lookup
 		$users_ip = Request::ip();
 
-		//get the param for ip regex to use machine ip
+		// get the param for ip regex to use machine ip
 		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
 
 		$use_machine_ip = false;
@@ -1193,7 +1193,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//make url based on if were using machine ip or users
+		// make url based on if were using machine ip or users
 		if ($use_machine_ip)
 		{
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
@@ -1203,7 +1203,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
 		}
 
-		//get the resolver
+		// get the resolver
 		$r = null;
 		if (function_exists('curl_init'))
 		{
@@ -1215,14 +1215,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			curl_close($cURL);
 		}
 
-		//parse the returned xml
+		// parse the returned xml
 		$openurl = array(
 			'link' => '',
 			'text' => '',
 			'icon' => ''
 		);
 
-		//parse the return from resolver lookup
+		// parse the return from resolver lookup
 		$resolver = null;
 		$xml = simplexml_load_string($r);
 		if (isset($xml->resolverRegistryEntry))
@@ -1230,7 +1230,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$resolver = $xml->resolverRegistryEntry->resolver;
 		}
 
-		//if we have resolver set vars for creating open urls
+		// if we have resolver set vars for creating open urls
 		if ($resolver != null)
 		{
 			$openURL['link'] = $resolver->baseURL;
@@ -1260,7 +1260,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// get the ones for this group
 		//$scope = 'group';
 
-		$citations->where('scope', '=', $this->PLUGIN_SCOPE);
+		$citations->where('scope', '=', self::PLUGIN_SCOPE);
 		$citations->where('scope_id', '=', $scope_id);
 		$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
 
@@ -1274,27 +1274,26 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// we handle things differently in search and sorting
 				if ($filter != 'search' && $filter != 'sort' && $filter!= 'tag' && $value != "")
 				{
-					if ($filter == 'author')
+					switch ($filter)
 					{
-						$citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
+						case 'author':
+							$citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
+						break;
+						
+						case 'publishedin':
+							$citations->where('date_publish', 'LIKE', "%{$value}-%");
+						break;
+						case 'year_start':
+							$citations->where('year', '>=', $value);
+						break;
+						case 'year_end':
+							$citations->where('year', '<=', $value);
+						break;
+						default:
+							$citations->where($filter, '=', $value);
+						break;
 					}
-					elseif ($filter == 'publishedin')
-					{
-						$citations->where('date_publish', 'LIKE', "%{$value}-%");
-					}
-					elseif ($filter == 'year_start')
-					{
-						$citations->where('year', '>=', $value);
-					}
-					elseif ($filter == 'year_end')
-					{
-						$citations->where('year', '<=', $value);
-					}
-					else
-					{
-						$citations->where($filter, '=', $value);
-					}
-				} //end if not search & not sort & non-empty value
+				} // end if not search & not sort & non-empty value
 
 				// for searching
 				if ($filter == "search" && $value != "")
@@ -1319,16 +1318,16 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 							{
 								// put for collection later
 								array_push($collection, $c->id);
-							} //end foreach $cite
-						} //end foreach terms
-					} //end foreach columns
+							} // end foreach $cite
+						} // end foreach terms
+					} // end foreach columns
 
 					// remove duplicates
 					$collection = array_unique($collection);
 
 					// pull the appropriate ones.
 					$citations->whereIn('id', $collection);
-			} //end searching
+			} // end searching
 
 			// for tags
 			if ($filter == "tag" && $value != "")
@@ -1346,10 +1345,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				//remove duplicates
+				// remove duplicates
 				$collection = array_unique($collection);
 
-				//get the tagged ones
+				// get the tagged ones
 				$citations->whereIn('id', $collection);
 		 } // end if tags
 
@@ -1358,7 +1357,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$clause = explode(" ", $value);
 				$citations->order($clause[0], $clause[1]);
 			}
-		} //end foreach filters as filter
+		} // end foreach filters as filter
 
 			return array('citations' => $citations, 'filters' => $filters);
 		}
