@@ -188,9 +188,6 @@ class TemplatesModelStyle extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-
 		// The folder and element vars are passed when saving the form.
 		if (empty($data))
 		{
@@ -286,12 +283,17 @@ class TemplatesModelStyle extends JModelAdmin
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the template XML.
-			$client = \Hubzero\Base\ClientManager::client($table->client_id);
-			$path   = Filesystem::cleanPath(PATH_APP .'/templates/'.$table->template.'/templateDetails.xml');
+			//$client = \Hubzero\Base\ClientManager::client($table->client_id);
+			$patha  = Filesystem::cleanPath(PATH_APP .'/templates/'.$table->template.'/templateDetails.xml');
+			$pathc  = Filesystem::cleanPath(PATH_CORE .'/templates/'.$table->template.'/templateDetails.xml');
 
-			if (file_exists($path))
+			if (file_exists($patha))
 			{
-				$this->_cache[$pk]->xml = simplexml_load_file($path);
+				$this->_cache[$pk]->xml = simplexml_load_file($patha);
+			}
+			elseif (file_exists($pathc))
+			{
+				$this->_cache[$pk]->xml = simplexml_load_file($pathc);
 			}
 			else
 			{
@@ -327,18 +329,24 @@ class TemplatesModelStyle extends JModelAdmin
 		$clientId	= $this->getState('item.client_id');
 		$template	= $this->getState('item.template');
 		$lang		= Lang::getRoot();
-		$client		= JApplicationHelper::getClientInfo($clientId);
+		$client		= \Hubzero\Base\ClientManager::client($clientId);
 
 		if (!$form->loadFile('style_'.$client->name, true))
 		{
 			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
-		$formFile = Filesystem::cleanPath($client->path.'/templates/'.$template.'/templateDetails.xml');
+		$base = PATH_CORE;
+		if (is_dir(PATH_APP . '/templates/' . $template))
+		{
+			$base = PATH_APP;
+		}
+
+		$formFile = Filesystem::cleanPath($base . '/templates/' . $template . '/templateDetails.xml');
 
 		// Load the core and/or local language file(s).
-			$lang->load('tpl_'.$template, $client->path, null, false, true)
-		||	$lang->load('tpl_'.$template, $client->path.'/templates/'.$template, null, false, true);
+		$lang->load('tpl_' . $template, $base . '/bootstrap/' . $client->name, null, false, true) ||
+		$lang->load('tpl_' . $template, $base . '/templates/' . $template, null, false, true);
 
 		if (file_exists($formFile))
 		{
