@@ -34,7 +34,7 @@ $this->css()
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>" method="get">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=search'); ?>" method="get">
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH'); ?>" />
 			<fieldset class="entry-search">

@@ -26,7 +26,7 @@ if ($this->config->get('access-manage-section')) {
 			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_($base); ?>" method="get">
+		<form action="<?php echo JRoute::_($base . '&scope=search'); ?>" method="get">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH'); ?>" />
 				<fieldset class="entry-search">
