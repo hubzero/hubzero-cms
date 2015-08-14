@@ -35,9 +35,9 @@ $this->css()
      ->js();
 
 //citation params
-$label = $this->config->get("citation_label", "number");
-$rollover = $this->config->get("citation_rollover", "no");
-$rollover = ($rollover == "yes") ? 1 : 0;
+$label    = $this->config->get('citation_label', 'number');
+$rollover = $this->config->get('citation_rollover', 'no');
+$rollover = ($rollover == 'yes') ? 1 : 0;
 $citationsFormat = new \Components\Citations\Tables\Format($this->database);
 $template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
@@ -48,14 +48,14 @@ $batch_download = $this->config->get("citation_batch_download", 1);
 $coins = $this->config->get("citation_coins", 1);
 
 //do we want to number li items
-if ($label == "none") {
-	$citations_label_class = "no-label";
-} elseif ($label == "number") {
-	$citations_label_class = "number-label";
-} elseif ($label == "type") {
-	$citations_label_class = "type-label";
-} elseif ($label == "both") {
-	$citations_label_class = "both-label";
+if ($label == 'none') {
+	$citations_label_class = 'no-label';
+} elseif ($label == 'number') {
+	$citations_label_class = 'number-label';
+} elseif ($label == 'type') {
+	$citations_label_class = 'type-label';
+} elseif ($label == 'both') {
+	$citations_label_class = 'both-label';
 }
 
 ?>
@@ -82,7 +82,7 @@ if ($label == "none") {
 	</div>
 </header>
 
-<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="get" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 	<section class="main section">
 		<div class="subject">
 			<div class="container data-entry">
@@ -159,9 +159,8 @@ if ($label == "none") {
 											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 										</td>
 									<?php endif; ?>
-
 									<?php if ($label != "none") : ?>
-										<td class="citation-label <?php echo $citations_label_class; ?>">
+										<td class="priority-3 citation-label <?php echo $citations_label_class; ?>">
 											<?php
 												$type = "";
 												foreach ($this->types as $t) {
@@ -232,30 +231,30 @@ if ($label == "none") {
 												<p><?php echo nl2br($cite->abstract); ?></p>
 											</div>
 										<?php endif; ?>
-									</td>
-									<?php if ($this->isAdmin === true) : ?>
-										<td class="col-edit"><a href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">
-											<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
-										</a></td>
-									<?php endif; ?>
-								</tr>
-								<tr>
-									<td <?php if ($label == "none") { echo 'colspan="3"'; } else { echo 'colspan="4"'; } ?> class="citation-details">
-										<?php
+										<div class="citation-details">
+											<?php
 											$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
 											{
 												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl);
 											}
-										?>
-										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
-										<?php endif; ?>
+											?>
+											<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+											<?php endif; ?>
 
-										<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
-										<?php endif; ?>
+											<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+												<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+											<?php endif; ?>
+										</div>
 									</td>
+									<?php if ($this->isAdmin === true) : ?>
+										<td class="col-edit">
+											<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">
+												<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
+											</a>
+										</td>
+									<?php endif; ?>
 								</tr>
 								<?php $counter++; ?>
 							<?php endforeach; ?>
@@ -301,6 +300,17 @@ if ($label == "none") {
 			</div><!-- /.container -->
 		</div><!-- /.subject -->
 		<div class="aside">
+			<?php if ($batch_download) : ?>
+				<fieldset id="download-batch">
+					<strong><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
+					<p><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
+
+					<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />
+					|
+					<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('COM_CITATIONS_BIBTEX'); ?>" />
+				</fieldset>
+			<?php endif; ?>
+
 			<fieldset>
 				<label>
 					<?php echo Lang::txt('COM_CITATIONS_TYPE'); ?>
@@ -438,17 +448,6 @@ if ($label == "none") {
 					<input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_FILTER'); ?>" />
 				</p>
 			</fieldset>
-
-			<?php if ($batch_download) : ?>
-				<fieldset id="download-batch">
-					<strong><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
-					<p><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
-
-					<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />
-					|
-					<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('COM_CITATIONS_BIBTEX'); ?>" />
-				</fieldset>
-			<?php endif; ?>
 		</div><!-- /.aside -->
 	</section>
 </form>

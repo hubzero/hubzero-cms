@@ -68,7 +68,7 @@ else
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li>
-				<a class="icon-browse browse btn" href="<?php echo Route::url('index.php?option=com_citations&task=add'); ?>">
+				<a class="icon-browse browse btn" href="<?php echo Route::url('index.php?option=com_citations'); ?>">
 					<?php echo Lang::txt('COM_CITATIONS_BACK'); ?>
 				</a>
 			</li>

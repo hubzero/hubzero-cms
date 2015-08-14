@@ -811,7 +811,7 @@ class Format
 					//display tag if not admin tag or if admin tag and user is adminstrator
 					if (!$tag['admin'] || ($tag['admin'] && $isAdmin))
 					{
-						$html .= '<li class="' . $cls . '"><a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+						$html .= '<li class="' . $cls . '"><a class="tag' . ($tag['admin'] ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
 					}
 				}
 				$html .= '</ul>';
