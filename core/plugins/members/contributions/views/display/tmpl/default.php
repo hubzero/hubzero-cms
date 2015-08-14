@@ -105,25 +105,24 @@ foreach ($this->cats as $cat)
 	<input type="hidden" name="area" value="<?php echo $this->escape($this->active) ?>" />
 
 	<div class="container">
+		<nav class="entries-filters">
+			<?php if (count($links) > 0) { ?>
+				<ul class="entries-menu filter-options">
+					<li>
+						<a href="<?php echo Route::url($this->member->getLink() . '&active=contributions&sort=date'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
+						<ul>
+							<?php echo implode("\n", $links); ?>
+						</ul>
+					</li>
+				</ul>
+			<?php } ?>
 
-		<?php if (count($links) > 0) { ?>
-			<ul class="entries-menu filter-options">
-				<li>
-					<a href="<?php echo Route::url($this->member->getLink() . '&active=contributions&sort=date'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
-					<ul>
-						<?php echo implode("\n", $links); ?>
-					</ul>
-				</li>
+			<ul class="entries-menu order-options">
+				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
 			</ul>
-		<?php } ?>
-
-		<ul class="entries-menu order-options">
-			<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
-			<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
-			<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
-		</ul>
-
-		<div class="clearfix"></div>
+		</nav>
 
 		<div class="container-block">
 <?php
@@ -214,7 +213,7 @@ foreach ($this->results as $category)
 			$html .= '<a href="' . Route::url($this->member->getLink() . '&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))) . '">';
 		}
 		$html .= $name.' <span>('.$num.$total.')</span>';
-		if (!$dopaging && $total > 5)
+		if (!$dopaging)
 		{
 			$html .= '<span class="more">' . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE') . '</span></a> ';
 		}
