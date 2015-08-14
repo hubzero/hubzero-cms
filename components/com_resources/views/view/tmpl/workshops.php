@@ -51,7 +51,7 @@ if ($mode != 'preview')
 
 $juser = JFactory::getUser();
 ?>
-<section class="main section upperpane">
+<section class="main section upperpane <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
 	<div class="subject">
 		<div class="grid overviewcontainer">
 			<div class="col span8">
@@ -209,7 +209,7 @@ $juser = JFactory::getUser();
 </section><!-- / .main section -->
 
 <?php if ($this->model->access('view-all')) { ?>
-	<section class="main section">
+	<section class="main section <?php echo $this->model->params->get('pageclass_sfx', ''); ?>">
 		<div class="subject tabbed">
 			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
 			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
