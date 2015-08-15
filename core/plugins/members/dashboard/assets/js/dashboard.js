@@ -39,6 +39,10 @@ HUB.Plugins.MemberDashboard = {
 	{
 		var $ = this.jQuery;
 
+		if (window.innerWidth <= 800) {
+			return;
+		}
+
 		// tell the modules we have js
 		$('.member_dashboard').addClass('js-enabled');
 
@@ -71,12 +75,11 @@ HUB.Plugins.MemberDashboard = {
 			widget_margins: [dashboard.settings.col_margin_horz, dashboard.settings.col_margin_vert],
 			widget_base_dimensions: [dashboard.settings.col_width, dashboard.settings.col_height],
 			max_cols: dashboard.settings.max_cols,
-			serialize_params: function(element, specs)
-			{
+			serialize_params: function(element, specs) {
 				var params = {};
 				$.each($(element).find('.module-settings form').serializeArray(), function() {
-				    var name = this.name.replace(/params\[([^\]]*)\]/g, "$1");
-				    params[name] = this.value;
+					var name = this.name.replace(/params\[([^\]]*)\]/g, "$1");
+					params[name] = this.value;
 				});
 
 				// return module id, col, row, and sizes
@@ -93,17 +96,17 @@ HUB.Plugins.MemberDashboard = {
 				handle: 'h3',
 				items: '.gs-w:not(.static)',
 				stop: function(event, ui) {
-					dashboard.save();	
+					dashboard.save();
 				}
 			},
 			resize: {
 				enabled: true, 
 				stop: function (event, ui, widget) {
-					dashboard.save();	
+					dashboard.save();
 				}
 			}
 		}).data('gridster');
-		
+
 		// is the dashboard customizable?
 		// if not disable dragging and resize
 		if (!$('.modules').hasClass('customizable'))

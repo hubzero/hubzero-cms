@@ -1091,6 +1091,42 @@ HUB.Groups = {
 //-----------------------------------------------------------
 
 jQuery(document).ready(function($){
+		var el = $('#page_menu');
+	if (el.length) {
+		el.addClass('js');
+
+		var select = $("<select />").on('change', function() {
+			window.location = $(this).find("option:selected").val();
+		});
+
+		$("<option />", {
+			"value"   : "",
+			"text"    : 'Select ...' //el.attr('data-label')
+		}).appendTo(select);
+
+		el.find("a").each(function() {
+			var elm = $(this);
+
+			if (elm.hasClass('alrt')) {
+				return;
+			}
+
+			var opts = {
+				"value"   : elm.attr("href"),
+				"text"    : elm.text()
+			};
+			if ($(elm.parent()).hasClass('active')) {
+				opts.selected = 'selected';
+			}
+			$("<option />", opts).appendTo(select);
+		});
+
+		var li = $("<li />").addClass('option-select');
+
+		select.appendTo(li);
+		li.appendTo(el);
+	}
+
 	HUB.Groups.initialize();
 });
 

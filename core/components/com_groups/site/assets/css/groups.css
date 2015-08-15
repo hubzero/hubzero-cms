@@ -242,34 +242,18 @@
 	#page_container {
 		margin: 0;
 		padding: 0;
-		display: table;
-		table-layout: fixed;
-		*padding-left: 215px;
-		*display: block;
 	}
 	#page_sidebar {
 		background: #e1e1e1;
 		background: rgba(0, 0, 0, 0.1);
-		display: table-cell;
-		width: 215px;
-		min-width: 215px;
-		vertical-align: top;
-		*display: block;
-		*margin-left: -215px;
-		*float: left;
 	}
 	#page_main {
-		z-index: 555;
-		display: table-cell;
-		vertical-align: top;
-		width: 100%;
-		*display: block;
-		*width: auto;
-		*float: left;
+		position: relative;
 	}
+
 	/* Identity */
 	#page_identity {
-		display: block;
+		display: none;
 		margin: 25px 25px 0 25px;
 		padding: 0;
 		position: relative;
@@ -306,7 +290,7 @@
 /* Menu */
 	#page_menu {
 		list-style: none;
-		margin: 25px 0;
+		margin: 0;
 		padding: 0;
 	}
 	#page_menu li {
@@ -584,6 +568,7 @@
 	#page_info {
 		background: #eee;
 		margin: 20px;
+		display: none;
 	}
 	.group-info {
 		border: 1px dashed #ccc;
@@ -749,6 +734,7 @@
 	.dropdown-menu li a.group-delete:before    { content: '\f057'; }
 	.dropdown-menu li a.logout:before          { content: '\f08b'; }
 
+/*
 @media (max-width: 800px) {
 	#page_identity {
 		padding: 0;
@@ -812,8 +798,6 @@
 	#page_menu li a,
 	#page_menu li span {
 		text-indent: -66em;
-		/*height: 6em;
-		width: 6em;*/
 		line-height: 6em;
 		margin: 0;
 		padding: 0;
@@ -842,7 +826,7 @@
 		-webkit-font-smoothing: antialiased;
 		text-align: center;
 	}
-}
+}*/
 
 /* Page Notifications */
 	#page_notifications {
@@ -2150,4 +2134,53 @@ fieldset.assignment label {
 }
 #page-comments .mark-key {
 
+}
+
+/* Responsive */
+	#page_menu li.option-select {
+		padding: 0.75em 2em;
+	}
+	#page_menu.js li {
+		display: none;
+	}
+	#page_menu.js li.option-select,
+	#page_menu.js li.option-select select {
+		display: block;
+	}
+	#page_menu.js li.option-select select {
+		width: 100%;
+	}
+@media (min-width: 40em) {
+	#page_identity {
+		display: block;
+	}
+	#page_container {
+		display: table;
+		table-layout: fixed;
+	}
+	#page_sidebar {
+		display: table-cell;
+		width: 215px;
+		min-width: 215px;
+		vertical-align: top;
+	}
+	#page_main {
+		z-index: 555;
+		display: table-cell;
+		vertical-align: top;
+		width: 100%;
+		position: static;
+	}
+	#page_menu {
+		margin: 25px 0;
+	}
+	#page_menu.js li {
+		display: block;
+	}
+	#page_menu.js li.option-select {
+		display: none;
+	}
+	#page_info {
+		display: block;
+	}
 }
