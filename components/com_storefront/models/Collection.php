@@ -303,7 +303,7 @@ class StorefrontModelCollection
 	public function save()
 	{
 		$db = JFactory::getDBO();
-		
+
 		$action = 'update';
 		if (!$this->getId())
 		{
@@ -353,7 +353,7 @@ class StorefrontModelCollection
 	public function delete()
 	{
 		$db = JFactory::getDBO();
-		
+
 		// Delete the collection record
 		$sql = 'DELETE FROM `#__storefront_collections` WHERE `cId` = ' . $db->quote($this->getId());
 		$db->setQuery($sql);
