@@ -74,7 +74,10 @@ class StorefrontModelCollection
 		if ($cInfo)
 		{
 			$this->setId($cInfo->cId);
-			$this->setAlias($cInfo->cAlias);
+			if (!empty($cInfo->cAlias))
+			{
+				$this->setAlias($cInfo->cAlias);
+			}
 			$this->setName($cInfo->cName);
 			$this->setActiveStatus($cInfo->cActive);
 			$this->setType($cInfo->cType);
@@ -369,6 +372,12 @@ class StorefrontModelCollection
 
 	/* ******************************** Static functions ********************************** */
 
+	/**
+	 * Delete the collection
+	 *
+	 * @param	void
+	 * @return	bool	true on success, exception otherwise
+	 */
 	public static function findActiveCollectionByAlias($cAlias)
 	{
 		$db = JFactory::getDBO();

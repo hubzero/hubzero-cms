@@ -43,9 +43,6 @@ if ($proPluginEnabled && !$juser->proEnabled)
 	JError::raiseError(404, JText::_('Component is not available at this time'));
 }
 
-//require needed files
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
-
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', '');
 
