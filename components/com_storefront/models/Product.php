@@ -815,7 +815,7 @@ class StorefrontModelProduct
 						`cId` = " . $db->quote($cId) . ",
 						`pId` = " . $db->quote($pId) . "
 						ON DUPLICATE KEY UPDATE
-						`cllId` = (@collectionId := `cllId`),
+						`pcId` = (@collectionId := `pcId`),
 						`cId` = " . $db->quote($cId) . ",
 						`pId` = " . $db->quote($pId);
 
@@ -837,7 +837,7 @@ class StorefrontModelProduct
 			$deleteSql .= ", " . $db->quote($activeCllId);
 		}
 		$deleteSql .= ')';
-		$sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $db->quote($pId) . " AND `cllId` NOT IN {$deleteSql}";
+		$sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $db->quote($pId) . " AND `pcId` NOT IN {$deleteSql}";
 		$db->setQuery($sql);
 		$db->query();
 

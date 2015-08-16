@@ -81,6 +81,11 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[cName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 			</div>
 
+			<div class="input-wrap">
+				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
+			</div>
+
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

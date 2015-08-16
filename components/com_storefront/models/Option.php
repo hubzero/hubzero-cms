@@ -229,7 +229,6 @@ class StorefrontModelOption
 	 */
 	public function save()
 	{
-
 		$action = 'update';
 		if (!$this->getId())
 		{

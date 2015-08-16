@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = StorefrontHelperPermissions::getActions('category');
+$canDo = StorefrontHelperPermissions::getActions('collection');
 
 JToolBarHelper::title(JText::_('COM_STOREFRONT'), 'kb.png');
 if (0  && $canDo->get('core.admin'))
@@ -78,6 +78,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Alias', 'cAlias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Type', 'cType', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<!--th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th-->
@@ -132,6 +133,9 @@ foreach ($this->rows as $row)
 						<span><?php echo $this->escape(stripslashes($row->cName)); ?></span>
 					</span>
 				<?php } ?>
+				</td>
+				<td>
+					<?php echo $this->escape(stripslashes($row->cAlias)); ?></span>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->cType)); ?></span>

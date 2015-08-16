@@ -32,9 +32,6 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 
 class Integrity
 {
-	/**
-	 * Constructor
-	 */
 	public static function skuIntegrityCheck($sku)
 	{
 		$return = new stdClass();
@@ -59,6 +56,31 @@ class Integrity
 			{
 				$return->errors[] = 'There is already a SKU with the identical set of options. Each SKU must have a unique set of options.';
 			}
+		}
+
+		return $return;
+	}
+
+	public static function collectionIntegrityCheck($collection)
+	{
+		$return = new stdClass();
+		$return->status = 'ok';
+		$return->errors = array();
+
+		// Check if there are other collections that have the same alias
+		try
+		{
+			$conflictingCollectionId = StorefrontModelCollection::findActiveCollectionByAlias($collection->getAlias());
+			if ($conflictingCollectionId && $conflictingCollectionId != $collection->getId())
+			{
+				$return->status = 'error';
+				$return->errors[] = 'There is already another collection published with the same alias. Alias must be unique.';
+			}
+		}
+		catch (Exception $e)
+		{
+			// No conflicting product found (hence, the Exception), good to go.
+			return $return;
 		}
 
 		return $return;

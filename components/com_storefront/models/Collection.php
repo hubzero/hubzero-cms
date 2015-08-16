@@ -30,11 +30,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+
 /**
  *
- * Storefront product class
+ * Storefront collection class
  *
  */
 class StorefrontModelCollection
@@ -45,7 +45,7 @@ class StorefrontModelCollection
 	/**
 	 * Constructor
 	 *
-	 * @param  void
+	 * @param  int		Optional: Collection ID
 	 * @return void
 	 */
 	public function __construct($cId = false)
@@ -55,20 +55,26 @@ class StorefrontModelCollection
 
 		$this->data = new stdClass();
 
-		if (isset($cId))
+		if (isset($cId) && $cId && is_numeric($cId))
 		{
-			$this->load($cId);
+			$this->setId($cId);
+			$this->load();
 		}
 	}
 
-	public function load($cId)
+	public function load()
 	{
-		$warehouse = new StorefrontModelWarehouse();
-		$cInfo = $warehouse->getCollectionInfo($cId, true);
+		$db = JFactory::getDBO();
+
+		$sql = "SELECT * FROM `#__storefront_collections` c
+ 				WHERE c.`cId` = " . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$cInfo = $db->loadObject();
 
 		if ($cInfo)
 		{
 			$this->setId($cInfo->cId);
+			$this->setAlias($cInfo->cAlias);
 			$this->setName($cInfo->cName);
 			$this->setActiveStatus($cInfo->cActive);
 			$this->setType($cInfo->cType);
@@ -156,7 +162,48 @@ class StorefrontModelCollection
 	 */
 	public function getName()
 	{
+		if (empty($this->data->name))
+		{
+			return false;
+		}
 		return $this->data->name;
+	}
+
+	/**
+	 * Set collection alias
+	 *
+	 * @param	string		collection alias
+	 * @return	bool		true
+	 */
+	public function setAlias($cAlias)
+	{
+		// Check if the alias is valid
+		$badAliasException = new Exception('Bad collection alias. Alias should be a non-empty non-numeric alphanumeric string.');
+		if (preg_match("/^[0-9a-zA-Z]+[\-_0-9a-zA-Z]*$/i", $cAlias))
+		{
+			if (is_numeric($cAlias))
+			{
+				throw $badAliasException;
+			}
+			$this->data->alias = $cAlias;
+			return true;
+		}
+		throw $badAliasException;
+	}
+
+	/**
+	 * Get collection alias
+	 *
+	 * @param	void
+	 * @return	string		collection alias
+	 */
+	public function getAlias()
+	{
+		if (empty($this->data->alias))
+		{
+			return false;
+		}
+		return $this->data->alias;
 	}
 
 	/**
@@ -216,7 +263,6 @@ class StorefrontModelCollection
 		{
 			throw new Exception(JText::_('No collection type set'));
 		}
-
 		return true;
 	}
 
@@ -230,7 +276,6 @@ class StorefrontModelCollection
 	{
 		$this->verify();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		return($warehouse->addCollection($this));
@@ -238,16 +283,103 @@ class StorefrontModelCollection
 
 	/**
 	 * Update collection info
+	 * TODO: remove it and use save()
 	 *
 	 * @param  void
 	 * @return object	info
 	 */
 	public function update()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$this->save();
+		return $this->getId();
+	}
 
-		return($warehouse->updateCollection($this));
+	/**
+	 * Save collection info
+	 *
+	 * @param  void
+	 * @return object	info
+	 */
+	public function save()
+	{
+		$db = JFactory::getDBO();
+		
+		$action = 'update';
+		if (!$this->getId())
+		{
+			$action = 'add';
+		}
+
+		if ($action == 'update')
+		{
+			$sql = "UPDATE `#__storefront_collections` SET ";
+		}
+		elseif ($action == 'add')
+		{
+			$sql = "INSERT INTO `#__storefront_collections` SET ";
+		}
+
+		if (!$alias = $db->quote($this->getAlias()))
+		{
+			$alias = 'NULL';
+		}
+
+		$sql .= "
+				`cName` = " . $db->quote($this->getName()) . ",
+				`cAlias` = " . $alias . ",
+				`cActive` = " . $db->quote($this->getActiveStatus()) . ",
+				`cType` = " . $db->quote($this->getType());
+
+		if ($action == 'update')
+		{
+			$sql .= " WHERE `cId` = " . $db->quote($this->getId());
+		}
+
+		$db->setQuery($sql);
+		if ($action == 'add')
+		{
+			// Set ID
+			$this->setId($db->insertid());
+		}
+		$db->query();
+	}
+
+	/**
+	 * Delete the collection
+	 *
+	 * @param	void
+	 * @return	bool	true on success, exception otherwise
+	 */
+	public function delete()
+	{
+		$db = JFactory::getDBO();
+		
+		// Delete the collection record
+		$sql = 'DELETE FROM `#__storefront_collections` WHERE `cId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
+
+		// Delete the product-collection relation
+		$sql = 'DELETE FROM `#__storefront_product_collections` WHERE `cId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
+
+		return true;
+	}
+
+	/* ******************************** Static functions ********************************** */
+
+	public static function findActiveCollectionByAlias($cAlias)
+	{
+		$db = JFactory::getDBO();
+
+		$sql = 'SELECT `cId` FROM `#__storefront_collections` c
+				WHERE c.`cAlias` = ' . $db->quote($cAlias) . "
+				AND c.`cActive` = 1";
+
+		$db->setQuery($sql);
+		$cId = $db->loadResult();
+		return $cId;
 	}
 
 }

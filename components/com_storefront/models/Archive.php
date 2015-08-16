@@ -89,8 +89,6 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 */
 	public function product($pId)
 	{
-		$warehouse = new StorefrontModelWarehouse();
-
 		if ($pId)
 		{
 			//$product = $warehouse->getProduct($pId, 'product', false);
@@ -497,17 +495,6 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		}
 	}
 
-	/**
-	 * Get collection
-	 */
-	public function collection($cId)
-	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Collection.php');
-		$collection = new StorefrontModelCollection($cId);
-
-		return $collection;
-	}
-
 	public function collections($rtrn='list', $filters=array())
 	{
 		if (!isset($filters['sort']))
@@ -671,34 +658,6 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		$warehouse = new StorefrontModelWarehouse();
 		$cInfo = $warehouse->getCollectionInfo($cId, true);
 		return $cInfo;
-	}
-
-	/**
-	 * Update category info
-	 *
-	 * @param      int 		$cId Category ID
-	 * @param      array 	$fields New info
-	 * @return     throws exception
-	 */
-	public function updateCategory($cId, $fields)
-	{
-		$warehouse = new StorefrontModelWarehouse();
-		$collection = $warehouse->getCollection($cId);
-
-		if (isset($fields['cName']))
-		{
-			$collection->setName($fields['cName']);
-		}
-		if (isset($fields['state']))
-		{
-			$collection->setActiveStatus($fields['state']);
-		}
-
-		$collection->setType('category');
-
-		$collection->update();
-
-		//print_r($fields);die;
 	}
 
 }

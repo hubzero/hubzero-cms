@@ -191,12 +191,14 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	/**
 	 * Check if collection exists
 	 *
-	 * @param  	int		collection ID
+	 * @param  	mixed	collection ID or alias
 	 * @return 	int 	cId on success, null if no match found
 	 */
 	public function collectionExists($cId, $showInactive = false)
 	{
-		$sql = "SELECT `cId` FROM `#__storefront_collections` c WHERE c.`cId` = " . $this->_db->quote($cId);
+		$sql = 'SELECT `cId` FROM `#__storefront_collections` c
+				WHERE c.`cId` = ' . $this->_db->quote($cId) . ' OR
+				c.`cAlias` = ' . $this->_db->quote($cId);
 		if (!$showInactive)
 		{
 			$sql .= " AND c.`cActive` = 1";
@@ -1443,7 +1445,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 						`cId` = " . $this->_db->quote($cId) . ",
 						`pId` = " . $this->_db->quote($pId) . "
 						ON DUPLICATE KEY UPDATE
-						`cllId` = (@collectionId := `cllId`),
+						`pcId` = (@collectionId := `pcId`),
 						`cId` = " . $this->_db->quote($cId) . ",
 						`pId` = " . $this->_db->quote($pId);
 
@@ -1465,7 +1467,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			$deleteSql .= ", " . $this->_db->quote($activeCllId);
 		}
 		$deleteSql .= ')';
-		$sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $this->_db->quote($pId) . " AND `cllId` NOT IN {$deleteSql}";
+		$sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $this->_db->quote($pId) . " AND `pcId` NOT IN {$deleteSql}";
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
@@ -1867,7 +1869,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 */
 	private function _getCollections($collectionType = 'category', $filters = false)
 	{
-		$sql = "SELECT DISTINCT c.`cId`, c.`cName`
+		$sql = "SELECT DISTINCT c.`cId`, c.`cAlias`, c.`cName`
 				FROM `#__storefront_collections` c
 				LEFT JOIN `#__storefront_product_collections` pc ON c.`cId` = pc.`cId`
 				LEFT JOIN `#__storefront_products` p ON p.`pId` = pc.`pId`

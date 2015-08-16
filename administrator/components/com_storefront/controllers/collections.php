@@ -30,9 +30,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Collection.php');
 
 /**
- * Controller class for knowledge base collections
+ * Controller class for storefront collections
  */
 class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 {
@@ -146,8 +147,8 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			// Load category
-			$this->view->row = $obj->collection($id);
+			// Load collection
+			$this->view->row = new StorefrontModelCollection($id);
 		}
 
 		// Set any errors
@@ -173,7 +174,7 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save a product
+	 * Save a collection
 	 *
 	 * @param   boolean  $redirect  Redirect the page after saving
 	 * @return  void
@@ -186,26 +187,34 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 
-		//print_r($fields); die;
+		// Get the collection
+		$collection = new StorefrontModelCollection($fields['cId']);
 
-		$obj = new StorefrontModelArchive();
+		try
+		{
+			if (isset($fields['cName']))
+			{
+				$collection->setName($fields['cName']);
+			}
+			if (isset($fields['state']))
+			{
+				$collection->setActiveStatus($fields['state']);
+			}
+			if (isset($fields['alias']))
+			{
+				$collection->setAlias($fields['alias']);
+			}
+			$collection->setType('category');
 
-		// Save product
-		try {
-			$obj->updateProduct($fields['pId'], $fields);
+			// Make sure there are no integrity issues
+			$this->checkIntegrity($collection);
+			$collection->save();
 		}
 		catch (Exception $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			// Get the product
-			$product = $obj->product($fields['pId']);
-			$this->editTask($product);
+			$this->editTask($collection);
 			return;
-		}
-
-		if (!isset($fields['access']))
-		{
-			//$row->set('access', JRequest::getInt('access', 0, 'post'));
 		}
 
 		if ($redirect)
@@ -213,15 +222,12 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_STOREFRONT_PRODUCT_SAVED')
+				JText::_('COM_STOREFRONT_COLLECTION_SAVED')
 			);
 			return;
 		}
 
-		// Get the product
-		$product = $obj->product($fields['pId']);
-
-		$this->editTask($product);
+		$this->editTask($collection);
 	}
 
 	/**
@@ -265,9 +271,9 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 				JRequest::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$cIds = JRequest::getInt('cId', 0);
+				$cIds = JRequest::getVar('cId', array(0));
 
-				// Make sure we have an ID to work with
+				// Make sure we have IDs to work with
 				if (empty($cIds))
 				{
 					$this->setRedirect(
@@ -285,14 +291,12 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 				if ($delete)
 				{
 					// Do the delete
-					$obj = new StorefrontModelArchive();
-
 					foreach ($cIds as $cId)
 					{
 						// Delete option group
 						try
 						{
-							$collection = $obj->collection($cId);
+							$collection = new StorefrontModelCollection($cId);
 							$collection->delete();
 						}
 						catch (Exception $e)
@@ -351,8 +355,6 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		//print_r($ids); die;
-
 		// Check for an ID
 		if (count($ids) < 1)
 		{
@@ -364,19 +366,22 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Update record(s)
-		$obj = new StorefrontModelArchive();
-
-		foreach ($ids as $pId)
+		foreach ($ids as $cId)
 		{
 			// Save category
 			try {
-				$obj->updateCategory($pId, array('state' => $state));
+				$collection = new StorefrontModelCollection($cId);
+				$collection->setActiveStatus($state);
+
+				// Make sure there are no integrity issues
+				$this->checkIntegrity($collection);
+				$collection->save();
 			}
 			catch (Exception $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				return;
+				//JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				//return;
+				$error = true;
 			}
 		}
 
@@ -394,10 +399,33 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 			break;
 		}
 
+		$type = 'message';
+
+		if (isset($error) && $error)
+		{
+			switch ($state)
+			{
+				case '1':
+					$action = 'published';
+					break;
+				case '0':
+					$action = 'unpublished';
+					break;
+			}
+
+			$message = 'Collection could not be ' . $action;
+			if (sizeof($ids) > 1)
+			{
+				$message = 'Some collection(s) could not be ' . $action;
+			}
+			$type = 'error';
+		}
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-			$message
+			$message,
+			$type
 		);
 	}
 
@@ -412,6 +440,30 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
+	}
+
+	private function checkIntegrity($collection)
+	{
+		// If the collection is not being published, no need to check for integrity
+		if (!$collection->getActiveStatus())
+		{
+			return true;
+		}
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
+		$integrityCheck = Integrity::collectionIntegrityCheck($collection);
+
+		if ($integrityCheck->status != 'ok')
+		{
+			$errorMessage = "Integrity check error:";
+			foreach ($integrityCheck->errors as $error)
+			{
+				$errorMessage .= '<br>' . $error;
+			}
+
+			throw new Exception($errorMessage);
+		}
+		return true;
 	}
 }
 

@@ -50,7 +50,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				echo '<li>';
 				echo '<a href="';
-				echo JRoute::_('index.php?option=' . $this->option . '/browse/' . $category->cId);
+
+				// Use alias if exists, otherwise use pId
+				$categoryId = $category->cId;
+				if (!empty($category->cAlias))
+				{
+					$categoryId = $category->cAlias;
+				}
+
+				echo JRoute::_('index.php?option=' . $this->option . '/browse/' . $categoryId);
 				echo '">' . $category->cName . '</a>';
 				echo '</li>';
 			}
