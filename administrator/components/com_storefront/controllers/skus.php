@@ -218,7 +218,6 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		//print_r($fields); die;
 
 		// Get SKU
 		$obj = new StorefrontModelArchive();
@@ -257,7 +256,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . JRequest::getInt('pId', 0),
-				JText::_('COM_STOREFRONT_PRODUCT_SAVED')
+				JText::_('COM_STOREFRONT_SKU_SAVED')
 			);
 			return;
 		}
@@ -422,8 +421,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 			}
 			catch (Exception $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				return;
+				$error = true;
 			}
 		}
 
@@ -441,10 +439,33 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 			break;
 		}
 
+		$type = 'message';
+
+		if (isset($error) && $error)
+		{
+			switch ($state)
+			{
+				case '1':
+					$action = 'published';
+					break;
+				case '0':
+					$action = 'unpublished';
+					break;
+			}
+
+			$message = 'SKU could not be ' . $action;
+			if (sizeof($ids) > 1)
+			{
+				$message = 'Some SKUs could not be ' . $action;
+			}
+			$type = 'error';
+		}
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId,
-			$message
+			$message,
+			$type
 		);
 	}
 

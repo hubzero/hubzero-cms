@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
 
 /**
  *
@@ -43,10 +42,6 @@ class StorefrontModelProduct
 {
 	// Product data container
 	var $data;
-	private $db;
-
-	// Product SKUs
-	var $skus = array();
 
 	/**
 	 * Constructor
@@ -60,7 +55,6 @@ class StorefrontModelProduct
 		JFactory::getLanguage()->load('com_storefront');
 
 		$this->data = new stdClass();
-		$this->db = JFactory::getDBO();
 
 		if (isset($pId) && is_numeric($pId) && $pId)
 		{
@@ -73,55 +67,39 @@ class StorefrontModelProduct
 	 * Load existing product
 	 *
 	 * @param	void
-	 * @return	bool		true on success, exception otherwise
+	 * @return	void		Throws exception if product cannot be loaded
 	 */
 	private function load()
 	{
+		$db = JFactory::getDBO();
+		$pId = $this->getId();
+
 		// Get all product info
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
-		$productInfo = $warehouse->getProductInfo($this->getId(), true);
+		$sql = "SELECT p.*, pt.ptName, pt.ptModel FROM `#__storefront_products` p
+ 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
+ 				WHERE p.`pId` = " . $db->quote($pId);
+		$db->setQuery($sql);
+		$productInfo = $db->loadObject();
 
-		if ($productInfo)
-		{
-			$this->setType($productInfo->ptId);
-			$this->setName($productInfo->pName);
-			$this->setDescription($productInfo->pDescription);
-			$this->setFeatures($productInfo->pFeatures);
-			$this->setTagline($productInfo->pTagline);
-			$this->setActiveStatus($productInfo->pActive);
-			$this->setAccessLevel($productInfo->access);
-			$this->setAllowMultiple($productInfo->pAllowMultiple);
-			$this->setImages($productInfo->images);
-
-			// Get collections
-			$collections = $warehouse->getProductCollections($this->getId());
-			foreach ($collections as $cId)
-			{
-				$this->addToCollection($cId);
-			}
-
-			// Get SKUs
-			$skus = $warehouse->getProductSkus($this->getId(), 'rows', false);
-
-			// Add SKUs to a product
-			foreach ($skus as $sId)
-			{
-				$sku = $warehouse->getSku($sId);
-				$this->addSku($sku);
-			}
-		}
-		else
+		if (empty($productInfo))
 		{
 			throw new Exception(JText::_('Error loading product'));
 		}
+		$this->setType($productInfo->ptId);
+		$this->setName($productInfo->pName);
+		$this->setDescription($productInfo->pDescription);
+		$this->setFeatures($productInfo->pFeatures);
+		$this->setTagline($productInfo->pTagline);
+		$this->setActiveStatus($productInfo->pActive);
+		$this->setAccessLevel($productInfo->access);
+		$this->setAllowMultiple($productInfo->pAllowMultiple);
 	}
 
 	/**
 	 * Set product type
 	 *
 	 * @param	string		Product type
-	 * @return	bool		true on success, exception otherwise
+	 * @return	void		Throws exception if the produt type is bad
 	 */
 	public function setType($productType)
 	{
@@ -161,17 +139,8 @@ class StorefrontModelProduct
 		return $this->data->type;
 	}
 
-	/**
-	 * Add product to collection
-	 *
-	 * @param	int		collection ID
-	 * @return	bool	true
-	 */
-	public function addToCollection($cId)
-	{
-		$this->data->collections[] = $cId;
-		return true;
-	}
+
+	/* ****************************** Collections ******************************* */
 
 	/**
 	 * Get product collections
@@ -181,9 +150,20 @@ class StorefrontModelProduct
 	 */
 	public function getCollections()
 	{
-		if (empty($this->data->collections))
+		if (!isset($this->data->collections))
 		{
-			return array();
+			if ($this->getId())
+			{
+				$db = JFactory::getDBO();
+				$sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $db->quote($this->getId());
+				$db->setQuery($sql);
+				$collections = $db->loadResultArray();
+				$this->setCollections($collections);
+			}
+			else
+			{
+				return array();
+			}
 		}
 		return $this->data->collections;
 	}
@@ -196,29 +176,88 @@ class StorefrontModelProduct
 	 */
 	public function setCollections($collections)
 	{
-		// Reset old collections
-		$this->data->collections = array();
-
-		foreach ($collections as $cId)
-		{
-			$this->addToCollection($cId);
-		}
-	}
-
-	public function addSku($sku)
-	{
-		if (!($sku instanceof StorefrontModelSku))
-		{
-			throw new Exception(JText::_('Bad SKU. Unable to add.'));
-		}
-
-		$sku->verify();
-
-		$this->skus[] = $sku;
+		$this->data->collections = array_unique($collections);
 	}
 
 	/**
-	 * Sets a new SKU for the product, used by single SKU products
+	 * Add product to collection
+	 *
+	 * @param	int		collection ID
+	 * @return	bool	true
+	 */
+	public function addToCollection($cId)
+	{
+		$collections = $this->getCollections();
+		$collections[] = $cId;
+		$this->setCollections($collections);
+		return true;
+	}
+
+
+	/* ****************************** SKUs ******************************* */
+
+	/**
+	 * Get product skus
+	 *
+	 * @param	void
+	 * @return	array		product SKUs
+	 */
+	public function getSkus()
+	{
+		if (!isset($this->skus))
+		{
+			if ($this->getId())
+			{
+				$db = JFactory::getDBO();
+				$sql = "SELECT `sId` FROM `#__storefront_skus` WHERE `pId` = " . $db->quote($this->getId());
+				$db->setQuery($sql);
+				$db->execute();
+
+				$skuIds = $db->loadResultArray();
+				$skus = array();
+
+				foreach ($skuIds as $sId)
+				{
+					$sku = new StorefrontModelSku($sId);
+					$skus[] = $sku;
+				}
+				$this->setSkus($skus, false);
+			}
+			else
+			{
+				return array();
+			}
+		}
+		return $this->skus;
+	}
+
+	// Removes all old SKUs sets given SKUs
+	private function setSkus($skus, $deleteOld = true)
+	{
+		// Delete all skus that are not part of the new SKUs
+		if ($deleteOld)
+		{
+			$newSkuIds = array();
+			foreach ($skus as $sku)
+			{
+				$newSkuIds[] = $sku->getId();
+				$sku->setProductId($this->getId());
+			}
+
+			$oldSkus = $this->getSkus();
+			foreach ($oldSkus as $oldSku)
+			{
+				if (!in_array($oldSku->getId(), $newSkuIds))
+				{
+					$oldSku->delete();
+				}
+			}
+		}
+		$this->skus = $skus;
+	}
+
+	/**
+	 * Sets a new SKU for the product, used by single SKU products, removes all other SKUs from the product
 	 *
 	 * @param	StorefrontModelSku
 	 * @return	void
@@ -230,19 +269,23 @@ class StorefrontModelProduct
 			throw new Exception(JText::_('Bad SKU. Unable to add.'));
 		}
 
-		// Overwrite the existing SKU(s)
-		$this->skus = array($sku);
+		$this->setSkus(array($sku));
 	}
 
-	/**
-	 * Get product skus
-	 *
-	 * @param	void
-	 * @return	array		product SKUs
-	 */
-	public function getSkus()
+	public function addSku($sku)
 	{
-		return $this->skus;
+		if (!($sku instanceof StorefrontModelSku))
+		{
+			throw new Exception(JText::_('Bad SKU. Unable to add.'));
+		}
+
+		// Set SKU product ID to this product
+		$sku->setProductId($this->getId());
+		$sku->save();
+
+		$skus = $this->getSkus();
+		$skus[] = $sku;
+		$this->setSkus($skus);
 	}
 
 	/**
@@ -312,7 +355,7 @@ class StorefrontModelProduct
 	}
 
 	/**
-	 * Get product features
+	 * Get product description
 	 *
 	 * @param	void
 	 * @return	string		Product description
@@ -327,7 +370,7 @@ class StorefrontModelProduct
 	}
 
 	/**
-	 * Set product Features
+	 * Set product features
 	 *
 	 * @param	string		Product Features
 	 * @return	bool		true
@@ -353,6 +396,51 @@ class StorefrontModelProduct
 		return $this->data->features;
 	}
 
+	/* ****************************** Images ******************************* */
+
+	/**
+	 * Get product images
+	 *
+	 * @param	void
+	 * @return	array		Product images
+	 */
+	public function getImages($forceReload = false)
+	{
+		if (!isset($this->data->images) || $forceReload)
+		{
+			if ($this->getId())
+			{
+				// Get product image(s)
+				$db = JFactory::getDBO();
+				$sql = "SELECT imgId, imgName FROM `#__storefront_images`
+				WHERE `imgObject` = 'product'
+				AND `imgObjectId` = " . $db->quote($this->getId()) . "
+				ORDER BY `imgPrimary` DESC";
+				$db->setQuery($sql);
+				$images = $db->loadObjectList();
+				$this->setImages($images);
+			}
+			else
+			{
+				return array();
+			}
+		}
+		return $this->data->images;
+	}
+
+	/**
+	 * Get primary image
+	 *
+	 * @param	void
+	 * @return	obj		image info
+	 */
+	public function getImage()
+	{
+		$images = $this->getImages();
+
+		return (empty($images) ? NULL : $images[0]);
+	}
+
 	/**
 	 * Set product images
 	 *
@@ -369,7 +457,7 @@ class StorefrontModelProduct
 	{
 		$image = new stdClass();
 		$image->imgName = $img;
-		$this->data->images = array($image);
+		$this->setImages(array($image));
 		return true;
 	}
 
@@ -381,50 +469,29 @@ class StorefrontModelProduct
 	 */
 	public function addImages($img)
 	{
-		$this->data->images = array_merge($this->data->images, $img);
+		$this->setImages(array_merge($this->getImages(), $img));
 		return true;
 	}
 
 	/**
-	 * Add primary image
+	 * Add primary image (the first image in the array)
 	 *
 	 * @param	string		Product image name
 	 * @return	bool		true
 	 */
 	public function addImage($img)
 	{
-		if (!empty($this->data->images[0]))
+		$images = $this->getImages();
+		if (!empty($images[0]))
 		{
-			$this->data->images[] = $this->data->images[0];
+			// Move the current primary image to the end
+			$images[] = $images[0];
 		}
-		$image = new stdClass();
-		$image->imgName = $img;
-		$this->data->images[0] = $image;
-		return true;
-	}
-
-	/**
-	 * Get product image
-	 *
-	 * @param	void
-	 * @return	array		Product image
-	 */
-	public function getImages()
-	{
-		if (empty($this->data->images))
-		{
-			return NULL;
-		}
-		return $this->data->images;
-	}
-
-	public function getImage()
-	{
-		if (empty($this->data->images))
-		{
-			return NULL;
-		}
-		return $this->data->images[0];
+		$primaryImage = new stdClass();
+		$primaryImage->imgName = $img;
+		// Set the new image as primary
+		$images[0] = $primaryImage;
+		return $this->setImages($images);
 	}
 
 	/**
@@ -435,12 +502,13 @@ class StorefrontModelProduct
 	 */
 	public function removeImage($imgId)
 	{
-		if (empty($this->data->images))
+		$images = $this->getImages();
+		if (empty($images))
 		{
 			return false;
 		}
 
-		foreach ($this->data->images as $key => $img)
+		foreach ($images as $key => $img)
 		{
 			if ($imgId == $img->imgId)
 			{
@@ -562,6 +630,52 @@ class StorefrontModelProduct
 		return true;
 	}
 
+	/* ****************************** Option groups ******************************* */
+
+	public function getOptionGroups()
+	{
+		if (!isset($this->data->optionGroups))
+		{
+			if ($this->getId())
+			{
+				$db = JFactory::getDBO();
+
+				$sql = "SELECT ogId
+						FROM `#__storefront_product_option_groups` pog
+						WHERE pId = " . $this->getId();
+
+				$db->setQuery($sql);
+				$db->execute();
+				$res = $db->loadColumn();
+				$this->setOptionGroups($res);
+			}
+			else {
+				return array();
+			}
+		}
+		return $this->data->optionGroups;
+	}
+
+	public function setOptionGroups($ogIds)
+	{
+		$this->data->optionGroups = array_unique($ogIds);
+		return true;
+	}
+
+	/**
+	 * Add option group
+	 *
+	 * @param	int		option group ID
+	 * @return	bool	true
+	 */
+	public function addOptionGroup($ogId)
+	{
+		$optionGroups = $this->getOptionGroups();
+		$optionGroups[] = $ogId;
+		$this->setOptionGroups($optionGroups);
+		return true;
+	}
+
 	/**
 	 * Get product active status
 	 *
@@ -589,21 +703,12 @@ class StorefrontModelProduct
 		{
 			throw new Exception(JText::_('No product name set'));
 		}
-		if (empty($this->data->description))
-		{
-			//throw new Exception(JText::_('No product description set'));
-		}
-
-		foreach ($this->skus as $sku)
-		{
-			$sku->verify();
-		}
 
 		return true;
 	}
 
 	/**
-	 * Add product to the warehouse
+	 * Add product to the warehouse -- TODO: seems like something that needs to go soon
 	 *
 	 * @param  void
 	 * @return object	info
@@ -621,7 +726,7 @@ class StorefrontModelProduct
 	}
 
 	/**
-	 * Update product info
+	 * Update product info -- TODO: phase it out -- use save() instead
 	 *
 	 * @param  void
 	 * @return object	info
@@ -641,6 +746,150 @@ class StorefrontModelProduct
 	}
 
 	/**
+	 * Save product
+	 *
+	 * @param  	void
+	 * @return 	bool
+	 */
+	public function save()
+	{
+		$this->verify();
+
+		$pId = $this->getId();
+
+		if ($pId)
+		{
+			$sql = "UPDATE `#__storefront_products` SET ";
+		}
+		else
+		{
+			$sql = "INSERT INTO `#__storefront_products` SET ";
+		}
+
+		$db = JFactory::getDBO();
+
+		$sql .= "
+				`ptId` = " . $db->quote($this->getType()) . ",
+				`pName` = " . $db->quote($this->getName()) . ",
+				`pTagline` = " . $db->quote($this->getTagline()) . ",
+				`pDescription` = " . $db->quote($this->getDescription()) . ",
+				`pFeatures` = " . $db->quote($this->getFeatures()) . ",
+				`pAllowMultiple` = " . $db->quote($this->getAllowMultiple()) . ",
+				`pActive` = " . $db->quote($this->getActiveStatus()) . ",
+				`access` = " . $db->quote($this->getAccessLevel());
+
+
+		// Set pId if needed if adding new product
+		if (!$pId)
+		{
+			$sql .= ",
+				`pId` = " . $db->quote($pId);
+		}
+		else
+		{
+			$sql .= " WHERE `pId` = " . $db->quote($pId);
+		}
+
+		$db->setQuery($sql);
+		//echo '<br>'; echo $db->_sql; die;
+		$db->query();
+		if (!$pId)
+		{
+			$pId = $db->insertid();
+			$this->setId($pId);
+		}
+
+		// ### Do collections
+		$collections = $this->getCollections();
+
+		$affectedCollectionIds = array();
+		if (!empty($collections))
+		{
+			foreach ($collections as $cId)
+			{
+				$sql = "SET @collectionId := 0";
+				$db->setQuery($sql);
+				$db->query();
+
+				$sql = "INSERT INTO `#__storefront_product_collections` SET
+						`cId` = " . $db->quote($cId) . ",
+						`pId` = " . $db->quote($pId) . "
+						ON DUPLICATE KEY UPDATE
+						`cllId` = (@collectionId := `cllId`),
+						`cId` = " . $db->quote($cId) . ",
+						`pId` = " . $db->quote($pId);
+
+				$db->setQuery($sql);
+				$db->query();
+
+				$sql = "SELECT IF(@collectionId = 0, LAST_INSERT_ID(), @collectionId)";
+				$db->setQuery($sql);
+				$db->query();
+
+				$affectedCollectionIds[] = $db->loadResult();
+			}
+		}
+
+		// Delete unused collections
+		$deleteSql = '(0';
+		foreach ($affectedCollectionIds as $activeCllId)
+		{
+			$deleteSql .= ", " . $db->quote($activeCllId);
+		}
+		$deleteSql .= ')';
+		$sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $db->quote($pId) . " AND `cllId` NOT IN {$deleteSql}";
+		$db->setQuery($sql);
+		$db->query();
+
+		// ### Do images
+		$images = $this->getImages();
+
+		// First delete all old references
+		$sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'product' AND `imgObjectId` = " . $db->quote($pId);
+		$db->setQuery($sql);
+		$db->query();
+
+		if (!empty($images))
+		{
+			$firstImage = true;
+			foreach ($images as $key => $img)
+			{
+				$primary = 0;
+				if ($firstImage)
+				{
+					$primary = 1;
+					$firstImage = false;
+				}
+				$sql = "INSERT INTO `#__storefront_images` SET
+						`imgName` = " . $db->quote($img->imgName) . ",
+						`imgObject` = 'product',
+						`imgObjectId` = " . $db->quote($pId) . ",
+						`imgPrimary` = " . $primary;
+				$db->setQuery($sql);
+				$db->query();
+			}
+
+			// Refresh object's images info to get the latest image IDs
+			$this->getImages(true);
+		}
+
+		// ### Do option groups
+		// erase all old option groups
+		$sql = "DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = " . $db->quote($pId);
+		$db->setQuery($sql);
+		$db->query();
+
+		foreach ($this->getOptionGroups() as $ogId) {
+			$sql = "INSERT INTO `#__storefront_product_option_groups` (pId, ogId)
+					VALUES (" . $db->quote($pId) . ", " . $db->quote($ogId) . ")";
+			$db->setQuery($sql);
+			$db->execute();
+		}
+
+		return true;
+	}
+
+	/**
 	 * Delete the product
 	 *
 	 * @param	void
@@ -648,13 +897,13 @@ class StorefrontModelProduct
 	 */
 	public function delete()
 	{
-		$this->verify();
+		$db = JFactory::getDBO();
 
 		// Delete product record
-		$sql = 'DELETE FROM `#__storefront_products` WHERE `pId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		//print_r($this->db->replacePrefix($this->db->getQuery()));
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_products` WHERE `pId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		//print_r($db->replacePrefix($db->getQuery()));
+		$db->query();
 
 		// Delete product-related files (product image)
 		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $this->getId();
@@ -688,19 +937,19 @@ class StorefrontModelProduct
 		}
 
 		// Delete product-collection relations
-		$sql = 'DELETE FROM `#__storefront_product_collections` WHERE `pId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_product_collections` WHERE `pId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
 
 		// Delete product meta
-		$sql = 'DELETE FROM `#__storefront_product_meta` WHERE `pId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_product_meta` WHERE `pId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
 
 		// Delete prduct-option groups relations
-		$sql = 'DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = ' . $this->db->quote($this->getId());
-		$this->db->setQuery($sql);
-		$this->db->query();
+		$sql = 'DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = ' . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
 
 		//
 	}
@@ -752,24 +1001,9 @@ class StorefrontModelProduct
 							VALUES (" . $db->quote($key) . ", " . $db->quote($val) . ", " . $db->quote($pId) . ")
 	  						ON DUPLICATE KEY UPDATE `pmValue` = " . $db->quote($val);
 				$db->setQuery($sql);
-				//print_r($db->replacePrefix($db->getQuery()));
 				$db->query();
 			}
 		}
-	}
-
-	public static function optionGroups($pId)
-	{
-		$db = JFactory::getDBO();
-
-		$sql = "SELECT ogId
-				FROM `#__storefront_product_option_groups` pog
-				WHERE pId = {$pId}";
-
-		$db->setQuery($sql);
-		$db->execute();
-		$optionGroups = $db->loadColumn();
-		return $optionGroups;
 	}
 
 }

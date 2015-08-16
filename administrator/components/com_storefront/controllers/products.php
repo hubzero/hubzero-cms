@@ -160,11 +160,11 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		// Get types
 		$this->view->types = $obj->getProductTypes();
 
-		// Get active collections
-		$this->view->collections = $obj->collections('list', array('active' => 1, 'sort' => 'cType'));
+		// Get collections
+		$this->view->collections = $obj->collections('list', array('sort' => 'cType'));
 
-		// Get all active option groups
-		$this->view->optionGroups = $obj->optionGroups('list', array('active' => 1, 'sort' => 'ogName'));
+		// Get all option groups
+		$this->view->optionGroups = $obj->optionGroups('list', array('sort' => 'ogName'));
 
 		if (is_object($row))
 		{
@@ -187,7 +187,7 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		}
 
 		// Get product active groups
-		$this->view->productOptionGroups = $obj->getProductOptionGroups($id);
+		$this->view->productOptionGroups = $this->view->row->getOptionGroups();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -219,17 +219,13 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 	 * @param   boolean  $redirect  Redirect the page after saving
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-
-		if (!isset($fields['collections'])) {
-			$fields['collections'] = array();
-		}
 
 		$obj = new StorefrontModelArchive();
 
@@ -246,11 +242,29 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Save option groups
-		if (!empty($fields['optionGroups']))
+		// when saving product need to check all active product SKUs and disable those that do not verify anymore
+		$skus = $product->getSkus();
+		$skusDisabled = false;
+		foreach ($skus as $sku)
 		{
-			$obj->saveProductOptionGroups($fields['pId'], $fields['optionGroups']);
+			if($sku->getActiveStatus())
+			{
+				try {
+					$sku->verify();
+				}
+				catch(Exception $e) {
+					$sku->unpublish();
+					$skusDisabled = true;
+				}
+			}
 		}
+
+		$disabledSkuMessage = 'Some product SKUs were unpublished because of the recent product update. Check each SKU to fix the issues.';
+		if ($skusDisabled && !$redirect)
+		{
+			JFactory::getApplication()->enqueueMessage($disabledSkuMessage, 'warning');
+		}
+
 		if ($redirect)
 		{
 			// Redirect
@@ -258,6 +272,11 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
 				JText::_('COM_STOREFRONT_PRODUCT_SAVED')
 			);
+
+			if ($skusDisabled)
+			{
+				JFactory::getApplication()->enqueueMessage($disabledSkuMessage, 'warning');
+			}
 			return;
 		}
 

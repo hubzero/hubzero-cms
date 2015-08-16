@@ -185,7 +185,7 @@ class StorefrontControllerImages extends \Hubzero\Component\AdminController
 				return;
 			break;
 		}
-		if (!$product->update())
+		if (!$product->save())
 		{
 			echo json_encode(array('error' => 'Error updating product'));
 			return;

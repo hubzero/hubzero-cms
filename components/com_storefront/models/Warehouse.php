@@ -760,11 +760,14 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
 	{
 		// Find the number of options required for this product
-		//$sql = "SELECT COUNT(pog.`ogId`) FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '{$pId}'";
+		$sql = "SELECT COUNT(pog.`ogId`) AS cnt FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '{$pId}'";
+
+		/*
 		$sql = "SELECT COUNT(s.`sId`) AS cnt FROM `#__storefront_skus` s
 				INNER JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
 				WHERE s.`pId` = '{$pId}' AND s.`sActive` > 0
 				GROUP BY s.`sId` ORDER BY cnt DESC LIMIT 1";
+		*/
 		$this->_db->setQuery($sql);
 		$this->_db->execute();
 
@@ -1167,7 +1170,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			$sku = $this->getSku($sId, $productType);
 			$product->addSku($sku);
 		}
-		$product->verify();
+		//$product->verify();
 
 		return $product;
 	}

@@ -41,14 +41,24 @@ class Integrity
 		$return->status = 'ok';
 		$return->errors = array();
 
+		$options = $sku->getOptions();
+
 		// Check if there are other SKUs that have the same set of options
 		$warehouse = new StorefrontModelWarehouse();
-		$skuMatch = $warehouse->mapSku($sku->getProductId(), $sku->getOptions(), false);
+		$skuMatch = $warehouse->mapSku($sku->getProductId(), $options, false);
 
 		if ($skuMatch && $skuMatch != $sku->getId())
 		{
 			$return->status = 'error';
-			$return->errors[] = 'There is already a SKU with the identical set of options. Each SKU must have a unique set of options.';
+			// If there are no options, no multiple SKUs can be published
+			if (empty($options))
+			{
+				$return->errors[] = 'There is already another SKU published for this product. A product without product options can only have one SKU.';
+			}
+			else
+			{
+				$return->errors[] = 'There is already a SKU with the identical set of options. Each SKU must have a unique set of options.';
+			}
 		}
 
 		return $return;

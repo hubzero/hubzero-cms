@@ -93,11 +93,13 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 
 		if ($pId)
 		{
-			$product = $warehouse->getProduct($pId, 'product', false);
+			//$product = $warehouse->getProduct($pId, 'product', false);
 		}
 		else {
-			$product = $warehouse->newProduct();
+			//$product = $warehouse->newProduct();
 		}
+
+		$product = new StorefrontModelProduct($pId);
 
 		return $product;
 	}
@@ -107,18 +109,16 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 *
 	 * @param      int 		$pId Product ID
 	 * @param      array 	$fields New info
-	 * @return     throws exception
+	 * @return     Product
 	 */
 	public function updateProduct($pId, $fields)
 	{
-		$warehouse = new StorefrontModelWarehouse();
-
-		if (!empty($pId))
+		if (!empty($pId) && $pId)
 		{
-			$product = $warehouse->getProduct($pId);
+			$product = new StorefrontModelProduct($pId);
 		}
 		else {
-			$product = $warehouse->newProduct();
+			$product = new StorefrontModelProduct();
 		}
 
 		if (isset($fields['pName']))
@@ -151,20 +151,19 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		{
 			$product->setAllowMultiple($fields['pAllowMultiple']);
 		}
-		if (isset($fields['collections']))
-		{
-			$product->setCollections($fields['collections']);
-		}
 
-		if (!empty($pId))
-		{
-			$product->update();
+		if (!isset($fields['collections'])) {
+			$fields['collections'] = array();
 		}
-		else
-		{
-			$product->add();
-		}
+		$product->setCollections($fields['collections']);
 
+		if (!isset($fields['optionGroups'])) {
+			$fields['optionGroups'] = array();
+		}
+		$product->setOptionGroups($fields['optionGroups']);
+
+
+		$product->save();
 		return $product;
 	}
 
@@ -301,8 +300,8 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 */
 	public function updateSku($sku, $fields)
 	{
+		$checkIntegrity = true;
 		//print_r($fields); die;
-
 		if (isset($fields['sPrice']))
 		{
 			$sku->setPrice($fields['sPrice']);
@@ -326,11 +325,17 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		if (isset($fields['state']))
 		{
 			$sku->setActiveStatus($fields['state']);
+			if (!$fields['state'])
+			{
+				$checkIntegrity = false;
+			}
 		}
-		if (isset($fields['options']))
+
+		if (!isset($fields['options']))
 		{
-			$sku->setOptions($fields['options']);
+			$fields['options'] = array();
 		}
+		$sku->setOptions($fields['options']);
 
 		// Meta
 		if (isset($fields['meta']))
@@ -344,19 +349,20 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		//print_r($sku); die;
 		//throw new Exception('wow');
 
-		// Before saving SKU, check the for possible conflicts (integrity check)
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
-		$integrityCheck = Integrity::skuIntegrityCheck($sku);
-
-		if ($integrityCheck->status != 'ok')
+		// Before saving SKU, check the for possible conflicts (integrity check) except when the SKU gets unpublished
+		if ($checkIntegrity)
 		{
-			$errorMessage = "Integrity check error:";
-			foreach ($integrityCheck->errors as $error)
-			{
-				$errorMessage .= '<br>' . $error;
-			}
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
+			$integrityCheck = Integrity::skuIntegrityCheck($sku);
 
-			throw new Exception($errorMessage);
+			if($integrityCheck->status != 'ok') {
+				$errorMessage = "Integrity check error:";
+				foreach($integrityCheck->errors as $error) {
+					$errorMessage .= '<br>' . $error;
+				}
+
+				throw new Exception($errorMessage);
+			}
 		}
 
 		$sku->save();
@@ -610,44 +616,15 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		return $optionGroup;
 	}
 
-	public function getProductOptionGroups($pId)
-	{
-		$sql = "SELECT ogId
-				FROM `#__storefront_product_option_groups` pog
-				WHERE pId = {$pId}";
-
-		$this->_db->setQuery($sql);
-		$this->_db->execute();
-		$res = $this->_db->loadColumn();
-		//print_r($res); die;
-
-		return $res;
-	}
-
-	public function saveProductOptionGroups($pId, $optionGroups)
-	{
-		// erase all old option groups
-		$sql = "DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = " . $this->_db->quote($pId);
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-
-		foreach ($optionGroups as $ogId)
-		{
-			$sql = "INSERT INTO `#__storefront_product_option_groups` (pId, ogId)
-					VALUES (" . $this->_db->quote($pId) . ", " . $this->_db->quote($ogId) . ")";
-
-			$this->_db->setQuery($sql);
-			$this->_db->execute();
-		}
-	}
-
 	public function getProductOptions($pId)
 	{
 		$sql = "SELECT * FROM
 				`#__storefront_product_option_groups` pog
 				JOIN `#__storefront_option_groups` og on pog.ogId = og.ogId
 				JOIN `#__storefront_options` o on o.ogId = og.ogId
-				WHERE pog.pId = {$pId} AND (oActive IS NULL OR oActive = 1) AND (ogActive IS NULL OR ogActive = 1) ORDER BY og.ogName, o.oName";
+				WHERE pog.pId = {$pId}
+				-- AND (ogActive IS NULL OR ogActive = 1)
+				ORDER BY og.ogName, o.oName";
 
 
 		$this->_db->setQuery($sql);
@@ -672,6 +649,7 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 			$opt = new stdClass();
 			$opt->oId = $option->oId;
 			$opt->oName = $option->oName;
+			$opt->oActive = $option->oActive;
 
 			$optionGroups[$og]->options[] = $opt;
 		}
