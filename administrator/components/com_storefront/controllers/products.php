@@ -247,12 +247,14 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		$skusDisabled = false;
 		foreach ($skus as $sku)
 		{
-			if($sku->getActiveStatus())
+			if ($sku->getActiveStatus())
 			{
-				try {
+				try
+				{
 					$sku->verify();
 				}
-				catch(Exception $e) {
+				catch (Exception $e)
+				{
 					$sku->unpublish();
 					$skusDisabled = true;
 				}

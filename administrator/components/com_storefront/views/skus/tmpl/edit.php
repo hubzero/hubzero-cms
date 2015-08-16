@@ -124,10 +124,10 @@ function submitbutton(pressbutton)
 					<?php
 					foreach ($optionGroup->options as $option)
 					{
-						if($option->oActive || in_array($option->oId, $this->options))
+						if ($option->oActive || in_array($option->oId, $this->options))
 						{
 						?>
-						<option value="<?php echo $option->oId; ?>"<?php if(in_array($option->oId, $this->options)) {
+						<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) {
 							echo ' selected="selected"';
 						} ?>><?php echo $option->oName ?></option>
 						<?php

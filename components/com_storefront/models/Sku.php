@@ -51,7 +51,6 @@ class StorefrontModelSku
 	public function __construct($sId = false)
 	{
 		$this->data = new stdClass();
-		
 		if (isset($sId) && is_numeric($sId) && $sId)
 		{
 			$this->load($sId);

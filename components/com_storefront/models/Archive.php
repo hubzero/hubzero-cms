@@ -257,7 +257,8 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 
 					// Strip to just info
 					$resultsPlain = array();
-					foreach ($results as $k => $res) {
+					foreach ($results as $k => $res)
+					{
 						$resultsPlain[] = $res['info'];
 					}
 					$results = $resultsPlain;
@@ -355,9 +356,11 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
 			$integrityCheck = Integrity::skuIntegrityCheck($sku);
 
-			if($integrityCheck->status != 'ok') {
+			if ($integrityCheck->status != 'ok')
+			{
 				$errorMessage = "Integrity check error:";
-				foreach($integrityCheck->errors as $error) {
+				foreach ($integrityCheck->errors as $error)
+				{
 					$errorMessage .= '<br>' . $error;
 				}
 

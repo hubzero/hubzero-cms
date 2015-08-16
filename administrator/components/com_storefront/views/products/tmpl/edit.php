@@ -216,7 +216,7 @@ function submitbutton(pressbutton)
 							?>
 							<li>
 								<input type="checkbox"
-									   name="fields[optionGroups][]" <?php if(in_array($og->ogId, $this->productOptionGroups)) {
+									   name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) {
 									echo 'checked';
 								} ?> value="<?php echo $og->ogId; ?>"
 									   id="optionGroup_<?php echo $og->ogId; ?>">
