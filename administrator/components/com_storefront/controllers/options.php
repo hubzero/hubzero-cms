@@ -211,12 +211,12 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		//print_r($fields); die;
 
 		$obj = new StorefrontModelArchive();
 		// Save option
 		try {
 			$option = $obj->updateOption($fields['oId'], $fields);
+			//print_r($option); die;
 		}
 		catch (Exception $e)
 		{

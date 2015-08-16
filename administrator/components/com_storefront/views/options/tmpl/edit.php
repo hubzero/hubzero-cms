@@ -74,40 +74,6 @@ function submitbutton(pressbutton)
 
 		</fieldset>
 
-		<?php
-		if (!empty($this->allOptions))
-		{
-		?>
-		<fieldset class="adminform">
-			<legend><span><?php echo 'Product options'; ?></span></legend>
-
-			<?php
-			foreach ($this->allOptions as $optionGroup)
-			{
-			?>
-				<div class="input-wrap">
-					<label for="field-options-<?php echo $optionGroup->ogId; ?>"><?php echo $optionGroup->ogName; ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-
-					<select name="fields[options][]" id="field-options-<?php echo $optionGroup->ogId; ?>">
-						<option value="">-- please select an option --</option>
-					<?php
-					foreach ($optionGroup->options as $option)
-					{
-					?>
-						<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) { echo ' selected="selected"'; } ?>><?php echo $option->oName ?></option>
-					<?php
-					}
-					?>
-					</select>
-				</div>
-			<?php
-			}
-			?>
-		</fieldset>
-		<?php
-		}
-		?>
-
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
