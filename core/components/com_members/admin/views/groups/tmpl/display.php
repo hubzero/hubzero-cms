@@ -100,27 +100,39 @@ defined('_HZEXEC_') or die();
 					{
 						?>
 						<tr>
-							<td class="paramlist_key"><a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent"><?php echo $group->description . ' (' . $group->cn . ')'; ?></a></td>
-							<td class="paramlist_value"><?php
-							$seen[] = $group->cn;
+							<td>
+								<a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent">
+									<?php echo $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')'; ?>
+								</a>
+							</td>
+							<td>
+								<?php
+								$seen[] = $group->cn;
 
-							if ($group->registered)
-							{
-								$status = Lang::txt('COM_MEMBERS_GROUPS_APPLICANT');
-								if ($group->regconfirmed)
+								if ($group->registered)
 								{
-									$status = Lang::txt('COM_MEMBERS_GROUPS_MEMBER');
-									if ($group->manager)
+									$status = Lang::txt('COM_MEMBERS_GROUPS_APPLICANT');
+									if ($group->regconfirmed)
 									{
-										$status = Lang::txt('COM_MEMBERS_GROUPS_MANAGER');
+										$status = Lang::txt('COM_MEMBERS_GROUPS_MEMBER');
+										if ($group->manager)
+										{
+											$status = Lang::txt('COM_MEMBERS_GROUPS_MANAGER');
+										}
 									}
 								}
-							}
-							else
-							{
-								$status = Lang::txt('COM_MEMBERS_GROUPS_INVITEE');
-							}
-							echo $status; ?></td>
+								else
+								{
+									$status = Lang::txt('COM_MEMBERS_GROUPS_INVITEE');
+								}
+								echo $status;
+								?>
+							</td>
+							<td>
+								<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1'); ?>">
+									<span><?php echo Lang::txt('COM_MEMBERS_GROUPS_REMOVE'); ?></span>
+								</a>
+							</td>
 						</tr>
 						<?php
 					}

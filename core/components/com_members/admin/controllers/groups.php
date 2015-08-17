@@ -31,8 +31,10 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\User\Group;
 use Request;
 use Lang;
+use User;
 
 /**
  * Manage a member's group memberships
@@ -77,7 +79,7 @@ class Groups extends AdminController
 		}
 
 		// Load the group page
-		$group = \Hubzero\User\Group::getInstance($gid);
+		$group = Group::getInstance($gid);
 
 		// Add the user to the group table
 		$group->add($tbl, array($id));
@@ -87,6 +89,64 @@ class Groups extends AdminController
 			$group->add('members', array($id));
 		}
 
+		$group->update();
+
+		// Push through to the groups view
+		$this->displayTask($id);
+	}
+
+	/**
+	 * Remove member(s) from a group
+	 * Disallows removal of last manager (group must have at least one)
+	 *
+	 * @return void
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$gid = Request::getVar('gid', '');
+
+		// Load the group page
+		$group = new Group();
+		$group->read($gid);
+
+		// Get all the group's managers
+		$managers = $group->get('managers');
+
+		// Get all the group's members
+		$members = $group->get('members');
+
+		$users_mem = array();
+		$users_man = array();
+
+		// Incoming array of users to remove
+		$id = Request::getInt('id', 0);
+
+		// Ensure we found an account
+		if (!$id)
+		{
+			\App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
+		}
+
+		if (in_array($id, $members))
+		{
+			$users_mem[] = $id;
+		}
+
+		if (in_array($id, $managers))
+		{
+			$users_man[] = $id;
+		}
+
+		// Remove users from members list
+		$group->remove('members', $users_mem);
+
+		// Remove users from managers list
+		$group->remove('managers', $users_man);
+
+		// Save changes
 		$group->update();
 
 		// Push through to the groups view
