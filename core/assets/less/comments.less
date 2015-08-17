@@ -33,10 +33,10 @@
 				padding: 0;
 
 				li {
-					padding-left: 70px;
+					padding-left: 30px;
 				}
 			}
-			
+
 			ul:not(.comments), ol:not(.comments) {
 				li {
 					padding-left: 0;
@@ -48,11 +48,9 @@
 		.comment-options {
 			color: @white;
 			font-size: 90%;
-			//visibility: hidden;
 
 			a {
 				margin-right: 1em;
-				//visibility: hidden;
 				color: @commentOptionColor;
 				border: none;
 
@@ -60,10 +58,7 @@
 					margin-right: 0.4em;
 				}
 			}
-			/*&:hover a,
-			a.reply {
-				visibility: visible;
-			}*/
+
 			&:hover a {
 				color: @commentOptionHoverColor;
 			}
@@ -90,56 +85,17 @@
 
 		// Member photo
 		p.comment-member-photo {
-			float: left;
-			margin: 0 20px 0 0;
-			padding: 0;
-			width: 48px;
-			height: 48px;
-			overflow: hidden;
-			position: relative;
-			.border-radius(@baseBorderRadius);
-			.box-shadow(@commentShadow);
+			display: none;
 		}
 
 		// Content 
 		.comment-content {
-			margin: 0 0 1em 70px;
+			margin: 0 0 1em 0;
 			position: relative;
 			background-color: @commentBackground;
 			border: @commentBorder;
 			padding: 0.61803399em 1.61803399em;
 			.box-shadow(@commentShadow);
-
-			// Arrow
-			&:before,
-			&:after {
-				content: "";
-				position: absolute;
-				top: 10px;
-				left: -20px;
-				border-width: 10px;
-				border-style: solid;
-				border-color: transparent @commentBorderColor transparent transparent;
-				display: block; 
-				width: 0;
-			}
-			// Arrow base (should be same color as content border)
-			&:before {
-				top: 10px; 
-				left: -20px;
-				bottom: auto;
-				border-width: 10px;
-				border-color: transparent @commentBorderColor transparent transparent;
-			}
-			// Arrow overlay (should be same color as content background) 
-			// This is offset by a pixel relative to :before, which creates a 1px border effect
-			&:after {
-				top: 10px; 
-				left: -18px;
-				bottom: auto;
-				border-width: 10px;
-				border-color: transparent @commentBackground transparent transparent; 
-			}
 
 			&:hover .comment-options {
 				visibility: visible;
@@ -311,7 +267,7 @@
 	#commentform {
 		margin: 0;
 		padding: 0;
-		
+
 		fieldset {
 			margin: 0;
 			text-align: left;
@@ -321,37 +277,6 @@
 			border: 1px solid @commentFormBorderColor;
 			padding: 0.61803399em 1.61803399em 0 1.61803399em;
 			.box-shadow(@commentShadow);
-
-			// Arrow
-			&:before,
-			&:after {
-				content: "";
-				position: absolute;
-				bottom: -15px;
-				left: 50px;
-				border-width: 15px 0 0 15px;
-				border-style: solid;
-				border-color: @commentFormBorderColor transparent; 
-				display: block; 
-				width: 0;
-			}
-			// Arrow base (should be same color as content border)
-			&:before {
-				top: 10px; 
-				left: -20px;
-				bottom: auto;
-				border-width: 10px;
-				border-color: transparent @commentFormBorderColor transparent transparent;
-			}
-			// Arrow overlay (should be same color as content background) 
-			// This is offset by a pixel relative to :before, which creates a 1px border effect
-			&:after {
-				top: 10px; 
-				left: -18px;
-				bottom: auto;
-				border-width: 10px;
-				border-color: transparent @commentFormBackground transparent transparent; 
-			}
 
 			fieldset {
 				border: 1px solid #ddd;
@@ -370,20 +295,12 @@
 				}
 			}
 		}
-		p.comment-member-photo + fieldset {
+		/*p.comment-member-photo + fieldset {
 			margin-left: 70px;
-		}
+		}*/
 
 		p.comment-member-photo {
-			float: left;
-			overflow: hidden;
-			margin: 0 20px 0 0;
-			padding: 0;
-			width: 48px;
-			height: 48px;
-			background: transparent;
-			.border-radius(@baseBorderRadius);
-			.box-shadow(@commentShadow);
+			display: none;
 		}
 		.sidenote {
 			padding: 0.61803399em 1.61803399em;
@@ -466,3 +383,112 @@
 			border-bottom: 1px solid #efefef;
 		}
 	}
+
+@media (min-width: 50em) {
+	ol.comments {
+		li {
+			ol.comments {
+
+				li {
+					padding-left: 70px;
+				}
+			}
+		}
+
+		// Member photo
+		p.comment-member-photo {
+			display: block;
+			float: left;
+			margin: 0 20px 0 0;
+			padding: 0;
+			width: 48px;
+			height: 48px;
+			overflow: hidden;
+			position: relative;
+			.border-radius(0.25em);
+		}
+
+		// Content 
+		.comment-content {
+			margin: 0 0 1em 70px;
+
+			// Arrow
+			&:before,
+			&:after {
+				content: "";
+				position: absolute;
+				top: 10px;
+				left: -20px;
+				border-width: 10px;
+				border-style: solid;
+				border-color: transparent @commentBorderColor transparent transparent;
+				display: block; 
+				width: 0;
+			}
+			// Arrow base (should be same color as content border)
+			&:before {
+				top: 10px; 
+				left: -20px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentBorderColor transparent transparent;
+			}
+			// Arrow overlay (should be same color as content background) 
+			// This is offset by a pixel relative to :before, which creates a 1px border effect
+			&:after {
+				top: 10px; 
+				left: -18px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentBackground transparent transparent; 
+			}
+		}
+	}
+
+	#commentform {
+		p.comment-member-photo {
+			display: block;
+			float: left;
+			overflow: hidden;
+			margin: 0 20px 0 0;
+			padding: 0;
+			width: 48px;
+			height: 48px;
+			background: transparent;
+			.border-radius(0.25em);
+		}
+
+		fieldset {
+			// Arrow
+			&:before,
+			&:after {
+				content: "";
+				position: absolute;
+				bottom: -15px;
+				left: 50px;
+				border-width: 15px 0 0 15px;
+				border-style: solid;
+				border-color: @commentFormBorderColor transparent; 
+				display: block; 
+				width: 0;
+			}
+			// Arrow base (should be same color as content border)
+			&:before {
+				top: 10px; 
+				left: -20px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentFormBorderColor transparent transparent;
+			}
+			// Arrow overlay (should be same color as content background) 
+			// This is offset by a pixel relative to :before, which creates a 1px border effect
+			&:after {
+				top: 10px; 
+				left: -18px;
+				bottom: auto;
+				border-width: 10px;
+				border-color: transparent @commentFormBackground transparent transparent; 
+			}
+		}
+	}
+}
