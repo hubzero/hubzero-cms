@@ -3957,14 +3957,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Mark as curated
-			//if ($state == 1)
-			//{
-				$row->saveParam($row->id, 'curated', 1);
-			//}
-		}
+			$row->saveParam($row->id, 'curated', 1);
 
-		// OnAfterPublish
-		$this->onAfterChangeState( $pub, $row, $originalStatus );
+			// OnAfterPublish
+			$this->onAfterChangeState( $pub, $row, $originalStatus );
+		}
 
 		// Redirect
 		$this->_referer = $url;
