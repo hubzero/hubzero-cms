@@ -115,11 +115,15 @@ class StorefrontModelCollection
 	 */
 	public function getType()
 	{
+		if (empty($this->data->type))
+		{
+			return false;
+		}
 		return $this->data->type;
 	}
 
 	/**
-	 * Set collection id (used to update collection or to create a collection with given ID)
+	 * Set collection id
 	 *
 	 * @param	int			collection ID
 	 * @return	bool		true
@@ -337,14 +341,14 @@ class StorefrontModelCollection
 		{
 			$sql .= " WHERE `cId` = " . $db->quote($this->getId());
 		}
-
 		$db->setQuery($sql);
+		$db->query();
+
 		if ($action == 'add')
 		{
 			// Set ID
 			$this->setId($db->insertid());
 		}
-		$db->query();
 	}
 
 	/**

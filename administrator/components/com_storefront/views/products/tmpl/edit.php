@@ -78,6 +78,11 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
+				<label for="field-alais"><?php echo JText::_('Alias'); ?>:</label><br />
+				<input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
+			</div>
+
+			<div class="input-wrap">
 				<label for="field-pTagline"><?php echo JText::_('COM_STOREFRONT_TAGLINE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[pTagline]" id="field-pTagline" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getTagline())); ?>" />
 			</div>
@@ -125,7 +130,15 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 
-			<p><a href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options</a> (save product first if you updated the type)</p>
+			<?php
+			if ($this->metaNeeded) {
+			?>
+			<p>
+				<a href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit
+					type-related options</a> (save product first if you updated the type)</p>
+			<?php
+			}
+			?>
 
 			<div class="input-wrap">
 				<label for="field-state"><?php echo JText::_('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>

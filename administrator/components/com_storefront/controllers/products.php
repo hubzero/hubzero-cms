@@ -75,7 +75,6 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 			0,
 			'int'
 		);
-
 		//print_r($this->view->filters);
 
 		$obj = new StorefrontModelArchive();
@@ -152,7 +151,7 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 	 *
 	 * @return  void
 	 */
-	public function editTask($row=null)
+	public function editTask($row = null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
@@ -188,14 +187,22 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 
 		// Get product active groups
 		$this->view->productOptionGroups = $this->view->row->getOptionGroups();
+		$this->view->config = $this->config;
+
+		// Check if meta is needed for this product
+		$pType = $this->view->row->getType();
+		$this->view->metaNeeded = false;
+		// Only software needs meta
+		if ($pType == 30)
+		{
+			$this->view->metaNeeded = true;
+		}
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
 		}
-
-		$this->view->config = $this->config;
 
 		// Output the HTML
 		$this->view

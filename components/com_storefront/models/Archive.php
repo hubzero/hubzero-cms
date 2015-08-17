@@ -89,16 +89,7 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 	 */
 	public function product($pId)
 	{
-		if ($pId)
-		{
-			//$product = $warehouse->getProduct($pId, 'product', false);
-		}
-		else {
-			//$product = $warehouse->newProduct();
-		}
-
 		$product = new StorefrontModelProduct($pId);
-
 		return $product;
 	}
 
@@ -122,6 +113,10 @@ class StorefrontModelArchive extends \Hubzero\Base\Object
 		if (isset($fields['pName']))
 		{
 			$product->setName($fields['pName']);
+		}
+		if (isset($fields['pAlias']))
+		{
+			$product->setAlias($fields['pAlias']);
 		}
 		if (isset($fields['pDescription'])) {
 			$product->setDescription($fields['pDescription']);

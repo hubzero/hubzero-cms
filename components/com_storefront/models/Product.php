@@ -87,6 +87,10 @@ class StorefrontModelProduct
 		}
 		$this->setType($productInfo->ptId);
 		$this->setName($productInfo->pName);
+		if (!empty($productInfo->pAlias))
+		{
+			$this->setAlias($productInfo->pAlias);
+		}
 		$this->setDescription($productInfo->pDescription);
 		$this->setFeatures($productInfo->pFeatures);
 		$this->setTagline($productInfo->pTagline);
@@ -289,7 +293,7 @@ class StorefrontModelProduct
 	}
 
 	/**
-	 * Set product id (used to update product or to create a product with given ID)
+	 * Set product id
 	 *
 	 * @param	int			product ID
 	 * @return	bool		true
@@ -340,6 +344,43 @@ class StorefrontModelProduct
 			return false;
 		}
 		return $this->data->name;
+	}
+
+	/**
+	 * Set product alias
+	 *
+	 * @param	string		Product alias
+	 * @return	bool		true
+	 */
+	public function setAlias($pAlias)
+	{
+		// Check if the alias is valid
+		$badAliasException = new Exception('Bad product alias. Alias should be a non-empty non-numeric alphanumeric string.');
+		if (preg_match("/^[0-9a-zA-Z]+[\-_0-9a-zA-Z]*$/i", $pAlias))
+		{
+			if (is_numeric($pAlias))
+			{
+				throw $badAliasException;
+			}
+			$this->data->alias = $pAlias;
+			return true;
+		}
+		throw $badAliasException;
+	}
+
+	/**
+	 * Get product alias
+	 *
+	 * @param	void
+	 * @return	string		Product alias
+	 */
+	public function getAlias()
+	{
+		if (empty($this->data->alias))
+		{
+			return false;
+		}
+		return $this->data->alias;
 	}
 
 	/**
@@ -771,6 +812,7 @@ class StorefrontModelProduct
 		$sql .= "
 				`ptId` = " . $db->quote($this->getType()) . ",
 				`pName` = " . $db->quote($this->getName()) . ",
+				`pAlias` = " . $db->quote($this->getAlias()) . ",
 				`pTagline` = " . $db->quote($this->getTagline()) . ",
 				`pDescription` = " . $db->quote($this->getDescription()) . ",
 				`pFeatures` = " . $db->quote($this->getFeatures()) . ",
@@ -791,7 +833,6 @@ class StorefrontModelProduct
 		}
 
 		$db->setQuery($sql);
-		//echo '<br>'; echo $db->_sql; die;
 		$db->query();
 		if (!$pId)
 		{

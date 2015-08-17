@@ -76,7 +76,6 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 			0,
 			'int'
 		);
-
 		//print_r($this->view->filters);
 
 		$obj = new StorefrontModelArchive();
@@ -86,7 +85,6 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 
 		// Get records
 		$this->view->rows  = $obj->collections('list', $this->view->filters);
-
 		//print_r($this->view->rows); die;
 
 		// Initiate paging
@@ -179,7 +177,7 @@ class StorefrontControllerCollections extends \Hubzero\Component\AdminController
 	 * @param   boolean  $redirect  Redirect the page after saving
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');

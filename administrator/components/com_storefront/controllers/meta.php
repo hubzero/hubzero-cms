@@ -155,8 +155,6 @@ class StorefrontControllerMeta extends \Hubzero\Component\AdminController
 		// Load meta
 		$this->view->meta = $obj->getProductMeta($id);
 
-		//print_r($this->view->meta); die;
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -170,7 +168,7 @@ class StorefrontControllerMeta extends \Hubzero\Component\AdminController
 			$layout = 'edit-software';
 		}
 		else {
-
+			JError::raiseError(404, JText::_('No meta for this product'));
 		}
 
 		// Output the HTML
