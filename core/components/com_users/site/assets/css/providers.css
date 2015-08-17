@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        components/com_user/assets/css/providers.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -18,16 +18,18 @@
 	font-style: normal;
 }
 
+.auth .options {
+	padding: 0 2em;
+}
 .auth .account {
 	display: block;
-	width: 350px;
-	margin: 10px auto;
+	margin: 1em auto;
 	position: relative;
 	height: 50px;
 	line-height: 50px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	border-radius: 0.25em;
 	color: #FFFFFF;
 }
 .auth .account:hover,
@@ -139,7 +141,7 @@
 .primary .linkedin:before { content: ""; }
 .primary .linkedin { color: #4875B4; }
 .primary .pucas:before { content: ""; }
-.primary .pucas { background: #D1D3D4 url('/plugins/authentication/pucas/assets/img/logo.png') no-repeat 75px 7px; }
+.primary .pucas { background: #D1D3D4 url('/core/plugins/authentication/pucas/assets/img/logo.png') no-repeat 75px 7px; }
 .primary .twitter:before { content: ""; }
 .primary .twitter { color: #55ACEE; }
 .primary .orcid:before { content: ""; }
