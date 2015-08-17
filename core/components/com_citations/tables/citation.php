@@ -176,6 +176,10 @@ class Citation extends \JTable
 			//				OR r.uid = " . $this->_db->quote($filter['search']);
 			//}
 		}
+		if (!isset($filter['scope']) || !isset($filter['scope_id']))
+		{
+			$query .= 'AND r.scope = "" AND r.scope_id = ""';
+		}
 
 		//tag search
 		if (isset($filter['tag']) && $filter['tag'] != '')
@@ -577,10 +581,10 @@ class Citation extends \JTable
 		{
 			$stats[$i] = array();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope != 'group' OR scope IS NULL)");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope IS NULL OR scope IS NULL)");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope != 'group' OR scope IS NULL)");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope IS NULL OR scope IS NULL)");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 
