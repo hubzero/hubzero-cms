@@ -119,7 +119,6 @@
 		margin: 0 10px 20px 10px;
 		width: 332px;
 		border: 1px solid #ddd\9; /* [!] IE 8 */
-		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	}
 	.view-list .post {
 		width: auto;
@@ -660,7 +659,7 @@
 
 /* Instructions */
 	#collection-introduction {
-		width: 32em;
+		max-width: 32em;
 		margin: 3em auto;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
@@ -669,7 +668,6 @@
 		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		border: 1px solid #ddd\9; /* [!] IE 8 */
-		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	}
 	#collection-introduction .instructions {
 		padding: 1em 1.4em;

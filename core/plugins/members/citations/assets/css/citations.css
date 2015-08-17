@@ -81,7 +81,7 @@
 
 /* Instructions */
 	.introduction {
-		width: 32em;
+		max-width: 32em;
 		margin: 3em auto;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
@@ -90,7 +90,6 @@
 		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		border: 1px solid #ddd\9; /* [!] IE 8 */
-		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	}
 	.introduction .introduction-message {
 		padding: 1em 1.4em;
