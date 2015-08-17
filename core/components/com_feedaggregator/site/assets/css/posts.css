@@ -81,19 +81,8 @@
 		font-weight: none;
 	}
 
-/* Buttons */
-	.approveBtn {
-		color: white;
-		background: -webkit-gradient(linear, left top, left bottom, from(#009900), to(#003D00));
-		background: -webkit-linear-gradient(#009900, #003D00);
-		background: -moz-linear-gradient(center top, #009900 0%, #003D00 100%);
-		background: -moz-gradient(center top, #009900 0%, #003D00 100%);
-		background: -o-linear-gradient(#009900, #003D00);
-		background: linear-gradient(to bottom, #009900, #003D00);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#009900,endColorstr=#003D00);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#009900, endColorstr=#003D00)";
-	}
-	.reviewBtn {
+/* Buttons 
+	.btn-review {
 		color: white;
 		background: -webkit-gradient(linear, left top, left bottom, from(#9900CC), to(#5C007A));
 		background: -webkit-linear-gradient(#9900CC, #5C007A);
@@ -103,18 +92,7 @@
 		background: linear-gradient(to bottom, #9900CC, #5C007A);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9900CC,endColorstr=#5C007A);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9900CC, endColorstr=#5C007A)";
-	}
-	.removeBtn {
-		color: white;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FF0000), to(#B22400));
-		background: -webkit-linear-gradient(#FF0000, #B22400);
-		background: -moz-linear-gradient(center top, #FF0000 0%, #B22400 100%);
-		background: -moz-gradient(center top, #FF0000 0%, #B22400 100%);
-		background: -o-linear-gradient(#FF0000, #B22400);
-		background: linear-gradient(to bottom, #FF0000, #B22400);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000,endColorstr=#B22400);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000, endColorstr=#B22400)";
-	}
+	}*/
 
 	.disableBtn {
 		background-color: lime;

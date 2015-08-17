@@ -121,9 +121,9 @@ $this->js('posts')
 								?>
 							</td>
 							<td>
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="approveBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> />
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?> />
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> />
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="btn-review btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == 'under review' ? 'disabled' : ''); ?> />
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="btn-danger btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == 'removed' ? 'disabled' : ''); ?> />
 								<div class="postpreview-container">
 									<div class="postpreview" id="content-fancybox<?php echo $post->id; ?>">
 										<h1><?php echo (string) html_entity_decode(strip_tags($post->title)); ?></h1>
@@ -131,9 +131,9 @@ $this->js('posts')
 										<p><a target="_blank" href="<?php echo urldecode($post->link); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
 										<div class="button-container">
 											<hr />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="actionBtn approveBtn btn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?> />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> />
+											<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="btn-success btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'approved' ? 'disabled' : ''); ?> />
+											<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="btn-review btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'under review' ? 'disabled' : ''); ?> />
+											<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="btn-danger btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == 'removed' ? 'disabled' : ''); ?> />
 										</div>
 									</div>
 								</div>
