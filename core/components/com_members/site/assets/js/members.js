@@ -63,7 +63,7 @@ jQuery(document).ready(function($){
 		$("#personalize").removeClass("hide");
 	}
 
-	$('a.message').fancybox({
+	$('.message-member a').fancybox({
 		type: 'ajax',
 		width: 700,
 		height: 'auto',

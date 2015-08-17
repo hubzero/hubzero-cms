@@ -92,8 +92,8 @@ if (!$no_html)
 			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>
 			<ul id="member_options">
-				<li>
-					<a class="message tooltips" title="<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?> :: <?php echo Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $this->escape(stripslashes($this->profile->get('name')))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
+				<li class="message-member">
+					<a class="tooltips" title="<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?> :: <?php echo Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $this->escape(stripslashes($this->profile->get('name')))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
 						<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?>
 					</a>
 				</li>

@@ -338,7 +338,7 @@ $this->css()
 							</td>
 							<td class="message-member">
 							<?php if ($messageuser) { ?>
-								<a class="message tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+								<a class="tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
 									<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO', $this->escape($name)); ?>
 								</a>
 							<?php } ?>
