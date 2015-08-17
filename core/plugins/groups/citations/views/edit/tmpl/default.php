@@ -324,11 +324,8 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 		</fieldset>
 		<div class="clear"></div>
 
-		<?php if ($allow_tags == "yes" || $allow_badges == "yes"): ?>
-			<fieldset>
-				<legend><?php echo $fieldset_label; ?></legend>
-				<?php
-					if ($allow_tags == "yes"): ?>
+		<fieldset>
+			<legend><?php echo $fieldset_label; ?></legend>
 				<label>
 				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>: <span class="optional">Optional</span>
 				<?php
@@ -342,27 +339,21 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 				?>
 				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS_HINT'); ?></span>
 					</label>
-				<?php endif; ?>
 
-				<?php
-					if ($allow_badges == "yes"): ?>
-						<label class="badges">
-						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES'); ?>: <span class="optional">Optional</span>
-						<?php
-							if (count($badges_list) > 0)
-							{
-								echo $badges_list[0];
+					<label class="badges">
+					<?php
+						if (count($badges_list) > 0)
+						{
+							echo $badges_list[0];
 							}
-							else
-							{
-								echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
-							}
-						?>
+						else
+						{
+							echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
+						}
+					?>
 						<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES_HINT'); ?></span>
 					</label>
-				<?php endif; ?>
-			</fieldset><div class="clear"></div>
-		<?php endif; ?>
+		</fieldset><div class="clear"></div>
 
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATION'); ?></legend>
@@ -376,15 +367,13 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 			</label>
 		</fieldset>
 
-		<?php //if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 		<div class="explaination">
-			<p><?php echo Lang::txt('Tags allow your citation to be identified'); ?></p>
+			<p><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS_EXPLAINATION'); ?></p>
 		</div>
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?></legend>
-			<?php //if ($allow_tags == "yes") : ?>
 				<label>
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>: <span class="optional">Optional</span>
+					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>: <span class="optional"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_OPTIONAL');?></span>
 					<?php
 						if (count($tags_list) > 0) {
 							echo $tags_list[0];
@@ -394,11 +383,9 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 					?>
 					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS_HINT'); ?></span>
 				</label>
-			<?php //endif; ?>
 
-			<?php //if ($allow_badges == "yes") : ?>
 				<label class="badges">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES'); ?>: <span class="optional">Optional</span>
+					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES'); ?>: <span class="optional"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_OPTIONAL');?></span>
 					<?php
 						if (count($badges_list) > 0) {
 							echo $badges_list[0];
@@ -408,9 +395,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 					?>
 					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES_HINT'); ?></span>
 				</label>
-			<?php //endif; ?>
 		</fieldset><div class="clear"></div>
-	<?php //endif; ?>
 
 		<input type="hidden" name="scope" value="<?php echo $this->escape($this->row->scope); ?>" />
 		<input type="hidden" name="scope_id" value="<?php echo $this->escape($this->row->scope_id); ?>" />
