@@ -23,11 +23,7 @@ jQuery(document).ready(function (jq) {
 	$('.protected').click(function(e) {
 		var prompt = confirm('Are you sure you want to delete this citation?');
 		var url = $(this).attr('href');
-		if (prompt === true)
-		{
-			
-		}
-		else
+		if (prompt === false)
 		{
 			e.preventDefault();
 		}
@@ -41,7 +37,12 @@ jQuery(document).ready(function (jq) {
 		
 		var url = $(this).attr('data-link');
 		url = url + '&citationIDs=' + citationIDs.join(',');
-		window.location = url;
+
+		var locked = confirm('Are you sure you want to perform a bulk action?');
+		if (locked === true)
+		{
+			window.location = url;
+		 }
 
 	});
 });
