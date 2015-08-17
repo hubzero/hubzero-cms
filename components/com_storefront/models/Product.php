@@ -969,6 +969,12 @@ class StorefrontModelProduct
 			rmdir($dir);
 		}
 
+		// Delete images from database
+		$sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'product' AND `imgObjectId` = " . $db->quote($this->getId());
+		$db->setQuery($sql);
+		$db->query();
+
+
 		// Delete all SKUs
 		$skus = $this->getSkus();
 		foreach ($skus as $sku)
