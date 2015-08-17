@@ -40,6 +40,13 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
+		Pathway::append(
+			Lang::txt('COM_GEOSEARCH_TITLE'),
+			'index.php?option=' . $this->_option
+		);
+
+		Document::setTitle(Lang::txt('COM_GEOSEARCH_TITLE'));
+
 		$filters          = array();
 		$filters['limit'] = 1000; //Request::getInt('limit', 1000, 'request');
 		$filters['start'] = 0; //Request::getInt('limitstart', 0, 'request');
@@ -48,12 +55,6 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 		$distance         = Request::getInt('distance', '', 'request');
 		$location         = Request::getVar('location', '', 'request');
 		$unit             = Request::getVar('dist_units', '', 'request');
-
-		// Output HTML
-		if ($this->getError())
-		{
-			$this->view->setError( $this->getError() );
-		}
 
 		$this->view->display();
 	}

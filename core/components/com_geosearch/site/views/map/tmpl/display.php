@@ -32,55 +32,60 @@ $this->js('https://maps.googleapis.com/maps/api/js?v=3.exp');
 $this->js("geosearch.jquery.js");
 $this->js('oms.min.js');
 $this->css('geosearch.css');
-
 ?>
-
-<div id="content-header" class="full">
+<header id="content-header">
 	<h2><?php echo Lang::txt('COM_GEOSEARCH_TITLE'); ?></h2>
-</div>
+</header>
 
-<!--- .main .section -->
-<div class="main section">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" id="frm_search">
-	<!-- page errors -->
-	<?php if ($this->getError()): ?>
-		<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
-	<?php endif; ?>
+<section class="main section">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" id="frm_search" class="section-inner">
+		<div class="subject">
+			<?php if ($this->getError()): ?>
+				<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
+			<?php endif; ?>
 
-<div class="aside geosearch">
-	<div class="container">
-		<h3><?php echo Lang::txt('COM_GEOSEARCH_FILTER'); ?></h3>
-	<fieldset>
-		<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_RES'); ?></legend>
+			<div id="map_container">
+				<div id="map_canvas"></div>
+			</div> <!-- / #map_container -->
+		</div> <!-- / .subject -->
 
-		<div class="key">
-			<img src="<?php echo $this->img('icn_member2.png'); ?>">
-			<input type="checkbox" name="resource[]" class="resck" value="member" checked /> Members
-		</div>
+		<aside class="aside geosearch">
+			<div class="container">
+				<h3><?php echo Lang::txt('COM_GEOSEARCH_FILTER'); ?></h3>
+				<fieldset>
+					<legend><?php echo Lang::txt('COM_GEOSEARCH_LIM_RES'); ?></legend>
 
-		<div class="key">
-			<img src="<?php echo $this->img('icn_job2.png'); ?>" />
-			<input type="checkbox" name="resource[]" class="resck" value="job" checked /> Jobs
-		</div>
+					<div class="key">
+						<label for="resck-member">
+							<img src="<?php echo $this->img('icn_member2.png'); ?>" alt="" />
+							<input type="checkbox" name="resource[]" class="resck option" id="resck-member" value="member" checked="checked" /> <?php echo Lang::txt('COM_GEOSEARCH_MEMBERS'); ?>
+						</label>
+					</div>
 
-		<div class="key">
-			<img src="<?php echo $this->img('icn_event2.png'); ?>" />
-			<input type="checkbox" name="resource[]" class="resck" value="event" checked /> Events
-		</div>
+					<div class="key">
+						<label for="resck-job">
+							<img src="<?php echo $this->img('icn_job2.png'); ?>" alt="" />
+							<input type="checkbox" name="resource[]" class="resck option" value="job" id="resck-job" checked="checked" /> <?php echo Lang::txt('COM_GEOSEARCH_JOBS'); ?>
+						</label>
+					</div>
 
-		<div class="key">
-			<img src="<?php echo $this->img('icn_org2.png'); ?>" />
-			<input type="checkbox" name="resource[]" class="resck" value="organization" checked/> Organizations
-		</div>
+					<div class="key">
+						<label for="resck-event">
+							<img src="<?php echo $this->img('icn_event2.png'); ?>" alt="" />
+							<input type="checkbox" name="resource[]" class="resck option" value="event" id="resck-event" checked="checked" /> <?php echo Lang::txt('COM_GEOSEARCH_EVENTS'); ?>
+						</label>
+					</div>
 
-		<div class="clear-right"></div>
-	</fieldset>
+					<div class="key">
+						<label for="resck-organization">
+							<img src="<?php echo $this->img('icn_org2.png'); ?>" alt="" />
+							<input type="checkbox" name="resource[]" class="resck option" value="organization" id="resck-organization" checked="checked" /> <?php echo Lang::txt('COM_GEOSEARCH_ORGANIZATIONS'); ?>
+						</label>
+					</div>
 
-	</div><!-- / .container -->
-</div><!-- / .aside -->
-
-<div class="subject">
-	<div id="map_container">
-		<div id="map_canvas"></div>
-	</div> <!-- / #map_container -->
-</div> <!-- / .subject -->
+					<div class="clear-right"></div>
+				</fieldset>
+			</div><!-- / .container -->
+		</aside><!-- / .aside -->
+	</form>
+</section>

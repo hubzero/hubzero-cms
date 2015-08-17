@@ -148,10 +148,9 @@ input[type="button"]  {
 }
 
 #map_canvas {
-	width: 95%;
 	min-height: 500px;
-	margin: 0 0 2em 0;
-	padding: 2em 2em 2em 2em;
+	margin: 0;
+	padding: 2em;
 }
 .event-popup h1 {
 	font-size: 14pt;
