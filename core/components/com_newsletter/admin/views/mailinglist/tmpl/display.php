@@ -87,7 +87,7 @@ Toolbar::preferences($this->option, '550');
 
 	<input type="hidden" name="option" value="com_newsletter" />
 	<input type="hidden" name="controller" value="mailinglist" />
-	<input type="hidden" name="task" value="add" />
+	<input type="hidden" name="task" value="add" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 
 	<?php echo Html::input('token'); ?>

@@ -84,13 +84,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th scope="col"> </th>
+				<th class="priority-5" scope="col"><?php echo $this->grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-5" scope="col"> </th>
 				<th scope="col"><?php echo $this->grid('sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th scope="col" colspan="2"><?php echo $this->grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3" scope="col" colspan="2"><?php echo $this->grid('sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
+				<th class="priority-4" scope="col"><?php echo $this->grid('sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -155,8 +155,8 @@ function submitbutton(pressbutton)
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td><?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?></td>
-					<td><?php echo $row->id; ?></td>
-					<td><?php echo '<img src="' . rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media' . '" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
+					<td class="priority-5"><?php echo $row->id; ?></td>
+					<td class="priority-5"><?php echo '<img src="' . rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media' . '" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
 					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
 						<strong><?php echo stripslashes($row->alias); ?></strong>
@@ -166,11 +166,11 @@ function submitbutton(pressbutton)
 							</span>
 						<?php } ?>
 					</td>
-					<td><?php echo $ownerclass; ?></td>
-					<td><?php echo $owner; ?></td>
+					<td class="priority-3"><?php echo $ownerclass; ?></td>
+					<td class="priority-3"><?php echo $owner; ?></td>
 					<td><?php echo $status; ?></td>
-					<td><?php echo ($row->private == 1) ? '<span class="private">' . Lang::txt('COM_PROJECTS_FLAG_PRIVATE') . '</span>' : '<span class="public">' . Lang::txt('COM_PROJECTS_FLAG_PUBLIC') . '</span>'; ?></td>
-					<td><?php echo $quota . 'GB'; ?></td>
+					<td class="priority-4"><?php echo ($row->private == 1) ? '<span class="private">' . Lang::txt('COM_PROJECTS_FLAG_PRIVATE') . '</span>' : '<span class="public">' . Lang::txt('COM_PROJECTS_FLAG_PUBLIC') . '</span>'; ?></td>
+					<td class="priority-4"><?php echo $quota . 'GB'; ?></td>
 				</tr>
 				<?php
 					$k = 1 - $k;
@@ -182,7 +182,7 @@ function submitbutton(pressbutton)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />

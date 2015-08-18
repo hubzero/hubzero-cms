@@ -257,7 +257,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+	<input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
 	<input type="hidden" name="wishlist" value="<?php echo $this->filters['wishlist']; ?>" />
 	<input type="hidden" name="cid" value="<?php echo $this->filters['wishlist']; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />

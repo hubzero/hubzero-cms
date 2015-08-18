@@ -202,7 +202,7 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+	<input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="pageid" value="<?php echo $this->filters['pageid']; ?>" />
 
