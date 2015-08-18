@@ -209,14 +209,14 @@ if (isset($this->messages))
 										<?php endif; ?>
 									</td>
 									<?php if ($this->isManager === true) : ?>
-										<td class="col-edit"><a href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>">
-											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?>
+										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>"></span>
+											<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?></span>
 										</a></td>
-										<td class="col-delete"><a class="protected" href="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>">
-											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>
+										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>">
+											<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span>
 										</a></td>
-										<td class="col-publish"><a href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>">
-											<?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?>
+										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>">
+											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
 										</a></td>
 									<?php endif; ?>
 								</tr>

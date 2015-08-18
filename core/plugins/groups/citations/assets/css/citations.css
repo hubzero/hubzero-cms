@@ -94,6 +94,16 @@
 	margin-top: 5%;
 }
 
+a span {
+	display:none;
+}
+
+.individual.icon-edit, .individual.icon-delete, .individual.icon-window-publish {
+border-bottom: 0;
+font-size: 14pt;
+padding: 0px;
+margin: 0px;
+}
 #citations-introduction {
 	height: inherit;
 	width: 460px;
