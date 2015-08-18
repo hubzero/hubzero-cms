@@ -262,7 +262,8 @@ class Citation extends Relational
 	                $auth = html_entity_decode($this->$k);
 	                $auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
 
-									if ($auth == '' && $this->relatedAuthors->count() > 0)
+									// prefer the use of the relational table 
+									if ($this->relatedAuthors->count() > 0)
 									{
 										$authors = $this->relatedAuthors;
 										$authorCount = $this->relatedAuthors->count();

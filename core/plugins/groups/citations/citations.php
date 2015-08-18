@@ -548,7 +548,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'date_publish' => Request::getVar('date_publish'),
 				'year' => Request::getVar('year'),
 				'month' => Request::getVar('month'),
-				'author' => Request::getVar('author'),
 				'author_address' => Request::getVar('author_address'),
 				'editor' => Request::getVar('editor'),
 				'title' => Request::getVar('title'),

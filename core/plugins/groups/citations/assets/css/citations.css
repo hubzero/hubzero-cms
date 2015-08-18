@@ -161,6 +161,68 @@
 #noCitations {
 	text-align: center;
 	font-size: 12pt;
+}
+
+	.citation-author {
+		background: #f7f7f7;
+		border-radius: 0.25em;
+		position: relative;
+		margin: 0 0 0.5em 0;
+		padding: 1em;
+	}
+	.citation-author .author-name {
+		margin-right: 4em;
+		display: inline-block;
+		width: 80%;
+	}
+	.add-author {
+		margin-top: 30px;
+		}
+	.citation-author .author-handle {
+		margin-right: 1em;
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		position: relative;
+	}
+	.citation-author .author-handle:after {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.2em;
+		left: 0;
+		content: "\f0dc";
+		font-family: "Fontcons";
+		font-size: 16px;
+		line-height: 1;
+		color: #ccc;
+	}
+	.citation-author:hover .author-handle,
+	.citation-author:hover .author-handle:after,
+	.citation-author .author-handle:hover:after,
+	.citation-author .author-handle:after:hover {
+		cursor: move;
+		color: #333;
+	}
+	.citation-author span.author-description {
+		position: absolute;
+		right: 1em;
+		top: 25%;
+		font-size: 90%;
+	}
+	.citation-author .delete {
+		font-size: 1.7em;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		border: none;
+	}
+	.citation-author .delete:before {
+		margin-right: 1em;
+		content: "\f014";
+		font-family: "Fontcons";
 	}
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1080px) {
