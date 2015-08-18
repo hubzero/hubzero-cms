@@ -128,7 +128,7 @@ $bdcolor = '#e1e1e1';
 			<tr>
 				<td width="100%" style="padding: 8px;">
 					<div class="mobilehide" id="ticket-number" style="float: left; width: 1.2em; font-size: 4em; font-weight: bold; text-align: center; padding: 30px;" align="center">
-						&ldquo;
+						&#8220;
 					</div>
 					<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 						<tbody>
