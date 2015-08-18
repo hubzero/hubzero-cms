@@ -1396,7 +1396,7 @@ class CartModelCurrentCart extends CartModelCart
 				$itemInfo = $item['info'];
 
 				// Get product type
-				$warehouse = $this->warehouse();
+				$warehouse = $this->warehouse;
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
 
