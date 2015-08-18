@@ -34,30 +34,30 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'helpers' .
 class Software_Auditor extends BaseAuditor
 {
 
-    /**
-     * Constructor
-     *
-     * @param 	void
-     * @return 	void
-     */
-    public function __construct($type, $pId, $crtId)
-    {
-        parent::__construct($type, $pId, $crtId);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	void
+	 * @return 	void
+	 */
+	public function __construct($type, $pId, $crtId)
+	{
+		parent::__construct($type, $pId, $crtId);
+	}
 
-    /**
-     * Main handler. Does all the checks
-     *
-     * @param 	void
-     * @return 	void
-     */
-    public function audit()
-    {
-        /* If no user, some checks may be skipped... */
-        // Get user
-        $jUser = JFactory::getUser();
+	/**
+	 * Main handler. Does all the checks
+	 *
+	 * @param 	void
+	 * @return 	void
+	 */
+	public function audit()
+	{
+		/* If no user, some checks may be skipped... */
+		// Get user
+		$jUser = JFactory::getUser();
 		// User specific checks
-        if (!$jUser->get('guest'))
+		if (!$jUser->get('guest'))
 		{
 			if ($sId = $this->getSku())
 			{
@@ -75,7 +75,7 @@ class Software_Auditor extends BaseAuditor
 				}
 				return ($this->getResponse());
 			}
-        }
+		}
 
 		// Check SKU-related stuff if this is a SKU
 		if ($sId = $this->getSku())
@@ -106,6 +106,6 @@ class Software_Auditor extends BaseAuditor
 			$this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
 			$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 		}
-        return($this->getResponse());
-    }
+		return($this->getResponse());
+	}
 }
