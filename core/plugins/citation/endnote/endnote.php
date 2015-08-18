@@ -123,7 +123,6 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 		// remove empty citations
 		$raw_citations = array_values(array_filter($raw_citations));
-		echo "<pre>";
 
 		foreach ($raw_citations as $k => $rc)
 		{
