@@ -117,25 +117,25 @@ class Citation extends Relational
 			$include_coins = isset($config['include_coins']) ? $config['include_coins'] : "no";
 	    $c_type = 'journal';
 
-			$type = $this->relatedType->type;
+		$type = $this->relatedType->type;
 
-	    switch (strtolower($type))
-	    {
-	        case 'book':
-	        case 'inbook':
-	        case 'conference':
-	        case 'proceedings':
-	        case 'inproceedings':
+		 switch (strtolower($type))
+	   {
+	       case 'book':
+	       case 'inbook':
+	       case 'conference':
+	       case 'proceedings':
+	       case 'inproceedings':
 	            $c_type = "book";
-	            break;
-	        case 'journal':
-	        case 'article':
-	        case 'journal article';
-	            $c_type = "journal";
-	            break;
-	        default:
-	        break;
-	    }
+	           break;
+	       case 'journal':
+	       case 'article':
+	       case 'journal article';
+	           $c_type = "journal";
+	           break;
+	       default:
+	       break;
+	   }
 
 	    //var to hold COinS data
 	    $coins_data = array(
@@ -223,7 +223,7 @@ class Citation extends Relational
 			// form the formatted citation
 	    foreach ($template_keys as $k => $v)
 	    {
-	        if (!$this->keyExistsOrIsNotEmpty($k, $this))
+	        if (!$this->keyExistsOrIsNotEmpty($k, $this) && $k != 'author')
 	        {
 	            $replace_values[$v] = '';
 	        }
@@ -262,38 +262,68 @@ class Citation extends Relational
 	                $auth = html_entity_decode($this->$k);
 	                $auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
 
-	                $author_string = $auth;
-	                $authors = explode(';', $author_string);
+									if ($auth == '' && $this->relatedAuthors->count() > 0)
+									{
+										$authors = $this->relatedAuthors;
+										$authorCount = $this->relatedAuthors->count();
+									}
+									elseif ($auth != '')
+									{
+										$author_string = $auth;
+										$authors = explode(';', $author_string);
+										$authorCount = count($authors);
+									}
+									else
+									{
+										$authorCount = 0;
+										$replace_values[$v] = '';
+									}
 
-	                foreach ($authors as $author)
-	                {
-	                    preg_match('/{{(.*?)}}/s', $author, $matches);
-	                    if (!empty($matches))
-	                    {
-	                        $id = trim($matches[1]);
-	                        if (is_numeric($id))
-	                        {
-	                            $user = \User::getInstance($id);
-	                            if (is_object($user))
-	                            {
-	                                $a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
-	                            }
-	                            else
-	                            {
-	                                $a[] = $author;
-	                            }
-	                        }
-	                    }
-	                    else
-	                    {
-	                        $a[] = $author;
-	                    }
-
-	                    //add author coins
-	                    $coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
-	                }
-
-	                $replace_values[$v] = implode(", ", $a);
+									if ($authorCount > 0)
+									{
+										foreach ($authors as $author)
+										{
+												// for legacy profile handling
+												if (is_string($author))
+												{
+													preg_match('/{{(.*?)}}/s', $author, $matches);
+													if (!empty($matches))
+													{
+														$id = trim($matches[1]);
+														if (is_numeric($id))
+														{
+															$user = \User::getInstance($id);
+															if (is_object($user))
+															{
+																$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+															}
+															else
+															{
+																$a[] = $author;
+															}
+														}
+													}
+													//add author coins
+													$coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
+												} // legacy string
+												elseif (is_object($author)) // new ORM method
+												{
+													if ($author->uidNumber > 0)
+													{
+														 $a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
+													}
+													else
+										 			{
+														$a[] = $author->author;
+													}
+												} //new ORM method
+												 else
+												{
+													$a[] = $author;
+												}
+										}
+											$replace_values[$v] = implode(", ", $a);
+									}
 	            }
 
 	            if ($k == 'title')

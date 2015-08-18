@@ -152,6 +152,50 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 				</div>
 			</div>
 
+			<fieldset class="author-manager" data-add="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=add&' . JUtility::getToken() . '=1'); ?>" data-update="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=update&' . JUtility::getToken() . '=1'); ?>" data-list="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=display&' . JUtility::getToken() . '=1'); ?>">
+					<div class="grid">
+						<div class="col span10">
+							<label for="field-author">
+								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORS'); ?>
+								<?php
+								$authors = $this->row->authors;
+
+								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', '')));
+								if (count($mc) > 0) {
+									echo $mc[0];
+								} else { ?>
+									<input type="text" name="author" id="field-author" value="" />
+								<?php } ?>
+							</label>
+						</div>
+						<div class="col span2 omega">
+							<button class="btn add-author"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ADD'); ?></button>
+						</div>
+					</div>
+
+					<div class="field-wrap author-list">
+						<?php if (count($authors)) { ?>
+							<?php foreach ($authors as $i => $author) { ?>
+								<p class="citation-author" id="author_<?php echo $this->escape($author->id); ?>">
+									<span class="author-handle">
+									</span>
+									<span class="author-name">
+										<?php echo $this->escape($author->author); ?>
+									</span>
+									<span class="author-description">
+										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $this->escape($author->id); ?>" />
+										<a class="delete" data-id="<?php echo $this->escape($author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $author->id . '&' . JUtility::getToken() . '=1'); ?>">
+											<?php echo Lang::txt('JDELETE'); ?>
+										</a>
+									</span>
+								</p>
+							<?php } ?>
+						<?php } else { ?>
+							<p class="author-instructions"><?php //echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORS_HINT'); ?></p>
+						<?php } ?>
+					</div>
+					</fieldset>
+<?php /*
 			<label for="author">
 				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORS'); ?>:
 				<input type="text" name="author" id="author" size="30" value="<?php echo $this->escape($this->row->author); ?>" />
@@ -161,6 +205,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_ADDRESS'); ?>:
 				<input type="text" name="author_address" id="authoraddress" size="30" value="<?php echo $this->escape($this->row->author_address); ?>" />
 			</label>
+			*/ ?>
 			<label for="editor">
 				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDITORS'); ?>:
 				<input type="text" name="editor" id="editor" size="30" maxlength="250" value="<?php echo $this->escape($this->row->editor); ?>" />
@@ -323,37 +368,6 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 			</div>
 		</fieldset>
 		<div class="clear"></div>
-
-		<fieldset>
-			<legend><?php echo $fieldset_label; ?></legend>
-				<label>
-				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>: <span class="optional">Optional</span>
-				<?php
-					if (count($tags_list) > 0) {
-					echo $tags_list[0];
-					}
-					else
-					{
-					echo "<input type=\"text\" name=\"tags\" value=\"{$tags}\" />";
-					}
-				?>
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS_HINT'); ?></span>
-					</label>
-
-					<label class="badges">
-					<?php
-						if (count($badges_list) > 0)
-						{
-							echo $badges_list[0];
-							}
-						else
-						{
-							echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
-						}
-					?>
-						<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES_HINT'); ?></span>
-					</label>
-		</fieldset><div class="clear"></div>
 
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATION'); ?></legend>
