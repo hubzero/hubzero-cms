@@ -162,9 +162,9 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 									{
 										$authors = $this->row->relatedAuthors;
 									}
-									elseif($this->row->relatedAuthors->count() == 0 && $this->row->author != '')
+									elseif ($this->row->relatedAuthors->count() == 0 && $this->row->author != '')
 									{
-										$authors = NULL; 
+										$authors = NULL;
 										$authorField = explode(';',$this->row->author);
 										$authorString = '';
 										$totalAuths = count($authorField);
