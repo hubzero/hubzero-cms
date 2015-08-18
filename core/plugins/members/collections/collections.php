@@ -363,8 +363,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->followers   = $this->model->followers($count);
 
-		$view->total = $this->model->followers($count);
-
+		$view->total = $this->model->following($count);
 		$view->rows  = $this->model->following($view->filters);
 
 		foreach ($this->getErrors() as $error)
@@ -541,6 +540,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 			case 'member':
 				$id = $this->member->get('uidNumber');
+				$sfx = '&task=unfollow';
 			break;
 
 			case 'collection':
@@ -608,6 +608,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 			case 'member':
 				$id = $this->member->get('uidNumber');
+				$sfx = '&task=follow';
 			break;
 
 			case 'collection':

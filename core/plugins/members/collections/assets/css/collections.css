@@ -538,6 +538,12 @@
 		height: 40px;
 		text-indent: 0;
 	}
+	table.followers tbody td:first-child,
+	table.followers tbody th:first-child,
+	table.following tbody td:first-child,
+	table.following tbody th:first-child {
+		width: 5em;
+	}
 	table.following tbody td:last-child {
 		text-align: right;
 	}

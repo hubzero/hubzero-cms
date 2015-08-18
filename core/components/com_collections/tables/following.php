@@ -94,6 +94,8 @@ class Following extends \JTable
 	 */
 	public function check()
 	{
+		$this->_errors = array();
+
 		$this->follower_id = intval($this->follower_id);
 		if (!$this->follower_id)
 		{
