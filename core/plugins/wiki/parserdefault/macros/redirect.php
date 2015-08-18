@@ -86,8 +86,19 @@ class RedirectMacro extends WikiMacro
 		}
 
 		// Delayed redirect
-		return '<script type="text/javascript">setTimeout(function () { window.location.href = "' . str_replace(array("'", '"'), array('%27', '%22'), $url) . '"; }, ' . ($delay * 1000) . ');</script>
-				<p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
+		return '<script type="text/javascript">
+					window.onload = function () {
+						var timer = ' . $delay . ';
+						setInterval(function () {
+							timer--;
+							if (timer <= 0) {
+								window.location.href = "' . str_replace(array("'", '"'), array('%27', '%22'), $url) . '";
+							}
+							document.getElementById("redirectTimer").innerHTML = timer;
+						}, 1000);
+					};
+				</script>
+				<p class="warning">' . \Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay) . '</p>';
 	}
 
 	/**
