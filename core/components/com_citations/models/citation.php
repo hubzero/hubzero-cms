@@ -307,7 +307,7 @@ class Citation extends Relational
 													{
 														$a[] = $author;
 													}
-														
+
 													// add author coins
 													$coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
 												} // legacy string
