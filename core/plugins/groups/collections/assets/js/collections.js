@@ -288,13 +288,17 @@ jQuery(document).ready(function(jq){
 
 				if (el.children('span').text() == follow) {
 					el.removeClass('follow')
+						.removeClass('icon-follow')
 						.addClass('unfollow')
+						.addClass('icon-unfollow')
 						.attr('href', data.href)
 						.children('span')
 						.text(unfollow);
 				} else {
 					el.removeClass('unfollow')
+						.removeClass('icon-unfollow')
 						.addClass('follow')
+						.addClass('icon-follow')
 						.attr('href', data.href)
 						.children('span')
 						.text(follow);
