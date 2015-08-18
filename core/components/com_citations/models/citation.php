@@ -313,7 +313,7 @@ class Citation extends Relational
 														 $a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
 													}
 													else
-										 			{
+													{
 														$a[] = $author->author;
 													}
 												} //new ORM method
