@@ -97,7 +97,7 @@ for ($i=0, $n=count( $rows ); $i < $n; $i++)
 ?>
 		</tbody>
 	</table>
-	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="workshop" value="<?php $id = Request::getVar('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
 	<input type="hidden" name="id[]" value="<?php $id = Request::getVar('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

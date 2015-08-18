@@ -253,7 +253,7 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 
 	<?php echo Html::input('token'); ?>

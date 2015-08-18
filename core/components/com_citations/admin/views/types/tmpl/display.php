@@ -97,7 +97,7 @@ function submitbutton(pressbutton)
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+	<input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
 
 	<?php echo Html::input('token'); ?>
