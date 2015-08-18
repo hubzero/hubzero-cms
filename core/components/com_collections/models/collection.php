@@ -694,7 +694,6 @@ class Collection extends Base
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					print_R($this->_tbl); die();
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);

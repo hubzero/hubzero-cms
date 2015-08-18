@@ -272,44 +272,18 @@
 		background-color: #f0f0f0;
 		padding: 0;
 	}
+	.post .actions>span,
 	.post .actions a {
+		padding: 0.5em .7em;
+		margin: 0.5em 0.2em 0 0.2em;
 		overflow: hidden;
 		white-space: nowrap;
-		display: inline-block;
-		margin: 0.5em 0.2em 0 0.2em;
-		padding: 0.3em .7em;
-		-webkit-border-radius: 0.25em;
-		   -moz-border-radius: 0.25em;
-		    -ms-border-radius: 0.25em;
-		     -o-border-radius: 0.25em;
-		        border-radius: 0.25em;
-		color: inherit;
-		border: 1px solid #bbb;
-		background-color: #ededed;
-		background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fdfafb), to(#f0eded), color-stop(.5,#f9f7f7), color-stop(.5,#f6f3f4));
-		background-image: -moz-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
-		background-image: -o-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
-		background-image: -webkit-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdfafb', endColorstr='#f0eded');
-		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
-	}
-	.post .actions a:hover {
-		border-color: #000;
-		color: #eee;
-		background: #111111;
-		background: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#111111));
-		background: -webkit-linear-gradient(#333333, #111111);
-		background: -moz-linear-gradient(center top, #333333 0%, #111111 100%);
-		background: -moz-gradient(center top, #333333 0%, #111111 100%);
-		background: -o-linear-gradient(#333333, #111111);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333,endColorstr=#111111);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333, endColorstr=#111111)";
-		text-shadow: 0 1px 1px rgba(0, 0, 0,0.9);
 	}
 	.post .actions a:before {
 		content: "";
 		font-family: "Fontcons";
 	}
+	.icon-repost:before,
 	.post .actions a.repost:before {
 		content: "\f005";
 	}
@@ -335,7 +309,7 @@
 	}
 	.post .actions a.edit,
 	.post .actions a.delete {
-		width: 0.75em;
+		width: 2.3em;
 	}
 	.icon-follow:before {
 		content: "\f06e";
@@ -343,13 +317,13 @@
 	.icon-unfollow:before {
 		content: "\f070";
 	}
+	.icon-follow:before,
 	.post .actions a.follow:before {
 		content: "\f06e";
-		margin-right: 0;
 	}
+	.icon-unfollow:before,
 	.post .actions a.unfollow:before {
 		content: "\f070";
-		margin-right: 0;
 	}
 
 	.post img {
@@ -487,47 +461,7 @@
 		vertical-align: middle;
 		text-shadow: 0 1px 1px #fff;
 	}
-	.btn {
-		line-height: 1;
-	}
-	.btn.follow,
-	.btn.unfollow,
-	.btn.repost {
-		padding: 0.7em 0.91em 0.7em 2.91em;
-	}
-	.btn.follow:before,
-	.btn.unfollow:before,
-	.btn.repost:before {
-		background: #E3E3E3;
-		background: rgba(0, 0, 0, 0.08);
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: 1em;
-		text-align: center;
-		font-size: 1.2em;
-		font-weight: normal;
-		font-family: 'Fontcons';
-		line-height: 2.1;
-		padding: 0 0.5em;
-		margin-right: 0.2em;
-		-webkit-border-radius: 0.25em 0 0 0.25em;
-		   -moz-border-radius: 0.25em 0 0 0.25em;
-		    -ms-border-radius: 0.25em 0 0 0.25em;
-		     -o-border-radius: 0.25em 0 0 0.25em;
-		        border-radius: 0.25em 0 0 0.25em;
-		content: "\21BB";
-	}
-	.btn.repost:before {
-		content: "\f005";
-	}
-	.btn.follow:before {
-		content: "\f06e";
-	}
-	.btn.unfollow:before {
-		content: "\f070";
-	}
+
 	.attribution p span {
 		margin-right: 1em;
 	}
