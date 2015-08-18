@@ -54,7 +54,7 @@ $this->js();
 
 <section class="main section">
 	<p class="warning">
-		<?php echo Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST', Route::url($this->page->link('new'))); ?>
+		<?php echo Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST_CREATE_IT', Route::url($this->page->link('new'))); ?>
 	</p>
 <?php if (count($this->book->templates('list', array(), 'true'))) { ?>
 	<p>

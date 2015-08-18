@@ -188,6 +188,11 @@ class Page extends SiteController
 		// Does a page exist for the given pagename?
 		if (!$this->page->exists() || $this->page->isDeleted())
 		{
+			if (!$this->page->access('create'))
+			{
+				App::abort(404, Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST'));
+			}
+
 			// No! Ask if they want to create a new page
 			$this->view->setLayout('doesnotexist');
 			if ($this->_group)
