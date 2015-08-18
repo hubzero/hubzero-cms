@@ -251,17 +251,38 @@ class StorefrontModelOptionGroup
 		// Delete all options
 		$options = $this->getOptions();
 
-		//print_r($options); die;
+		// Save warning messages to display
+		$warnings = array();
+
 		foreach ($options as $option)
 		{
-			//print_r($option); die;
 			$option->delete();
+			if ($optionWarnings = $option->getMessages())
+			{
+				foreach ($optionWarnings as $optionWarning)
+				{
+					// Don't save duplicate messages, one is enough
+					if (!in_array($optionWarning, $warnings))
+					{
+						$warnings[] = $optionWarning;
+					}
+				}
+			}
 		}
 
 		// Delete product-option group relations
-		$sql = 'DELETE FROM `#__storefront_option_groups` WHERE `ogId` = ' . $this->db->quote($this->getId());
+		$sql = 'DELETE FROM `#__storefront_product_option_groups` WHERE `ogId` = ' . $this->db->quote($this->getId());
 		$this->db->setQuery($sql);
 		$this->db->query();
+
+		// Set warning messages
+		if (!empty($warnings))
+		{
+			foreach ($warnings as $warning)
+			{
+				$this->addMessage($warning);
+			}
+		}
 	}
 
 	public function getOptions()
@@ -292,6 +313,20 @@ class StorefrontModelOptionGroup
 	public function addOption($option)
 	{
 		$this->data->options[$option->getId()] = $option;
+	}
+
+	private function addMessage($msg)
+	{
+		$this->data->messages[] = $msg;
+	}
+
+	public function getMessages()
+	{
+		if (empty($this->data->messages))
+		{
+			return false;
+		}
+		return $this->data->messages;
 	}
 
 }

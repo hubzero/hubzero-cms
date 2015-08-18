@@ -55,6 +55,11 @@ if (empty($this->meta->eula))
 	$this->meta->eula = '';
 }
 
+if (empty($this->meta->globalDownloadLimit))
+{
+	$this->meta->globalDownloadLimit = '';
+}
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -79,6 +84,11 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="eula"><?php echo 'EULA (if required, can be overridden on a SKU level)' ?>: </label><br />
 				<?php echo JFactory::getEditor()->display('fields[eula]', $this->escape(stripslashes($this->meta->eula)), '', '', 50, 10, false, 'eula'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-globalDownloadLimit"><?php echo 'Total Downloads Limit'; ?>:</label><br />
+				<input type="text" name="fields[globalDownloadLimit]" id="field-globalDownloadLimit" size="30" maxlength="100" value="<?php echo $this->meta->globalDownloadLimit; ?>" />
 			</div>
 		</fieldset>
 	</div>

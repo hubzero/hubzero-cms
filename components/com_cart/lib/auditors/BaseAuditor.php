@@ -49,6 +49,19 @@ class BaseAuditor {
         $this->response->errors = array();
     }
 
+    public function setSku($sId)
+    {
+        $this->sId = $sId;
+    }
+
+    public function getSku()
+    {
+        if(!empty($this->sId) && $this->sId) {
+            return $this->sId;
+        }
+        return false;
+    }
+
     public function audit()
     {
         return($this->getResponse());

@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
+
 /**
  * Controller class for knowledge base categories
  */
@@ -50,6 +52,10 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 		// Get option group ID
 		$ogId = JRequest::getVar('id', array(0));
 		$this->view->ogId = $ogId;
+
+		// Get option group
+		$optionGroup = new StorefrontModelOptionGroup($ogId);
+		$this->view->optionGroup = $optionGroup;
 
 		// Get filters
 		$this->view->filters = array(
@@ -307,6 +313,7 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 				{
 					// Do the delete
 					$obj = new StorefrontModelArchive();
+					$warnings = array();
 
 					foreach ($oIds as $oId)
 					{
@@ -315,6 +322,18 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 						{
 							$option = $obj->option($oId);
 							$option->delete();
+
+							// see if there are any warnings to display
+							if ($optionWarnings = $option->getMessages())
+							{
+								foreach ($optionWarnings as $optionWarning)
+								{
+									if (!in_array($optionWarning, $warnings))
+									{
+										$warnings[] = $optionWarning;
+									}
+								}
+							}
 						}
 						catch (Exception $e)
 						{
@@ -337,6 +356,14 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 					$msg,
 					$type
 				);
+
+				if (!empty($warnings))
+				{
+					foreach ($warnings as $warning)
+					{
+						JFactory::getApplication()->enqueueMessage($warning, 'warning');
+					}
+				}
 			break;
 		}
 	}

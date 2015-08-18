@@ -30,6 +30,12 @@
 			$downloadLimit = $skuMeta['downloadLimit'];
 		}
 
+		$globalDownloadLimit = '';
+		if (isset($skuMeta['globalDownloadLimit']) && !empty($skuMeta['globalDownloadLimit']))
+		{
+			$globalDownloadLimit = $skuMeta['globalDownloadLimit'];
+		}
+
 		echo JFactory::getEditor()->display('fields[meta][eula]', $this->escape(stripslashes($eula)), '', '', 50, 10, false, 'eula');
 		?>
 	</div>
@@ -45,7 +51,12 @@
 	</div>
 
 	<div class="input-wrap">
-		<label for="field-downloadLimit"><?php echo 'Downloads Limit'; ?>:</label><br />
+		<label for="field-globalDownloadLimit"><?php echo 'Total Downloads Limit'; ?>:</label><br />
+		<input type="text" name="fields[meta][globalDownloadLimit]" id="field-globalDownloadLimit" size="30" maxlength="100" value="<?php echo $globalDownloadLimit; ?>" />
+	</div>
+
+	<div class="input-wrap">
+		<label for="field-downloadLimit"><?php echo 'Downloads Limit per Single User'; ?>:</label><br />
 		<input type="text" name="fields[meta][downloadLimit]" id="field-downloadLimit" size="30" maxlength="100" value="<?php echo $downloadLimit; ?>" />
 	</div>
 

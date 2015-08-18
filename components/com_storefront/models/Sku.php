@@ -498,9 +498,9 @@ class StorefrontModelSku
 		}
 		if (!empty($key))
 		{
-			if (!empty($this->data->$key))
+			if (!empty($this->data->meta[$key]))
 			{
-				return $this->data->key;
+				return $this->data->meta[$key];
 			}
 			return false;
 		}

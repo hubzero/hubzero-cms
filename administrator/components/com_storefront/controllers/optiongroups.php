@@ -30,6 +30,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
 
 /**
  * Controller class for knowledge base collections
@@ -309,14 +310,27 @@ class StorefrontControllerOptiongroups extends \Hubzero\Component\AdminControlle
 				{
 					// Do the delete
 					$obj = new StorefrontModelArchive();
+					$warnings = array();
 
 					foreach ($ogIds as $ogId)
 					{
 						// Delete option group
 						try
 						{
-							$optionGroup = $obj->optionGroup($ogId);
+							$optionGroup = new StorefrontModelOptionGroup($ogId);
 							$optionGroup->delete();
+
+							// see if there are any warnings to display
+							if ($optionGroupWarnings = $optionGroup->getMessages())
+							{
+								foreach ($optionGroupWarnings as $optionGroupWarning)
+								{
+									if (!in_array($optionGroupWarning, $warnings))
+									{
+										$warnings[] = $optionGroupWarning;
+									}
+								}
+							}
 						}
 						catch (Exception $e)
 						{
@@ -339,6 +353,13 @@ class StorefrontControllerOptiongroups extends \Hubzero\Component\AdminControlle
 					$msg,
 					$type
 				);
+				if ($warnings)
+				{
+					foreach ($warnings as $warning)
+					{
+						JFactory::getApplication()->enqueueMessage($warning, 'warning');
+					}
+				}
 				break;
 		}
 	}

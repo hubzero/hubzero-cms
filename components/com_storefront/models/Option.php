@@ -268,7 +268,7 @@ class StorefrontModelOption
 	 * Delete an option and everything related to it
 	 *
 	 * @param	void
-	 * @return	bool	true on success, exception otherwise
+	 * @return	void
 	 */
 	public function delete()
 	{
@@ -278,14 +278,53 @@ class StorefrontModelOption
 		//print_r($this->db->replacePrefix($this->db->getQuery()));
 		$this->db->query();
 
+		// Find all SKUs that use this option before removing all references
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'storefront.php');
+		$sIds = StorefrontHelperStorefront::getSkuIdsByOption($this->getId());
+
 		// Delete the SKU-option relation
 		$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `oId` = ' . $this->db->quote($this->getId());
 		$this->db->setQuery($sql);
 		//print_r($this->db->replacePrefix($this->db->getQuery()));
 		$this->db->query();
 
-		// TODO Cleanup
-		return true;
+		// Update dependencies, disable SKUs that became invalid
+		$skusDisabled = false;
+		foreach ($sIds as $sId)
+		{
+			$sku = new StorefrontModelSku($sId);
+			if ($sku->getActiveStatus())
+			{
+				try
+				{
+					$sku->verify();
+				}
+				catch (Exception $e)
+				{
+					$sku->unpublish();
+					$skusDisabled = true;
+				}
+			}
+		}
+
+		if ($skusDisabled)
+		{
+			$this->addMessage('Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.');
+		}
+	}
+
+	private function addMessage($msg)
+	{
+		$this->data->messages[] = $msg;
+	}
+
+	public function getMessages()
+	{
+		if (empty($this->data->messages))
+		{
+			return false;
+		}
+		return $this->data->messages;
 	}
 
 }

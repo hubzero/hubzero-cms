@@ -216,11 +216,6 @@ class StorefrontControllerMeta extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if (!isset($fields['access']))
-		{
-			//$row->set('access', JRequest::getInt('access', 0, 'post'));
-		}
-
 		if ($redirect)
 		{
 			// Redirect

@@ -78,6 +78,11 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
+				<th colspan="3">
+					SKUs for: <a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=products&task=edit&id=' . $this->product->getId()); ?>" title="<?php echo JText::_('Edit product'); ?>"><?php echo $this->product->getName(); ?></a>
+				</th>
+			</tr>
+			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>

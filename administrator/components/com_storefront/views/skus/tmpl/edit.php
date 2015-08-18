@@ -56,24 +56,20 @@ function submitbutton(pressbutton)
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
 		alert("<?php echo 'Title cannot be empty' ?>");
-	} else {
-		submitform(pressbutton);
 	}
-
 	<?php
-	if ($this->pInfo->ptModel == 'software')
+	if (0 && $this->pInfo->ptModel == 'software')
 	{
 	?>
-
-	if (document.getElementById('field-download-file').value == ''){
+	else if (document.getElementById('field-download-file').value == ''){
 		alert("<?php echo 'Download file cannot be empty' ?>");
-	} else {
-		submitform(pressbutton);
 	}
-
 	<?php
 	}
 	?>
+	else {
+		submitform(pressbutton);
+	}
 }
 </script>
 
@@ -119,22 +115,47 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-options-<?php echo $optionGroup->ogId; ?>"><?php echo $optionGroup->ogName; ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 
-					<select name="fields[options][]" id="field-options-<?php echo $optionGroup->ogId; ?>">
-						<option value="">-- please select an option --</option>
 					<?php
+					// First check if there are any options to display
+					$optionsToDisplay = false;
 					foreach ($optionGroup->options as $option)
 					{
 						if ($option->oActive || in_array($option->oId, $this->options))
 						{
-						?>
-						<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) {
-							echo ' selected="selected"';
-						} ?>><?php echo $option->oName ?></option>
-						<?php
+							$optionsToDisplay = true;
 						}
 					}
 					?>
-					</select>
+
+					<?php
+					if ($optionsToDisplay)
+					{
+					?>
+						<select name="fields[options][]" id="field-options-<?php echo $optionGroup->ogId; ?>">
+							<option value="">-- please select an option --</option>
+						<?php
+						foreach ($optionGroup->options as $option)
+						{
+							if ($option->oActive || in_array($option->oId, $this->options))
+							{
+							?>
+							<option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) {
+								echo ' selected="selected"';
+							} ?>><?php echo $option->oName ?></option>
+							<?php
+							}
+						}
+						?>
+						</select>
+					<?php
+					}
+					else
+					{
+					?>
+						<p class="warning">There are currently no available options for this option group. Please go to the <a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=options&task=display&id=' . $optionGroup->ogId); ?>" title="<?php echo JText::_('Edit option group'); ?>"><?php echo $optionGroup->ogName; ?> options administration</a> and make sure to create new or enable existing options.</p>
+					<?php
+					}
+					?>
 				</div>
 			<?php
 			}

@@ -23,59 +23,41 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Hubzero
+ * @author    Ilya Shunko <ishunko@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
-
-/**
- *
- * Storefront SKU class
- *
- */
-class StorefrontModelSoftwareSku extends StorefrontModelSku
+class CartDownload
 {
-	/**
-	 * Contructor
-	 *
-	 * @param  void
-	 * @return void
-	 */
-	public function __construct($sId)
+	public static function countProductDownloads($pId)
 	{
-		parent::__construct($sId);
+		$db = JFactory::getDBO();
+		$sql = 'SELECT COUNT(*) FROM `#__cart_downloads` d
+				LEFT JOIN `#__storefront_skus` s ON d.`sId` = s.`sId`
+				WHERE s.pId = ' . $db->quote($pId);
+		$db->setQuery($sql);
+		$downloadsCount = $db->loadResult();
+		return $downloadsCount;
 	}
 
-	public function verify()
+	public static function countSkuDownloads($sId, $uId = false)
 	{
-		parent::verify();
-
-		// Check if the download file is set
-		if (empty($this->data->meta['downloadFile']) || !$this->data->meta['downloadFile'])
+		$db = JFactory::getDBO();
+		$sql = 'SELECT COUNT(*) FROM `#__cart_downloads`
+				WHERE sId = ' . $db->quote($sId);
+		if ($uId)
 		{
-			throw new Exception(JText::_('Download file must be set'));
+			$sql .= 'AND `uId` = ' . $db->quote($uId);
 		}
-
-		// Check if the download file really exists
-		$params = JComponentHelper::getParams('com_storefront');
-		$downloadFolder = $params->get('downloadFolder');
-		$dir = JPATH_ROOT . $downloadFolder;
-		$file = $dir . DS . $this->data->meta['downloadFile'];
-
-		if (!file_exists($file))
-		{
-			throw new Exception(JText::_('Download file doesn\'t exist'));
-		}
+		$db->setQuery($sql);
+		$downloadsCount = $db->loadResult();
+		return $downloadsCount;
 	}
 
-	public function getGlobalDownloadLimit()
+	public static function countUserSkuDownloads($sId, $uId)
 	{
-
+		return 666;
+		return CartDownload::countSkuDownloads($sId, $uId);
 	}
-
 }

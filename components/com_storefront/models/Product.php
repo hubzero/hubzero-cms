@@ -220,9 +220,21 @@ class StorefrontModelProduct
 				$skuIds = $db->loadResultArray();
 				$skus = array();
 
+				// Find out product type to instantiate the correct object
+				// software
+				if ($this->getType() == 30)
+				{
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
+					$instanceName = 'StorefrontModelSoftwareSku';
+				}
+				else
+				{
+					$instanceName = 'StorefrontModelSku';
+				}
+
 				foreach ($skuIds as $sId)
 				{
-					$sku = new StorefrontModelSku($sId);
+					$sku = new $instanceName($sId);
 					$skus[] = $sku;
 				}
 				$this->setSkus($skus, false);
@@ -790,7 +802,7 @@ class StorefrontModelProduct
 	 * Save product
 	 *
 	 * @param  	void
-	 * @return 	bool
+	 * @return 	void
 	 */
 	public function save()
 	{
@@ -927,7 +939,8 @@ class StorefrontModelProduct
 			$db->execute();
 		}
 
-		return true;
+		// Finally, since the product updates can potentially affect other elements of the storefront, update dependencies
+		$this->updateDependencies();
 	}
 
 	/**
@@ -997,8 +1010,47 @@ class StorefrontModelProduct
 		$sql = 'DELETE FROM `#__storefront_product_option_groups` WHERE `pId` = ' . $db->quote($this->getId());
 		$db->setQuery($sql);
 		$db->query();
+	}
 
-		//
+	private function updateDependencies()
+	{
+		// Check all active product SKUs and disable those that do not verify anymore
+		$skus = $this->getSkus();
+		$skusDisabled = false;
+		foreach ($skus as $sku)
+		{
+			if ($sku->getActiveStatus())
+			{
+				try
+				{
+					$sku->verify();
+				}
+				catch (Exception $e)
+				{
+					$sku->unpublish();
+					$skusDisabled = true;
+				}
+			}
+		}
+
+		if ($skusDisabled)
+		{
+			$this->addMessage('Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.');
+		}
+	}
+
+	private function addMessage($msg)
+	{
+		$this->data->messages[] = $msg;
+	}
+
+	public function getMessages()
+	{
+		if (empty($this->data->messages))
+		{
+			return false;
+		}
+		return $this->data->messages;
 	}
 
 	/* ************************************* Static functions ***************************************************/

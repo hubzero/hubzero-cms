@@ -379,11 +379,13 @@ abstract class CartModelCart
 		{
 			require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
 			$auditor = Audit::getAuditor($skuInfo, $this->crtId);
+			$auditor->setSku($skuInfo->sId);
+			//print_r($auditor); die;
 			$auditorResponse = $auditor->audit();
 
 			if ($auditorResponse->status == 'error')
 			{
-				throw new Exception($skuInfo->pName . $auditor->getResponseError());
+				throw new Exception($skuInfo->pName . ', ' . $skuInfo->sSku . $auditor->getResponseError());
 			}
 		}
 

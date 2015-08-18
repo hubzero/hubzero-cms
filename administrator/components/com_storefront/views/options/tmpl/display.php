@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = StorefrontHelperPermissions::getActions('product');
 
-JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': Option Group Options', 'kb.png');
+JToolBarHelper::title(JText::_('COM_STOREFRONT') . ': Options', 'kb.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -73,9 +73,15 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
+			<tr>
+				<th colspan="4">
+					 Options for: <a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=optiongroups&task=edit&id=' . $this->optionGroup->getId()); ?>" title="<?php echo JText::_('Edit option group'); ?>"><?php echo $this->optionGroup->getName(); ?></a>
+				</th>
+			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
