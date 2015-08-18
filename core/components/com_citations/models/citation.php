@@ -267,7 +267,7 @@ class Citation extends Relational
 										$authors = $this->relatedAuthors;
 										$authorCount = $this->relatedAuthors->count();
 									}
-									elseif ($auth != '')
+									elseif ($auth != '' && $this->relatedAuthors->count() == 0)
 									{
 										$author_string = $auth;
 										$authors = explode(';', $author_string);
@@ -303,7 +303,12 @@ class Citation extends Relational
 															}
 														}
 													}
-													//add author coins
+													else
+													{
+														$a[] = $author;
+													}
+														
+													// add author coins
 													$coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
 												} // legacy string
 												elseif (is_object($author)) // new ORM method
@@ -317,7 +322,7 @@ class Citation extends Relational
 														$a[] = $author->author;
 													}
 												} //new ORM method
-												 else
+												else
 												{
 													$a[] = $author;
 												}
