@@ -13,6 +13,14 @@
 		padding-bottom: 2em;
 	}
 
+	#system-debug,
+	#system-debug * {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+	}
 	#system-debug {
 		position: fixed;
 		bottom: 0;
@@ -53,7 +61,7 @@
 		float: left;
 		font-weight: normal;
 		text-shadow: none;
-		width: 1em;
+		width: 3em;
 		overflow: hidden;
 		white-space: nowrap;
 		border-right: 1px solid #ddd;
@@ -363,64 +371,6 @@
 		text-indent: 0;
 	}
 
-@media (max-width: 500px) {
-	/*#system-debug .debug-tab {
-		width: 100%;
-		float: none;
-		display: block;
-		border-right: none;
-		border-top: 1px solid #ddd;
-		width: 100%;
-	}
-	#system-debug .debug-head h1:after {
-		content: "";
-		display: table;
-		line-height: 0;
-		clear: left;
-	}
-	#system-debug .debug-head h1 {
-		float: none;
-	}*/
-	#system-debug .debug-tab {
-		display: block;
-		overflow: hidden;
-		width: 1em;
-		white-space: nowrap;
-	}
-	#system-debug .debug-tab:before {
-		font-family: "Fontcons";
-		content: "\f05a";
-		margin-right: 2em;
-	}
-	#system-debug .debug-tab-errors:before {
-		content: "\26A0";
-	}
-	#system-debug .debug-tab-console:before {
-		content: "\f003";
-	}
-	#system-debug .debug-tab-request:before {
-		content: "\2601";
-	}
-	#system-debug .debug-tab-session:before {
-		content: "\f007";
-	}
-	#system-debug .debug-tab-timeline:before {
-		content: "\f056";
-	}
-	#system-debug .debug-tab-database:before {
-		content: "\f001";
-	}
-	#system-debug .debug-tab-lang-errors:before {
-		content: "\f0e5";
-	}
-	#system-debug .debug-tab-lang-files:before {
-		content: "\f075";
-	}
-	#system-debug .debug-tab-lang-untranslated:before {
-		content: "\f0e6";
-	}
-}
-
 	/* 
 	#7a93c4 - blue 
 	#c1807e - red
@@ -603,3 +553,44 @@
 	#system-debug.dark .dbg-warning {
 		color: #dec9a0;
 	}
+
+@media (max-width: 500px) {
+	#system-debug .debug-tab {
+		display: block;
+		overflow: hidden;
+		width: 3em;
+		white-space: nowrap;
+	}
+	#system-debug .debug-tab:before {
+		font-family: "Fontcons";
+		content: "\f05a";
+		margin-right: 2em;
+	}
+	#system-debug .debug-tab-errors:before {
+		content: "\26A0";
+	}
+	#system-debug .debug-tab-console:before {
+		content: "\f003";
+	}
+	#system-debug .debug-tab-request:before {
+		content: "\2601";
+	}
+	#system-debug .debug-tab-session:before {
+		content: "\f007";
+	}
+	#system-debug .debug-tab-timeline:before {
+		content: "\f056";
+	}
+	#system-debug .debug-tab-database:before {
+		content: "\f001";
+	}
+	#system-debug .debug-tab-lang-errors:before {
+		content: "\f0e5";
+	}
+	#system-debug .debug-tab-lang-files:before {
+		content: "\f075";
+	}
+	#system-debug .debug-tab-lang-untranslated:before {
+		content: "\f0e6";
+	}
+}
