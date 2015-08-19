@@ -33,19 +33,19 @@ $this->css();
 </div>
 
 <?php if ($this->model->access('content')) { ?>
-<ul id="page_options" class="pluginOptions">
-	<li>
-		<a class="icon-add add btn"  href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=create') . '#content'; ?>">
-			<?php echo Lang::txt('PLG_PROJECTS_DATA_START'); ?>
-		</a>
-	</li>
-</ul>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add add btn"  href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=create') . '#content'; ?>">
+				<?php echo Lang::txt('PLG_PROJECTS_DATA_START'); ?>
+			</a>
+		</li>
+	</ul>
 <?php } ?>
 <div id="confirm-file-delete" class="confirm-file-delete" title="<?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE_PROJECT_DATABASE'); ?>">
-<p>
-	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0; color: red;"></span>
-	<?php echo Lang::txt('Confirm database deletion.'); ?>
-</p>
+	<p>
+		<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0; color: red;"></span>
+		<?php echo Lang::txt('Confirm database deletion.'); ?>
+	</p>
 </div>
 
 <div id="prj-db-list">
@@ -53,13 +53,13 @@ $this->css();
 	<table class="listing">
 		<thead>
 			<tr>
-				<th style="width: 40%;"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_TITLE'); ?></th>
+				<th><?php echo Lang::txt('PLG_PROJECTS_DATABASES_TITLE'); ?></th>
 				<th><?php echo Lang::txt('Source File'); ?></th>
 				<th><?php echo Lang::txt('Created On'); ?></th>
 				<th><?php echo Lang::txt('Created By'); ?></th>
 				<?php if ($this->model->access('content')) { ?>
-				<th><?php echo Lang::txt('Update Database'); ?><span class="update-help-icon" title="<?php echo Lang::txt('Click the \'Update\' link to recreate a database using the updated source CSV file from the file repository. Click the help icon for more information.'); ?>"></span></th>
-				<th><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></th>
+					<th><?php echo Lang::txt('Update Database'); ?><span class="update-help-icon" title="<?php echo Lang::txt('Click the \'Update\' link to recreate a database using the updated source CSV file from the file repository. Click the help icon for more information.'); ?>"></span></th>
+					<th><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></th>
 				<?php } ?>
 			</tr>
 		</thead>
@@ -76,15 +76,14 @@ $this->css();
 					$full_path = htmlspecialchars($r['source_file']);
 				}
 
-				$file_url = '/projects/' . $this->model->get('alias')
-					. '/files/?action=download&amp;case=files&amp;subdir='
-					. trim($r['source_dir'], '/') . '&amp;file=' . $r['source_file'];
+				$file_url = 'index.php?option=com_projects&alias=' . $this->model->get('alias')
+					. '&active=files&action=download&subdir='
+					. trim($r['source_dir'], '/') . '&asset=' . $r['source_file'];
+				$file_url = Route::url($file_url);
 
 				$file_name = '<a href="' . $file_url . '">' . $r['source_file'] . '</a>';
 
-				$recreate = '<a href="/projects/' . $this->model->get('alias')
-					. '/databases/create/?db_id=' . $r['id']
-					. '" class="re-create-db">' . Lang::txt('Update Database') . '</a>';
+				$recreate = '<a href="' . Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=create&db_id=' . $r['id']) . '" class="re-create-db">' . Lang::txt('Update Database') . '</a>';
 
 				$file_extra = 'title="' . $full_path . '"';
 
@@ -92,19 +91,19 @@ $this->css();
 				{
 					if ($r['source_available'])
 					{
-						$file_extra = 'class="file-updated" title="The file has changed, modified ' . $r['source_revision_date'] . '"';
+						$file_extra = 'class="file-updated" title="' . Lang::txt('The file has changed, modified %s', $r['source_revision_date']) . '"';
 					}
 					else
 					{
-						$file_extra = 'class="file-deleted" title="The file [' . $full_path . '] has been removed or renamed ' . $r['source_revision_date'] . '"';
-						$file_name = '<span style="color: #ddd; cursor: not-allowed;">' . $r['source_file'] . '</span>';
-						$recreate = '<span title="The original file has been removed or renamed, please restore the file to enable this functionality" style="color: #ddd; cursor: not-allowed;">Recreate<span>';
+						$file_extra = 'class="file-deleted" title="' . Lang::txt('The file [%s] has been removed or renamed %s', $full_path, $r['source_revision_date']) . '"';
+						$file_name = '<span style="color: #ddd; cursor: not-allowed;">' . $this->escape($r['source_file']) . '</span>';
+						$recreate = '<span title="' . Lang::txt('The original file has been removed or renamed, please restore the file to enable this functionality') . '" style="color: #ddd; cursor: not-allowed;">' . Lang::txt('Recreate') . '<span>';
 					}
 				}
 		?>
 			<tr class="mini faded">
-				<td title="<?php echo htmlspecialchars($r['description']); ?>" data-db-title="<?php echo htmlspecialchars($r['title']); ?>"  data-db-id="<?php echo $r['id']; ?>">
-					<a target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->model->get('alias'); ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $r['title']; ?></a>
+				<td title="<?php echo $this->escape($r['description']); ?>" data-db-title="<?php echo $this->escape($r['title']); ?>" data-db-id="<?php echo $r['id']; ?>">
+					<a target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->model->get('alias'); ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $this->escape($r['title']); ?></a>
 					<?php if ($this->model->access('content')) { ?>
 					<span class="db-update" title="<?php echo Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT'); ?>"></span>
 					<?php } ?>
@@ -116,14 +115,14 @@ $this->css();
 					<?php echo $r['created']; ?>
 				</td>
 				<td>
-					<a target="_blank" href="/members/<?php echo $r['created_by']; ?>"><?php echo $r['name']; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $r['created_by']); ?>"><?php echo $this->escape($r['name']); ?></a>
 				</td>
 				<?php if ($this->model->access('content')) { ?>
 				<td>
 					<?php echo $recreate; ?>
 				</td>
 				<td>
-					<a href="/projects/<?php echo $this->model->get('alias'); ?>/databases/delete/?db_id=<?php echo $r['id']; ?>" class="delete-db"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=delete&db_id=' . $r['id']); ?>" class="delete-db"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></a>
 				</td>
 				<?php } ?>
 			</tr>
