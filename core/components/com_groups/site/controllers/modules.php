@@ -208,7 +208,10 @@ class Modules extends Base
 		$contentChanged = false;
 		$oldContent = trim($this->module->get('content'));
 		$newContent = (isset($module['content'])) ? trim($module['content']) : '';
-		$newContent = Module::purify($newContent, $this->group->isSuperGroup());
+		if (!$this->group->params->get('page_trusted', 0))
+		{
+			$newContent = Module::purify($newContent, $this->group->isSuperGroup());
+		}
 
 		// is the new and old content different?
 		if ($oldContent != $newContent)
