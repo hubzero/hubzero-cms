@@ -2081,7 +2081,8 @@ class Resources extends SiteController
 		$resource->path = trim($resource->path);
 
 		// Ensure we have a path
-		if (empty($resource->path))
+		// Ensure resource is published - stemedhub #472
+		if (empty($resource->path) && $resource->published != 1)
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
