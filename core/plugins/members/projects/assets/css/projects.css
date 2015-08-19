@@ -51,27 +51,10 @@
 	.entries tbody tr.mline:focus {
 		background: #f4fcff;
 	}
-	.entries img {
-		float: left;
-		margin-right: 0.3em;
-	}
-	/*.th_title {
-		padding-left: 0;
-	}
-	.th_privacy {
-		margin: 0;
-		padding: 0;
-		width: 5%;
-	}
-	.th_status, .th_role {
-		width: 4em;
+	.entries thead th a {
 		color: #999;
 	}
-	h4.th_header {
-		padding: 0.5em;
-		margin: 1em 0 0 0;
-		background: #f7f7f7;
-	}*/
+
 	.s-new {
 		display: block;
 		position: absolute;
@@ -83,7 +66,7 @@
 		margin-left: -0.5em;
 		padding: 0 0.4em;
 	}
-	.entries-menu .s-new {
+	.sub-menu .s-new {
 		position: relative;
 		display: inline;
 		margin-left: 0.3em;
@@ -106,10 +89,10 @@
 	}
 
 /* Browse Projects - project thumbnail 
---------------------------------------------- */
+---------------------------------------------
 	.th_image {
 		width: 30px;
-	}
+	} */
 	.th_image img {
 		width: 30px;
 		height: 30px;
