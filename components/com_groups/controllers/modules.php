@@ -198,7 +198,15 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		$contentChanged = false;
 		$oldContent = trim($this->module->get('content'));
 		$newContent = (isset($module['content'])) ? trim($module['content']) : '';
-		$newContent = GroupsModelModule::purify($newContent, $this->group->isSuperGroup());
+
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new JRegistry($this->group->params);
+		}
+		if (!$this->group->params->get('page_trusted', 0))
+		{
+			$newContent = GroupsModelModule::purify($newContent, $this->group->isSuperGroup());
+		}
 
 		// is the new and old content different?
 		if ($oldContent != $newContent)
