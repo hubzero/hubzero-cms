@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -33,11 +35,11 @@ $this->css();
 
 ?>
 
+<h3 class="section-header"><?php echo Lang::txt('PLG_GROUPS_PROJECTS'); ?></h3>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-
-<h3 class="heading"><?php echo Lang::txt('PLG_GROUPS_PROJECTS'); ?></h3>
 
 <ul id="page_options" class="pluginOptions">
 	<li>
@@ -47,44 +49,43 @@ $this->css();
 	</li>
 </ul>
 
+<ul class="sub-menu">
+	<li class="active">
+		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
+		</a>
+	</li>
+	<li>
+		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+		</a>
+	</li>
+</ul>
+
 <section class="main section" id="s-projects">
-		<div class="container">
-			<div class="entries-filters">
-				<ul class="entries-menu">
-					<li>
-						<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
-							<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
-						</a>
-					</li>
-					<li>
-						<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
-							<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div id="myprojects">
-				<?php
-				if ($this->which == 'all')
-				{
-					// Show owned projects first
-					$this->view('list')
-					     ->set('option', $this->option)
-					     ->set('rows', $this->owned)
-					     ->set('config', $this->config)
-					     ->set('user', User::getRoot())
-					     ->set('which', 'owned')
-					     ->display();
-				}
-				// Show rows
-				$this->view('list')
-				     ->set('option', $this->option)
-				     ->set('rows', $this->rows)
-				     ->set('config', $this->config)
-				     ->set('user', User::getRoot())
-				     ->set('which', $this->filters['which'])
-				     ->display();
-				?>
-			</div>
-		</div>
+	<div class="container">
+		<?php
+		if ($this->which == 'all')
+		{
+			// Show owned projects first
+			$this->view('list')
+			     ->set('option', $this->option)
+			     ->set('rows', $this->owned)
+			     ->set('config', $this->config)
+			     ->set('user', User::getRoot())
+			     ->set('which', 'owned')
+			     ->display();
+
+			echo '</div><div class="container">';
+		}
+		// Show rows
+		$this->view('list')
+		     ->set('option', $this->option)
+		     ->set('rows', $this->rows)
+		     ->set('config', $this->config)
+		     ->set('user', User::getRoot())
+		     ->set('which', $this->filters['which'])
+		     ->display();
+		?>
+	</div>
 </section><!-- /.main section -->

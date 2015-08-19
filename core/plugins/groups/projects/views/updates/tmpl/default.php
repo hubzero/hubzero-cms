@@ -43,23 +43,23 @@ $this->css();
 	</li>
 </ul>
 
-<section class="main section" id="s-projects">
-		<div class="entries-filters">
-			<ul class="entries-menu">
-				<li>
-					<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
-					</a>
-				</li>
-				<li>
-					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-					</a>
-				</li>
-			</ul>
-		</div>
+<ul class="sub-menu">
+	<li>
+		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
+		</a>
+	</li>
+	<li class="active">
+		<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+		</a>
+	</li>
+</ul>
 
-		<div id="project-updates">
-			<?php
-			echo $this->content;
-			?>
-		</div>
+<section class="main section" id="s-projects">
+	<div id="project-updates">
+		<?php
+		echo $this->content;
+		?>
+	</div>
 </section>

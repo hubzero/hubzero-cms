@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -38,9 +40,10 @@ switch ($this->which)
 	case 'all':   $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_ALL');   break;
 }
 ?>
+
+	<table class="entries">
+		<caption><?php echo $title . ' (' . count($this->rows) . ')'; ?></caption>
 <?php if (count($this->rows) > 0) { ?>
-	<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
-	<table class="listing">
 		<thead>
 			<tr>
 				<th class="th_image" colspan="2"></th>
@@ -50,7 +53,7 @@ switch ($this->which)
 			</tr>
 		</thead>
 		<tbody>
-		<?php
+			<?php
 			$i = 0;
 			foreach ($this->rows as $row)
 			{
@@ -64,17 +67,24 @@ switch ($this->which)
 				$setup = $row->inSetup() ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') : '';
 
 				$i++;
-?>
+				?>
 				<tr class="mline">
-					<td class="th_image"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>"  class="project-image" /></a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?></td>
-					<td class="th_privacy"><?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ; } ?></td>
-					<td class="th_title"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
-					<?php if ($this->which != 'owned') { ?><span class="block">
-					<?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
-					<?php } ?>
+					<td class="th_image">
+						<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+							<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>"  class="project-image" />
+						</a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?>
+					</td>
+					<td class="th_privacy">
+						<?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ; } ?>
+					</td>
+					<td class="th_title">
+						<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
+						<?php if ($this->which != 'owned') { ?>
+							<span class="block"><?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
+						<?php } ?>
 					</td>
 					<td class="th_status">
-					<?php
+						<?php
 						$html = '';
 						if ($row->access('owner')) {
 							if ($row->isActive()) {
@@ -94,20 +104,23 @@ switch ($this->which)
 							}
 						}
 						echo $html;
-					?>
+						?>
 					</td>
 					<td class="th_role">
 						<?php echo $role; ?>
 					</td>
 				</tr>
-		<?php
+				<?php
 			}
-		?>
+			?>
 		</tbody>
-	</table>
 <?php } else { ?>
-	<div class="entries">
-		<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
-		<p class="noresults"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_NO_PROJECTS'); ?></p>
-	</div>
+		<tbody>
+			<tr>
+				<td>
+					<p class="noresults"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_NO_PROJECTS'); ?></p>
+				</td>
+			</tr>
+		</tbody>
 <?php } ?>
+	</table>
