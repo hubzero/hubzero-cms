@@ -626,7 +626,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$prep = array();
 
 		// Loop through activities
-		if (count($activities) > 0)
+		if (is_array($activities) && count($activities) > 0)
 		{
 			foreach ($activities as $a)
 			{
