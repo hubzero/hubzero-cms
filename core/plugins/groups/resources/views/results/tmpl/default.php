@@ -103,7 +103,7 @@ if ($this->cats)
 </ul>
 
 <section class="section">
-	<form class="section-inner" method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources'); ?>">
+	<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources'); ?>">
 
 		<input type="hidden" name="area" value="<?php echo $this->escape($this->active); ?>" />
 
