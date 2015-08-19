@@ -224,6 +224,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$config =  new \Hubzero\Config\Registry($this->group->get('params'));
 		$display = $config->get('display');
 
+		$total = \Components\Citations\Models\Citation::all()
+			->where('scope', '=', self::PLUGIN_SCOPE)
+			->where('scope_id', '=', $this->group->get('gidNumber'))
+			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+			->count();
+
 		// for first-time use
 		if ($count == 0 && $isManager && !isset($display))
 		{
@@ -234,7 +240,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			 'warning'
 			 );
 		}
-		elseif ((int) $count == 0 && $isManager && isset($display))
+		elseif ((int) $count == 0 && $isManager && isset($display) && $total <= 0)
 		{
 			$view = $this->view('intro', 'browse');
 			$view->group = $this->group;
@@ -574,7 +580,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'uid' => User::get('id'),
 				'created' => Date::toSql(),
 				'scope' => self::PLUGIN_SCOPE,
-				'scope_id' => $scope_id
+				'scope_id' => $scope_id,
+				'affiliated' => Request::getInt('affiliated', 0),
+				'fundedby' => Request::getInt('fundedby', 0)
 			));
 
 		// Store new content
@@ -1279,7 +1287,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$value = \Hubzero\Utility\Sanitize::clean($value);
 
 				// we handle things differently in search and sorting
-				if ($filter != 'search' && $filter != 'sort' && $filter!= 'tag' && $value != "")
+				if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "")
 				{
 					switch ($filter)
 					{
@@ -1294,6 +1302,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						break;
 						case 'year_end':
 							$citations->where('year', '<=', $value);
+						break;
+						case 'filter':
+							if ($value == 'aff')
+							{
+								$value = 1;
+							}
+							else
+							{
+								$value = 0;
+							}
+
+							$citations->where('affiliated', '=', $value);
 						break;
 						default:
 							$citations->where($filter, '=', $value);
