@@ -39,21 +39,19 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<?php echo Lang::txt('PLG_GROUPS_COURSES'); ?>
 </h3>
 
-<div class="section">
+<section class="section">
 <?php if (count($this->results) > 0) { ?>
 	<div class="container" id="courses-container">
 		<form method="get" action="<?php Route::url($base); ?>">
-
-			<?php
-			$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-			//$qs .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
-			//$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
-			//$qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
-			?>
-			<ul class="entries-menu order-options">
-				<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE'); ?></a></li>
-				<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&sortby=popularity' . $qs); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED'); ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED'); ?></a></li>
-			</ul>
+			<nav class="entries-filters">
+				<?php
+				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+				?>
+				<ul class="entries-menu order-options">
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&sortby=popularity' . $qs); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED'); ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED'); ?></a></li>
+				</ul>
+			</nav>
 
 			<table class="courses entries">
 				<caption>
@@ -66,10 +64,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<span>(<?php echo Lang::txt('PLG_GROUPS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 				</caption>
 				<tbody>
-			<?php
+				<?php
 				foreach ($this->results as $course)
 				{
-			?>
+					?>
 					<tr class="course">
 						<th>
 							<span class="entry-id"><?php echo $course->get('id'); ?></span>
@@ -122,9 +120,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							</span>
 						</td>
 					</tr>
-			<?php
+					<?php
 				}
-			?>
+				?>
 				</tbody>
 			</table>
 
@@ -157,4 +155,4 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		</div><!-- / .post-type -->
 	</div><!-- / #collection-introduction -->
 <?php } ?>
-</div>
+</section>
