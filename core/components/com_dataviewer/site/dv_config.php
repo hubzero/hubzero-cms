@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 global $html_path, $com_name, $dv_conf;
 
 $html_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT) . '/html';
-$com_name = str_replace(PATH_CORE.'/components/', '', JPATH_COMPONENT);
+$com_name = str_replace(PATH_CORE.'/components/', '', dirname(__DIR__));
 $com_name = str_replace('com_', '' , $com_name);
 $com_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT);
 
