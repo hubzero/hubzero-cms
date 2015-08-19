@@ -242,9 +242,7 @@
 
 /* other */
 #members-account-section .account {
-	float: left;
 	margin: 0;
-	margin-right: 10px;
 	margin-bottom: 10px;
 }
 #members-account-section .account.active:after {
@@ -270,4 +268,17 @@
 }
 #members-account-section .account .account-info {
 	padding-left: 50px;
+}
+
+@media (min-width: 40em) {
+	#members-account-section .account {
+		float: left;
+		margin-right: 10px;
+		width: 47%;
+	}
+}
+@media (min-width: 50em) {
+	#members-account-section .account {
+		width: 48%;
+	}
 }
