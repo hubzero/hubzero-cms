@@ -68,7 +68,7 @@ function view($dd = false)
 
 	$dv_conf['settings']['view']['id'] = $dd['dv_id'];
 	$dv_conf['settings']['view']['type'] = 'spreadsheet';
-	$dv_conf['settings']['data_url'] = "/?option=com_$com_name&task=data&db=" . $dd['db_id']['id'] . '&dv=' . $dd['dv_id'];
+	$dv_conf['settings']['data_url'] = "index.php?option=com_$com_name&task=data&db=" . $dd['db_id']['id'] . '&dv=' . $dd['dv_id'];
 	$dv_conf['settings']['view_url'] = "/dataviewer/view/{$dd['db_id']['id']}/{$dd['dv_id']}/";
 
 

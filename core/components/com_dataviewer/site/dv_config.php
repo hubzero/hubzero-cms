@@ -18,7 +18,7 @@ $com_name = str_replace(PATH_CORE.'/components/', '', JPATH_COMPONENT);
 $com_name = str_replace('com_', '' , $com_name);
 $com_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT);
 
-$dv_conf['settings']['com_name'] = $com_name;
+$dv_conf['settings']['com_name'] = trim($com_name, DS);
 
 define('DV_COM', $com_name);
 define('DV_COM_PATH', $com_path);
