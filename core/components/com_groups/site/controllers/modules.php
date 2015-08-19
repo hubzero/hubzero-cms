@@ -208,6 +208,10 @@ class Modules extends Base
 		$contentChanged = false;
 		$oldContent = trim($this->module->get('content'));
 		$newContent = (isset($module['content'])) ? trim($module['content']) : '';
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
+		}
 		if (!$this->group->params->get('page_trusted', 0))
 		{
 			$newContent = Module::purify($newContent, $this->group->isSuperGroup());
