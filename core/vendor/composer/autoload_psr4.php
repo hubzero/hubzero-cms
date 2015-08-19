@@ -11,6 +11,8 @@ return array(
     'Pelago\\' => array($vendorDir . '/pelago/emogrifier/Classes'),
     'Orcid\\' => array($vendorDir . '/hubzero/orcid-php/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'League\\Flysystem\\Dropbox\\' => array($vendorDir . '/league/flysystem-dropbox/src'),
+    'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),

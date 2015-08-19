@@ -1,0 +1,42 @@
+#! /bin/sh
+set -e
+
+title="Dropbox SDK for PHP"
+out_path="build/api-docs"
+report_path="build/api-docs-report.xml"
+
+# Locate the script file.  Cross symlinks if necessary.
+loc="$0"
+while [ -h "$loc" ]; do
+	ls=`ls -ld "$loc"`
+	link=`expr "$ls" : '.*-> \(.*\)$'`
+	if expr "$link" : '/.*' > /dev/null; then
+		loc="$link"  # Absolute link
+	else
+		loc="`dirname "$loc"`/$link"  # Relative link
+	fi
+done
+
+script_dir=`dirname "$loc"`
+top_dir=`dirname "$dir"`
+
+out_path="$top_dir/$out_path"
+report_path="$top_dir/$report_path"
+
+echo "Docs: $out_path"
+echo "Report: $report_path"
+
+api_gen="$top_dir/vendor/bin/apigen.php"
+
+exec "$api_gen" \
+    --title "$title" \
+    --source 'lib' \
+    --destination "$out_path" \
+    --report "$report_path" \
+    --charset 'utf8' \
+    --source-code yes \
+    --php no \
+    --groups none \
+    --access-levels public \
+    --update-check no \
+    --quiet

@@ -22,6 +22,7 @@ return array(
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
+    'Dropbox' => array($vendorDir . '/dropbox/dropbox-sdk/lib'),
     'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
     'Authy' => array($vendorDir . '/authy/php/lib'),
 );
