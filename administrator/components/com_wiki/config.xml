@@ -39,4 +39,7 @@
 		</field>
 		<field name="cache_time" type="text" default="15" label="COM_WIKI_CONFIG_CACHE_TIME_LABEL" description="COM_WIKI_CONFIG_CACHE_TIME_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_wiki" section="component" />
+	</fieldset>
 </config>

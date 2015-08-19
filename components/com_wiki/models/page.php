@@ -855,7 +855,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 					}
 				}
 				// Check if they're a site admin (from Joomla)
-				else if ($juser->authorize($option, 'manage'))
+				else if ($juser->authorise('core.manage', $option))
 				{
 					$this->config()->set('access-page-admin', true);
 					$this->config()->set('access-page-manage', true);
@@ -874,7 +874,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 				// No group = Site wiki
 				else
 				{
-					$this->config()->set('access-page-create', true);
+					$this->config()->set('access-page-create', ($juser->authorise('core.create', $option) !== false));
 
 					// Check permissions based on the page mode (knol/wiki)
 					switch ($this->param('mode'))
@@ -903,8 +903,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 						// Standard wiki
 						default:
-							$this->config()->set('access-page-delete', true);
-							$this->config()->set('access-page-edit', true);
+							$this->config()->set('access-page-delete', ($juser->authorise('core.delete', $option) !== false));
+							$this->config()->set('access-page-edit', ($juser->authorise('core.edit', $option) !== false));
 							$this->config()->set('access-page-modify', true);
 
 							$this->config()->set('access-comment-view', true);
