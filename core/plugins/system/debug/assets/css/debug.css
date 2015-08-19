@@ -178,7 +178,7 @@
 /* Close button */
 	#system-debug .debug-close-btn {
 		display: none;
-		width: 0.75em;
+		width: 2.75em;
 		overflow: hidden;
 		white-space: nowrap;
 	}
