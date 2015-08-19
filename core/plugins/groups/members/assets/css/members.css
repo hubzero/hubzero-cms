@@ -5,10 +5,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-.group_members .section {
-	padding: 0;
-}
-.group_members h3.heading {
+.group_members .section-header {
 	display: none;
 }
 .container-block h4 span,
@@ -85,12 +82,12 @@
 	background-color: #F17;
 	font-size: 0.85em;
 	color: #FFF;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	border-radius: 0.25em;
 	padding: 0 5px;
 }
-.message-all,
+
 .entries .remove-member,
 .entries .demote-member,
 .entries .promote-member,
@@ -99,7 +96,7 @@
 .entries .approve-member {
 	width: 5%;
 }
-.message-all a.message,
+
 .entries .remove-member a,
 .entries .demote-member a,
 .entries .promote-member a,
@@ -114,7 +111,7 @@
 	position: relative;
 	text-indent: -999em;
 }
-.message-all a.message:hover,
+
 .entries .remove-member a:hover,
 .entries .demote-member a:hover,
 .entries .promote-member a:hover,
@@ -123,7 +120,7 @@
 .entries .approve-member a:hover {
 	border: none;
 }
-.message-all a.message:before,
+
 .entries .remove-member a:before,
 .entries .demote-member a:before,
 .entries .promote-member a:before,
@@ -145,7 +142,8 @@
 	height: 20px;
 	width: 20px;
 }
-.message-all a.message:before {
+.message-all a:before {
+	font-family: 'Fontcons';
 	content: '\2709';
 }
 .entries .remove-member a:before {
@@ -190,8 +188,6 @@
 	width: 10px;
 	height: 10px;
 	color: transparent !important;
-	background: #efefef;
-	border-radius: 2px;
 }
 .aside a.edit-role {
 	right: 30px;
@@ -210,91 +206,6 @@
 }
 .aside a.edit-role:after {
 	content: '\270E';
-}
-
-
-/* Entries Menu */
-.entries-filters {
-	overflow: hidden;
-	margin-bottom: 0.5em;
-}
-.entries-menu {
-	list-style: none;
-	float:left;
-	padding: 0;
-	margin:0;
-	font-size: 85%;
-	width:80%;
-}
-.list-footer,
-.entries-menu {
-	min-height: 1px;
-}
-.list-footer {
-	margin-bottom:20px;
-}
-.entries-menu li {
-	float: left;
-	margin: 0;
-}
-.entries-menu li a {
-	color: #888;
-	display: block;
-	cursor: pointer;
-	font-weight: normal;
-	line-height: 1em;
-	border: none;
-	margin:0 5px 0 0;
-	padding: 5px 10px;
-	text-shadow: 0px 1px 1px #fff;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius:5px;
-}
-.entries-menu a:hover {
-	color: #fff;
-    background-color: #636166;
-	text-shadow: 0 1px 1px rgba(0,0,0,.3);
-	text-decoration: none;
-}
-.entries-menu .active { 
-	color:#ffffff; 
-	text-shadow: 0 1px 1px rgba(0,0,0,.3); 
-}
-.entries-menu .active.managers { 
-	background-color:#F17; 
-}
-.entries-menu .active.members { 
-	background-color:#6A0; 
-}
-.entries-menu .active.pending { 
-	background-color:#A30; 
-}
-.entries-menu .active.invitees { 
-	background-color:#AAA; 
-}
-.entries-search {
-	float:left;
-	background-color:#fff;
-	width:20%;
-}
-.entries-search fieldset {
-	border:1px solid #ccc;
-	overflow:hidden;
-}
-.entries-search input[type=text] {
-	padding:2px;
-	border:none;
-	width:83%;
-	float:left;
-}
-.entries-search input[type=submit] {
-	float:right;
-	width:11%;
-	height:20px;
-	border:none;
-	text-indent:-9999px;
-	background:#fff url('/components/com_groups/site/assets/img/search.png') no-repeat 50% 50%;
 }
 
 /* Message AJAX */
@@ -339,7 +250,7 @@
 	color: #f00;
 	font-size: 0.6em;
 	text-transform: uppercase;
-}		
+}
 #sbox-content .hub-mail #members {
 	display: block;
 	width: 50%;
@@ -349,50 +260,4 @@
 }
 #sbox-content .hub-mail .smallinput {
 	width: 1px;
-}
-
-/* Hide the sidebar if the page is too narrow */
-@media only screen and (max-width: 1064px) {
-	.group_members .aside,
-	.group_members .subject {
-		float: none;
-	}
-	.group_members .aside .container {
-		width: 47.5%;
-		float: left;
-		margin: 1em 2.5% 1em 0;
-		padding: 0;
-		background: transparent;
-		border: none;
-	}
-	.group_members .aside #addrole {
-		margin-left: 2.5%;
-		margin-right: 0;
-	}
-	.group_members .aside .container h4 {
-		margin: 0 0 1em 0;
-		padding: 1em 0 0 0;
-	}
-	.group_members .aside .container ul {
-		padding: 0 0 1em 0;
-		border: none;
-	}
-	.group_members .aside .container:before,
-	.group_members .aside .container:after,
-	.group_members .aside:before,
-	.group_members .aside:after,
-	.group_members .subject:after {
-		display: none;
-	}
-	.group_members .aside {
-		margin: 0;
-		padding: 0;
-		width: auto;
-	}
-	.group_members .subject {
-		padding-left: 0;
-		padding-right: 0;
-		margin-right: 0;
-		clear: both;
-	}
 }
