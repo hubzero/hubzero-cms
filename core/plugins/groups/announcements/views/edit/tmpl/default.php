@@ -52,7 +52,7 @@ $this->js()
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
 		<div class="explaination">
 			<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_HINT'); ?>
 		</div><!-- /.aside -->
@@ -60,17 +60,15 @@ $this->js()
 		<fieldset>
 			<legend>
 				<?php if ($this->announcement->get('id')) : ?>
-						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 				<?php else : ?>
-						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_NEW'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_NEW'); ?>
 				<?php endif; ?>
 			</legend>
 
 			<label for="field_content">
 				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
-				<?php
-				echo $this->editor('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), 35, 5, 'field_content', array('class' => 'minimal no-footer'));
-				?>
+				<?php echo $this->editor('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), 35, 5, 'field_content', array('class' => 'minimal no-footer')); ?>
 			</label>
 
 			<fieldset>
@@ -111,9 +109,9 @@ $this->js()
 			<label for="field-email" id="email-label">
 				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->email == 1) { echo 'checked="checked"'; } ?> />
 				<?php if ($this->announcement->sent == 1) : ?>
-					<span class="important"><?php echo Lang::txt('Announcement already emailed, send again?'); ?></span>
+					<span class="important"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_RESEND'); ?></span>
 				<?php else : ?>
-					<?php echo Lang::txt('Email announcement to group members?'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_MEMBERS'); ?>
 				<?php endif; ?>
 			</label>
 
@@ -121,16 +119,17 @@ $this->js()
 				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> />
 				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?> <a href="#" class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</a>
 			</label>
+
 			<label for="field-sticky" id="sticky-label">
 				<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->announcement->get('sticky')) { echo ' checked="checked"'; } ?> />
 				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?> <a href="#" class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</a>
 			</label>
-
-			<p class="submit">
-				<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SAVE'); ?>" />
-			</p>
 		</fieldset>
 		<div class="clear"></div>
+
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SAVE'); ?>" />
+		</p>
 
 		<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->announcement->get('id')); ?>" />
 		<input type="hidden" name="fields[state]" value="1" />
