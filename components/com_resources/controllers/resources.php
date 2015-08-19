@@ -2148,7 +2148,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$resource->path = trim($resource->path);
 
 		// Ensure we have a path
-		if (empty($resource->path))
+		// Ensure the resource is published (stemedhub #472)
+		if ($resource->published != 1 || empty($resource->path))
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
