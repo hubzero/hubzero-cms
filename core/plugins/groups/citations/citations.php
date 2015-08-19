@@ -441,15 +441,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Pub author
 		$pubAuthor = false;
 
-		// Load the associations object
-		$assoc = new \Components\Citations\Tables\Association($this->database);
-
-		// Get associations
-		if ($id)
-		{
-			$view->assocs = $assoc->getRecords(array('cid' => $id), $view->isManager);
-		}
-
 		// Is user authorized to edit citations?
 		if (!$view->isManager && !$pubAuthor)
 		{
@@ -491,12 +482,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			$view->row->uid = User::get('id');
 
-			// It's new - no associations to get
-			$view->assocs = array();
-
 			// tags & badges
 			$view->tags		= array();
 			$view->badges = array();
+
+			$view->row->id = -time();
 		}
 		else
 		{
@@ -537,8 +527,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// get badges
 		$badges = trim(Request::getVar('badges', ''));
 
+		// check to see if new
+		$cid = Request::getInt('id');
+		$isNew = ($cid < 0 ? true : false);
+
 		// get the citation (single) or create a new one
-		$citation = \Components\Citations\Models\Citation::oneOrNew(Request::getInt('id'))
+		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
 			->set(array(
 				'type' => Request::getInt('type'),
 				'cite' => Request::getVar('cite'),
@@ -548,6 +542,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'date_publish' => Request::getVar('date_publish'),
 				'year' => Request::getVar('year'),
 				'month' => Request::getVar('month'),
+				'author' => Request::getVar('author'),
 				'author_address' => Request::getVar('author_address'),
 				'editor' => Request::getVar('editor'),
 				'title' => Request::getVar('title'),
@@ -588,6 +583,19 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$this->setError($citation->getError());
 			$this->_edit();
 			return;
+		}
+
+		// update authors entries for new citations
+		if ($isNew)
+		{
+			$authors = \Components\Citations\Models\Author::all()
+				->where('cid', '=', $cid);
+
+			foreach ($authors as $author)
+			{
+				$author->set('cid', $citation->id);
+				$author->save();
+			}
 		}
 
 		// check if we are allowing tags

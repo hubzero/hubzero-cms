@@ -195,7 +195,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 					</div>
 
 					<div class="field-wrap author-list">
-						<?php if (count($authors)) { ?>
+						<?php if (isset($authors) && count($authors)) { ?>
 							<?php foreach ($authors as $i => $author) { ?>
 								<p class="citation-author" id="author_<?php echo $this->escape($author->id); ?>">
 									<span class="author-handle">
