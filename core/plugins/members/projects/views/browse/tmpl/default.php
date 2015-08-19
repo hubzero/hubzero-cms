@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -42,23 +44,22 @@ $this->css();
 	</li>
 </ul>
 
-<div id="s-projects">	
-	<div id="myprojects" class="container">
-		<div class="entries-filters">
-			<ul class="entries-menu">
-				<li>
-					<a class="active" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
-						<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
-						<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
-					</a>
-				</li>
-			</ul>
-		</div>
-	<?php
+<ul class="sub-menu">
+	<li class="active">
+		<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
+		</a>
+	</li>
+	<li>
+		<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+		</a>
+	</li>
+</ul>
+
+<div id="s-projects">
+	<div class="container">
+		<?php
 		if ($this->which == 'all')
 		{
 			// Show owned projects first
@@ -70,6 +71,8 @@ $this->css();
 			     ->set('user', $this->user)
 			     ->set('filters', $this->filters)
 			     ->display();
+
+			echo '</div><div class="container">';
 		}
 
 		// Show rows
@@ -81,7 +84,6 @@ $this->css();
 		     ->set('which', $this->filters['which'])
 		     ->set('filters', $this->filters)
 		     ->display();
-	?>
+		?>
 	</div>
-</div><!-- / .subject -->
-<div class="clear"></div>
+</div>

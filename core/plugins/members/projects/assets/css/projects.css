@@ -13,117 +13,49 @@
 
 */
 
-/* My projects (member plugin) 
+/* Entries Menu
 --------------------------------------------- */
-
-/* Entries Menu */
-	#s-projects .entries-filters {
-		overflow: hidden;
-		margin: 0;
-		margin-bottom: 0.5em;
-	}
-	#s-projects .entries-menu {
-		list-style: none;
-		float: left;
-		padding: 0;
-		margin: 0;
-		font-size: 85%;
-		width: 80%;
-	}
-	#s-projects .entries-menu li {
-		float: left;
-		margin: 0;
-	}
-	#s-projects .entries-menu li a {
-		color: #888;
-		display: block;
-		cursor: pointer;
-		font-weight: normal;
-		line-height: 1em;
-		border: none;
-		margin: 0 5px 0 0;
-		padding: 0.5em 1em;
-		text-shadow: 0px 1px 1px #fff;
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		border-radius: 5px;
-		background: #f7f7f7;
-	}
-	#s-projects .entries-menu a:hover {
-		color: #fff;
-		background-color: #333;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		text-decoration: none;
-	}
-	#s-projects .entries-menu .active {
-		color: #ffffff;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		background-color: #999;
+	ul.sub-menu {
+		margin-bottom: 2em;
 	}
 
 /* Listings
 --------------------------------------------- */
-	table.listing {
-		border-top: none;
-		margin: 0 0 2em 0;
-		padding: 0;
-		background: #FFFFFF;
-		font-size: 85%;
-		color: #999;
-	}
-	table.listing th {
-		font-weight: normal;
-		border-bottom: 2px solid #f7f7f7;
-		color: #666;
-	}
-	table.listing tbody tr {
-		border-left: 1px solid #FFF;
-		border-right: 1px solid #FFF;
-	}
-	table.listing tbody tr.native {
+	.entries tbody tr.native {
 		background: #effeee;
-		border: 1px solid #cfeccd;
 	}
-	table.listing tbody tr.u_invited {
+	.entries tbody tr.u_invited {
 		background: #f6f6f6;
-		border: 1px solid #e2e2e2;
 	}
-	table.listing td {
-		border-bottom: 1px solid #ececec;
-	}
-	table.listing tbody tr:last-child {
-		border: none;
-	}
-	.listing span.setup a, #projects-admin span.setup {
+	.entries span.setup a,
+	#projects-admin span.setup {
 		color: #e4942d;
 		font-weight: bold;
 	}
-	.listing span.active a {
+	.entries span.active a {
 		color: green;
 	}
-	.listing span.pending  {
+	.entries span.pending {
 		color: red;
 	}
-	.listing span.suspended  {
+	.entries span.suspended {
 		color: black;
 	}
-	.listing span.active a:hover,
-	.listing span.active a:focus, 
-	.listing span.setup a:hover,
-	.listing span.setup a:focus {
+	.entries span.active a:hover,
+	.entries span.active a:focus, 
+	.entries span.setup a:hover,
+	.entries span.setup a:focus {
 		border-bottom: #59a94c;
 	}
-	table.listing tbody tr.mline:nth-child(2n-2) { /*background: #f6f6f6;*/ }
-	table.listing tbody tr.mline:hover,
-	table.listing tbody tr.mline:focus {
+	.entries tbody tr.mline:hover,
+	.entries tbody tr.mline:focus {
 		background: #f4fcff;
-		border: 1px solid #dae6ec;
 	}
-	.listing img {
+	.entries img {
 		float: left;
 		margin-right: 0.3em;
 	}
-	.th_title {
+	/*.th_title {
 		padding-left: 0;
 	}
 	.th_privacy {
@@ -139,7 +71,7 @@
 		padding: 0.5em;
 		margin: 1em 0 0 0;
 		background: #f7f7f7;
-	}
+	}*/
 	.s-new {
 		display: block;
 		position: absolute;
@@ -166,14 +98,14 @@
 	.block {
 		display: block;
 	}
-	table.listing th.activesort {
+	.entries th.activesort {
 		font-weight: bold !important;
 	}
-	table.listing th.activesort a {
+	.entries th.activesort a {
 		color: #000;
 	}
 
-/*Browse Projects - project thumbnail 
+/* Browse Projects - project thumbnail 
 --------------------------------------------- */
 	.th_image {
 		width: 30px;
@@ -205,16 +137,9 @@
 		margin-right: 0.3em;
 		vertical-align: middle;
 	}
-	.privacy-icon {
-		*background: transparent url("/components/com_projects/assets/img/icons/lock.png") 0 3px no-repeat;	
-		*padding: 5px 8px;
-	}
 
 /* News feed 
 --------------------------------------------- */
-	#project-updates {
-		padding: 1em;
-	}
 	.rightfloat {
 		float: right;
 		font-size: 85%;
@@ -235,7 +160,6 @@
 	.urgency {
 		color: red !important;
 	}
-
 
 /* Prev/next paging
 --------------------------------------------- */
@@ -263,7 +187,7 @@
 		color: #fce48a !important;
 	}
 	.re_sort:after {
-		content: "\2193"; 
+		content: "\2193";
 		margin-left: 0.2em;
 		width: 8px;
 		height: 8px;
@@ -273,13 +197,14 @@
 		color: #000;
 		font-weight: normal;
 	}
+
 	.noresults {
 		padding: 1em;
 		background: #f8ffff;
-		border-top: 1px solid #ace4e1;
-		border-bottom: 1px solid #ace4e1;
+		border: 1px solid #ace4e1;
 		font-size: 90%;
 	}
+
 	.hidden {
 		display: none !important;
 	}

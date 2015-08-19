@@ -1,9 +1,6 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -37,16 +39,16 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -60,14 +62,16 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @param   object  $user
+	 * @param   object  $member
+	 * @return  array
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		//default areas returned to nothing
+		// default areas returned to nothing
 		$areas = array();
 
-		//if this is the logged in user show them
+		// if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
 			$areas['projects'] = Lang::txt('PLG_MEMBERS_PROJECTS');
@@ -79,11 +83,11 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Perform actions when viewing a member profile
 	 *
-	 * @param      object $user   Current user
-	 * @param      object $member Current member page
-	 * @param      string $option Start of records to pull
-	 * @param      array  $areas  Active area(s)
-	 * @return     array
+	 * @param   object  $user    Current user
+	 * @param   object  $member  Current member page
+	 * @param   string  $option  Start of records to pull
+	 * @param   array   $areas   Active area(s)
+	 * @return  array
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -155,19 +159,13 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * View entries
 	 *
-	 * @param      string $which The type of entries to display
-	 * @return     string
+	 * @param   string  $which  The type of entries to display
+	 * @return  string
 	 */
 	protected function _view($which = 'all')
 	{
 		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'projects',
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		$view->projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
 		$view->newcount = $this->model->table()->getUpdateCount($view->projects, $this->_user->get('id'));
@@ -209,18 +207,12 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display updates
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	protected function _updates()
 	{
 		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'projects',
-				'name'    => 'updates'
-			)
-		);
+		$view = $this->view('default', 'updates');
 
 		// Get all projects user has access to
 		$projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
