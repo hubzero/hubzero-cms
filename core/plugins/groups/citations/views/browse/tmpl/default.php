@@ -281,16 +281,9 @@ if (isset($this->messages))
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
 						<select name="filters[sort]" id="sort" class="">
 							<?php foreach ($this->sorts as $k => $v) : ?>
-								<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
-								if (($this->isManager !== true) && ($v == "Date uploaded"))
-								{
-									// Do nothing
-								}
-								else
-								{
-								?>
-	 								<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
-								<?php } ?>
+								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort']) == $k ? 'selected' : ''); ?>>
+									<?php echo $v; ?>
+								</option>
 							<?php endforeach; ?>
 						</select>
 					</label>
