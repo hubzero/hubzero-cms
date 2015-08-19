@@ -920,7 +920,7 @@ class WikiParser
 				$output[] = '';
 			}
 			// pre blocks must start a line
-			else if ('{{{' == substr($line, 0, strlen('{{{')))
+			else if ('{{{' == substr($line, 0, 3) || '<pre>{{{' == substr($line, 0, 8))
 			{
 				if ($codestate == self::CS_NONE)
 				{
