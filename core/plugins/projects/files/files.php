@@ -196,6 +196,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
+			$ctask = 'connections';
+			if ($connection = Request::getInt('connection', null))
+			{
+				$ctask       = $this->_task;
+				$this->_task = 'connections';
+			}
+
 			// File actions
 			switch ($this->_task)
 			{
@@ -307,6 +314,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					break;
 				case 'sync_error':
 					$arr['html'] 	= $this->syncError();
+					break;
+
+				// New connected methods
+				case 'connections':
+					require_once __DIR__ . DS . 'connections.php';
+					$controller  = new connections($this, $this->_option, $connection);
+					$arr['html'] = $controller->execute($ctask);
 					break;
 			}
 		}
