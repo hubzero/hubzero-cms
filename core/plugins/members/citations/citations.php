@@ -608,58 +608,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Incoming associations
-		$arr     = Request::getVar('assocs', array());
-		$ignored = array();
-
-		foreach ($arr as $a)
-		{
-			$a = array_map('trim', $a);
-
-			// Initiate extended database class
-			$assoc = new \Components\Citations\Tables\Association($this->database);
-
-			//check to see if we should delete
-			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
-			{
-				// Delete the row
-				if (!$assoc->delete($a['id']))
-				{
-					$this->setError($assoc->getError());
-					$this->browseAction();
-					return;
-				}
-			}
-			else if ($a['tbl'] != '' || $a['oid'] != '')
-			{
-				$a['cid'] = $row->id;
-
-				// bind the data
-				if (!$assoc->bind($a))
-				{
-					$this->setError($assoc->getError());
-					$this->browseAction();
-					return;
-				}
-
-				// Check content
-				if (!$assoc->check())
-				{
-					$this->setError($assoc->getError());
-					$this->browseAction();
-					return;
-				}
-
-				// Store new content
-				if (!$assoc->store())
-				{
-					$this->setError($assoc->getError());
-					$this->browseAction();
-					return;
-				}
-			}
-		}
-
 		$config = Component::params('com_citations');
 
 		//check if we are allowing tags
