@@ -585,7 +585,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			JFile::delete($path . DS . $file['name']);
 
-			$this->setError(JText::_('File rejected because the anti-virus scan failed.'), 'error');
+			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNSAFE_FILE'));
 		}
 
 		// Push through to the media view
