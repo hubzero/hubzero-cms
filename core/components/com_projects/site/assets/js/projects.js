@@ -427,7 +427,7 @@ jQuery(document).ready(function($){
 		var li = $("<li />").addClass('option-select');
 
 		select.appendTo(li);
-		li.appendTo(el);
+		li.appendTo(el[0]);
 	}
 
 	HUB.Projects.initialize();
