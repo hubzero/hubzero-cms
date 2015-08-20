@@ -696,10 +696,18 @@
 	#project-wrap form {
 		border: none !important;
 	}
+	.groupowner {
+		background: #f8f6f2;
+		color: #999;
+		font-size: 85%;
+		margin: 0;
+		padding: 0.2em 0.5em;
+	}
+
+/* Project image
+--------------------------------------------- */
 	#pimage {
-		display: inline-block;
-		width: 150px;
-		height: 150px;
+		display: none;
 		border-radius: 20%;
 		overflow: hidden;
 		padding: 0;
@@ -711,17 +719,6 @@
 		-moz-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 		box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 	}
-	.groupowner {
-		background: #f8f6f2;
-		color: #999;
-		font-size: 85%;
-		margin: 0;
-		padding: 0.2em 0.5em;
-	}
-
-/* Project image
---------------------------------------------- */
-
 	#pimage img {
 		max-width: 200%;
 		height: 150px;
@@ -731,6 +728,26 @@
 	#pimage a:hover {
 		border: none;
 	}
+
+@media (min-width: 40em) {
+	#pimage {
+		display: inline-block;
+		width: 60px;
+		height: 60px;
+	}
+	#pimage img {
+		height: 60px;
+	}
+}
+@media (min-width: 50em) {
+	#pimage {
+		width: 150px;
+		height: 150px;
+	}
+	#pimage img {
+		height: 150px;
+	}
+}
 
 /* Project plugin options
 --------------------------------------------- */

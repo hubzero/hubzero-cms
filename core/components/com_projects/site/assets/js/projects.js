@@ -393,5 +393,42 @@ HUB.Projects = {
 }
 
 jQuery(document).ready(function($){
+	var el = $('.projecttools');
+
+	if (el.length) {
+		el.addClass('jsm');
+
+		var select = $("<select />").on('change', function() {
+			window.location = $(this).find("option:selected").val();
+		});
+
+		$("<option />", {
+			"value"   : "",
+			"text"    : 'Select ...' //el.attr('data-label')
+		}).appendTo(select);
+
+		el.find("a").each(function() {
+			var elm = $(this);
+
+			if (elm.hasClass('alrt')) {
+				return;
+			}
+
+			var opts = {
+				"value"   : elm.attr("href"),
+				"text"    : elm.text()
+			};
+			if ($(elm.parent()).hasClass('active')) {
+				opts.selected = 'selected';
+			}
+			$("<option />", opts).appendTo(select);
+		});
+
+		var li = $("<li />").addClass('option-select');
+
+		select.appendTo(li);
+		li.appendTo(el);
+	}
+
 	HUB.Projects.initialize();
 });

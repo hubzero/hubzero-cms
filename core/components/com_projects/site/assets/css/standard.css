@@ -12,14 +12,11 @@
  Standard project layout
 --------------------------------------------- */
 .main-menu {
-	width: 200px;
-	float: left;
 	margin: 0;
 	padding: 0;
 	background: #fff9ef;
 }
 .main-content {
-	margin-left: 200px;
 	padding: 2em;
 	padding-bottom: 4em;
 	margin-top: 0;
@@ -29,11 +26,10 @@
 }
 .main-menu ul.projecttools {
 	list-style: none;
-	margin: 0 0 2em 0;
-	padding: 0 0 2em 0;
+	margin: 0;
+	padding: 0;
 	font-size: 90%;
-	border-right: 1px solid #e8e8e8;
-	margin-right: -1px;	
+	border-top: 1px solid #e8e8e8;
 }
 .main-menu ul.assetlist {
 	padding-top: 0;
@@ -45,10 +41,6 @@
 	padding: 0.5em 0 0.5em 1.5em;
 	margin: 0;
 	border-bottom: 1px solid #e8e8e8;
-	border-top: 1px solid #e8e8e8;
-	border-right: 1px solid #e8e8e8;
-	margin-right: -1px;
-	margin-top: -1px;
 }
 .main-menu ul.projecttools li.assets {
 	padding-top: 0.5em;
@@ -81,7 +73,8 @@
 .main-menu ul.projecttools li.active {
 	background: #fff;
 	border-right: 1px solid #FFF;
-}	
+	margin-right: -1px;
+}
 .main-menu ul.projecttools li.active:last-child {
 	border-bottom: 1px solid #e8e8e8;
 }
@@ -117,6 +110,21 @@ ul.projecttools a:focus {
 	border: none;
 	outline: none; 
 }
+
+.main-menu ul.jsm li {
+	display: none;
+}
+.main-menu ul.jsm li.option-select {
+	padding: 0.5em;
+}
+.main-menu ul.jsm li.option-select,
+.main-menu ul.jsm li.option-select select {
+	display: block;
+}
+.main-menu ul.jsm li.option-select select {
+	width: 100%;
+}
+
 /* Counts (left-hand menu)
 --------------------------------------------- */
 .main-menu ul.projecttools li a span.mini {
@@ -193,29 +201,18 @@ ul.projecttools a:focus {
 	padding: 0.5em 1em;
 	font-size: 85%;
 }
-@media all and (max-width: 1024px) {
-	#introduction .second {
-		background: none;
+@media (min-width: 40em) {
+	.main-menu ul.jsm li {
+		display: block;
 	}
-	.content-files #u-hd {
+	.main-menu ul.jsm li.option-select {
 		display: none;
 	}
-	#plg-content .subject,
-	#plg-content .main-col {
-		margin-right: 0;
-		min-width: 400px;
-		width: 100%;
-		margin-right: 0;
+
+	.main-menu ul.projecttools {
+		margin: 0 0 2em 0;
+		padding: 0 0 2em 0;
 	}
-	#plg-content .side-col {
-		clear: both;
-		width: 100%;
-	}
-	.sidebox.suggestions p {
-		text-align: center;
-	}
-}
-@media all and (max-width: 900px) {
 	.main-menu ul.projecttools li a span {
 		display: none;
 	}
@@ -241,13 +238,6 @@ ul.projecttools a:focus {
 		height: 25px;
 		font-size: 25px;
 	}
-	#pimage {
-		width: 60px;
-		height: 60px;
-	}
-	#pimage img {
-		height: 60px;
-	}
 	.returnln {
 		padding: 0.5em 0;
 	}
@@ -258,9 +248,60 @@ ul.projecttools a:focus {
 		margin-top: 7em;
 	}
 	.main-menu {
+		float: left;
 		width: 100px;
 	}
 	.main-content {
 		margin-left: 100px;
+	}
+}
+@media (min-width: 50em) {
+	.main-menu ul.projecttools li,
+	.main-menu ul.assetlist li {
+		padding-left: 1.5em;
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+	}
+	.main-menu ul.projecttools li a span {
+		display: inline;
+	}
+	.main-menu ul.projecttools li.assets {
+		display: block;
+	}
+	.main-menu ul.projecttools li a:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+	}
+	.main-menu ul.projecttools li a span.mini,
+	.main-menu ul.assetlist li a span.mini {
+		margin: 0;
+	}
+	#introduction .second {
+		background: none;
+	}
+	.content-files #u-hd {
+		display: none;
+	}
+	#plg-content .subject,
+	#plg-content .main-col {
+		margin-right: 0;
+		min-width: 400px;
+		width: 100%;
+		margin-right: 0;
+	}
+	#plg-content .side-col {
+		clear: both;
+		width: 100%;
+	}
+	.sidebox.suggestions p {
+		text-align: center;
+	}
+	.main-menu {
+		float: left;
+		width: 200px;
+	}
+	.main-content {
+		margin-left: 200px;
 	}
 }
