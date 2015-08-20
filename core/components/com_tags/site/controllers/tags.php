@@ -271,7 +271,7 @@ class Tags extends SiteController
 							if (is_array($sresponse['results']))
 							{
 								$this->view->results = $sresponse['results'];
-								break;
+								break 2;
 							}
 						}
 					}
