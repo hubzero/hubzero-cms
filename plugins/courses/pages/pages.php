@@ -505,7 +505,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('File rejected because the anti-virus scan failed.'));
+			echo json_encode(array('error' => JText::_('File rejected because the anti-virus scan failed.')));
 			return;
 		}
 
