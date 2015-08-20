@@ -209,10 +209,6 @@ ul.projecttools a:focus {
 		display: none;
 	}
 
-	.main-menu ul.projecttools {
-		margin: 0 0 2em 0;
-		padding: 0 0 2em 0;
-	}
 	.main-menu ul.projecttools li a span {
 		display: none;
 	}
@@ -250,6 +246,8 @@ ul.projecttools a:focus {
 	.main-menu {
 		float: left;
 		width: 100px;
+		margin: 0;
+		padding: 0 0 4em 0;
 	}
 	.main-content {
 		margin-left: 100px;
