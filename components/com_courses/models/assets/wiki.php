@@ -144,6 +144,17 @@ class WikiAssetHandler extends ContentAssetHandler
 
 				// Move the file to the site folder
 				set_time_limit(60);
+
+				// Scan for viruses
+				if (!JFile::isSafe($_FILES['files']['tmp_name'][$i]))
+				{
+					// Scan failed, delete asset and association and return an error
+					$assetObj->delete();
+					$assocObj->delete();
+					JFolder::delete($uploadDirectory);
+					return array('error' => 'File rejected because the anti-virus scan failed.');
+				}
+
 				if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path))
 				{
 					return array('error' => 'Move file failed');
