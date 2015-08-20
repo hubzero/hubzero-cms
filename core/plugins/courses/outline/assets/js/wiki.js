@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
 			}
 		},
 		fail: function ( e, data ) {
-			$('.title-error').html(data.jqXHR.responseText).show();
+			$('.title-error').html($.parseJSON(data.jqXHR.responseText).message).show();
 			$('html, body').scrollTop(0);
 		}
 	})
