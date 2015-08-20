@@ -143,6 +143,14 @@ class Wiki extends Content
 
 				// Move the file to the site folder
 				set_time_limit(60);
+
+				// Scan for viruses
+				if (!\Filesystem::isSafe($_FILES['files']['tmp_name'][$i]))
+				{
+					// Scan failed, return an error
+					return array('error' => 'File rejected because the anti-virus scan failed.');
+				}
+
 				if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path))
 				{
 					return array('error' => 'Move file failed');
