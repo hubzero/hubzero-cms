@@ -260,8 +260,17 @@ class Media extends SiteController
 			Notify::error(Lang::txt('ERROR_UPLOADING'), 'courses');
 		}
 
-		//push a success message
-		Notify::success('You successfully uploaded the file.', 'courses');
+		if (!Filesystem::isSafe($path . DS . $file['name']))
+		{
+			Filesystem::delete($path . DS . $file['name']);
+
+			Notify::error(Lang::txt('File rejected because the anti-virus scan failed.'), 'courses');
+		}
+		else
+		{
+			//push a success message
+			Notify::success(Lang::txt('You successfully uploaded the file.'), 'courses');
+		}
 
 		// Push through to the media view
 		$this->mediaTask();
@@ -369,6 +378,14 @@ class Media extends SiteController
 		else
 		{
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+
+		if (!Filesystem::isSafe($file))
+		{
+			Filesystem::delete($file);
+
+			echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+			return;
 		}
 
 		//return success
