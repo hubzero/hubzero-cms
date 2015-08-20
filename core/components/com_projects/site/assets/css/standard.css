@@ -15,7 +15,7 @@
 	width: 200px;
 	float: left;
 	margin: 0;
-	padding: 0 0 0 0;	
+	padding: 0;
 	background: #fff9ef;
 }
 .main-content {
@@ -29,14 +29,9 @@
 }
 .main-menu ul.projecttools {
 	list-style: none;
-	margin: 0;
-	padding: 0;
+	margin: 0 0 2em 0;
+	padding: 0 0 2em 0;
 	font-size: 90%;
-	margin-bottom: 2em;
-	margin-top: 0;
-	padding-top: 0;
-	padding-bottom: 2em;
-	background: #fff9ef;
 	border-right: 1px solid #e8e8e8;
 	margin-right: -1px;	
 }
@@ -47,28 +42,16 @@
 	margin-top: -4em;
 }
 .main-menu ul.projecttools li {
-	padding: 0.5em 0.5em 0.5em 1.5em;
-	padding-right: 0;
+	padding: 0.5em 0 0.5em 1.5em;
 	margin: 0;
-	background: #fff9ef;
 	border-bottom: 1px solid #e8e8e8;
 	border-top: 1px solid #e8e8e8;
-	border-right: 1px solid #e8e8e8;		
-	height: 20px;
+	border-right: 1px solid #e8e8e8;
 	margin-right: -1px;
 	margin-top: -1px;
 }
 .main-menu ul.projecttools li.assets {
 	padding-top: 0.5em;
-	background: #fff9ef;
-}
-.main-menu ul.projecttools li.assets:hover {
-	background: #fff9ef;
-}
-.main-menu ul.projecttools li,
-.main-menu ul.projecttools li.assets,
-.main-menu ul.projecttools li.assets:hover {
-	background: #fff9ef;
 }
 .main-menu ul.projecttools li a:before {
 	color: #c9c4bc;
@@ -91,13 +74,12 @@
 .main-menu ul.projecttools li a {
 	padding: 0.1em;
 	padding-left: 20px;
-	width: 80%;	
-	height: 15px;
+	width: 80%;
 	outline: none;
 	display: block;
 }
 .main-menu ul.projecttools li.active {
-	background: #FFFFFF;
+	background: #fff;
 	border-right: 1px solid #FFF;
 }	
 .main-menu ul.projecttools li.active:last-child {
@@ -107,29 +89,31 @@
 	border-top: 1px solid #e8e8e8;
 }
 .main-menu ul.projecttools li.active a {
-	color: #000000;
+	color: #000;
 }
 .main-menu ul.projecttools li.active a span {
 	font-weight: bold;
 }
 .main-menu ul.projecttools li.editing {
-	background: #FFFFFF;
+	background: #fff;
 	padding-right: 0;
 }
 .main-menu ul.assetlist {
-	border-bottom: 1px solid #CCC;	
+	border-bottom: 1px solid #CCC;
 }
 .main-menu ul.projecttools li:hover {
-	background: #ffffff;
+	background: #fff;
 }
-.main-menu ul.projecttools li.pt_title, ul.projecttools li.pt_title:hover {
+.main-menu ul.projecttools li.pt_title,
+ul.projecttools li.pt_title:hover {
 	font-weight: bold;
 	font-size: 110%;
 	background: #e6dac6;
-	color: #000000;
+	color: #000;
 	border: none;
 }
-.main-menu ul.projecttools a:hover, ul.projecttools a:focus {
+.main-menu ul.projecttools a:hover,
+ul.projecttools a:focus {
 	border: none;
 	outline: none; 
 }
@@ -160,9 +144,9 @@
 --------------------------------------------- */
 .sidebox {
 	background: #fbfbfb;
-	border-right: 1px solid #cccccc;
-	border-left: 1px solid #cccccc;
-	border-bottom: 1px solid #cccccc;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 	border-bottom-left-radius: 10px;
 	-moz-border-radius-bottomleft: 10px;
 	border-bottom-right-radius: 10px;
@@ -175,7 +159,7 @@
 	padding: 0.2em 0.5em 1em 0.5em;
 	color: #333;
 	background-color: #ededed;
-	border-top: 1px solid #cccccc;
+	border-top: 1px solid #ccc;
 	background-position: 3px 3px;
 }
 .sidebox ul {
@@ -275,18 +259,8 @@
 	}
 	.main-menu {
 		width: 100px;
-		float: left;
-		margin: 0;
-		padding: 0 0 0 0;	
-		background: #fff9ef;
 	}
 	.main-content {
 		margin-left: 100px;
-		padding: 2em;
-		padding-bottom: 4em;
-		margin-top: 0;
-		background: #FFF;
-		border-left: 1px solid #e8e8e8;
-		min-height: 400px;
 	}
 }
