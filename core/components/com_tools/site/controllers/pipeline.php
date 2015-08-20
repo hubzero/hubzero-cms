@@ -1194,7 +1194,7 @@ class Pipeline extends SiteController
 		{
 			include_once(__DIR__ . DS . 'resource.php');
 
-			$resource = new ToolsControllerResource();
+			$resource = new Resource();
 
 			$rid = $resource->createPage($this->_toolid, $tool);
 			// save authors by default
@@ -1204,7 +1204,7 @@ class Pipeline extends SiteController
 			{
 				require_once(__DIR__ . DS . 'authors.php');
 
-				$controller = new ToolsControllerAuthors();
+				$controller = new Authors();
 				$controller->saveTask(0, $rid, $tool['developers']);
 
 				//$this->author_save(0, $rid, $tool['developers']);
@@ -2307,9 +2307,9 @@ class Pipeline extends SiteController
 		}
 
 		// unpublish resource page
-		include_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'resource.php');
+		include_once(__DIR__ . DS . 'resource.php');
 
-		$resource = new ToolsControllerResource();
+		$resource = new Resource();
 		$resource->updatePage($status['resourceid'], $status, '4');
 
 		// change tool status to 'abandoned' and priority to 'lowest'
