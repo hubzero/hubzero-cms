@@ -1224,8 +1224,16 @@ class Html extends Object
 				$href  	 .= DS . $desectPath[$p];
 				if ($linkit)
 				{
-					$bc .= ' &raquo; <span><a href="' . $url . '/?subdir='
-						. urlencode($href) . '" class="folder">' . $desectPath[$p] . '</a></span> ';
+					if (strpos($url, '?') !== false)
+					{
+						$currentUrl = Route::url($url . '&subdir=' . urlencode($href));
+						$bc .= ' &raquo; <span><a href="' . $currentUrl . '" class="folder">' . $desectPath[$p] . '</a></span> ';
+					}
+					else
+					{
+						$bc .= ' &raquo; <span><a href="' . $url . '/?subdir=';
+						$bc .= urlencode($href) . '" class="folder">' . $desectPath[$p] . '</a></span> ';
+					}
 				}
 				else
 				{
