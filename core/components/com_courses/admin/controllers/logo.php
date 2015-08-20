@@ -161,6 +161,14 @@ class Logo extends AdminController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
+		if (!Filesystem::isSafe($file))
+		{
+			Filesystem::delete($file);
+
+			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')));
+			return;
+		}
+
 		// Do we have an old file we're replacing?
 		if (($curfile = Request::getVar('currentfile', '')))
 		{
@@ -289,6 +297,15 @@ class Logo extends AdminController
 		}
 		else
 		{
+			if (!Filesystem::isSafe($path . DS . $file['name']))
+			{
+				Filesystem::delete($path . DS . $file['name']);
+
+				$this->setError(Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE'));
+				$this->displayTask($curfile, $id);
+				return;
+			}
+
 			// Do we have an old file we're replacing?
 			if (($curfile = Request::getVar('currentfile', '')))
 			{

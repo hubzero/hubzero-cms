@@ -443,6 +443,14 @@ class Pages extends AdminController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
+		if (!Filesystem::isSafe($file))
+		{
+			Filesystem::delete($file);
+
+			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')));
+			return;
+		}
+
 		//echo result
 		echo json_encode(array(
 			'success'   => true,
@@ -544,6 +552,16 @@ class Pages extends AdminController
 			if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING'));
+			}
+			else
+			{
+				if (!Filesystem::isSafe($path . DS . $file['name']))
+				{
+					Filesystem::delete($path . DS . $file['name']);
+
+					echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')));
+					return;
+				}
 			}
 		}
 
