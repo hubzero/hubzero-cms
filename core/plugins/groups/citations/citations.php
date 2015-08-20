@@ -914,16 +914,23 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges: "true");
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
-			// get formats
-			$view->formats = \Components\Citations\Models\Format::all()->rows()->toObject();
-			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
-			$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
+						// intended for the case that the group's custom
+			// format is removed from the jos_citations_format
+			try
+			{
+				$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
+			}
+			catch (\Exception $e)
+			{
+				$view->currentFormat = \Components\Citations\Models\Format::all()->where('style', 'like', 'ieee');
+			}
 
 			// get the name of the current format (see if it's custom)
 			// the name of the custom format
 			$name = "custom-group-" . $this->group->cn;
 
 			$custom = \Components\Citations\Models\Format::all()->where('style', 'LIKE', $name)->count();
+
 			if ($custom > 0)
 			{
 				// show the menu entry for the custom
@@ -935,6 +942,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$view->customFormat = false;
 			}
 
+			// get formats
+			$view->formats = \Components\Citations\Models\Format::all()
+					->where('style', 'NOT LIKE', '%custom-group-%')
+					->orWhere('style', '=', $name)
+					->rows()->toObject();
+
+			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
+	
 			// Output HTML
 			foreach ($this->getErrors() as $error)
 			{

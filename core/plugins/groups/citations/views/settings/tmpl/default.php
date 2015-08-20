@@ -166,7 +166,7 @@ $jQ(document).ready(function(e) {
 					</div>
 					<div class="col span6 omega">
 					<label for="display-members">
-						<?php echo Lang::txt('PLG_GROPUS_CITATIONS_SETTINGS_COINS_ONLY'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_COINS_ONLY'); ?>
 						<select name="coins_only" id="coins-only">
 							<option value="no" <?php echo ($this->coins_only == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
 							<option value="yes" <?php echo ($this->coins_only == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
@@ -188,14 +188,22 @@ $jQ(document).ready(function(e) {
 						<label for="cite">
 							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?>:
 								<select name="citation-format" id="format-selector">
-								<?php if ($this->customFormat === false): ?>
-									<option value="custom" data-format="">Custom for Group</option>
-								<?php endif; ?>
 									<?php foreach ($this->formats as $format): ?>
+											<?php if ($format->style != 'custom-group-'.$this->group->get('cn')): ?>
 										<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
 											<?php echo $format->style; ?>
 										</option>
+										 <?php elseif ($format->style == 'custom-group-'.$this->group->get('cn')): ?>
+											<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
+												<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_CUSTOM_FORMAT'); ?>
+											</option>
+										<?php endif; ?> 
 									<?php endforeach; ?>
+									<?php if ($this->customFormat === false): ?>
+									<option value="custom" data-format="">
+												<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_CUSTOM_FORMAT'); ?>
+									</option>
+									<?php endif; ?>
 								</select>
 
 							<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITE_KEY_EXPLANATION'); ?></span>

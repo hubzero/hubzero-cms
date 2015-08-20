@@ -148,8 +148,16 @@ class Citation extends Relational
 	    $replace_values = array();
 
 		// get the template
-		$format = \Components\Citations\Models\Format::oneOrFail($config['citationFormat']);
-		$template = $format->format;
+		// default to IEEE
+		try 
+		{
+			$format = \Components\Citations\Models\Format::oneOrFail($config['citationFormat']);
+		}
+		catch (\Exception $e)
+		{
+			$format = \Components\Citations\Models\Format::all()->where('style', 'LIKE', '%IEEE%')->row()->toObject();
+		}
+
 
 		//get the template keys
 		 $template_keys =  array(
@@ -211,15 +219,6 @@ class Citation extends Relational
 		 'author'       => 'rft.au'
 	 );
 
-	 /**
-		* Default formats
-		*
-		* @var  array
-		*/
-	$default_format = array(
-		 'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
-		 'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
-	 );
 			// form the formatted citation
 	    foreach ($template_keys as $k => $v)
 	    {
@@ -411,6 +410,7 @@ class Citation extends Relational
 
 	    // Add more to coins
 
+			$template = $format->format;
 	    $tmpl = isset($template) ? $template : $default_template;
 	    $cite = strtr($tmpl, $replace_values);
 
