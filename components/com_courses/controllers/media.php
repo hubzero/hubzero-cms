@@ -252,8 +252,17 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$this->addComponentMessage(JText::_('ERROR_UPLOADING'), 'error');
 		}
 
-		//push a success message
-		$this->addComponentMessage('You successfully uploaded the file.', 'passed');
+		if (!JFile::isSafe($path . DS . $file['name']))
+		{
+			JFile::delete($path . DS . $file['name']);
+
+			$this->addComponentMessage(JText::_('File rejected because the anti-virus scan failed.'), 'error');
+		}
+		else
+		{
+			//push a success message
+			$this->addComponentMessage(JText::_('You successfully uploaded the file.'), 'passed');
+		}
 
 		// Push through to the media view
 		$this->mediaTask();
@@ -361,6 +370,14 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		else
 		{
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+
+		if (!JFile::isSafe($file))
+		{
+			JFile::delete($file);
+
+			echo json_encode(array('error' => JText::_('File rejected because the anti-virus scan failed.'));
+			return;
 		}
 
 		//return success

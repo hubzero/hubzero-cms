@@ -499,6 +499,16 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
+		if (!JFile::isSafe($file))
+		{
+			JFile::delete($file);
+
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode(array('error' => JText::_('File rejected because the anti-virus scan failed.'));
+			return;
+		}
+
 		ob_clean();
 		header('Content-type: text/plain');
 		echo json_encode(array(
@@ -569,6 +579,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
+		}
+
+		if (!JFile::isSafe($path . DS . $file['name']))
+		{
+			JFile::delete($path . DS . $file['name']);
+
+			$this->setError(JText::_('File rejected because the anti-virus scan failed.'), 'error');
 		}
 
 		// Push through to the media view
