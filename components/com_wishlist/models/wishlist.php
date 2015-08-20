@@ -822,7 +822,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				$item->set('ranking', $ranking);
 
 				// store new content
-				if (!$item->store())
+				if (!$item->store(false))
 				{
 					$this->setError($item->getError());
 					return false;
