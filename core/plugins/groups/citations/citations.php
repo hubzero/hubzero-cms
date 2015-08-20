@@ -949,7 +949,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					->rows()->toObject();
 
 			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
-	
+
 			// Output HTML
 			foreach ($this->getErrors() as $error)
 			{
