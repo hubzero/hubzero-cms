@@ -149,7 +149,7 @@ class Citation extends Relational
 
 		// get the template
 		// default to IEEE
-		try 
+		try
 		{
 			$format = \Components\Citations\Models\Format::oneOrFail($config['citationFormat']);
 		}
