@@ -27,7 +27,7 @@
 				<field name="label" type="label" label="MOD_SEARCH_FIELD_LABEL_TEXT_LABEL" description="MOD_SEARCH_FIELD_LABEL_TEXT_DESC" />
 				<field name="width" type="text" default="20" label="MOD_SEARCH_FIELD_BOXWIDTH_LABEL" description="MOD_SEARCH_FIELD_BOXWIDTH_DESC" />
 				<field name="text" type="text" label="MOD_SEARCH_FIELD_TEXT_LABEL" description="MOD_SEARCH_FIELD_TEXT_DESC" />
-				<field name="button" label="MOD_SEARCH_FIELD_BUTTON_LABEL" description="MOD_SEARCH_FIELD_BUTTON_DESC">
+				<field name="button" type="list" label="MOD_SEARCH_FIELD_BUTTON_LABEL" description="MOD_SEARCH_FIELD_BUTTON_DESC">
 					<option value="">JNO</option>
 					<option value="1">JYES</option>
 				</field>
