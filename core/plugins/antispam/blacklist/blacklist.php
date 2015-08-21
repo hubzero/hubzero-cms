@@ -46,12 +46,10 @@ class plgAntispamBlackList extends \Hubzero\Plugin\Plugin
 	{
 		include_once(__DIR__ . DS . 'Detector.php');
 
-		$words = $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
-				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
-				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
-				. 'orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
-				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
-				. 'texas holdem, fisting');
+		$words = $this->params->get('badwords', 'viagra, xanax, phentermine, ringtones, tramadol, hydrocodone, levitra, '
+				. 'ambien, vicodin, fioricet, diazepam, accarat, casino, '
+				. 'fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
+				. 'porno, videosex, hentai, kasino, kasinos, poker');
 
 		$words = explode(',', $words);
 		$words = array_map('trim', $words);
