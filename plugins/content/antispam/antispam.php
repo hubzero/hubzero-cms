@@ -139,12 +139,10 @@ class plgContentAntispam extends JPlugin
 		        ->set('linkRatio', $this->params->get('linkRatio', 40))
 		        ->set('linkValidation', $this->params->get('linkValidation', 0))
 		        ->set('blacklist', $this->params->get('blacklist'))
-		        ->set('badwords', $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
-				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
-				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
-				. 'orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
-				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
-				. 'texas holdem, fisting'));
+		        ->set('badwords', $this->params->get('badwords', 'viagra, xanax, phentermine, ringtones, tramadol, hydrocodone, levitra, '
+				. 'ambien, vicodin, fioricet, diazepam, accarat, casino, '
+				. 'fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
+				. 'porno, videosex, hentai, kasino, kasinos, poker'));
 
 		$data = array(
 			'service' => $this->_name,
