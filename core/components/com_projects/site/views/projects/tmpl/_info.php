@@ -33,15 +33,16 @@ $config = $this->model->config();
 <div id="plg-header">
 	<h3 class="inform"><?php echo Lang::txt('COM_PROJECTS_PROJECT_INFO'); ?></h3>
 </div>
+
 <?php if ($this->model->access('manager')) { ?>
-<p class="editing"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=info'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
+	<p class="editing"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=info'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
 <?php } ?>
 
 <div id="basic_info">
 	<table id="infotbl">
 		<tbody>
 			<tr>
-				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></td>
+				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></th>
 				<td><?php echo $this->escape($this->model->get('title')); ?></td>
 				<?php if ($config->get('grantinfo', 0) && $this->model->params->get( 'grant_title')) { ?>
 					<td rowspan="5" class="grantinfo">
@@ -59,24 +60,24 @@ $config = $this->model->config();
 				<?php } ?>
 			</tr>
 			<tr>
-				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?></td>
+				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?></th>
 				<td><?php echo $this->model->get('alias'); ?></td>
 			</tr>
 			<tr>
-				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ACCESS'); ?></td>
+				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_ACCESS'); ?></th>
 				<td><?php echo $privacy; ?> <?php if ($this->model->isPublic()) { ?><span class="mini faded">[<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1'); ?>"><?php echo Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a>]</span><?php } ?></td>
 			</tr>
 			<tr>
-				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?></td>
+				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?></th>
 				<td><?php echo $this->model->created('date'); ?></td>
 			</tr>
 			<tr>
-				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></td>
+				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></th>
 				<td><?php echo $this->model->groupOwner() ? $this->model->groupOwner('description') : $this->model->owner('name'); ?></td>
 			</tr>
 			<?php if ($this->model->about('parsed')) { ?>
 			<tr>
-				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></td>
+				<th class="htd"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></th>
 				<td><?php echo $this->model->about('parsed'); ?></td>
 			</tr>
 			<?php } ?>
