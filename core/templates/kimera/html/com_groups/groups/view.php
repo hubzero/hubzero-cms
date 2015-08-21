@@ -106,10 +106,8 @@ $created = Date::of($this->group->get('created'))->toLocal(Lang::txt('DATE_FORMA
 					</h3>
 
 					<?php
-						
-							$gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
-							echo $gt->render();
-						
+					$gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
+					echo $gt->render();
 					?>
 				</div><!-- /#page_header -->
 			<?php endif; ?>
