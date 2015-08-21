@@ -49,7 +49,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="badwords" type="textarea" rows="25" cols="40" label="PLG_ANTISPAM_BLACKLIST_PARAM_WORDS_LABEL" description="PLG_ANTISPAM_BLACKLIST_PARAM_WORDS_DESC" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" />
+				<field name="badwords" type="textarea" rows="25" cols="40" label="PLG_ANTISPAM_BLACKLIST_PARAM_WORDS_LABEL" description="PLG_ANTISPAM_BLACKLIST_PARAM_WORDS_DESC" default="viagra, xanax, phentermine, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, accarat, casino, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, hentai, kasino, kasinos, poker" />
 			</fieldset>
 		</fields>
 	</config>
