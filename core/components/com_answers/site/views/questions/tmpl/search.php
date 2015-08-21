@@ -78,32 +78,33 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 					</fieldset>
 				</div><!-- / .container -->
 
-			<?php if (!User::isGuest()) { ?>
-				<ul class="entries-menu user-options">
-					<li>
-						<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
-							<?php echo Lang::txt('COM_ANSWERS_FILTER_EVERYTHING'); ?>
-						</a>
-					</li>
-					<li>
-						<a<?php echo ($this->filters['area'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=mine&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
-							<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_I_ASKED'); ?>
-						</a>
-					</li>
-					<li>
-						<a<?php echo ($this->filters['area'] == 'assigned') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=assigned&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
-							<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_RELATED_TO_CONTRIBUTIONS'); ?>
-						</a>
-					</li>
-					<li>
-						<a<?php echo ($this->filters['area'] == 'interest') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=interest&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
-							<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS'); ?>
-						</a>
-					</li>
-				</ul>
-			<?php } ?>
-
 				<div class="container">
+					<?php if (!User::isGuest()) { ?>
+						<nav class="entries-filters">
+							<ul class="entries-menu user-options">
+								<li>
+									<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+										<?php echo Lang::txt('COM_ANSWERS_FILTER_EVERYTHING'); ?>
+									</a>
+								</li>
+								<li>
+									<a<?php echo ($this->filters['area'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=mine&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_I_ASKED'); ?>
+									</a>
+								</li>
+								<li>
+									<a<?php echo ($this->filters['area'] == 'assigned') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=assigned&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_RELATED_TO_CONTRIBUTIONS'); ?>
+									</a>
+								</li>
+								<li>
+									<a<?php echo ($this->filters['area'] == 'interest') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=interest&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS'); ?>
+									</a>
+								</li>
+							</ul>
+						</nav>
+					<?php } ?>
 					<nav class="entries-filters">
 						<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_ANSWERS_SORT'); ?>">
 						<?php if ($this->config->get('banking')) { ?>
