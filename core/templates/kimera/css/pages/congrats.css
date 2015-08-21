@@ -162,7 +162,7 @@
 		text-align: center;
 	}
 	#features .col>div,
-	#features .column>div {
+	#features .columns>div {
 		display: block;
 		padding: 6em 30px 30px 30px;
 		text-decoration: none;
@@ -178,11 +178,11 @@
 	#features .columns ul {
 		border: none;
 	}
-	#features .columns p,
+	/*#features .columns p,
 	#features .columns form {
 		margin: 0;
 		padding: 30px 30px 30px 30px;
-	}
+	}*/
 	#features .columns form p,
 	#features .columns p + p {
 		padding-top: 0;
