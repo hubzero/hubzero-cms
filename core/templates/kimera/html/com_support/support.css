@@ -1,0 +1,20 @@
+@import url("../../../../../core/components/com_support/site/assets/css/support.css");
+
+.panel {
+	background: #f9f9f9;
+}
+.pane-queries {
+	width: 20em;
+	min-width: 20em;
+}
+.pane-queries .pane-inner {
+	width: auto;
+}
+
+@media (min-width: 70em) {
+	.pane-queries .pane-inner {
+		padding-left: 60px;
+		width: 23em;
+		min-width: 23em;
+	}
+}

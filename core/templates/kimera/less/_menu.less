@@ -1,0 +1,236 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_menu.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Menu
+// --------------------------------------------------
+
+#nav {
+	padding: 0;
+	margin: 0;
+
+	&:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
+
+	h2 {
+		display: none;
+	}
+
+	ul.menu,
+	ul.menu li,
+	ul.menu ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	ul.menu {
+		z-index: 797;
+		float: left;
+		padding: 0;
+		font-weight: 400;
+
+		span.separator {
+			display: block;
+			padding: 0.8em 1em;
+			border: none;
+		}
+
+		a {
+			display: block;
+			border: none;
+			color: #666;
+			font-size: 1em;
+			text-transform: uppercase;
+			font-weight: 500;
+			letter-spacing: 0.075em;
+			padding: 0 1em;
+			line-height: 4em;
+		}
+
+		li {
+			float: left;
+			line-height: 1.3em;
+			vertical-align: middle;
+			position: relative;
+			zoom: 1;
+			padding: 0;
+			border: none;
+
+			&:hover,
+			&:focus {
+				z-index: 799;
+				cursor: default;
+
+				&>ul {
+					visibility: visible;
+				}
+			}
+		}
+
+		// Second level
+		ul {
+			visibility: hidden;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			z-index: 798;
+			width: 16em;
+			padding: 0;
+			background: #222;
+			background: rgba(0, 0, 0, 0.9);
+			border-top: 2px solid #ccc;
+
+			li {
+				float: none;
+				font-weight: normal;
+
+				a {
+					padding: 0.8em 1em;
+					text-transform: none;
+					line-height: 1;
+					color: #bbb;
+					color: rgba(255, 255, 255, 0.6);
+					border: none;
+					font-size: 1em;
+					font-weight: 400;
+					letter-spacing: 0;
+					.transition(color 0.3s ease);
+				}
+
+				// Arrow indicating another level
+				&.parent>a:after {
+					font-family: 'Fontcons';
+					content: "\203A";
+					font-size: 0.85em;
+					line-height: 1.2em;
+					display: block;
+					float: right;
+					width: 1em;
+					height: 1em;
+					text-align: right;
+				}
+
+				&:hover>a,
+				&:focus>a {
+					color: #fff;
+				}
+			}
+			// Third level
+			ul {
+				top: 0;
+				left: 99%;
+			}
+		}
+
+		&>li:hover,
+		&>li:focus {
+			&>a {
+				color: #222;
+			}
+		}
+
+		.toggle {
+			font-family: 'Fontcons';
+			display: none;
+			font-size: 0.85em;
+			line-height: 1.2em;
+			background: #e1e1e1;
+			background: rgba(0, 0, 0, 0.1);
+			position: absolute;
+			top: 1em;
+			right: 1em;
+			padding: 1em;
+			width: 2.7em;
+			height: 3em;
+
+			&:before {
+				content: "\203A";
+			}
+		}
+		.active>.toggle {
+			&:before {
+				content: "\2304";
+			}
+		}
+	}
+}
+
+@media (max-width: 60em) {
+	#nav {
+		float: left;
+		cursor: pointer;
+
+		&:before {
+			content: "\f036";
+			font-family: "Fontcons";
+			font-size: 1.5em;
+			padding: 0.85em 0.9em 0.8em 0.9em;
+			display: block;
+		}
+
+		ul.menu {
+			float: none;
+			width: 100%;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			background: #fff;
+
+			&>li {
+				float: none;
+				display: none;
+				border-top: 1px solid #f1f1f1;
+			}
+			&>li>a {
+				color: #222;
+			}
+
+			ul {
+				position: static;
+				left: auto;
+				top: auto;
+				visibility: visible;
+				display: none;
+				width: auto;
+
+				li {
+					&.parent>a:after {
+						display: none;
+					}
+				}
+			}
+
+			li {
+				&.active {
+					&>ul {
+						display: block;
+					}
+				}
+			}
+
+			.toggle {
+				display: block;
+			}
+		}
+
+		&.active,
+		&:hover {
+			background: #fff;
+			color: #222;
+
+			ul.menu>li {
+				display: block;
+				text-align: center;
+			}
+		}
+	}
+}

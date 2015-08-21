@@ -1,0 +1,65 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_search.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Search
+// --------------------------------------------------
+
+#searchform {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 20em;
+	background: #222;
+	background: rgba(0, 0, 0, 0.9);
+	border-top: 2px solid #ccc;
+
+	fieldset {
+		border: none;
+		background: transparent;
+		margin: 0;
+		padding: 1em;
+
+		legend,
+		label {
+			display: none;
+		}
+	}
+
+	input {
+		float: left;
+	}
+	input#submitquery {
+		width: 20%;
+		padding: 0.6045084975em;
+		.box-sizing(border-box);
+		.background-clip(padding-box);
+		.transition(~"all .1s ease-out");
+		outline: none;
+		font-size: 1em;
+		line-height: 1.61803399em;
+		border: 1px solid #D9D9D9;
+		border: 1px solid rgba(0, 0, 0, 0.15);
+
+		&:hover,
+		&:focus {
+			background-color: #fff;
+		}
+	}
+	input#searchword {
+		width: 80%;
+		background-color: #ccc;
+		background-color: rgba(200, 200, 200, 0.3);
+
+		&:hover,
+		&:focus {
+			background-color: #ddd;
+			background-color: rgba(200, 200, 200, 0.5);
+			color: #fff;
+		}
+	}
+}

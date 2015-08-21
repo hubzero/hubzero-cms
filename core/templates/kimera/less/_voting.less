@@ -1,0 +1,92 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_voting.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Voting
+// --------------------------------------------------
+	.voting {
+		white-space: nowrap;
+
+		.vote-button,
+		a.vote-button,
+		.vote-button:hover,
+		a.vote-button:hover {
+			border: @votingBorder;
+			background-color: @votingBackground;
+			color: @votingColor;
+			text-shadow: none;
+			margin: 0;
+			padding: 0.426em 0.75em 0.436em 0.75em;
+			display: inline-block;
+			text-align: left;
+			cursor: pointer;
+		}
+		.vote-button:hover,
+		a.vote-button:hover {
+			background-color: @votingBackgroundHover;
+			color: @votingColorHover;
+		}
+		.vote-like,
+		.vote-dislike {
+			margin-left: 0.2em;
+			cursor: pointer;
+			display: inline-block;
+		}
+		.vote-button span {
+			display: inline-block;
+			width: 1.2em;
+			height: 1.4em;
+			overflow: hidden;
+			text-indent: -55em;
+			padding: 0;
+			margin: 0 0 0 0.3em;
+		}
+		.vote-like .neutral span,
+		.like span,
+		.vote-dislike .neutral span,
+		.dislike span {
+			background: none;
+			position: relative;
+		}
+		.like:hover {
+			background-color: @votingLikeBackgroundHover;
+		}
+		small.voting-after,
+		.vote-like .neutral span:after,
+		.like span:after,
+		.vote-dislike .neutral span:after,
+		.dislike span:after {
+			position: absolute;
+			left: 0;
+			top: 0;
+			text-indent: 0;
+			font-size: 1.2em;
+			line-height: 1;
+			.fontcons(@iconThumbsUp);
+		}
+		.vote-like .neutral span:after,
+		.like span:after {
+			content: "\@{iconThumbsUp}";
+		}
+		.dislike:hover {
+			background-color: @votingDislikeBackgroundHover;
+		}
+		.vote-dislike .neutral span:after,
+		.dislike span:after {
+			top: 0.2em;
+			content: "\@{iconThumbsDown}";
+		}
+	}
+	@-moz-document url-prefix() {
+		.voting .vote-button span {
+			height: 1.1em;
+		}
+		.voting .vote-dislike .neutral span:after,
+		.voting .dislike span:after {
+			top: 0;
+		}
+	}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<extension type="template" version="2.5">
+	<name>kimera</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Site template for HUBzero CMS</description>
+	<files>
+		<filename>css/component.css</filename>
+		<filename>css/error.css</filename>
+		<filename>css/index.css</filename>
+		<filename>css/print.css</filename>
+		<filename>css/browser/ie8.css</filename>
+		<filename>css/browser/ie9.css</filename>
+		<filename>css/pages/community.css</filename>
+		<filename>css/pages/congrats.css</filename>
+		<filename>css/pages/discover.css</filename>
+		<filename>css/pages/home.css</filename>
+		<filename>html/mod_breadcrumbs/default.php</filename>
+		<filename>html/mod_reportproblems/mod_reportproblems.css</filename>
+		<filename>html/mod_search/default.php</filename>
+		<filename>index.php</filename>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>js/hub.js</filename>
+		<filename>template_thumbnail.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_kimera.ini</language>
+	</languages>
+	<positions>
+		<position>footer</position>
+		<position>banner</position>
+		<position>welcome</position>
+		<position>left</position>
+		<position>right</position>
+		<position>helppane</position>
+		<position>user3</position>
+		<position>introblock</position>
+		<position>notices</position>
+		<position>search</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="header" type="list" default="light" label="TPL_KIMERA_FIELD_HEADER_LABEL" description="TPL_KIMERA_FIELD_HEADER_DESC">
+					<option value="light">TPL_KIMERA_FIELD_HEADER_LIGHT</option>
+					<option value="dark">TPL_KIMERA_FIELD_HEADER_DARK</option>
+				</field>
+				<field name="background" type="list" default="delauney" label="TPL_KIMERA_FIELD_BACKGROUND_LABEL" description="TPL_KIMERA_FIELD_BACKGROUND_DESC">
+					<option value="none">TPL_KIMERA_FIELD_BACKGROUND_NONE</option>
+					<option value="stripes">TPL_KIMERA_FIELD_BACKGROUND_STRIPES</option>
+					<option value="checkered">TPL_KIMERA_FIELD_BACKGROUND_CHECKERED</option>
+					<option value="picnic">TPL_KIMERA_FIELD_BACKGROUND_PICNIC</option>
+					<option value="blueprint">TPL_KIMERA_FIELD_BACKGROUND_BLUEPRINT</option>
+					<option value="triangles">TPL_KIMERA_FIELD_BACKGROUND_TRIANGLES</option>
+					<option value="plaid">TPL_KIMERA_FIELD_BACKGROUND_PLAID</option>
+					<option value="delauney">TPL_KIMERA_FIELD_BACKGROUND_DELAUNEY</option>
+					<option value="bokeh">TPL_KIMERA_FIELD_BACKGROUND_BOKEH</option>
+				</field>
+				<field name="colorPrimary" type="color" default="" label="TPL_KIMERA_FIELD_COLORPRIMARY_LABEL" description="TPL_KIMERA_FIELD_COLORPRIMARY_DESC" />
+				<field name="colorSecondary" type="color" default="" label="TPL_KIMERA_FIELD_COLORSECONDARY_LABEL" description="TPL_KIMERA_FIELD_COLORSECONDARY_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

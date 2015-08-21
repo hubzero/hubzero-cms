@@ -1,0 +1,25 @@
+@import url('/core/plugins/members/contributions/assets/css/contributions.css');
+
+/* Item listing */
+	.container h4 {
+		font-size: 115%;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+		padding: 0 0 0.618em 0;
+		position: relative;
+	}
+	.container h4 a {
+		color: #444;
+	}
+	.container h4 span {
+		color: #aaa;
+		font-size: 85%;
+		margin-left: 0.2em;
+	}
+	.category-header span.more {
+		position: absolute;
+		right: 0;
+		font-size: 1em;
+	}

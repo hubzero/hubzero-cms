@@ -1,0 +1,438 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kimera/css/pages/congrats.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	congratulations page CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.home #masthead {
+		background: transparent;
+		color: #fff;
+	}
+	.home #masthead h1 a {
+		color: #fff;
+	}
+	.home #masthead.fixed {
+		background: #fff;
+		color: #444;
+	}
+	.home #masthead.fixed h1 a {
+		color: #444;
+	}
+	.home #sub-masthead {
+		display: none;
+	}
+
+	.dark #masthead.fixed #account>ul>li>a,
+	.home #account>ul>li>a {
+		color: #ccc;
+		color: rgba(255, 255, 255, 0.8);
+	}
+	.home.dark #masthead.fixed {
+		background: #333;
+		color: #fff;
+	}
+	.home.dark #masthead.fixed h1 a {
+		color: #fff;
+	}
+
+	.home #nav ul.menu>li>a {
+		color: #666;
+	}
+	.home #nav ul.menu>li:hover>a,
+	.home #nav ul.menu>li:focus>a {
+		color: #222;
+	}
+
+	.home .fixed #nav ul.menu>li>a {
+		color: #666;
+	}
+	.home .fixed #nav ul.menu>li>a {
+		color: #666;
+	}
+	.home .fixed #nav ul.menu>li:hover>a,
+	.home .fixed #nav ul.menu>li:focus>a {
+		color: #222;
+	}
+	.home .fixed #account>ul>li>a {
+		color: #666;
+	}
+	.home .fixed #account>ul>li>a:hover,
+	.home .fixed #account>ul>li>a:focus {
+		color: #222;
+	}
+
+	.com_content .contentpaneopen {
+		padding: 0px;
+	}
+	html>body #content {
+		*border: none;
+		border: none\9;
+		margin-top: -1px\9;
+	}
+
+/* Splash area */
+	#splash .wrap {
+		padding: 30px;
+	}
+	#splash .inner-wrap .inner .wrap:before,
+	#splash .inner-wrap .inner .wrap:after {
+		display: none;
+		*display: none;
+	}
+
+/* Congratulations box */
+	#congrats {
+		max-width: 27em;
+		color: #fff;
+		position: relative;
+		margin: 90px auto;
+		padding: 30px 0;
+		text-align: left;
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+	}
+	#congrats h2 {
+		margin: 0;
+		padding: 0;
+		color: #fff;
+		font-weight: 300;
+		letter-spacing: 0.075em;
+		position: relative;
+	}
+	#congrats h2:after {
+		content: "";
+		position: absolute;
+		border: none;
+		width: 3em;
+		height: 1px;
+		margin: 0;
+		background: #fff;
+		left: 0;
+		top: -30px;
+	}
+	#congrats p {
+		margin: 0;
+		padding: 15px 0 0 0;
+		font-weight: 300;
+		letter-spacing: 0.075em;
+	}
+	#congrats a {
+		color: #fff;
+		font-weight: 500;
+		border: none;
+	}
+	#congrats a:hover {
+		color: #fff;
+		border-bottom: 1px solid #fff;
+	}
+
+/* Freatured items */
+	#features {
+		background: #efefef;
+	}
+	#features .wrap {
+		padding: 0;
+	}
+	#features h2 {
+		display: none;
+	}
+	h3,
+	h4 {
+		font-size: 1em;
+		line-height: 1;
+		padding: 0;
+		margin: 0;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		position: relative;
+		color: inherit;
+	}
+	#features .col,
+	#features .columns {
+		position: relative;
+		text-align: center;
+	}
+	#features .col>div {
+		display: block;
+		padding: 6em 30px 30px 30px;
+		text-decoration: none;
+		border: none;
+		color: inherit;
+	}
+	#features .grid .col:nth-child(2),
+	#features .columns:nth-child(3) {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	#features .columns p,
+	#features .columns ul {
+		border: none;
+	}
+	#features .columns p,
+	#features .columns form {
+		margin: 0;
+		padding: 30px 30px 30px 30px;
+	}
+	#features .columns form p,
+	#features .columns p + p {
+		padding-top: 0;
+	}
+	#features .columns form {
+		padding-bottom: 0;
+	}
+	#features .columns p.btn-container {
+		text-align: center;
+	}
+	#features .col>div:after {
+		content: "";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 31px;
+		left: 0;
+		width: 100%;
+		font-size: 2.5em;
+		line-height: 1;
+		text-align: center;
+	}
+	#features .col>div.use:after {
+		content: "\f0ad";
+	}
+	#features .col>div.manage:after {
+		content: "\f085";
+	}
+	#features .col>div.customize:after {
+		content: "\f06f";
+	}
+
+/* Highlight section */
+	.highlight-section {
+		text-align: center;
+		font-weight: 300;
+		letter-spacing: 0.15em;
+		font-size: 2em;
+		line-height: 1.5;
+		position: relative;
+		background: #fff;
+	}
+	.highlight-section p {
+		padding: 60px 30px;
+		margin: 0 5%;
+	}
+
+/* Section wrap */
+	.wrap {
+		padding: 30px;
+	}
+	.wrap ul,
+	.wrap li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.wrap .first,
+	.wrap .second {
+		margin-bottom: 2em;
+	}
+	.wrap .first ul {
+		margin: 1.7em 1em;
+		border-top: 1px dashed #E5E5E5;
+	}
+	.wrap .two p {
+		margin: 1.7em 0;
+	}
+	.wrap .first li {
+		border-bottom: 1px dashed #E5E5E5;
+		padding: 0.5em 0.7em;
+	}
+	.wrap ol.tags {
+		margin: 1.7em 1em 1.7em 2em;
+	}
+	.wrap ol.tags li {
+		margin: 2px 12px 2px 0px;
+	}
+	.wrap .first li a {
+	}
+	.wrap .first h2 {
+		margin-top: 0;
+	}
+	.wrap .first p {
+		padding: 0;
+	}
+	.wrap .four .first p {
+		border: none;
+		padding: 0;
+	}
+	
+/* Block section */
+	.blocks-section {
+		background: #fff; /*#ececec;*/
+		position: relative;
+		z-index: 1;
+	}
+	.blocks-section .two {
+		position: relative;
+	}
+	#content h2 {
+		padding: 30px 0 0 0;
+		border-top: 1px solid #E5E5E5;
+		position: relative;
+	}
+	#content h2:after {
+		content: "";
+		position: absolute;
+		border: none;
+		width: 2em;
+		height: 1px;
+		margin: 0;
+		background: #999;
+		left: 0;
+		top: -1px;
+	}
+	/*.blocks-section .two:after {
+		content: "";
+		position: absolute;
+		border: none;
+		width: 6em;
+		height: 1px;
+		margin: 0;
+		background: #999;
+		left: 0;
+		top: 0;
+	}*/
+	.blocks-section .two p {
+		margin: 1.7em 0;
+	}
+	/*.blocks-section h3 {
+		padding: 30px 0 0 0;
+		border-top: 1px solid #E5E5E5;
+	}*/
+
+/* Support section */
+	.support-section {
+		background: #f9f9f9;
+		padding: 0;
+		margin: 0;
+	}
+	.support-section .wrap {
+		position: relative;
+		display: block;
+		margin: 0;
+		z-index: 1;
+	}
+
+@media (min-width: 30em) {
+	#features .col,
+	#features .columns {
+		text-align: left;
+	}
+
+	.highlight-section p {
+		padding: 60px 30px;
+	}
+}
+@media (min-width: 40em) {
+	.columns {
+		float: left;
+		margin-right: 3.2258064516129%;
+	}
+	.two {
+		width:48.387096774194%;
+	}
+	.four {
+		width:22.58064516129%;
+	}
+	.four.columns.second.third.fourth {
+		width:74.193548387097%;
+	}
+	.two.second,
+	.four.fourth {
+		margin-right: 0;
+	}
+
+	#features {
+		display: table;
+	}
+	#features .wrap {
+		display: table-row;
+	}
+	#features .col,
+	#features .columns {
+		display: table-cell;
+		margin: 0;
+		padding: 0;
+		width: 33.33% !important;
+		float: none;
+		vertical-align: top;
+	}
+}
+@media (min-width: 60em) {
+	#congrats {
+		width: 27em;
+		margin: 90px auto;
+	}
+	.dark #masthead.fixed #account>ul>li>a,
+	.dark #masthead.fixed #nav ul.menu>li>a,
+	.home #account>ul>li>a,
+	.home #nav ul.menu>li>a {
+		color: #ccc;
+		color: rgba(255, 255, 255, 0.8);
+	}
+	.dark #masthead.fixed #nav ul.menu>li:hover>a,
+	.dark #masthead.fixed #nav ul.menu>li:focus>a,
+	.dark #masthead.fixed #nav ul.menu>li>a:hover,
+	.dark #masthead.fixed #nav ul.menu>li>a:focus,
+	.dark #masthead.fixed #account>ul>li>a:hover,
+	.home #account>ul>li>a:hover,
+	.home #account>ul>li>a:focus,
+	.home #nav ul.menu>li:hover>a,
+	.home #nav ul.menu>li:focus>a,
+	.home #nav ul.menu>li>a:hover,
+	.home #nav ul.menu>li>a:focus {
+		color: #fff;
+	}
+	#features .col>div:after {
+		left: 30px;
+		text-align: left;
+	}
+	#features .col>div {
+		padding: 30px 30px 30px 6em;
+	}
+}
+@media (min-width: 70em) {
+	#features .col>div {
+		padding: 60px 60px 60px 8em;
+	}
+	#features .col>div:after {
+		margin-top: 30px;
+		left: 60px;
+	}
+	.wrap {
+		padding: 60px;
+	}
+	.highlight-section p {
+		padding: 60px;
+	}
+
+	.blocks a {
+		padding: 60px 60px 60px 50%;
+	}
+	.blocks a:before {
+		line-height: 2;
+	}
+	.blocks .even a {
+		padding: 60px 50% 60px 60px;
+	}
+	.blocks h3,
+	.blocks p {
+		margin-left: 60px;
+	}
+}

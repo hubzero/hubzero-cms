@@ -1,0 +1,100 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/html/system/css/introduction.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+	Commonly used styles for the first page (introduction) of components
+*/
+
+/* Intro */
+	#introduction {
+		margin: 0;
+		padding: 30px;
+		background: #fff;
+		color: #999;
+		position: relative;
+		overflow: hidden;
+	}
+	#introduction:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		z-index: 1;
+		line-height: 1;
+		font-family: 'Fontcons';
+		font-size: 300px;
+		color: #f6f6f6;
+		text-shadow: none;
+		top: 60px;
+		left: auto;
+		right: 60px;
+		text-align: right;
+	}
+	#introduction .grid,
+	#introduction .aside,
+	#introduction .subject {
+		z-index: 2;
+		position: relative;
+	}
+	#introduction h3 {
+		margin-top: 0;
+		color: #484848;
+	}
+	#introduction .aside ul,
+	#introduction .aside li {
+		list-style: none;
+		margin: 1em 0;
+		padding: 0;
+		border: none;
+	}
+	/*#introduction ul.token-input-list-act {
+		background: transparent;
+		padding: 3px 3px 2px 3px;
+		border: 1px solid #ddd;
+		border: 1px solid rgba(0, 0, 0, 0.175);
+	}*/
+	#introduction li {
+		margin: 0;
+		padding: 0 0 0 5px;
+		position: relative;
+	}
+	#introduction p {
+		margin: 1em 0 0 0;
+		font-size: 1.2em;
+		line-height: 1.8em;
+	}
+	#introduction p strong {
+		font-weight: 400;
+		color: #222;
+	}
+	#introduction p + p {
+		margin-top: 0.5em;
+	}
+	#introduction .col p:last-child {
+		margin-bottom: 0;
+	}
+	/*#introduction .omega {
+		text-align: right;
+	}*/
+
+	#introduction + .section {
+		padding: 30px;
+	}
+	#introduction .data-entry {
+		margin: 0;
+		padding: 0;
+	}
+
+@media (min-width: 70em) {
+	#introduction {
+		padding: 60px;
+	}
+	#introduction + .section {
+		padding: 60px;
+	}
+}

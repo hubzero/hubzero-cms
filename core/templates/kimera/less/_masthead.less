@@ -1,0 +1,240 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_masthead.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Masthead
+// --------------------------------------------------
+
+#masthead {
+	background: #fff;
+	color: #444;
+	margin: 0;
+	padding: 0;
+	z-index: 999;
+	.transition(all 0.3s ease);
+	.clearfix();
+	border: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+
+	h1 {
+		margin: 0;
+		padding: 0 @spacing;
+		float: left;
+		line-height: 1;
+		text-transform: lowercase;
+		font-family: "Kaushan Script", "BlackJack", cursive;
+		font-weight: normal;
+		font-style: normal;
+		font-size: 2em;
+
+		a {
+			position: relative;
+			display: block;
+			background: transparent;
+			border: none;
+			font-weight: normal;
+			font-style: normal;
+			padding: 0.5em 0;
+			color: #444;
+			.transition(all 0.3s ease);
+
+			&:hover {
+				text-decoration: none;
+				border: none;
+			}
+		}
+	}
+
+	&.dark {
+		background: #333;
+		color: #fff;
+
+		h1 {
+			a {
+				color: #fff;
+			}
+		}
+	}
+}
+
+@media (min-width: 50em) {
+	#masthead {
+		position: fixed;
+
+		&.fixed {
+			.box-shadow(~"0 4px 0 rgba(0, 0, 0, 0.08)");
+		}
+	}
+}
+
+@media (min-width: 70em) {
+	#masthead h1 {
+		padding-left: @gutter;
+	}
+}
+
+//
+// Prime Nav
+// --------------------------------------------------
+
+#account {
+	float: right;
+	list-style: none;
+	margin: 0 @spacing 0 0;
+	padding: 0;
+	position: relative;
+	z-index: 798;
+
+	&.loggedin {
+		cursor: pointer;
+	}
+
+	a:hover,
+	a:focus { 
+		color: #111;
+	}
+
+	img {
+		margin: 0;
+		padding: 0;
+		border: 2px solid rgba(0, 0, 0, 0.4);
+		.border-radius(50%);
+	}
+
+	li {
+		list-style: none;
+		margin: 0 0 0 0.5em;
+		padding: 0;
+		float: left;
+		line-height: 1;
+
+		&>a {
+			display: block;
+			border: none;
+			color: #666;
+			line-height: 2.85;
+			font-size: 1.4em;
+			width: 2em;
+			padding: 0 0 0 1em;
+			overflow: hidden;
+
+			&:before {
+				content: "";
+				font-family: "Fontcons";
+				margin-right: 0.5em;
+				font-size: 1em;
+			}
+
+			&.icon-search:before {
+				content: "\f002";
+			}
+			&.icon-login:before {
+				content: "\f007";
+			}
+
+			&:hover,
+			&:focus {
+				color: #222;
+			}
+		}
+
+		ul {
+			position: absolute;
+			visibility: hidden;
+			width: 200px;
+			right: 0px;
+			top: 100%;
+			background: #222;
+			background: rgba(0, 0, 0, 0.9);
+			border-top: 2px solid #ccc;
+
+			li {
+				float: none;
+				border: none;
+
+				a {
+					display: block;
+					color: #bbb;
+					color: rgba(255, 255, 255, 0.6);
+					position: relative;
+					font-size: 1em;
+					width: auto;
+					line-height: 1;
+					border: none;
+					padding: 0.8em 1em;
+					.transition(color 0.3s ease);
+
+					&:hover,
+					&:focus {
+						color: #fff;
+					}
+					&:before {
+						content: "";
+						display: inline-block;
+						font-family: 'Fontcons';
+						font-size: 1.2em;
+						width: 1em;
+						height: 1em;
+						margin-right: 0.2em;
+					}
+				}
+
+				&#account-dashboard a:before {
+					content: "\f009";
+				}
+				&#account-profile a:before {
+					content: "\f007";
+				}
+				&#account-messages a:before {
+					content: "\2709";
+				}
+				&#account-logout a:before {
+					content: "\f011";
+				}
+			}
+		}
+
+		form {
+			display: none;
+		}
+
+		&:hover > ul,
+		&:focus > ul,
+		&:hover > form,
+		&:focus > form {
+			visibility: visible;
+			display: block;
+		}
+
+		&:hover img,
+		&:focus img {
+			border-color: #222;
+		}
+
+		&.loggedin>a {
+			width: auto;
+
+			&:before {
+				content: "";
+				display: none;
+			}
+		}
+	}
+
+	.account-details {
+		display: none;
+	}
+}
+
+@media (min-width: 70em) {
+	#account {
+		margin: 0 @gutter 0 0;
+	}
+}

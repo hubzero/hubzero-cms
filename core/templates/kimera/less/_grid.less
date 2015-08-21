@@ -1,0 +1,230 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_grid.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Grid system
+// --------------------------------------------------
+
+	.grid {
+		#grid > .grid;
+
+		.col {
+			display: block;
+			width: 100%;
+			min-height: 1em;
+
+			&.omega {
+				margin-right: 0;
+			}
+		}
+
+		[class*="span"] {
+			#grid > .col;
+		}
+	}
+
+// Spans
+	.grid .span-whole,
+	.grid .span12 {
+		#grid > .span(12);
+	}
+	.grid .span11 {
+		#grid > .span(11);
+	}
+	.grid .span10 {
+		#grid > .span(10);
+	}
+	.grid .span-three-quarters,
+	.grid .span9 {
+		#grid > .span(9);
+	}
+	.grid .span-two-thirds,
+	.grid .span8 {
+		#grid > .span(8);
+	}
+	.grid .span7 {
+		#grid > .span(7);
+	}
+	.grid .span-half,
+	.grid .span6 {
+		#grid > .span(6);
+	}
+	.grid .span5 {
+		#grid > .span(5);
+	}
+	.grid .span-third,
+	.grid .span4 {
+		#grid > .span(4);
+	}
+	.grid .span-quarter,
+	.grid .span3 {
+		#grid > .span(3);
+	}
+	.grid .span2 {
+		#grid > .span(2);
+	}
+	.grid .span1 {
+		#grid > .span(1);
+	}
+
+// Offsets
+	.grid .offset-whole,
+	.grid .offset12 {
+		#grid > .offset(12);
+	}
+	.grid .offset11 {
+		#grid > .offset(11);
+	}
+	.grid .offset10 {
+		#grid > .offset(10);
+	}
+	.grid .offset-three-quarters,
+	.grid .offset9 {
+		#grid > .offset(9);
+	}
+	.grid .offset-two-thirds,
+	.grid .offset8 {
+		#grid > .offset(8);
+	}
+	.grid .offset7 {
+		#grid > .offset(7);
+	}
+	.grid .offset-half,
+	.grid .offset6 {
+		#grid > .offset(6);
+	}
+	.grid .offset5 {
+		#grid > .offset(5);
+	}
+	.grid .offset-third,
+	.grid .offset4 {
+		#grid > .offset(4);
+	}
+	.grid .offset-quarter,
+	.grid .offset3 {
+		#grid > .offset(3);
+	}
+	.grid .offset2 {
+		#grid > .offset(2);
+	}
+	.grid .offset1 {
+		#grid > .offset(1);
+	}
+
+
+// Breaking the grid media queries
+@media only screen and (max-width: 1023px) and (min-width: 900px) {
+	// Collapse 6 columns into a set of two 3 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col {
+		float: left;
+		#grid > .span(4);
+	}
+
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(3n) {
+		margin-right: 0;
+	}
+
+	// Add bottom margin to the first 3 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(-n + 3) {
+		margin-bottom: @gridColCollapseMargin;
+	}
+
+	// Clear the 4th column
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(4) {
+		clear: left;
+	}
+
+	.grid.break6 > .col {
+		.basicColumn;
+	}
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 501px) {
+	// Collapse 4 columns into a set of two 2 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(4),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(4) ~ .col {
+		float: left;
+		#grid > .span(6);
+	}
+
+	.grid:not(.nobreak) .col:first-child:nth-last-child(4) ~ .col:nth-child(2) {
+		margin-right: 0;
+	}
+
+	// Add bottom margin to the first 2 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(4),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(4) ~ .col:nth-child(-n + 2) {
+		margin-bottom: @gridColCollapseMargin;
+	}
+
+	// Clear the 3rd column
+	.grid:not(.nobreak) .col:first-child:nth-last-child(4) ~ .col:nth-child(3) {
+		clear: left;
+	}
+
+	.grid.break6 > .col,
+	.grid.break4 > .col {
+		.basicColumn;
+	}
+}
+
+@media only screen and (max-width: 900px) and (min-width: 501px) {
+	// Collapse 3 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(3),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(3) ~ .col {
+		.basicColumn;
+	}
+
+	// Add bottom margin to the first 2 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(3),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(3) ~ .col:nth-child(-n + 2) {
+		margin-bottom: @gridColCollapseMargin;
+	}
+	.break3 > .col {
+		float: none;
+		width: 100%;
+		margin-right: 0;
+		margin-left: 0;
+	}
+
+	// Re-collapse 6 columns (2-2-2)
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col {
+		float: left;
+		#grid > .span(6);
+	}
+
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(2n) {
+		margin-right: 0;
+	}
+
+	// Add bottom margin to the first 4 columns
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(-n + 4) {
+		margin-bottom: @gridColCollapseMargin;
+	}
+
+	// Clear the 3rd and 5th column
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(3),
+	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(5) {
+		clear: left;
+	}
+
+	.grid.break6 > .col,
+	.grid.break4 > .col,
+	.grid.break3 > .col {
+		.basicColumn;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.grid:not(.nobreak) .col {
+		.basicColumn;
+	}
+}

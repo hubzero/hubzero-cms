@@ -1,0 +1,11 @@
+@import url('/core/plugins/members/collections/assets/css/collections.css');
+
+ul.sub-menu {
+	margin: 0 -30px 30px -30px;
+}
+
+@media (min-width: 60em) {
+	ul.sub-menu {
+		margin: -30px -30px 30px -30px;
+	}
+}

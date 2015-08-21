@@ -1,0 +1,67 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_collect/assets/css/collect.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Collect CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.collector {
+		position: absolute;
+		top: 4em;
+		right: 5em;
+		padding: 0;
+		margin: 0;
+	}
+	.collector .icon-collect:before {
+		content: "\f005";
+		font-family: "Fontcons";
+		color: #fff;
+		color: rgba(255, 255, 255, 0.75);
+	}
+	.collector .icon-collect {
+		font-size: 1.4em;
+		border: none;
+		overflow: hidden;
+		width: 1em;
+		white-space: nowrap;
+		color: transparent;
+	}
+	.collector .icon-collect:hover {
+		color: transparent;
+		background: transparent;
+	}
+	.collector .icon-collect:hover:before {
+		color: #fff;
+	}
+
+/* Form */
+	#sbox-content #hubForm.full fieldset {
+		margin: 0;
+		border: none;
+		background: transparent;
+	}
+	#sbox-content #hubForm.full .submit {
+		padding: 0 0 1em 0;
+	}
+	#sbox-content.fancybox-inner {
+		border: none;
+	}
+	#sbox-content #hubForm .grid .or {
+		font-weight: bold;
+		text-align: center;
+		padding-top: 2em;
+	}
+	#sbox-content .in-collections ul {
+		list-style: none;
+	}
+	#sbox-content .in-collections li {
+		margin: 0.2em 0;
+	}

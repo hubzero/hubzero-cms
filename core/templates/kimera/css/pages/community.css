@@ -1,0 +1,95 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kimera/css/pages/community.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	community page CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.com_content .tagline {
+		margin: 0;
+		padding: 30px;
+		text-align: center;
+		font-size: 1.2em;
+	}
+
+	.com_content .about {
+		border: none;
+		color: #666;
+		position: relative;
+		margin: 0;
+		padding: 30px;
+	}
+	.com_content .about.odd {
+		background: #fff;
+	}
+	.com_content .about.even {
+		background: #fafafa;
+	}
+
+	.com_content .about h3 a {
+		color: #484848;
+		border: none;
+	}
+
+@media (min-width: 40em) {
+	.com_content .tagline {
+		font-size: 2em;
+		line-height: 1.5;
+		font-weight: 300;
+		letter-spacing: 0.15em;
+		padding: 60px;
+	}
+
+	.com_content .about {
+		font-size: 1.2em;
+		line-height: 1.8em;
+	}
+
+	.com_content .about.odd {
+		padding: 30px 60px 30px 50%;
+	}
+	.com_content .about.even {
+		padding: 30px 50% 30px 60px;
+	}
+
+	.com_content .about h3:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 40px;
+		z-index: 100;
+		font-family: 'Fontcons';
+		font-size: 125px;
+		line-height: 1;
+		left: 17.5%;
+		color: #ccc;
+		content: "";
+	}
+	.com_content .about.even h3:after {
+		left: auto;
+		right: 17.5%;
+	}
+	.com_content .about.members h3:after {
+		content: "\f007";
+	}
+	.com_content .about.groups h3:after {
+		content: "\f042";
+		font-size: 150px;
+	}
+	.com_content .about.answers h3:after {
+		content: "\f0e6";
+	}
+	.com_content .about.forum h3:after {
+		content: "\f075";
+	}
+}

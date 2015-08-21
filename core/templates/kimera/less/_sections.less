@@ -1,0 +1,283 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_sections.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Sections
+// --------------------------------------------------
+
+// Asides (right side)
+.aside {
+	background: #f1f1f1;
+	padding: @spacing;
+	margin: -@spacing -@spacing @spacing -@spacing;
+
+	&>*:first-child {
+		padding-top: 0;
+		margin-top: 0;
+	}
+
+	p {
+		margin: 1em 0;
+	}
+
+	h3,
+	h4 {
+		text-transform: uppercase;
+		font-size: 1em;
+		font-weight: 500;
+		letter-spacing: 0.1em;
+	}
+
+	ul,
+	ol {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	li {
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid #e1e1e1;
+
+		&.parent {
+			border-bottom: none;
+		}
+		li {
+			padding-left: 1em;
+		}
+
+		strong,
+		a {
+			display: block;
+			padding: 0.75em 0;
+			text-decoration: none;
+			padding-left: 1em;
+			border: none;
+			font-weight: normal;
+			font-style: normal;
+			position: relative;
+			color: #888;
+
+			&:before {
+				content: "";
+				border-color: transparent transparent transparent #aaa;
+				border-style: solid solid solid solid;
+				border-width: 0.32em 0 0.32em 0.32em;
+				height: 0;
+				width: 0;
+				display: block;
+				overflow: hidden;
+				position: absolute;
+				top: 1.6em;
+				left: 0;
+				margin-top: -0.32em;
+			}
+
+			&:hover {
+				color: #222;
+
+				&:before {
+					border-color: transparent transparent transparent #222;
+				}
+			}
+
+			&.active {
+				font-weight: bold;
+				color: #222;
+
+				&:before {
+					border-color: transparent transparent transparent #222;
+				}
+			}
+		}
+
+		&.active>a {
+			font-weight: bold;
+			color: #222;
+
+			&:before {
+				border-color: transparent transparent transparent #222;
+			}
+		}
+
+		.item-count {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 1em;
+			background: #fff;
+			.border-radius(@borderRadiusSmall);
+			padding: 0.2em 0.4em;
+			color: #999;
+			font-weight: normal;
+			line-height: 1;
+			font-size: 90%;
+		}
+	}
+
+	ol:last-child,
+	ul:last-child,
+	p:last-child {
+		margin-bottom: 0;
+	}
+
+	legend {
+		font-weight: bold;
+	}
+	fieldset fieldset {
+		border: 1px solid #ccc;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 0.5em 1em 1em 1em;
+		margin: 1em 0;
+
+		legend {
+			padding: 0 0.4em;
+		}
+	}
+	label {
+		display: block;
+		padding: 0.5em 0;
+
+		input,
+		select,
+		textarea {
+			margin-top: 0.25em;
+			width: 100%;
+		}
+		.option,
+		input[type="checkbox"],
+		input[type="radio"] {
+			width: auto;
+		}
+	}
+}
+/*
+.subject + .aside {
+	margin: @spacing -@spacing -@spacing -@spacing;
+}
+*/
+.contentpaneopen,
+section.section {
+	background: #f9f9f9;
+	padding: @spacing;
+}
+/*
+section.section {
+	&>*:not(.section-inner),
+	&>*:not(.subject),
+	&>*:not(.aside) {
+		margin: @spacing;
+	}
+}*/
+.contentpaneopen:after {
+	content: "";
+	display: table;
+	line-height: 0;
+	clear: both;
+}
+
+@media (min-width: 50em) {
+}
+
+@media (min-width: 60em) {
+	section.section {
+		display: table;
+		vertical-align: top;
+		width: 100%;
+		table-layout: fixed;
+
+		&>.section-inner {
+			display: table-row;
+		}
+
+		.subject,
+		.aside {
+			display: table-cell;
+			vertical-align: top;
+			margin: 0;
+		}
+		.subject {
+			padding: 0 @spacing 0 0;
+		}
+		.aside {
+			width: 260px;
+			min-width: 260px;
+		}
+		.aside + .subject {
+			padding: 0 0 0 @spacing;
+		}
+	}
+	// Reset for content in groups and members
+	#page_content {
+		section.section {
+			display: block;
+
+			&>.section-inner {
+				display: block;
+			}
+
+			.subject,
+			.aside {
+				display: block;
+			}
+			.subject {
+				padding: 0;
+			}
+			.aside {
+				width: auto;
+				min-width: auto;
+				padding: 30px 0 0 0;
+			}
+			.aside + .subject {
+				padding: 30px 0 0 0;
+			}
+		}
+	}
+}
+
+@media (min-width: 70em) {
+	section.section {
+		padding: @spacing @gutter;
+		.subject {
+			padding: 0 @gutter 0 0;
+		}
+		.aside + .subject {
+			padding: 0 0 0 @gutter;
+		}
+		.aside {
+			width: 320px;
+			min-width: 320px;
+			padding: @spacing @gutter;
+		}
+	}
+	#page_content {
+		section.section {
+			display: table;
+
+			&>.section-inner {
+				display: table-row;
+			}
+
+			.subject,
+			.aside {
+				display: table-cell;
+			}
+			.subject {
+				padding: 0 @spacing 0 0;
+			}
+			.aside {
+				width: 260px;
+				min-width: 260px;
+				padding: 0;
+			}
+			.aside + .subject {
+				padding: 0 0 0 @spacing;
+			}
+		}
+	}
+}

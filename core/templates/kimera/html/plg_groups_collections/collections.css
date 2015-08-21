@@ -1,0 +1,16 @@
+@import url('/core/plugins/groups/collections/assets/css/collections.css');
+
+#page_content.group_collections {
+	padding: 0;
+}
+#posts {
+	margin: 30px;
+}
+.guest-options {
+	margin: -3.25em 30px 0 0;
+}
+@media (min-width: 70em) {
+	.guest-options {
+		margin: -3.25em 60px 0 0;
+	}
+}

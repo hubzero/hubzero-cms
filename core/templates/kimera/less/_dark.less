@@ -1,0 +1,44 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_dark.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+// Dark Header theme
+.dark {
+	#masthead {
+		background: #333;
+
+		h1 {
+			a {
+				color: #fff;
+			}
+		}
+	}
+
+	#nav ul.menu {
+		&>li>a {
+			color: #ccc;
+			color: rgba(255, 255, 255, 0.8);
+		}
+		&>li:hover>a,
+		&>li:focus>a {
+			color: #fff;
+		}
+	}
+
+	#account {
+		&>ul>li {
+			&>a {
+				color: #ccc;
+				color: rgba(255, 255, 255, 0.8);
+			}
+			&:hover {
+				&>a {
+					color: #fff;
+				}
+			}
+		}
+	}
+}

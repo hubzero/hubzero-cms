@@ -1,0 +1,112 @@
+//
+// @package     hubzero-cms
+// @file        templates/kimera/less/_pagination.less
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+//
+// Pagination (multiple pages)
+// --------------------------------------------------
+
+.list-footer {
+	margin: @baseLineHeight 0;
+	padding: 0;
+	color: lighten(@paginationColor, 50%);
+	background-image: none;
+	list-style: none;
+	line-height: @baseLineHeight;
+	.clearfix();
+	font-size: 11px;
+	border-top: 1px solid #ccc;
+	border-top: 1px solid rgba(0,0,0,0.15);
+
+	li {
+		float: left;
+		margin: 0;
+		padding: 0;
+		background-image: none;
+		list-style: none;
+	}
+	.counter {
+		float: right;
+		padding: 0.5em 0.75em;
+		color: @paginationColor;
+		border-left: none;
+		display: none;
+	}
+	.page { 
+	}
+	.limit {
+		padding: 0.5em 0.75em;
+		padding-right: @baseFontSize;
+		color: @paginationColor;
+		float: right;
+	}
+	.start {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	.next,
+	.prev {
+		display: none;
+	}
+	input,
+	label {
+		display: inline;
+		width: auto;
+	}
+
+	span,
+	strong,
+	a,
+	a:visited {
+		display: inline-block;
+		border: none;
+		border-top: 2px solid transparent;
+		text-align: center;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		outline: 0;
+		text-decoration: none;
+	}
+
+	// Disabled buttons
+	span {
+		padding: 0.5em 0.75em;
+		color: #999;
+		font-weight: 400;
+		position: relative;
+	}
+
+	// Current page
+	strong {
+		padding: 0.5em 0.75em;
+		color: #555;
+		font-weight: 500;
+		border-color: #222;
+	}
+
+	// Page links
+	a,
+	a:visited {
+		padding: 0.5em 0.75em;
+		color: #555;
+		.background-clip(padding-box);
+		font-weight: 400;
+		cursor: pointer;
+		position: relative;
+
+		&:hover {
+			border-color: #999;
+		}
+	}
+}
+
+@media (min-width: 40em) {
+	.list-footer {
+		.counter {
+			display: block;
+		}
+	}
+}

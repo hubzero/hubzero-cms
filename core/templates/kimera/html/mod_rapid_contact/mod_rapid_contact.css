@@ -1,0 +1,48 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_rapid_contact/assets/css/mod_rapid_contact.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_rapid_contact
+	-- -- -- -- -- -- --
+
+*/
+
+	.mod_rapid_contact fieldset {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.mod_rapid_contact fieldset legend {
+		display: none;
+	}
+	.mod_rapid_contact fieldset label {
+		display: block;
+	}
+	.mod_rapid_contact fieldset .input-wrap {
+		margin: 0 0 1.5em 0;
+	}
+	.mod_rapid_contact fieldset label span.required {
+		text-transform: uppercase;
+		font-size: xx-small;
+		color: red;
+	}
+	/*.mod_rapid_contact fieldset span.input span.errorMessage {
+		display: block;
+		line-height: 12px;
+		padding-left: 12px;
+		position: absolute;
+		right: -29.5%;
+		top: 0;
+		width: 25%;
+	}*/
+	.mod_rapid_contact fieldset span.input input,
+	.mod_rapid_contact fieldset span.input textarea {
+		max-width: 100%;
+		width: 100%;
+	}
