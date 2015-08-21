@@ -559,7 +559,7 @@ class Jobs extends SiteController
 		$this->_buildPathway();
 
 		// Push some styles to the template
-		$this->csss();
+		$this->css();
 
 		// Push some scripts to the template
 		$this->js();
