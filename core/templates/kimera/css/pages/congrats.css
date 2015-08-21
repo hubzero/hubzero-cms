@@ -161,7 +161,8 @@
 		position: relative;
 		text-align: center;
 	}
-	#features .col>div {
+	#features .col>div,
+	#features .column>div {
 		display: block;
 		padding: 6em 30px 30px 30px;
 		text-decoration: none;
@@ -169,7 +170,7 @@
 		color: inherit;
 	}
 	#features .grid .col:nth-child(2),
-	#features .columns:nth-child(3) {
+	#features .columns:nth-child(2) {
 		background: rgba(0, 0, 0, 0.05);
 	}
 
@@ -192,7 +193,8 @@
 	#features .columns p.btn-container {
 		text-align: center;
 	}
-	#features .col>div:after {
+	#features .col>div:after,
+	#features .columns>div:after {
 		content: "";
 		font-family: "Fontcons";
 		position: absolute;
@@ -203,13 +205,16 @@
 		line-height: 1;
 		text-align: center;
 	}
-	#features .col>div.use:after {
+	#features .col>div.use:after,
+	#features .columns>div.use:after {
 		content: "\f0ad";
 	}
-	#features .col>div.manage:after {
+	#features .col>div.manage:after,
+	#features .columns>div.manage:after {
 		content: "\f085";
 	}
-	#features .col>div.customize:after {
+	#features .col>div.customize:after,
+	#features .columns>div.customize:after {
 		content: "\f06f";
 	}
 
