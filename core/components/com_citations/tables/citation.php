@@ -176,10 +176,6 @@ class Citation extends \JTable
 			//				OR r.uid = " . $this->_db->quote($filter['search']);
 			//}
 		}
-		if (!isset($filter['scope']) || !isset($filter['scope_id']))
-		{
-			$query .= 'AND r.scope = "" AND r.scope_id = ""';
-		}
 
 		//tag search
 		if (isset($filter['tag']) && $filter['tag'] != '')
@@ -464,13 +460,27 @@ class Citation extends \JTable
 		// scope & scope Id
 		if (isset($filter['scope']) && $filter['scope'] != '')
 		{
-			$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
+			if ($filter['scope'] == 'hub')
+			{
+				$query .= "AND r.scope IS NULL OR r.scope = 'hub'";
+			}
+			elseif ($filter['scope'] == 'all')
+			{
+				$query .= 'OR r.scope IS NULL OR r.scope IS NOT NULL';
+			}
+			else
+			{
+				$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
+			}
 		}
 		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
 		{
 			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
 		}
-
+		if (!isset($filter['scope']) && !isset($filter['scope_id']) && $filter['scope'] != 'all')
+		{
+			$query .= 'AND r.scope = "" AND r.scope_id = ""';
+		}
 		//group by
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
@@ -581,9 +591,11 @@ class Citation extends \JTable
 		{
 			$stats[$i] = array();
 
+			// Not supported in PLG_GROUPS_CITATIONS or PLG_MEMBERS_CITATIONS
 			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=1 AND (scope IS NULL OR scope IS NULL)");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
+			// Not supported in PLG_GROUPS_CITATIONS or PLG_MEMBERS_CITATIONS
 			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->quote($i) . " AND affiliated=0 AND (scope IS NULL OR scope IS NULL)");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}

@@ -85,8 +85,15 @@ function submitbutton(pressbutton)
 				<option value="type"<?php if ($this->filters['sort'] == 'type') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TYPE'); ?></option>
 				<option value="author ASC"<?php if ($this->filters['sort'] == 'author ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('AUTHORS'); ?></option>
 				<option value="title ASC"<?php if ($this->filters['sort'] == 'title ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TITLE'); ?></option>
-				<option value="scope ASC"<?php if ($this->filters['sort'] == 'scope ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SCOPE'); ?></option>
 				<option value="scope_id ASC"<?php if ($this->filters['sort'] == 'scope_id ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SCOPE_ID'); ?></option>
+			</select>
+
+			<label for="scope"><?php echo Lang::txt('SCOPE'); ?>: </label>
+			<select name="scope" id="scope" onchange="document.adminForm.submit();">
+				<option value="all"<?php if ($this->filters['scope'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('ALL'); ?></option>
+				<option value="hub"<?php if ($this->filters['scope'] == 'hub') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('HUB'); ?></option>
+				<option value="group"<?php if ($this->filters['scope'] == 'group') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('GROUP'); ?></option>
+				<option value="member"<?php if ($this->filters['scope'] == 'member') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('MEMBER'); ?></option>
 			</select>
 		</div>
 	</fieldset>
