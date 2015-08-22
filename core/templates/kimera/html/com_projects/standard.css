@@ -35,8 +35,8 @@
 .main-menu ul.assetlist {
 	padding-top: 0;
 	padding-bottom: 0;
-	margin-bottom: -1px;
-	margin-top: -4em;
+	/*margin-bottom: -1px;
+	margin-top: -4em;*/
 }
 .main-menu ul.projecttools li {
 	position: relative;
