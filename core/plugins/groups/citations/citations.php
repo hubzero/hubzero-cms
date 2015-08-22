@@ -236,7 +236,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// have a group manager set the settings
 			App::redirect(
 			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=settings'),
-			 Lang::txt('Please elect your settings for this group.'),
+			 Lang::txt('Please select your settings for this group.'),
 			 'warning'
 			 );
 		}
