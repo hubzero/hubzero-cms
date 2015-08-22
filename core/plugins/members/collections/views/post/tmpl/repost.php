@@ -49,7 +49,7 @@ $this->css();
 		<legend><?php echo Lang::txt('Collect'); ?></legend>
 
 		<div class="grid">
-			<div class="col span-half">
+			<div class="col span5">
 				<label for="field-collection_id">
 					<?php echo Lang::txt('Select collection'); ?>
 					<select name="collection_id" id="field-collection_id">
@@ -94,8 +94,10 @@ $this->css();
 					</select>
 				</label>
 			</div>
-			<p class="or">OR</p>
-			<div class="col span-half omega">
+			<div class="col span2">
+				<p class="or">OR</p>
+			</div>
+			<div class="col span5 omega">
 				<label for="field-collection_title">
 					<?php echo Lang::txt('Create collection'); ?>
 					<input type="text" name="collection_title" id="field-collection_title" />

@@ -105,7 +105,7 @@ jQuery(document).ready(function(jq){
 				itemSelector : '#posts div.post',     // selector for all items you'll retrieve
 				loading: {
 					finishedMsg: 'No more pages to load.',
-					img: container.attr('data-base') + '/components/com_collections/assets/img/spinner.gif'
+					img: container.attr('data-base') + '/core/components/com_collections/assets/img/spinner.gif'
 				},
 				path: function(index) {
 					var path = $('.list-footer .next a').attr('href');

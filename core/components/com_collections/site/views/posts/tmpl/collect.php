@@ -45,7 +45,7 @@ if ($this->collection_id)
 		<legend><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></legend>
 
 		<div class="grid">
-			<div class="col span-half">
+			<div class="col span5">
 				<label for="field-collection_id">
 					<?php echo Lang::txt('COM_COLLECTIONS_COLLECTION'); ?>
 					<select name="collection_id" id="field-collection_id">
@@ -91,9 +91,11 @@ if ($this->collection_id)
 				</label>
 			</div><!-- / .col -->
 
-			<p class="or"><?php echo Lang::txt('COM_COLLECTIONS_OR'); ?></p>
+			<div class="col span2">
+				<p class="or"><?php echo Lang::txt('COM_COLLECTIONS_OR'); ?></p>
+			</div>
 
-			<div class="col span-half omega">
+			<div class="col span5 omega">
 				<label for="field-collection_title">
 					<?php echo Lang::txt('COM_COLLECTIONS_CREATE_COLLECTION'); ?>
 					<input type="text" name="collection_title" id="field-collection_title" value="" />
