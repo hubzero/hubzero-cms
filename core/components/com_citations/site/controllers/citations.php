@@ -164,17 +164,6 @@ class Citations extends SiteController
 			'group'           => ''
 		);
 
-		// Do we have a group filter?
-		if ($group = Request::getVar('group', ''))
-		{
-			$this->view->filters['scope']    = 'groups';
-			$this->view->filters['scope_id'] = $group;
-
-			// Only used so we only have one param on form filters
-			$this->view->filters['group']    = $group;
-		}
-
-		// Affiliation filter
 		$this->view->filter = array(
 			'all'    => Lang::txt('COM_CITATIONS_ALL'),
 			'aff'    => Lang::txt('COM_CITATIONS_AFFILIATED'),
