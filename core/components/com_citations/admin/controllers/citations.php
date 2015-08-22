@@ -83,7 +83,8 @@ class Citations extends AdminController
 				'search',
 				''
 			)),
-			'published' => array(0, 1)
+			'published' => array(0, 1),
+			'scope' => Request::getVar('scope','all')
 		);
 
 		$obj = new Citation($this->database);
