@@ -61,7 +61,7 @@ defined('_HZEXEC_') or die();
 
 				if (($access == 'registered' && User::isGuest()) || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members'))))
 				{
-					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" class=\"overview\">Overview</span>";
+					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" class=\"disabled overview\">Overview</span>";
 				}
 				else
 				{
@@ -83,13 +83,13 @@ defined('_HZEXEC_') or die();
 				elseif ($access == 'members' && !in_array(User::get("id"), $this->group->get('members')))
 				{
 					$item  = "<li class=\"protected members-only group-{$class}-tab\" title=\"This page is restricted to group members only!\">";
-					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"{$class}\">{$title}</span>";
+					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"disabled {$class}\">{$title}</span>";
 					$item .= "</li>";
 				}
 				elseif ($access == 'registered' && User::isGuest())
 				{
 					$item  = "<li class=\"protected registered-only group-{$class}-tab\" title=\"This page is restricted to registered hub users only!\">";
-					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"{$class}\">{$title}</span>";
+					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"disabled {$class}\">{$title}</span>";
 					$item .= "</li>";
 				}
 				else
