@@ -45,6 +45,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'sponsor.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'format.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
+require_once(dirname(__DIR__) . DS . 'models'  . DS . 'format.php');
 
 $controllerName = \Request::getCmd('controller', 'citations');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
