@@ -59,7 +59,8 @@
 .main-menu ul.projecttools li.assets span {
 	padding-left: 20px;
 }
-.main-menu ul.projecttools li a {
+.main-menu ul.projecttools li a,
+.main-menu ul.projecttools li.assets>span {
 	color: #aaa;
 	position: relative;
 	display: block;
@@ -82,7 +83,7 @@
 	padding-right: 0;
 }
 .main-menu ul.assetlist {
-	border-bottom: 1px solid #CCC;
+	background: #2a2a2a;
 }
 .main-menu ul.projecttools li.pt_title,
 ul.projecttools li.pt_title:hover {
@@ -213,9 +214,9 @@ ul.projecttools a:focus {
 		vertical-align: top;
 		width: 100%;
 	}
-	.main-menu ul.projecttools {
+	/*.main-menu ul.projecttools {
 		margin: 0 0 30px 0;
-	}
+	}*/
 	.main-menu ul.jsm li {
 		display: block;
 	}

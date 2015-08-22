@@ -11,6 +11,27 @@
 	width: auto;
 }
 
+.subject h3 {
+	margin: 0 0 1em 0;
+}
+.ticket .entry-details,
+ol.comments .comment-changelog {
+	margin: 0;
+}
+.aside {
+	margin: 0;
+}
+
+@media (min-width: 50em) {
+	.subject h3 {
+		margin: 1em 0;
+	}
+	.ticket .entry-details,
+	ol.comments .comment-changelog {
+		margin: 0 0 0 70px;
+	}
+}
+
 @media (min-width: 70em) {
 	.pane-queries .pane-inner {
 		padding-left: 60px;

@@ -239,7 +239,7 @@
 		border-top: none;
 	}
 	#page_menu li a,
-	#page_menu li strong {
+	#page_menu li .disabled {
 		color: #aaa;
 		position: relative;
 		display: block;

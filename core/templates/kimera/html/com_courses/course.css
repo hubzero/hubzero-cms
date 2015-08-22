@@ -3,15 +3,11 @@
 #content {
 	padding: 0;
 }
-/*
-section.course .subject {
-	padding: 0px 30px 0px 60px;
-}*/
 section.course .subject,
-	.course .subject {
-		padding: 0 30px 0 0;
-		margin-right: 0;
-	}
+.course .subject {
+	padding: 0 30px 0 0;
+	margin-right: 0;
+}
 section.section .subject + .aside {
 	min-width: 270px;
 }
@@ -20,20 +16,23 @@ section.course {
 }
 section.course.intro {
 	background: #fff;
-	/*padding: 0 60px;*/
 	border-bottom: 1px solid #e1e1e1;
 }
 .course.intro .subject {
+	padding: 0 30px 0 0;
+}
+section.course .aside {
+	background: transparent;
 	padding: 0;
 }
 .aside .manager-options {
 	margin-top: 0;
 }
-
-/*
-section.course.intro .subject {
-	padding: 30px 30px 30px 60px;
-}*/
+ul.sub-menu li.add-page a,
+ul.sub-menu li.add-page a:hover {
+	background: transparent;
+	border: none;
+}
 
 section.intro .subject,
 section.intro .aside,
@@ -57,9 +56,6 @@ section.course .inner-section {
 	margin-right: 0px;
 	padding: 0;
 }
-/*#content.com_courses .inner-section {
-	padding-left: 60px;
-}*/
 
 ul.sub-menu {
 	background: transparent;
