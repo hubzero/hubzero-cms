@@ -33,6 +33,7 @@ namespace Components\Citations\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Citations\Helpers;
 use Components\Citations\Tables;
+use Components\Citations\Models\Format as	CitationFormat;
 use Request;
 use Route;
 use Lang;
@@ -50,14 +51,31 @@ class Format extends AdminController
 	 */
 	public function displayTask()
 	{
-		//get current format
-		$citationsFormat = new Tables\Format($this->database);
-		$this->view->currentFormat = $citationsFormat->getDefaultFormat();
+
+		// get the first item, will use as default if not set. 
+		$firstResult = CitationFormat::all()
+			->where('style', 'NOT LIKE', 'custom-group-%')
+			->limit(1)
+			->row();
+
+		// see if the component config has a value.
+		if ($this->config->get('default_citation_format') != NULL)
+		{
+			$currentFormat = CitationFormat::all()
+			->where('style', 'LIKE', strtolower($this->config->get('default_citation_format')))
+			->limit(1)
+			->row();
+		}
+		else
+		{
+			$currentFormat = $firstResult;
+		}
+
+		// set view variable
+		$this->view->currentFormat = $currentFormat; 
 
 		//get formatter object
-		$cf = new Helpers\Format();
-		$this->view->apaFormat  = $cf->getDefaultFormat('apa');
-		$this->view->ieeeFormat = $cf->getDefaultFormat('ieee');
+		$this->view->formats = CitationFormat::all();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -81,11 +99,38 @@ class Format extends AdminController
 		Request::checkToken();
 
 		//get format
-		$format = Request::getVar('format', array());
+		$format = Request::getVar('citationFormat', array());
 
-		$citationsFormat = new Tables\Format($this->database);
-		$citationsFormat->save($format);
+		// create or update custom format
+		$model = CitationFormat::oneOrNew($format['id']);
+	
+		if ($model->style == 'Hub Custom' || $model->isNew() === true)
+		{
+			$model->set(array(
+				'style' => 'Hub Custom',
+				'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
+				));
 
+			if (!$model->save())
+			{
+				// redirect with error message
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Lang::txt('CITATION_FORMAT_NOT_SAVED'),
+					'error'
+				);
+			}
+
+			// after successful save, grab the ID
+			$formatID = $model->id;
+
+		}
+		else
+		{
+			$formatID = $model->id;
+		}
+		
+		// successfully set the default value, redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_FORMAT_SAVED')

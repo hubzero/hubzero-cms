@@ -97,7 +97,7 @@ class Citations extends SiteController
 		$types = $ct->getType();
 		foreach ($types as $t)
 		{
-			$this->view->typestats[$t['type_title']] = $row->getCount(array('type' => $t['id']), false);
+			$this->view->typestats[$t['type_title']] = $row->getCount(array('type' => $t['id'], 'scope' => 'hub'), false);
 		}
 
 		//are we allowing importing
@@ -161,7 +161,7 @@ class Citations extends SiteController
 			'aff'             => Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
 			'startuploaddate' => Request::getVar('startuploaddate', '0000-00-00'),
 			'enduploaddate'   => Request::getVar('enduploaddate', '0000-00-00'),
-			'group'           => ''
+			'scope'						=> 'hub'
 		);
 
 		$this->view->filter = array(
@@ -267,14 +267,6 @@ class Citations extends SiteController
 		// Add some data to our view for form filtering/sorting
 		$ct = new Type($this->database);
 		$this->view->types = $ct->getType();
-
-		// get groups
-		$this->view->groups = \Hubzero\User\Group::find(array(
-			'type'      => array('1','3'),
-			'published' => 1,
-			'approved'  => 1,
-			'fields'    => array('gidNumber', 'cn')
-		));
 
 		// Get the users id to make lookup
 		$users_ip = Request::ip();

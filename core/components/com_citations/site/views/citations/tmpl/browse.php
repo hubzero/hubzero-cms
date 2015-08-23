@@ -323,16 +323,6 @@ if ($label == 'none') {
 					</select>
 				</label>
 				<label>
-					<?php echo Lang::txt('COM_CITATIONS_GROUP'); ?>
-					<select name="group" id="group">
-						<option value=""><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></option>
-						<?php foreach ($this->groups as $group) : ?>
-							<?php $sel = ($this->filters['group'] == $group->gidNumber) ? "selected=\"selected\"" : ""; ?>
-							<option <?php echo $sel; ?> value="<?php echo $group->gidNumber; ?>"><?php echo $group->cn; ?></option>
-						<?php endforeach; ?>
-					</select>
-				</label>
-				<label>
 					<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 					<?php
 						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value

@@ -24,6 +24,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+			<field name="default_citation_format" type="text" label="COM_CITATIONS_CONFIG_DEFAULT_FORMAT" class="inputbox" component="com_citations" section="component" />
 		<field type="spacer" />
 		<field name="citation_label" type="list" default="number" label="COM_CITATIONS_CONFIG_LABEL_LABEL" description="COM_CITATIONS_CONFIG_LABEL_DESC">
 			<option value="number">COM_CITATIONS_CONFIG_LABEL_NUMBER</option>

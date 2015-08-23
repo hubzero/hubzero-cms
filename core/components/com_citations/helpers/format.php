@@ -31,9 +31,11 @@
 namespace Components\Citations\Helpers;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
 
 use Components\Citations\Tables\Association;
 use Components\Citations\Tables\Type;
+use Components\Citations\Models\Format as CitationFormat;
 use Hubzero\Utility\String;
 use Hubzero\User\Profile;
 
@@ -234,7 +236,17 @@ class Format
 		$replace_values = array();
 
 		//get the template
-		$template = $this->getTemplate();
+		if ($config->get('default_citation_format') != '')
+		{
+			$template = CitationFormat::all()
+				->where('style', 'LIKE', $config->get('default_citation_format'))
+				->limit(1)
+				->row()->format;
+		}
+		else
+		{
+			$template = $this->getTemplate();
+		}
 
 		//get the template keys
 		$template_keys = $this->getTemplateKeys();

@@ -80,8 +80,6 @@ $jQ(document).ready(function(e) {
 	}); 
 });
 </script>
-
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
@@ -89,16 +87,20 @@ $jQ(document).ready(function(e) {
 
 			<div class="input-wrap">
 				<label for="format-selector"><?php echo Lang::txt('CITATION_FORMAT_STYLE'); ?>:</label><br />
-				<select name="format[style]" id="format-selector">
-					<option value="apa" <?php if ($this->currentFormat->style == 'apa') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->apaFormat); ?>">APA Format</option>
-					<option value="ieee" <?php if ($this->currentFormat->style == 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->ieeeFormat); ?>">IEEE Format</option>
-					<option value="custom" <?php if ($this->currentFormat->style != 'apa' && $this->currentFormat->style != 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->currentFormat->format); ?>">Custom Format</option>
+				<select name="citationFormat[id]" id="format-selector">
+					<?php foreach ($this->formats as $format): ?>
+					<?php ($this->currentFormat->id == $format->id ? $selected = 'selected' : $selected = ''); ?> 
+					<option value="<?php echo $format->id; ?>" <?php echo $selected; ?> data-format="<?php echo str_replace('"', '\"', $format->format); ?>" > 
+						<?php echo $format->style; ?>
+					</option>
+					<?php endforeach; ?>
+					<option value="custom"><?php echo Lang::txt('CITATION_CUSTOM_FORMAT'); ?></option>
 				</select>
 			</div>
 
 			<div class="input-wrap">
 				<label for="format-string"><?php echo Lang::txt('CITATION_FORMAT_STRING'); ?>:</label><br />
-				<textarea name="format[format]" rows="10" id="format-string"><?php echo $this->currentFormat->format; ?></textarea>
+				<textarea name="citationFormat[format]" rows="10" id="format-string"><?php echo trim( preg_replace('/\r|\n/', '', $this->currentFormat->format)); ?></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -127,7 +129,7 @@ $jQ(document).ready(function(e) {
 	</div>	
 	<div class="clr"></div>
 
-	<input type="hidden" name="format[id]" value="<?php echo $this->currentFormat->id; ?>" />
+	<input type="hidden" name="citationFormat[current]" value="<?php echo $this->currentFormat->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
