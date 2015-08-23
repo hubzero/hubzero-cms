@@ -78,7 +78,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 					<div class="col span6">
 						<label for="type">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-							<select name="fields[type]" id="type">
+							<select name="type" id="type">
 								<option value=""> <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE_SELECT'); ?></option>
 								<?php
 									foreach ($this->types as $t)
@@ -93,7 +93,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 					<div class="col span6 omega">
 						<label for="cite">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITE_KEY'); ?>:
-							<input type="text" name="fields[cite]" id="cite" size="30" maxlength="250" value="<?php echo $this->escape($this->row->cite); ?>" />
+							<input type="text" name="cite" id="cite" size="30" maxlength="250" value="<?php echo $this->escape($this->row->cite); ?>" />
 							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITE_KEY_EXPLANATION'); ?></span>
 						</label>
 					</div>
@@ -108,21 +108,21 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 					<div class="col span4">
 						<label for="date_submit">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DATE_SUBMITTED'); ?>:
-							<input type="text" name="fields[date_submit]" id="date_submit" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_submit); ?>" />
+							<input type="text" name="date_submit" id="date_submit" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_submit); ?>" />
 							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DATE_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span4">
 						<label for="date_accept">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DATE_ACCEPTED'); ?>:
-							<input type="text" name="fields[date_accept]" id="date_accept" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_accept); ?>" />
+							<input type="text" name="date_accept" id="date_accept" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_accept); ?>" />
 							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DATE_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span4 omega">
 						<label for="date_publish">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DATE_PUBLISHED'); ?>:
-							<input type="text" name="fields[date_publish]" id="date_publish" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_publish); ?>" />
+							<input type="text" name="date_publish" id="date_publish" size="30" maxlength="250" value="<?php echo $this->escape($this->row->date_publish); ?>" />
 							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DATE_HINT'); ?></span>
 						</label>
 					</div>
@@ -197,44 +197,44 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 				</label>*/ ?>
 				<label for="editor">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDITORS'); ?>:
-					<input type="text" name="fields[editor]" id="editor" size="30" maxlength="250" value="<?php echo $this->escape($this->row->editor); ?>" />
+					<input type="text" name="editor" id="editor" size="30" maxlength="250" value="<?php echo $this->escape($this->row->editor); ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></span>
 				</label>
 				<label for="title">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TITLE_CHAPTER'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="fields[title]" id="title" size="30" maxlength="250" value="<?php echo $this->escape($this->row->title); ?>" />
+					<input type="text" name="title" id="title" size="30" maxlength="250" value="<?php echo $this->escape($this->row->title); ?>" />
 				</label>
 				<label for="booktitle">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BOOK_TITLE'); ?>:
-					<input type="text" name="fields[booktitle]" id="booktitle" size="30" maxlength="250" value="<?php echo $this->escape($this->row->booktitle); ?>" />
+					<input type="text" name="booktitle" id="booktitle" size="30" maxlength="250" value="<?php echo $this->escape($this->row->booktitle); ?>" />
 				</label>
 
 				<label for="shorttitle">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SHORT_TITLE'); ?>:
-					<input type="text" name="fields[short_title]" id="shorttitle" size="30" maxlength="250" value="<?php echo $this->escape($this->row->short_title); ?>" />
+					<input type="text" name="short_title" id="shorttitle" size="30" maxlength="250" value="<?php echo $this->escape($this->row->short_title); ?>" />
 				</label>
 				<label for="journal">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_JOURNAL'); ?>:
-					<input type="text" name="fields[journal]" id="journal" size="30" maxlength="250" value="<?php echo $this->escape($this->row->journal); ?>" />
+					<input type="text" name="journal" id="journal" size="30" maxlength="250" value="<?php echo $this->escape($this->row->journal); ?>" />
 				</label>
 
 				<div class="grid">
 					<div class="col span4">
 						<label for="volume">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_VOLUME'); ?>:
-							<input type="text" name="fields[volume]" id="volume" size="11" maxlength="11" value="<?php echo $this->escape($this->row->volume); ?>" />
+							<input type="text" name="volume" id="volume" size="11" maxlength="11" value="<?php echo $this->escape($this->row->volume); ?>" />
 						</label>
 					</div>
 					<div class="col span4">
 					<label for="number">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ISSUE'); ?>:
-							<input type="text" name="fields[number]" id="number" size="11" maxlength="50" value="<?php echo $this->escape($this->row->number); ?>" />
+							<input type="text" name="number" id="number" size="11" maxlength="50" value="<?php echo $this->escape($this->row->number); ?>" />
 					</label>
 					</div>
 					<div class="col span4 omega">
 						<label for="pages">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PAGES'); ?>:
-							<input type="text" name="fields[pages]" id="pages" size="11" maxlength="250" value="<?php echo $this->escape($this->row->pages); ?>" />
+							<input type="text" name="pages" id="pages" size="11" maxlength="250" value="<?php echo $this->escape($this->row->pages); ?>" />
 						</label>
 					</div>
 				</div>
@@ -242,14 +242,14 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 					<div class="col span6">
 						<label for="isbn">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ISBN'); ?>:
-							<input type="text" name="fields[isbn]" id="isbn" size="11" maxlength="50" value="<?php echo $this->escape($this->row->isbn); ?>" />
+							<input type="text" name="isbn" id="isbn" size="11" maxlength="50" value="<?php echo $this->escape($this->row->isbn); ?>" />
 						</label>
 					</div>
 					<div class="col span6 omega">
 						<label for="doi">
 						<abbr title="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DOI_FULL'); ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DOI'); ?></abbr>:
-						<input type="text" name="fields[doi]" id="doi" size="30" maxlength="250" value="<?php echo $this->escape($this->row->doi); ?>" />
+						<input type="text" name="doi" id="doi" size="30" maxlength="250" value="<?php echo $this->escape($this->row->doi); ?>" />
 						</label>
 					</div>
 				</div>
@@ -258,80 +258,80 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 					<div class="col span6">
 						<label for="callnumber">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CALL_NUMBER'); ?>:
-							<input type="text" name="fields[call_number]" id="callnumber" value="<?php echo $this->escape($this->row->call_number); ?>" />
+							<input type="text" name="call_number" id="callnumber" value="<?php echo $this->escape($this->row->call_number); ?>" />
 						</label>
 					</div>
 					<div class="col span6 omega">
 						<label for="accessionnumber">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ACCESSION_NUMBER'); ?>:
-							<input type="text" name="fields[accession_number]" id="accessionnumber"  value="<?php echo $this->escape($this->row->accession_number); ?>" />
+							<input type="text" name="accession_number" id="accessionnumber"  value="<?php echo $this->escape($this->row->accession_number); ?>" />
 						</label>
 					</div>
 				</div>
 
 				<label for="series">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SERIES'); ?>:
-					<input type="text" name="fields[series]" id="series" size="30" maxlength="250" value="<?php echo $this->escape($this->row->series); ?>" />
+					<input type="text" name="series" id="series" size="30" maxlength="250" value="<?php echo $this->escape($this->row->series); ?>" />
 				</label>
 
 				<label for="edition">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDITION'); ?>:
-					<input type="text" name="fields[edition]" id="edition" size="30" maxlength="250" value="<?php echo $this->escape($this->row->edition); ?>" />
+					<input type="text" name="edition" id="edition" size="30" maxlength="250" value="<?php echo $this->escape($this->row->edition); ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDITION_EXPLANATION'); ?></span>
 				</label>
 
 				<label for="school">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SCHOOL'); ?>:
-					<input type="text" name="fields[school]" id="school" size="30" maxlength="250" value="<?php echo $this->escape($this->row->school); ?>" />
+					<input type="text" name="school" id="school" size="30" maxlength="250" value="<?php echo $this->escape($this->row->school); ?>" />
 				</label>
 
 				<label for="publisher">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISHER'); ?>:
-					<input type="text" name="fields[publisher]" id="publisher" size="30" maxlength="250" value="<?php echo $this->escape($this->row->publisher); ?>" />
+					<input type="text" name="publisher" id="publisher" size="30" maxlength="250" value="<?php echo $this->escape($this->row->publisher); ?>" />
 				</label>
 
 				<label for="institution">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INSTITUTION'); ?>:
-					<input type="text" name="fields[institution]" id="institution" size="30" maxlength="250" value="<?php echo $this->escape($this->row->institution); ?>" />
+					<input type="text" name="institution" id="institution" size="30" maxlength="250" value="<?php echo $this->escape($this->row->institution); ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INSTITUTION_EXPLANATION'); ?></span>
 				</label>
 
 				<label for="address">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ADDRESS'); ?>:
-					<input type="text" name="fields[address]" id="address" size="30" maxlength="250" value="<?php echo $this->escape($this->row->address); ?>" />
+					<input type="text" name="address" id="address" size="30" maxlength="250" value="<?php echo $this->escape($this->row->address); ?>" />
 				</label>
 
 				<label for="location">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_LOCATION'); ?>:
-					<input type="text" name="fields[location]" id="location" size="30" maxlength="250" value="<?php echo $this->escape($this->row->location); ?>" />
+					<input type="text" name="location" id="location" size="30" maxlength="250" value="<?php echo $this->escape($this->row->location); ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_LOCATION_EXPLANATION'); ?></span>
 				</label>
 
 				<label for="howpublished">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH_METHOD'); ?>:
-					<input type="text" name="fields[howpublished]" id="howpublished" size="30" maxlength="250" value="<?php echo $this->escape($this->row->howpublished); ?>" />
+					<input type="text" name="howpublished" id="howpublished" size="30" maxlength="250" value="<?php echo $this->escape($this->row->howpublished); ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH_METHOD_EXPLANATION'); ?></span>
 				</label>
 
 				<label for="uri">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_URL'); ?>:
-					<input type="text" name="fields[uri]" id="uri" size="30" maxlength="250" value="<?php echo $this->escape($this->row->url); ?>" />
+					<input type="text" name="uri" id="uri" size="30" maxlength="250" value="<?php echo $this->escape($this->row->url); ?>" />
 				</label>
 
 				<label for="eprint">
 				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EPRINT'); ?>:
-				<input type="text" name="fields[eprint]" id="eprint" size="30" maxlength="250" value="<?php echo $this->escape($this->row->eprint); ?>" />
+				<input type="text" name="eprint" id="eprint" size="30" maxlength="250" value="<?php echo $this->escape($this->row->eprint); ?>" />
 				<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EPRINT_EXPLANATION'); ?></span>
 				</label>
 
 				<?php /*<label for="abstract">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT'); ?>:
-					<textarea name="fields[abstract]" id="abstract" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->abstract)); ?></textarea>
+					<textarea name="abstract]" id="abstract" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->abstract)); ?></textarea>
 				</label>*/ ?>
 
 				<label for="note">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NOTES'); ?>:
-					<textarea name="fields[note]" id="note" rows="5" cols="10"><?php echo $this->escape(stripslashes($this->row->note)); ?></textarea>
+					<textarea name="note" id="note" rows="5" cols="10"><?php echo $this->escape(stripslashes($this->row->note)); ?></textarea>
 				</label>
 
 				<?php /*<label for="keywords">
@@ -417,12 +417,12 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 
 			<div class="clear"></div>
 
-			<input type="hidden" name="fields[uid]" value="<?php echo $this->escape($this->row->uid); ?>" />
-			<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->row->created); ?>" />
-			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->row->scope); ?>" />
-			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->row->scope_id); ?>" />
-			<input type="hidden" name="fields[published]" value="<?php echo ($this->row->id ? $this->escape($this->row->published) : 1); ?>" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->id); ?>" />
+			<input type="hidden" name="uid" value="<?php echo $this->escape($this->row->uid); ?>" />
+			<input type="hidden" name="created" value="<?php echo $this->escape($this->row->created); ?>" />
+			<input type="hidden" name="scope" value="<?php echo $this->escape($this->row->scope); ?>" />
+			<input type="hidden" name="scope_id" value="<?php echo $this->escape($this->row->scope_id); ?>" />
+			<input type="hidden" name="published" value="<?php echo ($this->row->id ? $this->escape($this->row->published) : 1); ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->escape($this->row->id); ?>" />
 
 			<input type="hidden" name="option" value="com_members" />
 			<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />

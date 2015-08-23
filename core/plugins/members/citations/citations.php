@@ -533,100 +533,96 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
 		}
 
-		//get the posted vars
-		$c = Request::getVar('fields', array(), 'post');
-		if (isset($c['format_type']))
-		{
-			$c['format'] = $c['format_type'];
-		}
-
 		// set scope & scope id in save so no one can mess with hidden form inputs
-		$c['scope']    = 'member';
-		$c['scope_id'] = $this->member->get('uidNumber');
+		$scope    = 'member';
+		$scope_id = $this->member->get('uidNumber');
 
-		// Bind incoming data to object
-		$row = new \Components\Citations\Tables\Citation($this->database);
-		if (!$row->bind($c))
-		{
-			$this->setError($row->getError());
-			$this->browseAction();
-			return;
-		}
+		// get tags
+		$tags = trim(Request::getVar('tags', ''));
 
-		$auths = array();
-		$authors = $row->authors($row->id);
-		foreach ($authors as $a)
-		{
-			$auths[] = $a->author;
-		}
-		$row->author = implode(', ', $auths);
+		// get badges
+		$badges = trim(Request::getVar('badges', ''));
 
-		// New entry so set the created date
-		$isNew = 0;
-		if (!$row->id || $row->id < 0)
-		{
-			$isNew = $row->id;
-			$row->id = 0;
-			$row->created = Date::toSql();
-		}
+		// check to see if new
+		$cid = Request::getInt('id');
+		$isNew = ($cid < 0 ? true : false);
 
-		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = Request::getVar('uri', '', 'post');
-
-		// Check content for missing required data
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editAction($row);
-			return;
-		}
+		// get the citation (single) or create a new one
+		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
+			->set(array(
+				'type' => Request::getInt('type'),
+				'cite' => Request::getVar('cite'),
+				'ref_type' => Request::getVar('ref_type'),
+				'date_submit' => Request::getVar('date_submit'),
+				'date_accept' => Request::getVar('date_accept'),
+				'date_publish' => Request::getVar('date_publish'),
+				'year' => Request::getVar('year'),
+				'month' => Request::getVar('month'),
+				'author' => Request::getVar('author'),
+				'author_address' => Request::getVar('author_address'),
+				'editor' => Request::getVar('editor'),
+				'title' => Request::getVar('title'),
+				'booktitle' => Request::getVar('booktitle'),
+				'short_title' => Request::getVar('short_title'),
+				'journal' => Request::getVar('journal'),
+				'volume' => Request::getVar('volume'),
+				'number' => Request::getVar('number'),
+				'pages' => Request::getVar('pages'),
+				'isbn' => Request::getVar('isbn'),
+				'doi' => Request::getVar('doi'),
+				'call_number' => Request::getVar('call_number'),
+				'accession_number' => Request::getVar('accession_number'),
+				'series' => Request::getVar('series'),
+				'edition' => Request::getVar('edition'),
+				'school' => Request::getVar('school'),
+				'publisher' => Request::getVar('publisher'),
+				'institution' => Request::getVar('institution'),
+				'address' => Request::getVar('address'),
+				'location' => Request::getVar('location'),
+				'howpublished' => Request::getVar('howpublished'),
+				'url' => Request::getVar('uri'),
+				'eprint' => Request::getVar('eprint'),
+				'abstract' => Request::getVar('abstract'),
+				'keywords' => Request::getVar('keywords'),
+				'research_notes' => Request::getVar('research_notes'),
+				'language' => Request::getVar('language'),
+				'label' => Request::getVar('label'),
+				'uid' => User::get('id'),
+				'created' => Date::toSql(),
+				'scope' => $scope,
+				'scope_id' => $scope_id,
+				'affiliated' => Request::getInt('affiliated', 0),
+				'fundedby' => Request::getInt('fundedby', 0)
+			));
 
 		// Store new content
-		if (!$row->store())
+		if (!$citation->save())
 		{
-			$this->setError($row->getError());
-			$this->editAction($row);
+			$this->setError($citation->getError());
+			$this->editAction();
 			return;
 		}
 
-		if ($isNew < 0)
+		// update authors entries for new citations
+		if ($isNew)
 		{
-			// Update all Citation ID for authors.
-			//
-			// This will happen if a citation is new and a temp
-			// ID was used.
-			foreach ($authors as $a)
+			$authors = \Components\Citations\Models\Author::all()
+				->where('cid', '=', $cid);
+
+			foreach ($authors as $author)
 			{
-				$author = new \Components\Citations\Tables\Author($this->database);
-				$author->id  = $a->id;
-				$author->cid = $row->id;
-				$author->store();
+				$author->set('cid', $citation->id);
+				$author->save();
 			}
 		}
 
-		$config = Component::params('com_citations');
+		// check if we are allowing tags
+		$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
+		$ct1->setTags($tags, User::get('id'), 0, 1, '');
 
-		//check if we are allowing tags
-		if ($config->get('citation_allow_tags', 'no') == 'yes')
-		{
-			//get tags
-			$tags = trim(Request::getVar('tags', ''));
-			unset($c['tags']);
-
-			$ct1 = new \Components\Citations\Tables\Tags($row->id);
-			$ct1->setTags($tags, User::get('id'), 0, 1, '');
-		}
-
-		//check if we are allowing badges
-		if ($config->get('citation_allow_badges', 'no') == 'yes')
-		{
-			//get badges
-			$badges = trim(Request::getVar('badges', ''));
-			unset($c['badges']);
-
-			$ct2 = new \Components\Citations\Tables\Tags($row->id);
-			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
-		}
+		// check if we are allowing badges
+		$ct2 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
+		$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 
 		// resdirect after save
 		App::redirect(
