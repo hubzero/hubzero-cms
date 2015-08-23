@@ -462,7 +462,7 @@ class Citation extends \JTable
 		{
 			if ($filter['scope'] == 'hub')
 			{
-				$query .= "	AND r.scope IS NULL OR r.scope = 'hub'";
+				$query .= "	AND (r.scope IS NULL OR r.scope = 'hub')";
 			}
 			elseif ($filter['scope'] == 'all')
 			{
