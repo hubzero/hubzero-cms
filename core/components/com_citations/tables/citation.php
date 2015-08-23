@@ -462,7 +462,7 @@ class Citation extends \JTable
 		{
 			if ($filter['scope'] == 'hub')
 			{
-				$query .= "AND r.scope IS NULL OR r.scope = 'hub'";
+				$query .= "	AND r.scope IS NULL OR r.scope = 'hub'";
 			}
 			elseif ($filter['scope'] == 'all')
 			{
@@ -479,7 +479,7 @@ class Citation extends \JTable
 		}
 		if (!isset($filter['scope']) && !isset($filter['scope_id']) && $filter['scope'] != 'all')
 		{
-			$query .= 'AND r.scope = "" AND r.scope_id = ""';
+			$query .= ' AND r.scope = "" AND r.scope_id = ""';
 		}
 		//group by
 		if (isset($filter['tag']) && $filter['tag'] != '')
