@@ -96,8 +96,9 @@ background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10
 
 .individual.icon-edit, .individual.icon-delete, .individual.icon-window-publish {
 border-bottom: 0;
-font-size: 14pt;
+font-size: 9pt;
 padding: 0px;
+text-align:center;
 margin: 0px;
 }
 #citations-introduction {
@@ -226,7 +227,7 @@ margin: 0px;
 		border: none;
 	}
 	.citation-author .delete:before {
-		margin-right: 1em;
+		/*margin-right: 1em; */
 		content: "\f014";
 		font-family: "Fontcons";
 	}
