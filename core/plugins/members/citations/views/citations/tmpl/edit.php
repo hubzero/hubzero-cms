@@ -37,8 +37,8 @@ $this->css()
 
 $base = $this->member->getLink() . '&active=citations';
 
-$allow_tags = $this->config->get("citation_allow_tags", "no");
-$allow_badges = $this->config->get("citation_allow_badges", "no");
+$allow_tags = $this->allow_tags;
+$allow_badges = $this->allow_badges;
 
 $fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
 $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
@@ -83,8 +83,8 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 								<?php
 									foreach ($this->types as $t)
 									{
-										$sel = ($this->row->type == $t['id']) ? "selected=\"selected\"" : "";
-										echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
+										$sel = ($this->row->type == $t->id) ? "selected=\"selected\"" : "";
+										echo "<option {$sel} value=\"{$t->id}\">{$t->type_title}</option>";
 									}
 								?>
 							</select>
@@ -148,7 +148,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 							<label for="field-author">
 								<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS'); ?>
 								<?php
-								$authors = $this->row->authors();
+								$authors = $this->row->relatedAuthors;
 
 								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', '')));
 								if (count($mc) > 0) {
@@ -415,99 +415,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 				</fieldset><div class="clear"></div>
 			<?php endif; ?>
 
-			<fieldset>
-				<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_FOR'); ?></legend>
-
-				<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ASSOCIATION_DESC'); ?></p>
-
-				<div class="field-wrap">
-					<table id="assocs">
-						<thead>
-							<tr>
-								<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?></th>
-								<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ID'); ?></th>
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<td colspan="2"><a href="#" class="btn" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ADD_A_ROW'); ?></a></td>
-							</tr>
-						</tfoot>
-						<tbody>
-						<?php
-						$r = count($this->assocs);
-						if ($r > 5) {
-							$n = $r;
-						} else {
-							$n = 5;
-						}
-						for ($i = 0; $i < $n; $i++)
-						{
-							if ($r == 0 || !isset($this->assocs[$i]))
-							{
-								$this->assocs[$i] = new stdClass;
-								$this->assocs[$i]->id = NULL;
-								$this->assocs[$i]->cid = NULL;
-								$this->assocs[$i]->oid = NULL;
-								$this->assocs[$i]->type = NULL;
-								$this->assocs[$i]->tbl = NULL;
-							}
-							echo "\t\t\t" . '  <tr>' . "\n";
-							echo "\t\t\t" . '   <td><select name="assocs[' . $i . '][tbl]">' . "\n";
-							echo ' <option value=""';
-							echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"' : '';
-							echo '>' . Lang::txt('PLG_MEMBERS_CITATIONS_SELECT') . '</option>' . "\n";
-							echo ' <option value="resource"';
-							echo ($this->assocs[$i]->tbl == 'resource') ? ' selected="selected"' : '';
-							echo '>' . Lang::txt('PLG_MEMBERS_CITATIONS_RESOURCE') . '</option>' . "\n";
-							echo ' <option value="publication"';
-							echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"' : '';
-							echo '>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLICATION') . '</option>' . "\n";
-							echo '</select></td>' . "\n";
-							echo "\t\t\t" . '<td><input type="text" name="assocs[' . $i . '][oid]" value="' . $this->assocs[$i]->oid . '" />' . "\n";
-							echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][id]" value="' . $this->assocs[$i]->id . '" />' . "\n";
-							echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][cid]" value="' . $this->assocs[$i]->cid . '" /></td>' . "\n";
-							echo "\t\t\t" . '</tr>' . "\n";
-						}
-						?>
-						</tbody>
-					</table>
-				</div>
-			</fieldset><div class="clear"></div>
-
-			<?php /* <fieldset>
-				<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATION'); ?></legend>
-				<label>
-					<input type="checkbox" class="option" name="fields[affiliated]" id="affiliated" value="1"<?php if ($this->row->affiliated) { echo ' checked="checked"'; } ?> />
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATED_WITH_YOUR_ORG'); ?>
-				</label>
-				<label>
-					<input type="checkbox" class="option" name="fields[fundedby]" id="fundedby" value="1"<?php if ($this->row->fundedby) { echo ' checked="checked"'; } ?> />
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FUNDED_BY_YOUR_ORG'); ?>
-				</label>
-			</fieldset>
-
-			<fieldset>
-				<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CUSTOM_FIELDS'); ?></legend>
-
-				<label for="custom1">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CUSTOM_FIELD_1'); ?>:
-					<input type="text" name="fields[custom1]" id="custom1" value="<?php echo (isset($this->row->custom1)) ? $this->escape($this->row->custom1) : ''; ?>"/>
-				</label>
-				<label for="custom2">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CUSTOM_FIELD_2'); ?>:
-					<input type="text"  name="fields[custom2]" id="custom2" value="<?php echo (isset($this->row->custom2)) ? $this->escape($this->row->custom2) : ''; ?>"/>
-				</label>
-				<label for="custom3">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CUSTOM_FIELD_3'); ?>:
-					<input type="text"  name="fields[custom3]" id="custom3" value="<?php echo (isset($this->row->custom3)) ? $this->escape($this->row->custom3) : ''; ?>"/>
-				</label>
-				<label for="custom4">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CUSTOM_FIELD_4'); ?>:
-					<input type="text"  name="fields[custom4]" id="custom4" value="<?php echo (isset($this->row->custom4)) ? $this->escape($this->row->custom4) : ''; ?>"/>
-				</label>
-			</fieldset>
-			<div class="clear"></div> */ ?>
+			<div class="clear"></div>
 
 			<input type="hidden" name="fields[uid]" value="<?php echo $this->escape($this->row->uid); ?>" />
 			<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->row->created); ?>" />
