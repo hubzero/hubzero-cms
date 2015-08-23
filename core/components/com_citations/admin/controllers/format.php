@@ -52,7 +52,7 @@ class Format extends AdminController
 	public function displayTask()
 	{
 
-		// get the first item, will use as default if not set. 
+		// get the first item, will use as default if not set.
 		$firstResult = CitationFormat::all()
 			->where('style', 'NOT LIKE', 'custom-group-%')
 			->limit(1)
@@ -72,7 +72,7 @@ class Format extends AdminController
 		}
 
 		// set view variable
-		$this->view->currentFormat = $currentFormat; 
+		$this->view->currentFormat = $currentFormat;
 
 		//get formatter object
 		$this->view->formats = CitationFormat::all();
@@ -103,7 +103,7 @@ class Format extends AdminController
 
 		// create or update custom format
 		$model = CitationFormat::oneOrNew($format['id']);
-	
+
 		if ($model->style == 'Hub Custom' || $model->isNew() === true)
 		{
 			$model->set(array(
@@ -129,7 +129,7 @@ class Format extends AdminController
 		{
 			$formatID = $model->id;
 		}
-		
+
 		// successfully set the default value, redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
