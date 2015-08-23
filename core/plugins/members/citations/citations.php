@@ -33,11 +33,26 @@ defined('_HZEXEC_') or die();
 
 // Include needed libs
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'citation.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'author.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tag.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'tagobject.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'importer.php');
 
-foreach (array('citation', 'association', 'author', 'secondary', 'sponsor', 'tags', 'format', 'type') as $inc)
-{
-	require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . $inc . '.php');
-}
+use Hubzero\Config\Registry;
+use Components\Tags\Models\Tag;
+use Components\Tags\Models\Cloud;
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Author;
+use Components\Citations\Models\Type;
+use Components\Citations\Models\Format;
+use Components\Citations\Models\Importer;
+
 
 /**
  * Groups plugin class for citations
@@ -396,18 +411,19 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->member   = $this->member;
 		$view->option   = $this->option;
 		$view->database = $this->database;
-		$view->config   = Component::params('com_citations');
+		$view->allow_tags = $this->member->getParam('citation_allow_tags', 'yes');
+		$view->allow_badges = $this->member->getParam('citatoin_allow_badges', 'yes');
 
 		// Get the citation types
-		$citationsType = new \Components\Citations\Tables\Type($this->database);
-		$view->types = $citationsType->getType();
+		$citationsType = \Components\Citations\Models\Type::all();
+		$view->types = $citationsType->rows();
 
 		$fields = array();
 		foreach ($view->types as $type)
 		{
-			if (isset($type['fields']))
+			if (isset($type->fields))
 			{
-				$f = $type['fields'];
+				$f = $type->fields;
 				if (strpos($f, ',') !== false)
 				{
 					$f = str_replace(',', "\n", $f);
@@ -416,16 +432,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$f = array_map('trim', explode("\n", $f));
 				$f = array_values(array_filter($f));
 
-				$fields[strtolower(str_replace(' ', '', $type['type_title']))] = $f;
+				$fields[strtolower(str_replace(' ', '', $type->type_title))] = $f;
 			}
 		}
-
-		// add an empty value for the first type
-		array_unshift($view->types, array(
-			'id'         => 0,
-			'type'       => '',
-			'type_title' => ' - Select a Type &mdash;'
-		));
 
 		// Incoming
 		$id = Request::getInt('citation', 0);
@@ -437,8 +446,18 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->row = new \Components\Citations\Tables\Citation($this->database);
-			$view->row->load($id);
+			$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
+
+			// check to see if this member created this citation
+			if (!$view->row->isNew() && $view->row->uid != $this->member->get('uidNumber'))
+			{
+				// redirect
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_MEMBER_CITATIONS_OWNER_ONLY'),
+					'warning'
+				);
+			}
 		}
 
 		//make sure title isnt too long
@@ -473,38 +492,15 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			$view->row->uid = User::get('id');
 
-			// It's new - no associations to get
-			$view->assocs = array();
-
 			//tags & badges
 			$view->tags   = array();
 			$view->badges = array();
 
 			$view->row->id = -time();
 
-			/*$author = new \Components\Citations\Tables\Author($this->database);
-			$author->cid          = $view->row->id;
-			$author->author       = $this->member->get('name');
-			$author->uidNumber    = $this->member->get('uidNumber');
-			$author->organization = $this->member->get('organization');
-			$author->givenName    = $this->member->get('givenName');
-			$author->middleName   = $this->member->get('middleName');
-			$author->surname      = $this->member->get('surname');
-			$author->email        = $this->member->get('email');
-			if (!$author->check())
-			{
-				$this->setError($author->getError());
-			}
-			if (!$author->store())
-			{
-				$this->setError($author->getError());
-			}*/
 		}
 		else
 		{
-			$assoc = new \Components\Citations\Tables\Association($this->database);
-			$view->assocs = $assoc->getRecords(array('cid' => $id), true);
-
 			//tags & badges
 			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
 			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
