@@ -41,10 +41,6 @@ $label    = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $rollover = ($rollover == "yes") ? 1 : 0;
 
-// citation format
-$citationsFormat = new \Components\Citations\Tables\Format($this->database);
-$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
-
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);
 
@@ -148,17 +144,12 @@ if (isset($this->messages))
 				<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
 				<input type="hidden" name="referer" value="<?php echo $this->escape(@$_SERVER['HTTP_REFERER']); ?>" />
 
-				<?php if (count($this->citations) > 0) : ?>
+				<?php if ($this->citations->count() > 0) : ?>
 					<?php
 						$formatter = new \Components\Citations\Helpers\Format();
 						$formatter->setTemplate($template);
 
 						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-						$counter = $this->filters['start'] + 1;
-						if ($counter == '')
-						{
-							$counter = 1;
-						}
 					?>
 					<table class="citations entries">
 						<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
@@ -209,13 +200,13 @@ if (isset($this->messages))
 												switch ($label)
 												{
 													case "number":
-														echo "<span class=\"number\">{$counter}.</span>";
+														echo "<span class=\"number\">{$cite->id}.</span>";
 														break;
 													case "type":
 														echo "<span class=\"type\">{$type}</span>";
 														break;
 													case "both":
-														echo "<span class=\"number\">{$counter}. </span>";
+														echo "<span class=\"number\">{$cite->id}. </span>";
 														echo "<span class=\"type\">{$type}</span>";
 														break;
 												}
@@ -227,19 +218,19 @@ if (isset($this->messages))
 											<div class="identifier"><?php echo $cite->custom3; ?></div>
 										<?php endif; ?>
 										<?php
-											$formatted = $cite->formatted
-												? $cite->formatted
-												: $formatter->formatCitation($cite,
-													$this->filters['search'], $coins, $this->config);
+											$formatted = $cite->formatted($this->config->toArray(), $this->filters['search']);
 
 											if ($cite->doi)
 											{
-												$formatted = str_replace('doi:' . $cite->doi,
-													'<a href="' . $cite->url . '" rel="external">'
-													. 'doi:' . $cite->doi . '</a>', $formatted);
+												$formatted = str_replace(
+													'doi:' . $cite->doi,
+													'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
+													$formatted
+												);
 											}
 
-											echo $formatted; ?>
+											echo $formatted;
+										?>
 										<?php
 											//get this citations rollover param
 											$params = new \Hubzero\Html\Parameter($cite->params);
@@ -282,7 +273,7 @@ if (isset($this->messages))
 											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 										<?php endif; ?>
 
-										<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+										<?php if ($this->config->get("citation_show_tags","yes") == "yes") : ?>
 											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
 										<?php endif; ?>
 									</td>
@@ -297,7 +288,6 @@ if (isset($this->messages))
 										</td>
 									<?php endif; ?>
 								</tr>
-								<?php $counter++; ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
@@ -313,39 +303,7 @@ if (isset($this->messages))
 						</tbody>
 					</table>
 				<?php endif; ?>
-				<?php
-					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('task', 'browse');
-					foreach ($this->filters as $key => $value)
-					{
-						switch ($key)
-						{
-							case 'limit':
-							case 'idlist';
-							case 'start':
-							break;
-
-							case 'reftype':
-							case 'aff':
-							case 'geo':
-								foreach ($value as $k => $v)
-								{
-									$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
-								}
-							break;
-
-							default:
-								$pageNav->setAdditionalUrlParam($key, $value);
-							break;
-						}
-					}
-					echo $pageNav->render();
-				?>
+				<?php echo $this->citations->pagination; ?>
 				<div class="clearfix"></div>
 			</div><!-- /.container -->
 		</form>

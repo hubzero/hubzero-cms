@@ -185,9 +185,184 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function browseAction()
 	{
-		//initialize the view
-		$view = $this->view('browse');
 
+		 // Instantiate a new citations object
+		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->member->get('uidNumber'));
+
+		$count = clone $obj['citations'];
+		$count = $count->count();
+		//$isManager		 = ($this->authorized == 'manager') ? true : false;
+		$isManager = true;
+		$config =  new \Hubzero\Config\Registry($this->member->get('params'));
+
+		$total = \Components\Citations\Models\Citation::all()
+			->where('scope', '=', 'member')
+			->where('scope_id', '=', $this->member->get('uidNumber'))
+			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+			->count();
+
+		// for first-time use
+		/*
+		if ($count == 0 && $isManager)
+		{
+			// have a group manager set the settings
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				'error'
+			);
+
+			return;
+			App::redirect(
+			 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations&action=settings'),
+			 Lang::txt('Please select your settings for this group.'),
+			 'warning'
+			 );
+		}
+		elseif ((int) $count == 0 && $isManager && isset($display) && $total <= 0)
+		{
+			$view = $this->view('intro', 'browse');
+			$view->group = $this->group;
+			$view->isManager = ($this->authorized == 'manager') ? true : false;
+		}
+		else
+		{*/
+			// initialize the view
+			$view = $this->view('browse');
+
+			// push objects to the view
+			$view->option			 = $this->option;
+			$view->member			 = $this->member;
+			$view->task				 = $this->_name;
+			$view->database			 = $this->database;
+			$view->title			 = Lang::txt(strtoupper($this->_name));
+			//$view->isManager		 = ($this->authorized == 'manager') ? true : false;
+			$view->isAdmin = true;
+			$view->config			 = $config;
+			$view->grand_total = $total;
+
+		//}
+
+
+		// get applied filters
+		$view->filters = $obj['filters'];
+
+		// only display published citations to non-managers.
+		if ($view->isAdmin)
+		{
+			// get filtered citations
+			$view->citations = $obj['citations']->paginated()->rows();
+		}
+		else
+		{
+			$view->citations = $obj['citations']
+				->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+				->paginated()
+				->rows();
+		}
+
+		// get the earliest year we have citations for
+		$view->earliest_year = 2001;
+
+		// Affiliation filter
+		$view->filterlist = array(
+			'all'	 => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
+			'aff'	 => Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'),
+			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'),
+			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
+		);
+
+		// set default values for required filters for this view.
+		$view->filters['search'] = isset($view->filters['search']) ? $view->filters['search'] : "";
+		$view->filters['type'] = isset($view->filters['type']) ? $view->filters['type'] : "";
+		$view->filters['tag'] = isset($view->filters['tag']) ? $view->filters['tag'] : "";
+		$view->filters['author'] = isset($view->filters['author']) ? $view->filters['author'] : "";
+		$view->filters['publishedin'] = isset($view->filters['publishedin']) ? $view->filters['publishedin'] : "";
+		$view->filters['year_start'] = isset($view->filters['year_start']) ? $view->filters['year_start'] : "";
+		$view->filters['year_end'] = isset($view->filters['year_end']) ? $view->filters['year_end'] : "";
+		$view->filters['startuploaddate'] = isset($view->filters['startuploaddate']) ? $view->filters['startuploaddate'] : "";
+		$view->filters['enduploaddate'] = isset($view->filters['enduploaddate']) ? $view->filters['enduploaddate'] : "";
+		$view->filters['sort'] = isset($view->filters['sort']) ? $view->filters['sort'] : "";
+		$view->filters['filter'] = isset($view->filters['filter']) ? $view->filters['filter'] : "";
+
+		// Sort Filter
+		$view->sorts = array(
+			//'sec_cnt DESC' => Lang::txt('PLG_GROUPS_CITATIONS_CITEDBY'),
+			'year DESC'		 => Lang::txt('PLG_GROUPS_CITATIONS_YEAR'),
+			'created DESC' => Lang::txt('PLG_GROUPS_CITATIONS_NEWEST'),
+			'title ASC'		 => Lang::txt('PLG_GROUPS_CITATIONS_TITLE'),
+			'author ASC'	 => Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR'),
+			'journal ASC'  => Lang::txt('PLG_GROUPS_CITATIONS_JOURNAL')
+		);
+
+		// Handling ids of the the boxes checked for download
+		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+		$session = App::get('session');
+
+		// If it's new search remove all user citation checkmarks
+		if (isset($_POST['filter']))
+		{
+			$view->filters['idlist'] = "";
+			$session->set('idlist', $view->filters['idlist']);
+		}
+		else
+		{
+			$view->filters['idlist'] = Request::getVar('idlist', $session->get('idlist'));
+			$session->set('idlist', $view->filters['idlist']);
+		}
+
+		// Reset the filter if the user came from a different section
+		if (strpos($referer, "/citations/browse") == false)
+		{
+			$view->filters['idlist'] = "";
+			$session->set('idlist', $view->filters['idlist']);
+		}
+
+		// get the preferred labeling scheme
+		$view->label = "both";
+
+		if ($view->label == "none")
+		{
+			$view->citations_label_class = "no-label";
+		}
+		elseif ($view->label == "number")
+		{
+			$view->citations_label_class = "number-label";
+		}
+		elseif ($view->label == "type")
+		{
+			$view->citations_label_class = "type-label";
+		}
+		elseif ($view->label == "both")
+		{
+			$view->citations_label_class = "both-label";
+		}
+		else
+		{
+			$view->citations_label_class = "both-label";
+		}
+
+		// enable coins support
+		$view->coins = 1;
+
+		// types
+		$ct = \Components\Citations\Models\Type::all();
+		$view->types = $ct;
+
+		// OpenURL
+		$openURL = $this->_handleOpenURL();
+		$view->openurl['link'] = $openURL['link'];
+		$view->openurl['text'] = $openURL['text'];
+		$view->openurl['icon'] = $openURL['icon'];
+
+		// Output HTML
+		foreach ($this->getErrors() as $error)
+		{
+			$view->setError($error);
+		}
+
+		return $view->loadTemplate();
+		/*
 		// push objects to the view
 		$view->member            = $this->member;
 		$view->option            = $this->option;
@@ -385,6 +560,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		return $view->loadTemplate();
+		*/
 	}
 
 	/**
@@ -1036,5 +1212,211 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->messages = Notify::messages('plg_members_citations');
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	* Applies filters to Citations model and returns applied filters
+	* @param array  $filters array of POST values
+	* @return	array sanitized and validated filter values
+	*/
+	private function _filterHandler($filters = array(),  $scope_id = 0)
+	{
+		$citations = \Components\Citations\Models\Citation::all();
+		// require citations
+		if (!$citations)
+		{
+			return false;
+		}
+
+		// get the ones for this group
+		$citations->where('scope', '=', 'member');
+		$citations->where('scope_id', '=', $scope_id);
+		$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
+
+		if (count($filters) > 0)
+		{
+			foreach ($filters as $filter => $value)
+			{
+				// sanitization
+				$value = \Hubzero\Utility\Sanitize::clean($value);
+
+				// we handle things differently in search and sorting
+				if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "")
+				{
+					switch ($filter)
+					{
+						case 'author':
+							$citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
+						break;
+						case 'publishedin':
+							$citations->where('date_publish', 'LIKE', "%{$value}-%");
+						break;
+						case 'year_start':
+							$citations->where('year', '>=', $value);
+						break;
+						case 'year_end':
+							$citations->where('year', '<=', $value);
+						break;
+						case 'filter':
+							if ($value == 'aff')
+							{
+								$value = 1;
+							}
+							else
+							{
+								$value = 0;
+							}
+
+							$citations->where('affiliated', '=', $value);
+						break;
+						default:
+							$citations->where($filter, '=', $value);
+						break;
+					}
+				} // end if not search & not sort & non-empty value
+
+				// for searching
+				if ($filter == "search" && $value != "")
+				{
+					$terms = preg_split('/\s+/', $value);
+
+					$value = \Hubzero\Utility\Sanitize::clean($value);
+					$term = $value;
+					$collection = array();
+					$columns = array('author', 'title', 'isbn', 'doi', 'publisher', 'abstract');
+					foreach ($columns as $column)
+					{
+						foreach ($terms as $term)
+						{
+							// copy the original item
+							$cite = clone $citations;
+
+							// do some searching
+							$cite->where($column, 'LIKE', "%{$term}%");
+
+							foreach ($cite as $c)
+							{
+								// put for collection later
+								array_push($collection, $c->id);
+							} // end foreach $cite
+						} // end foreach terms
+					} // end foreach columns
+
+					// remove duplicates
+					$collection = array_unique($collection);
+
+					// pull the appropriate ones.
+					$citations->whereIn('id', $collection);
+			} // end searching
+
+			// for tags
+			if ($filter == "tag" && $value != "")
+			{
+				$collection = array();
+				$cite = clone $citations;
+				foreach ($cite as $c)
+				{
+					foreach ($c->tags as $tag)
+					{
+						if ($tag->tag == $value)
+						{
+							array_push($collection, $c->id);
+						}
+					}
+				}
+
+				// remove duplicates
+				$collection = array_unique($collection);
+
+				// get the tagged ones
+				$citations->whereIn('id', $collection);
+		 } // end if tags
+
+			if ($filter == "sort" && $value != "")
+			{
+				$clause = explode(" ", $value);
+				$citations->order($clause[0], $clause[1]);
+			}
+		} // end foreach filters as filter
+
+			return array('citations' => $citations, 'filters' => $filters);
+		}
+		else
+		{
+			return array('citations' => $citations, 'filters' => array());
+		}
+	}
+
+	/**
+	* Uses URL to determine OpenURL server
+	*
+	* @return	object $openURL
+	*/
+	private function _handleOpenURL()
+	{
+		// get the users id to make lookup
+		$users_ip = Request::ip();
+
+		// get the param for ip regex to use machine ip
+		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
+
+		$use_machine_ip = false;
+		foreach ($ip_regex as $ipr)
+		{
+			$match = preg_match('/' . $ipr . '/i', $users_ip);
+			if ($match)
+			{
+				$use_machine_ip = true;
+			}
+		}
+
+		// make url based on if were using machine ip or users
+		if ($use_machine_ip)
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
+		}
+		else
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
+		}
+
+		// get the resolver
+		$r = null;
+		if (function_exists('curl_init'))
+		{
+			$cURL = curl_init();
+			curl_setopt($cURL, CURLOPT_URL, $url );
+			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
+			$r = curl_exec($cURL);
+			curl_close($cURL);
+		}
+
+		// parse the returned xml
+		$openurl = array(
+			'link' => '',
+			'text' => '',
+			'icon' => ''
+		);
+
+		// parse the return from resolver lookup
+		$resolver = null;
+		$xml = simplexml_load_string($r);
+		if (isset($xml->resolverRegistryEntry))
+		{
+			$resolver = $xml->resolverRegistryEntry->resolver;
+		}
+
+		// if we have resolver set vars for creating open urls
+		if ($resolver != null)
+		{
+			$openURL['link'] = $resolver->baseURL;
+			$openURL['text'] = $resolver->linkText;
+			$openURL['icon'] = $resolver->linkIcon;
+
+			return $openURL;
+		}
+
+		return false;
 	}
 }
