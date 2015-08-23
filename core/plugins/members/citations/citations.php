@@ -727,17 +727,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//are we allowing importing
-		$config = Component::params('com_citations');
-		$importParam = $config->get('citation_bulk_import', 1);
-
-		// If importing is turned off go to intro page
-		if (!$importParam)
-		{
-			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name)
-			);
-			return;
-		}
 
 		$view = $this->view('display', 'import');
 
@@ -745,7 +734,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->member   = $this->member;
 		$view->option   = $this->option;
 		$view->database = $this->database;
-		$view->config   = $config;
 		$view->isAdmin  = $this->params->get('access-manage');
 
 		// citation temp file cleanup
@@ -811,7 +799,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file));
+		$citations = Event::trigger('citation.onImport' , array($file, 'member', $this->member->get('uidNumber')));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
