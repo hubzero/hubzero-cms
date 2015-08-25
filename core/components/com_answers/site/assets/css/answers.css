@@ -276,13 +276,6 @@
 		font-weight: 600;
 		line-height: 1.2em;
 	}
-	/*.subtitle {
-		margin: -1em 1.5em 1.5em 1.3em;
-		font-weight: normal;
-	}
-	.spacer {
-		padding: 0 1em 0 1em;
-	}*/
 	.myquestions {
 		padding-bottom: 0.2em; 
 		margin-left: -1.5em;
@@ -307,7 +300,6 @@
 	}
 	ol.comments .comment-options a.accept {
 		display: inline-block;
-		*display: inline; /* [!] IE 7 */
 		float: right;
 	}
 	ol.comments .comment-options a.accept:before {

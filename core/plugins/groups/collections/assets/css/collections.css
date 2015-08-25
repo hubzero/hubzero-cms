@@ -124,7 +124,6 @@
 		margin: 0 10px 20px 10px;
 		width: 332px;
 		border: 1px solid #ddd\9; /* [!] IE 8 */
-		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	}
 	.view-list .post {
 		width: auto;

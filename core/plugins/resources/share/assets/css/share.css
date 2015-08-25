@@ -182,7 +182,7 @@
 	}
 	.share_twitter:before         { content: "\f010"; color: #46b1e8; }
 	.share_facebook:before        { content: "\f012"; color: #49659d; }
-	.share_google:before     	  { content: "\f014"; color: black }
+	.share_google:before          { content: "\f014"; color: black }
 	.share_linkedin:before        { content: "\f016"; color: #2875b7; }
 	.share_pinterest:before       { content: "\f01a"; color: #ba1325; }
 	.share_delicious,
@@ -191,9 +191,4 @@
 	}
 	.share_reddit {
 		background: url("../img/reddit.gif") 0 -18px no-repeat;
-	}
-
-/* IE 7 hacks */
-	html>body .shareinfo.active dd  {
-		*background: url("../img/clear.gif");
 	}

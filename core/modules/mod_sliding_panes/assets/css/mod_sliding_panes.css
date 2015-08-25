@@ -135,18 +135,7 @@
 	.panes div div {
 		overflow: hidden;
 	}
-/* IE 7 Hacks */
-	html>body .panes-headings {
-		*filter: alpha(opacity = 50);
-	}
-	html>body .pane-play,
-	html>body .pane-pause {
-		*filter: alpha(opacity = 50);
-	}
-	html>body .pane-play:hover,
-	html>body .pane-pause:hover {
-		*filter: alpha(opacity = 80);
-	}
+
 /* Individual pane styling */
 	#pane-sliders-pane1 .pane-wrap {
 		background: #bb9500;

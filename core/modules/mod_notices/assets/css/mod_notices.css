@@ -24,7 +24,6 @@
 		border-bottom: 0.27em solid #eee;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 		z-index: 1;
-		*background-image: url("/media/system/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
 											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
 											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
@@ -47,16 +46,12 @@
 										transparent 75%, transparent);
 		-webkit-background-size: 30px 30px;
 		-moz-background-size: 30px 30px;
-		background-size: 30px 30px; /* Controls the size of the stripes */
+		background-size: 30px 30px;
 		-webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 		-moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 		-ms-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 		-o-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 		box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-	}
-	html.ie8,
-	html.ie9 {
-		background-image: url("/media/system/images/light-stripes.png");
 	}
 
 	.modnotices.low {
@@ -127,26 +122,3 @@
 	.modnotices .close span.modnoticec-before {
 		margin-top: -0.5em;
 	}
-/* [!] HACKS - IE 7 and older */
-	.modnotices p {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="modnoticep-before">&#xf095;&nbsp;</span>' + this.innerHTML);
-	}
-	.modnotices .close {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="modnoticec-before">&#xf057;&nbsp;</span>' + this.innerHTML);
-	}
-/* [!] HACKS - Firefox 3.4 and older */
-@-moz-document url-prefix() {
-	html.firefox3 .modnotices.low { 
-		background: #84A7DB url("/core/modules/mod_notices/assets/img/information.png") 0.71803399em 0.71803399em no-repeat;
-	}
-	html.firefox3 .modnotices.medium { 
-		background: #cea638 url("/core/modules/mod_notices/assets/img/warning.png") 0.71803399em 0.71803399em no-repeat;
-	}
-	html.firefox3 .modnotices.high { 
-		background: #ba4a3b url("/core/modules/mod_notices/assets/img/error.png") 0.71803399em 0.71803399em no-repeat; 
-	}
-	html.firefox3 .modnotices .close {
-		background: url("/core/modules/mod_notices/assets/img/delete.png") 0 0 no-repeat;
-		text-indent: 5em;
-	}
-}

@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_events/events.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_events/site/assets/css/events.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -320,12 +320,4 @@
 		background-color: #fff;
 		border-color: #999;
 		border-bottom: 1px solid #fff;
-	}
-/* IE 7 hacks */
-	html>body .ecalendar .today {
-		*width: 13%;
-	}
-	html>body .ecalendar caption a:hover,
-	html>body .datenav a:hover {
-		*background-position: 0 -15px;
 	}

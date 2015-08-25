@@ -80,10 +80,10 @@
 		overflow: hidden;
 	}
 	.panes-headings .pane-next {
-		background: transparent url("images/pane-next.png") 3px 0.4em no-repeat;
+		background: transparent url("../img/pane-next.png") 3px 0.4em no-repeat;
 	}
 	.panes-headings .pane-prev {
-		background: transparent url("images/pane-prev.png") 3px 0.4em no-repeat;
+		background: transparent url("../img/pane-prev.png") 3px 0.4em no-repeat;
 	}
 	.panes-headings .pane-next:hover,
 	.panes-headings .pane-prev:hover {
@@ -103,12 +103,12 @@
 		color: #fff;
 		width: 10px;
 		overflow: hidden;
-		background: transparent url("images/pane-pause.png") 3px -19px no-repeat;
+		background: transparent url("../img/pane-pause.png") 3px -19px no-repeat;
 		opacity: 0.5;
 	}
 	.pane-play {
 		right: 10px;
-		background: transparent url("images/pane-next.png") 3px -19px no-repeat;
+		background: transparent url("../img/pane-next.png") 3px -19px no-repeat;
 	}
 	.pane-play:hover,
 	.pane-pause:hover {
@@ -136,24 +136,7 @@
 	.panes div div {
 		overflow: hidden;
 	}
-/* IE 7 Hacks */
-	html>body .panes-headings {
-		*filter: alpha(opacity = 50);
-	}
-	html>body .pane-play,
-	html>body .pane-pause {
-		*filter: alpha(opacity = 50);
-	}
-	html>body .pane-play:hover,
-	html>body .pane-pause:hover {
-		*filter: alpha(opacity = 80);
-	}
-/* IE 6 Hacks */
-	* html .panes-headings,
-	* html .pane-play,
-	* html .pane-pause {
-		display: none;
-	}
+
 /* Individual pane styling */
 	#pane-sliders-pane1 .pane-wrap {
 		background: #bb9500;
