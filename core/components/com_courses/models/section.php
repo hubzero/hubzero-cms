@@ -677,7 +677,7 @@ class Section extends Base
 
 		if (!$this->_code)
 		{
-			$this->_code = new SectionCode($code, $this->get('id'));
+			$this->_code = new Section\Code($code, $this->get('id'));
 		}
 
 		return $this->_code;
