@@ -767,7 +767,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'created' => Date::toSql(),
 				'affiliated' => Request::getInt('affiliated', 0),
 				'fundedby' => Request::getInt('fundedby', 0),
-				'scope' => $scope, 
+				'scope' => $scope,
 				'scope_id' => $scopeID
 			));
 
