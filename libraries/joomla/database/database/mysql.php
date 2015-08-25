@@ -947,4 +947,37 @@ class JDatabaseMySQL extends JDatabase
 
 		return (in_array($key, array_keys($keys))) ? true : false;
 	}
+
+	/**
+	 * Gets the database engine of the given table
+	 *
+	 * @param  string $table the table for which to retrieve the engine type
+	 * @return string
+	 **/
+	public function getEngine($table)
+	{
+		$this->setQuery('SHOW TABLE STATUS WHERE Name = ' . str_replace('#__', $this->tablePrefix, $this->quote($table, false)));
+		if ($info = $this->loadObjectList())
+		{
+			return $info[0]->Engine;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Gets the database character set of the given table
+	 *
+	 * @param  string $table the table for which to retrieve the character set
+	 * @return string
+	 **/
+	public function getCharacterSet($table)
+	{
+		$create = $this->getTableCreate($table);
+		preg_match('/CHARSET=([[:alnum:]]*)/', $create[$table], $matches);
+
+		return (isset($matches[1])) ? $matches[1] : false;
+	}
 }
