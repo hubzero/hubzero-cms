@@ -314,14 +314,64 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->raw->password = null;
 		}
 
-		if ($isNew && !$this->raw->password)
-		{
-			//\Hubzero\User\Helper::random_password();
-			$this->raw->password = $this->_profile->get('username');
-		}
-
 		if ($isNew)
 		{
+			if (!$this->_profile->get('username'))
+			{
+				$valid = false;
+
+				// Try to create from name
+				$username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->_profile->get('name')));
+				if (\Hubzero\Utility\Validate::username($username))
+				{
+					if (!$this->_usernameExists($username))
+					{
+						$valid = true;
+					}
+				}
+
+				// Try to create from portion preceeding @ in email address
+				if (!$valid)
+				{
+					$username = strstr($this->_profile->get('email'), '@', true);
+					if (\Hubzero\Utility\Validate::username($username))
+					{
+						if ($this->_usernameExists($username))
+						{
+							$valid = true;
+						}
+					}
+				}
+
+				// Try to create from whole email address
+				if (!$valid)
+				{
+					for ($i = 0; $i <= 99; $i++)
+					{
+						$username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->_profile->get('name'))) . $i;
+						if (\Hubzero\Utility\Validate::username($username))
+						{
+							if ($this->_usernameExists($username))
+							{
+								$valid = true;
+								break;
+							}
+						}
+					}
+				}
+
+				if ($valid)
+				{
+					$this->_profile->set('username', $username);
+				}
+			}
+
+			if (!$this->raw->password)
+			{
+				//\Hubzero\User\Helper::random_password();
+				$this->raw->password = $this->_profile->get('username');
+			}
+
 			$usersConfig = Component::params('com_users');
 			$newUsertype = $usersConfig->get('new_usertype');
 			if (!$newUsertype)
@@ -439,6 +489,22 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				array_push($this->record->errors, Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
 			}
 		}
+	}
+
+	/**
+	 * Map Tags
+	 *
+	 * @return  void
+	 */
+	private function _usernameExists($username)
+	{
+		$db = \App::get('db');
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__users')
+			->where('username=' . $qb->quote($username));
+		$db->setQuery($query);
+		return $db->loadResult();
 	}
 
 	/**
