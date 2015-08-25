@@ -136,11 +136,11 @@
 	#authorslist p.orgs {
 		font-style: italic;
 	}
-	.guide { 
+	.guide {
 		background: url("/core/components/com_resources/site/assets/img/compass.gif") 0 0 no-repeat; 
 		padding-left: 20px; 
 	}
-	.itunes { 
+	.itunes {
 		background: url("/core/components/com_resources/site/assets/img/itunes.png") 0 0 no-repeat; 
 		padding-left: 20px; 
 		padding-bottom: 2px; 
@@ -171,8 +171,8 @@
 		padding: 0.2em;
 		padding-left: 0.5em;
 	}
-	p.doi, 
-	.opensource_license, 
+	p.doi,
+	.opensource_license,
 	.closedsource_license {
 		font-size: 85%;
 		color: #666666;
@@ -299,10 +299,7 @@
 		color: #978971;
 	}
 
-/* Important view overwrites 
-	#reviews-section .com_resources {
-		padding-top:0 !important;
-	}*/
+/* Important view overwrites */
 	.com_resources .overviewcontainer #content-header {
 		border: none;
 		background: transparent;
@@ -331,15 +328,7 @@
 	.noborder {
 		border: none;
 	}
-	/*.section .section .subject {
-		background: #ffffff !important;
-		border:none !important;
-		padding-right:0 !important;
-		padding-left:0 !important;
-	}
-	.resource td {
-		border: none !important;
-	}*/
+
 	.com_resources h2 span {
 		font-weight: normal;
 		font-size: small;
@@ -357,19 +346,7 @@
 	#lbBottomContainer {
 		z-index: 1000;
 	}
-	/*.com_resources .section h3 {
-		display: block !important;
-		margin: 1.5em 1em 0.5em 0;
-	}
-	.com_resources #introduction h3 {
-		margin-top: 0;
-	}
-	.com_resources .section h3 span {
-		display: inline;
-		float: right;
-		font-weight: normal;
-		font-size: small;
-	}*/
+
 	.com_resources .results .resource .title {
 		margin-right: 200px;
 	}
@@ -470,9 +447,6 @@
 		margin: 0;
 		padding: 10px 10px 5px 10px;
 	}
-	/*.upperpane .metadata {
-		margin: 1em 0 0 0;
-	}*/
 	.metadata p {
 		margin: 0.2em 0;
 		padding: 0;
@@ -783,9 +757,6 @@
 		list-style: none;
 		margin-left: 0;
 	}
-	/*.com_resources .section h3 {
-		display: none;
-	}*/
 	.com_resources .section .section h3 {
 		display: block;
 		margin: 1em 0 0.5em;
@@ -793,18 +764,10 @@
 	.com_resources .section .section {
 		padding: 0;
 	}
-	.com_resources .section .section .subject {
-		/*background: #F7F7F7;
-		border-top: 1px solid #E3E3E3;
-		border-bottom: 1px solid #E3E3E3;
-		padding: 1em;*/
-	}
 	.com_resources .section .section .aside {
 		padding-top: 0;
 	}
-	/*#sub-menu {
-		margin-bottom: -1px;
-	}*/
+
 	.com_resources .tabbed h3.section-header {
 		display: none !important;
 	}
@@ -828,9 +791,14 @@
 	div#tagbrowser {
 		text-align: left; 
 		position: relative; 
-		height: 400px;
 		margin-bottom: 25px; 
 		display: none;
+	}
+	#tagbrowser:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: left;
 	}
 	#tbh2 {
 		display: none;
@@ -869,25 +837,19 @@
 		list-style: none;
 	}
 	#tagbrowser li#selecta {
-		height: 200px; 
-		text-align: center; 
-		color: #c8c8c8; 
-		font-size: 30px; 
-		font-weight: bold; 
-		margin: 140px auto 0 0px; 
+		height: 200px;
+		text-align: center;
+		color: #c8c8c8;
+		font-size: 30px;
+		font-weight: bold;
+		margin: 140px auto 0 0;
 		line-height: 1em;
-	}
-	#level-1 ul {
-		border-right: 1px solid #c5c5c5;
 	}
 	#level-2 ul {
 		border-left: 0; 
-		border-right: 1px solid #c5c5c5;
 	}
-	#level-3 ul#ulinfo {
-		background-image: none; 
+	#level-3 ul {
 		border-left: 0; 
-		overflow: auto;
 	}
 	#level-2 h3 {
 		position: relative;
@@ -918,76 +880,72 @@
 	#level-2 ul li {
 		margin-right: 0;
 	}
-	#level-3 ul#ulinfo li { /* different */
-		padding: 10px;
+	#level-3 ul li {
+		padding: 1em;
 	}
 	#level-1 ul li.supported,
 	#level-2 ul li.supported {
 		padding-left: 20px;
 		background-position: 2px 4px;
 	}
-	#level-1 ul li.ie a {
+	/*#level-1 ul li.ie a {
 		display: inline; 
 		background: none; 
-		padding: 0; 
-		width: 10px; 
-		text-decoration: underline; 
+		padding: 0;
+		width: 10px;
+		text-decoration: underline;
 		color: blue;
 	}
 	#level-1 ul li.ie a:hover {
 		color: blue;
-	}
-	#tagbrowser #level-1 ul a, 
-	#tagbrowser #level-2 ul a {
-		display: block; 
-		padding: 2px 12px 2px 2px; 
-		margin: 0; 
-		text-decoration: none; 
+	}*/
+	#level-1 ul a, 
+	#level-2 ul a {
+		display: block;
+		padding: 0.2em 1em 0.2em 0.2em;
+		margin: 0;
+		text-decoration: none;
 		border: none;
 		color: #333;
 		position: relative;
 		*position: static; /* IE 7 and IE 8 compatibility mode go apeshit without this */
-		*background: #fff url("/core/components/com_resources/site/assets/img/arrowoff.gif") right 50% no-repeat;
 	}
-	#tagbrowser #level-1 ul a:after, 
-	#tagbrowser #level-2 ul a:after {
+	#level-1 ul a:after,
+	#level-2 ul a:after {
 		font-family: 'Fontcons';
 		content: "\203A";
-		font-size: 12px;
+		font-size: 1em;
 		display: block;
-		width: 12px;
-		height: 12px;
+		width: 1em;
+		height: 1em;
 		position: absolute;
-		top: 2px;
+		top: 0.2em;
 		right: 0;
 		color: #ccc;
 	}
-	#tagbrowser #level-1 ul a.open:after, 
-	#tagbrowser #level-2 ul a.open:after {
+	#level-1 ul a.open:after,
+	#level-2 ul a.open:after {
 		color: #333;
 	}
-	#tagbrowser #level-1 ul a:hover:after, 
-	#tagbrowser #level-2 ul a:hover:after,
-	#tagbrowser #level-1 ul a.hi:after, 
-	#tagbrowser #level-2 ul a.hi:after {
+	#level-1 ul a:hover:after,
+	#level-2 ul a:hover:after,
+	#level-1 ul a.hi:after, 
+	#level-2 ul a.hi:after {
 		color: #fff;
 	}
-	#tagbrowser #level-1 ul a.open, 
-	#tagbrowser #level-2 ul a.open {
+	#level-1 ul a.open,
+	#level-2 ul a.open {
 		background: #D0D0D0;
-		*background: #D0D0D0 url("/core/components/com_resources/site/assets/img/arrowon.gif") right 50% no-repeat; /* IE 7 and older */
 	}
-	#tagbrowser #level-1 ul a.hi, 
-	#tagbrowser #level-2 ul a.hi {
+	#level-1 ul a.hi,
+	#level-2 ul a.hi {
 		background: #3875D7;
 		color: #fff;
-		*background: #3875D7 url("/core/components/com_resources/site/assets/img/arrowhi.gif") right 50% no-repeat; /* IE 7 and older */
 	}
-	#tagbrowser #level-1 ul a:hover, 
-	#tagbrowser #level-2 ul a:hover {
+	#level-1 ul a:hover,
+	#level-2 ul a:hover {
 		background: #3875D7;
 		color: #fff;
-		*background: #3875D7 url("/core/components/com_resources/site/assets/img/arrowhi.gif") right 50% no-repeat; /* IE 7 and older */
 	}
 	#level-3 h3 {
 		text-align: right;
