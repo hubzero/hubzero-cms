@@ -14,8 +14,8 @@
 	}
 
 /* Item listing */
-	.group_resources .results .private {
-		background: #fff;
+	.group_resources .results .details span {
+		color: transparent;
 	}
 	.group_resources .results .resource .title .resource-status {
 		color: #aaa;

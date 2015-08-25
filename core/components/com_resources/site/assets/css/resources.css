@@ -521,6 +521,30 @@
 		content: "\f078";
 	}
 
+/* 5 star Reviews */
+	.avgrating {
+		padding-left: 0;
+	}
+	.avgrating span {
+		padding-left: 1em;
+	}
+	.avgrating:before {
+		font-family: 'Fontcons';
+		font-size: 1em;
+		line-height: 1;
+	}
+	.no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
+	.half-stars:before      { content: "\f089\2606\2606\2606\2606"; }
+	.one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
+	.onehalf-stars:before   { content: "\2605\f089\2606\2606\2606"; }
+	.two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
+	.twohalf-stars:before   { content: "\2605\2605\f089\2606\2606"; }
+	.three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
+	.threehalf-stars:before { content: "\2605\2605\2605\f089\2606"; }
+	.four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
+	.fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
+	.five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
+
 /* Ranking */
 	.rankinfo {
 		position: relative;
@@ -1257,115 +1281,6 @@
 	.resource ol {
 		list-style: decimal;
 	}
-
-/* [!] HACKS - IE 7 and older */
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#x270D;</small>');
-	}
-	.com_resources .four .columns div {
-		*padding-left: 0;
-	}
-	.aside #whatsrelated li {
-		*padding-left: 0.5em;
-	}
-	/* Extra content */
-	.extracontent .animation,
-	.extracontent .video,
-	.extracontent .download,
-	.extracontent .course,
-	.extracontent .learningmodule,
-	.extracontent .note,
-	.extracontent .presentation,
-	.extracontent .teachingmaterial,
-	.extracontent .tool,
-	.extracontent .series,
-	.extracontent .workshop,
-	.extracontent .wiki,
-	.extracontent .citation {
-		*padding-left: 23px; 
-	}
-	.extracontent .animation { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-animation.gif") 0 0em no-repeat; 
-	}
-	.extracontent .video { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-animation.gif") 0 0em no-repeat; 
-	}
-	.extracontent .download { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-download.gif") 0 0em no-repeat; 
-	}
-	.extracontent .course { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-course.gif") 0 0em no-repeat; 
-	}
-	.extracontent .learningmodule { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-learningmodule.gif") 0 0em no-repeat; 
-	}
-	.extracontent .note { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-note.gif") 0 0em no-repeat; 
-	}
-	.extracontent .presentation { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-presentation.gif") 0 0em no-repeat; 
-	}
-	.extracontent .publication { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-publication.gif") 0 0em no-repeat; 
-	}
-	.extracontent .teachingmaterial { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-teachingmaterial.gif") 0 0em no-repeat; 
-	}
-	.extracontent .tool { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-tool.gif") 0 0em no-repeat; 
-	}
-	.extracontent .series { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-series.gif") 0 2px no-repeat; 
-	}
-	.extracontent .workshop { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-workshop.gif") 0 0em no-repeat; 
-	}
-	.extracontent .wiki { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-wiki.gif") 0 2px no-repeat; 
-	}
-	.extracontent .citation { 
-		*background: url("/core/components/com_resources/site/assets/img/types/fc-publication.gif") 0 0em no-repeat; 
-	}
-	/* Metadata */
-	.metadata p {
-		*padding: 0 0 0 20px;
-	}
-	.metadata .review {
-		*background: url("/core/components/com_resources/site/assets/img/1.gif") -52px 50% no-repeat;
-	}
-	.metadata .citation {
-		*background: url("/core/components/com_resources/site/assets/img/cite.gif") 0 50% no-repeat;
-	}
-	.metadata .wishlist {
-		*background: url("/core/components/com_resources/site/assets/img/wishlist.gif") 0 50% no-repeat;
-	}
-	.metadata .usage { 
-		*background: url("/core/components/com_resources/site/assets/img/stats.gif") 0 50% no-repeat;
-	}
-	.metadata .answer { 
-		*background: url("/core/components/com_resources/site/assets/img/qanda.gif") 0 50% no-repeat;
-	}
-	/* Ratings in Ranking popup */
-	.rankinfo .avgrating {
-		*width: 70px;
-		*height: 14px;
-		*overflow: hidden;
-		*text-indent: -30em;
-		*display: block;
-		*float: left;
-		*padding: 0;
-	}
-	.rankinfo .no-stars        { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right 0 no-repeat; }
-	.rankinfo .half-stars      { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -40px no-repeat; }
-	.rankinfo .one-stars       { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -80px no-repeat; }
-	.rankinfo .onehalf-stars   { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -120px no-repeat; }
-	.rankinfo .two-stars       { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -160px no-repeat; }
-	.rankinfo .twohalf-stars   { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -200px no-repeat; }
-	.rankinfo .three-stars     { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -240px no-repeat; }
-	.rankinfo .threehalf-stars { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -280px no-repeat; }
-	.rankinfo .four-stars      { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -320px no-repeat; }
-	.rankinfo .fourhalf-stars  { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -360px no-repeat; }
-	.rankinfo .five-stars      { *background: url("/core/components/com_resources/site/assets/img/stars/stars_dark.gif") right -400px no-repeat; }
 
 	/* New version info */
 	.new-version {
