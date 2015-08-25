@@ -1,0 +1,138 @@
+.fs-dropdown {
+	width: 100%;
+	font-size: 1em;
+	line-height: 1.5em;
+}
+.fs-dropdown ul {
+	margin: 0 !important;
+	padding: 0;
+	list-style: none;
+}
+.fs-dropdown ul li {
+	margin: 0 !important;
+	padding: 0;
+}
+.fs-dropdown-selected {
+	position: relative;
+}
+a.fs-dropdown-selected-item {
+	display: block;
+	position: relative;
+	padding: 0.3em 0.8em;
+	border: 1px solid #d9d9d9;
+	border: 1px solid rgba(0,0,0,0.15);
+	color: #555 !important;
+	text-decoration: none;
+	font-weight: bold;
+	background-color: #f1f1f1;
+	background-color: rgba(200,200,200,0.15);
+	overflow: hidden;
+	height: 2.6em;
+}
+.readonly a.fs-dropdown-selected-item {
+	opacity: 0.75;
+	cursor: default;
+}
+a.fs-dropdown-selected-item span {
+	display: inline-block;
+	line-height: 1.8em;
+	margin-right: 1em;
+}
+a.fs-dropdown-selected-item:hover {
+	background-color: #fff;
+	border-color: #222;
+}
+a.fs-dropdown-selected-item:after {
+	content: '\f0dc';
+	position: absolute;
+	top: 0.5em;
+	right: 1.5em;
+	width: 0;
+	height: 0;
+	font-family: 'Fontcons';
+	font-weight: normal;
+	font-size: 1em;
+	color: #555;
+}
+.fs-dropdown-open a.fs-dropdown-selected-item {
+}
+.fs-dropdown-selected-image {
+	margin-right: 6px;
+}
+.fs-dropdown-options-container {
+	position: absolute;
+	left: -9999px;
+	top: 30px;
+	border: 1px solid #ccc;
+	border-top: none;
+	width: 99.5%;
+	background: #FFF;
+	box-shadow: 0px 1px 5px #DDD;
+	z-index: 8888;
+}
+.fs-dropdown-options {
+	overflow-y: scroll;
+	max-height: 500px;
+}
+.fs-dropdown-options .fs-dropdown-option a {
+	display: block;
+	padding: 5px 10px;
+	border-bottom: 1px solid #ddd;
+	color: #777;
+	text-decoration: none;
+}
+.fs-option-image,
+.fs-option-color {
+	margin-right: 6px;
+	display: inline-block;
+}
+.fs-option-color {
+	border: 1px solid #000;
+	background: #CCC;
+	height: 10px;
+	width: 15px;
+	box-shadow: inset 0 0 2px #000;
+}
+.fs-dropdown-options .fs-dropdown-option:last-child a {
+	border-bottom: none;
+}
+.fs-dropdown-options .fs-dropdown-option a:hover,
+.fs-dropdown-options .fs-dropdown-option-highlighted {
+	cursor: pointer;
+	background: #efefef;
+}
+.fs-dropdown-options .fs-dropdown-option-selected a,
+.fs-dropdown-options .fs-dropdown-option-selected a:hover,
+.fs-dropdown-options .fs-dropdown-option-selected a:focus  {
+	background: #555 !important;
+	color: #fff !important;
+}
+
+.fs-dropdown-label {
+	font-weight: bold;
+	padding: 5px 10px !important;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.fs-dropdown-options-group {
+}
+.fs-dropdown-options-group li a {
+	padding: 5px 10px 5px 20px !important;
+}
+
+.fs-dropdown-options-search {
+	padding: 3px;
+	border-bottom: 1px solid #ddd;
+}
+
+.fs-dropdown-options-search input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 3px;
+}
+
+.fs-dropdown-option a .highlight {
+	color: #333;
+	font-weight: bold;
+	text-decoration:underline;
+}

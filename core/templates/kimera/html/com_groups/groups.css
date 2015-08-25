@@ -1126,6 +1126,29 @@
 		color: #777;
 	}
 
+	#hubForm #access {
+		list-style: none;
+		margin: 0;
+		padding: 1em;
+		background: #efefef;
+	}
+	.preview #access img {
+		width: auto;
+	}
+	#hubForm #access li {
+		font-size: 1.1em;
+		color: #444;
+		border-bottom: 1px dotted #ccc;
+		overflow: hidden;
+		margin: 0;
+		padding: 0.7em 0;
+		list-style: none;
+	}
+	#hubForm #access li select {
+		float: right;
+		width: auto;
+	}
+
 @media (min-width: 40em) {
 	#page_identity {
 		display: block;
