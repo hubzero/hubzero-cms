@@ -2,7 +2,7 @@
 /**
  * @package   orcid-php
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @license   http://opensource.org/licenses/BSD-3-Clause BSD New
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 
 namespace Orcid;
@@ -399,7 +399,7 @@ class Oauth
         }
         else
         {
-            throw new Exception($data->{'error-desc'}->value);
+            throw new Exception($data->error_description);
         }
 
         return $this;
@@ -436,7 +436,7 @@ class Oauth
             if (!$this->getAccessToken()) throw new Exception('You must first set an access token or authenticate');
 
             $this->http->setHeader([
-                'Content-Type'  => 'application/vdn.orcid+xml',
+                'Content-Type'  => 'application/vdn.orcid+json',
                 'Authorization' => 'Bearer ' . $this->getAccessToken()
             ]);
         }

@@ -680,12 +680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f"
+                "reference": "02d11e200cd1361e7c1f993075b17362b8c9a3e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/b184ab8efe2e8468ce39ec2a8f4ef8a6765d16a7",
-                "reference": "0879b92aa25d9560eb3b671d5c89d65463fd6e8f",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/02d11e200cd1361e7c1f993075b17362b8c9a3e2",
+                "reference": "02d11e200cd1361e7c1f993075b17362b8c9a3e2",
                 "shasum": ""
             },
             "require": {
@@ -700,10 +700,10 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD New"
+                "MIT"
             ],
             "description": "Library for ORCID web services",
-            "time": "2015-07-06 16:28:20"
+            "time": "2015-08-25 13:56:14"
         },
         {
             "name": "leafo/lessphp",
@@ -1042,7 +1042,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/5981069224109bb624eeeb41c623f55493da6528",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/711306e9564a02fc10e8afd882e86758ace83956",
                 "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
                 "shasum": ""
             },

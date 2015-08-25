@@ -2,7 +2,7 @@
 /**
  * @package   orcid-php
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @license   http://opensource.org/licenses/BSD-3-Clause BSD New
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 
 namespace Orcid;

@@ -1,7 +1,7 @@
 {
     "name": "hubzero/orcid-php",
     "description": "Library for ORCID web services",
-    "license": "BSD New",
+    "license": "MIT",
     "require": {
         "php": ">=5.4.0",
         "ext-curl": "*"
