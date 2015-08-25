@@ -630,7 +630,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				// redirect
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-					Lang::txt('PLG_MEMBER_CITATIONS_OWNER_ONLY'),
+					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
 					'warning'
 				);
 			}
@@ -729,12 +729,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'type' => Request::getInt('type'),
 				'cite' => Request::getVar('cite'),
 				'ref_type' => Request::getVar('ref_type'),
-				'date_submit' => Request::getVar('date_submit'),
-				'date_accept' => Request::getVar('date_accept'),
-				'date_publish' => Request::getVar('date_publish'),
+				'date_submit' => Request::getVar('date_submit', '0000-00-00 00:00:00'),
+				'date_accept' => Request::getVar('date_accept', '0000-00-00 00:00:00'),
+				'date_publish' => Request::getVar('date_publish', '0000-00-00 00:00:00'),
 				'year' => Request::getVar('year'),
 				'month' => Request::getVar('month'),
-				'author' => Request::getVar('author'),
+				'author' => is_array(Request::getVar('author')) ? '' : Request::getVar('author'),
 				'author_address' => Request::getVar('author_address'),
 				'editor' => Request::getVar('editor'),
 				'title' => Request::getVar('title'),
@@ -772,7 +772,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			));
 
 		// Store new content
-		if (!$citation->save())
+		if (!$citation->save() && !$citation->validate())
 		{
 			$this->setError($citation->getError());
 			$this->editAction($citation);
@@ -829,10 +829,21 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$id = Request::getInt('citation', 0);
+		$citationIDs = Request::getVar('citationIDs', '');
+		$bulk = Request::getVar('bulk', false);
 
 		// Load the object
-		$row = new \Components\Citations\Tables\Citation($this->database);
-		$row->load($id);
+		$citation = \Components\Citations\Models\Citation::oneOrNew($id);
+
+		if ($this->member->get('uidNumber') == $citation->uid)
+		{
+			// redirect
+			App::redirect(
+					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
+					'warning'
+				);
+		}
 
 		if ($row->id)
 		{
