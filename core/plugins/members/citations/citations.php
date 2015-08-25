@@ -711,7 +711,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// set scope & scope id in save so no one can mess with hidden form inputs
 		$scope    = 'member';
-		$scope_id = $this->member->get('uidNumber');
+		$scopeID = $this->member->get('uidNumber');
 
 		// get tags
 		$tags = trim(Request::getVar('tags', ''));
@@ -720,7 +720,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$badges = trim(Request::getVar('badges', ''));
 
 		// check to see if new
-		$cid = Request::getInt('id');
+		$cid = Request::getInt('cid');
 		$isNew = ($cid < 0 ? true : false);
 
 		// get the citation (single) or create a new one
@@ -765,17 +765,17 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'label' => Request::getVar('label'),
 				'uid' => User::get('id'),
 				'created' => Date::toSql(),
-				'scope' => $scope,
-				'scope_id' => $scope_id,
 				'affiliated' => Request::getInt('affiliated', 0),
-				'fundedby' => Request::getInt('fundedby', 0)
+				'fundedby' => Request::getInt('fundedby', 0),
+				'scope' => $scope, 
+				'scope_id' => $scopeID
 			));
 
 		// Store new content
 		if (!$citation->save())
 		{
 			$this->setError($citation->getError());
-			$this->editAction();
+			$this->editAction($citation);
 			return;
 		}
 

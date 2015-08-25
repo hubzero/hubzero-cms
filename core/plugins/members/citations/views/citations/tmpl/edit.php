@@ -422,7 +422,7 @@ $badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'ba
 			<input type="hidden" name="scope" value="<?php echo $this->escape($this->row->scope); ?>" />
 			<input type="hidden" name="scope_id" value="<?php echo $this->escape($this->row->scope_id); ?>" />
 			<input type="hidden" name="published" value="<?php echo ($this->row->id ? $this->escape($this->row->published) : 1); ?>" />
-			<input type="hidden" name="id" value="<?php echo $this->escape($this->row->id); ?>" />
+			<input type="hidden" name="cid" value="<?php echo $this->escape($this->row->id); ?>" />
 
 			<input type="hidden" name="option" value="com_members" />
 			<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
