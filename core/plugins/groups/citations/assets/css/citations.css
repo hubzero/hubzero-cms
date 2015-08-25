@@ -55,8 +55,8 @@ background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10
 }
 .admin {
  padding: 10px 10px 10px 10px;	
- background-color: gray;
- margin: 5px 0 15px 0;
+ background-color: #C1C1C1;
+ margin: 25px 0 15px 0;
 }
 
 .admin a.btn, .btn {
