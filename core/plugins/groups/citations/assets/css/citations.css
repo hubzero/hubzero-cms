@@ -63,7 +63,7 @@ background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10
  border-color: #5F5E5E;
  }
 
-a.icon-delete:hover{
+a.btn.icon-delete:hover{
 	color: white;
 	background-color: #da4f49;
 	background-image: -moz-linear-gradient(top,#ee5f5b,#bd362f);
@@ -74,6 +74,32 @@ a.icon-delete:hover{
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
 }
 
+
+	.entries .col-options {
+		white-space: nowrap;
+	}
+	.entries .edit,
+	.entries .delete,
+	.entries .publish {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1.2em;
+		border: none;
+		color: #ccc;
+		margin-left: 0.2em;
+	}
+	.entries .edit:hover {
+		color: #222;
+	}
+	.entries .delete:hover {
+		color: red;
+	}
+	.entries .publish:hover {
+		color: green;
+	}
 
 .templateTable {
  font-size: 9pt;
@@ -106,13 +132,6 @@ a.icon-delete:hover{
  margin-top: 5%;
 }
 
-.individual.icon-edit, .individual.icon-delete, .individual.icon-window-publish {
-border-bottom: 0;
-font-size: 9pt;
-padding: 0px;
-text-align:center;
-margin: 0px;
-}
 #citations-introduction {
  height: inherit;
  max-width: 460px;
