@@ -113,7 +113,9 @@ $this->css()
 					</a>
 					<?php endif; ?>
 				</h3>
-			<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
+			<?php
+			$rows = $this->model->entries('list', $this->filters);
+			if ($rows->total() > 0) { ?>
 				<ol class="blog-entries entries">
 			<?php
 				$cls = 'even';
@@ -299,7 +301,9 @@ $this->css()
 			?>
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
-				<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
+				<?php
+				$popular = $this->model->entries('popular', $this->filters);
+				if ($popular->total() > 0) { ?>
 					<ol>
 					<?php foreach ($popular as $row) { ?>
 						<?php
@@ -322,7 +326,9 @@ $this->css()
 
 			<div class="container blog-recent-entries">
 				<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
-				<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
+				<?php
+				$recent = $this->model->entries('recent', $this->filters);
+				if ($recent->total() > 0) { ?>
 					<ol>
 					<?php foreach ($recent as $row) { ?>
 						<?php
