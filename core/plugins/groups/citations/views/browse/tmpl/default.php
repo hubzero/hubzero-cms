@@ -73,36 +73,37 @@ if (isset($this->messages))
 				</div><!-- /.container .data-entry -->
 
 				<div class="container"> <!-- .container for citation type (aff, nonaff, all) -->
-					<ul class="entries-menu filter-options">
-						<?php
-							$queryString = "";
-							$exclude = array("filter");
-							foreach ($this->filters as $k => $v)
-							{
-								if ($v != "" && !in_array($k, $exclude))
+					<nav class="entries-filters">
+						<ul class="entries-menu filter-options">
+							<?php
+								$queryString = "";
+								$exclude = array("filter");
+								foreach ($this->filters as $k => $v)
 								{
-									if (is_array($v))
+									if ($v != "" && !in_array($k, $exclude))
 									{
-										foreach ($v as $k2 => $v2)
+										if (is_array($v))
 										{
-											$queryString .= "&{$k}[{$k2}]={$v2}";
+											foreach ($v as $k2 => $v2)
+											{
+												$queryString .= "&{$k}[{$k2}]={$v2}";
+											}
+										}
+										else
+										{
+											$queryString .= "&{$k}={$v}";
 										}
 									}
-									else
-									{
-										$queryString .= "&{$k}={$v}";
-									}
 								}
-							}
-						?>
-						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
-						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
-						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
-						<?php if ($this->config->get('display') != "group"): ?>
-							<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
-						<?php endif; ?>
-					</ul>
-				<div class="clearfix"></div> <!-- clearfix for spacing -->
+							?>
+							<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
+							<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
+							<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
+							<?php if ($this->config->get('display') != "group"): ?>
+								<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
+							<?php endif; ?>
+						</ul>
+					</nav>
 				<?php if ($this->citations->count() > 0) : ?>
 					<table class="citations entries">
 						<thead>
