@@ -235,7 +235,8 @@ ul.projecttools a:focus {
 		width: 285px;
 		min-width: 285px;
 	}
-	.main-menu ul.projecttools li a {
+	.main-menu ul.projecttools li a,
+	.main-menu ul.projecttools li.assets>span {
 		padding: 0.6em 2em 0.6em 6.5em;
 	}
 }
