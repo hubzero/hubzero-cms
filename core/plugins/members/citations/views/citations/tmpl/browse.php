@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,181 +23,101 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @author	Shawn Rice <zooley@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
-     ->js();
+$this->css('citations.css')
+	 ->js();
 
-$base = $this->member->getLink() . '&active=citations';
-
-//citation params
-$label    = $this->config->get("citation_label", "number");
-$rollover = $this->config->get("citation_rollover", "no");
-$rollover = ($rollover == "yes") ? 1 : 0;
-
-//batch downloads
-$batch_download = $this->config->get("citation_batch_download", 1);
-
-//Include COinS
-$coins = $this->config->get("citation_coins", 1);
-
-//do we want to number li items
-if ($label == "none")
-{
-	$citations_label_class = "no-label";
-}
-elseif ($label == "number")
-{
-	$citations_label_class = "number-label";
-}
-elseif ($label == "type")
-{
-	$citations_label_class = "type-label";
-}
-elseif ($label == "both")
-{
-	$citations_label_class = "both-label";
-}
+$base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations';
 
 if (isset($this->messages))
 {
 	foreach ($this->messages as $message)
 	{
-		echo '<p class="' . $message['type'] . '">' . $message['message'] . '</p>';
+		echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 	}
 }
 ?>
-<div id="content-header-extra">
+
+<div id="content-header-extra"><!-- Citation management buttons -->
 	<?php if ($this->isAdmin) : ?>
-		<a class="btn icon-add" href="<?php echo Route::url($base . '&task=add'); ?>">
+		<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SUBMIT_CITATION'); ?>
 		</a>
-		<a class="btn icon-upload" href="<?php echo Route::url($base . '&task=import'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT'); ?>
+		<a class="btn icon-upload" href="<?php echo Route::url($base. '&action=import'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_CITATION'); ?>
+		</a>
+		<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=settings'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SET_FORMAT'); ?>
 		</a>
 	<?php endif; ?>
-</div>
+</div><!-- / Citations management buttons -->
 
-<div class="frm" id="browsebox">
+<div class="frm" id="browsebox"><!-- .frm #browsebox -->
+	<form action="<?php echo Route::url(Request::current()); ?>" id="citeform" method="GET" class="withBatchDownload">
+		<section class="main section"> <!-- .main .section -->
+			<div class="subject">
+				<div class="container data-entry"> <!-- citation search box -->
+					<!-- @TODO replace with hubgraph -->
+					<input class="entry-search-submit" type="submit" value="Search" /> <!-- search button -->
+					<fieldset class="entry-search"> <!-- text box container -->
+						<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+						<input type="text" name="filters[search]" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+					</fieldset>
+				</div><!-- /.container .data-entry -->
 
-<?php if (User::get('id') == $this->member->get('uidNumber') && !$this->grand_total) { ?>
-
-	<div class="introduction">
-		<div class="introduction-message">
-			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_EMPTY'); ?></p>
-		</div>
-		<div class="introduction-questions">
-			<p><strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS'); ?></strong></p>
-			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS_EXPLANATION'); ?></p>
-
-			<p><strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_HOW_TO_START'); ?></strong></p>
-			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_HOW_TO_START_EXPLANATION'); ?></p>
-		</div>
-	</div><!-- / .introduction -->
-
-<?php } else { ?>
-
-	<section class="main section">
-		<form action="<?php echo Route::url(JURI::current()); ?>" id="citeform" method="get" class="section-inner <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
-
-			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
-				<fieldset class="entry-search">
-					<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
-				</fieldset>
-			</div><!-- /.container .data-entry -->
-
-			<div class="container">
-				<nav class="entries-filters">
-					<ul class="entries-menu sort-options">
-						<?php foreach ($this->sorts as $k => $v) : ?>
-						<li>
-							<?php $sel = ($k == $this->filters['sort']) ? 'class="active"' : ''; ?>
-							<a <?php echo $sel; ?> href="<?php echo Route::url($base . '&sort=' . $k . ($this->filters['type'] ? '&type=' . $this->filters['type'] : '')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SORT_BY', $v); ?>">&darr; <?php echo $v; ?></a>
-						</li>
-						<?php endforeach; ?>
-					</ul>
-					<ul class="entries-menu filter-options">
-						<li>
-							<label for="filter-type">
-								<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?>
-								<select name="type" id="filter-type">
-									<option value=""><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ALL'); ?></option>
-									<?php foreach ($this->types as $t) : ?>
-										<?php $sel = ($this->filters['type'] == $t['id']) ? 'selected="selected"' : ''; ?>
-										<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
-									<?php endforeach; ?>
-								</select>
-								<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FILTER'); ?>" />
-							</label>
-						</li>
-					</ul>
-				</nav>
-
-				<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
-				<input type="hidden" name="referer" value="<?php echo $this->escape(@$_SERVER['HTTP_REFERER']); ?>" />
-
+				<div class="container"> <!-- .container for citation type (aff, nonaff, all) -->
 				<?php if ($this->citations->count() > 0) : ?>
-					<?php
-						$formatter = new \Components\Citations\Helpers\Format();
-						$formatter->setTemplate($template);
-
-						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
-					?>
 					<table class="citations entries">
-						<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
-						<?php if ($batch_download) : ?>
 						<thead>
 							<tr>
 								<th class="batch">
 									<input type="checkbox" class="checkall-download" />
 								</th>
-								<th colspan="3">
-									<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?>
-								</th>
+								<th colspan="6"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></th>
 							</tr>
+							<?php if ($this->isAdmin) : ?>
+								<tr class="hidden">
+									<div class="admin">
+										<a class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
+											<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH_SELECTED'); ?>
+										</a>
+										<a class="btn btn-danger icon-delete bulk" data-protected="true" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
+											<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE_SELECTED'); ?>
+										</a>
+										</td>
+									</div>
+								</tr>
+							<?php endif; ?>
 						</thead>
-						<tfoot>
-							<tr>
-								<td colspan="4">
-									<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_AS'); ?>
-									<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" /> |
-									<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
-								</td>
-							</tr>
-						</tfoot>
-						<?php endif; ?>
 						<tbody>
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
-								<tr>
-									<?php if ($batch_download) : ?>
-										<td class="batch">
-											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
-										</td>
-									<?php endif; ?>
-
-									<?php if ($label != "none") : ?>
-										<td class="citation-label <?php echo $citations_label_class; ?>">
+								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
+									<td class="batch">
+										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+									</td>
+									<?php if ($this->label != "none") : ?>
+										<td class="citation-label <?php echo $this->citations_label_class; ?>">
 											<?php
-												$type = '';
-												foreach ($this->types as $t)
-												{
-													if ($t['id'] == $cite->type)
-													{
-														$type = $t['type_title'];
+												/**
+												 * @TODO replace with Relational
+												 **/
+												$type = "";
+												foreach ($this->types as $t) {
+													if ($t->id == $cite->type) {
+														$type = $t->type_title;
 													}
 												}
 												$type = ($type != "") ? $type : "Generic";
 
-												switch ($label)
+												switch ($this->label)
 												{
 													case "number":
 														echo "<span class=\"number\">{$cite->id}.</span>";
@@ -214,9 +134,6 @@ if (isset($this->messages))
 										</td>
 									<?php endif; ?>
 									<td class="citation-container">
-										<?php if (isset($cite->custom3)) : ?>
-											<div class="identifier"><?php echo $cite->custom3; ?></div>
-										<?php endif; ?>
 										<?php
 											$formatted = $cite->formatted($this->config->toArray(), $this->filters['search']);
 
@@ -230,11 +147,10 @@ if (isset($this->messages))
 											}
 
 											echo $formatted;
-										?>
-										<?php
+
 											//get this citations rollover param
-											$params = new \Hubzero\Html\Parameter($cite->params);
-											$citation_rollover = $params->get('rollover', $rollover);
+											//$params = new \Hubzero\Config\Registry($cite->params);
+											$citation_rollover = 0;
 										?>
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
@@ -261,54 +177,104 @@ if (isset($this->messages))
 												<p><?php echo nl2br($cite->abstract); ?></p>
 											</div>
 										<?php endif; ?>
-
-										<?php
-											$singleCitationView = $this->config->get('citation_single_view', 0);
-											if (!$singleCitationView)
-											{
-												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
-											}
-										?>
-										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
-										<?php endif; ?>
-
-										<?php if ($this->config->get("citation_show_tags","yes") == "yes") : ?>
-											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
-										<?php endif; ?>
 									</td>
 									<?php if ($this->isAdmin === true) : ?>
-										<td class="col-options">
-											<a class="delete icon-delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($base . '&action=delete&citation=' . $cite->id); ?>">
-												<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
-											</a>
-											<a class="edit icon-edit" href="<?php echo Route::url($base . '&action=edit&citation=' . $cite->id); ?>">
-												<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
-											</a>
-										</td>
+										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&cid=' .$cite->id ); ?>"></span>
+											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?></span>
+										</a></td>
+										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&cid=' . $cite->id); ?>">
+											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE'); ?></span>
+										</a></td>
+										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&cid=' . $cite->id); ?>">
+											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
+										</a></td>
 									<?php endif; ?>
+								</tr>
+								<tr>
+									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="6"'; } ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
+										<?php	echo $cite->citationDetails($this->openurl); ?>
+										<?php if ($this->config->get('citations_show_badges', 'yes') == "yes"): ?>
+											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+										 <?php endif; ?>
+										<?php if ($this->config->get('citations_show_tags', 'yes') == "yes"): ?>
+											<?php echo $cite->tagCloud(); ?>
+										<?php endif; ?>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
-				<?php else : ?>
-					<table class="citations entries">
-						<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
-						<tbody>
-							<tr>
-								<td>
-									<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				<?php endif; ?>
-				<?php echo $this->citations->pagination; ?>
-				<div class="clearfix"></div>
-			</div><!-- /.container -->
-		</form>
-	</section>
+					<?php else : ?>
+						<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+					<?php endif; ?>
+					<?php echo $this->citations->pagination; ?>
+					<div class="clearfix"></div>
+				</div><!-- /.container -->
+			</div><!-- /.subject -->
+			<div class="aside">
+				<fieldset>
+					<label>
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?>
+						<select name="filters[type]" id="type">
+							<option value=""><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ALL'); ?></option>
+							<?php foreach ($this->types as $t) : ?>
+								<?php $sel = ($this->filters['type'] == $t->id) ? "selected=\"selected\"" : ""; ?>
+								<option <?php echo $sel; ?> value="<?php echo $t->id; ?>"><?php echo $t->type_title; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</label>
+					<label>
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS'); ?>:
+						<?php
+							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'filters[tag]', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+							if (count($tf) > 0) : ?>
+								<?php echo $tf[0]; ?>
+							<?php else: ?>
+								<input type="text" name="filters[tag]" value="<?php echo $this->filters['tag']; ?>" />
+							<?php endif; ?>
+					</label>
+					<label>
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORED_BY'); ?>
+						<input type="text" name="filters[author]" value="<?php echo $this->filters['author']; ?>" />
+					</label>
+					<label>
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISHED_IN'); ?>
+						<input type="text" name="filters[publishedin]" value="<?php echo $this->filters['publishedin']; ?>" />
+					</label>
+					<label for="year_start">
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_YEAR'); ?><br />
+						<input type="text" name="filters[year_start]" class="half" value="<?php echo $this->filters['year_start']; ?>" />
+						to
+						<input type="text" name="filters[year_end]" class="half" value="<?php echo $this->filters['year_end']; ?>" />
+					</label>
+					<label>
+						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SORT_BY'); ?>
+						<select name="filters[sort]" id="sort" class="">
+							<?php foreach ($this->sorts as $k => $v) : ?>
+								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort']) == $k ? 'selected' : ''); ?>>
+									<?php echo $v; ?>
+								</option>
+							<?php endforeach; ?>
+						</select>
+					</label>
+					<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
+					<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
+					<input type="hidden" name="action" value="browse" />
 
-<?php } ?>
+					<div class="btn-cluster">
+						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FILTER'); ?>" />
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations'); ?>" class="btn">Reset</a>
+					</div>
+				</fieldset>
+				<fieldset id="download-batch">
+					<strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
+					<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-</div>
+					<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" />
+					|
+					<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
+				</fieldset>
+			</div><!-- /.aside -->
+		</section>
+	</form>
+</div><!-- /.frm /#browsebox -->

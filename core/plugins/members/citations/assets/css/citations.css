@@ -32,7 +32,7 @@
 		border-color: transparent #8e6e59 transparent transparent !important;
 	}
 	.citation-details .tags li {
-		padding: 0;
+		padding: 0.618em 0 0 0;
 		border: none;
 	}
 
@@ -50,7 +50,8 @@
 		white-space: nowrap;
 	}
 	.entries .edit,
-	.entries .delete {
+	.entries .delete,
+	.entries .publish {
 		display: inline-block;
 		width: 1em;
 		height: 1em;
@@ -67,6 +68,19 @@
 	.entries .delete:hover {
 		color: red;
 	}
+	.entries .publish:hover {
+		color: green;
+	}
+
+
+	.btn-cluster {
+			padding: 5px 15px 15px 5px;
+			margin-left:auto;
+			margin-right: auto;
+			float:left;
+			width: 100%;
+			text-align: center;
+	}
 
 	#hubForm .author-manager .span2 {
 		text-align: right;
@@ -77,6 +91,21 @@
 	}
 	#hubForm .author-manager button {
 		margin-top: 2.4em;
+	}
+
+	.admin {
+		padding: 10px 10px 10px 10px;	
+		background-color: #C1C1C1;
+	 	margin: 0 0 15px 0;
+	}
+	
+	.admin a.btn, .btn {
+	 	border-color: #5F5E5E;
+	 }
+
+	#download-batch {
+	 	padding:10px;
+		text-align: center;
 	}
 
 /* Instructions */

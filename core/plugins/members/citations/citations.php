@@ -613,7 +613,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$id = Request::getInt('citation', 0);
+		$id = Request::getInt('cid', 0);
 
 		// Load the object
 		if (is_object($row))
