@@ -77,7 +77,6 @@ class Citation extends Relational
 		//'asset_id'
 	);
 
-
 	/**
 	 * Defines a one to many relationship with authors
 	 *
@@ -108,44 +107,44 @@ class Citation extends Relational
 	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	public function formatted($config = array('format' => 'apa'), $highlight = NULL)
 	{
-	    //get hub specific details
-	    $hub_name = \Config::get('sitename');
-	    $hub_url  = rtrim(\Request::base(), '/');
+		//get hub specific details
+		$hub_name = \Config::get('sitename');
+		$hub_url  = rtrim(\Request::base(), '/');
 
-			//get scope specific details
-			$coins_only = isset($config['coins_only']) ? $config['coins_only'] : "no";
-			$include_coins = isset($config['include_coins']) ? $config['include_coins'] : "no";
-	    $c_type = 'journal';
+		//get scope specific details
+		$coins_only = isset($config['coins_only']) ? $config['coins_only'] : "no";
+		$include_coins = isset($config['include_coins']) ? $config['include_coins'] : "no";
+		$c_type = 'journal';
 
 		$type = $this->relatedType->type;
 
-		 switch (strtolower($type))
-	   {
-	       case 'book':
-	       case 'inbook':
-	       case 'conference':
-	       case 'proceedings':
-	       case 'inproceedings':
-	            $c_type = "book";
-	           break;
-	       case 'journal':
-	       case 'article':
-	       case 'journal article';
-	           $c_type = "journal";
-	           break;
-	       default:
-	       break;
-	   }
+		switch (strtolower($type))
+		{
+			case 'book':
+			case 'inbook':
+			case 'conference':
+			case 'proceedings':
+			case 'inproceedings':
+				$c_type = "book";
+				break;
+			case 'journal':
+			case 'article':
+			case 'journal article';
+				$c_type = "journal";
+				break;
+			default:
+			break;
+		}
 
-	    //var to hold COinS data
-	    $coins_data = array(
-	        "ctx_ver=Z39.88-2004",
-	        "rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
-	        "rfr_id=info:sid/{$hub_url}:{$hub_name}"
-	    );
+		//var to hold COinS data
+		$coins_data = array(
+			"ctx_ver=Z39.88-2004",
+			"rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
+			"rfr_id=info:sid/{$hub_url}:{$hub_name}"
+		);
 
-	    //array to hold replace vals
-	    $replace_values = array();
+		//array to hold replace vals
+		$replace_values = array();
 
 		// get the template
 		// default to IEEE
@@ -158,353 +157,352 @@ class Citation extends Relational
 			$format = \Components\Citations\Models\Format::all()->where('style', 'LIKE', '%IEEE%')->row()->toObject();
 		}
 
-
 		//get the template keys
-		 $template_keys =  array(
-		 "type" => "{TYPE}",
-		 "cite" => "{CITE KEY}",
-		 "ref_type" => "{REF TYPE}",
-		 "date_submit" => "{DATE SUBMITTED}",
-		 "date_accept" => "{DATE ACCEPTED}",
-		 "date_publish" => "{DATE PUBLISHED}",
-		 "author" => "{AUTHORS}",
-		 "editor" => "{EDITORS}",
-		 "title" => "{TITLE/CHAPTER}",
-		 "booktitle" => "{BOOK TITLE}",
-		 "chapter" => "{CHAPTER}",
-		 "journal" => "{JOURNAL}",
-		 "journaltitle" => "{JOURNAL TITLE}",
-		 "volume" => "{VOLUME}",
-		 "number" => "{ISSUE/NUMBER}",
-		 "pages" => "{PAGES}",
-		 "isbn" => "{ISBN/ISSN}",
-		 "issn" => "{ISSN}",
-		 "doi" => "{DOI}",
-		 "series" => "{SERIES}",
-		 "edition" => "{EDITION}",
-		 "school" => "{SCHOOL}",
-		 "publisher" => "{PUBLISHER}",
-		 "institution" => "{INSTITUTION}",
-		 "address" => "{ADDRESS}",
-		 "location" => "{LOCATION}",
-		 "howpublished" => "{HOW PUBLISHED}",
-		 "url" => "{URL}",
-		 "eprint" => "{E-PRINT}",
-		 "note" => "{TEXT SNIPPET/NOTES}",
-		 "organization" => "{ORGANIZATION}",
-		 "abstract" => "{ABSTRACT}",
-		 "year" => "{YEAR}",
-		 "month" => "{MONTH}",
-		 "search_string" => "{SECONDARY LINK}",
-		 "sec_cnt" => "{SECONDARY COUNT}"
-	 );
+		$template_keys =  array(
+			"type" => "{TYPE}",
+			"cite" => "{CITE KEY}",
+			"ref_type" => "{REF TYPE}",
+			"date_submit" => "{DATE SUBMITTED}",
+			"date_accept" => "{DATE ACCEPTED}",
+			"date_publish" => "{DATE PUBLISHED}",
+			"author" => "{AUTHORS}",
+			"editor" => "{EDITORS}",
+			"title" => "{TITLE/CHAPTER}",
+			"booktitle" => "{BOOK TITLE}",
+			"chapter" => "{CHAPTER}",
+			"journal" => "{JOURNAL}",
+			"journaltitle" => "{JOURNAL TITLE}",
+			"volume" => "{VOLUME}",
+			"number" => "{ISSUE/NUMBER}",
+			"pages" => "{PAGES}",
+			"isbn" => "{ISBN/ISSN}",
+			"issn" => "{ISSN}",
+			"doi" => "{DOI}",
+			"series" => "{SERIES}",
+			"edition" => "{EDITION}",
+			"school" => "{SCHOOL}",
+			"publisher" => "{PUBLISHER}",
+			"institution" => "{INSTITUTION}",
+			"address" => "{ADDRESS}",
+			"location" => "{LOCATION}",
+			"howpublished" => "{HOW PUBLISHED}",
+			"url" => "{URL}",
+			"eprint" => "{E-PRINT}",
+			"note" => "{TEXT SNIPPET/NOTES}",
+			"organization" => "{ORGANIZATION}",
+			"abstract" => "{ABSTRACT}",
+			"year" => "{YEAR}",
+			"month" => "{MONTH}",
+			"search_string" => "{SECONDARY LINK}",
+			"sec_cnt" => "{SECONDARY COUNT}"
+		);
 		/**
 		 * Values used by COINs
 		*
 		* @var  array
 		*/
-	 $coins_keys = array(
-		 'title'        => 'rft.atitle',
-		 'journaltitle' => 'rft.jtitle',
-		 'date_publish' => 'rft.date',
-		 'volume'       => 'rft.volume',
-		 'number'       => 'rft.issue',
-		 'pages'        => 'rft.pages',
-		 'issn'         => 'rft.issn',
-		 'isbn'         => 'rft.isbn',
-		 'type'         => 'rft.genre',
-		 'author'       => 'rft.au',
-		 'url'          => 'rft_id',
-		 'doi'          => 'rft_id=info:doi/',
-		 'author'       => 'rft.au'
-	 );
+		$coins_keys = array(
+			'title'        => 'rft.atitle',
+			'journaltitle' => 'rft.jtitle',
+			'date_publish' => 'rft.date',
+			'volume'       => 'rft.volume',
+			'number'       => 'rft.issue',
+			'pages'        => 'rft.pages',
+			'issn'         => 'rft.issn',
+			'isbn'         => 'rft.isbn',
+			'type'         => 'rft.genre',
+			'author'       => 'rft.au',
+			'url'          => 'rft_id',
+			'doi'          => 'rft_id=info:doi/',
+			'author'       => 'rft.au'
+		);
 
 			// form the formatted citation
-	    foreach ($template_keys as $k => $v)
-	    {
-	        if (!$this->keyExistsOrIsNotEmpty($k, $this) && $k != 'author')
-	        {
-	            $replace_values[$v] = '';
-	        }
-	        else
-	        {
-	            $replace_values[$v] = $this->$k;
+		foreach ($template_keys as $k => $v)
+		{
+			if (!$this->keyExistsOrIsNotEmpty($k, $this) && $k != 'author')
+			{
+				$replace_values[$v] = '';
+			}
+			else
+			{
+				$replace_values[$v] = $this->$k;
 
-	            //add to coins data if we can but not authors as that will get processed below
-	            if (in_array($k, array_keys($coins_keys)) && $k != 'author')
-	            {
-	                //key specific
-	                switch ($k)
-	                {
-	                    case 'title':
-	                        break;
-	                    case 'doi':
-	                        $coins_data[] = $this->_coins_keys[$k] . $this->$k;
-	                        break;
-	                    case 'url':
-	                        $coins_data[] = $this->_coins_keys[$k] . '=' . htmlentities($this->$k);
-	                        break;
-	                    case 'journaltitle':
-	                        $jt = html_entity_decode($this->$k);
-	                        $jt = (!preg_match('!\S!u', $jt)) ? utf8_encode($jt) : $jt;
-	                        $coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
-	                        break;
-	                    default:
-	                        $coins_data[] = $this->_coins_keys[$k] . '=' . $this->$k;
-	                }
-	            }
+				//add to coins data if we can but not authors as that will get processed below
+				if (in_array($k, array_keys($coins_keys)) && $k != 'author')
+				{
+					//key specific
+					switch ($k)
+					{
+						case 'title':
+							break;
+						case 'doi':
+							$coins_data[] = $this->_coins_keys[$k] . $this->$k;
+							break;
+						case 'url':
+							$coins_data[] = $this->_coins_keys[$k] . '=' . htmlentities($this->$k);
+							break;
+						case 'journaltitle':
+							$jt = html_entity_decode($this->$k);
+							$jt = (!preg_match('!\S!u', $jt)) ? utf8_encode($jt) : $jt;
+							$coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
+							break;
+						default:
+							$coins_data[] = $this->_coins_keys[$k] . '=' . $this->$k;
+					}
+				}
 
-	            if ($k == 'author')
-	            {
-	                $a = array();
+				if ($k == 'author')
+				{
+					$a = array();
 
-	                $auth = html_entity_decode($this->$k);
-	                $auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
+					$auth = html_entity_decode($this->$k);
+					$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
 
-									// prefer the use of the relational table 
-									if ($this->relatedAuthors->count() > 0)
+					// prefer the use of the relational table 
+					if ($this->relatedAuthors->count() > 0)
+					{
+						$authors = $this->relatedAuthors;
+						$authorCount = $this->relatedAuthors->count();
+					}
+					elseif ($auth != '' && $this->relatedAuthors->count() == 0)
+					{
+						$author_string = $auth;
+						$authors = explode(';', $author_string);
+						$authorCount = count($authors);
+					}
+					else
+					{
+						$authorCount = 0;
+						$replace_values[$v] = '';
+					}
+
+					if ($authorCount > 0)
+					{
+						foreach ($authors as $author)
+						{
+							// for legacy profile handling
+							if (is_string($author))
+							{
+								preg_match('/{{(.*?)}}/s', $author, $matches);
+								if (!empty($matches))
+								{
+									$id = trim($matches[1]);
+									if (is_numeric($id))
 									{
-										$authors = $this->relatedAuthors;
-										$authorCount = $this->relatedAuthors->count();
+										$user = \User::getInstance($id);
+										if (is_object($user))
+										{
+											$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+										}
+										else
+										{
+											$a[] = $author;
+										}
 									}
-									elseif ($auth != '' && $this->relatedAuthors->count() == 0)
+								}
+								else
+								{
+									$a[] = $author;
+								}
+
+								// add author coins
+								$coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
+							} // legacy string
+							elseif (is_object($author)) // new ORM method
+							{
+								if ($author->uidNumber > 0)
+								{
+									 $a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
+								}
+								else
+								{
+									$a[] = $author->author;
+								}
+							} //new ORM method
+							else
+							{
+								$a[] = $author;
+							}
+						}
+						$replace_values[$v] = implode(", ", $a);
+					}
+				}
+
+				if ($k == 'title')
+				{
+					$url_format = isset($config['citation_url']) ? $config['citation_url'] : 'url';
+									$custom_url = isset($config['citation_custom_url']) ? $config['citation_custom_url'] : '';
+
+					$url = $this->url;
+					if ($url_format == 'custom' && $custom_url != '')
+					{
+						//parse custom url to make sure we are not using any vars
+						preg_match_all('/\{(\w+)\}/', $custom_url, $matches, PREG_SET_ORDER);
+						if ($matches)
+						{
+							foreach ($matches as $match)
+							{
+								$field = strtolower($match[1]);
+								$replace = $match[0];
+								$replaceWith = '';
+								if (property_exists($this, $field))
+								{
+									if (strstr($this->$field, 'http'))
 									{
-										$author_string = $auth;
-										$authors = explode(';', $author_string);
-										$authorCount = count($authors);
+										$custom_url = $this->$field;
 									}
 									else
 									{
-										$authorCount = 0;
-										$replace_values[$v] = '';
+										$replaceWith = urlencode($this->$field);
+										$custom_url = str_replace($replace, $replaceWith, $custom_url);
 									}
+								}
+							}
+							//set the citation url to be the new custom url parsed
+							$url  = $custom_url;
+						}
+					}
 
-									if ($authorCount > 0)
-									{
-										foreach ($authors as $author)
-										{
-												// for legacy profile handling
-												if (is_string($author))
-												{
-													preg_match('/{{(.*?)}}/s', $author, $matches);
-													if (!empty($matches))
-													{
-														$id = trim($matches[1]);
-														if (is_numeric($id))
-														{
-															$user = \User::getInstance($id);
-															if (is_object($user))
-															{
-																$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
-															}
-															else
-															{
-																$a[] = $author;
-															}
-														}
-													}
-													else
-													{
-														$a[] = $author;
-													}
+					//prepare url
+					if (strstr($url, "\r\n"))
+					{
+						$url = array_filter(array_values(explode("\r\n", $url)));
+						$url = $url[0];
+					}
+					elseif (strstr($url, " "))
+					{
+						$url = array_filter(array_values(explode(" ", $url)));
+						$url = $url[0];
+					}
 
-													// add author coins
-													$coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
-												} // legacy string
-												elseif (is_object($author)) // new ORM method
-												{
-													if ($author->uidNumber > 0)
-													{
-														 $a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
-													}
-													else
-													{
-														$a[] = $author->author;
-													}
-												} //new ORM method
-												else
-												{
-													$a[] = $author;
-												}
-										}
-											$replace_values[$v] = implode(", ", $a);
-									}
-	            }
+					$t = html_entity_decode($this->$k);
+					$t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
 
-	            if ($k == 'title')
-	            {
-	                $url_format = isset($config['citation_url']) ? $config['citation_url'] : 'url';
-									$custom_url = isset($config['citation_custom_url']) ? $config['citation_custom_url'] : '';
+					$title = ($url != '' && preg_match('/http:|https:/', $url))
+							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>'
+							: '<span class="citation-title">' . $t . '</span>';
 
-	                $url = $this->url;
-	                if ($url_format == 'custom' && $custom_url != '')
-	                {
-	                    //parse custom url to make sure we are not using any vars
-	                    preg_match_all('/\{(\w+)\}/', $custom_url, $matches, PREG_SET_ORDER);
-	                    if ($matches)
-	                    {
-	                        foreach ($matches as $match)
-	                        {
-	                            $field = strtolower($match[1]);
-	                            $replace = $match[0];
-	                            $replaceWith = '';
-	                            if (property_exists($this, $field))
-	                            {
-	                                if (strstr($this->$field, 'http'))
-	                                {
-	                                    $custom_url = $this->$field;
-	                                }
-	                                else
-	                                {
-	                                    $replaceWith = urlencode($this->$field);
-	                                    $custom_url = str_replace($replace, $replaceWith, $custom_url);
-	                                }
-	                            }
-	                        }
-	                        //set the citation url to be the new custom url parsed
-	                        $url  = $custom_url;
-	                    }
-	                }
-
-	                //prepare url
-	                if (strstr($url, "\r\n"))
-	                {
-	                    $url = array_filter(array_values(explode("\r\n", $url)));
-	                    $url = $url[0];
-	                }
-	                elseif (strstr($url, " "))
-	                {
-	                    $url = array_filter(array_values(explode(" ", $url)));
-	                    $url = $url[0];
-	                }
-
-	                $t = html_entity_decode($this->$k);
-	                $t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
-
-	                $title = ($url != '' && preg_match('/http:|https:/', $url))
-	                        ? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>'
-	                        : '<span class="citation-title">' . $t . '</span>';
-
-	                //do we want to display single citation
-	                //$singleCitationView = $config('citation_single_view', 0);
+					//do we want to display single citation
+					//$singleCitationView = $config('citation_single_view', 0);
 									$singleCitationView = isset($config['citation_single_view']) ? $config['citation_single_view'] : 0;
 
-	                if ($singleCitationView && isset($this->id))
-	                {
-	                    $title = '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $t . '</a>';
-	                }
+					if ($singleCitationView && isset($this->id))
+					{
+						$title = '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $t . '</a>';
+					}
 
-	                //send back title to replace title placeholder ({TITLE})
-	                $replace_values[$v] = '"' . $title . '"';
+					//send back title to replace title placeholder ({TITLE})
+					$replace_values[$v] = '"' . $title . '"';
 
-	                //add title to coin data but fixing bad chars first
-	                $coins_data[] = 'rft.atitle=' . $t;
-	            }
+					//add title to coin data but fixing bad chars first
+					$coins_data[] = 'rft.atitle=' . $t;
+				}
 
-	            if ($k == 'pages')
-	            {
-	                $replace_values[$v] = "pg: " . $this->$k;
-	            }
-	        }
-	    }
+				if ($k == 'pages')
+				{
+					$replace_values[$v] = "pg: " . $this->$k;
+				}
+			}
+		}
 
-	    // Add more to coins
+		// Add more to coins
 
 			$template = $format->format;
-	    $tmpl = isset($template) ? $template : $default_template;
-	    $cite = strtr($tmpl, $replace_values);
+		$tmpl = isset($template) ? $template : $default_template;
+		$cite = strtr($tmpl, $replace_values);
 
-	    // Strip empty tags
-	    $pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
-	    $cite = preg_replace($pattern, '', $cite);
+		// Strip empty tags
+		$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
+		$cite = preg_replace($pattern, '', $cite);
 
-	    //reformat dates
-	    $pattern = "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/";
-	    $cite = preg_replace($pattern, "$2-$3-$1", $cite);
+		//reformat dates
+		$pattern = "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/";
+		$cite = preg_replace($pattern, "$2-$3-$1", $cite);
 
-	    // Reduce multiple spaces to one
-	    $pattern = "/\s/s";
-	    $cite = preg_replace($pattern, ' ', $cite);
+		// Reduce multiple spaces to one
+		$pattern = "/\s/s";
+		$cite = preg_replace($pattern, ' ', $cite);
 
-	    // Strip empty punctuation inside
-	    $b = array(
-	        "''" => '',
-	        '""' => '',
-	        '()' => '',
-	        '{}' => '',
-	        '[]' => '',
-	        '??' => '',
-	        '!!' => '',
-	        '..' => '.',
-	        ',,' => ',',
-	        ' ,' => '',
-	        ' .' => '',
-	        ',.' => '.',
-	        '","'=> '',
-	        'doi:.'=>'',
-	        '(DOI:).'=>''
-	    );
+		// Strip empty punctuation inside
+		$b = array(
+			"''" => '',
+			'""' => '',
+			'()' => '',
+			'{}' => '',
+			'[]' => '',
+			'??' => '',
+			'!!' => '',
+			'..' => '.',
+			',,' => ',',
+			' ,' => '',
+			' .' => '',
+			',.' => '.',
+			'","'=> '',
+			'doi:.'=>'',
+			'(DOI:).'=>''
+		);
 
-	    foreach ($b as $k => $i)
-	    {
-	        $cite = str_replace($k, $i, $cite);
-	    }
+		foreach ($b as $k => $i)
+		{
+			$cite = str_replace($k, $i, $cite);
+		}
 
-	    // Strip empty punctuation from the start
-	    $c = array(
-	        "' ",
-	        '" ',
-	        '(',
-	        ') ',
-	        ', ',
-	        '. ',
-	        '? ',
-	        '! ',
-	        ': ',
-	        '; '
-	    );
+		// Strip empty punctuation from the start
+		$c = array(
+			"' ",
+			'" ',
+			'(',
+			') ',
+			', ',
+			'. ',
+			'? ',
+			'! ',
+			': ',
+			'; '
+		);
 
-	    foreach ($c as $k)
-	    {
-	        if (substr($cite, 0, 2) == $k)
-	        {
-	            $cite = substr($cite, 2);
-	        }
-	    }
+		foreach ($c as $k)
+		{
+			if (substr($cite, 0, 2) == $k)
+			{
+				$cite = substr($cite, 2);
+			}
+		}
 
-	    // remove trailing commas
-	    $cite = trim($cite);
-	    if (substr($cite, -1) == ',')
-	    {
-	        $cite = substr($cite, 0, strlen($cite)-1);
-	    }
+		// remove trailing commas
+		$cite = trim($cite);
+		if (substr($cite, -1) == ',')
+		{
+			$cite = substr($cite, 0, strlen($cite)-1);
+		}
 
-	    // percent encode chars
-	    $chars      = array('%', ' ', '/', ':', '"', '\'', '&amp;');
-	    $replace    = array("%20", "%20", "%2F", "%3A", "%22", "%27", "%26");
-	    $coins_data = str_replace($chars, $replace, implode('&', $coins_data));
+		// percent encode chars
+		$chars      = array('%', ' ', '/', ':', '"', '\'', '&amp;');
+		$replace    = array("%20", "%20", "%2F", "%3A", "%22", "%27", "%26");
+		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
-	    $cite = preg_replace('/, :/', ':', $cite);
+		$cite = preg_replace('/, :/', ':', $cite);
 
-	    // highlight citation data
-	    // do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
-	    $cite = ($highlight) ? String::highlight($cite, $highlight) : $cite;
+		// highlight citation data
+		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
+		$cite = ($highlight) ? String::highlight($cite, $highlight) : $cite;
 
-	    // if we want coins add them
-	    if ($include_coins == "yes"|| $coins_only == "yes")
-	    {
-	        $coins = '<span class="Z3988" title="' . $coins_data . '"></span>';
-	        if ($coins_only == "yes")
-	        {
-	            return $coins;
-	        }
+		// if we want coins add them
+		if ($include_coins == "yes"|| $coins_only == "yes")
+		{
+			$coins = '<span class="Z3988" title="' . $coins_data . '"></span>';
+			if ($coins_only == "yes")
+			{
+				return $coins;
+			}
 
-	        $cite .= $coins;
-	    }
+			$cite .= $coins;
+		}
 
-	    // output the citation
+		// output the citation
 
-	    return $cite;
+		return $cite;
 	}
 
 
@@ -588,7 +586,6 @@ class Citation extends Relational
 		return $html;
 	}
 
-
 	/**
 	 * Output a tagcloud of tags associated with a citation
 	 *
@@ -602,22 +599,19 @@ class Citation extends Relational
 		{
 			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
 
-			$html  = '<ul class="tags">';
+			$html  = '<ol class="tags">';
 			foreach ($this->tags as $tag)
 			{
 				if ($tag->tagObject->label == NULL )
 				{
-
-					$cls = ($tag->admin) ? 'admin' : '';
-
 					//display tag if not admin tag or if admin tag and user is adminstrator
 					if (!$tag->admin || ($tag->admin && $isAdmin))
 					{
-						$html .= '<li class="' . $cls . '"><a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
+						$html .= '<li' . ($tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
 					}
 				}
 			}
-			$html .= '</ul>';
+			$html .= '</ol>';
 			return $html;
 		}
 	}
@@ -728,7 +722,7 @@ class Citation extends Relational
 			$link .= implode("&", $query);
 
 			// do we have an icon or just using text as the link
-			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" />' : $text;
+			$link_text = ($icon != '') ? '<img alt="' . $text . '" src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" />' : $text;
 
 			// final link
 			$html .= '<a rel="external nofollow" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
