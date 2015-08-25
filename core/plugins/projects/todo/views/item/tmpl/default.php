@@ -89,7 +89,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 	<p class="td-options">
 		<?php if (!$this->row->isComplete() && $this->model->access('content')) { ?>
 		<span class="edit"><a href="<?php echo Route::url($url . '&action=edit') . '/?todoid=' . $this->row->get('id'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_TODO_EDIT'); ?></a></span>
-		<span class="checked"><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1'; ?>" class="confirm-checkoff"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
+		<span class="checked"><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1&amp;' . Session::getFormToken() . '=1'; ?>" class="confirm-checkoff"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
 		<?php } ?>
 		<?php if ($deletable) { ?>
 		<span class="trash"><a href="<?php echo Route::url($url . '&action=delete') . '/?todoid=' . $this->row->get('id'); ?>" class="confirm-it" id="deltd"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?></a></span>
