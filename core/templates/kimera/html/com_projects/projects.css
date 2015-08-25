@@ -76,10 +76,9 @@
 	}
 /* Listings
 --------------------------------------------- */
-	table.listing {
-		margin: 0 !important;
+	/*table.listing {
+		margin: 0;
 		padding: 0;
-		background: #FFFFFF;
 	}
 	table.listing th {
 		font-weight: normal;
@@ -94,7 +93,7 @@
 	table.listing td {
 		border-top: 1px solid #FFF;
 		border-bottom: 1px solid #f9f9f9;
-	}
+	}*/
 	.listing span.setup a, #projects-admin span.setup {
 		color: #e4942d;
 		font-weight: bold;
