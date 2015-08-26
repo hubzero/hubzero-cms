@@ -157,7 +157,7 @@ class Oauth
      **/
     public function setClientId($id)
     {
-        $this->clientId = $id;
+        $this->clientId = trim($id);
 
         return $this;
     }
@@ -170,7 +170,7 @@ class Oauth
      **/
     public function setClientSecret($secret)
     {
-        $this->clientSecret = $secret;
+        $this->clientSecret = trim($secret);
 
         return $this;
     }
