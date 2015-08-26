@@ -36,6 +36,14 @@
 		border: none;
 	}
 
+	.citation-row.unpublished {
+ 		background-color:	#FFFAC0; 
+	}
+
+	.unpublished-details {
+		background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10px, #F9F3AD 20px );
+	}
+
 	.com_members .member_citations .entries thead th {
 		padding-top: 0.618em;
 		padding-bottom: 0.618em;

@@ -34,6 +34,32 @@ jQuery(document).ready(function (jq){
 		return res;
 	});
 
+	// toggle download markers.
+	$('.checkall-download').click(function() {
+		var checked = $(this).prop('checked');
+		$('.download-marker').each(function() {
+			$(this).prop('checked', checked);
+			});
+		});
+	
+	// bulk actions
+	$('.bulk').click(function() {
+		var citationIDs = $('.download-marker:checked').map(function()
+			{
+				return $(this).val();
+			}).get();
+		
+		var url = $(this).attr('data-link');
+		url = url + '&citationIDs=' + citationIDs.join(',');
+
+		var locked = confirm('Are you sure you want to perform a bulk action?');
+		if (locked === true)
+		{
+			window.location = url;
+		 }
+
+	});
+
 	if (manager.length) {
 		manager
 			.find('button')
