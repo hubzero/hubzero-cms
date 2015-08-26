@@ -150,9 +150,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 					App::get('session')->getId()
 				);
 				$this->importer->set('scope', 'member');
-				$this->importer->set('scope_id', $this->member->get('uidNumber'));
-				$this->importer->set('user', $this->member->get('uidNumber'));
-				$this->importer->set('published', 1);
+				$this->importer->set('scope_id', User::get('id'));
+				$this->importer->set('user', User::get('id'));
+				$this->importer->set('published', 0); //let the user decide if they want to publish or not
 			}
 
 			// Run task based on action
@@ -186,14 +186,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function browseAction()
 	{
-
 		 // Instantiate a new citations object
 		$obj = $this->_filterHandler(Request::getVar('filters', array()), $this->member->get('uidNumber'));
 
 		$count = clone $obj['citations'];
 		$count = $count->count();
-		//$isManager		 = ($this->authorized == 'manager') ? true : false;
-		$isManager = true;
+		$isAdmin = $this->member->get('uidNumber') == User::get('id');
 		$config =  new \Hubzero\Config\Registry($this->member->get('params'));
 
 		$total = \Components\Citations\Models\Citation::all()
@@ -237,8 +235,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->task				 = $this->_name;
 			$view->database			 = $this->database;
 			$view->title			 = Lang::txt(strtoupper($this->_name));
-			//$view->isManager		 = ($this->authorized == 'manager') ? true : false;
-			$view->isAdmin = true;
+			$view->isAdmin 		 = $isAdmin;
 			$view->config			 = $config;
 			$view->grand_total = $total;
 
@@ -946,12 +943,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				if ($citation->published != $citation::STATE_PUBLISHED)
 				{
 					$citation->set('published',  $citation::STATE_PUBLISHED);
-					$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
+					$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 				}
 				else
 				{
 					$citation->set('published', $citation::STATE_UNPUBLISHED);
-					$string = 'PLG_GROUPS_CITATIONS_CITATION_UNPUBLISHED';
+					$string = 'PLG_MEMBERS_CITATIONS_CITATION_UNPUBLISHED';
 				}
 
 				// save the state
@@ -969,7 +966,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				{
 					App::redirect(
 						Route::url($this->member->getLink() . '&active=' . $this->_name),
-						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+						Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
 						'error'
 					);
 					return;
@@ -982,7 +979,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				 ***/
 				$published = array();
 				$citationIDs = explode(',',$citationIDs);
-				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
+				$string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 
 				// error, no such citation
 				foreach ($citationIDs as $id)
@@ -1017,7 +1014,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			{
 				App::redirect(
 							Route::url($this->member->getLink() . '&active=' . $this->_name),
-					Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+					Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
 					'error'
 				);
 				return;
@@ -1130,7 +1127,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// call the plugins
-		$citations = Event::trigger('citation.onImport' , array($file, 'member', $this->member->get('uidNumber')));
+		$citations = Event::trigger('citation.onImport' , array($file, 'member', User::get('id')));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
