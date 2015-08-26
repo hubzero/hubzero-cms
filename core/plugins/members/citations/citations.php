@@ -955,7 +955,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				}
 
 				// save the state
-				if ($citation->save() && $citation->scope == 'member' 
+				if ($citation->save() && $citation->scope == 'member'
 						&& $citation->scope_id == $this->member->get('uidNumber'))
 				{
 					App::redirect(
@@ -1000,7 +1000,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 					}
 
 					// save the state
-					if ($citation->save() && $citation->scope == 'member' 
+					if ($citation->save() && $citation->scope == 'member'
 						&& $citation->scope_id == $this->member->get('uidNumber'))
 					{
 						array_push($published, $id);
