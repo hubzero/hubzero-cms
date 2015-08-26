@@ -72,6 +72,10 @@ HUBzero is a registered trademark of Purdue University.
 				</field>
 				<field name="texpath" type="text" menu="hide" default="" label="Path to LaTeX" description="Path to LaTeX" />
 				<field name="gspath" type="text" menu="hide" default="" label="Path to Ghostscript" description="Path to Ghostscript" />
+				<field name="default_action" type="list" default="browse" label="Default Action" description="The default action to execute when opening the files tab without an action otherwise specified.">
+					<option value="browse">Browse (browse local files)</option>
+					<option value="connections">Connections (view available connections)</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

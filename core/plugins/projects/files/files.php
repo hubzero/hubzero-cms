@@ -156,10 +156,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar( 'repo', 'local');
 			$this->repo = new \Components\Projects\Models\Repo ($this->model, $repoName);
 
+			$default = $this->params->get('default_action', 'browse');
+
 			$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 			$this->_database   = \App::get('db');
 			$this->_uid 	   = User::get('id');
-			$this->_task       = $action ? $action : Request::getVar('action', 'browse');
+			$this->_task       = $action ? $action : Request::getVar('action', $default);
 			$this->subdir 	   = trim(urldecode(Request::getVar('subdir', '')), DS);
 			$this->publication = Request::getInt('pid', 0);
 
@@ -197,7 +199,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			$ctask = 'connections';
-			if ($connection = Request::getInt('connection', null))
+			if (($connection = Request::getInt('connection', null))
+			  || $this->_task == 'editconnection'
+			  || $this->_task == 'saveconnection'
+			  || $this->_task == 'newconnection')
 			{
 				$ctask       = $this->_task;
 				$this->_task = 'connections';
