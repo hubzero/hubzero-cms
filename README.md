@@ -1,9 +1,10 @@
 ------
-**DO NOT USE THIS BRANCH OF HUBZERO-CMS**
+**_DO NOT USE THIS BRANCH OF HUBZERO-CMS_**
 
 The 'master' branch of hubzero-cms is a work in progress of the next release of HUBzero and changes rapidly and may or may not work at any given point in time and may irrecoverably alter your HUBzero database content/schema at any time with no guarantee that it will correct the the modifications cleanly in the future. DO NOT USE.
 
-**DO NOT USE THIS BRANCH OF HUBZERO-CMS**
+**_DO NOT USE THIS BRANCH OF HUBZERO-CMS_**
+
 ------
 
 ### The HUBzero® Platform for Scientific Collaboration
