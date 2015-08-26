@@ -190,6 +190,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 
 				// Also set a suggested username for their hub account
 				Session::set('auth_link.tmp_username', str_replace(' ', '', strtolower($response->fullname)));
+				Session::set('auth_link.tmp_orcid', $username);
 			}
 
 			$hzal->update();

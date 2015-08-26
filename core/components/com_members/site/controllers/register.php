@@ -378,6 +378,7 @@ class Register extends SiteController
 			{
 				$tmp_username = Session::get('auth_link.tmp_username', '');
 				$xregistration->set('login', $tmp_username);
+				$xregistration->set('orcid', Session::get('auth_link.tmp_orcid', ''));
 				$xregistration->set('email', $hzal->email);
 				$xregistration->set('confirmEmail', $hzal->email);
 				$force = true;
