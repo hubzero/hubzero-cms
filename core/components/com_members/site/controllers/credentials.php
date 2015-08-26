@@ -188,7 +188,19 @@ class Credentials extends SiteController
 		// Make sure it looks like a valid username
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
-		if (!\Components\Members\Helpers\Utility::validlogin($username))
+		// Determine if attempting to log in via username or email address
+		if (strpos($username, '@'))
+		{
+			$validator = 'validemail';
+			$field     = 'email';
+		}
+		else
+		{
+			$validator = 'validlogin';
+			$field     = 'username';
+		}
+
+		if (!\Components\Members\Helpers\Utility::$validator($username))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
@@ -199,14 +211,23 @@ class Credentials extends SiteController
 		}
 
 		// Find the user for the given username
-		$user = \Hubzero\User\User::whereEquals('username', $username)->rows();
+		$user = \Hubzero\User\User::whereEquals($field, $username)->rows();
 
-		// Make sure we have at least one (although there's really no way to have more than 1)
+		// Make sure we have at least one and not more than one
 		if ($user->count() < 1)
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
+				'warning'
+			);
+			return;
+		}
+		else if ($user->count() > 1)
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
+				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MULTIPLE_RESULTS'),
 				'warning'
 			);
 			return;
