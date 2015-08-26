@@ -333,17 +333,35 @@ class UsersModelReset extends JModelForm
 		$query	= $db->getQuery(true);
 		$query->select('id');
 		$query->from($db->quoteName('#__users'));
-		$query->where($db->quoteName('username').' = '.$db->Quote($data['username']));
+
+		// Determine if attempting to reset via username or email address
+		if (strpos($data['username'], '@'))
+		{
+			$query->where($db->quoteName('email').' = '.$db->Quote($data['username']));
+		}
+		else
+		{
+			$query->where($db->quoteName('username').' = '.$db->Quote($data['username']));
+		}
 
 		// Get the user object.
 		$db->setQuery((string) $query);
-		$userId = $db->loadResult();
+		$rows = $db->loadObjectList();
 
 		// Check for an error.
 		if ($db->getErrorNum()) {
 			$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $db->getErrorMsg()), 500);
 			return false;
 		}
+
+		// Make sure we have one result, and not more than one
+		if (count($rows) > 1 || count($rows) < 1)
+		{
+			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
+			return false;
+		}
+
+		$userId = $rows[0]->id;
 
 		// Check for a user.
 		if (empty($userId)) {
