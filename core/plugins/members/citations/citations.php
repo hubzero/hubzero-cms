@@ -961,13 +961,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$citation_show_badges = \Hubzero\Utility\Sanitize::clean(Request::getVar('citation_show_badges', ''));
 
 
-			// set member citation parameters 
+			// set member citation parameters
 			$this->member->setParam('citationFormat', $citationFormatID);
 			$this->member->setParam('include_coins' , $include_coins);
 			$this->member->setParam('coins_only' , $coins_only);
 			$this->member->setParam('citations_show_tags' , $citation_show_tags);
 			$this->member->setParam('citations_show_badges' , $citation_show_badges);
-			
+
 			// save profile settings
 			if (!$this->member->update())
 			{
