@@ -206,7 +206,7 @@ $jQ(document).ready(function(e) {
 									<?php endif; ?>
 								</select>
 
-							<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITE_KEY_EXPLANATION'); ?></span>
+							<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_FORMAT_EXPLAINATION'); ?></span>
 						</label>
 
 						<!-- some space -->

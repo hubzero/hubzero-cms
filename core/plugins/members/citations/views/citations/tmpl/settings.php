@@ -85,38 +85,6 @@ $jQ(document).ready(function(e) {
 	<?php } ?>
 		<form action="<?php echo Route::url($base . '?action=settings'); ?>" method="post" id="hubForm" class="add-citation">
 
-			<!-- Citation sources -->
-			<div class="explaination">
-			<p>
-			    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SOURCE_EXPLAIN'); ?>
-            </p>
-			</div>
-
-			<fieldset>
-				<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_SOURCES'); ?></legend>
-
-				<div class="grid">
-					<div class="col span6">
-						<label for="display-members">
-						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SELECT_SOURCES'); ?>
-						<select name="display" id="display-sources">
-							<option value="group"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DISPLAY_GROUPS'); ?></option>
-							<option value="member"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DISPLAY_MEMBERS'); ?></option>
-						</select>
-						</label>
-					</div>
-					<div class="col span6 omega">
-					<p id="applicableFields">
-                        <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_GROUP_ATTRIB'); ?>
-					</p>
-					<p>
-                        <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_MEMBER_ATTRIB'); ?>
-					</p>
-					</div>
-				</div>
-			</fieldset>
-			<div class="clear"></div>
-
 			<!-- Badge and Tag options -->
 			<fieldset>
 				<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_BADGE_OPTIONS'); ?></legend>
@@ -206,7 +174,7 @@ $jQ(document).ready(function(e) {
 									<?php endif; ?>
 								</select>
 
-							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITE_KEY_EXPLANATION'); ?></span>
+							<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_FORMAT_EXPLAINATION'); ?></span>
 						</label>
 
 						<!-- some space -->
