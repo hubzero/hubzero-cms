@@ -198,10 +198,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$total = \Components\Citations\Models\Citation::all()
 			->where('scope', '=', 'member')
 			->where('scope_id', '=', $this->member->get('uidNumber'))
-			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
+			->where('published', '!=', \Components\Citations\Models\Citation::STATE_DELETED)
 			->count();
 
-		if ($count == 0 && $isAdmin)
+		if ($total == 0 && $isAdmin)
 		{
 			$view = $this->view('intro');
 			$view->member = $this->member;
