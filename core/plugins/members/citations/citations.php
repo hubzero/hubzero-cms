@@ -624,11 +624,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
 
 			// check to see if this member created this citation
-			if (!$view->row->isNew() && $view->row->uid != $this->member->get('uidNumber'))
+			if (!$view->row->isNew() && $view->row->uid != User::get('id'))
 			{
 				// redirect
 				App::redirect(
-					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Route::url($this->member->getLink() . '&active=' . $this->_name),
 					Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
 					'warning'
 				);

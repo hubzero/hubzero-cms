@@ -390,18 +390,6 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 		</fieldset>
 		<div class="clear"></div>
 
-		<fieldset>
-			<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATION'); ?></legend>
-			<label>
-				<input type="checkbox" class="option" name="affiliated" id="affiliated" value="1"<?php if ($this->row->affiliated) { echo ' checked="checked"'; } ?> />
-				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATED_WITH_YOUR_ORG'); ?>
-			</label>
-			<label>
-				<input type="checkbox" class="option" name="fundedby" id="fundedby" value="1"<?php if ($this->row->fundedby) { echo ' checked="checked"'; } ?> />
-				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FUNDED_BY_YOUR_ORG'); ?>
-			</label>
-		</fieldset>
-
 		<div class="explaination">
 			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TAGS_EXPLAINATION'); ?></p>
 		</div>
