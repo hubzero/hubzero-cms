@@ -21,7 +21,7 @@ class Migration20141022103600PlgResourcesAbout extends Base
 			$this->db->setQuery("SELECT id, params FROM `#__resource_types` WHERE `category`=27 AND `params` LIKE '%plg_abouttool=1%'");
 			if ($records = $this->db->loadObjectList())
 			{
-				$path = PATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
+				$path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
 				if (!file_exists($path))
 				{
 					$path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
@@ -66,7 +66,7 @@ class Migration20141022103600PlgResourcesAbout extends Base
 			$this->db->setQuery("SELECT id, params FROM `#__resource_types` WHERE `category`=27 AND `alias`='tools'");
 			if ($records = $this->db->loadObjectList())
 			{
-				$path = PATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
+				$path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
 				if (!file_exists($path))
 				{
 					$path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
