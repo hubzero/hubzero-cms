@@ -408,7 +408,8 @@ class Citation extends Relational
 
 		// Add more to coins
 
-			$template = $format->format;
+		$template = $format->format;
+
 		$tmpl = isset($template) ? $template : $default_template;
 		$cite = strtr($tmpl, $replace_values);
 

@@ -157,11 +157,11 @@ $jQ(document).ready(function(e) {
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_FORMAT'); ?>:
 								<select name="citation-format" id="format-selector">
 									<?php foreach ($this->formats as $format): ?>
-											<?php if ($format->style != 'custom-group-'.$this->member->get('uidNumber')): ?>
+											<?php if ($format->style != 'custom-member-'.$this->member->get('uidNumber')): ?>
 										<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
 											<?php echo $format->style; ?>
 										</option>
-										 <?php elseif ($format->style == 'custom-group-'.$this->member->get('uidNumber')): ?>
+										 <?php elseif ($format->style == 'custom-member-'.$this->member->get('uidNumber')): ?>
 											<option <?php if ($this->currentFormat->id == $format->id) { echo 'selected'; } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
 												<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_CUSTOM_FORMAT'); ?>
 											</option>
@@ -181,7 +181,7 @@ $jQ(document).ready(function(e) {
 						<div class="clear"></div>
 
 						<label for="cite">
-						<textarea name="template" rows="10" id="format-string"><?php echo $this->currentFormat->format; ?></textarea>
+						<textarea name="template" rows="10" id="format-string"><?php echo addslashes($this->currentFormat->format); ?></textarea>
 
 					</div>
 					<div class="col span4 omega">

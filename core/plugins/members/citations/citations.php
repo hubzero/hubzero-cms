@@ -193,7 +193,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$count = clone $obj['citations'];
 		$count = $count->count();
 		$isAdmin = $this->member->get('uidNumber') == User::get('id');
-		$config =  new \Hubzero\Config\Registry($this->member->get('params'));
+		$config =  $this->member->getParameters();
 
 		$total = \Components\Citations\Models\Citation::all()
 			->where('scope', '=', 'member')
@@ -928,15 +928,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$display = Request::getVar('display', '');
 			$format = Request::getVar('citation-format', '');
 
-			$params = json_decode($this->member->get('params'));
-
 			// craft a clever name
-			$name =  "custom-group-" . $this->group->cn;
+			$name =  "custom-member-" . $this->member->get('uidNumber');
 
 			// fetch or create new format
 			$citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
 
-			// if the setting a custom group citation type
+			// if the setting a custom member citation type
 			if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew()))
 			{
 				$citationFormat->set(array(
@@ -948,31 +946,43 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$citationFormat->save();
 
 				// update group
-				$params->citationFormat = $citationFormat->id;
+				$citationFormatID = $citationFormat->id;
 			}
 			else
 			{
 				// returned value from format select box
-				$params->citationFormat = $format;
+				$citationFormatID = $format;
 			}
 
-			// more parameters for citations
-			$params->display = Request::getVar('display', '');
-			$params->include_coins = Request::getVar('include_coins', '');
-			$params->coins_only = Request::getVar('coins_only', '');
-			$params->citations_show_tags = Request::getVar('citations_show_tags', '');
-			$params->citations_show_badges = Request::getVar('citations_show_badges', '');
 
-			// update the group parameters
-			$gParams = new Registry($params);
-			$gParams->merge($params);
-			$this->group->set('params', $gParams->toString());
-			$this->group->update();
+			$include_coins = \Hubzero\Utility\Sanitize::clean(Request::getVar('include_coins', ''));
+			$coins_only = \Hubzero\Utility\Sanitize::clean(Request::getVar('coins_only', ''));
+			$citation_show_tags = \Hubzero\Utility\Sanitize::clean(Request::getVar('citations_show_tags', ''));
+			$citation_show_badges = \Hubzero\Utility\Sanitize::clean(Request::getVar('citation_show_badges', ''));
+
+
+			// set member citation parameters 
+			$this->member->setParam('citationFormat', $citationFormatID);
+			$this->member->setParam('include_coins' , $include_coins);
+			$this->member->setParam('coins_only' , $coins_only);
+			$this->member->setParam('citations_show_tags' , $citation_show_tags);
+			$this->member->setParam('citations_show_badges' , $citation_show_badges);
+			
+			// save profile settings
+			if (!$this->member->update())
+			{
+				// failed
+				App::redirect(
+					Route::url($this->member->getLink() . '&active=' . $this->_name),
+					Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_NOT_SAVED'),
+					'error'
+				);
+			}
 
 			// redirect after save
 			App::redirect(
 				Route::url($this->member->getLink() . '&active=' . $this->_name),
-				Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_SAVED'),
+				Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_SAVED'),
 				'success'
 			);
 			return;

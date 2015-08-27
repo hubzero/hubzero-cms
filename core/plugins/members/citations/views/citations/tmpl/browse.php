@@ -43,6 +43,7 @@ if (isset($this->messages))
 		echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 	}
 }
+
 ?>
 
 <div id="content-header-extra"><!-- Citation management buttons -->
