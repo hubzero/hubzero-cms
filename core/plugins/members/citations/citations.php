@@ -205,7 +205,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			$view = $this->view('intro');
 			$view->member = $this->member;
-			$view->isAdmin = User::get('id') == $this->member->get('uidNumber'); 
+			$view->isAdmin = User::get('id') == $this->member->get('uidNumber');
 		}
 		elseif ((int) $count == 0 && $isAdmin && isset($display) && $total <= 0)
 		{
@@ -214,7 +214,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->isManager = ($this->authorized == 'manager') ? true : false;
 		}
 		else
-		{	
+		{
 			// initialize the view
 			$view = $this->view('browse');
 
