@@ -201,32 +201,20 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
 			->count();
 
-		// for first-time use
-		/*
-		if ($count == 0 && $isManager)
+		if ($count == 0 && $isAdmin)
 		{
-			// have a group manager set the settings
-			App::redirect(
-				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=import'),
-				Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-				'error'
-			);
-
-			return;
-			App::redirect(
-			 Route::url('index.php?option=com_groups&cn=' . $this->member->cn . '&active=citations&action=settings'),
-			 Lang::txt('Please select your settings for this group.'),
-			 'warning'
-			 );
+			$view = $this->view('intro');
+			$view->member = $this->member;
+			$view->isAdmin = User::get('id') == $this->member->get('uidNumber'); 
 		}
-		elseif ((int) $count == 0 && $isManager && isset($display) && $total <= 0)
+		elseif ((int) $count == 0 && $isAdmin && isset($display) && $total <= 0)
 		{
 			$view = $this->view('intro', 'browse');
 			$view->group = $this->member;
 			$view->isManager = ($this->authorized == 'manager') ? true : false;
 		}
 		else
-		{*/
+		{	
 			// initialize the view
 			$view = $this->view('browse');
 
@@ -240,8 +228,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$view->config			 = $config;
 			$view->grand_total = $total;
 
-		//}
-
+		}
 
 		// get applied filters
 		$view->filters = $obj['filters'];

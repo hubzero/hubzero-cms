@@ -126,6 +126,79 @@
 	 	padding:10px;
 		text-align: center;
 	}
+#intro-container
+{
+ width: inherit;
+ height: 100%;
+ margin-top: 5%;
+}
+
+#citations-introduction {
+ height: inherit;
+ max-width: 460px;
+ -webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+ -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+ -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4); 
+ -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4); 
+	box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+	border: 1px solid #ddd\9; /* [!] IE 8 */ 
+	*border: 1px solid #ddd\9; /* [!] IE 7,6 */
+	margin-right: auto;
+	margin-left: auto;
+	}
+	#citations-introduction .instructions {
+		background-color: #FFFFFF;
+		padding: 0 30px 30px 30px;
+		}
+	#instructions-title:before {
+		content: "\275D";
+		font-family: "Fontcons";
+		padding: 10px;
+		}
+	#instructions-title {
+		margin: 10px 0 0 0;
+		padding: 20px 0 10px 0;
+		}
+#who {
+	font-weight: bold;
+	}
+.instructions ul {
+	margin-left: 0;
+	}
+.instructions ul li {
+	padding: 0 0 15px 0; 
+	list-style: none;
+	}
+
+.description {
+	width: 225px;
+	display: block;
+	float: right;
+	top: 50%;
+	height: auto;
+	padding-top: 5px;
+}
+.or {
+	padding-left: 30px;
+	font-size: 12pt;
+	font-weight: bold;
+	}
+.instruction {
+	padding: 10px;
+	border: 1px solid #f0f0f0;
+	height: auto;
+	}
+
+	#citations-introduction .questions {
+		background-color: #f0f0f0;
+		margin-top: 0;
+		padding: 10px 30px 30px 30px;
+		}
+
+#noCitations {
+	text-align: center;
+	font-size: 12pt;
+}
 
 /* Instructions */
 	.introduction {
