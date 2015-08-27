@@ -158,20 +158,21 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			// Run task based on action
 			switch ($this->action)
 			{
-				case 'save':   $arr['html'] .= $this->saveAction();      break;
+				case 'save':   		$arr['html'] .= $this->saveAction();      break;
 				case 'add':
-				case 'edit':   $arr['html'] .= $this->editAction();      break;
-				case 'delete': $arr['html'] .= $this->deleteAction();    break;
-				case 'publish': $arr['html'] .= $this->publishAction();  break;
-				case 'browse': $arr['html'] .= $this->browseAction();    break;
+				case 'edit':   		$arr['html'] .= $this->editAction();      break;
+				case 'delete': 		$arr['html'] .= $this->deleteAction();    break;
+				case 'publish': 	$arr['html'] .= $this->publishAction();  	break;
+				case 'browse': 		$arr['html'] .= $this->browseAction();    break;
+				case 'settings': 	$arr['html'] .= $this->settingsAction(); 	break;
 
-				case 'import':  $arr['html'] .= $this->importAction();   break;
-				case 'upload':  $arr['html'] .= $this->uploadAction();   break;
-				case 'review':  $arr['html'] .= $this->reviewAction();   break;
-				case 'process': $arr['html'] .= $this->processAction();  break;
-				case 'saved':   $arr['html'] .= $this->savedAction();    break;
+				case 'import':  	$arr['html'] .= $this->importAction();   	break;
+				case 'upload':  	$arr['html'] .= $this->uploadAction();   	break;
+				case 'review':  	$arr['html'] .= $this->reviewAction();   	break;
+				case 'process': 	$arr['html'] .= $this->processAction();  	break;
+				case 'saved':   	$arr['html'] .= $this->savedAction();    	break;
 
-				default:       $arr['html'] .= $this->browseAction(); break;
+				default:       		$arr['html'] .= $this->browseAction(); 		break;
 			}
 		}
 
@@ -903,13 +904,142 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			 else
 			 {
 					App::redirect(
-						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Route::url($this->member->getLink() . '&active=' . $this->_name),
 						Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
 						'error'
 					);
 					return;
 				}
 				 return;
+	}
+
+	/**
+	 * Settings for group citations
+	 *
+	 * @param null
+	 * @return void
+	 *
+	 *
+	 */
+	private function settingsAction()
+	{
+		if ($_POST)
+		{
+			$display = Request::getVar('display', '');
+			$format = Request::getVar('citation-format', '');
+
+			$params = json_decode($this->member->get('params'));
+
+			// craft a clever name
+			$name =  "custom-group-" . $this->group->cn;
+
+			// fetch or create new format
+			$citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
+
+			// if the setting a custom group citation type
+			if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew()))
+			{
+				$citationFormat->set(array(
+					'format'		=> Request::getVar('template'),
+					'style'			=> $name
+				));
+
+				// save format
+				$citationFormat->save();
+
+				// update group
+				$params->citationFormat = $citationFormat->id;
+			}
+			else
+			{
+				// returned value from format select box
+				$params->citationFormat = $format;
+			}
+
+			// more parameters for citations
+			$params->display = Request::getVar('display', '');
+			$params->include_coins = Request::getVar('include_coins', '');
+			$params->coins_only = Request::getVar('coins_only', '');
+			$params->citations_show_tags = Request::getVar('citations_show_tags', '');
+			$params->citations_show_badges = Request::getVar('citations_show_badges', '');
+
+			// update the group parameters
+			$gParams = new Registry($params);
+			$gParams->merge($params);
+			$this->group->set('params', $gParams->toString());
+			$this->group->update();
+
+			// redirect after save
+			App::redirect(
+				Route::url($this->member->getLink() . '&active=' . $this->_name),
+				Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_SAVED'),
+				'success'
+			);
+			return;
+
+		}
+		else
+		{
+			// instansiate the view
+			$view = $this->view('settings');
+
+			// pass the group through
+			$view->member	= $this->member;
+
+			// get group settings
+			$params = json_decode($this->member->get('params'));
+
+			$view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
+			$view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
+			$view->citations_show_tags = (isset($params->citations_show_tags) ? $params->citations_show_tags: "true");
+			$view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges: "true");
+			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
+
+						// intended for the case that the group's custom
+			// format is removed from the jos_citations_format
+			try
+			{
+				$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
+			}
+			catch (\Exception $e)
+			{
+				$view->currentFormat = \Components\Citations\Models\Format::all()->where('style', 'like', 'ieee');
+			}
+
+			// get the name of the current format (see if it's custom)
+			// the name of the custom format
+			$name = "custom-member-" . $this->member->get('uidNumber');
+
+			$custom = \Components\Citations\Models\Format::all()->where('style', 'LIKE', $name)->count();
+
+			if ($custom > 0)
+			{
+				// show the menu entry for the custom
+				$view->customFormat = true;
+			}
+			else
+			{
+				// show menu item for new custom format
+				$view->customFormat = false;
+			}
+
+			// get formats
+			$view->formats = \Components\Citations\Models\Format::all()
+					->where('style', 'NOT LIKE', '%custom-member-%')
+					->where('style', 'NOT LIKE', '%custom-group-%')
+					->orWhere('style', '=', $name)
+					->rows()->toObject();
+
+			$view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
+
+			// Output HTML
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+
+			return $view->loadTemplate();
+		}
 	}
 
 	/**
