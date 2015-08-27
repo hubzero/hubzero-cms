@@ -19,8 +19,8 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
-		$wishlist = new Wishlist($this->db);
-		$wish     = new Wish($this->db);
+		$wishlist = new \Components\Wishlist\Tables\Wishlist($this->db);
+		$wish     = new \Components\Wishlist\Tables\Wish($this->db);
 
 		// Get records
 		$lists = $wishlist->getRecords(array(
