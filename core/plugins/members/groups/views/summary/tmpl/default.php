@@ -209,15 +209,19 @@ $this->css();
 		</table>
 	</div><!-- / .container -->
 <?php } else { ?>
-	<div class="grid">
-		<div class="col span-half">
-			<h4><?php echo Lang::txt('PLG_MEMBERS_GROUPS_YOURS'); ?></h4>
+	<div class="introduction">
+		<div class="instructions">
+			<!-- <ol>
+				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_FIND_COURSE', Route::url('index.php?option=com_courses')); ?></li>
+				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_ENROLL'); ?></li>
+				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_GET_LEARNING'); ?></li>
+			</ol> -->
 			<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_YOURS_EXPLANATION'); ?></p>
-		</div><!-- / .col -->
-		<div class="col span-half omega">
-			<h4><?php echo Lang::txt('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></h4>
+		</div><!-- / .instructions -->
+		<div class="questions">
+			<p><strong><?php echo Lang::txt('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></strong></p>
 			<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_EXPLANATION'); ?></p>
 			<p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', Route::url('index.php?option=com_groups')); ?></p>
-		</div><!-- / .col -->
-	</div>
+		</div><!-- / .post-type -->
+	</div><!-- / #collection-introduction -->
 <?php } ?>

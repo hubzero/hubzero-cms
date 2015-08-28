@@ -25,6 +25,17 @@
 	}
 	#courses-introduction .instructions {
 		padding: 1em 1.4em;
+		font-size: 1.2em;
+	}
+	#courses-introduction .instructions:before {
+		content: "\f09c";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 7em;
+		line-height: 1;
+		color: #ccc;
+		margin: 0.1em 0;
+		text-align: center;
 	}
 	#courses-introduction .questions {
 		padding: 1em 1.4em;

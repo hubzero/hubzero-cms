@@ -144,29 +144,7 @@
 		outline:none;
 		border:1px solid #065eff;
 	}
-	/*.section-edit-submit,
-	.section-edit-cancel {
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		-ms-border-radius: 3px;
-		-o-border-radius: 3px;
-		border-radius: 3px;
-		background: #065eff;
-		color: #FFF;
-		border: 1px solid #0441b0; 
-		padding: 5px 20px;
-		font-size: 13px;
-	}
-	.section-edit-cancel {
-		font-size: 11px;
-		background: #efefef;
-		border: 1px solid #ccc; 
-		color: #444;
-	}
-	.section-edit-submit:hover,
-	.section-edit-cancel:hover {
-		cursor: pointer;
-	}*/
+
 	.section-edit-submit:disabled {
 		background: #81adfc;
 		border: 1px solid #6389d0;
@@ -444,46 +422,27 @@
 		color:#FFF;
 		content: "Uploading...";
 	}
-	/* */
 	#page_identity a#page_identity_change {
-		position:absolute;
-		bottom:0px; 
-		left:0px;
-		height:50px;
-		background:#000;
-		background:rgba(0,0,0,0.7);
-		color:#FFF;
-		-webkit-border-radius: 3px 3px 0 0;
-		-moz-border-radius: 3px 3px 0 0;
-		-ms-border-radius: 3px 3px 0 0;
-		-o-border-radius: 3px 3px 0 0;
-		border-radius: 3px 3px 0 0;
-		z-index:555;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		background: #000;
+		background: rgba(0,0,0,0.7);
+		color: #FFF;
+		z-index: 555;
 		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 		filter: alpha(opacity=70);
-		display:block;
-		border:none;
-		min-height:10px;
+		display: block;
+		border: none;
+		padding: 1em 0;
+		min-height: 1em;
+		font-weight:500;
+		font-size: 1.2em;
 	}
-	#page_identity_change:before {
+	#page_identity_change span:before {
 		content: "\f03e";
-		position: absolute;
-		left:10px;
-		bottom:18px;
-		width:24px;
-		text-align:center;
-		font-size: 20px;
 		font-family: 'Fontcons';
-	}
-	#page_identity_change span {
-		position:absolute;
-		bottom:18px;
-		left:40px;
-		width:100px;
-		font-size:14px;
-		font-weight:500; 
-		text-align:center;
-		color:#ccc;
+		margin-right: 0.4em;
 	}
 	#page_identity a#page_identity_change:hover {
 		background:#000;
