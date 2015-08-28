@@ -50,14 +50,14 @@ Lang::load('tpl_' . $this->template, __DIR__);
 
 		<title><?php echo Config::get('sitename') . ' - ' . $this->error->getCode(); ?></title>
 
-		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/app/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
+		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
 
 		<!--[if IE 9]>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/app/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if lt IE 9]>
-			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/app/templates/<?php echo $this->template; ?>/js/html5.js"></script>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/app/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
 	</head>
 	<body id="error-page">

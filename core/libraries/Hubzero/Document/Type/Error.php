@@ -101,16 +101,17 @@ class Error extends Base
 		$file = 'error.php';
 
 		// Check template
-		$directory = isset($params['directory']) ? $params['directory'] : 'templates';
+		$directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
 		$template  = isset($params['template'])  ? ltrim(preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $params['template']), '.') : 'system';
 
 		if (!file_exists($directory . DS . $template . DS . $file))
 		{
+			$directory = PATH_CORE . '/templates';
 			$template = 'system';
 		}
 
 		// Set variables
-		$this->baseurl  = rtrim(\Request::root(true), '/');
+		$this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/') . rtrim(substr(dirname($directory), strlen(PATH_ROOT)), '/'));
 		$this->template = $template;
 		$this->debug    = isset($params['debug']) ? $params['debug'] : false;
 
