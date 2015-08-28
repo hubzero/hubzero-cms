@@ -15,8 +15,8 @@
 
 	.collector {
 		position: absolute;
-		top: 4em;
-		right: 5em;
+		top: 4.75em;
+		right: 6em;
 		padding: 0;
 		margin: 0;
 	}
@@ -25,18 +25,20 @@
 		font-family: "Fontcons";
 		color: #fff;
 		color: rgba(255, 255, 255, 0.75);
+		margin-right: 2em;
 	}
 	.collector .icon-collect {
 		font-size: 1.4em;
 		border: none;
 		overflow: hidden;
-		width: 1em;
+		width: 0.1em;
 		white-space: nowrap;
-		color: transparent;
+		color: transparent !important;
 	}
 	.collector .icon-collect:hover {
 		color: transparent;
 		background: transparent;
+		border: none !important;
 	}
 	.collector .icon-collect:hover:before {
 		color: #fff;
