@@ -392,12 +392,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// create view object
 		$view = $this->view('default', 'edit');
 
-		// appends view override if this is a supergroup
-		if ($this->group->isSuperGroup())
-		{
-			$view->addTemplatePath($this->_superGroupViewOverride('edit'));
-		}
-
 		// Check if they're logged in
 		if (User::isGuest())
 		{
@@ -691,6 +685,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				/***
 				 * @TODO move to API, possible use of whereIn()?
 				 ***/
+
+				// when no selection has been made
+				if ($bulk == true && $citationIDs == '')
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
+						'warning'
+					);
+						return;
+					}
 				$published = array();
 				$citationIDs = explode(',',$citationIDs);
 				$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
@@ -795,12 +800,22 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				/**
 				 * @TODO move to API, possible use of whereIn()?
 				 ***/
-				 $deleted  = array();
+				$deleted  = array();
 
-				 $citationIDs = explode(',',$citationIDs);
+					// when no selection has been made
+					if ($bulk == true && $citationIDs == '')
+					{
+						App::redirect(
+							Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+							Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
+							'warning'
+						);
+						return;
+					}
+					$citationIDs = explode(',',$citationIDs);
 
-				 foreach ($citationIDs as $id)
-				 {
+					foreach ($citationIDs as $id)
+					{
 						$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 						$citation->set('published', $citation::STATE_DELETED);
 
@@ -945,6 +960,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// get formats
 			$view->formats = \Components\Citations\Models\Format::all()
 					->where('style', 'NOT LIKE', '%custom-group-%')
+					->where('style', 'NOT LIKE', '%custom-member-%')
 					->orWhere('style', '=', $name)
 					->rows()->toObject();
 
