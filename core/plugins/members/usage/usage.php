@@ -39,16 +39,16 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @return     array   Plugin name
+	 * @param   object  $user    User
+	 * @param   object  $member  MembersProfile
+	 * @return  array   Plugin name
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -62,11 +62,11 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   User
-	 * @param      object  $member MembersProfile
-	 * @param      string  $option Component name
-	 * @param      string  $areas  Plugins to return data
-	 * @return     array   Return array of html
+	 * @param   object  $user    User
+	 * @param   object  $member  MembersProfile
+	 * @param   string  $option  Component name
+	 * @param   string  $areas   Plugins to return data
+	 * @return  array   Return array of html
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -117,9 +117,9 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->cluster_schools = $cluster['schools'];
 
 			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
-					FROM #__resources AS r
-					LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id
-					LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources"
+					FROM `#__resources` AS r
+					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
+					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
 					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get("uidNumber")).'") AND (r.access=0 OR r.access=3)
 					ORDER BY r.publish_up DESC';
 
@@ -129,9 +129,9 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->tool_total_14 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 14);
 
 			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
-					FROM #__resources AS r
-					LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id
-					LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources"
+					FROM `#__resources` AS r
+					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
+					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
 					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.intval($member->get("uidNumber")).'") AND (r.access=0 OR r.access=3)
 					ORDER BY r.publish_up DESC';
 
@@ -154,8 +154,8 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Convert negative IDs to n IDS (-15 -> n15)
 	 *
-	 * @param      number $uid User ID
-	 * @return     mixed
+	 * @param   number  $uid  User ID
+	 * @return  mixed
 	 */
 	public function uid($uid)
 	{
@@ -169,15 +169,15 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get contributions
 	 *
-	 * @param      string $authorid User ID
-	 * @return     array
+	 * @param   string  $authorid  User ID
+	 * @return  array
 	 */
 	public function first_last_contribution($authorid)
 	{
 		$database = App::get('db');
 
 		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), '%d %b %Y') AS first_contrib, DATE_FORMAT(MAX(res.publish_up), '%d %b %Y') AS last_contrib
-				FROM #__resources AS res, #__author_assoc AS aa, #__resource_types AS restypes
+				FROM `#__resources` AS res, `#__author_assoc` AS aa, `#__resource_types` AS restypes
 				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . "
 				AND res.standalone = 1
 				AND res.published = 1
@@ -199,7 +199,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 				$contribution['contribs'] = $row->contribs;
 				$contribution['first']    = $row->first_contrib;
 				$contribution['last']     = $row->last_contrib;
-	        }
+			}
 		}
 
 		return $contribution;
@@ -208,15 +208,15 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get simulation count
 	 *
-	 * @param      integer $resid  Resource ID
-	 * @param      string  $period Time period to find data for
-	 * @return     integer
+	 * @param   integer  $resid   Resource ID
+	 * @param   string   $period  Time period to find data for
+	 * @return  integer
 	 */
 	public static function get_simcount($resid, $period)
 	{
 		$database = App::get('db');
 
-		$sql = "SELECT jobs FROM #__resource_stats_tools WHERE resid=" . $database->quote($resid) . " AND period=" . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
+		$sql = "SELECT jobs FROM `#__resource_stats_tools` WHERE resid=" . $database->quote($resid) . " AND period=" . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
 
 		$database->setQuery($sql);
 		$result = $database->loadResult();
@@ -231,10 +231,10 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a count of users
 	 *
-	 * @param      string $resid   Resource ID
-	 * @param      string $period  Time period
-	 * @param      string $restype Resource type
-	 * @return     string
+	 * @param   string  $resid    Resource ID
+	 * @param   string  $period   Time period
+	 * @param   string  $restype  Resource type
+	 * @return  string
 	 */
 	public static function get_usercount($resid, $period, $restype='0')
 	{
@@ -242,11 +242,11 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		if ($restype == '7')
 		{
-			$table = "#__resource_stats_tools";
+			$table = "`#__resource_stats_tools`";
 		}
 		else
 		{
-			$table = "#__resource_stats";
+			$table = "`#__resource_stats`";
 		}
 
 		$data = '-';
@@ -268,8 +268,8 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get classroom usage
 	 *
-	 * @param      mixed  $authorid User ID
-	 * @return     array
+	 * @param   mixed  $authorid  User ID
+	 * @return  array
 	 */
 	public function get_classroom_usage($authorid)
 	{
@@ -309,9 +309,9 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a count of citations
 	 *
-	 * @param      string $resid    Resource ID
-	 * @param      mixed  $authorid User ID
-	 * @return     string
+	 * @param   string  $resid     Resource ID
+	 * @param   mixed   $authorid  User ID
+	 * @return  string
 	 */
 	public static function get_citationcount($resid, $authorid=0)
 	{
@@ -320,14 +320,14 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 		if ($authorid)
 		{
 			$sql = "SELECT COUNT(DISTINCT (c.id))
-			FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r
+					FROM `#__citations` c, `#__citations_assoc` ca, `#__author_assoc` aa, `#__resources` r
 					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = 'resources' AND ca.tbl = 'resource' AND r.published=1
 					AND r.standalone=1 AND aa.authorid = " . $database->quote($authorid);
 		}
 		else
 		{
 			$sql = "SELECT COUNT(DISTINCT (c.id)) AS citations
-					FROM #__resources r, #__citations c, #__citations_assoc ca
+					FROM `#__resources` r, `#__citations` c, `#__citations_assoc` ca
 					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = 'resource' AND standalone=1 AND r.id = " . $database->quote($resid);
 		}
 
@@ -343,8 +343,8 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the user's rank
 	 *
-	 * @param      integer $authorid User ID
-	 * @return     string
+	 * @param   integer  $authorid  User ID
+	 * @return  string
 	 */
 	public function get_rank($authorid)
 	{
@@ -353,7 +353,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 		$rank = 0;
 		$i = 1;
 		$sql = 'SELECT a.uidNumber AS aid, COUNT(DISTINCT aa.subid) AS contribs
-				FROM #__xprofiles a, #__resources res, #__author_assoc aa
+				FROM `#__xprofiles` a, `#__resources` res, `#__author_assoc` aa
 				WHERE a.uidNumber = aa.authorid AND res.id = aa.subid AND res.published=1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"
 				AND res.standalone=1 GROUP BY aid ORDER BY contribs DESC';
 
@@ -375,7 +375,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 		if ($rank)
 		{
 			$sql = 'SELECT COUNT(DISTINCT a.uidNumber) as authors
-				FROM #__xprofiles a, #__author_assoc aa, #__resources res
+				FROM `#__xprofiles` a, `#__author_assoc` aa, `#__resources` res
 				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND res.published=1 AND (res.access=0 OR res.access=3)
 				AND res.standalone=1';
 
@@ -394,16 +394,16 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get total stats for a user
 	 *
-	 * @param      string $authorid  User ID
-	 * @param      string $user_type User type
-	 * @param      string $period    Time period
-	 * @return     integer
+	 * @param   string  $authorid   User ID
+	 * @param   string  $user_type  User type
+	 * @param   string  $period     Time period
+	 * @return  integer
 	 */
 	public function get_total_stats($authorid, $user_type, $period)
 	{
 		$database = App::get('db');
 
-		$sql = "SELECT " . $user_type . " FROM #__author_stats WHERE authorid = " . $database->quote($authorid) . " AND period = " . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
+		$sql = "SELECT " . $user_type . " FROM `#__author_stats` WHERE authorid = " . $database->quote($authorid) . " AND period = " . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
 
 		$database->setQuery($sql);
 		return $database->loadResult();

@@ -35,10 +35,9 @@ $this->css('usage', 'com_usage');
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_USAGE'); ?></h3>
 
-<div class="aside">
-	<p class="info"><?php echo Lang::txt('PLG_MEMBERS_USAGE_EXPLANATION'); ?></p>
-</div><!-- / .aside -->
-<div class="subject" id="statistics">
+<p class="info"><?php echo Lang::txt('PLG_MEMBERS_USAGE_EXPLANATION'); ?></p>
+
+<div id="statistics">
 	<table class="data">
 		<caption><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_CAPTION_OVERVIEW'); ?></caption>
 		<thead>
@@ -207,5 +206,5 @@ $this->css('usage', 'com_usage');
 		<?php } ?>
 		</tbody>
 	</table>
-	<?php echo '* Total only includes versions of the tools this author contributed to.'; ?>
-</div><!-- / .subject -->
+	<p><?php echo Lang::txt('PLG_MEMBERS_USAGE_FOOTNOTE'); ?></p>
+</div>
