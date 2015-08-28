@@ -1379,12 +1379,14 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// vars
-		$config = Component::params('com_citations');
-		$allow_tags   = $config->get('citation_allow_tags', 'no');
-		$allow_badges = $config->get('citation_allow_badges', 'no');
+		$allow_tags   = "yes";
+		$allow_badges = "yes"; 
 
+		$this->importer->set('user', User::get('id'));
 		$this->importer->setTags($allow_tags == 'yes');
 		$this->importer->setBadges($allow_badges == 'yes');
+		$this->importer->set('scope_id', $this->member->get('uidNumber'));
+		$this->importer->set('scope', 'member');
 
 		// Process
 		$results = $this->importer->process(
