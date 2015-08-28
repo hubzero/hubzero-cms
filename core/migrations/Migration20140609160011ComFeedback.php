@@ -53,7 +53,7 @@ class Migration20140609160011ComFeedback extends Base
 			$this->db->setQuery($query);
 			if ($results = $this->db->loadObjectList())
 			{
-				$path = PATH_ROOT . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php';
+				$path = PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php';
 				if (!file_exists($path))
 				{
 					$path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php';
