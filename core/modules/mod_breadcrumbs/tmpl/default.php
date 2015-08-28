@@ -62,7 +62,7 @@ defined('_HZEXEC_') or die;
 			// Render all but last item - along with separator
 			if (!empty($item->link))
 			{
-				echo '<a href="' . $item->link . '" class="pathway">' . $item->name . '</a>';
+				echo '<a href="' . $item->link . '" class="pathway">' . html_entity_decode($item->name) . '</a>';
 			}
 			else
 			{
