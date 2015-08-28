@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/members/contributions.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/members/courses/courses.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,9 +30,9 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5" type="plugin" group="members">
 	<name>Members - Courses</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Display courses for a member</description>
+	<description>PLG_MEMBERS_COURSES_DESCRIPTION</description>
 	<files>
 		<filename plugin="courses">courses.php</filename>
 	</files>
@@ -42,9 +42,8 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+				<field name="display_limit" type="text" size="5" default="50" label="PLG_MEMBERS_COURSES_LIMIT_LABEL" description="PLG_MEMBERS_COURSES_LIMIT_DESC" />
 			</fieldset>
 		</fields>
 	</config>
 </extension>
-
