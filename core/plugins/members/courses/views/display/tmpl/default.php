@@ -42,33 +42,34 @@ $this->css();
 <section class="section">
 <?php if ($this->hasRoles) { ?>
 
-	<?php if ($this->roles && $this->hasRoles > 1) { ?>
-		<ul class="entries-menu user-options">
-			<?php foreach ($this->roles as $s) { ?>
-				<?php
-				if ($s->total <= 0)
-				{
-					continue;
-				}
-				$sel = '';
-				if ($this->filters['task'] == $s->alias)
-				{
-					//$active = $s;
-					$sel = 'active';
-				}
-				?>
-				<li>
-					<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo Route::url($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
-						<?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
-					</a>
-				</li>
-			<?php } ?>
-		</ul>
-	<?php } ?>
-
 	<div class="container" id="courses-container">
 		<form method="get" action="<?php echo Route::url($base); ?>">
 			<nav class="entries-filters">
+
+				<?php if ($this->roles && $this->hasRoles > 1) { ?>
+					<ul class="entries-menu user-options">
+						<?php foreach ($this->roles as $s) { ?>
+							<?php
+							if ($s->total <= 0)
+							{
+								continue;
+							}
+							$sel = '';
+							if ($this->filters['task'] == $s->alias)
+							{
+								//$active = $s;
+								$sel = 'active';
+							}
+							?>
+							<li>
+								<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo Route::url($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
+									<?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
+								</a>
+							</li>
+						<?php } ?>
+					</ul>
+				<?php } ?>
+
 				<ul class="entries-menu order-options">
 					<li>
 						<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">

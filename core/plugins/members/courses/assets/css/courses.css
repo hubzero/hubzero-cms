@@ -43,7 +43,7 @@
 		height: 2em;
 	}
 
-	.user-options + .container {
+	/*.user-options + .container {
 		margin-top: 0;
 	}
 	.user-options li {
@@ -77,7 +77,7 @@
 		border: 1px solid #ececec;
 		border-bottom: none;
 		color: #333;
-	}
+	}*/
 
 	.order-options a:before {
 		content: "\2193";
