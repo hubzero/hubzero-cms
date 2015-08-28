@@ -179,7 +179,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 												if ($totalAuths > 1 && $x < $totalAuths - 1 )
 												{
 													$authorString .= ',';
-												}	
+												}
 											}
 											else
 											{
