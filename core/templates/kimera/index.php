@@ -36,7 +36,6 @@ Html::behavior('modal');
 // Include global scripts
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 
-
 // Load theme
 $color1  = str_replace('#', '', $this->params->get('colorPrimary', '2f8dc9')); // 2f8dc9  171a1f
 $color2  = str_replace('#', '', $this->params->get('colorSecondary', '2f8dc9'));
