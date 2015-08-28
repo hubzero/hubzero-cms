@@ -74,6 +74,7 @@ if (isset($this->messages))
 				</div><!-- /.container .data-entry -->
 
 				<div class="container"> <!-- .container for citation type (aff, nonaff, all) -->
+				<div class="clearfix"></div>
 				<?php if ($this->citations->count() > 0) : ?>
 					<table class="citations entries">
 						<thead>

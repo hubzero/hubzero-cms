@@ -169,13 +169,26 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 										$authorString = '';
 										$totalAuths = count($authorField);
 										$x = 0;
+
 										foreach ($authorField as $a)
 										{
 											$as = explode(',', $a);
-											$authorString .= $as[1] . ' ' . $as[0];
-											if ($totalAuths > 1 && $x < $totalAuths - 1 )
+											if (count($as) >= 2)
 											{
-												$authorString .= ',';
+												$authorString .= $as[1] . ' ' . $as[0];
+												if ($totalAuths > 1 && $x < $totalAuths - 1 )
+												{
+													$authorString .= ',';
+												}	
+											}
+											else
+											{
+												$authorString .= $a;
+
+												if ($totalAuths > 1 && $x < $totalAuths - 1 )
+												{
+													$authorString .= ',';
+												}	
 											}
 											$x++;
 										}
