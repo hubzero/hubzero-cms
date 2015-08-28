@@ -1380,7 +1380,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// vars
 		$allow_tags   = "yes";
-		$allow_badges = "yes"; 
+		$allow_badges = "yes";
 
 		$this->importer->set('user', User::get('id'));
 		$this->importer->setTags($allow_tags == 'yes');
