@@ -58,6 +58,8 @@ $this->css()
 				<p><?php echo Lang::txt('COM_MEMBERS_PASSWORD_IF_FORGOTTEN_RESET', Route::url('index.php?option=com_users&task=logout&return=' . base64_encode('/users/reset'))); ?></p>
 			</div>
 			<fieldset>
+				<legend><?php echo Lang::txt('COM_MEMBERS_CHANGEPASSWORD_CHOOSE'); ?></legend>
+
 				<label<?php echo ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
 					<?php echo Lang::txt('COM_MEMBERS_FIELD_CURRENT_PASS'); ?>
 					<input name="oldpass" id="oldpass" type="password" value="" />

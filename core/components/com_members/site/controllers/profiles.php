@@ -719,7 +719,7 @@ class Profiles extends SiteController
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
 		Pathway::append(
-			Lang::txt(strtoupper($this->_task)),
+			Lang::txt('COM_MEMBERS_' . strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
 
