@@ -62,17 +62,17 @@ if (isset($this->messages))
 <div id="intro-container">
 <div id="citations-introduction">
 	<div class="instructions">
-	<h2 id="instructions-title">Group Citations</h2>
+	<h2 id="instructions-title"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></h2>
 	<p id="noCitations"> <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 	<?php if ($this->isAdmin): ?>
-	<p id="who">A group manager may:</p>
+	<p id="who"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_MEMBER_MAY'); ?></p>
 	<ul>
 		<li>
 			<div class="instruction">
 			<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
 				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SUBMIT_CITATION'); ?>
 		</a>
-		<span class="description">  Manually enter a citation.</span>
+		<span class="description"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_MANUALLY_ENTER'); ?></span>
 		</div>
 	</li>
  		<li>
@@ -91,16 +91,15 @@ if (isset($this->messages))
 			<a class="btn icon-settings" href="<?php echo Route::url($base. '&action=settings'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SET_FORMAT'); ?>
 		 </a>
-		<span class="description">Set group-level options for citations.</span>
+		<span class="description"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_DESCRIPTION'); ?></span>
 		</div>
 			</li>
  </ul>
  <?php endif; ?>
 </div><!-- / .instructions -->
 	<div class="questions">
-	<p><strong>What is a group citation?</strong></p>
-	<p>Within a group, a citation is a listing of a product resulting in work done by a group or a group member.
-	As a group manager, you can choose to display citations curated by a group manager-only or citations that were produced by members of your group.</p>
+	<p><strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS'); ?></strong></p>
+	<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS_EXPLANATION'); ?></p>
 	</div>
 	</div>
 
