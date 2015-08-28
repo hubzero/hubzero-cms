@@ -56,7 +56,7 @@ class Helper extends Module
 	{
 		parent::__construct($params, $module);
 
-		$this->instances++;
+		self::$instances++;
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Helper extends Module
 
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
-		if ($this->instances <= 1)
+		if (self::$instances <= 1)
 		{
 			// Push some CSS to the template
 			$this->css($type . '.css')
