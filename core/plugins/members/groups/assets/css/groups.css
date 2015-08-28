@@ -26,11 +26,11 @@
 	.groups tfoot td {
 		text-align: right;
 	}
-	.groups .user-options {
+	.groups .user-actions {
 		white-space: nowrap;
 		text-align: right;
 	}
-	.groups .user-options a {
+	.groups .user-actions a {
 		display: inline-block;
 		font-size: 1.6em;
 		width: 1em;
@@ -42,30 +42,30 @@
 		background: transparent;
 		padding: 0;
 	}
-	.groups .user-options a:hover {
+	.groups .user-actions a:hover {
 		color: #333;
 	}
-	.groups .user-options .manage:before {
+	.groups .user-actions .manage:before {
 		font-family: "Fontcons";
 		content: "\f007";
 	}
-	.groups .user-options .customize:before {
+	.groups .user-actions .customize:before {
 		font-family: "Fontcons";
 		content: "\2699";
 	}
-	.groups .user-options .cancel:before {
+	.groups .user-actions .cancel:before {
 		font-family: "Fontcons";
 		content: "\f057";
 	}
-	.groups .user-options .accept:before {
+	.groups .user-actions .accept:before {
 		font-family: "Fontcons";
 		content: "\2714";
 	}
-	.groups .user-options .delete:before {
+	.groups .user-actions .delete:before {
 		font-family: "Fontcons";
 		content: "\f014";
 	}
-	.groups .user-options a:before {
+	.groups .user-actions a:before {
 		margin-right: 2em;
 	}
 /* Group member status */

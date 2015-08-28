@@ -185,7 +185,7 @@ $this->css();
 							<span class="pending-approval status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?></span>
 						<?php endif; ?>
 					</td>
-					<td class="user-options">
+					<td class="user-actions">
 						<?php if ($published) : ?>
 							<?php echo $options; ?>
 						<?php endif; ?>
