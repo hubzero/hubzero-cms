@@ -53,7 +53,12 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				'name'   => 'issueResourceMasterDoi',
 				'label'  => Lang::txt('PLG_CRON_RESOURCES_MASTER_DOI'),
 				'params' => ''
-			)
+			)/*,
+			array(
+				'name'   => 'updateResourceRanking',
+				'label'  => Lang::txt('PLG_CRON_RESOURCES_RANKING'),
+				'params' => 'ranking'
+			)*/
 		);
 
 		return $obj;
@@ -135,6 +140,124 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				$resource->master_doi = strtoupper($masterDoi);
 				$resource->store();
 			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Issue master DOI for tool resources if does not exist
+	 *
+	 * @param   object   $job  \Components\Cron\Models\Job
+	 * @return  boolean
+	 */
+	public function updateResourceRanking(\Components\Cron\Models\Job $job)
+	{
+		$processed = array();
+
+		$params = $job->get('params');
+		$limit  = $params->get('resource_limit', 100);
+
+		if (!is_numeric($limit) || $limit <= 0 || $limit > 1000)
+		{
+			$limit = 100;
+		}
+
+		switch (intval($params->get('resource_frequency', 7)))
+		{
+			case 7:
+				// Once a week, start of the week
+				$d = new \DateTime('-' . gmdate('w') . ' days');
+			break;
+
+			case 14:
+				// Find a start point
+				if (!$params->get('start_point'))
+				{
+					$d = new \DateTime('-' . gmdate('w') . ' days');
+					$timestamp = $d->format('Y-m-d') . ' 00:00:00';
+
+					$params->set('start_point', $d->format('Y-m-d') . ' 00:00:00');
+				}
+
+				$now = Date::toSql();
+				if ($now > $params->get('start_point'))
+				{
+					$d = new \DateTime($params->get('start_point'));
+					$d->modify('+2 week');
+					$params->set('start_point', $d->format('Y-m-d') . ' 00:00:00');
+
+					$job->set('params', $params->toString());
+					$job->store(false);
+					$job->set('params', $params);
+				}
+
+				$d = new \DateTime($params->get('start_point'));
+			break;
+
+			case 21:
+				// Find a start point
+				if (!$params->get('start_point'))
+				{
+					$d = new \DateTime('-' . gmdate('w') . ' days');
+					$timestamp = $d->format('Y-m-d') . ' 00:00:00';
+
+					$params->set('start_point', $d->format('Y-m-d') . ' 00:00:00');
+				}
+
+				$now = Date::toSql();
+				if ($now > $params->get('start_point'))
+				{
+					$d = new \DateTime($params->get('start_point'));
+					$d->modify('+3 week');
+					$params->set('start_point', $d->format('Y-m-d') . ' 00:00:00');
+
+					$job->set('params', $params->toString());
+					$job->store(false);
+					$job->set('params', $params);
+				}
+
+				$d = new \DateTime($params->get('start_point'));
+			break;
+
+			case 30:
+				// Once a week, start of the week
+				$d = new \DateTime('first day of this month');
+			break;
+		}
+
+		$timestamp = $d->format('Y-m-d') . ' 00:00:00';
+
+		$database = App::get('db');
+
+		// Get all resources that haven't been ranked
+		$sql = "SELECT r.id, r.ranking, r.ranked
+				FROM `#__resources` AS r
+				WHERE r.standalone=1
+				AND r.state=1
+				AND (r.ranked = '0000-00-00 00:00:00' OR r.ranked < " . $database->quote($timestamp) . ")
+				ORDER BY r.ranked ASC
+				LIMIT {$limit}";
+
+		$database->setQuery($sql);
+		$queued = $database->loadObjectList();
+
+		// Loop through each resource and rank it
+		foreach ($queued as $item)
+		{
+			if (in_array($item->id, $processed))
+			{
+				continue;
+			}
+
+			//if ($resource->rank())
+			//{
+				// mark as sent and save
+				$resource->ranked = Date::toSql();
+				//$resource->store();
+			//}
+
+			$processed[] = $item->id;
 		}
 
 		return true;

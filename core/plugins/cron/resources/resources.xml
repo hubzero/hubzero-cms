@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/cron/resources.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/cron/resources/resources.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.7" type="plugin" group="cron">
 	<name>Cron - Resources</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Cron events for resources</description>
 	<files>
@@ -43,4 +43,13 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 		</fields>
 	</config>
+	<params group="ranking">
+		<param name="ranking_limit" type="text" default="100" label="PLG_CRON_RESOURCES_LIMIT_LABEL" description="PLG_CRON_RESOURCES_LIMIT_DESC" />
+		<param name="ranking_frequency" type="list" default="7" label="PLG_CRON_RESOURCES_FREQ_LABEL" description="PLG_CRON_RESOURCES_FREQ_DESC">
+			<option value="7">PLG_CRON_RESOURCES_FREQ_ONE_WEEK</option>
+			<option value="14">PLG_CRON_RESOURCES_FREQ_TWO_WEEKS</option>
+			<option value="21">PLG_CRON_RESOURCES_FREQ_THREE_WEEKS</option>
+			<option value="30">PLG_CRON_RESOURCES_FREQ_ONE_MONTH</option>
+		</param>
+	</params>
 </extension>
