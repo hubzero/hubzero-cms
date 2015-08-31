@@ -33,34 +33,17 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('framework', true);
 
-// Load theme
-$color1  = $this->params->get('colorprimary', '000000');
-$color2  = $this->params->get('colorsecondary', '2f8dc9');
-$bground = $this->params->get('background', 'triangles');
-
-$hash = md5($color1 . $bground . $color2);
-
-$path = '/templates/' . $this->template . '/css/theme.php?color1=' . $color1 . '&color2=' . $color2 . '&background=' . $bground;
-if (file_exists(PATH_APP . '/cache/site/' . $hash . '.css'))
-{
-	$path = substr(PATH_APP, strlen(PATH_ROOT)) . '/cache/site/' . $hash . '.css';
-}
-
-$this->addStyleSheet($this->baseurl . $path);
-
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(
-	'nojs',
+	'no-js',
 	$browser->name(),
 	$browser->name() . $browser->major(),
 	$this->direction
 );
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 9 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo end($cls); ?> ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo end($cls); ?> ie ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/component.css?v=<?php echo filemtime(__DIR__ . '/css/component.css'); ?>" />
