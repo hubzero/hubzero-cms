@@ -74,7 +74,7 @@ class Assets
 	/**
 	 * Check if a filename is a supported image type
 	 *
-	 * @param   string $image Filename
+	 * @param   string   $image  Filename
 	 * @return  boolean
 	 */
 	public static function isImage($image)
@@ -99,7 +99,7 @@ class Assets
 	/**
 	 * Adds a linked stylesheet to the page
 	 *
-	 * @param	string  $stylesheet Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
 	 * @return  void
 	 */
 	public static function addStylesheet($stylesheet)
@@ -125,7 +125,7 @@ class Assets
 	/**
 	 * Adds a linked script to the page
 	 *
-	 * @param	string  $script Script name (optional, uses module name if left blank)
+	 * @param   string  $script  Script name (optional, uses module name if left blank)
 	 * @return  void
 	 */
 	public static function addScript($script)
@@ -151,9 +151,9 @@ class Assets
 	/**
 	 * Adds a linked stylesheet from a component to the page
 	 *
-	 * @param	string  $component  Component name
-	 * @param	string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $component   Component name
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $dir         Asset directory to look in
 	 * @return  void
 	 */
 	public static function addComponentStylesheet($component, $stylesheet = '', $dir = 'css')
@@ -186,8 +186,8 @@ class Assets
 	 * Adds a linked script from a component to the page
 	 *
 	 * @param   string  $component  URL to the linked script
-	 * @param	string  $script     Script name (optional, uses module name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $script     Script name (optional, uses module name if left blank)
+	 * @param   string  $dir        Asset directory to look in
 	 * @return  void
 	 */
 	public static function addComponentScript($component, $script = '', $dir = 'js')
@@ -219,8 +219,8 @@ class Assets
 	/**
 	 * Adds a linked stylesheet from the system to the page
 	 *
-	 * @param	string  $stylesheet Stylesheet name
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $stylesheet  Stylesheet name
+	 * @param   string  $dir         Asset directory to look in
 	 * @return  void
 	 */
 	public static function addSystemStylesheet($stylesheet, $dir = 'css')
@@ -244,8 +244,8 @@ class Assets
 	/**
 	 * Adds a linked script from the system to the page
 	 *
-	 * @param	string  $script     Script name (optional, uses module name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $script  Script name (optional, uses module name if left blank)
+	 * @param   string  $dir     Asset directory to look in
 	 * @return  void
 	 */
 	public static function addSystemScript($script, $dir = 'js')
@@ -270,9 +270,9 @@ class Assets
 	 * Gets the path to a component image
 	 * checks template overrides first, then component
 	 *
-	 * @param	string  $component	Component name
-	 * @param	string  $image		Image to look for
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $component  Component name
+	 * @param   string  $image      Image to look for
+	 * @param   string  $dir        Asset directory to look in
 	 * @return  string	Path to an image file
 	 */
 	public static function getComponentImage($component, $image, $dir = 'img')
@@ -312,10 +312,10 @@ class Assets
 	 * Gets the path to a component stylesheet
 	 * checks template overrides first, then component
 	 *
-	 * @param	string  $component	Component name
-	 * @param	string  $stylesheet	Stylesheet to look for
-	 * @param	string  $dir        Asset directory to look in
-	 * @return  string	Path to a stylesheet
+	 * @param   string  $component   Component name
+	 * @param   string  $stylesheet  Stylesheet to look for
+	 * @param   string  $dir         Asset directory to look in
+	 * @return  string  Path to a stylesheet
 	 */
 	public static function getComponentStylesheet($component, $stylesheet, $dir = 'css')
 	{
@@ -347,10 +347,10 @@ class Assets
 	 * Gets the path to a module image
 	 * checks template overrides first, then module
 	 *
-	 * @param	string  $module	Module name
-	 * @param	string  $image	Image to look for
-	 * @param	string  $dir        Asset directory to look in
-	 * @return  string	Path to an image file
+	 * @param   string  $module  Module name
+	 * @param   string  $image   Image to look for
+	 * @param   string  $dir     Asset directory to look in
+	 * @return  string  Path to an image file
 	 */
 	public static function getModuleImage($module, $image, $dir = 'img')
 	{
@@ -388,9 +388,9 @@ class Assets
 	/**
 	 * Adds a linked stylesheet from a module to the page
 	 *
-	 * @param	string  $module		Module name
-	 * @param	string  $stylesheet	Stylesheet name (optional, uses module name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $module      Module name
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses module name if left blank)
+	 * @param   string  $dir         Asset directory to look in
 	 * @return  void
 	 */
 	public static function addModuleStyleSheet($module, $stylesheet = '', $dir = 'css')
@@ -414,9 +414,9 @@ class Assets
 	/**
 	 * Adds a linked script to the page
 	 *
-	 * @param   string  $module  	URL to the linked script
-	 * @param	string  $script  	Script name (optional, uses module name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $module  URL to the linked script
+	 * @param   string  $script  Script name (optional, uses module name if left blank)
+	 * @param   string  $dir     Asset directory to look in
 	 * @return  void
 	 */
 	public static function addModuleScript($module, $script = '', $dir = 'js')
@@ -441,10 +441,10 @@ class Assets
 	 * Gets the path to a plugin image
 	 * checks template overrides first, then plugin folder
 	 *
-	 * @param	string  $folder		Plugin folder name
-	 * @param	string  $plugin		Plugin name
-	 * @param	string  $image		Image to look for
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $folder  Plugin folder name
+	 * @param   string  $plugin  Plugin name
+	 * @param   string  $image   Image to look for
+	 * @param   string  $dir     Asset directory to look in
 	 * @return  string	Path to an image file
 	 */
 	public static function getPluginImage($folder, $plugin, $image, $dir = 'img')
@@ -495,10 +495,10 @@ class Assets
 	/**
 	 * Adds a linked stylesheet from a plugin to the page
 	 *
-	 * @param	string  $folder		Plugin folder name
-	 * @param	string  $plugin		Plugin name
-	 * @param	string  $stylesheet	Stylesheet name (optional, uses module name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $folder      Plugin folder name
+	 * @param   string  $plugin      Plugin name
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses module name if left blank)
+	 * @param   string  $dir         Asset directory to look in
 	 * @return  void
 	 */
 	public static function addPluginStyleSheet($folder, $plugin, $stylesheet = '', $dir = 'css')
@@ -522,10 +522,10 @@ class Assets
 	/**
 	 * Adds a linked script to the page
 	 *
-	 * @param	string  $folder		Plugin folder name
-	 * @param	string  $plugin		Plugin name
-	 * @param	string  $script  	Script name (optional, uses module name if left blank)
-	 * @param	string  $dir        Asset directory to look in
+	 * @param   string  $folder  Plugin folder name
+	 * @param   string  $plugin  Plugin name
+	 * @param   string  $script  Script name (optional, uses module name if left blank)
+	 * @param   string  $dir     Asset directory to look in
 	 * @return  void
 	 */
 	public static function addPluginScript($folder, $plugin, $script = '', $dir = 'js')
@@ -549,9 +549,9 @@ class Assets
 	/**
 	 * Gets the path to a system image
 	 *
-	 * @param	string  $image		Image to look for
-	 * @param	string  $dir        Asset directory to look in
-	 * @return  string	Path to an image file
+	 * @param   string  $image  Image to look for
+	 * @param   string  $dir    Asset directory to look in
+	 * @return  string  Path to an image file
 	 */
 	public static function getSystemImage($image, $dir = 'images')
 	{
@@ -588,7 +588,7 @@ class Assets
 	 * Accepts either an array or string of comma-separated file names
 	 * If more than one stylesheet is called for, it will combine, compress, return path to cached file
 	 *
-	 * @param	mixed  $elements An array or string of comma-separated file names
+	 * @param   mixed  $elements  An array or string of comma-separated file names
 	 * @return  string
 	 */
 	public static function getSystemStylesheet($elements = null)

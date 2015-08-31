@@ -74,9 +74,10 @@ class TraceableDispatcher implements DispatcherInterface
 	/**
 	 * Constructor.
 	 *
-	 * @param EventDispatcherInterface $dispatcher An EventDispatcherInterface instance
-	 * @param Stopwatch                $stopwatch  A Stopwatch instance
-	 * @param LoggerInterface          $logger     A LoggerInterface instance
+	 * @param   EventDispatcherInterface $dispatcher An EventDispatcherInterface instance
+	 * @param   Stopwatch                $stopwatch  A Stopwatch instance
+	 * @param   LoggerInterface          $logger     A LoggerInterface instance
+	 * @return  void
 	 */
 	public function __construct(DispatcherInterface $dispatcher, $stopwatch = null, Logger $logger = null)
 	{
@@ -138,11 +139,11 @@ class TraceableDispatcher implements DispatcherInterface
 		$this->preProcess($event);
 		$this->preTrigger($event);
 
-		//$e = $this->stopwatch->start($event->getName(), 'section');
+		/*$e = $this->stopwatch->start($event->getName(), 'section');
 
-		//$responses = $this->dispatcher->trigger($event, $args);
+		$responses = $this->dispatcher->trigger($event, $args);
 
-		/*if ($e->isStarted())
+		if ($e->isStarted())
 		{
 			$e->stop();
 		}*/

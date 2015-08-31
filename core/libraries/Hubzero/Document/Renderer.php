@@ -33,7 +33,9 @@ namespace Hubzero\Document;
 use Hubzero\Base\Object;
 
 /**
- * Abstract class for a renderer
+ * Abstract document renderer
+ *
+ * Inspired by Joomla's JDocumentRenderer class
  */
 class Renderer extends Object
 {

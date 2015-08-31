@@ -38,7 +38,9 @@ use Route;
 use App;
 
 /**
- * OpenSearch class, provides an easy interface to display an OpenSearch document
+ * OpenSearch document class for parsing and displaying an OpenSearch page
+ *
+ * Inspired by Joomla's JDocumentOpenSearch class
  */
 class Opensearch extends Base
 {
@@ -181,7 +183,7 @@ class Opensearch extends Base
 	 * Sets the short name
 	 *
 	 * @param   string  $name  The name.
-	 * @return  object  instance of $this to allow chaining
+	 * @return  object  Supports chaining
 	 */
 	public function setShortName($name)
 	{
@@ -193,8 +195,8 @@ class Opensearch extends Base
 	/**
 	 * Adds an URL to the OpenSearch description.
 	 *
-	 * @param   object $url  The url to add to the description.
-	 * @return  object instance of $this to allow chaining
+	 * @param   object  $url  The url to add to the description.
+	 * @return  object  Supports chaining
 	 */
 	public function addUrl(Url $url)
 	{
@@ -207,7 +209,7 @@ class Opensearch extends Base
 	 * Adds an image to the OpenSearch description.
 	 *
 	 * @param   object  $image  The image to add to the description.
-	 * @return  object  instance of $this to allow chaining
+	 * @return  object  Supports chaining
 	 */
 	public function addImage(Image $image)
 	{

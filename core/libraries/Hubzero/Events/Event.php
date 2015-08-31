@@ -38,6 +38,8 @@ use Countable;
 
 /**
  * Default Event class.
+ *
+ * Based on work by the Joomla Framework
  */
 class Event implements ArrayAccess, Serializable, Countable
 {

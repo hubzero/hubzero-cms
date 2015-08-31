@@ -57,12 +57,13 @@ class Api implements RendererInterface
 	 * Create a new exception renderer.
 	 *
 	 * @param   object  $response
+	 * @param   bool    $debug
 	 * @return  void
 	 */
 	public function __construct(Response $response, $debug = false)
 	{
 		$this->response = $response;
-		$this->debug = $debug;
+		$this->debug    = $debug;
 	}
 
 	/**

@@ -34,6 +34,8 @@ use Hubzero\Error\Exception\InvalidArgumentException;
 
 /**
  * Utility class for all HTML drawing classes
+ *
+ * Inspired, in part, by Joomla's JHtml class
  */
 class Builder
 {

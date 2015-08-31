@@ -34,34 +34,36 @@ use Hubzero\Config\Registry;
 
 /**
  * Parameter handler
+ *
+ * Inspired by Joomla's JPArameter class
  */
 class Parameter extends Registry
 {
 	/**
 	 * The raw params string
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_raw = null;
 
 	/**
 	 * The XML params element
 	 *
-	 * @var    object
+	 * @var  object
 	 */
 	protected $_xml = null;
 
 	/**
 	 * Loaded elements
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_elements = array();
 
 	/**
 	 * Directories, where element types can be stored
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_elementPath = array();
 
@@ -271,7 +273,7 @@ class Parameter extends Registry
 	 * @param   object  &$node         A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 * @return  array  Any array of the label, the form element and the tooltip.
+	 * @return  array   Any array of the label, the form element and the tooltip.
 	 */
 	public function getParam(&$node, $control_name = 'params', $group = '_default')
 	{

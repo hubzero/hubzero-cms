@@ -38,6 +38,8 @@ use User;
 
 /**
  * Utility class for creating HTML Grids
+ *
+ * Inspired by a combination of Joomla's JGrid and JHtmlGrid
  */
 class Grid
 {

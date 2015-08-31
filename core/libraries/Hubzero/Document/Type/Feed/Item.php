@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,13 +34,13 @@ use Hubzero\Base\Object;
 
 /**
  * Item is an internal class that stores feed item information
+ *
+ * Inspired by Joomla's JFeedItem class
  */
 class Item extends Object
 {
 	/**
 	 * Title item element
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */
@@ -49,16 +49,12 @@ class Item extends Object
 	/**
 	 * Link item element
 	 *
-	 * required
-	 *
 	 * @var  string
 	 */
 	public $link;
 
 	/**
 	 * Description item element
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */
@@ -103,7 +99,7 @@ class Item extends Object
 	/**
 	 * Enclosure element
 	 *
-	 * @var		object
+	 * @var	 object
 	 */
 	public $enclosure =  null;
 
@@ -146,68 +142,67 @@ class Item extends Object
 	 */
 	public $source;
 
-	/* iTunes specific tags */
-
 	/**
-	 * Description for 'itunes_summary'
+	 * iTunes summary
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_summary = '';
 
 	/**
-	 * Description for 'itunes_explicit'
+	 * iTunes 'explicit content' flag
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_explicit = "no";
 
 	/**
-	 * Description for 'itunes_keywords'
+	 * iTunes keywords
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_keywords = '';
 
 	/**
-	 * Description for 'itunes_author'
+	 * iTunes author
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_author = '';
 
 	/**
-	 * Description for 'itunes_image'
+	 * iTunes image
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_image = '';
 
 	/**
-	 * Description for 'itunes_duration'
+	 * iTunes duration (video, sound)
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_duration = '';
 
 	/**
-	 * Description for 'itunes_category'
+	 * iTunes category
 	 *
-	 * @public string
+	 * @var  string
 	 */
 	public $itunes_category = '';
 
 	/**
-	 * Description for 'itunes_subcategories'
+	 * iTunes subcategories
 	 *
-	 * @public unknown
+	 * @var  string
 	 */
 	public $itunes_subcategories = null;
 
 	/**
 	 * Set the Enclosure for this item
 	 *
-	 * @param object $enclosure The Item to add to the feed.
+	 * @param   object  $enclosure  The Item to add to the feed.
+	 * @return  void
 	*/
 	public function setEnclosure($enclosure)
 	{

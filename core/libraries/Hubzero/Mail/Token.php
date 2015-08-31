@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    David Benham <dbenham@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -52,35 +52,35 @@ class Token
 	/**
 	 * Description for '_currentVersion'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_currentVersion;
 
 	/**
 	 * Description for '_iv'
 	 *
-	 * @var unknown
+	 * @var  unknown
 	 */
 	private $_iv;
 
 	/**
 	 * Description for '_key'
 	 *
-	 * @var unknown
+	 * @var  unknown
 	 */
 	private $_key;
 
 	/**
 	 * Description for '_blocksize'
 	 *
-	 * @var number
+	 * @var  number
 	 */
 	private $_blocksize;
 
 	/**
 	 * Read encryption configuration from config file
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -134,11 +134,11 @@ class Token
 	/**
 	 * Build a unique email token
 	 *
-	 * @param  int    $version
-	 * @param  int    $action
-	 * @param  int    $userid
-	 * @param  int    $id
-	 * @return string - base 16 string representing token
+	 * @param   int     $version
+	 * @param   int     $action
+	 * @param   int     $userid
+	 * @param   int     $id
+	 * @return  string  Base 16 string representing token
 	 */
 	public function buildEmailToken($version, $action, $userid, $id)
 	{
@@ -175,8 +175,8 @@ class Token
 	/**
 	 * Function to decrypt email token
 	 * 
-	 * @param  string $t Email token
-	 * @return array     Email token details
+	 * @param   string  $t  Email token
+	 * @return  array   Email token details
 	 */
 	public function decryptEmailToken($t)
 	{
@@ -200,6 +200,4 @@ class Token
 		$arr = unpack("N3", $decrypted);
 		return array($arr[1], $arr[2], $arr[3]);
 	}
-
 }
-

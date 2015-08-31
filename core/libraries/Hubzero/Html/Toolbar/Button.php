@@ -34,24 +34,23 @@ use Hubzero\Base\Object;
 
 /**
  * Button base class
+ * The Button is the base class for all Button types
  *
- * The JButton is the base class for all JButton types
+ * Inspired by Joomla's JButton class
  */
 abstract class Button extends Object
 {
 	/**
-	 * element name
+	 * Element name
 	 *
-	 * This has to be set in the final renderer classes.
-	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_name = null;
 
 	/**
-	 * reference to the object that instantiated the element
+	 * Reference to the object that instantiated the element
 	 *
-	 * @var    JButton
+	 * @var  object  Button
 	 */
 	protected $_parent = null;
 
@@ -59,6 +58,7 @@ abstract class Button extends Object
 	 * Constructor
 	 *
 	 * @param   object  $parent  The parent
+	 * @return  void
 	 */
 	public function __construct($parent = null)
 	{
@@ -68,7 +68,7 @@ abstract class Button extends Object
 	/**
 	 * Get the element name
 	 *
-	 * @return  string   type of the parameter
+	 * @return  string  type of the parameter
 	 */
 	public function getName()
 	{
@@ -110,8 +110,6 @@ abstract class Button extends Object
 	/**
 	 * Method to get the CSS class name for an icon identifier
 	 *
-	 * Can be redefined in the final class
-	 *
 	 * @param   string  $identifier  Icon identification string
 	 * @return  string  CSS class name
 	 */
@@ -122,8 +120,6 @@ abstract class Button extends Object
 
 	/**
 	 * Get the button
-	 *
-	 * Defined in the final button class
 	 *
 	 * @return  string
 	 */

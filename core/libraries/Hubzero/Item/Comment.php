@@ -189,8 +189,8 @@ class Comment extends \JTable
 	/**
 	 * Set the upload path
 	 *
-	 * @param      string $path PAth to set to
-	 * @return     void
+	 * @param   string  $path  Path to set to
+	 * @return  void
 	 */
 	public function setUploadDir($path)
 	{
@@ -205,7 +205,7 @@ class Comment extends \JTable
 	/**
 	 * Get the upload path
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function getUploadDir()
 	{
@@ -215,7 +215,7 @@ class Comment extends \JTable
 	/**
 	 * Get allowed file extensions
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getAllowedExtensions()
 	{
@@ -225,8 +225,8 @@ class Comment extends \JTable
 	/**
 	 * Set allowed file extensions
 	 *
-	 * @param      $exts    Array of file extensions
-	 * @return     void
+	 * @param   $exts  array  Array of file extensions
+	 * @return  void
 	 */
 	public function setAllowedExtensions($exts = array())
 	{
@@ -239,9 +239,9 @@ class Comment extends \JTable
 	/**
 	 * Check File Name
 	 *
-	 * @param      $uploadDir    Upload Directory
-	 * @param      $fileName     File Name
-	 * @return     void
+	 * @param   string  $uploadDir  Upload Directory
+	 * @param   string  $fileName   File Name
+	 * @return  void
 	 */
 	private function checkFileName($uploadDir, $fileName)
 	{
@@ -260,7 +260,8 @@ class Comment extends \JTable
 	/**
 	 * Store attachments
 	 *
-	 * @return     void
+	 * @param   boolean  $updateNulls
+	 * @return  void
 	 */
 	public function store($updateNulls = false)
 	{
@@ -304,10 +305,10 @@ class Comment extends \JTable
 	/**
 	 * Get all the comments on an entry
 	 *
-	 * @param      string  $item_type Type of entry these comments are attached to
-	 * @param      integer $item_id   ID of entry these comments are attached to
-	 * @param      integer $parent     ID of parent comment
-	 * @return     mixed False if error otherwise array of records
+	 * @param   string   $item_type  Type of entry these comments are attached to
+	 * @param   integer  $item_id    ID of entry these comments are attached to
+	 * @param   integer  $parent     ID of parent comment
+	 * @return  mixed    False if error otherwise array of records
 	 */
 	public function getComments($item_type=NULL, $item_id=0, $parent=0, $limit=25, $start=0)
 	{
@@ -361,8 +362,8 @@ class Comment extends \JTable
 	/**
 	 * Delete a comment and any chldren
 	 *
-	 * @param      integer $id     ID of parent comment
-	 * @return     boolean true if successful otherwise returns and error message
+	 * @param   integer  $id  ID of parent comment
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function delete($oid=null)
 	{
@@ -382,8 +383,8 @@ class Comment extends \JTable
 	/**
 	 * Delete descendants of a comment
 	 *
-	 * @param      integer $id     ID of parent comment
-	 * @return     boolean true if successful otherwise returns and error message
+	 * @param   integer  $id  ID of parent comment
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function deleteDescendants($id=NULL)
 	{
@@ -419,9 +420,9 @@ class Comment extends \JTable
 	/**
 	 * Set the state of a comment and all descendants
 	 *
-	 * @param      integer $id     ID of parent comment
-	 * @param      integer $state  State to set (0=unpublished, 1=published, 2=trashed)
-	 * @return     boolean true if successful otherwise returns and error message
+	 * @param   integer  $id     ID of parent comment
+	 * @param   integer  $state  State to set (0=unpublished, 1=published, 2=trashed)
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function setState($oid=null, $state=0)
 	{
@@ -448,9 +449,9 @@ class Comment extends \JTable
 	/**
 	 * Set the state of descendants of a comment
 	 *
-	 * @param      integer $id     ID of parent comment
-	 * @param      integer $state  State to set (0=unpublished, 1=published, 2=trashed)
-	 * @return     boolean true if successful otherwise returns and error message
+	 * @param   integer  $id     ID of parent comment
+	 * @param   integer  $state  State to set (0=unpublished, 1=published, 2=trashed)
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function setDescendantState($id=NULL, $state=0)
 	{
@@ -484,12 +485,10 @@ class Comment extends \JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query based on a list of filters
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -538,8 +537,8 @@ class Comment extends \JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query off of
-	 * @return     integer
+	 * @param   array   $filters  Filters to build query off of
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -554,8 +553,8 @@ class Comment extends \JTable
 	/**
 	 * Get an array of records
 	 *
-	 * @param      array $filters Filters to build query off of
-	 * @return     array
+	 * @param   array  $filters  Filters to build query off of
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -585,8 +584,8 @@ class Comment extends \JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  Database query
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -640,10 +639,10 @@ class Comment extends \JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a count of records
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array   $filters
+	 * @return  object  Return course units
 	 */
 	public function count($filters=array())
 	{
@@ -655,10 +654,10 @@ class Comment extends \JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a list of records
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array   $filters
+	 * @return  object  Return course units
 	 */
 	public function find($filters=array())
 	{
@@ -685,38 +684,27 @@ class Comment extends \JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a list of ratings
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array   $filters
+	 * @return  object  Return course units
 	 */
 	public function ratings($filters=array())
 	{
 		$query  = "SELECT r.rating";
 		$query .= $this->_buildquery($filters);
 
-		/*if (isset($filters['sort']) && $filters['sort'])
-		{
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
-			{
-				$filters['sort_Dir'] = 'ASC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		}
-		if (!empty($filters['start']) && !empty($filters['limit']))
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}*/
-
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Check if an item has been rated
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   integer  $item_id
+	 * @param   string   $item_type
+	 * @param   integer  $created_by
+	 * @return  boolean
 	 */
 	public function hasRated($item_id, $item_type, $created_by)
 	{

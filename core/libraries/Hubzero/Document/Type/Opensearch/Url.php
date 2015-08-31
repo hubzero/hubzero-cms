@@ -33,14 +33,14 @@ namespace Hubzero\Document\Type\Opensearch;
 use Hubzero\Base\Object;
 
 /**
- * An internal class that stores the search URLs for the OpenSearch description
+ * URL for the OpenSearch Description
+ *
+ * Inspired by Joomla's JOpenSearchUrl class
  */
 class Url extends Object
 {
 	/**
 	 * Type item element
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */
@@ -49,16 +49,13 @@ class Url extends Object
 	/**
 	 * Rel item element
 	 *
-	 * required
-	 *
 	 * @var  string
 	 */
 	public $rel = 'results';
 
 	/**
-	 * Template item element. Has to contain the {searchTerms} parameter to work.
-	 *
-	 * required
+	 * Template item element.
+	 * Has to contain the {searchTerms} parameter to work.
 	 *
 	 * @var  string
 	 */

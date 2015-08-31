@@ -36,6 +36,8 @@ use stdClass;
 
 /**
  * Module renderer
+ *
+ * Inspired by Joomla's JDocumentRendererModule class
  */
 class Module extends Renderer
 {
@@ -95,32 +97,6 @@ class Module extends Renderer
 			$module = clone $module;
 			$module->params = (string) $params;
 		}
-
-		/*$contents = '';
-
-		// Default for compatibility purposes. Set cachemode parameter or use Module::cache from within the
-		// module instead
-		
-		// Get the configuration object
-		$conf = \App::get('config');
-
-		$cachemode = $params->get('cachemode', 'oldstatic');
-
-		if ($params->get('cache', 0) == 1 && $config->get('caching') >= 1 && $cachemode != 'id' && $cachemode != 'safeuri')
-		{
-			// Default to itemid creating method and workarounds on
-			$cacheparams = new stdClass;
-			$cacheparams->cachemode    = $cachemode;
-			$cacheparams->class        = '\\Hubzero\\Module\\Loader';
-			$cacheparams->method       = 'render';
-			$cacheparams->methodparams = array($module, $attribs);
-
-			$contents = \App::get('module')::cache($module, $params, $cacheparams);
-		}
-		else
-		{
-			$contents = \App::get('module')->render($module, $attribs);
-		}*/
 
 		return \App::get('module')->render($module, $attribs);
 	}

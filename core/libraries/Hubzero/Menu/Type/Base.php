@@ -35,6 +35,8 @@ use Hubzero\Base\Object;
 
 /**
  * Base Menu class
+ *
+ * Inspired by Joomla's JMenu class
  */
 class Base extends Object
 {
@@ -170,10 +172,8 @@ class Base extends Object
 		{
 			return $this->_items[$this->_default['*']];
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**
@@ -294,7 +294,7 @@ class Base extends Object
 	}
 
 	/**
-	 * Method to check JMenu object authorization against an access control
+	 * Method to check object authorization against an access control
 	 * object and optionally an access extension object
 	 *
 	 * @param   integer  $id  The menu id

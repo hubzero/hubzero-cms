@@ -32,6 +32,8 @@ namespace Hubzero\Encryption;
 
 /**
  * Class for handling basic encryption/decryption of data.
+ *
+ * Inspired by Joomla's JCrypt class
  */
 class Encrypter
 {

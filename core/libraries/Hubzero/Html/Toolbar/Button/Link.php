@@ -34,6 +34,8 @@ use Hubzero\Html\Toolbar\Button;
 
 /**
  * Renders a link button
+ *
+ * Inspired by Joomla's JButtonLink class
  */
 class Link extends Button
 {

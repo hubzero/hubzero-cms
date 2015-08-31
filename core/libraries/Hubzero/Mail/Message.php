@@ -38,29 +38,29 @@ class Message extends \Swift_Message
 	/**
 	 * Failed email address
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_failures = null;
 
 	/**
 	 * Message tags
 	 *
-	 * @var array
-	 **/
-	private $_tags = [];
+	 * @var  array
+	 */
+	private $_tags = array();
 
 	/**
 	 * Message transporters
 	 *
-	 * @var array
-	 **/
-	private static $_transporters = [];
+	 * @var  array
+	 */
+	private static $_transporters = array();
 
 	/**
 	 * Check if message needs to be sent as multipart
 	 * MIME message or if it has only one part.
 	 *
-	 * @return bool
+	 * @return  bool
 	 */
 	public function addHeader($headerFieldNameOrLine, $fieldValue = null)
 	{
@@ -74,8 +74,8 @@ class Message extends \Swift_Message
 	 *
 	 * Modified version to also accept a string $message->setPriority('high');
 	 *
-	 * @param      mixed $priority integer|string
-	 * @return     object
+	 * @param   mixed  $priority  integer|string
+	 * @return  object
 	 */
 	public function setPriority($priority)
 	{
@@ -96,7 +96,7 @@ class Message extends \Swift_Message
 	/**
 	 * Send the message
 	 *
-	 * @return object
+	 * @return  object
 	 */
 	public function send($transporter='', $options=array())
 	{
@@ -174,7 +174,7 @@ class Message extends \Swift_Message
 	/**
 	 * Get the list of failed email addresses
 	 *
-	 * @return array|null
+	 * @return  array|null
 	 */
 	public function getFailures()
 	{
@@ -184,8 +184,8 @@ class Message extends \Swift_Message
 	/**
 	 * Get the list of failed email addresses
 	 *
-	 * @param   integer $user_id   User ID
-	 * @param   integer $object_id Object ID
+	 * @param   integer  $user_id    User ID
+	 * @param   integer  $object_id  Object ID
 	 * @return  string
 	 */
 	public function buildToken($user_id, $object_id)
@@ -197,8 +197,8 @@ class Message extends \Swift_Message
 	/**
 	 * Add an attachment
 	 *
-	 * @param   mixed  $attachment File path (string) or object (Swift_Mime_MimeEntity)
-	 * @param   string $filename   Optional filename to set
+	 * @param   mixed   $attachment  File path (string) or object (Swift_Mime_MimeEntity)
+	 * @param   string  $filename    Optional filename to set
 	 * @return  object
 	 */
 	public function addAttachment($attachment, $filename=null)
@@ -219,7 +219,7 @@ class Message extends \Swift_Message
 	/**
 	 * Remove an attachment
 	 *
-	 * @param   mixed  $attachment File path (string) or object (Swift_Mime_MimeEntity)
+	 * @param   mixed  $attachment  File path (string) or object (Swift_Mime_MimeEntity)
 	 * @return  object
 	 */
 	public function removeAttachment($attachment)
@@ -235,7 +235,7 @@ class Message extends \Swift_Message
 	/**
 	 * Get an embed string for an attachment
 	 *
-	 * @param   mixed  $attachment File path (string) or object (Swift_Image)
+	 * @param   mixed  $attachment  File path (string) or object (Swift_Image)
 	 * @return  object
 	 */
 	public function getEmbed($attachment)
@@ -251,7 +251,7 @@ class Message extends \Swift_Message
 	/**
 	 * Sets tags on the message
 	 *
-	 * @param   array  $tags The tags to set
+	 * @param   array  $tags  The tags to set
 	 * @return  void
 	 */
 	public function setTags($tags)
@@ -275,7 +275,7 @@ class Message extends \Swift_Message
 	 * @param   string  $name         the mechanism name
 	 * @param   object  $transporter  the transporter object
 	 * @return  void
-	 **/
+	 */
 	public static function addTransporter($name, $transporter)
 	{
 		self::$_transporters[$name] = $transporter;
@@ -284,9 +284,9 @@ class Message extends \Swift_Message
 	/**
 	 * Checks to see if a transporter by the given name exists
 	 *
-	 * @param  string $name the transporter name
-	 * @return bool
-	 **/
+	 * @param   string  $name  The transporter name
+	 * @return  bool
+	 */
 	public static function hasTrasporter($name)
 	{
 		return isset(self::$_transporters[$name]);
@@ -295,9 +295,9 @@ class Message extends \Swift_Message
 	/**
 	 * Gets the named transporter
 	 *
-	 * @param  string $name the transporter name
-	 * @return object
-	 **/
+	 * @param   string  $name  The transporter name
+	 * @return  object
+	 */
 	public static function getTrasporter($name)
 	{
 		return self::$_transporters[$name];

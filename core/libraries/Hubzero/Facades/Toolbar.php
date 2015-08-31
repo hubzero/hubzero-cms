@@ -32,6 +32,8 @@ namespace Hubzero\Facades;
 
 /**
  * Request facade
+ *
+ * Inspired by Joomla's JToolbarHelper class
  */
 class Toolbar extends Facade
 {

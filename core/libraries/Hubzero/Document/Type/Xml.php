@@ -33,7 +33,9 @@ namespace Hubzero\Document\Type;
 use Hubzero\Document\Base;
 
 /**
- * Document XML class, provides an easy interface to parse and display XML output
+ * XML document class for parsing and displaying an XML page
+ *
+ * Inspired by Joomla's JDocumentXml class
  */
 class Xml extends Base
 {

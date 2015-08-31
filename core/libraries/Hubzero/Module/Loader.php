@@ -36,6 +36,8 @@ use Hubzero\Config\Registry;
 
 /**
  * Module loader class
+ *
+ * Inspired by Joomla's JModuleHelper class
  */
 class Loader
 {

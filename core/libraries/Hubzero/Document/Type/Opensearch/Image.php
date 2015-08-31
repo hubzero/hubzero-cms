@@ -33,14 +33,14 @@ namespace Hubzero\Document\Type\Opensearch;
 use Hubzero\Base\Object;
 
 /**
- * An internal class that stores Images for the OpenSearch Description
+ * Image for the OpenSearch Description
+ *
+ * Inspired by Joomla's JOpenSearchImage class
  */
 class Image extends Object
 {
 	/**
 	 * The images MIME type
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */
@@ -49,8 +49,6 @@ class Image extends Object
 	/**
 	 * URL of the image or the image as base64 encoded value
 	 *
-	 * required
-	 *
 	 * @var  string
 	 */
 	public $data = '';
@@ -58,16 +56,12 @@ class Image extends Object
 	/**
 	 * The image's width
 	 *
-	 * required
-	 *
 	 * @var  string
 	 */
 	public $width;
 
 	/**
 	 * The image's height
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */

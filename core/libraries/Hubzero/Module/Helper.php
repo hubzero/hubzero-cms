@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,8 +38,8 @@ class Helper
 	/**
 	 * Count the modules based on the given condition
 	 *
-	 * @param  string 	$condition	The condition to use
-	 * @return integer  Number of modules found
+	 * @param   string   $condition  The condition to use
+	 * @return  integer  Number of modules found
 	 */
 	public static function countModules($condition)
 	{
@@ -50,9 +50,9 @@ class Helper
 	 * Render modules for a position
 	 * Alias method for renderModules()
 	 *
-	 * @param      string  $position Position to render modules for
-	 * @param      integer $style    Module style (deprecated?)
-	 * @return     string HTML
+	 * @param   string   $position  Position to render modules for
+	 * @param   integer  $style     Module style (deprecated?)
+	 * @return  string   HTML
 	 */
 	public static function displayModules($position, $style=-2)
 	{
@@ -63,9 +63,9 @@ class Helper
 	 * Render a specific module
 	 * Alias method for renderModule()
 	 *
-	 * @param      string  $name  Module name
-	 * @param      integer $style Module style (deprecated?)
-	 * @return     void
+	 * @param   string   $name   Module name
+	 * @param   integer  $style  Module style (deprecated?)
+	 * @return  void
 	 */
 	public static function displayModule($name, $style=-1)
 	{
@@ -75,9 +75,9 @@ class Helper
 	/**
 	 * Render a specific module
 	 *
-	 * @param      string  $name  Module name
-	 * @param      integer $style Module style (deprecated?)
-	 * @return     string HTML
+	 * @param   string   $name   Module name
+	 * @param   integer  $style  Module style (deprecated?)
+	 * @return  string   HTML
 	 */
 	public static function renderModule($name, $style=-1)
 	{
@@ -87,9 +87,9 @@ class Helper
 	/**
 	 * Render modules for a position
 	 *
-	 * @param      string  $position Position to render modules for
-	 * @param      integer $style    Module style (deprecated?)
-	 * @return     string HTML
+	 * @param   string   $position  Position to render modules for
+	 * @param   integer  $style     Module style (deprecated?)
+	 * @return  string   HTML
 	 */
 	public static function renderModules($position, $style=-2)
 	{
@@ -99,8 +99,8 @@ class Helper
 	/**
 	 * Get the parameters for a module
 	 *
-	 * @param      integer $id Module ID
-	 * @return     object
+	 * @param   integer  $id  Module ID
+	 * @return  object
 	 */
 	public function getParams($id)
 	{

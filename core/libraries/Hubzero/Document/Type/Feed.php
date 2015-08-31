@@ -35,7 +35,9 @@ use Hubzero\Document\Renderer;
 use Hubzero\Document\Base;
 
 /**
- * Document Feed class, provides an easy interface to parse and display any feed document
+ * Feed document class for parsing and displaying an XML feed
+ *
+ * Inspired by Joomla's JDocumentFeed class
  */
 class Feed extends Base
 {
@@ -166,63 +168,63 @@ class Feed extends Base
 	/**
 	 * The feed items collection
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	public $items = array();
 
 	/**
-	 * Description for 'itunes_summary'
+	 * iTunes summary
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $itunes_summary = '';
 
 	/**
-	 * Description for 'itunes_category'
+	 * iTunes category
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $itunes_category = '';
 
 	/**
-	 * Description for 'itunes_subcategories'
+	 * iTunes subcategories
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	public $itunes_subcategories = null;
 
 	/**
-	 * Description for 'itunes_owner'
+	 * iTunes feed owner
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	public $itunes_owner = null;
 
 	/**
-	 * Description for 'itunes_explicit'
+	 * iTunes 'explicit content' flag
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $itunes_explicit = 'no';
 
 	/**
-	 * Description for 'itunes_keywords'
+	 * iTunes keywords
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $itunes_keywords = '';
 
 	/**
-	 * Description for 'itunes_author'
+	 * iTunes author
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $itunes_author = '';
 
 	/**
-	 * Description for 'itunes_image'
+	 * iTunes image
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	public $itunes_image = null;
 

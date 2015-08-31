@@ -34,6 +34,8 @@ use Hubzero\Document\Renderer;
 
 /**
  * Modules renderer
+ *
+ * Inspired by Joomla's JDocumentRendererModules class
  */
 class Modules extends Renderer
 {

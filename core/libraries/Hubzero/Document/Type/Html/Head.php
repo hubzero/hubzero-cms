@@ -35,6 +35,8 @@ use Hubzero\Utility\Arr;
 
 /**
  * Head renderer
+ *
+ * Inspired by Joomla's JDocumentRendererHead class
  */
 class Head extends Renderer
 {

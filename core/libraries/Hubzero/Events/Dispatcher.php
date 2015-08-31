@@ -36,6 +36,9 @@ use Closure;
 /**
  * Implementation of a DispatcherInterface supporting
  * prioritized listeners.
+ *
+ * Inspired by the Joomla Framework Event package,
+ * and the Laravel event handler.
  */
 class Dispatcher implements DispatcherInterface
 {

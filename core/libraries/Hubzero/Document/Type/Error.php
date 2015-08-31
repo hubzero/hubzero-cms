@@ -35,7 +35,9 @@ use Exception;
 use Request;
 
 /**
- * Document Error class, provides an easy interface to parse and display an error page
+ * Error document class for parsing and displaying an error page
+ *
+ * Inspired by Joomla's JDocumentError class
  */
 class Error extends Base
 {

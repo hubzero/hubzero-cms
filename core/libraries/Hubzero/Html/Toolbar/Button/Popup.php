@@ -35,6 +35,8 @@ use Hubzero\Html\Builder\Behavior;
 
 /**
  * Renders a popup window button
+ *
+ * Inspired by Joomla's JButtonPopup class
  */
 class Popup extends Button
 {
@@ -57,7 +59,7 @@ class Popup extends Button
 	 * @param   integer  $top      Top attribute.
 	 * @param   integer  $left     Left attribute
 	 * @param   string   $onClose  JavaScript for the onClose event.
-	 * @return  string  HTML string for the button
+	 * @return  string   HTML string for the button
 	 */
 	public function fetchButton($type = 'Popup', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0, $onClose = '')
 	{
@@ -78,8 +80,6 @@ class Popup extends Button
 
 	/**
 	 * Get the button id
-	 *
-	 * Redefined from JButton class
 	 *
 	 * @param   string  $type  Button type
 	 * @param   string  $name  Button name

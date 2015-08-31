@@ -34,6 +34,8 @@ use Hubzero\Base\Object;
 
 /**
  * Document class, provides an easy interface to parse and display a document
+ *
+ * Inspired by Joomla's JDocument class
  */
 class Base extends Object
 {
@@ -89,105 +91,105 @@ class Base extends Object
 	/**
 	 * Document modified date
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_mdate = '';
 
 	/**
 	 * Tab string
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_tab = "\11";
 
 	/**
 	 * Contains the line end string
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_lineEnd = "\12";
 
 	/**
 	 * Contains the character encoding string
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_charset = 'utf-8';
 
 	/**
 	 * Document mime type
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_mime = '';
 
 	/**
 	 * Document namespace
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_namespace = '';
 
 	/**
 	 * Document profile
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_profile = '';
 
 	/**
 	 * Array of linked scripts
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	public $_scripts = array();
 
 	/**
 	 * Array of scripts placed in the header
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	public $_script = array();
 
 	/**
 	 * Array of linked style sheets
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	public $_styleSheets = array();
 
 	/**
 	 * Array of included style declarations
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	public $_style = array();
 
 	/**
 	 * Array of meta tags
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	public $_metaTags = array();
 
 	/**
 	 * The rendering engine
 	 *
-	 * @var    object
+	 * @var  object
 	 */
 	public $_engine = null;
 
 	/**
 	 * The document type
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	public $_type = null;
 
 	/**
 	 * Array of buffered output
 	 *
-	 * @var    mixed (depends on the renderer)
+	 * @var  mixed (depends on the renderer)
 	 */
 	public static $_buffer = null;
 
@@ -195,8 +197,7 @@ class Base extends Object
 	 * Class constructor.
 	 *
 	 * @param   array  $options  Associative array of options
-	 *
-	 * @since   11.1
+	 * @return  void
 	 */
 	public function __construct($options = array())
 	{
@@ -239,32 +240,9 @@ class Base extends Object
 	}
 
 	/**
-	 * Set the document type
-	 *
-	 * @param   string  $type  Type document is to set to
-	 * @return  object  Document instance of $this to allow chaining
-	 */
-	/*public function setType($type)
-	{
-		$this->_type = $type;
-
-		return $this;
-	}*/
-
-	/**
-	 * Returns the document type
-	 *
-	 * @return  string
-	 */
-	/*public function getType()
-	{
-		return $this->_type;
-	}*/
-
-	/**
 	 * Get the contents of the document buffer
 	 *
-	 * @return  The contents of the document buffer
+	 * @return  string  The contents of the document buffer
 	 */
 	public function getBuffer()
 	{
@@ -652,7 +630,6 @@ class Base extends Object
 	 * @param   string   $type  The document type to be sent
 	 * @param   boolean  $sync  Should the type be synced with HTML?
 	 * @return  object   Document instance of $this to allow chaining
-	 * @link    http://www.w3.org/TR/xhtml-media-types
 	 */
 	public function setMimeEncoding($type = 'text/html', $sync = true)
 	{
@@ -689,13 +666,16 @@ class Base extends Object
 		{
 			case 'win':
 				$this->_lineEnd = "\15\12";
-				break;
+			break;
+
 			case 'unix':
 				$this->_lineEnd = "\12";
-				break;
+			break;
+
 			case 'mac':
 				$this->_lineEnd = "\15";
-				break;
+			break;
+
 			default:
 				$this->_lineEnd = $style;
 		}

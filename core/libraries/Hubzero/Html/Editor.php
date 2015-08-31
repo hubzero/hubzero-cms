@@ -37,32 +37,17 @@ use Lang;
 
 /**
  * Editor class to handle WYSIWYG editors
+ *
+ * Inspired by Joomla's JEditor class
  */
 class Editor extends Object
 {
 	/**
-	 * An array of Observer objects to notify
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	//protected $observers = array();
-
-	/**
 	 * The state of the observable object
 	 *
-	 * @var    mixed
-	 * @since  11.1
+	 * @var  mixed
 	 */
 	protected $state = null;
-
-	/**
-	 * A multi dimensional array of [function][] = key for observers
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	//protected $methods = array();
 
 	/**
 	 * Editor Plugin object
@@ -93,8 +78,9 @@ class Editor extends Object
 	protected $author = null;
 
 	/**
-	 * @var    array  JEditor instances container.
-	 * @since  11.3
+	 * Editor instances container.
+	 *
+	 * @var  array
 	 */
 	protected static $instances = array();
 
@@ -131,7 +117,7 @@ class Editor extends Object
 	/**
 	 * Get the state of the Editor object
 	 *
-	 * @return  mixed    The state of the object.
+	 * @return  mixed  The state of the object.
 	 */
 	public function getState()
 	{
@@ -146,61 +132,7 @@ class Editor extends Object
 	 */
 	public function attach($observer)
 	{
-		/*if (is_array($observer))
-		{
-			if (!isset($observer['handler']) || !isset($observer['event']) || !is_callable($observer['handler']))
-			{
-				return;
-			}
-
-			// Make sure we haven't already attached this array as an observer
-			foreach ($this->_observers as $check)
-			{
-				if (is_array($check) && $check['event'] == $observer['event'] && $check['handler'] == $observer['handler'])
-				{
-					return;
-				}
-			}
-
-			$this->_observers[] = $observer;
-			end($this->_observers);
-			$methods = array($observer['event']);
-		}
-		else
-		{
-			if (!($observer instanceof Editor))
-			{
-				return;
-			}
-
-			// Make sure we haven't already attached this object as an observer
-			$class = get_class($observer);
-
-			foreach ($this->_observers as $check)
-			{
-				if ($check instanceof $class)
-				{
-					return;
-				}
-			}
-
-			$this->_observers[] = $observer;
-			$methods = array_diff(get_class_methods($observer), get_class_methods('JPlugin'));
-		}
-
-		$key = key($this->_observers);
-
-		foreach ($methods as $method)
-		{
-			$method = strtolower($method);
-
-			if (!isset($this->_methods[$method]))
-			{
-				$this->_methods[$method] = array();
-			}
-
-			$this->_methods[$method][] = $key;
-		}*/
+		// [!] For Joomla compatibility only
 	}
 
 	/**
@@ -211,28 +143,7 @@ class Editor extends Object
 	 */
 	public function detach($observer)
 	{
-		// Initialise variables.
-		/*$retval = false;
-
-		$key = array_search($observer, $this->_observers);
-
-		if ($key !== false)
-		{
-			unset($this->_observers[$key]);
-			$retval = true;
-
-			foreach ($this->_methods as &$method)
-			{
-				$k = array_search($key, $method);
-
-				if ($k !== false)
-				{
-					unset($method[$k]);
-				}
-			}
-		}
-
-		return $retval;*/
+		// [!] For Joomla compatibility only
 	}
 
 	/**
@@ -305,19 +216,6 @@ class Editor extends Object
 		// Initialise variables.
 		$return = null;
 
-		/*$args['name'] = $name;
-		$args['content'] = $html;
-		$args['width'] = $width;
-		$args['height'] = $height;
-		$args['col'] = $col;
-		$args['row'] = $row;
-		$args['buttons'] = $buttons;
-		$args['id'] = $id ? $id : $name;
-		$args['asset'] = $asset;
-		$args['author'] = $author;
-		$args['params'] = $params;
-		$args['event'] = 'onDisplay';*/
-
 		$results[] = $this->editor->onDisplay($name, $html, $width, $height, $col, $row, $buttons, $id, $asset, $author, $params);
 
 		foreach ($results as $result)
@@ -346,9 +244,6 @@ class Editor extends Object
 			return;
 		}
 
-		//$args[] = $editor;
-		//$args['event'] = 'onSave';
-
 		$return = '';
 		$results[] = $this->editor->onSave($editor);
 
@@ -372,9 +267,6 @@ class Editor extends Object
 	public function getContent($editor)
 	{
 		$this->load();
-
-		//$args['name'] = $editor;
-		//$args['event'] = 'onGetContent';
 
 		$return = '';
 		$results[] = $this->editor->onGetContent($editor);
@@ -400,10 +292,6 @@ class Editor extends Object
 	public function setContent($editor, $html)
 	{
 		$this->load();
-
-		//$args['name']  = $editor;
-		//$args['html']  = $html;
-		//$args['event'] = 'onSetContent';
 
 		$return = '';
 		$results[] = $this->editor->onSetContent($editor, $html);

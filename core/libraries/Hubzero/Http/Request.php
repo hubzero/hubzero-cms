@@ -37,6 +37,12 @@ use Hubzero\Utility\String;
 /**
  * Request handler replaces the default PHP global variables 
  * and functions by an object-oriented layer.
+ *
+ * A number of methods are inspired by or follow Joomla
+ * syntax to maintain compatibility.
+ *
+ * Further inspiration for Laravel's Request class
+ * http://laravel.com
  */
 class Request extends BaseRequest
 {
@@ -59,7 +65,7 @@ class Request extends BaseRequest
 	 * @param   string   $value      Value
 	 * @param   string   $hash       Hash
 	 * @param   boolean  $overwrite  Boolean
-	 * @return  string   Previous value
+	 * @return  boolean
 	 */
 	public function setVar($name, $value = null, $hash = 'method', $overwrite = true)
 	{
@@ -128,7 +134,7 @@ class Request extends BaseRequest
 	 * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
 	 * @param   string   $type     Return type for the variable. [!] Deprecated. Joomla legacy support.
 	 * @param   string   $mask     Filter mask for the variable. [!] Deprecated. Joomla legacy support.
-	 * @return  itneger  Request variable
+	 * @return  integer  Request variable
 	 */
 	public function getVar($key, $default = null, $hash = 'input', $type = 'none', $mask = 0)
 	{

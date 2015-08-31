@@ -32,6 +32,8 @@ namespace Hubzero\Encryption;
 
 /**
  * Cipher interface.
+ *
+ * Inspired by Joomla's JCryptCipher class
  */
 interface Cipher
 {

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -71,20 +71,6 @@ class Javascript extends AbstractRenderer
 		foreach ($messages as $item)
 		{
 			$output[] = 'console.' . $item['label'] . '("' . addslashes($this->_deflate($item['message'])) . '");';
-			/*switch ($item['type'])
-			{
-				case 'string':
-					$output[] = 'console.' . $item['label'] . '("' . $this->_deflate($item['message']). '");';
-				break;
-
-				case 'array':
-					$output[] = 'console.log("' . json_encode($this->_deflate($item['message'])). '");';
-				break;
-
-				case 'object':
-					$output[] = 'console.log(JSON.parse(\'' . json_encode($item['message']) . '\'));';
-				break;
-			}*/
 		}
 		$output[] = '</script>';
 		return implode("\n", $output);

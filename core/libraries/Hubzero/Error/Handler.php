@@ -35,6 +35,9 @@ use ErrorException;
 
 /**
  * Error Handling Class
+ *
+ * Inspired, in part, by Laravel's Exception Handler
+ * http://laravel.com
  */
 class Handler
 {

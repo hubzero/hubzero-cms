@@ -79,7 +79,6 @@ final class WrappedListener
 	 * @param   string  $method
 	 * @param   array   $arguments
 	 * @return  mixed
-	 * @since   2.0
 	 */
 	public function __call($method, $arguments)
 	{

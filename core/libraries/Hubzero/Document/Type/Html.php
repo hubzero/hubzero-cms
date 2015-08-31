@@ -34,7 +34,9 @@ use Hubzero\Document\Base;
 use Hubzero\Config\Registry;
 
 /**
- * Document class, provides an easy interface to parse and display a HTML document
+ * HTML Document class for parsing and displaying a HTML document
+ *
+ * Inspired by Joomla's JDocumentHtml class
  */
 class Html extends Base
 {

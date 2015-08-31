@@ -1,11 +1,30 @@
 <?php
-
 /**
- * This file is part of the Geocoder package.
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * HUBzero CMS
  *
- * @license    MIT License
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Geocode\Result;
@@ -14,25 +33,36 @@ use Geocoder\Result\AbstractResult;
 use Geocoder\Result\ResultInterface;
 
 /**
- * @author William Durand <william.durand1@gmail.com>
+ * @author  William Durand <william.durand1@gmail.com>
  */
 class Country extends AbstractResult implements ResultInterface
 {
 	/**
-	 * @var string
+	 * Country name
+	 *
+	 * @var  string
 	 */
 	protected $name = null;
 
 	/**
-	 * @var string
+	 * Country code
+	 *
+	 * @var  string
 	 */
 	protected $code = null;
 
 	/**
-	 * @var string
+	 * Country continent
+	 *
+	 * @var  string
 	 */
 	protected $continent = null;
 
+	/**
+	 * Get latitude/longitude coordinates
+	 *
+	 * @return  array
+	 */
 	public function getCoordinates()
 	{
 		return array(
@@ -41,16 +71,32 @@ class Country extends AbstractResult implements ResultInterface
 		);
 	}
 
+	/**
+	 * Get latitude
+	 *
+	 * @return  float
+	 */
 	public function getLatitude()
 	{
 		return 0.0;
 	}
 
+	/**
+	 * Get longitude
+	 *
+	 * @return  float
+	 */
 	public function getLongitude()
 	{
 		return 0.0;
 	}
 
+	/**
+	 * Get the coordinates for the "bounding box"
+	 * that encompasses the coutnry.
+	 *
+	 * @return  float
+	 */
 	public function getBounds()
 	{
 		return array(
@@ -61,61 +107,121 @@ class Country extends AbstractResult implements ResultInterface
 		);
 	}
 
+	/**
+	 * Get street number (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getStreetNumber()
 	{
 		return '';
 	}
 
+	/**
+	 * Get street name (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getStreetName()
 	{
 		return '';
 	}
 
+	/**
+	 * Get city (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getCity()
 	{
 		return '';
 	}
 
+	/**
+	 * Get zip code (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getZipcode()
 	{
 		return '';
 	}
 
+	/**
+	 * Get city district (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getCityDistrict()
 	{
 		return '';
 	}
 
+	/**
+	 * Get county (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getCounty()
 	{
 		return '';
 	}
 
+	/**
+	 * Get county code (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getCountyCode()
 	{
 		return '';
 	}
 
+	/**
+	 * Get region
+	 *
+	 * @return  string
+	 */
 	public function getRegion()
 	{
 		return $this->continent;
 	}
 
+	/**
+	 * Get region code
+	 *
+	 * @return  string
+	 */
 	public function getRegionCode()
 	{
 		return '';
 	}
 
+	/**
+	 * Get country name
+	 *
+	 * @return  string
+	 */
 	public function getCountry()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Get country code
+	 *
+	 * @return  string
+	 */
 	public function getCountryCode()
 	{
 		return $this->code;
 	}
 
+	/**
+	 * Get timezone (N/A)
+	 *
+	 * @return  string
+	 */
 	public function getTimezone()
 	{
 		return '';

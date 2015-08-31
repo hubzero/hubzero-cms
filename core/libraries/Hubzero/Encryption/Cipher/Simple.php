@@ -36,6 +36,8 @@ use InvalidArgumentException;
 
 /**
  * Cipher for Simple encryption, decryption and key generation.
+ *
+ * Inspired by Joomla's JCryptCipherSimple class
  */
 class Simple implements Cipher
 {

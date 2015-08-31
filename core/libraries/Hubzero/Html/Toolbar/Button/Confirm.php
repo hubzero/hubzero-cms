@@ -35,13 +35,15 @@ use Hubzero\Html\Builder\Behavior;
 
 /**
  * Renders a standard button with a confirm dialog
+ *
+ * Inspired by Joomla's JButtonConfirm class
  */
 class Confirm extends Button
 {
 	/**
 	 * Button type
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_name = 'Confirm';
 

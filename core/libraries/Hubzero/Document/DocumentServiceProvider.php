@@ -145,7 +145,8 @@ class DocumentServiceProvider extends Middleware
 		}
 
 		$document->setTitle($params->get('page_title'));
-		$document->setDescription($params->get('page_description'));*/
+		$document->setDescription($params->get('page_description'));
+		*/
 
 		$generator = 'HUBzero - The open source platform for scientific and educational collaboration';
 		if ($this->app['config']->get('MetaVersion', 0))

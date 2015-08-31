@@ -36,13 +36,16 @@ use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 
 /**
  * RedirectResponse represents an HTTP response doing a redirect.
+ *
+ * Inspired, in part, by Laravel
+ * http://laravel.com
  */
 class RedirectResponse extends BaseRedirectResponse
 {
 	/**
 	 * The request instance.
 	 *
-	 * @var \Illuminate\Http\Request
+	 * @var  object
 	 */
 	protected $request;
 
@@ -139,7 +142,6 @@ class RedirectResponse extends BaseRedirectResponse
 	 * @param   object  $request  A Request instance
 	 * @return  object  The current response.
 	 */
-	//public function prepare(Request $request)
 	public function send()
 	{
 		if ($this->request)

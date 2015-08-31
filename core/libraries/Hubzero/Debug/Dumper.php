@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,21 +39,21 @@ class Dumper
 	/**
 	 * Renderable
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_renderer = null;
 
 	/**
 	 * Messages
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_messages = array();
 
 	/**
 	 * Map of characters to be replaced through strtr
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_nameReplacements = array(
 		'-'  => '',
@@ -65,6 +65,8 @@ class Dumper
 
 	/**
 	 * Constructor
+	 *
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -92,7 +94,7 @@ class Dumper
 	/**
 	 * Returns the renderer
 	 *
-	 * @return    Renderer\Renderable
+	 * @return  object  Renderer\Renderable
 	 */
 	public function getRenderer()
 	{
@@ -102,7 +104,7 @@ class Dumper
 	/**
 	 * Sets the renderer
 	 *
-	 * @param   mixed  $renderer string or Renderable
+	 * @param   mixed  $renderer  string or Renderable
 	 * @return  object
 	 */
 	public function setRenderer($renderer)
@@ -141,8 +143,8 @@ class Dumper
 	/**
 	 * Canonicalize name
 	 *
-	 * @param  string $name
-	 * @return string
+	 * @param   string  $name
+	 * @return  string
 	 */
 	protected function scrub($name)
 	{
@@ -153,9 +155,9 @@ class Dumper
 	/**
 	 * Adds a message
 	 *
-	 * @param    mixed  $message
-	 * @param    string $label
-	 * @return   object
+	 * @param   mixed   $message
+	 * @param   string  $label
+	 * @return  object
 	 */
 	public function addVar($var)
 	{
@@ -169,7 +171,9 @@ class Dumper
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Get a list of messages
+	 *
+	 * @return  array
 	 */
 	public function messages()
 	{
@@ -190,6 +194,8 @@ class Dumper
 
 	/**
 	 * Deletes all messages
+	 *
+	 * @return  void
 	 */
 	public function clear()
 	{
@@ -197,11 +203,14 @@ class Dumper
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Get a count and list of messages
+	 *
+	 * @return  array
 	 */
 	public function collect()
 	{
 		$messages = $this->messages();
+
 		return array(
 			'count'    => count($messages),
 			'messages' => $messages
@@ -219,8 +228,9 @@ class Dumper
 	}
 
 	/**
-	 * Render log
+	 * Render
 	 *
+	 * @param   object  $renderer
 	 * @return  string
 	 */
 	public function render($renderer=null)
@@ -238,9 +248,8 @@ class Dumper
 	/**
 	 * Adds a message
 	 *
-	 * @param    mixed  $message
-	 * @param    string $label
-	 * @return   object
+	 * @param   mixed  $var
+	 * @return  void
 	 */
 	public static function log($var)
 	{
@@ -251,7 +260,8 @@ class Dumper
 	/**
 	 * Dumps a var
 	 *
-	 * @param   mixed $var
+	 * @param   mixed   $var
+	 * @param   string  $to
 	 * @return  void
 	 */
 	public static function dump($var, $to=null)
@@ -266,7 +276,8 @@ class Dumper
 	/**
 	 * Dumps a var and dies();
 	 *
-	 * @param   mixed $var
+	 * @param   mixed   $var
+	 * @param   string  $to
 	 * @return  void
 	 */
 	public static function stop($var, $to=null)

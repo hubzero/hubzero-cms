@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,14 +33,12 @@ namespace Hubzero\Document\Type\Feed;
 use Hubzero\Base\Object;
 
 /**
- * ItunesOwner is an internal class that stores feed image information
+ * Class for storing iTunes owner information
  */
 class ItunesOwner extends Object
 {
 	/**
 	 * Email attribute
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */
@@ -48,8 +46,6 @@ class ItunesOwner extends Object
 
 	/**
 	 * Name attribute
-	 *
-	 * required
 	 *
 	 * @var  string
 	 */

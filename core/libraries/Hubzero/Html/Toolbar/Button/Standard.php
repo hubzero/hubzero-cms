@@ -35,6 +35,8 @@ use Hubzero\Html\Builder\Behavior;
 
 /**
  * Renders a standard button
+ *
+ * Inspired by Joomla's JButtonStandard class
  */
 class Standard extends Button
 {
@@ -53,7 +55,7 @@ class Standard extends Button
 	 * @param   string   $text  Button text.
 	 * @param   string   $task  Task associated with the button.
 	 * @param   boolean  $list  True to allow lists
-	 * @return  string  HTML string for the button
+	 * @return  string   HTML string for the button
 	 */
 	public function fetchButton($type = 'Standard', $name = '', $text = '', $task = '', $list = true)
 	{
@@ -79,7 +81,7 @@ class Standard extends Button
 	 * @param   string   $task      The task associated with the button
 	 * @param   boolean  $list      True to allow use of lists
 	 * @param   boolean  $hideMenu  True to hide the menu on click
-	 * @return  string  Button CSS Id
+	 * @return  string   Button CSS Id
 	 */
 	public function fetchId($type = 'Standard', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
 	{

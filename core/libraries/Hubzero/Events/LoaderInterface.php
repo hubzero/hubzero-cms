@@ -39,7 +39,6 @@ interface LoaderInterface
 	 * Get the event name.
 	 *
 	 * @return  string  The event name.
-	 * @since   2.0
 	 */
 	public function getName();
 
@@ -48,7 +47,6 @@ interface LoaderInterface
 	 *
 	 * @param   string  $group
 	 * @return  array
-	 * @since   2.0
 	 */
 	public function loadListeners($group);
 }

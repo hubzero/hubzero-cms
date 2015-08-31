@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,22 +36,32 @@ namespace Hubzero\Debug\Dumper;
 interface Renderable
 {
 	/**
-	 * Get the renderer's name
+	 * Returns renderer name
+	 *
+	 * @return  string
 	 */
 	public function getName();
 
 	/**
 	 * Set the list of messages
+	 *
+	 * @param   mixed  $messages
+	 * @return  object
 	 */
 	public function setMessages($messages);
 
 	/**
 	 * Get the list of messages
+	 *
+	 * @return  array
 	 */
 	public function getMessages();
 
 	/**
-	 * {@inheritDoc}
+	 * Render a list of messages
+	 *
+	 * @param   array  $messages
+	 * @return  string
 	 */
 	public function render($messages=null);
 }

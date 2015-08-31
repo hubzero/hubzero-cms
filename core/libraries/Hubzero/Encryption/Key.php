@@ -32,6 +32,8 @@ namespace Hubzero\Encryption;
 
 /**
  * Encryption key object
+ *
+ * Inspired by Joomla's JCryptKey class
  */
 class Key
 {
@@ -73,20 +75,4 @@ class Key
 		$this->private = isset($private) ? (string) $private : null;
 		$this->public  = isset($public)  ? (string) $public  : null;
 	}
-
-	/**
-	 * Magic method to return some protected property values.
-	 *
-	 * @param   string  $name  The name of the property to return.
-	 * @return  mixed
-	 */
-	/*public function __get($name)
-	{
-		if ($name == 'type')
-		{
-			return $this->type;
-		}
-
-		throw new InvalidArgumentException('Cannot access property ' . __CLASS__ . '::' . $name);
-	}*/
 }

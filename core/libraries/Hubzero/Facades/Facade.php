@@ -32,13 +32,16 @@ namespace Hubzero\Facades;
 
 /**
  * Abstract face class
+ *
+ * Heavily influenced by Laravel
+ * http://laravel.com
  */
 abstract class Facade
 {
 	/**
 	 * The application instance being facaded.
 	 *
-	 * @var \Hubzero\Base\Application
+	 * @var  object  \Hubzero\Base\Application
 	 */
 	protected static $app;
 

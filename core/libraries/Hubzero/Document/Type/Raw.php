@@ -33,7 +33,9 @@ namespace Hubzero\Document\Type;
 use Hubzero\Document\Base;
 
 /**
- * Document RAW class, provides an easy interface to parse and display raw output
+ * Raw document class for outputting raw data
+ *
+ * Inspired by Joomla's JDocumentRaw class
  */
 class Raw extends Base
 {

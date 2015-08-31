@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -47,7 +47,6 @@ class Template extends Html
 	 * @param   boolean  $caching  If true, cache the output
 	 * @param   array    $params   Associative array of attributes
 	 * @return  The rendered data
-	 * @since   1.3.1
 	 */
 	public function render($caching = false, $params = array())
 	{
@@ -114,7 +113,6 @@ class Template extends Html
 	 * @param   string  $directory  The name of the template
 	 * @param   string  $filename   The actual filename
 	 * @return  string  The contents of the template
-	 * @since   1.3.1
 	 */
 	protected function _loadTemplate($directory, $filename)
 	{

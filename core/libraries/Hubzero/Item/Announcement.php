@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -49,10 +49,10 @@ class Announcement extends \JTable
 	const STATE_DELETED     = 2;
 
 	/**
-	 * Constructor method for JTable class
+	 * Constructor
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  $db
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -61,6 +61,8 @@ class Announcement extends \JTable
 
 	/**
 	 * Overloaded Check method. Verify we have all needed things to save
+	 *
+	 * @return  bool
 	 */
 	public function check()
 	{
@@ -82,7 +84,7 @@ class Announcement extends \JTable
 	/**
 	 * Mark item as archived
 	 *
-	 * @return object
+	 * @return  object
 	 */
 	public function archive()
 	{
@@ -93,16 +95,20 @@ class Announcement extends \JTable
 
 	/**
 	 * Method to check if announcement belongs to entity
+	 *
+	 * @param   string   $entity_scope
+	 * @param   integer  $entity_id
+	 * @return  boolean
 	 */
 	public function belongsToObject($entity_scope, $entity_id)
 	{
-		//make sure we have an id
+		// make sure we have an id
 		if (!isset($this->id) || $this->id == null || $this->id == 0)
 		{
 			return true;
 		}
 
-		//make sure scope and id match
+		// make sure scope and id match
 		if ($this->scope == $entity_scope && $this->scope_id == $entity_id)
 		{
 			return true;
@@ -113,7 +119,8 @@ class Announcement extends \JTable
 	/**
 	 * Get Announcement Count
 	 *
-	 * @param    array    $filters
+	 * @param   array  $filters
+	 * @return  integer
 	 */
 	public function count($filters = array())
 	{
@@ -127,14 +134,14 @@ class Announcement extends \JTable
 	/**
 	 * Get Announcement Records
 	 *
-	 * @param    array    $filters
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
 		$query  = "SELECT a.*";
 		$query .= $this->_buildQuery($filters);
 
-		//$query .= " ORDER BY a.priority DESC, a.created DESC";
 		$query .= " ORDER BY a.created DESC";
 		if (isset($filters['limit']))
 		{
@@ -152,7 +159,8 @@ class Announcement extends \JTable
 	/**
 	 * Build Query to get Announcements
 	 *
-	 * @param    array    $filters
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{
@@ -229,7 +237,9 @@ class Announcement extends \JTable
 	/**
 	 * Check if date is within announcement publish up/down
 	 *
-	 * @param    array    $filters
+	 * @param   object  $announcement
+	 * @param   string  $date
+	 * @return  boolean
 	 */
 	public function announcementPublishedForDate($announcement = null, $date = null)
 	{
@@ -272,7 +282,8 @@ class Announcement extends \JTable
 	/**
 	 * Email Announcement
 	 *
-	 * @param    array    $filters
+	 * @param   object  $announcement
+	 * @return  boolean
 	 */
 	public function emailAnnouncement($announcement = null)
 	{

@@ -40,7 +40,7 @@ class Site extends Base
 	/**
 	 * Loads the entire menu table into memory.
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function load()
 	{
@@ -96,10 +96,10 @@ class Site extends Base
 	/**
 	 * Gets menu items by attribute
 	 *
-	 * @param	string	$attributes	The field name
-	 * @param	string	$values		The value of the field
-	 * @param	boolean	$firstonly	If true, only returns the first item found
-	 * @return	array
+	 * @param   string   $attributes  The field name
+	 * @param   string   $values      The value of the field
+	 * @param   boolean  $firstonly   If true, only returns the first item found
+	 * @return  array
 	 */
 	public function getItems($attributes, $values, $firstonly = false)
 	{
@@ -142,8 +142,8 @@ class Site extends Base
 	/**
 	 * Get menu item by id
 	 *
-	 * @param	string	$language	The language code.
-	 * @return	object	The item object
+	 * @param   string  $language  The language code.
+	 * @return  object  The item object
 	 */
 	public function getDefault($language = '*')
 	{
@@ -155,9 +155,7 @@ class Site extends Base
 		{
 			return $this->_items[$this->_default['*']];
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 }

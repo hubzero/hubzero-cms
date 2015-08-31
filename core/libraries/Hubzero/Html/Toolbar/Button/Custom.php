@@ -34,13 +34,15 @@ use Hubzero\Html\Toolbar\Button;
 
 /**
  * Renders a custom button
+ *
+ * Inspired by Joomla's JButtonCustom class
  */
 class Custom extends Button
 {
 	/**
 	 * Button type
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_name = 'Custom';
 
@@ -50,7 +52,7 @@ class Custom extends Button
 	 * @param   string  $type  Button type, unused string.
 	 * @param   string  $html  HTML strng for the button
 	 * @param   string  $id    CSS id for the button
-	 * @return  string   HTML string for the button
+	 * @return  string  HTML string for the button
 	 */
 	public function fetchButton($type = 'Custom', $html = '', $id = 'custom')
 	{

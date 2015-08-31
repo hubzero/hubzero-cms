@@ -33,7 +33,9 @@ namespace Hubzero\Document\Type;
 use Hubzero\Document\Base;
 
 /**
- * Document JSON class, provides an easy interface to parse and display JSON output
+ * JSON document class for parsing and displaying JSON data
+ *
+ * Inspired by Joomla's JDocumentJson class
  */
 class Json extends Base
 {

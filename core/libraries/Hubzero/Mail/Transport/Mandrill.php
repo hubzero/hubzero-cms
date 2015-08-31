@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -46,29 +46,29 @@ class Mandrill implements Swift_Transport
 	/**
 	 * Whether or not the Mandrill object has been created
 	 *
-	 * @var bool
-	 **/
+	 * @var  bool
+	 */
 	private $started = false;
 
 	/**
 	 * The Mandrill API key
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	private $apiKey = '';
 
 	/**
 	 * The Mandrill object
 	 *
-	 * @var object
-	 **/
+	 * @var  object
+	 */
 	private $mandrill = null;
 
 	/**
 	 * Constructs a new Mandril transport mechanism
 	 *
-	 * @param  string $apiKey the Mandrill api key
-	 * @return void
+	 * @param   string  $apiKey  The Mandrill api key
+	 * @return  void
 	 **/
 	public function __construct($apiKey)
 	{
@@ -78,7 +78,7 @@ class Mandrill implements Swift_Transport
 	/**
 	 * Tests to see if the transporter has been started
 	 *
-	 * @return bool
+	 * @return  bool
 	 */
 	public function isStarted()
 	{
@@ -88,7 +88,7 @@ class Mandrill implements Swift_Transport
 	/**
 	 * Starts the transport mechanism
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function start()
 	{
@@ -98,7 +98,7 @@ class Mandrill implements Swift_Transport
 	/**
 	 * Stop the transport mechanism
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function stop()
 	{
@@ -111,13 +111,14 @@ class Mandrill implements Swift_Transport
 	 * Recipient/sender data will be retrieved from the Message API.
 	 * The return value is the number of recipients who were accepted for delivery.
 	 *
-	 * @param  Swift_Mime_Message $message           the message to be sent
-	 * @param  array              $failedRecipients  an array of failures
-	 * @return int
+	 * @param   object  $message           The message to be sent
+	 * @param   array   $failedRecipients  An array of failures
+	 * @return  int
 	 */
 	public function send(Swift_Mime_Message $message, &$failedRecipients=null)
 	{
-		try {
+		try
+		{
 			// Start building the message
 			$from = $message->getFrom();
 			$to   = [];
@@ -212,8 +213,8 @@ class Mandrill implements Swift_Transport
 	 *
 	 * @FIXME: not exactly sure how this comes into play (more research needed)
 	 *
-	 * @param  Swift_Events_EventListener $plugin
-	 * @return void
+	 * @param   object  $plugin
+	 * @return  void
 	 */
 	public function registerPlugin(Swift_Events_EventListener $plugin)
 	{

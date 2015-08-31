@@ -34,6 +34,8 @@ use Hubzero\Html\Toolbar\Button;
 
 /**
  * Renders a help popup window button
+ *
+ * Inspired by Joomla's JButtonHelp class
  */
 class Help extends Button
 {
@@ -77,8 +79,6 @@ class Help extends Button
 
 	/**
 	 * Get the button id
-	 *
-	 * Redefined from JButton class
 	 *
 	 * @return  string	Button CSS Id
 	 */

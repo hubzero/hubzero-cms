@@ -33,6 +33,9 @@ namespace Hubzero\Filesystem;
 use Hubzero\Filesystem\Util\MimeType;
 use Hubzero\Filesystem\Exception\PathViolationException;
 
+/**
+ * Utility methods
+ */
 class Util
 {
 	/**

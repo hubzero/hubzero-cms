@@ -444,14 +444,6 @@ class File extends Object
 		}
 		else
 		{
-			/*if (substr($output, 0, strlen(JPATH_BASE)) == JPATH_BASE)
-			{
-				$relative = rtrim(\Request::base(true), '/') . substr($output, strlen(JPATH_BASE));
-			}
-			else
-			{
-				$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
-			}*/
 			$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
 			$relative = rtrim(\Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');
 		}

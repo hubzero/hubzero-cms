@@ -44,14 +44,14 @@ class Writer
 	/**
 	 * The Monolog logger instance.
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $monolog;
 
 	/**
 	 * All of the error levels.
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $levels = array(
 		'debug',
@@ -67,16 +67,16 @@ class Writer
 	/**
 	 * The event dispatcher instance.
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $dispatcher;
 
 	/**
 	 * Create a new log writer instance.
 	 *
-	 * @param  object  $monolog
-	 * @param  object  $dispatcher
-	 * @return void
+	 * @param   object  $monolog
+	 * @param   object  $dispatcher
+	 * @return  void
 	 */
 	public function __construct(MonologLogger $monolog, DispatcherInterface $dispatcher = null)
 	{
@@ -91,9 +91,9 @@ class Writer
 	/**
 	 * Call Monolog with the given method and parameters.
 	 *
-	 * @param  string  $method
-	 * @param  array  $parameters
-	 * @return mixed
+	 * @param   string  $method
+	 * @param   array  $parameters
+	 * @return  mixed
 	 */
 	protected function callMonolog($method, $parameters)
 	{
@@ -108,10 +108,10 @@ class Writer
 	/**
 	 * Register a file log handler.
 	 *
-	 * @param  string  $path
-	 * @param  string  $level
-	 * @param  string  $format
-	 * @return void
+	 * @param   string  $path
+	 * @param   string  $level
+	 * @param   string  $format
+	 * @return  void
 	 */
 	public function useFiles($path, $level = 'debug', $format='', $dateFormat = 'Y-m-d H:i:s', $permissions=null)
 	{
@@ -129,11 +129,11 @@ class Writer
 	/**
 	 * Register a daily file log handler.
 	 *
-	 * @param  string  $path
-	 * @param  int     $days
-	 * @param  string  $level
-	 * @param  string  $format
-	 * @return void
+	 * @param   string  $path
+	 * @param   int     $days
+	 * @param   string  $level
+	 * @param   string  $format
+	 * @return  void
 	 */
 	public function useDailyFiles($path, $days = 0, $level = 'debug', $format='', $dateFormat = 'Y-m-d H:i:s', $permissions=null)
 	{
@@ -151,8 +151,8 @@ class Writer
 	/**
 	 * Parse the string level into a Monolog constant.
 	 *
-	 * @param  string  $level
-	 * @return int
+	 * @param   string  $level
+	 * @return  int
 	 */
 	protected function parseLevel($level)
 	{
@@ -191,8 +191,8 @@ class Writer
 	 * Register a new callback handler for when
 	 * a log event is triggered.
 	 *
-	 * @param  Closure  $callback
-	 * @return void
+	 * @param   object  $callback  Closure
+	 * @return  void
 	 */
 	public function listen($handler)
 	{
@@ -207,7 +207,7 @@ class Writer
 	/**
 	 * Get the underlying Monolog instance.
 	 *
-	 * @return \Monolog\Logger
+	 * @return  object
 	 */
 	public function getMonolog()
 	{
@@ -217,7 +217,7 @@ class Writer
 	/**
 	 * Get the event dispatcher instance.
 	 *
-	 * @return \Hubzero\Events\Dispatcher
+	 * @return  object
 	 */
 	public function getEventDispatcher()
 	{
@@ -227,10 +227,10 @@ class Writer
 	/**
 	 * Set the event dispatcher instance.
 	 *
-	 * @param  \Hubzero\Events\Dispatcher
-	 * @return void
+	 * @param   object
+	 * @return  void
 	 */
-	public function setEventDispatcher(JDispatcher $dispatcher)
+	public function setEventDispatcher($dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
 	}
@@ -238,10 +238,10 @@ class Writer
 	/**
 	 * Fires a log event.
 	 *
-	 * @param  string  $level
-	 * @param  string  $message
-	 * @param  array   $context
-	 * @return void
+	 * @param   string  $level
+	 * @param   string  $message
+	 * @param   array   $context
+	 * @return  void
 	 */
 	protected function triggerLogEvent($level, $message, array $context = array())
 	{
@@ -257,9 +257,9 @@ class Writer
 	/**
 	 * Dynamically handle error additions.
 	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
+	 * @param   string  $method
+	 * @param   array   $parameters
+	 * @return  mixed
 	 */
 	public function __call($method, $parameters)
 	{

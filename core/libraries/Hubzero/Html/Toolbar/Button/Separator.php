@@ -34,13 +34,15 @@ use Hubzero\Html\Toolbar\Button;
 
 /**
  * Renders a button separator
+ *
+ * Inspired by Joomla's JButtonSeparator class
  */
 class Separator extends Button
 {
 	/**
 	 * Button type
 	 *
-	 * @var   string
+	 * @var  string
 	 */
 	protected $_name = 'Separator';
 

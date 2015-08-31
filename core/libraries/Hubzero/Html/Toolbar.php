@@ -34,43 +34,44 @@ use Hubzero\Base\Object;
 
 /**
  * ToolBar handler
+ *
+ * Inspired by Joomla's JToolBar class
  */
 class Toolbar extends Object
 {
 	/**
 	 * Toolbar name
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_name = '';
 
 	/**
 	 * Toolbar array
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_bar = array();
 
 	/**
 	 * Loaded buttons
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_buttons = array();
 
 	/**
 	 * Directories, where button types can be stored.
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_buttonPath = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $name  The toolbar name.
-	 *
-	 * @since   11.1
+	 * @param   string  $name  The toolbar name
+	 * @return  void
 	 */
 	public function __construct($name = 'toolbar')
 	{

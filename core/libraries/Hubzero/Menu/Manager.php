@@ -65,8 +65,8 @@ class Manager
 	/**
 	 * Get a menu instance.
 	 *
-	 * @param  string  $menu
-	 * @return mixed
+	 * @param   string  $menu
+	 * @return  mixed
 	 */
 	public function menu($menu = null, $options = array())
 	{

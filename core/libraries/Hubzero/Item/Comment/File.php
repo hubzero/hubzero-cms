@@ -82,8 +82,8 @@ class File extends \JTable
 	/**
 	 * Set the upload path
 	 *
-	 * @param      string $path PAth to set to
-	 * @return     void
+	 * @param   string  $path  Path to set to
+	 * @return  void
 	 */
 	public function setUploadDir($path)
 	{

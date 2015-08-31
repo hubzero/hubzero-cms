@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -37,18 +37,60 @@ use Hubzero\Base\Object;
  */
 class Mozify extends Object
 {
+	/**
+	 * Image alt text
+	 *
+	 * @var  string
+	 */
 	private $imageAlt        = null;
+
+	/**
+	 * Image URL
+	 *
+	 * @var  string
+	 */
 	private $imageUrl        = null;
+
+	/**
+	 * Image width
+	 *
+	 * @var  integer
+	 */
 	private $imageWidth      = null;
+
+	/**
+	 * Image height
+	 *
+	 * @var  integer
+	 */
 	private $imageHeight     = null;
+
+	/**
+	 * Mosaix size
+	 *
+	 * @var  integer
+	 */
 	private $mosaicSize      = 5;
+
+	/**
+	 * CSS class prefix
+	 *
+	 * @var  string
+	 */
 	private $cssClassName    = 'hz_mozify_';
+
+	/**
+	 * Internal coutner
+	 *
+	 * @var  integer
+	 */
 	private $counter         = 1;
 
 	/**
 	 * Image Mozifyier Constructor
 	 *
-	 * @param  $config  Array of config values
+	 * @param   array  $config  Array of config values
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
@@ -119,6 +161,8 @@ class Mozify extends Object
 
 	/**
 	 * Accessor Method to get Image Url
+	 *
+	 * @return  string
 	 */
 	public function getImageUrl()
 	{
@@ -127,6 +171,9 @@ class Mozify extends Object
 
 	/**
 	 * Mutator Method to set Image Url
+	 *
+	 * @param   string  $imageUrl
+	 * @return  void
 	 */
 	public function setImageUrl($imageUrl = '')
 	{
@@ -139,7 +186,6 @@ class Mozify extends Object
 		else
 		{
 			$this->setError('Unable to get details of image');
-			return;
 		}
 	}
 
@@ -156,7 +202,7 @@ class Mozify extends Object
 	/**
 	 * Mutator Method to set Image Alt Text
 	 *
-	 * @param   string $imageAlt
+	 * @param   string  $imageAlt
 	 * @return  void
 	 */
 	public function setImageAlt($imageAlt = '')
@@ -237,7 +283,7 @@ class Mozify extends Object
 		$class = $this->getCssClassName();
 
 		//build mso hack
-		$mosHack = '<!--[if mso]><style>.' . $class . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" style="display:block;float:none;" align=""><tr><td>';
+		$mosHack  = '<!--[if mso]><style>.' . $class . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" style="display:block;float:none;" align=""><tr><td>';
 		$mosHack .= '<img src="' . $this->imageUrl . '" alt="'.$this->imageAlt.'" style="display:block;" moz="3" valid="true" height="' . $this->imageHeight . '" width="' . $this->imageWidth . '"></td></tr></table><style type="text/css">/*<![endif]-->';
 		return $mosHack;
 	}
@@ -264,7 +310,7 @@ class Mozify extends Object
 		$class = $this->getCssClassName();
 
 		//build replacement html
-		$replacement = '<table width="' . $this->imageWidth . '" cellspacing="0" cellpadding="0" border="0" align="" moz="3" style="display:block;float:none" class="' . $class . '">';
+		$replacement  = '<table width="' . $this->imageWidth . '" cellspacing="0" cellpadding="0" border="0" align="" moz="3" style="display:block;float:none" class="' . $class . '">';
 		$replacement .= '<tbody>';
 		$replacement .= '<tr>';
 		$replacement .= '<td style="padding:0px 0px 0px 0px;" class="' . $class . '">';
@@ -317,6 +363,7 @@ class Mozify extends Object
 	/**
 	 * Cinvert an RGB value to hex
 	 *
+	 * @param   array   $rgb
 	 * @return  string
 	 */
 	private function _rgb2hex(array $rgb)
