@@ -43,6 +43,8 @@ if (!defined('_QQ_'))
 
 /**
  * Languages/translation handler class
+ *
+ * Inspired by Joomla's JLanguage class
  */
 class Translator extends Object
 {
@@ -495,7 +497,7 @@ class Translator extends Object
 	 * Setter for the lowerLimitSearchWordCallback function.
 	 *
 	 * @param   mixed  $function  Function name (string) or actual function for PHP 5.3 (function)
-	 * @return  string|function Function name or the actual function for PHP 5.3.
+	 * @return  string|function   Function name or the actual function for PHP 5.3.
 	 */
 	public function setLowerLimitSearchWordCallback($function)
 	{
@@ -533,7 +535,7 @@ class Translator extends Object
 	 * Setter for the upperLimitSearchWordCallback function
 	 *
 	 * @param   string  $function  The name of the callback function.
-	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 * @return  mixed   Function name (string) or the actual function for PHP 5.3 (function).
 	 */
 	public function setUpperLimitSearchWordCallback($function)
 	{
@@ -571,7 +573,7 @@ class Translator extends Object
 	 * Setter for the searchDisplayedCharactersNumberCallback function.
 	 *
 	 * @param   string  $function  The name of the callback.
-	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 * @return  mixed   Function name (string) or the actual function for PHP 5.3 (function).
 	 */
 	public function setSearchDisplayedCharactersNumberCallback($function)
 	{
@@ -585,8 +587,8 @@ class Translator extends Object
 	 *
 	 * This is a simple, quick check for the directory that should contain language files for the given user.
 	 *
-	 * @param   string  $lang      Language to check.
-	 * @param   string  $basePath  Optional path to check.
+	 * @param   string   $lang      Language to check.
+	 * @param   string   $basePath  Optional path to check.
 	 * @return  boolean  True if the language exists.
 	 */
 	public static function exists($lang, $basePath = PATH_APP)

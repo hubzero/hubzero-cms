@@ -40,7 +40,7 @@ class TranslationServiceProvider extends ServiceProvider
 	/**
 	 * Register the service provider.
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function register()
 	{
