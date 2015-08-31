@@ -676,7 +676,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$totalAuths = count($authors);
 				$x = 0;
 
-			
+
 				foreach ($authors as &$author)
 				{
 					/***
@@ -700,7 +700,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 					$x = $x + 1;
 				}
-		 		$view->authorString = $authorString;
+					$view->authorString = $authorString;
 			}
 
 
