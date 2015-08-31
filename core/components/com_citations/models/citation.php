@@ -85,7 +85,7 @@ class Citation extends Relational
 	 **/
 	public function relatedAuthors()
 	{
-		return $this->oneToMany('Author', 'cid', 'id');
+		return $this->oneToMany('Author', 'cid', 'id')->order('ordering', 'ASC');
 	}
 
 	/**

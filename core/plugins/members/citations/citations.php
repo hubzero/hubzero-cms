@@ -705,22 +705,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// get badges
 		$badges = trim(Request::getVar('badges', ''));
 
-
-		// handle the author string
-		$authorString = Request::getVar('author');
-		if (!is_array($authorString))
-		{
-			$authorString = str_replace(',',';', $authorString);
-		}
-		else
-		{
-			$authorString = '';
-		}
-
 		// check to see if new
 		$cid = Request::getInt('cid');
 		$isNew = ($cid < 0 ? true : false);
-
+		
 		// get the citation (single) or create a new one
 		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
 			->set(array(
@@ -732,7 +720,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'date_publish' => Request::getVar('date_publish', '0000-00-00 00:00:00'),
 				'year' => Request::getVar('year'),
 				'month' => Request::getVar('month'),
-				'author' => is_array(Request::getVar('author')) ? '' : Request::getVar('author'),
 				'author_address' => Request::getVar('author_address'),
 				'editor' => Request::getVar('editor'),
 				'title' => Request::getVar('title'),
@@ -777,6 +764,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+
+		$authorCount = $citation->relatedAuthors()->count();
+
 		// update authors entries for new citations
 		if ($isNew)
 		{
@@ -788,6 +778,30 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$author->set('cid', $citation->id);
 				$author->save();
 			}
+		}
+		elseif (!$isNew && ($authorCount == 0))
+		{
+			$authorField = explode(',',Request::getVar('author'));
+			$totalAuths = count($authorField);
+
+			if ($totalAuths == 0)
+			{
+				// redirect 
+			}
+			
+			foreach ($authorField as $key => $a)
+			{
+				// create a new row
+				$authorObj = \Components\Citations\Models\Author::blank()->set(array(
+					'cid' => $citation->id,
+					'ordering' => $key,
+					'author' => $a
+				));
+
+				$authorObj->save();	
+
+			}
+			// turn the author string into author entries
 		}
 
 		// check if we are allowing tags

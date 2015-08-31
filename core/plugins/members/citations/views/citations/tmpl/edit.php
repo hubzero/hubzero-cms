@@ -156,7 +156,8 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 					<div class="grid">
 						<div class="col span10">
 							<label for="field-author">
-								<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS') . ' '; ?>
+								<span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 								<?php
 									if ($this->row->relatedAuthors->count())
 									{
