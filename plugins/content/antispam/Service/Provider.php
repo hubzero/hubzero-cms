@@ -193,6 +193,7 @@ class Provider extends AbstractAdapter
 		$linkCount = count($matches[0]);
 
 		$wordCount = str_word_count($text, 0, 'http: //');
+		$wordCount = ($wordCount <= 0 ? 1 : $wordCount);
 
 		if ($linkCount >= $this->get('linkFrequency'))
 		{
