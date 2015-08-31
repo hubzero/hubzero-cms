@@ -159,12 +159,10 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 								<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS') . ' '; ?>
 								<span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 								<?php
-
-								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''))));
-
-								if (count($mc) > 0) {
-									echo $mc[0];
-								} else { ?>
+									$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''))));
+									if (count($mc) > 0) {
+										echo $mc[0];
+									} else { ?>
 									<input type="text" name="author" id="field-author" value="" />
 								<?php } ?>
 							</label>
@@ -175,17 +173,17 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 					</div>
 
 					<div class="field-wrap author-list">
-						<?php if (isset($authors) && count($authors)) { ?>
-							<?php foreach ($authors as $i => $author) { ?>
-								<p class="citation-author" id="author_<?php echo $this->escape($author->id); ?>">
+						<?php if (isset($this->authors) && count($this->authors)) { ?>
+							<?php foreach ($this->authors as $i => $this->author) { ?>
+								<p class="citation-author" id="author_<?php echo $this->escape($this->author->id); ?>">
 									<span class="author-handle">
 									</span>
 									<span class="author-name">
-										<?php echo $this->escape($author->author); ?>
+										<?php echo $this->escape($this->author->author); ?>
 									</span>
 									<span class="author-description">
-										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $this->escape($author->id); ?>" />
-										<a class="delete" data-id="<?php echo $this->escape($author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $author->id . '&' . JUtility::getToken() . '=1'); ?>">
+										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $this->escape($this->author->id); ?>" />
+										<a class="delete" data-id="<?php echo $this->escape($this->author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $this->author->id . '&' . JUtility::getToken() . '=1'); ?>">
 											<?php echo Lang::txt('JDELETE'); ?>
 										</a>
 									</span>

@@ -242,7 +242,6 @@ class Pdo extends Driver
 		catch (\PDOException $e)
 		{
 			// @FIXME: this should honor error reporting settings
-			var_dump($this->statement); die;
 			throw new QueryFailedException($e->getMessage(), 500, $e);
 		}
 

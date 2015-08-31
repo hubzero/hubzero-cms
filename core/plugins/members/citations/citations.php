@@ -665,7 +665,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			if ($view->row->relatedAuthors->count())
 			{
-				$authors = $view->row->relatedAuthors;
+				$view->authors = $view->row->relatedAuthors;
 			}
 			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
 			{
@@ -676,6 +676,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$totalAuths = count($authors);
 				$x = 0;
 
+			
 				foreach ($authors as &$author)
 				{
 					/***
@@ -699,9 +700,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 					$x = $x + 1;
 				}
+		 		$view->authorString = $authorString;
 			}
 
-		 $view->authorString = $authorString;
 
 		 //tags & badges
 		 $view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
@@ -744,20 +745,6 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// get badges
 		$badges = trim(Request::getVar('badges', ''));
-
-		// replace separator for authors
-		$authorString = Request::getVar('author');
-
-		if (is_string($authorString))
-		{
-			$authorString = str_replace(',', ';', $authorString);
-		}
-		else
-		{
-			// incoming is an array for related authors
-			// jos_citation_authors table entries
-			$authorString = '';
-		}
 
 		// check to see if new
 		$cid = Request::getInt('cid');
