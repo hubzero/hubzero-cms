@@ -515,10 +515,25 @@ abstract class JModel extends JObject
 
 		$options = array(
 			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JRequest::getCmd('option')),
-			'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
+			'cachebase' => ($client_id) ? PATH_APP . '/cache/admin' : $conf->get('cache_path', PATH_APP . '/cache/site'));
+
+		/*
+		[!] HUBzero - Changed to use Hubzero Cache
 
 		$cache = JCache::getInstance('callback', $options);
 		$cache->clean();
+		*/
+		$handler = \App::get('config')->get('cache_handler');
+		$client  = \Hubzero\Base\ClientManager::client($client_id);
+
+		$app = \App::getRoot();
+		$app->get('config')->set($handler, array(
+			'cachebase' => PATH_APP . '/cache/' . (isset($client->alias) ? $client->alias : $client->name)
+		));
+
+		$cache = new \Hubzero\Cache\Manager($app);
+		$cache->storage($handler);
+		$cache->clean($group);
 
 		// Trigger the onContentCleanCache event.
 		$dispatcher->trigger($this->event_clean_cache, $options);
