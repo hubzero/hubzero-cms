@@ -178,10 +178,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td>
-					<?php if ($row->published) : ?>
+					<?php if ($row->published == 1) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->id); ?>"><span class="state publish"><span><?php echo Lang::txt('UNPUBLISH'); ?></span></span></a>
-					<?php else : ?>
+					<?php elseif ($row->published == 0) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo Lang::txt('PUBLISH'); ?></span></span></a>
+					<?php elseif ($row->published == 2) : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->id); ?>"><span class="state delete"><span><?php echo Lang::txt('DELETED'); ?></span></span></a>
 					<?php endif; ?>
 				</td>
 				<td class="priority-3">
