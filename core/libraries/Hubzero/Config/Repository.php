@@ -167,7 +167,8 @@ class Repository extends Registry
 
 		if (!$found || $value === null || $value === '')
 		{
-			return $default;
+			//return $default;
+			return parent::get($path, $default);
 		}
 
 		return $value;
