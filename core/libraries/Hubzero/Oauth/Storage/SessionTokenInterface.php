@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,22 +38,22 @@ interface SessionTokenInterface
 	/**
 	 * Get session id from cookie
 	 * 
-	 * @return bool  Result of test
+	 * @return  bool  Result of test
 	 */
 	public function getSessionIdFromCookie();
 
 	/**
 	 * Get user id via session id
 	 * 
-	 * @param  string $session_id Session identifier
-	 * @return int                User identifier
+	 * @param   string  $session_id  Session identifier
+	 * @return  int     User identifier
 	 */
 	public function getUserIdFromSessionId($session_id);
 
 	/**
 	 * Loads client needed for internal requests
 	 * 
-	 * @return mixed
+	 * @return  mixed
 	 */
 	public function getInternalRequestClient();
 
@@ -62,7 +62,7 @@ interface SessionTokenInterface
 	 * created or was accidentally delete resulted in both session 
 	 * and tool requests failing
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function createInternalRequestClient();
 }

@@ -32,6 +32,7 @@ namespace Hubzero\Spam\StringProcessor;
 
 /**
  * Spam string processor.
+ *
  * Based on work by Laju Morrison <morrelinko@gmail.com>
  */
 class NativeStringProcessor implements StringProcessorInterface

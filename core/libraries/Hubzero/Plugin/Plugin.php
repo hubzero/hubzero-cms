@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -44,8 +44,8 @@ class Plugin extends Object
 	/**
 	 * Event object to observe.
 	 *
-	 * @var    object
-	 * @since  11.3
+	 * @var  object
+	 * @deprecated
 	 */
 	protected $_subject = null;
 
@@ -74,6 +74,7 @@ class Plugin extends Object
 	 * Container for component messages
 	 *
 	 * @var  array
+	 * @deprecated
 	 */
 	public $pluginMessageQueue = array();
 
@@ -156,6 +157,7 @@ class Plugin extends Object
 	 * @param   string  $msg      A message to display
 	 * @param   string  $msgType  Message type [error, success, warning]
 	 * @return  void
+	 * @deprecated
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
@@ -179,6 +181,7 @@ class Plugin extends Object
 	 * @param   string  $message  The message to add
 	 * @param   string  $type     The type of message to add
 	 * @return  object
+	 * @deprecated
 	 */
 	public function addPluginMessage($message, $type='message')
 	{
@@ -210,7 +213,8 @@ class Plugin extends Object
 	/**
 	 * Method to get component messages
 	 *
-	 * @return	array
+	 * @return  array
+	 * @deprecated
 	 */
 	public function getPluginMessage()
 	{
@@ -241,7 +245,7 @@ class Plugin extends Object
 	 *
 	 * @param   string  $name    Plugin name
 	 * @param   string  $folder  Plugin folder
-	 * @return	object
+	 * @return  object
 	 */
 	public static function getParams($name, $folder)
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,30 +36,30 @@ namespace Hubzero\Trac;
 class Project
 {
 	/**
-	 * Description for 'id'
+	 * Project ID
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $id = null;
 
 	/**
-	 * Description for 'name'
+	 * Project name
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $name = null;
 
 	/**
-	 * Description for '_updatedkeys'
+	 * List of updated keys
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_updatedkeys = array();
 
 	/**
-	 * Description for '_list_keys'
+	 * List keys
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_list_keys = array();
 
@@ -192,9 +192,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'create'
-	 *
-	 * Long description (if any) ...
+	 * Create a record
 	 *
 	 * @return  boolean
 	 */
@@ -254,9 +252,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'read'
-	 *
-	 * Long description (if any) ...
+	 * Read a record
 	 *
 	 * @return  boolean
 	 */
@@ -305,9 +301,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'update'
-	 *
-	 * Long description (if any) ...
+	 * Update a record
 	 *
 	 * @param   boolean  $all
 	 * @return  boolean
@@ -316,7 +310,7 @@ class Project
 	{
 		$db =  \App::get('db');
 
-		$query = "UPDATE #__trac_project SET ";
+		$query = "UPDATE `#__trac_project` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -401,9 +395,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'delete'
-	 *
-	 * Long description (if any) ...
+	 * Delete a record
 	 *
 	 * @return  boolean
 	 */
@@ -619,12 +611,10 @@ class Project
 	}
 
 	/**
-	 * Short description for 'get'
+	 * Property accessor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   string  $key
-	 * @return  mixed
+	 * @param   string  $property
+	 * @return  string
 	 */
 	public function get($key)
 	{
@@ -632,11 +622,9 @@ class Project
 	}
 
 	/**
-	 * Short description for 'set'
+	 * Property setter
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   string  $key
+	 * @param   string  $property
 	 * @param   mixed   $value
 	 * @return  void
 	 */
@@ -646,9 +634,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'add_user_permission'
-	 *
-	 * Long description (if any) ...
+	 * Add permission to a user
 	 *
 	 * @param   string  $user
 	 * @param   string  $action
@@ -700,9 +686,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'add_group_permission'
-	 *
-	 * Long description (if any) ...
+	 * Add permission to a group
 	 *
 	 * @param   string  $group
 	 * @param   string  $action
@@ -750,9 +734,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'remove_user_permission'
-	 *
-	 * Long description (if any) ...
+	 * Remove permission form a user
 	 *
 	 * @param   string  $user
 	 * @param   string  $action
@@ -814,9 +796,7 @@ class Project
 	}
 
 	/**
-	 * Short description for 'remove_group_permission'
-	 *
-	 * Long description (if any) ...
+	 * Remove permission form a group
 	 *
 	 * @param   string  $group
 	 * @param   string  $action

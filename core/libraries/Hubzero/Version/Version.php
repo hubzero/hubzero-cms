@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,7 +41,7 @@ final class Version
 	/**
 	 * HUBzero CMS version identification - see compareVersion()
 	 */
-	const VERSION = '1.3.2-dev';
+	const VERSION = '2.0.0-dev';
 
 	/**
 	 * Github Service Identifier for version information is retreived from
@@ -56,7 +56,7 @@ final class Version
 	/**
 	 * The latest stable version HUBzero CMS available
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected static $latestVersion;
 
@@ -64,10 +64,10 @@ final class Version
 	 * Compare the specified version string $version
 	 * with the current Hubzero\Version\Version::VERSION
 	 *
-	 * @param  string  $version  A version string (e.g. "0.7.1").
-	 * @return int           -1 if the $version is older,
-	 *                           0 if they are the same,
-	 *                           and +1 if $version is newer.
+	 * @param   string  $version  A version string (e.g. "0.7.1").
+	 * @return  int               -1 if the $version is older,
+	 *                            0 if they are the same,
+	 *                            and +1 if $version is newer.
 	 */
 	public static function compareVersion($version)
 	{
@@ -88,11 +88,11 @@ final class Version
 	 * the array to a single value, comparing the version numbers with
 	 * version_compare().
 	 *
-	 * @see    http://developer.github.com/v3/git/refs/#get-all-references
-	 * @link   https://api.github.com/repos/hubzero/hzcms1/git/refs/tags/release-
-	 * @link   http://hubzero.org/api/hz-version?v=1
-	 * @param  string $service Version Service with which to retrieve the version
-	 * @return string
+	 * @see     http://developer.github.com/v3/git/refs/#get-all-references
+	 * @link    https://api.github.com/repos/hubzero/hzcms1/git/refs/tags/release-
+	 * @link    http://hubzero.org/api/hz-version?v=1
+	 * @param   string  $service  Version Service with which to retrieve the version
+	 * @return  string
 	 */
 	public static function getLatest($service = self::VERSION_SERVICE_HUBZERO)
 	{
@@ -134,7 +134,7 @@ final class Version
 	 * the latest (or newer??) than the latest tag on GitHub,
 	 * which is returned by static::getLatest().
 	 *
-	 * @return bool
+	 * @return  bool
 	 */
 	public static function isLatest()
 	{

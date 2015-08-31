@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,41 +24,44 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Redis;
+
 use Predis\Client;
 
+/**
+ * Redis Database helper
+ */
 class Database
 {
 	/**
 	 * The host address of the database.
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $clients;
 
 	/**
 	 * Hold server vars
 	 * 
-	 * @var [type]
+	 * @var  array
 	 */
 	protected $servers;
 
 	/**
 	 * Hold Client options
 	 * 
-	 * @var [type]
+	 * @var  array
 	 */
 	protected $options;
 
 	/**
 	 * Create a new Redis connection instance.
 	 *
-	 * @param  array  $servers
-	 * @return void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -78,8 +81,7 @@ class Database
 	/**
 	 * Create a new aggregate client supporting sharding.
 	 *
-	 * @param  array  $servers
-	 * @return array
+	 * @return  array
 	 */
 	protected function createAggregateClient()
 	{
@@ -95,8 +97,7 @@ class Database
 	/**
 	 * Create an array of single connection clients.
 	 *
-	 * @param  array  $servers
-	 * @return array
+	 * @return  array
 	 */
 	protected function createSingleClients()
 	{
@@ -113,8 +114,8 @@ class Database
 	/**
 	 * Get a specific Redis connection instance.
 	 *
-	 * @param  string  $name
-	 * @return \Predis\Connection\SingleConnectionInterface
+	 * @param   string  $name
+	 * @return  object
 	 */
 	public static function connect($name = 'default')
 	{
@@ -126,9 +127,9 @@ class Database
 	/**
 	 * Run a command against the Redis database.
 	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
+	 * @param   string  $method
+	 * @param   array   $parameters
+	 * @return  mixed
 	 */
 	public function command($method, array $parameters = array())
 	{
@@ -138,9 +139,9 @@ class Database
 	/**
 	 * Dynamically make a Redis command.
 	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
+	 * @param   string  $method
+	 * @param   array   $parameters
+	 * @return  mixed
 	 */
 	public function __call($method, $parameters)
 	{

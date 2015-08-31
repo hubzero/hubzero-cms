@@ -35,6 +35,8 @@ use Exception;
 
 /**
  * Database session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageDatabase class
  */
 class Database extends Store
 {

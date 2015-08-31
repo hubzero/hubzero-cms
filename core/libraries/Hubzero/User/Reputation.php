@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 namespace Hubzero\User;
@@ -42,15 +42,15 @@ class Reputation extends Relational
 	/**
 	 * The table to which the class pertains
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	protected $table = '#__user_reputation';
 
 	/**
 	 * Increments user spam count, both globally and in current session
 	 *
-	 * @return bool
-	 **/
+	 * @return  bool
+	 */
 	public function incrementSpamCount()
 	{
 		// Save global spam count
@@ -67,8 +67,8 @@ class Reputation extends Relational
 	/**
 	 * Checks to see if user is jailed
 	 *
-	 * @return bool
-	 **/
+	 * @return  bool
+	 */
 	public function isJailed()
 	{
 		if ($this->get('user_id', false))

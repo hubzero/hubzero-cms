@@ -54,7 +54,7 @@ abstract class Service extends Object implements DetectorInterface
 	/**
 	 * Returns the validation value
 	 *
-	 * @return mixed Value to be validated
+	 * @return  mixed  Value to be validated
 	 */
 	public function getValue()
 	{
@@ -64,8 +64,8 @@ abstract class Service extends Object implements DetectorInterface
 	/**
 	 * Sets the value to be validated and clears the errors arrays
 	 *
-	 * @param  mixed $value
-	 * @return void
+	 * @param   mixed  $value
+	 * @return  void
 	 */
 	public function setValue($value)
 	{

@@ -34,6 +34,8 @@ use Hubzero\Session\Store;
 
 /**
  * Memcached session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageMemchached class
  */
 class Memcached extends Store
 {
@@ -263,7 +265,7 @@ class Memcached extends Store
 	/**
 	 * Build the storage key
 	 *
-	 * @param   string   $id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string
 	 */
 	protected function key($id)

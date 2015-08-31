@@ -262,7 +262,7 @@ class Redis extends Store
 	/**
 	 * Build the storage key
 	 *
-	 * @param   string   $id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string
 	 */
 	protected function key($id)

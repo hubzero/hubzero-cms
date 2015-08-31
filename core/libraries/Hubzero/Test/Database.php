@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -39,15 +39,15 @@ class Database extends \PHPUnit_Extensions_Database_TestCase
 	/**
 	 * The database pdo object
 	 *
-	 * @var object
-	 **/
+	 * @var  object
+	 */
 	static protected $pdo = null;
 
 	/**
 	 * The database connection
 	 *
-	 * @var object
-	 **/
+	 * @var  object
+	 */
 	protected $connection = null;
 
 	/**
@@ -56,8 +56,8 @@ class Database extends \PHPUnit_Extensions_Database_TestCase
 	 * We assume that you'll have a test sqlite database with your test schema defined.
 	 * If you don't need this, then why aren't you using the basic test class?
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	protected $fixture = 'test.sqlite3';
 
 	/**
@@ -67,14 +67,14 @@ class Database extends \PHPUnit_Extensions_Database_TestCase
 	 * or need to do something a little more complicated, you can also completely override the
 	 * getDataSet() method.
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	protected $seed = 'seed.xml';
 
 	/**
 	 * Gets the default database connection (PHPUnit uses this during setup)
 	 *
-	 * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
+	 * @return  object  PHPUnit_Extensions_Database_DB_IDatabaseConnection
 	 */
 	public function getConnection()
 	{
@@ -98,7 +98,7 @@ class Database extends \PHPUnit_Extensions_Database_TestCase
 	/**
 	 * Gets the database seed info (PHPUnit does this for every test)
 	 *
-	 * @return PHPUnit_Extensions_Database_DataSet_IDataSet
+	 * @return  object  PHPUnit_Extensions_Database_DataSet_IDataSet
 	 */
 	public function getDataSet()
 	{
@@ -110,8 +110,8 @@ class Database extends \PHPUnit_Extensions_Database_TestCase
 	/**
 	 * Gets a mock database driver
 	 *
-	 * @return object
-	 **/
+	 * @return  object
+	 */
 	public function getMockDriver()
 	{
 		static $dbo;

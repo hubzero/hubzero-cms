@@ -39,6 +39,8 @@ use Lang;
 
 /**
  * Plugin loader
+ *
+ * Inspired, in part, by Joomla's JPluginHelper class
  */
 class Loader implements LoaderInterface
 {
@@ -53,7 +55,6 @@ class Loader implements LoaderInterface
 	 * Get the event name.
 	 *
 	 * @return  string  The event name.
-	 * @since   2.0
 	 */
 	public function getName()
 	{

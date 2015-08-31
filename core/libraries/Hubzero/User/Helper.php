@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,14 +35,11 @@ namespace Hubzero\User;
  */
 class Helper
 {
-
 	/**
-	 * Short description for 'random_password'
+	 * Generate a random password
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $length Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   integer  $length
+	 * @return  string
 	 */
 	public static function random_password($length = 8)
 	{
@@ -65,12 +62,10 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'encrypt_password'
+	 * Encrypt a password
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $password Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string  $password
+	 * @return  string
 	 */
 	public static function encrypt_password($password)
 	{
@@ -78,70 +73,70 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'getXDomainId'
+	 * Get domain ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $domain Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $domain
+	 * @return  mixed
 	 */
 	public static function getXDomainId($domain)
 	{
 		$db = \App::get('db');
 
 		if (empty($domain) || ($domain == 'hubzero'))
+		{
 			return false;
+		}
 
 		$query = 'SELECT domain_id FROM `#__xdomains` WHERE domain=' . $db->quote($domain) . ';';
-
-		$db->setQuery( $query );
+		$db->setQuery($query);
 
 		$result = $db->loadObject();
 
 		if (empty($result))
+		{
 			return false;
+		}
 
 		return $result->domain_id;
 	}
 
 	/**
-	 * Short description for 'getXDomainUserId'
+	 * Get domain user ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $domain_username Parameter description (if any) ...
-	 * @param      string $domain Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $domain_username
+	 * @param   string  $domain
+	 * @return  mixed
 	 */
 	public static function getXDomainUserId($domain_username, $domain)
 	{
 		$db = \App::get('db');
 
 		if (empty($domain) || ($domain == 'hubzero'))
+		{
 			return $domain_username;
+		}
 
 		$query = 'SELECT uidNumber FROM #__xdomain_users,#__xdomains WHERE ' .
 				 '#__xdomains.domain_id=#__xdomain_users.domain_id AND ' .
 				 '#__xdomains.domain=' . $db->quote($domain) . ' AND ' .
 				 '#__xdomain_users.domain_username=' . $db->quote($domain_username);
-
-		$db->setQuery( $query );
+		$db->setQuery($query);
 
 		$result = $db->loadObject();
 
 		if (empty($result))
+		{
 			return false;
+		}
 
 		return $result->uidNumber;
 	}
 
 	/**
-	 * Short description for 'deleteXDomainUserId'
+	 * Delete a record by user ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $id
+	 * @return  boolean
 	 */
 	public static function deleteXDomainUserId($id)
 	{
@@ -155,7 +150,7 @@ class Helper
 		if ($id <= 0)
 			return false;
 
-		$query = 'DELETE FROM #__xdomain_users WHERE uidNumber=' . $db->quote($id) . ';';
+		$query = 'DELETE FROM `#__xdomain_users` WHERE uidNumber=' . $db->quote($id) . ';';
 
 		$db->setQuery($query);
 
@@ -165,18 +160,16 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'isXDomainUser'
+	 * Check if a user has a domain record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $uid
+	 * @return  boolean
 	 */
 	public static function isXDomainUser($uid)
 	{
 		$db = \App::get('db');
 
-		$query = 'SELECT uidNumber FROM #__xdomain_users WHERE #__xdomain_users.uidNumber=' . $db->quote($uid);
+		$query = 'SELECT uidNumber FROM `#__xdomain_users` WHERE #__xdomain_users.uidNumber=' . $db->quote($uid);
 
 		$db->setQuery($query);
 
@@ -189,21 +182,21 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'createXDomain'
+	 * Creeate a domain record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $domain Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $domain
+	 * @return  boolean
 	 */
 	public static function createXDomain($domain)
 	{
 		$db = \App::get('db');
 
 		if (empty($domain) || ($domain == 'hubzero'))
+		{
 			return false;
+		}
 
-		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
+		$query = 'SELECT domain_id FROM `#__xdomains` WHERE ' .
 				 '#__xdomains.domain=' . $db->quote($domain);
 
 		$db->setQuery($query);
@@ -212,7 +205,7 @@ class Helper
 
 		if (empty($result))
 		{
-			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->quote($domain) . ')';
+			$query = 'INSERT INTO `#__xdomains` (domain) VALUES (' . $db->quote($domain) . ')';
 
 			$db->setQuery($query);
 
@@ -221,20 +214,20 @@ class Helper
 			$domain_id = $db->insertid();
 		}
 		else
+		{
 			$domain_id = $result->domain_id;
+		}
 
 		return $domain_id;
 	}
 
 	/**
-	 * Short description for 'setXDomainUserId'
+	 * Set a domain for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $domain_username Parameter description (if any) ...
-	 * @param      unknown $domain Parameter description (if any) ...
-	 * @param      unknown $uidNumber Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string   $domain_username
+	 * @param   string   $domain
+	 * @param   integer  $uidNumber
+	 * @return  bool
 	 */
 	public static function setXDomainUserId($domain_username, $domain, $uidNumber)
 	{
@@ -242,14 +235,12 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'mapXDomainUser'
+	 * Map a domain to a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $domain_username Parameter description (if any) ...
-	 * @param      unknown $domain Parameter description (if any) ...
-	 * @param      unknown $uidNumber Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string   $domain_username
+	 * @param   string   $domain
+	 * @param   integer  $uidNumber
+	 * @return  boolean
 	 */
 	public static function mapXDomainUser($domain_username, $domain, $uidNumber)
 	{
@@ -258,7 +249,7 @@ class Helper
 		if (empty($domain))
 			return 0;
 
-		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
+		$query = 'SELECT domain_id FROM `#__xdomains` WHERE ' .
 				 '#__xdomains.domain=' . $db->quote($domain);
 
 		$db->setQuery($query);
@@ -267,7 +258,7 @@ class Helper
 
 		if (empty($result))
 		{
-			$query = 'INSERT INTO #__xdomains (domain) VALUES (' . $db->quote($domain) . ')';
+			$query = 'INSERT INTO `#__xdomains` (domain) VALUES (' . $db->quote($domain) . ')';
 
 			$db->setQuery($query);
 
@@ -278,7 +269,7 @@ class Helper
 		else
 			$domain_id = $result->domain_id;
 
-		$query = 'INSERT INTO #__xdomain_users (domain_id,domain_username,uidNumber) ' .
+		$query = 'INSERT INTO `#__xdomain_users` (domain_id,domain_username,uidNumber) ' .
 			' VALUES (' . $db->quote($domain_id) . ',' .
 			$db->quote($domain_username) . ',' . $db->quote($uidNumber) . ')';
 
@@ -293,21 +284,20 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'getGroups'
+	 * Get a list of groups for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $cat Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $uid
+	 * @param   string  $type
+	 * @param   string  $cat
+	 * @return  boolean
 	 */
 	public static function getGroups($uid, $type='all', $cat = null)
 	{
 		$db = \App::get('db');
 
 		$g = '';
-		if ($cat == 1) {
+		if ($cat == 1)
+		{
 			$g .= "(g.type='".$cat."' OR g.type='3') AND";
 		}
 		elseif ($cat !== null)
@@ -345,7 +335,9 @@ class Helper
 		$result = $db->loadObjectList();
 
 		if (empty($result))
+		{
 			return false;
+		}
 
 		return $result;
 	}
@@ -353,18 +345,18 @@ class Helper
 	/**
 	 * Remove User From Groups
 	 *
-	 * @param      string $uid
-	 * @return     boolean
+	 * @param   integer  $uid
+	 * @return  boolean
 	 */
-	public static function removeUserFromGroups( $uid )
+	public static function removeUserFromGroups($uid)
 	{
 		$db = \App::get('db');
 		$tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
 
 		foreach ($tables as $table)
 		{
-			$sql = "DELETE FROM `".$table."` WHERE uidNumber=" . $db->quote( $uid );
-			$db->setQuery( $sql );
+			$sql = "DELETE FROM `".$table."` WHERE uidNumber=" . $db->quote($uid);
+			$db->setQuery($sql);
 			$db->query();
 		}
 
@@ -372,14 +364,12 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'getCourses'
+	 * Get courses for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $cat Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string  $uid
+	 * @param   string  $type
+	 * @param   string  $cat
+	 * @return  boolean
 	 */
 	public static function getCourses($uid, $type='all', $cat = null)
 	{
@@ -420,31 +410,33 @@ class Helper
 		$result = $db->loadObjectList();
 
 		if (empty($result))
+		{
 			return false;
+		}
 
 		return $result;
 	}
 
 	/**
-	 * Short description for 'getCommonGroups'
+	 * Get common groups between two users
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $uid Parameter description (if any) ...
-	 * @param      string $pid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $uid
+	 * @param   string   $pid
+	 * @return  boolean
 	 */
-	public static function getCommonGroups( $uid, $pid )
+	public static function getCommonGroups($uid, $pid)
 	{
 		$uprofile = Profile::getInstance($uid);
 
 		// Get the groups the visiting user
 		$xgroups = (is_object($uprofile)) ? $uprofile->getGroups('all') : array();
 		$usersgroups = array();
-		if (!empty($xgroups)) {
+		if (!empty($xgroups))
+		{
 			foreach ($xgroups as $group)
 			{
-				if ($group->regconfirmed) {
+				if ($group->regconfirmed)
+				{
 					$usersgroups[] = $group->cn;
 				}
 			}
@@ -453,12 +445,15 @@ class Helper
 		// Get the groups of the profile
 		$pprofile = Profile::getInstance($pid);
 		$pgroups = (is_object($pprofile)) ? $pprofile->getGroups('all') : array();
+
 		// Get the groups the user has access to
 		$profilesgroups = array();
-		if (!empty($pgroups)) {
+		if (!empty($pgroups))
+		{
 			foreach ($pgroups as $group)
 			{
-				if ($group->regconfirmed) {
+				if ($group->regconfirmed)
+				{
 					$profilesgroups[] = $group->cn;
 				}
 			}

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2010-2012 Purdue University. All rights reserved.
+ * Copyright 2010-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author	  Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2010-2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2010-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,8 +34,18 @@ use Hubzero\User\Profile;
 use Hubzero\User\Password\History;
 use Hubzero\User\Password;
 
+/**
+ * Password rule
+ */
 class Rule
 {
+	/**
+	 * Get a list of rules
+	 *
+	 * @param   string  $group
+	 * @param   bool    $all
+	 * @return  array
+	 */
 	public static function getRules($group = null, $all = false)
 	{
 		$db =  \App::get('db');
@@ -75,6 +85,12 @@ class Rule
 		return $result;
 	}
 
+	/**
+	 * Analyze a password
+	 *
+	 * @param   string  $password
+	 * @return  array
+	 */
 	public static function analyze($password)
 	{
 		$stats = array();
@@ -121,6 +137,15 @@ class Rule
 		return $stats;
 	}
 
+	/**
+	 * Validate a password
+	 *
+	 * @param   string  $password
+	 * @param   array   $rules
+	 * @param   mixed   $user
+	 * @param   string  $name
+	 * @return  array
+	 */
 	public static function validate($password, $rules, $user, $name=null)
 	{
 		if (empty($rules))
@@ -225,9 +250,9 @@ class Rule
 						continue;
 					}
 
-					$givenName = $xuser->get('givenName');
+					$givenName  = $xuser->get('givenName');
 					$middleName = $xuser->get('middleName');
-					$surname = $xuser->get('surname');
+					$surname    = $xuser->get('surname');
 
 					$name = $givenName;
 
@@ -236,74 +261,93 @@ class Rule
 							$name = $middleName;
 						}
 						else {
-							$name .= " " . $middleName;
+							$name .= ' ' . $middleName;
 						}
 					}
 
-					if (!empty($surname)) {
-						if (empty($name)) {
+					if (!empty($surname))
+					{
+						if (empty($name))
+						{
 							$name = $surname;
 						}
-						else {
-							$name .= " " . $surname;
+						else
+						{
+							$name .= ' ' . $surname;
 						}
 					}
 				}
 
-				if (self::isBasedOnName($password,$name)) {
+				if (self::isBasedOnName($password,$name))
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'notUsernameBased') {
-				if (is_numeric($user)) {
+			else if ($rule['rule'] == 'notUsernameBased')
+			{
+				if (is_numeric($user))
+				{
 					$juser = \JUser::getInstance($user);
 
-					if (!is_object($juser)) {
+					if (!is_object($juser))
+					{
 						continue;
 					}
 
 					$user = $juser->get('username');
 				}
 
-				if (self::isBasedOnUsername($password,$user)) {
+				if (self::isBasedOnUsername($password, $user))
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'notReused') {
+			else if ($rule['rule'] == 'notReused')
+			{
 				$date = new \DateTime('now');
 				$date->modify("-" . $rule['value'] . "day");
 
 				$phist = History::getInstance($user);
-				if (!is_object($phist)) {
+				if (!is_object($phist))
+				{
 					continue;
 				}
 
-				if ($phist->exists($password, $date->format("Y-m-d H:i:s"))) {
+				if ($phist->exists($password, $date->format("Y-m-d H:i:s")))
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] == 'notRepeat') {
-				if (Password::passwordMatches($user, $password, true)) {
+			else if ($rule['rule'] == 'notRepeat')
+			{
+				if (Password::passwordMatches($user, $password, true))
+				{
 					$fail[] = $rule['failuremsg'];
 				}
 			}
-			else if ($rule['rule'] === 'true') {
+			else if ($rule['rule'] === 'true')
+			{
 			}
-			else {
+			else
+			{
 				$fail[] = $rule['failuremsg'];
 			}
 		}
 
 		if (empty($fail))
 		{
-			return array();
+			$fail = array();
 		}
-		else
-		{
-			return $fail;
-		}
+
+		return $fail;
 	}
 
+	/**
+	 * Normalize a word
+	 *
+	 * @param   string  $word
+	 * @return  string
+	 */
 	private static function normalize_word($word)
 	{
 		$nword = '';
@@ -330,7 +374,14 @@ class Rule
 		return $nword;
 	}
 
-	public static function isBasedOnName($word,$name)
+	/**
+	 * Check if a word is based on a name
+	 *
+	 * @param   string  $word
+	 * @param   string  $name
+	 * @return  bool
+	 */
+	public static function isBasedOnName($word, $name)
 	{
 		$word = self::normalize_word($word);
 
@@ -382,7 +433,14 @@ class Rule
 		return false;
 	}
 
-	public static function isBasedOnUsername($word,$username)
+	/**
+	 * Check if a word is based on a username
+	 *
+	 * @param   string  $word
+	 * @param   string  $username
+	 * @return  bool
+	 */
+	public static function isBasedOnUsername($word, $username)
 	{
 		$word = self::normalize_word($word);
 		$username = self::normalize_word($username);

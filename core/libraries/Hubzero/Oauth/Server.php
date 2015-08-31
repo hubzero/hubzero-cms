@@ -47,7 +47,7 @@ class Server
 	/**
 	 * Internal var to hold true Oauth Server
 	 * 
-	 * @var  null
+	 * @var  object
 	 */
 	private $server = null;
 

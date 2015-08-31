@@ -259,7 +259,7 @@ class Checker
 	/**
 	 * Report the results of a spam detector 
 	 *
-	 * @param   string   $name     NAme of the detector
+	 * @param   string   $name     Name of the detector
 	 * @param   boolean  $value    If spam or not
 	 * @param   string   $message  Message set by detector
 	 * @return  string

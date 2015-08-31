@@ -114,6 +114,7 @@ class Handler
 	 *
 	 * @param   string  $message
 	 * @param   string  $type
+	 * @param   string  $domain
 	 * @return  $this
 	 */
 	public function message($message, $type = 'info', $domain = null)
@@ -132,6 +133,7 @@ class Handler
 	/**
 	 * Check if there are any messages
 	 *
+	 * @param   string  $domain
 	 * @return  boolean
 	 */
 	public function isEmpty($domain = null)
@@ -142,6 +144,7 @@ class Handler
 	/**
 	 * Check if there are any messages
 	 *
+	 * @param   string  $domain
 	 * @return  boolean
 	 */
 	public function any($domain = null)
@@ -176,7 +179,7 @@ class Handler
 	/**
 	 * Get the instance as an array.
 	 *
-	 * @param   string   $domain
+	 * @param   string  $domain
 	 * @return  array
 	 */
 	public function toArray($domain = null)
@@ -199,7 +202,7 @@ class Handler
 	/**
 	 * Convert the message bag to its string representation.
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function __toString()
 	{

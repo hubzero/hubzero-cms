@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Plugin;
 
+/**
+ * Extended Plugin for OAuth clients
+ */
 abstract class OauthClient extends Plugin
 {
 	/**
@@ -86,13 +89,13 @@ abstract class OauthClient extends Plugin
 	/**
 	 * Builds the redirect URI based on the current URI and a few other assumptions
 	 *
-	 * @param  string $name the plugin name
-	 * @return string
+	 * @param   string  $name  The plugin name
+	 * @return  string
 	 **/
 	protected static function getRedirectUri($name)
 	{
 		// Get the hub url
-		$service = trim(Request::base(), DS);
+		$service = trim(Request::base(), '/');
 
 		if (substr($service, -13) == 'administrator')
 		{

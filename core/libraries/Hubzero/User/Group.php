@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -42,179 +42,177 @@ class Group extends Object
 	/**
 	 * Group ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $gidNumber = null;
 
 	/**
 	 * Group alias
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $cn = null;
 
 	/**
 	 * Group title
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $description = null;
 
 	/**
-	 * Description for 'published'
+	 * Published state
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $published = null;
 
 	/**
-	 * Description for 'approved'
+	 * Approved/not approves
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $approved = null;
 
 	/**
 	 * Group type
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $type = null;
 
 	/**
-	 * Description for 'public_desc'
+	 * Public description
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $public_desc = null;
 
 	/**
-	 * Description for 'private_desc'
+	 * Pivate description
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $private_desc = null;
 
 	/**
-	 * Description for 'restrict_msg'
+	 * Message for restricted access
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $restrict_msg = null;
 
 	/**
-	 * Description for 'join_policy'
+	 * Join policy
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $join_policy = null;
 
 	/**
-	 * Description for 'discoverability'
+	 * Discoverability
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $discoverability = null;
 
 	/**
-	 * Description for 'discussion_email_autosubscribe'
+	 * Autosubscribe to discussion emails
 	 *
-	 * @var tinyint
+	 * @var  integer
 	 */
 	private $discussion_email_autosubscribe = 0;
 
 	/**
 	 * Description for 'logo'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $logo = null;
 
 	/**
 	 * Description for 'plugins'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $plugins = null;
 
 	/**
-	 * Description for 'created'
+	 * Created timestamp
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $created = null;
 
 	/**
-	 * Description for 'created_by'
+	 * Created by user ID
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $created_by = null;
 
 	/**
-	 * Description for 'params'
+	 * Paramters
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $params = null;
 
 	/**
-	 * Description for 'members'
+	 * List of members
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $members = array();
 
 	/**
-	 * Description for 'managers'
+	 * List of managers
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $managers = array();
 
 	/**
-	 * Description for 'applicants'
+	 * List of applicants
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $applicants = array();
 
 	/**
-	 * Description for 'invitees'
+	 * List of invitees
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $invitees = array();
 
 	/**
-	 * Description for '_list_keys'
+	 * Alternate table keys
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
 
 	/**
-	 * Description for '_updatedkeys'
+	 * List of updated keys
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_updatedkeys = array();
 
 	/**
-	 * Short description for '__construct'
-	 * Long description (if any) ...
+	 * Constructor
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function __construct()
 	{
 	}
 
 	/**
-	 * Short description for 'clear'
-	 * Long description (if any) ...
+	 * Clear data
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function clear()
 	{
@@ -247,8 +245,8 @@ class Group extends Object
 	/**
 	 * Returns a reference to a group object
 	 *
-	 * @param     mixed $group A string (cn) or integer (ID)
-	 * @return    mixed Object if instance found, false if not
+	 * @param   mixed  $group  A string (cn) or integer (ID)
+	 * @return  mixed  Object if instance found, false if not
 	 */
 	static public function getInstance($group)
 	{
@@ -299,7 +297,7 @@ class Group extends Object
 	 * Creates a new group in the CMS.
 	 * Creates a new entry under the #__xgroups table.
 	 *
-	 * @return mixed Returns false if error or gid upon success.
+	 * @return  mixed  Returns false if error or gid upon success.
 	 */
 	public function create()
 	{
@@ -376,12 +374,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'read'
-	 * Long description (if any) ...
+	 * Read a record
 	 *
-	 * @param unknown $name Parameter description (if any) ...
-	 * @param string $storage Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   mixed    $name
+	 * @return  boolean
 	 */
 	public function read($name = null)
 	{
@@ -455,12 +451,9 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'update'
-	 * Long description (if any) ...
+	 * Update a record
 	 *
-	 * @param unknown $gidNumber Parameter description (if any) ...
-	 * @param array $data Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function update()
 	{
@@ -656,11 +649,9 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'delete'
-	 * Long description (if any) ...
+	 * Delete a record
 	 *
-	 * @param unknown $group Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function delete()
 	{
@@ -710,11 +701,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for '__get'
-	 * Long description (if any) ...
+	 * Get a property's value
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function __get($property = null)
 	{
@@ -789,12 +779,11 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for '__set'
-	 * Long description (if any) ...
+	 * Set a property's value
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $property
+	 * @param   mixed   $value
+	 * @return  void
 	 */
 	public function __set($property = null, $value = null)
 	{
@@ -834,11 +823,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for '__isset'
-	 * Long description (if any) ...
+	 * Check if a property is set
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   string  $property
+	 * @return  bool
 	 */
 	public function __isset($property = null)
 	{
@@ -857,11 +845,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for '__unset'
-	 * Long description (if any) ...
+	 * Unset a property
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $property
+	 * @return  void
 	 */
 	public function __unset($property = null)
 	{
@@ -882,12 +869,11 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for '_error'
-	 * Long description (if any) ...
+	 * Output an error message
 	 *
-	 * @param string $message Parameter description (if any) ...
-	 * @param integer $level Parameter description (if any) ...
-	 * @return void
+	 * @param   string   $message
+	 * @param   integer  $level
+	 * @return  void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
@@ -910,12 +896,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'get'
-	 * Long description (if any) ...
+	 * Get a property's value
 	 *
-	 * @param unknown $key Parameter description (if any)
-	 * @param  unknown $default value when no match is found
-	 * @return unknown Return description (if any) ...
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function get($key, $default=null)
 	{
@@ -923,12 +907,11 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'set'
-	 * Long description (if any) ...
+	 * Set a property's value
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
+	 * @param   string  $property
+	 * @param   mixed   $value
+	 * @return  void
 	 */
 	public function set($key, $value)
 	{
@@ -936,11 +919,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for '_userids'
-	 * Long description (if any) ...
+	 * Get a list of user IDs from a string, list, or list of usernames
 	 *
-	 * @param array $users Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param   array  $users
+	 * @return  mixed
 	 */
 	private function _userids($users)
 	{
@@ -982,7 +964,7 @@ class Group extends Object
 
 		$db->setQuery($sql);
 
-		$result = $db->loadColumny();
+		$result = $db->loadColumn();
 
 		if (empty($result))
 		{
@@ -995,12 +977,11 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'add'
-	 * Long description (if any) ...
+	 * Add users to a table
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param array $value Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $key
+	 * @param   array   $value
+	 * @return  void
 	 */
 	public function add($key = null, $value = array())
 	{
@@ -1010,12 +991,11 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'remove'
-	 * Long description (if any) ...
+	 * Remove users form a table
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param array $value Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $key
+	 * @param   array   $value
+	 * @return  void
 	 */
 	public function remove($key = null, $value = array())
 	{
@@ -1025,12 +1005,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'iterate'
-	 * Long description (if any) ...
+	 * Iterate through each group and do something
 	 *
-	 * @param unknown $func Parameter description (if any) ...
-	 * @param string $storage Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   string  $func
+	 * @return  boolean
 	 */
 	static function iterate($func)
 	{
@@ -1040,7 +1018,7 @@ class Group extends Object
 
 		$db->setQuery($query);
 
-		$result = $db->loadColumny();
+		$result = $db->loadColumn();
 
 		if ($result === false)
 		{
@@ -1059,9 +1037,9 @@ class Group extends Object
 	 * Check if a group exists.
 	 * Given the group id, returns true if group exists.
 	 *
-	 * @param integer $group the group id number (GID) of the group being verified.
-	 * @param boolean $check_system boolean for checking against POSIX user.
-	 * @return boolean returns false if group does not exist; true if group exists.
+	 * @param   integer  $group         The group id number (GID) of the group being verified.
+	 * @param   boolean  $check_system  Boolean for checking against POSIX user.
+	 * @return  boolean  Returns false if group does not exist; true if group exists.
 	 */
 	static public function exists($group, $check_system = false)
 	{
@@ -1116,11 +1094,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'find'
-	 * Long description (if any) ...
+	 * Find groups
 	 *
-	 * @param array $filters Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   array  $filters
+	 * @return  mixed
 	 */
 	static function find($filters = array())
 	{
@@ -1294,12 +1271,11 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'is_member_of'
-	 * Long description (if any) ...
+	 * Check if the user is a member of a given table
 	 *
-	 * @param string $table Parameter description (if any) ...
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   string   $table  Table to check
+	 * @param   integer  $uid    User ID
+	 * @return  boolean
 	 */
 	public function is_member_of($table, $uid)
 	{
@@ -1321,11 +1297,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'isMember'
-	 * Long description (if any) ...
+	 * Is user a member of the group?
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   integer  $uid
+	 * @return  bool
 	 */
 	public function isMember($uid)
 	{
@@ -1333,11 +1308,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'isApplicant'
-	 * Long description (if any) ...
+	 * Is user an applicant of the group?
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   integer  $uid
+	 * @return  bool
 	 */
 	public function isApplicant($uid)
 	{
@@ -1345,11 +1319,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'isManager'
-	 * Long description (if any) ...
+	 * Is user a manager of the group?
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   integer  $uid
+	 * @return  bool
 	 */
 	public function isManager($uid)
 	{
@@ -1357,11 +1330,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'isInvitee'
-	 * Long description (if any) ...
+	 * Is user an invitee of the group?
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   integer  $uid
+	 * @return  bool
 	 */
 	public function isInvitee($uid)
 	{
@@ -1369,11 +1341,10 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'getEmails'
-	 * Long description (if any) ...
+	 * Get emails for users
 	 *
-	 * @param string $key Parameter description (if any) ...
-	 * @return array Return description (if any) ...
+	 * @param   string  $tbl
+	 * @return  array
 	 */
 	public function getEmails($tbl = 'managers')
 	{
@@ -1393,22 +1364,18 @@ class Group extends Object
 
 		$db->setQuery($query);
 
-		$emails = $db->loadColumny();
+		$emails = $db->loadColumn();
 
 		return $emails;
 	}
 
 	/**
-	 * Short description for 'search'
-	 * Long description (if any) ...
+	 * Search
 	 *
-	 * @param string $tbl Parameter description (if any) ...
-	 * @param string $q Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param   string  $tbl
+	 * @param   string  $q
+	 * @return  array
 	 */
-
-	// @FIXME: next refactoring this might be getMembers(), getInvitees(), getApplicaants(),
-	// getManagers() with a filter and limit/offset option  *njk*
 	public function search($tbl = '', $q = '')
 	{
 		if (!in_array($tbl, array('applicants', 'members', 'managers', 'invitees')))
@@ -1431,13 +1398,13 @@ class Group extends Object
 					AND u.id=t.uidNumber
 					AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
 		$db->setQuery($query);
-		return $db->loadColumny();
+		return $db->loadColumn();
 	}
 
 	/**
 	 * Is a group a super group?
 	 *
-	 * @return BOOL
+	 * @return  bool
 	 */
 	public function isSuperGroup()
 	{
@@ -1447,7 +1414,7 @@ class Group extends Object
 	/**
 	 * Return a groups logo
 	 *
-	 * @param   string $what What data to return?
+	 * @param   string  $what  What data to return?
 	 * @return  mixed
 	 */
 	public function getLogo($what='')
@@ -1494,7 +1461,7 @@ class Group extends Object
 	/**
 	 * Get groups path
 	 *
-	 * @return [type] [description]
+	 * @return  string
 	 */
 	public function getBasePath()
 	{
@@ -1506,8 +1473,8 @@ class Group extends Object
 	/**
 	 * Return serve up path
 	 *
-	 * @param  string $path [description]
-	 * @return [type]       [description]
+	 * @param   string  $path
+	 * @return  string
 	 */
 	public function downloadLinkForPath($base = 'uploads', $path = '', $type = 'file')
 	{
@@ -1535,10 +1502,10 @@ class Group extends Object
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @param      string  $type    Type to get [public, private]
-	 * @return     string
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @param   string   $type     Type to get [public, private]
+	 * @return  string
 	 */
 	public function getDescription($as='parsed', $shorten=0, $type='public')
 	{

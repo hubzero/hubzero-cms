@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2010-2012 Purdue University. All rights reserved.
+ * Copyright 2010-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author	  Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2010-2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2010-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -42,7 +42,7 @@ class History
 	/**
 	 * Log a message
 	 *
-	 * @param   string $msg
+	 * @param   string  $msg
 	 * @return  void
 	 */
 	private function logDebug($msg)
@@ -54,7 +54,7 @@ class History
 	/**
 	 * Get an instance of a user's password History
 	 *
-	 * @param   mixed $instance User ID (integer) or username (string)
+	 * @param   mixed  $instance  User ID (integer) or username (string)
 	 * @return  object
 	 */
 	public static function getInstance($instance)
@@ -73,7 +73,7 @@ class History
 		}
 		else
 		{
-			$query = "SELECT id FROM #__users WHERE username=" .  $db->quote($instance) . ";";
+			$query = "SELECT id FROM `#__users` WHERE username=" .  $db->quote($instance) . ";";
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			if (is_numeric($result) && $result > 0)
@@ -93,8 +93,8 @@ class History
 	/**
 	 * Add a passhash to a user's history
 	 *
-	 * @param   string $passhash
-	 * @param   string $invalidated
+	 * @param   string  $passhash
+	 * @param   string  $invalidated
 	 * @return  boolean
 	 */
 	public function add($passhash = null, $invalidated = null)
@@ -122,7 +122,7 @@ class History
 
 		$user_id = $this->user_id;
 
-		$query = "INSERT INTO #__users_password_history(user_id," .
+		$query = "INSERT INTO `#__users_password_history` (user_id," .
 			"passhash,invalidated)" .
 			" VALUES ( " .
 			$db->quote($user_id) . "," .
@@ -145,8 +145,8 @@ class History
 	/**
 	 * Check if a password exists for a user
 	 *
-	 * @param   string $password
-	 * @param   string $since
+	 * @param   string  $password
+	 * @param   string  $since
 	 * @return  boolean
 	 */
 	public function exists($password = null, $since = null)
@@ -187,8 +187,8 @@ class History
 	/**
 	 * Remove a passhash from a user's history
 	 *
-	 * @param   string $passhash
-	 * @param   string $timestamp
+	 * @param   string  $passhash
+	 * @param   string  $timestamp
 	 * @return  boolean
 	 */
 	public function remove($passhash, $timestamp)
@@ -205,10 +205,12 @@ class History
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__users_password_history WHERE user_id= " .
+		$db->setQuery(
+			"DELETE FROM `#__users_password_history` WHERE user_id= " .
 			$db->quote($this->user_id) . " AND passhash = " .
 			$db->quote($passhash) . " AND invalidated = " .
-			$db->quote($timestamp) . ";");
+			$db->quote($timestamp) . ";"
+		);
 
 		if (!$db->query())
 		{
@@ -222,8 +224,8 @@ class History
 	 * Shortcut helper method for adding
 	 * a password to a user's history
 	 *
-	 * @param   string $passhash
-	 * @param   string $user
+	 * @param   string  $passhash
+	 * @param   string  $user
 	 * @return  boolean
 	 */
 	public static function addPassword($passhash, $user = null)

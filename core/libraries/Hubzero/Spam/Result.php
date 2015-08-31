@@ -32,6 +32,7 @@ namespace Hubzero\Spam;
 
 /**
  * Spam result.
+ *
  * Based on work by Laju Morrison <morrelinko@gmail.com>
  */
 class Result

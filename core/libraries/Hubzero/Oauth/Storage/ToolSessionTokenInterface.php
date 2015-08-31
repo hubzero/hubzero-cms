@@ -40,23 +40,23 @@ interface ToolSessionTokenInterface
 	/**
 	 * Get tool data from request
 	 * 
-	 * @return bool  Result of test
+	 * @return  bool  Result of test
 	 */
 	public function getToolSessionDataFromRequest(RequestInterface $request);
 
 	/**
 	 * Validate tool session data
 	 * 
-	 * @param  string $toolSessionId    Tool session id
-	 * @param  string $toolSessionToken Tool session token
-	 * @return bool                     Result of test
+	 * @param   string  $toolSessionId     Tool session id
+	 * @param   string  $toolSessionToken  Tool session token
+	 * @return  bool    Result of test
 	 */
 	public function validateToolSessionData($toolSessionId, $toolSessionToken);
 
 	/**
 	 * Loads client needed for internal requests
 	 * 
-	 * @return mixed
+	 * @return  mixed
 	 */
 	public function getInternalRequestClient();
 
@@ -65,7 +65,7 @@ interface ToolSessionTokenInterface
 	 * created or was accidentally delete resulted in both session 
 	 * and tool requests failing
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function createInternalRequestClient();
 }

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,7 +36,7 @@ use Hubzero\View\Exception\InvalidLayoutException;
 /**
  * Base class for a View
  *
- * Class holding methods for displaying presentation data.
+ * Inspired, in parts, by Joomla's JView class
  */
 class View extends Object
 {
@@ -45,42 +45,42 @@ class View extends Object
 	/**
 	 * The name of the view
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $_name = null;
 
 	/**
 	 * The base path of the view
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_basePath = null;
 
 	/**
 	 * Layout name
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_layout = 'default';
 
 	/**
 	 * Layout extension
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_layoutExt = 'php';
 
 	/**
 	 * Layout template
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_layoutTemplate = '_';
 
 	/**
 	 * The set of search directories for resources (templates)
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_path = array(
 		'template' => array(),
@@ -90,21 +90,21 @@ class View extends Object
 	/**
 	 * The name of the default template source file.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_template = null;
 
 	/**
 	 * The output of the template script.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_output = null;
 
 	/**
 	 * The registered helpers.
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected static $helpers = array();
 
@@ -118,7 +118,8 @@ class View extends Object
 	 *                          base_path: the parent path (optional) of the views directory (defaults to the component folder)<br/>
 	 *                          template_plath: the path (optional) of the layout directory (defaults to base_path + /views/ + view name<br/>
 	 *                          helper_path: the path (optional) of the helper files (defaults to base_path + /helpers/)<br/>
-	 *                          layout: the layout (optional) to use to display the view<br/>
+	 *                          layout: the layout (optional) to use to display the view
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
@@ -366,8 +367,8 @@ class View extends Object
 	/**
 	 * Set the name
 	 *
-	 * @param  string  The name to set
-	 * @return object
+	 * @param   string  The name to set
+	 * @return  object
 	 */
 	public function setName($name)
 	{
@@ -405,7 +406,7 @@ class View extends Object
 	 * Allows a different extension for the layout files to be used
 	 *
 	 * @param   string  $value  The extension.
-	 * @return  string   Previous value
+	 * @return  string  Previous value
 	 */
 	public function setLayoutExt($value)
 	{

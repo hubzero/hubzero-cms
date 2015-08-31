@@ -41,7 +41,7 @@ class Cookie implements MessageStore
 	/**
 	 * Lifetime of the cookie (in minutes)
 	 *
-	 * @var  itneger
+	 * @var  integer
 	 */
 	private $lifetime;
 

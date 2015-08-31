@@ -35,6 +35,8 @@ use Exception;
 
 /**
  * WinCache session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageWincache class
  */
 class WinCache extends Store
 {

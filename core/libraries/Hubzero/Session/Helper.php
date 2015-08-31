@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,12 +32,15 @@ namespace Hubzero\Session;
 
 use Hubzero\Session\Storage;
 
+/**
+ * Session helper
+ */
 class Helper
 {
 	/**
 	 * Get Session storage class
 	 * 
-	 * @return [type] [description]
+	 * @return  object
 	 */
 	public static function storage()
 	{
@@ -54,8 +57,8 @@ class Helper
 	/**
 	 * Get Session by id
 	 * 
-	 * @param  [type] $id [description]
-	 * @return [type]     [description]
+	 * @param   integer  $id  Session ID
+	 * @return  object
 	 */
 	public static function getSession($id)
 	{

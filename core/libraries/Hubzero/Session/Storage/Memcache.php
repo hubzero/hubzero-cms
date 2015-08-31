@@ -34,6 +34,8 @@ use Hubzero\Session\Store;
 
 /**
  * Memcache session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageMemcache class
  */
 class Memcache extends Store
 {

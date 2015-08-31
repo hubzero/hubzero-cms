@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,264 +41,262 @@ use Event;
  */
 class Profile extends Object
 {
-	// Properties
-
 	/**
 	 * ID (primary key)
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $uidNumber = null;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $name = null;
 
 	/**
 	 * Username
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $username = null;
 
 	/**
 	 * Email address
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $email = null;
 
 	/**
 	 * Timestamp for registration date
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $registerDate = null;
 
 	/**
 	 * Description for 'gidNumber'
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $gidNumber = null;
 
 	/**
 	 * System home directory for the user
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $homeDirectory = null;
 
 	/**
 	 * Description for 'loginShell'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $loginShell = null;
 
 	/**
 	 * Description for 'ftpShell'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $ftpShell = null;
 
 	/**
 	 * Description for 'userPassword'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $userPassword = null;
 
 	/**
 	 * Description for 'shadowExpire'
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $shadowExpire = null;
 
 	/**
 	 * Description for 'gid'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $gid = null;
 
 	/**
 	 * Organization type
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $orgtype = null;
 
 	/**
 	 * Organization
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $organization = null;
 
 	/**
 	 * Two-letter code for 'Country of residence'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $countryresident = null;
 
 	/**
 	 * Two-letter code for 'Country of origin'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $countryorigin = null;
 
 	/**
 	 * Gender
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $gender = null;
 
 	/**
 	 * URL
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $url = null;
 
 	/**
 	 * Reason (for getting an account)
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $reason = null;
 
 	/**
 	 * Receive email updates form the site?
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $mailPreferenceOption = -1;
 
 	/**
 	 * Agreed to Terms of Service?
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $usageAgreement = null;
 
 	/**
 	 * Timestamp for last time profile was modified
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $modifiedDate = null;
 
 	/**
 	 * Email address confirmed?
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $emailConfirmed = null;
 
 	/**
 	 * Registration IP
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $regIP = null;
 
 	/**
 	 * Registration host
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $regHost = null;
 
 	/**
 	 * Native tribe
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $nativeTribe = null;
 
 	/**
 	 * Phone number
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $phone = null;
 
 	/**
 	 * Password from proxy creation
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $proxyPassword = null;
 
 	/**
 	 * User ID from proxy creation
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $proxyUidNumber = null;
 
 	/**
 	 * Given name (first name)
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $givenName = null;
 
 	/**
 	 * Middle name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $middleName = null;
 
 	/**
 	 * Surname (last/family name)
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $surname = null;
 
 	/**
 	 * Picture
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $picture = null;
 
 	/**
 	 * VIP status?
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $vip = null;
 
 	/**
 	 * Public profile?
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $public = null;
 
 	/**
 	 * Parameters
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $params = null;
 
 	/**
 	 * Notes
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $note = null;
 
@@ -306,7 +304,7 @@ class Profile extends Object
 	 * ORCID
 	 * http://orcid.org
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $orcid = null;
 
@@ -315,70 +313,70 @@ class Profile extends Object
 	/**
 	 * Profile bio
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_auxs_bio = null;
 
 	/**
 	 * List of diabilities
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_disability = array();
 
 	/**
 	 * List of hispanic options
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_hispanic = array();
 
 	/**
 	 * List of races
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_race = array();
 
 	/**
 	 * Description for '_auxv_admin'
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_admin = array();
 
 	/**
 	 * Description for '_auxv_host'
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_host = array();
 
 	/**
 	 * List of Edu levels
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_edulevel = array();
 
 	/**
 	 * List of roles
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_auxv_role = array();
 
 	/**
 	 * Description for '_password'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_password = null;
 
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_params = null;
 
@@ -552,11 +550,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for '_xregistration_load'
-	 * Long description (if any) ...
+	 * Bind registration data
 	 *
-	 * @param object $registration Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   object  $registration
+	 * @return  boolean
 	 */
 	private function _xregistration_load($registration)
 	{
@@ -583,11 +580,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'loadRegistration'
-	 * Long description (if any) ...
+	 * Load registration data
 	 *
-	 * @param object &$registration Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   object  &$registration
+	 * @return  boolean
 	 */
 	public function loadRegistration(&$registration)
 	{

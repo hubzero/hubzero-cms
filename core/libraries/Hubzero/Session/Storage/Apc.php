@@ -35,6 +35,8 @@ use Exception;
 
 /**
  * APC session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageApc class
  */
 class Apc extends Store
 {
@@ -104,7 +106,7 @@ class Apc extends Store
 	/**
 	 * Build the storage key
 	 *
-	 * @param   string   $id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string
 	 */
 	protected function key($id)

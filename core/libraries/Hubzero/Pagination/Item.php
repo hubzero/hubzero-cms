@@ -34,8 +34,6 @@ use Hubzero\Base\Object;
 
 /**
  * Pagination object representing a particular item in the pagination lists.
- *
- * @since  1.3.1
  */
 class Item extends Object
 {

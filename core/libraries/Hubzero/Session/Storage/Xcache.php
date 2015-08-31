@@ -35,6 +35,8 @@ use Exception;
 
 /**
  * XCache session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageXcache class
  */
 class Xcache extends Store
 {

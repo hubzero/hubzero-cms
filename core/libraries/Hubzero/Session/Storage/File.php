@@ -36,20 +36,22 @@ use Exception;
 
 /**
  * File session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageFile class
  */
 class File extends Store
 {
 	/**
 	 * The filesystem instance.
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $files;
 
 	/**
 	 * The path where sessions should be stored.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $path;
 

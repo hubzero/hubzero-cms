@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -41,9 +41,9 @@ class User extends \Hubzero\Database\Relational
 	/**
 	 * Defines a one to many relationship between users and reset tokens
 	 *
-	 * @return \Hubzero\Database\Relationship\OneToMany
-	 * @since  2.0.0
-	 **/
+	 * @return  object  \Hubzero\Database\Relationship\OneToMany
+	 * @since   2.0.0
+	 */
 	public function tokens()
 	{
 		return $this->oneToMany('\Components\Members\Models\Token');
@@ -52,9 +52,9 @@ class User extends \Hubzero\Database\Relational
 	/**
 	 * Defines a one to one relationship between a user and their reputation
 	 *
-	 * @return \Hubzero\Database\Relationship\OneToOne
-	 * @since  2.0.0
-	 **/
+	 * @return  object  \Hubzero\Database\Relationship\OneToOne
+	 * @since   2.0.0
+	 */
 	public function reputation()
 	{
 		return $this->oneToOne('Reputation');
@@ -63,9 +63,9 @@ class User extends \Hubzero\Database\Relational
 	/**
 	 * Defines a relationship with a generic user logging class (not a relational model itself)
 	 *
-	 * @return  \Hubzero\User\Logger
+	 * @return  object  \Hubzero\User\Logger
 	 * @since   2.0.0
-	 **/
+	 */
 	public function logger()
 	{
 		return new Logger($this);
@@ -75,8 +75,8 @@ class User extends \Hubzero\Database\Relational
 	 * Checks to see if the current user has exceeded the site
 	 * password reset request limit for a given time period
 	 *
-	 * @return bool
-	 **/
+	 * @return  bool
+	 */
 	public function hasExceededResetLimit()
 	{
 		$params     = \Component::params('com_users');
@@ -100,8 +100,8 @@ class User extends \Hubzero\Database\Relational
 	 * Checks to see if the current user has exceeded the site
 	 * login attempt limit for a given time period
 	 *
-	 * @return bool
-	 **/
+	 * @return  bool
+	 */
 	public function hasExceededLoginLimit()
 	{
 		$params    = \Component::params('com_users');

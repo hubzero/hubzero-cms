@@ -35,6 +35,8 @@ use Exception;
 
 /**
  * eAccelerator session storage handler
+ *
+ * Inspired by Joomla's JSessionStorageEAccelerator class
  */
 class Eaccelerator extends Store
 {
@@ -166,7 +168,7 @@ class Eaccelerator extends Store
 	/**
 	 * Build the storage key
 	 *
-	 * @param   string   $id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string
 	 */
 	protected function key($id)

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,12 +38,10 @@ use Hubzero\User\Group;
 class Helper
 {
 	/**
-	 * Short description for 'niceidformat'
+	 * Pad an ID with prepended zeros
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   integer  $group_id
+	 * @return  integer
 	 */
 	public static function niceidformat($group_id)
 	{
@@ -57,7 +55,8 @@ class Helper
 	/**
 	 * Get popular groups
 	 *
-	 * @return    array
+	 * @param   integer  $limit
+	 * @return  array
 	 */
 	public static function getPopularGroups($limit=0)
 	{
@@ -91,7 +90,8 @@ class Helper
 	/**
 	 * Gets featured groups
 	 *
-	 * @return    array
+	 * @param   string  $groupList
+	 * @return  array
 	 */
 	public static function getFeaturedGroups($groupList)
 	{
@@ -126,7 +126,9 @@ class Helper
 	/**
 	 * Gets groups matching tag string
 	 *
-	 * @return    string
+	 * @param   string  $usertags
+	 * @param   string  $usergroups
+	 * @return  string
 	 */
 	public static function getGroupsMatchingTagString($usertags, $usergroups)
 	{
@@ -186,7 +188,9 @@ class Helper
 	/**
 	 * Converts invite emails to true group
 	 *
-	 * @return    void
+	 * @param   string   $email
+	 * @param   integer  $user_id
+	 * @return  void
 	 */
 	public function convertInviteEmails($email, $user_id)
 	{
@@ -251,12 +255,11 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'search_roles'
-	 * Long description (if any) ...
+	 * Search group roles
 	 *
-	 * @param   object  $group Parameter description (if any) ...
-	 * @param   string  $role  Parameter description (if any) ...
-	 * @return  boolean Return description (if any) ...
+	 * @param   object  $group
+	 * @param   string  $role
+	 * @return  array
 	 */
 	public static function search_roles($group, $role = '')
 	{
@@ -280,12 +283,11 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'getPluginAccess'
-	 * Long description (if any) ...
+	 * Get the access level for a group plugin
 	 *
-	 * @param   object $group      Parameter description (if any) ...
-	 * @param   string $get_plugin Parameter description (if any) ...
-	 * @return  mixed  Return description (if any) ...
+	 * @param   object $group
+	 * @param   string $get_plugin
+	 * @return  mixed
 	 */
 	public static function getPluginAccess($group, $get_plugin = '')
 	{
@@ -376,8 +378,9 @@ class Helper
 	 *
 	 * Always returns the same instance whenever this method is called
 	 *
-	 * @param      array     Array of database options
-	 * @return     object    JDatabase Object
+	 * @param   array   $config  Array of database options
+	 * @param   string  $cname
+	 * @return  object  Database Object
 	 */
 	public static function getDbo($config = array(), $cname = '')
 	{

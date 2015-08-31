@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -59,8 +59,8 @@ class Mysql implements AccessTokenInterface,
 	/**
 	 * Get Access token data
 	 * 
-	 * @param  string $access_token Access token
-	 * @return array                Access token data
+	 * @param   string  $access_token  Access token
+	 * @return  array   Access token data
 	 */
 	public function getAccessToken($access_token)
 	{
@@ -178,7 +178,7 @@ class Mysql implements AccessTokenInterface,
 	 * 
 	 * @param   string  $client_id   Client id
 	 * @param   string  $grant_type  Grant type
-	 * @return  bool                 Result of test
+	 * @return  bool    Result of test
 	 */
 	public function checkRestrictedGrantType($client_id, $grant_type)
 	{
@@ -200,7 +200,7 @@ class Mysql implements AccessTokenInterface,
 	 * 
 	 * @param   string  $client_id      Client id
 	 * @param   string  $client_secret  Client secret
-	 * @return  bool                    Result of test
+	 * @return  bool    Result of test
 	 */
 	public function checkClientCredentials($client_id, $client_secret = null)
 	{
@@ -223,8 +223,8 @@ class Mysql implements AccessTokenInterface,
 	/**
 	 * Is client public
 	 * 
-	 * @param   [type]   $client_id  [description]
-	 * @return  boolean              [description]
+	 * @param   integer  $client_id
+	 * @return  boolean
 	 */
 	public function isPublicClient($client_id)
 	{
@@ -239,7 +239,7 @@ class Mysql implements AccessTokenInterface,
 	 * Get authorization code details by code
 	 * 
 	 * @param   string  $code  Authorization code
-	 * @return  array          Code details
+	 * @return  array   Code details
 	 */
 	public function getAuthorizationCode($code)
 	{
@@ -317,7 +317,7 @@ class Mysql implements AccessTokenInterface,
 	 * 
 	 * @param   string  $username  User's username
 	 * @param   string  $password  User's password
-	 * @return  bool               Result of username/password check
+	 * @return  bool    Result of username/password check
 	 */
 	public function checkUserCredentials($username, $password)
 	{
@@ -338,7 +338,7 @@ class Mysql implements AccessTokenInterface,
 	 * Get user information
 	 * 
 	 * @param   string  $username  User's username
-	 * @return  array             User info
+	 * @return  array   User info
 	 */
 	public function getUserDetails($username)
 	{
@@ -362,7 +362,7 @@ class Mysql implements AccessTokenInterface,
 	 * Get username from email address
 	 * 
 	 * @param   string  $enteredUsername  Email address
-	 * @return  string                    User's username
+	 * @return  string  User's username
 	 */
 	private function getUsernameFromEmail($enteredUsername)
 	{
@@ -387,7 +387,7 @@ class Mysql implements AccessTokenInterface,
 	 * Load refresh token details by token
 	 * 
 	 * @param   string  $refresh_token  Refresh token
-	 * @return  array                   Refresh token details
+	 * @return  array   Refresh token details
 	 */
 	public function getRefreshToken($refresh_token)
 	{
@@ -487,7 +487,7 @@ class Mysql implements AccessTokenInterface,
 	 * Get user id via session id
 	 * 
 	 * @param   string  $sessionId  Session identifier
-	 * @return  int                 User identifier
+	 * @return  int     User identifier
 	 */
 	public function getUserIdFromSessionId($sessionId)
 	{
@@ -533,7 +533,7 @@ class Mysql implements AccessTokenInterface,
 	 * 
 	 * @param   string  $toolSessionId     Tool session id
 	 * @param   string  $toolSessionToken  Tool session token
-	 * @return  bool                       Result of test
+	 * @return  bool    Result of test
 	 */
 	public function validateToolSessionData($toolSessionId, $toolSessionToken)
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,96 +38,88 @@ use OAuthException;
  */
 class Provider
 {
-
 	/**
-	 * Description for '_provider'
+	 * Provider
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	private $_provider = null;
 
 	/**
-	 * Description for '_consumer_data'
+	 * Consumer data
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $_consumer_data = null;
 
 	/**
-	 * Description for '_token_data'
+	 * Token data
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $_token_data = null;
 
 	/**
-	 * Description for '_request_token_path'
+	 * Request token path
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $_request_token_path = null;
 
 	/**
-	 * Description for '_access_token_path'
+	 * Access token path
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $_access_token_path = null;
 
 	/**
-	 * Description for '_authorize_path'
+	 * Authorize path
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $_authorize_path = null;
 
 	/**
-	 * Short description for 'setRequestTokenPath'
+	 * Set request token path
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $path Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $path
+	 * @return  void
 	 */
-	function setRequestTokenPath($path)
+	public function setRequestTokenPath($path)
 	{
 		$this->_request_token_path = trim($path,'/');
 	}
 
 	/**
-	 * Short description for 'setAccessTokenPath'
+	 * Set access token path
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $path Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $path
+	 * @return  void
 	 */
-	function setAccessTokenPath($path)
+	public function setAccessTokenPath($path)
 	{
 		$this->_access_token_path = trim($path,'/');
 	}
 
 	/**
-	 * Short description for 'setAuthorizePath'
+	 * Set authorize path
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $path Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $path
+	 * @return  void
 	 */
-	function setAuthorizePath($path)
+	public function setAuthorizePath($path)
 	{
 		$this->_authorize_path = trim($path,'/');
 	}
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @param   array  $params
+	 * @return  void
 	 */
-	function __construct($params = array())
+	public function __construct($params = array())
 	{
 		if (!class_exists('OAuthProvider'))
 		{
@@ -141,17 +133,14 @@ class Provider
 		$this->_provider->tokenHandler(array($this, 'tokenHandler'));
 	}
 
-	// @FIXME: validateRequest() is still a bit awkward and needs to be refactored
-
 	/**
-	 * Short description for 'validateRequest'
+	 * Validate a request
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $uri Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $uri
+	 * @param   string   $method
+	 * @return  boolean
 	 */
-	function validateRequest($uri = null, $method = null)
+	public function validateRequest($uri = null, $method = null)
 	{
 		$endpoint = false;
 
@@ -289,56 +278,48 @@ class Provider
 		}
 
 		$result['message'] = $message;
-		$result['status'] = $status;
-		$result['reason'] = $reason;
+		$result['status']  = $status;
+		$result['reason']  = $reason;
 
 		return $result;
 	}
 
 	/**
-	 * Short description for 'getToken'
+	 * Get token
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  string
 	 */
-	function getToken()
+	public function getToken()
 	{
 		return $this->_provider->token;
 	}
 
 	/**
-	 * Short description for 'getConsumerKey'
+	 * Get consumer key
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  string
 	 */
-	function getConsumerKey()
+	public function getConsumerKey()
 	{
 		return $this->_provider->consumer_key;
 	}
 
 	/**
-	 * Short description for 'getConsumerData'
+	 * Get consumer data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  string
 	 */
-	function getConsumerData()
+	public function getConsumerData()
 	{
 		return $this->_consumer_data;
 	}
 
 	/**
-	 * Short description for 'getTokenData'
+	 * Get token data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  string
 	 */
-	function getTokenData()
+	public function getTokenData()
 	{
 		return $this->_token_data;
 	}
@@ -356,7 +337,7 @@ class Provider
 	 * 		If consumer_key is expired or otherwise invalid returns OAUTH_CONSUMER_KEY_REFUSED
 	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
-	function consumerHandler()
+	public function consumerHandler()
 	{
 		$db = \App::get('db');
 
@@ -365,7 +346,7 @@ class Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" . $db->quote($this->_provider->consumer_key) . " LIMIT 1;");
+		$db->setQuery("SELECT * FROM `#__oauthp_consumers` WHERE token=" . $db->quote($this->_provider->consumer_key) . " LIMIT 1;");
 
 		$result = $db->loadObject();
 
@@ -400,7 +381,7 @@ class Provider
 	 * 		If nonce has been seen before returns OAUTH_BAD_NONCE
 	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
-	function timestampNonceHandler()
+	public function timestampNonceHandler()
 	{
 		$timediff = abs(time() - $this->_provider->timestamp);
 
@@ -416,12 +397,14 @@ class Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("INSERT INTO #__oauthp_nonces (nonce,stamp,created) "
+		$db->setQuery(
+			"INSERT INTO `#__oauthp_nonces` (nonce,stamp,created) "
 				. " VALUES (" .
 				$db->quote($this->_provider->nonce) .
 				"," .
 				$db->quote($this->_provider->timestamp) .
-				", UTC_TIMESTAMP());");
+				", UTC_TIMESTAMP());"
+		);
 
 		if (($db->query() === false) && ($db->getErrorNum() != 1062)) // duplicate row error ok (well expected anyway)
 		{
@@ -449,7 +432,7 @@ class Provider
 	 * 		If request verifier doesn't match token's verifier returns OAUTH_VERIFIER_INVALID
 	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
-	function tokenHandler()
+	public function tokenHandler()
 	{
 		$db = \App::get('db');
 
@@ -458,7 +441,7 @@ class Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. $db->quote($this->_provider->token) . " LIMIT 1;");
+		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($this->_provider->token) . " LIMIT 1;");
 
 		$result = $db->loadObject();
 

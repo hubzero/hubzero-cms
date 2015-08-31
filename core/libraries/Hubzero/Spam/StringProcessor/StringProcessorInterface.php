@@ -32,6 +32,7 @@ namespace Hubzero\Spam\StringProcessor;
 
 /**
  * Interface for spam string processors.
+ *
  * Based on work by Laju Morrison <morrelinko@gmail.com>
  */
 interface StringProcessorInterface

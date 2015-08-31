@@ -39,6 +39,8 @@ use Hubzero\Base\Object;
  * settings and lifetime management methods.
  * Based on the standard PHP session handling mechanism it provides
  * more advanced features such as expire timeouts.
+ *
+ * Inspired by Joomla's JSession class
  */
 class Manager extends Object
 {

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,7 +34,7 @@ class Ldap
 	/**
 	 * Error messages
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private static $errors  = array(
 		'errors'   => true,
@@ -45,7 +45,7 @@ class Ldap
 	/**
 	 * Success messages
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private static $success = array(
 		'success'  => true,
@@ -58,7 +58,7 @@ class Ldap
 	/**
 	 * Get the LDAP connection
 	 *
-	 * @param   integer $debug
+	 * @param   integer  $debug
 	 * @return  mixed
 	 */
 	public static function getLDO($debug = 0)

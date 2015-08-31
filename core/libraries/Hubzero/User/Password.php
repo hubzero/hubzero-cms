@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2010-2012 Purdue University. All rights reserved.
+ * Copyright 2010-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2010-2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2010-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,14 +40,14 @@ class Password
 	/**
 	 * Description for 'user_id'
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	private $user_id = null;
 
 	/**
 	 * Description for 'passhash'
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $passhash = null;
 
@@ -103,23 +103,23 @@ class Password
 	/**
 	 * Description for '_updatedkeys'
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_updatedkeys = array();
 
 	/**
-	 * Short description for '__construct' Long description (if any) . ..
+	 * Constructor
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function __construct()
 	{
 	}
 
 	/**
-	 * Short description for 'clear' Long description (if any) . ..
+	 * Clear internal data
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function clear()
 	{
@@ -143,9 +143,9 @@ class Password
 	/**
 	 * Short description for 'getInstance' Long description (if any) . ..
 	 *
-	 * @param unknown $instance Parameter description (if any) ...
-	 * @param unknown $storage Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param   unknown $instance Parameter description (if any) ...
+	 * @param   unknown $storage Parameter description (if any) ...
+	 * @return  mixed Return description (if any) ...
 	 */
 	public static function getInstance($instance, $storage = null)
 	{
@@ -160,9 +160,9 @@ class Password
 	}
 
 	/**
-	 * Short description for 'create' Long description (if any) . ..
+	 * Create a record
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function create()
 	{
@@ -174,8 +174,6 @@ class Password
 		}
 
 		// @FIXME: this should fail if id doesn't exist in #__users
-
-
 		if ($this->user_id > 0)
 		{
 			$query = "INSERT INTO #__users_password (user_id) VALUES ( " . $db->quote($this->user_id) . ");";
@@ -196,11 +194,10 @@ class Password
 	}
 
 	/**
-	 * Short description for 'read' Long description (if any) . ..
+	 * Read a record
 	 *
-	 * @param integer $user_id Parameter description (if any) ...
-	 * @param string $storage Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   integer  $instance
+	 * @return  boolean
 	 */
 	public function read($instance = null)
 	{
@@ -272,10 +269,9 @@ class Password
 	}
 
 	/**
-	 * Short description for 'update' Long description (if any) . ..
+	 * Update a record
 	 *
-	 * @param boolean $all Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function update()
 	{
@@ -286,7 +282,7 @@ class Password
 			return false;
 		}
 
-		$query = "UPDATE #__users_password SET ";
+		$query = "UPDATE `#__users_password` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -354,9 +350,9 @@ class Password
 	}
 
 	/**
-	 * Short description for 'delete' Long description (if any) . ..
+	 * Delete a record
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function delete()
 	{
@@ -374,7 +370,7 @@ class Password
 
 		if (!isset($this->user_id))
 		{
-			$db->setQuery("SELECT user_id FROM #__users_password WHERE user_id" . $db->quote($this->user_id) . ";");
+			$db->setQuery("SELECT user_id FROM `#__users_password` WHERE user_id" . $db->quote($this->user_id) . ";");
 
 			$this->__set('user_id', $db->loadResult());
 		}
@@ -384,7 +380,7 @@ class Password
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__users_password WHERE user_id= " . $db->quote($this->user_id) . ";");
+		$db->setQuery("DELETE FROM `#__users_password` WHERE user_id= " . $db->quote($this->user_id) . ";");
 
 		$affected = 0;
 
@@ -402,10 +398,10 @@ class Password
 	}
 
 	/**
-	 * Short description for '__get' Long description (if any) . ..
+	 * Get a property's value
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function __get($property = null)
 	{
@@ -436,11 +432,11 @@ class Password
 	}
 
 	/**
-	 * Short description for '__set' Long description (if any) . ..
+	 * Set a property's value
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $property
+	 * @param   mixed   $value
+	 * @return  void
 	 */
 	public function __set($property = null, $value = null)
 	{
@@ -464,10 +460,10 @@ class Password
 	}
 
 	/**
-	 * Short description for '__isset' Long description (if any) . ..
+	 * Check if a property is set
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param   string  $property
+	 * @return  bool
 	 */
 	public function __isset($property = null)
 	{
@@ -486,10 +482,10 @@ class Password
 	}
 
 	/**
-	 * Short description for '__unset' Long description (if any) . ..
+	 * Unset a property
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $property
+	 * @return  void
 	 */
 	public function __unset($property = null)
 	{
@@ -510,11 +506,11 @@ class Password
 	}
 
 	/**
-	 * Short description for '_error' Long description (if any) . ..
+	 * Output an error message
 	 *
-	 * @param string $message Parameter description (if any) ...
-	 * @param integer $level Parameter description (if any) ...
-	 * @return void
+	 * @param   string   $message
+	 * @param   integer  $level
+	 * @return  void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
@@ -537,10 +533,10 @@ class Password
 	}
 
 	/**
-	 * Short description for 'get' Long description (if any) . ..
+	 * Get a property's value
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function get($key)
 	{
@@ -548,17 +544,23 @@ class Password
 	}
 
 	/**
-	 * Short description for 'set' Long description (if any) . ..
+	 * Set a property's value
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
+	 * @param   string  $property
+	 * @param   mixed   $value
+	 * @return  void
 	 */
 	public function set($key, $value)
 	{
 		return $this->__set($key, $value);
 	}
 
+	/**
+	 * Check if a password is expired
+	 *
+	 * @param   mixed  $user
+	 * @return  bool
+	 */
 	public static function isPasswordExpired($user = null)
 	{
 		$hzup = self::getInstance($user);
@@ -594,6 +596,12 @@ class Password
 		return true;
 	}
 
+	/**
+	 * Get a hash of a password
+	 *
+	 * @param   string  $password
+	 * @return  string
+	 */
 	public static function getPasshash($password)
 	{
 		// Get the password encryption/hashing mechanism
@@ -616,6 +624,13 @@ class Password
 		return $passhash;
 	}
 
+	/**
+	 * Change a user's password
+	 *
+	 * @param   mixed   $user
+	 * @param   string  $password
+	 * @return  bool
+	 */
 	public static function changePassword($user = null, $password)
 	{
 		$passhash = self::getPasshash($password);
@@ -623,6 +638,13 @@ class Password
 		return self::changePasshash($user, $passhash);
 	}
 
+	/**
+	 * Change a user's pass hash
+	 *
+	 * @param   mixed   $user
+	 * @param   string  $password
+	 * @return  bool
+	 */
 	public static function changePasshash($user = null, $passhash)
 	{
 		// Get config values for min, max, and warning
@@ -664,6 +686,13 @@ class Password
 		return true;
 	}
 
+	/**
+	 * Compare passwords
+	 *
+	 * @param   string  $passhash
+	 * @param   string  $password
+	 * @return  bool
+	 */
 	public static function comparePasswords($passhash, $password)
 	{
 		if (empty($passhash) || empty($password))
@@ -676,16 +705,19 @@ class Password
 		$encryption = strtolower($matches[2]);
 
 		if (empty($encryption))
-		{ // Joomla
+		{
+			// Joomla
 			$encryption = "md5-hex";
 
 			if (!empty($matches[4]))
-			{ // Joomla 1.5
+			{
+				// Joomla 1.5
 				$crypt = $matches[4];
 				$salt  = $matches[5];
 			}
 			else
-			{ // Joomla 1.0
+			{
+				// Joomla 1.0
 				$crypt = $matches[5];
 				$salt  = '';
 			}
@@ -728,6 +760,14 @@ class Password
 		return ($crypt == $hashed);
 	}
 
+	/**
+	 * Check if a password matches
+	 *
+	 * @param   mixed   $user
+	 * @param   string  $password
+	 * @param   bool    $alltables
+	 * @return  bool
+	 */
 	public static function passwordMatches($user = null, $password, $alltables = false)
 	{
 		$passhash = null;
@@ -760,6 +800,12 @@ class Password
 		return self::comparePasswords($passhash, $password);
 	}
 
+	/**
+	 * Invalidate a user's password
+	 *
+	 * @param   mixed   $user
+	 * @return  bool
+	 */
 	public static function invalidatePassword($user = null)
 	{
 		$hzup = self::getInstance($user);
@@ -770,6 +816,12 @@ class Password
 		return true;
 	}
 
+	/**
+	 * Expire a user's password
+	 *
+	 * @param   mixed   $user
+	 * @return  bool
+	 */
 	public static function expirePassword($user = null)
 	{
 		$hzup = self::getInstance($user);

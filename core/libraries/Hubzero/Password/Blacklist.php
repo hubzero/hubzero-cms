@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,26 @@
  *
  * @package     hubzero-cms
  * @author      Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright	Copyright 2010-2012 Purdue University. All rights reserved.
+ * @copyright	Copyright 2010-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Password;
 
+/**
+ * Password Blacklist helper
+ */
 class Blacklist
 {
+	/**
+	 * Check if a word is in the blacklist
+	 *
+	 * @param   string  $word
+	 * @return  bool
+	 */
 	public static function inBlacklist($word)
 	{
-		$db =  \App::get('db');
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -46,15 +55,18 @@ class Blacklist
 			$word = '';
 		}
 
-		$query = 'SELECT 1 FROM #__password_blacklist WHERE word=' .  $db->quote($word) . ';';
-
+		$query = 'SELECT 1 FROM `#__password_blacklist` WHERE word=' .  $db->quote($word) . ';';
 		$db->setQuery($query);
 
-		$result = $db->loadResult();
-
-		return $result;
+		return $db->loadResult();
 	}
 
+	/**
+	 * Turn a word into simple l33t type
+	 *
+	 * @param   string  $word
+	 * @return  string
+	 */
 	public static function simple_l33t($word)
 	{
 		$subs = array(
@@ -87,11 +99,17 @@ class Blacklist
 			'2' => 'Z',
 		);
 
-		$word2 = str_replace( array_keys($subs), array_values($subs), $word);
+		$word2 = str_replace(array_keys($subs), array_values($subs), $word);
 
 		return strtolower($word2);
 	}
 
+	/**
+	 * Turn a word into l33t type
+	 *
+	 * @param   string  $word
+	 * @return  string
+	 */
 	private static function l33t($word)
 	{
 		$subs = array(
@@ -268,11 +286,11 @@ class Blacklist
 		);
 
 		$wordsubs = array(
-			" joo " => " you ",
-			" teh " => " the ",
-			" wat " => " what ",
-			" sas " => " says ",
-			" u " => " you "
+			' joo ' => ' you ',
+			' teh ' => ' the ',
+			' wat ' => ' what ',
+			' sas ' => ' says ',
+			' u '   => ' you '
 		);
 
 		$word2 = str_replace( array_keys($subs), array_values($subs), $word);
@@ -281,6 +299,12 @@ class Blacklist
 		return $word2;
 	}
 
+	/**
+	 * Normalize a word
+	 *
+	 * @param   string  $word
+	 * @return  string
+	 */
 	private static function normalize_word($word)
 	{
 		$nword = '';
@@ -292,12 +316,14 @@ class Blacklist
 			$o = ord($word[$i]);
 
 			if ($o < 97)
-			{ // convert to lowercase
+			{
+				// convert to lowercase
 				$o += 32;
 			}
 
 			if ($o > 122 || $o < 97)
-			{ // skip anything not a lowercase letter
+			{
+				// skip anything not a lowercase letter
 				continue;
 			}
 
@@ -307,9 +333,15 @@ class Blacklist
 		return $nword;
 	}
 
+	/**
+	 * Check if a word is based on a blacklisted word
+	 *
+	 * @param   string  $word
+	 * @return  bool
+	 */
 	public static function basedOnBlacklist($word)
 	{
-		$db =  \App::get('db');
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -323,7 +355,7 @@ class Blacklist
 
 		$words[] = $word;
 		$words[] = strtolower($word);
-		$words[] = strtolower( strrev($word) );
+		$words[] = strtolower(strrev($word));
 
 		$len = strlen($word);
 		$word2 = '';
@@ -336,11 +368,11 @@ class Blacklist
 			}
 		}
 		$words[] = strtolower($word2);
-		$words[] = strtolower( strrev($word2) );
+		$words[] = strtolower(strrev($word2));
 		$words[] = self::l33t($word);
-		$words[] = strrev( self::l33t($word) );
+		$words[] = strrev(self::l33t($word));
 		$words[] = self::simple_l33t($word);
-		$words[] = strrev( self::simple_l33t($word) );
+		$words[] = strrev(self::simple_l33t($word));
 
 		$query = "SELECT 1 FROM `#__password_blacklist` WHERE word IN (";
 
@@ -361,14 +393,20 @@ class Blacklist
 		return $result; // returns true if char belongs to class
 	}
 
-	public static function nameBlacklist($word,$givenName,$middleName,$surname)
+	/**
+	 * Check if a name is in the blacklist
+	 *
+	 * @param   string  $word
+	 * @return  bool
+	 */
+	public static function nameBlacklist($word, $givenName, $middleName, $surname)
 	{
-		$word = self::normalize_word($word);
-		$givenName = self::normalize_word($givenName);
+		$word       = self::normalize_word($word);
+		$givenName  = self::normalize_word($givenName);
 		$middleName = self::normalize_word($middleName);
-		$surname = self::normalize_word($surname);
+		$surname    = self::normalize_word($surname);
 
-		$words = array();
+		$words   = array();
 		$words[] = $givenName;
 		$words[] = strrev($givenName);
 		$words[] = $middleName;
@@ -397,12 +435,18 @@ class Blacklist
 		return false;
 	}
 
-	public static function usernameBlacklist($word,$username)
+	/**
+	 * Check if a username is in the blacklist
+	 *
+	 * @param   string  $word
+	 * @return  bool
+	 */
+	public static function usernameBlacklist($word, $username)
 	{
-		$word = self::normalize_word($word);
+		$word     = self::normalize_word($word);
 		$username = self::normalize_word($username);
 
-		$words = array();
+		$words   = array();
 		$words[] = $username;
 		$words[] = strrev($username);
 

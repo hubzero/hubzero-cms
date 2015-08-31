@@ -35,6 +35,8 @@ use SessionHandlerInterface;
 
 /**
  * Custom session storage handler for PHP
+ *
+ * Inspired by Joomla's JSessionStorage class
  */
 abstract class Store extends Object implements SessionHandlerInterface
 {
@@ -86,6 +88,7 @@ abstract class Store extends Object implements SessionHandlerInterface
 	/**
 	 * Register the functions of this class with PHP's session handler
 	 *
+	 * @param   array  $options
 	 * @return  void
 	 */
 	public function register($options = array())

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2010-2012 Purdue University. All rights reserved.
+ * Copyright 2010-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,16 +24,29 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2010-2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2010-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Password;
 
+/**
+ * Character class helper
+ */
 class CharacterClass
 {
+	/**
+	 * List of character classes
+	 *
+	 * @var  array
+	 */
 	static $classes = null;
 
+	/**
+	 * Populate the list of character classes
+	 *
+	 * @return  void
+	 */
 	private static function init()
 	{
 		$classes[] = array('id' => '1', 'name' => 'uppercase', 'regex' => '[A-Z]',                                       'flag' => '1');
@@ -46,6 +59,12 @@ class CharacterClass
 		self::$classes = $classes;
 	}
 
+	/**
+	 * Match character class
+	 *
+	 * @param   string  $char
+	 * @return  object
+	 */
 	public static function match($char = null)
 	{
 		$result = array();
