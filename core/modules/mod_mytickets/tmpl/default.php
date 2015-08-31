@@ -37,14 +37,11 @@ $this->css();
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<ul class="module-nav">
 		<li><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
-		<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_feedback&task=report_problems'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
+		<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_support&task=new'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
 	</ul>
 
 	<h4>
-		<a href="<?php echo Route::url('index.php?option=com_support&task=tickets&show=7'); ?>">
-			<?php echo Lang::txt('MOD_MYTICKETS_SUBMITTED'); ?>
-			<span><?php echo Lang::txt('MOD_MYTICKETS_VIEW_ALL'); ?></span>
-		</a>
+		<?php echo Lang::txt('MOD_MYTICKETS_SUBMITTED'); ?>
 	</h4>
 	<?php if (count($this->rows1) <= 0) { ?>
 		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
@@ -65,10 +62,7 @@ $this->css();
 	<?php } ?>
 
 	<h4>
-		<a href="<?php echo Route::url('index.php?option=com_support&task=tickets&show=8'); ?>">
-			<?php echo Lang::txt('MOD_MYTICKETS_ASSIGNED'); ?>
-			<span><?php echo Lang::txt('MOD_MYTICKETS_VIEW_ALL'); ?></span>
-		</a>
+		<?php echo Lang::txt('MOD_MYTICKETS_ASSIGNED'); ?>
 	</h4>
 	<?php if (count($this->rows2) <= 0) { ?>
 		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
@@ -89,10 +83,7 @@ $this->css();
 	<?php } ?>
 
 	<h4>
-		<a href="<?php echo Route::url('index.php?option=com_support&task=tickets&show=8'); ?>">
-			<?php echo Lang::txt('MOD_MYTICKETS_CONTRIBUTIONS'); ?>
-			<span><?php echo Lang::txt('MOD_MYTICKETS_VIEW_ALL'); ?></span>
-		</a>
+		<?php echo Lang::txt('MOD_MYTICKETS_CONTRIBUTIONS'); ?>
 	</h4>
 	<?php if (count($this->rows3) <= 0) { ?>
 		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
