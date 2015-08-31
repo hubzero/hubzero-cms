@@ -663,9 +663,49 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			//tags & badges
-			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
-			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
+			if ($view->row->relatedAuthors->count())
+			{
+				$authors = $view->row->relatedAuthors;
+			}
+			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
+			{
+				// formats the author for the multi-author plugin
+				$authors = explode(';',$view->row->author);
+
+				$authorString = '';
+				$totalAuths = count($authors);
+				$x = 0;
+			
+				foreach ($authors as &$author)
+				{
+					/***
+					* Because the multi-select keys off of a comma,
+					* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
+					* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
+					* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
+					***/
+					$authorEntry = explode(',', $author);
+					if (count($authorEntry == 2))
+					{
+						$author = $authorEntry[1] . ' ' . $authorEntry[0];
+					}
+
+					$authorString .= $author;
+			
+					if ($totalAuths > 1 && $x < $totalAuths - 1 )
+					{
+						$authorString .= ',';
+					}
+
+					$x = $x + 1;
+				}
+			}
+
+		 $view->authorString = $authorString;
+
+		 //tags & badges
+		 $view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
+		 $view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
 		}
 
 		// Output HTML
@@ -704,6 +744,20 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// get badges
 		$badges = trim(Request::getVar('badges', ''));
+
+		// replace separator for authors
+		$authorString = Request::getVar('author');
+
+		if (is_string($authorString))
+		{
+			$authorString = str_replace(',', ';', $authorString);	
+		}
+		else
+		{
+			// incoming is an array for related authors
+			// jos_citation_authors table entries
+			$authorString = '';
+		}
 
 		// check to see if new
 		$cid = Request::getInt('cid');
