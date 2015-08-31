@@ -652,13 +652,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($authorField as $key => $a)
 				{
-					// create a new author entry 
+					// create a new author entry
 					$authorObj = \Components\Citations\Models\Author::blank()->set(array(
 						'cid' => $citation->id,
 						'ordering' => $key,
 						'author' => $a
 						));
-						
+
 						$authorObj->save();
 					}
 				}
