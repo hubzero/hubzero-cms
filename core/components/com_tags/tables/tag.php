@@ -347,6 +347,10 @@ class Tag extends \JTable
 			}
 			$this->_db->setQuery($query);
 			$data = $this->_db->loadColumn();
+			if (empty($data))
+			{
+				$data[] = 0;
+			}
 
 			$query  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon,
 						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total,
