@@ -35,6 +35,9 @@ use Hubzero\Http\Request;
 
 /**
  * App Middleware
+ *
+ * Inspired, in part, by Laravel
+ * http://laravel.com
  */
 abstract class Middleware extends ServiceProvider
 {

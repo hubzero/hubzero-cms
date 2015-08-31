@@ -41,7 +41,7 @@ class Apc extends None
 	/**
 	 * Indicates if APCu is supported.
 	 *
-	 * @var bool
+	 * @var  bool
 	 */
 	protected $apcu = false;
 

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2014 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2009-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,63 +38,63 @@ use Hubzero\Base\Object;
  * Browser identification is performed by examining the HTTP_USER_AGENT
  * environment variable provided by the web server.
  *
- * This class has many influences from the lib/Browser.php code in
- * version 3 of Horde by Chuck Hagenbuch and Jon Parise.
+ * This class is based on Joomla's JBrowser and has many influences from the
+ * lib/Browser.php code in version 3 of Horde by Chuck Hagenbuch and Jon Parise.
  */
 class Detector extends Object
 {
 	/**
-	 * @var    integer  Major version number
+	 * @var  integer  Major version number
 	 */
 	protected $majorVersion = 0;
 
 	/**
-	 * @var    integer  Minor version number
+	 * @var  integer  Minor version number
 	 */
 	protected $minorVersion = 0;
 
 	/**
-	 * @var    string  Browser name.
+	 * @var  string  Browser name.
 	 */
 	protected $browser = '';
 
 	/**
-	 * @var    string  Full user agent string.
+	 * @var  string  Full user agent string.
 	 */
 	protected $agent = '';
 
 	/**
-	 * @var    string  Lower-case user agent string
+	 * @var  string  Lower-case user agent string
 	 */
 	protected $lowerAgent = '';
 
 	/**
-	 * @var    string  HTTP_ACCEPT string.
+	 * @var  string  HTTP_ACCEPT string.
 	 */
 	protected $accept = '';
 
 	/**
-	 * @var    array  Parsed HTTP_ACCEPT string
+	 * @var  array  Parsed HTTP_ACCEPT string
 	 */
 	protected $acceptParsed = array();
 
 	/**
-	 * @var    string  Platform the browser is running on
+	 * @var  string  Platform the browser is running on
 	 */
 	protected $platform = '';
 
 	/**
-	 * @var    string  Platform version the browser is running on
+	 * @var  string  Platform version the browser is running on
 	 */
 	protected $platformVersion = '';
 
 	/**
-	 * @var    string  Device the browser is running on
+	 * @var  string  Device the browser is running on
 	 */
 	protected $device = '';
 
 	/**
-	 * @var    array  Known robots.
+	 * @var  array  Known robots.
 	 */
 	protected $robots = array(
 		/* The most common ones. */
@@ -147,8 +147,9 @@ class Detector extends Object
 	);
 
 	/**
-	 * @var    boolean  Is this a mobile browser?
-	 * @since  12.1
+	 * Is this a mobile browser?
+	 *
+	 * @var  boolean
 	 */
 	protected $mobile = false;
 
@@ -156,7 +157,7 @@ class Detector extends Object
 	 * List of viewable image MIME subtypes.
 	 * This list of viewable images works for IE and Netscape/Mozilla.
 	 *
-	 * @var    array
+	 * @var  array
 	 */
 	protected $images = array(
 		'jpeg',
@@ -168,7 +169,9 @@ class Detector extends Object
 	);
 
 	/**
-	 * @var    array  Browser instances container.
+	 * Browser instances container.
+	 *
+	 * @var  array
 	 */
 	protected static $instances = array();
 
@@ -177,8 +180,7 @@ class Detector extends Object
 	 *
 	 * @param   string  $userAgent  The browser string to parse.
 	 * @param   string  $accept     The HTTP_ACCEPT settings to use.
-	 *
-	 * @since   11.1
+	 * @return  void
 	 */
 	public function __construct($userAgent = null, $accept = null)
 	{
@@ -455,23 +457,6 @@ class Detector extends Object
 	 */
 	protected function _setPlatform()
 	{
-		// if we're on an iPad or iPhone
-		/*if (preg_match('/ipad|iphone/i', $this->lowerAgent))
-		{
-			$this->platform = 'ios';
-		}
-		elseif (strpos($this->lowerAgent, 'wind') !== false)
-		{
-			$this->platform = 'win';
-		}
-		elseif (strpos($this->lowerAgent, 'mac') !== false)
-		{
-			$this->platform = 'mac';
-		}
-		else
-		{
-			$this->platform = 'unix';
-		}*/
 		$this->device = 'computer';
 
 		// Determine platform

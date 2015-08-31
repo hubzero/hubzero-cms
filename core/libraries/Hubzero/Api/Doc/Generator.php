@@ -113,7 +113,7 @@ class Generator
 	/**
 	 * Load from cache
 	 * 
-	 * @return  mixed  Documentation
+	 * @return  boolean
 	 */
 	private function cache()
 	{
@@ -147,7 +147,7 @@ class Generator
 	/**
 	 * Generate Doc
 	 * 
-	 * @return  mixed  Documentation
+	 * @return  void
 	 */
 	private function generate()
 	{
@@ -228,8 +228,8 @@ class Generator
 	/**
 	 * Process an individual file
 	 * 
-	 * @param  string $file File path
-	 * @return array        Processed endpoints
+	 * @param   string  $file  File path
+	 * @return  array   Processed endpoints
 	 */
 	private function processFile($file)
 	{
@@ -353,8 +353,12 @@ class Generator
 	{
 		// replace some values in file path to get what we need
 		$file = str_replace(
-			array(PATH_CORE . DS . 'components' . DS . 'com_', '.php'),
-			array('', ''),
+			array(
+				PATH_CORE . DS . 'components' . DS . 'com_',
+				PATH_APP . DS . 'components' . DS . 'com_',
+				'.php'
+			),
+			array('', '', ''),
 			$file
 		);
 

@@ -38,28 +38,28 @@ class Administrator implements ClientInterface
 	/**
 	 * ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	public $id = 1;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $name = 'administrator';
 
 	/**
 	 * Alias
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $alias = 'admin';
 
 	/**
 	 * A url to init this client.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $url = 'admin';
 }

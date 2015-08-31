@@ -42,7 +42,7 @@ class File extends None
 	/**
 	 * The file cache directory
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $directory;
 

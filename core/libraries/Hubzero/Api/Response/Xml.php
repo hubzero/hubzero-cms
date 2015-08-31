@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2011-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,14 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2011-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Api\Response;
 
 /**
- * Hubzero class for encoding and decoding XML
+ * Class for encoding and decoding XML
  */
 class Xml
 {
@@ -59,12 +59,12 @@ class Xml
 	/**
 	 * Encode a variable into XML
 	 *
-	 * @param      mixed   $mixed            Data to encode (array/object)
-	 * @param      string  $tag              Root tag name
-	 * @param      string  $attributes       Attributes to add
-	 * @param      number  $depth            Depth to encode to
-	 * @param      boolean $show_declaration Show XML doctype declaration
-	 * @return     string XML
+	 * @param   mixed    $mixed             Data to encode (array/object)
+	 * @param   string   $tag               Root tag name
+	 * @param   string   $attributes        Attributes to add
+	 * @param   number   $depth             Depth to encode to
+	 * @param   boolean  $show_declaration  Show XML doctype declaration
+	 * @return  string   XML
 	 */
 	public function encode($mixed, $tag='root', $attributes='', $depth = 1, $show_declaration = true)
 	{
@@ -197,14 +197,15 @@ class Xml
 		}
 
 		self::last_error(self::XML_ERROR_NONE);
-	    return $xml;
+
+		return $xml;
 	}
 
 	/**
 	 * Set the last error
 	 *
-	 * @param      integer $id Error number
-	 * @return     integer
+	 * @param   integer  $id  Error number
+	 * @return  integer
 	 */
 	public function last_error($id)
 	{
@@ -221,8 +222,8 @@ class Xml
 	/**
 	 * Parse XML and return as array or object
 	 *
-	 * @param      string $xml XML
-	 * @return     mixed Array or object
+	 * @param   string  $xml  XML
+	 * @return  mixed   Array or object
 	 */
 	public function decode($xml)
 	{
@@ -384,6 +385,7 @@ class Xml
 		}
 
 		self::last_error(self::XML_ERROR_NONE);
+
 		return $obj;
 	}
 }

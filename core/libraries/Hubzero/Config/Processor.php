@@ -34,6 +34,8 @@ use Hubzero\Error\Exception\InvalidArgumentException;
 
 /**
  * Abstract Registry Processor
+ *
+ * Based, in part, on Joomla's JRegistry classes
  */
 abstract class Processor
 {

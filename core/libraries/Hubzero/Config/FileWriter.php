@@ -52,9 +52,9 @@ class FileWriter
 	/**
 	 * Create a new file configuration loader.
 	 *
-	 * @param  string  $format
-	 * @param  string  $path
-	 * @return void
+	 * @param   string  $format
+	 * @param   string  $path
+	 * @return  void
 	 */
 	public function __construct($format, $path)
 	{

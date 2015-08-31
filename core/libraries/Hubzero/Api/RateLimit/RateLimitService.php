@@ -42,7 +42,7 @@ class RateLimitService extends Middleware
 	/**
 	 * Load Service
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function register()
 	{

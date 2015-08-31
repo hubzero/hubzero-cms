@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,40 +41,40 @@ class Cli implements ClientInterface
 	/**
 	 * ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	public $id = 6;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $name = 'cli';
 
 	/**
 	 * Alias
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $alias = 'cli';
 
 	/**
 	 * A url to init this client
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $url = '';
 
 	/**
 	 * Method to call another console command
 	 *
-	 * @param  string                     $class     the command to call
-	 * @param  string                     $task      the command task to call
-	 * @param  \Hubzero\Console\Arguments $arguments the command arguments
-	 * @param  \Hubzero\Console\Output    $output    the command output
-	 * @return void
-	 **/
+	 * @param   string  $class      The command to call
+	 * @param   string  $task       The command task to call
+	 * @param   object  $arguments  The command arguments
+	 * @param   object  $output     The command output
+	 * @return  void
+	 */
 	public function call($class, $task, Arguments $arguments, Output $output)
 	{
 		// Namespace class

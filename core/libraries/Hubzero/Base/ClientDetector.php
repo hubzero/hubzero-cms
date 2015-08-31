@@ -34,6 +34,9 @@ use Hubzero\Http\Request;
 
 /**
  * Client detector
+ *
+ * Inspired by Laravel's environment detector
+ * http://laravel.com
  */
 class ClientDetector
 {
@@ -72,8 +75,9 @@ class ClientDetector
 	/**
 	 * Set the application environment for a web request.
 	 *
-	 * @param  mixed   $environments  array|string
-	 * @return string
+	 * @param   mixed   $environments  array|string
+	 * @return  string
+	 * @todo    Base off URI instead of Joomla path constant
 	 */
 	protected function detectWebEnvironment($environments)
 	{

@@ -37,6 +37,8 @@ use stdClass;
 
 /**
  * INI format handler for Registry.
+ *
+ * Based, in part, on Joomla's JRegistry format classes
  */
 class Ini extends Base
 {
@@ -48,7 +50,9 @@ class Ini extends Base
 	protected static $cache = array();
 
 	/**
-	 * {@inheritDoc}
+	 * Returns an array of allowed file extensions for this parser
+	 *
+	 * @return  array
 	 */
 	public function getSupportedExtensions()
 	{
@@ -56,10 +60,11 @@ class Ini extends Base
 	}
 
 	/**
-	 * {@inheritDoc}
 	 * Parses an INI file as an array
 	 *
-	 * @throws  ParseException If there is an error parsing the INI file
+	 * @param   string  $path
+	 * @return  object
+	 * @throws  ParseException  If there is an error parsing the INI file
 	 */
 	public function parse($path)
 	{

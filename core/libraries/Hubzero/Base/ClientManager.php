@@ -31,7 +31,7 @@
 namespace Hubzero\Base;
 
 /**
- * Application helper functions
+ * Manager for application client types
  */
 class ClientManager
 {
@@ -68,13 +68,11 @@ class ClientManager
 					continue;
 				}
 
-				$client = preg_replace('#\.[^.]*$#', '', $file->getFilename()); //pathinfo($client, PATHINFO_FILENAME);
+				$client = preg_replace('#\.[^.]*$#', '', $file->getFilename());
 				if ($client == 'ClientInterface')
 				{
 					continue;
 				}
-
-				//include_once(__DIR__ . '/Client/' . $file->getFilename());
 
 				$cls = __NAMESPACE__ . '\\Client\\' . ucfirst(strtolower($client));
 				if (!class_exists($cls))

@@ -34,6 +34,9 @@ use Hubzero\Container\Container;
 
 /**
  * Authentication manager
+ *
+ * Login/logout initially based on Joomla
+ * JApplication::login/logout methods.
  */
 class Manager
 {
@@ -172,10 +175,11 @@ class Manager
 	}
 
 	/**
-	 * Set the default authentication driver name.
+	 * Logout a user
 	 *
-	 * @param  string  $name
-	 * @return void
+	 * @param   integer  $userid
+	 * @param   array    $options
+	 * @return  boolean
 	 */
 	public function logout($userid = null, $options = array())
 	{
@@ -184,7 +188,7 @@ class Manager
 
 		// Build the credentials array.
 		$parameters['username'] = $user->get('username');
-		$parameters['id'] = $user->get('id');
+		$parameters['id']       = $user->get('id');
 
 		// Set clientid in the options array if it hasn't been set already.
 		if (!isset($options['clientid']))

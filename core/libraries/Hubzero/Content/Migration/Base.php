@@ -42,52 +42,52 @@ class Base
 	/**
 	 * Base database object (should have joomla extensions and migrations log tables in it)
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	private $baseDb;
 
 	/**
 	 * Db object available to migrations
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $db;
 
 	/**
 	 * Available callbacks
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	protected $callbacks = array();
 
 	/**
 	 * Options
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $options = array();
 
 	/**
 	 * Errors
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $errors = array();
 
 	/**
 	 * Whether or not we're running in protected mode
 	 *
-	 * @var bool
+	 * @var  bool
 	 **/
 	private $protectedMode = true;
 
 	/**
 	 * Constructor
 	 *
-	 * @param  object - database object (primary)
-	 * @param  array  - callbacks
-	 * @param  object - alternate db
-	 * @return void
+	 * @param   object  $db         Database object (primary)
+	 * @param   array   $callbacks  Callbacks
+	 * @param   object  $altDb      Alternate db
+	 * @return  void
 	 **/
 	public function __construct($db, $callbacks=array(), $altDb=null)
 	{
@@ -104,10 +104,10 @@ class Base
 	/**
 	 * Helper function for calling a given callback
 	 *
-	 * @param (string) $callback - name of callback to use
-	 * @param (string) $fund     - name of callback function to call
-	 * @param (array)  $args     - args to pass to callback function
-	 * @return void
+	 * @param   string  $callback  Name of callback to use
+	 * @param   string  $fund      Name of callback function to call
+	 * @param   array   $args      Args to pass to callback function
+	 * @return  mixed
 	 **/
 	public function callback($callback, $func, $args=array())
 	{
@@ -124,8 +124,8 @@ class Base
 	/**
 	 * Get option - these are specified/overwritten by the individual migrations/hooks
 	 *
-	 * @param  (string) $key
-	 * @return (string) $value
+	 * @param   string  $key
+	 * @return  mixed
 	 **/
 	public function getOption($key)
 	{
@@ -135,7 +135,7 @@ class Base
 	/**
 	 * Return a middleware database object
 	 *
-	 * @return object
+	 * @return  object
 	 */
 	public function getMWDBO()
 	{
@@ -186,7 +186,7 @@ class Base
 	/**
 	 * Try to get the root credentials from a variety of locations
 	 *
-	 * @return (mixed) $return - array of creds or false on failure
+	 * @return  mixed  Array of creds or false on failure
 	 **/
 	private function getRootCredentials()
 	{
@@ -249,7 +249,7 @@ class Base
 	/**
 	 * Try to run commands as MySql root user
 	 *
-	 * @return (bool) $success - if successfully upgraded to root access
+	 * @return  bool  If successfully upgraded to root access
 	 **/
 	public function runAsRoot()
 	{
@@ -289,9 +289,9 @@ class Base
 	/**
 	 * Set an error
 	 *
-	 * @param  (string) $message
-	 * @param  (string) $type
-	 * @return void
+	 * @param   string  $message
+	 * @param   string  $type
+	 * @return  void
 	 **/
 	public function setError($message, $type='fatal')
 	{
@@ -301,7 +301,7 @@ class Base
 	/**
 	 * Get errors
 	 *
-	 * @return (array) - errors
+	 * @return  array  Errors
 	 **/
 	public function getErrors()
 	{
@@ -311,9 +311,9 @@ class Base
 	/**
 	 * Get element params
 	 *
-	 * @param  string $option    com_xyz
-	 * @param  bool   $returnRaw whether or not to return jregistry object or raw param string
-	 * @return object|string
+	 * @param   string  $option     com_xyz
+	 * @param   bool    $returnRaw  whether or not to return jregistry object or raw param string
+	 * @return  object|string
 	 **/
 	public function getParams($element, $returnRaw=false)
 	{
@@ -366,12 +366,12 @@ class Base
 	/**
 	 * Add, as needed, the component to the appropriate table, depending on the Joomla version
 	 *
-	 * @param $name           - (string) component name
-	 * @param $option         - (string) com_xyz
-	 * @param $enabled        - (int)    whether or not the component should be enabled
-	 * @param $params         - (string) component params (if already known)
-	 * @param $createMenuItem - (bool)   create an admin menu item for this component
-	 * @return bool
+	 * @param   string  $name            Component name
+	 * @param   string  $option          String) com_xyz
+	 * @param   int     $enabled         Whether or not the component should be enabled
+	 * @param   string  $params          Component params (if already known)
+	 * @param   bool    $createMenuItem  Create an admin menu item for this component
+	 * @return  bool
 	 **/
 	public function addComponentEntry($name, $option=NULL, $enabled=1, $params='', $createMenuItem=true)
 	{
@@ -509,11 +509,11 @@ class Base
 	/**
 	 * Add, as needed, the plugin entry to the appropriate table, depending on the Joomla version
 	 *
-	 * @param $folder  - (string) plugin folder
-	 * @param $element - (string) plugin element
-	 * @param $enabled - (int)    whether or not the plugin should be enabled
-	 * @param $params  - (array)  plugin params (if already known)
-	 * @return bool
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @param   int     $enabled  Whether or not the plugin should be enabled
+	 * @param   array   $params   Plugin params (if already known)
+	 * @return  bool
 	 **/
 	public function addPluginEntry($folder, $element, $enabled=1, $params='')
 	{
@@ -586,9 +586,9 @@ class Base
 	/**
 	 * Standardize a plugin entry name
 	 *
-	 * @param $folder  - (string) plugin folder
-	 * @param $element - (string) plugin element
-	 * @return bool
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @return  bool
 	 **/
 	public function normalizePluginEntry($folder, $element)
 	{
@@ -613,10 +613,10 @@ class Base
 	/**
 	 * Rename a plugin entry in the appropriate table, depending on the Joomla version
 	 *
-	 * @param $folder  - (string) plugin folder
-	 * @param $element - (string) plugin element
-	 * @param $name    - (string) the new plugin name
-	 * @return bool
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @param   string  $name     The new plugin name
+	 * @return  bool
 	 **/
 	public function renamePluginEntry($folder, $element, $name)
 	{
@@ -652,10 +652,10 @@ class Base
 	/**
 	 * Save plugin params
 	 *
-	 * @param $folder  - (string) plugin folder
-	 * @param $element - (string) plugin element
-	 * @param $params  - (array)  plugin params (if already known)
-	 * @return void
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @param   array   $params   Plugin params (if already known)
+	 * @return  void
 	 **/
 	public function savePluginParams($folder, $element, $params)
 	{
@@ -728,9 +728,9 @@ class Base
 	/**
 	 * Saves extension params (only applies to J2.5 and up!)
 	 *
-	 * @param  string $element the element to which the params apply
-	 * @param  array  $params  the params being saved
-	 * @return bool
+	 * @param   string  $element  The element to which the params apply
+	 * @param   array   $params   The params being saved
+	 * @return  bool
 	 **/
 	public function saveParams($element, $params)
 	{
@@ -775,11 +775,11 @@ class Base
 	/**
 	 * Add, as needed, the module entry to the appropriate table, depending on the Joomla version
 	 *
-	 * @param $element - (string) plugin element
-	 * @param $enabled - (int)    whether or not the plugin should be enabled
-	 * @param $params  - (array)  plugin params (if already known)
-	 * @param $client  - (int)    client (site=0, admin=1)
-	 * @return bool
+	 * @param   string  $element  Plugin element
+	 * @param   int     $enabled  Whether or not the plugin should be enabled
+	 * @param   array   $params   Plugin params (if already known)
+	 * @param   int     $client   Client (site=0, admin=1)
+	 * @return  bool
 	 **/
 	public function addModuleEntry($element, $enabled=1, $params='', $client=0)
 	{
@@ -812,13 +812,13 @@ class Base
 	/**
 	 * Instead of just adding to the extensions table, install module in modules table
 	 *
-	 * @param $module   - (string)     module name
-	 * @param $position - (string)     module position
-	 * @param $always   - (bool)       if true - always install, false - only install if another module of that type isn't present
-	 * @param $params   - (array)      params (if already known)
-	 * @param $client   - (int)        client (site=0, admin=1)
-	 * @param $menus    - (int, array) menus to install to (0=all)
-	 * @return void
+	 * @param   string  $module    Module name
+	 * @param   string  $position  Module position
+	 * @param   bool    $always    If true - always install, false - only install if another module of that type isn't present
+	 * @param   array   $params    Params (if already known)
+	 * @param   int     $client    Client (site=0, admin=1)
+	 * @param   mixed   $menus     (int, array) menus to install to (0=all)
+	 * @return  void
 	 **/
 	public function installModule($module, $position, $always=true, $params='', $client=0, $menus=0)
 	{
@@ -880,13 +880,13 @@ class Base
 	/**
 	 * Add, as needed, templates to the CMS
 	 *
-	 * @param $element - (string) template element
-	 * @param $name    - (string) template name
-	 * @param $client  - (int)    admin or site client
-	 * @param $enabled - (int)    whether or not the template should be enabled
-	 * @param $home    - (int)    whether or not this should become the enabled template
-	 * @param $styles  - (array)  template styles
-	 * @return bool
+	 * @param   string  $element  Template element
+	 * @param   string  $name     Template name
+	 * @param   int     $client   Admin or site client
+	 * @param   int     $enabled  Whether or not the template should be enabled
+	 * @param   int     $home     Whether or not this should become the enabled template
+	 * @param   array   $styles   Template styles
+	 * @return  bool
 	 **/
 	public function addTemplateEntry($element, $name=null, $client=1, $enabled=1, $home=0, $styles=NULL)
 	{
@@ -937,11 +937,11 @@ class Base
 	/**
 	 * Install a template, adding it if needed
 	 *
-	 * @param $element - (string) template element
-	 * @param $name    - (string) template name
-	 * @param $client  - (int)    admin or site client
-	 * @param $styles  - (array)  template styles
-	 * @return void
+	 * @param   string  $element  Template element
+	 * @param   string  $name     Template name
+	 * @param   int     $client   Admin or site client
+	 * @param   array   $styles   Template styles
+	 * @return  void
 	 **/
 	public function installTemplate($element, $name=null, $client=1, $styles=NULL)
 	{
@@ -951,9 +951,9 @@ class Base
 	/**
 	 * Sets the asset rules
 	 *
-	 * @param  string $element the element to which the rules apply
-	 * @param  array  $rules the incoming rules to set
-	 * @return void
+	 * @param   string  $element  The element to which the rules apply
+	 * @param   array   $rules    The incoming rules to set
+	 * @return  void
 	 **/
 	public function setAssetRules($element, $rules)
 	{
@@ -993,8 +993,8 @@ class Base
 	/**
 	 * Remove component entries from the appropriate table, depending on the Joomla version
 	 *
-	 * @param $name - (string) component name
-	 * @return bool
+	 * @param   string  $name  Component name
+	 * @return  bool
 	 **/
 	public function deleteComponentEntry($name)
 	{
@@ -1048,8 +1048,8 @@ class Base
 	/**
 	 * Remove plugin entries from the appropriate table, depending on the Joomla version
 	 *
-	 * @param $name - (string) plugin name
-	 * @return bool
+	 * @param   string  $name  Plugin name
+	 * @return  bool
 	 **/
 	public function deletePluginEntry($folder, $element=NULL)
 	{
@@ -1072,9 +1072,9 @@ class Base
 	/**
 	 * Remove module entries from the appropriate table, depending on the Joomla version
 	 *
-	 * @param $name   - (string) plugin name
-	 * @param $client - (int)    client (site=0, admin=1)
-	 * @return bool
+	 * @param   string  $name    Plugin name
+	 * @param   int     $client  Client (site=0, admin=1)
+	 * @return  bool
 	 **/
 	public function deleteModuleEntry($element, $client=null)
 	{
@@ -1125,9 +1125,9 @@ class Base
 	/**
 	 * Remove template entires from the appropriate tables
 	 *
-	 * @param $name   - (string) template element name
-	 * @param $client - (int) client id
-	 * @return bool
+	 * @param   string  $name    Template element name
+	 * @param   int     $client  Client id
+	 * @return  bool
 	 **/
 	public function deleteTemplateEntry($element, $client=1)
 	{
@@ -1161,9 +1161,9 @@ class Base
 	/**
 	 * Enable plugin
 	 *
-	 * @param  $folder  - (string) plugin folder
-	 * @param  $element - (string) plugin element
-	 * @return void
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @return  void
 	 **/
 	public function enablePlugin($folder, $element)
 	{
@@ -1173,9 +1173,9 @@ class Base
 	/**
 	 * Disable plugin
 	 *
-	 * @param  $folder  - (string) plugin folder
-	 * @param  $element - (string) plugin element
-	 * @return void
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @return  void
 	 **/
 	public function disablePlugin($folder, $element)
 	{
@@ -1185,10 +1185,10 @@ class Base
 	/**
 	 * Enable/disable plugin
 	 *
-	 * @param  $folder  - (string) plugin folder
-	 * @param  $element - (string) plugin element
-	 * @param  $enabled - (int)    whether or not the plugin should be enabled
-	 * @return void
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin element
+	 * @param   int     $enabled  Whether or not the plugin should be enabled
+	 * @return  void
 	 **/
 	private function setPluginStatus($folder, $element, $enabled=1)
 	{
@@ -1209,8 +1209,8 @@ class Base
 	/**
 	 * Enable component
 	 *
-	 * @param  $element - (string) element
-	 * @return void
+	 * @param   string  $element  Element
+	 * @return  void
 	 **/
 	public function enableComponent($element)
 	{
@@ -1220,8 +1220,8 @@ class Base
 	/**
 	 * Disable component
 	 *
-	 * @param  $element - (string) element
-	 * @return void
+	 * @param   string  $element  Element
+	 * @return  void
 	 **/
 	public function disableComponent($element)
 	{
@@ -1231,9 +1231,9 @@ class Base
 	/**
 	 * Enable/disable component
 	 *
-	 * @param  $element - (string) element
-	 * @param  $enabled - (int)    whether or not the component should be enabled
-	 * @return void
+	 * @param   string  $element  Element
+	 * @param   int     $enabled  Whether or not the component should be enabled
+	 * @return  void
 	 **/
 	private function setComponentStatus($element, $enabled=1)
 	{
@@ -1254,8 +1254,8 @@ class Base
 	/**
 	 * Enable module
 	 *
-	 * @param  $element - (string) element
-	 * @return void
+	 * @param   string  $element  Element
+	 * @return  void
 	 **/
 	public function enableModule($element)
 	{
@@ -1265,8 +1265,8 @@ class Base
 	/**
 	 * Disable module
 	 *
-	 * @param  $element - (string) element
-	 * @return void
+	 * @param   string  $element  Element
+	 * @return  void
 	 **/
 	public function disableModule($element)
 	{
@@ -1276,8 +1276,8 @@ class Base
 	/**
 	 * Enable/disable module
 	 *
-	 * @param  $element - (string) element
-	 * @param  $enabled - (int)    whether or not the module should be enabled
+	 * @param  string  $element  Element
+	 * @param  int     $enabled  Whether or not the module should be enabled
 	 * @return void
 	 **/
 	private function setModuleStatus($element, $enabled=1)

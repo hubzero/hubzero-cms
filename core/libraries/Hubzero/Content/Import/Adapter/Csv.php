@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,28 +43,29 @@ class Csv implements Adapter
 	/**
 	 * Field Delimiter
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $delimiter = ',';
 
 	/**
 	 * Array to hold processed data
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $data = array();
 
 	/**
 	 * Integer to hold count
 	 *
-	 * @var int
+	 * @var  int
 	 */
 	private $data_count = 0;
 
 	/**
 	 * Does this adapter respond to a mime type
 	 *
-	 * @param  Mime type string
+	 * @param   string  Mime type
+	 * @return  bool
 	 */
 	public static function accepts($mime)
 	{
@@ -79,7 +80,8 @@ class Csv implements Adapter
 	/**
 	 * Count Import data
 	 *
-	 * @return int
+	 * @param   object  $import
+	 * @return  int
 	 */
 	public function count(Import $import)
 	{
@@ -101,9 +103,10 @@ class Csv implements Adapter
 	}
 
 	/**
-	 * Count Import data
+	 * Get a list of headers
 	 *
-	 * @return int
+	 * @param   object  $import
+	 * @return  array
 	 */
 	public function headers(Import $import)
 	{
@@ -116,7 +119,10 @@ class Csv implements Adapter
 	/**
 	 * Process Import data
 	 *
-	 * @param  Closure Object
+	 * @param   object  $import     Import record
+	 * @param   array   $callbacks  Array of Callbacks
+	 * @param   bool    $dryRun     Dry Run mode?
+	 * @return  object
 	 */
 	public function process(Import $import, array $callbacks, $dryRun)
 	{
@@ -166,10 +172,10 @@ class Csv implements Adapter
 	/**
 	 * Run Callbacks on Record
 	 *
-	 * @param  object $record    Resource Record
-	 * @param  array  $callbacks Array of Callbacks
-	 * @param  bool   $dryRun    Dry Run mode?
-	 * @return object            Record object
+	 * @param   object  $record    Resource Record
+	 * @param   array   $callbacks Array of Callbacks
+	 * @param   bool    $dryRun    Dry Run mode?
+	 * @return  object  Record object
 	 */
 	public function map($record, $callbacks, $dryRun)
 	{

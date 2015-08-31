@@ -41,6 +41,9 @@ use Hubzero\Http\Response;
 
 /**
  * Application class
+ *
+ * Heavily influenced by Laravel's Application class
+ * http://laravel.com
  */
 class Application extends Container
 {
@@ -105,6 +108,8 @@ class Application extends Container
 	/**
 	 * Create a new application instance.
 	 *
+	 * @param   object  $request   Request object
+	 * @param   object  $response  Response object
 	 * @return  void
 	 */
 	public function __construct(Request $request = null, Response $response = null)
@@ -192,6 +197,7 @@ class Application extends Container
 	/**
 	 * Register facades with the autoloader
 	 * 
+	 * @param   array  $aliases
 	 * @return  void
 	 */
 	public function registerBaseFacades($aliases = array())
@@ -320,8 +326,8 @@ class Application extends Container
 	/**
 	 * Abort
 	 *
-	 * @param   integer  $code
-	 * @param   string   $message
+	 * @param   integer  $code     Error code
+	 * @param   string   $message  Error message
 	 * @return  void
 	 */
 	public function abort($code, $message='')
@@ -345,14 +351,14 @@ class Application extends Container
 	/**
 	 * Redirect current request to new request (sub requests)
 	 * 
-	 * @param   string  $url     Url to redirect to
+	 * @param   string  $url      Url to redirect to
 	 * @param   string  $message  Message to display on redirect.
 	 * @param   array   $type     Message type.
 	 * @return  void
 	 */
 	public function redirect($url, $message = null, $type = 'success')
 	{
-		$redirect = new RedirectResponse($url); //, $status, $headers);
+		$redirect = new RedirectResponse($url);
 		$redirect->setRequest($this['request']);
 
 		if ($message && $this->has('notification'))
@@ -449,6 +455,7 @@ class Application extends Container
 	 */
 	public function run()
 	{
+		// Start handling errors before doing anything else
 		if ($this->has('error'))
 		{
 			array_walk($this->serviceProviders, function($p)
@@ -460,8 +467,13 @@ class Application extends Container
 			});
 		}
 
+		// Boot the application
+		//
+		// This allows service providers to finish performing any
+		// needed setup.
 		$this->boot();
 
+		// Initialise
 		if (!$this->runningInConsole())
 		{
 			$this['dispatcher']->trigger('system.onAfterInitialise');

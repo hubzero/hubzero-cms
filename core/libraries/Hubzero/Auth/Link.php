@@ -30,92 +30,86 @@
 namespace Hubzero\Auth;
 
 /**
- * Short description for 'Hubzero\Auth\Link'
- *
- * Long description (if any) ...
+ * Authentication Link
  */
 class Link
 {
 	/**
-	 * Description for 'id'
+	 * Record ID
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $id;
 
 	/**
-	 * Description for 'user_id'
+	 * User ID
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $user_id;
 
 	/**
-	 * Description for 'auth_domain_id'
+	 * Domain ID
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $auth_domain_id;
 
 	/**
-	 * Description for 'username'
+	 * Username
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $username;
 
 	/**
-	 * Description for 'email'
+	 * User email
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $email;
 
 	/**
-	 * Description for 'password'
+	 * User password
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $password;
 
 	/**
-	 * Description for 'params'
+	 * Parameters
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $params;
 
 	/**
-	 * Description for '_updatedkeys'
+	 * List of updated keys
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_updatedkeys = array();
 
 	/**
-	 * Description for '_updateAll'
+	 * Update all fields?
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
 	private $_updateAll = false;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 void
+	 * @return  void
 	 */
-	private function __construct()
+	public function __construct()
 	{
 	}
 
 	/**
-	 * Short description for 'clear'
+	 * Clear any existing data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 void
+	 * @return  void
 	 */
 	public function clear()
 	{
@@ -138,12 +132,10 @@ class Link
 	}
 
 	/**
-	 * Short description for 'logDebug'
+	 * Log a debug message
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $msg Parameter description (if any) ...
-	 * @return	 void
+	 * @param   string  $msg  Message to log
+	 * @return  void
 	 */
 	private function logDebug($msg)
 	{
@@ -152,13 +144,11 @@ class Link
 	}
 
 	/**
-	 * Short description for 'getInstance'
+	 * Get an instance of a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $auth_domain_id Parameter description (if any) ...
-	 * @param	  unknown $username Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   integer  $auth_domain_id
+	 * @param   string   $username
+	 * @return  mixed    Object on success, False on failure
 	 */
 	public static function getInstance($auth_domain_id, $username)
 	{
@@ -177,12 +167,10 @@ class Link
 	}
 
 	/**
-	 * Short description for 'find_by_id'
+	 * Find a record by ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $id Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   integer  $id
+	 * @return  mixed    Object on success, False on failure
 	 */
 	public static function find_by_id($id)
 	{
@@ -200,13 +188,11 @@ class Link
 	}
 
 	/**
-	 * Short description for 'createInstance'
+	 * Create a new instance and return it
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   unknown $auth_domain_id Parameter description (if any) ...
-	 * @param   unknown $username Parameter description (if any) ...
-	 * @return  mixed  Return description (if any) ...
+	 * @param   integer  $auth_domain_id
+	 * @param   string   $username
+	 * @return  mixed
 	 */
 	public function createInstance($auth_domain_id, $username)
 	{
@@ -231,15 +217,13 @@ class Link
 	}
 
 	/**
-	 * Short description for 'create'
+	 * Create a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return  boolean R eturn description (if any) ...
+	 * @return  boolean
 	 */
 	public function create()
 	{
-		$db =  \App::get('db');
+		$db = \App::get('db');
 
 		if (empty($db))
 		{
@@ -248,7 +232,7 @@ class Link
 
 		if (is_numeric($this->id))
 		{
-			$query = "INSERT INTO #__auth_link (id,user_id,auth_domain_id,username,email,password,params) VALUES ( "
+			$query = "INSERT INTO `#__auth_link` (id,user_id,auth_domain_id,username,email,password,params) VALUES ( "
 				. $db->quote($this->id) .
 				"," . $db->quote($this->user_id) .
 				"," . $db->quote($this->auth_domain_id) .
@@ -269,7 +253,7 @@ class Link
 		}
 		else
 		{
-			$query = "INSERT INTO #__auth_link (user_id,auth_domain_id,username,email,password,params) VALUES ( "
+			$query = "INSERT INTO `#__auth_link` (user_id,auth_domain_id,username,email,password,params) VALUES ( "
 				. $db->quote($this->user_id) .
 				"," . $db->quote($this->auth_domain_id) .
 				"," . $db->quote($this->username) .
@@ -284,7 +268,7 @@ class Link
 
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
-				$query = "SELECT id FROM #__auth_link WHERE " .
+				$query = "SELECT id FROM `#__auth_link` WHERE " .
 					"auth_domain_id=" . $db->quote($this->auth_domain_id) . " AND " .
 					"user_id=" . $db->quote($this->user_id) . ";";
 
@@ -311,11 +295,9 @@ class Link
 	}
 
 	/**
-	 * Short description for 'read'
+	 * Read a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function read()
 	{
@@ -328,22 +310,23 @@ class Link
 
 		if (is_numeric($this->id))
 		{
-			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE id=" .
+			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM `#__auth_link` WHERE id=" .
 				$db->quote($this->id) . ";";
 		}
 		else if (is_numeric($this->user_id))
 		{
-			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
+			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM `#__auth_link` WHERE " .
 				" user_id=" . $db->quote($this->user_id) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";";
 		}
 		else if (is_string($this->username))
 		{
-			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM #__auth_link WHERE " .
+			$query = "SELECT id,user_id,auth_domain_id,username,email,password,params FROM `#__auth_link` WHERE " .
 				" username=" . $db->quote($this->username) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";";
 
 		}
 
-		if (empty($query)) {
+		if (empty($query))
+		{
 			return false;
 		}
 
@@ -369,18 +352,16 @@ class Link
 	}
 
 	/**
-	 * Short description for 'update'
+	 * Update a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  boolean $all Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
+	 * @param   boolean  $all  Update all properties?
+	 * @return  boolean
 	 */
 	public function update($all = false)
 	{
 		$db =  \App::get('db');
 
-		$query = "UPDATE #__auth_link SET ";
+		$query = "UPDATE `#__auth_link` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -442,11 +423,9 @@ class Link
 	}
 
 	/**
-	 * Short description for 'delete'
+	 * Delete a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return	 boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function delete()
 	{
@@ -459,8 +438,7 @@ class Link
 
 		if (!isset($this->id))
 		{
-			$db->setQuery("SELECT id FROM #__auth_link WHERE user_id=" .
-				$db->quote($this->user_id) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";");
+			$db->setQuery("SELECT id FROM `#__auth_link` WHERE user_id=" . $db->quote($this->user_id) . " AND auth_domain_id=" . $db->quote($this->auth_domain_id) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -470,7 +448,7 @@ class Link
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__auth_link WHERE id= " . $db->quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__auth_link` WHERE id= " . $db->quote($this->id) . ";");
 
 		if (!$db->query())
 		{
@@ -481,12 +459,10 @@ class Link
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Retrieve the value of a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $property Parameter description (if any) ...
-	 * @return	 string Return description (if any) ...
+	 * @param   string  $property  Property name
+	 * @return  mixed
 	 */
 	public function __get($property = null)
 	{
@@ -517,13 +493,11 @@ class Link
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  string $property Parameter description (if any) ...
-	 * @param	  unknown $value Parameter description (if any) ...
-	 * @return	 void
+	 * @param   string  $property  Property name
+	 * @param   mixed   $value     Value to set
+	 * @return  void
 	 */
 	public function __set($property = null, $value = null)
 	{
@@ -547,12 +521,10 @@ class Link
 	}
 
 	/**
-	 * Short description for '__isset'
+	 * Check if a propety is set
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   string $property Parameter description (if any) ...
-	 * @return  string Return description (if any) ...
+	 * @param   string   $property  Property name
+	 * @return  boolean
 	 */
 	public function __isset($property = null)
 	{
@@ -571,11 +543,9 @@ class Link
 	}
 
 	/**
-	 * Short description for '__unset'
+	 * Unset a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   string $property Parameter description (if any) ...
+	 * @param   string  $property  Property name
 	 * @return  void
 	 */
 	public function __unset($property = null)
@@ -583,7 +553,9 @@ class Link
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
 			if (empty($property))
+			{
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
@@ -595,12 +567,10 @@ class Link
 	}
 
 	/**
-	 * Short description for '_error'
+	 * Display an error
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   string $message Parameter description (if any) ...
-	 * @param   integer $level Parameter description (if any) ...
+	 * @param   string   $message  Error message
+	 * @param   integer  $level    Error level
 	 * @return  void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
@@ -627,8 +597,8 @@ class Link
 	 * Return array of linked accounts associated with a given user id
 	 * Also include auth domain name for easy display of domain name
 	 *
-	 * @param   int $user_id - id of user to return accounts for
-	 * @return  array Return - array of auth link entries for the given user_id
+	 * @param   integer  $user_id  ID of user to return accounts for
+	 * @return  array    Array of auth link entries for the given user_id
 	 */
 	public static function find_by_user_id($user_id = null)
 	{
@@ -644,7 +614,7 @@ class Link
 			return false;
 		}
 
-		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
+		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM `#__auth_link` as l, `#__auth_domain` as d";
 		$sql .= " WHERE l.auth_domain_id = d.id AND l.user_id = " . $db->quote($user_id);
 
 		$db->setQuery($sql);
@@ -663,8 +633,8 @@ class Link
 	 * Return array of linked accounts associated with a given email address
 	 * Also include auth domain name for easy display of domain name
 	 *
-	 * @param	  string $email - email address to match accounts against
-	 * @return	 array Return - array of auth link entries for the given user_id
+	 * @param   string  $email  Email address to match accounts against
+	 * @return  array   Array of auth link entries for the given user_id
 	 */
 	public static function find_by_email($email = null, $exclude = array())
 	{
@@ -680,7 +650,7 @@ class Link
 			return false;
 		}
 
-		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
+		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM `#__auth_link` as l, `#__auth_domain` as d";
 		$sql .= " WHERE l.auth_domain_id = d.id AND l.email = " . $db->quote($email);
 
 		if (!empty($exclude[0]))
@@ -704,26 +674,26 @@ class Link
 	}
 
 	/**
-	 * Short description for 'delete_by_user_id'
+	 * Delete a record by User ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $uid Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
+	 * @param   integer  $uid  User ID
+	 * @return  boolean
 	 */
 	public static function delete_by_user_id($uid = null)
 	{
 		if (empty($uid))
+		{
 			return true;
+		}
 
 		$db = \App::get('db');
 
 		if (empty($db))
 		{
-				return false;
+			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__auth_link WHERE user_id= " . $db->quote($uid) . ";");
+		$db->setQuery("DELETE FROM `#__auth_link` WHERE `user_id`= " . $db->quote($uid) . ";");
 
 		if (!$db->query())
 		{
@@ -736,11 +706,11 @@ class Link
 	/**
 	 * Find existing auth_link entry, return false if none exists
 	 *
-	 * @param  string - $type Parameter description (if any) ...
-	 * @param  string - $authenticator Parameter description (if any) ...
-	 * @param  string - $domain Parameter description (if any) ...
-	 * @param  string - $username Parameter description (if any) ...
-	 * @return mixed  - object on success and false on failure
+	 * @param   string  $type
+	 * @param   string  $authenticator
+	 * @param   string  $domain
+	 * @param   string  $username
+	 * @return  mixed   object on success and false on failure
 	 */
 	public static function find($type, $authenticator, $domain, $username)
 	{
@@ -771,25 +741,27 @@ class Link
 	}
 
 	/**
-	 * Short description for 'find_or_create'
+	 * Find a record, creating it if not found.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $type Parameter description (if any) ...
-	 * @param	  unknown $authenticator Parameter description (if any) ...
-	 * @param	  unknown $domain Parameter description (if any) ...
-	 * @param	  unknown $username Parameter description (if any) ...
-	 * @return	 mixed Return description (if any) ...
+	 * @param   string  $type
+	 * @param   string  $authenticator
+	 * @param   string  $domain
+	 * @param   string  $username
+	 * @return  mixed   Object on success, False on failure
 	 */
-	public static function find_or_create($type,$authenticator,$domain,$username)
+	public static function find_or_create($type, $authenticator, $domain, $username)
 	{
-		$hzad = Domain::find_or_create($type,$authenticator,$domain);
+		$hzad = Domain::find_or_create($type, $authenticator, $domain);
 
 		if (!is_object($hzad))
+		{
 			return false;
+		}
 
 		if (empty($username))
+		{
 			return false;
+		}
 
 		$hzal = new self();
 		$hzal->username = $username;
@@ -798,33 +770,34 @@ class Link
 		$hzal->read();
 
 		if (empty($hzal->id) && !$hzal->create())
+		{
 			return false;
+		}
 
 		return $hzal;
 	}
 
 	/**
-	 * Short description for 'find_trusted_emails'
+	 * Find trusted emails by User ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param	  unknown $user_id Parameter description (if any) ...
-	 * @return	 boolean Return description (if any) ...
+	 * @param   integer  $user_id  USer ID
+	 * @return  mixed
 	 */
-	public function find_trusted_emails( $user_id )
+	public function find_trusted_emails($user_id)
 	{
-		if (empty($user_id))
+		if (empty($user_id) || !is_numeric($user_id))
+		{
 			return false;
-
-		if (!is_numeric($user_id))
-			return false;
+		}
 
 		$db = \App::get('db');
 
 		if (empty($db))
+		{
 			return false;
+		}
 
-		$sql = "SELECT email FROM #__auth_link WHERE user_id = " . $db->quote($user_id) . ";";
+		$sql = "SELECT email FROM `#__auth_link` WHERE `user_id` = " . $db->quote($user_id) . ";";
 
 		$db->setQuery($sql);
 

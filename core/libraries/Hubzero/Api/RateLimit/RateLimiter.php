@@ -56,6 +56,7 @@ class RateLimiter
 	 * New rate limiter instance
 	 * 
 	 * @param   object  $storage  Storage object
+	 * @param   array   $config   Options
 	 * @return  void
 	 */
 	public function __construct(StorageInterface $storage, $config = [])
@@ -76,9 +77,9 @@ class RateLimiter
 	/**
 	 * Rate limit for application & user
 	 * 
-	 * @param  int    $applicationId  Application identifier
-	 * @param  int    $userId         User identifier
-	 * @return array                  Array of rate limit data
+	 * @param   int    $applicationId  Application identifier
+	 * @param   int    $userId         User identifier
+	 * @return  array  Array of rate limit data
 	 */
 	public function rateLimit($applicationId, $userId)
 	{
@@ -127,9 +128,9 @@ class RateLimiter
 	/**
 	 * Create initial limit data
 	 * 
-	 * @param  int    $applicationId  Application identifier
-	 * @param  int    $userId         User identifier
-	 * @return array                  Array of rate limit data
+	 * @param   int    $applicationId  Application identifier
+	 * @param   int    $userId         User identifier
+	 * @return  array  Array of rate limit data
 	 */
 	private function createRateLimitData($applicationId, $userId)
 	{
@@ -161,8 +162,8 @@ class RateLimiter
 	/**
 	 * Get new expires date string
 	 * 
-	 * @param  string $type Short or long period
-	 * @return string       Date string
+	 * @param   string  $type  Short or long period
+	 * @return  string  Date string
 	 */
 	private function getNewExpiresDateString($type = 'short')
 	{

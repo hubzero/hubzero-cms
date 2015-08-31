@@ -40,7 +40,9 @@ use stdClass;
 class Xml extends Base
 {
 	/**
-	 * {@inheritDoc}
+	 * Returns an array of allowed file extensions for this parser
+	 *
+	 * @return  array
 	 */
 	public function getSupportedExtensions()
 	{
@@ -48,10 +50,11 @@ class Xml extends Base
 	}
 
 	/**
-	 * {@inheritDoc}
 	 * Parses an XML file as an array
 	 *
-	 * @throws ParseException If there is an error parsing the XML file
+	 * @param   string  $path
+	 * @return  object
+	 * @throws  ParseException  If there is an error parsing the XML file
 	 */
 	public function parse($path)
 	{

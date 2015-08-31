@@ -44,8 +44,8 @@ class Guard
 	/**
 	 * The oauth token data
 	 *
-	 * @var array
-	 **/
+	 * @var  array
+	 */
 	private $token = null;
 
 	/**
@@ -58,6 +58,7 @@ class Guard
 	/**
 	 * Constructor
 	 *
+	 * @param   object  $app  Container
 	 * @return  void
 	 */
 	public function __construct(Container $app)

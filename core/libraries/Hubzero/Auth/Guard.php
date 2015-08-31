@@ -41,24 +41,21 @@ class Guard extends Object
 	/**
 	 * An array of Observer objects to notify
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	protected $_observers = array();
 
 	/**
 	 * The state of the observable object
 	 *
-	 * @var    mixed
-	 * @since  11.1
+	 * @var  mixed
 	 */
 	protected $_state = null;
 
 	/**
 	 * A multi dimensional array of [function][] = key for observers
 	 *
-	 * @var    array
-	 * @since  11.1
+	 * @var  array
 	 */
 	protected $_methods = array();
 
@@ -72,6 +69,7 @@ class Guard extends Object
 	/**
 	 * Constructor
 	 *
+	 * @param   object  $app
 	 * @return  void
 	 */
 	public function __construct(Container $app)
@@ -99,8 +97,12 @@ class Guard extends Object
 	/**
 	 * Attach an observer object
 	 *
+	 * [!] Based on Joomla's event dispatcher
+	 *     This is here purely for compatibility.
+	 *
 	 * @param   object  $observer  An observer object to attach
 	 * @return  void
+	 * @todo    Update plugins to not need this and remove method
 	 */
 	public function attach($observer)
 	{
@@ -164,8 +166,12 @@ class Guard extends Object
 	/**
 	 * Detach an observer object
 	 *
+	 * [!] Based on Joomla's event dispatcher
+	 *     This is here purely for compatibility.
+	 *
 	 * @param   object   $observer  An observer object to detach.
 	 * @return  boolean  True if the observer object was detached.
+	 * @todo    Update plugins to not need this and remove method
 	 */
 	public function detach($observer)
 	{

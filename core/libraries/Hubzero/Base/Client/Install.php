@@ -38,21 +38,21 @@ class Install implements ClientInterface
 	/**
 	 * ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	public $id = 3;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $name = 'install';
 
 	/**
 	 * A url to init this client.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $url = 'install';
 }

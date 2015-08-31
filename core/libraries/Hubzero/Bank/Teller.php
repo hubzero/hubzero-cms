@@ -41,35 +41,35 @@ class Teller extends Object
 	/**
 	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_db   = NULL;
 
 	/**
 	 * User ID
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $uid      = NULL;
 
 	/**
 	 * Current point balance
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	public $balance  = NULL;
 
 	/**
 	 * Lifetime point earnings
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	public $earnings = NULL;
 
 	/**
 	 * Credit point balance
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	public $credit   = NULL;
 
@@ -108,7 +108,7 @@ class Teller extends Object
 	/**
 	 * Get the current balance
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function summary()
 	{
@@ -118,7 +118,7 @@ class Teller extends Object
 	/**
 	 * Get the current credit balance
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function credit_summary()
 	{

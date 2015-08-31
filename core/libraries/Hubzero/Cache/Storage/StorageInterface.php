@@ -38,44 +38,44 @@ interface StorageInterface
 	/**
 	 * Add cache item. If item already exist in storage return false.
 	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $ttl
-	 * @return bool
+	 * @param   string  $key
+	 * @param   mixed   $value
+	 * @param   int     $ttl
+	 * @return  bool
 	 */
 	public function add($key, $value, $minutes);
 
 	/**
 	 * Set cache item.
 	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $ttl
-	 * @return bool
+	 * @param   string  $key
+	 * @param   mixed   $value
+	 * @param   int     $ttl
+	 * @return  bool
 	 */
 	public function put($key, $value, $minutes);
 
 	/**
 	 * Get cache item
 	 *
-	 * @param string $key
-	 * @return mixed
+	 * @param   string  $key
+	 * @return  mixed
 	 */
 	public function get($key);
 
 	/**
 	 * Check cache item.
 	 *
-	 * @param string $key
-	 * @return bool
+	 * @param   string  $key
+	 * @return  bool
 	 */
 	public function has($key);
 
 	/**
 	 * Delete cache item.
 	 *
-	 * @param string $key
-	 * @return bool
+	 * @param   string  $key
+	 * @return  bool
 	 */
 	public function forget($key);
 }

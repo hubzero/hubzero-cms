@@ -121,7 +121,7 @@ class Memcached extends None
 
 		if ($memcached->getVersion() === false)
 		{
-			throw new RuntimeException("Could not establish Memcached connection.");
+			throw new RuntimeException('Could not establish Memcached connection.');
 		}
 
 		return $memcached;

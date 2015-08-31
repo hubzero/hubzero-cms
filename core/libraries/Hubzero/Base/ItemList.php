@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,21 +43,21 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Current cursor position
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_pos = 0;
 
 	/**
 	 * Current array count
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_total = 0;
 
 	/**
 	 * Container for data
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_data = array();
 
@@ -79,20 +79,19 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Add item to the array
 	 *
-	 * @param      mixed $value
-	 * @return     void
+	 * @param   mixed  $value
+	 * @return  void
 	 */
 	public function add($value)
 	{
-		//$this->_data[$this->_total++] = $value;
 		return $this->offsetSet(null, $value);
 	}
 
 	/**
 	 * Remove item from the array
 	 *
-	 * @param      mixed $offset
-	 * @return     void
+	 * @param   mixed  $offset
+	 * @return  void
 	 */
 	public function remove($offset)
 	{
@@ -102,18 +101,17 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Reset cursor to starting point
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rewind()
 	{
 		$this->_pos = 0;
-		//reset($this->_data);
 	}
 
 	/**
 	 * Reset cursor to starting point and reset list (in case we unset some)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reset()
 	{
@@ -124,7 +122,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Is the current position the first one?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isFirst()
 	{
@@ -134,7 +132,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Is the current position the last one?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isLast()
 	{
@@ -144,9 +142,9 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Seek to an absolute position
 	 *
-	 * @param  int $index
-	 * @throws OutOfBoundsException When the seek position is invalid
-	 * @return void
+	 * @param   integer               $index
+	 * @throws  OutOfBoundsException  When the seek position is invalid
+	 * @return  void
 	 */
 	public function seek($index)
 	{
@@ -167,7 +165,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * Return the current array value if the cursor is at
 	 * a valid index
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function current()
 	{
@@ -181,7 +179,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Return the array count
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function total()
 	{
@@ -191,7 +189,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Return the array count
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function count()
 	{
@@ -201,7 +199,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Return the first array value
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function first()
 	{
@@ -212,7 +210,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Return the last array value
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function last()
 	{
@@ -223,7 +221,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Return the key for the current cursor position
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function key()
 	{
@@ -233,7 +231,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Set cursor position to previous position and return array value
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function prev()
 	{
@@ -244,7 +242,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Set cursor position to next position and return array value
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function next()
 	{
@@ -255,7 +253,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Check if the current cursor position is valid
 	 *
-	 * @return     mixed
+	 * @return  mixed
 	 */
 	public function valid()
 	{
@@ -265,8 +263,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Check if an offset exists
 	 *
-	 * @param  mixed $offset
-	 * @return bool
+	 * @param   mixed  $offset
+	 * @return  bool
 	 */
 	public function offsetExists($offset)
 	{
@@ -276,8 +274,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Get the value of an offset
 	 *
-	 * @param  mixed $offset
-	 * @return mixed
+	 * @param   mixed  $offset
+	 * @return  mixed
 	 */
 	public function offsetGet($offset)
 	{
@@ -287,9 +285,9 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Append a new item
 	 *
-	 * @param  mixed $offset
-	 * @param  mixed $item
-	 * @return void
+	 * @param   mixed  $offset
+	 * @param   mixed  $item
+	 * @return  void
 	 */
 	public function offsetSet($offset, $item)
 	{
@@ -307,8 +305,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Unset an item
 	 *
-	 * @param  mixed $offset
-	 * @return void
+	 * @param   mixed  $offset
+	 * @return  void
 	 */
 	public function offsetUnset($offset)
 	{
@@ -319,8 +317,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Run a map over each of the items
 	 *
-	 * @param  Closure  $callback
-	 * @return array
+	 * @param   object  $callback  Closure
+	 * @return  array
 	 */
 	public function map(Closure $callback)
 	{
@@ -330,8 +328,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Run a filter over each of the items
 	 *
-	 * @param  Closure  $callback
-	 * @return array
+	 * @param   object  $callback  Closure
+	 * @return  array
 	 */
 	public function filter(Closure $callback)
 	{
@@ -341,8 +339,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Merge Item Lists
 	 *
-	 * @param  object $data Hubzero\Base\ItemList
-	 * @return Hubzero\Base\ItemList
+	 * @param   object  $data  ItemList
+	 * @return  object  ItemList
 	 */
 	public function merge()
 	{
@@ -360,7 +358,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Reverse data order.
 	 * 
-	 * @return new \Hubzero\Base\ItemList
+	 * @return  object  ItemList
 	 */
 	public function reverse()
 	{

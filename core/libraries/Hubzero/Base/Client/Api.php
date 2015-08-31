@@ -38,21 +38,21 @@ class Api implements ClientInterface
 	/**
 	 * ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	public $id = 4;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $name = 'api';
 
 	/**
 	 * A url to init this client.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $url = 'api';
 }

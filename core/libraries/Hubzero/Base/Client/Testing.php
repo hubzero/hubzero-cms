@@ -38,21 +38,21 @@ class Testing implements ClientInterface
 	/**
 	 * ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	public $id = 5;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $name = 'testing';
 
 	/**
 	 * A url to init this client.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $url = 'testing';
 }

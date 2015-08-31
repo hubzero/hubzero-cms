@@ -40,7 +40,9 @@ use Hubzero\Config\Processor as Base;
 class Php extends Base
 {
 	/**
-	 * {@inheritDoc}
+	 * Returns an array of allowed file extensions for this parser
+	 *
+	 * @return  array
 	 */
 	public function getSupportedExtensions()
 	{
@@ -51,8 +53,10 @@ class Php extends Base
 	 * {@inheritDoc}
 	 * Loads a PHP file and gets its' contents as an array
 	 *
-	 * @throws ParseException             If the PHP file throws an exception
-	 * @throws UnsupportedFormatException If the PHP file does not return an array
+	 * @param   string  $path
+	 * @return  object
+	 * @throws  ParseException              If the PHP file throws an exception
+	 * @throws  UnsupportedFormatException  If the PHP file does not return an array
 	 */
 	public function parse($path)
 	{

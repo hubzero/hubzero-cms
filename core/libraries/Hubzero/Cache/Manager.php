@@ -35,6 +35,9 @@ use Closure;
 
 /**
  * Cache manager
+ *
+ * Inspired by Laravel's Manager class
+ * http://laravel.com
  */
 class Manager
 {

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,24 +23,24 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Base\Model;
 
 /**
- * Iterator class
+ * Extended Iterator class
  */
 class ItemList extends \Hubzero\Base\ItemList
 {
 	/**
 	 * Fetch Item with key equal to value
 	 *
-	 * @param  $key    Object Key
-	 * @param  $value  Object Value
-	 * @return mixed
+	 * @param   $key    Object Key
+	 * @param   $value  Object Value
+	 * @return  mixed
 	 */
 	public function fetch($key, $value)
 	{
@@ -57,9 +57,9 @@ class ItemList extends \Hubzero\Base\ItemList
 	/**
 	 * Lists a specific key from the item list
 	 *
-	 * @param  string $key      Key to grab from item
-	 * @param  string $default  Default value if key is empty
-	 * @return array            Array of keys
+	 * @param   string  $key      Key to grab from item
+	 * @param   string  $default  Default value if key is empty
+	 * @return  array   Array of keys
 	 */
 	public function lists($key, $default = null)
 	{

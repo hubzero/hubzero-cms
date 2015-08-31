@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -58,13 +58,16 @@ class MarketHistory extends \JTable
 		if (!$this->itemid)
 		{
 			$this->setError(\Lang::txt('Entry must have an item ID.'));
-			return false;
 		}
 
 		$this->category = trim($this->category);
 		if (!$this->category)
 		{
 			$this->setError(\Lang::txt('Entry must have a category.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -79,11 +82,11 @@ class MarketHistory extends \JTable
 	/**
 	 * Get the ID of a record matching the data passed
 	 *
-	 * @param   mixed   $itemid    Integer
-	 * @param   string  $action    Transaction type
-	 * @param   string  $category  Transaction category
-	 * @param   string  $created   Transaction date
-	 * @param   string  $log       Transaction log
+	 * @param   mixed    $itemid    Integer
+	 * @param   string   $action    Transaction type
+	 * @param   string   $category  Transaction category
+	 * @param   string   $created   Transaction date
+	 * @param   string   $log       Transaction log
 	 * @return  integer
 	 */
 	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '')

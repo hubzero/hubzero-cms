@@ -36,16 +36,33 @@ use Iterator;
  */
 class Reader implements Iterator
 {
+	/**
+	 * File contents
+	 *
+	 * @var  object
+	 */
 	private $file;
+
+	/**
+	 * Key
+	 *
+	 * @var  string
+	 */
 	private $key;
-	private $reader;
+
+	/**
+	 * Cursor position
+	 *
+	 * @var  int
+	 */
 	private $position;
 
 	/**
 	 * Constructor
 	 *
-	 * @param string $file XML file we want to use
-	 * @param string $key  XML node we are looking to iterate over
+	 * @param   string  $file  XML file we want to use
+	 * @param   string  $key   XML node we are looking to iterate over
+	 * @return  void
 	 */
 	public function __construct($file, $key='record')
 	{
@@ -57,7 +74,7 @@ class Reader implements Iterator
 	/**
 	 * Get the current XML node
 	 *
-	 * @return object XML node as a stdClass
+	 * @return  object  XML node as a stdClass
 	 */
 	public function current()
 	{
@@ -71,7 +88,7 @@ class Reader implements Iterator
 	/**
 	 * Get our current position while iterating
 	 *
-	 * @return int Current position
+	 * @return  int  Current position
 	 */
 	public function key()
 	{
@@ -81,7 +98,7 @@ class Reader implements Iterator
 	/**
 	 * Go to the next Node that matches our key
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function next()
 	{
@@ -90,7 +107,8 @@ class Reader implements Iterator
 
 	/**
 	 * Move to the first node that matches our key
-	 * @return void
+	 *
+	 * @return  void
 	 */
 	public function rewind()
 	{
@@ -100,7 +118,7 @@ class Reader implements Iterator
 	/**
 	 * Is our current node valid
 	 *
-	 * @return bool Is valid?
+	 * @return  bool  Is valid?
 	 */
 	public function valid()
 	{

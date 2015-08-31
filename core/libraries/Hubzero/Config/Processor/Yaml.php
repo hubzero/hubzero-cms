@@ -41,7 +41,9 @@ use Exception;
 class Yaml extends Base
 {
 	/**
-	 * {@inheritDoc}
+	 * Returns an array of allowed file extensions for this parser
+	 *
+	 * @return  array
 	 */
 	public function getSupportedExtensions()
 	{
@@ -49,9 +51,10 @@ class Yaml extends Base
 	}
 
 	/**
-	 * {@inheritDoc}
 	 * Loads a YAML/YML file as an array
 	 *
+	 * @param   string  $path
+	 * @return  object
 	 * @throws  ParseException If If there is an error parsing the YAML file
 	 */
 	public function parse($path)

@@ -123,7 +123,7 @@ class Memcache extends None
 
 		if ($memcache->getVersion() === false)
 		{
-			throw new RuntimeException("Could not establish Memcached connection.");
+			throw new RuntimeException('Could not establish Memcached connection.');
 		}
 
 		// Memcahed has no list keys, we do our own accounting, initialise key index

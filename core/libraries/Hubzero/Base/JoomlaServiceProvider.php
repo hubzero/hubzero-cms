@@ -32,6 +32,9 @@ namespace Hubzero\Base;
 
 /**
  * Joomla handler service provider
+ * 
+ * This loads in the core Joomla framework and instantiates
+ * the base application class.
  */
 class JoomlaServiceProvider extends ServiceProvider
 {

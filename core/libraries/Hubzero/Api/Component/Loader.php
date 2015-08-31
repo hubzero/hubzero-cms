@@ -40,6 +40,9 @@ class Loader extends Base
 	/**
 	 * Render the component.
 	 *
+	 * Based off of Joomla's JComponentHelper::renderComponent()
+	 * but with a number of changes.
+	 *
 	 * @param   string  $option  The component option.
 	 * @param   array   $params  The component parameters
 	 * @return  object

@@ -32,6 +32,8 @@ namespace Hubzero\Base\Traits;
 
 /**
  * Adds entity escaping for string output
+ *
+ * Methods based on those found in Joomla's JView class.
  */
 trait Escapable
 {
@@ -71,8 +73,8 @@ trait Escapable
 	/**
 	 * Sets the _escape() callback.
 	 *
-	 * @param   mixed  $spec  The callback for _escape() to use.
-	 * @return  void
+	 * @param   mixed   $spec  The callback for _escape() to use.
+	 * @return  object  Chainable
 	 */
 	public function setEscape($spec)
 	{

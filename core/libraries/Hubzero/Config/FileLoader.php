@@ -90,11 +90,6 @@ class FileLoader
 				}
 				$parser    = $this->getParser($extension);
 
-				/*$data = array_replace_recursive(
-					$data,
-					$parser->parse($path)
-				);*/
-
 				$data[$group] = $parser->parse($path);
 			}
 
@@ -158,7 +153,7 @@ class FileLoader
 	 *
 	 * @param   string  $extension
 	 * @return  object
-	 * @throws  UnsupportedFormatException If `$extension` is an unsupported file format
+	 * @throws  UnsupportedFormatException  If `$extension` is an unsupported file format
 	 */
 	protected function getParser($extension)
 	{
@@ -189,8 +184,8 @@ class FileLoader
 	 *
 	 * @param   mixed  $path
 	 * @return  array
-	 * @throws  EmptyDirectoryException If `$path` is an empty directory
-	 * @throws  FileNotFoundException   If a file is not found at `$path`
+	 * @throws  EmptyDirectoryException  If `$path` is an empty directory
+	 * @throws  FileNotFoundException    If a file is not found at `$path`
 	 */
 	protected function getPath($path)
 	{
@@ -212,10 +207,10 @@ class FileLoader
 		{
 			$paths = glob($path . '/*.*');
 
-			if (empty($paths))
+			/*if (empty($paths))
 			{
-				//throw new EmptyDirectoryException("Configuration directory: [$path] is empty");
-			}
+				throw new EmptyDirectoryException("Configuration directory: [$path] is empty");
+			}*/
 
 			return $paths;
 		}

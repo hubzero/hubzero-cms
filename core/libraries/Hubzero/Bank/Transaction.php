@@ -57,20 +57,22 @@ class Transaction extends \JTable
 		if (!$this->uid)
 		{
 			$this->setError(\Lang::txt('Entry must have a user ID.'));
-			return false;
 		}
 
 		$this->type = trim($this->type);
 		if (!$this->type)
 		{
 			$this->setError(\Lang::txt('Entry must have a type (e.g., deposit, withdraw).'));
-			return false;
 		}
 
 		$this->category = trim($this->category);
 		if (!$this->category)
 		{
 			$this->setError(\Lang::txt('Entry must have a category.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 

@@ -78,8 +78,6 @@ class ComponentServiceProvider extends Middleware
 
 			$contents = $this->app['component']->render($component);
 
-			//$response->setContent($content);
-
 			$this->app['dispatcher']->trigger('system.onAfterDispatch');
 
 			if ($this->app->has('profiler'))

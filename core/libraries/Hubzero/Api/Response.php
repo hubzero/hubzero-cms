@@ -41,15 +41,15 @@ class Response extends BaseResponse
 	/**
 	 * The original content of the response.
 	 *
-	 * @var mixed
+	 * @var  mixed
 	 */
 	public $original;
 
 	/**
 	 * Set the content on the response.
 	 *
-	 * @param  mixed  $content
-	 * @return $this
+	 * @param   mixed   $content
+	 * @return  object  $this
 	 */
 	public function setContent($content)
 	{
@@ -174,7 +174,8 @@ class Response extends BaseResponse
 	/**
 	 * Sends HTTP headers and content.
 	 *
-	 * @return  object  Response
+	 * @param   boolean  $flush
+	 * @return  object   Response
 	 */
 	public function send($flush = false)
 	{

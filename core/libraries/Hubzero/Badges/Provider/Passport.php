@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,33 +23,75 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Badges\Provider;
+
+use Exception;
 
 /**
  * Passport badges provider
  */
 class Passport implements ProviderInterface
 {
-	private $credentials  = false;
-	private $request      = NULL;
-	private $request_type = 'oauth';
-
+	/**
+	 * API endpoint
+	 *
+	 * @var  string
+	 */
 	const passportApiEndpoint = 'https://api.openpassport.org/1.0.0/';
+
+	/**
+	 * API badges URL
+	 *
+	 * @var  string
+	 */
 	const passportBadgesUrl   = 'https://www.openpassport.org/MyBadges';
+
+	/**
+	 * API claim URL
+	 *
+	 * @var  string
+	 */
 	const passportClaimUrl    = 'https://www.openpassport.org/MyBadges/Pending';
+
+	/**
+	 * API denied URL
+	 *
+	 * @var  string
+	 */
 	const passportDeniedUrl   = 'https://www.openpassport.org/MyBadges/Denied';
+
+	/**
+	 * Credentials
+	 *
+	 * @var  array
+	 */
+	private $credentials = false;
+
+	/**
+	 * Request connection
+	 *
+	 * @var  resource
+	 */
+	private $request = NULL;
+
+	/**
+	 * Request type
+	 *
+	 * @var  string
+	 */
+	private $request_type = 'oauth';
 
 	/**
 	 * Constructor
 	 * 
-	 * @param 	string - request type
+	 * @param   string  $request_type  Request type
 	 * @return  void
 	 */
-	public function __construct($request_type='oauth')
+	public function __construct($request_type = 'oauth')
 	{
 		$this->request_type = $request_type;
 	}
@@ -57,7 +99,7 @@ class Passport implements ProviderInterface
 	/**
 	 * Set credentials
 	 * 
-	 * @param 	object - passportCredentials
+	 * @param   object  $passportCredentials
 	 * @return  void
 	 */
 	public function setCredentials($passportCredentials)
@@ -90,12 +132,14 @@ class Passport implements ProviderInterface
 		}
 		else
 		{
-			throw new \Exception('Unsupported request type');
+			throw new Exception('Unsupported request type');
 		}
 	}
 
 	/**
 	 * Close connection
+	 *
+	 * @return  void
 	 */
 	public function destroy()
 	{
@@ -109,26 +153,26 @@ class Passport implements ProviderInterface
 		}
 		else
 		{
-			throw new \Exception('Unsupported request type');
+			throw new Exception('Unsupported request type');
 		}
 	}
 
 	/**
 	 * Create a new badge
 	 * 
-	 * @param 	object		data: badge info. Must have the following:
-	 *						$data['Name']          = 'Badge name';
-	 *						$data['Description']   = 'Badge description';
-	 *						$data['CriteriaUrl']   = 'Badge criteria URL';
-	 *						$data['Version']       = 'Version';
-	 *						$data['BadgeImageUrl'] = 'URL of the badge image: square at least 450px x 450px';
-	 * @return  int			Freshly created badge ID
+	 * @param   array    $data  badge info. Must have the following:
+	 *                          $data['Name']          = 'Badge name';
+	 *                          $data['Description']   = 'Badge description';
+	 *                          $data['CriteriaUrl']   = 'Badge criteria URL';
+	 *                          $data['Version']       = 'Version';
+	 *                          $data['BadgeImageUrl'] = 'URL of the badge image: square at least 450px x 450px';
+	 * @return  integer  Freshly created badge ID
 	 */
 	public function createBadge($data)
 	{
 		if (!$this->credentialsSet())
 		{
-			throw new \Exception('You need to set the credentials first.');
+			throw new Exception('You need to set the credentials first.');
 		}
 
 		$data['IssuerId'] = $this->credentials->issuerId;
@@ -143,9 +187,9 @@ class Passport implements ProviderInterface
 			{
 				$this->request->fetch(self::passportApiEndpoint . 'badges/', $data, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
-				throw new \Exception('Badge creation request failed.');
+				throw new Exception('Badge creation request failed.');
 			}
 
 			$badge = json_decode($this->request->getLastResponse());
@@ -161,12 +205,12 @@ class Passport implements ProviderInterface
 		}
 		else
 		{
-			throw new \Exception('Unsupported request type');
+			throw new Exception('Unsupported request type');
 		}
 
 		if (empty($badge->Id) || !$badge->Id)
 		{
-			throw new \Exception($badge->message);
+			throw new Exception($badge->message);
 		}
 
 		return($badge->Id);
@@ -175,15 +219,15 @@ class Passport implements ProviderInterface
 	/**
 	 * Grant badges to users
 	 * 
-	 * @param 	object - Badge info: ID, Evidence URL
-	 * @param 	mixed  - string (for single user) or array (for multiple users) of user email addresses
+	 * @param   object  $badge  Badge info: ID, Evidence URL
+	 * @param   mixed   $users  String (for single user) or array (for multiple users) of user email addresses
 	 * @return  void
 	 */
 	public function grantBadge($badge, $users)
 	{
 		if (!$this->credentialsSet())
 		{
-			throw new \Exception('You need to set the credentials first.');
+			throw new Exception('You need to set the credentials first.');
 		}
 
 		if (!is_array($users))
@@ -215,7 +259,7 @@ class Passport implements ProviderInterface
 			{
 				$this->request->fetch(self::passportApiEndpoint . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
 				error_log($e->getCode());
 			}
@@ -233,14 +277,14 @@ class Passport implements ProviderInterface
 		}
 		else
 		{
-			throw new \Exception('Unsupported request type');
+			throw new Exception('Unsupported request type');
 		}
 
 		foreach ($assertion as $ass)
 		{
 			if (empty($ass->Id) || !$ass->Id)
 			{
-				throw new \Exception($ass->message);
+				throw new Exception($ass->message);
 			}
 		}
 	}
@@ -248,7 +292,6 @@ class Passport implements ProviderInterface
 	/**
 	 * Check if credentials are set
 	 * 
-	 * @param 	void
 	 * @return  bool
 	 */
 	private function credentialsSet()
@@ -264,12 +307,13 @@ class Passport implements ProviderInterface
 	/**
 	 * Return a URL
 	 * 
-	 * @param 	void
+	 * @param   string  $type
 	 * @return  bool
 	 */
-	public function getUrl($type='Claim')
+	public function getUrl($type = 'Claim')
 	{
-		switch ($type) {
+		switch ($type)
+		{
 			case 'Denied':
 				return self::passportDeniedUrl;
 			break;
@@ -287,7 +331,7 @@ class Passport implements ProviderInterface
 	/**
 	 * Get assertions by email address
 	 * 
-	 * @param 	mixed - string (for single user) or array (for multiple users) of user email addresses
+	 * @param   mixed  $emailAddresses  String (for single user) or array (for multiple users) of user email addresses
 	 * @return  array
 	 */
 	public function getAssertionsByEmailAddress($emailAddresses)
@@ -312,7 +356,7 @@ class Passport implements ProviderInterface
 			{
 				$this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, array('Content-Type'=>'application/json'));
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
 				error_log($e->getCode());
 			}
@@ -330,7 +374,7 @@ class Passport implements ProviderInterface
 		}
 		else
 		{
-			throw new \Exception('Unsupported request type');
+			throw new Exception('Unsupported request type');
 		}
 
 		return $response;

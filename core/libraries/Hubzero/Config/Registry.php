@@ -38,6 +38,8 @@ use stdClass;
 
 /**
  * Registry class
+ *
+ * Based on Joomla's JRegistry class
  */
 class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \Countable
 {
@@ -374,13 +376,6 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 		}
 
 		// Load the variables into the registry's default namespace.
-		/*foreach ($source->toArray() as $k => $v)
-		{
-			if (($v !== null) && ($v !== ''))
-			{
-				$this->data->$k = $v;
-			}
-		}*/
 		$this->bind($this->data, $source->toArray(), $recursive, false);
 
 		return true;

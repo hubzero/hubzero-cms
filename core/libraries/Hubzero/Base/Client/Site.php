@@ -38,28 +38,28 @@ class Site implements ClientInterface
 	/**
 	 * ID
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	public $id = 0;
 
 	/**
 	 * Name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $name = 'site';
 
 	/**
 	 * Alias
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $alias = 'site';
 
 	/**
 	 * A url to init this client.
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $url = '';
 }

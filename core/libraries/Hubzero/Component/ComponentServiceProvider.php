@@ -36,7 +36,7 @@ use Hubzero\Http\Request;
 /**
  * Component loader service provider
  */
-class ComponentServiceProvider extends Middleware //ServiceProvider
+class ComponentServiceProvider extends Middleware
 {
 	/**
 	 * Register the service provider.

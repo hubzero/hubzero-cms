@@ -75,21 +75,21 @@ class ApiController implements ControllerInterface
 	/**
 	 * The name of the task to be executed
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_doTask = null;
 
 	/**
 	 * The name of this controller
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_controller = null;
 
 	/**
 	 * The name of this component
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_option = null;
 
@@ -105,7 +105,7 @@ class ApiController implements ControllerInterface
 	 * 
 	 * @var  array
 	 */
-	public $authenticated   = array('all');
+	public $authenticated = array('all');
 
 	/**
 	 * Methods skipping Auth
@@ -119,14 +119,14 @@ class ApiController implements ControllerInterface
 	 * 
 	 * @var  array
 	 */
-	public $rateLimited     = array();
+	public $rateLimited = array();
 
 	/**
 	 * Methods skipping rate limiting
 	 * 
 	 * @var  array
 	 */
-	public $notRateLimited  = array('all');
+	public $notRateLimited = array('all');
 
 	/**
 	 * Constructor

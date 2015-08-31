@@ -63,32 +63,36 @@ class SiteController extends Object implements ControllerInterface
 
 	/**
 	 * Container for component messages
-	 * @var		array
+	 *
+	 * @var  array
 	 */
 	public $componentMessageQueue = array();
 
 	/**
 	 * The name of the component derived from the controller class name
-	 * @var		string
+	 *
+	 * @var  string
 	 */
 	protected $_name = NULL;
 
 	/**
 	 * Container for storing overloaded data
-	 * @var		array
+	 *
+	 * @var  array
 	 */
 	protected $_data = array();
 
 	/**
 	 * The task the component is to perform
-	 * @var		string
+	 *
+	 * @var  string
 	 */
 	protected $_task = NULL;
 
 	/**
 	 * A list of executable tasks
 	 *
-	 * @param array
+	 * @var  array
 	 */
 	protected $_taskMap = array(
 		'__default' => 'display'
@@ -97,49 +101,52 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * The name of the task to be executed
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_doTask = null;
 
 	/**
 	 * The name of this controller
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_controller = null;
 
 	/**
 	 * The name of this component
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_option = null;
 
 	/**
 	 * The base path to this component
 	 *
-	 * @param string
+	 * @var  string
 	 */
 	protected $_basePath = null;
 
 	/**
 	 * Redirection URL
 	 *
-	 * @param string
+	 * @var  string
+	 * @deprecated
 	 */
 	protected $_redirect = null;
 
 	/**
 	 * The message to display
 	 *
-	 * @param string
+	 * @var string
+	 * @deprecated
 	 */
 	protected $_message = null;
 
 	/**
 	 * Message type
 	 *
-	 * @param string
+	 * @var string
+	 * @deprecated
 	 */
 	protected $_messageType = 'message';
 
@@ -242,12 +249,12 @@ class SiteController extends Object implements ControllerInterface
 		}
 
 		// Set some commonly used vars
+		//
+		// [!] Deprecated
+		//     These will be going away in a future version. Do not use.
 		$this->juser    = \User::getRoot();
 		$this->database = \App::get('db');
 		$this->config   = \Component::params($this->_option);
-
-		// Clear component messages - for cross component messages
-		//$this->getComponentMessage();
 	}
 
 	/**
@@ -401,7 +408,7 @@ class SiteController extends Object implements ControllerInterface
 	 *
 	 * @param   string  $task    The task.
 	 * @param   string  $method  The name of the method in the derived class to perform for this task.
-	 * @return  void
+	 * @return  object  Supports chaining.
 	 */
 	public function registerTask($task, $method)
 	{
@@ -417,7 +424,7 @@ class SiteController extends Object implements ControllerInterface
 	 * Unregister (unmap) a task in the class.
 	 *
 	 * @param   string  $task  The task.
-	 * @return  object  This object to support chaining.
+	 * @return  object  Supports chaining.
 	 */
 	public function unregisterTask($task)
 	{
@@ -430,7 +437,7 @@ class SiteController extends Object implements ControllerInterface
 	 * Register the default task to perform if a mapping is not found.
 	 *
 	 * @param   string  $method  The name of the method in the derived class to perform if a named task is not found.
-	 * @return  object  A JController object to support chaining.
+	 * @return  object  Supports chaining.
 	 */
 	public function registerDefaultTask($method)
 	{
@@ -456,6 +463,7 @@ class SiteController extends Object implements ControllerInterface
 	 * @param   string  $msg   Message to display on redirect. Optional.
 	 * @param   string  $type  Message type. Optional, defaults to 'message'.
 	 * @return  void
+	 * @deprecated
 	 */
 	public function redirect($url=null, $msg=null, $type=null)
 	{
@@ -484,6 +492,7 @@ class SiteController extends Object implements ControllerInterface
 	 *                         value set internally by controller, if any.
 	 * @param   string  $type  Message type. Optional, defaults to 'message'.
 	 * @return  object
+	 * @deprecated
 	 */
 	public function setRedirect($url, $msg=null, $type=null)
 	{
@@ -518,6 +527,7 @@ class SiteController extends Object implements ControllerInterface
 	 *                         value set internally by controller, if any.
 	 * @param   string  $type  Message type. Optional, defaults to 'message'.
 	 * @return  object
+	 * @deprecated
 	 */
 	public function setMessage($msg, $type='message')
 	{
@@ -534,30 +544,10 @@ class SiteController extends Object implements ControllerInterface
 	 * @param   string $message The message to add
 	 * @param   string $type    The type of message to add
 	 * @return  void
+	 * @deprecated
 	 */
 	public function addComponentMessage($message, $type='message')
 	{
-		/*if (!count($this->componentMessageQueue))
-		{
-			$session = \App::get('session');
-			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage))
-			{
-				$this->componentMessageQueue = $componentMessage;
-				$session->set('component.message.queue', null);
-			}
-		}
-
-		//if message is somthing
-		if ($message != '')
-		{
-			$this->componentMessageQueue[] = array(
-				'message' => $message,
-				'type'    => strtolower($type),
-				'option'  => $this->_option
-			);
-		}*/
-
 		$session = \App::get('session');
 		$componentMessage = $session->get('component.message.queue', array());
 		foreach ($componentMessage as $m)
@@ -585,29 +575,10 @@ class SiteController extends Object implements ControllerInterface
 	 * Method to get component messages
 	 *
 	 * @return  array
+	 * @deprecated
 	 */
 	public function getComponentMessage()
 	{
-		/*if (!count($this->componentMessageQueue))
-		{
-			$session = \App::get('session');
-			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage))
-			{
-				$this->componentMessageQueue = $componentMessage;
-				$session->set('component.message.queue', null);
-			}
-		}
-
-		foreach ($this->componentMessageQueue as $k => $cmq)
-		{
-			if ($cmq['option'] != $this->_option)
-			{
-				$this->componentMessageQueue[$k] = array();
-			}
-		}
-
-		return $this->componentMessageQueue;*/
 		$session = \App::get('session');
 		$componentMessage = $session->get('component.message.queue', array());
 		$session->set('component.message.queue', null);
@@ -627,10 +598,10 @@ class SiteController extends Object implements ControllerInterface
 	 * Clear the component message queue
 	 *
 	 * @return  object
+	 * @deprecated
 	 */
 	public function clearComponentMessage()
 	{
-		//$this->componentMessageQueue = array();
 		\App::get('session')->set('component.message.queue', null);
 
 		return $this;
@@ -640,6 +611,7 @@ class SiteController extends Object implements ControllerInterface
 	 * Method to check admin access permission
 	 *
 	 * @return  boolean  True on success
+	 * @deprecated
 	 */
 	protected function _authorize()
 	{

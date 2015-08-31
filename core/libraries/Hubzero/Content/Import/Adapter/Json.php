@@ -49,21 +49,22 @@ class Json implements Adapter
 	/**
 	 * Array to hold processed data
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $data = array();
 
 	/**
 	 * Integer to hold count
 	 *
-	 * @var int
+	 * @var  int
 	 */
 	private $data_count = 0;
 
 	/**
 	 * Does this adapter respond to a mime type
 	 *
-	 * @param  Mime type string
+	 * @param   string  Mime type
+	 * @return  bool
 	 */
 	public static function accepts($mime)
 	{
@@ -78,7 +79,8 @@ class Json implements Adapter
 	/**
 	 * Count Import data
 	 *
-	 * @return int
+	 * @param   object  $import
+	 * @return  int
 	 */
 	public function count(Import $import)
 	{
@@ -93,9 +95,10 @@ class Json implements Adapter
 	}
 
 	/**
-	 * Count Import data
+	 * Get a list of headers
 	 *
-	 * @return int
+	 * @param   object  $import
+	 * @return  array
 	 */
 	public function headers(Import $import)
 	{
@@ -118,7 +121,10 @@ class Json implements Adapter
 	/**
 	 * Process Import data
 	 *
-	 * @param  Closure Object
+	 * @param   object  $import     Import record
+	 * @param   array   $callbacks  Array of Callbacks
+	 * @param   bool    $dryRun     Dry Run mode?
+	 * @return  object
 	 */
 	public function process(Import $import, array $callbacks, $dryRun)
 	{
@@ -168,10 +174,10 @@ class Json implements Adapter
 	/**
 	 * Run Callbacks on Record
 	 *
-	 * @param  object $record    Resource Record
-	 * @param  array  $callbacks Array of Callbacks
-	 * @param  bool   $dryRun    Dry Run mode?
-	 * @return object            Record object
+	 * @param   object  $record    Resource Record
+	 * @param   array   $callbacks Array of Callbacks
+	 * @param   bool    $dryRun    Dry Run mode?
+	 * @return  object  Record object
 	 */
 	public function map($record, $callbacks, $dryRun)
 	{

@@ -39,6 +39,8 @@ use stdClass;
 
 /**
  * Component helper class
+ *
+ * Largely inspired by Joomla's JComponentHelper class.
  */
 class Loader
 {

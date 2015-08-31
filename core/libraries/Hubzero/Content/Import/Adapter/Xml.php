@@ -75,7 +75,8 @@ class Xml implements Adapter
 	/**
 	 * Count Import data
 	 *
-	 * @return int
+	 * @param   object  $import
+	 * @return  int
 	 */
 	public function count(Import $import)
 	{
@@ -90,9 +91,10 @@ class Xml implements Adapter
 	}
 
 	/**
-	 * Count Import data
+	 * Get a list of headers
 	 *
-	 * @return int
+	 * @param   object  $import
+	 * @return  array
 	 */
 	public function headers(Import $import)
 	{
@@ -115,7 +117,10 @@ class Xml implements Adapter
 	/**
 	 * Process Import data
 	 *
-	 * @param  Closure Object
+	 * @param   object  $import     Import record
+	 * @param   array   $callbacks  Array of Callbacks
+	 * @param   bool    $dryRun     Dry Run mode?
+	 * @return  object
 	 */
 	public function process(Import $import, array $callbacks, $dryRun)
 	{
@@ -165,9 +170,9 @@ class Xml implements Adapter
 	/**
 	 * Run Callbacks on Record
 	 *
-	 * @param   object  $record     Resource Record
-	 * @param   array   $callbacks  Array of Callbacks
-	 * @param   bool    $dryRun     Dry Run mode?
+	 * @param   object  $record    Resource Record
+	 * @param   array   $callbacks Array of Callbacks
+	 * @param   bool    $dryRun    Dry Run mode?
 	 * @return  object  Record object
 	 */
 	public function map($record, $callbacks, $dryRun)

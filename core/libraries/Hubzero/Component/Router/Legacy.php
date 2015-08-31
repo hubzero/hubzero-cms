@@ -80,7 +80,7 @@ class Legacy implements RouterInterface
 
 			if ($this->component == 'com_content')
 			{
-				$total    = count($segments);
+				$total = count($segments);
 
 				for ($i = 0; $i < $total; $i++)
 				{

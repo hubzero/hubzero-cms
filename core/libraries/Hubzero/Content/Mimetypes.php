@@ -1,38 +1,46 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu> based on work by Robert Widdick
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Content;
 
 /**
- * Hubzero class for determining the mimetype of a file
+ * Class for determining the mimetype of a file
+ *
+ * Based on work by Robert Widdick
  */
 class Mimetypes
 {
 	/**
 	 * Define some private variables
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $mimeTypes = array(
 		'3dm'		=> 'x-world/x-3dmf',
@@ -751,7 +759,7 @@ class Mimetypes
 	/**
 	 * Free up some memory
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function __destruct()
 	{
@@ -761,8 +769,8 @@ class Mimetypes
 	/**
 	 * Retrieve the corresponding MIME type, if one exists
 	 *
-	 * @param  String $file File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
-	 * @return String $MIMEType - The type of the file passed in the argument
+	 * @param   string  $file  File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
+	 * @return  string  The type of the file passed in the argument
 	 */
 	public function getMimeType($file = NULL)
 	{
@@ -815,8 +823,8 @@ class Mimetypes
 	/**
 	 * Gets the file extension from a string
 	 *
-	 * @param  String $file The full file name
-	 * @return String $ext The file extension
+	 * @param   string  $file  The full file name
+	 * @return  string  The file extension
 	 */
 	private function _getExtension($file = NULL)
 	{

@@ -38,16 +38,40 @@ use DOMDocument;
  */
 class Reader implements Iterator
 {
+	/**
+	 * File path
+	 *
+	 * @var  string
+	 */
 	private $file;
+
+	/**
+	 * Key
+	 *
+	 * @var  string
+	 */
 	private $key;
+
+	/**
+	 * File reader
+	 *
+	 * @var  object
+	 */
 	private $reader;
+
+	/**
+	 * Cursor position
+	 *
+	 * @var  int
+	 */
 	private $position;
 
 	/**
 	 * XML Reader Iterator Constructor
 	 *
-	 * @param string $file XML file we want to use
-	 * @param string $key  XML node we are looking to iterate over
+	 * @param   string  $file  XML file we want to use
+	 * @param   string  $key   XML node we are looking to iterate over
+	 * @return  void
 	 */
 	public function __construct($file, $key)
 	{
@@ -60,7 +84,7 @@ class Reader implements Iterator
 	/**
 	 * Get the current XML node
 	 *
-	 * @return object XML node as a stdClass
+	 * @return  object  XML node as a stdClass
 	 */
 	public function current()
 	{
@@ -72,7 +96,7 @@ class Reader implements Iterator
 	/**
 	 * Get our current position while iterating
 	 *
-	 * @return int Current position
+	 * @return  int  Current position
 	 */
 	public function key()
 	{
@@ -82,7 +106,7 @@ class Reader implements Iterator
 	/**
 	 * Go to the next Node that matches our key
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function next()
 	{
@@ -94,7 +118,8 @@ class Reader implements Iterator
 
 	/**
 	 * Move to the first node that matches our key
-	 * @return void
+	 *
+	 * @return  void
 	 */
 	public function rewind()
 	{
@@ -109,7 +134,7 @@ class Reader implements Iterator
 	/**
 	 * Is our current node valid
 	 *
-	 * @return bool Is valid?
+	 * @return  bool  Is valid?
 	 */
 	public function valid()
 	{

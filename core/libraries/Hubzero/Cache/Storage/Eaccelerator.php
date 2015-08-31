@@ -170,7 +170,8 @@ class Eaccelerator extends None
 
 			foreach ($keys as $key)
 			{
-				/* Trim leading ":" to work around list_keys namespace bug in eAcc. This will still work when bug is fixed */
+				// Trim leading ":" to work around list_keys namespace bug in eAcc.
+				// This will still work when bug is fixed.
 				$key['name'] = ltrim($key['name'], ':');
 
 				if (strpos($key['name'], $hash . '-cache-' . $group . '-') === 0) // xor $mode != 'group')
@@ -208,7 +209,8 @@ class Eaccelerator extends None
 
 		foreach ($keys as $key)
 		{
-			/* Trim leading ":" to work around list_keys namespace bug in eAcc. This will still work when bug is fixed */
+			// Trim leading ":" to work around list_keys namespace bug in eAcc.
+			// This will still work when bug is fixed.
 			$name    = ltrim($key['name'], ':');
 			$namearr = explode('-', $name);
 

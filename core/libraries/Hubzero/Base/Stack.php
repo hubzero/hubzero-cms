@@ -34,6 +34,9 @@ use Hubzero\Http\Request;
 
 /**
  * Request stack
+ *
+ * Inspired, in part, by Laravel
+ * http://laravel.com
  */
 class Stack
 {
@@ -57,13 +60,6 @@ class Stack
 	 * @var  object
 	 */
 	protected $request;
-
-	/**
-	 * Object to pass through layers
-	 * 
-	 * @var  object
-	 */
-	//protected $core;
 
 	/**
 	 * Create stack with first layer as core
@@ -125,8 +121,8 @@ class Stack
 	/**
 	 * Final callback
 	 * 
-	 * @param  object  $callback  Callback after stack is run
-	 * @return void    Result of callback
+	 * @param   object  $callback  Callback after stack is run
+	 * @return  void    Result of callback
 	 */
 	public function then(\Closure $callback)
 	{

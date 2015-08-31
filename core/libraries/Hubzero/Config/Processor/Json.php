@@ -35,11 +35,15 @@ use Hubzero\Config\Processor as Base;
 
 /**
  * JSON processor for Registry.
+ *
+  * Based, in part, on Joomla's JRegistry format classes
  */
 class Json extends Base
 {
 	/**
-	 * {@inheritDoc}
+	 * Returns an array of allowed file extensions for this parser
+	 *
+	 * @return  array
 	 */
 	public function getSupportedExtensions()
 	{
@@ -47,10 +51,11 @@ class Json extends Base
 	}
 
 	/**
-	 * {@inheritDoc}
 	 * Loads a JSON file as an array
 	 *
-	 * @throws  ParseException If there is an error parsing the JSON file
+	 * @param   string  $path
+	 * @return  object
+	 * @throws  ParseException  If there is an error parsing the JSON file
 	 */
 	public function parse($path)
 	{

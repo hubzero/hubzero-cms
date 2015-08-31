@@ -30,6 +30,12 @@
 
 namespace Hubzero\Base;
 
+/**
+ * Application service provider
+ *
+ * Inspired by Laravel
+ * http://laravel.com
+ */
 abstract class ServiceProvider
 {
 	/**

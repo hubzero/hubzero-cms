@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,86 +23,79 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Auth;
 
 /**
- * Short description for 'Hubzero\Auth\Domain'
- *
- * Long description (if any) ...
+ * Authentication domain
  */
 class Domain
 {
-
 	/**
-	 * Description for 'id'
+	 * Record ID
 	 *
-	 * @var unknown
+	 * @var  integer
 	 */
 	private $id;
 
 	/**
-	 * Description for 'type'
+	 * Domain type
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $type;
 
 	/**
-	 * Description for 'authenticator'
+	 * Authenticator name
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $authenticator;
 
 	/**
-	 * Description for 'domain'
+	 * Domain name
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $domain;
 
 	/**
-	 * Description for 'params'
+	 * Parameters
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	private $params;
 
 	/**
-	 * Description for '_updatedkeys'
+	 * List of updated keys
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_updatedkeys = array();
 
 	/**
-	 * Description for '_updateAll'
+	 * Update all fields?
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
 	private $_updateAll = false;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
-	private function __construct()
+	public function __construct()
 	{
 	}
 
 	/**
-	 * Short description for 'clear'
+	 * Clear any existing data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function clear()
 	{
@@ -125,12 +118,10 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'logDebug'
+	 * Log a debug message
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $msg Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $msg  Message to log
+	 * @return  void
 	 */
 	private function logDebug($msg)
 	{
@@ -139,14 +130,12 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'getInstance'
+	 * Get a Domain instance
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      unknown $authenticator Parameter description (if any) ...
-	 * @param      unknown $domain Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $type
+	 * @param   string  $authenticator
+	 * @param   string  $domain
+	 * @return  mixed   Object on success, False on failure
 	 */
 	public static function getInstance($type, $authenticator, $domain)
 	{
@@ -165,29 +154,34 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'createInstance'
+	 * Find a record by ID
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      unknown $authenticator Parameter description (if any) ...
-	 * @param      unknown $domain Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $id
+	 * @return  mixed    Object on success, False on failure
 	 */
 	public static function find_by_id($id)
 	{
 		$hzad = new self();
 		$hzad->id = $id;
-
 		$hzad->read();
 
 		if (empty($hzad->authenticator))
+		{
 			return false;
+		}
 
 		return $hzad;
 	}
 
-	public function createInstance($type,$authenticator,$domain = null)
+	/**
+	 * Create a new instance and return it
+	 *
+	 * @param   string  $type
+	 * @param   string  $authenticator
+	 * @param   string  $domain
+	 * @return  mixed
+	 */
+	public function createInstance($type, $authenticator, $domain = null)
 	{
 		if (empty($type) || empty($authenticator))
 		{
@@ -209,11 +203,9 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'create'
+	 * Create a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean  True on success, False on failure
 	 */
 	public function create()
 	{
@@ -226,7 +218,7 @@ class Domain
 
 		if (is_numeric($this->id))
 		{
-			$query = "INSERT INTO #__auth_domain (id,type,authenticator,domain,params) VALUES ( " . $db->quote($this->id) .
+			$query = "INSERT INTO `#__auth_domain` (id,type,authenticator,domain,params) VALUES ( " . $db->quote($this->id) .
 				"," . $db->quote($this->type) . "," . $db->quote($this->authenticator) . "," . $db->quote($this->domain) . ","
 				. $db->quote($this->params) . ");";
 
@@ -241,7 +233,7 @@ class Domain
 		}
 		else
 		{
-			$query = "INSERT INTO #__auth_domain (type,authenticator,domain,params) VALUES ( " .
+			$query = "INSERT INTO `#__auth_domain` (type,authenticator,domain,params) VALUES ( " .
 				$db->quote($this->type) . "," . $db->quote($this->authenticator) . "," . $db->quote($this->domain) . "," . $db->quote($this->params) . ");";
 
 			$db->setQuery($query);
@@ -250,7 +242,7 @@ class Domain
 			//var_dump($db);
 			if ($result === false && $db->getErrorNum() == 1062)
 			{
-				$query = "SELECT id FROM #__auth_domain WHERE authenticator=" .
+				$query = "SELECT id FROM `#__auth_domain` WHERE authenticator=" .
 					$db->quote($this->authenticator) . " AND domain=" . $db->quote($this->domain) . " AND type=" . $db->quote($this->type) . ";";
 
 				$db->setQuery($query);
@@ -276,11 +268,9 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'read'
+	 * Read a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean  True on success, False on failure
 	 */
 	public function read()
 	{
@@ -293,12 +283,12 @@ class Domain
 
 		if (is_numeric($this->id))
 		{
-			$query = "SELECT id,type,authenticator,domain,params FROM #__auth_domain WHERE id=" .
+			$query = "SELECT id,type,authenticator,domain,params FROM `#__auth_domain` WHERE id=" .
 				$db->quote($this->id) . ";";
 		}
 		else
 		{
-			$query = "SELECT id,type,authenticator,domain,params FROM #__auth_domain WHERE "
+			$query = "SELECT id,type,authenticator,domain,params FROM `#__auth_domain` WHERE "
 				. " type=" . $db->quote($this->type)
 				. " AND authenticator=" . $db->quote($this->authenticator)
 				. " AND domain=" . $db->quote($this->domain)
@@ -327,18 +317,16 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'update'
+	 * Update a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      boolean $all Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   boolean  $all  Update all values?
+	 * @return  boolean  True on success, False on failure
 	 */
-	function update($all = false)
+	public function update($all = false)
 	{
 		$db =  \App::get('db');
 
-		$query = "UPDATE #__auth_domain SET ";
+		$query = "UPDATE `#__auth_domain` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -400,12 +388,10 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'delete'
+	 * Delete a record
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      boolean $deletelinks Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   boolean  $deletelinks  Delete links?
+	 * @return  boolean  True on success, False on failure
 	 */
 	public function delete($deletelinks = false)
 	{
@@ -423,8 +409,7 @@ class Domain
 
 		if (!isset($this->id))
 		{
-			$db->setQuery("SELECT id FROM #__auth_domain WHERE authenticator=" .
-					$db->quote($this->authenticator) . " AND domain=" . $db->quote($this->domain) . ";");
+			$db->setQuery("SELECT id FROM `#__auth_domain` WHERE `authenticator`=" . $db->quote($this->authenticator) . " AND `domain`=" . $db->quote($this->domain) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -434,7 +419,7 @@ class Domain
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__auth_domain WHERE id= " . $db->quote($this->id) . ";");
+		$db->setQuery("DELETE FROM `#__auth_domain` WHERE `id`= " . $db->quote($this->id) . ";");
 
 		if (!$db->query())
 		{
@@ -443,8 +428,7 @@ class Domain
 
 		if ($deletelinks)
 		{
-			$db->setQuery("UPDATE #__auth_links SET auth_domain_id=NULL WHERE auth_domain_id=" .
-				$db->quote($this->id) . ";");
+			$db->setQuery("UPDATE `#__auth_links` SET `auth_domain_id`=NULL WHERE `auth_domain_id`=" . $db->quote($this->id) . ";");
 
 			$db->query();
 		}
@@ -453,12 +437,10 @@ class Domain
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Retrieve the value of a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string  $property  Property name
+	 * @return  mixed
 	 */
 	public function __get($property = null)
 	{
@@ -489,13 +471,11 @@ class Domain
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $property  Property name
+	 * @param   mixed   $value     Value to set
+	 * @return  void
 	 */
 	public function __set($property = null, $value = null)
 	{
@@ -513,23 +493,25 @@ class Domain
 		$this->$property = $value;
 
 		if (!in_array($property, $this->_updatedkeys))
+		{
 			$this->_updatedkeys[] = $property;
+		}
 	}
 
 	/**
-	 * Short description for '__isset'
+	 * Check if a propety is set
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string   $property  Property name
+	 * @return  boolean
 	 */
 	public function __isset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
 			if (empty($property))
+			{
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
@@ -539,19 +521,19 @@ class Domain
 	}
 
 	/**
-	 * Short description for '__unset'
+	 * Unset a property
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $property Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $property  Property name
+	 * @return  void
 	 */
 	public function __unset($property = null)
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
 			if (empty($property))
+			{
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
@@ -563,13 +545,11 @@ class Domain
 	}
 
 	/**
-	 * Short description for '_error'
+	 * Display an error
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $message Parameter description (if any) ...
-	 * @param      integer $level Parameter description (if any) ...
-	 * @return     void
+	 * @param   string   $message  Error message
+	 * @param   integer  $level    Error level
+	 * @return  void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
@@ -592,16 +572,15 @@ class Domain
 	}
 
 	/**
-	 * Short description for 'find_or_create'
+	 * Fine a specific record, or create it
+	 * if not found
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      unknown $authenticator Parameter description (if any) ...
-	 * @param      unknown $domain Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $type
+	 * @param   string  $authenticator
+	 * @param   string  $domain
+	 * @return  mixed
 	 */
-	public static function find_or_create($type,$authenticator,$domain=null)
+	public static function find_or_create($type, $authenticator, $domain=null)
 	{
 		$hzad = new self();
 		$hzad->type = $type;
@@ -610,7 +589,9 @@ class Domain
 		$hzad->read();
 
 		if (empty($hzad->id) && !$hzad->create())
+		{
 			return false;
+		}
 
 		return $hzad;
 	}

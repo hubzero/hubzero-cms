@@ -38,27 +38,27 @@ class Request
 	/**
 	 * Description for 'suppress_response_codes'
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
 	public $suppress_response_codes = false;
 
 	/**
 	 * Description for 'accepts'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $accepts = "text/plain";
 
 	/**
 	 * Description for 'method'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $method = 'GET';
 	/**
 	 * Description for 'path'
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $scheme = 'http';
 	private $username = '';
@@ -83,8 +83,6 @@ class Request
 	private $_session = array();
 	private $_request = array();
 	private $_env = array();
-
-
 
 	/**
 	 * Short description for 'getHeaderField'

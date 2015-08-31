@@ -38,7 +38,8 @@ use Hubzero\Plugin\Plugin;
 use Hubzero\Module\Module;
 
 /**
- * Helper for pushing styles to the document.
+ * Asset Aware trait.
+ * Adds helpers for pushing CSS and JS assets to the document.
  */
 trait AssetAware
 {
@@ -187,5 +188,7 @@ trait AssetAware
 		{
 			return $this->module->module;
 		}
+
+		return '';
 	}
 }

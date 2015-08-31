@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -42,16 +42,16 @@ class Factor extends Relational
 	/**
 	 * The table namespace
 	 *
-	 * @var string
-	 **/
+	 * @var  string
+	 */
 	protected $namespace = 'auth';
 
 	/**
 	 * Gets one result or fails by domain and user_id
 	 *
-	 * @param  string $domain the domain of interest
-	 * @return static|bool
-	 **/
+	 * @param   string  $domain  The domain of interest
+	 * @return  mixed   static|bool
+	 */
 	public static function currentOrFailByDomain($domain)
 	{
 		$factor = static::all()->whereEquals('user_id', User::get('id'))
