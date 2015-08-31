@@ -675,7 +675,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				$authorString = '';
 				$totalAuths = count($authors);
 				$x = 0;
-			
+
 				foreach ($authors as &$author)
 				{
 					/***
@@ -691,7 +691,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 					}
 
 					$authorString .= $author;
-			
+
 					if ($totalAuths > 1 && $x < $totalAuths - 1 )
 					{
 						$authorString .= ',';
@@ -750,7 +750,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		if (is_string($authorString))
 		{
-			$authorString = str_replace(',', ';', $authorString);	
+			$authorString = str_replace(',', ';', $authorString);
 		}
 		else
 		{
@@ -762,7 +762,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// check to see if new
 		$cid = Request::getInt('cid');
 		$isNew = ($cid < 0 ? true : false);
-		
+
 		// get the citation (single) or create a new one
 		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
 			->set(array(
@@ -840,9 +840,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 			if ($totalAuths == 0)
 			{
-				// redirect 
+				// redirect
 			}
-			
+
 			foreach ($authorField as $key => $a)
 			{
 				// create a new row
@@ -852,7 +852,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 					'author' => $a
 				));
 
-				$authorObj->save();	
+				$authorObj->save();
 
 			}
 			// turn the author string into author entries
