@@ -490,6 +490,45 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
+			if ($view->row->relatedAuthors->count())
+			{
+				$view->authors = $view->row->relatedAuthors;
+			}
+			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
+			{
+				// formats the author for the multi-author plugin
+				$authors = explode(';',$view->row->author);
+
+				$authorString = '';
+				$totalAuths = count($authors);
+				$x = 0;
+
+
+				foreach ($authors as &$author)
+				{
+					/***
+					* Because the multi-select keys off of a comma,
+					* imported entries may display incorrectly (Wojkovich, Kevin) breaks the multi-select
+					* Convert this to Kevin Wojkovich and I'll @TODO add some logic in the formatter to
+					* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
+					***/
+					$authorEntry = explode(',', $author);
+					if (count($authorEntry == 2))
+					{
+						$author = $authorEntry[1] . ' ' . $authorEntry[0];
+					}
+
+					$authorString .= $author;
+
+					if ($totalAuths > 1 && $x < $totalAuths - 1 )
+					{
+						$authorString .= ',';
+					}
+
+					$x = $x + 1;
+				}
+					$view->authorString = $authorString;
+			}
 			// tags & badges
 			$view->tags		= \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
 			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
@@ -542,7 +581,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'date_publish' => Request::getVar('date_publish'),
 				'year' => Request::getVar('year'),
 				'month' => Request::getVar('month'),
-				'author' => Request::getVar('author'),
 				'author_address' => Request::getVar('author_address'),
 				'editor' => Request::getVar('editor'),
 				'title' => Request::getVar('title'),
@@ -587,6 +625,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		$authorCount = $citation->relatedAuthors()->count();
+
 		// update authors entries for new citations
 		if ($isNew)
 		{
@@ -599,6 +639,30 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$author->save();
 			}
 		}
+		elseif (!$isNew && ($authorCount == 0))
+		{
+			$authorField = explode(',', Request::getVar('author'));
+			$totalAuths = count($authorField);
+
+			if ($totalAuths == 0)
+			{
+				// redirect with Error
+			}
+			else
+			{
+				foreach ($authorField as $key => $a)
+				{
+					// create a new author entry 
+					$authorObj = \Components\Citations\Models\Author::blank()->set(array(
+						'cid' => $citation->id,
+						'ordering' => $key,
+						'author' => $a
+						));
+						
+						$authorObj->save();
+					}
+				}
+			}
 
 		// check if we are allowing tags
 		$ct1 = new \Components\Tags\Models\Cloud($citation->id, 'citations');

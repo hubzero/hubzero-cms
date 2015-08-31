@@ -157,31 +157,9 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 						<div class="col span10">
 							<label for="field-author">
 								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORS'); ?>
-								<?php
-									if ($this->row->relatedAuthors->count())
-									{
-										$authors = $this->row->relatedAuthors;
-									}
-									elseif ($this->row->relatedAuthors->count() == 0 && $this->row->author != '')
-									{
-										$authors = NULL;
-										$authorField = explode(';',$this->row->author);
-										$authorString = '';
-										$totalAuths = count($authorField);
-										$x = 0;
-										foreach ($authorField as $a)
-										{
-											$as = explode(',', $a);
-											$authorString .= $as[1] . ' ' . $as[0];
-											if ($totalAuths > 1 && $x < $totalAuths - 1 )
-											{
-												$authorString .= ',';
-											}
-											$x++;
-										}
-									 }
+								<?php	
 
-								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', (isset($authorString) ? $authorString : ''))));
+								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''))));
 								if (count($mc) > 0) {
 									echo $mc[0];
 								} else { ?>
