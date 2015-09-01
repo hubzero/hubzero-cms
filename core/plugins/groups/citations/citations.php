@@ -1411,7 +1411,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$citations->where('scope_id', '=', $scope_id);
 			$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
 		}
-	
+
 		// apply filters on the set of citations
 		if ($filterCount > 0)
 		{
