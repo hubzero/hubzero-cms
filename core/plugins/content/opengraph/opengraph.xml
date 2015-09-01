@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/content/opengraph/opengraph.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2015 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension group="content" method="upgrade" type="plugin" version="2.0.0">
+	<name>plg_content_opengraph</name>
+	<creationDate>09/2015</creationDate>
+	<author>HUBzero</author>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>htt://hubzero.org</authorUrl>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<version>1.0.0</version>
+	<description>PLG_CONTENT_OPENGRAPH_DESCRIPTION</description>
+	<files>
+		<folder>models</folder>
+		<filename plugin="opengraph">opengraph.php</filename>
+		<filename >index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_opengraph.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_opengraph.sys.ini</language>
+	</languages>
+	<administration>
+		<languages>
+			<language tag="en-GB">language/en-GB/en-GB.plg_content_opengraph.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.plg_content_opengraph.sys.ini</language>
+		</languages>
+	</administration>
+	<config>
+		<fields name="params">
+			<fieldset name="article" label="PLG_CONTENT_OPENGRAPH_ARTICLE_OPTIONS">
+				<field name="title" type="text" default="" label="PLG_CONTENT_OPENGRAPH_TITLE_LABEL" description="PLG_CONTENT_OPENGRAPH_TITLE_DESC" />
+				<field name="type" type="list" default="article" label="PLG_CONTENT_OPENGRAPH_TYPE_LABEL" description="PLG_CONTENT_OPENGRAPH_TYPE_DESC">
+					<option value="activity">activity</option>
+					<option value="sport">sport</option>
+					<option value="bar">bar</option>
+					<option value="company">company</option>
+					<option value="cafe">cafe</option>
+					<option value="hotel">hotel</option>
+					<option value="restaurant">restaurant</option>
+					<option value="cause">cause</option>
+					<option value="sports_league">sports_league</option>
+					<option value="sports_team">sports_team</option>
+					<option value="band">band</option>
+					<option value="government">government</option>
+					<option value="non_profit">non_profit</option>
+					<option value="school">school</option>
+					<option value="university">university</option>
+					<option value="actor">actor</option>
+					<option value="athlete">athlete</option>
+					<option value="author">author</option>
+					<option value="director">director</option>
+					<option value="musician">musician</option>
+					<option value="politician">politician</option>
+					<option value="public_figure">public_figure</option>
+					<option value="city">city</option>
+					<option value="country">country</option>
+					<option value="landmark">landmark</option>
+					<option value="state_province">state_province</option>
+					<option value="album">album</option>
+					<option value="book">book</option>
+					<option value="drink">drink</option>
+					<option value="food">food</option>
+					<option value="game">game</option>
+					<option value="product">product</option>
+					<option value="song">song</option>
+					<option value="movie">movie</option>
+					<option value="tv_show">tv_show</option>
+					<option value="blog">blog</option>
+					<option value="website">website</option>
+					<option value="article">article</option>
+				</field>
+				<field name="image" type="media" default="" label="PLG_CONTENT_OPENGRAPH_IMAGE_LABEL" description="PLG_CONTENT_OPENGRAPH_IMAGE_DESC" />
+				<field name="url" type="text" default="" label="PLG_CONTENT_OPENGRAPH_URL_LABEL" description="PLG_CONTENT_OPENGRAPH_URL_DESC" />
+				<field name="site_name" type="text" default="" label="PLG_CONTENT_OPENGRAPH_SITE_NAME_LABEL" description="PLG_CONTENT_OPENGRAPH_SITE_NAME_DESC" />
+				<field name="description" type="textarea" default="" label="PLG_CONTENT_OPENGRAPH_DESCRIPTION_LABEL" description="PLG_CONTENT_OPENGRAPH_DESCRIPTION_DESC" />
+			</fieldset>
+			<fieldset name="category" label="PLG_CONTENT_OPENGRAPH_CATEGORY_OPTIONS">
+				<field name="titlec" type="text" default="" label="PLG_CONTENT_OPENGRAPH_TITLE_LABEL" description="PLG_CONTENT_OPENGRAPH_TITLE_DESC" />
+				<field name="typec" type="list" default="article" label="PLG_CONTENT_OPENGRAPH_TYPE_LABEL" description="PLG_CONTENT_OPENGRAPH_TYPE_DESC">
+					<option value="activity">activity</option>
+					<option value="sport">sport</option>
+					<option value="bar">bar</option>
+					<option value="company">company</option>
+					<option value="cafe">cafe</option>
+					<option value="hotel">hotel</option>
+					<option value="restaurant">restaurant</option>
+					<option value="cause">cause</option>
+					<option value="sports_league">sports_league</option>
+					<option value="sports_team">sports_team</option>
+					<option value="band">band</option>
+					<option value="government">government</option>
+					<option value="non_profit">non_profit</option>
+					<option value="school">school</option>
+					<option value="university">university</option>
+					<option value="actor">actor</option>
+					<option value="athlete">athlete</option>
+					<option value="author">author</option>
+					<option value="director">director</option>
+					<option value="musician">musician</option>
+					<option value="politician">politician</option>
+					<option value="public_figure">public_figure</option>
+					<option value="city">city</option>
+					<option value="country">country</option>
+					<option value="landmark">landmark</option>
+					<option value="state_province">state_province</option>
+					<option value="album">album</option>
+					<option value="book">book</option>
+					<option value="drink">drink</option>
+					<option value="food">food</option>
+					<option value="game">game</option>
+					<option value="product">product</option>
+					<option value="song">song</option>
+					<option value="movie">movie</option>
+					<option value="tv_show">tv_show</option>
+					<option value="blog">blog</option>
+					<option value="website">website</option>
+					<option value="article">article</option>
+				</field>
+				<field name="imagec" type="media" default="" label="PLG_CONTENT_OPENGRAPH_IMAGE_LABEL" description="PLG_CONTENT_OPENGRAPH_IMAGE_DESC" />
+				<field name="urlc" type="text" default="" label="PLG_CONTENT_OPENGRAPH_URL_LABEL" description="PLG_CONTENT_OPENGRAPH_URL_DESC" />
+				<field name="site_namec" type="text" default="" label="PLG_CONTENT_OPENGRAPH_SITE_NAME_LABEL" description="PLG_CONTENT_OPENGRAPH_SITE_NAME_DESC" />
+				<field name="descriptionc" type="textarea" default="" label="PLG_CONTENT_OPENGRAPH_DESCRIPTION_LABEL" description="PLG_CONTENT_OPENGRAPH_DESCRIPTION_DESC" />
+				<field name="displayc" type="list" default="1" label="PLG_CONTENT_OPENGRAPH_DISPLAY_CATEGORY_LABEL" description="PLG_CONTENT_OPENGRAPH_DISPLAY_CATEGORY_DESC">
+					<option value="1">PLG_CONTENT_OPENGRAPH_YES</option>
+					<option value="0">PLG_CONTENT_OPENGRAPH_NO</option>
+				</field>
+			</fieldset>
+			<fieldset name="common" label="PLG_CONTENT_OPENGRAPH_COMMON_OPTIONS">
+				<field name="app_id" type="text" default="" label="PLG_CONTENT_OPENGRAPH_APP_ID_LABEL" description="PLG_CONTENT_OPENGRAPH_APP_ID_DESC" />
+				<field name="other" type="textarea" default="" label="PLG_CONTENT_OPENGRAPH_OTHER_PROPERTIES_LABEL" description="PLG_CONTENT_OPENGRAPH_OTHER_PROPERTIES_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
