@@ -37,7 +37,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 ?>
 
 <script type="text/javascript">
-var $jQ = jQuery.noConflict();
+var $jQ = jQuery;
 
 $jQ(document).ready(function(e) {
 	var formatSelector = $jQ('#format-selector'),
