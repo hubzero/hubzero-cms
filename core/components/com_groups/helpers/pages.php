@@ -333,7 +333,7 @@ class Pages
 		$plain = $eview->loadTemplate(false);
 		$plain = str_replace("\n", "\r\n", $plain);
 
-		$eview->setLayout($type)
+		$eview->setLayout($type);
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
