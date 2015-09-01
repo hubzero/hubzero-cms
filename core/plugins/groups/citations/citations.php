@@ -1367,14 +1367,53 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		$filterCount = count($filters);
+
+		// see if we have members too
+		$config = json_decode($this->group->get('params'));
+		$members = $this->group->members;
+
 		// get the ones for this group
-		//$scope = 'group';
-
-		$citations->where('scope', '=', self::PLUGIN_SCOPE);
-		$citations->where('scope_id', '=', $scope_id);
-		$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
-
-		if (count($filters) > 0)
+		if ($config->display == 'member')
+		{
+			// if all filter is applied
+			if (array_key_exists('filter', $filters) && ($filters['filter'] == '' || $filters['filter'] == 'all'))
+			{
+				$citations
+					->where('scope', '=', self::PLUGIN_SCOPE)
+					->where('scope_id', '=', $scope_id)
+					->where('scope', '=', 'member')
+					->orWhereIn('scope_id', $members)
+					->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
+			}
+			// if members excluisvely is shown
+			elseif (array_key_exists('filter', $filters) && $filters['filter'] == 'member')
+			{
+				$citations
+					->where('scope', '=', 'member')
+					->whereIn('scope_id', $members)
+					->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
+			}
+			// return members + group
+			else
+			{
+				$citations
+					->where('scope', '=', self::PLUGIN_SCOPE)
+					->where('scope_id', '=', $scope_id)
+					->where('scope', '=', 'member')
+					->orWhereIn('scope_id', $members)
+					->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
+			}
+		} // end if $config->display == member
+		else
+		{
+			$citations->where('scope', '=', self::PLUGIN_SCOPE);
+			$citations->where('scope_id', '=', $scope_id);
+			$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
+		}
+	
+		// apply filters on the set of citations
+		if ($filterCount > 0)
 		{
 			foreach ($filters as $filter => $value)
 			{
@@ -1382,7 +1421,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$value = \Hubzero\Utility\Sanitize::clean($value);
 
 				// we handle things differently in search and sorting
-				if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "")
+				if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "" && ($filter == 'filter' && $value != 'member'))
 				{
 					switch ($filter)
 					{
@@ -1402,13 +1441,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 							if ($value == 'aff')
 							{
 								$value = 1;
+								$citations->where('affiliated', '=', $value);
 							}
-							else
+							elseif ($value == 'nonaff' || $value == '')
 							{
 								$value = 0;
+								$citations->where('affiliated', '=', $value);
 							}
-
-							$citations->where('affiliated', '=', $value);
 						break;
 						default:
 							$citations->where($filter, '=', $value);
@@ -1469,9 +1508,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// remove duplicates
 				$collection = array_unique($collection);
 
-				// get the tagged ones
-				$citations->whereIn('id', $collection);
-		 } // end if tags
+					// get the tagged ones
+					$citations->whereIn('id', $collection);
+				} // end if tags
 
 			if ($filter == "sort" && $value != "")
 			{
