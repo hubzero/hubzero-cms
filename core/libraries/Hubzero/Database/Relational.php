@@ -363,7 +363,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 			{
 				// We take the first one we find, so in theory, if multiple forwards exist with
 				// the same name, you'd have to prioritize them somehow.
-				if ($var = $this->makeRelationship($name)->getRelationship($forward)->$name)
+				if ($var = $this->makeRelationship($forward)->getRelationship($forward)->$name)
 				{
 					return $var;
 				}
