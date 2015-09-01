@@ -691,7 +691,7 @@ class JController extends JObject
 		if ($cachable && $viewType != 'feed' && $conf->get('caching') >= 1)
 		{
 			$option = JRequest::getCmd('option');
-			$cache = JFactory::getCache($option, 'view');
+			//$cache = JFactory::getCache($option, 'view');
 
 			if (is_array($urlparams))
 			{
@@ -715,7 +715,25 @@ class JController extends JObject
 				$app->registeredurlparams = $registeredurlparams;
 			}
 
-			$cache->get($view, 'display');
+			//$cache->get($view, 'display');
+			$id = md5(serialize(array(\JCache::makeId(), get_class($view), 'display')));
+			$data = \Cache::get($option . '.' . $id);
+			if (!$data || empty($data))
+			{
+				//$content = $view->loadTemplate();
+				ob_start();
+				ob_implicit_flush(false);
+				$view->display();
+				$content = ob_get_contents();
+				ob_end_clean();
+				$data = array(
+					'content' => $content,
+					'head' => Document::getHeadData()
+				);
+				\Cache::put($option . '.' . $id, $data, \Config::get('cachetime'));
+			}
+			echo $data['content'];
+			Document::setHeadData($data['head']);
 		}
 		else
 		{
