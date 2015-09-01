@@ -1376,7 +1376,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		$no_html = JRequest::getVar("no_html", 0);
 

@@ -189,7 +189,7 @@ if (!$no_html)
 					?>
 
 					<?php if ($this->tab == 'profile') : ?>
-						<a id="profile-privacy" href="<?php echo JRoute::_($this->profile->getLink()); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+						<a id="profile-privacy" href="<?php echo JRoute::_($this->profile->getLink() .'?' . JSession::getFormToken() . '=1'); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 							<?php echo $title; ?>
 						</a>
 					<?php else: ?>
