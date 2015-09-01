@@ -49,20 +49,20 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="icon-add btn" href="<?php echo Route::url($this->base . '&task=new'); ?>">
+					<?php echo Lang::txt('COM_TIME_RECORDS_NEW'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
 </header>
 
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_records">
-		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li class="last">
-					<a class="icon-add btn" href="<?php echo Route::url($this->base . '&task=new'); ?>">
-						<?php echo Lang::txt('COM_TIME_RECORDS_NEW'); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
 		<div class="container">
 			<?php if (count($this->getErrors()) > 0) : ?>
 				<?php foreach ($this->getErrors() as $error) : ?>
@@ -121,79 +121,103 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 					</ul>
 				</div>
 			<?php endif; ?>
-			<table class="entries">
-				<caption><?php echo Lang::txt('COM_TIME_RECORDS_CAPTION'); ?></caption>
-				<thead>
-					<tr>
-						<td>
+			<div class="entries table">
+				<div class="caption"><?php echo Lang::txt('COM_TIME_RECORDS_CAPTION'); ?></div>
+				<div class="thead">
+					<div class="tr">
+						<div class="th">
 							<a <?php if ($sortcol == 'id') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=id&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_RECORDS_ID'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'user.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=user.name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_RECORDS_USER'); ?>
 							</a>
-						</td>
-						<td class="col-time">
+						</div>
+						<div class="th col-time">
 							<a <?php if ($sortcol == 'time') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=time&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_RECORDS_TIME'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=date&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_RECORDS_DATE'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'task.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=task.name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_RECORDS_TASK'); ?>
 							</a>
-						</td>
-						<td><?php echo Lang::txt('COM_TIME_RECORDS_DESCRIPTION'); ?></td>
-					</tr>
-				</thead>
-				<tbody>
+						</div>
+						<div class="th"><?php echo Lang::txt('COM_TIME_RECORDS_DESCRIPTION'); ?></div>
+					</div>
+				</div>
+				<div class="tbody">
 					<?php foreach ($this->records as $record) : ?>
-						<tr>
-							<td>
-								<a href="<?php echo Route::url($this->base . '&task=readonly&id=' . $record->id); ?>">
-									<?php echo $record->id; ?>
-								</a>
-							</td>
-							<td><?php echo $record->user->name; ?></td>
-							<td class="col-time"><?php echo $record->time; ?></td>
-							<td><?php echo Date::of($record->date)->toLocal('m/d/y'); ?></td>
-							<td>
-								<?php echo String::highlight(
-									$record->task->name,
-									$this->filters['search'],
-									array('html' => true)
-								); ?>
-							</td>
-							<td class="last" title="<?php echo $record->description; ?>">
-								<?php echo String::highlight(
-									String::truncate(
-										$record->description,
-										25),
-									$this->filters['search'],
-									array('html' => true)
-								); ?>
-							</td>
-						</tr>
+						<div class="tr">
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_RECORDS_ID'); ?>:</div>
+								<div class="small-content">
+									<a href="<?php echo Route::url($this->base . '&task=readonly&id=' . $record->id); ?>">
+										<?php echo $record->id; ?>
+									</a>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_RECORDS_USER'); ?>:</div>
+								<div class="small-content">
+									<?php echo $record->user->name; ?>
+								</div>
+							</div>
+							<div class="td col-time">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_RECORDS_TIME'); ?>:</div>
+								<div class="small-content">
+									<?php echo $record->time; ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_RECORDS_DATE'); ?>:</div>
+								<div class="small-content">
+									<?php echo Date::of($record->date)->toLocal('m/d/y'); ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_RECORDS_TASK'); ?>:</div>
+								<div class="small-content">
+									<?php echo String::highlight(
+										$record->task->name,
+										$this->filters['search'],
+										array('html' => true)
+									); ?>
+								</div>
+							</div>
+							<div class="td last" title="<?php echo $record->description; ?>">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_RECORDS_DESCRIPTION'); ?>:</div>
+								<div class="small-content">
+									<?php echo String::highlight(
+										String::truncate(
+											$record->description,
+											25),
+										$this->filters['search'],
+										array('html' => true)
+									); ?>
+								</div>
+							</div>
+						</div>
 					<?php endforeach; ?>
 					<?php if (!$this->records->count()) : ?>
-						<tr>
-							<td colspan="7" class="no_records"><?php echo Lang::txt('COM_TIME_RECORDS_NONE_TO_DISPLAY'); ?></td>
-						</tr>
+						<div class="tr">
+							<div colspan="7" class="td no_records"><?php echo Lang::txt('COM_TIME_RECORDS_NONE_TO_DISPLAY'); ?></div>
+						</div>
 					<?php endif; ?>
-				</tbody>
-			</table>
+				</div>
+			</div>
 			<form action="<?php echo Route::url($this->base); ?>">
 				<?php echo $this->records->pagination; ?>
 			</form>

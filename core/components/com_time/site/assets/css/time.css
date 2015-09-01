@@ -210,6 +210,42 @@
 	font-weight: bold;
 }
 
+@media (max-width: 50em) {
+	.com_time_container {
+		padding-left: 0;
+	}
+	.com_time_quick_links {
+		display: none;
+	}
+	.com_time_navigation {
+		width: auto;
+		margin-left: 0;
+		float: none;
+		overflow: hidden;
+	}
+	.com_time_menu {
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+	.com_time_menu li {
+		float: left;
+	}
+	.com_time_menu li:after,
+	.com_time_menu li a:after {
+		content: '';
+		display: none;
+	}
+	.com_time_menu li a {
+		height: 4em;
+		width: 4em;
+		line-height: 4em;
+	}
+	.com_time_menu li a:before {
+		font-size: 1.5em;
+	}
+}
+
 /*-------------------------*/
 /*         Tables          */
 /*-------------------------*/
@@ -270,6 +306,84 @@
 }
 .com_time_content .sort_desc.num:before {
 	content: "\f163";
+}
+
+/* Div based table-like layout */
+.com_time_content .table {
+	display: table;
+	width: 100%;
+}
+.com_time_content .tr {
+	display: table-row;
+}
+.com_time_content .tbody .tr:hover {
+	background-color: #EFEFEF;
+	color: #333;
+}
+.com_time_content .thead {
+	display: table-header-group;
+}
+.com_time_content .tbody {
+	display: table-row-group;
+}
+.com_time_content .th {
+	display: table-cell;
+	vertical-align: top;
+	line-height: 1.6em;
+	padding: .4045084975em .61803399em;
+	border-bottom: 1px solid #dadada;
+}
+.com_time_content .td {
+	display: table-cell;
+	text-align: left;
+	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid rgba(0,0,0,0.035);
+	padding: 1em;
+}
+
+.com_time_content .caption {
+	display: table-caption;
+	text-align: center;
+	font-size: 115%;
+	text-transform: uppercase;
+	letter-spacing: .15em;
+	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+.com_time_content .small-label {
+	display: none;
+}
+
+@media (max-width: 50em) {
+	.com_time_content .table {
+		display: block;
+	}
+	.com_time_content .tr {
+		display: table;
+		width: 100%;
+		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgba(0,0,0,0.15);
+	}
+	.com_time_content .thead {
+		display: none;
+	}
+	.com_time_content .tbody {
+		display: block;
+	}
+	.com_time_content .td {
+		display: table-row;
+		border-bottom: none;
+		padding: .5em;
+	}
+	.com_time_content .caption {
+		display: block;
+	}
+	.com_time_content .small-label {
+		display: table-cell;
+		text-align: right;
+		width: 30%;
+		padding-right: 1em;
+	}
 }
 
 /*-------------------------*/
@@ -389,4 +503,10 @@
 .com_time_content .search-submit {
 	float: right;
 	margin-left: 10px;
+}
+
+@media (max-width: 50em) {
+	.com_time_content #add-filters select {
+		width: 100%;
+	}
 }
