@@ -140,7 +140,7 @@ class Loader
 	/**
 	 * Make sure component name follows naming conventions
 	 *
-	 * @param   string   $option  The element value for the extension
+	 * @param   string  $option  The element value for the extension
 	 * @return  string
 	 */
 	public function canonical($option)
@@ -198,19 +198,12 @@ class Loader
 			define('JPATH_COMPONENT_SITE', PATH_APP . DS . 'components' . DS . $option . DS . 'site');
 			define('JPATH_COMPONENT_ADMINISTRATOR', PATH_APP . DS . 'components' . DS . $option . DS . 'admin');
 		}
-		else if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
+		else
 		{
 			// Set path and constants for combined components
 			define('JPATH_COMPONENT', PATH_CORE . DS . 'components' . DS . $option . DS . $client);
 			define('JPATH_COMPONENT_SITE', PATH_CORE . DS . 'components' . DS . $option . DS . 'site');
 			define('JPATH_COMPONENT_ADMINISTRATOR', PATH_CORE . DS . 'components' . DS . $option . DS . 'admin');
-		}
-		else
-		{
-			// Set path and constants for legacy components
-			define('JPATH_COMPONENT', JPATH_BASE . DS . 'components' . DS . $option);
-			define('JPATH_COMPONENT_SITE', JPATH_SITE . DS . 'components' . DS . $option);
-			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . DS . 'components' . DS . $option);
 		}
 
 		$path = JPATH_COMPONENT . DS . $file . '.php';
@@ -273,15 +266,15 @@ class Loader
 
 			$client = ucfirst($client);
 
-			$name  = $compname . 'Router';
-			$name2 = '\\Components\\' . $compname . '\\' . $client . '\\Router';
+			$legacy = $compname . 'Router';
+			$name   = '\\Components\\' . $compname . '\\' . $client . '\\Router';
 
-			if (!class_exists($name) && !class_exists($name2))
+			if (!class_exists($name) && !class_exists($legacy))
 			{
 				// Use the component routing handler if it exists
 				$paths = array();
-				$paths[] = $this->path($option) . DS . 'router.php';
 				$paths[] = $this->path($option) . DS . strtolower($client) . DS . 'router.php';
+				$paths[] = $this->path($option) . DS . 'router.php';
 
 				// Use the custom routing handler if it exists
 				foreach ($paths as $path)
@@ -303,13 +296,13 @@ class Loader
 					self::$routers[$key] = new $name;
 				}
 			}
-			else if (class_exists($name2))
+			else if (class_exists($legacy))
 			{
-				$reflection = new ReflectionClass($name2);
+				$reflection = new ReflectionClass($legacy);
 
 				if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 				{
-					self::$routers[$key] = new $name2;
+					self::$routers[$key] = new $legacy;
 				}
 			}
 

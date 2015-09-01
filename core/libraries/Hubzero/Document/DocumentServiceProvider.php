@@ -148,17 +148,16 @@ class DocumentServiceProvider extends Middleware
 		$document->setDescription($params->get('page_description'));
 		*/
 
-		$generator = 'HUBzero - The open source platform for scientific and educational collaboration';
 		if ($this->app['config']->get('MetaVersion', 0))
 		{
-			$generator .= ' (' . $this->app->version() . ')';
+			$document->setGenerator($document->getGenerator() . ' (' . $this->app->version() . ')');
 		}
-		$document->setGenerator($generator);
 
 		if ($this->app->isSite())
 		{
 			$document->setBase(htmlspecialchars($request->current()));
 		}
+
 		$document->setBuffer($response->getContent(), 'component');
 		$document->parse($params);
 
@@ -171,7 +170,6 @@ class DocumentServiceProvider extends Middleware
 
 		$response->setContent($document->render($caching, $params));
 
-		// Trigger post dispatch event
 		$this->app['dispatcher']->trigger('system.onAfterRender');
 
 		if ($profiler = $this->app['profiler'])

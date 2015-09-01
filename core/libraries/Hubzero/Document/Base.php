@@ -36,6 +36,8 @@ use Hubzero\Base\Object;
  * Document class, provides an easy interface to parse and display a document
  *
  * Inspired by Joomla's JDocument class
+ *
+ * @todo  Rewrite all of this.
  */
 class Base extends Object
 {
