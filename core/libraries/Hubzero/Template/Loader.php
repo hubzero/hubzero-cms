@@ -268,11 +268,15 @@ class Loader
 
 				$db->setQuery($query);
 				$templates = $db->loadObjectList('id');
+
 				foreach ($templates as &$template)
 				{
-					$registry = new Registry($template->params);
+					if (!($template->params instanceof Registry))
+					{
+						$registry = new Registry($template->params);
 
-					$template->params = $registry;
+						$template->params = $registry;
+					}
 
 					// Create home element
 					if ($template->home == 1 && !isset($templates[0])) // || ($this->app->has('language.filter') && $this->app->get('language.filter') && $template->home == $tag))
