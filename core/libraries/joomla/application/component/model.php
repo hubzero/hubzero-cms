@@ -524,7 +524,7 @@ abstract class JModel extends JObject
 		$cache->clean();
 		*/
 		$handler = \App::get('config')->get('cache_handler');
-		$client  = \Hubzero\Base\ClientManager::client($client_id);
+		$client  = \Hubzero\Base\ClientManager::client((int) $client_id);
 
 		$app = \App::getRoot();
 		$app->get('config')->set($handler, array(
