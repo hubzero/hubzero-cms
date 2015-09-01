@@ -768,10 +768,17 @@ class Groups extends Base
 
 		// Build the e-mail message
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'saved'));
+		$eview = new \Hubzero\Mail\View(array(
+			'name'   => 'emails',
+			'layout' => 'saved_plain'
+		));
 		$eview->option = $this->_option;
 		$eview->user   = User::getRoot();
 		$eview->group  = $group;
+		$plain = $eview->loadTemplate(false);
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		$eview->setLayout('saved');
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
@@ -809,11 +816,12 @@ class Groups extends Base
 					->addHeader('X-Component', 'com_groups')
 					->addHeader('X-Component-Object', 'group_saved')
 					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
+					->addPart($plain, 'text/plain')
 					->addPart($html, 'text/html')
 					->send();
 		}
 
-		//only inform site admin if the group wasnt auto-approved
+		//only inform site admin if the group wasn't auto-approved
 		if (!$this->config->get('auto_approve', 1) && $group->get('approved') == 0)
 		{
 			// create approval subject
@@ -835,6 +843,7 @@ class Groups extends Base
 					->addHeader('X-Component', 'com_groups')
 					->addHeader('X-Component-Object', 'group_pending_approval')
 					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
+					->addPart($plain, 'text/plain')
 					->addPart($html, 'text/html')
 					->send();
 		}
@@ -887,7 +896,7 @@ class Groups extends Base
 	/**
 	 *  Show confirm delete view
 	 *
-	 * @return 		void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
