@@ -96,11 +96,11 @@ if (isset($this->messages))
 									}
 								}
 							?>
-							<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
+							<li><a <?php if ($this->filters['filter'] == '' || $this->filters['filter'] == 'all') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
 							<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
 							<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
 							<?php if ($this->config->get('display') != "group"): ?>
-								<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
+								<li><a <?php if ($this->filters['filter'] == 'member') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filters[filter]=member'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
 							<?php endif; ?>
 						</ul>
 					</nav>
@@ -209,7 +209,7 @@ if (isset($this->messages))
 											</div>
 										<?php endif; ?>
 									</td>
-									<?php if ($this->isManager === true) : ?>
+									<?php if ($this->isManager === true && $cite->scope == 'group') : ?>
 										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>"></span>
 											<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?></span>
 										</a></td>
