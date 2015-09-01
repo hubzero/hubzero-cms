@@ -13,6 +13,10 @@
 
 */
 
+	.contentpaneopen {
+		padding: 0;
+	}
+
 	.com_content .tagline {
 		margin: 0;
 		padding: 30px;

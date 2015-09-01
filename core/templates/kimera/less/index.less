@@ -56,36 +56,6 @@
 		border-bottom: 1px solid #999;
 	}
 
-// Inputs
-	/*input[type=text],
-	input[type=password],
-	input[type=email],
-	textarea {
-		font-family: @sansFontFamily;
-		font-size: 1em;
-		line-height: 1.61803399em;
-		max-width: 100%;
-		padding: 0.6045084975em;
-		outline: none;
-		border: 1px solid #D9D9D9;
-		background-color: #fff;
-		background-color: rgba(200, 200, 200, 0.15);
-		//.box-sizing(border-box);
-		.background-clip(padding-box);
-		.border-radius(0.25em);
-		.transition(all 0.1s ease-out);
-	}
-	textarea:focus,
-	input[type="text"]:focus,
-	input[type="password"]:focus,
-	input[type="file"]:focus {
-		background-color: #fff;
-		border-color: #0fa1ca;
-	}
-	.placeholder-support {
-		color: #aaa;
-	}*/
-
 // Elements
 	// Lists
 	ul {
@@ -215,7 +185,6 @@
 		font-size: 1em;
 		border-collapse: collapse;
 		border-bottom: 1px dashed #dadada;
-		//border-bottom: 1px dashed #dadada;
 
 		caption {
 			line-height: 1.6em;
@@ -243,7 +212,6 @@
 
 // Splash
 	#splash .inner-wrap .inner .wrap {
-		//min-height: 90px;
 		position: relative;
 	}
 
@@ -370,75 +338,11 @@
 // Sections
 @import "_sections.less";
 
-	/*#content.com_content {
-		margin-top: 7.2em;
-
-		.content-header {
-			height: 7.2em;
-			position: absolute;
-			top: -7.2em;
-			left: 30px;
-			right: 30px;
-		}
-
-		ul.actions {
-			display: none;
-		}
-		.heading {
-			padding: 0;
-		}
-		section.section .aside,
-		section.section .subject {
-			padding-top: 30px;
-			padding-bottom: 30px;
-		}
-	}*/
-
-/* Metadata 
-	.metadata p {
-		font-size: 90%;
-		margin: 0.2em 0;
-		padding: 0 0 0 20px;
-	}*/
-
-/* Buttons & Icons 
-	/*.edit-member:before {
-		content: "\f007";
-	}
-	.author:before {
-		content: "\f007";
-	}
-	.browse:before {
-		content: "\f00b";
-		margin-right: 0.3em;
-	}
-
-	#page_options .edit:before {
-		content: "";
-		margin-right: 0;
-	}*/
-
-	/*.comments form fieldset {
-		background: transparent;
-		border: none;
-		padding: 0;
-		margin: 0;
-
-		fieldset {
-			border: 1px solid #ccc;
-			margin: 1.5em 0 0 0;
-			padding: 0 1em 1em 1em;
-		}
-	}*/
-
 /* Item listing */
 	.results {
 		list-style: none;
 		margin: 1em 0 1em 0;
 		padding: 0;
-		//position: relative;
-		//border-top: 1px dashed #bAbAbA;
-		//border-bottom: none;
 
 		li {
 			padding: @spacing 0;
@@ -446,7 +350,6 @@
 			border-top: 1px solid rgba(0, 0, 0, 0.075);
 			margin: 0;
 			position: relative;
-			//list-style: none;
 		}
 		&>li:first-child {
 			border-top: none;
@@ -503,34 +406,8 @@
 		}
 	}
 
-// 5 star Reviews
-	/*.avgrating {
-		padding-left: 0;
-
-		span {
-			padding-left: 1em;
-		}
-		&:before {
-			font-family: 'Fontcons';
-			font-size: 1em;
-			line-height: 1;
-			//color: #ea0;
-		}
-	}
-	.no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
-	.half-stars:before      { content: "\f089\2606\2606\2606\2606"; }
-	.one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
-	.onehalf-stars:before   { content: "\2605\f089\2606\2606\2606"; }
-	.two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
-	.twohalf-stars:before   { content: "\2605\2605\f089\2606\2606"; }
-	.three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
-	.threehalf-stars:before { content: "\2605\2605\2605\f089\2606"; }
-	.four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
-	.fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
-	.five-stars:before      { content: "\2605\2605\2605\2605\2605"; }*/
-
 // Overlay
-	.fancybox-opened {
+	.fancybox-wrap {
 		#content-header,
 		.explaination,
 		.aside {
@@ -572,7 +449,6 @@
 			.multiple-option {
 				margin: 0;
 				padding: 1em 1.618em;
-				//border-bottom: 1px solid #eee;
 				display: block;
 			}
 			.multiple-option label {
@@ -601,15 +477,6 @@
 		}
 	}
 
-	/*#section-plan {
-		background: #f1f1f1;
-	}
-
-	.voting .vote-button,
-	.voting a.vote-button {
-		background: url("../img/layout/stripes.png");
-	}*/
-
 // Buttons
 @import "_buttons.less";
 
@@ -631,7 +498,7 @@
 
 // Containers & listings
 @import "_layout.less";
-
+/*
 body {
 	#fav {
 		top: -3.4em;
@@ -668,24 +535,14 @@ body {
 			}
 		}
 	}
-
-	/*#content form.search {
-		border: 1px solid #f9f9f9
-	}
-
-	#page_options li#personalize a {
-		line-height: 1;
-	}*/
 }
-
+*/
 .com_content {
 	.actions {
 		list-style: none;
 		position: absolute;
 		right: 30px;
 		top: 30px;
-		//background: rgba(0, 0, 0, 0.75);
-		//.border-radius(0.25em);
 		font-size: 1.5em;
 		line-height: 1;
 
@@ -724,126 +581,16 @@ body {
 	}
 }
 
+	#page_content section.section .subject,
+	#page_content section.section .aside {
+		background: transparent;
+	}
+
 // Utilities
 @import "../../../../core/assets/less/utilities.less";
 
-	#page_content section.section .subject,
-	#page_content section.section .aside {
-		//padding: 0;
-		background: transparent;
-	}
-/*
-@media (min-width: 60em) {
-	#page_content section.section {
-		.subject {
-			padding-right: 30px;
-			padding-left: 0;
-		}
-		.aside {
-			padding-right: 30px;
-			padding-left: 0;
-		}
-		.subject + .aside {
-			padding-left: 30px;
-			padding-right: 0;
-		}
-		.aside + .subject {
-			padding-right: 0;
-			padding-left: 30px;
-		}
-	}
-}*/
 // Dark header
 @import "_dark.less";
-/*
-@media (max-width: 1064px) {
-	#page_content {
-		section.section {
-			display: block;
-			width: auto;
-
-			.subject,
-			.aside {
-				display: block;
-				width: auto;
-				margin-right: 0;
-				margin-left: 0;
-				padding-right: 0;
-				padding-left: 0;
-			}
-		}
-	}
-}
-
-@media (max-width: 800px) {
-	#hubForm {
-		&:before {
-			display: none;
-		}
-		.explaination {
-			float: none;
-			width: auto;
-			padding: 0;
-			margin: 1em 0;
-			border: none;
-		}
-		fieldset {
-			margin-right: 0;
-		}
-		.submit {
-			margin-right: 0;
-		}
-	}
-
-	#masthead {
-		font-size: 90%;
-	}
-
-	section.section {
-		display: block;
-		width: auto;
-
-		.subject,
-		.aside {
-			display: block;
-			width: auto;
-			margin-right: 0;
-			margin-left: 0;
-			padding-right: 0;
-			padding-left: 0;
-		}
-	}
-}
-
-@media (max-width: 600px) {
-	#content {
-		padding: 0;
-	}
-	#hubForm .grid .span4,
-	#hubForm .grid .span-third {
-		float: none;
-		width: auto;
-		margin-right: 0;
-	}
-	#footer {
-		#ancillary {
-			padding: 0 @spacing @spacing @spacing;
-		}
-		ul#legalese {
-			padding: @spacing;
-
-			.policy {
-				left: @spacing;
-			}
-		}
-		.grid {
-			.span3,
-			.span-quarter {
-				margin-top: @spacing;
-			}
-		}
-	}
-}*/
 
 // Print
 @import "_print.less";
