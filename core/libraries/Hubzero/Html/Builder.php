@@ -182,7 +182,7 @@ class Builder
 	}
 
 	/**
-	 * Add a directory where JHtml should search for helpers. You may
+	 * Add a directory where Html should search for helpers. You may
 	 * either pass a string or an array of directories.
 	 *
 	 * @param   string  $path  A path to search.
