@@ -8,23 +8,20 @@
 /*-------------------------
 	Tables
 -------------------------*/
-.com_time_tasks .entries tbody td.no_tasks {
+.com_time_tasks .entries .tbody .td.no_tasks {
 	text-align: center;
 }
-.com_time_tasks .entries tbody tr.inactive {
+.com_time_tasks .entries .tbody .tr.inactive {
 	color: #999;
 	background-color: #F1F1F1;
 }
-.com_time_tasks .entries tbody td.inactive,
-.com_time_tasks .entries tbody td.active {
+.com_time_tasks .entries .tbody .td.inactive,
+.com_time_tasks .entries .tbody .td.active {
 	width: 15px;
-	padding: 5px;
-	background-position: 10px 11px;
-	background-repeat: no-repeat;
 	position: relative;
 }
-.com_time_tasks .entries tbody td.inactive:before,
-.com_time_tasks .entries tbody td.active:before {
+.com_time_tasks .entries .tbody .td.inactive:before,
+.com_time_tasks .entries .tbody .td.active:before {
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -39,19 +36,17 @@
 	font-family: 'Fontcons';
 	color: green;
 }
-.com_time_tasks .entries tbody td.inactive:before {
+.com_time_tasks .entries .tbody .td.inactive:before {
 	content: "\26aa";
 	color: orange;
 }
-.com_time_tasks .entries tbody td.active:before {
+.com_time_tasks .entries .tbody .td.active:before {
 	content: "\26ab";
 }
-.com_time_tasks .entries tbody td.inactive a,
-.com_time_tasks .entries tbody td.active a {
-	display: block;
-	height: 16px;
-	width: 16px;
-	margin-top: 6px;
-	margin-left: 6px;
-	border-bottom: none;
+
+@media (max-width: 50em) {
+	.com_time_tasks .td.active,
+	.com_time_tasks .td.inactive {
+		display: none;
+	}
 }

@@ -47,28 +47,28 @@ HTML::behavior('core');
 
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<?php if ($this->row->id && $this->permissions->can('edit.permissions')) : ?>
+				<li>
+					<?php $permRoute = Route::url('index.php?option=' . $this->option . '&controller=permissions&scope=Hub&scope_id=' . $this->row->id . '&tmpl=component'); ?>
+					<a class="icon-config btn permissions-button" href="<?php echo $permRoute; ?>">
+						<?php echo Lang::txt('COM_TIME_HUBS_PERMISSIONS'); ?>
+					</a>
+				</li>
+			<?php endif; ?>
+			<li class="last">
+				<a class="icon-reply btn" href="<?php echo Route::url($this->base . $this->start); ?>">
+					<?php echo Lang::txt('COM_TIME_HUBS_ALL_HUBS'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
 </header>
 
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_hubs">
-		<div id="content-header-extra">
-			<ul id="useroptions">
-				<?php if ($this->row->id && $this->permissions->can('edit.permissions')) : ?>
-					<li>
-						<?php $permRoute = Route::url('index.php?option=' . $this->option . '&controller=permissions&scope=Hub&scope_id=' . $this->row->id . '&tmpl=component'); ?>
-						<a class="icon-config btn permissions-button" href="<?php echo $permRoute; ?>">
-							<?php echo Lang::txt('COM_TIME_HUBS_PERMISSIONS'); ?>
-						</a>
-					</li>
-				<?php endif; ?>
-				<li class="last">
-					<a class="icon-reply btn" href="<?php echo Route::url($this->base . $this->start); ?>">
-						<?php echo Lang::txt('COM_TIME_HUBS_ALL_HUBS'); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
 		<div class="container">
 			<?php if (count($this->getErrors()) > 0) : ?>
 				<?php foreach ($this->getErrors() as $error) : ?>

@@ -50,20 +50,20 @@ HTML::behavior('core');
 
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="add icon-add btn" href="<?php echo Route::url($this->base . '&task=new'); ?>">
+					<?php echo Lang::txt('COM_TIME_TASKS_NEW'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
 </header>
 
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_tasks">
-		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li class="last">
-					<a class="add icon-add btn" href="<?php echo Route::url($this->base . '&task=new'); ?>">
-						<?php echo Lang::txt('COM_TIME_TASKS_NEW'); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
 		<div class="container">
 			<?php if (count($this->getErrors()) > 0) : ?>
 				<?php foreach ($this->getErrors() as $error) : ?>
@@ -122,80 +122,114 @@ HTML::behavior('core');
 					</ul>
 				</div>
 			<?php endif; ?>
-			<table class="entries">
-				<caption><?php echo Lang::txt('COM_TIME_TASKS_CAPTION'); ?></caption>
-				<thead>
-					<tr>
-						<td></td>
-						<td>
+			<div class="entries table">
+				<div class="caption"><?php echo Lang::txt('COM_TIME_TASKS_CAPTION'); ?></div>
+				<div class="thead">
+					<div class="tr">
+						<div class="th"></div>
+						<div class="th">
 							<a <?php if ($sortcol == 'name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_NAME'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'hub.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=hub.name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_HUB_NAME'); ?>
 							</a>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'priority') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=priority&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_PRIORITY'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'assignee.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=assignee.name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_ASSIGNEE_SHORT'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'liaison.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=liaison.name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_LIAISON_SHORT'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'start_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=start_date&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_START_DATE'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'end_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=end_date&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_TASKS_END_DATE'); ?>
 							</a>
-						</td>
-					</tr>
-				</thead>
-				<tbody>
+						</div>
+					</div>
+				</div>
+				<div class="tbody">
 					<?php foreach ($this->tasks as $task) : ?>
-						<tr<?php if ($task->active == 0) { echo ' class="inactive"'; } ?>>
-							<td class="<?php if ($task->active == 0) { echo "in"; } ?>active">
+						<div class="tr<?php if ($task->active == 0) { echo ' inactive'; } ?>">
+							<div class="td <?php if ($task->active == 0) { echo "in"; } ?>active">
 								<a href="<?php echo Route::url($this->base . '&task=toggleactive&id=' . $task->id); ?>"></a>
-							</td>
-							<td>
-								<a href="<?php echo Route::url($this->base . '&task=edit&id=' . $task->id); ?>">
-									<?php echo String::highlight($task->name, $this->filters['search'], array('html' => true)); ?>
-								</a>
-							</td>
-							<td><?php echo $task->hub->name; ?></td>
-							<td style="text-align:center;"><?php echo $task->priority; ?></td>
-							<td><?php echo $task->assignee->name; ?></td>
-							<td><?php echo $task->liaison->name; ?></td>
-							<td><?php echo ($task->start_date != '0000-00-00') ? Date::of($task->start_date)->toLocal('m/d/y') : ''; ?></td>
-							<td><?php echo ($task->end_date != '0000-00-00') ? Date::of($task->end_date)->toLocal('m/d/y') : ''; ?></td>
-						</tr>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_NAME'); ?>:</div>
+								<div class="small-content">
+									<a href="<?php echo Route::url($this->base . '&task=edit&id=' . $task->id); ?>">
+										<?php echo String::highlight($task->name, $this->filters['search'], array('html' => true)); ?>
+									</a>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_HUB_NAME'); ?>:</div>
+								<div class="small-content">
+									<?php echo $task->hub->name; ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_PRIORITY'); ?>:</div>
+								<div class="small-content">
+									<?php echo $task->priority; ?>
+								</div>
+							</div>
+							<div class="td">
+							<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_ASSIGNEE_SHORT'); ?>:</div>
+								<div class="small-content">
+									<?php echo $task->assignee->name; ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_LIAISON_SHORT'); ?>:</div>
+								<div class="small-content">
+									<?php echo $task->liaison->name; ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_START_DATE'); ?>:</div>
+								<div class="small-content">
+									<?php echo ($task->start_date != '0000-00-00') ? Date::of($task->start_date)->toLocal('m/d/y') : ''; ?>
+								</div>
+							</div>
+							<div class="td">
+								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_END_DATE'); ?>:</div>
+								<div class="small-content">
+									<?php echo ($task->end_date != '0000-00-00') ? Date::of($task->end_date)->toLocal('m/d/y') : ''; ?>
+								</div>
+							</div>
+						</div>
 					<?php endforeach; ?>
 					<?php if (!$this->tasks->count()) : ?>
-						<tr>
-							<td colspan="9" class="no_tasks"><?php echo Lang::txt('COM_TIME_TASKS_NONE_TO_DISPLAY'); ?></td>
-						</tr>
+						<div class="tr">
+							<div class="td no_tasks"><?php echo Lang::txt('COM_TIME_TASKS_NONE_TO_DISPLAY'); ?></div>
+						</div>
 					<?php endif; ?>
-				</tbody>
-			</table>
+				</div>
+			</div>
 			<form action="<?php echo Route::url($this->base); ?>">
 				<?php echo $this->tasks->pagination; ?>
 			</form>

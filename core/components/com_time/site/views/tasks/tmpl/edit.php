@@ -47,25 +47,25 @@ $this->css()
 
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li>
+				<a class="icon-reply btn" href="<?php echo Route::url($this->base . $this->start); ?>">
+					<?php echo Lang::txt('COM_TIME_TASKS_ALL_TASKS'); ?>
+				</a>
+			</li>
+			<li class="last">
+				<a class="delete icon-delete btn" href="<?php echo Route::url($this->base . '&task=delete&id=' . $this->row->id); ?>">
+					<?php echo Lang::txt('COM_TIME_TASKS_DELETE'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
 </header>
 
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_tasks">
-		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li>
-					<a class="icon-reply btn" href="<?php echo Route::url($this->base . $this->start); ?>">
-						<?php echo Lang::txt('COM_TIME_TASKS_ALL_TASKS'); ?>
-					</a>
-				</li>
-				<li class="last">
-					<a class="delete icon-delete btn" href="<?php echo Route::url($this->base . '&task=delete&id=' . $this->row->id); ?>">
-						<?php echo Lang::txt('COM_TIME_TASKS_DELETE'); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
 		<div class="container">
 			<?php if (count($this->getErrors()) > 0) : ?>
 				<?php foreach ($this->getErrors() as $error) : ?>

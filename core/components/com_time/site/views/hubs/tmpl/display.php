@@ -45,76 +45,94 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="add icon-add btn" href="<?php echo Route::url($this->base . '&task=new'); ?>">
+					<?php echo Lang::txt('COM_TIME_HUBS_NEW'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
 </header>
 
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_hubs">
-		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li class="last">
-					<a class="add icon-add btn" href="<?php echo Route::url($this->base . '&task=new'); ?>">
-						<?php echo Lang::txt('COM_TIME_HUBS_NEW'); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
 		<div class="container">
 			<?php if (count($this->getErrors()) > 0) : ?>
 				<?php foreach ($this->getErrors() as $error) : ?>
 				<p class="error"><?php echo $this->escape($error); ?></p>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<table class="entries">
-				<caption><?php echo Lang::txt('COM_TIME_HUBS_CAPTION'); ?></caption>
-				<thead>
-					<tr>
-						<td>
+			<div class="entries table">
+				<div class="caption"><?php echo Lang::txt('COM_TIME_HUBS_CAPTION'); ?></div>
+				<div class="thead">
+					<div class="tr">
+						<div class="th">
 							<a <?php if ($sortcol == 'name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=name&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_HUBS_NAME'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'liaison') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=liaison&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_HUBS_LIAISON'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'anniversary_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=anniversary_date&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_HUBS_ANNIVERSARY_DATE'); ?>
 							</a>
-						</td>
-						<td>
+						</div>
+						<div class="th">
 							<a <?php if ($sortcol == 'support_level') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
 								href="<?php echo Route::url($this->base . '&orderby=support_level&orderdir=' . $newdir); ?>">
 									<?php echo Lang::txt('COM_TIME_HUBS_SUPPORT_LEVEL'); ?>
 							</a>
-						</td>
-					</tr>
-				</thead>
-				<tbody>
+						</div>
+					</div>
+				</div>
+				<div class="tbody">
 					<?php foreach ($this->rows as $hub) : ?>
-					<tr>
-						<td>
-							<a class="view" id="<?php echo $hub->id; ?>" href="<?php echo Route::url($this->base . '&task=readonly&id=' . $hub->id); ?>">
-								<?php echo $hub->name; ?>
-							</a>
-						</td>
-						<td><?php echo $hub->liaison; ?></td>
-						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? Date::of($hub->anniversary_date)->toLocal('m/d/y') : ''; ?></td>
-						<td><?php echo $hub->support_level; ?></td>
-					</tr>
+					<div class="tr">
+						<div class="td">
+							<div class="small-label"><?php echo Lang::txt('COM_TIME_HUBS_NAME'); ?>:</div>
+							<div class="small-content">
+								<a class="view" id="<?php echo $hub->id; ?>" href="<?php echo Route::url($this->base . '&task=readonly&id=' . $hub->id); ?>">
+									<?php echo $hub->name; ?>
+								</a>
+							</div>
+						</div>
+						<div class="td">
+							<div class="small-label"><?php echo Lang::txt('COM_TIME_HUBS_LIAISON'); ?>:</div>
+							<div class="small-content">
+								<?php echo $hub->liaison; ?>
+							</div>
+						</div>
+						<div class="td">
+							<div class="small-label"><?php echo Lang::txt('COM_TIME_HUBS_ANNIVERSARY_DATE'); ?>:</div>
+							<div class="small-content">
+								<?php echo ($hub->anniversary_date != '0000-00-00') ? Date::of($hub->anniversary_date)->toLocal('m/d/y') : ''; ?>
+							</div>
+						</div>
+						<div class="td">
+							<div class="small-label"><?php echo Lang::txt('COM_TIME_HUBS_SUPPORT_LEVEL'); ?>:</div>
+							<div class="small-content">
+								<?php echo $hub->support_level; ?>
+							</div>
+						</div>
+					</div>
 					<?php endforeach; ?>
 					<?php if (!$this->rows->count()) : ?>
-						<tr>
-							<td colspan="7" class="no_hubs"><?php echo Lang::txt('COM_TIME_HUBS_NONE_TO_DISPLAY'); ?></td>
-						</tr>
+						<div class="tr">
+							<div class="td no_hubs"><?php echo Lang::txt('COM_TIME_HUBS_NONE_TO_DISPLAY'); ?></div>
+						</div>
 					<?php endif; ?>
-				</tbody>
-			</table>
+				</div>
+			</div>
 			<form action="<?php echo Route::url($this->base); ?>">
 				<?php echo $this->rows->pagination; ?>
 			</form>
