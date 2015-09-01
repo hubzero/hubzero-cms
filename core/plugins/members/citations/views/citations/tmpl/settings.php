@@ -37,7 +37,7 @@ $base =	Route::url($this->member->getLink() . '&active=' . $this->_name);
 ?>
 
 <script type="text/javascript">
-var $jQ = jQuery.noConflict();
+var $jQ = jQuery;
 
 $jQ(document).ready(function(e) {
 	var formatSelector = $jQ('#format-selector'),
