@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database\Relationship;
@@ -41,8 +41,8 @@ class OneToMany extends Relationship
 	/**
 	 * Fetches the results of relationship
 	 *
-	 * @return \Hubzero\Database\Relational
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relational
+	 * @since   2.0.0
 	 **/
 	public function rows()
 	{
@@ -56,12 +56,12 @@ class OneToMany extends Relationship
 	 * or many items on the related side at a given time.  We must then be prepared
 	 * to loop over the items.  
 	 *
-	 * @param  object|array  $models   a single model or array of models to associate
-	 * @param  closure       $callback a callback to potentially append additional data
-	 * @return object|array
-	 * @since  1.3.2
+	 * @param   object|array   $models    A single model or array of models to associate
+	 * @param   closure        $callback  A callback to potentially append additional data
+	 * @return  object|array
+	 * @since   2.0.0
 	 **/
-	public function associate($models, $callback=null)
+	public function associate($models, $callback = null)
 	{
 		if (is_array($models) || $models instanceof \Hubzero\Database\Rows)
 		{
@@ -81,9 +81,9 @@ class OneToMany extends Relationship
 	/**
 	 * Saves new related models with the given data
 	 *
-	 * @param  array $data an array of datasets being saved to new models
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   array  $data  An array of datasets being saved to new models
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function save($data)
 	{
@@ -109,8 +109,8 @@ class OneToMany extends Relationship
 	/**
 	 * Deletes all rows attached to the current model
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function destroyAll()
 	{
@@ -129,9 +129,9 @@ class OneToMany extends Relationship
 	/**
 	 * Get keys based on given constraint
 	 *
-	 * @param  closure $constraint the constraint function to apply
-	 * @return array
-	 * @since  1.3.2
+	 * @param   closure  $constraint  The constraint function to apply
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedKeys($constraint)
 	{
@@ -144,11 +144,11 @@ class OneToMany extends Relationship
 	/**
 	 * Loads the relationship content with the provided data
 	 *
-	 * @param  array  $rows the rows that we'll be seeding
-	 * @param  string $data the data to seed
-	 * @param  string $name the name of the relationship
-	 * @return object
-	 * @since  1.3.2
+	 * @param   array   $rows  The rows that we'll be seeding
+	 * @param   string  $data  The data to seed
+	 * @param   string  $name  The name of the relationship
+	 * @return  object
+	 * @since   2.0.0
 	 **/
 	public function seedWithData($rows, $data, $name)
 	{
@@ -160,11 +160,11 @@ class OneToMany extends Relationship
 	/**
 	 * Seeds the given rows with data
 	 *
-	 * @param  array  $rows the rows to seed on to
-	 * @param  array  $data the data from which to seed
-	 * @param  string $name the relationship name
-	 * @return array
-	 * @since  1.3.2
+	 * @param   array   $rows  The rows to seed on to
+	 * @param   array   $data  The data from which to seed
+	 * @param   string  $name  The relationship name
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function seed($rows, $data, $name)
 	{
@@ -187,9 +187,9 @@ class OneToMany extends Relationship
 	/**
 	 * Sorts the relations into arrays keyed by the related key
 	 *
-	 * @param  array $relations the relations to sort
-	 * @return array
-	 * @since  1.3.2
+	 * @param   array  $relations  The relations to sort
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function getResultsByRelatedKey($relations)
 	{

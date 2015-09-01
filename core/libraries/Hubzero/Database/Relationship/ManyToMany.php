@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database\Relationship;
@@ -39,8 +39,8 @@ class ManyToMany extends OneToManyThrough
 	/**
 	 * Fetches the results of relationship
 	 *
-	 * @return \Hubzero\Database\Relational
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relational
+	 * @since   2.0.0
 	 **/
 	public function rows()
 	{
@@ -73,12 +73,12 @@ class ManyToMany extends OneToManyThrough
 	/**
 	 * Associates the model provided back to the model by way of their proper keys
 	 *
-	 * @param  object  $model    the model to associate
-	 * @param  closure $callback a callback to potentially append additional data
-	 * @return object
-	 * @since  1.3.2
+	 * @param   object   $model     The model to associate
+	 * @param   closure  $callback  A callback to potentially append additional data
+	 * @return  object
+	 * @since   2.0.0
 	 **/
-	public function associate($model, $callback=null)
+	public function associate($model, $callback = null)
 	{
 		$relationship = $this;
 		Event::listen(
@@ -98,8 +98,8 @@ class ManyToMany extends OneToManyThrough
 	 * This is primarily used when we're getting the related results and we need to work
 	 * our way backwards through the intermediate table.
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function mediate()
 	{
@@ -134,9 +134,9 @@ class ManyToMany extends OneToManyThrough
 	 * To avoid this behavior, either use the sync function or set a constraint on your associative
 	 * table.
 	 *
-	 * @param  array $ids the identifiers to place in the associative table
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   array  $ids  The identifiers to place in the associative table
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function connect($ids)
 	{
@@ -162,8 +162,8 @@ class ManyToMany extends OneToManyThrough
 	/**
 	 * Generates the connection data needed to create the associative entry
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function getConnectionData()
 	{
@@ -174,12 +174,12 @@ class ManyToMany extends OneToManyThrough
 	 * Removes the relationship between the two sides of the many to many
 	 * (not deleting either of the actual sides of the models themselves)
 	 *
-	 * @param  array   $ids        the identifiers to remove from the associative table
-	 * @param  closure $constraint additional constraints to place on the query
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   array    $ids         The identifiers to remove from the associative table
+	 * @param   closure  $constraint  Additional constraints to place on the query
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function disconnect($ids, $constraint=null)
+	public function disconnect($ids, $constraint = null)
 	{
 		if (is_array($ids) && count($ids) > 0)
 		{
@@ -200,9 +200,9 @@ class ManyToMany extends OneToManyThrough
 	 * Syncs the provided identifiers back to the parent model by way of associative entities,
 	 * deleting ones that should no longer be there, and adding ones that are missing.
 	 *
-	 * @param  array $ids the identifiers to place in the associative table
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   array  $ids  The identifiers to place in the associative table
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function sync($ids)
 	{

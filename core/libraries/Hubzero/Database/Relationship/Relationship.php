@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database\Relationship;
@@ -43,40 +43,40 @@ class Relationship
 	/**
 	 * The primary model
 	 *
-	 * @var \Hubzero\Database\Relational|static
+	 * @var  \Hubzero\Database\Relational|static
 	 **/
 	protected $model = null;
 
 	/**
 	 * The related model
 	 *
-	 * @var \Hubzero\Database\Relational|static
+	 * @var  \Hubzero\Database\Relational|static
 	 **/
 	protected $related = null;
 
 	/**
 	 * The local key (probably 'id')
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $localKey = null;
 
 	/**
 	 * The related key (probably 'modelName_id')
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $relatedKey = null;
 
 	/**
 	 * Constructs a new object instance
 	 *
-	 * @param  \Hubzero\Database\Relational|static $model      the primary model
-	 * @param  \Hubzero\Database\Relational|static $related    the related model
-	 * @param  \Hubzero\Database\Relational|static $localKey   the local key
-	 * @param  \Hubzero\Database\Relational|static $relatedKey the related key
-	 * @return void
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Relational|static  $model       The primary model
+	 * @param   \Hubzero\Database\Relational|static  $related     The related model
+	 * @param   \Hubzero\Database\Relational|static  $localKey    The local key
+	 * @param   \Hubzero\Database\Relational|static  $relatedKey  The related key
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function __construct($model, $related, $localKey, $relatedKey)
 	{
@@ -89,10 +89,10 @@ class Relationship
 	/**
 	 * Handles calls to undefined methods, assuming they should be passed up to the model
 	 *
-	 * @param  string $name the method name being called
-	 * @param  array  $arguments the method arguments provided
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $name       The method name being called
+	 * @param   array   $arguments  The method arguments provided
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function __call($name, $arguments)
 	{
@@ -102,8 +102,8 @@ class Relationship
 	/**
 	 * Returns the key name of the primary table
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getLocalKey()
 	{
@@ -113,8 +113,8 @@ class Relationship
 	/**
 	 * Returns the key name of the related table
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getRelatedKey()
 	{
@@ -124,8 +124,8 @@ class Relationship
 	/**
 	 * Fetch results of relationship
 	 *
-	 * @return \Hubzero\Database\Relational
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relational
+	 * @since   2.0.0
 	 **/
 	public function rows()
 	{
@@ -135,8 +135,8 @@ class Relationship
 	/**
 	 * Constrains the relationship content to the applicable rows on the related model
 	 *
-	 * @return object
-	 * @since  1.3.2
+	 * @return  object
+	 * @since   2.0.0
 	 **/
 	public function constrain()
 	{
@@ -146,9 +146,9 @@ class Relationship
 	/**
 	 * Gets keys based on a given constraint
 	 *
-	 * @param  closure $constraint the constraint function to apply
-	 * @return array
-	 * @since  1.3.2
+	 * @param   closure  $constraint  The constraint function to apply
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedKeys($constraint)
 	{
@@ -160,9 +160,9 @@ class Relationship
 	/**
 	 * Gets rows based on given constraint
 	 *
-	 * @param  closure $constraint the constraint function to apply
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @param   closure  $constraint  The constraint function to apply
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedRows($constraint)
 	{
@@ -174,9 +174,9 @@ class Relationship
 	/**
 	 * Gets the constrained count
 	 *
-	 * @param  int $count the count to limit by
-	 * @return array
-	 * @since  1.3.2
+	 * @param   int  $count  The count to limit by
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedKeysByCount($count)
 	{
@@ -191,9 +191,9 @@ class Relationship
 	/**
 	 * Gets the constrained items
 	 *
-	 * @param  closure $constraint the constraint function to apply
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @param   closure  $constraint  The constraint function to apply
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	protected function getConstrained($constraint)
 	{
@@ -208,9 +208,9 @@ class Relationship
 	/**
 	 * Get related keys from a given row set
 	 *
-	 * @param  \Hubzero\Database\Rows $rows the rows from which to grab the related keys
-	 * @return array
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Rows  $rows  The rows from which to grab the related keys
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getRelatedKeysFromRows($rows)
 	{
@@ -220,8 +220,8 @@ class Relationship
 	/**
 	 * Joins the related table together for the pending query
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function join()
 	{
@@ -242,12 +242,12 @@ class Relationship
 	 * Because this is a singular relationship, we never expect to have more than one
 	 * model at at time.
 	 *
-	 * @param  object  $model    the model to associate
-	 * @param  closure $callback a callback to potentially append additional data
-	 * @return object
-	 * @since  1.3.2
+	 * @param   object   $model     The model to associate
+	 * @param   closure  $callback  A callback to potentially append additional data
+	 * @return  object
+	 * @since   2.0.0
 	 **/
-	public function associate($model, $callback=null)
+	public function associate($model, $callback = null)
 	{
 		$model->set($this->relatedKey, $this->model->getPkValue());
 
@@ -262,9 +262,9 @@ class Relationship
 	/**
 	 * Saves a new related model with the given data
 	 *
-	 * @param  array $data the data being saved on the new model
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   array  $data  The data being saved on the new model
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function save($data)
 	{
@@ -277,11 +277,11 @@ class Relationship
 	/**
 	 * Loads the relationship content with the provided data
 	 *
-	 * @param  array  $rows the rows that we'll be seeding
-	 * @param  string $data the data to seed
-	 * @param  string $name the name of the relationship
-	 * @return object
-	 * @since  1.3.2
+	 * @param   array   $rows  The rows that we'll be seeding
+	 * @param   string  $data  The data to seed
+	 * @param   string  $name  The name of the relationship
+	 * @return  object
+	 * @since   2.0.0
 	 **/
 	public function seedWithData($rows, $data, $name)
 	{
@@ -294,14 +294,14 @@ class Relationship
 	 * This is used when pre-loading relationship content
 	 * via ({@link \Hubzero\Database\Relational::including()})
 	 *
-	 * @param  array   $rows       the rows that we'll be seeding
-	 * @param  string  $name       the relationship name that we'll use to attach to the rows
-	 * @param  closure $constraint the constraint function to limit related items
-	 * @param  string  $subs       the nested relationships that should be passed on to the child
-	 * @return object
-	 * @since  1.3.2
+	 * @param   array    $rows        The rows that we'll be seeding
+	 * @param   string   $name        The relationship name that we'll use to attach to the rows
+	 * @param   closure  $constraint  The constraint function to limit related items
+	 * @param   string   $subs        The nested relationships that should be passed on to the child
+	 * @return  object
+	 * @since   2.0.0
 	 **/
-	public function seedWithRelation($rows, $name, $constraint=null, $subs=null)
+	public function seedWithRelation($rows, $name, $constraint = null, $subs = null)
 	{
 		if (!$keys = $rows->fieldsByKey($this->localKey)) return $rows;
 
@@ -317,12 +317,12 @@ class Relationship
 	/**
 	 * Gets the relations that will be seeded on to the provided rows
 	 *
-	 * @param  array   $keys       the keys for which to fetch related items
-	 * @param  closure $constraint the constraint function to limit related items
-	 * @return array
-	 * @since  1.3.2
+	 * @param   array    $keys        The keys for which to fetch related items
+	 * @param   closure  $constraint  The constraint function to limit related items
+	 * @return  array
+	 * @since   2.0.0
 	 **/
-	protected function getRelations($keys, $constraint=null)
+	protected function getRelations($keys, $constraint = null)
 	{
 		if (isset($constraint)) call_user_func_array($constraint, array($this->related));
 
@@ -332,9 +332,9 @@ class Relationship
 	/**
 	 * Sorts the relations into arrays keyed by the related key
 	 *
-	 * @param  array $relations the relations to sort
-	 * @return array
-	 * @since  1.3.2
+	 * @param   array  $relations  The relations to sort
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function getResultsByRelatedKey($relations)
 	{
@@ -344,11 +344,11 @@ class Relationship
 	/**
 	 * Seeds the given rows with data
 	 *
-	 * @param  \Hubzero\Database\Rows $rows the rows to seed on to
-	 * @param  \Hubzero\Database\Rows $data the data from which to seed
-	 * @param  string                 $name the relationship name
-	 * @return array
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Rows  $rows  The rows to seed on to
+	 * @param   \Hubzero\Database\Rows  $data  The data from which to seed
+	 * @param   string                  $name  The relationship name
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function seed($rows, $data, $name)
 	{

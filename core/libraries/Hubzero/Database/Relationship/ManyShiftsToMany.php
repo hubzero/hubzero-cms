@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -39,19 +39,19 @@ class ManyShiftsToMany extends ManyToMany
 	/**
 	 * The field identifying model type
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $shifter = null;
 
 	/**
 	 * Constructs a new object instance
 	 *
-	 * @param   \Hubzero\Database\Relational|static  $model              the primary model
-	 * @param   \Hubzero\Database\Relational|static  $related            the related model
-	 * @param   string                               $associativeTable   the associative entity
-	 * @param   string                               $localKey           the local key
-	 * @param   string                               $relatedKey         the related key
-	 * @param   string                               $shifter            the field identifying model type
+	 * @param   \Hubzero\Database\Relational|static  $model              The primary model
+	 * @param   \Hubzero\Database\Relational|static  $related            The related model
+	 * @param   string                               $associativeTable   The associative entity
+	 * @param   string                               $localKey           The local key
+	 * @param   string                               $relatedKey         The related key
+	 * @param   string                               $shifter            The field identifying model type
 	 * @return  void
 	 * @since   2.0.0
 	 **/
@@ -68,8 +68,8 @@ class ManyShiftsToMany extends ManyToMany
 	 * This is primarily used when we're getting the related results and we need to work
 	 * our way backwards through the intermediate table.
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function mediate()
 	{
@@ -84,9 +84,9 @@ class ManyShiftsToMany extends ManyToMany
 	/**
 	 * Gets the constrained count
 	 *
-	 * @param  int $count the count to limit by
-	 * @return array
-	 * @since  1.3.2
+	 * @param   int  $count  The count to limit by
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedKeysByCount($count)
 	{
@@ -107,8 +107,8 @@ class ManyShiftsToMany extends ManyToMany
 	/**
 	 * Generates the connection data needed to create the associative entry
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function getConnectionData()
 	{
@@ -119,12 +119,12 @@ class ManyShiftsToMany extends ManyToMany
 	 * Removes the relationship between the two sides of the many to many
 	 * (not deleting either of the actual sides of the models themselves)
 	 *
-	 * @param  array   $ids        the identifiers to remove from the associative table
-	 * @param  closure $constraint additional constraints to place on the query
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   array    $ids         The identifiers to remove from the associative table
+	 * @param   closure  $constraint  Additional constraints to place on the query
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function disconnect($ids, $constraint=null)
+	public function disconnect($ids, $constraint = null)
 	{
 		$associativeTable = $this->associativeTable;
 		$shifter          = $this->shifter;

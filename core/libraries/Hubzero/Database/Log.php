@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database;
@@ -42,12 +42,12 @@ class Log
 	/**
 	 * Logs queries to hubzero sql log
 	 *
-	 * @param  string $query the query to log
-	 * @param  int    $time  the query time
-	 * @return void
-	 * @since  1.3.2
+	 * @param   string  $query  The query to log
+	 * @param   int     $time   The query time
+	 * @return  void
+	 * @since   2.0.0
 	 **/
-	public static function add($query, $time=0)
+	public static function add($query, $time = 0)
 	{
 		list($file, $line) = self::parseBacktrace();
 		list($type)        = explode(' ', $query, 2);
@@ -58,8 +58,8 @@ class Log
 	/**
 	 * Writes the log statment out
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public static function write($statement)
 	{
@@ -77,8 +77,8 @@ class Log
 	/**
 	 * Parses the debug backtrace for the applicable file and line
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public static function parseBacktrace()
 	{
@@ -107,8 +107,8 @@ class Log
 	/**
 	 * Gets the debug backtrace from php
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public static function getBacktrace()
 	{

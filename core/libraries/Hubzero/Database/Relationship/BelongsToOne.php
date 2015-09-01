@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database\Relationship;
@@ -36,5 +36,4 @@ namespace Hubzero\Database\Relationship;
  */
 class BelongsToOne extends Relationship
 {
-
 }

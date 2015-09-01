@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database;
@@ -46,37 +46,37 @@ class Rows implements Iterator
 	/**
 	 * Internal array of iterable data
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $rows = NULL;
 
 	/**
 	 * Order by used to retrieve these rows
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'id';
 
 	/**
 	 * Order direction used to retrieve these rows
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderDir = 'asc';
 
 	/**
 	 * The pagination object based on these rows
 	 *
-	 * @var \Hubzero\Database\Pagination
+	 * @var  \Hubzero\Database\Pagination
 	 **/
 	public $pagination = null;
 
 	/**
 	 * Pushes a new model on to the stack
 	 *
-	 * @param  \Hubzero\Database\Relational|static $model the model to add
-	 * @return void
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Relational|static  $model  The model to add
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function push(Relational $model)
 	{
@@ -97,8 +97,8 @@ class Rows implements Iterator
 	/**
 	 * Removes model from the stack
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function drop($key)
 	{
@@ -108,8 +108,8 @@ class Rows implements Iterator
 	/**
 	 * Clears out any existing rows
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function clear()
 	{
@@ -119,8 +119,8 @@ class Rows implements Iterator
 	/**
 	 * Transforms rows into a JSON array
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function toJson()
 	{
@@ -130,8 +130,8 @@ class Rows implements Iterator
 	/**
 	 * Transforms rows into an object array
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function toObject()
 	{
@@ -141,8 +141,8 @@ class Rows implements Iterator
 	/**
 	 * Transforms rows into an array of arrays
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function toArray()
 	{
@@ -152,10 +152,10 @@ class Rows implements Iterator
 	/**
 	 * Outputs rows as given type
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
-	public function to($type='array')
+	public function to($type = 'array')
 	{
 		$rows = [];
 
@@ -174,8 +174,8 @@ class Rows implements Iterator
 	/**
 	 * Grabs the raw rows out of the iterator
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function raw()
 	{
@@ -185,8 +185,8 @@ class Rows implements Iterator
 	/**
 	 * Gets current row in array of rows
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function current()
 	{
@@ -196,8 +196,8 @@ class Rows implements Iterator
 	/**
 	 * Gets the current key
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function key()
 	{
@@ -210,9 +210,9 @@ class Rows implements Iterator
 	/**
 	 * Returns the result keys for the current dataset
 	 *
-	 * @param  string $key the key for which to pull all values
-	 * @return array
-	 * @since  1.3.2
+	 * @param   string  $key  The key for which to pull all values
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function fieldsByKey($key)
 	{
@@ -232,8 +232,8 @@ class Rows implements Iterator
 	/**
 	 * Gets first item from rows property, if set
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function first()
 	{
@@ -243,8 +243,8 @@ class Rows implements Iterator
 	/**
 	 * Gets next item in iterable list
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function next()
 	{
@@ -254,8 +254,8 @@ class Rows implements Iterator
 	/**
 	 * Rewinds rows back to start
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function rewind()
 	{
@@ -268,8 +268,8 @@ class Rows implements Iterator
 	/**
 	 * Fast-forwards to the end of the iterable list
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function last()
 	{
@@ -279,8 +279,8 @@ class Rows implements Iterator
 	/**
 	 * Validates current key
 	 *
-	 * @return bool true or false depending on the validity of the current iterable element
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function valid()
 	{
@@ -298,8 +298,8 @@ class Rows implements Iterator
 	/**
 	 * Counts the number of rows
 	 *
-	 * @return int number of rows
-	 * @since  1.3.2
+	 * @return  int  number of rows
+	 * @since   2.0.0
 	 **/
 	public function count()
 	{
@@ -309,8 +309,8 @@ class Rows implements Iterator
 	/**
 	 * Seeks to the given key
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function seek($key)
 	{
@@ -320,8 +320,8 @@ class Rows implements Iterator
 	/**
 	 * Search for the given key/value pair, returning false if not found
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function search($key, $value)
 	{
@@ -339,12 +339,12 @@ class Rows implements Iterator
 	/**
 	 * Sorts the rows by a given field
 	 *
-	 * @param  string $field the field to sort by
-	 * @param  bool $asc true if sort direction is ascending, false for descending
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $field  The field to sort by
+	 * @param   bool    $asc    True if sort direction is ascending, false for descending
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function sort($field, $asc=true)
+	public function sort($field, $asc = true)
 	{
 		usort($this->rows, function($a, $b) use ($field, $asc)
 		{
@@ -359,11 +359,11 @@ class Rows implements Iterator
 	/**
 	 * Retrieves only the most recent applicable row
 	 *
-	 * @param  string $limiter the column name to use to determine the latest row
-	 * @return \Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @param   string  $limiter  The column name to use to determine the latest row
+	 * @return  \Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
-	public function latest($limiter='created')
+	public function latest($limiter = 'created')
 	{
 		return $this->sort($limiter, false)->first();
 	}
@@ -371,8 +371,8 @@ class Rows implements Iterator
 	/**
 	 * Saves a collection of models
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function save()
 	{
@@ -394,8 +394,8 @@ class Rows implements Iterator
 	/**
 	 * Deletes all models in this collection
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function destroyAll()
 	{

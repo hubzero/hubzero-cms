@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -39,8 +39,8 @@ class Rules
 	/**
 	 * Do validation checks on provided data
 	 *
-	 * @param   array       $data   the fields to validate
-	 * @param   array       $rules  the rules upon which to validate
+	 * @param   array       $data   The fields to validate
+	 * @param   array       $rules  The rules upon which to validate
 	 * @return  array|bool
 	 * @since   2.0.0
 	 **/
@@ -90,8 +90,8 @@ class Rules
 	/**
 	 * Checks that var isn't empty
 	 *
-	 * @param   string       $key  the field name
-	 * @param   mixed        $var  the field content
+	 * @param   string       $key  The field name
+	 * @param   mixed        $var  The field content
 	 * @return  bool|string
 	 * @since   2.0.0
 	 **/
@@ -103,8 +103,8 @@ class Rules
 	/**
 	 * Checks that var is positive
 	 *
-	 * @param   string       $key  the field name
-	 * @param   mixed        $var  the field content
+	 * @param   string       $key  The field name
+	 * @param   mixed        $var  The field content
 	 * @return  bool|string
 	 * @since   2.0.0
 	 **/
@@ -116,8 +116,8 @@ class Rules
 	/**
 	 * Checks that var is non-zero
 	 *
-	 * @param   string       $key  the field name
-	 * @param   mixed        $var  the field content
+	 * @param   string       $key  The field name
+	 * @param   mixed        $var  The field content
 	 * @return  bool|string
 	 * @since   2.0.0
 	 **/
@@ -129,8 +129,8 @@ class Rules
 	/**
 	 * Checks that var is alphabetical
 	 *
-	 * @param   string       $key  the field name
-	 * @param   mixed        $var  the field content
+	 * @param   string       $key  The field name
+	 * @param   mixed        $var  The field content
 	 * @return  bool|string
 	 * @since   2.0.0
 	 **/
@@ -142,8 +142,8 @@ class Rules
 	/**
 	 * Checks that var is phone
 	 *
-	 * @param   string       $key  the field name
-	 * @param   mixed        $var  the field content
+	 * @param   string       $key  The field name
+	 * @param   mixed        $var  The field content
 	 * @return  bool|string
 	 * @since   2.0.0
 	 **/
@@ -155,8 +155,8 @@ class Rules
 	/**
 	 * Checks that var is email
 	 *
-	 * @param   string       $key  the field name
-	 * @param   mixed        $var  the field content
+	 * @param   string       $key  The field name
+	 * @param   mixed        $var  The field content
 	 * @return  bool|string
 	 * @since   2.0.0
 	 **/

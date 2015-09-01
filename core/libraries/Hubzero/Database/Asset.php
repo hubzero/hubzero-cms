@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database;
@@ -39,16 +39,16 @@ class Asset
 	/**
 	 * The database model
 	 *
-	 * @var \Hubzero\Database\Relational|static
+	 * @var  \Hubzero\Database\Relational|static
 	 **/
 	private $model = null;
 
 	/**
 	 * Constructs a new object, setting the model
 	 *
-	 * @param  object $model the model to which the asset will refer
-	 * @return void
-	 * @since  1.3.2
+	 * @param   object  $model  The model to which the asset will refer
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function __construct($model)
 	{
@@ -58,9 +58,9 @@ class Asset
 	/**
 	 * Resolves the asset id based on the default parameters and expectations
 	 *
-	 * @param  object $model the database model to which the asset refers
-	 * @return int
-	 * @since  1.3.2
+	 * @param   object  $model  The database model to which the asset refers
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	public static function resolve($model)
 	{
@@ -70,9 +70,9 @@ class Asset
 	/**
 	 * Deletes the asset entry for the provided model
 	 *
-	 * @param  object $model the model being deleted
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   object  $model  The model being deleted
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public static function destroy($model)
 	{
@@ -82,8 +82,8 @@ class Asset
 	/**
 	 * Gets the asset id for the object instance
 	 *
-	 * @return int
-	 * @since  1.3.2
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	public function getId()
 	{
@@ -139,8 +139,8 @@ class Asset
 	/**
 	 * Deletes the current asset entry
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function delete()
 	{
@@ -157,8 +157,8 @@ class Asset
 	/**
 	 * Computes the (distinct) name of the asset
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	private function getAssetName()
 	{
@@ -172,8 +172,8 @@ class Asset
 	/**
 	 * Gets the title to use for the asset table
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	private function getAssetTitle()
 	{
@@ -184,8 +184,8 @@ class Asset
 	/**
 	 * Gets the parent asset id for the record
 	 *
-	 * @return int
-	 * @since  1.3.2
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	private function getAssetParentId()
 	{
@@ -209,13 +209,14 @@ class Asset
 	/**
 	 * Gets the root asset id from the #__assets table, defaulting to 1
 	 *
-	 * @return int
-	 * @since   11.1
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	private function getRootId()
 	{
 		$assets = \JTable::getInstance('Asset', 'JTable', array('dbo' => \App::get('db')));
 		$rootId = $assets->getRootId();
+
 		if (!empty($rootId))
 		{
 			return $rootId;

@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -39,8 +39,8 @@ class Structure extends Query
 	/**
 	 * Retrieves field information about the given tables
 	 *
-	 * @param   string  $table     the name of the database table
-	 * @param   bool    $typeOnly  true (default) to only return field types
+	 * @param   string  $table     The name of the database table
+	 * @param   bool    $typeOnly  True (default) to only return field types
 	 * @return  array
 	 * @since   2.0.0
 	 */

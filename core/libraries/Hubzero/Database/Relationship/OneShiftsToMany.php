@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -46,11 +46,11 @@ class OneShiftsToMany extends OneToMany
 	/**
 	 * Constructs a new object instance
 	 *
-	 * @param   \Hubzero\Database\Relational|static  $model       the primary model
-	 * @param   \Hubzero\Database\Relational|static  $related     the related model
-	 * @param   \Hubzero\Database\Relational|static  $localKey    the local key
-	 * @param   \Hubzero\Database\Relational|static  $relatedKey  the related key
-	 * @param   string                               $shifter     the field identifying model type
+	 * @param   \Hubzero\Database\Relational|static  $model       The primary model
+	 * @param   \Hubzero\Database\Relational|static  $related     The related model
+	 * @param   \Hubzero\Database\Relational|static  $localKey    The local key
+	 * @param   \Hubzero\Database\Relational|static  $relatedKey  The related key
+	 * @param   string                               $shifter     The field identifying model type
 	 * @return  void
 	 * @since   2.0.0
 	 **/
@@ -66,12 +66,12 @@ class OneShiftsToMany extends OneToMany
 	 *
 	 * We use this time to also set a callback where we define our shifter.
 	 *
-	 * @param   object|array  $models    a single model or array of models to associate
-	 * @param   closure       $callback  a callback to potentially append additional data
+	 * @param   object|array  $models    A single model or array of models to associate
+	 * @param   closure       $callback  A callback to potentially append additional data
 	 * @return  object|array
 	 * @since   2.0.0
 	 **/
-	public function associate($models, $callback=null)
+	public function associate($models, $callback = null)
 	{
 		$modelName = $this->model->getModelName();
 		$shifter   = $this->shifter;
@@ -100,12 +100,12 @@ class OneShiftsToMany extends OneToMany
 	/**
 	 * Gets the relations that will be seeded on to the provided rows
 	 *
-	 * @param   array    $keys        the keys for which to fetch related items
-	 * @param   closure  $constraint  the constraint function to limit related items
+	 * @param   array    $keys        The keys for which to fetch related items
+	 * @param   closure  $constraint  The constraint function to limit related items
 	 * @return  array
 	 * @since   2.0.0
 	 **/
-	protected function getRelations($keys, $constraint=null)
+	protected function getRelations($keys, $constraint = null)
 	{
 		if (isset($constraint)) call_user_func_array($constraint, array($this->related));
 

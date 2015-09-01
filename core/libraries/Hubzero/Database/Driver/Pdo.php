@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -46,9 +46,9 @@ class Pdo extends Driver
 	/**
 	 * Constructs a new database object based on the given params
 	 *
-	 * @param  array $options the database connection params
-	 * @return void
-	 * @since  2.0.0
+	 * @param   array  $options  The database connection params
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	public function __construct($options)
 	{
@@ -92,8 +92,8 @@ class Pdo extends Driver
 	/**
 	 * Destroys the connection
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	public function __destruct()
 	{
@@ -103,8 +103,8 @@ class Pdo extends Driver
 	/**
 	 * Sets the error reporting mode to throw exceptions
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function throwExceptions()
 	{
@@ -116,8 +116,8 @@ class Pdo extends Driver
 	/**
 	 * Sets the error reporting mode to return errors
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function returnErrors()
 	{
@@ -130,8 +130,8 @@ class Pdo extends Driver
 	/**
 	 * Checks for a database connection
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function hasConnectionOrFail()
 	{
@@ -146,8 +146,9 @@ class Pdo extends Driver
 	/**
 	 * Prepares a query for binding
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $statement  The statement to prepare
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function prepare($statement)
 	{
@@ -162,12 +163,12 @@ class Pdo extends Driver
 	 * If you're going to pass in types, they must be keyed
 	 * the same as the bindings.
 	 *
-	 * @param  array $bindings the param bindings
-	 * @param  array $type     the param types
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   array  $bindings  The param bindings
+	 * @param   array  $type      The param types
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function bind($bindings, $type=[])
+	public function bind($bindings, $type = [])
 	{
 		$idx = 1;
 
@@ -191,9 +192,9 @@ class Pdo extends Driver
 	/**
 	 * Explicitly translate generic type to driver specific types
 	 *
-	 * @param  string $type the variable type (bool, null, int, str)
-	 * @return int
-	 * @since  2.0.0
+	 * @param   string  $type  The variable type (bool, null, int, str)
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	private function translateType($type)
 	{
@@ -205,9 +206,9 @@ class Pdo extends Driver
 	 *
 	 * Some sql syntax is more particular about type than others.
 	 *
-	 * @param  mixed $binding the binding to infer from
-	 * @return int
-	 * @since  2.0.0
+	 * @param   mixed  $binding  The binding to infer from
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	private function inferType($binding)
 	{
@@ -222,9 +223,9 @@ class Pdo extends Driver
 	/**
 	 * Executes the SQL statement
 	 *
-	 * @return $this
-	 * @since  2.0.0
-	 * @throws QueryFailedException
+	 * @return  $this
+	 * @since   2.0.0
+	 * @throws  QueryFailedException
 	 */
 	public function execute()
 	{
@@ -254,11 +255,11 @@ class Pdo extends Driver
 	/**
 	 * Fetches a row from the result set cursor as an object
 	 *
-	 * @param  string $class the class name to use for the returned row object
-	 * @return object|null
-	 * @since  2.0.0
+	 * @param   string       $class  The class name to use for the returned row object
+	 * @return  object|null
+	 * @since   2.0.0
 	 */
-	protected function fetchObject($class='stdClass')
+	protected function fetchObject($class = 'stdClass')
 	{
 		return $this->statement->fetchObject($class);
 	}
@@ -266,8 +267,8 @@ class Pdo extends Driver
 	/**
 	 * Fetches a row from the result set as an array
 	 *
-	 * @return mixed
-	 * @since  2.0.0
+	 * @return  mixed
+	 * @since   2.0.0
 	 */
 	protected function fetchArray()
 	{
@@ -277,8 +278,8 @@ class Pdo extends Driver
 	/**
 	 * Fetches a row from the result set as an associative array
 	 *
-	 * @return mixed
-	 * @since  2.0.0
+	 * @return  mixed
+	 * @since   2.0.0
 	 */
 	protected function fetchAssoc()
 	{
@@ -288,8 +289,8 @@ class Pdo extends Driver
 	/**
 	 * Gets the auto-incremented value from the last INSERT statement
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	public function insertid()
 	{
@@ -299,8 +300,8 @@ class Pdo extends Driver
 	/**
 	 * Frees up the memory used for the result set
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	protected function freeResult()
 	{
@@ -312,12 +313,12 @@ class Pdo extends Driver
 	/**
 	 * Drops a table from the database
 	 *
-	 * @param  string  $tableName the name of the database table to drop
-	 * @param  boolean $ifExists  optionally specify that the table must exist before it is dropped
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string   $tableName  The name of the database table to drop
+	 * @param   boolean  $ifExists   Optionally specify that the table must exist before it is dropped
+	 * @return  $this
+	 * @since   2.0.0
 	 */
-	public function dropTable($tableName, $ifExists=true)
+	public function dropTable($tableName, $ifExists = true)
 	{
 		$this->setQuery('DROP TABLE ' . ($ifExists ? 'IF EXISTS ' : '') . $this->quoteName($tableName))
 		     ->execute();
@@ -328,8 +329,8 @@ class Pdo extends Driver
 	/**
 	 * Gets the database collation in use by sampling a text field of a table in the database
 	 *
-	 * @return string|bool
-	 * @since  2.0.0
+	 * @return  string|bool
+	 * @since   2.0.0
 	 */
 	public function getCollation()
 	{
@@ -342,9 +343,9 @@ class Pdo extends Driver
 	/**
 	 * Shows the table CREATE statement that creates the given tables
 	 *
-	 * @param  string|array $tables a table name or a list of table names
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string|array  $tables  A table name or a list of table names
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public function getTableCreate($tables)
 	{
@@ -367,12 +368,12 @@ class Pdo extends Driver
 	/**
 	 * Retrieves field information about the given tables
 	 *
-	 * @param  string $table    the name of the database table
-	 * @param  bool   $typeOnly true (default) to only return field types
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string  $table     The name of the database table
+	 * @param   bool    $typeOnly  True (default) to only return field types
+	 * @return  array
+	 * @since   2.0.0
 	 */
-	public function getTableColumns($table, $typeOnly=true)
+	public function getTableColumns($table, $typeOnly = true)
 	{
 		$result = [];
 
@@ -403,9 +404,9 @@ class Pdo extends Driver
 	/**
 	 * Retrieves key information about the given tables
 	 *
-	 * @param  string|array $tables a table name or a list of table names
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string|array  $tables  A table name or a list of table names
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public function getTableKeys($table)
 	{
@@ -419,8 +420,8 @@ class Pdo extends Driver
 	/**
 	 * Gets an array of all tables in the database
 	 *
-	 * @return array
-	 * @since  2.0.0
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public function getTableList()
 	{
@@ -434,9 +435,9 @@ class Pdo extends Driver
 	/**
 	 * Locks a table in the database
 	 *
-	 * @param  string $tableName the name of the table to lock
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $tableName  The name of the table to lock
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function lockTable($table)
 	{
@@ -448,14 +449,14 @@ class Pdo extends Driver
 	/**
 	 * Renames a table in the database
 	 *
-	 * @param  string $oldTable the name of the table to be renamed
-	 * @param  string $newTable the new name for the table
-	 * @param  string $backup   table prefix
-	 * @param  string $prefix   for the table - used to rename constraints in non-mysql databases
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $oldTable  The name of the table to be renamed
+	 * @param   string  $newTable  The new name for the table
+	 * @param   string  $backup    Table prefix
+	 * @param   string  $prefix    For the table - used to rename constraints in non-mysql databases
+	 * @return  $this
+	 * @since   2.0.0
 	 */
-	public function renameTable($oldTable, $newTable, $backup=null, $prefix=null)
+	public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)
 	{
 		$this->setQuery('RENAME TABLE ' . $oldTable . ' TO ' . $newTable)->execute();
 
@@ -465,8 +466,8 @@ class Pdo extends Driver
 	/**
 	 * Commits a transaction
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	public function transactionCommit()
 	{
@@ -476,8 +477,8 @@ class Pdo extends Driver
 	/**
 	 * Rolls back a transaction
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	public function transactionRollback()
 	{
@@ -487,8 +488,8 @@ class Pdo extends Driver
 	/**
 	 * Initializes a transaction
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	public function transactionStart()
 	{
@@ -498,8 +499,8 @@ class Pdo extends Driver
 	/**
 	 * Unlocks all tables in the database
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function unlockTables()
 	{
@@ -511,9 +512,9 @@ class Pdo extends Driver
 	/**
 	 * Checks for the existance of a table
 	 *
-	 * @param  string $table the table we're looking for
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table  The table we're looking for
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public function tableExists($table)
 	{
@@ -526,10 +527,10 @@ class Pdo extends Driver
 	/**
 	 * Returns whether or not the given table has a given field
 	 *
-	 * @param  string $table a table name
-	 * @param  string $field a field name
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table  A table name
+	 * @param   string  $field  A field name
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public function tableHasField($table, $field)
 	{
@@ -544,10 +545,10 @@ class Pdo extends Driver
 	/**
 	 * Returns whether or not the given table has a given key
 	 *
-	 * @param  string $table a table name
-	 * @param  string $key   a key name
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table  A table name
+	 * @param   string  $key    A key name
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public function tableHaskey($table, $key)
 	{
@@ -562,8 +563,8 @@ class Pdo extends Driver
 	/**
 	 * Gets the primary key of a table
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getPrimaryKey($table)
 	{
@@ -587,9 +588,9 @@ class Pdo extends Driver
 	/**
 	 * Gets the database engine of the given table
 	 *
-	 * @param  string $table the table for which to retrieve the engine type
-	 * @return string|bool
-	 * @since  2.0.0
+	 * @param   string       $table  The table for which to retrieve the engine type
+	 * @return  string|bool
+	 * @since   2.0.0
 	 **/
 	public function getEngine($table)
 	{
@@ -601,12 +602,12 @@ class Pdo extends Driver
 	/**
 	 * Gets the database character set of the given table
 	 *
-	 * @param  string $table the table for which to retrieve the character set
-	 * @param  string $field the field to check (optional)
-	 * @return string|bool
-	 * @since  2.0.0
+	 * @param   string       $table  The table for which to retrieve the character set
+	 * @param   string       $field  The field to check (optional)
+	 * @return  string|bool
+	 * @since   2.0.0
 	 **/
-	public function getCharacterSet($table, $field=null)
+	public function getCharacterSet($table, $field = null)
 	{
 		$create = $this->getTableCreate($table);
 
@@ -625,9 +626,9 @@ class Pdo extends Driver
 	/**
 	 * Gets the auto-increment value for the given table
 	 *
-	 * @param  string $table the table for which to retrieve the character set
-	 * @return int|bool
-	 * @since  2.0.0
+	 * @param   string    $table  The table for which to retrieve the character set
+	 * @return  int|bool
+	 * @since   2.0.0
 	 **/
 	public function getAutoIncrement($table)
 	{
@@ -647,10 +648,10 @@ class Pdo extends Driver
 	 *
 	 * @FIXME: if escape is called directly, we shouldn't remove first and last char
 	 *
-	 * @param  string $text  the string to be escaped
-	 * @param  bool   $extra optional parameter to provide extra escaping
-	 * @return string
-	 * @since  2.0.0
+	 * @param   string  $text   The string to be escaped
+	 * @param   bool    $extra  Optional parameter to provide extra escaping
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function escape($text, $extra = false)
 	{
@@ -667,8 +668,8 @@ class Pdo extends Driver
 	/**
 	 * Test to see if the PDO connector is available.
 	 *
-	 * @return bool
-	 * @since  2.0.0
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public static function test()
 	{
@@ -678,8 +679,8 @@ class Pdo extends Driver
 	/**
 	 * Determines if the connection to the server is active
 	 *
-	 * @return bool
-	 * @since  2.0.0
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public function connected()
 	{
@@ -694,8 +695,8 @@ class Pdo extends Driver
 	/**
 	 * Gets the number of affected rows for the previous executed SQL statement
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	public function getAffectedRows()
 	{
@@ -705,11 +706,11 @@ class Pdo extends Driver
 	/**
 	 * Gets a new query for the current driver
 	 *
-	 * @param  bool $legacy whether or not to return new query builder or legacy builder
-	 * @return Query
-	 * @since  2.0.0
+	 * @param   bool   $legacy  Whether or not to return new query builder or legacy builder
+	 * @return  Query
+	 * @since   2.0.0
 	 */
-	public function getQuery($legacy=false)
+	public function getQuery($legacy = false)
 	{
 		if ($legacy)
 		{
@@ -724,8 +725,8 @@ class Pdo extends Driver
 	/**
 	 * Gets the version of the database connector
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function getVersion()
 	{
@@ -735,9 +736,9 @@ class Pdo extends Driver
 	/**
 	 * Selects a database for use
 	 *
-	 * @param  string $database the name of the database to select for use
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $database  The name of the database to select for use
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public function select($database)
 	{
@@ -755,8 +756,8 @@ class Pdo extends Driver
 	 *
 	 * This is already happening in the initial database connection for PDO.
 	 *
-	 * @return bool
-	 * @since  2.0.0
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	public function setUTF()
 	{
@@ -767,8 +768,8 @@ class Pdo extends Driver
 	/**
 	 * Grabs the number of returned rows for the previous executed SQL statement
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	public function getNumRows()
 	{
@@ -779,8 +780,8 @@ class Pdo extends Driver
 	/**
 	 * Detects the driver syntax
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	protected function detectSyntax()
 	{

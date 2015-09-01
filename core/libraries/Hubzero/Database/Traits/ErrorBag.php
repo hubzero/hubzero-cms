@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database\Traits;
@@ -39,16 +39,16 @@ trait ErrorBag
 	/**
 	 * Errors that have been declared
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $errors = array();
 
 	/**
 	 * Sets all errors at once, overwritting any existing errors
 	 *
-	 * @param  array $errors the errors to set
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   array  $errors  The errors to set
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function setErrors($errors)
 	{
@@ -59,9 +59,9 @@ trait ErrorBag
 	/**
 	 * Adds error to the existing set
 	 *
-	 * @param  string $error the error to add
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $error  The error to add
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function addError($error)
 	{
@@ -72,8 +72,8 @@ trait ErrorBag
 	/**
 	 * Returns all errors
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getErrors()
 	{
@@ -83,8 +83,8 @@ trait ErrorBag
 	/**
 	 * Returns the first error
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getError()
 	{

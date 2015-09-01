@@ -44,16 +44,16 @@ abstract class Driver
 	/**
 	 * The connection instances factory
 	 *
-	 * @var   array
-	 * @since 2.0.0
+	 * @var    array
+	 * @since  2.0.0
 	 **/
 	protected static $instances = [];
 
 	/**
 	 * The cumulative query timer (in miliseconds)
 	 *
-	 * @var   int
-	 * @since 2.0.0
+	 * @var    int
+	 * @since  2.0.0
 	 */
 	protected $timer = 0;
 
@@ -62,16 +62,16 @@ abstract class Driver
 	 *
 	 * This will likely be an object for all modern database drivers.
 	 *
-	 * @var   object|resource
-	 * @since 2.0.0
+	 * @var    object|resource
+	 * @since  2.0.0
 	 */
 	protected $connection;
 
 	/**
 	 * The incremental count of executed queries
 	 *
-	 * @var   int
-	 * @since 2.0.0
+	 * @var    int
+	 * @since  2.0.0
 	 */
 	protected $count = 0;
 
@@ -81,16 +81,16 @@ abstract class Driver
 	 * For prepared statements, this would the be actual statement class, for non-prepared
 	 * statements, this will simply be the last executed or upcoming query.
 	 *
-	 * @var   object|string
-	 * @since 2.0.0
+	 * @var    object|string
+	 * @since  2.0.0
 	 */
 	protected $statement;
 
 	/**
 	 * The prepared statement bindings
 	 *
-	 * @var   array
-	 * @since 2.0.0
+	 * @var    array
+	 * @since  2.0.0
 	 */
 	protected $bindings = [];
 
@@ -100,63 +100,64 @@ abstract class Driver
 	 * For prepared statements, we'll try to interpolate prepared statement into basic strings,
 	 * even though this isn't really an accurate representation of the query.
 	 *
-	 * @var   array
-	 * @since 2.0.0
+	 * @var    array
+	 * @since  2.0.0
 	 */
 	protected $log = [];
 
 	/**
 	 * The character(s) used to quote items such as table names or field names
 	 *
-	 * @var   string
-	 * @since 2.0.0
+	 * @var    string
+	 * @since  2.0.0
 	 */
 	protected $wrapper = '`%s`';
 
 	/**
 	 * The null or zero representation of a timestamp for the database driver
 	 *
-	 * @var   string
-	 * @since 2.0.0
+	 * @var    string
+	 * @since  2.0.0
 	 */
 	protected $nullDate = '0000-00-00 00:00:00';
 
 	/**
 	 * The common database table prefix
 	 *
-	 * @var   string
-	 * @since 2.0.0
+	 * @var    string
+	 * @since  2.0.0
 	 */
 	protected $tablePrefix = 'jos_';
 
 	/**
 	 * The state of debugging
 	 *
-	 * @var   bool
-	 * @since 2.0.0
+	 * @var    bool
+	 * @since  2.0.0
 	 */
 	protected $debug = false;
 
 	/**
 	 * The name of the database
 	 *
-	 * @var   string
-	 * @since 2.0.0
+	 * @var    string
+	 * @since  2.0.0
 	 */
 	protected $database;
 
 	/**
 	 * The database driver syntax
 	 *
-	 * @var string
+	 * @var    string
+	 * @since  2.0.0
 	 **/
 	protected $syntax = null;
 
 	/**
 	 * Constructs a new object, setting some class properties
 	 *
-	 * @param array $options list of options used to configure the connection
-	 * @since 2.0.0
+	 * @param  array  $options  List of options used to configure the connection
+	 * @since  2.0.0
 	 */
 	protected function __construct($options)
 	{
@@ -168,12 +169,12 @@ abstract class Driver
 	/**
 	 * Provides alias support for quote() and quoteName()
 	 *
-	 * @param      string $method the called method name
-	 * @param      array  $args   the array of arguments passed to the method
-	 * @return     string
-	 * @since      2.0.0
-	 * @deprecated 2.0.0
-	 * @throws     \Hubzero\Error\Exception\BadMethodCallException
+	 * @param       string  $method  The called method name
+	 * @param       array   $args    The array of arguments passed to the method
+	 * @return      string
+	 * @since       2.0.0
+	 * @deprecated  2.0.0
+	 * @throws      \Hubzero\Error\Exception\BadMethodCallException
 	 */
 	public function __call($method, $args)
 	{
@@ -203,12 +204,12 @@ abstract class Driver
 	 *  * The 'database' option determines which database is to be used for the connection.
 	 *  * The 'select' option determines whether the connector should automatically select the chosen database.
 	 *
-	 * @param  array $options parameters to construct the database driver requested
-	 * @return static
-	 * @since  2.0.0
-	 * @throws \Hubzero\Error\Exception\RuntimeException
+	 * @param   array   $options   Parameters to construct the database driver requested
+	 * @return  static
+	 * @since   2.0.0
+	 * @throws  \Hubzero\Error\Exception\RuntimeException
 	 */
-	public static function getInstance($options=[])
+	public static function getInstance($options = [])
 	{
 		// Sanitize the database connector options
 		$options['driver']   = (isset($options['driver']))   ? preg_replace('/[^A-Z0-9_\.-]/i', '', $options['driver']) : 'pdo';
@@ -245,9 +246,9 @@ abstract class Driver
 	 * your choice.  We assume the person setting the connection
 	 * has done their checks to make sure it is valid.
 	 *
-	 * @param  object $connection the connection to set
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   object $connection the connection to set
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function setConnection($connection)
 	{
@@ -260,9 +261,9 @@ abstract class Driver
 	/**
 	 * Sets the SQL statement string for later execution
 	 *
-	 * @param  string $query the SQL statement to set
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $query  The SQL statement to set
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function setQuery($query)
 	{
@@ -274,12 +275,12 @@ abstract class Driver
 	/**
 	 * Quotes and optionally escape a string to database requirements for insertion into the database
 	 *
-	 * @param  string $text   the string to quote
-	 * @param  bool   $escape true to escape the string, false to leave it unchanged
-	 * @return string
-	 * @since  2.0.0
+	 * @param   string  $text    The string to quote
+	 * @param   bool    $escape  True to escape the string, false to leave it unchanged
+	 * @return  string
+	 * @since   2.0.0
 	 */
-	public function quote($text, $escape=true)
+	public function quote($text, $escape = true)
 	{
 		return '\'' . ($escape ? $this->escape($text) : $text) . '\'';
 	}
@@ -288,12 +289,12 @@ abstract class Driver
 	 * Wraps an SQL statement identifier name such as column, table or database names
 	 * in quotes to prevent injection risks and reserved word conflicts
 	 *
-	 * @param  string $name the identifier name to wrap in quotes, supporting dot-notation names
-	 * @param  string $as   the AS query part associated to $name
-	 * @return string
-	 * @since  2.0.0
+	 * @param   string  $name  The identifier name to wrap in quotes, supporting dot-notation names
+	 * @param   string  $as    The AS query part associated to $name
+	 * @return  string
+	 * @since   2.0.0
 	 */
-	public function quoteName($name, $as=null)
+	public function quoteName($name, $as = null)
 	{
 		$parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
 		$bits  = '';
@@ -317,8 +318,8 @@ abstract class Driver
 	 * allows you to directly pass in a string already including the AS
 	 * statement, and still correctly quote it.
 	 *
-	 * @param  string $value the table definition
-	 * @return string
+	 * @param   string  $value  The table definition
+	 * @return  string
 	 */
 	public function wrap($value)
 	{
@@ -346,13 +347,13 @@ abstract class Driver
 	/**
 	 * Inserts a row into a table based on an object's properties
 	 *
-	 * @param  string $table   the name of the database table to insert into
-	 * @param  object &$object a reference to an object whose public properties match the table fields
-	 * @param  string $key     the name of the primary key. If provided the object property is updated
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table    The name of the database table to insert into
+	 * @param   object  &$object  A reference to an object whose public properties match the table fields
+	 * @param   string  $key      The name of the primary key. If provided the object property is updated
+	 * @return  bool
+	 * @since   2.0.0
 	 */
-	public function insertObject($table, &$object, $key=null)
+	public function insertObject($table, &$object, $key = null)
 	{
 		// Initialise some variables
 		$fields = [];
@@ -395,14 +396,14 @@ abstract class Driver
 	/**
 	 * Updates a row in a table based on an object's properties
 	 *
-	 * @param  string $table   the name of the database table to update
-	 * @param  object &$object a reference to an object whose public properties match the table fields
-	 * @param  string $key     the name of the primary key
-	 * @param  bool   $nulls   true to update null fields or false to ignore them
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table    The name of the database table to update
+	 * @param   object  &$object  A reference to an object whose public properties match the table fields
+	 * @param   string  $key      The name of the primary key
+	 * @param   bool    $nulls    True to update null fields or false to ignore them
+	 * @return  bool
+	 * @since   2.0.0
 	 */
-	public function updateObject($table, &$object, $key, $nulls=false)
+	public function updateObject($table, &$object, $key, $nulls = false)
 	{
 		// Initialise variables
 		$fields = [];
@@ -461,8 +462,8 @@ abstract class Driver
 	 * Gets the first row of the result set from the database query
 	 * as an associative array of type: ['field_name' => 'row_value']
 	 *
-	 * @return array|null
-	 * @since  2.0.0
+	 * @return  array|null
+	 * @since   2.0.0
 	 */
 	public function loadAssoc()
 	{
@@ -492,12 +493,12 @@ abstract class Driver
 	 * NOTE: Chosing to key the result array by a non-unique field name can result in unwanted
 	 * behavior and should be avoided.
 	 *
-	 * @param  string $key    the name of a field on which to key the result array
-	 * @param  string $column instead of the whole row, only this column value will be in the result array
-	 * @return array|null
-	 * @since  2.0.0
+	 * @param   string  $key     The name of a field on which to key the result array
+	 * @param   string  $column  Instead of the whole row, only this column value will be in the result array
+	 * @return  array|null
+	 * @since   2.0.0
 	 */
-	public function loadAssocList($key=null, $column=null)
+	public function loadAssocList($key = null, $column = null)
 	{
 		// Initialise variables
 		$array = [];
@@ -528,11 +529,11 @@ abstract class Driver
 	/**
 	 * Gets an array of values from the offset field in each row of the result set from the database query
 	 *
-	 * @param  int $offset the row offset to use to build the result array
-	 * @return array|null
-	 * @since  2.0.0
+	 * @param   int  $offset  The row offset to use to build the result array
+	 * @return  array|null
+	 * @since   2.0.0
 	 */
-	public function loadColumn($offset=0)
+	public function loadColumn($offset = 0)
 	{
 		// Initialise variables
 		$column = [];
@@ -558,11 +559,11 @@ abstract class Driver
 	 * You must call query() or execute() before calling this method, otherwise
 	 * you'll have nothing to load.
 	 *
-	 * @param  string $class the class name to use for the returned row object
-	 * @return object|bool
-	 * @since  2.0.0
+	 * @param   string  $class  The class name to use for the returned row object
+	 * @return  object|bool
+	 * @since   2.0.0
 	 */
-	public function loadNextObject($class='stdClass')
+	public function loadNextObject($class = 'stdClass')
 	{
 		// Get the next row from the result set as an object of type $class
 		if ($row = $this->fetchObject($class)) return $row;
@@ -579,8 +580,8 @@ abstract class Driver
 	 * You must call query() or execute() before calling this method, otherwise
 	 * you'll have nothing to load.
 	 *
-	 * @return array|bool
-	 * @since  2.0.0
+	 * @return  array|bool
+	 * @since   2.0.0
 	 */
 	public function loadNextRow()
 	{
@@ -596,11 +597,11 @@ abstract class Driver
 	/**
 	 * Gets the first row of the result set from the database query as an object
 	 *
-	 * @param  string $class the class name to use for the returned row object
-	 * @return object|null
-	 * @since  2.0.0
+	 * @param   string  $class  The class name to use for the returned row object
+	 * @return  object|null
+	 * @since   2.0.0
 	 */
-	public function loadObject($class='stdClass')
+	public function loadObject($class = 'stdClass')
 	{
 		// Initialise variables
 		$return = null;
@@ -623,8 +624,8 @@ abstract class Driver
 	/**
 	 * Gets the first field of the first row of the result set from the database query
 	 *
-	 * @return string|null
-	 * @since  2.0.0
+	 * @return  string|null
+	 * @since   2.0.0
 	 */
 	public function loadResult()
 	{
@@ -649,8 +650,8 @@ abstract class Driver
 	/**
 	 * Gets the first row of the result set from the database query as an array
 	 *
-	 * @return array|null
-	 * @since  2.0.0
+	 * @return  array|null
+	 * @since   2.0.0
 	 */
 	public function loadRow()
 	{
@@ -679,11 +680,11 @@ abstract class Driver
 	 * NOTE: Choosing to key the result array by a non-unique field can result in unwanted
 	 * behavior and should be avoided.
 	 *
-	 * @param  string $key the name of a field on which to key the result array
-	 * @return array|null
-	 * @since  2.0.0
+	 * @param   string  $key  The name of a field on which to key the result array
+	 * @return  array|null
+	 * @since   2.0.0
 	 */
-	public function loadRowList($key=null)
+	public function loadRowList($key = null)
 	{
 		// Initialise variables
 		$rows = [];
@@ -717,12 +718,12 @@ abstract class Driver
 	 * NOTE: Choosing to key the result array by a non-unique field name can result in unwanted
 	 * behavior and should be avoided.
 	 *
-	 * @param  string $key   the name of the field on which to key the result array
-	 * @param  string $class the class name to use for the returned row objects
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string  $key    The name of the field on which to key the result array
+	 * @param   string  $class  The class name to use for the returned row objects
+	 * @return  array
+	 * @since   2.0.0
 	 */
-	public function loadObjectList($key='', $class='stdClass')
+	public function loadObjectList($key = '', $class = 'stdClass')
 	{
 		$rows = [];
 
@@ -753,8 +754,8 @@ abstract class Driver
 	 * the class exists and the static test method returns true.  This gives us the ability to have a multitude
 	 * of connector classes that are self-aware as to whether or not they are able to be used on a given system.
 	 *
-	 * @return array
-	 * @since  2.0.0
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public static function getConnectors()
 	{
@@ -787,12 +788,12 @@ abstract class Driver
 	/**
 	 * Replaces a string placeholder with the string held in the class variable
 	 *
-	 * @param  string $sql    the SQL statement to prepare
-	 * @param  string $prefix the common table prefix
-	 * @return string
-	 * @since  2.0.0
+	 * @param   string  $sql     The SQL statement to prepare
+	 * @param   string  $prefix  The common table prefix
+	 * @return  string
+	 * @since   2.0.0
 	 */
-	public function replacePrefix($sql, $prefix='#__')
+	public function replacePrefix($sql, $prefix = '#__')
 	{
 		// As we replace strings of different lengths, subsequent prefix positions will become invalid.
 		// Thus, we track that differential here to account for the shifting locations
@@ -811,9 +812,9 @@ abstract class Driver
 	/**
 	 * Splits a string of multiple queries into an array of individual queries
 	 *
-	 * @param  string $sql input SQL string from which to split into individual queries
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string  $sql  Input SQL string from which to split into individual queries
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public static function splitSql($sql)
 	{
@@ -839,8 +840,9 @@ abstract class Driver
 	/**
 	 * Logs the current sql statement
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   int    $time  The time elapsed during query execution
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	protected function log($time)
 	{
@@ -861,8 +863,8 @@ abstract class Driver
 	/**
 	 * Gets the string version of the query
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function toString()
 	{
@@ -882,8 +884,10 @@ abstract class Driver
 	/**
 	 * Builds a string version of the prepared statement
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @param   string  $query     The query string to use as the base
+	 * @param   array   $bindings  The bindings to interpolate in
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	private function interpolate($query, $bindings)
 	{
@@ -904,8 +908,8 @@ abstract class Driver
 	/**
 	 * Executes the SQL statement (basically an alias for execute())
 	 *
-	 * @return static
-	 * @since  2.0.0
+	 * @return  static
+	 * @since   2.0.0
 	 */
 	public function query()
 	{
@@ -915,9 +919,9 @@ abstract class Driver
 	/**
 	 * Sets the database debugging state for the driver
 	 *
-	 * @param  bool $level true to enable debugging
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   bool   $level  True to enable debugging
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function setDebug($level)
 	{
@@ -929,8 +933,8 @@ abstract class Driver
 	/**
 	 * Enables debugging
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function enableDebugging()
 	{
@@ -940,8 +944,8 @@ abstract class Driver
 	/**
 	 * Disables debugging
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function disableDebugging()
 	{
@@ -951,9 +955,9 @@ abstract class Driver
 	/**
 	 * Truncates a table
 	 *
-	 * @param  string $table the table to truncate
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $table  The table to truncate
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	public function truncateTable($table)
 	{
@@ -966,8 +970,8 @@ abstract class Driver
 	 *
 	 * Useful for when you need to call a proprietary method such as postgresql's lo_* methods.
 	 *
-	 * @return mixed
-	 * @since  2.0.0
+	 * @return  mixed
+	 * @since   2.0.0
 	 */
 	public function getConnection()
 	{
@@ -977,8 +981,8 @@ abstract class Driver
 	/**
 	 * Grabs the syntax
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function getSyntax()
 	{
@@ -988,9 +992,9 @@ abstract class Driver
 	/**
 	 * Sets the syntax
 	 *
-	 * @param  string  $syntax  the syntax being used based on the connection
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $syntax  The syntax being used based on the connection
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function setSyntax($syntax)
 	{
@@ -1002,8 +1006,8 @@ abstract class Driver
 	/**
 	 * Gets the total number of SQL statements executed by the database driver
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	public function getCount()
 	{
@@ -1013,8 +1017,8 @@ abstract class Driver
 	/**
 	 * Gets the name of the database in use by this connection
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	protected function getDatabase()
 	{
@@ -1024,8 +1028,8 @@ abstract class Driver
 	/**
 	 * Returns a PHP date() function compliant date format for the database driver
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function getDateFormat()
 	{
@@ -1035,8 +1039,8 @@ abstract class Driver
 	/**
 	 * Gets the database driver SQL statement log
 	 *
-	 * @return array
-	 * @since  2.0.0
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public function getLog()
 	{
@@ -1046,8 +1050,8 @@ abstract class Driver
 	/**
 	 * Gets the database timer
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	public function getTimer()
 	{
@@ -1057,8 +1061,8 @@ abstract class Driver
 	/**
 	 * Gets the null or zero representation of a timestamp for the database driver
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function getNullDate()
 	{
@@ -1068,8 +1072,8 @@ abstract class Driver
 	/**
 	 * Gets the common table prefix for the database driver
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function getPrefix()
 	{
@@ -1079,9 +1083,9 @@ abstract class Driver
 	/**
 	 * Sets the common table prefix for the database driver
 	 *
-	 * @param  string $prefix the prefix to use
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $prefix  The prefix to use
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	public function setPrefix($prefix)
 	{
@@ -1093,8 +1097,8 @@ abstract class Driver
 	/**
 	 * Gets the current sql statement
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	public function getStatement()
 	{
@@ -1106,338 +1110,339 @@ abstract class Driver
 	/**
 	 * Fetchs a row from the result set as an object
 	 *
-	 * @param  string $class the class name to use for the returned row object
-	 * @return mixed
-	 * @since  2.0.0
+	 * @param   string  $class  The class name to use for the returned row object
+	 * @return  mixed
+	 * @since   2.0.0
 	 */
-	abstract protected function fetchObject($class='stdClass');
+	abstract protected function fetchObject($class = 'stdClass');
 
 	/**
 	 * Fetches a row from the result set as an array
 	 *
-	 * @return mixed
-	 * @since  2.0.0
+	 * @return  mixed
+	 * @since   2.0.0
 	 */
 	abstract protected function fetchArray();
 
 	/**
 	 * Fetches a row from the result set as an associative array
 	 *
-	 * @return mixed
-	 * @since  2.0.0
+	 * @return  mixed
+	 * @since   2.0.0
 	 */
 	abstract protected function fetchAssoc();
 
 	/**
+	 * Detects the driver syntax
+	 *
+	 * @return  string
+	 * @since   2.0.0
+	 **/
+	abstract protected function detectSyntax();
+
+	/**
 	 * Frees up the memory used for the result set
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	abstract protected function freeResult();
 
 	/**
 	 * Sets the error reporting mode to throw exceptions
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	abstract public function throwExceptions();
 
 	/**
 	 * Sets the error reporting mode to return errors
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	abstract public function returnErrors();
 
 	/**
 	 * Checks for a database connection, throwing an exception if not
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	abstract public function hasConnectionOrFail();
 
 	/**
 	 * Prepares a query for binding
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $statement  The query statement to prepare
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	abstract public function prepare($statement);
 
 	/**
 	 * Binds the given bindings to the prepared statement
 	 *
-	 * @param  array  $bindings the param bindings
-	 * @param  string $type     the param type
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   array   $bindings  The param bindings
+	 * @param   string  $type      The param type
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	abstract public function bind($bindings, $type=null);
+	abstract public function bind($bindings, $type = null);
 
 	/**
 	 * Gets the auto-incremented value from the last INSERT statement
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	abstract public function insertid();
 
 	/**
 	 * Sets the connection to use UTF-8 character encoding
 	 *
-	 * @return bool
-	 * @since  2.0.0
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	abstract public function setUTF();
 
 	/**
 	 * Initializes a transaction
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	abstract public function transactionStart();
 
 	/**
 	 * Rolls back a transaction
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	abstract public function transactionRollback();
 
 	/**
 	 * Commits a transaction
 	 *
-	 * @return void
-	 * @since  2.0.0
+	 * @return  void
+	 * @since   2.0.0
 	 */
 	abstract public function transactionCommit();
 
 	/**
 	 * Unlocks all tables in the database
 	 *
-	 * @return $this
-	 * @since  2.0.0
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	abstract public function unlockTables();
 
 	/**
 	 * Locks a table in the database
 	 *
-	 * @param  string $tableName the name of the table to lock
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $tableName  The name of the table to lock
+	 * @return  $this
+	 * @since   2.0.0
 	 */
 	abstract public function lockTable($tableName);
 
 	/**
 	 * Executes the set SQL statement
 	 *
-	 * @return $this|bool
-	 * @since  2.0.0
+	 * @return  $this|bool
+	 * @since   2.0.0
 	 */
 	abstract public function execute();
 
 	/**
 	 * Renames a table in the database
 	 *
-	 * @param  string $oldTable the name of the table to be renamed
-	 * @param  string $newTable the new name for the table
-	 * @param  string $backup   table prefix
-	 * @param  string $prefix   for the table - used to rename constraints in non-mysql databases
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $oldTable  The name of the table to be renamed
+	 * @param   string  $newTable  The new name for the table
+	 * @param   string  $backup    Table prefix
+	 * @param   string  $prefix    For the table - used to rename constraints in non-mysql databases
+	 * @return  $this
+	 * @since   2.0.0
 	 */
-	abstract public function renameTable($oldTable, $newTable, $backup=null, $prefix=null);
+	abstract public function renameTable($oldTable, $newTable, $backup = null, $prefix = null);
 
 	/**
 	 * Selects a database for use
 	 *
-	 * @param  string $database the name of the database to select for use
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $database  The name of the database to select for use
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	abstract public function select($database);
 
 	/**
 	 * Gets a new query for the current driver
 	 *
-	 * @return Query
-	 * @since  2.0.0
+	 * @return  Query
+	 * @since   2.0.0
 	 */
 	abstract public function getQuery();
 
 	/**
 	 * Retrieves field information about the given tables
 	 *
-	 * @param  string $table    the name of the database table
-	 * @param  bool   $typeOnly true (default) to only return field types
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string  $table     The name of the database table
+	 * @param   bool    $typeOnly  True (default) to only return field types
+	 * @return  array
+	 * @since   2.0.0
 	 */
-	abstract public function getTableColumns($table, $typeOnly=true);
+	abstract public function getTableColumns($table, $typeOnly = true);
 
 	/**
 	 * Shows the table CREATE statement that creates the given tables
 	 *
-	 * @param  string|array $tables a table name or a list of table names
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string|array  $tables  A table name or a list of table names
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	abstract public function getTableCreate($tables);
 
 	/**
 	 * Retrieves key information about the given tables
 	 *
-	 * @param  string|array $tables a table name or a list of table names
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string|array  $tables  A table name or a list of table names
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	abstract public function getTableKeys($tables);
 
 	/**
 	 * Gets an array of all tables in the database
 	 *
-	 * @return array
-	 * @since  2.0.0
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	abstract public function getTableList();
 
 	/**
 	 * Gets the version of the database connector
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 */
 	abstract public function getVersion();
 
 	/**
 	 * Determines if the connection to the server is active
 	 *
-	 * @return boolean
-	 * @since  2.0.0
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	abstract public function connected();
 
 	/**
 	 * Drops a table from the database
 	 *
-	 * @param  string $table    the name of the database table to drop
-	 * @param  boole  $ifExists optionally specify that the table must exist before it is dropped
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $table     The name of the database table to drop
+	 * @param   bool    $ifExists  Optionally specify that the table must exist before it is dropped
+	 * @return  $this
+	 * @since   2.0.0
 	 */
-	abstract public function dropTable($table, $ifExists=true);
+	abstract public function dropTable($table, $ifExists = true);
 
 	/**
 	 * Escapes a string for usage in an SQL statement
 	 *
-	 * @param  string  $text  the string to be escaped
-	 * @param  boolean $extra optional parameter to provide extra escaping
-	 * @return string
-	 * @since  2.0.0
+	 * @param   string   $text   The string to be escaped
+	 * @param   boolean  $extra  Optional parameter to provide extra escaping
+	 * @return  string
+	 * @since   2.0.0
 	 */
-	abstract public function escape($text, $extra=false);
+	abstract public function escape($text, $extra = false);
 
 	/**
 	 * Gets the number of affected rows for the previous executed SQL statement
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	abstract public function getAffectedRows();
 
 	/**
 	 * Gets the database collation in use by sampling a text field of a table in the database
 	 *
-	 * @return string|bool
-	 * @since  2.0.0
+	 * @return  string|bool
+	 * @since   2.0.0
 	 */
 	abstract public function getCollation();
 
 	/**
 	 * Grabs the number of returned rows for the previous executed SQL statement
 	 *
-	 * @return int
-	 * @since  2.0.0
+	 * @return  int
+	 * @since   2.0.0
 	 */
 	abstract public function getNumRows();
 
 	/**
 	 * Checks for the existance of a table
 	 *
-	 * @param  string $table the table we're looking for
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table  The table we're looking for
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	abstract public function tableExists($table);
 
 	/**
 	 * Returns whether or not the given table has a given field
 	 *
-	 * @param  string $table a table name
-	 * @param  string $field a field name
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table  A table name
+	 * @param   string  $field  A field name
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	abstract public function tableHasField($table, $field);
 
 	/**
 	 * Returns whether or not the given table has a given key
 	 *
-	 * @param  string $table a table name
-	 * @param  string $key   a key name
-	 * @return bool
-	 * @since  2.0.0
+	 * @param   string  $table  A table name
+	 * @param   string  $key    A key name
+	 * @return  bool
+	 * @since   2.0.0
 	 */
 	abstract public function tableHaskey($table, $key);
 
 	/**
 	 * Gets the primary key of a table
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	abstract public function getPrimaryKey($table);
 
 	/**
 	 * Gets the database engine of the given table
 	 *
-	 * @param  string $table the table for which to retrieve the engine type
-	 * @return string|bool
-	 * @since  2.0.0
+	 * @param   string       $table  The table for which to retrieve the engine type
+	 * @return  string|bool
+	 * @since   2.0.0
 	 **/
 	abstract public function getEngine($table);
 
 	/**
 	 * Gets the database character set of the given table
 	 *
-	 * @param  string $table the table for which to retrieve the character set
-	 * @param  string $field the field to check (optional)
-	 * @return string|bool
-	 * @since  2.0.0
+	 * @param   string  $table  The table for which to retrieve the character set
+	 * @param   string  $field  The field to check (optional)
+	 * @return  string|bool
+	 * @since   2.0.0
 	 **/
-	abstract public function getCharacterSet($table, $field=null);
+	abstract public function getCharacterSet($table, $field = null);
 
 	/**
 	 * Gets the auto-increment value for the given table
 	 *
-	 * @param  string $table the table for which to retrieve the character set
-	 * @return int|bool
-	 * @since  2.0.0
+	 * @param   string    $table  The table for which to retrieve the character set
+	 * @return  int|bool
+	 * @since   2.0.0
 	 **/
 	abstract public function getAutoIncrement($table);
-
-	/**
-	 * Detects the driver syntax
-	 *
-	 * @return string
-	 * @since  2.0.0
-	 **/
-	abstract protected function detectSyntax();
 }

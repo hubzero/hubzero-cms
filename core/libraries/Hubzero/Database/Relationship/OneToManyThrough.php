@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database\Relationship;
@@ -44,34 +44,34 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * The associative table used to capture the through relationship
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $associativeTable = null;
 
 	/**
 	 * Key on the left side of the associative table
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $associativeLocal = null;
 
 	/**
 	 * Key on the right side of the associative table
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $associativeRelated = null;
 
 	/**
 	 * Constructs a new object instance
 	 *
-	 * @param  \Hubzero\Database\Relational|static $model              the local model
-	 * @param  \Hubzero\Database\Relational|static $related            the related model
-	 * @param  string                              $associativeTable   the associative entity
-	 * @param  string                              $associativeLocal   the local key on the associative table
-	 * @param  string                              $associativeRelated the related key on the associative table
-	 * @return void
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Relational|static  $model               The local model
+	 * @param   \Hubzero\Database\Relational|static  $related             The related model
+	 * @param   string                               $associativeTable    The associative entity
+	 * @param   string                               $associativeLocal    The local key on the associative table
+	 * @param   string                               $associativeRelated  The related key on the associative table
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function __construct($model, $related, $associativeTable, $associativeLocal, $associativeRelated)
 	{
@@ -85,8 +85,8 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Loads the relationship content and returns the related side of the model
 	 *
-	 * @return object
-	 * @since  1.3.2
+	 * @return  object
+	 * @since   2.0.0
 	 **/
 	public function constrain()
 	{
@@ -100,9 +100,9 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Get keys based on a given constraint
 	 *
-	 * @param  closure $constraint the constraint function to apply
-	 * @return array
-	 * @since  1.3.2
+	 * @param   closure  $constraint  The constraint function to apply
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedKeys($constraint)
 	{
@@ -114,9 +114,9 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Gets the constrained count
 	 *
-	 * @param  int $count the count to limit by
-	 * @return array
-	 * @since  1.3.2
+	 * @param   int  $count  The count to limit by
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getConstrainedKeysByCount($count)
 	{
@@ -131,8 +131,8 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Joins the intermediate and related tables together to the model for the pending query
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function join()
 	{
@@ -158,8 +158,8 @@ class OneToManyThrough extends OneToMany
 	 * This is primarily used when we're getting the related results and we need to work
 	 * our way backwards through the intermediate table.
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function mediate()
 	{
@@ -175,12 +175,12 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Gets the relations that will be seeded on to the provided rows
 	 *
-	 * @param  array   $keys       the keys for which to fetch related items
-	 * @param  closure $constraint the constraint function to limit related items
-	 * @return array
-	 * @since  1.3.2
+	 * @param   array    $keys        The keys for which to fetch related items
+	 * @param   closure  $constraint  The constraint function to limit related items
+	 * @return  array
+	 * @since   2.0.0
 	 **/
-	protected function getRelations($keys, $constraint=null)
+	protected function getRelations($keys, $constraint = null)
 	{
 		$this->mediate();
 
@@ -192,9 +192,9 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Sorts the relations into arrays keyed by the related key
 	 *
-	 * @param  array $relations the relations to sort
-	 * @return array
-	 * @since  1.3.2
+	 * @param   array  $relations  The relations to sort
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	protected function getResultsByRelatedKey($relations)
 	{

@@ -24,9 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
+ * @since     Class available since release 2.0.0
  */
 
 namespace Hubzero\Database;
@@ -45,9 +45,10 @@ use Hubzero\Error\Exception\RuntimeException;
 /**
  * Database ORM base class
  *
- * @uses \Hubzero\Error\Exception\BadMethodCallException to handle calls to undefined methods
- * @uses \Hubzero\Error\Exception\RuntimeException       to handle scenarios with undefined rows
- * // @FIXME: handle dates
+ * //@FIXME: handle dates
+ *
+ * @uses  \Hubzero\Error\Exception\BadMethodCallException  to handle calls to undefined methods
+ * @uses  \Hubzero\Error\Exception\RuntimeException        to handle scenarios with undefined rows
  */
 class Relational implements \IteratorAggregate, \ArrayAccess
 {
@@ -76,7 +77,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * This will defined as the static/calling class' name.
 	 * It's used when building relationships between classes.
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $modelName = null;
 
@@ -87,56 +88,56 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * so this should save us some time by storing the results
 	 * for future reference.
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $methods = [];
 
 	/**
 	 * The database query object
 	 *
-	 * @var Hubzero\Database\Query
+	 * @var  \Hubzero\Database\Query
 	 **/
 	private $query = null;
 
 	/**
 	 * The database connection used by the query object
 	 *
-	 * @var Hubzero\Database\Driver|object
+	 * @var  \Hubzero\Database\Driver|object
 	 **/
 	private static $connection = null;
 
 	/**
 	 * Whether or not we're caching query results
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $noCache = false;
 
 	/**
 	 * The relationships on this model
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $relationships = [];
 
 	/**
 	 * The forwards for the model (i.e. other places to look for attributes)
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $forwards = [];
 
 	/**
 	 * The includes set on the model for eager loading
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $includes = [];
 
 	/**
 	 * The model data returned as the result of a query, or set for saving
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $attributes = [];
 
@@ -147,7 +148,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * overwritten by a given subclass. Definition of this property likely
 	 * indicates some derivation from standard naming conventions.
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $table = null;
 
@@ -157,9 +158,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * This is likely just the component name, and will most likely
 	 * be set by all subclasses. This follows the convention of 
 	 * prefixing/namespacing database tables with #__componentname_*.
+	 *
 	 * @FIXME: could we infer this once our models are properly namespaced?
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $namespace = null;
 
@@ -168,22 +170,22 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 *
 	 * It defaults to 'id', but can be overwritten by a subclass.
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected $pk = 'id';
 
 	/**
 	 * Fields that have content that can/should be parsed
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $parsed = [];
 
 	/**
 	 * Fields and their validation criteria
 	 *
-	 * @var array
-	 * @see \Hubzero\Database\Rules
+	 * @var  array
+	 * @see  \Hubzero\Database\Rules
 	 **/
 	protected $rules = [];
 
@@ -193,14 +195,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * This can be overwritten in a model or by calling
 	 * the order method on the query object.
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderBy = 'id';
 
 	/**
 	 * Default order direction for select queries
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	public $orderDir = 'asc';
 
@@ -209,43 +211,43 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 *
 	 * This will also get set on the rows object if applicable.
 	 *
-	 * @var \Hubzero\Database\Pagination|null
+	 * @var  \Hubzero\Database\Pagination|null
 	 **/
 	public $pagination = null;
 
 	/**
 	 * Automatic fields to populate every time a row is touched
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	public $always = [];
 
 	/**
 	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	public $initiate = [];
 
 	/**
 	 * Automatic fields to populate every time a row is updated
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	public $renew = [];
 
 	/**
 	 * Any associative elements
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	public $associated = null;
 
 	/**
 	 * Constructs an object instance
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function __construct()
 	{
@@ -272,13 +274,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Processes calls to inaccessible or undefined instance methods
 	 *
-	 * @param  string $name the method name being called
-	 * @param  array  $arguments the method arguments provided
-	 * @return mixed
-	 * @throws \Hubzero\Error\Exception\BadMethodCallException if called method does not exist in
-	 *                                                         this class or the query class, or
-	 *                                                         as a helper* method on the current class.
-	 * @since 1.3.2
+	 * @param   string  $name       The method name being called
+	 * @param   array   $arguments  The method arguments provided
+	 * @return  mixed
+	 * @throws  \Hubzero\Error\Exception\BadMethodCallException  If called method does not exist in
+	 *                                                           this class or the query class, or
+	 *                                                           as a helper* method on the current class.
+	 * @since  2.0.0
 	 **/
 	public function __call($name, $arguments)
 	{
@@ -323,10 +325,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * methods directly on a newly created object
 	 * For example: Model::whereEquals('field', 'yes');
 	 *
-	 * @param  string $name the method name being called
-	 * @param  array  $arguments the method arguments provided
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $name       The method name being called
+	 * @param   array   $arguments  The method arguments provided
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public static function __callStatic($name, $arguments)
 	{
@@ -336,9 +338,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets attributes set on model dynmically
 	 *
-	 * @param  string $name the name of the var to retrieve
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $name  The name of the var to retrieve
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function __get($name)
 	{
@@ -380,8 +382,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 *
 	 * PHP, when cloning, does a shallow copy, hence the need for this intercept.
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function __clone()
 	{
@@ -391,8 +393,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Runs extra setup code when creating a new model
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setup()
 	{
@@ -402,9 +404,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets the database connection to be used by the query builder
 	 *
-	 * @param  object $connection the connection to set
-	 * @return void
-	 * @since  1.3.2
+	 * @param   object  $connection  The connection to set
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public static function setDefaultConnection($connection)
 	{
@@ -414,8 +416,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Disables query caching
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function disableCaching()
 	{
@@ -427,8 +429,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Enables query caching
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function enableCaching()
 	{
@@ -440,8 +442,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Purges the query cache
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function purgeCache()
 	{
@@ -460,12 +462,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * Also, make sure to access properties in transformers using the get method.
 	 * Otherwise you'll just get stuck in a loop!
 	 *
-	 * @param  string $key the attribute key to get
-	 * @param  mixed  $default the value to provide, should the key be non-existent
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $key      The attribute key to get
+	 * @param   mixed   $default  The value to provide, should the key be non-existent
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
-	public function get($key, $default=null)
+	public function get($key, $default = null)
 	{
 		return $this->hasAttribute($key) ? $this->attributes[$key] : $default;
 	}
@@ -476,12 +478,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * This must be used when setting data to be saved. Otherwise, the properties
 	 * will be attached directly to the model itself and not included in the save.
 	 *
-	 * @param  array|string $key   the key to set, or array of key/value pairs
-	 * @param  mixed        $value the value to set if key is string
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   array|string  $key    The key to set, or array of key/value pairs
+	 * @param   mixed         $value  The value to set if key is string
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function set($key, $value=null)
+	public function set($key, $value = null)
 	{
 		if (is_array($key) || is_object($key))
 		{
@@ -501,8 +503,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Returns a new empty model
 	 *
-	 * @return static
-	 * @since  1.3.2
+	 * @return  static
+	 * @since   2.0.0
 	 **/
 	public static function blank()
 	{
@@ -512,9 +514,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Construct a new object instance, setting the passed in results on the object
 	 *
-	 * @param  object $results the results to set on the new model
-	 * @return static
-	 * @since  1.3.2
+	 * @param   object  $results  The results to set on the new model
+	 * @return  static
+	 * @since   2.0.0
 	 **/
 	public static function newFromResults($results)
 	{
@@ -527,8 +529,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Copies the current model (likely used to maintain query parameters between multiple queries)
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function copy()
 	{
@@ -538,8 +540,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Outputs attributes in JSON encoded format
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function toJson()
 	{
@@ -549,8 +551,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Outputs attributes as array
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function toArray()
 	{
@@ -560,8 +562,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Outputs attributes as object
 	 *
-	 * @return object
-	 * @since  1.3.2
+	 * @return  object
+	 * @since   2.0.0
 	 **/
 	public function toObject()
 	{
@@ -571,9 +573,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks to see if the current model has a helper by the given name
 	 *
-	 * @param  string $name the helper name to check for
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   string  $name  The helper name to check for
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function hasHelper($name)
 	{
@@ -583,10 +585,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Calls the requested helper, passing the given arguments
 	 *
-	 * @param  string $name      the helper name to call
-	 * @param  array  $arguments arguments to pass with the method call
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $name       The helper name to call
+	 * @param   array   $arguments  Arguments to pass with the method call
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function callHelper($name, $arguments)
 	{
@@ -596,9 +598,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks to see if the current model has a transformer by the given name
 	 *
-	 * @param  string $name the transformer name to check for
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   string  $name  The transformer name to check for
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function hasTransformer($name)
 	{
@@ -608,12 +610,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Calls the requested transformer, passing the given arguments
 	 *
-	 * @param  string $name      the transformer name to call
-	 * @param  array  $arguments arguments to pass with the method call
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $name       The transformer name to call
+	 * @param   array   $arguments  Arguments to pass with the method call
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
-	public function callTransformer($name, $arguments=array())
+	public function callTransformer($name, $arguments = [])
 	{
 		return call_user_func_array(array($this, 'transform' . ucfirst($this->snakeToCamel($name))), $arguments);
 	}
@@ -621,9 +623,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks to see if the given field is one to be parsed
 	 *
-	 * @param  string $field the field to check
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   string  $field  The field to check
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function isParsable($field)
 	{
@@ -633,12 +635,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Parses content string as directed
 	 *
-	 * @param   string  $field  the field to parse
-	 * @param   string  $as     the format to return state in
+	 * @param   string  $field  The field to parse
+	 * @param   string  $as     The format to return state in
 	 * @return  string
-	 * @since   1.3.2
+	 * @since   2.0.0
 	 **/
-	public function parse($field, $as='parsed')
+	public function parse($field, $as = 'parsed')
 	{
 		switch (strtolower($as))
 		{
@@ -664,9 +666,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Takes a snake-cased string and camel cases it
 	 *
-	 * @param  string $text the string to camel case
-	 * @return string
-	 * @since  1.3.2
+	 * @param   string  $text  The string to camel case
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function snakeToCamel($text)
 	{
@@ -683,8 +685,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Resets the current model, likely for another query to be performed on it
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	private function reset()
 	{
@@ -696,8 +698,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets a fresh query object
 	 *
-	 * @return \Hubzero\Database\Query
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Query
+	 * @since   2.0.0
 	 **/
 	public function getQuery()
 	{
@@ -707,8 +709,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets a fresh structure object
 	 *
-	 * @return \Hubzero\Database\Structure
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Structure
+	 * @since   2.0.0
 	 **/
 	public function getStructure()
 	{
@@ -718,8 +720,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets a fresh query object on the model, seeding it with helpful defaults
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	private function newQuery()
 	{
@@ -730,8 +732,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks to see if the requested attribute is set on the model
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function hasAttribute($key)
 	{
@@ -741,8 +743,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Grabs all of the model attributes
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getAttributes()
 	{
@@ -752,9 +754,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Removes an attribute
 	 *
-	 * @param  string $key the attribute to remove
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $key  The attribute to remove
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function removeAttribute($key)
 	{
@@ -766,8 +768,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Clears data attributes set on the current model
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	private function clearAttributes()
 	{
@@ -777,8 +779,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Determines if the current model is new by looking for the presence of a primary key attribute
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function isNew()
 	{
@@ -788,8 +790,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves the current model's table name
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getTableName()
 	{
@@ -799,8 +801,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves the current model's primary key name
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getPrimaryKey()
 	{
@@ -810,8 +812,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets the value of the primary key
 	 *
-	 * @return mixed
-	 * @since  1.3.2
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function getPkValue()
 	{
@@ -821,8 +823,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Creates the fully qualified field name by prepending the table name
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getQualifiedFieldName($field)
 	{
@@ -832,8 +834,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves the model's name
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getModelName()
 	{
@@ -843,8 +845,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves the model's namespace
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function getNamespace()
 	{
@@ -854,8 +856,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves the model rules
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getRules()
 	{
@@ -865,10 +867,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Adds a new rule to the validation set
 	 *
-	 * @param   string  $key   the field to which the rule applies
-	 * @param   mixed   $rule  the rule to add
+	 * @param   string  $key   The field to which the rule applies
+	 * @param   mixed   $rule  The rule to add
 	 * @return  $this
-	 * @since   1.3.2
+	 * @since   2.0.0
 	 **/
 	public function addRule($key, $rule)
 	{
@@ -880,8 +882,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Get total number of rows
 	 *
-	 * @return int
-	 * @since  1.3.2
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	public function total()
 	{
@@ -897,8 +899,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * The {@link \Hubzero\Database\Rows} class also has a count method, which is used
 	 * to count rows after they've already been fetched.
 	 *
-	 * @return int
-	 * @since  1.3.2
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	public function count()
 	{
@@ -908,8 +910,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets the results of the established query
 	 *
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	public function rows()
 	{
@@ -930,8 +932,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * Not quite the same as rows, in that we're assuming an intentional
 	 * call to only get one row wouldn't want any pagination info included.
 	 *
-	 * @return \Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
 	public function row()
 	{
@@ -943,9 +945,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets the results of the query on new models and returns a Rows collection
 	 *
-	 * @param  array $data the data to set on the model
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @param   array  $data  The data to set on the model
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	public function rowsFromRaw($data)
 	{
@@ -968,8 +970,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * We go ahead and use a copy, that way future calls to the same model will
 	 * continue to have the initial query elements set in place
 	 *
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	public function getIterator()
 	{
@@ -979,10 +981,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets the atrributes key with value
 	 *
-	 * @param  array|string $key   the key to set, or array of key/value pairs
-	 * @param  mixed        $value the value to set if key is string
-	 * @return void
-	 * @since  1.3.2
+	 * @param   array|string  $key    The key to set, or array of key/value pairs
+	 * @param   mixed         $value  The value to set if key is string
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function offsetSet($key, $value)
 	{
@@ -1002,8 +1004,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks to see if the requested attribute is set on the model
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @param   string  $key  The offset to check for
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function offsetExists($key)
 	{
@@ -1013,8 +1016,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Unsets the requested attribute from the model
 	 *
-	 * @return void
-	 * @since  1.3.2
+	 * @param   string  $key  The offset to remove
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function offsetUnset($key)
 	{
@@ -1024,9 +1028,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets an attribute by key
 	 *
-	 * @param  string $key the attribute key to get
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $key  The attribute key to get
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
 	public function offsetGet($key)
 	{
@@ -1036,9 +1040,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves one row by primary key value provided
 	 *
-	 * @param  mixed $id the primary key field value to use to retrieve one row
-	 * @return \Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @param   mixed  $id  The primary key field value to use to retrieve one row
+	 * @return  \Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
 	public static function one($id)
 	{
@@ -1049,10 +1053,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves one row by primary key, throwing a new exception if not found
 	 *
-	 * @param  mixed $id the primary key field value to use to retrieve one row
-	 * @return \Hubzero\Database\Relational|static
-	 * @throws Hubzero\Error\Exception\RuntimeException
-	 * @since  1.3.2
+	 * @param   mixed  $id  The primary key field value to use to retrieve one row
+	 * @return  \Hubzero\Database\Relational|static
+	 * @throws  Hubzero\Error\Exception\RuntimeException
+	 * @since   2.0.0
 	 **/
 	public static function oneOrFail($id)
 	{
@@ -1070,9 +1074,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves one row by primary key, returning an empty row if not found
 	 *
-	 * @param  mixed $id the primary key field value to use to retrieve one row
-	 * @return \Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @param   mixed  $id  The primary key field value to use to retrieve one row
+	 * @return  \Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
 	public static function oneOrNew($id)
 	{
@@ -1087,11 +1091,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Returns all rows (unless otherwise limited)
 	 *
-	 * @param  string|array $columns the columns to select
-	 * @return \Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @param   string|array  $columns  The columns to select
+	 * @return  \Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
-	public static function all($columns=null)
+	public static function all($columns = null)
 	{
 		return self::blank();
 	}
@@ -1102,11 +1106,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * This orders results by the limiter, and grabs the first one.
 	 * It by default assumes you want to order by created date.
 	 *
-	 * @param  string $limiter the column name to use to determine the latest row
-	 * @return \Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @param   string  $limiter  The column name to use to determine the latest row
+	 * @return  \Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
-	public function latest($limiter='created')
+	public function latest($limiter = 'created')
 	{
 		return $this->order($limiter, 'desc')->limit(1)->rows()->first();
 	}
@@ -1114,8 +1118,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Saves the current model to the database
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function save()
 	{
@@ -1139,8 +1143,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Inserts a new row into the database
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	private function create()
 	{
@@ -1153,8 +1157,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Updates an existing item in the database
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	private function modify()
 	{
@@ -1173,11 +1177,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Parses for automatically fillable fields
 	 *
-	 * @param  string $scope the scope of rules to parse and run
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $scope  The scope of rules to parse and run
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	private function parseAutomatics($scope='always')
+	private function parseAutomatics($scope = 'always')
 	{
 		$automatics = array_merge($this->$scope, $this->always);
 
@@ -1208,8 +1212,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Saves the current model and any subsequent attached models
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function saveAndPropagate()
 	{
@@ -1236,8 +1240,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Deletes the existing/current model
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function destroy()
 	{
@@ -1257,11 +1261,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks out the current model to the provided user
 	 *
-	 * @param  string $userId optional userId for whome the row should be checked out
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $userId  Optional userId for whom the row should be checked out
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function checkout($userId=null)
+	public function checkout($userId = null)
 	{
 		$userId = $userId ?: User::get('id');
 		$this->set('checked_out', $userId)
@@ -1272,8 +1276,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks back in the current model
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function checkin()
 	{
@@ -1289,8 +1293,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks to see if the current model is checked out by someone else
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function isCheckedOut()
 	{
@@ -1304,13 +1308,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * location in the query builder class, this method cannot be as it is attached
 	 * directly to the model itself.
 	 *
-	 * @param  string  $relationship the relationship name
-	 * @param  closure $constraint   the constraint to apply to the related query
-	 * @param  int     $depth        the depth level of the clause, for sub clauses
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string   $relationship  The relationship name
+	 * @param   closure  $constraint    The constraint to apply to the related query
+	 * @param   int      $depth         The depth level of the clause, for sub clauses
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function whereRelatedHas($relationship, $constraint, $depth=0)
+	public function whereRelatedHas($relationship, $constraint, $depth = 0)
 	{
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeys($constraint);
@@ -1325,13 +1329,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * location in the query builder class, this method cannot be as it is attached
 	 * directly to the model itself.
 	 *
-	 * @param  string  $relationship the relationship name
-	 * @param  closure $constraint   the constraint to apply to the related query
-	 * @param  int     $depth        the depth level of the clause, for sub clauses
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string   $relationship  The relationship name
+	 * @param   closure  $constraint    The constraint to apply to the related query
+	 * @param   int      $depth         The depth level of the clause, for sub clauses
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function orWhereRelatedHas($relationship, $constraint, $depth=0)
+	public function orWhereRelatedHas($relationship, $constraint, $depth = 0)
 	{
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeys($constraint);
@@ -1346,13 +1350,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * location in the query builder class, this method cannot be as it is attached
 	 * directly to the model itself.
 	 *
-	 * @param  string $relationship the relationship name to constrain against
-	 * @param  int    $count        the minimum number of rows required
-	 * @param  int    $depth        the depth level of the clause, for sub clauses
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $relationship  The relationship name to constrain against
+	 * @param   int     $count         The minimum number of rows required
+	 * @param   int     $depth         The depth level of the clause, for sub clauses
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function whereRelatedHasCount($relationship, $count=1, $depth=0)
+	public function whereRelatedHasCount($relationship, $count = 1, $depth = 0)
 	{
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeysByCount($count);
@@ -1374,8 +1378,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * To make this work, data would need to be stored on the object, and then seeded
 	 * after the model rows are fetched (like parseIncludes() works now).
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	private function whereRelated($relationship, $constraint)
 	{
@@ -1414,9 +1418,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 *
 	 * @FIXME: decide whether or not to use this
 	 *
-	 * @param  \Hubzero\Database\Rows $rows the rows to seed
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Rows  $rows  The rows to seed
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	private function seed($rows)
 	{
@@ -1436,11 +1440,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * location in the query builder class, this method cannot be as it is attached
 	 * directly to the model itself.
 	 *
-	 * @param  string $column the field to use for ownership, defaulting to 'created_by'
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $column  The field to use for ownership, defaulting to 'created_by'
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function whereIsMine($column='created_by')
+	public function whereIsMine($column = 'created_by')
 	{
 		$this->whereEquals($column, User::get('id'));
 		return $this;
@@ -1449,8 +1453,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Validates the set data attributes against the model rules
 	 *
-	 * @return bool
-	 * @since  1.3.2
+	 * @return  bool
+	 * @since   2.0.0
 	 **/
 	public function validate()
 	{
@@ -1465,9 +1469,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Chunks the retrieved data based on a given chunk limit
 	 *
-	 * @param  int $size the chunk size
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   int    $size  The chunk size
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function paginate($size)
 	{
@@ -1478,12 +1482,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves a chuck of data based on standard pagination parameters
 	 *
-	 * @param  string $start the request variable used to denote limit start
-	 * @param  string $limit the request variable used to denote limit of results to return
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $start  The request variable used to denote limit start
+	 * @param   string  $limit  The request variable used to denote limit of results to return
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function paginated($start='start', $limit='limit')
+	public function paginated($start = 'start', $limit = 'limit')
 	{
 		$this->pagination = Pagination::init($this->getModelName(), $this->copy()->total(), $start, $limit);
 
@@ -1497,12 +1501,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets the ordering based on the established request variables
 	 *
-	 * @param  string $orderBy  the request variable used to denote ordering column
-	 * @param  string $orderDir the request variable used to denote ordering direction
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $orderBy   The request variable used to denote ordering column
+	 * @param   string  $orderDir  The request variable used to denote ordering direction
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	public function ordered($orderBy='orderby', $orderDir='orderdir')
+	public function ordered($orderBy = 'orderby', $orderDir = 'orderdir')
 	{
 		// Look for our request vars of interest
 		$this->orderBy  = Request::getCmd($orderBy,  $this->getState('orderby',  $this->orderBy));
@@ -1533,12 +1537,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves state vars set in the model namespace
 	 *
-	 * @param  string $var     the var to attempt to retrieve
-	 * @param  mixed  $default the default to return, should the var be unknown
-	 * @return mixed
-	 * @since  1.3.2
+	 * @param   string  $var      The var to attempt to retrieve
+	 * @param   mixed   $default  The default to return, should the var be unknown
+	 * @return  mixed
+	 * @since   2.0.0
 	 **/
-	public function getState($var, $default=null)
+	public function getState($var, $default = null)
 	{
 		return User::getState($this->getModelName() . ".{$var}", $default);
 	}
@@ -1546,10 +1550,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets state vars on the model namespace
 	 *
-	 * @param  string $key   the key under which the value will go
-	 * @param  mixed  $value the value to assign to the key
-	 * @return void
-	 * @since  1.3.2
+	 * @param   string  $key    The key under which the value will go
+	 * @param   mixed   $value  The value to assign to the key
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setState($key, $value)
 	{
@@ -1559,12 +1563,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Checks whether or not the current user is the owner/creator of the row
 	 *
-	 * @param  string $field the field by which creation is determined
-	 * @return bool
-	 * @throws \Hubzero\Error\Exception\RuntimeException if rows have not first been fetched
-	 * @since  1.3.2
+	 * @param   string  $field  The field by which creation is determined
+	 * @return  bool
+	 * @throws  \Hubzero\Error\Exception\RuntimeException  If rows have not first been fetched
+	 * @since   2.0.0
 	 **/
-	public function isCreator($field='created_by')
+	public function isCreator($field = 'created_by')
 	{
 		// Make sure we have a valid row
 		if (!$this->hasAttribute($field))
@@ -1578,10 +1582,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Finds the named class, checking a handful of scopes
 	 *
-	 * @param  string $name the name of the relationship to resolve
-	 * @return object
-	 * @since  1.3.2
-	 * @throws \Hubzero\Error\Exception\RuntimeException if a class of name cannot be found
+	 * @param   string  $name  The name of the relationship to resolve
+	 * @return  object
+	 * @since   2.0.0
+	 * @throws  \Hubzero\Error\Exception\RuntimeException  If a class of name cannot be found
 	 **/
 	private function resolve($name)
 	{
@@ -1602,13 +1606,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves a one to one model relationship
 	 *
-	 * @param  string $model the name of the primary model
-	 * @param  string|null $childKey the child key that point to the local key
-	 * @param  string|null $thisKey the local key on the model
-	 * @return \Hubzero\Database\Relationship\OneToOne
-	 * @since  1.3.2
+	 * @param   string       $model     The name of the primary model
+	 * @param   string|null  $childKey  The child key that point to the local key
+	 * @param   string|null  $thisKey   The local key on the model
+	 * @return  \Hubzero\Database\Relationship\OneToOne
+	 * @since   2.0.0
 	 **/
-	public function oneToOne($model, $childKey=null, $thisKey=null)
+	public function oneToOne($model, $childKey = null, $thisKey = null)
 	{
 		// Default the keys if not set
 		$thisKey  = $thisKey  ?: $this->getPrimaryKey();
@@ -1620,13 +1624,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves a one to many model relationship
 	 *
-	 * @param  string $model the name of the model to relate to the current one
-	 * @param  string|null $foreignKey the foreign key used to associate the many back to the model
-	 * @param  string|null $thisKey the local key used to associate the many back to the model
-	 * @return \Hubzero\Database\Relationship\OneToMany
-	 * @since  1.3.2
+	 * @param   string       $model       The name of the model to relate to the current one
+	 * @param   string|null  $foreignKey  The foreign key used to associate the many back to the model
+	 * @param   string|null  $thisKey     The local key used to associate the many back to the model
+	 * @return  \Hubzero\Database\Relationship\OneToMany
+	 * @since   2.0.0
 	 **/
-	public function oneToMany($model, $relatedKey=null, $thisKey=null)
+	public function oneToMany($model, $relatedKey = null, $thisKey = null)
 	{
 		// Default the keys if not set
 		$thisKey    = $thisKey    ?: $this->getPrimaryKey();
@@ -1642,14 +1646,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * constrain by a scope type.  Additionally, the related key is actually most likely
 	 * static (scope_id), rather than dynamic based on the model name.
 	 *
-	 * @param   string       $model       the name of the model to relate to the current one
-	 * @param   string|null  $relatedKey  the foreign key used to associate the many back to the model
-	 * @param   string|null  $shifter     the many side field used to differentiate/shift models
-	 * @param   string|null  $thisKey     the local key used to associate the many back to the model
+	 * @param   string       $model       The name of the model to relate to the current one
+	 * @param   string|null  $relatedKey  The foreign key used to associate the many back to the model
+	 * @param   string|null  $shifter     The many side field used to differentiate/shift models
+	 * @param   string|null  $thisKey     The local key used to associate the many back to the model
 	 * @return  \Hubzero\Database\Relationship\OneShiftsToMany
-	 * @since   1.3.2
+	 * @since   2.0.0
 	 **/
-	public function oneShiftsToMany($model, $relatedKey='scope_id', $shifter='scope', $thisKey=null)
+	public function oneShiftsToMany($model, $relatedKey = 'scope_id', $shifter = 'scope', $thisKey = null)
 	{
 		// Default the keys if not set
 		$thisKey = $thisKey ?: $this->getPrimaryKey();
@@ -1660,14 +1664,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves a many to many model relationship
 	 *
-	 * @param  string $model the name of the model to relate to the current one
-	 * @param  string $associativeTable the name of the intermediate table used to associate model->related
-	 * @param  string|null $thisKey the local key used on the associative table
-	 * @param  string|null $relatedKey the related key used on the associative table
-	 * @return \Hubzero\Database\Relationship\ManyToMany
-	 * @since  1.3.2
+	 * @param   string       $model             The name of the model to relate to the current one
+	 * @param   string       $associativeTable  The name of the intermediate table used to associate model->related
+	 * @param   string|null  $thisKey           The local key used on the associative table
+	 * @param   string|null  $relatedKey        The related key used on the associative table
+	 * @return  \Hubzero\Database\Relationship\ManyToMany
+	 * @since   2.0.0
 	 **/
-	public function manyToMany($model, $associativeTable=null, $thisKey=null, $relatedKey=null)
+	public function manyToMany($model, $associativeTable = null, $thisKey = null, $relatedKey = null)
 	{
 		$related   = $this->resolve($model);
 		$names     = [strtolower($this->getModelName()), strtolower($related->getModelName())];
@@ -1687,15 +1691,15 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves a many shifts to many model relationship
 	 *
-	 * @param   string       $model             the name of the model to relate to the current one
-	 * @param   string       $associativeTable  the name of the intermediate table used to associate model->related
-	 * @param   string|null  $thisKey           the local key used on the associative table
-	 * @param   string       $shifter           the many side field used to differentiate/shift models
-	 * @param   string       $relatedKey        the related key used on the associative table
+	 * @param   string       $model             The name of the model to relate to the current one
+	 * @param   string       $associativeTable  The name of the intermediate table used to associate model->related
+	 * @param   string|null  $thisKey           The local key used on the associative table
+	 * @param   string       $shifter           The many side field used to differentiate/shift models
+	 * @param   string       $relatedKey        The related key used on the associative table
 	 * @return  \Hubzero\Database\Relationship\ManyShiftsToMany
-	 * @since   1.3.2
+	 * @since   2.0.0
 	 **/
-	public function manyShiftsToMany($model, $associativeTable=null, $thisKey='scope_id', $shifter='scope', $relatedKey=null)
+	public function manyShiftsToMany($model, $associativeTable = null, $thisKey = 'scope_id', $shifter = 'scope', $relatedKey = null)
 	{
 		$related = $this->resolve($model);
 
@@ -1709,13 +1713,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves a belongs to one model relationship
 	 *
-	 * @param  string $model the name of the model to relate to the current one
-	 * @param  string|null $thisKey the local key used to associate the many back to the model
-	 * @param  string|null $parentKey the parent key used to associate the model to its parent
-	 * @return \Hubzero\Database\Relationship\BelongsToOne
-	 * @since  1.3.2
+	 * @param   string       $model      The name of the model to relate to the current one
+	 * @param   string|null  $thisKey    The local key used to associate the many back to the model
+	 * @param   string|null  $parentKey  The parent key used to associate the model to its parent
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 * @since   2.0.0
 	 **/
-	public function belongsToOne($model, $thisKey=null, $parentKey=null)
+	public function belongsToOne($model, $thisKey = null, $parentKey = null)
 	{
 		$parent = $this->resolve($model);
 
@@ -1732,14 +1736,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * Note that here, versus the manyToMany relationship, we assume the 'through' item
 	 * actually has a formal model for it, rather than just an intermediate table name.
 	 *
-	 * @param  string      $model      the name of the related model to associate to the current one
-	 * @param  string      $through    the name of the intermediate model
-	 * @param  string|null $relatedKey the related key used to associate the model to its parent
-	 * @param  string|null $localKey   the local key used to associate the many back to the model
-	 * @return \Hubzero\Database\Relationship\OneToManyThrough
-	 * @since  1.3.2
+	 * @param   string       $model       The name of the related model to associate to the current one
+	 * @param   string       $through     The name of the intermediate model
+	 * @param   string|null  $relatedKey  The related key used to associate the model to its parent
+	 * @param   string|null  $localKey    The local key used to associate the many back to the model
+	 * @return  \Hubzero\Database\Relationship\OneToManyThrough
+	 * @since   2.0.0
 	 **/
-	public function oneToManyThrough($model, $through, $relatedKey=null, $localKey=null)
+	public function oneToManyThrough($model, $through, $relatedKey = null, $localKey = null)
 	{
 		// Format the model name and instantiate new object
 		$related = $this->resolve($model);
@@ -1760,10 +1764,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * This is helpful if you're going to call saveAndPropagate and want
 	 * to pass the parent object back to a view in the event of a save error.
 	 *
-	 * @param  string $relationship the relationship to invoke
-	 * @param  array|object $models the model or models to attach
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string        $relationship  The relationship to invoke
+	 * @param   array|object  $models        The model or models to attach
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function attach($relationship, $models)
 	{
@@ -1795,8 +1799,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets an associated relationship to be retrieved with the current model
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function including()
 	{
@@ -1812,9 +1816,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Retrieves an associated model in conjunction with the current one
 	 *
-	 * @param  \Hubzero\Database\Rows $rows the rows to parse and augment
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
+	 * @param   \Hubzero\Database\Rows  $rows  The rows to parse and augment
+	 * @return  \Hubzero\Database\Rows
+	 * @since   2.0.0
 	 **/
 	private function parseIncluding($rows)
 	{
@@ -1853,8 +1857,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * method above for the code that actually checks for a
 	 * valid attribute on the forwarding model.
 	 *
-	 * @return $this
-	 * @since  1.3.2
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function forwardTo()
 	{
@@ -1869,10 +1873,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Adds a new relationship to the current model
 	 *
-	 * @param  string $name the name of the relationship
-	 * @param  object $model the model or rows to add
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $name   The name of the relationship
+	 * @param   object  $model  The model or rows to add
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function addRelationship($name, $model)
 	{
@@ -1884,8 +1888,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets all relationships
 	 *
-	 * @return array
-	 * @since  1.3.2
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getRelationships()
 	{
@@ -1895,9 +1899,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Gets the defined relationship
 	 *
-	 * @param  string the relationship to return
-	 * @return \Hubzero\Database\Rows|\Hubzero\Database\Relational|static
-	 * @since  1.3.2
+	 * @param   string  $name  The relationship to return
+	 * @return  \Hubzero\Database\Rows|\Hubzero\Database\Relational|static
+	 * @since   2.0.0
 	 **/
 	public function getRelationship($name)
 	{
@@ -1907,9 +1911,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Establishes a relationship, fetching the rows as needed
 	 *
-	 * @param  string $name the name of the relationship
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $name  The name of the relationship
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function makeRelationship($name)
 	{
@@ -1927,8 +1931,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Generates automatic created field value
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function automaticCreated()
 	{
@@ -1938,8 +1942,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Generates automatic created by field value
 	 *
-	 * @return int
-	 * @since  1.3.2
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	public function automaticCreatedBy()
 	{
@@ -1949,8 +1953,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Generates automatic asset id field
 	 *
-	 * @return int
-	 * @since  1.3.2
+	 * @return  int
+	 * @since   2.0.0
 	 **/
 	public function automaticAssetId()
 	{

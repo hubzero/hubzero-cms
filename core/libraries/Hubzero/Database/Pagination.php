@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,38 +38,38 @@ class Pagination
 	/**
 	 * Total rows available
 	 *
-	 * @var int
+	 * @var  int
 	 **/
 	public $total;
 
 	/**
 	 * Pagination starting point
 	 *
-	 * @var int
+	 * @var  int
 	 **/
 	public $start;
 
 	/**
 	 * Pagination page limit
 	 *
-	 * @var int
+	 * @var  int
 	 **/
 	public $limit;
 
 	/**
 	 * The HUBzero paginator
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	private $paginator;
 
 	/**
 	 * Attempts to forward calls to the paginator itself
 	 *
-	 * @param  string $name the method name being called
-	 * @param  array  $arguments the method arguments provided
-	 * @return $this
-	 * @since  1.3.2
+	 * @param   string  $name       The method name being called
+	 * @param   array   $arguments  The method arguments provided
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
 	public function __call($name, $arguments)
 	{
@@ -85,10 +85,14 @@ class Pagination
 	/**
 	 * Initializes pagination object
 	 *
-	 * @return object
-	 * @since  1.3.2
+	 * @param   string  $namespace  The session state variable namespace
+	 * @param   int     $total      Total number of records
+	 * @param   string  $start      The variable name representing the pagination start number
+	 * @param   string  $limit      The variable name representing the pagination limit number
+	 * @return  object
+	 * @since   2.0.0
 	 **/
-	public static function init($namespace, $total, $start='start', $limit='limit')
+	public static function init($namespace, $total, $start = 'start', $limit = 'limit')
 	{
 		$instance = new self;
 
@@ -108,8 +112,8 @@ class Pagination
 	/**
 	 * Returns the html pagination output
 	 *
-	 * @return string
-	 * @since  1.3.2
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function __toString()
 	{
@@ -119,8 +123,8 @@ class Pagination
 	/**
 	 * Gets the HUBzero paginator, or creates a new one
 	 *
-	 * @return \Hubzero\Pagination\Paginator
-	 * @since  1.3.2
+	 * @return  \Hubzero\Pagination\Paginator
+	 * @since   2.0.0
 	 **/
 	protected function getPaginator()
 	{
