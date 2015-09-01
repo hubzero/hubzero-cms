@@ -275,14 +275,17 @@ $rows = $this->model->entries('list', $this->filters);
 						</li>
 					<?php
 					}
-				}
-				?>
+				} else { ?>
+					<p><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
+				<?php } ?>
 				</ol>
 			</div><!-- / .blog-entries-years -->
 
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
-				<?php if ($popular = $this->model->entries('popular')) { ?>
+				<?php
+				$popular = $this->model->entries('popular');
+				if ($popular->total()) { ?>
 					<ol>
 					<?php foreach ($popular as $row) { ?>
 						<li>
