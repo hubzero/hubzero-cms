@@ -410,7 +410,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$view->row = \Components\Citations\Models\Citation::oneOrNew($id);
-			
+
 			// check to see if this member created this citation
 			if (!$view->row->isNew() && ($view->row->uid != User::get('id') || $view->row->scope != 'member'))
 			{
