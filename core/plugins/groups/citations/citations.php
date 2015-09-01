@@ -466,6 +466,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			Pathway::append(Lang::txt('PLG_GROUPS_CITATIONS_ADD'));
 		}
+		
+		// non-owner redirect
+		if (!$view->row->isNew() &&  $view->row->scope != 'group')
+		{
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+				Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
+				'warning'
+			);
+		}
+			
 
 		// Set the page title
 		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
