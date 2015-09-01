@@ -321,14 +321,19 @@ class Pages
 		);
 
 		// build html email
-		$eview = new \Hubzero\Component\View(array(
+		$eview = new \Hubzero\Mail\View(array(
 			'name'   => 'emails',
-			'layout' => $type
+			'layout' => $type . '_plain'
 		));
 		$eview->option     = Request::getCmd('option', 'com_groups');;
 		$eview->controller = Request::getCmd('controller', 'groups');
 		$eview->group      = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
 		$eview->object     = $object;
+
+		$plain = $eview->loadTemplate(false);
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		$eview->setLayout($type)
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
 
@@ -342,6 +347,7 @@ class Pages
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', $type . '_approval')
+				->addPart($plain, 'text/plain')
 				->addPart($html, 'text/html')
 				->send();
 	}
