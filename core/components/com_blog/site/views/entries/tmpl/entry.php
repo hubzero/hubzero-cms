@@ -260,7 +260,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
 			<?php
-			$popular = $this->model->entries('popular', $this->filters)
+			$popular = $this->model->entries('popular', $this->filters);
 			if ($popular->total()) { ?>
 				<ol>
 				<?php foreach ($popular as $row) { ?>
