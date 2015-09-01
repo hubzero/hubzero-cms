@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -48,8 +48,7 @@ class RelationalTest extends Database
 	/**
 	 * Sets up the tests...called prior to each test
 	 *
-	 * @return void
-	 * @author 
+	 * @return  void
 	 **/
 	public function setUp()
 	{
@@ -59,7 +58,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests object construction and variable initialization
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testConstruct()
 	{
@@ -72,7 +71,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure a call to a helper function actually finds the function
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testCallHelper()
 	{
@@ -82,7 +81,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure a call to a transformer actually finds the transformer
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testCallTransformer()
 	{
@@ -92,7 +91,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure that a result can be retrieved
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneReturnsResult()
 	{
@@ -103,7 +102,7 @@ class RelationalTest extends Database
 	 * Tests that a call for a non-existant row via oneOrFail method throws an exception
 	 *
 	 * @expectedException RuntimeException
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneOrFailThrowsException()
 	{
@@ -113,7 +112,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that a request for a non-existant row via oneOrNew method returns new model
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneOrNewCreatesNew()
 	{
@@ -123,7 +122,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that a belongsToOne relationship properly grabs the related side of the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testBelongsToOneReturnsRelationship()
 	{
@@ -133,7 +132,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the belongs to one relationship can properly constrain the belongs to side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testBelongsToOneCanBeConstrained()
 	{
@@ -149,7 +148,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that a oneToMany relationship properly grabs the many side of the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneToManyReturnsRelationship()
 	{
@@ -159,7 +158,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the one side of the relationship can be properly constrained by the many side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneToManyCanBeConstrainedByCount()
 	{
@@ -172,7 +171,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that a manyToMany relationship properly grabs the many side of the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyToManyReturnsRelationship()
 	{
@@ -182,7 +181,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the local/left side of the m2m relationship can be properly constrained by the related/right side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyToManyCanBeConstrainedByCount()
 	{
@@ -194,7 +193,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the local/left side of the m2m relationship can be properly constrained by the related/right side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyToManyCanBeConstrained()
 	{
@@ -209,7 +208,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that a oneShiftsToMany relationship properly grabs the many side of the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneShiftsToManyReturnsRelationship()
 	{
@@ -219,7 +218,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that a manyShiftsToMany relationship properly grabs the many (right) side of the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyShiftsToManyReturnsRelationship()
 	{
@@ -229,7 +228,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneShiftsToManyCanBeConstrainedByCount()
 	{
@@ -241,7 +240,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the local/left side of the ms2m relationship can be properly constrained by the related/right side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyShiftsToManyCanBeConstrainedByCount()
 	{
@@ -253,7 +252,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testOneShiftsToManyCanBeConstrained()
 	{
@@ -268,7 +267,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that the local/left side of the ms2m relationship can be properly constrained by the related/right side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyShiftsToManyCanBeConstrained()
 	{
@@ -283,7 +282,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can properly preload a simple one to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingOneToManyPreloadsRelationship()
 	{
@@ -295,7 +294,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can properly preload a one shifts to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingOneShiftsToManyPreloadsRelationship()
 	{
@@ -307,7 +306,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can properly preload a many shifts to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingManyShiftsToManyPreloadsRelationship()
 	{
@@ -319,7 +318,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can properly preload a simple many to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingManyToManyPreloadsRelationship()
 	{
@@ -331,7 +330,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can be constrained on a one to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingOneToManyCanBeConstrained()
 	{
@@ -347,7 +346,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can be constrained on a one shifts to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingOneShiftsToManyCanBeConstrained()
 	{
@@ -363,7 +362,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests that an including call can be constrained on a many shifts to many relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testIncludingManyShiftsToManyCanBeConstrained()
 	{
@@ -379,7 +378,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure saving a one to many relationship properly sets the associated field on the related side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testSaveOneToManyAssociatesRelated()
 	{
@@ -391,7 +390,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure saving a one shifts to many relationship properly sets the associated fields on the related side
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testSaveOneShiftsToManyAssociatesRelated()
 	{
@@ -403,7 +402,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure connecting a many to many properly creates the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testConnectManyToManyCreatesAssociation()
 	{
@@ -416,7 +415,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure connecting a many shifts to many properly creates the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testConnectManyShiftsToManyCreatesAssociation()
 	{
@@ -429,7 +428,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure disconnecting a many to many properly destroys the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testDisconnectManyToManyDestroysAssociation()
 	{
@@ -442,7 +441,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure disconnecting a many shifts to many properly destroys the relationship
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testDisconnectManyShiftsToManyDestroysAssociation()
 	{
@@ -455,7 +454,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure many to many save automatically connects
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyToManySaveAutomaticallyConnects()
 	{
@@ -469,7 +468,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure many shifts to many save automatically connects
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testManyShiftsToManySaveAutomaticallyConnects()
 	{
@@ -483,7 +482,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure connecting a many to many can also add additional fields to the intermediary table
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testConnectManyToManyCanAddAdditionalFields()
 	{
@@ -501,7 +500,7 @@ class RelationalTest extends Database
 	/**
 	 * Tests to make sure connecting a many shifts to many can also add additional fields to the intermediary table
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function testConnectManyShiftsToManyCanAddAdditionalFields()
 	{

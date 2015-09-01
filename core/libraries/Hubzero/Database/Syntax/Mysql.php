@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -39,14 +39,14 @@ class Mysql
 	/**
 	 * The database connection object
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	protected $connection = null;
 
 	/**
 	 * The prepared statement binding parameters
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected $bindings = [];
 
@@ -72,9 +72,9 @@ class Mysql
 	/**
 	 * Constructs query syntax class, setting database connection
 	 *
-	 * @param  object $connection the database connection to use
-	 * @return void
-	 * @since  2.0.0
+	 * @param   object  $connection  The database connection to use
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function __construct($connection)
 	{
@@ -84,8 +84,8 @@ class Mysql
 	/**
 	 * Grabs the params bindings
 	 *
-	 * @return array
-	 * @since  2.0.0
+	 * @return  array
+	 * @since   2.0.0
 	 **/
 	public function getBindings()
 	{
@@ -95,12 +95,12 @@ class Mysql
 	/**
 	 * Sets a new bind value
 	 *
-	 * @param  string $value the value to bind
-	 * @param  string $type  the value type
-	 * @return $this
-	 * @since  2.0.0
+	 * @param   string  $value  The value to bind
+	 * @param   string  $type   The value type
+	 * @return  $this
+	 * @since   2.0.0
 	 **/
-	protected function bind($value, $type=null)
+	protected function bind($value, $type = null)
 	{
 		$this->bindings[] = $value;
 	}
@@ -108,13 +108,13 @@ class Mysql
 	/**
 	 * Sets a select element on the query
 	 *
-	 * @param  string $column the column to select
-	 * @param  string $as     what to call the return val
-	 * @param  bool   $count  whether or not to count column
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $column  The column to select
+	 * @param   string  $as      What to call the return val
+	 * @param   bool    $count   Whether or not to count column
+	 * @return  void
+	 * @since   2.0.0
 	 **/
-	public function setSelect($column, $as=null, $count=false)
+	public function setSelect($column, $as = null, $count = false)
 	{
 		// A default * is often added, get rid of it if anything else is added
 		// This wouldn't get rid of table.* as that is likely added intentionally
@@ -133,12 +133,12 @@ class Mysql
 	/**
 	 * Sets an insert element on the query
 	 *
-	 * @param  string $table  the table into which we will be inserting
-	 * @param  bool   $ignore whether or not to ignore errors produced related to things like duplicate keys
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $table   The table into which we will be inserting
+	 * @param   bool    $ignore  Whether or not to ignore errors produced related to things like duplicate keys
+	 * @return  void
+	 * @since   2.0.0
 	 **/
-	public function setInsert($table, $ignore=false)
+	public function setInsert($table, $ignore = false)
 	{
 		$this->insert = $table;
 		$this->ignore = $ignore;
@@ -147,9 +147,9 @@ class Mysql
 	/**
 	 * Sets an update element on the query
 	 *
-	 * @param  string $table the table whose fields will be updated
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $table  The table whose fields will be updated
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setUpdate($table)
 	{
@@ -159,9 +159,9 @@ class Mysql
 	/**
 	 * Sets a delete element on the query
 	 *
-	 * @param  string $table the table whose row will be deleted
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $table  The table whose row will be deleted
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setDelete($table)
 	{
@@ -171,9 +171,9 @@ class Mysql
 	/**
 	 * Sets a from element on the query
 	 *
-	 * @param  string $table the table of interest
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $table  The table of interest
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setFrom($table)
 	{
@@ -183,14 +183,14 @@ class Mysql
 	/**
 	 * Sets a join element on the query
 	 *
-	 * @param  string $table    the table join
-	 * @param  string $leftKey  the left side of the join condition
-	 * @param  string $rightKey the right side of the join condition
-	 * @param  string $type     the join type to perform
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $table     The table join
+	 * @param   string  $leftKey   The left side of the join condition
+	 * @param   string  $rightKey  The right side of the join condition
+	 * @param   string  $type      The join type to perform
+	 * @return  void
+	 * @since   2.0.0
 	 **/
-	public function setJoin($table, $leftKey, $rightKey, $type='inner')
+	public function setJoin($table, $leftKey, $rightKey, $type = 'inner')
 	{
 		$this->join[] = [
 			'table' => $table,
@@ -203,9 +203,9 @@ class Mysql
 	/**
 	 * Sets a set element on the query
 	 *
-	 * @param  array $data the data to be modified
-	 * @return void
-	 * @since  2.0.0
+	 * @param   array  $data  The data to be modified
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setSet($data)
 	{
@@ -215,9 +215,9 @@ class Mysql
 	/**
 	 * Sets a values element on the query
 	 *
-	 * @param  array $data the data to be inserted
-	 * @return void
-	 * @since  2.0.0
+	 * @param   array  $data  The data to be inserted
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setValues($data)
 	{
@@ -227,9 +227,9 @@ class Mysql
 	/**
 	 * Sets a group element on the query
 	 *
-	 * @param  string $column the column on which to apply the group by
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $column  The column on which to apply the group by
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setGroup($column)
 	{
@@ -239,11 +239,11 @@ class Mysql
 	/**
 	 * Sets a having element on the query
 	 *
-	 * @param  string $column   the column to which the clause will apply
-	 * @param  string $operator the operation that will compare column to value
-	 * @param  string $value    the value to which the column will be evaluated
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $column    The column to which the clause will apply
+	 * @param   string  $operator  The operation that will compare column to value
+	 * @param   string  $value     The value to which the column will be evaluated
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setHaving($column, $operator, $value)
 	{
@@ -257,15 +257,15 @@ class Mysql
 	/**
 	 * Sets a where element on the query
 	 *
-	 * @param  string $column   the column to which the clause will apply
-	 * @param  string $operator the operation that will compare column to value
-	 * @param  string $value    the value to which the column will be evaluated
-	 * @param  string $logical  the operator between multiple clauses
-	 * @param  int    $depth    the depth level of the clause, for sub clauses
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $column    The column to which the clause will apply
+	 * @param   string  $operator  The operation that will compare column to value
+	 * @param   string  $value     The value to which the column will be evaluated
+	 * @param   string  $logical   The operator between multiple clauses
+	 * @param   int     $depth     The depth level of the clause, for sub clauses
+	 * @return  void
+	 * @since   2.0.0
 	 **/
-	public function setWhere($column, $operator, $value, $logical='and', $depth=0)
+	public function setWhere($column, $operator, $value, $logical = 'and', $depth = 0)
 	{
 		$this->where[] = [
 			'column'   => $column,
@@ -279,14 +279,14 @@ class Mysql
 	/**
 	 * Sets a raw where element on the query
 	 *
-	 * @param  string $raw      the raw where clause
-	 * @param  array  $bindings the clause bindings, if any
-	 * @param  string $logical  the operator between multiple clauses
-	 * @param  int    $depth    the depth level of the clause, for sub clauses
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $raw       The raw where clause
+	 * @param   array   $bindings  The clause bindings, if any
+	 * @param   string  $logical   The operator between multiple clauses
+	 * @param   int     $depth     The depth level of the clause, for sub clauses
+	 * @return  void
+	 * @since   2.0.0
 	 **/
-	public function setRawWhere($raw, $bindings=[], $logical='and', $depth=0)
+	public function setRawWhere($raw, $bindings = [], $logical = 'and', $depth = 0)
 	{
 		$this->where[] = [
 			'raw'      => $raw,
@@ -299,9 +299,9 @@ class Mysql
 	/**
 	 * Sets a limit element on the query
 	 *
-	 * @param  int $limit number of results to return on next query
-	 * @return void
-	 * @since  2.0.0
+	 * @param   int  $limit  Number of results to return on next query
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setLimit($limit)
 	{
@@ -311,9 +311,9 @@ class Mysql
 	/**
 	 * Sets a start element on the query
 	 *
-	 * @param  int $start position to start from
-	 * @return void
-	 * @since  2.0.0
+	 * @param   int  $start  Position to start from
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setStart($start)
 	{
@@ -323,10 +323,10 @@ class Mysql
 	/**
 	 * Sets an order element on the query
 	 *
-	 * @param  string $column the column to which the order by will apply
-	 * @param  string $dir    the direction in which the results will be ordered
-	 * @return void
-	 * @since  2.0.0
+	 * @param   string  $column  The column to which the order by will apply
+	 * @param   string  $dir     The direction in which the results will be ordered
+	 * @return  void
+	 * @since   2.0.0
 	 **/
 	public function setOrder($column, $dir)
 	{
@@ -339,8 +339,9 @@ class Mysql
 	/**
 	 * Builds the given query element
 	 *
-	 * @return void
-	 * @author 
+	 * @param   string  $type  The query element to build
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function build($type)
 	{
@@ -354,8 +355,8 @@ class Mysql
 	/**
 	 * Builds a select statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	private function buildSelect()
 	{
@@ -379,8 +380,8 @@ class Mysql
 	/**
 	 * Builds an insert statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildInsert()
 	{
@@ -390,8 +391,8 @@ class Mysql
 	/**
 	 * Builds an update statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildUpdate()
 	{
@@ -401,8 +402,8 @@ class Mysql
 	/**
 	 * Builds a delete statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildDelete()
 	{
@@ -412,8 +413,8 @@ class Mysql
 	/**
 	 * Builds a from statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	private function buildFrom()
 	{
@@ -430,8 +431,8 @@ class Mysql
 	/**
 	 * Builds a join statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildJoin()
 	{
@@ -448,8 +449,8 @@ class Mysql
 	/**
 	 * Builds a where statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	private function buildWhere()
 	{
@@ -509,8 +510,8 @@ class Mysql
 	/**
 	 * Builds a set statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildSet()
 	{
@@ -528,8 +529,8 @@ class Mysql
 	/**
 	 * Builds a values statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildValues()
 	{
@@ -549,8 +550,8 @@ class Mysql
 	/**
 	 * Builds a group statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildGroup()
 	{
@@ -560,8 +561,8 @@ class Mysql
 	/**
 	 * Builds a having statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildHaving()
 	{
@@ -580,8 +581,8 @@ class Mysql
 	/**
 	 * Builds a limit statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildLimit()
 	{
@@ -595,8 +596,8 @@ class Mysql
 	/**
 	 * Builds an order statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildOrder()
 	{
@@ -615,7 +616,7 @@ class Mysql
 	/**
 	 * Returns the proper query for generating a list of table columns per this syntax
 	 *
-	 * @param   string  $table  the name of the database table
+	 * @param   string  $table  The name of the database table
 	 * @return  array
 	 * @since   2.0.0
 	 */
@@ -627,12 +628,12 @@ class Mysql
 	/**
 	 * Normalizes the results of the above query
 	 *
-	 * @param   array  $data      the raw column data
-	 * @param   bool   $typeOnly  true (default) to only return field types
+	 * @param   array  $data      The raw column data
+	 * @param   bool   $typeOnly  True (default) to only return field types
 	 * @return  array
 	 * @since   2.0.0
 	 **/
-	public function normalizeColumns($data, $typeOnly=true)
+	public function normalizeColumns($data, $typeOnly = true)
 	{
 		$results = [];
 

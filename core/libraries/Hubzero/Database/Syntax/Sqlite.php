@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 2.0.0
  */
@@ -39,8 +39,8 @@ class Sqlite extends Mysql
 	/**
 	 * Builds an insert statement from the set params
 	 *
-	 * @return string
-	 * @since  2.0.0
+	 * @return  string
+	 * @since   2.0.0
 	 **/
 	public function buildInsert()
 	{
@@ -50,7 +50,7 @@ class Sqlite extends Mysql
 	/**
 	 * Returns the proper query for generating a list of table columns per this syntax
 	 *
-	 * @param   string  $table  the name of the database table
+	 * @param   string  $table  The name of the database table
 	 * @return  array
 	 * @since   2.0.0
 	 */
@@ -62,12 +62,12 @@ class Sqlite extends Mysql
 	/**
 	 * Normalizes the results of the above query
 	 *
-	 * @param   array  $data      the raw column data
-	 * @param   bool   $typeOnly  true (default) to only return field types
+	 * @param   array  $data      The raw column data
+	 * @param   bool   $typeOnly  True (default) to only return field types
 	 * @return  array
 	 * @since   2.0.0
 	 **/
-	public function normalizeColumns($data, $typeOnly=true)
+	public function normalizeColumns($data, $typeOnly = true)
 	{
 		$results = [];
 
