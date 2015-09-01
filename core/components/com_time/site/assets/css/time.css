@@ -506,7 +506,18 @@
 }
 
 @media (max-width: 50em) {
+	.com_time_content #add-filters p {
+		text-align: center;
+	}
 	.com_time_content #add-filters select {
 		width: 100%;
+		margin: 5px 0;
+	}
+	.com_time_content #filter-submit {
+		margin-left: 0;
+	}
+	.com_time_content .clear-button,
+	.com_time_content .search-submit {
+		display: none;
 	}
 }
