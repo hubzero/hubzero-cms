@@ -466,7 +466,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			Pathway::append(Lang::txt('PLG_GROUPS_CITATIONS_ADD'));
 		}
-		
+
 		// non-owner redirect
 		if (!$view->row->isNew() &&  $view->row->scope != 'group')
 		{
@@ -476,7 +476,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'warning'
 			);
 		}
-			
+
 
 		// Set the page title
 		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
