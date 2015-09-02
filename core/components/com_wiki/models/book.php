@@ -489,9 +489,9 @@ class Book extends Object
 	 */
 	public function pages($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['group']) && $this->_scope != '__site__')
+		if (!isset($filters['group']))
 		{
-			$filters['group'] = $this->_scope;
+			$filters['group'] = ($this->_scope != '__site__') ? $this->_scope : '';
 		}
 		if (!isset($filters['state']))
 		{

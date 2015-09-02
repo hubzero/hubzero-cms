@@ -1,7 +1,31 @@
 {{{
 #!html
-<div id="introduction" class="section">
-	<div class="aside">
+<section id="introduction" class="section">
+	<div class="subject">
+		<div class="grid">
+			<div class="col span6">
+}}}
+
+=== What are wiki pages? ===
+
+Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create (and own) new articles, and there can be multiple articles on the same wiki, each written by a different author.
+
+{{{
+#!html
+			</div>
+			<div class="col span6 omega">
+}}}
+
+=== Who can make a wiki page? ===
+
+Anyone with an account can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
+
+{{{
+#!html
+			</div>
+		</div>
+	</div><!-- / .subject -->
+	<aside class="aside">
 }}}
 
 === Questions? ===
@@ -12,94 +36,74 @@
 
 {{{
 #!html
-	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="two columns first">
-}}}
+	</aside><!-- / .aside -->
+</section><!-- / #introduction.section -->
 
-=== What are wiki pages? ===
-
-Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create (and own) new articles, and there can be multiple articles on the same wiki, each written by a different author.
-
-{{{
-#!html
-		</div>
-		<div class="two columns second">
-}}}
-
-=== Who can make a wiki page? ===
-
-Anyone with an account can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
-
-{{{
-#!html
-		</div>
-		<div class="clear"></div>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
-</div><!-- / #introduction.section -->
-
-<div class="section">
-	<div class="four columns first">
+<section class="section">
+	<div class="grid">
+		<div class="col span3">
 }}}
 
 == Find an article ==
 
 {{{
 #!html
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="/search" method="get" class="search">
-				<fieldset>
-					<p>
-						<input type="text" name="terms" value="" />
-						<input type="submit" value="Search" />
-						<input type="hidden" name="section" value="wiki" />
-					</p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div class="browse">
+		</div>
+		<div class="col span9 omega">
+			<div class="grid">
+				<div class="col span6">
+					<form action="/search" method="get" class="search">
+						<fieldset>
+							<p>
+								<input type="text" name="terms" value="" />
+								<input type="submit" value="Search" />
+								<input type="hidden" name="section" value="wiki" />
+							</p>
+						</fieldset>
+					</form>
+				</div>
+				<div class="col span6 omega">
+					<div class="browse">
 }}}
 
 [Special:AllPages Browse the list of available articles]
 
 {{{
 #!html
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
-	
-	<div class="four columns first">
-		<h2>Recent articles</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid">
+		<div class="col span3">
+			<h2>Recent articles</h2>
+		</div>
+		<div class="col span3">
 }}}
 
 [[RecentPage(1, wiki, 0)]]
 
 {{{
 #!html
-	</div><!-- / .four columns second -->
-	<div class="four columns third">
+		</div>
+		<div class="col span3">
 }}}
 
 [[RecentPage(1, wiki, 1)]]
 
 {{{
 #!html
-	</div><!-- / .four columns third -->
-	<div class="four columns fourth">
+		</div>
+		<div class="col span3 omega">
 }}}
 
 [[RecentPage(1, wiki, 2)]]
 
 {{{
 #!html
-	</div><!-- / .four columns fourth -->
-	<div class="clear"></div>
-</div><!-- / .section -->
+		</div>
+	</div>
+</section><!-- / .section -->
 }}}
