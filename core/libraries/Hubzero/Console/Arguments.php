@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,38 +43,38 @@ class Arguments
 	/**
 	 * Raw command line arguments (PHP $argv)
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $raw = NULL;
 
 	/**
 	 * Class name - command to execute
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $class = NULL;
 
 	/**
 	 * Task name - class method to execute
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $task = NULL;
 
 	/**
 	 * Array of additional options being passed to the command
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $opts = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * Set raw arguments and initiate parsing
+	 * Set raw arguments
 	 *
-	 * @param  (object) $arguments
-	 * @return void
+	 * @param   object  $arguments  The command arguments
+	 * @return  void
 	 **/
 	public function __construct($arguments)
 	{
@@ -86,8 +86,8 @@ class Arguments
 	 *
 	 * Throws invalid property exception if property isn't found
 	 *
-	 * @param  (string) $var - property to retrieve
-	 * @return void
+	 * @param   string  $var  The property to retrieve
+	 * @return  void
 	 **/
 	public function get($var)
 	{
@@ -104,11 +104,11 @@ class Arguments
 	/**
 	 * Getter for those additional options that a given command may use
 	 *
-	 * @param  (string) $key     - option name to retieve value for
-	 * @param  (mixed)  $default - default value for option
-	 * @return void
+	 * @param   string  $key      Option name to retieve value for
+	 * @param   mixed   $default  Default value for option
+	 * @return  void
 	 **/
-	public function getOpt($key, $default=false)
+	public function getOpt($key, $default = false)
 	{
 		return (isset($this->opts[$key])) ? $this->opts[$key] : $default;
 	}
@@ -116,7 +116,7 @@ class Arguments
 	/**
 	 * Get all opts
 	 *
-	 * @return (array) - options
+	 * @return  array
 	 **/
 	public function getOpts()
 	{
@@ -126,9 +126,9 @@ class Arguments
 	/**
 	 * Setter for additional options for a given command
 	 *
-	 * @param  (string) $key
-	 * @param  (mixed)  $value
-	 * @return void
+	 * @param   string  $key    The argument to set
+	 * @param   mixed   $value  The argument value to give it
+	 * @return  void
 	 **/
 	public function setOpt($key, $value)
 	{
@@ -138,8 +138,8 @@ class Arguments
 	/**
 	 * Delete option
 	 *
-	 * @param  string $key
-	 * @return void
+	 * @param   string  $key  The argument to remove
+	 * @return  void
 	 **/
 	public function deleteOpt($key)
 	{
@@ -149,7 +149,7 @@ class Arguments
 	/**
 	 * Parse the raw arguments into command, task, and additional options
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function parse()
 	{
@@ -226,10 +226,10 @@ class Arguments
 	/**
 	 * Routes command to the proper file based on the input given
 	 *
-	 * @param   string  $command  the command to route
+	 * @param   string  $command  The command to route
 	 * @return  void
 	 **/
-	public static function routeCommand($command='help')
+	public static function routeCommand($command = 'help')
 	{
 		// Aliases take precedence, so parse for them first
 		if ($aliases = Config::get('aliases'))
@@ -294,12 +294,12 @@ class Arguments
 	/**
 	 * Routes task to the proper method based on the input given
 	 *
-	 * @param   string  $command  the command to route
-	 * @param   string  $class    the class deduced from routeCommand
-	 * @param   string  $task     the task to route
+	 * @param   string  $command  The command to route
+	 * @param   string  $class    The class deduced from routeCommand
+	 * @param   string  $task     The task to route
 	 * @return  void
 	 **/
-	public static function routeTask($command, $class, $task='execute')
+	public static function routeTask($command, $class, $task = 'execute')
 	{
 		// Aliases take precedence, so parse for them first
 		if ($aliases = Config::get('aliases'))
