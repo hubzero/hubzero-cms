@@ -39,6 +39,7 @@ defined('_HZEXEC_') or die();
 
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal('Y-m-d') : '';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal('Y-m-d') : '';
+	$expiredate = ($job->expiredate && $job->expiredate !='0000-00-00 00:00:00') ? Date::of($job->expiredate)->toLocal('Y-m-d') : '';
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode
 
@@ -176,14 +177,24 @@ defined('_HZEXEC_') or die();
 					</label>
 				</div>
 			</div>
-			<label for="applyExternalUrl">
-				<?php echo Lang::txt('COM_JOBS_EDITJOB_EXTERNAL_URL'); ?>:
-				<input  type="text" name="applyExternalUrl" id="applyExternalUrl" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($job->applyExternalUrl)); ?>" />
-			</label>
-			<label for="applyInternal">
-				<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1"<?php echo $job->applyInternal ? ' checked="checked" ' : ''; ?> />
-				<?php echo Lang::txt('COM_JOBS_EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
-			</label>
+			<div class="grid">
+				<div class="col span6">
+					<label for="closedate">
+						<?php echo Lang::txt('COM_JOBS_EDITJOB_EXPIRE_DATE'); ?>:
+						<input  type="text" name="expiredate" id="expiredate" size="10" maxlength="10" value="<?php echo $expiredate; ?>" />
+						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
+					</label>
+				</div> <!-- /.col .span6 -->
+				<div class="col span6 omega">	
+					<label for="applyExternalUrl">
+						<?php echo Lang::txt('COM_JOBS_EDITJOB_EXTERNAL_URL'); ?>:
+						<input  type="text" name="applyExternalUrl" id="applyExternalUrl" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($job->applyExternalUrl)); ?>" />
+					</label>
+					<label for="applyInternal">
+						<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1"<?php echo $job->applyInternal ? ' checked="checked" ' : ''; ?> />
+						<?php echo Lang::txt('COM_JOBS_EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
+					</label>
+				</div> <!-- /.col .span6 .omega -->
 		</fieldset>
 
 		<div class="explaination">
