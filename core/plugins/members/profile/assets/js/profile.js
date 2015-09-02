@@ -375,7 +375,8 @@ HUB.Members.Profile = {
 		
 		$("#page_header").on("click", "#profile-privacy", function(event){
 			var pub = 0,
-				id = $(this).attr("data-uidnumber");
+				id = $(this).attr("data-uidnumber"),
+				url = $(this).attr("href");
 			
 			if($(this).hasClass("private"))
 			{
@@ -395,7 +396,7 @@ HUB.Members.Profile = {
 				'no_html': 1
 			};
 			
-			$.post('index.php', params, function(data){ 
+			$.post(url, params, function(data){ 
 				var returned = jQuery.parseJSON(data);
 				
 				if(returned.success)

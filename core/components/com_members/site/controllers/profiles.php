@@ -1346,7 +1346,7 @@ class Profiles extends SiteController
 			return false;
 		}
 
-		Request::checkToken();
+		Request::checkToken(array('get', 'post'));
 
 		$no_html = Request::getVar("no_html", 0);
 
