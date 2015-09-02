@@ -90,6 +90,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo $this->grid('sort', 'COM_JOBS_COL_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_JOBS_COL_OWNER', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_JOBS_COL_ADDED', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_EXPIRATION'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_JOBS_COL_APPLICATIONS'); ?></th>
 			</tr>
 		</thead>
@@ -201,6 +202,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td class="priority-4">
 					<time datetime="<?php echo $row->added; ?>"><?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+				</td>
+				<td class="priority-4">
+					<?php if ($row->expiredate != "0000-00-00 00:00:00"): ?>
+					<time datetime="<?php echo $row->expiredate; ?>"><?php echo Date::of($row->expiredate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+					<?php else: ?>
+						<span><?php echo Lang::txt('COM_JOBS_NEVER_EXPIRES'); ?></span> 
+					<?php endif; ?>
 				</td>
 				<td class="priority-2">
 					<?php echo $row->applications; ?>

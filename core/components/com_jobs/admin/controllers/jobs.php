@@ -273,7 +273,6 @@ class Jobs extends AdminController
 
 		$subject = $id ? Lang::txt('COM_JOBS_MESSAGE_SUBJECT', $job->code) : '';
 
-		// save any new info
 		$job->bind($_POST);
 
 		// some clean-up
