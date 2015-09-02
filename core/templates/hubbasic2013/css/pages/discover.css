@@ -13,8 +13,7 @@
 
 */
 
-	span.fontcon-before,
-	span.fontcon-after,
+	.block:before,
 	#content .col div:before {
 		content: "";
 		display: block;
@@ -39,6 +38,7 @@
 		text-align: center;
 		line-height: 1;
 	}
+	.block:hover:before,
 	#content .col div:hover:before {
 		top: 0.2em;
 		color: #250b23;
@@ -57,53 +57,60 @@
 		padding-top: 8em;
 		text-align: center;
 	}
+	#content .col .block-wiki:before,
 	#content .col div.wiki:before {
 		content: "\f072";
 	}
+	#content .col .block-resources:before,
 	#content .col div.presentation:before {
 		content: "\f040";
 	}
+	#content .col .block-citations:before,
 	#content .col div.quote:before {
 		content: "\275D";
 	}
+	#content .col .block-tags:before,
 	#content .col div.tag:before {
 		content: "\f02c";
 	}
+	#content .col .block-feedback:before,
 	#content .col div.feedback:before {
 		content: "\f086";
 	}
-	#content .col div.note:before {
-		content: "\f075";
-	}
+	#content .col .block-contribute:before,
 	#content .col div.contribute:before {
 		content: "\f01b";
 	}
+	#content .col .block-tools:before,
 	#content .col div.tool:before {
 		content: "\2692";
 	}
-	#content .col div.donate:before {
-		content: "\f04d";
-	}
+	#content .col .block-blog:before,
 	#content .col div.blog:before {
 		content: "\f036";
 	}
+	#content .col .block-polls:before,
 	#content .col div.poll:before {
 		content: "\f080";
 	}
+	#content .col .block-events:before,
 	#content .col div.event:before {
 		content: "\f073";
 	}
+	#content .col .block-store:before,
 	#content .col div.cart:before {
 		content: "\f04d";
 	}
+	#content .col .block-whatsnew:before,
 	#content .col div.new:before {
 		content: "\273D";
 	}
+	#content .col .block-wishes:before,
 	#content .col div.wish:before {
 		content: "\f078";
 	}
 
-	#content .col h2 { 
+	#content .col h2 {
 		font-weight: normal;
 		margin: 0;
 		padding: 0.5em 0 0 0;
@@ -112,14 +119,14 @@
 		border-right: 4px solid #dadada;
 		border-top: 1px solid #dadada;
 	}
-	#content .col h3 { 
-		margin: 0 0 1em 0; 
+	#content .col h3 {
+		margin: 0 0 1em 0;
 		padding: 0.6em 0 0.6em 0;
 		display: block;
 		line-height: 1.4em;
 		color: #565656;
 	}
-	#content .col h3 a { 
+	#content .col h3 a {
 		border: none;
 		color: #565656;
 	}

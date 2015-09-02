@@ -17,121 +17,135 @@
 		padding: 0;
 	}
 
-	.below {
-		padding-top: 0;
+	.odd,
+	.even {
+		padding: 30px 0;
 	}
 
-	.below + .grid {
+	.even {
 		background-color: #fff;
 	}
 
-	#content .col div:before {
+	.block {
+		position: relative;
+		padding: 0 0 0 5em;
+	}
+	.block:before {
 		content: "";
 		display: block;
 		position: absolute;
-		left: 50%;
-		top: 0.5em;
+		left: 0;
+		top: 0;
 		width: 1em;
 		height: 1em;
-		padding: 0.5em;
 		font-size: 3em;
 		font-family: 'Fontcons';
 		color: #dadada;
-		margin-left: -1em;
 		font-weight: normal;
-		-webkit-transition: all 300ms ease; 
-		   -moz-transition: all 300ms ease; 
-		    -ms-transition: all 300ms ease; 
-		     -o-transition: all 300ms ease; 
+		-webkit-transition: all 300ms ease;
+		   -moz-transition: all 300ms ease;
+		    -ms-transition: all 300ms ease;
+		     -o-transition: all 300ms ease;
 		        transition: all 300ms ease;
-		border: 1px solid #dadada;
-		border-radius: 50%;
 		text-align: center;
 		line-height: 1;
 		background: transparent;
 	}
-	#content .col div:hover:before {
+	.block:hover:before {
 		top: 0.2em;
 		color: #250b23;
 	}
-	#content .grid {
-		padding: 30px;
-	}
-	#content .grid.below {
-		border-top: none;
-	}
-	#content .col {
-		position: relative;
-	}
-	#content .col div {
-		background: none;
-		padding-top: 8em;
-		text-align: center;
-	}
-	#content .col div.wiki:before {
+
+	.block-wiki:before {
 		content: "\f072";
 	}
-	#content .col div.presentation:before {
+	.block-resources:before {
 		content: "\f040";
 	}
-	#content .col div.quote:before {
+	.block-citations:before {
 		content: "\275D";
 	}
-	#content .col div.tag:before {
+	.block-tags:before {
 		content: "\f02c";
 	}
-	#content .col div.feedback:before {
+	.block-feedback:before {
 		content: "\f086";
 	}
-	#content .col div.note:before {
-		content: "\f075";
-	}
-	#content .col div.contribute:before {
+	.block-contribute:before {
 		content: "\f01b";
 	}
-	#content .col div.tool:before {
+	.block-tools:before {
 		content: "\2692";
 	}
-	#content .col div.donate:before {
-		content: "\f04d";
-	}
-	#content .col div.blog:before {
+	.block-blog:before {
 		content: "\f036";
 	}
-	#content .col div.poll:before {
+	.block-polls:before {
 		content: "\f080";
 	}
-	#content .col div.event:before {
+	.block-events:before {
 		content: "\f073";
 	}
-	#content .col div.cart:before {
+	.block-store:before {
 		content: "\f04d";
 	}
-	#content .col div.new:before {
+	.block-whatsnew:before {
 		content: "\273D";
 	}
-	#content .col div.wish:before {
+	.block-wishes:before {
 		content: "\f078";
 	}
 
-	#content .col h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1.2;
+	.contentpaneopen h2 {
+		font-weight: 300;
+		margin: 0 0 30px 0;
+		padding: 30px 0;
+		line-height: 1;
 		border: none;
+		text-align: center;
+		position: relative;
 	}
-	#content .col h3 { 
-		margin: 0 0 1em 0; 
-		padding: 0.6em 0 0.6em 0;
+	.contentpaneopen h2:after {
+		content: "";
+		position: absolute;
+		border: none;
+		width: 2em;
+		height: 1px;
+		margin: 0 0 0 -1em;
+		background: #999;
+		left: 50%;
+		bottom: -1px;
+	}
+	.col h3 {
+		margin: 0 0 1em 0;
+		padding: 0 0 0.6em 0;
 		display: block;
 		line-height: 1.4em;
 		color: #565656;
+		text-transform: uppercase;
+		font-weight: 500;
+		font-size: 1.2em;
+		letter-spacing: 0.1em;
 	}
-	#content .col h3 a { 
+	.col h3 a {
 		border: none;
 		color: #565656;
 	}
+
+	#content .grid {
+		padding: 30px;
+	}
+
+@media (min-width: 40em) {
+	.block {
+		padding: 0 0 0 8em;
+	}
+	.block:before {
+		padding: 0.5em;
+		border: 1px solid #dadada;
+		border-radius: 50%;
+	}
+}
 
 @media (min-width: 70em) {
 	#content .grid {
