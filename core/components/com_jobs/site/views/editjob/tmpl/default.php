@@ -179,7 +179,7 @@ defined('_HZEXEC_') or die();
 			</div>
 			<div class="grid">
 				<div class="col span6">
-					<label for="closedate">
+					<label for="expiredate">
 						<?php echo Lang::txt('COM_JOBS_EDITJOB_EXPIRE_DATE'); ?>:
 						<input  type="text" name="expiredate" id="expiredate" size="10" maxlength="10" value="<?php echo $expiredate; ?>" />
 						<span class="hint"><?php echo Lang::txt('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>

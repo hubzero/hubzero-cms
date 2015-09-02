@@ -49,6 +49,12 @@ HUB.Jobs = {
 			});
 		}
 
+		if ($('#expiredate').length > 0) {
+			$('#expiredate').datepicker({
+				dateFormat: 'yy-mm-dd'
+			});
+		}
+
 		// subscription form
 		if ($('#subForm')) {
 			var frm = $('#hubForm');
