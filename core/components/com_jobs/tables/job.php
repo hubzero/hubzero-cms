@@ -292,6 +292,7 @@ class Job extends \JTable
 		if ($active)
 		{
 			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > " . $this->_db->quote($now) . ") ";
+			$sql .= "\n AND (j.expiredate ='0000-00-00 00:00:00' OR j.expiredate IS NULL OR j.expiredate> " . $this->_db->quote($now) . ") ";
 		}
 
 		if (!$count)
