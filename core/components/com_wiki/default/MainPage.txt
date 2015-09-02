@@ -1,9 +1,8 @@
 {{{
 #!html
 <section id="introduction" class="section">
-	<div class="subject">
-		<div class="grid">
-			<div class="col span6">
+	<div class="grid">
+		<div class="col span4">
 }}}
 
 === What are wiki pages? ===
@@ -12,8 +11,8 @@ Wiki pages are user-written articles on a range of subjects. Any contributor or 
 
 {{{
 #!html
-			</div>
-			<div class="col span6 omega">
+		</div>
+		<div class="col span4">
 }}}
 
 === Who can make a wiki page? ===
@@ -22,10 +21,8 @@ Anyone with an account can create a new article. When creating a new article, th
 
 {{{
 #!html
-			</div>
 		</div>
-	</div><!-- / .subject -->
-	<aside class="aside">
+		<div class="col span4 omega">
 }}}
 
 === Questions? ===
@@ -36,7 +33,8 @@ Anyone with an account can create a new article. When creating a new article, th
 
 {{{
 #!html
-	</aside><!-- / .aside -->
+		</div>
+	</div>
 </section><!-- / #introduction.section -->
 
 <section class="section">
