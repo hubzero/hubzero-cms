@@ -499,13 +499,6 @@ class Repository extends Base implements CommandInterface
 	 **/
 	public function syntax()
 	{
-		// Make sure phpcs is installed
-		exec('which phpcs', $output);
-		if (!$output)
-		{
-			$this->output->error('PHP Code Sniffer does not appear to be installed');
-		}
-
 		// Get files
 		$status = $this->mechanism->status();
 		$files  = (isset($status['added']) || isset($status['modified'])) ? array_merge($status['added'], $status['modified']) : array();
@@ -579,7 +572,7 @@ class Repository extends Base implements CommandInterface
 				if (!$this->arguments->getOpt('no-sniffing'))
 				{
 					// Append specific standard (with branchname) to command
-					$cmd    = "phpcs --standard={$standards}{$branch}/ruleset.xml -n {$base}{$file}";
+					$cmd    = "php " . PATH_CORE . DS . 'bin' . DS . "phpcs --standard={$standards}{$branch}/ruleset.xml -n {$base}{$file}";
 					$cmd    = escapeshellcmd($cmd);
 					$result = shell_exec($cmd);
 
