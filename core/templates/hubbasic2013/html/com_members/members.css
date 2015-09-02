@@ -51,6 +51,10 @@
 	#page_menu li span {
 		color: #888;
 	}
+	#page_menu li ul:after {
+		background: #d1d1d1;
+		background: rgba(0, 0, 0, 0.075);
+	}
 @media (min-width: 40em) {
 	#page_header {
 		padding: 10px 20px 30px 20px;

@@ -80,17 +80,17 @@ defined('_HZEXEC_') or die();
 				{
 					$item = '';
 				}
-				elseif ($access == 'members' && !in_array(User::get("id"), $this->group->get('members')))
+				elseif ($access == 'members' && !in_array(User::get('id'), $this->group->get('members')))
 				{
-					$item  = "<li class=\"protected members-only group-{$class}-tab\" title=\"This page is restricted to group members only!\">";
-					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"disabled {$class}\">{$title}</span>";
-					$item .= "</li>";
+					$item  = '<li class="protected members-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted to group members only!') . '">';
+					$item .= '<span data-icon="&#x' . $section['icon'] . '" class="disabled ' . $class . '">' . $title . '</span>';
+					$item .= '</li>';
 				}
 				elseif ($access == 'registered' && User::isGuest())
 				{
-					$item  = "<li class=\"protected registered-only group-{$class}-tab\" title=\"This page is restricted to registered hub users only!\">";
-					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"disabled {$class}\">{$title}</span>";
-					$item .= "</li>";
+					$item  = '<li class="protected registered-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted to registered hub users only!') . '">';
+					$item .= '<span data-icon="&#x' . $section['icon'] . '" class="disabled ' . $class . '">' . $title . '</span>';
+					$item .= '</li>';
 				}
 				else
 				{
@@ -105,14 +105,42 @@ defined('_HZEXEC_') or die();
 					//create menu item
 					$item  = "<li class=\"{$liClass} group-{$class}-tab {$cls}\">";
 					$item .= "<a class=\"{$class}\"  data-icon=\"&#x{$section['icon']};\" title=\"{$this->group->get('description')}'s {$title} Page\" href=\"{$link}\">{$title}</a>";
-					$item .= "<span class=\"meta\">";
+					$item .= '<span class="meta">';
 					if ($meta_count)
 					{
-						$item .= "<span class=\"count\">" . $meta_count . "</span>";
+						$item .= '<span class="count">' . $meta_count . '</span>';
 					}
-					$item .= "</span>";
+					$item .= '</span>';
 					$item .= $meta_alert;
-					$item .= "</li>";
+
+					if (isset($metadata['options']) && is_array($metadata['options']))
+					{
+						$item .= '<ul class="tab-options">';
+						foreach ($metadata['options'] as $option)
+						{
+							if (!isset($option['text']))
+							{
+								if (!isset($option['title']))
+								{
+									continue;
+								}
+								$option['text'] = $option['title'];
+							}
+
+							$attribs = array();
+							foreach ($option as $key => $val)
+							{
+								if ($key == 'text') continue;
+
+								$attribs[] = $key . '="' . $this->escape($val) . '"';
+							}
+
+							$item .= '<li><a ' . implode(' ', $attribs) . '>' . $this->escape($option['text']) . '</a></li>';
+						}
+						$item .= '</ul>';
+					}
+
+					$item .= '</li>';
 				}
 			}
 			echo $item;

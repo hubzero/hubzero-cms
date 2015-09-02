@@ -275,6 +275,31 @@
 		border-bottom: 1px solid #a62525;
 	}
 
+	/* Sub-menus */
+	#page_menu li ul {
+		list-style: none;
+		margin: 0 0 0 30px;
+		position: relative;
+	}
+	#page_menu li ul:after {
+		content: "";
+		width: 1px;
+		background: #eee;
+		background: rgba(255, 255, 255, 0.6);
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+	}
+	#page_menu li ul li {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	#page_menu li ul li a {
+		padding-left: 1em;
+	}
+
 	#page_menu li.option-select {
 		padding: 0.4em 2em;
 	}

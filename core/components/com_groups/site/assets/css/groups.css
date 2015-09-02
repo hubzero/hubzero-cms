@@ -370,9 +370,9 @@
 	}
 	#page_menu li.active {
 		color: #eee;
-		font-weight: 500;
 	}
 	#page_menu li.active>a {
+		font-weight: 500;
 		color: #eee;
 		background: #555;
 		background: rgba(0, 0, 0, 0.6);

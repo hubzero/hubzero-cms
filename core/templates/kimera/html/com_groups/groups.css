@@ -292,11 +292,11 @@
 	}
 	#page_menu li.active {
 		color: #eee;
-		font-weight: 500;
 	}
 	#page_menu li.active>a {
 		background: #f9f9f9;
 		color: #222;
+		font-weight: 500;
 	}
 	#page_menu li.active>a:before {
 		/*color: #FFF;*/

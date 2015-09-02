@@ -139,6 +139,33 @@ if (!$no_html)
 							<?php endif; ?>
 						</span>
 						<?php echo $meta_alert; ?>
+						<?php if (isset($metadata['options']) && is_array($metadata['options'])) : ?>
+							<ul class="tab-options">
+							<?php
+							foreach ($metadata['options'] as $option)
+							{
+								if (!isset($option['text']))
+								{
+									if (!isset($option['title']))
+									{
+										continue;
+									}
+									$option['text'] = $option['title'];
+								}
+
+								$attribs = array();
+								foreach ($option as $key => $val)
+								{
+									if ($key == 'text') continue;
+
+									$attribs[] = $key . '="' . $this->escape($val) . '"';
+								}
+
+								echo '<li><a ' . implode(' ', $attribs) . '>' . $this->escape($option['text']) . '</a></li>';
+							}
+							?>
+							</ul>
+						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul><!-- /#page_menu -->

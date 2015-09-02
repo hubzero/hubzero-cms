@@ -1105,15 +1105,20 @@ jQuery(document).ready(function($){
 		}).appendTo(select);
 
 		el.find("a").each(function() {
-			var elm = $(this);
+			var elm = $(this),
+				prfx = '';
 
 			if (elm.hasClass('alrt')) {
 				return;
 			}
 
+			if ($(elm.parent().parent()).hasClass('tab-options')) {
+				prfx = '- ';
+			}
+
 			var opts = {
 				"value"   : elm.attr("href"),
-				"text"    : elm.text()
+				"text"    : prfx + elm.text()
 			};
 			if ($(elm.parent()).hasClass('active')) {
 				opts.selected = 'selected';
