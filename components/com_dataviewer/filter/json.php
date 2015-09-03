@@ -59,7 +59,7 @@ function filter($res, $dd)
 			$data_type = (isset($dd['cols'][$key]['data_type']))? $dd['cols'][$key]['data_type']: false;
 			$data_type = (!$data_type)? $field_type: $data_type;
 
-			switch($data_type) {
+			switch ($data_type) {
 				case 'int':
 				case 'float':
 				case 'number':
@@ -182,7 +182,7 @@ function filter($res, $dd)
 	}
 
 	// Charts
-	if(isset($dd['charts_list'])) {
+	if (isset($dd['charts_list'])) {
 		$table['charts_list'] = $dd['charts_list'];
 	}
 
@@ -199,7 +199,7 @@ function filter($res, $dd)
 	$res_count = 0;
 	while ($rec = mysql_fetch_assoc($data)) {
 		$row = array();
-		foreach($rec as $key => $val) {
+		foreach ($rec as $key => $val) {
 			$null_val = false;
 			if (!isset($dd['cols'][$key]['hide'])) {
 
@@ -207,7 +207,7 @@ function filter($res, $dd)
 					$val = sprintf($dd['cols'][$key]['fmt'], $val);
 				}
 
-				if($val == NULL) {
+				if ($val == NULL) {
 					$val = '-';
 
 					if (isset($dd['replace_null'])) {
@@ -236,7 +236,7 @@ function filter($res, $dd)
 					if ($dd['cols'][$key]['type_extra'] == 'multi') {
 						$list = explode('|#|', $val);
 						$val = array();
-						foreach($list as $l) {
+						foreach ($list as $l) {
 							$link_label = $l;
 							$link = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . $l;
 
@@ -283,10 +283,10 @@ function filter($res, $dd)
 						}
 						$val = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
 					}
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'date') {
+				} elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'date') {
 					$val = strtotime($val);
 					$val = date("m/d/Y", $val);
-				} elseif((isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'image') || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'image')) {
+				} elseif ((isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'image') || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'image')) {
 					$small_img = $val;
 					$medium_img = $val;
 
@@ -362,9 +362,9 @@ function filter($res, $dd)
 					} else {
 						$val = '<a target="_blank" href="' . $original_img . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
 					}
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'email') {
+				} elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'email') {
 					$val = '<a href="mailto:' . $val . '">' . $val . '</a>';
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'link' || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] != 'image')) {
+				} elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'link' || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] != 'image')) {
 
 					if (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'full_link') {
 						$dd['cols'][$key]['full_url'] = true;
@@ -406,9 +406,9 @@ function filter($res, $dd)
 
 						$links = array();
 
-						for($i=0; $i<count($multi_val); $i++) {
+						for ($i=0; $i<count($multi_val); $i++) {
 							$preview = '';
-							if(isset($prv_list[$i])) {
+							if (isset($prv_list[$i])) {
 								$preview = 'data-preview-img="' . trim($prv_list[$i]) . '"';
 							}
 
@@ -416,7 +416,7 @@ function filter($res, $dd)
 						}
 						$val = implode('<br />', $links);
 					}
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'tool') {
+				} elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'tool') {
 					$label = isset($dd['cols'][$key]['link_label'])? $rec[$dd['cols'][$key]['link_label']]: basename($rec[$dd['cols'][$key]['dl']], '.csv');
 					$name = isset($dd['cols'][$key]['name'])? $dd['cols'][$key]['name']: 'Tool';
 
@@ -550,7 +550,7 @@ function filter($res, $dd)
 
 				if (isset($dd['cols'][$key]['opmod'])) {	// Only doing text style now, More to come....
 					$switch = $rec[$dd['cols'][$key]['opmod']['switch']];
-					foreach($dd['cols'][$key]['opmod']['case'] as $is_val=>$func) {
+					foreach ($dd['cols'][$key]['opmod']['case'] as $is_val=>$func) {
 						if ($switch == $is_val) {
 							$func = explode('|', $func);
 							$param = $func[1];
@@ -562,7 +562,7 @@ function filter($res, $dd)
 					}
 				}
 
-				if(isset($dd['cols'][$key]['width'])) {
+				if (isset($dd['cols'][$key]['width'])) {
 
 					$nowrap = '';
 					if (isset($dd['cols'][$key]['nowrap'])) {
@@ -664,7 +664,7 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 				$label .= isset($dd['cols'][$key]['ext'])? '.' . $pi['extension']: '';
 			}
 		}
-	} elseif($dd['cols'][$key]['type'] == 'url') {
+	} elseif ($dd['cols'][$key]['type'] == 'url') {
 		$link = $path;
 		$label = $path;
 	} else {
