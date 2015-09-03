@@ -163,7 +163,7 @@ function authorize($dd)
 	if ($dv_conf['acl']['allowed_users'] !== false && $dv_conf['acl']['allowed_users'] == 'registered' && !$juser->get('guest')) {
 		return true;
 	} elseif (isset($dv_conf['acl']['allowed_users']) && is_array($dv_conf['acl']['allowed_users']) && !$juser->get('guest')) {
-		if(in_array($juser->get('username'), $dv_conf['acl']['allowed_users'])) {
+		if (in_array($juser->get('username'), $dv_conf['acl']['allowed_users'])) {
 			return true;
 		}
 	}
