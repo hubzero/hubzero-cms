@@ -138,7 +138,7 @@ function filter($res, $dd)
 				$name = isset($dd['cols'][$key]['name'])? $dd['cols'][$key]['name']: 'Tool';
 				$link_format = explode('{p}', $dd['cols'][$key]['link_format']);
 				$param = explode(',', $dd['cols'][$key]['param']);
-				$link_zip = $com_name . '/?task=zip&hash_list=';
+				$link_zip = $com_name . '/zip_files/?hash_list=';
 
 				if (!isset($dd['cols'][$key]['multi_launch']) || $dd['cols'][$key]['multi_launch'] != false) {
 					$tool_bar .= '<a style="text-decoration: none; margin-left: 2px;" class="dv_tools_launch_multi" title="Launch ' . $name . ' with selected files" target="_blank" href="' . $link_format[0] . '"><img src="' . $html_path . '/run-m.png' . '" />&nbsp;</a>';
@@ -440,7 +440,7 @@ function filter($res, $dd)
 								$link = substr($path, strlen(JPATH_BASE)+1);
 							} else {
 								$hash = get_dl_hash($path);
-								$link = $com_name . '/?task=file&hash=' . $hash;
+								$link = $com_name . '/stream_file/?hash=' . $hash;
 							}
 							$dl .= '<a title="Download File" data-data-file="' . $path . '" class="dv_tools_dl_link" target="_blank" href="/' . $link . '"><img src="' . $html_path . '/download.png' . '" /></a>';
 						}
