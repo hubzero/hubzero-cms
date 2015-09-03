@@ -159,7 +159,7 @@ class Repository extends AdminController
 					{
 						$type    = 'error';
 						$message = 'Update failed. Rolling back changes.';
-						$this->rollbackTask();
+						$this->rollbackTask($message, $type);
 						break;
 					}
 				}
@@ -177,15 +177,15 @@ class Repository extends AdminController
 	/**
 	 * Perform rollback
 	 *
-	 * @return     void
+	 * @param   string  $message  The message to display upon rollback completion
+	 * @param   string  $type     The message type to use
+	 * @return  void
 	 */
-	public function rollbackTask()
+	public function rollbackTask($message = 'Rollback complete!', $type = 'success')
 	{
 		$response = Cli::rollback();
 		$response = json_decode($response);
 		$response = $response[0];
-		$message  = 'Rollback complete!';
-		$type     = 'success';
 
 		if (!empty($response))
 		{
