@@ -60,6 +60,15 @@ function task_stream_file($db_id)
 	exit;
 }
 
+
+function task_zip_files($db_id)
+{
+	$hash_list = JRequest::getVar('hash_list');
+	zip_files($hash_list);
+	exit;
+}
+
+
 function task_view($db_id)
 {
 	global $dv_conf;
