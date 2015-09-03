@@ -36,6 +36,15 @@ if (!\User::authorise('core.manage', 'com_installer'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
+if ($task = \Request::getCmd('task'))
+{
+	if (strstr($task, '.'))
+	{
+		@list($c, $t) = explode('.', $task);
+		$t = \Request::setVar('task', trim($t));
+		$c = \Request::setVar('controller', trim($c));
+	}
+}
 $controllerName = \Request::getCmd('controller', 'install');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
