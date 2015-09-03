@@ -145,6 +145,8 @@ class Repository extends Base implements CommandInterface
 			'added'     => 'green',
 			'modified'  => 'yellow',
 			'deleted'   => 'cyan',
+			'renamed'   => 'yellow',
+			'copied'    => 'yellow',
 			'untracked' => 'black',
 			'unmerged'  => 'red',
 			'merged'    => 'blue'

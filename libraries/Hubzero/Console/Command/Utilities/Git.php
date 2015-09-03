@@ -145,6 +145,8 @@ class Git
 				'added'     => array(),
 				'modified'  => array(),
 				'deleted'   => array(),
+				'renamed'   => array(),
+				'copied'    => array(),
 				'untracked' => array(),
 				'unmerged'  => array(),
 				'merged'    => array()
@@ -169,6 +171,12 @@ class Git
 						break;
 					case 'M':
 						$response['modified'][] = $parts[2];
+						break;
+					case 'R':
+						$response['renamed'][] = $parts[2];
+						break;
+					case 'C':
+						$response['copied'][] = $parts[2];
 						break;
 					case 'UU':
 						$response['unmerged'][] = $parts[2];
