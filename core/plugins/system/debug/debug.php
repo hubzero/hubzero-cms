@@ -646,15 +646,15 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		{
 			if (is_array($val))
 			{
-				$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $this->_arr($val) . '</code>';
+				$a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8') . '</code> <code class="op">=></code> <code class="vl">' . $this->_arr($val) . '</code>';
 			}
 			else if (is_object($val))
 			{
-				$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';
+				$a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8') . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';
 			}
 			else
 			{
-				$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '</code>';
+				$a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8') . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '</code>';
 			}
 		}
 		$html .= implode(", \n", $a) . "\n" . ' )' . "\n";
