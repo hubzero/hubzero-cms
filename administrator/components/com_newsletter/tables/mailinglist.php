@@ -289,7 +289,7 @@ class NewsletterMailinglist extends JTable
 	 */
 	private function _getHubMailingList()
 	{
-		$sql = "SELECT DISTINCT email FROM #__xprofiles WHERE emailConfirmed = '1' AND mailPreferenceOption > '0'";
+		$sql = "SELECT DISTINCT email FROM #__xprofiles WHERE emailConfirmed >= 1 AND mailPreferenceOption > '0'";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList('email');
 	}
