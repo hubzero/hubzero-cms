@@ -97,6 +97,16 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	}
 
 	/**
+	 * Reset all internal data
+	 *
+	 * @return  void
+	 */
+	public function reset()
+	{
+		$this->data = new stdClass;
+	}
+
+	/**
 	 * Gets this object represented as an ArrayIterator.
 	 *
 	 * This allows the data properties to be accessed via a foreach statement.

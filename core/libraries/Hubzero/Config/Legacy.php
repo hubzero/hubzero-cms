@@ -184,6 +184,16 @@ class Legacy extends Registry
 	}
 
 	/**
+	 * Determine if the given configuration exists.
+	 *
+	 * @return  bool
+	 */
+	public function exists()
+	{
+		return file_exists($this->file);
+	}
+
+	/**
 	 * Determine if the given configuration value exists.
 	 *
 	 * @param   string  $file     Path to file to load
@@ -251,5 +261,20 @@ class Legacy extends Registry
 
 			$writer->write($contents, $group);
 		}
+	}
+
+	/**
+	 * Write the contents of the legacy config
+	 *
+	 * @param   string  $file
+	 * @return  bool
+	 */
+	public function update($file = null)
+	{
+		$file = ($file ?: $this->file);
+
+		$contents = $this->toString('PHP', array('class' => 'JConfig', 'closingtag' => false));
+
+		return file_put_contents($file, $contents);
 	}
 }
