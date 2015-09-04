@@ -56,8 +56,46 @@ jQuery(document).ready(function (jq){
 		if (locked === true)
 		{
 			window.location = url;
-		 }
+		}
+	});
 
+	// exporting citation types
+	$('.download').click(function(e) {
+			e.preventDefault();
+
+			// get selected citation entries
+			var markers = []; // empty array 
+			
+			$('.download-marker').each(function() {
+				if ($(this).prop('checked')) {	
+					markers.push($(this).val());
+				}
+			});
+		
+			// formats the citation list for com_citation
+			// downloadbatchTask()
+			var citationString = '';
+			for (i = 0; i < markers.length; i++) {
+				if (markers[i+1])
+				{
+					citationString = citationString + markers[i]  + '-';
+				}
+				else
+				{
+					citationString = citationString + markers[i];
+				}
+			}
+		
+		var download = $(this).val().toLowerCase();
+		// get what we are downloading...
+		if ((download == 'bibtex' || download == 'endnote') && markers.length > 0)
+		{
+			var url = 'index.php?option=com_citations&task=downloadbatch&download=' + download + '&idlist=' + citationString;
+			$('#download-frame').attr({
+				src: url,
+				style: "display:none"
+				});
+		}
 	});
 
 	if (manager.length) {

@@ -214,6 +214,17 @@ if (isset($this->messages))
 				</div><!-- /.container -->
 			</div><!-- /.subject -->
 			<div class="aside">
+				<fieldset id="download-batch">
+					<strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
+					<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
+
+					<input type="submit" name="download" class="download" id="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" />
+					|
+					<input type="submit" name="download" class="download" id="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
+				<!-- for serving up the file download -->
+					<iframe id="download-frame"></iframe>
+				<!-- end file serving -->
+				</fieldset>
 				<fieldset>
 					<label>
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?>
@@ -267,14 +278,6 @@ if (isset($this->messages))
 						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FILTER'); ?>" />
 						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=citations'); ?>" class="btn">Reset</a>
 					</div>
-				</fieldset>
-				<fieldset id="download-batch">
-					<strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
-					<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
-
-					<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" />
-					|
-					<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
 				</fieldset>
 			</div><!-- /.aside -->
 		</section>

@@ -1385,7 +1385,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$members = $this->group->members;
 
 		// get the ones for this group
-		if ($config->display == 'member')
+		if (isset($config->display) && $config->display == 'member')
 		{
 			// if all filter is applied
 			if (array_key_exists('filter', $filters) && ($filters['filter'] == '' || $filters['filter'] == 'all'))

@@ -984,17 +984,25 @@ class Citations extends SiteController
 	public function downloadbatchTask()
 	{
 		// get the submit buttons value
-		$download = Request::getVar('download', '', 'post');
+		$download = Request::getVar('download', '');
+		$no_html = Request::getVar('no_html', 0);
 
 		// get the citations we want to export
-		$citationsString = Request::getVar('idlist', '' , "post");
+		$citationsString = Request::getVar('idlist', '');
 		$citations       = explode('-', $citationsString);
 
 		// return to browse mode if we really dont wanna download
 		if (strtolower($download) != 'endnote'
 		 && strtolower($download) != 'bibtex')
 		{
-			return $this->displayTask();
+			if (!$no_html)
+			{
+				return $this->displayTask();
+			}
+			else
+			{
+				return json_encode(array('status'=>'1'));
+			}
 		}
 
 		// var to hold output

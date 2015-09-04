@@ -18,6 +18,9 @@
 .legendColorBox {
  max-width: 14px;
 }
+#download-frame {
+	display:none;
+}
 .citation-row {
  margin-bottom: 40px;
 }

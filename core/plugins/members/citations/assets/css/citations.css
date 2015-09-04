@@ -18,6 +18,11 @@
 	.legendColorBox {
 		max-width: 14px;
 	}
+
+	#download-frame {
+		display: none;
+	}
+
 	.citations .citation-label .type {
 		font-weight: bold;
 	}
