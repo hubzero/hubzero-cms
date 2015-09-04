@@ -12,41 +12,41 @@ defined('_HZEXEC_') or die();
 ?>
 <form target="_parent" action="<?php echo Route::url('index.php?option=com_media&tmpl=index&folder=' . $this->state->folder); ?>" method="post" id="mediamanager-form" name="mediamanager-form">
 	<div class="manager">
-	<table width="100%" cellspacing="0">
-	<thead>
-		<tr>
-			<th width="1%"><?php echo Lang::txt('JGLOBAL_PREVIEW'); ?></th>
-			<th><?php echo Lang::txt('COM_MEDIA_NAME'); ?></th>
-			<th width="8%"><?php echo Lang::txt('COM_MEDIA_PIXEL_DIMENSIONS'); ?></th>
-			<th width="8%"><?php echo Lang::txt('COM_MEDIA_FILESIZE'); ?></th>
-		<?php if (User::authorise('core.delete', 'com_media')):?>
-			<th width="8%"><?php echo Lang::txt('JACTION_DELETE'); ?></th>
-		<?php endif;?>
-		</tr>
-	</thead>
-	<tbody>
-		<?php echo $this->loadTemplate('up'); ?>
+		<table>
+			<thead>
+				<tr>
+					<th><?php echo Lang::txt('JGLOBAL_PREVIEW'); ?></th>
+					<th><?php echo Lang::txt('COM_MEDIA_NAME'); ?></th>
+					<th><?php echo Lang::txt('COM_MEDIA_PIXEL_DIMENSIONS'); ?></th>
+					<th><?php echo Lang::txt('COM_MEDIA_FILESIZE'); ?></th>
+					<?php if (User::authorise('core.delete', 'com_media')): ?>
+						<th><?php echo Lang::txt('JACTION_DELETE'); ?></th>
+					<?php endif; ?>
+				</tr>
+			</thead>
+			<tbody>
+				<?php echo $this->loadTemplate('up'); ?>
 
-		<?php for ($i=0, $n=count($this->folders); $i<$n; $i++) :
-			$this->setFolder($i);
-			echo $this->loadTemplate('folder');
-		endfor; ?>
+				<?php for ($i=0, $n=count($this->folders); $i<$n; $i++) :
+					$this->setFolder($i);
+					echo $this->loadTemplate('folder');
+				endfor; ?>
 
-		<?php for ($i=0, $n=count($this->documents); $i<$n; $i++) :
-			$this->setDoc($i);
-			echo $this->loadTemplate('doc');
-		endfor; ?>
+				<?php for ($i=0, $n=count($this->documents); $i<$n; $i++) :
+					$this->setDoc($i);
+					echo $this->loadTemplate('doc');
+				endfor; ?>
 
-		<?php for ($i=0, $n=count($this->images); $i<$n; $i++) :
-			$this->setImage($i);
-			echo $this->loadTemplate('img');
-		endfor; ?>
+				<?php for ($i=0, $n=count($this->images); $i<$n; $i++) :
+					$this->setImage($i);
+					echo $this->loadTemplate('img');
+				endfor; ?>
 
-	</tbody>
-	</table>
-	<input type="hidden" name="task" value="list" />
-	<input type="hidden" name="username" value="" />
-	<input type="hidden" name="password" value="" />
-	<?php echo Html::input('token'); ?>
+			</tbody>
+		</table>
+		<input type="hidden" name="task" value="list" />
+		<input type="hidden" name="username" value="" />
+		<input type="hidden" name="password" value="" />
+		<?php echo Html::input('token'); ?>
 	</div>
 </form>

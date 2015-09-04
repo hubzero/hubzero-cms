@@ -24,6 +24,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 			</td>
 			<td class="description">
 				<a href="<?php echo  COM_MEDIA_BASEURL.'/'.$this->_tmp_img->path_relative; ?>" title="<?php echo $this->_tmp_img->name; ?>" rel="preview"><?php echo $this->escape($this->_tmp_img->title); ?></a>
+				<br /><span><?php echo str_replace(rtrim(Request::root(), '/'), '', COM_MEDIA_BASEURL.'/'.$this->_tmp_img->path_relative); ?></span>
 			</td>
 			<td>
 				<?php echo Lang::txt('COM_MEDIA_IMAGE_DIMENSIONS', $this->_tmp_img->width, $this->_tmp_img->height); ?>

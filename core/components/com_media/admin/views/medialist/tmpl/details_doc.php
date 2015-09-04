@@ -11,6 +11,9 @@ defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry;
 
+$this->_tmp_doc->name  = ltrim($this->_tmp_doc->name, DS);
+$this->_tmp_doc->title = ltrim($this->_tmp_doc->title, DS);
+
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
 		<tr>
@@ -21,6 +24,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 			</td>
 			<td class="description"  title="<?php echo $this->_tmp_doc->name; ?>">
 				<?php echo $this->_tmp_doc->title; ?>
+				<br /><span><?php echo str_replace(rtrim(Request::root(), '/'), '', COM_MEDIA_BASEURL.'/'.$this->_tmp_doc->path_relative); ?></span>
 			</td>
 			<td>
 				&#160;
