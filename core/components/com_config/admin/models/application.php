@@ -321,6 +321,22 @@ class Application extends JModelForm
 			}
 		}
 
+		$legacy = new \Hubzero\Config\Legacy();
+		if ($legacy->exists())
+		{
+			$legacy->reset();
+
+			foreach ($data as $group => $values)
+			{
+				foreach ($values as $key => $val)
+				{
+					$legacy->set($key, $val);
+				}
+			}
+
+			$legacy->update();
+		}
+
 		return true;
 	}
 }
