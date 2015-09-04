@@ -29,8 +29,8 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.5.0" client="site" type="module">
 	<name>mod_myprojects</name>
-	<author>Alissa Nedossekina</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>MOD_MYPROJECTS_XML_DESCRIPTION</description>
 	<files>
