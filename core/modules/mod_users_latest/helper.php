@@ -65,7 +65,7 @@ class Helper extends Module
 	 * @param   object  $params  Registry
 	 * @return  array
 	 */
-	static function getUsers($params)
+	public static function getUsers($params)
 	{
 		$db = App::get('db');
 
