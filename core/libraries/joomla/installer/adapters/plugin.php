@@ -83,7 +83,7 @@ class JInstallerPlugin extends JAdapterInstance
 			// [!] Hubzero - Change to install path
 			//     @TODO: Revert this when Hubzeor has its own installer
 			//$this->parent->setPath('source', JPATH_PLUGINS . '/' . $this->parent->extension->folder . '/' . $this->parent->extension->element);
-			$this->parent->setPath('source', ($this->parent->extension->protected ? PATH_CORE : PATH_APP) . '/' . $this->parent->extension->folder . '/' . $this->parent->extension->element);
+			$this->parent->setPath('source', ($this->parent->extension->protected ? PATH_CORE : PATH_APP) . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element);
 		}
 		$this->manifest = $this->parent->getManifest();
 		$element = $this->manifest->files;
@@ -566,7 +566,7 @@ class JInstallerPlugin extends JAdapterInstance
 
 		// [!] Hubzero - Change to install paths
 		//     @TODO: Revert this when Hubzeor has its own installer
-		$base = PATH_APP; //JPATH_PLUGINS
+		$base = PATH_APP . '/plugins'; //JPATH_PLUGINS
 
 		// Set the plugin root path
 		if (is_dir($base . '/' . $row->folder . '/' . $row->element))
