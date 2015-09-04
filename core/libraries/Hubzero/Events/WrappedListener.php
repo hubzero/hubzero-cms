@@ -89,6 +89,13 @@ final class WrappedListener
 		$this->listener->event = $event;
 		$args = $event->getArguments();
 
+		// A bit ugly but we need to take into account cases where
+		// arguments have named indices (i.e., associative array)
+		if (count($args) && !isset($args[0]))
+		{
+			$args = array_values($args);
+		}
+
 		switch (count($args))
 		{
 			case 0:
