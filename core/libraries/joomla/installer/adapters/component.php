@@ -103,7 +103,10 @@ class JInstallerComponent extends JAdapterInstance
 			$this->parent
 				->setPath(
 				'source',
-				($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) .
+				// [!] Hubzero - Change to install path
+				//     @TODO: Revert this when Hubzeor has its own installer
+				//($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) .
+				($this->parent->extension->protected ? PATH_CORE : PATH_APP) .
 				'/components/' . $this->parent->extension->element
 			);
 		}
@@ -121,7 +124,10 @@ class JInstallerComponent extends JAdapterInstance
 		}
 
 		$lang = JFactory::getLanguage();
-		$source = $path ? $path : ($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/components/' . $extension;
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$source = $path ? $path : ($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/components/' . $extension;
+		$source = $path ? $path : ($this->parent->extension->protected ? PATH_CORE : PATH_APP) . '/components/' . $extension;
 
 		if ($this->manifest->administration->files)
 		{
@@ -184,11 +190,16 @@ class JInstallerComponent extends JAdapterInstance
 		$this->parent->set('message', JText::_((string) $this->manifest->description));
 
 		// Set the installation target paths
-		$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $this->get('element')));
-		$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $this->get('element')));
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $this->get('element')));
+		//$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $this->get('element')));
+		$this->parent->setPath('extension_site', JPath::clean(PATH_APP . '/components/' . $this->get('element') . '/site'));
+		$this->parent->setPath('extension_administrator', JPath::clean(PATH_APP . '/components/' . $this->get('element') . '/admin'));
 
 		// copy this as its used as a common base
-		$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator'));
+		//$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator'));
+		$this->parent->setPath('extension_root', JPath::clean(PATH_APP . '/components/' . $this->get('element')));
 
 		// Basic Checks Section
 
@@ -660,9 +671,14 @@ class JInstallerComponent extends JAdapterInstance
 		}
 
 		// Set the installation target paths
-		$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $this->get('element')));
-		$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $this->get('element')));
-		$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator')); // copy this as its used as a common base
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $this->get('element')));
+		//$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $this->get('element')));
+		//$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator')); // copy this as its used as a common base
+		$this->parent->setPath('extension_site', JPath::clean(PATH_APP . '/components/' . $this->get('element') . '/site'));
+		$this->parent->setPath('extension_administrator', JPath::clean(PATH_APP . '/components/' . $this->get('element') . '/admin'));
+		$this->parent->setPath('extension_root', JPath::clean(PATH_APP . '/components/' . $this->get('element')));
 
 		/**
 		 * Hunt for the original XML file
@@ -1120,9 +1136,14 @@ class JInstallerComponent extends JAdapterInstance
 		}
 
 		// Get the admin and site paths for the component
-		$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $row->element));
-		$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $row->element));
-		$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator')); // copy this as its used as a common base
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $row->element));
+		//$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $row->element));
+		//$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator')); // copy this as its used as a common base
+		$this->parent->setPath('extension_administrator', JPath::clean(PATH_APP . '/components/' . $row->element . '/admin'));
+		$this->parent->setPath('extension_site', JPath::clean(PATH_APP . '/components/' . $row->element . '/site'));
+		$this->parent->setPath('extension_root', JPath::clean(PATH_APP . '/components/' . $row->element));
 
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -1169,7 +1190,10 @@ class JInstallerComponent extends JAdapterInstance
 		$this->set('element', $element);
 
 		// Attempt to load the admin language file; might have uninstall strings
-		$this->loadLanguage(JPATH_ADMINISTRATOR . '/components/' . $element);
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$this->loadLanguage(JPATH_ADMINISTRATOR . '/components/' . $element);
+		$this->loadLanguage(PATH_APP . '/components/' . $element . '/admin');
 
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -1685,19 +1709,30 @@ class JInstallerComponent extends JAdapterInstance
 	public function discover()
 	{
 		$results = array();
-		$site_components = JFolder::folders(JPATH_SITE . '/components');
-		$admin_components = JFolder::folders(JPATH_ADMINISTRATOR . '/components');
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$site_components = JFolder::folders(JPATH_SITE . '/components');
+		//$admin_components = JFolder::folders(JPATH_ADMINISTRATOR . '/components');
+		$site_components = JFolder::folders(PATH_CORE . '/components');
+		$admin_components = JFolder::folders(PATH_APP . '/components');
 
 		foreach ($site_components as $component)
 		{
-			if (file_exists(JPATH_SITE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'))
+			//if (file_exists(JPATH_SITE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'))
+			if (file_exists(PATH_CORE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'))
 			{
 				$manifest_details = JApplicationHelper::parseXMLInstallFile(
-					JPATH_SITE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
+					//JPATH_SITE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
+					PATH_CORE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
 				);
 				$extension = JTable::getInstance('extension');
 				$extension->set('type', 'component');
 				$extension->set('client_id', 0);
+				// [!] Hubzero - Admin/site component is determined a little differently
+				if (file_exists(PATH_CORE . '/components/' . $component . '/admin/' . str_replace('com_', '', $component) . '.php'))
+				{
+					$extension->set('client_id', 1);
+				}
 				$extension->set('element', $component);
 				$extension->set('name', $component);
 				$extension->set('state', -1);
@@ -1708,14 +1743,21 @@ class JInstallerComponent extends JAdapterInstance
 
 		foreach ($admin_components as $component)
 		{
-			if (file_exists(JPATH_ADMINISTRATOR . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'))
+			//if (file_exists(JPATH_ADMINISTRATOR . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'))
+			if (file_exists(PATH_APP . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'))
 			{
 				$manifest_details = JApplicationHelper::parseXMLInstallFile(
-					JPATH_ADMINISTRATOR . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
+					//JPATH_ADMINISTRATOR . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
+					PATH_APP . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
 				);
 				$extension = JTable::getInstance('extension');
 				$extension->set('type', 'component');
-				$extension->set('client_id', 1);
+				// [!] Hubzero - Admin/site component is determined a little differently
+				$extension->set('client_id', 0);
+				if (file_exists(PATH_CORE . '/components/' . $component . '/admin/' . str_replace('com_', '', $component) . '.php'))
+				{
+					$extension->set('client_id', 1);
+				}
 				$extension->set('element', $component);
 				$extension->set('name', $component);
 				$extension->set('state', -1);
@@ -1738,6 +1780,9 @@ class JInstallerComponent extends JAdapterInstance
 		// Need to find to find where the XML file is since we don't store this normally
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
 		$short_element = str_replace('com_', '', $this->parent->extension->element);
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($this->parent->extension->protected ? PATH_CORE : PATH_APP);
 		$manifestPath = $client->path . '/components/' . $this->parent->extension->element . '/' . $short_element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);
@@ -1802,9 +1847,14 @@ class JInstallerComponent extends JAdapterInstance
 		}
 
 		// Set the installation target paths
-		$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $this->get('element')));
-		$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $this->get('element')));
-		$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator')); // copy this as its used as a common base
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$this->parent->setPath('extension_site', JPath::clean(JPATH_SITE . '/components/' . $this->get('element')));
+		//$this->parent->setPath('extension_administrator', JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $this->get('element')));
+		//$this->parent->setPath('extension_root', $this->parent->getPath('extension_administrator')); // copy this as its used as a common base
+		$this->parent->setPath('extension_site', JPath::clean($client->path . '/components/' . $this->get('element') . '/site'));
+		$this->parent->setPath('extension_administrator', JPath::clean($client->path . '/components/' . $this->get('element') . '/admin'));
+		$this->parent->setPath('extension_root', JPath::clean($client->path . '/components/' . $this->get('element'))); // copy this as its used as a common base
 
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -2018,6 +2068,9 @@ class JInstallerComponent extends JAdapterInstance
 		// Need to find to find where the XML file is since we don't store this normally
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
 		$short_element = str_replace('com_', '', $this->parent->extension->element);
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($this->parent->extension->protected ? PATH_CORE : PATH_APP);
 		$manifestPath = $client->path . '/components/' . $this->parent->extension->element . '/' . $short_element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);

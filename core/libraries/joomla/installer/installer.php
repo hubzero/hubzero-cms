@@ -598,7 +598,7 @@ class JInstaller extends JAdapter
 		$this->loadAllAdapters();
 		$results = array();
 
-		foreach ($this->_adapters as $adapter)
+		foreach ($this->_adapters as $type => $adapter)
 		{
 			// Joomla! 1.5 installation adapter legacy support
 			if (method_exists($adapter, 'discover'))

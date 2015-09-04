@@ -86,51 +86,50 @@ defined('_HZEXEC_') or die();
 	<?php if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftp'); ?>
 	<?php endif; ?>
-	<div class="width-70 fltlft">
-		<fieldset class="adminform uploadform">
-			<legend><span><?php echo Lang::txt('COM_INSTALLER_UPLOAD_PACKAGE_FILE'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="install_package"><?php echo Lang::txt('COM_INSTALLER_PACKAGE_FILE'); ?></label>
-				<input class="input_box" id="install_package" name="install_package" type="file" size="57" />
-			</div>
-			<div class="input-wrap">
-				<input class="button" type="button" value="<?php echo Lang::txt('COM_INSTALLER_UPLOAD_AND_INSTALL'); ?>" onclick="Joomla.submitbutton()" />
-			</div>
-			<div class="clr"></div>
-		</fieldset>
+	<fieldset class="adminform uploadform">
+		<legend><span><?php echo Lang::txt('COM_INSTALLER_UPLOAD_PACKAGE_FILE'); ?></span></legend>
 
-		<fieldset class="adminform uploadform">
-			<legend><span><?php echo Lang::txt('COM_INSTALLER_INSTALL_FROM_DIRECTORY'); ?></span></legend>
+		<div class="input-wrap">
+			<label for="install_package"><?php echo Lang::txt('COM_INSTALLER_PACKAGE_FILE'); ?></label>
+			<input class="input_box" id="install_package" name="install_package" type="file" size="57" />
+		</div>
+		<div class="input-wrap">
+			<input class="button" type="button" value="<?php echo Lang::txt('COM_INSTALLER_UPLOAD_AND_INSTALL'); ?>" onclick="Joomla.submitbutton()" />
+		</div>
+		<div class="clr"></div>
+	</fieldset>
 
-			<div class="input-wrap">
-				<label for="install_directory"><?php echo Lang::txt('COM_INSTALLER_INSTALL_DIRECTORY'); ?></label>
-				<input type="text" id="install_directory" name="install_directory" class="input_box" size="70" value="<?php echo $this->state->get('install.directory'); ?>" />
-			</div>
-			<div class="input-wrap">
-				<input type="button" class="button" value="<?php echo Lang::txt('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton3()" />
-			</div>
-			<div class="clr"></div>
-		</fieldset>
+	<fieldset class="adminform uploadform">
+		<legend><span><?php echo Lang::txt('COM_INSTALLER_INSTALL_FROM_DIRECTORY'); ?></span></legend>
 
-		<fieldset class="adminform uploadform">
-			<legend><span><?php echo Lang::txt('COM_INSTALLER_INSTALL_FROM_URL'); ?></span></legend>
+		<div class="input-wrap">
+			<label for="install_directory"><?php echo Lang::txt('COM_INSTALLER_INSTALL_DIRECTORY'); ?></label>
+			<input type="text" id="install_directory" name="install_directory" class="input_box" size="70" value="<?php echo $this->state->get('install.directory'); ?>" />
+		</div>
+		<div class="input-wrap">
+			<input type="button" class="button" value="<?php echo Lang::txt('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton3()" />
+		</div>
+		<div class="clr"></div>
+	</fieldset>
 
-			<div class="input-wrap">
-				<label for="install_url"><?php echo Lang::txt('COM_INSTALLER_INSTALL_URL'); ?></label>
-				<input type="text" id="install_url" name="install_url" class="input_box" size="70" value="http://" />
-			</div>
-			<div class="input-wrap">
-				<input type="button" class="button" value="<?php echo Lang::txt('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton4()" />
-			</div>
-		</fieldset>
+	<fieldset class="adminform uploadform">
+		<legend><span><?php echo Lang::txt('COM_INSTALLER_INSTALL_FROM_URL'); ?></span></legend>
 
-		<input type="hidden" name="type" value="" />
-		<input type="hidden" name="installtype" value="upload" />
+		<div class="input-wrap">
+			<label for="install_url"><?php echo Lang::txt('COM_INSTALLER_INSTALL_URL'); ?></label>
+			<input type="text" id="install_url" name="install_url" class="input_box" size="70" value="http://" />
+		</div>
+		<div class="input-wrap">
+			<input type="button" class="button" value="<?php echo Lang::txt('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton4()" />
+		</div>
+	</fieldset>
 
-		<input type="hidden" name="option" value="com_installer" />
-		<input type="hidden" name="controller" value="install" />
-		<input type="hidden" name="task" value="install" />
-		<?php echo Html::input('token'); ?>
-	</div>
+	<input type="hidden" name="type" value="" />
+	<input type="hidden" name="installtype" value="upload" />
+
+	<input type="hidden" name="option" value="com_installer" />
+	<input type="hidden" name="controller" value="install" />
+	<input type="hidden" name="task" value="install" />
+	<?php echo Html::input('token'); ?>
 </form>

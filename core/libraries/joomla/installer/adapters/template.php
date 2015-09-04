@@ -45,7 +45,10 @@ class JInstallerTemplate extends JAdapterInstance
 			$this->parent
 				->setPath(
 				'source',
-				($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/templates/' . $this->parent->extension->element
+				// [!] Hubzero - Change to install path
+				//     @TODO: Revert this when Hubzeor has its own installer
+				//($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/templates/' . $this->parent->extension->element
+				($this->parent->extension->protected ? PATH_CORE : PATH_APP) . '/templates/' . $this->parent->extension->element
 			);
 		}
 
@@ -62,7 +65,10 @@ class JInstallerTemplate extends JAdapterInstance
 
 		$extension = "tpl_$name";
 		$lang = JFactory::getLanguage();
-		$source = $path ? $path : ($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/templates/' . $name;
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$source = $path ? $path : ($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/templates/' . $name;
+		$source = $path ? $path : ($this->parent->extension->protected ? PATH_CORE : PATH_APP) . '/templates/' . $name;
 			$lang->load($extension . '.sys', $source, null, false, true)
 		||	$lang->load($extension . '.sys', constant('JPATH_' . strtoupper($client)), null, false, true);
 	}
@@ -92,14 +98,19 @@ class JInstallerTemplate extends JAdapterInstance
 				$this->parent->abort(JText::sprintf('JLIB_INSTALLER_ABORT_TPL_INSTALL_UNKNOWN_CLIENT', $cname));
 				return false;
 			}
-			$basePath = $client->path;
+			// [!] Hubzero - Change to install paths
+			//     @TODO: Revert this when Hubzeor has its own installer
+			$basePath = PATH_APP; //$client->path;
 			$clientId = $client->id;
 		}
 		else
 		{
 			// No client attribute was found so we assume the site as the client
 			$cname = 'site';
-			$basePath = JPATH_SITE;
+			// [!] Hubzero - Change to install paths
+			//     @TODO: Revert this when Hubzeor has its own installer
+			//$basePath = JPATH_SITE;
+			$basePath = PATH_APP;
 			$clientId = 0;
 		}
 
@@ -385,6 +396,10 @@ class JInstallerTemplate extends JAdapterInstance
 			return false;
 		}
 
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($row->protected ? PATH_CORE : PATH_APP);
+
 		$this->parent->setPath('extension_root', $client->path . '/templates/' . strtolower($name));
 		$this->parent->setPath('source', $this->parent->getPath('extension_root'));
 
@@ -443,8 +458,12 @@ class JInstallerTemplate extends JAdapterInstance
 	public function discover()
 	{
 		$results = array();
-		$site_list = JFolder::folders(JPATH_SITE . '/templates');
-		$admin_list = JFolder::folders(JPATH_ADMINISTRATOR . '/templates');
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$site_list = JFolder::folders(JPATH_SITE . '/templates');
+		//$admin_list = JFolder::folders(JPATH_ADMINISTRATOR . '/templates');
+		$site_list = JFolder::folders(PATH_APP . '/templates');
+		$admin_list = JFolder::folders(PATH_CORE . '/templates');
 		$site_info = JApplicationHelper::getClientInfo('site', true);
 		$admin_info = JApplicationHelper::getClientInfo('administrator', true);
 
@@ -456,10 +475,13 @@ class JInstallerTemplate extends JAdapterInstance
 
 				// Ignore special system template
 			}
-			$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . "/templates/$template/templateDetails.xml");
+			//$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . "/templates/$template/templateDetails.xml");
+			$manifest_details = JApplicationHelper::parseXMLInstallFile(PATH_APP . "/templates/$template/templateDetails.xml");
 			$extension = JTable::getInstance('extension');
 			$extension->set('type', 'template');
-			$extension->set('client_id', $site_info->id);
+			//$extension->set('client_id', $site_info->id);
+			$manifest = JFactory::getXML(PATH_APP . "/templates/$template/templateDetails.xml");
+			$extension->set('client_id', ($manifest->attributes()->client == 'administrator' ? $admin_info->id : $site_info->id));
 			$extension->set('element', $template);
 			$extension->set('name', $template);
 			$extension->set('state', -1);
@@ -476,10 +498,13 @@ class JInstallerTemplate extends JAdapterInstance
 				// Ignore special system template
 			}
 
-			$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR . "/templates/$template/templateDetails.xml");
+			//$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR . "/templates/$template/templateDetails.xml");
+			$manifest_details = JApplicationHelper::parseXMLInstallFile(PATH_CORE . "/templates/$template/templateDetails.xml");
 			$extension = JTable::getInstance('extension');
 			$extension->set('type', 'template');
-			$extension->set('client_id', $admin_info->id);
+			//$extension->set('client_id', $admin_info->id);
+			$manifest = JFactory::getXML(PATH_CORE . "/templates/$template/templateDetails.xml");
+			$extension->set('client_id', ($manifest->attributes()->client == 'administrator' ? $admin_info->id : $site_info->id));
 			$extension->set('element', $template);
 			$extension->set('name', $template);
 			$extension->set('state', -1);
@@ -503,6 +528,9 @@ class JInstallerTemplate extends JAdapterInstance
 		// Templates are one of the easiest
 		// If its not in the extensions table we just add it
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($this->parent->extension->protected ? PATH_CORE : PATH_APP);
 		$lang = JFactory::getLanguage();
 		$manifestPath = $client->path . '/templates/' . $this->parent->extension->element . '/templateDetails.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
@@ -579,6 +607,9 @@ class JInstallerTemplate extends JAdapterInstance
 	{
 		// Need to find to find where the XML file is since we don't store this normally.
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($this->parent->extension->protected ? PATH_CORE : PATH_APP);
 		$manifestPath = $client->path . '/templates/' . $this->parent->extension->element . '/templateDetails.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);

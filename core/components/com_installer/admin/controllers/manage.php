@@ -79,7 +79,7 @@ class Manage extends AdminController
 		}
 
 		//Check if there are no matching items
-		if (!count($this->items))
+		if (!count($this->view->items))
 		{
 			Notify::warning(Lang::txt('COM_INSTALLER_MSG_MANAGE_NOEXTENSION'));
 		}
@@ -145,7 +145,7 @@ class Manage extends AdminController
 			}
 		}
 
-		App::redirect(Route::url('index.php?option=com_installer&view=manage', false));
+		App::redirect(Route::url('index.php?option=com_installer&controller=manage', false));
 	}
 
 	/**
@@ -164,7 +164,7 @@ class Manage extends AdminController
 
 		\Hubzero\Utility\Arr::toInteger($eid, array());
 		$result = $model->remove($eid);
-		App::edirect(Route::url('index.php?option=com_installer&view=manage', false));
+		App::edirect(Route::url('index.php?option=com_installer&controller=manage', false));
 	}
 
 	/**
@@ -185,7 +185,7 @@ class Manage extends AdminController
 		\Hubzero\Utility\Arr::toInteger($uid, array());
 		$result = $model->refresh($uid);
 
-		App::redirect(Route::url('index.php?option=com_installer&view=manage', false));
+		App::redirect(Route::url('index.php?option=com_installer&controller=manage', false));
 	}
 
 	/**
@@ -212,7 +212,7 @@ class Manage extends AdminController
 					$compatibility->installed->version,
 					implode(', ', $compatibility->installed->value)
 				)
-				. '<br/>'
+				. '<br />'
 				. Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
 					$compatibility->available->version,
 					implode(', ', $compatibility->available->value)

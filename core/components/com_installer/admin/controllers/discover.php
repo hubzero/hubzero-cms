@@ -80,7 +80,7 @@ class Discover extends AdminController
 		$model->discover();
 
 		App::redirect(
-			Route::url('index.php?option=com_installer&view=discover', false)
+			Route::url('index.php?option=com_installer&controller=discover', false)
 		);
 	}
 
@@ -95,7 +95,7 @@ class Discover extends AdminController
 		$model->discover_install();
 
 		App::redirect(
-			Route::url('index.php?option=com_installer&view=discover', false)
+			Route::url('index.php?option=com_installer&controller=discover', false)
 		);
 	}
 
@@ -110,7 +110,7 @@ class Discover extends AdminController
 		$model->purge();
 
 		App::redirect(
-			Route::url('index.php?option=com_installer&view=discover', false),
+			Route::url('index.php?option=com_installer&controller=discover', false),
 			$model->_message
 		);
 	}

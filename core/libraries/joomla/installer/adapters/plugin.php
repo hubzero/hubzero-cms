@@ -80,7 +80,10 @@ class JInstallerPlugin extends JAdapterInstance
 		$source = $this->parent->getPath('source');
 		if (!$source)
 		{
-			$this->parent->setPath('source', JPATH_PLUGINS . '/' . $this->parent->extension->folder . '/' . $this->parent->extension->element);
+			// [!] Hubzero - Change to install path
+			//     @TODO: Revert this when Hubzeor has its own installer
+			//$this->parent->setPath('source', JPATH_PLUGINS . '/' . $this->parent->extension->folder . '/' . $this->parent->extension->element);
+			$this->parent->setPath('source', ($this->parent->extension->protected ? PATH_CORE : PATH_APP) . '/' . $this->parent->extension->folder . '/' . $this->parent->extension->element);
 		}
 		$this->manifest = $this->parent->getManifest();
 		$element = $this->manifest->files;
@@ -103,7 +106,10 @@ class JInstallerPlugin extends JAdapterInstance
 			{
 				$extension = "plg_${group}_${name}";
 				$lang = JFactory::getLanguage();
-				$source = $path ? $path : JPATH_PLUGINS . "/$group/$name";
+				// [!] Hubzero - Change to install path
+				//     @TODO: Revert this when Hubzeor has its own installer
+				//$source = $path ? $path : JPATH_PLUGINS . "/$group/$name";
+				$source = $path ? $path : ($this->parent->extension->protected ? PATH_CORE : PATH_APP) . "/plugins/$group/$name";
 				$folder = (string) $element->attributes()->folder;
 				if ($folder && file_exists("$path/$folder"))
 				{
@@ -171,7 +177,10 @@ class JInstallerPlugin extends JAdapterInstance
 		$group = (string) $xml->attributes()->group;
 		if (!empty($element) && !empty($group))
 		{
-			$this->parent->setPath('extension_root', JPATH_PLUGINS . '/' . $group . '/' . $element);
+			// [!] Hubzero - Change to install paths
+			//     @TODO: Revert this when Hubzeor has its own installer
+			//$this->parent->setPath('extension_root', JPATH_PLUGINS . '/' . $group . '/' . $element);
+			$this->parent->setPath('extension_root', PATH_APP . '/plugins/' . $group . '/' . $element);
 		}
 		else
 		{
@@ -555,16 +564,20 @@ class JInstallerPlugin extends JAdapterInstance
 			return false;
 		}
 
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$base = PATH_APP; //JPATH_PLUGINS
+
 		// Set the plugin root path
-		if (is_dir(JPATH_PLUGINS . '/' . $row->folder . '/' . $row->element))
+		if (is_dir($base . '/' . $row->folder . '/' . $row->element))
 		{
 			// Use 1.6 plugins
-			$this->parent->setPath('extension_root', JPATH_PLUGINS . '/' . $row->folder . '/' . $row->element);
+			$this->parent->setPath('extension_root', $base . '/' . $row->folder . '/' . $row->element);
 		}
 		else
 		{
 			// Use Legacy 1.5 plugins
-			$this->parent->setPath('extension_root', JPATH_PLUGINS . '/' . $row->folder);
+			$this->parent->setPath('extension_root', $base . '/' . $row->folder);
 		}
 
 		// Because 1.5 plugins don't have their own folders we cannot use the standard method of finding an installation manifest
@@ -601,8 +614,8 @@ class JInstallerPlugin extends JAdapterInstance
 		}
 
 		// Attempt to load the language file; might have uninstall strings
-		$this->parent->setPath('source', JPATH_PLUGINS . '/' . $row->folder . '/' . $row->element);
-		$this->loadLanguage(JPATH_PLUGINS . '/' . $row->folder . '/' . $row->element);
+		$this->parent->setPath('source', $base . '/' . $row->folder . '/' . $row->element);
+		$this->loadLanguage($base . '/' . $row->folder . '/' . $row->element);
 
 		// Installer Trigger Loading
 
@@ -713,15 +726,19 @@ class JInstallerPlugin extends JAdapterInstance
 	 */
 	public function discover()
 	{
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$base = PATH_APP; //JPATH_SITE
+
 		$results = array();
-		$folder_list = JFolder::folders(JPATH_SITE . '/plugins');
+		$folder_list = JFolder::folders($base . '/plugins');
 
 		foreach ($folder_list as $folder)
 		{
-			$file_list = JFolder::files(JPATH_SITE . '/plugins/' . $folder, '\.xml$');
+			$file_list = JFolder::files($base . '/plugins/' . $folder, '\.xml$');
 			foreach ($file_list as $file)
 			{
-				$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . '/plugins/' . $folder . '/' . $file);
+				$manifest_details = JApplicationHelper::parseXMLInstallFile($base . '/plugins/' . $folder . '/' . $file);
 				$file = JFile::stripExt($file);
 				// Ignore example plugins
 				if ($file == 'example')
@@ -739,14 +756,14 @@ class JInstallerPlugin extends JAdapterInstance
 				$extension->set('manifest_cache', json_encode($manifest_details));
 				$results[] = $extension;
 			}
-			$folder_list = JFolder::folders(JPATH_SITE . '/plugins/' . $folder);
+			$folder_list = JFolder::folders($base . '/plugins/' . $folder);
 			foreach ($folder_list as $plugin_folder)
 			{
-				$file_list = JFolder::files(JPATH_SITE . '/plugins/' . $folder . '/' . $plugin_folder, '\.xml$');
+				$file_list = JFolder::files($base . '/plugins/' . $folder . '/' . $plugin_folder, '\.xml$');
 				foreach ($file_list as $file)
 				{
 					$manifest_details = JApplicationHelper::parseXMLInstallFile(
-						JPATH_SITE . '/plugins/' . $folder . '/' . $plugin_folder . '/' . $file
+						$base . '/plugins/' . $folder . '/' . $plugin_folder . '/' . $file
 					);
 					$file = JFile::stripExt($file);
 
@@ -784,10 +801,12 @@ class JInstallerPlugin extends JAdapterInstance
 		// Similar to modules and templates, rather easy
 		// If it's not in the extensions table we just add it
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($this->parent->extension->protected ? PATH_CORE : PATH_APP);
 		if (is_dir($client->path . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element))
 		{
-			$manifestPath = $client->path . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element . '/'
-				. $this->parent->extension->element . '.xml';
+			$manifestPath = $client->path . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element . '/' . $this->parent->extension->element . '.xml';
 		}
 		else
 		{
@@ -834,8 +853,10 @@ class JInstallerPlugin extends JAdapterInstance
 		// Similar to modules and templates, rather easy
 		// If it's not in the extensions table we just add it
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
-		$manifestPath = $client->path . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element . '/'
-			. $this->parent->extension->element . '.xml';
+		// [!] Hubzero - Change to install paths
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = ($this->parent->extension->protected ? PATH_CORE : PATH_APP);
+		$manifestPath = $client->path . '/plugins/' . $this->parent->extension->folder . '/' . $this->parent->extension->element . '/' . $this->parent->extension->element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);
 		$manifest_details = JApplicationHelper::parseXMLInstallFile($this->parent->getPath('manifest'));

@@ -103,6 +103,7 @@ class Discover extends Extension
 			$key = implode(':', array($install->type, $install->element, $install->folder, $install->client_id));
 			$extensions[$key] = $install;
 		}
+
 		unset($installedtmp);
 
 		foreach ($results as $result)

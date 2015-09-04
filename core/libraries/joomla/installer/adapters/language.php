@@ -47,7 +47,10 @@ class JInstallerLanguage extends JAdapterInstance
 			$this->parent
 				->setPath(
 				'source',
-				($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/language/' . $this->parent->extension->element
+				// [!] Hubzero - Change to install path
+				//     @TODO: Revert this when Hubzeor has its own installer
+				//($this->parent->extension->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/language/' . $this->parent->extension->element
+				PATH_APP . '/bootstrap/' . ($this->parent->extension->client_id ? 'administrator' : 'site') . '/language/' . $this->parent->extension->element
 			);
 		}
 		$this->manifest = $this->parent->getManifest();
@@ -58,13 +61,17 @@ class JInstallerLanguage extends JAdapterInstance
 		{
 			JError::raiseWarning(42, JText::_('JLIB_INSTALLER_ERROR_DEPRECATED_FORMAT'));
 			$element = $this->manifest->site->files;
-			if (!$this->_install('site', JPATH_SITE, 0, $element))
+			//if (!$this->_install('site', JPATH_SITE, 0, $element))
+			if (!$this->_install('site', PATH_APP . '/bootstrap/site', 0, $element))
 			{
 				return false;
 			}
 
 			$element = $this->manifest->administration->files;
-			if (!$this->_install('administrator', JPATH_ADMINISTRATOR, 1, $element))
+			// [!] Hubzero - Change to install path
+			//     @TODO: Revert this when Hubzeor has its own installer
+			//if (!$this->_install('administrator', JPATH_ADMINISTRATOR, 1, $element))
+			if (!$this->_install('administrator', PATH_APP . '/bootstrap/administrator', 1, $element))
 			{
 				return false;
 			}
@@ -80,7 +87,9 @@ class JInstallerLanguage extends JAdapterInstance
 				$this->parent->abort(JText::sprintf('JLIB_INSTALLER_ABORT', JText::sprintf('JLIB_INSTALLER_ERROR_UNKNOWN_CLIENT_TYPE', $cname)));
 				return false;
 			}
-			$basePath = $client->path;
+			// [!] Hubzero - Change to install path
+			//     @TODO: Revert this when Hubzeor has its own installer
+			$basePath = PATH_APP . '/bootstrap/' . $client->name; //$client->path;
 			$clientId = $client->id;
 			$element = $this->manifest->files;
 
@@ -90,7 +99,9 @@ class JInstallerLanguage extends JAdapterInstance
 		{
 			// No client attribute was found so we assume the site as the client
 			$cname = 'site';
-			$basePath = JPATH_SITE;
+			// [!] Hubzero - Change to install path
+			//     @TODO: Revert this when Hubzeor has its own installer
+			$basePath = PATH_APP . '/bootstrap/site'; //JPATH_SITE;
 			$clientId = 0;
 			$element = $this->manifest->files;
 
@@ -314,7 +325,10 @@ class JInstallerLanguage extends JAdapterInstance
 			$this->parent->abort(JText::sprintf('JLIB_INSTALLER_ABORT', JText::sprintf('JLIB_INSTALLER_ERROR_UNKNOWN_CLIENT_TYPE', $cname)));
 			return false;
 		}
-		$basePath = $client->path;
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$basePath = $client->path;
+		$basePath = PATH_APP . '/bootstrap/' . $client->name;
 		$clientId = $client->id;
 
 		// Get the language name
@@ -486,6 +500,9 @@ class JInstallerLanguage extends JAdapterInstance
 		}
 
 		// Construct the path from the client, the language and the extension element name
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = PATH_APP . '/bootstrap/' . $client->name;
 		$path = $client->path . '/language/' . $element;
 
 		// Get the package manifest object and remove media
@@ -567,13 +584,19 @@ class JInstallerLanguage extends JAdapterInstance
 	public function discover()
 	{
 		$results = array();
-		$site_languages = JFolder::folders(JPATH_SITE . '/language');
-		$admin_languages = JFolder::folders(JPATH_ADMINISTRATOR . '/language');
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		//$site_languages = JFolder::folders(JPATH_SITE . '/language');
+		//$admin_languages = JFolder::folders(JPATH_ADMINISTRATOR . '/language');
+		$site_languages = JFolder::folders(PATH_APP . '/bootstrap/site/language');
+		$admin_languages = JFolder::folders(PATH_APP . '/bootstrap/administrator/language');
 		foreach ($site_languages as $language)
 		{
-			if (file_exists(JPATH_SITE . '/language/' . $language . '/' . $language . '.xml'))
+			//if (file_exists(JPATH_SITE . '/language/' . $language . '/' . $language . '.xml'))
+			if (file_exists(PATH_APP . '/bootstrap/site/language/' . $language . '/' . $language . '.xml'))
 			{
-				$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . '/language/' . $language . '/' . $language . '.xml');
+				//$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . '/language/' . $language . '/' . $language . '.xml');
+				$manifest_details = JApplicationHelper::parseXMLInstallFile(PATH_APP . '/bootstrap/site/language/' . $language . '/' . $language . '.xml');
 				$extension = JTable::getInstance('extension');
 				$extension->set('type', 'language');
 				$extension->set('client_id', 0);
@@ -586,9 +609,10 @@ class JInstallerLanguage extends JAdapterInstance
 		}
 		foreach ($admin_languages as $language)
 		{
-			if (file_exists(JPATH_ADMINISTRATOR . '/language/' . $language . '/' . $language . '.xml'))
+			//if (file_exists(JPATH_ADMINISTRATOR . '/language/' . $language . '/' . $language . '.xml'))
+			if (file_exists(PATH_APP . '/bootstrap/administrator/language/' . $language . '/' . $language . '.xml'))
 			{
-				$manifest_details = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR . '/language/' . $language . '/' . $language . '.xml');
+				$manifest_details = JApplicationHelper::parseXMLInstallFile(PATH_APP . '/bootstrap/administrator/language/' . $language . '/' . $language . '.xml');
 				$extension = JTable::getInstance('extension');
 				$extension->set('type', 'language');
 				$extension->set('client_id', 1);
@@ -614,6 +638,9 @@ class JInstallerLanguage extends JAdapterInstance
 	{
 		// Need to find to find where the XML file is since we don't store this normally
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = PATH_APP . '/bootstrap/' . $client->name;
 		$short_element = $this->parent->extension->element;
 		$manifestPath = $client->path . '/language/' . $short_element . '/' . $short_element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
@@ -648,6 +675,9 @@ class JInstallerLanguage extends JAdapterInstance
 	public function refreshManifestCache()
 	{
 		$client = JApplicationHelper::getClientInfo($this->parent->extension->client_id);
+		// [!] Hubzero - Change to install path
+		//     @TODO: Revert this when Hubzeor has its own installer
+		$client->path = PATH_APP . '/bootstrap/' . $client->name;
 		$manifestPath = $client->path . '/language/' . $this->parent->extension->element . '/' . $this->parent->extension->element . '.xml';
 		$this->parent->manifest = $this->parent->isManifest($manifestPath);
 		$this->parent->setPath('manifest', $manifestPath);
