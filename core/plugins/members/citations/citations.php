@@ -810,8 +810,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$include_coins = \Hubzero\Utility\Sanitize::clean(Request::getVar('include_coins', ''));
 			$coins_only = \Hubzero\Utility\Sanitize::clean(Request::getVar('coins_only', ''));
 			$citation_show_tags = \Hubzero\Utility\Sanitize::clean(Request::getVar('citations_show_tags', ''));
-			$citation_show_badges = \Hubzero\Utility\Sanitize::clean(Request::getVar('citation_show_badges', ''));
-
+			$citation_show_badges = \Hubzero\Utility\Sanitize::clean(Request::getVar('citations_show_badges', ''));
 
 			// set member citation parameters
 			$this->member->setParam('citationFormat', $citationFormatID);
