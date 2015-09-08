@@ -569,16 +569,15 @@ class Citation extends Relational
 	 * @param   object  $database  JDatabase
 	 * @return  string  HTML
 	 */
-	public static function badgeCloud()
+	public function badgeCloud()
 	{
 		$html = '';
-
 		$html = '<ul class="tags badges">';
 		foreach ($this->tags as $badge)
 		{
-			if ($tga->tagObject->label == "badge")
+			if ($badge->tagObject->label == "badge")
 			{
-				$html .= '<li><a href="#">' . stripslashes($badge['raw_tag']) . '</a></li>';
+				$html .= '<li><a href="#" class="tag">' . stripslashes($badge['raw_tag']) . '</a></li>';
 			}
 		}
 
