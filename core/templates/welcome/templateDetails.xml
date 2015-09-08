@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 	<name>Welcome</name>
 	<creationDate>2014</creationDate>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>http://hubzero.org/</authorUrl>
@@ -42,7 +42,7 @@
 					<option value="">TPL_WELCOME_FIELD_FLAVOR_NONE</option>
 					<option value="amazon">Amazon</option>
 				</field>
-				<field name="template" type="text" default="hubbasic2013" label="TPL_WELCOME_FIELD_TEMPLATE_LABEL" description="TPL_WELCOME_FIELD_TEMPLATE_DESC" />
+				<field name="template" type="text" default="kimera" label="TPL_WELCOME_FIELD_TEMPLATE_LABEL" description="TPL_WELCOME_FIELD_TEMPLATE_DESC" />
 			</fieldset>
 		</fields>
 	</config>

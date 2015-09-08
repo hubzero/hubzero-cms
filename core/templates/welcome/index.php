@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    HUBzero
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,9 +32,9 @@ defined('_HZEXEC_') or die();
 
 if (Request::getInt('getstarted', 0) && ($tpl = $this->params->get('template', '')))
 {
-	$fallback = 'hubbasic2013';
+	$fallback = 'kimera';
 
-	$database = JFactory::getDBO();
+	$database = App::get('db');
 
 	// Make the desired template exists
 	$database->setQuery("SELECT id FROM `#__template_styles` WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
@@ -74,7 +74,7 @@ $flavor = $this->params->get('flavor', false);
 		<link rel="stylesheet" href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/css/main.css" />
 
 		<!-- Scripts -->
-		<script type="text/javascript" src="<?php echo \Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
+		<script type="text/javascript" src="<?php echo Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/vendor/modernizr-2.6.2.min.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/vendor/skrollr.min.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/main.js"></script>
@@ -116,7 +116,7 @@ $flavor = $this->params->get('flavor', false);
 
 			<header>
 				<div class="inner">
-					<h1><?php echo Lang::txt('TPL_WELCOME_CONGRATS' . ($this->params->get('flavor') ? '_' . strtoupper($this->params->get('flavor')) : ''), \Hubzero\Version\Version::VERSION); ?></h1>
+					<h1><?php echo Lang::txt('TPL_WELCOME_CONGRATS' . ($this->params->get('flavor') ? '_' . strtoupper($this->params->get('flavor')) : ''), App::version()); ?></h1>
 
 					<div class="displays">
 						<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/screen-x2.png" class="display" alt="" />
@@ -289,7 +289,7 @@ $flavor = $this->params->get('flavor', false);
 								<div class="col txt">
 									<p><?php echo Lang::txt('TPL_WELCOME_CHANGE_PAGE_BODY', rtrim(Request::base(), '/') . '/gettingstarted'); ?></p>
 
-									<a href="<?php echo $this->baseurl; ?>/?getstarted=1" class="b"><?php echo Lang::txt('TPL_WELCOME_READY'); ?></a>
+									<a href="<?php echo rtrim(Request::base(), '/'); ?>/?getstarted=1" class="b"><?php echo Lang::txt('TPL_WELCOME_READY'); ?></a>
 								</div>
 							</div>
 						</div>
