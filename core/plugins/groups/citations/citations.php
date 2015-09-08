@@ -791,18 +791,40 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					}
 
 					// save the state
-					if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
-						&& $citation->scope_id == $this->group->get('gidNumber'))
+					if ($citation->scope == self::PLUGIN_SCOPE
+						&& $citation->scope_id == $this->group->get('gidNumber') && $citation->save())
 					{
 						array_push($published, $id);
 					}
 				}
+
+				if (!empty($published))
+				{
 					App::redirect(
 						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
 						Lang::txt($string),
 						'success'
 					);
 					return;
+				}
+				elseif ($citation->scope != self::PLUGIN_SCOPE)
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
+						'error'
+					);
+					return;
+				}
+				else
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
+						'error'
+					);
+					return;
+				}
 			}
 			else
 			{
@@ -870,56 +892,81 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 			}
 			// for bulk citations operation
-			elseif ((bool) $bulk)
+			elseif ((bool)$bulk)
 			{
-				/**
+				/***
 				 * @TODO move to API, possible use of whereIn()?
 				 ***/
-				$deleted  = array();
 
-					// when no selection has been made
-					if ($bulk == true && $citationIDs == '')
-					{
-						App::redirect(
-							Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-							Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
-							'warning'
-						);
-						return;
-					}
-					$citationIDs = explode(',',$citationIDs);
-
-					foreach ($citationIDs as $id)
-					{
-						$citation = \Components\Citations\Models\Citation::oneOrFail($id);
-						$citation->set('published', $citation::STATE_DELETED);
-
-						// update the record
-						if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
-						&& $citation->scope_id == $this->group->get('gidNumber'))
-						{
-							array_push($deleted, $id);
-						}
-					}
-
+				// when no selection has been made
+				if ($bulk == true && $citationIDs == '')
+				{
 					App::redirect(
 						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
+						Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
+						'warning'
+					);
+						return;
+					}
+
+				$deleted = array();
+				$citationIDs = explode(',',$citationIDs);
+				$string = 'PLG_GROUPS_CITATIONS_CITATION_DELETED';
+
+				// error, no such citation
+				foreach ($citationIDs as $id)
+				{
+					$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+
+					// toggle the state
+					$citation->set('published',  $citation::STATE_DELETED);
+
+					// save the state
+					if ($citation->scope == self::PLUGIN_SCOPE
+						&& $citation->scope_id == $this->group->get('gidNumber') && $citation->save())
+					{
+						array_push($deleted, $id);
+					}
+				}
+
+				if (!empty($deleted))
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt($string),
 						'success'
 					);
 					return;
-			 }
-			 else
-			 {
+				}
+				elseif ($citation->scope != self::PLUGIN_SCOPE)
+				{
 					App::redirect(
 						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
-						Lang::txt('PLG_GROUPS_CITATIONS_NO_SUCH_CITATION'),
+						Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
 						'error'
 					);
 					return;
 				}
-				 return;
-
+				else
+				{
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+						Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
+						'error'
+					);
+					return;
+				}
+			}
+			else
+			{
+				App::redirect(
+					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
+					Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
+					'error'
+				);
+				return;
+			}
 		} // end _delete()
 
 	/**
@@ -1390,11 +1437,25 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// if all filter is applied
 			if (array_key_exists('filter', $filters) && ($filters['filter'] == '' || $filters['filter'] == 'all'))
 			{
+				// get the ID's of the citations of members of the group
+				$memberCitations = \Components\Citations\Models\Citation::all()
+					->where('scope', '=', 'member')
+					->whereIn('scope_id', $members)
+					->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
+
+
+				// push them to an array
+				$memberCites = array();
+				foreach ($memberCitations as $mC)
+				{
+					array_push($memberCites, $mC->id);
+				}
+
+				// Get the group's citations plus member citations.
 				$citations
 					->where('scope', '=', self::PLUGIN_SCOPE)
 					->where('scope_id', '=', $scope_id)
-					->where('scope', '=', 'member')
-					->orWhereIn('scope_id', $members)
+					->orWhereIn('id', $memberCites)
 					->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
 			}
 			// if members excluisvely is shown
@@ -1403,21 +1464,36 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$citations
 					->where('scope', '=', 'member')
 					->whereIn('scope_id', $members)
-					->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
+					->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
 			}
 			// return members + group
 			else
 			{
+				// get the ID's of the citations of members of the group
+				$memberCitations = \Components\Citations\Models\Citation::all()
+					->where('scope', '=', 'member')
+					->whereIn('scope_id', $members)
+					->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
+
+
+				// push them to an array
+				$memberCites = array();
+				foreach ($memberCitations as $mC)
+				{
+					array_push($memberCites, $mC->id);
+				}
+
+				// Get the group's citations plus member citations.
 				$citations
 					->where('scope', '=', self::PLUGIN_SCOPE)
 					->where('scope_id', '=', $scope_id)
-					->where('scope', '=', 'member')
-					->orWhereIn('scope_id', $members)
+					->orWhereIn('id', $memberCites)
 					->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
 			}
 		} // end if $config->display == member
 		else
 		{
+			// display only group citations
 			$citations->where('scope', '=', self::PLUGIN_SCOPE);
 			$citations->where('scope_id', '=', $scope_id);
 			$citations->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
