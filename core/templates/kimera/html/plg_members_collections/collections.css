@@ -95,8 +95,13 @@
 		background: transparent;
 	}
 
-@media (min-width: 60em) {
+@media (min-width: 50em) {
 	ul.sub-menu {
 		margin: -30px -30px 30px -30px;
+	}
+}
+@media (min-width: 70em) {
+	ul.sub-menu {
+		margin: -30px -60px 30px -60px;
 	}
 }
