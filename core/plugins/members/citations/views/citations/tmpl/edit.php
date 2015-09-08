@@ -183,7 +183,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 									</span>
 									<span class="author-description">
 										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $this->escape($this->author->id); ?>" />
-										<a class="delete" data-id="<?php echo $this->escape($this->author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $this->author->id . '&' . JUtility::getToken() . '=1'); ?>">
+										<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" data-id="<?php echo $this->escape($this->author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $this->author->id . '&' . JUtility::getToken() . '=1'); ?>">
 											<?php echo Lang::txt('JDELETE'); ?>
 										</a>
 									</span>
