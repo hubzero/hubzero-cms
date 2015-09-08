@@ -196,7 +196,7 @@ if (isset($this->messages))
 									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="6"'; } ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
 										<?php	echo $cite->citationDetails($this->openurl); ?>
 										<?php if ($this->config->get('citations_show_badges', 'yes') == "yes"): ?>
-											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+										 	<?php echo $cite->badgeCloud(); ?>
 										 <?php endif; ?>
 										<?php if ($this->config->get('citations_show_tags', 'yes') == "yes"): ?>
 											<?php echo $cite->tagCloud(); ?>

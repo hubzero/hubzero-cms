@@ -219,6 +219,10 @@ if (isset($this->messages))
 										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>">
 											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
 										</a></td>
+									<?php else: ?>
+										<td class="col"></td>
+										<td class="col"></td>
+										<td class="col"></td>
 									<?php endif; ?>
 								</tr>
 								<tr>
