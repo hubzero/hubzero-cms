@@ -25,7 +25,6 @@ class Migration20131108091700ComBlog extends Base
 					CHANGE `publish_down` `publish_down` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00',
 					CHANGE `allow_comments` `allow_comments` TINYINT(2)  NOT NULL  DEFAULT '0',
 					CHANGE `hits` `hits` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `group_id` `group_id` INT(11)  NOT NULL  DEFAULT '0',
 					CHANGE `params` `params` TINYTEXT  NOT NULL,
 					CHANGE `scope` `scope` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `content` `content` TEXT  NOT NULL,
@@ -35,16 +34,23 @@ class Migration20131108091700ComBlog extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
+			if ($this->db->tableHasField('#__blog_entries', 'group_id'))
+			{
+				$query = "ALTER TABLE `#__blog_entries` CHANGE `group_id` `group_id` INT(11)  NOT NULL  DEFAULT '0';";
+				$this->db->setQuery($query);
+				$this->db->query();
+
+				if (!$this->db->tableHasKey('#__blog_entries', 'idx_group_id'))
+				{
+					$query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_group_id` (`group_id`);";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+			}
+
 			if (!$this->db->tableHasKey('#__blog_entries', 'idx_created_by'))
 			{
 				$query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_created_by` (`created_by`);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-
-			if (!$this->db->tableHasKey('#__blog_entries', 'idx_group_id'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_group_id` (`group_id`);";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
