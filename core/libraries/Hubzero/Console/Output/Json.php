@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,7 +40,7 @@ class Json extends Output
 	/**
 	 * Constructor - set mode
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function __construct()
 	{
@@ -52,10 +52,10 @@ class Json extends Output
 	/**
 	 * Render out stored output to command line
 	 *
-	 * @param  (bool) $newLine - whether or not to include new line with each response (really only applies to interactive output)
-	 * @return void
+	 * @param   bool  $newLine  Whether or not to include new line with each response (really only applies to interactive output)
+	 * @return  void
 	 **/
-	public function render($newLine=true)
+	public function render($newLine = true)
 	{
 		// Make sure there is something there
 		if (isset($this->response) && count($this->response) > 0)
@@ -70,12 +70,12 @@ class Json extends Output
 	/**
 	 * Add a new line to the output buffer (not actually a real php output buffer)
 	 *
-	 * @param  (string) $message - text of line
-	 * @param  (mixed)  $styles  - array of custom styles or string containing predefined term (see formatLine() for posibilities)
-	 * @param  (bool)   $newLine - whether or not line should end with a new line
-	 * @return (object) $this    - for method chaining
+	 * @param   string  $message  Text of line
+	 * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+	 * @param   bool    $newLine  Whether or not line should end with a new line
+	 * @return  $this
 	 **/
-	public function addLine($message, $styles=null, $newLine=true)
+	public function addLine($message, $styles = null, $newLine = true)
 	{
 		$styles  = null;
 		$newLine = true;

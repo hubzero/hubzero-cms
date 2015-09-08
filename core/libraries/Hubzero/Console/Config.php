@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,14 +41,14 @@ class Config
 	/**
 	 * Parsed config vars
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	private $config = null;
 
 	/**
 	 * Config file path
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $path = null;
 
@@ -57,7 +57,7 @@ class Config
 	 *
 	 * Parse for muse configuration file from user home directory
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function __construct()
 	{
@@ -78,7 +78,7 @@ class Config
 	/**
 	 * Creates a new instance of self
 	 *
-	 * @return self
+	 * @return  static
 	 **/
 	public static function getInstance()
 	{
@@ -95,11 +95,11 @@ class Config
 	/**
 	 * Gets the specified config var
 	 *
-	 * @param  string $key the key to fetch
-	 * @param  mixed  $default the default to return, should the key not exist
-	 * @return mixed
+	 * @param   string  $key      The key to fetch
+	 * @param   mixed   $default  The default to return, should the key not exist
+	 * @return  mixed
 	 **/
-	public static function get($key, $default=false)
+	public static function get($key, $default = false)
 	{
 		$instance = self::getInstance();
 
@@ -111,8 +111,8 @@ class Config
 	 *
 	 * Passed data will be merged with existing data.
 	 *
-	 * @param  array $data the data to save
-	 * @return bool
+	 * @param   array  $data  The data to save
+	 * @return  bool
 	 **/
 	public static function save($data)
 	{
@@ -134,7 +134,7 @@ class Config
 	/**
 	 * Writes the data to the configuration file
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function write()
 	{
@@ -149,9 +149,9 @@ class Config
 	 * differently.  Namely, if a nested array is not associative, we want it to append items
 	 * to it, rather than completely overwrite the value of the nested element.
 	 *
-	 * @param  array $existing the existing data
-	 * @param  array $incoming the new data
-	 * @return array
+	 * @param   array  $existing  The existing data
+	 * @param   array  $incoming  The new data
+	 * @return  array
 	 **/
 	private function merge($existing, $incoming)
 	{
@@ -180,8 +180,8 @@ class Config
 	/**
 	 * Multi-dimensional array_unique function
 	 *
-	 * @param  array $var the array to make unique
-	 * @return array
+	 * @param   array  $var  The array to make unique
+	 * @return  array
 	 **/
 	private function unique($var)
 	{

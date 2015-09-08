@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,7 +40,7 @@ class Output
 	/**
 	 * Array containing lines to be rendered out
 	 *
-	 * @var (array) response lines
+	 * @var  array
 	 **/
 	private $response = array();
 
@@ -51,7 +51,7 @@ class Output
 	 * set with setDefaultIndentation() to avoid having
 	 * to set on all calls to addLine().
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $defaultIndentation = '';
 
@@ -61,14 +61,14 @@ class Output
 	 * While in interactive mode, output each line as it's given
 	 * rather than pooling and waiting until render is called.
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $isInteractive = true;
 
 	/**
 	 * Whether or not to color output
 	 *
-	 * @var bool
+	 * @var  bool
 	 **/
 	private $colored = true;
 
@@ -78,17 +78,17 @@ class Output
 	 * Assume normal, but minimal and verbose are also options. This isn't setting the format, but it's allowing us to distinguish what
 	 * amount/sorts of data the command should return.  The individual format handler would then format the output appropriately.
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $mode = 'normal';
 
 	/**
 	 * Render out stored output to command line
 	 *
-	 * @param  (bool) $newLine - whether or not to include new line with each response (really only applies to interactive output)
-	 * @return void
+	 * @param   bool  $newLine  Whether or not to include new line with each response (really only applies to interactive output)
+	 * @return  void
 	 **/
-	public function render($newLine=true)
+	public function render($newLine = true)
 	{
 		// Make sure there is something there
 		if (isset($this->response) && count($this->response) > 0)
@@ -112,12 +112,12 @@ class Output
 	/**
 	 * Add a new line to the output buffer (not actually a real php output buffer)
 	 *
-	 * @param  (string) $message - text of line
-	 * @param  (mixed)  $styles  - array of custom styles or string containing predefined term (see formatLine() for posibilities)
-	 * @param  (bool)   $newLine - whether or not line should end with a new line
-	 * @return (object) $this    - for method chaining
+	 * @param   string  $message  Text of line
+	 * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+	 * @param   bool    $newLine  Whether or not line should end with a new line
+	 * @return  $this
 	 **/
-	public function addLine($message, $styles=null, $newLine=true)
+	public function addLine($message, $styles = null, $newLine = true)
 	{
 		$this->formatLine($message, $styles);
 
@@ -139,11 +139,11 @@ class Output
 	 * Main difference between this and addLine() is that this is a shortcut for not
 	 * including a new line at the end of the output
 	 *
-	 * @param  (string) $message - text of string
-	 * @param  (mixed)  $styles  - array of custom styles or string containing predefined term (see formatLine() for posibilities)
-	 * @return (object) $this    - for method chaining
+	 * @param   string  $message  Text of string
+	 * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+	 * @return  $this
 	 **/
-	public function addString($message, $styles=null)
+	public function addString($message, $styles = null)
 	{
 		$this->addLine($message, $styles, false);
 
@@ -154,11 +154,11 @@ class Output
 	 * Add a paragraph to the output buffer.
 	 * This will chop the text up to maintain lines of approximately 80 characters.
 	 *
-	 * @param  (string) $paragraph - text to be chopped into lines and stored
-	 * @param  (mixed)  $styles    - array of custom styles or string containing predefined term (see formatLine() for posibilities)
-	 * @return (object) $this      - for method chaining
+	 * @param   string  $paragraph  Text to be chopped into lines and stored
+	 * @param   mixed   $styles     Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+	 * @return  $this
 	 **/
-	public function addParagraph($paragraph, $styles=array())
+	public function addParagraph($paragraph, $styles = array())
 	{
 		// Sanitize the given text of new lines, double spaces, and tabs
 		$paragraph = str_replace("\n", " ", $paragraph);
@@ -190,8 +190,8 @@ class Output
 	/**
 	 * Add raw text to output buffer
 	 *
-	 * @param  (string) $text
-	 * @return (object) $this - for method chaining
+	 * @param   string  $text  The text to add
+	 * @return  $this
 	 **/
 	public function addRaw($text)
 	{
@@ -213,8 +213,8 @@ class Output
 	 * can also be provided with a message type, which translates to
 	 * one of the predefined styles used in formatLine().
 	 *
-	 * @param  (array) $lines - array of lines
-	 * @return void
+	 * @param   array  $lines  Array of lines to add
+	 * @return  void
 	 **/
 	public function addLinesFromArray($lines)
 	{
@@ -227,7 +227,7 @@ class Output
 	/**
 	 * Add a blank line to the output
 	 *
-	 * @return (object) $this - for method chaining
+	 * @return  $this
 	 **/
 	public function addSpacer()
 	{
@@ -239,7 +239,7 @@ class Output
 	/**
 	 * Send beep
 	 *
-	 * @return (object) $this - for method chaining
+	 * @return  $this
 	 **/
 	public function beep()
 	{
@@ -251,11 +251,11 @@ class Output
 	/**
 	 * Send backspace
 	 *
-	 * @param  (int)    $spaces      - number of spaces to back up
-	 * @param  (bool)   $destructive - whether or not to destroy existing chars
-	 * @return (object) $this        - for method chaining
+	 * @param   int    $spaces       Number of spaces to back up
+	 * @param   bool   $destructive  Whether or not to destroy existing chars
+	 * @return  $this
 	 **/
-	public function backspace($spaces=1, $destructive=false)
+	public function backspace($spaces = 1, $destructive = false)
 	{
 		echo chr(27) . "[" . (int)$spaces . "D";
 
@@ -275,8 +275,8 @@ class Output
 	/**
 	 * Get response from the user
 	 *
-	 * @param  (string) $prompt - question to ask user
-	 * @return $response
+	 * @param   string  $prompt  Question to ask user
+	 * @return  string
 	 **/
 	public function getResponse($prompt)
 	{
@@ -292,8 +292,8 @@ class Output
 	/**
 	 * Shortcut function to print an error, render the error, and halt execution
 	 *
-	 * @param  (string) $message - line of text used in error
-	 * @return void
+	 * @param   string  $message  Line of text used in error
+	 * @return  void
 	 **/
 	public function error($message)
 	{
@@ -306,8 +306,8 @@ class Output
 	 * Set the default indentation. This will be used unless an indentation is
 	 * explicitly given while adding a line.
 	 *
-	 * @param  (int) $indentation - intiger of number of spaces to indent lines
-	 * @return void
+	 * @param   int  $indentation  Intiger of number of spaces to indent lines
+	 * @return  void
 	 **/
 	public function setDefaultIndentation($indentation)
 	{
@@ -322,7 +322,7 @@ class Output
 	/**
 	 * Get our output subclass specialized for rendering help doc
 	 *
-	 * @return (object) $obj - new Help output class
+	 * @return  \Hubzero\Console\Output\Help
 	 **/
 	public function getHelpOutput()
 	{
@@ -334,8 +334,8 @@ class Output
 	/**
 	 * Get our output subclass specialized for a certain format
 	 *
-	 * @param  (string) $format
-	 * @return (object) $obj - new Help output class
+	 * @param   string  $format  The format to get
+	 * @return  object
 	 **/
 	public function getOutputFormatter($format)
 	{
@@ -354,7 +354,7 @@ class Output
 	/**
 	 * Get our output subclass specialized for rendering progress tracking
 	 *
-	 * @return (object) $obj - new Progress output class
+	 * @return  \Hubzero\Console\Output\Progress
 	 **/
 	public function getProgressOutput()
 	{
@@ -369,9 +369,9 @@ class Output
 	 * This will also translate textual colors and formatting words
 	 * to bash escape sequences.
 	 *
-	 * @param  (string) $message - raw line of text
-	 * @param  (mixed)  $styles  - string or array of styles
-	 * @return void
+	 * @param   string  $message  Raw line of text
+	 * @param   mixed   $styles   String or array of styles
+	 * @return  void
 	 **/
 	private function formatLine(&$message, $styles)
 	{
@@ -444,7 +444,7 @@ class Output
 	/**
 	 * Make output stream rather than pooled and dumped out at the end when render is called
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function makeInteractive()
 	{
@@ -454,7 +454,7 @@ class Output
 	/**
 	 * Make output pooled
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function makeNonInteractive()
 	{
@@ -464,7 +464,7 @@ class Output
 	/**
 	 * Check if output is streamed
 	 *
-	 * @return void
+	 * @return  bool
 	 **/
 	public function isInteractive()
 	{
@@ -474,7 +474,7 @@ class Output
 	/**
 	 * Set the output mode
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function setMode($mode)
 	{
@@ -484,7 +484,7 @@ class Output
 	/**
 	 * Get the output mode
 	 *
-	 * @return void
+	 * @return  string
 	 **/
 	public function getMode()
 	{
@@ -494,7 +494,7 @@ class Output
 	/**
 	 * Make output colored
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function makeColored()
 	{
@@ -504,7 +504,7 @@ class Output
 	/**
 	 * Make output b&w
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function makeUnColored()
 	{
@@ -514,8 +514,8 @@ class Output
 	/**
 	 * Simple translation table to map color words to bash equivalents
 	 *
-	 * @param  (string) $color - human readable color name
-	 * @return (string) $color - bash color number
+	 * @param   string  $color  Human readable color name
+	 * @return  string
 	 **/
 	private function translateColor($color)
 	{
@@ -536,8 +536,8 @@ class Output
 	/**
 	 * Simple translation table to map formatting key words to bash equivalents
 	 *
-	 * @param  (string) $format - human readable format name
-	 * @return (string) $format - bash format number
+	 * @param   string  $format  Human readable format name
+	 * @return  string
 	 **/
 	private function translateFormat($format)
 	{

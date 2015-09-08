@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,26 +40,26 @@ class Progress extends Output
 	/**
 	 * Track content length
 	 *
-	 * @var int
+	 * @var  int
 	 **/
 	private $contentLength = 0;
 
 	/**
 	 * Save initial message length
 	 *
-	 * @var int
+	 * @var  int
 	 **/
 	private $initMessageLength = 0;
 
 	/**
 	 * Initialize progress counter
 	 *
-	 * @param  (string) $initMessage - initial message
-	 * @param  (string) $type        - progress type
-	 * @param  (int)    $total       - total number of progress points
-	 * @return void
+	 * @param   string  $initMessage  Initial message
+	 * @param   string  $type         Progress type
+	 * @param   int     $total        Total number of progress points
+	 * @return  void
 	 **/
-	public function init($initMessage=null, $type='percentage', $total=null)
+	public function init($initMessage = null, $type = 'percentage', $total = null)
 	{
 		// Force interactivity of this class (this doesn't affect our primary output class)
 		$this->makeInteractive();
@@ -89,11 +89,11 @@ class Progress extends Output
 	/**
 	 * Set the current progress val
 	 *
-	 * @param  (int) $val - progress value
-	 * @param  (int) $tot - total value
-	 * @return void
+	 * @param   int  $val  Progress value
+	 * @param   int  $tot  Total value
+	 * @return  void
 	 **/
-	public function setProgress($val, $tot=null)
+	public function setProgress($val, $tot = null)
 	{
 		if ($this->contentLength > 0)
 		{
@@ -121,7 +121,7 @@ class Progress extends Output
 	/**
 	 * Finish progress output
 	 *
-	 * @return null
+	 * @return  void
 	 **/
 	public function done()
 	{
