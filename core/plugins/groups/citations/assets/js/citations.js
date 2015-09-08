@@ -94,7 +94,13 @@ jQuery(document).ready(function (jq) {
 		var url = $(this).attr('data-link');
 		url = url + '&citationIDs=' + citationIDs.join(',');
 
-		var locked = confirm('Are you sure you want to perform a bulk action?');
+		var textAction = $(this).text().toLowerCase().trim();
+		textAction = 'Are you sure you want to ' + textAction + '?';
+		
+		var url = $(this).attr('data-link');
+		url = url + '&citationIDs=' + citationIDs.join(',');
+
+		var locked = confirm(textAction.trim());
 		if (locked === true)
 		{
 			window.location = url;
