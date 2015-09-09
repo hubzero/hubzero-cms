@@ -195,8 +195,12 @@ class Collection extends Base
 			$result['created_by'] = User::get('id');
 		}
 		$this->bind($result);
+		if (!$this->check())
+		{
+			return false;
+		}
 
-		return $this->store();
+		return $this->store(false);
 	}
 
 	/**
