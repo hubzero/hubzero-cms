@@ -70,6 +70,9 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 			$content = $article;
 		}
 
+		$content = preg_replace('/^<!-- \{FORMAT:.*\} -->/i', '', $content);
+		$content = trim($content);
+
 		if (!$content) return;
 
 		// Get the detector manager
