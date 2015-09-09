@@ -227,7 +227,7 @@ jQuery(document).ready(function($) {
 
 	$('tfoot input').each(function(i) {
 		$(this).data('filter-value', '');
- 
+
 		if (dv_settings.show_filter_options) {
 			$(this).autocomplete({
 				disabled: true,
@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
 				title: res.title,
 				modal: true
 			}).find('.dv_image').lazyload();
-			
+
 		}
 	}
 
@@ -532,11 +532,12 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 
+		var params = [];
 		$(dv_table.fnGetNodes()).find('.' + id + ':checkbox:checked').each(function() {
-			url += $(this).val() + ',';
+			params.push('file:' + $(this).val());
 		});
 
-		url = url.slice(0, (url.length-1));
+		url += params.join('%0d%0a');
 
 		if (typeof pageTracker != 'undefined') {
 			pageTracker._trackEvent('Data viewer', 'Tools launch (multiple)', url);
@@ -794,9 +795,9 @@ jQuery(document).ready(function($) {
 				$('#dv_filters_tabs').append(filter_div);
 				$('#dv_filters_tabs ul').append(tpl_title.supplant({'id': i, 'name': dv_data.filters[i].filter_name}));
 			}
-			
+
 		}
-		
+
 		$('#dv_filters_tabs').tabs("refresh").tabs( 'option', "active", 0);
 
 
