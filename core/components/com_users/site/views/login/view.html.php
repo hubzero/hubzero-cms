@@ -129,6 +129,7 @@ class UsersViewLogin extends JViewLegacy
 		$this->multiAuth           = $multiAuth;
 		$this->return              = $return;
 		$this->authenticators      = $authenticators;
+		$this->totalauths          = count($plugins);
 		$this->remember_me_default = $remember_me_default;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
