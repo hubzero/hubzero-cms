@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,7 +41,7 @@ class Migration extends Base implements CommandInterface
 	/**
 	 * Default (required) command - just executes run
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -51,7 +51,9 @@ class Migration extends Base implements CommandInterface
 	/**
 	 * Run migration
 	 *
-	 * @return void
+	 * @museDescription  Runs pending migrations according to options provided
+	 *
+	 * @return  void
 	 **/
 	public function run()
 	{
@@ -328,7 +330,9 @@ class Migration extends Base implements CommandInterface
 	/**
 	 * Report migration run info
 	 *
-	 * @return void
+	 * @museDescription  Shows a history of previously run migrations
+	 *
+	 * @return  void
 	 **/
 	public function history()
 	{
@@ -382,7 +386,7 @@ class Migration extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
@@ -392,6 +396,7 @@ class Migration extends Base implements CommandInterface
 				'Run a migration. This includes searching for migration files,
 				depending on the options provided.'
 			)
+			->addTasks($this)
 			->addArgument(
 				'-d: direction [up|down]',
 				'If not specified, defaults to "up".',

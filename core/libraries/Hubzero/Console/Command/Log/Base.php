@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,21 +38,21 @@ class Base
 	/**
 	 * Fields available in this log and their default visibility
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected static $fields = array();
 
 	/**
 	 * If dates/times are present, how are they formatted
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected static $dateFormat = null;
 
 	/**
 	 * Check if given field is valid
 	 *
-	 * @return (bool)
+	 * @return  bool
 	 **/
 	public static function isField($field)
 	{
@@ -62,7 +62,7 @@ class Base
 	/**
 	 * Get date format string
 	 *
-	 * @return (string) $dateFormat
+	 * @return  string
 	 **/
 	public static function getDateFormat()
 	{
@@ -72,18 +72,18 @@ class Base
 	/**
 	 * Get log path
 	 *
-	 * @return (string) $path - log path
+	 * @return  string
 	 **/
 	public static function path()
 	{
-		return false;
+		return '';
 	}
 
 	/**
 	 * Show current output format
 	 *
-	 * @param  (object) $output - output object
-	 * @return void
+	 * @param   \Hubzero\Console\Output  $output  The output object
+	 * @return  void
 	 **/
 	public static function format($output)
 	{
@@ -125,9 +125,9 @@ class Base
 	/**
 	 * Toggle field visibility
 	 *
-	 * @return (bool)
+	 * @return  string|bool
 	 **/
-	public static function toggle($field, $status=null)
+	public static function toggle($field, $status = null)
 	{
 		// If we're toggling field based on position in array
 		if (strlen($field) == 1 && is_numeric($field))
@@ -205,10 +205,10 @@ class Base
 	/**
 	 * Parse log line
 	 *
-	 * @param  (string) $line     - log line
-	 * @param  (object) $output   - output object
-	 * @param  (array)  $settings - settings to honor
-	 * @return void
+	 * @param   string  $line      Log line
+	 * @param   object  $output    Output object
+	 * @param   array   $settings  Settings to honor
+	 * @return  void
 	 **/
 	public static function parse($line, $output, $settings)
 	{

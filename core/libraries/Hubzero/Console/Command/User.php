@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -44,7 +44,7 @@ class User extends Base implements CommandInterface
 	 *
 	 * Generates list of available commands and their respective tasks
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -54,7 +54,7 @@ class User extends Base implements CommandInterface
 	/**
 	 * Help doc for user command
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
@@ -69,9 +69,10 @@ class User extends Base implements CommandInterface
 	 * Merge two user accounts into one
 	 *
 	 * @TODO: middleware tables?
-	 * @museDescription Merges two users together, disabling the source user
 	 *
-	 * @return void
+	 * @museDescription  Merges two users together, disabling the source user
+	 *
+	 * @return  void
 	 **/
 	public function merge()
 	{
@@ -274,9 +275,9 @@ class User extends Base implements CommandInterface
 	/**
 	 * Reverse the merge process (via logs, not by mirroring the merge process)
 	 *
-	 * @museDescription Unmerges a previous merge, reenabling the source user
+	 * @museDescription  Unmerges a previous merge, reenabling the source user
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function unmerge()
 	{
@@ -396,9 +397,9 @@ class User extends Base implements CommandInterface
 	/**
 	 * Block a user (probably because of spamming)
 	 *
-	 * @museDescription Disables a user completely, without deleting
+	 * @museDescription  Disables a user completely, without deleting
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function disable()
 	{

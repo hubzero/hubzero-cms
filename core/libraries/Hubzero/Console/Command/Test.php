@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,7 +41,7 @@ class Test extends Base implements CommandInterface
 	/**
 	 * Default execute method
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -51,7 +51,9 @@ class Test extends Base implements CommandInterface
 	/**
 	 * Run the tests
 	 *
-	 * @return void
+	 * @museDescription  Runs available tests for the given extension
+	 *
+	 * @return  void
 	 **/
 	public function run()
 	{
@@ -114,7 +116,9 @@ class Test extends Base implements CommandInterface
 	/**
 	 * Lists the test suites available to run
 	 *
-	 * @return void
+	 * @museDescription  Shows a list of extensions with available tests
+	 *
+	 * @return  void
 	 **/
 	public function show()
 	{
@@ -148,7 +152,7 @@ class Test extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
@@ -158,6 +162,7 @@ class Test extends Base implements CommandInterface
 				'A custom PHPUnit testing wrapper. This helps with setting up the 
 				environment and allowing for specialized options related to testing.'
 			)
+			->addTasks($this)
 			->addArgument(
 				'extension',
 				'The first option to the "run" command should be a specific extension.
@@ -165,7 +170,9 @@ class Test extends Base implements CommandInterface
 				will search the provided extension for a directory titled "Test".  The
 				command will parse the provided extension, and expects a name in the format
 				of com_name, mod_name, plg_folder_element, or lib_name.  Libraries are
-				assumed to be in the Hubzero library folder.'
+				assumed to be in the Hubzero library folder.',
+				'',
+				true
 			);
 	}
 }

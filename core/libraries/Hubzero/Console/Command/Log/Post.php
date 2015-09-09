@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,7 +38,7 @@ class Post extends Base
 	/**
 	 * Fields available in this log and their default visibility
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	protected static $fields = array(
 		'timestamp' => true,
@@ -50,15 +50,14 @@ class Post extends Base
 	/**
 	 * If dates/times are present, how are they formatted
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	protected static $dateFormat = "Y-m-d\TH:i:s.uP";
 
 	/**
 	 * Parses
 	 *
-	 * @return void
-	 * @author 
+	 * @return  void
 	 **/
 	public static function parseData($value)
 	{
@@ -81,7 +80,7 @@ class Post extends Base
 	/**
 	 * Get log path
 	 *
-	 * @return (string) $path - log path
+	 * @return  string
 	 **/
 	public static function path()
 	{

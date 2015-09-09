@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,21 +41,21 @@ class Log extends Base implements CommandInterface
 	/**
 	 * Keep track of log class
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $log = null;
 
 	/**
 	 * Keep track of prompt character
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $promptChar = null;
 
 	/**
 	 * Default (required) command
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -65,7 +65,7 @@ class Log extends Base implements CommandInterface
 	/**
 	 * Follow a log
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function follow()
 	{
@@ -398,7 +398,7 @@ class Log extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
@@ -411,8 +411,8 @@ class Log extends Base implements CommandInterface
 	/**
 	 * Parse thresholds from user input to array
 	 *
-	 * @param  (string) $thresholds
-	 * @return (array)  $threshold
+	 * @param   string  $thresholds  The threshold input string to parse
+	 * @return  array
 	 **/
 	private function parseThresholds($thresholds)
 	{
@@ -451,7 +451,7 @@ class Log extends Base implements CommandInterface
 	/**
 	 * Print prompt character + space
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function printPrompt()
 	{
@@ -461,7 +461,7 @@ class Log extends Base implements CommandInterface
 	/**
 	 * Map date format keyword to php date format string
 	 *
-	 * @return (string) $format
+	 * @return  string
 	 **/
 	private function mapDateFormat($name)
 	{

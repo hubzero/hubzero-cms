@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,16 +43,16 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Repository management mechanism (i.e. git, packages, etc...)
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	private $mechanism;
 
 	/**
-	 * Constructor - sets output and arguments for use by command
+	 * Constructor - sets output mechanism and arguments for use by command
 	 *
-	 * @param  object - output renderer
-	 * @param  object - command arguments
-	 * @return void
+	 * @param   \Hubzero\Console\Output    $output     The ouput renderer
+	 * @param   \Hubzero\Console\Arguments $arguments  The command arguments
+	 * @return  void
 	 **/
 	public function __construct(Output $output, Arguments $arguments)
 	{
@@ -97,7 +97,7 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Default (required) command - just run check command
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -118,9 +118,9 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Check the current status of the repository
 	 *
-	 * @return void
-	 *
 	 * @museDescription  Checks the current status of the repository for upgrade eligibility
+	 *
+	 * @return  void
 	 **/
 	public function status()
 	{
@@ -187,10 +187,10 @@ class Repository extends Base implements CommandInterface
 
 	/**
 	 * Repository log
-	 *
-	 * @return void
-	 *
+	 * 
 	 * @museDescription  Shows the past and pending changelog for the repository
+	 *
+	 * @return  void
 	 **/
 	public function log()
 	{
@@ -250,9 +250,9 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Update the repository
 	 *
-	 * @return void
-	 *
 	 * @museDescription  Updates the repository, by default performing a dry run
+	 *
+	 * @return  void
 	 **/
 	public function update()
 	{
@@ -388,9 +388,9 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Rollback to last (or named) checkpoint
 	 *
-	 * @return void
-	 *
 	 * @museDescription  Rolls the repository back to the last checkpoint
+	 *
+	 * @return  void
 	 **/
 	public function rollback()
 	{
@@ -439,9 +439,9 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Do some repository cleanup
 	 *
-	 * @return void
-	 *
 	 * @museDescription  Performs cleanup operations including deleting automatic tags and stashes (if applicable)
+	 *
+	 * @return  void
 	 **/
 	public function clean()
 	{
@@ -495,9 +495,9 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Run syntax checker on changed files
 	 *
-	 * @return void
-	 *
 	 * @museDescription  Verifies the validity of the syntax of any pending changes
+	 *
+	 * @return  void
 	 **/
 	public function syntax()
 	{
@@ -601,7 +601,7 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{

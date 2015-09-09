@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,7 +43,7 @@ class Migration extends Scaffolding
 	/**
 	 * Construct new migration script
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function construct()
 	{
@@ -143,9 +143,9 @@ class Migration extends Scaffolding
 	/**
 	 * Simple helper function to check validity of provided extension name
 	 *
-	 * @param  string - extension name to evaluate
-	 * @param  string - base directory to examine
-	 * @return bool   - whether or not extension is valid
+	 * @param   string  $extension  Extension name to evaluate
+	 * @param   string  $base       Directory to examine
+	 * @return  bool
 	 **/
 	private function isValidExtension($extension, $base)
 	{
@@ -174,8 +174,8 @@ class Migration extends Scaffolding
 	/**
 	 * Get table creation string
 	 *
-	 * @param  (string) table name for which to retrieve create syntax
-	 * @return (string) table creation syntax
+	 * @param   string  $tableName  The table name for which to retrieve create syntax
+	 * @return  string
 	 **/
 	private function showCreateTable($tableName)
 	{
@@ -193,7 +193,7 @@ class Migration extends Scaffolding
 	/**
 	 * Help doc for migration scaffolding class
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{

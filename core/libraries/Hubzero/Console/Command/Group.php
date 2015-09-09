@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,16 +41,16 @@ class Group extends Base implements CommandInterface
 	/**
 	 * Group object
 	 *
-	 * @var object
+	 * @var  object
 	 **/
 	private $group;
 
 	/**
 	 * Constructor - sets output mechanism and arguments for use by command
 	 *
-	 * @param  object - output renderer
-	 * @param  object - command arguments
-	 * @return void
+	 * @param   \Hubzero\Console\Output    $output     The ouput renderer
+	 * @param   \Hubzero\Console\Arguments $arguments  The command arguments
+	 * @return  void
 	 **/
 	public function __construct(Output $output, Arguments $arguments)
 	{
@@ -98,7 +98,7 @@ class Group extends Base implements CommandInterface
 	/**
 	 * Default (required) command - just executes run
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -111,7 +111,7 @@ class Group extends Base implements CommandInterface
 	/**
 	 * Run super groups scaffolding
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function scaffolding()
 	{
@@ -134,7 +134,7 @@ class Group extends Base implements CommandInterface
 	/**
 	 * Run super groups migration
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function migrate()
 	{
@@ -146,7 +146,7 @@ class Group extends Base implements CommandInterface
 	/**
 	 * Update super group code
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function update()
 	{
@@ -168,7 +168,7 @@ class Group extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{

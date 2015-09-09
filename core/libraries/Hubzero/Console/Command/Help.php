@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -45,7 +45,7 @@ class Help extends Base implements CommandInterface
 	 *
 	 * Generates list of available commands and their respective tasks
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -79,7 +79,7 @@ class Help extends Base implements CommandInterface
 	 * Just call execute. Normally this would output our help text, but because this is the
 	 * help command, we don't need a separate help method.
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
@@ -89,7 +89,7 @@ class Help extends Base implements CommandInterface
 	/**
 	 * Parse the commands directory in search of available commands
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function processCommands()
 	{
@@ -110,10 +110,10 @@ class Help extends Base implements CommandInterface
 	/**
 	 * Helper to get files in commands directy. This is used to generate a list of commands.
 	 *
-	 * @param  (string) $dir - directory to search for commands
-	 * @return void
+	 * @param   string  $dir  The directory to search for commands
+	 * @return  void
 	 **/
-	private function getCommands($dir=null)
+	private function getCommands($dir = null)
 	{
 		$dir = (isset($dir)) ? $dir : __DIR__;
 
@@ -157,8 +157,8 @@ class Help extends Base implements CommandInterface
 	/**
 	 * Merge flat list of commands into dimensional array
 	 *
-	 * @param  (array) $commands - commands to parse
-	 * @return (array) $parsed   - parsed commands
+	 * @param   array  $commands  The commands to parse
+	 * @return  array
 	 **/
 	private function mergeCommands($commands)
 	{
@@ -195,12 +195,12 @@ class Help extends Base implements CommandInterface
 	/**
 	 * Output command entries
 	 *
-	 * @param  (mixed)  $entry - item(s) to output
-	 * @param  (int)    $ind   - indentation level
-	 * @param  (string) $path  - path to current entry
-	 * @return void
+	 * @param   mixed   $entry  Item(s) to output
+	 * @param   int     $ind    Indentation level
+	 * @param   string  $path   Path to current entry
+	 * @return  void
 	 **/
-	private function addEntries($entry, $ind=1, $path='')
+	private function addEntries($entry, $ind = 1, $path = '')
 	{
 		// If it's an array, loop through it
 		if (is_array($entry))

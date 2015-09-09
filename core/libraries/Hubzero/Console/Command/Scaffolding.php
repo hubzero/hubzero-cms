@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,37 +43,37 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Array of vars to replace in template
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $replacements = array();
 
 	/**
 	 * Array of template files to parse
 	 *
-	 * @var array
+	 * @var  array
 	 **/
 	private $templateFiles = array();
 
 	/**
 	 * The type of scaffolding item that we're making
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $type = false;
 
 	/**
 	 * Whether or not to look for template vars or just do a blind replacement
 	 *
-	 * @var bool
+	 * @var  bool
 	 **/
 	private $doBlindReplacements = false;
 
 	/**
 	 * Constructor - sets output mechanism and arguments for use by command
 	 *
-	 * @param  object - output renderer
-	 * @param  object - command arguments
-	 * @return void
+	 * @param   \Hubzero\Console\Output    $output     The ouput renderer
+	 * @param   \Hubzero\Console\Arguments $arguments  The command arguments
+	 * @return  void
 	 **/
 	public function __construct(Output $output, Arguments $arguments)
 	{
@@ -87,7 +87,7 @@ class Scaffolding extends Base implements CommandInterface
 	 *
 	 * Generates list of available commands and their respective tasks
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -97,7 +97,7 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Help doc for scaffolding command
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{
@@ -124,7 +124,7 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Create a new item from scaffolding templates
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function create()
 	{
@@ -183,7 +183,7 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Copy item and attempt to rename appropriatly
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function copy()
 	{
@@ -217,7 +217,7 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Get the type of template we're making
 	 *
-	 * @return (string) $type
+	 * @return  string
 	 **/
 	protected function getType()
 	{
@@ -227,7 +227,7 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Set blind replacement var
 	 *
-	 * @return (object) $this - for method chaining
+	 * @return  $this
 	 **/
 	protected function doBlindReplacements()
 	{
@@ -239,7 +239,7 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Make template
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	protected function make()
 	{
@@ -278,9 +278,9 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Add a new replacement for the template
 	 *
-	 * @param  (string) $key
-	 * @param  (string) $value
-	 * @return (object) $this - for method chaining
+	 * @param   string  $key    The replacement key
+	 * @param   string  $value  The replacement value
+	 * @return  $this
 	 **/
 	protected function addReplacement($key, $value)
 	{
@@ -292,12 +292,12 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Add a new template file
 	 *
-	 * @param  (string) $filename    - template filename
-	 * @param  (string) $destination - final location of template file after making
-	 * @param  (bool)   $fullPath    - true if full path is given
-	 * @return (object) $this        - for method chaining
+	 * @param   string  $filename     The template filename
+	 * @param   string  $destination  Final location of template file after making
+	 * @param   bool    $fullPath     True if full path is given
+	 * @return  $this
 	 **/
-	protected function addTemplateFile($filename, $destination, $fullPath=false)
+	protected function addTemplateFile($filename, $destination, $fullPath = false)
 	{
 		$this->templateFiles[] = array(
 			'path'        => ((!$fullPath) ? __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $filename : $filename),
@@ -310,8 +310,8 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Make replacements in a given content string
 	 *
-	 * @param  (string) $contents - incoming content
-	 * @return (string) $contents - outgoing content
+	 * @param   string  $contents  Incoming content
+	 * @return  string
 	 **/
 	private function doReplacements($contents)
 	{
@@ -413,9 +413,9 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Write contents out to file
 	 *
-	 * @param  (string) $path - location of file to put contents
-	 * @param  (string) $contents - contents to write to file
-	 * @return void
+	 * @param   string  $path      Location of file to put contents
+	 * @param   string  $contents  Contents to write to file
+	 * @return  void
 	 **/
 	private function putContents($path, $contents)
 	{
@@ -470,8 +470,8 @@ class Scaffolding extends Base implements CommandInterface
 	/**
 	 * Scan template folder for files to iterate through
 	 *
-	 * @param  (string) $path - path of folder to scan
-	 * @return void
+	 * @param   string  $path  Path of folder to scan
+	 * @return  void
 	 **/
 	private function scanFolder($path)
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -42,7 +42,7 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Default (required) command - just executes run
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function execute()
 	{
@@ -72,9 +72,9 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Add an entry to the extension table
 	 *
-	 * @museDescription Adds a new extension to the extensions table
+	 * @museDescription  Adds a new extension to the extensions table
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function add()
 	{
@@ -84,9 +84,9 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Delete an entry from the extension table
 	 *
-	 * @museDescription Deletes an existing entry from the extensions table
+	 * @museDescription  Deletes an existing entry from the extensions table
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function delete()
 	{
@@ -96,9 +96,9 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Install an extension
 	 *
-	 * @museDescription Installs an extension, adding it if it hasn't been already
+	 * @museDescription  Installs an extension, adding it if it hasn't been already
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function install()
 	{
@@ -108,9 +108,9 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Enable an extension
 	 *
-	 * @museDescription Enables an existing extension
+	 * @museDescription  Enables an existing extension
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function enable()
 	{
@@ -120,9 +120,9 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Disable an extension
 	 *
-	 * @museDescription Disables an existing extension
+	 * @museDescription  Disables an existing extension
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function disable()
 	{
@@ -132,8 +132,8 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Alter extension
 	 *
-	 * @param  string - method name
-	 * @return void
+	 * @param   string  $method  The method name
+	 * @return  void
 	 **/
 	private function alter($method)
 	{
@@ -276,7 +276,7 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Output help documentation
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function help()
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,39 +38,39 @@ class Git
 	/**
 	 * Root path of git repository
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $dir;
 
 	/**
 	 * Git working tree directory
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $workTree;
 
 	/**
 	 * Base command for all git calls
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $baseCmd;
 
 	/**
 	 * Get upstream branch name (when needing to compare master with upstream branch)
 	 *
-	 * @var string
+	 * @var  string
 	 **/
 	private $upstream = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param  string $root the git root directory (not including .git suffix)
-	 * @param  string $source the upstream repository
-	 * @return void
+	 * @param   string  $root    The git root directory (not including .git suffix)
+	 * @param   string  $source  The upstream repository
+	 * @return  void
 	 **/
-	public function __construct($root, $source=null)
+	public function __construct($root, $source = null)
 	{
 		$this->dir      = $root . DS . '.git';
 		$this->workTree = $root;
@@ -91,7 +91,7 @@ class Git
 	/**
 	 * Just return the name of this utility
 	 *
-	 * @return (string) - name of utility (as it would be displayed to the user)
+	 * @return  string
 	 **/
 	public function getName()
 	{
@@ -101,7 +101,7 @@ class Git
 	/**
 	 * Return the base path of the repository
 	 *
-	 * @return (string) - path
+	 * @return  string
 	 **/
 	public function getBasePath()
 	{
@@ -111,7 +111,7 @@ class Git
 	/**
 	 * Get the mechanisms version identifier
 	 *
-	 * @return (string) - version name
+	 * @return  string
 	 **/
 	public function getMechanismVersionName()
 	{
@@ -124,7 +124,7 @@ class Git
 	/**
 	 * Get the status of the repository
 	 *
-	 * @return (string) $response
+	 * @return  string
 	 **/
 	public function status()
 	{
@@ -194,16 +194,16 @@ class Git
 	/**
 	 * Get the log
 	 *
-	 * @param  (int)    $length    - number of entires to return
-	 * @param  (int)    $start     - commit number to start at
-	 * @param  (bool)   $upcoming  - whether or not to include upcoming commits in response
-	 * @param  (bool)   $installed - whether or not to include installed commits in response
-	 * @param  (string) $search    - filter by search string
-	 * @param  (string) $format    - format of response
-	 * @param  (bool)   $count     - return count of entires
-	 * @return (array)  $response
+	 * @param   int     $length     Number of entires to return
+	 * @param   int     $start      Commit number to start at
+	 * @param   bool    $upcoming   Whether or not to include upcoming commits in response
+	 * @param   bool    $installed  Whether or not to include installed commits in response
+	 * @param   string  $search     Filter by search string
+	 * @param   string  $format     Format of response
+	 * @param   bool    $count      Return count of entires
+	 * @return  array
 	 **/
-	public function log($length=null, $start=null, $upcoming=false, $installed=true, $search=null, $format='%an: %s', $count=false)
+	public function log($length = null, $start = null, $upcoming = false, $installed = true, $search = null, $format = '%an: %s', $count = false)
 	{
 		$args = array();
 
@@ -286,9 +286,12 @@ class Git
 	/**
 	 * Count log entries
 	 *
-	 * @return (int) count of logs
+	 * @param   bool    $installed  Whether or not to include installed entries
+	 * @param   bool    $upcoming   Whether or not to include upcoming entries
+	 * @param   string  $search     A search filter to apply
+	 * @return  int
 	 **/
-	private function countLogs($installed=true, $upcoming=false, $search=null)
+	private function countLogs($installed = true, $upcoming = false, $search = null)
 	{
 		$total     = 0;
 		$countArgs = array('--count');
@@ -322,12 +325,12 @@ class Git
 	/**
 	 * Pull the latest updates
 	 *
-	 * @param  (bool)   $dryRun     - whether or not to do the run, or just check what's incoming
-	 * @param  (bool)   $allowNonFf - whether or not to allow non fast forward pulls (i.e. merges)
-	 * @param  (string) $source     - where this repository should pull from (this should be a valid git remote/branch)
-	 * @return (string) $return     - response text to return
+	 * @param   bool    $dryRun      Whether or not to do the run, or just check what's incoming
+	 * @param   bool    $allowNonFf  Whether or not to allow non fast forward pulls (i.e. merges)
+	 * @param   string  $source      Where this repository should pull from (this should be a valid git remote/branch)
+	 * @return  string
 	 **/
-	public function update($dryRun=true, $allowNonFf=false, $source=null)
+	public function update($dryRun = true, $allowNonFf = false, $source = null)
 	{
 		if (!$dryRun)
 		{
@@ -434,12 +437,12 @@ class Git
 	/**
 	 * Pushes the local repository to the remote destination
 	 *
-	 * @param  string $ref       the ref to push from/to (the same name unless $remoteRef is provided)
-	 * @param  string $remote    the remote name to push to
-	 * @param  string $remoteRef the remote ref if it differs in name from the local one
-	 * @return mixed
+	 * @param   string  $ref        The ref to push from/to (the same name unless $remoteRef is provided)
+	 * @param   string  $remote     The remote name to push to
+	 * @param   string  $remoteRef  The remote ref if it differs in name from the local one
+	 * @return  array
 	 **/
-	public function push($ref='master', $remote='origin', $remoteRef=null)
+	public function push($ref = 'master', $remote = 'origin', $remoteRef = null)
 	{
 		$ref      = (isset($remoteRef)) ? $ref . ':' . $remoteRef : $ref;
 		$response = $this->call('push', array($remote, $ref));
@@ -468,7 +471,7 @@ class Git
 	/**
 	 * Create a rollback point for restoration in the event of a problem during the update
 	 *
-	 * @return (string) $response - response from tag method
+	 * @return  string
 	 **/
 	public function createRollbackPoint()
 	{
@@ -479,7 +482,7 @@ class Git
 	/**
 	 * Get the latest rollback point
 	 *
-	 * @return (string) $rollbackPoint
+	 * @return  string|bool
 	 **/
 	public function getRollbackPoint()
 	{
@@ -517,7 +520,7 @@ class Git
 	/**
 	 * Purge rollback points except for the latest
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function purgeRollbackPoints()
 	{
@@ -545,7 +548,7 @@ class Git
 	/**
 	 * Purge stashed changes
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	public function purgeStash()
 	{
@@ -555,8 +558,8 @@ class Git
 	/**
 	 * Perform rollback
 	 *
-	 * @param  (string) $rollbackPoint - tagname of rollback point
-	 * @return void
+	 * @param   string  $rollbackPoint  Tagname of rollback point
+	 * @return  bool
 	 **/
 	public function rollback($rollbackPoint)
 	{
@@ -577,7 +580,8 @@ class Git
 	/**
 	 * Create a tag
 	 *
-	 * @return (string) $response
+	 * @param   string  $tagname  The tag name to create
+	 * @return  string
 	 **/
 	public function tag($tagname)
 	{
@@ -589,7 +593,7 @@ class Git
 	/**
 	 * Check to see if the repo is clean, at least as far as this mechanism is concerned
 	 *
-	 * @return boolean
+	 * @return  bool
 	 **/
 	public function isClean()
 	{
@@ -614,7 +618,7 @@ class Git
 	/**
 	 * Stash local changes
 	 *
-	 * @return boolean
+	 * @return  bool
 	 **/
 	public function stash()
 	{
@@ -626,11 +630,11 @@ class Git
 	/**
 	 * Call a git command
 	 *
-	 * @param  (string) $cmd  - git command being called
-	 * @param  (array)  $args - arguments for the specific command
-	 * @return (string) $response - command response text
+	 * @param   string  $cmd   Git command being called
+	 * @param   array   $args  Arguments for the specific command
+	 * @return  string
 	 **/
-	private function call($cmd, $arguments=array())
+	private function call($cmd, $arguments = array())
 	{
 		$command  = "{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '') . ' 2>&1';
 		$response = shell_exec($command);
