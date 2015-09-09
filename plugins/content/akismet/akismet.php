@@ -69,6 +69,9 @@ class plgContentAkismet extends JPlugin
 			$content = $article;
 		}
 
+		$content = preg_replace('/^<!-- \{FORMAT:.*\} -->/i', '', $content);
+		$content = trim($content);
+
 		if (!$content) return;
 
 		if (!$this->params->get('apiKey')) return;
