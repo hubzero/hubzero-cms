@@ -187,8 +187,12 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 			$result['created_by'] = JFactory::getUser()->get('id');
 		}
 		$this->bind($result);
+		if (!$this->check())
+		{
+			return false;
+		}
 
-		return $this->store();
+		return $this->store(false);
 	}
 
 	/**
