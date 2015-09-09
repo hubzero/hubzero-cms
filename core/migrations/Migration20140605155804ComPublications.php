@@ -41,11 +41,9 @@ class Migration20140605155804ComPublications extends Base
 	 **/
 	public function down()
 	{
-		$queries = array();
-
 		if ($this->db->tableExists('#__publication_logs'))
 		{
-			$query = "DROP TABLE IF EXISTS `#__publication_curation_history`";
+			$query = "DROP TABLE IF EXISTS `#__publication_logs`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

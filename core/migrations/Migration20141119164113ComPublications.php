@@ -43,4 +43,38 @@ class Migration20141119164113ComPublications extends Base
 			}
 		}
 	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		if ($this->db->tableExists('#__publication_logs'))
+		{
+			if ($this->db->tableHasField('#__publication_logs', 'page_views_unfiltered'))
+			{
+				$query = "ALTER TABLE `#__publication_logs` DROP `page_views_unfiltered`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+			if ($this->db->tableHasField('#__publication_logs', 'primary_accesses_unfiltered'))
+			{
+				$query = "ALTER TABLE `#__publication_logs` DROP `primary_accesses_unfiltered`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+			if ($this->db->tableHasField('#__publication_logs', 'page_views_unique'))
+			{
+				$query = "ALTER TABLE `#__publication_logs` DROP `page_views_unique`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+			if ($this->db->tableHasField('#__publication_logs', 'primary_accesses_unique'))
+			{
+				$query = "ALTER TABLE `#__publication_logs` DROP `primary_accesses_unique`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
+	}
 }

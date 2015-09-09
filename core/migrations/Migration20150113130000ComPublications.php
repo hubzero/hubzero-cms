@@ -25,4 +25,20 @@ class Migration20150113130000ComPublications extends Base
 			}
 		}
 	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		if ($this->db->tableExists('#__publication_versions'))
+		{
+			if ($this->db->tableHasField('#__publication_versions', 'curator'))
+			{
+				$query = "ALTER TABLE `#__publication_versions` DROP `curator`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
+	}
 }

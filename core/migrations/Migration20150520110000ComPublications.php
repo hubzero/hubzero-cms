@@ -37,50 +37,79 @@ class Migration20150520110000ComPublications extends Base
 			// Add curation_version_id column
 			if (!$this->db->tableHasField('#__publication_versions', 'curation_version_id'))
 			{
-				$query = "ALTER TABLE `#__publication_versions` ADD COLUMN curation_version_id int(11)";
+				$query = "ALTER TABLE `#__publication_versions` ADD COLUMN `curation_version_id` int(11)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			// Get versions with saved curation
-			$query  = "SELECT DISTINCT(v.curation), t.id as type_id, t.curation as master_curation ";
-			$query .= " FROM `#__publication_versions` AS v ";
-			$query .= "JOIN `#__publications` AS p ON p.id = v.publication_id ";
-			$query .= "JOIN `#__publication_master_types` AS t ON t.id = p.master_type ";
-			$query .= "WHERE v.curation IS NOT NULL ";
-			$query .= "AND v.curation != '' ";
-			$query .= "AND v.accepted !='" . $this->db->getNullDate() . "' ";
-			$query .= "ORDER BY v.accepted ASC";
-
-			$this->db->setQuery($query);
-			$results = $this->db->loadObjectList();
-
-			if ($results && count($results) > 0)
+			if ($this->db->tableHasField('#__publication_versions', 'curation')
+			 && $this->db->tableHasField('#__publication_master_types', 'curation'))
 			{
-				$path = PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'curation.version.php';
-				include_once($path);
+				$query  = "SELECT DISTINCT(v.curation), t.id as type_id, t.curation as master_curation ";
+				$query .= "FROM `#__publication_versions` AS v ";
+				$query .= "JOIN `#__publications` AS p ON p.id = v.publication_id ";
+				$query .= "JOIN `#__publication_master_types` AS t ON t.id = p.master_type ";
+				$query .= "WHERE v.curation IS NOT NULL ";
+				$query .= "AND v.curation != '' ";
+				$query .= "AND v.accepted !='" . $this->db->getNullDate() . "' ";
+				$query .= "ORDER BY v.accepted ASC";
 
-				foreach ($results as $result)
+				$this->db->setQuery($query);
+				$results = $this->db->loadObjectList();
+
+				if ($results && count($results) > 0)
 				{
-					// Determine version number
-					$query = "SELECT MAX(version_number) FROM #__publication_curation_versions WHERE type_id=" . $this->db->Quote($result->type_id);
-					$this->db->setQuery($query);
-					$versionNumber = $this->db->loadResult();
-					$versionNumber = intval($versionNumber) + 1;
+					$path = PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'curation.version.php';
+					include_once($path);
 
-					$stq = new \Components\Publications\Tables\CurationVersion($this->db);
-					$stq->type_id         = $result->type_id;
-					$stq->created         = Date::toSql();
-					$stq->version_number  = $versionNumber;
-					$stq->curation        = $result->curation;
-
-					if ($stq->store())
+					foreach ($results as $result)
 					{
-						$query = "UPDATE `#__publication_versions` SET `curation_version_id`=" . ($stq->id) . " WHERE `curation`=" . $this->db->Quote($result->curation);
+						// Determine version number
+						$query = "SELECT MAX(version_number) FROM `#__publication_curation_versions` WHERE type_id=" . $this->db->quote($result->type_id);
 						$this->db->setQuery($query);
-						$this->db->query();
+						$versionNumber = $this->db->loadResult();
+						$versionNumber = intval($versionNumber) + 1;
+
+						$stq = new \Components\Publications\Tables\CurationVersion($this->db);
+						$stq->type_id         = $result->type_id;
+						$stq->created         = Date::toSql();
+						$stq->version_number  = $versionNumber;
+						$stq->curation        = $result->curation;
+
+						if ($stq->store())
+						{
+							$query = "UPDATE `#__publication_versions` SET `curation_version_id`=" . ($stq->id) . " WHERE `curation`=" . $this->db->quote($result->curation);
+							$this->db->setQuery($query);
+							$this->db->query();
+						}
 					}
 				}
+			}
+		}
+	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		// Create versions table
+		if ($this->db->tableExists('#__publication_curation_versions'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__publication_curation_versions`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__publication_versions'))
+		{
+			// Add curation_version_id column
+			if ($this->db->tableHasField('#__publication_versions', 'curation_version_id'))
+			{
+				$query = "ALTER TABLE `#__publication_versions` DROP `curation_version_id`";
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}

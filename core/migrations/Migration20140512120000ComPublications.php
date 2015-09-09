@@ -106,37 +106,37 @@ class Migration20140512120000ComPublications extends Base
 
 			$queries[] = "INSERT INTO `#__publication_handlers` (`id`,`name`, `label`, `title`, `status`, `about`, `params`)
 						  VALUES ('1','imageviewer','Image Viewer', 'Image Gallery Presenter', '1', '', '')";
+		}
 
-			// Add curation field
-			if (!$this->db->tableHasField('#__publication_versions', 'curation'))
-			{
-				$queries[] = "ALTER TABLE `#__publication_versions` ADD `curation` TEXT  NULL;";
-			}
-			// Add reviewed field
-			if (!$this->db->tableHasField('#__publication_versions', 'reviewed'))
-			{
-				$queries[] = "ALTER TABLE `#__publication_versions` ADD `reviewed` datetime NULL;";
-			}
-			// Add reviewed_by field
-			if (!$this->db->tableHasField('#__publication_versions', 'reviewed_by'))
-			{
-				$queries[] = "ALTER TABLE `#__publication_versions` ADD `reviewed_by` int(11);";
-			}
-			// Add curation field
-			if (!$this->db->tableHasField('#__publication_master_types', 'curation'))
-			{
-				$queries[] = "ALTER TABLE `#__publication_master_types` ADD `curation` TEXT  NULL;";
-			}
-			// Add curation group field
-			if (!$this->db->tableHasField('#__publication_master_types', 'curatorgroup'))
-			{
-				$queries[] = "ALTER TABLE `#__publication_master_types` ADD `curatorgroup` int(11);";
-			}
-			// Add element field
-			if (!$this->db->tableHasField('#__publication_attachments', 'element_id'))
-			{
-				$queries[] = "ALTER TABLE `#__publication_attachments` ADD `element_id` int(11) NOT NULL DEFAULT '0';";
-			}
+		// Add curation field
+		if (!$this->db->tableHasField('#__publication_versions', 'curation'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_versions` ADD `curation` TEXT  NULL;";
+		}
+		// Add reviewed field
+		if (!$this->db->tableHasField('#__publication_versions', 'reviewed'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_versions` ADD `reviewed` datetime NULL;";
+		}
+		// Add reviewed_by field
+		if (!$this->db->tableHasField('#__publication_versions', 'reviewed_by'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_versions` ADD `reviewed_by` int(11);";
+		}
+		// Add curation field
+		if (!$this->db->tableHasField('#__publication_master_types', 'curation'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_master_types` ADD `curation` TEXT  NULL;";
+		}
+		// Add curation group field
+		if (!$this->db->tableHasField('#__publication_master_types', 'curatorgroup'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_master_types` ADD `curatorgroup` int(11);";
+		}
+		// Add element field
+		if (!$this->db->tableHasField('#__publication_attachments', 'element_id'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_attachments` ADD `element_id` int(11) NOT NULL DEFAULT '0';";
 		}
 
 		// Run queries

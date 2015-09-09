@@ -25,4 +25,20 @@ class Migration20150518190000ComPublications extends Base
 			}
 		}
 	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		if ($this->db->tableExists('#__publication_ratings'))
+		{
+			if ($this->db->tableHasField('#__publication_ratings', 'state'))
+			{
+				$query = "ALTER TABLE `#__publication_ratings` DROP `state`";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
+	}
 }

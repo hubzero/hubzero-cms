@@ -45,6 +45,26 @@ class Migration20140515130000ComPublications extends Base
 	 **/
 	public function down()
 	{
+		$queries = array();
 
+		if ($this->db->tableHasField('#__publication_licenses', 'opensource'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_licenses` DROP `opensource`";
+		}
+		if ($this->db->tableHasField('#__publication_licenses', 'restriction'))
+		{
+			$queries[] = "ALTER TABLE `#__publication_licenses` DROP `restriction`";
+		}
+
+		// Run queries
+		if (count($queries) > 0)
+		{
+			// Run queries
+			foreach ($queries as $query)
+			{
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
 	}
 }

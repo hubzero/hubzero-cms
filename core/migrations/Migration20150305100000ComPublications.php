@@ -25,4 +25,20 @@ class Migration20150305100000ComPublications extends Base
 			}
 		}
 	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		if ($this->db->tableExists('#__publications'))
+		{
+			if ($this->db->tableHasField('#__publications', 'master_doi'))
+			{
+				$query = "ALTER TABLE `#__publications` DROP `master_doi`;";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+		}
+	}
 }
