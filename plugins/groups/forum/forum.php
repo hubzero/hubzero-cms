@@ -128,7 +128,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true), 'server'));
-				$this->setRedirect(
+				$this->redirect(
 					JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
 					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)),
 					'warning'
