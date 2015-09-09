@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,16 +24,12 @@
  *
  * @package	  hubzero-cms
  * @author	  Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license	  http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
-// Include model
-include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-	. DS . 'models' . DS . 'todo.php');
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Projects todo's
@@ -48,31 +44,29 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Component name
+	 * Store redirect URL
 	 *
-	 * @var  string
+	 * @var	   string
 	 */
-	protected $_option = 'com_projects';
+	protected $_referer = NULL;
 
 	/**
-	 * Store internal message
+	 * Store output message
 	 *
 	 * @var	   array
 	 */
-	protected $_msg = NULL;
+	protected $_message = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return	   array   Plugin name and title
 	 */
-	public function &onProjectAreas($alias = NULL)
+	public function &onProjectAreas()
 	{
 		$area = array(
-			'name'    => 'todo',
-			'title'   => Lang::txt('COM_PROJECTS_TAB_TODO'),
-			'submenu' => NULL,
-			'show'    => true
+			'name' => 'todo',
+			'title' => JText::_('COM_PROJECTS_TAB_TODO')
 		);
 
 		return $area;
@@ -81,19 +75,20 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param	   object  $model			Project
+	 * @param	   object  $project			Project
+	 * @param	   integer &$counts
 	 * @return	   array   integer
 	 */
-	public function &onProjectCount( $model, $admin = 0 )
+	public function &onProjectCount( $project, &$counts, $admin = 0 )
 	{
-		$database = App::get('db');
+		$database = JFactory::getDBO();
 
-		$objTD = new \Components\Projects\Tables\Todo( $database );
-		$counts['todo'] = $objTD->getTodos($model->get('id'), $filters = array('count' => 1));
+		$objTD = new ProjectTodo( $database );
+		$counts['todo'] = $objTD->getTodos($project->id, $filters = array('count' => 1));
 
 		if ($admin == 1)
 		{
-			$counts['todos_completed'] = $objTD->getTodos($model->get('id'), $filters = array(
+			$counts['todos_completed'] = $objTD->getTodos($project->id, $filters = array(
 				'count' => 1,
 				'state' => 1)
 			);
@@ -105,58 +100,80 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $model           Project model
+	 * @param	   object  $project			Project
+	 * @param	   string  $option			Component name
+	 * @param	   integer $authorized		Authorization
+	 * @param	   integer $uid				User ID
+	 * @param	   integer $msg				Message
+	 * @param	   integer $error			Error
 	 * @param	   string  $action			Plugin task
 	 * @param	   string  $areas			Plugins to return data
 	 * @return	   array   Return array of html
 	 */
-	public function onProject ( $model, $action = '', $areas = null )
+	public function onProject ( $project, $option, $authorized,
+		$uid, $msg = '', $error = '', $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'     =>'',
-			'metadata' =>''
+			'html'=>'',
+			'metadata'=>'',
+			'msg'=>'',
+			'referer'=>''
 		);
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ))
-		{
-			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
-			{
+		if (is_array( $areas )) {
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
 				return;
 			}
 		}
 
-		// Check that project exists
-		if (!$model->exists())
+		// Is the user authorized?
+		if (!$authorized && !$project->owner)
 		{
 			return $arr;
 		}
 
-		// Check authorization
-		if (!$model->access('member'))
+		// Do we have a project ID?
+		if (!is_object($project) or !$project->id )
 		{
 			return $arr;
 		}
+		else
+		{
+			$this->_project = $project;
+		}
 
-		// Model
-		$this->model = $model;
+		// Include model
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'todo.php');
+
+		// Get our model
+		$this->model = new ProjectModelTodo();
 
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Get our To do model
-			$this->todo = new \Components\Projects\Models\Todo();
-
 			// Set vars
-			$this->_task		= $action ? $action : Request::getVar('action','');
-			$this->_todoid		= Request::getInt('todoid', 0);
-			$this->_database	= App::get('db');
-			$this->_uid 		= User::get('id');
+			$this->_task		= $action ? $action : JRequest::getVar('action','');
+			$this->_todoid		= JRequest::getInt('todoid', 0);
+			$this->_database	= JFactory::getDBO();
+			$this->_option		= $option;
+			$this->_authorized	= $authorized;
+			$this->_msg			= $msg;
+			if ($error)
+			{
+				$this->setError( $error );
+			}
+			$this->_uid = $uid;
+			if (!$this->_uid)
+			{
+				$juser = JFactory::getUser();
+				$this->_uid = $juser->get('id');
+			}
 
 			switch ($this->_task)
 			{
@@ -177,79 +194,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Return data
+		$arr['referer'] = $this->_referer;
+		$arr['msg'] = $this->_message;
 		return $arr;
-	}
-
-	/**
-	 * Event call to get side content for main project page
-	 *
-	 * @return
-	 */
-	public function onProjectMiniList($model)
-	{
-		if (!$model->exists() || !$model->access('content'))
-		{
-			return false;
-		}
-
-		// Get our To do model
-		$this->todo = new \Components\Projects\Models\Todo();
-
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => 'todo',
-				'name'    => 'mini'
-			)
-		);
-
-		// Filters for returning results
-		$view->filters = array(
-			'projects'	 => array($model->get('id')),
-			'limit'      => $model->config()->get('sidebox_limit', 5),
-			'start'		 => 0,
-			'sortby'	 => 'due',
-			'sortdir'	 => 'ASC'
-		);
-
-		$view->items = $this->todo->entries('list', $view->filters);
-		$view->model = $model;
-		return $view->loadTemplate();
-	}
-
-	/**
-	 * To do in multiple projects (members/groups plugins)
-	 *
-	 * @param      array 	$filters    Query filters
-	 * @param      integer  $limit 		Number of entries
-	 *
-	 * @return     array
-	 */
-	public function onShared($area, $model, $projects, $uid, $filters)
-	{
-		// Check if our area is the one we want to return results for
-		if ($area != 'todo')
-		{
-			return;
-		}
-
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => 'todo',
-				'name'    => 'view',
-				'layout'  => 'shared'
-			)
-		);
-		$view->limit    = isset($filters['limit']) ? $filters['limit'] : 0;
-		$view->filters  = $filters;
-		$view->uid      = $uid;
-		$view->model    = $model;
-		$view->database = App::get('db');
-		$view->todo     = new \Components\Projects\Models\Todo();
-
-		return $view->loadTemplate();
 	}
 
 	/**
@@ -260,12 +207,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	public function page()
 	{
 		// Get default view from owner params
-		$mparams = new \Hubzero\Html\Parameter($this->model->member()->params);
-		$defaultView = $mparams->get('todo_layout', 'pinboard');
+		$owner_params = new JParameter( $this->_project->owner_params );
+		$defaultView = $owner_params->get('todo_layout', 'pinboard');
 
 		// Incoming
-		$layout = Request::getVar('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
-		$mine = isset($this->_mine) ? $this->_mine : Request::getInt('mine', 0);
+		$layout = JRequest::getVar('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
+		$mine = isset($this->_mine) ? $this->_mine : JRequest::getInt('mine', 0);
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -279,36 +226,42 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'projects'	 => array($this->model->get('id')),
-			'limit'		 => Request::getInt('limit', $this->params->get('limit', 50)),
-			'start'		 => Request::getInt('limitstart', 0),
-			'todolist'	 => Request::getWord('list', ''),
-			'state'		 => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
+			'projects'	 => array($this->_project->id),
+			'limit'		 => JRequest::getInt('limit', $this->params->get('limit', 50)),
+			'start'		 => JRequest::getInt('limitstart', 0),
+			'todolist'	 => JRequest::getVar('list', ''),
+			'state'		 => isset($this->_state) ? $this->_state : JRequest::getVar('state', 0),
 			'mine'		 => $mine,
 			'assignedto' => $mine == 1  ? $this->_uid : 0,
-			'sortby'	 => Request::getVar('sortby', 'priority'),
-			'sortdir'	 => Request::getVar('sortdir', 'ASC'),
+			'sortby'	 => JRequest::getVar('sortby', 'priority'),
+			'sortdir'	 => JRequest::getVar('sortdir', 'ASC'),
 			'layout'	 => $layout
 		);
 
 		$view->option		= $this->_option;
 		$view->database		= $this->_database;
-		$view->model		= $this->model;
+		$view->project		= $this->_project;
 		$view->uid			= $this->_uid;
 		$view->title		= $this->_area['title'];
-		$view->todo		    = $this->todo;
+		$view->model		= $this->model;
 
 		// Update view preference if changed
 		if ($layout != $defaultView)
 		{
-			$objO = $this->model->table('Owner');
+			$objO = new ProjectOwner( $this->_database );
 			$objO->saveParam(
-				$this->model->get('id'),
+				$this->_project->id,
 				$this->_uid,
 				$param = 'todo_layout', $layout
 			);
 		}
 
+		// Get messages and errors
+		$view->msg = $this->_msg;
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
 		return $view->loadTemplate();
 
 	}
@@ -321,15 +274,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	public function item()
 	{
 		// Incoming
-		$todoid = $this->_todoid ? $this->_todoid : Request::getInt('todoid', 0);
+		$todoid = $this->_todoid ? $this->_todoid : JRequest::getInt('todoid', 0);
 		$layout = ($this->_task == 'edit' || $this->_task == 'new') ? 'edit' : 'default';
-
-		// Check permission
-		if ($this->_task == 'edit' && !$this->model->access('content'))
-		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
-		}
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -340,13 +286,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->option = $this->option;
-		$view->todo   = $this->todo;
-		$view->params = $this->model->params;
 		$view->model  = $this->model;
+		$view->params = new JParameter($this->_project->params);
+		$view->project		= $this->_project;
 
 		// Get team members (to assign items to)
-		$objO = $this->model->table('Owner');
-		$view->team = $objO->getOwners($this->model->get('id'), $tfilters = array('status' => 1));
+		$objO = new ProjectOwner( $this->_database );
+		$view->team = $objO->getOwners($this->_project->id, $tfilters = array('status' => 1));
 
 		if (isset($this->entry) && is_object($this->entry))
 		{
@@ -354,7 +300,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->row = $this->todo->entry($todoid);
+			$view->row = $this->model->entry($todoid);
 		}
 
 		if (!$view->row->exists() && $this->_task != 'new')
@@ -363,19 +309,32 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Append breadcrumbs
-		Pathway::append(
-				stripslashes(\Hubzero\Utility\String::truncate($view->row->get('content'), 40)),
-				Route::url($this->model->link('todo')
-					. '&action=view&todoid=' . $todoid)
+		$app = JFactory::getApplication();
+		$pathway = $app->getPathway();
+		$pathway->addItem(
+				stripslashes($view->row->get('content')),
+				JRoute::_('index.php?option=' . $this->_option . a
+					. 'alias=' . $this->_project->alias . a . 'active=todo'
+					. a . 'action=view') . '/?todoid=' . $todoid
 		);
 
 		$view->uid			= $this->_uid;
 		$view->title		= $this->_area['title'];
-		$view->list			= Request::getVar('list', '');
-		$view->ajax			= Request::getVar('ajax', 0);
+		$view->list			= JRequest::getVar('list', '');
+		$view->ajax			= JRequest::getVar('ajax', 0);
 
+		// Get messages and errors
+		$view->msg = $this->_msg;
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
 		return $view->loadTemplate();
 	}
+
+	//----------------------------------------
+	// Processors
+	//----------------------------------------
 
 	/**
 	 * Save item
@@ -385,33 +344,26 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	public function save()
 	{
 		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+		JRequest::checkToken(array('get', 'post')) or jexit('Invalid Token');
 
 		// Incoming
-		$listcolor	= Request::getVar('list', '');
-		$content	= Request::getVar('content', '');
-		$todoid		= Request::getInt('todoid', 0);
-		$newlist	= Request::getVar('newlist', '', 'post');
-		$newcolor	= Request::getVar('newcolor', '', 'post');
-		$page		= Request::getVar('page', 'list', 'post');
-		$assigned	= Request::getInt('assigned', 0);
-		$mine		= Request::getInt('mine', 0);
-		$state		= Request::getInt('state', 0);
-		$ajax		= Request::getInt('ajax', 0);
+		$listcolor	= JRequest::getVar('list', '');
+		$content	= JRequest::getVar('content', '');
+		$todoid		= JRequest::getInt('todoid', 0);
+		$newlist	= JRequest::getVar('newlist', '', 'post');
+		$newcolor	= JRequest::getVar('newcolor', '', 'post');
+		$page		= JRequest::getVar('page', 'list', 'post');
+		$assigned	= JRequest::getInt('assigned', 0);
+		$mine		= JRequest::getInt('mine', 0);
+		$state		= JRequest::getInt('state', 0);
+		$ajax		= JRequest::getInt('ajax', 0);
 		$task		= $this->_task;
 
 		$new = 0;
 
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
-		}
-
 		// Check if assignee is owner
-		$objO = $this->model->table('Owner');
-		if ($assigned && !$objO->isOwner($assigned, $this->model->get('id')))
+		$objO = new ProjectOwner( $this->_database );
+		if ($assigned && !$objO->isOwner($assigned, $this->_project->id))
 		{
 			$assigned = 0;
 		}
@@ -421,14 +373,14 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate extended database class
-		$objTD = new \Components\Projects\Tables\Todo( $this->_database );
+		$objTD = new ProjectTodo( $this->_database );
 
 		// Load up todo if exists
-		if (!$objTD->loadTodo($this->model->get('id'), $todoid))
+		if (!$objTD->loadTodo($this->_project->id, $todoid))
 		{
 			$objTD->created_by	= $this->_uid;
-			$objTD->created		= Date::toSql();
-			$objTD->projectid	= $this->model->get('id');
+			$objTD->created		= JFactory::getDate()->toSql();
+			$objTD->projectid	= $this->_project->id;
 			$assigned			= $assigned;
 			$new				= 1;
 		}
@@ -440,7 +392,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Prevent resubmit
 		if ($task == 'save' && $content == '' && $newlist == '')
 		{
-			App::redirect($this->model->link('todo'));
+			$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
+			'alias='.$this->_project->alias . a . 'active=todo');
 			return;
 		}
 
@@ -448,13 +401,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if ($task == 'save' && $content != '')
 		{
 			$content			= rtrim(stripslashes($content));
+			$content            = \Hubzero\Utility\Sanitize::stripAll($content);
 			$objTD->content		= $content ? $content : $objTD->content;
-			$objTD->content		= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
 
 			// Save access under details
-			if (strlen($objTD->content) > 255)
+			if (strlen($content) > 255)
 			{
-				$objTD->details = $objTD->content;
+				$objTD->details = $content;
 			}
 			$objTD->content		= \Hubzero\Utility\String::truncate($objTD->content, 255);
 
@@ -463,7 +416,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objTD->state		= $state;
 
 			// Get due date
-			$due = trim(Request::getVar('due', ''));
+			$due = trim(JRequest::getVar('due', ''));
 
 			if ($due && $due!= 'mm/dd/yyyy')
 			{
@@ -486,13 +439,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						}
 						if (checkdate($month, $day, $year))
 						{
-							$objTD->duedate = Date::of(mktime(0, 0, 0, $month, $day, $year))->toSql();
+							$objTD->duedate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
 						}
 					}
 				}
 				else
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_WRONG_DATE_FORMAT'));
+					$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_WRONG_DATE_FORMAT'));
 				}
 			}
 			else
@@ -501,12 +454,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get last order
-			$lastorder = $objTD->getLastOrder($this->model->get('id'));
+			$lastorder = $objTD->getLastOrder($this->_project->id);
 			$neworder = $lastorder ? $lastorder + 1 : 1;
 			$objTD->priority = $todoid ? $objTD->priority : $neworder;
 
 			// Get list name
-			$objTD->todolist = $listcolor == 'none' ? NULL : $objTD->getListName($this->model->get('id'), $objTD->color);
+			$objTD->todolist = $listcolor == 'none' ? NULL : $objTD->getListName($this->_project->id, $objTD->color);
 
 			// Store content
 			if (!$objTD->store())
@@ -516,12 +469,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$this->_msg = $todoid
-					? Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
-					: Lang::txt('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
+					?  JText::_('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
+					: JText::_('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
 			}
 		}
 		// Assign todo
-		elseif ($task == 'assign')
+		else if ($task == 'assign')
 		{
 			$changed = $objTD->assigned_to == $assigned ? 0 : 1;
 			if ($changed)
@@ -537,8 +490,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$this->_msg = $mine
-						? Lang::txt('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO_MINE')
-						: Lang::txt('PLG_PROJECTS_TODO_TODO_REASSIGNED');
+						? JText::_('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO_MINE')
+						: JText::_('PLG_PROJECTS_TODO_TODO_REASSIGNED');
 				}
 			}
 		}
@@ -551,7 +504,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				$objTD->state = $state;
 				if ($state == 1)
 				{
-					$objTD->closed = Date::toSql();
+					$objTD->closed = JFactory::getDate()->toSql();
 					$objTD->closed_by = $this->_uid;
 				}
 				// Store content
@@ -562,17 +515,18 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$this->_msg = $state == 1
-						? Lang::txt('PLG_PROJECTS_TODO_TODO_MARKED_COMPLETED')
-						: Lang::txt('PLG_PROJECTS_TODO_TODO_MARKED_INCOMPLETE');
+						? JText::_('PLG_PROJECTS_TODO_TODO_MARKED_COMPLETED')
+						: JText::_('PLG_PROJECTS_TODO_TODO_MARKED_INCOMPLETE');
 
 					if ($state == 1)
 					{
 						// Record activity
-						$aid = $this->model->recordActivity(
-							Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to do',
-							Route::url('index.php?option=' . $this->_option
-								. '&alias=' . $this->model->get('alias') . '&active=todo'
-								. '&action=view&todoid=' . $objTD->id), 'todo', 1 );
+						$objAA = new ProjectActivity ( $this->_database );
+						$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
+							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to do',
+							JRoute::_('index.php?option=' . $this->_option . a .
+							'alias=' . $this->_project->alias . a . 'active=todo'. a .
+							'action=view') . '/?todoid=' . $objTD->id, 'todo', 1 );
 					}
 				}
 			}
@@ -583,12 +537,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		{
 			$new = 0;
 			$newlist = \Hubzero\Utility\Sanitize::stripAll(trim($newlist));
-			if (!$objTD->getListName($this->model->get('id'), $newcolor))
+			if (!$objTD->getListName($this->_project->id, $newcolor))
 			{
-				$objTD				= new \Components\Projects\Tables\Todo( $this->_database );
+				$objTD				= new ProjectTodo( $this->_database );
 				$objTD->created_by	= $this->_uid;
-				$objTD->created		= Date::toSql();
-				$objTD->projectid	= $this->model->get('id');
+				$objTD->created		= JFactory::getDate()->toSql();
+				$objTD->projectid	= $this->_project->id;
 				$objTD->content		= 'provisioned';
 				$objTD->state		= 2; // inactive
 				$objTD->todolist	= $newlist;
@@ -597,22 +551,23 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				// Store content
 				if (!$objTD->store())
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_ERROR_LIST_SAVE'));
+					$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_ERROR_LIST_SAVE'));
 				}
 				else {
-					$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
+					$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
 				}
 			}
 		}
 
 		// Record activity
+		$objAA = new ProjectActivity( $this->_database );
 		if ($new)
 		{
-			$aid = $this->model->recordActivity(
-				Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to do',
-				Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $this->model->get('alias') . '&active=todo'
-					. '&action=view&todoid=' . $objTD->id), 'todo', 1);
+			$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
+				JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to do',
+				JRoute::_('index.php?option=' . $this->_option . a .
+				'alias=' . $this->_project->alias . a . 'active=todo' . a .
+				'action=view') . '/?todoid=' . $objTD->id, 'todo', 1);
 			// Store activity ID
 			if ($aid)
 			{
@@ -621,17 +576,28 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Pass error or success message
+		if ($this->getError())
+		{
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+		}
+		elseif (isset($this->_msg) && $this->_msg)
+		{
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+		}
+
 		// Set redirect path
 		if ($page == 'item')
 		{
-			$url = Route::url('index.php?option=' . $this->_option
-					. '&alias='.$this->model->get('alias') . '&active=todo'
-					. '&action=view&todoid=' . $objTD->id);
+			$url = JRoute::_('index.php?option=' . $this->_option . a .
+				'alias='.$this->_project->alias . a . 'active=todo' . a .
+				'action=view') . '/?todoid=' . $objTD->id;
 		}
 		else
 		{
-			$url = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias') . '&active=todo&list=' . $objTD->color);
+			$url = JRoute::_('index.php?option=' . $this->_option . a .
+				'alias=' . $this->_project->alias . a . 'active=todo') .
+				'/?list=' . $objTD->color;
 		}
 
 		// Go to view
@@ -642,19 +608,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				? $this->item()
 				: $this->page();
 		}
-
-		// Pass error or success message
-		if ($this->getError())
+		else
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			$this->_referer = $url;
+			return; // redirect
 		}
-		elseif (!empty($this->_msg))
-		{
-			\Notify::message($this->_msg, 'success', 'projects');
-		}
-
-		// Redirect
-		App::redirect(Route::url($url));
 	}
 
 	/**
@@ -664,25 +622,18 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function delete()
 	{
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
-		}
-
 		// Incoming
 		$todoid = $this->_todoid;
-		$list = Request::getVar('dl', '');
+		$list = JRequest::getVar('dl', '');
 
 		$gobacklist = '';
 
 		// Load todo
-		$objTD = new \Components\Projects\Tables\Todo( $this->_database );
-		if ($todoid && $objTD->loadTodo($this->model->get('id'), $todoid))
+		$objTD = new ProjectTodo( $this->_database );
+		if ($todoid && $objTD->loadTodo($this->_project->id, $todoid))
 		{
 			// Get associated commenting activities
-			$objC = new \Components\Projects\Tables\Comment( $this->_database );
+			$objC = new ProjectComment( $this->_database );
 			$activities = $objC->collectActivities($todoid, "todo" );
 			$activities[] = $objTD->activityid;
 
@@ -690,9 +641,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$gobacklist = $objTD->color;
 
 			// Delete todo
-			if (!$objTD->deleteTodo($this->model->get('id'), $todoid))
+			if (!$objTD->deleteTodo($this->_project->id, $todoid))
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED_ERROR'));
+				$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_DELETED_ERROR'));
 			}
 			else
 			{
@@ -702,36 +653,36 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				// Delete all associated activities
 				foreach ($activities as $a)
 				{
-					$objAA = $this->model->table('Activity');
-					$objAA->loadActivity($a, $this->model->get('id'));
+					$objAA = new ProjectActivity( $this->_database );
+					$objAA->loadActivity($a, $this->_project->id);
 					$objAA->deleteActivity();
 				}
 
-				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED');
+				$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_DELETED');
 			}
 		}
-		elseif ($list && $objTD->getListName($this->model->get('id'), $list))
+		else if ($list && $objTD->getListName($this->_project->id, $list))
 		{
 			// Are we deleting a list?
-			$deleteall = Request::getInt('all', 0);
+			$deleteall = JRequest::getInt('all', 0);
 
 			if ($deleteall)
 			{
 				// Get all to-do's on list
-				$todos = $objTD->getTodos( $this->model->get('id'), $filters = array('todolist' => $list) );
+				$todos = $objTD->getTodos( $this->_project->id, $filters = array('todolist' => $list) );
 				if (count($todos) > 0)
 				{
 					foreach ($todos as $todo)
 					{
-						if ($objTD->loadTodo($this->model->get('id'), $todo->id))
+						if ($objTD->loadTodo($this->_project->id, $todo->id))
 						{
 							// Get associated commenting activities
-							$objC = new \Components\Projects\Tables\Comment( $this->_database );
+							$objC = new ProjectComment( $this->_database );
 							$activities = $objC->collectActivities($todo->id, "todo" );
 							$activities[] = $objTD->activityid;
 
 							// Delete todo
-							if ($objTD->deleteTodo($this->model->get('id'), $todo->id))
+							if ($objTD->deleteTodo($this->_project->id, $todo->id))
 							{
 								// Delete all associated comments
 								$comments = $objC->deleteComments( $todo->id, "todo" );
@@ -739,8 +690,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 								// Delete all associated activities
 								foreach ($activities as $a)
 								{
-									$objAA = new \Components\Projects\Tables\Activity( $this->_database );
-									$objAA->loadActivity( $a, $this->model->get('id') );
+									$objAA = new ProjectActivity( $this->_database );
+									$objAA->loadActivity( $a, $this->_project->id );
 									$objAA->deleteActivity();
 								}
 							}
@@ -750,24 +701,25 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// Clean-up colored items
-			$objTD->deleteList( $this->model->get('id'), $list );
-			$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
+			$objTD->deleteList( $this->_project->id, $list );
+			$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
 		}
 
-		// Pass error or success message
+		// Pass success or error message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
 		}
-		elseif (!empty($this->_msg))
+		elseif (isset($this->_msg) && $this->_msg)
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
 		// Redirect back to todo list
-		$url  = Route::url($this->model->link('todo'));
+		$url  = JRoute::_('index.php?option=' . $this->_option . a .
+			   'alias=' . $this->_project->alias . a . 'active=todo');
 		$url .= $gobacklist ? '?list=' . $gobacklist : '';
-		App::redirect($url);
+		$this->_referer = $url;
 		return;
 	}
 
@@ -778,25 +730,19 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function reorder()
 	{
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			return $this->page();
-		}
-
 		// AJAX
 		// Incoming
-		$newid = Request::getInt('newid', 0);
-		$oldid = Request::getInt('oldid', 0);
-		$items = Request::getVar( 'item', array());
+		$newid = JRequest::getInt('newid', 0);
+		$oldid = JRequest::getInt('oldid', 0);
+		$items = JRequest::getVar( 'item', array(), 'request', 'array' );
 
 		if ($newid && $oldid)
 		{
-			$objTD1 = new \Components\Projects\Tables\Todo( $this->_database );
-			$objTD1->loadTodo ($this->model->get('id'), $oldid);
+			$objTD1 = new ProjectTodo( $this->_database );
+			$objTD1->loadTodo ($this->_project->id, $oldid);
 
-			$objTD2 = new \Components\Projects\Tables\Todo( $this->_database );
-			$objTD2->loadTodo ($this->model->get('id'), $newid);
+			$objTD2 = new ProjectTodo( $this->_database );
+			$objTD2->loadTodo ($this->_project->id, $newid);
 
 			$priority1 = $objTD1->priority;
 			$priority2 = $objTD2->priority;
@@ -812,8 +758,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$o = 1;
 			foreach ($items as $item)
 			{
-				$objTD = new \Components\Projects\Tables\Todo( $this->_database );
-				$objTD->loadTodo ($this->model->get('id'), $item);
+				$objTD = new ProjectTodo( $this->_database );
+				$objTD->loadTodo ($this->_project->id, $item);
 				$objTD->priority = $o;
 				$objTD->store();
 				$o++;
@@ -824,6 +770,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		return $this->page();
 	}
 
+	//----------------------------------------
+	// Commenting
+	//----------------------------------------
+
 	/**
 	 * Delete comment
 	 *
@@ -831,19 +781,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _deleteComment()
 	{
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
-		}
-
 		// Incoming
-		$cid	= Request::getInt( 'cid', 0 );
+		$cid	= JRequest::getInt( 'cid', 0 );
 		$todoid = $this->_todoid;
 
 		// Instantiate comment
-		$objC = new \Components\Projects\Tables\Comment( $this->_database );
+		$objC = new ProjectComment( $this->_database );
 
 		if ($objC->load($cid))
 		{
@@ -852,11 +795,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			// delete comment
 			if ($objC->deleteComment())
 			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_DELETED');
+				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_DELETED');
 			}
 
 			// delete associated activity
-			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
+			$objAA = new ProjectActivity( $this->_database );
 			if ($activityid && $objAA->load($activityid))
 			{
 				$objAA->deleteActivity();
@@ -866,16 +809,19 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
 		}
-		elseif (!empty($this->_msg))
+		elseif (isset($this->_msg) && $this->_msg)
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
-		// Redirect
-		App::redirect(Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid));
+		// Set redirect path
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
+						  'alias=' . $this->_project->alias . a . 'active=todo' . a .
+						  'action=view') . '/?todoid='.$todoid;
 		return;
+
 	}
 
 	/**
@@ -886,19 +832,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	protected function _saveComment()
 	{
 		// Check for request forgeries
-		Request::checkToken();
-
-		// Check permission
-		if (!$this->model->access('content'))
-		{
-			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
-			return;
-		}
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$itemid = Request::getInt( 'itemid', 0, 'post' );
-		$comment = trim(Request::getVar( 'comment', '', 'post' ));
-		$parent_activity = Request::getInt( 'parent_activity', 0, 'post' );
+		$itemid = JRequest::getInt( 'itemid', 0, 'post' );
+		$comment = trim(JRequest::getVar( 'comment', '', 'post' ));
+		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
 
 		// Clean-up
 		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
@@ -906,14 +845,14 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$comment = \Hubzero\Utility\String::truncate($comment, 800);
 
 		// Instantiate comment
-		$objC = new \Components\Projects\Tables\Comment( $this->_database );
+		$objC = new ProjectComment( $this->_database );
 		if ($comment)
 		{
 			$objC->itemid          = $itemid;
 			$objC->tbl             = 'todo';
 			$objC->parent_activity = $parent_activity;
 			$objC->comment         = $comment;
-			$objC->created         = Date::toSql();
+			$objC->created         = JFactory::getDate()->toSql();
 			$objC->created_by      = $this->_uid;
 			if (!$objC->store())
 			{
@@ -921,7 +860,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_POSTED');
+				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_POSTED');
 			}
 			// Get new entry ID
 			if (!$objC->id)
@@ -930,12 +869,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
+			$objAA = new ProjectActivity( $this->_database );
 			if ($objC->id )
 			{
-				$what = Lang::txt('COM_PROJECTS_TODO_ITEM');
-				$url  = Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid);
-				$aid  = $this->model->recordActivity(
-					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
+				$what = JText::_('PLG_PROJECTS_TODO_TODO_ITEM');
+				$url = '#tr_'.$parent_activity; // same-page link
+				$aid = $objAA->recordActivity( $this->_project->id,
+					$this->_uid, JText::_('PLG_PROJECTS_TODO_COMMENTED').' '.JText::_('PLG_PROJECTS_TODO_ON').' '.$what,
 					$objC->id, $what, $url, 'quote', 0 );
 			}
 
@@ -950,15 +890,17 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Pass error or success message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
 		}
-		elseif (!empty($this->_msg))
+		elseif (isset($this->_msg) && $this->_msg)
 		{
-			\Notify::message($this->_msg, 'success', 'projects');
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
-		// Redirect
-		App::redirect(Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid));
+		// Set redirect path
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
+						 'alias=' . $this->_project->alias . a . 'active=todo' . a .
+						 'action=view') . '/?todoid=' . $itemid;
 		return;
 	}
 }
