@@ -1,0 +1,17 @@
+@import url("../../../../../core/components/com_projects/site/assets/css/features.css");
+
+#feature-section {
+	background: #f9f9f9;
+}
+.feature {
+	margin: 0;
+	border: none;
+}
+.feature>.grid>.span6 {
+	border: none;
+	background: transparent;
+}
+.feature p.ima {
+	width: 4.5em;
+	height: 4.5em;
+}
