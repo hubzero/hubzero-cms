@@ -370,7 +370,7 @@ class Structures_BibTex
 			if (sizeof($cites) != sizeof($unique)) { //Some values have not been unique!
 				$notuniques = array();
 				for ($i = 0; $i < sizeof($cites); $i++) {
-					if ('' == $unique[$i]) {
+					if (isset($unique[$i]) && '' == $unique[$i]) {
 						$notuniques[] = $cites[$i];
 					}
 				}
