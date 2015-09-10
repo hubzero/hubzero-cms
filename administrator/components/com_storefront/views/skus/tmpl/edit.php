@@ -53,6 +53,8 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo JFactory::getEditor()->save('text'); ?>
+
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
 		alert("<?php echo 'Title cannot be empty' ?>");

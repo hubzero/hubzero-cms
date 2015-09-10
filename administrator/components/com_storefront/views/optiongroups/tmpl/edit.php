@@ -48,19 +48,11 @@ JToolBarHelper::cancel();
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	if (pressbutton =='resethits') {
-		if (confirm("<?php echo JText::_('COM_STOREFRONT_RESET_HITS_WARNING'); ?>")){
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
-
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
+	<?php echo JFactory::getEditor()->save('text'); ?>
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){

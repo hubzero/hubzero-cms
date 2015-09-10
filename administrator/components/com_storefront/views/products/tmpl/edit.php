@@ -53,6 +53,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
+	<?php echo JFactory::getEditor()->save('text'); ?>
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
