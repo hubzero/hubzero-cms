@@ -52,7 +52,7 @@ class Application extends Container
 	 *
 	 * @var  string
 	 */
-	const VERSION = '2.0.0-dev';
+	const VERSION = '2.0.0';
 
 	/**
 	 * Indicates if the application has "booted".
