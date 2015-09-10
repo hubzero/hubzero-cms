@@ -106,7 +106,7 @@ smaller area with "overflow: scroll" enabled?
 		dockTemplate: '<div></div>',
 		dockCss: {
 			position: 'fixed',
-			top: '30%',
+			top: '115px',
 			right: '50%',
 			//width: '30em',
 			zIndex: 50000
