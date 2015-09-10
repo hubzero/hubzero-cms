@@ -1,4 +1,3 @@
-/*@import url("../../../../../core/components/com_groups/site/assets/css/groups.css");*/
 
 /* Intro */
 	#introduction:after {
@@ -315,6 +314,25 @@
 		right: 1em;
 		top: 0.75em;
 		margin: 0;
+	}
+	#page_menu li.protected {
+		-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=90)";
+		filter: alpha(opacity=90);
+		opacity: 0.9;
+	}
+	#page_menu li.protected:after {
+		content: "\f023";
+		position: absolute;
+		right: 1em;
+		top: 0.6em;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
+		font-family: 'Fontcons';
+		color: #999;
+		-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=90)";
+		filter: alpha(opacity=90);
+		opacity: 0.9;
 	}
 	#page_menu li .meta .count {
 		background: #555;
@@ -1274,7 +1292,7 @@
 		min-width: 285px;
 	}
 	#page_menu li a,
-	#page_menu li span {
+	#page_menu li span.disabled {
 		padding: 0.75em 2em 0.75em 6.5em;
 	}
 	#page_menu li a:before,
@@ -1291,9 +1309,6 @@
 	#page_identity img {
 		max-width: 285px;
 	}
-	/*#page_identity {
-		margin: 30px 60px 0px 60px;
-	}*/
 	#page_header {
 		padding: 30px 60px;
 	}
