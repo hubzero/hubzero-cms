@@ -135,14 +135,6 @@ class File extends Object
 
 		$this->name = $name;
 
-		if (strstr($this->name, '.'))
-		{
-			if (strtolower(substr($name, strrpos($name, '.') + 1)) == $this->type)
-			{
-				$this->name = preg_replace('/\.[^.]*$/', '', $this->name);
-			}
-		}
-
 		if (substr($this->name, 0, strlen('http')) == 'http'
 		 || substr($this->name, 0, strlen('://')) == '://'
 		 || substr($this->name, 0, strlen('//')) == '//')
@@ -150,6 +142,14 @@ class File extends Object
 			$this->kind = 'external';
 			$this->paths['source'] = $this->name;
 			$this->paths['target'] = $this->name;
+		}
+
+		if (strstr($this->name, '.'))
+		{
+			if (strtolower(substr($name, strrpos($name, '.') + 1)) == $this->type)
+			{
+				$this->name = preg_replace('/\.[^.]*$/', '', $this->name);
+			}
 		}
 
 		$this->directory = $this->dir($this->name, $this->type());
