@@ -49,8 +49,7 @@ $this->css('tools.css');
 	</nav>
 <?php } ?>
 
-
-<section class="main section<?php if ($this->config->get('access-manage-session') && $this->active == 'all') { echo ' hide'; } else { echo ''; }?>" id="mysessions-section">
+<section class="main section<?php if (!$this->config->get('access-manage-session') && $this->active == 'all') { echo ' hide'; } else { echo ''; }?>" id="mysessions-section">
 	<p class="warning"><?php echo JText::_('COM_TOOLS_ERROR_QUOTAEXCEEDED'); ?></p>
 	<table class="sessions">
 		<thead>
