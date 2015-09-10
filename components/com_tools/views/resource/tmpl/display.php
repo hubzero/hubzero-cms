@@ -80,7 +80,7 @@ $this->css('resource.css')
 		<?php if ($this->step !=1 ) { ?>
 			<span style="float:left"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
 		<?php } ?>
-			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
+			<span style="float:right;"><input type="submit" value="<?php echo ucfirst(JText::_('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>
 
@@ -129,7 +129,7 @@ $this->css('resource.css')
 		<?php if ($this->step != 1) { ?>
 			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
 		<?php } ?>
-			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
+			<span style="float:right"><input type="submit" value="<?php echo ucfirst(JText::_('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>
 	</form>
