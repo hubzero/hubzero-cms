@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        components/com_collections/assets/css/help.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -22,13 +22,13 @@
 		background: rgba(0, 0, 0, 0.05);
 		border: none;
 		position: relative;
-		padding: 20px 20px 20px 50%;
+		padding: 100px 20px 20px 20px;
 		margin: 0 -20px;
 	}
 	.about-even {
 		border: none;
 		position: relative;
-		padding: 20px 50% 20px 20px;
+		padding: 100px 20px 20px 20px;
 		margin: 0 -20px;
 	}
 	.about-odd:after,
@@ -39,20 +39,14 @@
 		padding: 0;
 		position: absolute;
 		top: 30px;
+		left: 0;
+		right: 0;
+		text-align: center;
 		z-index: 100;
-	}
-	.about-odd:after,
-	.about-even:after {
 		font-family: 'Fontcons';
-		font-size: 150px;
+		font-size: 50px;
 		line-height: 1;
-		left: 17.5%;
 		color: #bbb;
-		content: "";
-	}
-	.about-even:after {
-		left: auto;
-		right: 17.5%;
 	}
 	.about-odd.posts:after {
 		content: "\f08c";
@@ -69,3 +63,22 @@
 	.about-odd.livefeed:after {
 		content: "\f056";
 	}
+
+@media (min-width: 40em) {
+	.about-odd {
+		padding: 20px 20px 20px 50%;
+	}
+	.about-even {
+		padding: 20px 50% 20px 20px;
+	}
+	.about-odd:after,
+	.about-even:after {
+		left: 17.5%;
+		right: auto;
+		font-size: 150px;
+	}
+	.about-even:after {
+		left: auto;
+		right: 17.5%;
+	}
+}
