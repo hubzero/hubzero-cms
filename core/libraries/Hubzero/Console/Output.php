@@ -188,6 +188,52 @@ class Output
 	}
 
 	/**
+	 * Renders rows in a table-like structure
+	 *
+	 * @param   array  $rows     The rows of text to render
+	 * @param   bool   $headers  If the first row contains header information
+	 * @return  $this
+	 **/
+	public function addTable($rows, $headers = false)
+	{
+		// Figure out some items we need to know
+		$maxLengths = [];
+
+		foreach ($rows as $i => $row)
+		{
+			foreach ($row as $k => $field)
+			{
+				$maxLengths[$k] = isset($maxLengths[$k]) ? $maxLengths[$k] : 0;
+				$maxLengths[$k] = strlen($field) > $maxLengths[$k] ? strlen($field) : $maxLengths[$k];
+			}
+		}
+
+		// Compute the total length of the table
+		$width = array_sum($maxLengths) + ((count($row) - 1) * 3) + 2;
+
+		// Add the top border
+		$this->addLine('/' . str_repeat('-', ($width)) . '\\');
+
+		// Draw the rows
+		foreach ($rows as $i => $row)
+		{
+			$styles = ($i == 0 && $headers) ? ['format' => 'underline'] : null;
+			foreach ($row as $k => $field)
+			{
+				$padding = $maxLengths[$k] - strlen($field);
+				$this->addString('| ');
+				$this->addString($field, $styles);
+				$this->addString(' ' . str_repeat(' ', $padding));
+			}
+
+			$this->addLine('|');
+		}
+
+		// Add the bottom border
+		$this->addLine('\\' . str_repeat('-', ($width)) . '/');
+	}
+
+	/**
 	 * Add raw text to output buffer
 	 *
 	 * @param   string  $text  The text to add
@@ -436,8 +482,9 @@ class Output
 		}
 		else
 		{
-			$messageStyles = $style['format'] . ';' . $style['color'];
-			$message       = chr(27) . "[" . $messageStyles . "m" . $style['indentation'] . $message . chr(27) . "[0m";
+			$messageStyles  = $style['format'];
+			$messageStyles .= ($style['color']) ? ';' . $style['color'] : '';
+			$message        = chr(27) . "[" . $messageStyles . "m" . $style['indentation'] . $message . chr(27) . "[0m";
 		}
 	}
 
