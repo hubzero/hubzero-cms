@@ -25,7 +25,7 @@
  * This file incorporates work covered by the following copyright and
  * permission notice:
  *
- * @package   hubzero-cms-joomla
+ * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright (c) 2010-2015 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPLv3

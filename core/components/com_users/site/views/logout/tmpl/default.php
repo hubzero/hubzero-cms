@@ -22,7 +22,7 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms-joomla
+ * @package   hubzero-cms
  * @file      components/com_user/views/logout/tmpl/default.php
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright (c) 2010-2015 HUBzero Foundation, LLC.
