@@ -1,8 +1,7 @@
-
 /**
  * @package     hubzero-cms
  * @file        plugins/courses/outline/prerequisites.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
