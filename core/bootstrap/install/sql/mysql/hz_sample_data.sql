@@ -2,10 +2,10 @@
 # @package      hubzero-cms
 # @file         installation/sql/mysql/hz_sample_data.sql
 # @author       Nicholas J. Kisseberth <nkissebe@purdue.edu>
-# @copyright    Copyright (c) 2010-2013 Purdue University. All rights reserved.
+# @copyright    Copyright (c) 2010-2015 HUBzero Foundation, LLC.
 # @license      http://www.gnu.org/licenses/gpl2.html GPLv2
 #
-# Copyright (c) 2010-2013 Purdue University
+# Copyright (c) 2010-2015 HUBzero Foundation, LLC.
 # All rights reserved.
 #
 # This file is free software: you can redistribute it and/or modify it
@@ -1188,3 +1188,4 @@ INSERT INTO `#__polls` (`id`, `title`, `voters`, `checked_out`, `checked_out_tim
 --
 
 INSERT INTO `#__incremental_registration_labels` VALUES (1,'mailPreferenceOption','E-Mail Updates');
+
