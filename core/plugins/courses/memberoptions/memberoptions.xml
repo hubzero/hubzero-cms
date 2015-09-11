@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Courses - Member options</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Display a course's member options</description>
 	<files>
 		<filename plugin="memberoptions">memberoptions.php</filename>

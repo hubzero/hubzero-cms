@@ -22,7 +22,7 @@
 	<name>HUBzero - Match CAPTCHA</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Generates a math based CAPTCHA</description>
 	<files>
 		<filename plugin="matchcaptcha">mathcaptcha.php</filename>

@@ -22,7 +22,7 @@
 	<name>Wiki - Default Parser</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Loads a wiki parser and performs any called actions on text passed to it</description>
 	<files>
 		<filename plugin="parserdefault">parserdefault.php</filename>

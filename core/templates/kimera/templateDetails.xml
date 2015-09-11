@@ -22,7 +22,7 @@
 	<name>kimera</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Site template for HUBzero CMS</description>
 	<files>
 		<filename>css/component.css</filename>

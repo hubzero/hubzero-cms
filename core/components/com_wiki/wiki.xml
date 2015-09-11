@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Wiki</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2009 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Manage wiki pages</description>
 	<files>
 		<filename>router.php</filename>
