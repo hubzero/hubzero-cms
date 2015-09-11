@@ -2,10 +2,10 @@
 /**
  * @package		HUBzero CMS
  * @author		Sudheera R. Fernando <sudheera@xconsole.org>
- * @copyright	Copyright 2013 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @copyright		Copyright (c) 2010-2015 HUBzero Foundation, LLC.
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2010-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2010-2015 HUBzero Foundation, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or

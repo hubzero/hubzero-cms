@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,7 +25,7 @@
  * @package   hubzero-cms
  * @author    Steven Snyder <snyder13@purdue.edu>
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -295,7 +295,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Check login status of current user with regards to Purdue CASphp json
+	 * Check login status of current user
 	 *
 	 * @access	public
 	 * @return	Array $status
@@ -370,7 +370,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Method to setup Purdue CAS params and redirect to pucas auth URL
+	 * Method to display login prompt
 	 *
 	 * @access	public
 	 * @param   object	$view	view object

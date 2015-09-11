@@ -3,11 +3,10 @@
 /**
  * @package     Dataviewer :: Data Definition Converter
  * @author      Sudheera R. Fernando <sudheera@xconsole.org>
- * @copyright   Copyright 2011 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @copyright   Copyright (c) 2011-2015 HUBzero Foundation, LLC.
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2011 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright (c) 2011-2015 HUBzero Foundation, LLC.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,

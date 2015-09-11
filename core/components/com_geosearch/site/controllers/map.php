@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -22,7 +22,7 @@
  *
  * @package   hubzero-cms
  * @author    Brandon Beatty, Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 

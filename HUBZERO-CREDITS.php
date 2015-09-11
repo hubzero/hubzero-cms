@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     hubzero-cms
- * @copyright   Copyright (c) 2005-2015 Purdue University. All rights reserved.
+ * @copyright   Copyright (c) 2005-2015 HUBzero Foundation, LLC.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 

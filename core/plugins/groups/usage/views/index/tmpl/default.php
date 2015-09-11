@@ -2,10 +2,10 @@
 /**
  * @package     HUBzero CMS
  * @author      Christopher <csmoak@purdue.edu>
- * @copyright   Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2011 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or

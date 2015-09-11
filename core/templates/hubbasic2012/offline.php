@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -95,7 +95,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('Down for maintenanc
 				<div class="inner">
 					<ul id="legalese">
 						<li class="policy">Copyright &copy; <?php echo gmdate("Y"); ?> <?php echo Config::get('sitename'); ?></li>
-						<li>Powered by <a href="http://hubzero.org" rel="external">HUBzero<sup>&reg;</sup></a>, a <a href="http://www.purdue.edu" title="Purdue University" rel="external">Purdue</a> project</li>
+						<li>Powered by the <a href="http://hubzero.org" rel="external">HUBzero<sup>&reg;</sup> platform</a></li>
 					</ul><!-- / footer #legalese -->
 				</div>
 			</div><!-- / #footer -->

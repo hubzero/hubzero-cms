@@ -12,6 +12,6 @@
 
 <div class="super-group-footer-wrap">
 	<div class="super-group-footer">
-		&copy; 2013 HUBzero Foundation, LLC. Template designed by the HUBzero Development Team.
+		&copy; 2013-2015 HUBzero Foundation, LLC. Template designed by the HUBzero Development Team.
 	</div>
 </div>

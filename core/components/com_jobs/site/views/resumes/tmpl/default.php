@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
  * @license	GNU General Public License, version 2 (GPLv2)
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2005-2009 HUBzero Foundation, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or

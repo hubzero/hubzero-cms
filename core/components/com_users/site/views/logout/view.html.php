@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -27,7 +27,7 @@
  *
  * @package   hubzero-cms-joomla
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright (c) 2010-2011 Purdue University. All rights reserved.
+ * @copyright Copyright (c) 2010-2015 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  */
 

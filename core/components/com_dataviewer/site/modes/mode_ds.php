@@ -4,7 +4,7 @@
  * @subpackage  com_dataviewer
  *
  * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2012,2013 Purdue University. All rights reserved.
+ * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3 or later; see LICENSE.txt
  */
 
