@@ -140,14 +140,15 @@ $this->css()
 							$title = 'COM_MEMBERS_BROWSE_CONTRIBUTORS';
 						}
 						if ($this->filters['index']) {
-							$title = Lang::txt($title . '_STARTING_WITH', strToUpper($this->filters['index']));
+							$title = Lang::txt($title . '_STARTING_WITH', $this->escape(strToUpper($this->filters['index'])));
 						}
 						else
 						{
 							$title = Lang::txt($title);
 						}
-						if ($this->filters['search'] != '') {
-							$title = Lang::txt('COM_MEMBERS_SEARCH_FOR_IN', $this->filters['search'], $title);
+						if ($this->filters['search'] != '')
+						{
+							$title = Lang::txt('COM_MEMBERS_SEARCH_FOR_IN', $this->escape($this->filters['search']), $title);
 						}
 						echo $title;
 						?>

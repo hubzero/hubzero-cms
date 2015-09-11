@@ -135,7 +135,7 @@ if ($this->wishlist->exists())
 								{
 									?>
 									<li>
-										<a href="<?php echo Route::url($url . '&tag=' . implode(',', $cloud->parseTags($this->filters['tag'], $tag))); ?>">
+										<a class="tag" href="<?php echo Route::url($url . '&tag=' . implode(',', $cloud->parseTags($this->filters['tag'], $tag))); ?>">
 											<?php echo $this->escape(stripslashes($tag)); ?>
 											<span class="remove">x</a>
 										</a>
@@ -184,7 +184,7 @@ if ($this->wishlist->exists())
 						<table class="ideas entries">
 							<caption>
 								<?php echo Lang::txt('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?>
-								<?php echo ($this->filters['tag'] != '') ? Lang::txt('COM_WISHLIST_WISHES_TAGGED_WITH', $this->filters['tag']) : ''; ?>
+								<?php echo ($this->filters['tag'] != '') ? Lang::txt('COM_WISHLIST_WISHES_TAGGED_WITH', $this->escape($this->filters['tag'])) : ''; ?>
 								<span>
 									(<?php echo ($this->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + $this->wishlist->wishes()->total(); ?> of <?php echo $this->total; ?>)
 								</span>

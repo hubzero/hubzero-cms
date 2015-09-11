@@ -89,7 +89,7 @@ $rows = $this->model->entries('list', $this->filters);
 			<div class="container">
 				<h3>
 				<?php if (isset($this->filters['search']) && $this->filters['search']) { ?>
-					<?php echo Lang::txt('COM_BLOG_SEARCH_FOR', $this->filters['search']); ?>
+					<?php echo Lang::txt('COM_BLOG_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
 				<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
 					<?php echo Lang::txt('COM_BLOG_LATEST_ENTRIES'); ?>
 				<?php } else {

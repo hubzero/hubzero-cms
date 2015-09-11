@@ -61,6 +61,17 @@ class Request extends Facade
 		$cur_state = \User::getState($key, $default);
 		$new_state = self::getVar($request, null, 'default', $type);
 
+		switch ($type)
+		{
+			case 'int':	  $new_state = intval($new_state); break;
+			case 'word':  $new_state = preg_replace('/[^A-Z_]/i', '', $new_state); break;
+			case 'cmd':   $new_state = preg_replace('/[^A-Z0-9_\.-]/i', '', $new_state); break;
+			case 'bool':  $new_state = (bool) $new_state; break;
+			case 'float': $new_state = preg_replace('/-?[0-9]+(\.[0-9]+)?/', '', $new_state); break;
+			case 'string': $new_state = (string) $new_state; break;
+			case 'array': $new_state = (array) $new_state; break;
+		}
+
 		// Save the new value only if it was set in this request.
 		if ($new_state !== null)
 		{
