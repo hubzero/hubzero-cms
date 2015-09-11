@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           plugins/groups/usage.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 HUBzero Foundation, LLC.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Groups - Usage</name>
 	<author>HUBzero</author>
 	<creationDate>June 2008</creationDate>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>zooley@purdue.edu</authorEmail>
 	<authorUrl>zooley.rcac.purdue.edu</authorUrl>

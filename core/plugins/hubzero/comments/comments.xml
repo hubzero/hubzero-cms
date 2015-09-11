@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2009 HUBzero Foundation, LLC.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 	<name>Hubzero - Comments</name>
 	<author>HUBzero</author>
 	<creationDate>September 2012</creationDate>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>HUBzero Comments</description>
 	<files>

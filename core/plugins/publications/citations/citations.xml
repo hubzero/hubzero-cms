@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           plugins/publications/citations/citations.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 HUBzero Foundation, LLC.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.7" type="plugin" group="publications">
 	<name>Publication - Citations</name>
 	<author>Alissa Nedossekina</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Displays citations for a publication</description>
 	<files>

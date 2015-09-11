@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           components/com_blog/blog.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 HUBzero Foundation, LLC.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Blog</name>
 	<author>HUBzero</author>
 	<creationDate>11/22/2009</creationDate>
-	<copyright>(C) 2010 Purdue University</copyright>
+	<copyright>(C) 2010 HUBzero Foundation, LLC./copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>1.0</version>
 	<description>Manage A Blog</description>

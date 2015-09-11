@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_reportproblems/mod_reportproblems.xml
-@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2015 Purdue University. All rights reserved.
+Copyright 2005-2015 HUBzero Foundation, LLC.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>mod_reportproblems</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>

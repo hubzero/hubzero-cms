@@ -2,10 +2,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_myquestions/mod_myquestions.xml
-@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2015 Purdue University. All rights reserved.
+Copyright 2005-2015 HUBzero Foundation, LLC.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>mod_myquestions</name>
 	<author>HUBzero</author>
 	<creationDate>Jan 2009</creationDate>
-	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.2.0</version>

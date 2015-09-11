@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2015 HUBzero Foundation, LLC.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 	<name>mod_hubzilla</name>
 	<author>HUBzero</author>
 	<creationDate>August 2012</creationDate>
-	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5.0</version>
