@@ -4,7 +4,7 @@
 @package        hubzero-cms
 @file           modules/mod_collect/mod_collect.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
-@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+@license        http://opensource.org/licenses/MIT MIT
 
 Copyright 2005-2015 HUBzero Foundation, LLC.
 
