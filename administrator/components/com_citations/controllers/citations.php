@@ -484,8 +484,8 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 		//add tags & badges
 		$ct = new CitationTags($row->id);
-		$ct->setTags($this->tags, $this->juser->get('id'), 0, 1, '');
-		$ct->setTags($this->badges, $this->juser->get('id'), 0, 1, 'badge');
+		$ct->setTags($this->tags, $this->juser->get('id'), 1, 1, '');
+		$ct->setTags($this->badges, $this->juser->get('id'), 1, 1, 'badge');
 
 		// Redirect
 		$this->setRedirect(
