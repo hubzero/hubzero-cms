@@ -1576,6 +1576,7 @@ class Pipeline extends SiteController
 				Log::debug(__FUNCTION__ . "() state changing to published");
 				$hzt->published = '1';
 			}
+
 			$this->_error = $error;
 
 			// update dev screenshots of a published tool changes status
@@ -1599,8 +1600,29 @@ class Pipeline extends SiteController
 				{
 					require_once(__DIR__ . DS . 'screenshots.php');
 
-					$ss = new ToolsControllerScreenshots();
+					$ss = new Screenshots();
 					$ss->transfer($from, $to, $rid);
+				}
+			}
+
+			// If the tool was cancelled ...
+			if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned'))
+			{
+				include_once(__DIR__ . DS . 'resource.php');
+
+				$r = new \Components\Resources\Tables\Resource($this->database);
+				$r->loadAlias($hzt->toolname);
+
+				if ($r && $r->id)
+				{
+					$rstatus = 2;
+					if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Published'))
+					{
+						$rstatus = 1;
+					}
+
+					$resource = new Resource();
+					$resource->updatePage($r->id, $oldstatus, $rstatus);
 				}
 			}
 
