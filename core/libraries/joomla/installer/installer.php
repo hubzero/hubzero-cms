@@ -1329,8 +1329,8 @@ class JInstaller extends JAdapter
 
 		// Here we set the folder we are going to copy the files to.
 		// 'languages' Files are copied to JPATH_BASE/language/ folder
-
-		$destination = $client->path . '/language';
+		// [!] HUBzero - Temporarily changed path
+		$destination = PATH_APP . '/bootstrap/' . $client->name . '/language';
 
 		// Here we set the folder we are going to copy the files from.
 

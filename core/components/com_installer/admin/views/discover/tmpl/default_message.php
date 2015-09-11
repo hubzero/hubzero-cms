@@ -31,9 +31,8 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$state = $this->get('State');
-$message1 = $state->get('message');
-$message2 = $state->get('extension_message');
+$message1 = $this->state->get('message');
+$message2 = $this->state->get('extension_message');
 ?>
 <table class="adminform">
 	<tbody>

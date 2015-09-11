@@ -33,7 +33,7 @@ namespace Components\Installer\Admin;
 // Access check.
 if (!\User::authorise('core.manage', 'com_installer'))
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 if ($task = \Request::getCmd('task'))
