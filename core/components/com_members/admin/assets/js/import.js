@@ -2,7 +2,7 @@
  * @package     hubzero-cms
  * @file        components/com_members/admin/assets/js/import.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {

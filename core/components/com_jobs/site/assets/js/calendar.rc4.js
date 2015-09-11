@@ -2,7 +2,7 @@
  * @package     hubzero-cms
  * @file        components/com_events/js/calendar.rc4.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 // Calendar: a Javascript class for Mootools that adds accessible and unobtrusive date pickers to your form elements <http://electricprism.com/aeron/calendar>

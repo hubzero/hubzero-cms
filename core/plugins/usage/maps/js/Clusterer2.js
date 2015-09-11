@@ -2,7 +2,7 @@
  * @package     hubzero-cms
  * @file        plugins/usage/maps/js/Clusterer2.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 // Clusterer.js - marker clustering routines for Google Maps apps

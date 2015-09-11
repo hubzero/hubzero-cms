@@ -2,7 +2,7 @@
  * @package     hubzero-cms
  * @file        templates/welcome/js/main.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 if (typeof console === "undefined" || typeof console.log === "undefined") {

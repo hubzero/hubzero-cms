@@ -2,7 +2,7 @@
  * @package		HUBzero CMS
  * @author		Sudheera R. Fernando <sudheera@xconsole.org>
  * @copyright	Copyright 2012-2015 HUBzero Foundation, LLC.
- * @license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license		http://opensource.org/licenses/MIT MIT
  *
  * Copyright 2012-2015 HUBzero Foundation, LLC.
  * All rights reserved.

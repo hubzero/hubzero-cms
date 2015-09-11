@@ -2,7 +2,7 @@
  * @package     hubzero-cms
  * @file        modules/mod_collect/assets/js/collect.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license     http://opensource.org/licenses/MIT MIT
  */
 
 String.prototype.nohtml = function () {
