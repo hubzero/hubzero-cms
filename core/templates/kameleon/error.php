@@ -34,6 +34,8 @@ defined('_HZEXEC_') or die();
 Lang::load('tpl_' . $this->template) ||
 Lang::load('tpl_' . $this->template, __DIR__);
 
+$code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
+
 $browser = new \Hubzero\Browser\Detector();
 ?>
 <!DOCTYPE html>
@@ -45,17 +47,19 @@ $browser = new \Hubzero\Browser\Detector();
 	<head>
 		<meta name="viewport" content="width=device-width" />
 
-		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . DS . 'css' . DS . 'error.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . DS . 'css' . DS . 'error.css'); ?>" />
+
+		<title><?php echo Lang::txt('TPL_KAMELEON_ERROR_OCCURRED') . ' - ' . $code; ?></title>
 
 		<!--[if lt IE 9]>
-			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
 		<!--[if IE 9]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/core/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
 	</head>
 	<body id="error-body">
@@ -71,7 +75,7 @@ $browser = new \Hubzero\Browser\Detector();
 
 			<main id="component-content">
 				<div id="errorbox">
-					<h2 class="error-code"><?php echo $this->error->getCode() ?></h2>
+					<h2 class="error-code"><?php echo $code; ?></h2>
 					<p class="error"><?php echo $this->error->getMessage(); ?></p>
 
 					<noscript>
