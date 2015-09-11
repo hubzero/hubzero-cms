@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Courses - Reviews</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Display reviews for a course</description>
 	<files>
 		<filename plugin="reviews">reviews.php</filename>

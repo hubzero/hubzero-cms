@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 	<version>1.0</version>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<license></license>
 	<description>WYSIWYG Editor built on CKEditor</description>
 	<files>

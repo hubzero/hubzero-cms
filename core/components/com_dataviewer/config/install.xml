@@ -5,7 +5,7 @@
 	<author>Sudheera R. Fernando</author>
 	<authorEmail>srf@xconsole.org</authorEmail>
 	<copyright>Copyright 2010-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3 or later</license>
+	<license>http://opensource.org/licenses/MIT MIT or later</license>
 	<version>2.0.1</version>
 	<description>Dataviewer for HUB Databases</description>
 

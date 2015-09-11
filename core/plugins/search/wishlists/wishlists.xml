@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Search - Wishlists</name>
 	<author>Steve Snyder</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Search plugin for wishlists</description>
 	<files>
 		<filename plugin="wishlists">wishlists.php</filename>

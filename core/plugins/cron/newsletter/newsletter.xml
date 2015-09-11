@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Cron - Newsletter</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Cron events for newsletter</description>
 	<files>
 		<filename plugin="newsletter">newsletter.php</filename>

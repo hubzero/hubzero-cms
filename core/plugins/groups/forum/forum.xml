@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Groups - Forum</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Display and manage a forum for a specific group</description>
 	<files>
 		<filename plugin="forum">forum.php</filename>

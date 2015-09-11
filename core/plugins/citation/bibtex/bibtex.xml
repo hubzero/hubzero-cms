@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Citation - BibTex</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Imports BibTex data</description>
 	<files>
 		<filename plugin="bibtex">bibtex.php</filename>

@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Projects - Blog</name>
 	<author>Alissa Nedossekina</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Manage project micro blog entries</description>
 	<files>
 		<filename plugin="blog">blog.php</filename>

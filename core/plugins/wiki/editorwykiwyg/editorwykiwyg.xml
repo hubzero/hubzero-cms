@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Wiki - Editor Wykiwyg</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Creates a wysiwyg textarea with an editing toolbar for wiki syntax shortcuts</description>
 	<files>
 		<filename plugin="editorwykiwyg">editorwykiwyg.php</filename>

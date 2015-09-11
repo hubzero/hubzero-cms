@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <extension type="module" version="1.5" client="administrator">
 	<name>mod_ishlist</name>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>MOD_WISHLIST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_wishlist">mod_wishlist.php</filename>

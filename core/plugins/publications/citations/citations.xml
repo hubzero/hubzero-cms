@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Publication - Citations</name>
 	<author>Alissa Nedossekina</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Displays citations for a publication</description>
 	<files>
 		<filename plugin="citations">citations.php</filename>

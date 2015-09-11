@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Content - xHubTags</name>
 	<author>Nicholas J. Kisseberth</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Process XHUB tags in com_content items</description>
 	<files>
 		<filename plugin="xhubtags">xhubtags.php</filename>
