@@ -100,6 +100,7 @@ class Request extends BaseRequest
 
 			case 'post':
 			case 'request':
+			case 'delete':
 				$hash = 'request';
 				//$this->request->set($name, $value);
 			break;
