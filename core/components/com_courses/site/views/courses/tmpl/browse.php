@@ -25,7 +25,7 @@
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access

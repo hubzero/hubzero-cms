@@ -3,7 +3,7 @@
  * @package		HUBzero CMS
  * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @license		http://opensource.org/licenses/MIT MIT
  *
  * Copyright 2005-2009 HUBzero Foundation, LLC.
  * All rights reserved.
