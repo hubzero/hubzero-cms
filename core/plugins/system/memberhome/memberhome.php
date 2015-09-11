@@ -101,6 +101,7 @@ class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 			$menu->setActive($menuId);
 			$item = $menu->getItem($menuId);
 			$vars = $item->query;
+			$vars['Itemid'] = $menuId;
 
 			foreach ($vars as $key => $var)
 			{
