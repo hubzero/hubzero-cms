@@ -159,14 +159,14 @@ class Migration20120101000004Core extends Base
 
 			if ($this->db->tableHasField('#__citations_authors', 'authorid') && !$this->db->tableHasKey('#__citations_authors', 'idx_authorid'))
 			{
-				$query = "ALTER TABLE `#__citations_authors` ADD INDEX `authorid` (`idx_authorid` ASC)";
+				$query = "ALTER TABLE `#__citations_authors` ADD INDEX `idx_authorid` (`authorid` ASC)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if ($this->db->tableHasField('#__citations_authors', 'uidNumber') && !$this->db->tableHasKey('#__citations_authors', 'idx_uidNumber'))
 			{
-				$query = "ALTER TABLE `#__citations_authors` ADD INDEX `uidNumber` (`idx_uidNumber` ASC)";
+				$query = "ALTER TABLE `#__citations_authors` ADD INDEX `idx_uidNumber` (`uidNumber` ASC)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
