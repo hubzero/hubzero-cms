@@ -1,8 +1,8 @@
 /**
  * @package     hubzero-cms
  * @file        templates/kimera/css/pages/home.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /*
@@ -163,6 +163,7 @@
 		position: relative;
 		text-align: center;
 	}
+	#features .col>div,
 	#features .box {
 		display: block;
 		padding: 6em 30px 30px 30px;
@@ -175,6 +176,7 @@
 		background: rgba(0, 0, 0, 0.05);
 	}
 
+	#features .col>div:after,
 	#features .box:after {
 		content: "";
 		font-family: "Fontcons";
@@ -195,18 +197,29 @@
 	#features .projects:after {
 		content: "\f03f";
 	}
+	#features .col>.resource:after,
 	#features .resource:after {
 		content: "\f08c";
 	}
+	#features .col>.poll:after,
 	#features .box.poll:after {
 		content: "\25F7";
 	}
+	#features .col>.tool:after,
 	#features .tool:after {
 		content: "\2692";
 	}
 	#features p {
 		margin: 1em 0 0 0;
 		padding: 0;
+	}
+	#features ul {
+		margin: 1em 0;
+		list-style: none;
+	}
+	#features li {
+		padding: 0.5em 0;
+		margin: 0;
 	}
 
 	#features .box:hover:after {
@@ -704,11 +717,14 @@
 	}
 }
 @media (min-width: 40em) {
-	#features {
+	#features>.wrap {
 		display: table;
+		table-layout: fixed;
+		width: 100%;
 	}
-	#features .wrap {
+	#features .grid {
 		display: table-row;
+		width: 100%;
 	}
 	#features .col,
 	#features .columns {
