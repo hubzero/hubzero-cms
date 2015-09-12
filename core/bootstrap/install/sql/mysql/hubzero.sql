@@ -4982,7 +4982,8 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1702, 'hubbasic2013', 'template', 'hubbasic2013', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (1703, 'welcome', 'template', 'welcome', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (1704, 'hubbasicadmin', 'template', 'hubbasicadmin', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(1705, 'kameleon (admin)', 'template', 'kameleon', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(1705, 'kameleon (admin)', 'template', 'kameleon', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1706, 'Kimera (site)', 'template', 'kimera', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1200, 'mod_announcements', 'module', 'mod_announcements', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Announcements Display\",\"type\":\"module\",\"creationDate\":\"May 2010\",\"author\":\"HUBzero\",\"copyright\":\"\",\"authorEmail\":\"alisa@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"This module allows the display of announcements\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
@@ -5068,6 +5069,7 @@ INSERT INTO `#__template_styles` VALUES (9,'hubbasic2013',0,'0','HUBzero Standar
 INSERT INTO `#__template_styles` VALUES (10,'welcome', 0, '1', 'Welcome Template', '{\"flavor\":\"\",\"template\":\"hubbasic2013\"}');
 INSERT INTO `#__template_styles` VALUES (11,'hubbasicadmin',1,'0','HUBzero Standard Admin Template','{}');
 INSERT INTO `#__template_styles` VALUES (12,'kameleon', 1, '1', 'kameleon (admin)', '{\"header\":\"dark\",\"theme\":\"bluesteel\"}');
+INSERT INTO `#__template_styles` VALUES (13,'kimera',0,'0','HUBzero Standard Site Template - 2015','{}');
 
 INSERT INTO `#__stats_tops` VALUES (1,'Top Tools by Ranking',1,5);
 INSERT INTO `#__stats_tops` VALUES (2,'Top Tools by Simulation Users',1,5);
