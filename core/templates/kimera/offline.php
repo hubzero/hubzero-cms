@@ -42,7 +42,7 @@ $cls = array(
 	$this->direction
 );
 
-$this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('Down for maintenance'));
+$this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('TPL_KIMERA_OFFLINE'));
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
