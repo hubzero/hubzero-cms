@@ -33,7 +33,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>Steven Snyder</author>
 	<creationDate>July 2014</creationDate>
 	<copyright>Copyright (C) 2014-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.5</version>
 	<description>Handles user authentication with Shibboleth/InCommon</description>
 	<files>

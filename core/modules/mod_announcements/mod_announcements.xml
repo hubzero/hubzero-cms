@@ -33,7 +33,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>mod_announcements</name>
 	<author>HUBzero</author>
 	<creationDate>May 2010</creationDate>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.0.0</version>
 	<description>MOD_ANNOUNCEMENTS_XML_DESCRIPTION</description>
