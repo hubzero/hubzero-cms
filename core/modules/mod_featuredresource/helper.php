@@ -86,12 +86,12 @@ class Helper extends Module
 			$row = $rows[0];
 		}
 
+		$this->cls = trim($this->params->get('moduleclass_sfx'));
+		$this->txt_length = trim($this->params->get('txt_length'));
+
 		// Did we get any results?
 		if ($row)
 		{
-			$this->cls = trim($this->params->get('moduleclass_sfx'));
-			$this->txt_length = trim($this->params->get('txt_length'));
-
 			$config = Component::params('com_resources');
 
 			// Resource
@@ -132,10 +132,11 @@ class Helper extends Module
 
 			$this->id    = $id;
 			$this->thumb = $thumb;
-			$this->row   = $row;
-
-			require $this->getLayoutPath();
 		}
+
+		$this->row   = $row;
+
+		require $this->getLayoutPath();
 	}
 
 	/**
