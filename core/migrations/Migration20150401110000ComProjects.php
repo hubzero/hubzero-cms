@@ -17,7 +17,7 @@ class Migration20150401110000ComProjects extends Base
 	{
 		if (!$this->db->tableExists('#__project_tools'))
 		{
-			$query = "CREATE TABLE `jos_project_tools` (
+			$query = "CREATE TABLE `#__project_tools` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `name` varchar(64) NOT NULL DEFAULT '',
 			  `title` varchar(127) NOT NULL DEFAULT '',
@@ -41,7 +41,7 @@ class Migration20150401110000ComProjects extends Base
 		}
 		if (!$this->db->tableExists('#__project_tool_instances'))
 		{
-			$query = "CREATE TABLE `jos_project_tool_instances` (
+			$query = "CREATE TABLE `#__project_tool_instances` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `parent_name` varchar(64) NOT NULL DEFAULT '',
@@ -64,7 +64,7 @@ class Migration20150401110000ComProjects extends Base
 		}
 		if (!$this->db->tableExists('#__project_tool_logs'))
 		{
-			$query = "CREATE TABLE `jos_project_tool_logs` (
+			$query = "CREATE TABLE `#__project_tool_logs` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `parent_name` varchar(64) NOT NULL DEFAULT '',
@@ -84,7 +84,7 @@ class Migration20150401110000ComProjects extends Base
 		}
 		if (!$this->db->tableExists('#__project_tool_views'))
 		{
-			$query = "CREATE TABLE `jos_project_tool_views` (
+			$query = "CREATE TABLE `#__project_tool_views` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `userid` int(15) NOT NULL,
@@ -96,7 +96,7 @@ class Migration20150401110000ComProjects extends Base
 		}
 		if (!$this->db->tableExists('#__project_tool_statuses'))
 		{
-			$query = "CREATE TABLE `jos_project_tool_statuses` (
+			$query = "CREATE TABLE `#__project_tool_statuses` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `status` varchar(100) NOT NULL DEFAULT '',
 			  `status_about` text,
@@ -111,7 +111,7 @@ class Migration20150401110000ComProjects extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
-			$query = "INSERT INTO `jos_project_tool_statuses` (`id`, `status`, `status_about`, `next`, `next_admin`, `next_about`, `next_actor`, `wait_time`, `options`)
+			$query = "INSERT INTO `#__project_tool_statuses` (`id`, `status`, `status_about`, `next`, `next_admin`, `next_about`, `next_actor`, `wait_time`, `options`)
 			VALUES
 				(1,'created','','upload your code and request install','wait for develper to upload code','You need to upload your code into the tool <a href=\"{app-source}\">repository</a>. When your code is ready for install, notify administrator via this screen.',0,'','{\"option-message\":\"1\",\"option-cancel\":\"1\"}'),
 				(2,'deleted','','','','',2,'',''),
