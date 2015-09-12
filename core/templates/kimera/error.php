@@ -33,7 +33,7 @@
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(
-	'nojs',
+	'no-js',
 	$browser->name(),
 	$browser->name() . $browser->major(),
 	$this->direction
