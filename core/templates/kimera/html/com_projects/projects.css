@@ -32,6 +32,16 @@
 		box-shadow: none;
 	}
 
+	#page_options .btn {
+		border: 2px solid rgba(0, 0, 0, 0.2);
+		color: #777;
+	}
+	#page_options .btn:hover {
+		border-color: #222;
+		background-color: #222;
+		color: #fff;
+	}
+
 /* Forms
 --------------------------------------------- */
 
@@ -94,7 +104,8 @@
 		border-top: 1px solid #FFF;
 		border-bottom: 1px solid #f9f9f9;
 	}*/
-	.listing span.setup a, #projects-admin span.setup {
+	.listing span.setup a,
+	#projects-admin span.setup {
 		color: #e4942d;
 		font-weight: bold;
 	}
