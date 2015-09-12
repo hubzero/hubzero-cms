@@ -17,7 +17,7 @@ class Migration20150406140000ComProjects extends Base
 	{
 		if (!$this->db->tableExists('#__project_repos'))
 		{
-			$query = "CREATE TABLE `jos_project_repos` (
+			$query = "CREATE TABLE `#__project_repos` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `project_id` int(11) NOT NULL,
 			  `name` varchar(64) NOT NULL DEFAULT '',
