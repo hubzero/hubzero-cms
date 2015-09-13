@@ -42026,7 +42026,6 @@
 ./core/plugins/publications/watch/views/emails/tmpl/_plain.php
 ./core/plugins/publications/watch/views/emails/tmpl/_plain.xml
 ./core/components/com_citations/models/import.php
-./core/components/com_citations/models/importer.php
 ./core/components/com_citations/models/import.php
 ./core/plugins/groups/citations/.citations.php.swp
 ./core/plugins/groups/citations/views/settings/tmpl/.default.php.swp

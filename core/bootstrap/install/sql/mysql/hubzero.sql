@@ -5066,7 +5066,7 @@ UPDATE `#__template_styles` SET home=0;
 INSERT INTO `#__template_styles` VALUES (7,'hubbasic',0,'0','HUBzero Standard Site Template - 2011','{}');
 INSERT INTO `#__template_styles` VALUES (8,'hubbasic2012',0,'0','HUBzero Standard Site Template - 2012','{}');
 INSERT INTO `#__template_styles` VALUES (9,'hubbasic2013',0,'0','HUBzero Standard Site Template - 2013','{}');
-INSERT INTO `#__template_styles` VALUES (10,'welcome', 0, '1', 'Welcome Template', '{\"flavor\":\"\",\"template\":\"hubbasic2013\"}');
+INSERT INTO `#__template_styles` VALUES (10,'welcome', 0, '1', 'Welcome Template', '{\"flavor\":\"\",\"template\":\"kimera\"}');
 INSERT INTO `#__template_styles` VALUES (11,'hubbasicadmin',1,'0','HUBzero Standard Admin Template','{}');
 INSERT INTO `#__template_styles` VALUES (12,'kameleon', 1, '1', 'kameleon (admin)', '{\"header\":\"dark\",\"theme\":\"bluesteel\"}');
 INSERT INTO `#__template_styles` VALUES (13,'kimera',0,'0','HUBzero Standard Site Template - 2015','{}');
