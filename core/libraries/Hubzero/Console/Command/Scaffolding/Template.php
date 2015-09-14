@@ -78,19 +78,41 @@ class Template extends Scaffolding
 			}
 		}
 
+		// Normalize source and destination
+		$to       = trim($to, DS);
+		$from     = trim($from, DS);
+		$pathTo   = PATH_CORE;
+		$pathFrom = PATH_CORE;
+
+		preg_match('/(core|app)\/([[:alnum:]_-]*)/', $to, $matchesTo);
+		preg_match('/(core|app)\/([[:alnum:]_-]*)/', $from, $matchesFrom);
+
+		if (isset($matchesTo[0]))
+		{
+			$to = $matchesTo[2];
+
+			if ($matchesTo[1] == 'app') $pathTo = PATH_APP;
+		}
+		if (isset($matchesFrom[0]))
+		{
+			$from = $matchesFrom[2];
+
+			if ($matchesFrom[1] == 'app') $pathFrom = PATH_APP;
+		}
+
 		// Make sure template doesn't already exist
-		if (is_dir(PATH_APP . DS . 'templates' . DS . $to))
+		if (is_dir($pathTo . DS . 'templates' . DS . $to))
 		{
 			$this->output->error("Error: the template destination alread exists.");
 		}
-		if (!is_dir(PATH_APP . DS . 'templates' . DS . $from))
+		if (!is_dir($pathFrom . DS . 'templates' . DS . $from))
 		{
 			$this->output->error("Error: the template source does not appear to exist.");
 		}
 
 		// Make component
-		$this->addTemplateFile(PATH_APP . DS . 'templates' . DS . $from, PATH_APP . DS . 'templates' . DS . $to, true)
-			 ->addTemplateFile(PATH_APP . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $from . '.ini', PATH_APP . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $to . '.ini', true)
+		$this->addTemplateFile($pathFrom . DS . 'templates' . DS . $from, $pathTo . DS . 'templates' . DS . $to, true)
+			 ->addTemplateFile($pathFrom . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $from . '.ini', $pathTo . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $to . '.ini', true)
 			 ->addReplacement(strtoupper($from), strtoupper($to))
 			 ->addReplacement(ucfirst($from), ucfirst($to))
 			 ->addReplacement($from, $to)
