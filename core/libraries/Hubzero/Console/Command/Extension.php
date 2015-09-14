@@ -236,14 +236,19 @@ class Extension extends Base implements CommandInterface
 				$element = $name = substr($name, 4);
 				$name    = ucwords($name);
 				$client  = $this->arguments->getOpt('client', 'site');
+				$isCore  = $this->arguments->getOpt('core', false) ? 1 : 0;
 
 				if ($method == 'delete')
 				{
 					$migration->$mthd($element, (($client == 'admin') ? 1 : 0));
 				}
+				else if ($method == 'add')
+				{
+					$migration->$mthd($element, $name, (($client == 'admin') ? 1 : 0), 1, 0, null, $isCore);
+				}
 				else
 				{
-					$migration->$mthd($element, $name, (($client == 'admin') ? 1 : 0));
+					$migration->$mthd($element, $name, (($client == 'admin') ? 1 : 0), null, $isCore);
 				}
 				break;
 

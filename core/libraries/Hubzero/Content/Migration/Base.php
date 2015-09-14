@@ -882,15 +882,16 @@ class Base
 	/**
 	 * Add, as needed, templates to the CMS
 	 *
-	 * @param   string  $element  Template element
-	 * @param   string  $name     Template name
-	 * @param   int     $client   Admin or site client
-	 * @param   int     $enabled  Whether or not the template should be enabled
-	 * @param   int     $home     Whether or not this should become the enabled template
-	 * @param   array   $styles   Template styles
+	 * @param   string  $element    Template element
+	 * @param   string  $name       Template name
+	 * @param   int     $client     Admin or site client
+	 * @param   int     $enabled    Whether or not the template should be enabled
+	 * @param   int     $home       Whether or not this should become the enabled template
+	 * @param   array   $styles     Template styles
+	 * @param   int     $protected  Whether or not the template is a core one or not
 	 * @return  bool
 	 **/
-	public function addTemplateEntry($element, $name=null, $client=1, $enabled=1, $home=0, $styles=NULL)
+	public function addTemplateEntry($element, $name=null, $client=1, $enabled=1, $home=0, $styles=NULL, $protected=0)
 	{
 		if ($this->baseDb->tableExists('#__extensions'))
 		{
@@ -916,7 +917,7 @@ class Base
 			if (!$this->baseDb->loadResult())
 			{
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-				$query .= " VALUES ('{$name}', 'template', '{$element}', '', '{$client}', '{$enabled}', '1', '0', '{}', '{}', '', '', '0', '0000-00-00 00:00:00', '0', '0')";
+				$query .= " VALUES ('{$name}', 'template', '{$element}', '', '{$client}', '{$enabled}', '1', '{$protected}', '{}', '{}', '', '', '0', '0000-00-00 00:00:00', '0', '0')";
 				$this->baseDb->setQuery($query);
 				$this->baseDb->query();
 
@@ -939,15 +940,16 @@ class Base
 	/**
 	 * Install a template, adding it if needed
 	 *
-	 * @param   string  $element  Template element
-	 * @param   string  $name     Template name
-	 * @param   int     $client   Admin or site client
-	 * @param   array   $styles   Template styles
+	 * @param   string  $element    Template element
+	 * @param   string  $name       Template name
+	 * @param   int     $client     Admin or site client
+	 * @param   array   $styles     Template styles
+	 * @param   int     $protected  Whether or not the template is a core one or not
 	 * @return  void
 	 **/
-	public function installTemplate($element, $name=null, $client=1, $styles=NULL)
+	public function installTemplate($element, $name=null, $client=1, $styles=NULL, $protected=0)
 	{
-		$this->addTemplateEntry($element, $name, $client, 1, 1, $styles);
+		$this->addTemplateEntry($element, $name, $client, 1, 1, $styles, $protected);
 	}
 
 	/**
