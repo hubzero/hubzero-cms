@@ -1010,7 +1010,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		//get manifest
 		$manifest = $this->getVideoManifestForResource( $activechild );
 
-		if (!file_exists(PATH_APP . $manifest))
+		if (!file_exists(JPATH_SITE. $manifest))
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
