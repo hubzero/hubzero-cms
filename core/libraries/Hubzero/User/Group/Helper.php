@@ -112,7 +112,8 @@ class Helper
 		//query to get groups
 		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc
 				FROM jos_xgroups AS g
-				WHERE g.type=1
+				WHERE (g.type=1
+				OR g.type=3)
 				AND g.published=1
 				AND g.approved=1
 				AND g.discoverability=0
