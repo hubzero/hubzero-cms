@@ -59,13 +59,6 @@ class Test extends Base implements CommandInterface
 	 **/
 	public function run()
 	{
-		// Make sure phpunit is installed
-		exec('which phpunit', $output);
-		if (!$output)
-		{
-			$this->output->error('PHPUnit does not appear to be installed');
-		}
-
 		// Get the extension to test...for now, this is required
 		if (!$extension = $this->arguments->getOpt(3))
 		{
@@ -94,7 +87,7 @@ class Test extends Base implements CommandInterface
 		}
 
 		// Build the command
-		$cmd = 'phpunit --no-globals-backup --bootstrap ' . PATH_CORE . DS . 'bootstrap' . DS . 'test' . DS . 'start.php ' . escapeshellarg($path) . ' 2>&1';
+		$cmd = 'php ' . PATH_CORE . DS . 'bin' . DS . 'phpunit --no-globals-backup --bootstrap ' . PATH_CORE . DS . 'bootstrap' . DS . 'test' . DS . 'start.php ' . escapeshellarg($path) . ' 2>&1';
 
 		// We want to stream the output, so set up what we need to do that
 		$descriptorspec = [
