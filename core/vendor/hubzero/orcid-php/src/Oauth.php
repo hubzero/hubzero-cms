@@ -399,7 +399,10 @@ class Oauth
         }
         else
         {
-            throw new Exception($data->error_description);
+            // Seems like the response format changes on occasion...not sure what's going on there?
+            $error = (isset($data->error_description)) ? $data->error_description : $data->{'error-desc'}->value;
+
+            throw new Exception($error);
         }
 
         return $this;

@@ -1,6 +1,8 @@
 # orcid-php
 PHP Library for ORCID
 
+[![Build Status](https://travis-ci.org/hubzero/orcid-php.svg?branch=master)](https://travis-ci.org/hubzero/orcid-php)
+
 This library was started to support the ORCID OAuth2 authentication workflow. It also supports basic profile access, but is a work in progress. More features are to come as needed by the developer or requested/contributed by other interested parties.
 
 ## Usage

@@ -1,0 +1,146 @@
+{
+    "message-version" : "1.2",
+    "orcid-profile" : {
+        "orcid" : null,
+        "orcid-id" : null,
+        "orcid-identifier" : {
+            "value" : null,
+            "uri" : "http://orcid.org/0000-0000-0000-0000",
+            "path" : "0000-0000-0000-0000",
+            "host" : "orcid.org"
+        },
+        "orcid-deprecated" : null,
+        "orcid-preferences" : {
+            "locale" : "EN"
+        },
+        "orcid-history" : {
+            "creation-method" : "DIRECT",
+            "completion-date" : null,
+            "submission-date" : {
+                "value" : 1435781105161
+            },
+            "last-modified-date" : {
+                "value" : 1442425371236
+            },
+            "claimed" : {
+                "value" : true
+            },
+            "source" : null,
+            "deactivation-date" : null,
+            "verified-email" : {
+                "value" : true
+            },
+            "verified-primary-email" : {
+                "value" : true
+            },
+            "visibility" : null
+        },
+        "orcid-bio" : {
+            "personal-details" : {
+                "given-names" : {
+                    "value" : "Test"
+                },
+                "family-name" : {
+                    "value" : "User"
+                },
+                "credit-name" : null,
+                "other-names" : {
+                    "other-name" : [ ],
+                    "visibility" : "PUBLIC"
+                }
+            },
+            "biography" : {
+                "value" : "",
+                "visibility" : "PUBLIC"
+            },
+            "researcher-urls" : {
+                "researcher-url" : [ ],
+                "visibility" : "PUBLIC"
+            },
+            "contact-details" : {
+                "email" : [ {
+                    "value" : "testuser@gmail.com",
+                    "primary" : true,
+                    "current" : true,
+                    "verified" : true,
+                    "visibility" : "PUBLIC",
+                    "source" : "0000-0000-0000-0000",
+                    "source-client-id" : null
+                } ],
+                "address" : null
+            },
+            "keywords" : null,
+            "external-identifiers" : {
+                "external-identifier" : [ ],
+                "visibility" : "PUBLIC"
+            },
+            "delegation" : null,
+            "applications" : null,
+            "scope" : null
+        },
+        "orcid-activities" : {
+            "affiliations" : {
+                "affiliation" : [ {
+                    "type" : "EMPLOYMENT",
+                    "department-name" : "Information Technology at Purdue",
+                    "role-title" : "Software Engineer",
+                    "start-date" : {
+                        "year" : {
+                            "value" : "2012"
+                        },
+                        "month" : {
+                            "value" : "10"
+                        },
+                        "day" : {
+                            "value" : "01"
+                        }
+                    },
+                    "end-date" : null,
+                    "organization" : {
+                        "name" : "Purdue University",
+                        "address" : {
+                            "city" : "West Lafayette",
+                            "region" : "IN",
+                            "country" : "US"
+                        },
+                        "disambiguated-organization" : {
+                            "disambiguated-organization-identifier" : "311308",
+                            "disambiguation-source" : "RINGGOLD"
+                        }
+                    },
+                    "source" : {
+                        "source-orcid" : {
+                            "value" : null,
+                            "uri" : "http://orcid.org/0000-0000-0000-0000",
+                            "path" : "0000-0000-0000-0000",
+                            "host" : "orcid.org"
+                        },
+                        "source-client-id" : null,
+                        "source-name" : {
+                            "value" : "Test User"
+                        },
+                        "source-date" : {
+                            "value" : 1435781249511
+                        }
+                    },
+                    "created-date" : {
+                        "value" : 1435781249511
+                    },
+                    "last-modified-date" : {
+                        "value" : 1435781261197
+                    },
+                    "visibility" : "PUBLIC",
+                    "put-code" : "1002942"
+                } ]
+            },
+            "orcid-works" : null,
+            "funding-list" : null
+        },
+        "orcid-internal" : null,
+        "type" : "USER",
+        "group-type" : null,
+        "client-type" : null
+    },
+    "orcid-search-results" : null,
+    "error-desc" : null
+}

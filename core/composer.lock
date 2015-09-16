@@ -680,12 +680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "5fde3e87254b74915a4e1ce81167cf50f1f1fe4a"
+                "reference": "bd33ac5d2aecdb2a3ac259b9a180157d752affb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/5fde3e87254b74915a4e1ce81167cf50f1f1fe4a",
-                "reference": "5fde3e87254b74915a4e1ce81167cf50f1f1fe4a",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/bd33ac5d2aecdb2a3ac259b9a180157d752affb3",
+                "reference": "bd33ac5d2aecdb2a3ac259b9a180157d752affb3",
                 "shasum": ""
             },
             "require": {
@@ -703,7 +703,7 @@
                 "MIT"
             ],
             "description": "Library for ORCID web services",
-            "time": "2015-08-26 13:08:53"
+            "time": "2015-09-16 18:31:32"
         },
         {
             "name": "leafo/lessphp",
