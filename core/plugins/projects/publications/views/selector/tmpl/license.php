@@ -46,7 +46,7 @@ $pubParams = $this->publication->params;
 		}
 
 		$icon = $item->icon;
-		$icon = str_replace('/com_publications/assets/img/', '/com_publications/site/assets/img/', $icon);
+		$icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
 
 		?>
 		<li class="type-license allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">

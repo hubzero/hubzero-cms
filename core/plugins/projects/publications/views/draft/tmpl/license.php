@@ -77,7 +77,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 							$info .= ' </div>';
 						}
 					$icon = $this->license->icon;
-					$icon = str_replace('/com_publications/assets/img/', '/com_publications/site/assets/img/', $icon);
+					$icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
 				?>
 				<div class="chosenitem">
 						<p class="item-title">
