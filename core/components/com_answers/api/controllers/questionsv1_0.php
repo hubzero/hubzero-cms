@@ -76,14 +76,14 @@ class Questionsv1_0 extends ApiController
 	 * 		"name":          "sort",
 	 * 		"description":   "Field to sort results by.",
 	 * 		"required":      false,
-	 *      "default":       "created"
+	 *      "default":       "created",
 	 * 		"allowedValues": "created, title, alias, id, publish_up, publish_down, state"
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "sort_Dir",
 	 * 		"description":   "Direction to sort results by.",
 	 * 		"required":      false,
-	 * 		"default":       "desc"
+	 * 		"default":       "desc",
 	 * 		"allowedValues": "asc, desc"
 	 * }
 	 * @return    void

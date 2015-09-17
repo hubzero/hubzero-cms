@@ -93,7 +93,7 @@ class Groupsv1_0 extends ApiController
 	 * 		"description":   "Comma-separated list of fields to return",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "gidNumber,cn,description,created,created_by"
+	 * 		"default":       "gidNumber,cn,description,created,created_by",
 	 * 		"allowedValues": "gidNumber, cn, description, published, approved, type, public_desc, join_policy, discoverability, logo, params, created, created_by"
 	 * }
 	 * @return  void
@@ -314,7 +314,7 @@ class Groupsv1_0 extends ApiController
 	 * 		"description":   "Comma-separated list of fields to return",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "gidNumber,cn,description,created,created_by"
+	 * 		"default":       "gidNumber,cn,description,created,created_by",
 	 * 		"allowedValues": "gidNumber, cn, description, published, approved, type, public_desc, join_policy, discoverability, logo, params, created, created_by"
 	 * }
 	 * @return    void

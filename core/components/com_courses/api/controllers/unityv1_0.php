@@ -58,7 +58,7 @@ class Unityv1_0 extends base
 	 * 		"description": "Host page",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     $_SERVER['HTTP_REFERER']
+	 * 		"default":     "$_SERVER['HTTP_REFERER']"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "payload",
