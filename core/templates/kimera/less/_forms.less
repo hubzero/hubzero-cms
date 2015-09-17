@@ -1,8 +1,8 @@
 //
 // @package     hubzero-cms
 // @file        templates/kimera/less/_forms.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
+// @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 //
 
 // Form elements
@@ -30,6 +30,19 @@
 		&:focus {
 			background-color: #fff;
 			border-color: #222;
+		}
+
+		&.disabled {
+			color: #888;
+			color: rgba(0, 0, 0, 0.5);
+
+			&:hover,
+			&:focus {
+				background-color: #f1f1f1;
+				background-color: rgba(200, 200, 200, 0.15);
+				border-color: #D9D9D9;
+				border-color: rgba(0, 0, 0, 0.15);
+			}
 		}
 	}
 	.placeholder-support {
