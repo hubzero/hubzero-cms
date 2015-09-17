@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2009 HUBzero Foundation, LLC.
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -56,11 +56,6 @@
 
 /* Edit project 
 --------------------------------------------- */
-	#edit-project-content .omega {
-		background: #f4f4f4;
-		border: 1px solid #CCCCCC;
-		padding-bottom: 1.5em;
-	}
 	.edit-title {
 		border-bottom: 4px solid #ccc;
 		margin-top: 1em;
@@ -95,9 +90,6 @@
 	ul#panelist li a:hover {
 		color: #000000;
 	}
-	/*ul#panelist li.activepane {
-		background: white;
-	}*/
 	ul#panelist li.activepane a,
 	ul#panelist li.activeln a,
 	ul#panelist li.activeln {
@@ -115,17 +107,7 @@
 		background-position: 5px center !important;
 	}
 
-	/*#edit-project h5 {
-		display: block;
-		margin: 1em 0 0 0;
-		padding: 0;
-		color: #666;
-	}
-	h5.terms-question {
-		padding: 0 0.5em;
-		background: #e2e2e2;
-	}*/
-	h5.terms-question span {
+	.terms-question span {
 		float: right;
 		margin-right: 0.5em;
 	}
@@ -141,12 +123,6 @@
 	#edit-project label {
 		padding: 0.5em 0 !important;
 	}
-	/*#edit-project table#infotbl td.htd {
-		text-align: left;
-	}
-	#cbody {
-		min-width: 500px;
-	}*/
 
 /* Cancel project 
 --------------------------------------------- */
