@@ -2029,6 +2029,30 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INVALID_PHONE'));
 			}
+
+			$data = array();
+			preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $pub->version->metadata, $matches, PREG_SET_ORDER);
+			if (count($matches) > 0)
+			{
+				foreach ($matches as $match)
+				{
+					$data[$match[1]] = $match[2];
+				}
+			}
+
+			foreach ($contact as $key => $val)
+			{
+				$data['repository_' . $key] = $val;
+			}
+
+			$metadata = '';
+
+			foreach ($data as $k => $v)
+			{
+				$metadata .= "\n" . '<nb:' . $k . '>' . $v . '</nb:' . $k . '>' . "\n";
+			}
+
+			$pub->version->metadata = $metadata;
 		}
 
 		// Main version?
@@ -2117,7 +2141,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->version->set('modified_by', $this->_uid);
 
 		// Issue DOI
-		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
+		/*if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
@@ -2136,7 +2160,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI')
 					. ' ' . $doiService->getError());
 			}
-		}
+		}*/
 
 		// Proceed if no error
 		if (!$this->getError())
@@ -2144,8 +2168,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if ($state == 1)
 			{
 				// Get and save manifest and its version
-				$versionNumber = $this->_pub->_curationModel->checkCurationVersion();
-				$pub->version->set('curation', json_encode($this->_pub->_curationModel->_manifest));
+				$versionNumber = $pub->_curationModel->checkCurationVersion();
+				$pub->version->set('curation', json_encode($pub->_curationModel->_manifest));
 				$pub->version->set('curation_version_id', $versionNumber);
 			}
 
