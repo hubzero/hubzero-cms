@@ -39,6 +39,8 @@ $cls = array(
 	$this->direction
 );
 
+$code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
+
 Lang::load('tpl_' . $this->template) ||
 Lang::load('tpl_' . $this->template, __DIR__);
 ?>
@@ -48,7 +50,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title><?php echo Config::get('sitename') . ' - ' . $this->error->getCode(); ?></title>
+		<title><?php echo Config::get('sitename') . ' - ' . $code; ?></title>
 
 		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
 
@@ -75,7 +77,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 			<main id="content" class="<?php echo 'code' . $this->error->getCode(); ?>" role="main">
 				<div class="inner">
 					<h2 class="error-code">
-						<?php echo $this->error->getCode(); ?>
+						<?php echo $code; ?>
 					</h2>
 
 					<p class="error"><?php 
