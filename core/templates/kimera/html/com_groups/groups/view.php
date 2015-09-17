@@ -119,7 +119,7 @@ $created = Date::of($this->group->get('created'))->toLocal(Lang::txt('DATE_FORMA
 						<?php
 						foreach ($this->notifications as $notification)
 						{
-							echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+							echo "<p class=\"message {$notification['type']}\">{$notification['message']}</p>";
 						}
 						?>
 					</div><!-- /#page_notifications -->

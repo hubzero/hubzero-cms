@@ -1166,6 +1166,10 @@
 		width: auto;
 	}
 
+	#page_notifications {
+		margin: 0 30px;
+	}
+
 @media (min-width: 40em) {
 	#page_identity {
 		display: block;

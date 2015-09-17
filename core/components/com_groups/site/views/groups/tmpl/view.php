@@ -129,10 +129,9 @@ $no_html = Request::getInt( 'no_html', 0 );
 						{
 							foreach ($this->notifications as $notification)
 							{
-								echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+								echo "<p class=\"message {$notification['type']}\">{$notification['message']}</p>";
 							}
 						}
-
 					?>
 				</div><!-- /#page_notifications -->
 
