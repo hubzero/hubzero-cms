@@ -279,9 +279,9 @@ class Arguments
 			$comPath = PATH_CORE . DS . 'components' . DS . 'com_' . strtolower($parts[0]);
 			if (is_dir($comPath))
 			{
-				if (isset($parts[1]) && is_file($comPath . DS . 'cli' . DS . 'commands' . DS . $parts[1] . '.php'))
+				if (isset($parts[1]) && is_file($comPath . DS . 'cli' . DS . 'commands' . DS . strtolower($parts[1]) . '.php'))
 				{
-					require_once $comPath . DS . 'cli' . DS . 'commands' . DS . $parts[1] . '.php';
+					require_once $comPath . DS . 'cli' . DS . 'commands' . DS . strtolower($parts[1]) . '.php';
 					$notfound    = false;
 					$class       = 'Components\\' . ucfirst($parts[0]) . '\\Cli\\Commands\\' . ucfirst($parts[1]);
 				}
