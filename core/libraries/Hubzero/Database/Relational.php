@@ -1103,18 +1103,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	}
 
 	/**
-	 * Retrieves one row loaded by an alias field
-	 *
-	 * @param   string  $alias  The alias to load by
-	 * @return  mixed
-	 **/
-	public static function oneByAlias($alias)
-	{
-		$instance = self::blank();
-		return $instance->whereEquals('alias', $alias)->row();
-	}
-
-	/**
 	 * Returns all rows (unless otherwise limited)
 	 *
 	 * @param   string|array  $columns  The columns to select
