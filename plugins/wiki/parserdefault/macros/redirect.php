@@ -82,7 +82,11 @@ class RedirectMacro extends WikiMacro
 		// No delay time? Redirect now.
 		if (!$delay)
 		{
-			return JFactory::getApplication()->redirect($url);
+			return '<script type="text/javascript">
+					window.onload = function () {
+						window.location.href = "' . str_replace(array("'", '"'), array('%27', '%22'), $url) . '";
+					};
+				</script>';
 		}
 
 		// Delayed redirect
