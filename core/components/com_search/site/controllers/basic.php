@@ -42,19 +42,7 @@ use Plugin;
 use Config;
 use Lang;
 
-if (!function_exists('stem'))
-{
-	/**
-	 * Stem a string
-	 *
-	 * @param  string $str
-	 * @return string
-	 */
-	function stem($str)
-	{
-		return $str;
-	}
-}
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'basic.php';
 
 foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
 {
