@@ -1144,7 +1144,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$p['collection_id'] = 0;
 
-			if ($coltitle = Request::getVar('collection_title', '', 'post'))
+			if ($coltitle = JRequest::getVar('collection_title', '', 'post'))
 			{
 				$collection = new CollectionsModelCollection();
 				$collection->set('title', $coltitle);
