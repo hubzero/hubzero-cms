@@ -179,6 +179,8 @@ class Extension extends Base implements CommandInterface
 				break;
 
 			case 'mod':
+				$client = $this->arguments->getOpt('client', 'site');
+
 				if ($method == 'install')
 				{
 					$mthd     = $method . 'Module';
@@ -202,7 +204,7 @@ class Extension extends Base implements CommandInterface
 						$this->output->error('Sorry, modules do not currently support the ' . $mthd . ' method');
 					}
 
-					$migration->$mthd($name, $position);
+					$migration->$mthd(str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0));
 				}
 				else
 				{
@@ -213,7 +215,7 @@ class Extension extends Base implements CommandInterface
 						$this->output->error('Sorry, modules do not currently support the ' . $mthd . ' method');
 					}
 
-					$migration->$mthd($name);
+					$migration->$mthd($name, 1, '', (($client == 'admin') ? 1 : 0));
 				}
 				break;
 
