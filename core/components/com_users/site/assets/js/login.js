@@ -106,6 +106,8 @@ HUB.User = {
 				error: function(xhr, status, error)
 				{
 					console.log("An error occured while trying to login.");
+					// Probably related to an expired session, reload the page to try and clear the problem up
+					window.location.reload();
 				},
 				complete: function(xhr, status) {}
 			});
