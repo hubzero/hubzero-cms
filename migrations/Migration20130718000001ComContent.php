@@ -188,7 +188,7 @@ class Migration20130718000001ComContent extends Hubzero_Migration
 			foreach ($results as $r)
 			{
 				$attribs = trim($r->attribs);
-				if (empty($attribs) || $attribs == '{}')
+				if (empty($attribs) || $attribs[0] == '{')
 				{
 					continue;
 				}
