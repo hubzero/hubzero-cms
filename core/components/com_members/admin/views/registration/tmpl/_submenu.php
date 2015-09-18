@@ -46,6 +46,9 @@ $controller = Request::getCmd('controller', 'registration');
 			<a<?php if ($controller == 'employers') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_members&controller=employers'); ?>"><?php echo Lang::txt('COM_MEMBERS_ORGTYPE'); ?></a>
 		</li>
 		<li>
+			<a<?php if ($controller == 'reasons') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_members&controller=reasons'); ?>"><?php echo Lang::txt('COM_MEMBERS_REASONS'); ?></a>
+		</li>
+		<li>
 			<a<?php if ($controller == 'incremental') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=com_members&controller=incremental'); ?>"><?php echo Lang::txt('COM_MEMBERS_INCREMENTAL'); ?></a>
 		</li>
 		<li>

@@ -499,26 +499,20 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$message = (!empty($this->xregistration->_invalid['reason'])) ? '<span class="error">' . $this->xregistration->_invalid['reason'] . '</span>' : '';
 					$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
-					$reasons = array(
-						'COM_MEMBERS_REGISTER_REASON_REQUIRED_FOR_CLASS',
-						'COM_MEMBERS_REGISTER_REASON_DEVELOPING_COURSE',
-						'COM_MEMBERS_REGISTER_REASON_USING_IN_COURSE',
-						'COM_MEMBERS_REGISTER_REASON_USING_TOOLS_FOR_RESEARCH',
-						'COM_MEMBERS_REGISTER_REASON_USING_FOR_RESEARCH',
-						'COM_MEMBERS_REGISTER_REASON_LEARNING_ABOUT_SUBJECT',
-						'COM_MEMBERS_REGISTER_REASON_KEEPING_CURRENT_IN_SUBJECT'
-					);
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'reason.php');
+					$database = App::get('db');
+					$xr = new \Components\Members\Tables\Reason($database);
+					$reasons = $xr->find('list');
+
 					$otherreason = '';
 					?>
 					<label for="reason"<?php echo $fieldclass; ?>>
 						<?php echo Lang::txt('COM_MEMBERS_REGISTER_REASON'); ?>: <?php echo ($this->registrationReason == REG_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<select name="reason" id="reason">
-						<?php if (!in_array($this->registration['reason'], $reasons)) { ?>
-							<option value="" selected="selected"><?php echo Lang::txt('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
-						<?php } ?>
-						<?php foreach ($reasons as $reason) { ?>
-							<option value="<?php echo Lang::txt($reason); ?>"<?php if ($this->registration['reason'] == Lang::txt($reason)) { echo ' selected="selected"'; } ?>><?php echo Lang::txt($reason); ?></option>
-						<?php } ?>
+							<option value=""><?php echo Lang::txt('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
+							<?php foreach ($reasons as $r) { ?>
+								<option value="<?php echo $this->escape($r->reason); ?>"<?php if ($this->registration['reason'] == $r->reason) { echo ' selected="selected"'; } ?>><?php echo $this->escape($r->reason); ?></option>
+							<?php } ?>
 						</select>
 					</label>
 					<input name="reasontxt" id="reasontxt" type="text" value="<?php echo $this->escape($this->registration['reason']); ?>" />
