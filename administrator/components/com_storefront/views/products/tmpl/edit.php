@@ -135,8 +135,7 @@ function submitbutton(pressbutton)
 			if ($this->metaNeeded) {
 			?>
 			<p>
-				<a href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit
-					type-related options</a> (save product first if you updated the type)</p>
+				<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options (save product first if you updated the type)</a></p>
 			<?php
 			}
 			?>
@@ -285,11 +284,11 @@ function submitbutton(pressbutton)
 			else
 			{
 				$pic = 'noimage.png';
-				$path = $this->config->get('imagesFolder', '/site/storefront/products');
+				$path = DS . 'components' . DS . 'com_storefront' . DS . 'assets' . DS . 'img' . DS;
 			}
 			?>
 				<div id="img-container">
-					<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo JText::_('COM_STOREFRONT_LOGO'); ?>" />
+					<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo JText::_('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($image); ?>" />
 				</div>
 				<table class="formed">

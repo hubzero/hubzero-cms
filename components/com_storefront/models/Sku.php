@@ -334,7 +334,9 @@ class StorefrontModelSku
 		if ($this->getMeta('downloadFile'))
 		{
 			// Path and file name
-			$dir = JPATH_ROOT . DS . 'media' . DS . 'software';
+			$params = JComponentHelper::getParams('com_storefront');
+			$downloadFolder = $params->get('downloadFolder');
+			$dir = JPATH_ROOT . $downloadFolder;
 			$file = $dir . DS . $this->getMeta('downloadFile');
 
 			if (file_exists($file))

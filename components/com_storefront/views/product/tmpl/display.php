@@ -63,7 +63,7 @@ if (!empty($this->notifications))
 
 				if (empty($this->product->images))
 				{
-					$imgPath = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS;
+					$imgPath = DS . 'components' . DS . 'com_storefront' . DS . 'assets' . DS . 'img' . DS;
 					$image = new stdClass();
 					$image->imgName = 'noimage.png';
 					$this->product->images[0] = $image;

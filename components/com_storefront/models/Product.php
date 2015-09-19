@@ -941,6 +941,8 @@ class StorefrontModelProduct
 
 		// Finally, since the product updates can potentially affect other elements of the storefront, update dependencies
 		$this->updateDependencies();
+
+		return true;
 	}
 
 	/**

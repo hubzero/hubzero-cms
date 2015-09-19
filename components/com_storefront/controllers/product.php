@@ -172,7 +172,8 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			$qtyDropDownMaxValLimit = 20;
 
 			// Get the first and the only value
-			$sku = array_shift(array_values($data->skus));
+			$arrayValues = array_values($data->skus);
+			$sku = array_shift($arrayValues);
 
 			// If no inventory tracking, there is no limit on how many can be purchased
 			$qtyDropDownMaxVal = $qtyDropDownMaxValLimit;
@@ -221,38 +222,6 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			$doc =& JFactory::getDocument();
 			$doc->addScriptDeclaration($js);
 		}
-
-		/*
-		// Get images (if any), gets all images from /site/storefront/products/$pId
-		$allowedImgExt = array('jpg', 'gif', 'png');
-		$productImg = array();
-		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $pId;
-		$imgPath = JPATH_ROOT . $imgWebPath;
-
-		if (file_exists($imgPath))
-		{
-			$files = scandir($imgPath);
-			foreach ($files as $file)
-			{
-				if (in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedImgExt)) {
-					if (substr($file, 0, 7) == 'default')
-					{
-						// Let the default image to be the first one
-						array_unshift($productImg, $imgWebPath . DS . $file);
-					}
-					else
-					{
-						$productImg[] = $imgWebPath . DS . $file;
-					}
-				}
-			}
-		}
-		else
-		{
-			$productImg[] = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . 'noimage.png';
-		}
-		$this->view->productImg = $productImg;
-		*/
 
 		$this->view->config = $this->config;
 

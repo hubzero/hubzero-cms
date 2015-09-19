@@ -984,7 +984,8 @@ class CartModelCurrentCart extends CartModelCart
 
 		// Get coupon types
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$coupons = StorefrontModelCoupons::getCouponsInfo($cnIds);
+		$storefrontCoupons = new StorefrontModelCoupons();
+		$coupons = $storefrontCoupons->getCouponsInfo($cnIds);
 
 		return $coupons;
 	}

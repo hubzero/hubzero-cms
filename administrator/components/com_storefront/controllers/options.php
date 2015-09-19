@@ -240,7 +240,7 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $fields['ogId'],
-				JText::_('COM_STOREFRONT_PRODUCT_SAVED')
+				JText::_('COM_STOREFRONT_OPTION_SAVED')
 			);
 			return;
 		}
