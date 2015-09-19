@@ -23,7 +23,8 @@ class Migration20151023000001ComStorefront extends Base
 		}
 	}
 
-	public function down() {
+	public function down()
+	{
 
 	}
 }
