@@ -64,14 +64,17 @@ class Software_Auditor extends BaseAuditor
 				// Check if the current user reached the max count of downloads for this SKU
 				$sku = new StorefrontModelSku($sId);
 				$skuDownloadLimit = $sku->getMeta('downloadLimit');
+				if ($skuDownloadLimit > 0)
+				{
 				// Get SKU download count
 				$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
 				// Check if the limit is reached
-				if ($skuDownloadCount >= $skuDownloadLimit)
-				{
-					$this->setResponseStatus('error');
-					$this->setResponseNotice('You have reached the maximum number of allowed downloads for this product.');
-					$this->setResponseError(': you have reached the maximum number of allowed downloads for this product.');
+					if ($skuDownloadCount >= $skuDownloadLimit)
+					{
+						$this->setResponseStatus('error');
+						$this->setResponseNotice('You have reached the maximum number of allowed downloads for this product.');
+						$this->setResponseError(': you have reached the maximum number of allowed downloads for this product.');
+					}
 				}
 				return ($this->getResponse());
 			}
@@ -83,14 +86,17 @@ class Software_Auditor extends BaseAuditor
 			// Check if SKU is reached the download max count
 			$sku = new StorefrontModelSku($sId);
 			$skuDownloadLimit = $sku->getMeta('globalDownloadLimit');
-			// Get SKU download count
-			$skuDownloadCount = CartDownload::countSkuDownloads($this->sId);
-			// Check if the limit is reached
-			if ($skuDownloadCount >= $skuDownloadLimit)
+			if ($skuDownloadLimit > 0)
 			{
-				$this->setResponseStatus('error');
-				$this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
-				$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
+				// Get SKU download count
+				$skuDownloadCount = CartDownload::countSkuDownloads($this->sId);
+				// Check if the limit is reached
+				if ($skuDownloadCount >= $skuDownloadLimit)
+				{
+					$this->setResponseStatus('error');
+					$this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
+					$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
+				}
 			}
 			return($this->getResponse());
 		}
@@ -98,13 +104,16 @@ class Software_Auditor extends BaseAuditor
 		// Get product download limit
 		$productDownloadLimit = StorefrontModelProduct::getMeta($this->pId, 'globalDownloadLimit');
 		// Get product downloads count
-		$productDownloadCount = CartDownload::countProductDownloads($this->pId);
-		// Check if the limit is reached
-		if ($productDownloadCount >= $productDownloadLimit)
+		if ($productDownloadLimit > 0)
 		{
-			$this->setResponseStatus('error');
-			$this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
-			$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
+			$productDownloadCount = CartDownload::countProductDownloads($this->pId);
+			// Check if the limit is reached
+			if ($productDownloadCount >= $productDownloadLimit)
+			{
+				$this->setResponseStatus('error');
+				$this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
+				$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
+			}
 		}
 		return($this->getResponse());
 	}
