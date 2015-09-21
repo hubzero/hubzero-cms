@@ -41,6 +41,7 @@ class Html
 {
 	/**
 	 * Auto-link strings matching URL patterns
+	 * @deprectated  
 	 *
 	 * @param      array $matches Strings matching URL pattern
 	 * @return     string
