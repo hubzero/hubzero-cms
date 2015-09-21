@@ -1291,6 +1291,16 @@ class Questions extends SiteController
 
 		$question = new Question($id);
 
+		// verify the orignial poster is the only one accepting the answer
+		if ($question->get('created_by') != User::get('id'))
+		{
+			App::redirect(
+				Route::url($question->link()),
+				Lang::txt('COM_ANSWERS_ERROR_MUST_BE_ASKER'),
+				'error'
+			);
+		}
+
 		// Check changes
 		if (!$question->accept($rid))
 		{
