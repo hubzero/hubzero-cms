@@ -1303,6 +1303,19 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 
 		$question = new AnswersModelQuestion($id);
 
+		// check to see whether the author is accepting the answer.
+		if ($question->get('created_by') != $this->juser->get('id',0))
+		{
+			$this->setRedirect(
+				JRoute::_($question->link()),
+				JText::_('COM_ANSWERS_ERROR_MUST_BE_ASKER'),
+				'error'
+				);
+
+				return;
+		}
+			
+
 		// Check changes
 		if (!$question->accept($rid))
 		{
