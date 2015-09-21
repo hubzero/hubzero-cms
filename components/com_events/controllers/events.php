@@ -714,57 +714,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		//$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
 		$row->contact_info = preg_replace("/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"$1$2$5$8\">$1$2$5$8</a>", $row->contact_info);
 
-		// Images - replace the {mosimage} plugins in both text areas
-		// if ($row->images)
-		// {
-		// 	$row->images = explode("\n", $row->images);
-		// 	$images = array();
-
-		// 	foreach ($row->images as $img)
-		// 	{
-		// 		$temp = explode('|', trim($img));
-		// 		if (!isset($temp[1]))
-		// 		{
-		// 			$temp[1] = "left";
-		// 		}
-
-		// 		if (!isset($temp[2]))
-		// 		{
-		// 			$temp[2] = "Image";
-		// 		}
-
-		// 		if (!isset($temp[3]))
-		// 		{
-		// 			$temp[3] = "0";
-		// 		}
-
-		// 		$images[] = '<img src="./images/stories/' . $temp[0] . '" style="float:' . $temp[1] . ';" alt="' . $temp[2] . '" />';
-		// 	}
-
-		// 	$text = explode('{mosimage}', $row->content);
-
-		// 	$row->content = $text[0];
-
-		// 	for ($i=0, $n=count($text)-1; $i < $n; $i++)
-		// 	{
-		// 		if (isset($images[$i]))
-		// 		{
-		// 			$row->content .= $images[$i];
-		// 		}
-		// 		if (isset($text[$i+1]))
-		// 		{
-		// 			$row->content .= $text[$i+1];
-		// 		}
-		// 	}
-		// 	unset($text);
-		// }
-
-		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		$row->content = preg_replace_callback("/$UrlPtrn/", array('EventsHtml', 'autolink'), trim(stripslashes($row->content)));
-		$row->content = nl2br($row->content);
-		$row->content = str_replace("[[BR]]", '<br />', $row->content);
-		$row->content = str_replace(" * ", '<br />&nbsp;&bull;&nbsp;', $row->content);
-		//$row->content = stripslashes($row->content);
+		$autoLink = new \Hubzero\View\Helper\Autolink;
+		$row->content = $autoLink->__invoke($row->content);
 
 		$fields = $this->config->getCfg('fields');
 		if (!empty($fields))

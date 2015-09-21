@@ -39,6 +39,7 @@ require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'config.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'page.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'respondent.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'View' . DS .'Helper' . DS . 'Autolink.php');
 
 $controllerName = JRequest::getCmd('controller', 'events');
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
