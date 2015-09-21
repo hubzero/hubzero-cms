@@ -1099,6 +1099,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Load the topic
 		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
 
+		// Redirect if the thread is soft-deleted
+		if ($this->view->thread->get('state') == 2)
+		{
+			App::redirect(
+				Route::url($this->base . '&scope=' . $this->view->filters['section'] . '/' . $this->view->filters['category']),
+				Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_NOT_FOUND'),
+				'error'
+			);
+			return;
+		}
+
 		// Get authorization
 		$this->_authorize('category', $this->view->category->get('id'));
 		$this->_authorize('thread', $this->view->thread->get('id'));
