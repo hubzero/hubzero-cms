@@ -1127,7 +1127,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
 
 		// Redirect if the thread is soft-deleted
-		if ($this->view->thread->get('state') == 2)  
+		if ($this->view->thread->get('state') == 2) 
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&scope=' . $this->view->filters['section'] . '/' . $this->view->filters['category']),
