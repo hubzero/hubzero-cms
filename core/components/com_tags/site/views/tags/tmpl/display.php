@@ -47,7 +47,6 @@ $this->css('introduction.css', 'system')
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<?php echo $this->autocompleter('tags', 'tag', '', 'actags'); ?>
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
 			</form><!-- / .container -->
 			<p><?php echo Lang::txt('COM_TAGS_ARE'); ?></p>
