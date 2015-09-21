@@ -1314,7 +1314,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 
 				return;
 		}
-			
 
 		// Check changes
 		if (!$question->accept($rid))
