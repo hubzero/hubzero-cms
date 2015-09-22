@@ -1771,6 +1771,21 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	}
 
 	/**
+	 * Retrieves a belongs to one model relationship as the inverse of a oneShiftsToMany
+	 *
+	 * @param   string  $shifter  The parent side field used to differentiate/shift models
+	 * @param   string  $thisKey  The local key used to associate the many back to the model
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 * @since   2.0.0
+	 **/
+	public function shifter($shifter = 'scope', $thisKey = 'scope_id')
+	{
+		$parent = $this->resolve($this->$shifter);
+
+		return new BelongsToOne($this, $parent, $thisKey, 'id');
+	}
+
+	/**
 	 * Attaches the given model(s) to the current one via its relationship
 	 *
 	 * This is kind of like calling save on an individual relationship,

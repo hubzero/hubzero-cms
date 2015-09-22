@@ -42,6 +42,16 @@ use Hubzero\Database\Relational;
 class Member extends Relational
 {
 	/**
+	 * Inverse relationship with the shifter object
+	 *
+	 * @return  \Hubzero\Database\Relationship\BelongsToOne
+	 **/
+	public function memberable()
+	{
+		return $this->shifter();
+	}
+
+	/**
 	 * Many shifts to many relationship with permissions
 	 *
 	 * @return  \Hubzero\Database\Relationship\ManyShiftsToMany

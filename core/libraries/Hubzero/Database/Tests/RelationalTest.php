@@ -515,4 +515,16 @@ class RelationalTest extends Database
 		$this->assertArrayHasKey('permitted', (array)$result->associated, 'Group should have had an associated key of "permitted"');
 		$this->assertEquals($now, $result->associated->permitted, 'Group permitted date should have equaled ' . $now);
 	}
+
+	/**
+	 * Tests to make sure we can retrieve the shifter of a many to many shifting relationship
+	 *
+	 * @return  void
+	 **/
+	public function testOneShiftsToManyCanGetShifter()
+	{
+		$group = Member::oneOrFail(1)->memberable;
+
+		$this->assertEquals($group->id, '1', 'Member should have returned a group association id of 1');
+	}
 }
