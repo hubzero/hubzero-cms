@@ -797,6 +797,35 @@ class Hubzero_Migration
 				$component_id = $db->insertId();
 			}
 
+			// Secondly, add asset entry if not yet created
+			$query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $db->quote($option);
+			$db->setQuery($query);
+			if (!$db->loadResult())
+			{
+				// Build default ruleset
+				$defaulRules = array(
+					"core.admin"      => array(
+						"7" => 1
+						),
+					"core.manage"     => array(
+						"6" => 1
+						),
+					"core.create"     => array(),
+					"core.delete"     => array(),
+					"core.edit"       => array(),
+					"core.edit.state" => array()
+					);
+
+				// Register the component container just under root in the assets table
+				$asset = JTable::getInstance('Asset');
+				$asset->name = $option;
+				$asset->parent_id = 1;
+				$asset->rules = json_encode($defaulRules);
+				$asset->title = $option;
+				$asset->setLocation(1, 'last-child');
+				$asset->store();
+			}
+
 			if ($createMenuItem)
 			{
 				// Check for an admin menu entry...if it's not there, create it
