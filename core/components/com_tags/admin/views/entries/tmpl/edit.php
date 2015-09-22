@@ -136,7 +136,8 @@ if ($this->getError())
 								}
 							}
 						}
-						echo $this->escape($this->tag->creator('name', Lang::txt('COM_TAGS_UNKNOWN')));
+						$name = $this->tag->creator('name');
+						echo $this->escape(($name ? $name : Lang::txt('COM_TAGS_UNKNOWN')));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->tag->get('created_by')); ?>" />
 					</td>
