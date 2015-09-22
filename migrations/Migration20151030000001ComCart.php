@@ -42,7 +42,8 @@ class Migration20151030000001ComCart extends Base
 		}
 	}
 
-	public function down() {
+	public function down()
+	{
 
 	}
 
