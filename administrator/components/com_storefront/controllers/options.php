@@ -216,7 +216,7 @@ class StorefrontControllerOptions extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 
 		$obj = new StorefrontModelArchive();
 		// Save option

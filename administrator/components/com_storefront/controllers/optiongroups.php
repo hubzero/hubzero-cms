@@ -215,7 +215,7 @@ class StorefrontControllerOptiongroups extends \Hubzero\Component\AdminControlle
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 
 		//print_r($fields); die;
 
