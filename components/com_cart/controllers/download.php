@@ -149,7 +149,8 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if(!$direct) {
+		if (!$direct)
+		{
 			$this->landingTask($tId, $sId);
 			return;
 		}

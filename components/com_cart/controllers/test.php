@@ -100,7 +100,7 @@ class CartControllerTest extends ComponentController
 				// Add coupon
 				$coupon->add();
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -116,7 +116,7 @@ class CartControllerTest extends ComponentController
 			{
 				$warehouse->deleteCoupon('couponcode3');
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -143,7 +143,7 @@ class CartControllerTest extends ComponentController
 				$info = $course->add();
 				//print_r($info);
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -166,14 +166,15 @@ class CartControllerTest extends ComponentController
 				$course->setTimeToLive('10 YEAR');
 				$course->update();
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
 			return;
 		}
 
-		if (0) {
+		if (0)
+		{
 			// UPDATE COURSE by recreating it
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			$course = new StorefrontModelCourse();
@@ -189,7 +190,7 @@ class CartControllerTest extends ComponentController
 				$info = $course->update();
 				//print_r($info);
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -323,7 +324,7 @@ class CartControllerTest extends ComponentController
 	public function passportTask()
 	{
 		// Instantiate badges manager, provide badges provider (right now there is only one: 'PASSPORT').
-		$badges = new Hubzero_Badges('PASSPORT');
+		//$badges = new Hubzero_Badges('PASSPORT');
 
 		// Get the actual badges provider class
 		$passport = $badges->getProvider();
@@ -339,10 +340,11 @@ class CartControllerTest extends ComponentController
 		$credentials->password = 'xxx';
 
 		// Set credentials
-		try {
+		try
+		{
 			$passport->setCredentials($credentials);
 		}
-		catch(Exception $e)
+		catch (Exception $e)
 		{
 			echo $e->getMessage();
 		}
@@ -353,7 +355,8 @@ class CartControllerTest extends ComponentController
 		$badge->evidenceUrl = 'http://hubzero.org';
 
 		// Award a badge
-		try {
+		try
+		{
 			// Single user
 			//$passport->grantBadge($badge, 'ishunko@purdue.edu');
 
@@ -363,7 +366,7 @@ class CartControllerTest extends ComponentController
 
 			echo 'Badges granted';
 		}
-		catch(Exception $e)
+		catch (Exception $e)
 		{
 			echo 'Error: ' . $e->getMessage();
 		}
