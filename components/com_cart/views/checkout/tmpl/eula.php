@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$states = Cart_Helper::getUsStates();
-
 $this->css();
 
 // Get the name of the product downloaded

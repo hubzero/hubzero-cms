@@ -72,6 +72,9 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		// Get the SKU ID
 		$sId = JRequest::getVar('p0');
 
+		// Get the landing page flag
+		$direct = JRequest::getVar('p1');
+
 		// Check if the transaction is complete and belongs to the user and is active
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Cart.php');
 		$transaction = CartModelCart::getTransactionFacts($tId);
@@ -87,13 +90,16 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		// Error if needed
 		if ($tStatus !== 'completed')
 		{
-			JError::raiseError(401, JText::_('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'));
+			$messages = array(array('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED', 'error'));
+			$this->messageTask($messages);
 			return;
 		}
 		elseif ($cartUser != $currentUser)
 		{
-			JError::raiseError(401, JText::_('COM_CART_DOWNLOAD_NOT_AUTHORIZED'));
+			$messages = array(array('COM_CART_DOWNLOAD_NOT_AUTHORIZED', 'error'));
+			$this->messageTask($messages);
 			return;
+
 		}
 
 		// Check if the product is valid and downloadable; find the file
@@ -107,7 +113,8 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		// Error if needed
 		if ($productType != 30 || empty($downloadFile))
 		{
-			JError::raiseError(400, JText::_('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOABLE'));
+			$messages = array(array(JText::_('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOABLE'), 'error'));
+			$this->messageTask($messages);
 			return;
 		}
 
@@ -132,14 +139,18 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		}
 
 		// Path and file name
-		$params = JComponentHelper::getParams('com_storefront');
-		$downloadFolder = $params->get('downloadFolder');
-		$dir = JPATH_ROOT . $downloadFolder;
+		$dir = JPATH_ROOT . DS . 'media' . DS . 'software';
 		$file = $dir . DS . $downloadFile;
 
 		if (!file_exists($file))
 		{
-			JError::raiseError(404, JText::_('COM_CART_DOWNLOAD_FILE_NOT_FOUND'));
+			$messages = array(array(JText::_('COM_CART_DOWNLOAD_FILE_NOT_FOUND'), 'error'));
+			$this->messageTask($messages);
+			return;
+		}
+
+		if(!$direct) {
+			$this->landingTask($tId, $sId);
 			return;
 		}
 
@@ -156,6 +167,14 @@ class CartControllerDownload extends \Hubzero\Component\SiteController
 		$xserver->filename($file);
 		$xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
 		exit;
+	}
+
+	public function landingTask($tId, $sId)
+	{
+		$this->setView('download', 'landing');
+		$this->view->sId = $sId;
+		$this->view->tId = $tId;
+		$this->view->display();
 	}
 
 	public function messageTask($notifications)

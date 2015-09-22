@@ -35,19 +35,17 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 $this->css()
      ->js()
+	->js('download.js');
+
+$link = JRoute::_('index.php?option=com_cart/download/' . $this->tId . '/' . $this->sId . '/direct', true, -1);
+
 ?>
 
 <header id="content-header">
 	<h2><?php echo  JText::_('COM_CART'); ?>: Download</h2>
 </header>
 
-<?php
-
-if (!empty($this->notifications))
-{
-	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
-	$view->notifications = $this->notifications;
-	$view->display();
-}
-
-?>
+<section class="section">
+<p>Thank you for requesting a file. Your download will begin shortly.</p>
+<p>Problems with the download? Please use the <a href="<?php echo $link; ?>" id="cartRedirectUrl">direct link</a></p>
+</section>

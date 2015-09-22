@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-alais"><?php echo JText::_('Alias'); ?>:</label><br />
+				<label for="field-alais"><?php echo JText::_('Alias'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
 			</div>
 

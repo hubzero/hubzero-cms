@@ -102,7 +102,7 @@ class Cart_Helper
 	 * @param   bool 	$notZero Flag if zero should be accepted (by default zero is ok)
 	 * @return  bool
 	 */
-	public function isNonNegativeInt($x, $zeroAccepted = true)
+	public static function isNonNegativeInt($x, $zeroAccepted = true)
 	{
 		if (isset($x) && is_numeric($x) && intval($x) == $x && $x >= 0)
 		{
@@ -123,7 +123,7 @@ class Cart_Helper
 	 * @param      unknown $email Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function validemail($email)
+	public static function validemail($email)
 	{
 		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email))
 		{
@@ -140,7 +140,7 @@ class Cart_Helper
 	 * @param      unknown $url Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validurl($url)
+	public static function validurl($url)
 	{
 		$ptrn = '/([a-z0-9_\-]{1,5}:\/\/)?(([a-z0-9_\-]{1,}):([a-z0-9_\-]{1,})\@)?((www\.)|([a-z0-9_\-]{1,}\.)+)?([a-z0-9_\-]{3,})(\.[a-z]{2,4})(\/([a-z0-9_\-]{1,}\/)+)?([a-z0-9_\-]{1,})?(\.[a-z]{2,})?(\?)?(((\&)?[a-z0-9_\-]{1,}(\=[a-z0-9_\-]{1,})?)+)?/';
 		if (preg_match($ptrn, $url)) {
@@ -158,7 +158,7 @@ class Cart_Helper
 	 * @param      unknown $phone Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validphone($phone)
+	public static function validphone($phone)
 	{
 		if (preg_match("/^[\ \#\*\+\:\,\.0-9-]*$/", $phone)) {
 			return(1);
@@ -175,25 +175,13 @@ class Cart_Helper
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validZip($zip)
+	public static function validZip($zip)
 	{
 		if (preg_match("/^\d{5}([\-]\d{4})?$/", $zip))
 		{
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Escape value for DB insertino
-	 *
-	 * @param	string Value to be escaped
-	 * @return  string Escaped value
-	 */
-	public function escapeDb($val)
-	{
-		$val = mysql_real_escape_string($val);
-		return $val;
 	}
 
 }

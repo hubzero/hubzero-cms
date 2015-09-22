@@ -400,6 +400,7 @@ class CartControllerTest extends ComponentController
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 			$curl_result = @curl_exec($ch);

@@ -194,13 +194,11 @@ class PaymentProvider
      */
     private function getPostURL()
     {
-        //return('http://www.conmerge.com/temp/post.php');
         if ($this->options->env == 'LIVE')
         {
             return 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
         }
         else {
-            //return 'http://www.conmerge.com/temp/post.php';
             return 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
         }
     }

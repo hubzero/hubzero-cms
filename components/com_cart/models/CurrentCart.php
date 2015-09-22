@@ -540,21 +540,21 @@ class CartModelCurrentCart extends CartModelCart
 		if (empty($errors))
 		{
 			// save shipping info
-			$shippingToFirst = Cart_Helper::escapeDb(JRequest::getVar('shippingToFirst', false, 'post', 'string'));
-			$shippingToLast = Cart_Helper::escapeDb(JRequest::getVar('shippingToLast', false, 'post', 'string'));
-			$shippingAddress = Cart_Helper::escapeDb(JRequest::getVar('shippingAddress', false, 'post', 'string'));
-			$shippingCity = Cart_Helper::escapeDb(JRequest::getVar('shippingCity', false, 'post', 'string'));
-			$shippingState = Cart_Helper::escapeDb(JRequest::getVar('shippingState', false, 'post', 'string'));
-			$shippingZip = Cart_Helper::escapeDb(JRequest::getVar('shippingZip', false, 'post', 'string'));
+			$shippingToFirst = $this->_db->quote(JRequest::getVar('shippingToFirst', false, 'post', 'string'));
+			$shippingToLast = $this->_db->quote(JRequest::getVar('shippingToLast', false, 'post', 'string'));
+			$shippingAddress = $this->_db->quote(JRequest::getVar('shippingAddress', false, 'post', 'string'));
+			$shippingCity = $this->_db->quote(JRequest::getVar('shippingCity', false, 'post', 'string'));
+			$shippingState = $this->_db->quote(JRequest::getVar('shippingState', false, 'post', 'string'));
+			$shippingZip = $this->_db->quote(JRequest::getVar('shippingZip', false, 'post', 'string'));
 
 			if ($this->debug)
 			{
 				echo '<br>saving transaction shipping info';
 			}
 
-			$sqlUpdateValues = "`tiShippingToFirst` = '{$shippingToFirst}', `tiShippingToLast` = '{$shippingToLast}',
-								`tiShippingAddress` = '{$shippingAddress}', `tiShippingCity` = '{$shippingCity}',
-								`tiShippingState` = '{$shippingState}', `tiShippingZip` = '{$shippingZip}'";
+			$sqlUpdateValues = "`tiShippingToFirst` = {$shippingToFirst}, `tiShippingToLast` = {$shippingToLast},
+								`tiShippingAddress` = {$shippingAddress}, `tiShippingCity` = {$shippingCity},
+								`tiShippingState` = {$shippingState}, `tiShippingZip` = {$shippingZip}";
 
 			$sql = "INSERT INTO `#__cart_transaction_info`
 					SET `tId` = {$this->cart->tId}, {$sqlUpdateValues}
@@ -562,7 +562,7 @@ class CartModelCurrentCart extends CartModelCart
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 
-			$saveAddress = Cart_Helper::escapeDb(JRequest::getVar('saveAddress', false, 'post', 'string'));
+			$saveAddress = $this->_db->quote(JRequest::getVar('saveAddress', false, 'post', 'string'));
 			// Save the address for future use if requested
 			if ($saveAddress)
 			{
