@@ -13,7 +13,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__plugins'))
 		{
 			$query = "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
 		}
@@ -31,7 +31,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__plugins'))
 		{
 			$query = "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
 		}

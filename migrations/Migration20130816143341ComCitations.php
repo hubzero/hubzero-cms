@@ -28,7 +28,7 @@ class Migration20130816143341ComCitations extends Hubzero_Migration
 		jimport('joomla.html.parameter');
 		
 		//get citation params
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if ($db->tableExists('#__extensions'))
 		{
 			$sql = "SELECT params FROM `#__extensions` WHERE `type`='component' AND `element`='com_citations';";
 		}
