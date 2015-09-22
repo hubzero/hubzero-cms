@@ -190,7 +190,7 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php echo $row->access; ?>
+					<?php echo $this->ag[$row->access]; ?>
 				</td>
 			</tr>
 <?php

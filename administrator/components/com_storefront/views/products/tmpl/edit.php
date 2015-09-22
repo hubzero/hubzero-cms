@@ -168,7 +168,6 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 
-
 		<?php
 		if ($this->collections->total())
 		{

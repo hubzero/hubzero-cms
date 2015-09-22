@@ -211,7 +211,7 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo 'Should the inventory level be kept tracked? If yes set the inventory.'; ?>">
 				<label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
 				<select name="fields[sTrackInventory]" id="field-sTrackInventory">
 					<option value="0"<?php if ($this->row->getTrackInventory() == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STOREFRONT_NO'); ?></option>
@@ -219,7 +219,7 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative ingeger.'; ?>">
 				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
 				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="100" value="<?php echo $this->row->getInventoryLevel(); ?>" />
 			</div>

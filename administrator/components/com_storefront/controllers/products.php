@@ -114,6 +114,16 @@ class StorefrontControllerProducts extends \Hubzero\Component\AdminController
 		//print_r($skus); die;
 		$this->view->skus = $skus;
 
+		// access groups
+		$ag = JHTML::_('access.assetgroups');
+		$accessGroups = array();
+		$accessGroups[0] = 'All';
+		foreach ($ag as $obj)
+		{
+			$accessGroups[$obj->value] = $obj->text;
+		}
+		$this->view->ag = $accessGroups;
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
