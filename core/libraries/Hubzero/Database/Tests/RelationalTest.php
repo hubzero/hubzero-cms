@@ -489,7 +489,7 @@ class RelationalTest extends Database
 	public function testConnectManyToManyCanAddAdditionalFields()
 	{
 		// Tag post 2 with tag 4
-		$now = \Date::toSql();
+		$now = uniqid();
 		Post::oneOrFail(3)->tags()->connect([1 => ['tagged' => $now]]);
 
 		$result = Post::oneOrFail(3)->tags->seek(1);
@@ -506,7 +506,7 @@ class RelationalTest extends Database
 	 **/
 	public function testConnectManyShiftsToManyCanAddAdditionalFields()
 	{
-		$now = \Date::toSql();
+		$now = uniqid();
 		Group::oneOrFail(1)->permissions()->connect([3 => ['permitted' => $now]]);
 
 		$result = Group::oneOrFail(1)->permissions->seek(3);
