@@ -226,24 +226,34 @@ class Page extends SiteController
 			throw new Exception(Lang::txt('COM_WIKI_WARNING_NOT_AUTH'), 403);
 		}
 
-		if ($this->page->get('scope') && !$this->page->get('group_cn'))
+		if ($scope = $this->page->get('scope'))
 		{
-			$bits = explode('/', $this->page->get('scope'));
 			$s = array();
-			foreach ($bits as $bit)
+			if ($cn = $this->page->get('group_cn'))
 			{
-				$bit = trim($bit);
-				if ($bit != '/' && $bit != '')
+				$scope = substr($scope, strlen($cn . '/wiki'));
+				$s[] = $cn;
+				$s[] = 'wiki';
+			}
+			$scope = trim($scope, '/');
+			if ($scope)
+			{
+				$bits = explode('/', $scope);
+				foreach ($bits as $bit)
 				{
-					$p = Article::getInstance($bit, implode('/', $s));
-					if ($p->exists())
+					$bit = trim($bit);
+					if ($bit != '/' && $bit != '')
 					{
-						Pathway::append(
-							$p->get('title'),
-							$p->link()
-						);
+						$p = Article::getInstance($bit, implode('/', $s));
+						if ($p->exists())
+						{
+							Pathway::append(
+								$p->get('title'),
+								$p->link()
+							);
+						}
+						$s[] = $bit;
 					}
-					$s[] = $bit;
 				}
 			}
 		}
