@@ -219,34 +219,38 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if ($this->page->get('scope') && !$this->page->get('group_cn'))
+		if ($scope = $this->page->get('scope'))
 		{
-			$bits = explode('/', $this->page->get('scope'));
 			$s = array();
-			foreach ($bits as $bit)
+			if ($cn = $this->page->get('group_cn'))
 			{
-				$bit = trim($bit);
-				if ($bit != '/' && $bit != '')
+				$scope = substr($scope, strlen($cn . '/wiki'));
+				$s[] = $cn;
+				$s[] = 'wiki';
+			}
+			$scope = trim($scope, '/');
+			if ($scope)
+			{
+				$bits = explode('/', $this->page->get('scope'));
+				foreach ($bits as $bit)
 				{
-					$p = WikiModelPage::getInstance($bit, implode('/', $s));
-					if ($p->exists())
+					$bit = trim($bit);
+					if ($bit != '/' && $bit != '')
 					{
-						$pathway->addItem(
-							$p->get('title'),
-							$p->link()
-						);
+						$p = WikiModelPage::getInstance($bit, implode('/', $s));
+						if ($p->exists())
+						{
+							$pathway->addItem(
+								$p->get('title'),
+								$p->link()
+							);
+						}
+						$s[] = $bit;
 					}
-					$s[] = $bit;
 				}
 			}
 		}
-		/*if ($this->page->get('group_cn'))
-		{
-			$pathway->addItem(
-				JText::_('Wiki'),
-				$this->page->link('base')
-			);
-		}*/
+
 		$pathway->addItem(
 			$this->view->title,
 			$this->page->link()
