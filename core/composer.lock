@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c67822ffc3459af93defd9101edd415c",
+    "hash": "29c278e372a67d83e7b5987218e08f56",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -676,21 +676,26 @@
         },
         {
             "name": "hubzero/orcid-php",
-            "version": "dev-master",
+            "version": "v0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "bd33ac5d2aecdb2a3ac259b9a180157d752affb3"
+                "reference": "570841355da67b842d2026f197a21e7e513aa79c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/bd33ac5d2aecdb2a3ac259b9a180157d752affb3",
-                "reference": "bd33ac5d2aecdb2a3ac259b9a180157d752affb3",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/570841355da67b842d2026f197a21e7e513aa79c",
+                "reference": "570841355da67b842d2026f197a21e7e513aa79c",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.9.*",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "2.*"
             },
             "type": "library",
             "autoload": {
@@ -703,7 +708,12 @@
                 "MIT"
             ],
             "description": "Library for ORCID web services",
-            "time": "2015-09-16 18:31:32"
+            "keywords": [
+                "oauth",
+                "orcid",
+                "php"
+            ],
+            "time": "2015-09-23 17:47:27"
         },
         {
             "name": "leafo/lessphp",
@@ -1042,7 +1052,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/711306e9564a02fc10e8afd882e86758ace83956",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/b9404fc2e14f08e03ed27a24ca0782116d3f77c4",
                 "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
                 "shasum": ""
             },
@@ -1714,8 +1724,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "guzzle/guzzle": 20,
-        "pelago/emogrifier": 20,
-        "hubzero/orcid-php": 20
+        "pelago/emogrifier": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

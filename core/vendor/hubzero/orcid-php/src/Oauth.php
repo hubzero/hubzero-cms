@@ -120,7 +120,7 @@ class Oauth
      * @return  void
      * @uses    Orcid\Http\Curl
      **/
-    public function __construct($http=null)
+    public function __construct($http = null)
     {
         $this->http = $http ?: new Curl;
     }
@@ -340,9 +340,15 @@ class Oauth
     public function getAuthorizationUrl()
     {
         // Check for required items
-        if (!$this->clientId)    throw new Exception('Client ID is required');
-        if (!$this->scope)       throw new Exception('Scope is required');
-        if (!$this->redirectUri) throw new Exception('Redirect URI is required');
+        if (!$this->clientId) {
+            throw new Exception('Client ID is required');
+        }
+        if (!$this->scope) {
+            throw new Exception('Scope is required');
+        }
+        if (!$this->redirectUri) {
+            throw new Exception('Redirect URI is required');
+        }
 
         // Start building url (enpoint is the same for public and member APIs)
         $url  = 'https://' . self::HOSTNAME . '/' . self::AUTHORIZE;
@@ -352,11 +358,11 @@ class Oauth
         $url .= '&response_type=code';
 
         // Process non-required fields
-        if ($this->showLogin)          $url .= '&show_login=true';
-        if (isset($this->state))       $url .= '&state=' . $this->state;
-        if (isset($this->familyNames)) $url .= '&family_names=' . $this->familyNames;
-        if (isset($this->givenNames))  $url .= '&given_names=' . $this->givenNames;
-        if (isset($this->email))       $url .= '&email=' . urlencode($this->email);
+        $url .= ($this->showLogin)          ? '&show_login=true'                    : '';
+        $url .= (isset($this->state))       ? '&state=' . $this->state              : '';
+        $url .= (isset($this->familyNames)) ? '&family_names=' . $this->familyNames : '';
+        $url .= (isset($this->givenNames))  ? '&given_names=' . $this->givenNames   : '';
+        $url .= (isset($this->email))       ? '&email=' . urlencode($this->email)   : '';
 
         return $url;
     }
@@ -371,12 +377,20 @@ class Oauth
     public function authenticate($code)
     {
         // Validate code
-        if (!$code || strlen($code) != 6) throw new Exception('Invalid authorization code');
+        if (!$code || strlen($code) != 6) {
+            throw new Exception('Invalid authorization code');
+        }
 
         // Check for required items
-        if (!$this->clientId)     throw new Exception('Client ID is required');
-        if (!$this->clientSecret) throw new Exception('Client secret is required');
-        if (!$this->redirectUri)  throw new Exception('Redirect URI is required');
+        if (!$this->clientId) {
+            throw new Exception('Client ID is required');
+        }
+        if (!$this->clientSecret) {
+            throw new Exception('Client secret is required');
+        }
+        if (!$this->redirectUri) {
+            throw new Exception('Redirect URI is required');
+        }
 
         $fields = [
             'client_id'     => $this->clientId,
@@ -392,13 +406,10 @@ class Oauth
 
         $data = json_decode($this->http->execute());
 
-        if (isset($data->access_token))
-        {
+        if (isset($data->access_token)) {
             $this->setAccessToken($data->access_token);
             $this->setOrcid($data->orcid);
-        }
-        else
-        {
+        } else {
             // Seems like the response format changes on occasion...not sure what's going on there?
             $error = (isset($data->error_description)) ? $data->error_description : $data->{'error-desc'}->value;
 
@@ -429,22 +440,21 @@ class Oauth
      * @return  object
      * @throws  Exception
      **/
-    public function getProfile($orcid=null)
+    public function getProfile($orcid = null)
     {
         $this->http->setUrl($this->getApiEndpoint('orcid-profile', $orcid));
 
-        if ($this->level == 'api')
-        {
+        if ($this->level == 'api') {
             // If using the members api, we have to have an access token set
-            if (!$this->getAccessToken()) throw new Exception('You must first set an access token or authenticate');
+            if (!$this->getAccessToken()) {
+                throw new Exception('You must first set an access token or authenticate');
+            }
 
             $this->http->setHeader([
                 'Content-Type'  => 'application/vdn.orcid+json',
                 'Authorization' => 'Bearer ' . $this->getAccessToken()
             ]);
-        }
-        else
-        {
+        } else {
             $this->http->setHeader('Accept: application/orcid+json');
         }
 
@@ -458,7 +468,7 @@ class Oauth
      * @param   string  $orcid     the orcid to look up, if not already specified
      * @return  string
      **/
-    private function getApiEndpoint($endpoint, $orcid=null)
+    private function getApiEndpoint($endpoint, $orcid = null)
     {
         $url  = ($this->level == 'pub') ? 'http://' : 'https://';
         $url .= $this->level . '.';

@@ -32,7 +32,7 @@ class Profile
      * @param   object  $oauth  the oauth object used for making calls to orcid
      * @return  void
      **/
-    public function __construct($oauth=null)
+    public function __construct($oauth = null)
     {
         $this->oauth = $oauth;
     }
@@ -54,8 +54,7 @@ class Profile
      **/
     public function raw()
     {
-        if (!isset($this->raw))
-        {
+        if (!isset($this->raw)) {
             $this->raw = $this->oauth->getProfile()->{'orcid-profile'};
         }
 
@@ -86,10 +85,8 @@ class Profile
         $email = null;
         $bio   = $this->bio();
 
-        if (isset($bio->{'contact-details'}))
-        {
-            if (isset($bio->{'contact-details'}->email))
-            {
+        if (isset($bio->{'contact-details'})) {
+            if (isset($bio->{'contact-details'}->email)) {
                 $email = $bio->{'contact-details'}->email[0]->value;
             }
         }

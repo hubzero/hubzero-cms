@@ -1469,7 +1469,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/711306e9564a02fc10e8afd882e86758ace83956",
+            "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/b9404fc2e14f08e03ed27a24ca0782116d3f77c4",
             "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
             "shasum": ""
         },
@@ -1736,24 +1736,29 @@
     },
     {
         "name": "hubzero/orcid-php",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "v0.1",
+        "version_normalized": "0.1.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/hubzero/orcid-php.git",
-            "reference": "bd33ac5d2aecdb2a3ac259b9a180157d752affb3"
+            "reference": "570841355da67b842d2026f197a21e7e513aa79c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/bd33ac5d2aecdb2a3ac259b9a180157d752affb3",
-            "reference": "bd33ac5d2aecdb2a3ac259b9a180157d752affb3",
+            "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/570841355da67b842d2026f197a21e7e513aa79c",
+            "reference": "570841355da67b842d2026f197a21e7e513aa79c",
             "shasum": ""
         },
         "require": {
             "ext-curl": "*",
             "php": ">=5.4.0"
         },
-        "time": "2015-09-16 18:31:32",
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.*",
+            "phpunit/phpunit": "4.*",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2015-09-23 17:47:27",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1765,6 +1770,11 @@
         "license": [
             "MIT"
         ],
-        "description": "Library for ORCID web services"
+        "description": "Library for ORCID web services",
+        "keywords": [
+            "oauth",
+            "orcid",
+            "php"
+        ]
     }
 ]

@@ -78,7 +78,7 @@
         "phpdocumentor/reflection-docblock": "2.0.4",
         "bshaffer/oauth2-server-php": "v1.4",
         "pear/net_dns2": "1.4.*",
-        "hubzero/orcid-php": "dev-master",
+        "hubzero/orcid-php": "0.*",
         "league/flysystem": "1.0.*",
         "league/flysystem-dropbox": "1.0.*"
     },

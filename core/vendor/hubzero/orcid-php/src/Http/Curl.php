@@ -79,9 +79,10 @@ class Curl
         $raw   = '';
         $first = true;
 
-        foreach ($fields as $key => $value)
-        {
-            if (!$first) $raw .= '&';
+        foreach ($fields as $key => $value) {
+            if (!$first) {
+                $raw .= '&';
+            }
 
             $raw .= $key . '=' . $value;
 
@@ -104,15 +105,11 @@ class Curl
     {
         $headers = [];
 
-        if (is_array($header))
-        {
-            foreach ($header as $key => $value)
-            {
+        if (is_array($header)) {
+            foreach ($header as $key => $value) {
                 $headers[] = $key . ': ' . $value;
             }
-        }
-        else
-        {
+        } else {
             $headers[] = $header;
         }
 
