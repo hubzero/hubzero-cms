@@ -3,6 +3,10 @@
 	ul.sub-menu {
 		margin: 0 -30px 30px -30px;
 	}
+	p.overview,
+	fieldset.filters {
+		margin: -30px -30px 20px -30px;
+	}
 
 	.creator .img-link img,
 	.convo .img-link img {
@@ -103,5 +107,10 @@
 @media (min-width: 70em) {
 	ul.sub-menu {
 		margin: -30px -60px 30px -60px;
+	}
+	p.overview,
+	fieldset.filters {
+		margin: -30px -60px 20px -60px;
+		padding: 1em 60px;
 	}
 }
