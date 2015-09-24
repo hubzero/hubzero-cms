@@ -104,4 +104,8 @@
 	.guest-options {
 		margin: -3.25em 60px 0 0;
 	}
+	p.overview,
+	fieldset.filters {
+		padding: 1em 60px;
+	}
 }
