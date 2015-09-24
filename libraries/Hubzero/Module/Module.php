@@ -149,9 +149,10 @@ class Module extends Object
 		}
 
 		if (substr($stylesheet, 0, strlen('http')) == 'http'
-		 || substr($stylesheet, 0, strlen('://')) == '://')
+		 || substr($stylesheet, 0, strlen('://')) == '://'
+		 || substr($stylesheet, 0, strlen('//')) == '//')
 		{
-			\JFactory::getDocument()->addStylesheet($stylesheet);
+			\JFactory::getDocument()->addStylesheet(ltrim($stylesheet, ':'));
 			return $this;
 		}
 
@@ -204,9 +205,10 @@ class Module extends Object
 		}
 
 		if (substr($script, 0, strlen('http')) == 'http'
-		 || substr($script, 0, strlen('://')) == '://')
+		 || substr($script, 0, strlen('://')) == '://'
+		 || substr($script, 0, strlen('//')) == '//')
 		{
-			\JFactory::getDocument()->addScript($script);
+			\JFactory::getDocument()->addScript(ltrim($script, ':'));
 			return $this;
 		}
 

@@ -58,7 +58,7 @@ class Js extends AbstractHelper
 		 || substr($asset, 0, strlen('://')) == '://'
 		 || substr($asset, 0, strlen('//')) == '//')
 		{
-			\JFactory::getDocument()->addScript($asset);
+			\JFactory::getDocument()->addScript(ltrim($asset, ':'));
 			return $this->getView();
 		}
 

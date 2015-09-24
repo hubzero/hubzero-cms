@@ -58,7 +58,7 @@ class Css extends AbstractHelper
 		 || substr($stylesheet, 0, strlen('://')) == '://'
 		 || substr($stylesheet, 0, strlen('//')) == '//')
 		{
-			\JFactory::getDocument()->addStyleSheet($stylesheet);
+			\JFactory::getDocument()->addStyleSheet(ltrim($stylesheet, ':'));
 			return $this->getView();
 		}
 
