@@ -103,6 +103,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							     ->set('collection', $row)
 							     ->display();
 						?>
+						<?php if ($tags = $row->item()->tags('cloud')) { ?>
+							<div class="tags-wrap">
+								<?php echo $tags; ?>
+							</div>
+						<?php } ?>
 						<div class="meta">
 							<p class="stats">
 								<span class="likes">

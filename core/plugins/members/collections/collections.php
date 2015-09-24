@@ -1532,6 +1532,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($row);
 		}
 
+		$row->item()->tag(trim(Request::getVar('tags', '')));
+
 		// Redirect to collection
 		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all'));
 	}

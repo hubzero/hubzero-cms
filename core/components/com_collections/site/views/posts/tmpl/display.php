@@ -255,6 +255,11 @@ if (!$no_html) {
 						     ->set('row', $this->collection)
 						     ->display();
 					?>
+					<?php if ($tags = $this->collection->item()->tags('cloud')) { ?>
+							<div class="tags-wrap">
+								<?php echo $tags; ?>
+							</div>
+						<?php } ?>
 					<div class="meta">
 						<p class="stats">
 							<span class="likes">
@@ -350,6 +355,11 @@ if (!$no_html) {
 						     ->set('row', $collection)
 						     ->display();
 						?>
+						<?php if ($tags = $collection->item()->tags('cloud')) { ?>
+							<div class="tags-wrap">
+								<?php echo $tags; ?>
+							</div>
+						<?php } ?>
 						<div class="meta">
 							<p class="stats">
 								<span class="likes">

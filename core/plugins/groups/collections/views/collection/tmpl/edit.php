@@ -72,6 +72,20 @@ $default = $this->params->get('access-plugin');
 			<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'minimal no-footer')); ?>
 		</label>
 
+		<label>
+			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS'); ?>
+			<?php
+			$tags = ($this->entry->get('id') ? $this->entry->item()->tags('string') : '');
+			$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
+			$tf = implode('', $tf);
+			if ($tf) {
+				echo $tf;
+			} else { ?>
+				<input type="text" name="tags" value="<?php echo $this->escape($tags); ?>" />
+			<?php } ?>
+			<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS_HINT'); ?></span>
+		</label>
+
 		<div class="grid">
 			<div class="col span6">
 				<label for="field-layout"<?php if ($this->task == 'save' && !$this->entry->get('layout')) { echo ' class="fieldWithErrors"'; } ?>>

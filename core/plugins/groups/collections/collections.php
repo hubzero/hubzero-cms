@@ -1595,6 +1595,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($row);
 		}
 
+		$row->item()->tag(trim(Request::getVar('tags', '')));
+
 		// Redirect to collection
 		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $row->get('alias'))
