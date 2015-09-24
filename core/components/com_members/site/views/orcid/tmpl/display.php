@@ -82,7 +82,9 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 ?>
 <section class="main section">
 	<form name="orcid-search-form">
-		<?php if ($tkn) { ?>
+		<?php if ($srv != 'public' && !$tkn) { ?>
+			<p class="warning"><?php echo Lang::txt('This service is currently unavailable and/or not configured correctly. Please contact <a href="%s">support</a> for further assistance.', Route::url('index.php?option=com_support')); ?></p>
+		<?php } else { ?>
 			<h3><?php echo Lang::txt('Associate your <b>ORCID</b> (Open Researcher and Contributor ID)'); ?></h3>
 			<fieldset>
 				<legend><?php echo Lang::txt('Profile Info'); ?></legend>
@@ -148,8 +150,6 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 					</div>
 				</div>
 			<?php } ?>
-		<?php } else { ?>
-			<p class="warning"><?php echo Lang::txt('This service is currently unavailable and/or not configured correctly. Please contact <a href="%s">support</a> for further assistance.', Route::url('index.php?option=com_support')); ?></p>
 		<?php } ?>
 	</form>
 </section>
