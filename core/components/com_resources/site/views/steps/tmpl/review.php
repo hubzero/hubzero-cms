@@ -39,7 +39,6 @@ $params = $this->config;
 $params->merge($rparams);
 
 $this->css('create.css')
-     ->css('resources.css', 'com_resources')
      ->js('create.js');
 ?>
 <header id="content-header">
