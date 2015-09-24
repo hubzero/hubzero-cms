@@ -511,7 +511,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<a class="btn icon-search" id="orcid-fetch" href="' . JRoute::_('index.php?option=com_members&controller=orcid') . '">' . JText::_('PLG_MEMBERS_PROFILE_ORCID_FIND') . '</a>
 				</div>
 			</div>
-			<p>' . JText::_('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
+			<p><img src="' . $this->img('orcid-logo.png', 'com_members') . '" width="80" alt="ORCID" /> ' . JText::_('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
 							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
 							     ->display();
 						?>
