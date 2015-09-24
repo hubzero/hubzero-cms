@@ -527,7 +527,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<a class="btn icon-search" id="orcid-fetch" href="' . Route::url('index.php?option=com_members&controller=orcid') . '">' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_FIND') . '</a>
 				</div>
 			</div>
-			<p>' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
+			<p><img src="' . $this->img('orcid-logo.png', 'com_members') . '" width="80" alt="ORCID" /> ' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
 							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . \Components\Members\Helpers\Html::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
 							     ->display();
 						?>

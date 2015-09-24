@@ -261,22 +261,23 @@ class Orcid extends SiteController
 		$returnOrcid = Request::getInt('return', 0);
 		$isRegister  = $returnOrcid == 1;
 
+		$callbackPrefix = 'HUB.Members.Profile.';
 		if ($isRegister)
 		{
-			$callbackPrefix = "HUB.Register.";
-		}
-		else
-		{
-			$callbackPrefix = "HUB.Members.Profile.";
+			$callbackPrefix = 'HUB.Register.';
 		}
 
-		/*
-		 * Separeted into three requests for better results
-		 */
+		// Separated into three requests for better results
+		$filled = 0;
+		$fnames = array();
+		$lnames = array();
+		$emails = array();
 
 		// get results based on first name
-		if (isset($first_name))
+		if ($first_name)
 		{
+			$filled++;
+
 			$root = $this->_fetchXml($first_name, NULL, NULL);
 
 			if (!empty($root))
@@ -284,28 +285,25 @@ class Orcid extends SiteController
 				$fnames = $this->_parseTree($root);
 			}
 		}
-		else
-		{
-			$fnames = array();
-		}
 
 		// get results based on last name
-		if (isset($last_name))
+		if ($last_name)
 		{
+			$filled++;
+
 			$root = $this->_fetchXml(NULL, $last_name, NULL);
+
 			if (!empty($root))
 			{
 				$lnames = $this->_parseTree($root);
 			}
 		}
-		else
-		{
-			$lnames = array();
-		}
 
 		// get results based on email
-		if (isset($email))
+		if ($email)
 		{
+			$filled++;
+
 			$root = $this->_fetchXml(NULL, NULL, $email);
 
 			if (!empty($root))
@@ -313,13 +311,22 @@ class Orcid extends SiteController
 				$emails = $this->_parseTree($root);
 			}
 		}
-		else
+
+		// Get results based on more than one field
+		$multi = array();
+
+		if ($filled > 1)
 		{
-			$emails = array();
+			$root = $this->_fetchXml($first_name, $last_name, $email);
+
+			if (!empty($root))
+			{
+				$multi = $this->_parseTree($root);
+			}
 		}
 
 		// combine
-		$records = array_merge((array)$fnames, (array)$lnames, (array)$emails);
+		$records = array_merge((array)$multi, (array)$emails, (array)$fnames, (array)$lnames);
 
 		ob_end_clean();
 		ob_start();
