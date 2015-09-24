@@ -43,6 +43,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	protected $_services = array(
 		'public'  => 'pub.orcid.org',
+		'publicsandbox'  => 'pub.sandbox.orcid.org',
 		'members' => 'api.orcid.org',
 		'sandbox' => 'api.sandbox.orcid.org'
 	);
@@ -117,7 +118,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		$srv = $this->config->get('orcid_service', 'members');
 
 		$url = JURI::getInstance()->getScheme() . '://' . $this->_services[$srv] . '/v1.2/search/orcid-bio?q=';
-		$tkn = $this->config->get('orcid_' . $srv . '_token', '8b9f8396-0e9d-4b74-96b0-fbcfdc678716');
+		$tkn = $this->config->get('orcid_' . $srv . '_token');
 
 		$bits = array();
 
@@ -138,9 +139,15 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		$url .= implode('&', $bits);
 
+		$header = array('Accept: application/orcid+xml');
+		if ($srv != 'public')
+		{
+			$header[] = 'Authorization: Bearer ' . $tkn;
+		}
+
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
-		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml', 'Authorization: Bearer ' . $tkn));
+		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
