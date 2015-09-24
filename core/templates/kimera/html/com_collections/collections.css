@@ -96,3 +96,10 @@ section.main {
 	.post-modal section.section {
 		background: transparent;
 	}
+
+	.fancybox-wrap fieldset {
+		width: auto;
+	}
+	.fancybox-wrap fieldset label {
+		padding: 1em 0;
+	}
