@@ -5,10 +5,16 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
-	#sbox-content fieldset input, 
-	#sbox-content fieldset select, 
-	#sbox-content fieldset textarea {
-		width: auto;
+	#queryForm input, 
+	#queryForm select, 
+	#queryForm textarea,
+	#queryForm label {
+		width: auto !important;
+	}
+	#queryForm label {
+		margin: 0;
+		padding: 0;
+		display: inline;
 	}
 	#sbox-content fieldset input#field-title {
 		width: 60%;
@@ -24,6 +30,9 @@
 		padding: 1em;
 		max-width: 100%;
 	}
+	#queryForm p {
+		margin: 1em 0;
+	}
 	#queryForm h3 {
 		margin: 0;
 		padding: 0.5em 2em 0.5em 1em;
@@ -31,16 +40,8 @@
 		position: inherit;
 		display: block;
 		border-bottom: 1px solid #757575;
-		color: #555;
-		text-shadow: 0px 1px 0px #e5e5ee;
+		color: #fff;
 		background: #a2a2a2;
-		background: -webkit-gradient(linear, left top, left bottom, from(#c4c4c4), to(#a2a2a2));
-		background: -webkit-linear-gradient(#c4c4c4, #a2a2a2);
-		background: -moz-linear-gradient(top, #c4c4c4, #a2a2a2);
-		background: -moz-gradient(center top, #c4c4c4 0%, #a2a2a2 100%);
-		background: -o-linear-gradient(#c4c4c4, #a2a2a2);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4c4c4', endColorstr='#a2a2a2');
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c4c4c4, endColorstr=#a2a2a2)";
 	}
 	#sbox-content fieldset label {
 		width: auto;
