@@ -142,8 +142,8 @@ class File extends Object
 		 || substr($this->name, 0, strlen('//')) == '//')
 		{
 			$this->kind = 'external';
-			$this->paths['source'] = $this->name;
-			$this->paths['target'] = $this->name;
+			$this->paths['source'] = ltrim($this->name, ':');
+			$this->paths['target'] = ltrim($this->name, ':');
 		}
 
 		if (strstr($this->name, '.'))
