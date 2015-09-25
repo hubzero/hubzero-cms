@@ -174,7 +174,8 @@ class Hosts extends AdminController
 		$retval = 1; // Assume success.
 		$fnoutput = array();
 
-		exec("/bin/sh ../components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null", $output, $status);
+		$cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm 2>&1 </dev/null";
+		exec($cmd, $output, $status);
 
 		$outln = 0;
 		if ($status != 0)
