@@ -130,6 +130,7 @@ if (isset($this->messages))
 						<tbody>
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
+								<?php if (!$this->isManager && $cite->published == $cite::STATE_UNPUBLISHED) { continue; } ?> 
 								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
