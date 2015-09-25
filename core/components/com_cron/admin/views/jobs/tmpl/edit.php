@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -472,7 +471,7 @@ jQuery(document).ready(function($){
 					<td>
 						<?php
 						$modifier = User::getInstance($this->row->get('modified_by'));
-						echo $this->escape($modifier->get('name'));
+						echo $this->escape($modifier->get('name', Lang::txt('COM_CRON_UNKNOWN')));
 						?>
 						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
 					</td>

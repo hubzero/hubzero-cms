@@ -25,20 +25,16 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cron\Admin\Controllers;
 
-use Components\Cron\Models\Manager;
 use Components\Cron\Models\Job;
-use Components\Cron\Tables\Job as Table;
 use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
-use Config;
 use Notify;
 use Event;
 use Route;
@@ -76,18 +72,6 @@ class Jobs extends AdminController
 	{
 		// Filters
 		$this->view->filters = array(
-			'limit' => Request::getState(
-				$this->_option . '.jobs.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.jobs.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
 			'sort' => trim(Request::getState(
 				$this->_option . '.jobs.sort',
 				'filter_order',
@@ -100,13 +84,14 @@ class Jobs extends AdminController
 			))
 		);
 
-		$model = new Manager();
+		/*if ($this->view->filters['search'])
+		{
+			$record->whereLike('fullname', $this->view->filters['search']);
+		}*/
 
-		// Get a record count
-		$this->view->total   = $model->jobs('count', $this->view->filters);
+		$record = Job::all();
 
-		// Get records
-		$this->view->results = $model->jobs('list', $this->view->filters);
+		$this->view->rows = $record->ordered('filter_order', 'filter_order_Dir')->paginated();
 
 		// Output the HTML
 		$this->view->display();
@@ -132,31 +117,29 @@ class Jobs extends AdminController
 				$id = intval($id[0]);
 			}
 
-			$row = new Job($id);
+			$row = Job::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->get('id'))
+		if (!$row->get('id'))
 		{
-			$this->view->row->set('created', Date::toSql());
-			$this->view->row->set('created_by', User::get('id'));
-
-			$this->view->row->set('recurrence', '');
+			$row->set('created', Date::toSql());
+			$row->set('created_by', User::get('id'));
+			$row->set('recurrence', '');
 		}
-		$this->view->row->set('minute', '*');
-		$this->view->row->set('hour', '*');
-		$this->view->row->set('day', '*');
-		$this->view->row->set('month', '*');
-		$this->view->row->set('dayofweek', '*');
-		if ($this->view->row->get('recurrence'))
+		$row->set('minute', '*');
+		$row->set('hour', '*');
+		$row->set('day', '*');
+		$row->set('month', '*');
+		$row->set('dayofweek', '*');
+		if ($row->get('recurrence'))
 		{
-			$bits = explode(' ', $this->view->row->get('recurrence'));
-			$this->view->row->set('minute', $bits[0]);
-			$this->view->row->set('hour', $bits[1]);
-			$this->view->row->set('day', $bits[2]);
-			$this->view->row->set('month', $bits[3]);
-			$this->view->row->set('dayofweek', $bits[4]);
+			$bits = explode(' ', $row->get('recurrence'));
+
+			$row->set('minute', $bits[0]);
+			$row->set('hour', $bits[1]);
+			$row->set('day', $bits[2]);
+			$row->set('month', $bits[3]);
+			$row->set('dayofweek', $bits[4]);
 		}
 
 		$defaults = array(
@@ -167,9 +150,9 @@ class Jobs extends AdminController
 			'0 0 * * *',
 			'0 * * * *'
 		);
-		if (!in_array($this->view->row->get('recurrence'), $defaults))
+		if (!in_array($row->get('recurrence'), $defaults))
 		{
-			$this->view->row->set('recurrence', 'custom');
+			$row->set('recurrence', 'custom');
 		}
 
 		$e = array();
@@ -183,8 +166,9 @@ class Jobs extends AdminController
 			}
 		}
 
-		$this->database->setQuery("SELECT p.* FROM `#__extensions` AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering");
-		$this->view->plugins = $this->database->loadObjectList();
+		$database = App::get('db');
+		$database->setQuery("SELECT p.* FROM `#__extensions` AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering");
+		$this->view->plugins = $database->loadObjectList();
 		if ($this->view->plugins)
 		{
 			foreach ($this->view->plugins as $key => $plugin)
@@ -192,6 +176,8 @@ class Jobs extends AdminController
 				$this->view->plugins[$key]->events = (isset($e[$plugin->element])) ? $e[$plugin->element] : array();
 			}
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -243,15 +229,14 @@ class Jobs extends AdminController
 		{
 			$fields['recurrence'] = implode(' ', $recurrence);
 		}
+		unset($fields['minute']);
+		unset($fields['hour']);
+		unset($fields['day']);
+		unset($fields['month']);
+		unset($fields['dayofweek']);
 
 		// Initiate extended database class
-		$row = new Job();
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$row = Job::oneOrNew($fields['id'])->set($fields);
 
 		if ($row->get('recurrence'))
 		{
@@ -263,12 +248,13 @@ class Jobs extends AdminController
 		$row->set('params', $p->toString());
 
 		// Store content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$this->setError($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
+		Notify::success(Lang::txt('COM_CRON_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -277,8 +263,7 @@ class Jobs extends AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_CRON_ITEM_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -312,13 +297,9 @@ class Jobs extends AdminController
 		// Loop through each ID
 		foreach ($ids as $id)
 		{
-			$job = new Job(intval($id));
-			if (!$job->exists())
-			{
-				continue;
-			}
+			$job = Job::oneOrFail(intval($id));
 
-			if ($job->get('active'))
+			if (!$job->get('id') || $job->get('active'))
 			{
 				continue;
 			}
@@ -327,20 +308,18 @@ class Jobs extends AdminController
 
 			// Show related content
 			$results = Event::trigger('cron.' . $job->get('event'), array($job));
-			if ($results)
-			{
-				if (is_array($results))
-				{
-					// Set it as active in case there were multiple plugins called on
-					// the event. This is to ensure ALL processes finished.
-					$job->set('active', 1);
 
-					foreach ($results as $result)
+			if ($results && is_array($results))
+			{
+				// Set it as active in case there were multiple plugins called on
+				// the event. This is to ensure ALL processes finished.
+				$job->set('active', 1);
+
+				foreach ($results as $result)
+				{
+					if ($result)
 					{
-						if ($result)
-						{
-							$job->set('active', 0);
-						}
+						$job->set('active', 0);
 					}
 				}
 			}
@@ -348,7 +327,7 @@ class Jobs extends AdminController
 			$job->mark('end_run');
 			$job->set('last_run', Date::toLocal('Y-m-d H:i:s'));
 			$job->set('next_run', $job->nextRun());
-			$job->store();
+			$job->save();
 
 			$output->jobs[] = $job->toArray();
 		}
@@ -388,14 +367,14 @@ class Jobs extends AdminController
 			return;
 		}
 
-		$obj = new Table($this->database);
-
 		// Loop through each ID
 		foreach ($ids as $id)
 		{
-			if (!$obj->delete(intval($id)))
+			$row = Job::oneOrFail(intval($id));
+
+			if (!$row->destroy())
 			{
-				Notify::error($obj->getError());
+				Notify::error($row->getError());
 			}
 		}
 
@@ -440,9 +419,9 @@ class Jobs extends AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new Job($id);
+			$row = Job::oneOrFail(intval($id));
 			$row->set('state', $state);
-			if (!$row->store())
+			if (!$row->save())
 			{
 				Notify::error($row->getError());
 				continue;

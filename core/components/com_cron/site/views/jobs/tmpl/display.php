@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -36,7 +35,7 @@ defined('_HZEXEC_') or die();
 if (!$this->no_html) {
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('Cron'); ?></h2>
+	<h2><?php echo Lang::txt('COM_CRON'); ?></h2>
 </header>
 
 <section class="main section">

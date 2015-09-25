@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -78,73 +77,61 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<!-- <th scope="col"><?php echo Lang::txt('COM_CRON_COL_RECURRENCE'); ?></th> -->
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9"><?php
-				// initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				?></td>
+				<td colspan="9"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-if ($this->results)
-{
-	$k = 0;
-	for ($i=0, $n=count( $this->results ); $i < $n; $i++)
-	{
-		$row =& $this->results[$i];
-
-		switch ($row->get('state'))
+		<?php
+		foreach ($this->rows as $i => $row)
 		{
-			case '2': // Deleted
-				$task = 'publish';
-				$alt  = Lang::txt('JTRASHED');
-				$cls  = 'trash';
-			break;
-			case '1': // Published
-				$task = 'unpublish';
-				$alt  = Lang::txt('JPUBLISHED');
-				$cls  = 'publish';
-			break;
-			case '0': // Unpublished
-			default:
-				$task = 'publish';
-				$alt  = Lang::txt('JUNPUBLISHED');
-				$cls  = 'unpublish';
-			break;
-		}
+			switch ($row->get('state'))
+			{
+				case '2': // Deleted
+					$task = 'publish';
+					$alt  = Lang::txt('JTRASHED');
+					$cls  = 'trash';
+				break;
+				case '1': // Published
+					$task = 'unpublish';
+					$alt  = Lang::txt('JPUBLISHED');
+					$cls  = 'publish';
+				break;
+				case '0': // Unpublished
+				default:
+					$task = 'publish';
+					$alt  = Lang::txt('JUNPUBLISHED');
+					$cls  = 'unpublish';
+				break;
+			}
 
-		switch ($row->get('active'))
-		{
-			case '1': // Published
-				$alt2 = Lang::txt('COM_CRON_ACTIVE');
-				$cls2 = 'publish';
-			break;
-			case '0': // Unpublished
-			default:
-				$alt2 = Lang::txt('COM_CRON_INACTIVE');
-				$cls2 = 'unpublish';
-			break;
-		}
-?>
-			<tr class="<?php echo "row$k"; ?>">
+			switch ($row->get('active'))
+			{
+				case '1': // Published
+					$alt2 = Lang::txt('COM_CRON_ACTIVE');
+					$cls2 = 'publish';
+				break;
+				case '0': // Unpublished
+				default:
+					$alt2 = Lang::txt('COM_CRON_INACTIVE');
+					$cls2 = 'unpublish';
+				break;
+			}
+			?>
+			<tr>
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
@@ -221,11 +208,9 @@ if ($this->results)
 					</span>
 				</td> -->
 			</tr>
-<?php
-		$k = 1 - $k;
-	}
-}
-?>
+			<?php
+		}
+		?>
 		</tbody>
 	</table>
 

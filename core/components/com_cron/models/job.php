@@ -25,125 +25,167 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cron\Models;
 
-use Components\Cron\Models\Expression;
-use Components\Cron\Tables\Job as Table;
-use Hubzero\Base\ItemList;
-use Hubzero\Base\Model;
+//use Components\Cron\Models\Expression;
+use Hubzero\Database\Relational;
 use Hubzero\User\Profile;
 use Hubzero\Debug\Profiler;
 use Hubzero\Config\Registry;
+use Lang;
 use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'job.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
 
 /**
- * Table class for a cron job model
+ * Cron model for a job
  */
-class Job extends Model
+class Job extends Relational
 {
-	/**
-	 * Table class name
-	 *
-	 * @var  string
-	 */
-	protected $_tbl_name = '\\Components\\Cron\\Tables\\Job';
-
 	/**
 	 * Cron expression
 	 *
 	 * @var  object
 	 */
-	private $_expression = NULL;
+	protected $expression = NULL;
 
 	/**
 	 * Profiler
 	 *
 	 * @var  object
 	 */
-	private $_profiler = NULL;
+	protected $profiler = NULL;
 
 	/**
-	 * Constructor
+	 * The table namespace
 	 *
-	 * @param   integer  $id  Record ID, array, or object
+	 * @var string
+	 */
+	protected $namespace = 'cron';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var string
+	 */
+	public $orderBy = 'ordering';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var array
+	 */
+	protected $rules = array(
+		'title' => 'notempty',
+		'recurrence' => 'notempty',
+		'event' => 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'event',
+		'publish_up',
+		'publish_down'
+	);
+
+	/**
+	 * Split event into plugin name and event
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 **/
+	public function automaticEvent($data)
+	{
+		if (strstr($data['event'], '::'))
+		{
+			$parts = explode('::', $data['event']);
+			$this->set('plugin', trim($parts[0]));
+			return trim($parts[1]);
+		}
+		return $data['event'];
+	}
+
+	/**
+	 * Set publish up value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 **/
+	public function automaticPublishUp($data)
+	{
+		if (!$data['publish_up'])
+		{
+			$data['publish_up'] = '0000-00-00 00:00:00';
+		}
+		return $data['publish_up'];
+	}
+
+	/**
+	 * Set publish down value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishDown($data)
+	{
+		if (!$data['publish_down'])
+		{
+			$data['publish_down'] = '0000-00-00 00:00:00';
+		}
+		return $data['publish_down'];
+	}
+
+	/**
+	 * Runs extra setup code when creating a new model
+	 *
 	 * @return  void
 	 */
-	public function __construct($oid=null)
+	public function setup()
 	{
-		parent::__construct($oid);
+		$this->addRule('recurrence', function($data)
+		{
+			$data['recurrence'] = preg_replace('/[\s]{2,}/', ' ', $data['recurrence']);
+
+			if (preg_match('/[^-,*\/ \\d]/', $data['recurrence']) !== 0)
+			{
+				return Lang::txt('Cron String contains invalid character.');
+			}
+
+			$bits = @explode(' ', $data['recurrence']);
+			if (count($bits) != 5)
+			{
+				return Lang::txt('Cron string is invalid. Too many or too little sections.');
+			}
+
+			return false;
+		});
 
 		$this->set('params', new Registry($this->get('params')));
 
-		$this->_profiler = new Profiler('cron_job_' . $this->get('id'));
+		$this->profiler = new Profiler('cron_job_' . $this->get('id'));
 	}
 
 	/**
-	 * Returns a reference to this object
+	 * Saves the current model to the database
 	 *
-	 * @param   integer  $oid  Record ID
-	 * @return  object
+	 * @return  bool
 	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property Property to retrieve
-	 * @param   mixed   $default   Default value if property not set
-	 * @return  mixed
-	 */
-	public function creator($property=null, $default=null)
-	{
-		if (!($this->_creator instanceof Profile))
-		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get((string) $property, $default);
-		}
-		return $this->_creator;
-	}
-
-	/**
-	 * Store the record in the database
-	 *
-	 * @param   boolean  $check  Perform data validation?
-	 * @return  boolean  True on success, False on error
-	 */
-	public function store($check=true)
+	public function save()
 	{
 		$params = $this->get('params');
 		if (is_object($params))
@@ -151,14 +193,53 @@ class Job extends Model
 			$this->set('params', $params->toString());
 		}
 
-		if (!parent::store($check))
-		{
-			return false;
-		}
+		$result = parent::save();
 
 		$this->set('params', $params);
 
-		return true;
+		return $result;
+	}
+
+	/**
+	 * Defines a belongs to one relationship
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'user_id');
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param   string  $as  What format to return
+	 * @return  string
+	 */
+	public function created($as='')
+	{
+		switch (strtolower($as))
+		{
+			case 'date':
+				return Date::of($this->get('date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+			break;
+
+			case 'time':
+				return Date::of($this->get('date'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			break;
+
+			case 'relative':
+				return Date::of($this->get('date'))->relative();
+			break;
+
+			default:
+				if ($as)
+				{
+					return Date::of($this->get('date'))->toLocal($as);
+				}
+				return $this->get('date');
+			break;
+		}
 	}
 
 	/**
@@ -168,11 +249,25 @@ class Job extends Model
 	 */
 	public function expression()
 	{
-		if (!($this->_expression instanceof \Cron\CronExpression))
+		if (!($this->expression instanceof \Cron\CronExpression))
 		{
-			$this->_expression = \Cron\CronExpression::factory($this->get('recurrence'));
+			$this->expression = \Cron\CronExpression::factory($this->get('recurrence'));
 		}
-		return $this->_expression;
+		return $this->expression;
+	}
+
+	/**
+	 * Is the entry published?
+	 *
+	 * @return  boolean
+	 */
+	public function isPublished()
+	{
+		if ($this->get('state') == self::STATE_PUBLISHED)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -183,7 +278,7 @@ class Job extends Model
 	public function isAvailable()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished())
+		if (!$this->get('id') || !$this->isPublished())
 		{
 			return false;
 		}
@@ -204,7 +299,7 @@ class Job extends Model
 	 */
 	public function started()
 	{
-		if (!$this->exists() || !$this->isPublished())
+		if (!$this->get('id') || !$this->isPublished())
 		{
 			return false;
 		}
@@ -212,7 +307,7 @@ class Job extends Model
 		$now = Date::of('now')->toLocal('Y-m-d H:i:s');
 
 		if ($this->get('publish_up')
-		 && $this->get('publish_up') != $this->_db->getNullDate()
+		 && $this->get('publish_up') != '0000-00-00 00:00:00'
 		 && $this->get('publish_up') > $now)
 		{
 			return false;
@@ -228,7 +323,7 @@ class Job extends Model
 	 */
 	public function ended()
 	{
-		if (!$this->exists() || !$this->isPublished())
+		if (!$this->get('id') || !$this->isPublished())
 		{
 			return true;
 		}
@@ -236,7 +331,7 @@ class Job extends Model
 		$now = Date::of('now')->toLocal('Y-m-d H:i:s');
 
 		if ($this->get('publish_down')
-		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') != '0000-00-00 00:00:00'
 		 && $this->get('publish_down') <= $now)
 		{
 			return true;
@@ -250,7 +345,7 @@ class Job extends Model
 	 *
 	 * @return  void
 	 */
-	public function lastRun($format='Y-m-d H:i:s')
+	public function lastRun($format = 'Y-m-d H:i:s')
 	{
 		return $this->expression()->getPreviousRunDate()->format($format);
 	}
@@ -260,7 +355,7 @@ class Job extends Model
 	 *
 	 * @return  void
 	 */
-	public function nextRun($format='Y-m-d H:i:s')
+	public function nextRun($format = 'Y-m-d H:i:s')
 	{
 		return $this->expression()->getNextRunDate()->format($format);
 	}
@@ -273,7 +368,7 @@ class Job extends Model
 	 */
 	public function mark($label)
 	{
-		return $this->_profiler->mark($label);
+		return $this->profiler->mark($label);
 	}
 
 	/**
@@ -286,7 +381,7 @@ class Job extends Model
 	 */
 	public function profile()
 	{
-		return $this->_profiler->marks();
+		return $this->profiler->marks();
 	}
 
 	/**
@@ -319,3 +414,4 @@ class Job extends Model
 		);
 	}
 }
+

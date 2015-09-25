@@ -25,14 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cron\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'job.php');
 require_once(__DIR__ . DS . 'controllers' . DS . 'jobs.php');
 
 // Instantiate controller
