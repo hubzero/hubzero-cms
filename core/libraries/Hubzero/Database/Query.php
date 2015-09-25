@@ -379,7 +379,7 @@ class Query
 	}
 
 	/**
-	 * Adds an explicit local operator to the pending where clause
+	 * Resets the depth of a nested statement back down to a given level
 	 *
 	 * @param   int  $depth  The depth to set to
 	 * @return  $this
