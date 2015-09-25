@@ -1506,7 +1506,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				$value = \Hubzero\Utility\Sanitize::clean($value);
 
 				// we handle things differently in search and sorting
-				if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "" && ($filter == 'filter' && $value != 'member'))
+				if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "" && $filter != 'filter')
 				{
 					switch ($filter)
 					{
