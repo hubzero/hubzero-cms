@@ -127,6 +127,30 @@ class QueryTest extends Database
 	}
 
 	/**
+	 * Test to make sure we can build a query with complex nested where statements
+	 *
+	 * @return  void
+	 **/
+	public function testBuildQueryWithNestedWheres()
+	{
+		// Here's the query we're try to write...
+		$expected = "SELECT * FROM `users` WHERE (`name` = 'a' OR `name` = 'b' ) AND (`email` = 'c' OR `email` = 'd' )";
+
+		$dbo   = $this->getMockDriver();
+		$query = new Query($dbo);
+
+		$query->select('*')
+		      ->from('users')
+		      ->whereEquals('name', 'a', 1)
+		      ->orWhereEquals('name', 'b', 1)
+		      ->resetDepth(0)
+		      ->whereEquals('email', 'c', 1)
+		      ->orWhereEquals('email', 'd', 1);
+
+		$this->assertEquals($expected, str_replace("\n", ' ', $query->toString()), 'Query did not build the expected result');
+	}
+
+	/**
 	 * Test to make sure that fetch properly caches a query
 	 *
 	 * @return  void

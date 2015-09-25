@@ -372,9 +372,22 @@ class Query
 	 * @return  $this
 	 * @since   2.0.0
 	 **/
-	public function orWhereRaw($string, $bindings=[], $depth=0)
+	public function orWhereRaw($string, $bindings = [], $depth = 0)
 	{
 		$this->syntax->setRawWhere($string, $bindings, 'or', $depth);
+		return $this;
+	}
+
+	/**
+	 * Adds an explicit local operator to the pending where clause
+	 *
+	 * @param   int  $depth  The depth to set to
+	 * @return  $this
+	 * @since   2.1.0
+	 **/
+	public function resetDepth($depth = 0)
+	{
+		$this->syntax->resetDepth($depth);
 		return $this;
 	}
 

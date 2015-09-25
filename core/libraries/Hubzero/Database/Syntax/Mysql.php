@@ -299,6 +299,21 @@ class Mysql
 	}
 
 	/**
+	 * Sets the query clause depth
+	 *
+	 * @param   int  $depth  The depth to set to
+	 * @return  void
+	 * @since   2.1.0
+	 **/
+	public function resetDepth($depth = 0)
+	{
+		$this->where[] = [
+			'resetdepth' => true,
+			'depth'      => $depth
+		];
+	}
+
+	/**
 	 * Sets a limit element on the query
 	 *
 	 * @param   int  $limit  Number of results to return on next query
@@ -462,39 +477,47 @@ class Mysql
 
 		foreach ($this->where as $constraint)
 		{
-			$string  = '';
-			$string .= ($constraint['depth'] < $depth) ? ') ' : '';
-			$string .= ($first) ? 'WHERE ' : strtoupper($constraint['logical']) . ' ';
-			$string .= ($constraint['depth'] > $depth) ? '(' : '';
+			$string = '';
 
-			// Make sure this isn't a 'raw' where clause
-			if (array_key_exists('raw', $constraint))
+			if (array_key_exists('resetdepth', $constraint))
 			{
-				$string .= $constraint['raw'];
-
-				foreach ($constraint['bindings'] as $binding)
-				{
-					$this->bind($binding);
-				}
+				$string .= str_repeat(')', ($depth - $constraint['depth']));
 			}
 			else
 			{
-				$string .= $this->connection->quoteName($constraint['column']);
-				$string .= ' ' . $constraint['operator'];
-				if (is_array($constraint['value']))
+				$string .= ($constraint['depth'] < $depth) ? ') ' : '';
+				$string .= ($first) ? 'WHERE ' : strtoupper($constraint['logical']) . ' ';
+				$string .= ($constraint['depth'] > $depth) ? '(' : '';
+
+				// Make sure this isn't a 'raw' where clause
+				if (array_key_exists('raw', $constraint))
 				{
-					$values = array();
-					foreach ($constraint['value'] as $value)
+					$string .= $constraint['raw'];
+
+					foreach ($constraint['bindings'] as $binding)
 					{
-						$values[] = '?';
-						$this->bind($value);
+						$this->bind($binding);
 					}
-					$string .= ' (' . ((!empty($values)) ? implode(',', $values) : "''") . ')';
 				}
 				else
 				{
-					$string .= ' ?';
-					$this->bind($constraint['value']);
+					$string .= $this->connection->quoteName($constraint['column']);
+					$string .= ' ' . $constraint['operator'];
+					if (is_array($constraint['value']))
+					{
+						$values = array();
+						foreach ($constraint['value'] as $value)
+						{
+							$values[] = '?';
+							$this->bind($value);
+						}
+						$string .= ' (' . ((!empty($values)) ? implode(',', $values) : "''") . ')';
+					}
+					else
+					{
+						$string .= ' ?';
+						$this->bind($constraint['value']);
+					}
 				}
 			}
 
