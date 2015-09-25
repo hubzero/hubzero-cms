@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -60,78 +59,68 @@ $base = rtrim(Request::base(true), '/');
 						<p>
 							<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
 							&rsaquo;
-							<strong><?php echo $this->escape(stripslashes($quote->fullname)); ?></strong>
+							<strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
 						</p>
 					</div>
 				<?php } ?>
-				<blockquote cite="<?php echo $this->escape(stripslashes($quote->fullname)); ?>">
+				<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 					<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
 						<p>
-							<?php echo $this->escape(stripslashes($quote->quote)); ?>
+							<?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
 						</p>
 					<?php } else { ?>
 						<p>
 							<?php
-							if (!trim($quote->short_quote))
+							if (!trim($quote->get('short_quote')))
 							{
-								$quote->short_quote = \Hubzero\Utility\String::truncate($quote->quote, 250);
+								$quote->set('short_quote', \Hubzero\Utility\String::truncate($quote->get('quote'), 250));
 							}
 							?>
-							<?php if ($quote->short_quote != $quote->quote) { ?>
-								<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
+							<?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
+								<?php echo $this->escape(rtrim(stripslashes($quote->get('short_quote')), '.')); ?>
 								 &#8230;
-								<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->id; ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
+								<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->get('id'); ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
 									<?php echo Lang::txt('MOD_QUOTES_MORE'); ?>
 								</a>
 							<?php } else { ?>
-								<?php echo $this->escape(stripslashes($quote->short_quote)); ?>
+								<?php echo $this->escape(stripslashes($quote->get('short_quote'))); ?>
 							<?php } ?>
 						</p>
 					<?php } ?>
 				</blockquote>
 				<p class="cite">
 					<?php
-					$user = $quote->user_id ? \Hubzero\User\Profile::getInstance($quote->user_id) : new \Hubzero\User\Profile();
+					$user = $quote->get('user_id') ? \Hubzero\User\Profile::getInstance($quote->get('user_id')) : new \Hubzero\User\Profile();
 					$userPicture = $user ? $user->getPicture() : $user->getPicture(true);
-					echo '<img src="' . $userPicture . '" alt="' . $quote->fullname . '" width="40" height="40" />';
+					echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname')) . '" width="40" height="40" />';
 					?>
-					<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?> <span><?php echo $this->escape(stripslashes($quote->org)); ?></span></cite>
+					<cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?> <span><?php echo $this->escape(stripslashes($quote->get('org'))); ?></span></cite>
 				</p>
 				<?php
-				if (is_dir(PATH_APP . DS . $this->path . $quote->id))
+				$pictures = $quote->files();
+
+				foreach ($pictures as $picture)
 				{
-					$pictures = scandir(PATH_APP . DS .$this->path . $quote->id);
-					array_shift($pictures);
-					array_shift($pictures);
+					list($ow, $oh, $type, $attr) = getimagesize($picture->getPathname());
 
-					foreach ($pictures as $picture)
+					// Scale if image is bigger than 120w x120h
+					$num = max($ow/120, $oh/120);
+					if ($num > 1)
 					{
-						$file = PATH_APP . DS . $this->path . $quote->id . DS . $picture;
-						if (file_exists($file))
-						{
-							$this_size = filesize($file);
-
-							list($ow, $oh, $type, $attr) = getimagesize($file);
-
-							// scale if image is bigger than 120w x120h
-							$num = max($ow/120, $oh/120);
-							if ($num > 1)
-							{
-								$mw = round($ow/$num);
-								$mh = round($oh/$num);
-							}
-							else
-							{
-								$mw = $ow;
-								$mh = $oh;
-							}
-							?>
-							<a class="fancybox-inline" href="<?php echo $this->path . $quote->id . DS . $picture; ?>">
-								<img  src="<?php echo $this->path . $quote->id . DS . $picture . '" height="' . $mh . '" width="' . $mw; ?>" alt="" />
-							</a>
-							<?php
-						}
+						$mw = round($ow/$num);
+						$mh = round($oh/$num);
 					}
+					else
+					{
+						$mw = $ow;
+						$mh = $oh;
+					}
+
+					$img = substr($picture->getPathname(), strlen(PATH_ROOT));
+
+					echo '<a class="fancybox-inline" href="' . $img . '">';
+					echo '<img  src="' . $img . '" height="' . $mh . '" width="' . $mw . '" alt="" />';
+					echo '</a>';
 				}
 				?>
 				<?php if ($this->params->get('cycle', 0) == 0) { ?>

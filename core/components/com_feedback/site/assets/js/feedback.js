@@ -25,11 +25,11 @@ jQuery(document).ready(function(jq){
 
 		var uploader = new qq.FileUploader({
 			element: attach[0],
-			dataType: 'html',
+			//dataType: 'html',
 			action: attach.attr("data-action"),
 			multiple: true,
 			debug: true,
-			formData: false,
+			//formData: false,
 			template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
@@ -38,20 +38,21 @@ jQuery(document).ready(function(jq){
 			onSubmit: function(id, file) {
 				running++;
 			},
-		onComplete: function (e, data, response) {
-			running--;
-			
-			var newImageDom = document.createElement('img');
-			newImageDom.src = '/' + response.directory + '/' + response.file;
-			newImageDom.width = '100';
-			newImageDom.height = '100';
-				
-			$('#uploadImages').append(newImageDom);
-			
-			if (running == 0) {
+			onComplete: function (e, data, response) {
+				console.log(response.toString());
+				running--;
+
+				var newImageDom = document.createElement('img');
+				newImageDom.src = '/' + response.directory + '/' + response.file;
+				newImageDom.width = '100';
+				newImageDom.height = '100';
+
+				$('#uploadImages').append(newImageDom);
+
+				if (running == 0) {
 					$('ul.qq-upload-list').empty();
 				}
-		},
+			}
 		});
 	}
 });

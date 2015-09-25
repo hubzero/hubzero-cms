@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -43,13 +42,11 @@ $base = rtrim(Request::base(true), '/');
 	<h2><?php echo Lang::txt('COM_FEEDBACK'); ?></h2>
 
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li>
-				<a class="icon-add btn add" href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>">
-					<?php echo Lang::txt('COM_FEEDBACK_ADD_YOUR_STORY'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-add btn add" href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>">
+				<?php echo Lang::txt('COM_FEEDBACK_ADD_YOUR_STORY'); ?>
+			</a>
+		</p>
 	</div>
 </header><!-- / #content-header -->
 
@@ -57,18 +54,22 @@ $base = rtrim(Request::base(true), '/');
 	<div class="section-inner">
 		<?php if (count($this->quotes) > 0) { ?>
 			<?php foreach ($this->quotes as $quote) { ?>
-				<div class="quote" id="<?php echo $quote->id; ?>">
+				<div class="quote" id="<?php echo $quote->get('id'); ?>">
 					<div class="grid">
 						<div class="col span2 omega">
 							<p class="cite">
 								<?php
-								$quote->org = str_replace('<br>', '<br />', $quote->org);
-								$user = $quote->user_id ? \Hubzero\User\Profile::getInstance($quote->user_id) : new \Hubzero\User\Profile();
+								if (!$quote->get('short_quote'))
+								{
+									$quote->set('short_quote', $quote->get('quote'));
+								}
+								$quote->set('org', str_replace('<br>', '<br />', $quote->get('org')));
+								$user = $quote->get('user_id') ? \Hubzero\User\Profile::getInstance($quote->get('user_id')) : new \Hubzero\User\Profile();
 								$userPicture = $user ? $user->getPicture() : $user->getPicture(true);
-								echo '<img src="' . $userPicture . '" alt="' . $user->get('name') . '" width="75" height="75" /><br />';
+								echo '<img src="' . $userPicture . '" alt="' . $this->escape($user->get('name')) . '" width="50" height="50" /><br />';
 								?>
-								<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?></cite>
-								<br /><?php echo $this->escape(stripslashes($quote->org)); ?>
+								<cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></cite>
+								<br /><?php echo $this->escape(stripslashes($quote->get('org'))); ?>
 							</p>
 						</div>
 						<div class="col span10 omega">
@@ -77,77 +78,67 @@ $base = rtrim(Request::base(true), '/');
 								<p>
 									<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
 									&rsaquo;
-									<strong><?php echo $this->escape(stripslashes($quote->fullname)); ?></strong>
+									<strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
 								</p>
 							</div>
-						<?php } ?>
-						<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
-							<blockquote cite="<?php echo $this->escape(stripslashes($quote->fullname)); ?>">
+							<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 								<p>
-									<?php echo $this->escape(stripslashes($quote->quote)); ?>
+									<?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
 								</p>
 							</blockquote>
 						<?php } else { ?>
-							<?php if ($quote->short_quote != $quote->quote) { ?>
-								<div class="quote-short" id="<?php echo $quote->id; ?>-short" style="display: none">
-									<blockquote cite="<?php echo $this->escape(stripslashes($quote->fullname)); ?>">
+							<?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
+								<div class="quote-short" id="<?php echo $quote->get('id'); ?>-short" style="display: none">
+									<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 										<p>
-											<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
+											<?php echo $this->escape(rtrim(stripslashes($quote->get('short_quote')), '.')); ?>
 											&#8230;
-											<a href="#" id="<?php echo $quote->id; ?>" class="show-more" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
+											<a href="#" id="<?php echo $quote->id; ?>" class="show-more" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
 												<?php echo Lang::txt('COM_FEEDBACK_MORE'); ?>
 											</a>
 										</p>
 									</blockquote>
 								</div>
 								<div class="quote-long" id="<?php echo $quote->id; ?>-long">
-									<blockquote cite="<?php echo $this->escape(stripslashes($quote->fullname)); ?>">
+									<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 										<p>
-											<?php echo $this->escape(stripslashes($quote->quote)); ?>
+											<?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
 										</p>
 									</blockquote>
 								</div>
 							<?php } else { ?>
-								<blockquote cite="<?php echo $this->escape(stripslashes($quote->fullname)); ?>">
+								<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 									<p>
-										<?php echo $this->escape(stripslashes($quote->short_quote)); ?>
+										<?php echo $this->escape(stripslashes($quote->get('short_quote'))); ?>
 									</p>
 								</blockquote>
 							<?php } ?>
 						<?php } ?>
 						<?php
-						if (is_dir(PATH_APP . DS . $this->path . $quote->id))
+						$pictures = $quote->files();
+
+						foreach ($pictures as $picture)
 						{
-							$pictures = scandir(PATH_APP . DS . $this->path . $quote->id);
-							array_shift($pictures);
-							array_shift($pictures);
+							list($ow, $oh, $type, $attr) = getimagesize($picture->getPathname());
 
-							foreach ($pictures as $picture)
+							// Scale if image is bigger than 120w x120h
+							$num = max($ow/120, $oh/120);
+							if ($num > 1)
 							{
-								$file = PATH_APP . DS . $this->path . $quote->id . DS . $picture;
-								if (file_exists($file))
-								{
-									$this_size = filesize($file);
-
-									list($ow, $oh, $type, $attr) = getimagesize($file);
-
-									// scale if image is bigger than 120w x120h
-									$num = max($ow/120, $oh/120);
-									if ($num > 1)
-									{
-										$mw = round($ow/$num);
-										$mh = round($oh/$num);
-									}
-									else
-									{
-										$mw = $ow;
-										$mh = $oh;
-									}
-									echo '<a class="fancybox-inline" href="' . $this->path . $quote->id . DS . $picture . '">';
-									echo '<img  src="' . $this->path . $quote->id . DS . $picture . '" height="' . $mh . '" width="' . $mw . '" alt=""/> ';
-									echo '</a>';
-								}
+								$mw = round($ow/$num);
+								$mh = round($oh/$num);
 							}
+							else
+							{
+								$mw = $ow;
+								$mh = $oh;
+							}
+
+							$img = substr($picture->getPathname(), strlen(PATH_ROOT));
+
+							echo '<a class="fancybox-inline" href="' . $img . '">';
+							echo '<img  src="' . $img . '" height="' . $mh . '" width="' . $mw . '" alt="" />';
+							echo '</a>';
 						}
 						?>
 						</div>

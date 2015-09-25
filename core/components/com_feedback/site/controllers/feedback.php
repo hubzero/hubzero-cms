@@ -32,7 +32,7 @@
 
 namespace Components\Feedback\Site\Controllers;
 
-use Components\Feedback\Tables\Quote;
+use Components\Feedback\Models\Quote;
 use Hubzero\Component\SiteController;
 use Hubzero\User\Profile;
 use Hubzero\Utility\Number;
@@ -143,13 +143,8 @@ class Feedback extends SiteController
 	public function quotesTask()
 	{
 		// Get quotes
-		$sq = new Quote($this->database);
-		$this->view->quotes = $sq->find('list', array(
-			'notable_quote' => 1
-		));
-
-		$this->view->path    = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
-		$this->view->quoteId = Request::getInt('quoteid', null);
+		$this->view->quotes  = Quote::all()->whereEquals('notable_quote', 1);
+		$this->view->quoteId = Request::getInt('quoteid');
 
 		$this->view->display();
 	}
@@ -161,12 +156,6 @@ class Feedback extends SiteController
 	 */
 	public function storyTask($row=null)
 	{
-		// Check to see if the user temp folder for holding pics is there, if so then remove it
-		if (is_dir($this->tmpPath() . DS . User::get('id')))
-		{
-			Filesystem::deleteDirectory($this->tmpPath() . DS . User::get('id'));
-		}
-
 		if (User::isGuest())
 		{
 			$here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
@@ -176,6 +165,12 @@ class Feedback extends SiteController
 				'warning'
 			);
 			return;
+		}
+
+		// Check to see if the user temp folder for holding pics is there, if so then remove it
+		if (is_dir($this->tmpPath() . DS . User::get('id')))
+		{
+			Filesystem::deleteDirectory($this->tmpPath() . DS . User::get('id'));
 		}
 
 		// Incoming
@@ -195,9 +190,9 @@ class Feedback extends SiteController
 
 		if (!is_object($row))
 		{
-			$row = new Quote($this->database);
-			$row->org      = $this->view->user->get('organization');
-			$row->fullname = $this->view->user->get('name');
+			$row = Quote::oneOrNew(0);
+			$row->set('org', $this->view->user->get('organization'));
+			$row->set('fullname', $this->view->user->get('name'));
 		}
 
 		$this->view->row = $row;
@@ -258,24 +253,14 @@ class Feedback extends SiteController
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		// Initiate class and bind posted items to database fields
-		$row = new Quote($this->database);
-
 		$fields['user_id']   = User::get('id');
-		$fields['useremail'] = User::get('email');
+		//$fields['useremail'] = User::get('email');
 
-		$dir  = String::pad($fields['user_id']);
-		$path = $row->filespace(false) . DS . $dir;
-
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			$this->storyTask($row);
-			return;
-		}
+		// Initiate class and bind posted items to database fields
+		$row = Quote::oneOrNew(0)->set($fields);
 
 		// Check that a story was entered
-		if (!$row->quote)
+		if (!$row->get('quote'))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_STORY'));
 			$this->storyTask($row);
@@ -283,7 +268,7 @@ class Feedback extends SiteController
 		}
 
 		// Check for an author
-		if (!$row->fullname)
+		if (!$row->get('fullname'))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_AUTHOR'));
 			$this->storyTask($row);
@@ -291,7 +276,7 @@ class Feedback extends SiteController
 		}
 
 		// Check for an organization
-		if (!$row->org)
+		if (!$row->get('org'))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_ORGANIZATION'));
 			$this->storyTask($row);
@@ -299,30 +284,22 @@ class Feedback extends SiteController
 		}
 
 		// Code cleaner for xhtml transitional compliance
-		$row->quote = Sanitize::stripAll($row->quote);
-		$row->quote = str_replace('<br>', '<br />', $row->quote);
-		$row->date  = Date::toSql();
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->storyTask($row);
-			return;
-		}
+		$row->set('quote', Sanitize::stripAll($row->get('quote')));
+		$row->set('quote', str_replace('<br>', '<br />', $row->get('quote')));
+		$row->set('date', Date::toSql());
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			$this->storyTask($row);
 			return;
 		}
 
-		$files = $_FILES;
+		//$files = $_FILES;
 		$addedPictures = array();
 
-		$path = $row->filespace() . DS . $row->id;
+		$path = $row->filespace() . DS . $row->get('id');
 		if (!is_dir($path))
 		{
 			if (!Filesystem::makeDirectory($path))
@@ -367,7 +344,7 @@ class Feedback extends SiteController
 		}
 
 		$this->view->addedPictures = $addedPictures;
-		$this->view->path   = ltrim($row->filespace(), DS) . DS . $row->id;
+		$this->view->path   = substr($row->filespace(), strlen(PATH_ROOT)) . DS . $row->id;
 
 		// Output HTML
 		$this->view->user   = User::getRoot();
@@ -443,7 +420,7 @@ class Feedback extends SiteController
 		}
 
 		// Define upload directory and make sure its writable
-		$path = $this->tmpPath() . DS . User::get('id');
+		$path = rtrim($this->tmpPath(), DS) . DS . User::get('id');
 
 		if (!is_dir($path))
 		{
@@ -525,7 +502,7 @@ class Feedback extends SiteController
 		echo json_encode(array(
 			'success'    => true,
 			'file'       => $filename . '.' . $ext,
-			'directory'  => str_replace(PATH_APP, '', $path),
+			'directory'  => str_replace(PATH_ROOT, '', $path),
 		));
 	}
 
@@ -536,7 +513,7 @@ class Feedback extends SiteController
 	 */
 	protected function tmpPath()
 	{
-		return Config::get('tmp_path') . DS . 'feedback';
+		return Config::get('tmp_path', PATH_APP . DS . '/tmp') . DS . 'feedback';
 	}
 }
 

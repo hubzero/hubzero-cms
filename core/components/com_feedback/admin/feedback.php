@@ -38,7 +38,7 @@ if (!\User::authorise('core.manage', 'com_feedback'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'quote.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'quote.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = \Request::getCmd('controller', 'quotes');

@@ -26,7 +26,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,7 @@
 namespace Modules\Quotes;
 
 use Hubzero\Module\Module;
-use Components\Feedback\Tables\Quote;
+use Components\Feedback\Models\Quote;
 use Component;
 use Request;
 use Date;
@@ -51,9 +50,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(Component::path('com_feedback') . DS . 'tables' . DS . 'quote.php');
-
-		$this->database = \App::get('db');
+		require_once(Component::path('com_feedback') . DS . 'models' . DS . 'quote.php');
 
 		//Get the admin configured settings
 		$this->filters = array(
@@ -63,11 +60,13 @@ class Helper extends Module
 		);
 
 		// Get quotes
-		$sq = new Quote($this->database);
-		$this->quotes = $sq->find('list', $this->filters);
+		$sq = Quote::all()->whereEquals('notable_quote', 1);
+		if ($this->filters['id'])
+		{
+			$sq->whereEquals('id', $this->filters['id']);
+		}
 
-		$feedbackConfig = Component::params('com_feedback');
-		$this->path = trim($feedbackConfig->get('uploadpath', '/site/quotes'), DS) . DS;
+		$this->quotes = $sq->limit($this->filters['limit'])->rows();
 
 		require $this->getLayoutPath($this->module->module);
 	}

@@ -83,7 +83,7 @@ $this->css()
 						<?php echo Lang::txt('COM_FEEDBACK_PICTURES'); ?>
 					</legend>
 					<div class="field-wrap">
-						<div id="ajax-uploader" data-instructions="<?php echo Lang::txt('COM_FEEDBACK_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo Route::url('index.php?option=' . $this->option . 'controller=' . $this->controller . '&task=uploadimage&no_html=1'); ?>">
+						<div id="ajax-uploader" data-instructions="<?php echo Lang::txt('COM_FEEDBACK_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uploadimage&no_html=1'); ?>">
 							<noscript>
 								<label for="upload">
 									<input type="file" name="files[]" id="field-files" multiple="multiple" />

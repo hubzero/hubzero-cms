@@ -32,7 +32,7 @@
 
 namespace Components\Feedback\Site\Controllers;
 
-use Components\Feedback\Tables\Quote;
+use Components\Feedback\Models\Quote;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Filesystem;
@@ -53,7 +53,7 @@ class Media extends SiteController
 	 */
 	public function execute()
 	{
-		$row = new Quote($this->database);
+		$row = Quote::oneOrNew(0);
 		$this->path = $row->filespace();
 
 		parent::execute();
@@ -91,7 +91,7 @@ class Media extends SiteController
 		}
 
 		// Build upload path
-		$path = $this->path . DS . String::pad($id);
+		$path = $this->path . DS . $id;
 
 		if (!is_dir($path))
 		{
@@ -175,7 +175,7 @@ class Media extends SiteController
 		$file = basename($file);
 
 		// Build the file path
-		$path = $this->path . DS . String::pad($id);
+		$path = $this->path . DS . $id;
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
