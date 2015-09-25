@@ -278,14 +278,13 @@ class Query
 	 * @param   string  $column    The column to which the clause will apply
 	 * @param   string  $operator  The operation that will compare column to value
 	 * @param   string  $value     The value to which the column will be evaluated
-	 * @param   string  $logical   The operator between multiple clauses
 	 * @param   int     $depth     The depth level of the clause, for sub clauses
 	 * @return  $this
 	 * @since   2.0.0
 	 **/
-	public function orWhere($column, $operator, $value, $logical = 'or', $depth = 0)
+	public function orWhere($column, $operator, $value, $depth = 0)
 	{
-		$this->where($column, $operator, $value, $logical, $depth);
+		$this->where($column, $operator, $value, 'or', $depth);
 		return $this;
 	}
 
