@@ -96,9 +96,9 @@ class Jobs extends SiteController
 		$results = Job::all()
 			->whereEquals('state', 1)
 			->where('next_run', '<=', Date::toLocal('Y-m-d H:i:s'))
-			->whereEquals('publish_up', '0000-00-00 00:00:00', 1)->orWhere('publish_up', '<=', $now, 'or', 1)
-			->where('id', '>', 0)
-			->whereEquals('publish_down', '0000-00-00 00:00:00', 1)->orWhere('publish_down', '>', $now, 'or', 1)
+			->whereEquals('publish_up', '0000-00-00 00:00:00', 1)->orWhere('publish_up', '<=', $now, 1)
+			->resetDepth()
+			->whereEquals('publish_down', '0000-00-00 00:00:00', 1)->orWhere('publish_down', '>', $now, 1)
 			->rows();
 
 		$output = new stdClass;
