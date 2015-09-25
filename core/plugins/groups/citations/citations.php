@@ -284,11 +284,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// get the earliest year we have citations for
 		$view->earliest_year = 2001;
 
-		// Affiliation filter
+		// Contribution filter
 		$view->filterlist = array(
 			'all'	 => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
-			'aff'	 => Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'),
-			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'),
 			'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB')
 		);
 
@@ -626,8 +624,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'created' => Date::toSql(),
 				'scope' => self::PLUGIN_SCOPE,
 				'scope_id' => $scope_id,
-				'affiliated' => Request::getInt('affiliated', 0),
-				'fundedby' => Request::getInt('fundedby', 0)
 			));
 
 		// Store new content
@@ -1525,18 +1521,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 						break;
 						case 'year_end':
 							$citations->where('year', '<=', $value);
-						break;
-						case 'filter':
-							if ($value == 'aff')
-							{
-								$value = 1;
-								$citations->where('affiliated', '=', $value);
-							}
-							elseif ($value == 'nonaff' || $value == '')
-							{
-								$value = 0;
-								$citations->where('affiliated', '=', $value);
-							}
 						break;
 						default:
 							$citations->where($filter, '=', $value);
