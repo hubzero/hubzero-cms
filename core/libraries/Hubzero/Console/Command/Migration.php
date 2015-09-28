@@ -395,8 +395,8 @@ class Migration extends Base implements CommandInterface
 		$this
 			->output
 			->addOverview(
-				'Run a migration. This includes searching for migration files,
-				depending on the options provided.'
+				'Run a migration. This includes searching for migration files
+				based on the options provided.'
 			)
 			->addTasks($this)
 			->addArgument(
