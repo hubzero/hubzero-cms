@@ -80,7 +80,8 @@
         "pear/net_dns2": "1.4.*",
         "hubzero/orcid-php": "0.*",
         "league/flysystem": "1.0.*",
-        "league/flysystem-dropbox": "1.0.*"
+        "league/flysystem-dropbox": "1.0.*",
+        "hubzero/framework": "dev-master"
     },
     "autoload": {
     "psr-0": { "Hubzero": "libraries/" },

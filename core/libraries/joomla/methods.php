@@ -458,4 +458,4 @@ class JText
 	}
 }
 
-include_once(dirname(__DIR__) . '/Hubzero/Base/helpers.php');
+include_once(dirname(dirname(__DIR__)) . '/vendor/hubzero/framework/src/Base/helpers.php');

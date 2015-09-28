@@ -13,6 +13,7 @@ return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'League\\Flysystem\\Dropbox\\' => array($vendorDir . '/league/flysystem-dropbox/src'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Hubzero\\' => array($vendorDir . '/hubzero/framework/src'),
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),

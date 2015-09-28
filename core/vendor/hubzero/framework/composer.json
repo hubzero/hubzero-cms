@@ -1,0 +1,29 @@
+{
+    "name": "hubzero/framework",
+    "description": "The HUBzero PHP framework",
+    "keywords": ["framework", "php", "hubzero"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/http-foundation": "2.5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "phpunit/dbunit": "1.4.*",
+        "satooshi/php-coveralls": "dev-master",
+        "squizlabs/php_codesniffer": "2.*",
+        "jakub-onderka/php-parallel-lint": "0.9.*",
+        "hubzero/standards": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/hubzero/phpcs-standards"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Hubzero\\": "src/"
+        }
+    }
+}

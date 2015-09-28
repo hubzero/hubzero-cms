@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "29c278e372a67d83e7b5987218e08f56",
+    "hash": "17a536a9ec27008e13528bccc520525d",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -673,6 +673,50 @@
                 "stream"
             ],
             "time": "2014-10-12 19:18:40"
+        },
+        {
+            "name": "hubzero/framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hubzero/framework.git",
+                "reference": "47b258759f902a48cf1a868a7fc1c2190e0935bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/47b258759f902a48cf1a868a7fc1c2190e0935bf",
+                "reference": "47b258759f902a48cf1a868a7fc1c2190e0935bf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "symfony/http-foundation": "2.5.5"
+            },
+            "require-dev": {
+                "hubzero/standards": "dev-master",
+                "jakub-onderka/php-parallel-lint": "0.9.*",
+                "phpunit/dbunit": "1.4.*",
+                "phpunit/phpunit": "4.*",
+                "satooshi/php-coveralls": "dev-master",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hubzero\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The HUBzero PHP framework",
+            "keywords": [
+                "framework",
+                "hubzero",
+                "php"
+            ],
+            "time": "2015-09-28 14:51:40"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1444,12 +1488,12 @@
             "version": "v2.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher.git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
                 "reference": "be3c5ff8d503c46768aeb78ce6333051aa6f26d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/be3c5ff8d503c46768aeb78ce6333051aa6f26d9",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/be3c5ff8d503c46768aeb78ce6333051aa6f26d9",
                 "reference": "be3c5ff8d503c46768aeb78ce6333051aa6f26d9",
                 "shasum": ""
             },
@@ -1503,12 +1547,12 @@
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/HttpFoundation.git",
+                "url": "https://github.com/symfony/http-foundation.git",
                 "reference": "650e115af152d7a5e857d01c2cdb9a22809de9b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/650e115af152d7a5e857d01c2cdb9a22809de9b4",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/650e115af152d7a5e857d01c2cdb9a22809de9b4",
                 "reference": "650e115af152d7a5e857d01c2cdb9a22809de9b4",
                 "shasum": ""
             },
@@ -1724,7 +1768,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "guzzle/guzzle": 20,
-        "pelago/emogrifier": 20
+        "pelago/emogrifier": 20,
+        "hubzero/framework": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -30,4 +30,4 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR 
 |
 */
 
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'Hubzero' . DIRECTORY_SEPARATOR . 'Base' . DIRECTORY_SEPARATOR . 'helpers.php';
+require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'hubzero' . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Base' . DIRECTORY_SEPARATOR . 'helpers.php';
