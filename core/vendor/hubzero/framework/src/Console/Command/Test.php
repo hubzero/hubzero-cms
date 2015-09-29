@@ -66,13 +66,13 @@ class Test extends Base implements CommandInterface
 		}
 
 		// Parse the extension and build a real path
-		$path  = PATH_CORE . DS;
+		$core  = dirname(dirname(__DIR__));
 		$parts = explode('_', $extension);
 		switch ($parts[0])
 		{
 			case 'lib':
 				unset($parts[0]);
-				$path .= 'libraries' . DS . 'Hubzero' . DS . ucfirst(implode(DS, $parts)) . DS . 'Tests';
+				$path = $core . DS . ucfirst(implode(DS, $parts)) . DS . 'Tests';
 				break;
 
 			default:
@@ -117,7 +117,7 @@ class Test extends Base implements CommandInterface
 	 **/
 	public function show()
 	{
-		$base        = PATH_CORE . DS . 'libraries' . DS . 'Hubzero';
+		$base        = dirname(dirname(__DIR__));
 		$directories = array_diff(scandir($base), ['.', '..']);
 
 		$tests = [];

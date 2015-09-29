@@ -112,22 +112,24 @@ class Help extends Base implements CommandInterface
 	/**
 	 * Helper to get files in commands directy. This is used to generate a list of commands.
 	 *
-	 * @param   string  $dir  The directory to search for commands
+	 * @param   string  $root  The root directory for commands
+	 * @param   string  $dir   The current directory to search for commands (relative to root)
 	 * @return  void
 	 **/
-	private function getCommands($dir = null)
+	private function getCommands($root = null, $dir = null)
 	{
-		$dir = (isset($dir)) ? $dir : __DIR__;
+		$root = $root ?: __DIR__;
+		$dir  = $dir  ?: '';
+		$cur  = $root . ((!empty($dir)) ? DS . $dir : '');
 
 		// Get files from command directory to use in list
-		$files = array_diff(scandir($dir), array('..', '.'));
+		$files = array_diff(scandir($cur), array('..', '.'));
 
 		foreach ($files as $file)
 		{
-			if (is_file($dir . DS . $file) && strpos($file, '.php') !== false)
+			if (is_file($cur . DS . $file) && strpos($file, '.php') !== false)
 			{
-				$npath      = str_replace('\\', DS, __NAMESPACE__);
-				$namespace  = str_replace(PATH_CORE . DS . 'libraries' . DS . $npath . DS, '', $dir . DS . $file);
+				$namespace  = str_replace($root . DS, '', $cur . DS . $file);
 				$namespace  = str_replace(DS, '\\', $namespace);
 				$class      = str_replace('.php', '', $namespace);
 
@@ -149,9 +151,9 @@ class Help extends Base implements CommandInterface
 					}
 				}
 			}
-			else if (is_dir($dir . DS . $file))
+			else if (is_dir($cur . DS . $file))
 			{
-				$this->getCommands($dir . DS . $file);
+				$this->getCommands($root, ((!empty($dir)) ? $dir . DS : '') . $file);
 			}
 		}
 	}
