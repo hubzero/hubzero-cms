@@ -1,40 +1,38 @@
 @import url("../../../../../core/components/com_collections/site/assets/css/collections.css");
 
-/* Layout 
-	#content {
-		padding: 0;
-	}
-	#content .main {
-		display: block;
+/* Form */
+	#sbox-content #hubForm.full fieldset {
 		margin: 0;
-		padding: 30px 50px 30px 50px;
-		background: #e1e1e1;
-	}
-	#content #content-header h2 {
-		padding: 30px 60px;
-	}
-	ul.sub-menu {
-		padding: 1em 60px 0 60px;
-	}*/
-
-/* Filters bar 
-	fieldset.filters {
-		padding: 30px 60px;
 		border: none;
-	}*/
-section.filters {
-	border: none;
-}
-/*
-section.main {
-	background: #ccc;
-}
-*/
-@media (min-width: 70em) {
-	section.main {
-		padding: 30px 50px;
+		background: transparent;
 	}
-}
+	#sbox-content #hubForm.full .submit {
+		padding: 0 0 1em 0;
+	}
+	#sbox-content.fancybox-inner {
+		border: none;
+	}
+	#sbox-content #hubForm .grid {
+		border: none;
+	}
+	#sbox-content #hubForm .grid label {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	#sbox-content #hubForm .grid .or {
+		font-weight: bold;
+		text-align: center;
+		padding-top: 2em;
+	}
+	#sbox-content .in-collections ul {
+		list-style: none;
+	}
+	#sbox-content .in-collections li {
+		margin: 0.2em 0;
+	}
+	.post-modal section.section {
+		background: transparent;
+	}
 
 /* Posts */
 	.post {
@@ -103,3 +101,13 @@ section.main {
 	.fancybox-wrap fieldset label {
 		padding: 1em 0;
 	}
+
+section.filters {
+	border: none;
+}
+
+@media (min-width: 70em) {
+	section.main {
+		padding: 30px 50px;
+	}
+}
