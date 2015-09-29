@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -96,7 +95,7 @@ class Miner extends Object implements Provider
 
 		if (is_null(self::$base))
 		{
-			self::$base = rtrim(\Request::base(), '/');
+			self::$base = rtrim(\Request::getSchemeAndHttpHost(), '/');
 		}
 	}
 
@@ -450,6 +449,35 @@ class Miner extends Object implements Provider
 				ORDER BY a.ordering, a.name"
 			);
 			$record->creator = $this->database->loadColumn();
+		}
+
+		$this->database->setQuery(
+			"SELECT *
+			FROM `#__citations` AS a
+			INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+			WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+			ORDER BY `year` DESC"
+		);
+		$references = $this->database->loadObjectList();
+		if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		{
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+
+			$formatter = new \Components\Citations\Helpers\Format;
+			$formatter->setTemplate('apa');
+
+			foreach ($references as $reference)
+			{
+				//<dcterms:isReferencedBy>uytruytry</dcterms:isReferencedBy>
+				//<dcterms:isVersionOf>jgkhfjf</dcterms:isVersionOf>
+				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
+				$cite = str_replace('&quot;', '"', $cite);
+
+				$record->relation[] = array(
+					'type'  => 'references',
+					'value' => trim($cite)
+				);
+			}
 		}
 
 		return $record;

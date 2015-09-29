@@ -790,15 +790,23 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
 </xsl:template>
 
-<xsl:template match="dc:relation.hasVersion" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<xsl:template match="dcterms:hasVersion" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
 </xsl:template>
 
-<xsl:template match="dc:relation.hasPart" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<xsl:template match="dcterms:hasPart" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
 </xsl:template>
 
-<xsl:template match="dc:relation.isPartOf" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<xsl:template match="dcterms:isPartOf" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
+</xsl:template>
+
+<xsl:template match="dcterms:references" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
+</xsl:template>
+
+<xsl:template match="dcterms:isReferencedBy" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<li><a class="link" href="{.}"><xsl:value-of select="."/></a></li>
 </xsl:template>
 

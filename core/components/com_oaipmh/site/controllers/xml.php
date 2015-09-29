@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -65,12 +64,12 @@ class Xml extends SiteController
 		$edate = $this->config->get('edate');
 		$edate = ($edate ? strtotime($edate) : time());
 
-		$service = new Service($metadata, rtrim(Request::base(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
+		$service = new Service($metadata, rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
 		$service->set('metadataPrefix', $metadata)
 				->set('repositoryName', $this->config->get('repository_name', \Config::get('sitename')))
 				->set('baseURL', $hubname)
 				->set('protocolVersion', '2.0')
-				->set('adminEmail', $this->config->get('email', \JFactory::getConfig()->get('mailfrom')))
+				->set('adminEmail', $this->config->get('email', \Config::get('mailfrom')))
 				->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
 				->set('deletedRecord', $this->config->get('del'))
 				->set('granularity', $igran)
