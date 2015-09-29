@@ -43,6 +43,13 @@ require_once(PATH_CORE . '/components/com_oaipmh/models/provider.php');
 class Miner extends Object implements Provider
 {
 	/**
+	 * Base URL
+	 * 
+	 * @var  string
+	 */
+	protected static $base = null;
+
+	/**
 	 * Database connection
 	 * 
 	 * @var  object
@@ -86,6 +93,11 @@ class Miner extends Object implements Provider
 		}
 
 		$this->database = $db;
+
+		if (is_null(self::$base))
+		{
+			self::$base = rtrim(\Request::getSchemeAndHttpHost(), '/');
+		}
 	}
 
 	/**
@@ -226,6 +238,16 @@ class Miner extends Object implements Provider
 	 */
 	public function record($id)
 	{
+		if (strstr($id, ':'))
+		{
+			list($id, $revision) = explode(':', $id);
+		}
+		$id = intval($id);
+		if (!isset($revision))
+		{
+			$revision = 0;
+		}
+
 		$this->database->setQuery(
 			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type
 			FROM `#__publication_versions` AS pv
@@ -266,6 +288,36 @@ class Miner extends Object implements Provider
 			ORDER BY t.raw_tag"
 		);
 		$record->subject = $this->database->loadColumn();
+
+		// Relations
+		$record->relation = array();
+
+		$this->database->setQuery(
+			"SELECT *
+			FROM `#__citations` AS a
+			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+			ORDER BY `year` DESC"
+		);
+		$references = $this->database->loadObjectList();
+		if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		{
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+
+			$formatter = new \Components\Citations\Helpers\Format;
+			$formatter->setTemplate('apa');
+
+			foreach ($references as $reference)
+			{
+				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
+				$cite = str_replace('&quot;', '"', $cite);
+
+				$record->relation[] = array(
+					'type'  => 'references',
+					'value' => trim($cite)
+				);
+			}
+		}
 
 		return $record;
 	}
