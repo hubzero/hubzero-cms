@@ -42,18 +42,25 @@ require_once(__DIR__ . '/dublincore.php');
 class QualifiedDC extends DublinCore
 {
 	/**
-	 * Schema description
+	 * Schema prefix
 	 * 
 	 * @var  string
 	 */
-	public static $schema = 'http://www.bepress.com/assets/xsd/oai_qualified_dc.xsd';
+	public static $prefix = 'oai_qdc';
+
+	/**
+	 * Schema description
+	 * 
+	 * @var  string http://www.bepress.com/assets/xsd/oai_qualified_dc.xsd
+	 */
+	public static $schema = 'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd http://purl.org/net/oclcterms http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd';
 
 	/**
 	 * Schema namespace
 	 * 
-	 * @var  string
+	 * @var  string http://www.bepress.com/OAI/2.0/qualified-dublin-core/
 	 */
-	public static $ns = 'http://www.bepress.com/OAI/2.0/qualified-dublin-core/';
+	public static $ns = 'http://worldcat.org/xmlschemas/qdc-1.0/';
 
 	/**
 	 * Get the schema name
@@ -63,16 +70,6 @@ class QualifiedDC extends DublinCore
 	public function name()
 	{
 		return 'Qualified Dublin Core';
-	}
-
-	/**
-	 * Get the schema prefix
-	 *
-	 * @return  string
-	 */
-	public function prefix()
-	{
-		return 'qdc';
 	}
 
 	/**
@@ -144,8 +141,9 @@ class QualifiedDC extends DublinCore
 		{
 			$this->response
 				->element('metadata')
-					->element('oai_dc:dc')
+					->element('oai_qdc:qualifieddc')
 						->attr('xmlns:' . self::$prefix, self::$ns)
+						->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
 						->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
 						->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
 						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
@@ -231,7 +229,7 @@ class QualifiedDC extends DublinCore
 							$res = $val;
 						}
 
-						$this->response->element('dc:' . $dc . ($term ? '.' . $term : ''), $this->prepare($res))->end();
+						$this->response->element(($term ? 'dcterms:' . $term : 'dc:' . $dc), $this->prepare($res))->end();
 					}
 				}
 				elseif (!empty($result->$dc))

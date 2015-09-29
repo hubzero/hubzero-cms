@@ -2,30 +2,32 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Plugins\Oaipmh\Publications\Data;
@@ -40,6 +42,13 @@ require_once(JPATH_ROOT . '/components/com_oaipmh/models/provider.php');
  */
 class Miner extends Object implements Provider
 {
+	/**
+	 * Base URL
+	 * 
+	 * @var  string
+	 */
+	protected static $base = null;
+
 	/**
 	 * Database connection
 	 * 
@@ -84,6 +93,11 @@ class Miner extends Object implements Provider
 		}
 
 		$this->database = $db;
+
+		if (is_null(self::$base))
+		{
+			self::$base = rtrim(\JURI::base(), '/');
+		}
 	}
 
 	/**
@@ -224,6 +238,16 @@ class Miner extends Object implements Provider
 	 */
 	public function record($id)
 	{
+		if (strstr($id, ':'))
+		{
+			list($id, $revision) = explode(':', $id);
+		}
+		$id = intval($id);
+		if (!isset($revision))
+		{
+			$revision = 0;
+		}
+
 		$this->database->setQuery(
 			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type
 			FROM `#__publication_versions` AS pv
@@ -255,7 +279,7 @@ class Miner extends Object implements Provider
 			WHERE pa.publication_version_id = pv.id AND pa.role != 'submitter' AND pv.publication_id = p.id AND p.id=" . $this->database->quote($id) . "
 			ORDER BY pa.name"
 		);
-		$record->creator = $this->database->loadResultArray();
+		$record->creator = $this->database->loadColumn();
 
 		$this->database->setQuery(
 			"SELECT DISTINCT t.raw_tag
@@ -263,7 +287,37 @@ class Miner extends Object implements Provider
 			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($id) . " AND tos.tbl='publications' AND t.admin=0
 			ORDER BY t.raw_tag"
 		);
-		$record->subject = $this->database->loadResultArray();
+		$record->subject = $this->database->loadColumn();
+
+		// Relations
+		$record->relation = array();
+
+		$this->database->setQuery(
+			"SELECT *
+			FROM `#__citations` AS a
+			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+			ORDER BY `year` DESC"
+		);
+		$references = $this->database->loadObjectList();
+		if (count($references) && file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+
+			$formatter = new \CitationsFormat;
+			$formatter->setTemplate('apa');
+
+			foreach ($references as $reference)
+			{
+				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \CitationsFormat::formatReference($reference, '')));
+				$cite = str_replace('&quot;', '"', $cite);
+
+				$record->relation[] = array(
+					'type'  => 'references',
+					'value' => trim($cite)
+				);
+			}
+		}
 
 		return $record;
 	}

@@ -450,6 +450,33 @@ class Miner extends Object implements Provider
 			$record->creator = $this->database->loadResultArray();
 		}
 
+		$this->database->setQuery(
+			"SELECT *
+			FROM `#__citations` AS a
+			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+			WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+			ORDER BY `year` DESC"
+		);
+		$references = $this->database->loadObjectList();
+		if (count($references) && file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+
+			$formatter = new \CitationsFormat;
+			$formatter->setTemplate('apa');
+
+			foreach ($references as $reference)
+			{
+				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \CitationsFormat::formatReference($reference, '')));
+				$cite = str_replace('&quot;', '"', $cite);
+
+				$record->relation[] = array(
+					'type'  => 'references',
+					'value' => trim($cite)
+				);
+			}
+		}
+
 		return $record;
 	}
 
