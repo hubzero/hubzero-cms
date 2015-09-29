@@ -704,7 +704,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 		</xsl:if>
 		<table>
 			<tbody>
-				<xsl:apply-templates select="*[not(self::dc:creator or self::dc:subject or self::dc:title or self::dc:relation or self::dc:relation.hasPart or self::dc:relation.isPartOf or self::dc:relation.hasVersion)]" />
+				<xsl:apply-templates select="*[not(self::dc:creator or self::dc:subject or self::dc:title or self::dc:relation or self::dcterms:hasPart or self::dcterms:isPartOf or self::dcterms:hasVersion or self::dcterms:references or self::dcterms:isReferencedBy)]" />
 				<xsl:if test="count(dc:relation) &gt; 0">
 					<tr>
 						<th class="key">Related</th>
@@ -713,27 +713,43 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 						</td>
 					</tr>
 				</xsl:if>
-				<xsl:if test="count(dc:relation.hasPart) &gt; 0">
+				<xsl:if test="count(dcterms:hasPart) &gt; 0">
 					<tr>
 						<th class="key">Parts</th>
 						<td class="value">
-							<ul class="relations"><xsl:apply-templates select="dc:relation.hasPart"/></ul>
+							<ul class="relations"><xsl:apply-templates select="dcterms:hasPart"/></ul>
 						</td>
 					</tr>
 				</xsl:if>
-				<xsl:if test="count(dc:relation.isPartOf) &gt; 0">
+				<xsl:if test="count(dcterms:isPartOf) &gt; 0">
 					<tr>
 						<th class="key">Is Part Of</th>
 						<td class="value">
-							<ul class="relations"><xsl:apply-templates select="dc:relation.isPartOf"/></ul>
+							<ul class="relations"><xsl:apply-templates select="dcterms:isPartOf"/></ul>
 						</td>
 					</tr>
 				</xsl:if>
-				<xsl:if test="count(dc:relation.hasVersion) &gt; 0">
+				<xsl:if test="count(dcterms:hasVersion) &gt; 0">
 					<tr>
 						<th class="key">Versions</th>
 						<td class="value">
-							<ul class="relations"><xsl:apply-templates select="dc:relation.hasVersion"/></ul>
+							<ul class="relations"><xsl:apply-templates select="dcterms:hasVersion"/></ul>
+						</td>
+					</tr>
+				</xsl:if>
+				<xsl:if test="count(dcterms:references) &gt; 0">
+					<tr>
+						<th class="key">References</th>
+						<td class="value">
+							<ul class="relations"><xsl:apply-templates select="dcterms:references"/></ul>
+						</td>
+					</tr>
+				</xsl:if>
+				<xsl:if test="count(dcterms:isReferencedBy) &gt; 0">
+					<tr>
+						<th class="key">Is Referenced By</th>
+						<td class="value">
+							<ul class="relations"><xsl:apply-templates select="dcterms:isReferencedBy"/></ul>
 						</td>
 					</tr>
 				</xsl:if>
