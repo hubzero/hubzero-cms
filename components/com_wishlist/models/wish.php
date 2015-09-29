@@ -596,7 +596,7 @@ class WishlistModelWish extends WishlistModelAbstract
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid category of "%s"', $scope));
+					throw new \InvalidArgumentException(\JText::sprintf('Invalid category of "%s"', $scope), 404);
 				}
 				include_once($path);
 			}
