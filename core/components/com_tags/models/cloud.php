@@ -492,14 +492,14 @@ class Cloud extends Object
 	/**
 	 * Tag an object
 	 * This will get a list of old tags on object and will
-	 * 1) add any new tags not in the old list
-	 * 2) remove any tags in the old list not found in the new list
+	 *   1) add any new tags not in the old list
+	 *   2) remove any tags in the old list not found in the new list
 	 *
-	 * @param   integer  $tagger_id   Tagger ID
-	 * @param   integer  $object_id   Object ID
 	 * @param   string   $tag_string  String of comma-separated tags
+	 * @param   integer  $tagger_id   Tagger ID
+	 * @param   boolean  $admin       Mark tags as admin?
 	 * @param   integer  $strength    Tag strength
-	 * @param   boolean  $admin       Has admin access?
+	 * @param   string   $label       Label to attach
 	 * @return  boolean  True on success, false if errors
 	 */
 	public function setTags($tag_string, $tagger_id=0, $admin=0, $strength=1, $label='')
@@ -534,7 +534,7 @@ class Cloud extends Object
 				if (!in_array($tagItem->get('tag'), $tagArray))
 				{
 					// We need to delete old tags that don't appear in the new parsed string.
-					$this->remove($tagItem->get('tag'), ($admin ? 0 : $tagger_id));
+					$this->remove($tagItem->get('tag')); //, ($admin ? 0 : $tagger_id));
 				}
 				else
 				{
