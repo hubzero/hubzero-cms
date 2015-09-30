@@ -534,7 +534,7 @@ class Cloud extends Object
 				if (!in_array($tagItem->get('tag'), $tagArray))
 				{
 					// We need to delete old tags that don't appear in the new parsed string.
-					$this->remove($tagItem->get('tag')) //, ($admin ? 0 : $tagger_id));
+					$this->remove($tagItem->get('tag')); //, ($admin ? 0 : $tagger_id));
 				}
 				else
 				{
