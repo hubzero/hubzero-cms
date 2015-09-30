@@ -48,7 +48,7 @@ else
 ?>
 		<h4<?php if ($collection->get('access', 0) == 4) { echo ' class="private"'; } ?>>
 			<a href="<?php echo Route::url($collection->link()); ?>">
-				<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
+				<?php echo $this->escape(stripslashes($collection->get('title', Lang::txt('COM_COLLECTIONS_NONE')))); ?>
 			</a>
 		</h4>
 		<div class="description">

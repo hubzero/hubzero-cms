@@ -692,7 +692,7 @@ class Collection extends Base
 	{
 		if (!$this->_adapter)
 		{
-			$scope = strtolower($this->get('object_type'));
+			$scope = strtolower($this->get('object_type', 'site'));
 			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
