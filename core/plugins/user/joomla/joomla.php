@@ -78,7 +78,9 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 						$lang->setLanguage($userLocale);
 					}
 
-					$lang->load('plg_user_joomla', JPATH_ADMINISTRATOR);
+					$lang->load('plg_user_joomla', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
+					$lang->load('plg_user_joomla', PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
+					$lang->load('plg_user_joomla', __DIR__);
 
 					// Compute the mail subject.
 					$emailSubject = Lang::txt(
