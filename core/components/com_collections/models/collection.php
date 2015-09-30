@@ -692,7 +692,9 @@ class Collection extends Base
 	{
 		if (!$this->_adapter)
 		{
-			$scope = strtolower($this->get('object_type'));
+			$scope = strtolower((string) $this->get('object_type', 'site'));
+			$scope = ($scope ?: 'site');
+
 			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
@@ -700,7 +702,7 @@ class Collection extends Base
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for collection #%s', $scope, $this->get('id')));
 				}
 				include_once($path);
 			}

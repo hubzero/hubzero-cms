@@ -33,7 +33,6 @@
 namespace Components\Collections\Models\Adapters;
 
 use Component;
-use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 
@@ -45,7 +44,7 @@ class Site extends Base
 	/**
 	 * URL segments
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_segments = array(
 		'option' => 'com_collections',
@@ -104,18 +103,14 @@ class Site extends Base
 			break;
 
 			case 'comments':
-				$segments['task']  = Date::of($this->get('publish_up'))->toLocal('Y') . '/';
-				$segments['task'] .= Date::of($this->get('publish_up'))->toLocal('m') . '/';
-				$segments['task'] .= $this->get('alias');
+				$segments['task'] = $this->get('alias');
 
 				$anchor = '#comments';
 			break;
 
 			case 'permalink':
 			default:
-				$segments['task']  = Date::of($this->get('publish_up'))->toLocal('Y') . '/';
-				$segments['task'] .= Date::of($this->get('publish_up'))->toLocal('m') . '/';
-				$segments['task'] .= $this->get('alias');
+				$segments['task'] = $this->get('alias');
 			break;
 		}
 
