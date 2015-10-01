@@ -670,7 +670,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
 				if (!isset($this->$property))
 				{
-					$this->$property = Html::content('prepare', $this->attributes[$field]);
+					$this->$property = Html::content('prepare', $this->get($field, ''));
 				}
 
 				return $this->$property;
@@ -678,7 +678,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->attributes[$field]);
+				$content = stripslashes($this->get($field, ''));
 				return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}

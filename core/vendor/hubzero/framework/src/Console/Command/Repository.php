@@ -327,6 +327,12 @@ class Repository extends Base implements CommandInterface
 						);
 					}
 				}
+
+				// Also check to see if we need to update packages
+				if ($this->arguments->getOpt('install-packages', false))
+				{
+					App::get('client')->call('repository:package', 'install', new Arguments([]), $this->output);
+				}
 			}
 			else if ($response['status'] == 'fatal')
 			{

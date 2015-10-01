@@ -84,16 +84,44 @@ class Package extends Base implements CommandInterface
 		}
 
 		// Composer install
-		$this->output->addLine('Installing any missing libraries from composer...', 'success');
-		$cmd    = 'php ' . PATH_CORE . DS . 'bin' . DS . 'composer --working-dir=' . PATH_CORE . ' install ' . implode(' ', $args);
-		$result = shell_exec($cmd);
+		if ($this->output->getMode() != 'minimal')
+		{
+			$this->output->addString('Installing any missing libraries from composer...', 'info');
+		}
+
+		$cmd = 'php ' . PATH_CORE . DS . 'bin' . DS . 'composer --working-dir=' . PATH_CORE . ' install ' . implode(' ', $args) . ' 2>&1';
+		exec($cmd, $output, $status);
+
+		// Composer install
+		if ($this->output->getMode() != 'minimal')
+		{
+			if ($status === 0)
+			{
+				$this->output->addLine('complete', 'success');
+			}
+			else
+			{
+				$this->output->error('failed');
+			}
+		}
+		else
+		{
+			if ($status !== 0)
+			{
+				$this->output->error('Failed to update package repository!');
+			}
+		}
 
 		if ($configuration == 'development' || $configuration == 'staging')
 		{
 			$this->configure();
 		}
 
-		$this->output->addLine('Installation complete!', 'success');
+		// Composer install
+		if ($this->output->getMode() != 'minimal')
+		{
+			$this->output->addLine('Installation complete!', 'success');
+		}
 	}
 
 	/**
@@ -112,18 +140,29 @@ class Package extends Base implements CommandInterface
 		if (is_null($gitHubUser))
 		{
 			$gitHubUser = exec('whoami');
-			$this->output->addLine("Assuming {$gitHubUser} as your GitHub username. To override, please specify the '--github-user' flag", 'info');
+
+			if ($this->output->getMode() != 'minimal')
+			{
+				$this->output->addLine("Assuming {$gitHubUser} as your GitHub username. To override, please specify the '--github-user' flag", 'info');
+			}
 		}
 		else
 		{
-			$this->output->addLine("Using the provided GitHub username: {$gitHubUser}", 'info');
+			if ($this->output->getMode() != 'minimal')
+			{
+				$this->output->addLine("Using the provided GitHub username: {$gitHubUser}", 'info');
+			}
 		}
 
 		// Escape user input
 		$gitHubUser = escapeshellarg($gitHubUser);
 
 		// Update GIT config within vendor to point to developer fork of primary repo
-		$this->output->addLine('Updating the framework repository to point to your GitHub fork...', 'success');
+		if ($this->output->getMode() != 'minimal')
+		{
+			$this->output->addLine('Updating the framework repository to point to your GitHub fork', 'success');
+		}
+
 		$workTree = PATH_CORE . DS . 'vendor' . DS . 'hubzero' . DS . 'framework';
 		$dir      = $workTree . DS . '.git';
 		$cmd      = "git --git-dir={$dir} --work-tree={$workTree} remote set-url --push origin git@github.com:{$gitHubUser}/framework.git 2>&1";
