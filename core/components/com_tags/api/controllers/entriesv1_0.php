@@ -171,9 +171,46 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Create a new entry
+	 * Create an entry
 	 *
-	 * @return  void
+	 * @apiMethod POST
+	 * @apiUri    /tags
+	 * @apiParameter {
+	 * 		"name":        "raw_tag",
+	 * 		"description": "Raw tag",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Tag",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "label",
+	 * 		"description": "Label",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "admin",
+	 * 		"description": "Admin tag? (0 = no, 1 = yes)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "substitutes",
+	 * 		"description": "Comma-separated list of aliases or alternatives (e.g., 'water, H2O, aqua')",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function createTask()
 	{
@@ -219,9 +256,25 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Display info for a tag
+	 * Retrieve an entry based on either ID or tag
 	 *
-	 * @return  void
+	 * @apiMethod GET
+	 * @apiUri    /tags/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Tag name",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function readTask()
 	{
@@ -241,7 +294,51 @@ class Entriesv1_0 extends ApiController
 	/**
 	 * Update an entry
 	 *
-	 * @return  void
+	 * @apiMethod PUT
+	 * @apiUri    /tags/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "raw_tag",
+	 * 		"description": "Raw tag",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Tag",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "label",
+	 * 		"description": "Label",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "admin",
+	 * 		"description": "Admin tag? (0 = no, 1 = yes)",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "substitutes",
+	 * 		"description": "Comma-separated list of aliases or alternatives (e.g., 'water, H2O, aqua')",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function updateTask()
 	{
@@ -286,9 +383,25 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Remove tag from an item
+	 * Delete an entry by either ID or tag
 	 *
-	 * @return  void
+	 * @apiMethod DELETE
+	 * @apiUri    /tags/{id}
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Tag name",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @return    void
 	 */
 	public function deleteTask()
 	{
@@ -313,9 +426,46 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Remove tag from an item
+	 * Remove tag from an item. Tag can be specified by either ID or tag name.
 	 *
-	 * @return  void
+	 * @apiMethod DELETE
+	 * @apiUri    /tags/{id}/remove
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Tag name",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Scope/item type (e.g., 'resource', 'group')",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope_id",
+	 * 		"description": "Scope/item ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     '0'
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tagger",
+	 * 		"description": "Limit to only tags created by specified user ID",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     '0'
+	 * }
+	 * @return    void
 	 */
 	public function removeTask()
 	{
@@ -349,9 +499,46 @@ class Entriesv1_0 extends ApiController
 	}
 
 	/**
-	 * Add a tag to an item
+	 * Add a tag to an item. Tag can be specified by either ID or tag name.
 	 *
-	 * @return  void
+	 * @apiMethod POST
+	 * @apiUri    /tags/{id}/add
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Tag entry identifier",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tag",
+	 * 		"description": "Tag name",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Scope/item type (e.g., 'resource', 'group')",
+	 * 		"type":        "string",
+	 * 		"required":    true,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "scope_id",
+	 * 		"description": "Scope/item ID",
+	 * 		"type":        "integer",
+	 * 		"required":    true,
+	 * 		"default":     '0'
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "tagger",
+	 * 		"description": "Tagger ID",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     '0'
+	 * }
+	 * @return    void
 	 */
 	public function addTask()
 	{
