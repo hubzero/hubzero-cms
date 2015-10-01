@@ -146,6 +146,7 @@ class Cli
 		if (!$dryRun)
 		{
 			$args[] = '-f';
+			$args[] = '--install-packages';
 		}
 
 		if ($allowNonFf)
