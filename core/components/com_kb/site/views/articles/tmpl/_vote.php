@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -63,13 +62,13 @@ else
 
 if (!User::isGuest())
 {
-	$like_title = Lang::txt('COM_KB_VOTE_UP', $this->item->get('helpful', 0));
+	$like_title    = Lang::txt('COM_KB_VOTE_UP', $this->item->get('helpful', 0));
 	$dislike_title = Lang::txt('COM_KB_VOTE_DOWN', $this->item->get('nothelpful', 0));
 	$cls = ' tooltips';
 }
 else
 {
-	$like_title = Lang::txt('COM_KB_VOTE_UP_LOGIN');
+	$like_title    = Lang::txt('COM_KB_VOTE_UP_LOGIN');
 	$dislike_title = Lang::txt('COM_KB_VOTE_DOWN_LOGIN');
 	$cls = ' tooltips';
 }

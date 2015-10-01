@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -36,6 +35,7 @@ use Components\Kb\Models\Archive;
 use Components\Kb\Models\Category;
 use Components\Kb\Models\Article;
 use Components\Kb\Models\Comment;
+use Components\Kb\Models\Vote;
 use Hubzero\Component\SiteController;
 use Exception;
 use Document;
@@ -65,21 +65,10 @@ class Articles extends SiteController
 	/**
 	 * Displays an overview of categories and articles in the knowledge base
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// Set the pathway
-		$this->_buildPathway(null, null, null);
-
-		// Set the page title
-		$this->_buildTitle(null, null, null);
-
-		// Output HTML
-		$this->view->database = $this->database;
-		$this->view->title    = Lang::txt('COM_KB');
-		$this->view->catid    = 0;
-		$this->view->config   = $this->config;
 		$this->view->archive  = $this->archive;
 
 		$this->view
@@ -94,56 +83,47 @@ class Articles extends SiteController
 	 */
 	public function categoryTask()
 	{
+		$alias = Request::getVar('alias', '');
+		$id    = Request::getInt('id', 0);
+
 		// Make sure we have an ID
-		if (!($alias = Request::getVar('alias', '')))
+		if (!$alias && !$id)
 		{
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Get the category
-		$sect = -1;
-		$cat  = -1;
+		$this->view->catid = 0;
 
-		$this->view->category = new Category($alias);
-		$this->view->section  = new Category($this->view->category->get('section'));
 		if ($alias == 'all')
 		{
-			$this->view->category->set('alias', 'all');
-			$this->view->category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
-			$this->view->category->set('id', 0);
-			$this->view->category->set('state', 1);
+			$category = new Category;
+			$category->set('alias', 'all');
+			$category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
+			$category->set('id', 0);
+			$category->set('published', 1);
 		}
 		else
 		{
-			if ($this->view->category->get('section'))
-			{
-				//$this->view->section  = new Category($this->view->category->get('section'));
+			$category = ($alias ? Category::oneByAlias($alias) : Category::oneOrFail($id));
 
-				$sect = $this->view->category->get('section');
-				$cat  = $this->view->category->get('id');
-			}
-			else
+			$this->view->catid = $category->get('id');
+			if ($category->get('parent_id') > 1)
 			{
-				$sect = $this->view->category->get('id');
+				$this->view->catid = $category->get('parent_id');
 			}
 		}
 
-		if (!$this->view->category->isPublished())
+		if (!$category->get('published'))
 		{
 			throw new Exception(Lang::txt('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		// Get configuration
 		$this->view->filters = array(
-			'limit'    => Request::getInt('limit', Config::get('list_limit')),
-			'start'    => Request::getInt('limitstart', 0),
 			'sort'     => Request::getWord('sort', 'recent'),
-			'section'  => $sect,
-			'category' => $cat,
-			'search'   => Request::getVar('search',''),
-			'state'    => 1,
-			'access'   => User::getAuthorisedViewLevels()
+			'category' => $category->get('id'),
+			'search'   => Request::getVar('search','')
 		);
 
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
@@ -155,30 +135,8 @@ class Articles extends SiteController
 			$this->view->filters['user_id'] = User::get('id');
 		}
 
-		// Get a record count
-		$this->view->total    = $this->view->category->articles('count', $this->view->filters);
-
-		// Get the records
-		$this->view->articles = $this->view->category->articles('list', $this->view->filters);
-
-		// Get all main categories for menu
-		$this->view->categories = $this->archive->categories();
-
-		// Set the pathway
-		$this->_buildPathway($this->view->section, $this->view->category, null);
-
-		// Set the page title
-		$this->_buildTitle($this->view->section, $this->view->category, null);
-
-		// Output HTML
-		$this->view->title  = Lang::txt('COM_KB');
-		$this->view->catid  = $sect;
-		$this->view->config = $this->config;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+		$this->view->archive = $this->archive;
+		$this->view->category = $category;
 
 		$this->view
 			->setLayout('category')
@@ -197,153 +155,55 @@ class Articles extends SiteController
 		$id    = Request::getInt('id', 0);
 
 		// Load the article
-		$this->view->article = new Article(($alias ? $alias : $id), Request::getVar('category'));
+		$article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
 
-		if (!$this->view->article->exists())
+		if (!$article->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
-		if (!$this->view->article->isPublished())
+		if (!$article->get('state'))
 		{
 			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Is the user logged in?
-		/*if (!User::isGurst())
+		if (!User::isGuest())
 		{
 			// See if this person has already voted
-			$h = new Vote($this->database);
-			$this->view->vote = $h->getVote(
-				$this->view->article->get('id'),
+			$vote = Vote::blank()->find(
+				$article->get('id'),
 				User::get('id'),
 				Request::ip(),
-				'entry'
+				'article'
 			);
+			$this->view->vote = $vote->get('vote');
 		}
 		else
-		{*/
+		{
 			$this->view->vote = strtolower(Request::getVar('vote', ''));
-		//}
+		}
 
 		// Load the category object
-		$this->view->section = new Category($this->view->article->get('section'));
-		if (!$this->view->section->isPublished())
+		$category = Category::oneOrFail($article->get('category'));
+
+		if (!$category->get('published'))
 		{
 			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
-		// Load the category object
-		$this->view->category = $this->view->article->category();
-		if ($this->view->category->exists() && !$this->view->category->isPublished())
+		$this->view->catid = $category->get('id');
+		if ($category->get('parent_id') > 1)
 		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
-		}
-
-		// Get all main categories for menu
-		$this->view->categories = $this->archive->categories('list');
-
-		$this->view->subcategories = $this->view->section->children('list');
-
-		$this->view->replyto = new Comment(Request::getInt('reply', 0));
-
-		// Set the pathway
-		$this->_buildPathway($this->view->section, $this->view->category, $this->view->article);
-
-		// Set the page title
-		$this->_buildTitle($this->view->section, $this->view->category, $this->view->article);
-
-		// Output HTML
-		$this->view->title   = Lang::txt('COM_KB');
-		$this->view->helpful = $this->helpful;
-		$this->view->catid   = $this->view->section->get('id');
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$this->view->catid = $category->get('parent_id');
 		}
 
 		$this->view
+			->set('article', $article)
+			->set('category', $category)
+			->set('archive', $this->archive)
 			->setLayout('article')
 			->display();
-	}
-
-	/**
-	 * Pushes items to the global breadcrumbs object
-	 *
-	 * @param      object $section  KbTableCategory
-	 * @param      object $category KbTableCategory
-	 * @param      object $article  KbTableArticle
-	 * @return     void
-	 */
-	protected function _buildPathway($section=null, $category=null, $article=null)
-	{
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if (is_object($section) && $section->get('alias'))
-		{
-			Pathway::append(
-				stripslashes($section->get('title')),
-				'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
-			);
-		}
-		if (is_object($category) && $category->get('alias'))
-		{
-			$lnk  = 'index.php?option=' . $this->_option;
-			$lnk .= (is_object($section) && $section->get('alias')) ? '&section=' . $section->get('alias') : '';
-			$lnk .= '&category=' . $category->get('alias');
-
-			Pathway::append(
-				stripslashes($category->get('title')),
-				$lnk
-			);
-		}
-		if (is_object($article) && $article->get('alias'))
-		{
-			$lnk = 'index.php?option=' . $this->_option . '&section=' . $section->get('alias');
-			if (is_object($category) && $category->get('alias'))
-			{
-				$lnk .= '&category=' . $category->get('alias');
-			}
-			$lnk .= '&alias=' . $article->get('alias');
-
-			Pathway::append(
-				stripslashes($article->get('title')),
-				$lnk
-			);
-		}
-	}
-
-	/**
-	 * Builds the document title
-	 *
-	 * @param      object $section  KbTableCategory
-	 * @param      object $category KbTableCategory
-	 * @param      object $article  KbTableArticle
-	 * @return     void
-	 */
-	protected function _buildTitle($section=null, $category=null, $article=null)
-	{
-		$this->_title = Lang::txt(strtoupper($this->_option));
-		if (is_object($section) && $section->get('title') != '')
-		{
-			$this->_title .= ': ' . stripslashes($section->get('title'));
-		}
-		if (is_object($category) && $category->get('title') != '')
-		{
-			$this->_title .= ': ' . stripslashes($category->get('title'));
-		}
-		if (is_object($article))
-		{
-			$this->_title .= ': ' . stripslashes($article->get('title'));
-		}
-
-		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -351,7 +211,7 @@ class Articles extends SiteController
 	 * AJAX call - Displays updated vote links
 	 * Standard link - falls through to the article view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function voteTask()
 	{
@@ -372,28 +232,23 @@ class Articles extends SiteController
 		// Did they vote?
 		if (!$vote)
 		{
-			// Already voted
 			$this->setError(Lang::txt('COM_KB_USER_DIDNT_VOTE'));
-			$this->articleTask();
-			return;
+			return $this->articleTask();
 		}
 
-		if (!in_array($type, array('entry', 'comment')))
+		if (!in_array($type, array('article', 'comment')))
 		{
-			// Already voted
-			$this->setError(Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
-			$this->displayTask();
-			return;
+			App::abort(404, Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
 		}
 
 		// Load the article
 		switch ($type)
 		{
-			case 'entry':
-				$row = new Article($id);
+			case 'article':
+				$row = Article::oneOrFail($id);
 			break;
 			case 'comment':
-				$row = new Comment($id);
+				$row = Comment::oneOrFail($id);
 			break;
 		}
 
@@ -416,7 +271,7 @@ class Articles extends SiteController
 		}
 		else
 		{
-			if ($type == 'entry')
+			if ($type == 'article')
 			{
 				App::redirect(
 					Route::url($row->link())
@@ -431,7 +286,7 @@ class Articles extends SiteController
 	 * Saves a comment to an article
 	 * Displays article
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savecommentTask()
 	{
@@ -452,20 +307,17 @@ class Articles extends SiteController
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new Comment($comment['id']);
-		if (!$row->bind($comment))
+		$row = Comment::oneOrNew($comment['id'])->set($comment);
+		if ($row->isNew())
 		{
-			$this->setError($row->getError());
-			$this->articleTask();
-			return;
+			$row->set('created', \Date::toSql());
 		}
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save(true))
 		{
 			$this->setError($row->getError());
-			$this->articleTask();
-			return;
+			return $this->articleTask();
 		}
 
 		App::redirect(
@@ -482,9 +334,7 @@ class Articles extends SiteController
 	{
 		if (!$this->config->get('feeds_enabled'))
 		{
-			$this->_task = 'article';
-			$this->articleTask();
-			return;
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Incoming
@@ -492,15 +342,13 @@ class Articles extends SiteController
 		$id    = Request::getInt('id', 0);
 
 		// Load the article
-		$category = new Category(Request::getVar('category'));
+		$category = Category::oneByAlias(Request::getVar('category'));
 
-		$article = new Article(($alias ? $alias : $id), $category->get('id'));
-		if (!$article->exists())
+		$article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
+		if (!$article->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
-
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		Document::setType('feed');
@@ -525,9 +373,8 @@ class Articles extends SiteController
 	/**
 	 * Recursive function to append comments to a feed
 	 *
-	 * @param   object  $feed
 	 * @param   object  $comments
-	 * @return  object
+	 * @return  void
 	 */
 	protected function _feedItem($comments)
 	{

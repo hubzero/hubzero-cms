@@ -33,8 +33,8 @@
 namespace Components\Kb\Site;
 
 use Hubzero\Component\Router\Base;
-use Components\Kb\Tables\Category;
-use Components\Kb\Tables\Article;
+use Components\Kb\Models\Category;
+use Components\Kb\Models\Article;
 
 /**
  * Routing class for the component
@@ -153,41 +153,44 @@ class Router extends Base
 
 				include_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 
-				$db = \App::get('db');
+				$category = Category::all()
+					->whereEquals('path', $title1 . '/' . $title2)
+					->row();
 
-				$category = new Category($db);
-				$category->loadAlias($title2);
+				//$db = \App::get('db');
 
-				if ($category->id)
+				//$category = Category::oneByAlias($title2);
+
+				if ($category->get('id'))
 				{
 					// section/category
-					$vars['task'] = 'category';
-					$vars['alias'] = $title2; //urldecode($segments[1]);
+					$vars['task']  = 'category';
+					$vars['id']    = $category->get('id');
+					//$vars['alias'] = $title2;
 					return $vars;
 				}
-				else
+				/*else
 				{
 					$category->loadAlias($title1);
-				}
+				}*/
 
-				if (!$category->id)
+				if (!$category->get('id'))
 				{
-					$vars['alias'] = $title2;
-					$vars['task'] = 'article';
+					$vars['alias']    = $title2;
+					$vars['task']     = 'article';
 					$vars['category'] = $title1;
 					return $vars;
 				}
 
-				$article = new Article($db);
-				$article->loadAlias($title2, $category->id);
+				/*$article = Article::oneByAliasAndCategory($title2, $category->get('id'));
 
-				if ($article->id)
+				if ($article->get('id'))
 				{
 					// section/article
-					$vars['id'] = $article->id;
+					$vars['id'] = $article->get('id');
 					$vars['task'] = 'article';
 					//$vars['alias'] = $title2; //urldecode($segments[1]);
-				}
+				}*/
 			break;
 
 			case 3:

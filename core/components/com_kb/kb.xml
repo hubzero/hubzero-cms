@@ -82,7 +82,6 @@ HUBzero is a registered trademark of Purdue University.
 		</languages>
 	</administration>
 	<params>
-		<param name="uploadpath" type="text" menu="hide" default="/site/kb" label="Upload path" description="File path for uploads" />
 		<param name="show_authors" type="list" default="1" label="Authors" description="Show/Hide the authors of posts">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>

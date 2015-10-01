@@ -42,21 +42,20 @@ require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \Request::getCmd('controller', 'categories');
+$controllerName = \Request::getCmd('controller', 'articles');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'categories';
+	$controllerName = 'articles';
 }
 
 \Submenu::addEntry(
-	\Lang::txt('COM_KB_CATEGORIES'),
-	\Route::url('index.php?option=com_kb&id=0', false),
-	$controllerName == 'categories'
+	\Lang::txt('COM_KB_ARTICLES'),
+	\Route::url('index.php?option=com_kb&controller=articles', false),
+	$controllerName == 'articles'
 );
 \Submenu::addEntry(
-	\Lang::txt('COM_KB_ARTICLES'),
-	\Route::url('index.php?option=com_kb&controller=articles&id=0', false),
-	$controllerName == 'articles'
+	\Lang::txt('COM_KB_CATEGORIES'),
+	\Route::url('index.php?option=com_categories&extension=com_kb', false)
 );
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');

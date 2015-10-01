@@ -47,8 +47,8 @@ if ($this->comment->get('state') == 1)
 $name = Lang::txt('COM_KB_ANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
-	$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
-	if ($this->comment->creator('public'))
+	$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+	if ($this->comment->creator()->get('public'))
 	{
 		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 	}
@@ -190,7 +190,7 @@ else
 			     ->set('depth', $this->depth)
 			     ->set('option', $this->option)
 			     ->set('article', $this->article)
-			     ->set('comments', $this->comment->replies())
+			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->rows())
 			     ->set('base', $this->base)
 			     ->display();
 		}

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,9 +33,8 @@ namespace Components\Kb\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Html\Parameter;
-use Components\Kb\Models\Archive;
+use Components\Kb\Models\Category;
 use Components\Kb\Models\Article;
-use Components\Kb\Tables;
 use Request;
 use Config;
 use Notify;
@@ -73,27 +71,15 @@ class Articles extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			),
-			'orphans' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.orphans',
-				'orphans',
-				0,
-				'int'
-			),
 			'category' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.category',
 				'category',
-				0,
-				'int'
-			),
-			'section' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.section',
-				'section',
 				0,
 				'int'
 			),
@@ -107,20 +93,6 @@ class Articles extends AdminController
 				'filter_order_Dir',
 				'ASC'
 			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
-			'state' => -1,
 			'access' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.access',
 				'access',
@@ -128,31 +100,31 @@ class Articles extends AdminController
 				'int'
 			)
 		);
-		$this->view->filters['filterby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
-		$a = new Archive();
+		$articles = Article::all();
 
-		// Get record count
-		$this->view->total = $a->articles('count', $this->view->filters);
+		if ($filters['search'])
+		{
+			$articles->whereLike('title', strtolower((string)$filters['search']));
+		}
+
+		if ($filters['category'])
+		{
+			$articles->whereEquals('category', (int)$filters['category']);
+		}
+
+		if ($filters['access'])
+		{
+			$articles->whereEquals('access', (int)$filters['access']);
+		}
+
+		$this->view->filters = $filters;
 
 		// Get records
-		$this->view->rows  = $a->articles('list', $this->view->filters);
+		$this->view->rows = $articles->ordered('filter_order', 'filter_order_Dir')->paginated();
 
 		// Get the sections
-		$this->view->sections = $a->categories('list', array(
-			'access' => -1,
-			'state' => -1,
-			'empty' => true
-		));
-		if ($this->view->filters['section'] && $this->view->filters['section'] >= 0)
-		{
-			$this->view->categories = $a->categories('list', array(
-				'section' => $this->view->filters['section'],
-				'access' => -1,
-				'state' => -1,
-				'empty' => true
-			), true);
-		}
+		$this->view->categories = Category::all()->ordered();
 
 		// Output the HTML
 		$this->view->display();
@@ -178,7 +150,7 @@ class Articles extends AdminController
 			}
 
 			// Load category
-			$row = new Article($id);
+			$row = Article::oneOrNew($id);
 		}
 
 		$this->view->row = $row;
@@ -194,7 +166,7 @@ class Articles extends AdminController
 			return;
 		}
 
-		if (!$this->view->row->exists())
+		if ($this->view->row->isNew())
 		{
 			$this->view->row->set('created_by', User::get('id'));
 			$this->view->row->set('created', Date::toSql());
@@ -205,10 +177,8 @@ class Articles extends AdminController
 			dirname(dirname(__DIR__)) . DS . 'kb.xml'
 		);
 
-		$c = new Archive();
-
 		// Get the sections
-		$this->view->sections = $c->categories('list', array('section' => 0, 'empty' => 1));
+		$this->view->categories = Category::all()->ordered();
 
 		/*
 		$m = new KbModelAdminArticle();
@@ -235,13 +205,7 @@ class Articles extends AdminController
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
-		$row = new Article($fields['id']);
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row = Article::oneOrNew($fields['id'])->set($fields);
 
 		// Get parameters
 		$params = Request::getVar('params', array(), 'post');
@@ -259,11 +223,10 @@ class Articles extends AdminController
 		}
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		// Save the tags
@@ -302,11 +265,11 @@ class Articles extends AdminController
 
 		if (count($ids) > 0)
 		{
-			foreach ($ids as $id)
+			$row = Article::oneOrFail(intval($id));
+
+			if (!$row->destroy())
 			{
-				// Delete the category
-				$article = new Article(intval($id));
-				$article->delete();
+				Notify::error($row->getError());
 			}
 		}
 
@@ -346,9 +309,9 @@ class Articles extends AdminController
 		foreach ($ids as $id)
 		{
 			// Updating an article
-			$row = new Article(intval($id));
+			$row = Article::oneOrFail(intval($id));
 			$row->set('state', $state);
-			$row->store();
+			$row->save();
 		}
 
 		// Set message
@@ -384,8 +347,7 @@ class Articles extends AdminController
 		if (isset($filters['id']) && $filters['id'])
 		{
 			// Bind the posted data to the article object and check it in
-			$article = new Tables\Article($this->database);
-			$article->load(intval($filters['id']));
+			$article = Article::oneOrFail($filters['id']);
 			$article->checkin();
 		}
 
@@ -416,10 +378,10 @@ class Articles extends AdminController
 		}
 
 		// Load and reset the article's hits
-		$article = new Article($id);
+		$article = Article::oneOrFail($id);
 		$article->set('hits', 0);
 
-		if (!$article->store())
+		if (!$article->save())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -457,11 +419,11 @@ class Articles extends AdminController
 		}
 
 		// Load and reset the article's ratings
-		$article = new Article($id);
+		$article = Article::oneOrFail($id);
 		$article->set('helpful', 0);
 		$article->set('nothelpful', 0);
 
-		if (!$article->store())
+		if (!$article->save())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -472,8 +434,10 @@ class Articles extends AdminController
 		}
 
 		// Delete all the entries associated with this article
-		$helpful = new Tables\Vote($this->database);
-		$helpful->deleteVote($id);
+		foreach ($article->votes() as $vote)
+		{
+			$vote->destroy();
+		}
 
 		// Set the redirect
 		App::redirect(

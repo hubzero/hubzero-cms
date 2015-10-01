@@ -25,87 +25,19 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Kb\Models;
 
-use Components\Kb\Tables;
-use Hubzero\Base\Object;
-use Hubzero\Base\ItemList;
-use Hubzero\Base\Model;
-use User;
-
 require_once(__DIR__ . DS . 'category.php');
 
 /**
  * Knowledgebase archive model class
  */
-class Archive extends Object
+class Archive
 {
-	/**
-	 * Category
-	 *
-	 * @var object
-	 */
-	private $_category = null;
-
-	/**
-	 * \Hubzero\Base\Model
-	 *
-	 * @var object
-	 */
-	private $_categories = null;
-
-	/**
-	 * Category count
-	 *
-	 * @var integer
-	 */
-	private $_categories_count = null;
-
-	/**
-	 * \Hubzero\Base\Model
-	 *
-	 * @var object
-	 */
-	private $_articles = null;
-
-	/**
-	 * Article count
-	 *
-	 * @var integer
-	 */
-	private $_articles_count = null;
-
-	/**
-	 * JDatabase
-	 *
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
-	 * Registry
-	 *
-	 * @var object
-	 */
-	private $_config;
-
-	/**
-	 * Constructor
-	 *
-	 * @return     void
-	 */
-	public function __construct()
-	{
-		$this->_db = \App::get('db');
-
-		$this->_config = \Component::params('com_kb');
-	}
-
 	/**
 	 * Returns a reference to this model
 	 *
@@ -130,38 +62,6 @@ class Archive extends Object
 	}
 
 	/**
-	 * Set and get a specific category
-	 *
-	 * @return     void
-	 */
-	public function category($id=null)
-	{
-		if (!isset($this->_category)
-		 || ($id !== null && (int) $this->_category->get('id') != $id && (string) $this->_category->get('alias') != $id))
-		{
-			$this->_category = null;
-
-			if ($this->_categories instanceof ItemList)
-			{
-				foreach ($this->_categories as $key => $entry)
-				{
-					if ((int) $category->get('id') == $id || (string) $category->get('alias') == $id)
-					{
-						$this->_category = $category;
-						break;
-					}
-				}
-			}
-
-			if (!$this->_category)
-			{
-				$this->_category = Category::getInstance($id);
-			}
-		}
-		return $this->_category;
-	}
-
-	/**
 	 * Get a count or list of categories
 	 *
 	 * @param      string  $rtrn    What data to return
@@ -169,66 +69,53 @@ class Archive extends Object
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function categories($rtrn='list', $filters=array(), $clear=false)
+	public function categories($filters = array())
 	{
-		if (!isset($filters['state']))
+		$counts = $this->articles()
+			->select('category')
+			->select('count(*)', 'articles');
+
+		if (isset($filters['state']))
 		{
-			$filters['state'] = Model::APP_STATE_PUBLISHED;
-		}
-		if (!isset($filters['access']))
-		{
-			$filters['access'] = User::getAuthorisedViewLevels();
-		}
-		if (!isset($filters['section']))
-		{
-			$filters['section'] = 0;
-		}
-		if (!isset($filters['empty']))
-		{
-			$filters['empty'] = false;
-		}
-		if (!isset($filters['sort']))
-		{
-			$filters['sort'] = 'title';
-		}
-		if (!isset($filters['sort_Dir']))
-		{
-			$filters['sort_Dir']  = 'ASC';
+			$counts->whereEquals('state', $filters['state']);
 		}
 
-		switch (strtolower($rtrn))
+		if (isset($filters['access']))
 		{
-			case 'count':
-				if (!isset($this->_categories_count) || !is_numeric($this->_categories_count) || $clear)
-				{
-					$tbl = new Tables\Category($this->_db);
-					$this->_categories_count = (int) $tbl->find('count', $filters);
-				}
-				return $this->_categories_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_categories instanceof ItemList || $clear)
-				{
-					$tbl = new Tables\Category($this->_db);
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Category($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_categories = new ItemList($results);
-					return $this->_categories;
-				}
-			break;
+			$counts->whereIn('access', $filters['access']);
 		}
+
+		$cts = $counts->group('category')
+			->rows();
+
+		$categories = Category::all();
+
+		if (isset($filters['state']))
+		{
+			$categories->whereEquals('published', $filters['state']);
+		}
+
+		if (isset($filters['access']))
+		{
+			$categories->whereIn('access', $filters['access']);
+		}
+
+		$cats = $categories->whereEquals('parent_id', 1)
+			->order('title', 'ASC')
+			->rows();
+
+		foreach ($cats as $category)
+		{
+			foreach ($cts as $c)
+			{
+				if ($c->get('category') == $category->get('id'))
+				{
+					$category->set('articles', $c->get('articles'));
+				}
+			}
+		}
+
+		return $cats;
 	}
 
 	/**
@@ -239,71 +126,8 @@ class Archive extends Object
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function articles($rtrn='list', $filters=array(), $clear=false)
+	public function articles()
 	{
-		if (!isset($filters['state']))
-		{
-			$filters['state']  = Model::APP_STATE_PUBLISHED;
-		}
-		if (!isset($filters['access']))
-		{
-			$filters['access'] = User::getAuthorisedViewLevels();
-		}
-		if (!isset($filters['start']))
-		{
-			$filters['start']  = 0;
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'popular':
-				$filters['sort']     = 'popularity';
-				$filters['sort_Dir'] = 'DESC';
-
-				return $this->articles('list', $filters, true);
-			break;
-
-			case 'recent':
-				$filters['sort']     = 'recent';
-				$filters['sort_Dir'] = 'DESC';
-
-				return $this->articles('list', $filters, true);
-			break;
-
-			case 'count':
-				if (!isset($this->_articles_count) || !is_numeric($this->_articles_count) || $clear)
-				{
-					$tbl = new Tables\Article($this->_db);
-					$this->_articles_count = (int) $tbl->find('count', $filters);
-				}
-				return $this->_articles_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_articles instanceof ItemList || $clear)
-				{
-					if (isset($filters['sort']))
-					{
-						$filters['order'] = $filters['sort'] . " " . $filters['sort_Dir'];
-					}
-					$tbl = new Tables\Article($this->_db);
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Article($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_articles = new ItemList($results);
-					return $this->_articles;
-				}
-			break;
-		}
+		return Article::all();
 	}
 }

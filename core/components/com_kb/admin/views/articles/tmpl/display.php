@@ -35,10 +35,6 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
 $ttle = Lang::txt('COM_KB_ARTICLES');
-if ($this->filters['orphans'])
-{
-	$ttle .= Lang::txt('COM_KB_ARTICLES') . ' ' . Lang::txt('COM_KB_ORPHANS');
-}
 
 Toolbar::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb.png');
 if ($canDo->get('core.edit.state'))
@@ -61,6 +57,8 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('articles');
+
+$access = Html::access('assetgroups');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -85,18 +83,13 @@ function submitbutton(pressbutton)
 			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-60 fltrt">
-			<label><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-			<?php echo \Components\Kb\Admin\Helpers\Html::sectionSelect($this->sections, $this->filters['section'], 'section'); ?>
-
-			<?php if (isset($this->categories) && $this->categories->total() > 0) { ?>
-				<label><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-				<?php echo \Components\Kb\Admin\Helpers\Html::sectionSelect($this->categories, $this->filters['category'], 'category'); ?>
-			<?php } ?>
+			<label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
+			<?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'onchange="this.form.submit()"'); ?>
 
 			<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
 			<select name="access" id="filter-access" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+				<?php echo Html::select('options', $access, 'value', 'text', $this->filters['access']); ?>
 			</select>
 		</div>
 	</fieldset>
@@ -106,53 +99,64 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php
-				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				?></td>
+				<td colspan="6"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$i = 0;
-foreach ($this->rows as $row)
-{
-	switch ((int) $row->get('state', 0))
-	{
-		case 1:
-			$class = 'publish';
-			$task = 'unpublish';
-			$alt = Lang::txt('JPUBLISHED');
-		break;
-		case 2:
-			$class = 'expire';
-			$task = 'publish';
-			$alt = Lang::txt('JTRASHED');
-		break;
-		case 0:
-		default:
-			$class = 'unpublish';
-			$task = 'publish';
-			$alt = Lang::txt('JUNPUBLISHED');
-		break;
-	}
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
+		{
+			switch ((int) $row->get('state', 0))
+			{
+				case 1:
+					$class = 'publish';
+					$task = 'unpublish';
+					$alt = Lang::txt('JPUBLISHED');
+				break;
+				case 2:
+					$class = 'expire';
+					$task = 'publish';
+					$alt = Lang::txt('JTRASHED');
+				break;
+				case 0:
+				default:
+					$class = 'unpublish';
+					$task = 'publish';
+					$alt = Lang::txt('JUNPUBLISHED');
+				break;
+			}
 
-	$tags = $row->tags('cloud');
-?>
+			foreach ($access as $ac)
+			{
+				if ($row->get('access') == $ac->value)
+				{
+					$row->set('access_level', $ac->text);
+					break;
+				}
+			}
+
+			foreach ($this->categories as $category)
+			{
+				if ($row->get('category') == $category->get('id'))
+				{
+					$row->set('ctitle', $category->get('title'));
+					break;
+				}
+			}
+
+			$tags = $row->tags('cloud');
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
@@ -179,7 +183,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&section=' . $this->filters['section']); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&category=' . $this->filters['category']); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -194,18 +198,18 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 				<td class="priority-3">
-					<?php echo $this->escape($row->get('ctitle')); echo ($row->get('cctitle') ? ' (' . $this->escape($row->get('cctitle')) . ')' : ''); ?>
+					<?php echo $this->escape($row->get('ctitle')); ?>
 				</td>
 				<td class="priority-5">
 					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span>
 					<span style="color: red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

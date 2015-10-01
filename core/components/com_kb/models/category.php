@@ -25,242 +25,102 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Kb\Models;
 
-use Components\Kb\Tables;
-use Hubzero\Base\ItemList;
-use Hubzero\Base\Model;
-use User;
+use Hubzero\Database\Relational;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 require_once(__DIR__ . DS . 'article.php');
 
 /**
  * Knowledgebase model for a category
  */
-class Category extends Model
+class Category extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = '\\Components\\Kb\\Tables\\Category';
+	protected $namespace = 'kb';
 
 	/**
-	 * Category
+	 * The table to which the class pertains
 	 *
-	 * @var object
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
 	 */
-	private $_parent = null;
+	protected $table = '#__categories';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Default order by for model
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_children = null;
+	public $orderBy = 'lft';
 
 	/**
-	 * child category count
+	 * Default order direction for select queries
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	private $_children_count = null;
-
-	/**
-	 * \Hubzero\Base\ItemList
-	 *
-	 * @var object
-	 */
-	private $_articles = null;
-
-	/**
-	 * Article count
-	 *
-	 * @var integer
-	 */
-	private $_articles_count = null;
+	public $orderDir = 'asc';
 
 	/**
 	 * Base URL
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_base = 'index.php?option=com_kb';
 
 	/**
-	 * Returns a reference to this model
+	 * Returns all rows (unless otherwise limited)
 	 *
-	 * @param   mixed   $oid
-	 * @return  object
+	 * @param   string|array  $columns  The columns to select
+	 * @return  \Hubzero\Database\Relational|static
 	 */
-	static function &getInstance($oid=null)
+	public static function all($columns = null)
 	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+		return self::blank()->whereEquals('extension', 'com_kb');
 	}
 
 	/**
 	 * Get a list of articles
 	 *
-	 * @param      string   $rtrn     Data type to return [count, list]
-	 * @param      array    $filters  Filters to apply to query
-	 * @param      boolean  $clear    Clear cached data?
-	 * @return     mixed    Returns an integer or iterator object depending upon format chosen
+	 * @return  object
 	 */
-	public function articles($rtrn='list', $filters=array(), $clear=false)
+	public function articles()
 	{
-		$tbl = new Tables\Article($this->_db);
-
-		if ($this->get('section'))
-		{
-			if (!isset($filters['section']))
-			{
-				$filters['section'] = $this->get('section');
-			}
-			if (!isset($filters['category']))
-			{
-				$filters['category'] = $this->get('id');
-			}
-		}
-		else
-		{
-			if (!isset($filters['section']))
-			{
-				$filters['section'] = $this->get('id');
-			}
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = self::APP_STATE_PUBLISHED;
-		}
-
-		if (!isset($filters['sort']))
-		{
-			$filters['sort'] = 'title';
-		}
-		if (!isset($filters['sort_Dir']))
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_articles_count) || !is_numeric($this->_articles_count) || $clear)
-				{
-					$this->_articles_count = $tbl->find('count', $filters);
-				}
-				return $this->_articles_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_articles instanceof ItemList || $clear)
-				{
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Article($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_articles = new ItemList($results);
-				}
-				return $this->_articles;
-			break;
-		}
+		return $this->oneToMany('Article', 'category');
 	}
 
 	/**
 	 * Get a list of responses
 	 *
-	 * @param      string   $rtrn     Data type to return [count, list]
-	 * @param      array    $filters  Filters to apply to query
-	 * @param      boolean  $clear    Clear cached data?
-	 * @return     mixed    Returns an integer or iterator object depending upon format chosen
+	 * @param   array    $filters  Filters to apply to query
+	 * @return  object
 	 */
-	public function children($rtrn='list', $filters=array(), $clear=false)
+	public function children($filters = array())
 	{
-		if (!isset($filters['section']))
+		$categories = self::blank()->whereEquals('parent_id', $this->get('id'));
+
+		if (isset($filters['state']))
 		{
-			$filters['section'] = $this->get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state']   = self::APP_STATE_PUBLISHED;
-		}
-		if (!isset($filters['access']))
-		{
-			$filters['access']  = User::getAuthorisedViewLevels();
-		}
-		if (!isset($filters['empty']))
-		{
-			$filters['empty']   = false;
+			$categories->whereEquals('published', $filters['state']);
 		}
 
-		if (!isset($filters['sort']))
+		if (isset($filters['access']))
 		{
-			$filters['sort'] = 'title';
-		}
-		if (!isset($filters['sort_Dir']))
-		{
-			$filters['sort_Dir'] = 'ASC';
+			$categories->whereEquals('access', $filters['access']);
 		}
 
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_children_count) || !is_numeric($this->_children_count) || $clear)
-				{
-					$this->_children_count = $this->_tbl->find('count', $filters);
-				}
-				return $this->_children_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_children instanceof ItemList || $clear)
-				{
-					if ($results = $this->_tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Category($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_children = new ItemList($results);
-				}
-				return $this->_children;
-			break;
-		}
+		return $categories;
 	}
 
 	/**
@@ -270,11 +130,7 @@ class Category extends Model
 	 */
 	public function parent()
 	{
-		if (!($this->_parent instanceof Category))
-		{
-			$this->_parent = Category::getInstance($this->get('section', 0));
-		}
-		return $this->_parent;
+		return self::oneOrFail($this->get('parent_id', 0));
 	}
 
 	/**
@@ -287,15 +143,7 @@ class Category extends Model
 	public function link($type='')
 	{
 		$link  = $this->_base;
-		if ($this->get('section'))
-		{
-			$link .= '&section=' . $this->parent()->get('alias');
-			$link .= '&category=' . $this->get('alias');
-		}
-		else
-		{
-			$link .= '&section=' . $this->get('alias');
-		}
+		$link .= '&section=' . $this->get('path');
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
@@ -327,19 +175,18 @@ class Category extends Model
 	 *
 	 * @return  boolean  False if error, True on success
 	 */
-	public function delete()
+	public function destroy()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists())
+		if (!$this->get('id'))
 		{
 			return true;
 		}
 
 		// Remove children
-		foreach ($this->children('list') as $category)
+		foreach ($this->children() as $category)
 		{
-			$category->set('delete_action', $this->get('delete_action', 'deletefaqs'));
-			if (!$category->delete())
+			if (!$category->destroy())
 			{
 				$this->setError($category->getError());
 				return false;
@@ -347,31 +194,17 @@ class Category extends Model
 		}
 
 		// Remove articles
-		foreach ($this->articles('list') as $article)
+		foreach ($this->articles() as $article)
 		{
-			if ($this->get('delete_action', 'deletefaqs') == 'deletefaqs')
+			if (!$article->destroy())
 			{
-				if (!$article->delete())
-				{
-					$this->setError($article->getError());
-					return false;
-				}
-			}
-			else
-			{
-				$key = ($article->get('category') == $this->get('id') ? 'category' : 'section');
-
-				$article->set($key, 0);
-				if (!$article->store(false))
-				{
-					$this->setError($article->getError());
-					return false;
-				}
+				$this->setError($article->getError());
+				return false;
 			}
 		}
 
 		// Attempt to delete the record
-		return parent::delete();
+		return parent::destroy();
 	}
 }
 

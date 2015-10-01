@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,9 +34,23 @@ defined('_HZEXEC_') or die();
 
 $this->css()
      ->js();
+
+if (Pathway::count() <= 0)
+{
+	Pathway::append(
+		Lang::txt('COM_KB'),
+		'index.php?option=' . $this->option
+	);
+}
+Pathway::append(
+	$this->category->get('title'),
+	$this->category->link()
+);
+
+Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_KB'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
@@ -48,9 +61,9 @@ $this->css()
 
 <section class="main section">
 	<div class="section-inner">
-	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php } ?>
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
 		<div class="subject">
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>" method="get">
 
@@ -80,20 +93,60 @@ $this->css()
 					</nav>
 
 					<table class="articles entries">
-						<caption>
-							<?php
-							$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
-							$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-							if ($this->filters['search'] != '')
-							{
-								echo Lang::txt('COM_KB_SEARCH_FOR_IN', $this->filters['search'], $this->escape(stripslashes($this->category->get('title'))));
-							} else {
-								echo $this->escape(stripslashes($this->category->get('title')));
-							} ?>
-							<span>(<?php echo Lang::txt('COM_KB_NUM_OF_TOTAL', $s . '-' . $e, $this->total); ?>)</span>
-						</caption>
 						<tbody>
-						<?php foreach ($this->articles as $row) { ?>
+						<?php
+						$filters = array('state' => 1, 'access' => User::getAuthorisedViewLevels());
+
+						$categories = $this->archive->categories($filters);
+
+						if (!$this->category->get('id'))
+						{
+							$articles = $this->archive->articles();
+						}
+						else
+						{
+							$articles = $this->category->articles();
+						}
+
+						$articles->whereEquals('state', 1)
+								->whereIn('access', User::getAuthorisedViewLevels());
+
+						if (isset($this->filters['search']) && $this->filters['search'])
+						{
+							$articles->where('title', 'LIKE', '%' . $this->filters['search'] . '%')->orWhere('fulltxt', 'LIKE', '%' . $this->filters['search'] . '%');
+						}
+						if ($this->filters['sort'] == 'popularity')
+						{
+							$articles->order('helpful', 'desc');
+						}
+						else
+						{
+							$articles->order('modified', 'desc')
+									->order('created', 'desc');
+						}
+
+						$articles = $articles->paginated();
+
+						foreach ($articles as $row)
+						{
+							if (!$this->category->get('id'))
+							{
+								foreach ($categories as $cat)
+								{
+									if ($cat->get('id') == $row->get('category'))
+									{
+										$row->set('ctitle', $cat->get('title'));
+										$row->set('calias', $cat->get('path'));
+										break;
+									}
+								}
+							}
+							else
+							{
+								$row->set('calias', $this->category->get('path'));
+								$row->set('ctitle', $this->category->get('title'));
+							}
+							?>
 							<tr>
 								<th>
 									<span class="entry-id"><?php echo $row->get('id'); ?></span>
@@ -133,15 +186,10 @@ $this->css()
 						</tbody>
 					</table>
 					<?php
-					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-					echo $pageNav->render();
+					echo $articles
+							->pagination
+							->setAdditionalUrlParam('search', $this->filters['search'])
+							->setAdditionalUrlParam('sort', $this->filters['sort']);
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
@@ -156,24 +204,24 @@ $this->css()
 							<?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
 						</a>
 					</li>
-				<?php foreach ($this->categories as $row) { ?>
-					<li>
-						<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
-						</a>
-					<?php if ($row->children('count') > 0 && $this->catid == $row->get('id')) { ?>
-						<ul class="categories">
-						<?php foreach ($row->children() as $cat) { ?>
-							<li>
-								<a <?php if ($this->catid  == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
-									<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
-								</a>
-							</li>
-						<?php } ?>
-						</ul>
+					<?php foreach ($categories as $row) { ?>
+						<li>
+							<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
+							</a>
+							<?php if ($this->catid == $row->get('id') && count($row->children($filters)) > 0) { ?>
+								<ul class="categories">
+								<?php foreach ($row->children() as $cat) { ?>
+									<li>
+										<a <?php if ($this->category->get('id') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
+											<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
+										</a>
+									</li>
+								<?php } ?>
+								</ul>
+							<?php } ?>
+						</li>
 					<?php } ?>
-					</li>
-				<?php } ?>
 				</ul>
 			</div><!-- / .container -->
 		</aside><!-- / .aside -->

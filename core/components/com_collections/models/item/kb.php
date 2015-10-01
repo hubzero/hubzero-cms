@@ -33,6 +33,7 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Kb\Models\Article;
+use Components\Kb\Models\Category;
 use Request;
 use Route;
 use Lang;
@@ -106,9 +107,21 @@ class Kb extends GenericItem
 
 		if (!$id)
 		{
-			$alias = Request::getVar('alias', '');
+			$category = Category::all()
+				->whereEquals('alias', Request::getVar('category'))
+				->limit(1)
+				->row();
 
-			$article = new Article($alias, Request::getVar('category'));
+			if (!$category->get('id'))
+			{
+				return true;
+			}
+
+			$article = Article::all()
+				->whereEquals('alias', Request::getVar('alias', ''))
+				->whereEquals('category', $category->get('id'))
+				->limit(1)
+				->row();
 			$id = $article->get('id');
 		}
 
@@ -121,10 +134,10 @@ class Kb extends GenericItem
 
 		if (!$article)
 		{
-			$article = new Article($id, Request::getVar('category'));
+			$article = Article::oneOrNew($id);
 		}
 
-		if (!$article->exists())
+		if ($article->isNew())
 		{
 			$this->setError(Lang::txt('Knowledge base article not found.'));
 			return false;
@@ -135,7 +148,7 @@ class Kb extends GenericItem
 		     ->set('created', $article->get('created'))
 		     ->set('created_by', $article->get('created_by'))
 		     ->set('title', $article->get('title'))
-		     ->set('description', $article->content('clean', 200))
+		     ->set('description', \Hubzero\Utility\String::truncate($article->fulltxt(), 200))
 		     ->set('url', Route::url($article->link()));
 
 		if (!$this->store())

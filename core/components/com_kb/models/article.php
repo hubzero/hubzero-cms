@@ -25,18 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Kb\Models;
 
-use Components\Kb\Tables;
-use Hubzero\User\Profile;
-use Hubzero\Base\Object;
-use Hubzero\Base\ItemList;
-use Hubzero\Base\Model;
+use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Config\Registry;
 use stdClass;
@@ -46,167 +41,102 @@ use Lang;
 use Date;
 use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'article.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'vote.php');
 require_once(__DIR__ . DS . 'comment.php');
-if (!class_exists(__NAMESPACE__ . '\Category'))
-{
-	require_once(__DIR__ . DS . 'category.php');
-}
+require_once(__DIR__ . DS . 'tags.php');
 
 /**
  * Knowledgebase model for an article
  */
-class Article extends Model
+class Article extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Kb\\Tables\\Article';
+	protected $namespace = 'kb';
 
 	/**
-	 * Model context
+	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	protected $_context = 'com_kb.article.fulltxt';
+	public $orderBy = 'title';
 
 	/**
-	 * KbModelCategory
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_category = null;
+	public $orderDir = 'asc';
 
 	/**
-	 * KbModelCategory
+	 * Fields and their validation criteria
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_section = null;
+	protected $rules = array(
+		'title'    => 'notempty',
+		'category' => 'positive|nonzero',
+		'fulltxt'  => 'notempty'
+	);
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Automatically fillable fields
 	 *
-	 * @var object
-	 */
-	private $_comments = null;
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias'
+	);
 
 	/**
-	 * Comment count
+	 * Fields to be parsed
 	 *
-	 * @var integer
-	 */
-	private $_comments_count = null;
+	 * @var array
+	 **/
+	protected $parsed = array(
+		'fulltxt'
+	);
 
 	/**
-	 * URL for this entry
+	 * Base URL
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_base = 'index.php?option=com_kb';
 
 	/**
-	 * Registry
+	 * Runs extra setup code when creating a new model
 	 *
-	 * @var object
+	 * @return  void
 	 */
-	private $_params = null;
-
-	/**
-	 * User object
-	 *
-	 * @var object
-	 */
-	private $_creator = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @param      mixed  $oid      Integer (ID), string (alias), object or array
-	 * @param      string $category Category alias
-	 * @return     void
-	 */
-	public function __construct($oid, $category=null)
+	public function setup()
 	{
-		$this->_db = \App::get('db');
-
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
-
-			if (is_numeric($oid) || is_string($oid))
-			{
-				if ($oid)
-				{
-					if ($category)
-					{
-						$this->_tbl->loadAlias($oid, $category);
-					}
-					else
-					{
-						$this->_tbl->load($oid);
-					}
-				}
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
-
-		if (!$this->get('calias'))
-		{
-			$section = Category::getInstance($this->get('section'));
-
-			$this->set('calias', $section->get('alias'));
-
-			if ($this->get('category'))
-			{
-				$category = Category::getInstance($this->get('category'));
-
-				$this->set('ccalias', $section->get('alias'));
-			}
-		}
-
 		$params = new Registry($this->get('params'));
 
-		$this->_params = Component::params('com_kb');
-		$this->_params->merge($params);
+		$this->params = Component::params('com_kb');
+		$this->params->merge($params);
 	}
 
 	/**
-	 * Returns a reference to an article model
+	 * Generates automatic owned by field value
 	 *
-	 * @param      mixed  $oid      Article ID or alias
-	 * @param      string $category Category alias
-	 * @return     object KbModelArticle
+	 * @param   array   $data  the data being saved
+	 * @return  string
 	 */
-	static function &getInstance($oid=null)
+	public function automaticAlias($data)
 	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = str_replace(' ', '-', $alias);
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 	}
 
 	/**
 	 * Are comments open?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function commentsOpen()
 	{
@@ -261,8 +191,8 @@ class Article extends Model
 	/**
 	 * Return a formatted timestamp for created date
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -270,14 +200,24 @@ class Article extends Model
 	}
 
 	/**
+	 * Defines a belongs to one relationship between article and user
+	 *
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 */
+	public function creator()
+	{
+		return $this->belongsToOne('Hubzero\User\User', 'created_by');
+	}
+
+	/**
 	 * Return a formatted timestamp for modified date
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function modified($as='')
 	{
-		if (!$this->get('modified') || $this->get('modified') == $this->_db->getNullDate())
+		if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00')
 		{
 			$this->set('modified', $this->get('created'));
 		}
@@ -287,8 +227,8 @@ class Article extends Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	private function _datetime($as='', $key='created')
 	{
@@ -309,127 +249,36 @@ class Article extends Model
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get parent category
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @return  object
 	 */
-	public function creator($property=null, $default=null)
+	public function category()
 	{
-		if (!($this->_creator instanceof Profile))
-		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
+		return $this->belongsToOne('Category', 'category');
 	}
 
 	/**
-	 * Get a list of responses
+	 * Get a list of comments
 	 *
-	 * @param      string  $rtrn    Data type to return [count, list]
-	 * @param      array   $filters Filters to apply to query
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed   Returns an integer or array depending upon format chosen
+	 * @return  object
 	 */
-	public function comments($rtrn='list', $filters=array(), $clear=false)
+	public function comments()
 	{
-		$tbl = new Tables\Comment($this->_db);
-
-		if (!isset($filters['entry_id']))
-		{
-			$filters['entry_id'] = $this->get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state']    = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
-		}
-
-		$filters['sort']     = 'created';
-		$filters['sort_Dir'] = 'DESC';
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_comments_count) || $clear)
-				{
-					$total = 0;
-
-					if (!($c = $this->get('comments')))
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($c as $com)
-					{
-						$total++;
-						if ($com->replies())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$total++;
-								if ($rep->replies())
-								{
-									$total += $rep->replies()->total();
-								}
-							}
-						}
-					}
-
-					$this->_comments_count = $total;
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!$this->_comments instanceof ItemList || $clear)
-				{
-					if ($results = $tbl->getAllComments($filters['entry_id']))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Comment($result);
-							$results[$key]->set('section', $this->get('calias'));
-							$results[$key]->set('category', $this->get('ccalias'));
-							$results[$key]->set('article', $this->get('alias'));
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_comments = new ItemList($results);
-				}
-				return $this->_comments;
-			break;
-		}
+		return $this->oneToMany('Comment', 'entry_id');
 	}
 
 	/**
 	 * Get tags on the entry
 	 * Optinal first agument to determine format of tags
 	 *
-	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
-	 * @param      integer $admin Include amdin tags? (defaults to no)
-	 * @return     mixed
+	 * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param   integer  $admin  Include amdin tags? (defaults to no)
+	 * @return  mixed
 	 */
 	public function tags($as='cloud', $admin=0)
 	{
-		if (!$this->exists())
+		if (!$this->get('id'))
 		{
 			switch (strtolower($as))
 			{
@@ -454,7 +303,10 @@ class Article extends Model
 	/**
 	 * Tag the entry
 	 *
-	 * @return     boolean
+	 * @param   string   $tags     Comma-separated list of tags to apply
+	 * @param   integer  $user_id  Tagger ID
+	 * @param   integer  $admin    Include amdin tags? (defaults to no)
+	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
@@ -467,22 +319,18 @@ class Article extends Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
 		$link  = $this->_base;
 		if (!$this->get('calias'))
 		{
-			$this->set('calias', $this->section()->get('alias'));
+			$category = Category::oneOrNew($this->get('category'));
+			$this->set('calias', $category->get('path'));
 		}
 		$link .= '&section=' . $this->get('calias');
-		if (!$this->get('ccalias') && $this->get('category'))
-		{
-			$this->set('ccalias', $this->category()->get('alias'));
-		}
-		$link .= ($this->get('ccalias')) ? '&category=' . $this->get('ccalias') : '';
 		$link .= ($this->get('alias'))   ? '&alias=' . $this->get('alias')      : '&alias=' . $this->get('id');
 
 		// If it doesn't exist or isn't published
@@ -494,7 +342,7 @@ class Article extends Model
 			break;
 
 			case 'vote':
-				$link  = $this->_base . '&task=vote&category=entry&id=' . $this->get('id');
+				$link  = $this->_base . '&task=vote&category=article&id=' . $this->get('id');
 			break;
 
 			case 'edit':
@@ -536,95 +384,33 @@ class Article extends Model
 	}
 
 	/**
-	 * Get the content of the record.
-	 * Optional argument to determine how content should be handled
+	 * Get a list of votes
 	 *
-	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
-	 * clean  - parses content and then strips tags
-	 * raw    - as is, no parsing
-	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed   String or Integer
+	 * @return  object
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function votes()
 	{
-		$as = strtolower($as);
-		$options = array();
-
-		switch ($as)
-		{
-			case 'parsed':
-				$content = $this->get('fulltxt.parsed', null);
-
-				if ($content == null)
-				{
-					$config = array();
-
-					$content = (string) stripslashes($this->get('fulltxt', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('fulltxt.parsed', (string) $this->get('fulltxt', ''));
-					$this->set('fulltxt', $content);
-
-					// Wackadoodle way of running content parses on the article
-					$article = new stdClass;
-					$article->id = $this->get('id');
-					$article->text = $this->get('fulltxt.parsed');
-
-					$this->trigger('onContentPrepare', array(
-						'com_content.article',
-						&$article,
-						&$this->_params
-					));
-					$this->set('fulltxt.parsed', $article->text);
-
-					return $this->content($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = stripslashes($this->get('fulltxt'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
-		}
-
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
+		return $this->oneShiftsToMany('Vote', 'object_id', 'type');
 	}
 
 	/**
 	 * Check if a user has voted for this entry
 	 *
-	 * @param      integer $user_id Optinal user ID to set as voter
-	 * @return     integer
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @param   string   $ip       IP Address
+	 * @return  integer
 	 */
-	public function voted($user_id=0)
+	public function voted($user_id = 0, $ip = null)
 	{
 		if ($this->get('voted', -1) == -1)
 		{
 			$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+			$ip   = ($ip ?: Request::ip());
 
 			// See if a person from this IP has already voted in the last week
-			$tbl = new Tables\Vote($this->_db);
-			$this->set(
-				'voted',
-				$tbl->getVote($this->get('id'), $user->get('id'), Request::ip(), 'entry')
-			);
+			$previous = Vote::find($this->get('id'), $user->get('id'), $ip, 'article');
+
+			$this->set('voted', $previous->get('vote'));
 		}
 
 		return $this->get('voted', 0);
@@ -633,19 +419,21 @@ class Article extends Model
 	/**
 	 * Vote for the entry
 	 *
-	 * @param      integer $vote    The vote [-1, 1, like, dislike, yes, no, positive, negative]
-	 * @param      integer $user_id Optinal user ID to set as voter
-	 * @return     boolean False if error, True on success
+	 * @param   integer  $vote     The vote [-1, 1, like, dislike, yes, no, positive, negative]
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @return  boolean  False if error, True on success
 	 */
-	public function vote($vote=0, $user_id=0)
+	public function vote($vote = 0, $user_id = 0)
 	{
-		if (!$this->exists())
+		if ($this->isNew())
 		{
 			$this->setError(Lang::txt('No record found'));
 			return false;
 		}
 
-		$vote = $this->_normalizeVote($vote);
+		$al = new Vote();
+
+		$vote = $al->automaticVote(array('vote' => $vote));
 
 		if ($vote === 0)
 		{
@@ -655,22 +443,23 @@ class Article extends Model
 
 		$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
-		$al = new Tables\Vote($this->_db);
-		$al->object_id = $this->get('id');
-		$al->type      = 'entry';
-		$al->ip        = Request::ip();
-		$al->user_id   = $user->get('id');
-		$al->vote      = $vote;
+		$al->set('object_id', $this->get('id'));
+		$al->set('type', 'article');
+		$al->set('ip', Request::ip());
+		$al->set('user_id', $user->get('id'));
+		$al->set('vote', $vote);
 
 		// Has user voted before?
-		if ($voted = $al->getVote($al->object_id, $al->user_id, $al->ip, $al->type))
+		$previous = $al->find($al->get('object_id'), $al->get('user_id'), $al->get('ip'), $al->get('type'));
+		if ($previous->get('vote'))
 		{
-			$voted = $this->_normalizeVote($voted);
+			$voted = $al->automaticVote(array('vote' => $previous->get('vote')));
+
 			// If the old vote is not the same as the new vote
 			if ($voted != $vote)
 			{
 				// Remove old vote
-				$al->deleteVote($al->object_id, $al->user_id, $al->ip, $al->type);
+				$previous->destroy();
 
 				// Reset the vote count
 				switch ($voted)
@@ -708,18 +497,13 @@ class Article extends Model
 		}
 
 		// Store the changes to vote count
-		if (!$this->store())
+		if (!$this->save())
 		{
 			return false;
 		}
 
 		// Store the vote log
-		if (!$al->check())
-		{
-			$this->setError($al->getError());
-			return false;
-		}
-		if (!$al->store())
+		if (!$al->save())
 		{
 			$this->setError($al->getError());
 			return false;
@@ -729,54 +513,36 @@ class Article extends Model
 	}
 
 	/**
-	 * Normalize a vote to a common format
+	 * Saves the current model to the database
 	 *
-	 * @param      mixed $vote String or integer
-	 * @return     mixed like|dislike
+	 * @return  bool
 	 */
-	private function _normalizeVote($vote)
+	public function save()
 	{
-		switch (strtolower($vote))
+		$params = $this->get('params');
+		if (is_object($params))
 		{
-			case 1:
-			case '1':
-			case 'yes':
-			case 'positive':
-			case 'like':
-				return 'like';
-			break;
-
-			case -1:
-			case '-1':
-			case 'no':
-			case 'negative':
-			case 'dislike':
-				return 'dislike';
-			break;
-
-			default:
-				return 0;
-			break;
+			$this->set('params', $params->toString());
 		}
+
+		$result = parent::save();
+
+		$this->set('params', $params);
+
+		return $result;
 	}
 
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
-	public function delete()
+	public function destroy()
 	{
-		// Can't delete what doesn't exist
-		if (!$this->exists())
-		{
-			return true;
-		}
-
 		// Remove comments
-		foreach ($this->comments('list') as $comment)
+		foreach ($this->comments() as $comment)
 		{
-			if (!$comment->delete())
+			if (!$comment->destroy())
 			{
 				$this->setError($comment->getError());
 				return false;
@@ -787,59 +553,43 @@ class Article extends Model
 		$this->tag('');
 
 		// Remove vote logs
-		$tbl = new Tables\Vote($this->_db);
-		if (!$tbl->deleteVote($this->get('id'), null, null, 'entry'))
+		foreach ($this->votes() as $vote)
 		{
-			$this->setError($tbl->getError());
-			return false;
+			if (!$vote->destroy())
+			{
+				$this->setError($vote->getError());
+				return false;
+			}
 		}
 
 		// Attempt to delete the record
-		return parent::delete();
+		return parent::destroy();
 	}
 
 	/**
 	 * Get a param value
 	 *
-	 * @param      string $key     Property to return
-	 * @param      mixed  $default Value to return if key is not found
-	 * @return     mixed
+	 * @param   string  $key      Property to return
+	 * @param   mixed   $default  Value to return if key is not found
+	 * @return  mixed
 	 */
 	public function param($key='', $default=null)
 	{
+		if (!is_object($this->get('params')))
+		{
+			$params = new Registry($this->get('params'));
+
+			$p = Component::params('com_kb');
+			$p->merge($params);
+
+			$this->set('params', $p);
+		}
+
 		if ($key)
 		{
-			return $this->_params->get((string) $key, $default);
+			return $this->get('params')->get((string) $key, $default);
 		}
-		return $this->_params;
-	}
-
-	/**
-	 * Get parent category
-	 *
-	 * @return     object KbModelCategory
-	 */
-	public function category()
-	{
-		if (!($this->_category instanceof Category))
-		{
-			$this->_category = Category::getInstance($this->get('category'));
-		}
-		return $this->_category;
-	}
-
-	/**
-	 * Get parent section
-	 *
-	 * @return     object KbModelCategory
-	 */
-	public function section()
-	{
-		if (!($this->_section instanceof Category))
-		{
-			$this->_section = Category::getInstance($this->get('section'));
-		}
-		return $this->_section;
+		return $this->get('params');
 	}
 }
 

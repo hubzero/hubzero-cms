@@ -50,10 +50,12 @@ class Helper extends Module
 		require_once(\Component::path('com_kb') . DS . 'models' . DS . 'archive.php');
 
 		$a = new Archive();
-		$this->rows = $a->articles(
-			'popular',
-			array('limit' => intval($this->params->get('limit', 5)))
-		);
+		$popular = $a->articles()
+			->whereIn('access', \User::getAuthorisedViewLevels())
+			->whereEquals('state', 1)
+			->order('helpful', 'desc')
+			->limit(intval($this->params->get('limit', 5)))
+			->rows();
 
 		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
