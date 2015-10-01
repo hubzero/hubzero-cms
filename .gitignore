@@ -2,3 +2,4 @@ app/cache/**
 app/logs/**
 app/config/**
 app/site/**
+core/vendor/**

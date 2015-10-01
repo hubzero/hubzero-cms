@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<dataset>
-    <users id="1" name="Updated User" email="updateduser@gmail.com" />
-    <users id="2" name="Admin"        email="admin@hub.com" />
-    <users id="3" name="You"          email="you@you.com" />
-    <users id="4" name="Me"           email="me@me.com" />
-</dataset>
