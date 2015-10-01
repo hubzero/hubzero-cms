@@ -349,6 +349,36 @@ class Query
 	}
 
 	/**
+	 * Applies a simple where like clause to the pending query
+	 *
+	 * @param   string  $column  The column to which the clause will apply
+	 * @param   string  $value   The value to which the column will be evaluated
+	 * @param   int     $depth   The depth level of the clause, for sub clauses
+	 * @return  $this
+	 * @since   2.1.0
+	 **/
+	public function whereLike($column, $value, $depth = 0)
+	{
+		$this->where($column, 'LIKE', "%{$value}%", 'and', $depth);
+		return $this;
+	}
+
+	/**
+	 * Applies a simple where like clause to the pending query
+	 *
+	 * @param   string  $column  The column to which the clause will apply
+	 * @param   string  $value   The value to which the column will be evaluated
+	 * @param   int     $depth   The depth level of the clause, for sub clauses
+	 * @return  $this
+	 * @since   2.1.0
+	 **/
+	public function orWhereLike($column, $value, $depth = 0)
+	{
+		$this->where($column, 'LIKE', "%{$value}%", 'or', $depth);
+		return $this;
+	}
+
+	/**
 	 * Applies a raw where clause to the pending query
 	 *
 	 * @param   string  $string    The raw where clause

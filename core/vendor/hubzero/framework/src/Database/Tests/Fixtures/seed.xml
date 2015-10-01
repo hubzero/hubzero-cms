@@ -1,5 +1,15 @@
 <?xml version="1.0" ?>
 <dataset>
+	<table name="bios">
+		<column>id</column>
+		<column>user_id</column>
+		<column>text</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>This is my bio about me.</value>
+		</row>
+	</table>
 	<table name="comments">
 		<column>id</column>
 		<column>user_id</column>

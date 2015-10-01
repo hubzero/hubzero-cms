@@ -527,4 +527,20 @@ class RelationalTest extends Database
 
 		$this->assertEquals($group->id, '1', 'Member should have returned a group association id of 1');
 	}
+
+	/**
+	 * Tests to make sure we can add a dynamic relationship at runtime
+	 *
+	 * @return  void
+	 **/
+	public function testCanAddRuntimeRelationship()
+	{
+		User::registerRelationship('bio', function ($model)
+		{
+			return $model->oneToOne('Bio');
+		});
+
+		$this->assertEquals('This is my bio about me.', User::oneOrFail(1)->bio->text, 'Bio call should have returned the bio for user 1');
+		$this->assertEquals('This is my bio about me.', User::oneOrFail(1)->bio()->rows()->text, 'Bio call should have returned the bio for user 1');
+	}
 }

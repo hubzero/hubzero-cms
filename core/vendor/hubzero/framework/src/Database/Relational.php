@@ -123,6 +123,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	private $relationships = [];
 
 	/**
+	 * The relationships established at runtime
+	 *
+	 * @var  array
+	 **/
+	private static $acquaintances = [];
+
+	/**
 	 * The forwards for the model (i.e. other places to look for attributes)
 	 *
 	 * @var  array
@@ -316,6 +323,12 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 			return ($result instanceof $class) ? $this : $result;
 		}
 
+		// Finally, check for a dynamic relationship definition
+		if (array_key_exists($name, self::$acquaintances))
+		{
+			return call_user_func_array(self::$acquaintances[$name], [$this]);
+		}
+
 		// This method doesn't exist
 		throw new BadMethodCallException("'{$name}' method does not exist.", 500);
 	}
@@ -372,10 +385,16 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 			}
 		}
 
-		// Finally, we'll assume we're looking for a relationship
+		// Now, we'll assume we're looking for a relationship
 		if (in_array($name, $this->methods))
 		{
 			return $this->makeRelationship($name)->getRelationship($name);
+		}
+
+		// Finally, check for a dynamic relationship definition
+		if (array_key_exists($name, self::$acquaintances))
+		{
+			return $this->makeAcquaintance($name)->getRelationship($name);
 		}
 	}
 
@@ -901,12 +920,18 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * The {@link \Hubzero\Database\Rows} class also has a count method, which is used
 	 * to count rows after they've already been fetched.
 	 *
+	 * If possible, you shouldn't use this method.  We have to make a clone of the current
+	 * query so that it won't be empty if you later try to fetch the results of the original
+	 * query.  It would be better to go ahead and fetch the results and call the count
+	 * method on the rows object, thus potentially saving a query if you later plan
+	 * to fetch the original rows that you were trying to count.
+	 *
 	 * @return  int
 	 * @since   2.0.0
 	 **/
 	public function count()
 	{
-		return $this->rows()->count();
+		return $this->copy()->rows()->count();
 	}
 
 	/**
@@ -1955,6 +1980,39 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Establishes a relationship, based on the acquaintances, fetching the rows as needed
+	 *
+	 * @param   string  $name  The name of the relationship
+	 * @return  $this
+	 * @since   2.1.0
+	 **/
+	public function makeAcquaintance($name)
+	{
+		// See if the relationship already exists
+		if (!$this->getRelationship($name))
+		{
+			// Get the child rows/row and set them back on the model as a relationship for future use
+			$rows = call_user_func_array(self::$acquaintances[$name], [$this])->rows();
+			$this->addRelationship($name, $rows);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Registers a new relationship at runtime, rather than explicitly in model
+	 *
+	 * @param   string   $name      The relationship name
+	 * @param   closure  $response  The relationship response function
+	 * @return  void
+	 * @since   2.1.0
+	 **/
+	public static function registerRelationship($name, $response)
+	{
+		self::$acquaintances[$name] = $response;
 	}
 
 	/**

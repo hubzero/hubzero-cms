@@ -127,6 +127,26 @@ class QueryTest extends Database
 	}
 
 	/**
+	 * Test to make sure we can build a query with where like statements
+	 *
+	 * @return  void
+	 **/
+	public function testBuildQueryWithWhereLike()
+	{
+		// Here's the query we're try to write...
+		$expected = "SELECT * FROM `users` WHERE `name` LIKE '%awesome%'";
+
+		$dbo   = $this->getMockDriver();
+		$query = new Query($dbo);
+
+		$query->select('*')
+		      ->from('users')
+		      ->whereLike('name', 'awesome');
+
+		$this->assertEquals($expected, str_replace("\n", ' ', $query->toString()), 'Query did not build the expected result');
+	}
+
+	/**
 	 * Test to make sure we can build a query with complex nested where statements
 	 *
 	 * @return  void
