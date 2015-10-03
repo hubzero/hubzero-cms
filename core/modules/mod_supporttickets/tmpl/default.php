@@ -147,19 +147,19 @@ Html::behavior('chart');
 				<tr>
 					<td class="major">
 						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>">
-							<?php echo $this->escape($this->topened[0]->count); ?>
+							<?php echo isset($this->topened[0]) ? $this->escape($this->topened[0]->count) : ''; ?>
 							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_OPEN'); ?></span>
 						</a>
 					</td>
 					<td class="critical">
 						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
-							<?php echo $this->escape($this->topened[2]->count); ?>
+							<?php echo isset($this->topened[2]) ? $this->escape($this->topened[2]->count) : '' ; ?>
 							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
 						</a>
 					</td>
 					<td class="newt">
 						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>">
-							<?php echo $this->escape($this->topened[1]->count); ?>
+							<?php echo isset($this->topened[1]) ? $this->escape($this->topened[1]->count) : ''; ?>
 							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_NEW'); ?></span>
 						</a>
 					</td>
