@@ -62,7 +62,7 @@ $this->css()
 	<?php
 	if ($this->row) {
 		$html  = '<h3>'. $this->escape(stripslashes($this->row->title));
-		if ($this->auth || $this->row->created_by == User::get('id'))
+		if ($this->auth && $this->row->created_by == User::get('id'))
 		{
 			$html .= '&nbsp;&nbsp;';
 			$html .= '<a class="edit" href="'. Route::url('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.Lang::txt('EVENTS_EDIT').'">'.strtolower(Lang::txt('EVENTS_EDIT')).'</a>'."\n";
