@@ -642,7 +642,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_edit($row);
 		}
 
-		$this->redirect(Route::url($row->link()));
+		App::redirect(Route::url($row->link()));
 	}
 
 	/**

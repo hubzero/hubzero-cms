@@ -97,20 +97,20 @@ $c = 0;
 									</a>
 								</dd>
 							</dl>
-						<?php if ($this->params->get('preview', 1)) { ?>
-						<?php } ?>
-							<div class="entry-body">
-								<?php 
-								if ($this->pullout && $c == 0)
-								{
-									echo $post->content('clean', $this->params->get('pulloutlimit', 500));
-								}
-								else
-								{
-									echo $post->content('clean', $this->params->get('charlimit', 100));
-								}
-								?>
-							</div>
+							<?php if ($this->params->get('preview', 1)) { ?>
+								<div class="entry-body">
+									<?php 
+									if ($this->pullout && $c == 0)
+									{
+										echo $post->content('clean', $this->params->get('pulloutlimit', 500));
+									}
+									else
+									{
+										echo $post->content('clean', $this->params->get('charlimit', 100));
+									}
+									?>
+								</div>
+							<?php } ?>
 						<?php } ?>
 						</div>
 					</li>
