@@ -213,7 +213,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			{
 				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login?return=' . base64_encode($url)),
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
