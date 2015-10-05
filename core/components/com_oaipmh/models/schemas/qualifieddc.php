@@ -56,7 +56,7 @@ class QualifiedDC extends DublinCore
 	 * 
 	 * @var  string http://www.bepress.com/assets/xsd/oai_qualified_dc.xsd
 	 */
-	public static $schema = 'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd http://purl.org/net/oclcterms http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd';
+	public static $schema = 'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd';
 
 	/**
 	 * Schema namespace
@@ -149,7 +149,7 @@ class QualifiedDC extends DublinCore
 						->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
 						->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
 						->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
+						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema . ' http://purl.org/net/oclcterms http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd');
 
 			$dcs = array(
 				'title'   => array(
