@@ -304,12 +304,12 @@ class Miner extends Object implements Provider
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
-			$formatter = new \CitationsFormat;
+			$formatter = new \CitationFormat;
 			$formatter->setTemplate('apa');
 
 			foreach ($references as $reference)
 			{
-				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \CitationsFormat::formatReference($reference, '')));
+				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \CitationFormat::formatReference($reference, '')));
 				$cite = str_replace('&quot;', '"', $cite);
 
 				$record->relation[] = array(
