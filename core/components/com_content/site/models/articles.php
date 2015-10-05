@@ -257,7 +257,7 @@ class ContentModelArticles extends JModelList
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
-			$groups	= implode(',', $user->getAuthorisedViewLevels());
+			$groups	= implode(',', User::getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 			$query->where('c.access IN ('.$groups.')');
 		}
