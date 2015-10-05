@@ -466,7 +466,12 @@ class Cloud extends Object
 			break;
 
 			case 'array':
-				return $this->tags('list', $filters, $clear);
+				$tags = array();
+				foreach ($this->tags('list', $filters, $clear) as $tag)
+				{
+					$tags[] = $tag->get('tag');
+				}
+				return $tags;
 			break;
 
 			case 'cloud':
