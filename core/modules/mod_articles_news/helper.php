@@ -73,7 +73,7 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once PATH_CORE . '/components/com_content/helpers/route.php';
+		require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
 
 		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/models', 'ContentModel');
 
