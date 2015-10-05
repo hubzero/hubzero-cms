@@ -131,6 +131,7 @@ $this->css('introduction.css', 'system')
 		'start'  => 0,
 		'show'   => 'contributors',
 		'sortby' => 'contributions',
+		'contributions' => 1,
 		'public' => 1,
 		'authorized' => false
 	);
