@@ -83,7 +83,7 @@ class Helper
 	 */
 	public static function renderModule($name, $style=-1)
 	{
-		return \Module::name($module, ($style == -1 ? 'none' : $style));
+		return \Module::name($name, ($style == -1 ? 'none' : $style));
 	}
 
 	/**
