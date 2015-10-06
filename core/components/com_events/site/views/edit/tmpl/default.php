@@ -73,7 +73,7 @@ $this->css()
 
 			<label>
 				<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
-				<textarea name="econtent" id="econtent" rows="15" cols="10"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
+				<?php echo App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false , 'econtent' , null, null, array('class' => 'minimal no-footer')); ?>
 			</label>
 
 			<label>
