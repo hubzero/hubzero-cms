@@ -71,9 +71,8 @@ $this->css()
 
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
-				<textarea name="econtent" id="econtent" rows="15" cols="10"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
+				<?php echo  JFactory::getEditor()->display('econtent', $this->row->content , '', '', 50, 30, false, 'econtent', null, null, array('class' => 'minimal no-footer')); ?>
 			</label>
-
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>
 				<input type="text" name="adresse_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info)); ?>" />
