@@ -372,8 +372,8 @@ HUB.Members.Profile = {
 	editPrivacy: function()
 	{
 		var $ = this.jQuery;
-		
-		$("#page_header").on("click", "#profile-privacy", function(event){
+
+		$("#profile-privacy").click( function(event){
 			var pub = 0,
 				id = $(this).attr("data-uidnumber"),
 				url = $(this).attr("href");
@@ -386,6 +386,7 @@ HUB.Members.Profile = {
 			{
 				pub = 0;
 			}
+
 			
 			var params = {
 				'option': 'com_members',
@@ -405,11 +406,13 @@ HUB.Members.Profile = {
 					{
 						$("#profile-privacy").removeClass("private");
 						$("body").find(".tooltip-text").html("Click here to set your profile private.");
+						$("body").find("#profile-privacy").html("Public Profile :: Click here to set your profile private.");
 					}
 					else
 					{
 						$("#profile-privacy").addClass("private");
 						$("body").find(".tooltip-text").html("Click here to set your profile public.");
+						$("body").find("#profile-privacy").html("Private Profile :: Click here to set your profile public.");
 					}
 				}
 			});
