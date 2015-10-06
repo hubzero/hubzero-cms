@@ -101,7 +101,7 @@ if (!$no_html)
 		}
 
 		if ($this->tab == 'profile') : ?>
-			<a id="profile-privacy" href="<?php echo Route::url($this->profile->getLink()); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+			<a id="profile-privacy" href="<?php echo Route::url($this->profile->getLink() . '?' . Session::getFormToken() . '=1'); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 				<?php echo $title; ?>
 			</a>
 		<?php else: ?>
