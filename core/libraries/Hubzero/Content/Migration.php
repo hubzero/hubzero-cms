@@ -47,6 +47,13 @@ class Migration
 	private $docroot = '';
 
 	/**
+	 * Alternate document root in which to search for migration scripts
+	 *
+	 * @var string
+	 **/
+	private $altDocroot = null;
+
+	/**
 	 * Array holding paths to migration scripts
 	 *
 	 * @var array
@@ -130,7 +137,8 @@ class Migration
 		// Try to determine the document root if none provided
 		if (is_null($docroot))
 		{
-			$this->docroot = PATH_CORE;
+			$this->docroot    = PATH_CORE;
+			$this->altDocroot = PATH_APP;
 		}
 		else
 		{
@@ -165,6 +173,11 @@ class Migration
 					$this->db->quote($this->docroot . DS . 'migrations'),
 					$this->db->quote(str_replace(PATH_ROOT . DS, '', $this->docroot . DS . 'migrations'))
 				);
+
+				if (isset($this->altDocroot))
+				{
+					$scopes[] = $this->db->quote(str_replace(PATH_ROOT . DS, '', $this->altDocroot . DS . 'migrations'));
+				}
 
 				$scope = ' AND (`scope` = ' . implode(' OR `scope` = ', $scopes) . ')';
 			}
@@ -264,6 +277,13 @@ class Migration
 
 		$files = array_diff(scandir($this->docroot . DS . 'migrations'), $exclude);
 		$ext   = '';
+
+		if (isset($this->altDocroot))
+		{
+			$altFiles = array_diff(scandir($this->altDocroot . DS . 'migrations'), $exclude);
+			$files    = array_merge($files, $altFiles);
+			sort($files);
+		}
 
 		if (!is_null($file))
 		{
@@ -427,17 +447,26 @@ class Migration
 			$info = pathinfo($file);
 
 			$fullpath = $this->docroot . DS . 'migrations' . DS . $file;
+			$docroot  = $this->docroot;
 
 			// Include the file
 			if (!is_file($fullpath))
 			{
-				$this->log("{$fullpath} is not a valid file", 'warning');
-				continue;
+				$altPath = $this->altDocroot . DS . 'migrations' . DS . $file;
+
+				if (!is_file($altPath))
+				{
+					$this->log("{$fullpath} is not a valid file", 'warning');
+					continue;
+				}
+				else
+				{
+					$fullpath = $altPath;
+					$docroot  = $this->altDocroot;
+				}
 			}
-			else
-			{
-				require_once $fullpath;
-			}
+
+			require_once $fullpath;
 
 			// Set classname
 			$classname = $info['filename'];
@@ -464,7 +493,7 @@ class Migration
 				}
 				elseif ($logOnly)
 				{
-					$this->recordMigration($file, str_replace(PATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
+					$this->recordMigration($file, str_replace(PATH_ROOT . DS, '', $docroot . DS . 'migrations'), $hash, $direction);
 					$this->log("Marking as run: {$direction}() in {$file}", 'success');
 				}
 			}
@@ -533,7 +562,7 @@ class Migration
 							}
 						}
 
-						$this->recordMigration($file, str_replace(PATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
+						$this->recordMigration($file, str_replace(PATH_ROOT . DS, '', $docroot . DS . 'migrations'), $hash, $direction);
 						$this->log("Completed {$direction}() in {$file}", 'success');
 					}
 					catch (\PDOException $e)
