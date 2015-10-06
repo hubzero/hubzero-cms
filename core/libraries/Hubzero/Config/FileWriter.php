@@ -129,9 +129,10 @@ class FileWriter
 	 *
 	 * @param   string   $path
 	 * @param   string   $contents
+	 * @param   mixed    $mode
 	 * @return  boolean
 	 */
-	public function putContent($file, $contents)
+	public function putContent($file, $contents, $mode = '0640')
 	{
 		$path = dirname($file);
 
@@ -143,6 +144,13 @@ class FileWriter
 			}
 		}
 
-		return file_put_contents($file, $contents);
+		$result = file_put_contents($file, $contents);
+
+		if ($result)
+		{
+			@chmod($file, octdec($mode));
+		}
+
+		return $result;
 	}
 }
