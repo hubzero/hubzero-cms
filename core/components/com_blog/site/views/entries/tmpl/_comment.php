@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -50,7 +49,7 @@ if ($this->comment->isReported())
 }
 else
 {
-	$comment  = $this->comment->content('parsed');
+	$comment  = $this->comment->content();
 }
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -87,7 +86,7 @@ else
 					<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('parent'); ?>" />
 					<input type="hidden" name="comment[created]" value="<?php echo $this->comment->get('created'); ?>" />
 					<input type="hidden" name="comment[created_by]" value="<?php echo $this->comment->get('created_by'); ?>" />
-
+					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
 
@@ -189,7 +188,7 @@ else
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies())
+			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->ordered()->rows())
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
 			     ->set('cls', $cls)

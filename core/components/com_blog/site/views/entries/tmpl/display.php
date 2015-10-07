@@ -33,22 +33,56 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$title = Lang::txt('COM_BLOG');
+
+if (Pathway::count() <= 0)
+{
+	Pathway::append(
+		Lang::txt('COM_BLOG'),
+		'index.php?option=' . $this->option
+	);
+}
+if ($year = $this->filters['year'])
+{
+	$title .= ': ' . $year;
+
+	Pathway::append(
+		$year,
+		'index.php?option=' . $this->option . '&year=' . $year
+	);
+}
+if ($month = $this->filters['month'])
+{
+	$title .= ': ' . $month;
+
+	Pathway::append(
+		sprintf("%02d", $month),
+		'index.php?option=' . $this->option . '&year=' . $year . '&month=' . sprintf("%02d", $month)
+	);
+}
+
+Document::setTitle($title);
+
 $this->css()
      ->js();
 
-$filters = array(
-	'scope'      => $this->filters['scope'],
-	'scope_id'   => $this->filters['scope_id'],
-	'state'      => $this->filters['state'],
-	'authorized' => $this->filters['authorized']
-);
+$first = $this->archive->entries(array(
+		'state'      => 1,
+		'authorized' => $this->filters['authorized'],
+		'scope'      => $this->filters['scope'],
+		'scope_id'   => $this->filters['scope_id']
+	))
+	->order('publish_up', 'asc')
+	->limit(1)
+	->row();
 
-$first = $this->model->entries('first', $filters);
-
-$rows = $this->model->entries('list', $this->filters);
+$rows = $this->archive->entries($this->filters)
+	->ordered()
+	->paginated()
+	->rows();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_BLOG'); ?></h2>
 
 	<div id="content-header-extra">
 		<?php
@@ -107,7 +141,7 @@ $rows = $this->model->entries('list', $this->filters);
 				} ?>
 				</h3>
 
-				<?php if ($rows->total() > 0) { ?>
+				<?php if ($rows->count() > 0) { ?>
 					<ol class="blog-entries entries">
 					<?php
 					$cls = 'even';
@@ -119,7 +153,7 @@ $rows = $this->model->entries('list', $this->filters);
 						{
 							$cls .= ' expired';
 						}
-					?>
+						?>
 						<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
 							<article>
 								<h4 class="entry-title">
@@ -155,17 +189,17 @@ $rows = $this->model->entries('list', $this->filters);
 										<dd class="author">
 											<?php if ($row->creator()->get('public')) { ?>
 												<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-													<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+													<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 												</a>
 											<?php } else { ?>
-												<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+												<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 											<?php } ?>
 										</dd>
 									<?php } ?>
 									<?php if ($row->get('allow_comments') == 1) { ?>
 										<dd class="comments">
 											<a href="<?php echo Route::url($row->link('comments')); ?>">
-												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
+												<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->comments()->whereIn('state', array(1, 3))->count()); ?>
 											</a>
 										</dd>
 									<?php } else { ?>
@@ -176,18 +210,18 @@ $rows = $this->model->entries('list', $this->filters);
 										</dd>
 									<?php } ?>
 									<?php if (User::get('id') == $row->get('created_by')) { ?>
-										<dd class="state <?php echo $row->state('text'); ?>">
-											<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+										<dd class="state <?php echo strtolower($row->visibility('text')); ?>">
+											<?php echo $row->visibility('text'); ?>
 										</dd>
 									<?php } ?>
 								</dl>
 								<div class="entry-content">
 									<?php if ($this->config->get('cleanintro', 1)) { ?>
 										<p>
-											<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
+											<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content()), $this->config->get('introlength', 300)); ?>
 										</p>
 									<?php } else { ?>
-										<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
+										<?php echo \Hubzero\Utility\String::truncate($row->content(), $this->config->get('introlength', 300), array('html' => true)); ?>
 									<?php } ?>
 								</div>
 							</article>
@@ -196,15 +230,11 @@ $rows = $this->model->entries('list', $this->filters);
 					</ol>
 
 					<?php
-					$pageNav = $this->pagination(
-						$this->model->entries('count', $this->filters),
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('year', $this->filters['year']);
-					$pageNav->setAdditionalUrlParam('month', $this->filters['month']);
-					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-					echo $pageNav->render();
+					echo $rows
+						->pagination
+						->setAdditionalUrlParam('year', $this->filters['year'])
+						->setAdditionalUrlParam('month', $this->filters['month'])
+						->setAdditionalUrlParam('search', $this->filters['search']);
 					?>
 				<?php } else { ?>
 					<p class="warning"><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
@@ -226,7 +256,7 @@ $rows = $this->model->entries('list', $this->filters);
 				<h4><?php echo Lang::txt('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
 				<?php
-				if ($first->exists())
+				if ($first->get('id'))
 				{
 					$start = intval(substr($first->get('publish_up'), 0, 4));
 					$now = Date::format("Y");
@@ -236,7 +266,7 @@ $rows = $this->model->entries('list', $this->filters);
 					?>
 						<li>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i); ?>"><?php echo $i; ?></a>
-						<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) { ?>
+						<?php if (($this->filters['year'] && $i == $this->filters['year']) || (!$this->filters['year'] && $i == $now)) { ?>
 							<ol>
 							<?php
 							$m = array(
@@ -267,7 +297,7 @@ $rows = $this->model->entries('list', $this->filters);
 							{
 							?>
 								<li>
-									<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k+1), 1)); ?>"><?php echo Lang::txt($m[$k]); ?></a>
+									<a<?php if ($this->filters['month'] && $this->filters['month'] == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k+1), 1)); ?>"><?php echo Lang::txt($m[$k]); ?></a>
 								</li>
 							<?php
 							}
@@ -286,8 +316,14 @@ $rows = $this->model->entries('list', $this->filters);
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
 				<?php
-				$popular = $this->model->entries('popular');
-				if ($popular->total()) { ?>
+				$popular = $this->archive->entries(array(
+						'state'  => $this->filters['state'],
+						'access' => $this->filters['access']
+					))
+					->order('hits', 'desc')
+					->limit(5)
+					->rows();
+				if ($popular->count()) { ?>
 					<ol>
 					<?php foreach ($popular as $row) { ?>
 						<li>

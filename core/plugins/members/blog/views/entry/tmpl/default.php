@@ -102,7 +102,7 @@ $this->css()
 			<?php if ($this->row->get('allow_comments')) { ?>
 				<dd class="comments">
 					<a href="<?php echo Route::url($this->row->link('comments')); ?>">
-						<?php echo Lang::txt('PLG_MEMBERS_BLOG_NUM_COMMENTS', $this->row->comments('count')); ?>
+						<?php echo Lang::txt('PLG_MEMBERS_BLOG_NUM_COMMENTS', $this->row->comments()->whereIn('state', array(1, 3))->count()); ?>
 					</a>
 				</dd>
 			<?php } else { ?>
@@ -114,7 +114,7 @@ $this->css()
 			<?php } ?>
 			<?php if (User::get('id') == $this->row->get('created_by')) { ?>
 				<dd class="state">
-					<?php echo Lang::txt('PLG_MEMBERS_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
+					<?php echo $this->row->visibility('text'); ?>
 				</dd>
 				<dd class="entry-options">
 					<a class="edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
@@ -128,19 +128,24 @@ $this->css()
 			</dl>
 
 			<div class="entry-content">
-				<?php echo $this->row->content('parsed'); ?>
+				<?php echo $this->row->content(); ?>
 				<?php echo $this->row->tags('cloud'); ?>
 			</div>
 		</div>
 	</div><!-- /.subject -->
 	<aside class="aside">
 		<?php
-		$limit = $this->filters['limit'];
-		$this->filters['limit'] = 5;
+		//$limit = $this->filters['limit'];
+		//$this->filters['limit'] = 5;
 		?>
 		<div class="container blog-popular-entries">
 			<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
-		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
+		<?php
+		$popular = $this->archive->entries()
+				->order('hits', 'desc')
+				->limit(5)
+				->rows();
+		if ($popular->count()) { ?>
 			<ol>
 			<?php foreach ($popular as $row) { ?>
 				<li>
@@ -155,9 +160,9 @@ $this->css()
 		<?php } ?>
 		</div><!-- / .blog-popular-entries -->
 
-		<div class="container blog-recent-entries">
+		<?php /*<div class="container blog-recent-entries">
 			<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
-		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
+		if ($recent = $this->model->entries('recent', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($recent as $row) { ?>
 				<li>
@@ -169,10 +174,10 @@ $this->css()
 			</ol>
 		<?php } else { ?>
 			<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-		<?php } ?>
+		<?php }*/ ?>
 		</div><!-- / .blog-recent-entries -->
 		<?php
-		$this->filters['limit'] = $limit;
+		//$this->filters['limit'] = $limit;
 		?>
 	</aside><!-- /.aside -->
 </section>
@@ -183,14 +188,20 @@ $this->css()
 			<h3>
 				<?php echo Lang::txt('PLG_MEMBERS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
-			<?php if ($this->row->comments('count') > 0) { ?>
+			<?php
+			$comments = $this->row->comments()
+				->whereIn('state', array(1, 3))
+				->whereEquals('parent', 0)
+				->ordered()
+				->rows();
+			if ($comments->count() > 0) { ?>
 				<?php
 					$this->view('_list', 'comments')
 					     ->set('parent', 0)
 					     ->set('cls', 'odd')
 					     ->set('depth', 0)
 					     ->set('option', $this->option)
-					     ->set('comments', $this->row->comments('list'))
+					     ->set('comments', $comments)
 					     ->set('config', $this->config)
 					     ->set('base', $this->row->link())
 					     ->set('member', $this->member)
@@ -219,8 +230,8 @@ $this->css()
 				</p>
 				<fieldset>
 					<?php
-						$replyto = $this->row->comment(Request::getInt('reply', 0));
-						if ($replyto->exists())
+						$replyto = $this->row->comments()->whereEquals('id', Request::getInt('reply', 0))->row();
+						if ($replyto->get('id'))
 						{
 							$name = Lang::txt('PLG_MEMBERS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous'))

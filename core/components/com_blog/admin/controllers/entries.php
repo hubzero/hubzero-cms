@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,7 +32,6 @@
 namespace Components\Blog\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Blog\Models\Archive;
 use Components\Blog\Models\Entry;
 use Request;
 use Config;
@@ -71,22 +69,35 @@ class Entries extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
+		$filters = array(
 			'scope' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scope',
 				'scope',
-				'site'
+				''
+			),
+			'scope_id' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.scope_id',
+				'scope_id',
+				0,
+				'int'
 			),
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'state' => urldecode(Request::getState(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
-				''
-			)),
+				-1,
+				'int'
+			),
+			'access' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				0,
+				'int'
+			),
 			// Get sorting variables
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
@@ -97,44 +108,46 @@ class Entries extends AdminController
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
-			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
 			)
 		);
 
-		if ($this->view->filters['scope'] == 'group')
+		$entries = Entry::all();
+
+		if ($filters['search'])
 		{
-			$this->view->filters['scope_id'] = Request::getState(
-				$this->_option . '.' . $this->_controller . '.scope_id',
-				'scope_id',
-				0,
-				'int'
-			);
+			$entries->whereLike('title', strtolower((string)$filters['search']));
 		}
-		$this->view->filters['order'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
-		// Instantiate our HelloEntry object
-		$obj = new Archive();
+		if ($filters['scope'])
+		{
+			$entries->whereEquals('scope', $filters['scope']);
+		}
 
-		// Get record count
-		$this->view->total = $obj->entries('count', $this->view->filters);
+		if ($filters['scope_id'])
+		{
+			$entries->whereEquals('scope_id', (int)$filters['scope_id']);
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$entries->whereEquals('state', (int)$filters['state']);
+		}
+
+		if ($filters['access'])
+		{
+			$entries->whereEquals('access', (int)$filters['access']);
+		}
 
 		// Get records
-		$this->view->rows  = $obj->entries('list', $this->view->filters);
+		$rows = $entries
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -157,20 +170,19 @@ class Entries extends AdminController
 			}
 
 			// Load the article
-			$row = new Entry($id);
+			$row = Entry::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->exists())
+		if ($row->isNew())
 		{
-			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', Date::toSql());
-			$this->view->row->set('publish_up', Date::toSql());
+			$row->set('created_by', User::get('id'));
+			$row->set('created', Date::toSql());
+			$row->set('publish_up', Date::toSql());
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -198,15 +210,10 @@ class Entries extends AdminController
 		}
 
 		// Initiate extended database class
-		$row = new Entry($fields['id']);
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -248,10 +255,10 @@ class Entries extends AdminController
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new Entry(intval($id));
+				$entry = Entry::oneOrFail(intval($id));
 
 				// Delete the entry
-				if (!$entry->delete())
+				if (!$entry->destroy())
 				{
 					Notify::error($entry->getError());
 					continue;
@@ -300,7 +307,7 @@ class Entries extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new Entry(intval($id));
+			$row = Entry::oneOrNew(intval($id));
 			$row->set('state', $state);
 
 			// Store new content
@@ -309,6 +316,7 @@ class Entries extends AdminController
 				Notify::error($row->getError());
 				continue;
 			}
+
 			$success++;
 		}
 
@@ -359,34 +367,26 @@ class Entries extends AdminController
 		}
 
 		// Loop through all the IDs
+		$success = 0;
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new Entry(intval($id));
+			$row = Entry::oneOrFail(intval($id));
 			$row->set('allow_comments', $state);
 
 			// Store new content
-			if (!$row->store())
+			if (!$row->save())
 			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					$row->getError(),
-					'error'
-				);
-				return;
+				Notify::error($row->getError());
+				continue;
 			}
+
+			$success++;
 		}
 
-		switch ($state)
-		{
-			case 1:
-				$message = Lang::txt('COM_BLOG_ITEMS_COMMENTS_ENABLED', count($ids));
-			break;
-			case 0:
-			default:
-				$message = Lang::txt('COM_BLOG_ITEMS_COMMENTS_DISABLED', count($ids));
-			break;
-		}
+		$message = $state
+				? Lang::txt('COM_BLOG_ITEMS_COMMENTS_ENABLED', $success)
+				: Lang::txt('COM_BLOG_ITEMS_COMMENTS_DISABLED', $success);
 
 		// Set the redirect
 		App::redirect(

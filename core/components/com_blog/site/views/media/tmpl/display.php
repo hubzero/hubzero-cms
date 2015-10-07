@@ -54,6 +54,8 @@ $this->css();
 			<input type="hidden" name="scope" value="<?php echo $this->escape($this->archive->get('scope')); ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->escape($this->archive->get('scope_id')); ?>" />
 			<input type="hidden" name="tmpl" value="component" />
+
+			<?php echo Html::input('token'); ?>
 		</fieldset>
 	</form>
 

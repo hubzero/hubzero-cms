@@ -109,7 +109,7 @@ class Blog extends GenericItem
 		{
 			$alias = Request::getVar('alias', '');
 
-			$post = new Entry($alias, 'site');
+			$post = Entry::oneByScope($alias, 'site', 0);
 			$id = $post->get('id');
 		}
 
@@ -122,10 +122,10 @@ class Blog extends GenericItem
 
 		if (!$post)
 		{
-			$post = new Entry($id);
+			$post = Entry::oneOrFail($id);
 		}
 
-		if (!$post->exists())
+		if (!$post->get('id'))
 		{
 			$this->setError(Lang::txt('Blog post not found.'));
 			return false;
@@ -136,7 +136,7 @@ class Blog extends GenericItem
 		     ->set('created', $post->get('created'))
 		     ->set('created_by', $post->get('created_by'))
 		     ->set('title', $post->get('title'))
-		     ->set('description', $post->content('clean', 200))
+		     ->set('description', \Hubzero\Utility\String::truncate(strip_tags($post->content()), 200))
 		     ->set('url', Route::url($post->link()));
 
 		if (!$this->store())

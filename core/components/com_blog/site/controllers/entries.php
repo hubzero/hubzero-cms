@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,7 @@ namespace Components\Blog\Site\Controllers;
 
 use Components\Blog\Models\Archive;
 use Components\Blog\Models\Comment;
-use Components\Blog\Tables;
+use Components\Blog\Models\Entry;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
@@ -72,160 +71,68 @@ class Entries extends SiteController
 		$this->registerTask('feedrss', 'feed');
 
 		$this->registerTask('archive', 'display');
+		$this->registerTask('new', 'edit');
 
 		parent::execute();
 	}
 
 	/**
-	 * Method to set the document path
+	 * Display a list of entries
 	 *
 	 * @return  void
 	 */
-	protected function _buildPathway()
-	{
-		$title = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
-
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				$title,
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task && $this->_task != 'display')
-		{
-			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
-			{
-				Pathway::append(
-					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-					'index.php?option=' . $this->_option . '&task=' . $this->_task
-				);
-			}
-			$year = Request::getInt('year', 0);
-			if ($year)
-			{
-				Pathway::append(
-					$year,
-					'index.php?option=' . $this->_option . '&year=' . $year
-				);
-			}
-			$month = Request::getInt('month', 0);
-			if ($month)
-			{
-				Pathway::append(
-					sprintf("%02d",$month),
-					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month)
-				);
-			}
-			if (isset($this->view->row))
-			{
-				Pathway::append(
-					stripslashes($this->view->row->get('title')),
-					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month) . '&alias=' . $this->view->row->get('alias')
-				);
-			}
-		}
-	}
-
-	/**
-	 * Method to build and set the document title
-	 *
-	 * @return	void
-	 */
-	protected function _buildTitle()
-	{
-		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
-		if ($this->_task && $this->_task != 'display')
-		{
-			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
-			{
-				$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
-			}
-			$year = Request::getInt('year', 0);
-			if ($year)
-			{
-				$this->_title .= ': ' . $year;
-			}
-			$month = Request::getInt('month', 0);
-			if ($month)
-			{
-				$this->_title .= ': ' . sprintf("%02d", $month);
-			}
-			if (isset($this->view->row))
-			{
-				$this->_title .= ': ' . stripslashes($this->view->row->get('title'));
-			}
-		}
-
-		Document::setTitle($this->_title);
-	}
-
-	/**
-	 * Display a list of entries
-	 *
-	 * @return     void
-	 */
 	public function displayTask()
 	{
-		$this->view->config = $this->config;
-
 		// Filters for returning results
-		$this->view->filters = array(
-			'limit'      => Request::getInt('limit', Config::get('list_limit')),
-			'start'      => Request::getInt('limitstart', 0),
+		$filters = array(
 			'year'       => Request::getInt('year', 0),
 			'month'      => Request::getInt('month', 0),
 			'scope'      => $this->config->get('show_from', 'site'),
 			'scope_id'   => 0,
 			'search'     => Request::getVar('search', ''),
 			'authorized' => false,
-			'state'      => 'public'
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
-		if ($this->view->filters['scope'] == 'both')
+
+		if ($filters['year'] > date("Y"))
 		{
-			$this->view->filters['scope'] = '';
+			$filters['year'] = 0;
+		}
+		if ($filters['month'] > 12)
+		{
+			$filters['month'] = 0;
+		}
+		if ($filters['scope'] == 'both')
+		{
+			$filters['scope'] = '';
 		}
 
 		if (!User::isGuest())
 		{
-			$this->view->filters['state'] = 'registered';
-
-			if ($this->view->config->get('access-manage-component'))
+			if ($this->config->get('access-manage-component'))
 			{
-				$this->view->filters['state']      = 'all';
-				$this->view->filters['authorized'] = true;
+				//$filters['state'] = null;
+				$filters['authorized'] = true;
+				array_push($filters['access'], 5);
 			}
 		}
 
-		$this->view->model = $this->model;
-		$this->view->year  = $this->view->filters['year'];
-		$this->view->month = $this->view->filters['month'];
-
-		$this->_buildTitle();
-		$this->_buildPathway();
-
-		$this->view->title = $this->config->get('title', Lang::txt(strtoupper($this->_option)));
-
-		// Get any errors for display
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->set('archive', $this->model)
+			->set('config', $this->config)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
 	 * Display an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function entryTask()
 	{
-		$this->view->config = $this->config;
-		$this->view->model  = $this->model;
-
 		$alias = Request::getVar('alias', '');
 
 		if (!$alias)
@@ -236,71 +143,59 @@ class Entries extends SiteController
 			return;
 		}
 
-		$this->view->row = $this->model->entry($alias);
+		// Load entry
+		$row = Entry::oneByScope(
+			$alias,
+			$this->model->get('scope'),
+			$this->model->get('scope_id')
+		);
 
-		if (!$this->view->row->exists())
+		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_NOT_FOUND'), 404);
 		}
 
 		// Check authorization
-		if (!$this->view->row->access('view'))
+		if (!$row->access('view'))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_NOT_AUTH'), 403);
 		}
 
 		// Filters for returning results
-		$this->view->filters = array(
-			'limit'    => 10,
-			'start'    => 0,
-			'scope'    => 'site',
-			'scope_id' => 0
+		$filters = array(
+			'limit'      => 10,
+			'start'      => 0,
+			'scope'      => 'site',
+			'scope_id'   => 0,
+			'authorized' => false,
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		if (User::isGuest())
+		if (!User::isGuest())
 		{
-			$this->view->filters['state'] = 'public';
-		}
-		else
-		{
-			if (!$this->view->config->get('access-manage-component'))
+			if ($this->config->get('access-manage-component'))
 			{
-				$this->view->filters['state'] = 'registered';
+				$filters['authorized'] = true;
 			}
 		}
 
-		// Push some scripts to the template
-		$this->_buildTitle();
-		$this->_buildPathway();
-
-		$this->view->title = $this->config->get('title', Lang::txt(strtoupper($this->_option)));
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
+		// Output HTML
 		$this->view
+			->set('archive', $this->model)
+			->set('config', $this->config)
+			->set('row', $row)
+			->set('filters', $filters)
 			->setLayout('entry')
 			->display();
 	}
 
 	/**
-	 * Show a form for creating an entry
-	 *
-	 * @return     void
-	 */
-	public function newTask()
-	{
-		return $this->editTask();
-	}
-
-	/**
 	 * Show a form for editing an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function editTask($row = null)
+	public function editTask($entry = null)
 	{
 		if (User::isGuest())
 		{
@@ -313,28 +208,18 @@ class Entries extends SiteController
 			return;
 		}
 
-		if (is_object($row))
+		if (!is_object($entry))
 		{
-			$this->view->entry = $row;
-		}
-		else
-		{
-			$this->view->entry = $this->model->entry(Request::getInt('entry', 0));
+			$entry = Entry::oneOrNew(Request::getInt('entry', 0));
 		}
 
-		if (!$this->view->entry->exists())
+		if ($entry->isNew())
 		{
-			$this->view->entry->set('allow_comments', 1);
-			$this->view->entry->set('state', 1);
-			$this->view->entry->set('scope', 'site');
-			$this->view->entry->set('created_by', User::get('id'));
+			$entry->set('allow_comments', 1);
+			$entry->set('state', 1);
+			$entry->set('scope', 'site');
+			$entry->set('created_by', User::get('id'));
 		}
-
-		// Push some scripts to the template
-		$this->_buildTitle();
-		$this->_buildPathway();
-
-		$this->view->title = $this->config->get('title', Lang::txt(strtoupper($this->_option)));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -342,14 +227,17 @@ class Entries extends SiteController
 		}
 
 		$this->view
+			->set('archive', $this->model)
+			->set('config', $this->config)
+			->set('entry', $entry)
 			->setLayout('edit')
 			->display();
 	}
 
 	/**
-	 * Save entry to database
+	 * Save entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -367,39 +255,33 @@ class Entries extends SiteController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
+		$fields = Request::getVar('entry', array(), 'post', 'none', 2);
 
 		// Make sure we don't want to turn off comments
-		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
+		//$fields['allow_comments'] = (isset($fields['allow_comments'])) ? : 0;
 
-		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
-			$entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
+			$fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
 		}
-		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
 		{
-			$entry['publish_down'] = Date::of($entry['publish_down'], Config::get('offset'))->toSql();
+			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
 
-		$row = $this->model->entry(0);
-
-		if (!$row->bind($entry))
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
 		// Process tags
 		if (!$row->tag(Request::getVar('tags', '')))
 		{
-			$this->setError($row->getError());
+			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
@@ -438,6 +320,7 @@ class Entries extends SiteController
 
 		// Incoming
 		$id = Request::getInt('entry', 0);
+
 		if (!$id)
 		{
 			return $this->displayTask();
@@ -447,7 +330,7 @@ class Entries extends SiteController
 		$confirmdel = Request::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = $this->model->entry($id);
+		$entry = Entry::oneOrFail($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
@@ -457,21 +340,16 @@ class Entries extends SiteController
 				$this->setError(Lang::txt('COM_BLOG_ERROR_CONFIRM_DELETION'));
 			}
 
-			// Push some scripts to the template
-			$this->_buildTitle();
-			$this->_buildPathway();
-
-			// Output HTML
-			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
-			$this->view->entry  = $entry;
-			$this->view->config = $this->config;
-
 			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
 
-			$this->view->display();
+			$this->view
+				->set('archive', $this->model)
+				->set('config', $this->config)
+				->set('entry', $entry)
+				->display();
 			return;
 		}
 
@@ -479,10 +357,11 @@ class Entries extends SiteController
 		Request::checkToken();
 
 		// Delete the entry itself
-		$entry->set('state', -1);
-		if (!$entry->store())
+		$entry->set('state', 2);
+
+		if (!$entry->save())
 		{
-			$this->setError($entry->getError());
+			Notify::error($entry->getError());
 		}
 
 		// Return the topics list
@@ -495,7 +374,7 @@ class Entries extends SiteController
 	/**
 	 * Generate an RSS feed of entries
 	 *
-	 * @return     string RSS
+	 * @return  void
 	 */
 	public function feedTask()
 	{
@@ -547,7 +426,7 @@ class Entries extends SiteController
 		$doc->category    = Lang::txt('COM_BLOG_RSS_CATEGORY');
 
 		// Get the records
-		$rows = $this->model->entries('list', $filters);
+		$rows = $this->model->entries($filters)->ordered()->paginated()->rows();
 
 		// Start outputing results if any found
 		if ($rows->total() > 0)
@@ -557,7 +436,7 @@ class Entries extends SiteController
 				$item = new \Hubzero\Document\Type\Feed\Item();
 
 				// Strip html from feed item description text
-				$item->description = $row->content('parsed');
+				$item->description = $row->content();
 				$item->description = html_entity_decode(Sanitize::stripAll($item->description));
 				if ($this->config->get('feed_entries') == 'partial')
 				{
@@ -569,7 +448,7 @@ class Entries extends SiteController
 				$item->link        = Route::url($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $row->creator('name');
+				$item->author      = $row->creator()->get('name');
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -580,7 +459,7 @@ class Entries extends SiteController
 	/**
 	 * Save a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savecommentTask()
 	{
@@ -603,15 +482,10 @@ class Entries extends SiteController
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new Comment($comment['id']);
-		if (!$row->bind($comment))
-		{
-			$this->setError($row->getError());
-			return $this->entryTask();
-		}
+		$row = Comment::oneOrNew($comment['id'])->set($comment);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->entryTask();
@@ -697,7 +571,7 @@ class Entries extends SiteController
 			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
-		$this->entry = $this->model->entry($alias);
+		$this->entry = Entry::oneByScope($alias, 'site', 0);
 
 		if (!$this->entry->isAvailable())
 		{
@@ -751,7 +625,7 @@ class Entries extends SiteController
 		}
 		else
 		{
-			$item->description = html_entity_decode(Sanitize::stripAll($row->content('clean')));
+			$item->description = html_entity_decode(Sanitize::stripAll($row->content()));
 		}
 
 		if ($row->get('anonymous'))
@@ -760,16 +634,18 @@ class Entries extends SiteController
 		}
 		else
 		{
-			$item->author = $row->creator('name');
+			$item->author = $row->creator()->get('name');
 		}
 		$item->date     = $row->created();
 		$item->category = '';
 
 		$doc->addItem($item);
 
-		if ($row->replies()->total() > 0)
+		$replies = $row->replies()->whereIn('state', array(1, 3));
+
+		if ($replies->count() > 0)
 		{
-			foreach ($row->replies() as $reply)
+			foreach ($replies as $reply)
 			{
 				$this->_comment($doc, $reply);
 			}

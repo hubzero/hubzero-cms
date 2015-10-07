@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,11 +32,25 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+if (Pathway::count() <= 0)
+{
+	Pathway::append(
+		Lang::txt('COM_BLOG'),
+		'index.php?option=' . $this->option
+	);
+}
+Pathway::append(
+	Lang::txt('COM_BLOG_DELETE'),
+	$this->entry->link('delete')
+);
+
+Document::setTitle(Lang::txt('COM_BLOG') . ': ' . Lang::txt('COM_BLOG_DELETE'));
+
 $this->css()
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_BLOG') . ': ' . Lang::txt('COM_BLOG_DELETE'); ?></h2>
 
 	<div id="content-header-extra">
 		<p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
@@ -46,9 +59,9 @@ $this->css()
 
 <section class="main section">
 	<div class="section-inner">
-	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php } ?>
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php } ?>
 		<form action="<?php echo Route::url($this->entry->link('delete')); ?>" method="post" id="hubForm">
 			<div class="explaination">
 			<?php if ($this->config->get('access-create-entry')) { ?>

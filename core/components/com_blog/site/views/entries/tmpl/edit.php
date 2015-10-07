@@ -25,13 +25,26 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+if (Pathway::count() <= 0)
+{
+	Pathway::append(
+		Lang::txt('COM_BLOG'),
+		'index.php?option=' . $this->option
+	);
+}
+Pathway::append(
+	($this->entry->isNew() ? Lang::txt('COM_BLOG_NEW') : Lang::txt('COM_BLOG_EDIT')),
+	$this->entry->link('edit')
+);
+
+Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('COM_BLOG_NEW') : Lang::txt('COM_BLOG_EDIT')));
 
 /*if ($this->entry->id) {
 	$lid = $this->entry->id;
@@ -49,7 +62,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 }
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('COM_BLOG_NEW') : Lang::txt('COM_BLOG_EDIT')); ?></h2>
 
 	<div id="content-header-extra">
 		<p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
@@ -101,12 +114,12 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					</div>
 
 					<div class="col span-half omega">
-						<label for="field-state">
+						<label for="field-access">
 							<?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY'); ?>
-							<select name="entry[state]" id="field-state">
-								<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-								<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-								<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+							<select name="entry[access]" id="field-access">
+								<option value="1"<?php if ($this->entry->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
+								<option value="2"<?php if ($this->entry->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
+								<option value="5"<?php if ($this->entry->get('access') > 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
 							</select>
 						</label>
 					</div>
@@ -133,14 +146,14 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<div class="clear"></div>
 
 			<input type="hidden" name="lid" value="<?php //echo $lid; ?>" />
-			<input type="hidden" name="id" value="<?php echo $this->entry->get('created_by'); ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->entry->get('id'); ?>" />
 			<input type="hidden" name="entry[id]" value="<?php echo $this->entry->get('id'); ?>" />
 			<input type="hidden" name="entry[alias]" value="<?php echo $this->entry->get('alias'); ?>" />
 			<input type="hidden" name="entry[created]" value="<?php echo $this->entry->get('created'); ?>" />
 			<input type="hidden" name="entry[created_by]" value="<?php echo $this->entry->get('created_by'); ?>" />
 			<input type="hidden" name="entry[scope]" value="site" />
 			<input type="hidden" name="entry[scope_id]" value="0" />
-			<input type="hidden" name="entry[access]" value="0" />
+			<input type="hidden" name="entry[state]" value="<?php echo $this->entry->get('state', 1); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
 

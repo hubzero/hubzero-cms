@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,9 +32,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$first = $this->model->entries('first');
-
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
+
+$first = $this->archive->entries(array(
+		'state'    => 1,
+		'scope'    => $this->filters['scope'],
+		'scope_id' => $this->filters['scope_id']
+	))
+	->order('publish_up', 'asc')
+	->limit(1)
+	->row();
+
+$rows = $this->archive->entries($this->filters)
+	->ordered()
+	->paginated()
+	->rows();
 
 $this->css()
      ->js();
@@ -72,21 +83,21 @@ $this->css()
 				<fieldset class="entry-search">
 					<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LEGEND'); ?></legend>
 					<label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LABEL'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->filters['search']))); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
 			<div class="container">
 				<h3>
-					<?php if (isset($this->search) && $this->search) { ?>
-						<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
-					<?php } else if (!isset($this->year) || !$this->year) { ?>
+					<?php if (isset($this->filters['search']) && $this->filters['search']) { ?>
+						<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
+					<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
 						<?php echo Lang::txt('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
-					<?php } elseif (isset($this->year) && isset($this->month) && $this->month == 0) { ?>
-						<?php echo Lang::txt('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->year); ?>
+					<?php } elseif (isset($this->filters['year']) && isset($this->filters['month']) && $this->filters['month'] == 0) { ?>
+						<?php echo Lang::txt('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->filters['year']); ?>
 					<?php } else {
-						$archiveDate  = $this->year;
-						$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
+						$archiveDate  = $this->filters['year'];
+						$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
 						$archiveDate .= '-01 00:00:00';
 						if ($this->month)
 						{
@@ -100,8 +111,8 @@ $this->css()
 					<?php
 						if ($this->config->get('feeds_enabled', 1)) :
 							$path  = $base . '&scope=feed.rss';
-							$path .= ($this->year)  ? '&year=' . $this->year   : '';
-							$path .= ($this->month) ? '&month=' . $this->month : '';
+							$path .= ($this->filters['year'])  ? '&year=' . $this->filters['year']   : '';
+							$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
 							$feed = Route::url($path);
 							$live_site = 'https://' . $_SERVER['HTTP_HOST'];
 							if (substr($feed, 0, 4) != 'http')
@@ -116,8 +127,7 @@ $this->css()
 					<?php endif; ?>
 				</h3>
 			<?php
-			$rows = $this->model->entries('list', $this->filters);
-			if ($rows->total() > 0) { ?>
+			if ($rows->count() > 0) { ?>
 				<ol class="blog-entries entries">
 			<?php
 				$cls = 'even';
@@ -170,16 +180,16 @@ $this->css()
 								<dd class="author">
 									<?php if ($row->creator('public')) { ?>
 										<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-											<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+											<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 										</a>
 									<?php } else { ?>
-										<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+										<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 									<?php } ?>
 								</dd>
 								<?php if ($row->get('allow_comments') == 1) { ?>
 									<dd class="comments">
 										<a href="<?php echo Route::url($row->link('comments')); ?>">
-											<?php echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS',  $row->get('comments', 0)); ?>
+											<?php echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $row->comments()->whereIn('state', array(1, 3))->count()); ?>
 										</a>
 									</dd>
 								<?php } else { ?>
@@ -190,8 +200,8 @@ $this->css()
 									</dd>
 								<?php } ?>
 								<?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-									<dd class="state <?php echo $row->state('text'); ?>">
-										<?php echo Lang::txt('PLG_GROUPS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+									<dd class="state <?php echo strtolower($row->visibility('text')); ?>">
+										<?php echo $row->visibility('text'); ?>
 									</dd>
 								<?php } ?>
 								<dd class="entry-options">
@@ -208,10 +218,10 @@ $this->css()
 							<div class="entry-content">
 								<?php if ($this->config->get('cleanintro', 1)) { ?>
 									<p>
-										<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
+										<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content()), $this->config->get('introlength', 300)); ?>
 									</p>
 								<?php } else { ?>
-									<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
+									<?php echo \Hubzero\Utility\String::truncate($row->content(), $this->config->get('introlength', 300)); ?>
 								<?php } ?>
 							</div>
 						</article>
@@ -219,11 +229,7 @@ $this->css()
 		<?php } ?>
 				</ol>
 				<?php
-					$pageNav = $this->pagination(
-						$this->model->entries('count', $this->filters),
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					$pageNav = $rows->pagination;
 					$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 					$pageNav->setAdditionalUrlParam('active', 'blog');
 					if ($this->filters['year'])
@@ -238,7 +244,7 @@ $this->css()
 					{
 						$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 					}
-					echo $pageNav->render();
+					echo $pageNav;
 				?>
 	<?php } else { ?>
 				<p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
@@ -249,7 +255,7 @@ $this->css()
 			<div class="container blog-entries-years">
 				<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
-					<?php if ($first->exists()) { ?>
+					<?php if ($first->get('id')) { ?>
 						<?php
 							$start = intval(substr($first->get('publish_up'), 0, 4));
 							$now = date("Y");
@@ -259,7 +265,7 @@ $this->css()
 								<a href="<?php echo Route::url($base . '&scope=' . $i); ?>">
 									<?php echo $i; ?>
 								</a>
-								<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) { ?>
+								<?php if (($this->filters['year'] && $i == $this->filters['year']) || (!$this->filters['year'] && $i == $now)) { ?>
 									<ol>
 										<?php
 											$m = array(
@@ -284,7 +290,7 @@ $this->css()
 										?>
 										<?php for ($k=0, $z=$months; $k < $z; $k++) { ?>
 											<li>
-												<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&scope='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>">
+												<a<?php if ($this->filters['month'] && $this->filters['month'] == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&scope='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>">
 													<?php echo Lang::txt($m[$k]); ?>
 												</a>
 											</li>
@@ -297,15 +303,17 @@ $this->css()
 				</ol>
 			</div>
 
-			<?php
-			$limit = $this->filters['limit'];
-			$this->filters['limit'] = 5;
-			?>
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
 				<?php
-				$popular = $this->model->entries('popular', $this->filters);
-				if ($popular->total() > 0) { ?>
+				$popular = $this->archive->entries(array(
+						'state'  => $this->filters['state'],
+						'access' => $this->filters['access']
+					))
+					->order('hits', 'desc')
+					->limit(5)
+					->rows();
+				if ($popular->count()) { ?>
 					<ol>
 					<?php foreach ($popular as $row) { ?>
 						<?php
@@ -326,7 +334,8 @@ $this->css()
 				<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 
-			<div class="container blog-recent-entries">
+			<?php
+				/*<div class="container blog-recent-entries">
 				<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
 				<?php
 				$recent = $this->model->entries('recent', $this->filters);
@@ -349,10 +358,7 @@ $this->css()
 				<?php } else { ?>
 					<p><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-			</div><!-- / .blog-recent-entries -->
-			<?php
-			$this->filters['limit'] = $limit;
-			?>
+			</div><!-- / .blog-recent-entries -->*/ ?>
 		</aside><!-- / .aside -->
 	</section>
 </form><!-- /.main -->

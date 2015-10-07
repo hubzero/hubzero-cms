@@ -58,12 +58,12 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// do field validation
 	if ($('#field-content').val() == ''){
 		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }
@@ -88,6 +88,14 @@ function submitbutton(pressbutton)
 	<div class="col width-40 fltrt">
 		<table class="meta">
 			<tbody>
+				<tr>
+					<th><?php echo Lang::txt('COM_BLOG_FIELD_ID'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('id', 0); ?>
+						<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
+					</td>
+				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_BLOG_FIELD_CREATOR'); ?>:</th>
 					<td>
@@ -133,7 +141,7 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<input type="hidden" name="fields[parent]" value="<?php echo $this->row->get('parent'); ?>" />
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

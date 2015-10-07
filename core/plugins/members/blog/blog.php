@@ -177,27 +177,18 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'scope'      => 'member',
 			'scope_id'   => $member->get('uidNumber'),
-			'created_by' => $member->get('uidNumber')
+			//'created_by' => $member->get('uidNumber'),
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		if (User::isGuest())
+		if (User::get('id') != $member->get('uidNumber'))
 		{
-			$filters['state'] = 'public';
-		}
-		// Logged-in non-owner
-		else if (User::get('id') != $member->get('uidNumber'))
-		{
-			$filters['state'] = 'registered';
-		}
-		// Owner of the blog
-		else
-		{
-			$filters['state'] = 'all';
 			$filters['authorized'] = $member->get('uidNumber');
 		}
 
 		// Get an entry count
-		$arr['metadata']['count'] = $this->model->entries('count', $filters);
+		$arr['metadata']['count'] = $this->model->entries($filters)->count();
 
 		return $arr;
 	}
@@ -206,7 +197,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 * Parse an SEF URL into its component bits
 	 * stripping out the path leading up to the blog plugin
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _parseUrl()
 	{
@@ -263,27 +254,20 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of latest blog entries
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _browse()
 	{
-		$view = $this->view('default', 'browse');
-		$view->option = $this->option;
-		$view->member = $this->member;
-		$view->config = $this->params;
-		$view->model  = $this->model;
-
 		// Filters for returning results
-		$view->filters = array(
-			'limit'      => Request::getInt('limit', Config::get('list_limit')),
-			'start'      => Request::getInt('limitstart', 0),
-			'created_by' => $this->member->get('uidNumber'),
+		$filters = array(
 			'year'       => Request::getInt('year', 0),
 			'month'      => Request::getInt('month', 0),
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('uidNumber'),
 			'search'     => Request::getVar('search',''),
-			'authorized' => false
+			'authorized' => false,
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
 		// See what information we can get from the path
@@ -292,41 +276,30 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		{
 			$bits = $this->_parseUrl();
 
-			$view->filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $view->filters['year'];
-			$view->filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $view->filters['month'];
+			$filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $filters['year'];
+			$filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $filters['month'];
 		}
-		if ($view->filters['year'] > date("Y"))
+		if ($filters['year'] > date("Y"))
 		{
-			$view->filters['year'] = 0;
+			$filters['year'] = 0;
 		}
-		if ($view->filters['month'] > 12)
+		if ($filters['month'] > 12)
 		{
-			$view->filters['month'] = 0;
+			$filters['month'] = 0;
 		}
 
-		// Check logged-in status
-		if (User::isGuest())
-		{
-			$view->filters['state'] = 'public';
-		}
-		// Logged-in non-owner
-		else if (User::get('id') != $this->member->get('uidNumber'))
-		{
-			$view->filters['state'] = 'registered';
-		}
-		// Owner of the blog
-		else
-		{
-			$view->filters['state'] = 'all';
-		}
 		if (User::get('id') == $this->member->get('uidNumber'))
 		{
-			$view->filters['authorized'] = $this->member->get('uidNumber');
+			$filters['authorized'] = $this->member->get('uidNumber');
 		}
 
-		$view->year   = $view->filters['year'];
-		$view->month  = $view->filters['month'];
-		$view->search = $view->filters['search'];
+		$view = $this->view('default', 'browse')
+			->set('option', $this->option)
+			->set('member', $this->member)
+			->set('task', $this->task)
+			->set('config', $this->params)
+			->set('archive', $this->model)
+			->set('filters', $filters);
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -367,7 +340,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('uidNumber'),
 			'search'     => Request::getVar('search',''),
-			'created_by' => $this->member->get('uidNumber')
+			//'created_by' => $this->member->get('uidNumber')
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
 		$path = Request::path();
@@ -395,33 +370,33 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		$filters['state'] = 'public';
 
-		$rows = $this->model->entries('list', $filters);
+		$rows = $this->model->entries($filters)
+			->ordered()
+			->paginated()
+			->rows();
 
 		// Start outputing results if any found
-		if ($rows->total() > 0)
+		foreach ($rows as $row)
 		{
-			foreach ($rows as $row)
+			$item = new \Hubzero\Document\Type\Feed\Item();
+
+			// Strip html from feed item description text
+			$item->description = $row->content('parsed');
+			$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
+			if ($this->params->get('feed_entries') == 'partial')
 			{
-				$item = new \Hubzero\Document\Type\Feed\Item();
-
-				// Strip html from feed item description text
-				$item->description = $row->content('parsed');
-				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
-				if ($this->params->get('feed_entries') == 'partial')
-				{
-					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
-				}
-
-				// Load individual item creator class
-				$item->title       = html_entity_decode(strip_tags($row->get('title')));
-				$item->link        = Route::url($row->link());
-				$item->date        = date('r', strtotime($row->published()));
-				$item->category    = '';
-				$item->author      = $row->creator('name');
-
-				// Loads item info into rss array
-				$doc->addItem($item);
+				$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 			}
+
+			// Load individual item creator class
+			$item->title       = html_entity_decode(strip_tags($row->get('title')));
+			$item->link        = Route::url($row->link());
+			$item->date        = date('r', strtotime($row->published()));
+			$item->category    = '';
+			$item->author      = $row->creator('name');
+
+			// Loads item info into rss array
+			$doc->addItem($item);
 		}
 
 		// Output the feed
@@ -431,19 +406,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a blog entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _entry()
 	{
-		$view = $this->view('default', 'entry');
-		$view->option = $this->option;
-		$view->member = $this->member;
-		$view->config = $this->params;
-		$view->model  = $this->model;
-
 		if (isset($this->entry) && is_object($this->entry))
 		{
-			$view->row = $this->entry;
+			$row = $this->entry;
 		}
 		else
 		{
@@ -456,43 +425,48 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				$alias = end($bits);
 			}
 
-			$view->row = $this->model->entry($alias);
+			$row = \Components\Blog\Models\Entry::oneByScope(
+				$alias,
+				$this->model->get('scope'),
+				$this->model->get('scope_id')
+			);
 		}
 
-		if (!$view->row->exists())
+		if (!$row->get('id'))
 		{
 			App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
-			return;
 		}
 
 		// Check authorization
-		if (($view->row->get('state') == 2 && User::isGuest())
-		 || ($view->row->get('state') == 0 && User::get('id') != $this->member->get('uidNumber')))
+		if (($row->get('access') == 2 && User::isGuest())
+		 || ($row->get('state') == 0 && User::get('id') != $this->member->get('uidNumber')))
 		{
 			App::abort(403, Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTH'));
-			return;
 		}
 
 		// Filters for returning results
-		$view->filters = array(
+		$filters = array(
 			'limit'      => 10,
 			'start'      => 0,
 			'scope'      => 'member',
 			'scope_id'   => $this->member->get('uidNumber'),
-			'created_by' => $this->member->get('uidNumber')
+			'authorized' => false
 		);
 
-		if (User::isGuest())
+		if (User::get('id') != $this->member->get('uidNumber'))
 		{
-			$view->filters['state'] = 'public';
+			$view->filters['state']  = 1;
+			$view->filters['access'] = User::getAuthorisedViewLevels();
 		}
-		else
-		{
-			if (User::get('id') != $this->member->get('uidNumber'))
-			{
-				$view->filters['state'] = 'registered';
-			}
-		}
+
+		$view = $this->view('default', 'entry')
+			->set('option', $this->option)
+			->set('member', $this->member)
+			->set('task', $this->task)
+			->set('config', $this->params)
+			->set('archive', $this->model)
+			->set('row', $row)
+			->set('filters', $filters);
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -505,7 +479,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a warning message
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _login()
 	{
@@ -515,7 +489,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for creating an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _new()
 	{
@@ -525,9 +499,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing an entry
 	 *
-	 * @return     string
+	 * @param   object  $entry
+	 * @return  string
 	 */
-	private function _edit($row=null)
+	private function _edit($entry = null)
 	{
 		// Login check
 		if (User::isGuest())
@@ -542,32 +517,21 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		// Instantiate view
-		$view = $this->view('default', 'edit');
-		$view->option = $this->option;
-		$view->member = $this->member;
-		$view->task   = $this->task;
-		$view->config = $this->params;
-
 		// Load the entry
-		if (is_object($row))
+		if (!is_object($entry))
 		{
-			$view->entry = $row;
-		}
-		else
-		{
-			$view->entry = new \Components\Blog\Models\Entry(Request::getInt('entry', 0));
+			$entry = \Components\Blog\Models\Entry::oneOrNew(Request::getInt('entry', 0));
 		}
 
 		// Does it exist?
-		if (!$view->entry->exists())
+		if ($entry->isNew())
 		{
 			// Set some defaults
-			$view->entry->set('allow_comments', 1);
-			$view->entry->set('state', 1);
-			$view->entry->set('scope', 'member');
-			$view->entry->set('scope_id', $this->member->get('uidNumber'));
-			$view->entry->set('created_by', $this->member->get('uidNumber'));
+			$entry->set('allow_comments', 1);
+			$entry->set('state', 1);
+			$entry->set('scope', 'member');
+			$entry->set('scope_id', $this->member->get('uidNumber'));
+			$entry->set('created_by', $this->member->get('uidNumber'));
 		}
 
 		// Pass any errors on to the view
@@ -577,13 +541,20 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Render view
+		$view = $this->view('default', 'edit')
+			->set('option', $this->option)
+			->set('member', $this->member)
+			->set('task', $this->task)
+			->set('config', $this->params)
+			->set('entry', $entry);
+
 		return $view->loadTemplate();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _save()
 	{
@@ -619,17 +590,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
 		// Instantiate model
-		$row = new \Components\Blog\Models\Entry($entry['id']);
-
-		// Bind data
-		if (!$row->bind($entry))
-		{
-			$this->setError($row->getError());
-			return $this->_edit($row);
-		}
+		$row = \Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
@@ -648,7 +612,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _delete()
 	{
@@ -675,7 +639,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$confirmdel = Request::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = new \Components\Blog\Models\Entry($id);
+		$entry = \Components\Blog\Models\Entry::oneOrFail($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
@@ -686,13 +650,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = $this->view('default', 'delete');
-			$view->option = $this->option;
-			$view->member = $this->member;
-			$view->task   = $this->task;
-			$view->config = $this->params;
-			$view->entry  = $entry;
-			$view->authorized = true;
+			$view = $this->view('default', 'delete')
+				->set('option', $this->option)
+				->set('member', $this->member)
+				->set('task', $this->task)
+				->set('config', $this->params)
+				->set('entry', $entry)
+				->set('authorized', true);
 
 			foreach ($this->getErrors() as $error)
 			{
@@ -703,8 +667,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Delete the entry itself
-		$entry->set('state', -1);
-		if (!$entry->store())
+		$entry->set('state', 2);
+
+		if (!$entry->save())
 		{
 			$this->setError($entry->getError());
 		}
@@ -716,7 +681,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _savecomment()
 	{
@@ -734,15 +699,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new \Components\Blog\Models\Comment($comment['id']);
-		if (!$row->bind($comment))
-		{
-			$this->setError($row->getError());
-			return $this->_entry();
-		}
+		$row = \Components\Blog\Models\Comment::oneOrNew($comment['id'])->set($comment);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
@@ -751,12 +711,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		/*
 		if ($row->get('created_by') != $this->member->get('uidNumber))
 		{
-			$this->entry = new \Components\Blog\Models\Entry($row->get('entry_id'));
+			$entry = \Components\Blog\Models\Entry::oneOrFail($row->get('entry_id'));
 
 			// Build the "from" data for the e-mail
-			$from = array();
-			$from['name']  = Config::get('sitename').' '.Lang::txt('PLG_MEMBERS_BLOG');
-			$from['email'] = Config::get('mailfrom');
+			$from = array(
+				'name'  => Config::get('sitename') . ' ' . Lang::txt('PLG_MEMBERS_BLOG'),
+				'email' => Config::get('mailfrom')
+			);
 
 			$subject = Lang::txt('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
 
@@ -764,7 +725,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
 			$message .= stripslashes($row->content)."\r\n\r\n";
 			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->entry->link() . '#comments), '/') . "\r\n";
+			$message .= rtrim(Request::base(), '/') . '/' . ltrim(Route::url($entry->link() . '#comments), '/') . "\r\n";
 
 			// Send the message
 			if (!Event::trigger('xmessage.onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option)))
@@ -780,7 +741,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _deletecomment()
 	{
@@ -799,13 +760,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = \Components\Blog\Models\Comment::getInstance($id);
+		$comment = \Components\Blog\Models\Comment::oneOrFail($id);
 
 		// Delete all comments on an entry
 		$comment->set('state', 2);
 
 		// Delete the entry itself
-		if (!$comment->store(false))
+		if (!$comment->save())
 		{
 			$this->setError($comment->getError());
 		}
@@ -817,7 +778,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display blog settings
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _settings()
 	{
@@ -856,7 +817,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save blog settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _savesettings()
 	{

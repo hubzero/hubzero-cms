@@ -25,104 +25,77 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Blog\Models;
 
-use Hubzero\Base\Model;
+use Hubzero\Database\Relational;
 use Hubzero\User\Profile;
-use Hubzero\Base\ItemList;
-use Hubzero\Utility\String;
 use Lang;
 use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
-
 /**
- * Blog model class for a comment
+ * Knowledgebase model for a comment
  */
-class Comment extends Model
+class Comment extends Relational
 {
 	/**
-	 * Table
-	 *
-	 * @var object
-	 */
-	protected $_tbl_name = '\\Components\\Blog\\Tables\\Comment';
-
-	/**
-	 * Model context
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_context = 'com_blog.comment.content';
+	protected $namespace = 'blog';
 
 	/**
-	 * \Hubzero\User\Profile
+	 * Default order by for model
 	 *
-	 * @var object
+	 * @var string
 	 */
-	private $_creator = NULL;
+	public $orderBy = 'created';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_comments = NULL;
+	public $orderDir = 'asc';
 
 	/**
-	 * Commen count
+	 * Fields and their validation criteria
 	 *
-	 * @var integer
+	 * @var  array
 	 */
-	private $_comments_count = NULL;
+	protected $rules = array(
+		'content'  => 'notempty',
+		'entry_id' => 'positive|nonzero'
+	);
 
 	/**
-	 * Returns a reference to a blog comment model
+	 * Automatically fillable fields
 	 *
-	 * @param   mixed   $oid  ID (int) or alias (string)
-	 * @return  object
+	 * @var  array
 	 */
-	static function &getInstance($oid=0)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new static($oid);
-		}
-
-		return $instances[$oid];
-	}
+	public $always = array(
+		'created',
+		'created_by'
+	);
 
 	/**
-	 * Has this comment been reported
+	 * Fields to be parsed
 	 *
-	 * @return  boolean  True if reported, False if not
+	 * @var  array
 	 */
-	public function isReported()
-	{
-		if ($this->get('state') == self::APP_STATE_FLAGGED)
-		{
-			return true;
-		}
-		return false;
-	}
+	protected $parsed = array(
+		'content'
+	);
 
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string   $as  What format to return
-	 * @return  boolean
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -140,39 +113,6 @@ class Comment extends Model
 				return $this->get('created');
 			break;
 		}
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string  $property  What data to return
-	 * @param   mixed   $default   Default value
-	 * @return  mixed
-	 */
-	public function creator($property=null, $default=null)
-	{
-		if (!($this->_creator instanceof Profile))
-		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
-			if ($property == 'picture')
-			{
-				return $this->_creator->getPicture($this->get('anonymous'));
-			}
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
 	}
 
 	/**
@@ -214,147 +154,65 @@ class Comment extends Model
 	}
 
 	/**
-	 * Get a list or count of comments
+	 * Defines a belongs to one relationship between article and user
 	 *
-	 * @param   string   $rtrn     Data format to return
-	 * @param   array    $filters  Filters to apply to data fetch
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public function replies($rtrn='list', $filters=array(), $clear=false)
+	public function creator()
+	{
+		return Profile::getInstance($this->get('created_by'));
+	}
+
+	/**
+	 * Was the entry reported?
+	 *
+	 * @return  boolean  True if reported, False if not
+	 */
+	public function isReported()
+	{
+		if ($this->get('state') == 3)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get either a count of or list of replies
+	 *
+	 * @param   array  $filters  Filters to apply to query
+	 * @return  object
+	 */
+	public function replies($filters = array())
 	{
 		if (!isset($filters['entry_id']))
 		{
 			$filters['entry_id'] = $this->get('entry_id');
 		}
-		if (!isset($filters['parent']))
+
+		$entries = self::blank()->whereEquals('parent', (int) $this->get('id'));
+
+		if (isset($filters['state']))
 		{
-			$filters['parent'] = $this->get('id');
+			$entries->whereEquals('state', (int) $filters['state']);
 		}
 
-		switch (strtolower($rtrn))
+		if (isset($filters['entry_id']))
 		{
-			case 'count':
-				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
-				{
-					$this->_comments_count = 0;
-
-					if (!$this->_comments)
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($this->_comments as $com)
-					{
-						$this->_comments_count++;
-						if ($com->replies())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$this->_comments_count++;
-								if ($rep->replies())
-								{
-									$this->_comments_count += $rep->replies()->total();
-								}
-							}
-						}
-					}
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_comments instanceof ItemList) || $clear)
-				{
-					if ($this->get('replies', null) !== null)
-					{
-						$results = $this->get('replies');
-					}
-					else
-					{
-						$results = $this->_tbl->getAllComments($this->get('entry_id'), $this->get('id'));
-					}
-
-					if ($results)
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Comment($result);
-							$results[$key]->set('option', $this->get('option'));
-							$results[$key]->set('scope', $this->get('scope'));
-							$results[$key]->set('alias', $this->get('alias'));
-							$results[$key]->set('path', $this->get('path'));
-						}
-					}
-
-					$this->_comments = new ItemList($results);
-				}
-				return $this->_comments;
-			break;
+			$entries->whereEquals('entry_id', (int) $filters['entry_id']);
 		}
+
+		return $entries;
 	}
 
 	/**
-	 * Get the content of the entry
+	 * Get parent comment
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @return  object
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function parent()
 	{
-		$as = strtolower($as);
-		$options = array();
-
-		switch ($as)
-		{
-			case 'parsed':
-				$content = $this->get('content.parsed', null);
-
-				if ($content === null)
-				{
-					$config = array(
-						'option'   => $this->get('option', \Request::getCmd('option')),
-						'scope'    => $this->get('scope', 'blog'),
-						'pagename' => $this->get('alias'),
-						'pageid'   => 0,
-						'filepath' => $this->get('path'),
-						'domain'   => ''
-					);
-
-					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('content', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('content.parsed', (string) $this->get('content', ''));
-					$this->set('content', $content);
-
-					return $this->content($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('content'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
-		}
-
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
+		return self::oneOrFail($this->get('parent', 0));
 	}
 
 	/**
@@ -362,25 +220,25 @@ class Comment extends Model
 	 *
 	 * @return  boolean  False if error, True on success
 	 */
-	public function delete()
+	public function destroy()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists())
+		if ($this->isNew())
 		{
 			return true;
 		}
 
 		// Remove comments
-		foreach ($this->replies('list') as $comment)
+		foreach ($this->replies() as $comment)
 		{
-			if (!$comment->delete())
+			if (!$comment->destroy())
 			{
 				$this->setError($comment->getError());
 				return false;
 			}
 		}
 
-		return parent::delete();
+		return parent::destroy();
 	}
 }
 

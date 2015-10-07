@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,7 +34,6 @@ namespace Components\Blog\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Blog\Models\Entry;
 use Components\Blog\Models\Comment;
-use Components\Blog\Tables;
 use Request;
 use Config;
 use Notify;
@@ -72,7 +70,7 @@ class Comments extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->filters = array(
+		$filters = array(
 			'entry_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.entry_id',
 				'entry_id',
@@ -84,18 +82,7 @@ class Comments extends AdminController
 				'search',
 				''
 			)),
-			// Get sorting variables
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'created'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			),
-			// Get paging variables
+			// Paging
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
@@ -107,28 +94,47 @@ class Comments extends AdminController
 				'limitstart',
 				0,
 				'int'
+			),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
 			)
 		);
 
-		$this->view->entry = new Entry($this->view->filters['entry_id']);
+		$entry = Entry::oneOrFail($filters['entry_id']);
 
-		// Instantiate our table object
-		$obj = new Tables\Comment($this->database);
+		$comments = Comment::all();
 
-		// Get records
-		$rows = $obj->getEntries($this->view->filters);
+		if ($filters['search'])
+		{
+			$comments->whereLike('title', strtolower((string)$filters['search']));
+		}
 
-		$levellimit = ($this->view->filters['limit'] == 0) ? 500 : $this->view->filters['limit'];
+		if ($filters['entry_id'])
+		{
+			$comments->whereEquals('entry_id', $filters['entry_id']);
+		}
 
-		$list = array();
-		$children = array();
+		$rows = $comments
+			->ordered('filter_order', 'filter_order_Dir')
+			->rows();
+
+		$levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
+		$list       = array();
+		$children   = array();
+
 		if ($rows)
 		{
 			// First pass - collect children
-			foreach ($rows as $v)
+			foreach ($rows as $k)
 			{
-				$k = new Comment($v);
-
 				$pt = $k->get('parent');
 				$list = @$children[$pt] ? $children[$pt] : array();
 				array_push($list, $k);
@@ -139,13 +145,13 @@ class Comments extends AdminController
 			$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
 		}
 
-		// Get record count
-		$this->view->total = count($list);
-
-		$this->view->rows = array_slice($list, $this->view->filters['start'], $this->view->filters['limit']);
-
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('entry', $entry)
+			->set('total', count($list))
+			->set('rows', array_slice($list, $filters['start'], $filters['limit']))
+			->display();
 	}
 
 	/**
@@ -218,20 +224,20 @@ class Comments extends AdminController
 			}
 
 			// Load the article
-			$row = new Comment($id);
+			$row = Comment::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->exists())
+		if ($row->isNew())
 		{
-			$this->view->row->set('entry_id', Request::getInt('entry_id', 0));
-			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', Date::toSql());
+			$row->set('entry_id', Request::getInt('entry_id', 0));
+			$row->set('created_by', User::get('id'));
+			$row->set('created', Date::toSql());
+			$row->set('state', 1);
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -250,15 +256,10 @@ class Comments extends AdminController
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
-		$row = new Comment($fields['id']);
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Comment::oneOrNew($fields['id'])->set($fields);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -297,9 +298,10 @@ class Comments extends AdminController
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new Comment(intval($id));
 				// Delete the entry
-				if (!$entry->delete())
+				$entry = Comment::oneOrFail(intval($id));
+
+				if (!$entry->destroy())
 				{
 					Notify::error($entry->getError());
 					continue;

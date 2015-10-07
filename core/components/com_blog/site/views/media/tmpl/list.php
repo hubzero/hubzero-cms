@@ -108,6 +108,8 @@ $this->css();
 				</tbody>
 			</table>
 		<?php } ?>
+
+		<?php echo Html::input('token'); ?>
 	</form>
 
 	<?php if ($this->getError()) { ?>

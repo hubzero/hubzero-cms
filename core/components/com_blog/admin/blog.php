@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -40,24 +39,20 @@ if (!\User::authorise('core.manage', 'com_blog'))
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
 
 $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'entries');
 
 \Submenu::addEntry(
-	\Lang::txt('COM_BLOG_SCOPE_SITE'),
-	\Route::url('index.php?option=com_blog&controller=entries&scope=site'),
-	($controllerName == 'entries' && $scope == 'site')
+	\Lang::txt('COM_BLOG_MENU_ENTRIES'),
+	\Route::url('index.php?option=com_blog&controller=entries'),
+	($controllerName == 'entries')
 );
 \Submenu::addEntry(
-	\Lang::txt('COM_BLOG_SCOPE_MEMBER'),
-	\Route::url('index.php?option=com_blog&controller=entries&scope=member'),
-	($controllerName == 'entries' && $scope == 'member')
-);
-\Submenu::addEntry(
-	\Lang::txt('COM_BLOG_SCOPE_GROUP'),
-	\Route::url('index.php?option=com_blog&controller=entries&scope=group'),
-	($controllerName == 'entries' && $scope == 'group')
+	\Lang::txt('COM_BLOG_MENU_COMMENTS'),
+	\Route::url('index.php?option=com_blog&controller=comments'),
+	($controllerName == 'comments')
 );
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

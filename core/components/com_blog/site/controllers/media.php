@@ -33,6 +33,7 @@
 namespace Components\Blog\Site\Controllers;
 
 use Components\Blog\Models\Archive;
+use Components\Blog\Models\Entry;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use InvalidArgumentException;
@@ -57,8 +58,13 @@ class Media extends SiteController
 	{
 		$archive = new Archive('site', 0);
 
-		$entry = $archive->entry(Request::getVar('alias', ''));
-		if (!$entry->exists() || !$entry->access('view'))
+		$entry = Entry::oneByScope(
+			Request::getVar('alias', ''),
+			'site',
+			0
+		);
+
+		if (!$entry->get('id') || !$entry->access('view'))
 		{
 			throw new Exception(Lang::txt('Access denied.'), 403);
 		}

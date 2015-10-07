@@ -60,7 +60,8 @@ class Helper extends Module
 			'start'    => 0,
 			'scope'    => $this->params->get('blog', 'site'),
 			'scope_id' => 0,
-			'state'    => (!User::isGuest() ? 'registered' : 'public')
+			'state'    => 1,
+			'access'   => User::getAuthorisedViewLevels()
 		);
 		if ($filters['scope'] == 'both' || $filters['scope'] == 'group')
 		{
@@ -72,7 +73,9 @@ class Helper extends Module
 		}
 
 		$archive = new Archive('site', 0);
-		$rows = $archive->entries('list', $filters);
+		$rows = $archive->entries($filters)
+			->ordered()
+			->rows();
 
 		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 		{
@@ -102,7 +105,7 @@ class Helper extends Module
 				}
 			}
 		}
-		$rows->reset();
+		//$rows->reset();
 
 		$this->posts = $rows;
 

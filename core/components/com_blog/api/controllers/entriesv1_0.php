@@ -40,6 +40,7 @@ use Exception;
 use stdClass;
 use Request;
 use Route;
+use User;
 use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php');
@@ -54,6 +55,20 @@ class Entriesv1_0 extends ApiController
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /blog/list
+	 * @apiParameter {
+	 * 		"name":          "scope",
+	 * 		"description":   "Scope type (group, member, etc.)",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "site"
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "scope_id",
+	 * 		"description":   "Scope object ID",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       0
+	 * }
 	 * @apiParameter {
 	 * 		"name":          "limit",
 	 * 		"description":   "Number of result to return.",
@@ -98,22 +113,28 @@ class Entriesv1_0 extends ApiController
 		$model = new Archive('site');
 
 		$filters = array(
-			'limit'      => Request::getInt('limit', 25),
-			'start'      => Request::getInt('limitstart', 0),
+			'scope'      => Request::getVar('scope', 'site'),
+			'scope_id'   => Request::getInt('scope_id', 0),
 			'search'     => Request::getVar('search', ''),
-			'sort'       => Request::getWord('sort', 'created'),
-			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
+			'authorized' => false,
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
 		$response = new stdClass;
 		$response->posts = array();
-		$response->total = $model->entries('count', $filters);
+		$response->total = $model->entries($filters)->count();
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($model->entries('list', $filters) as $i => $entry)
+			$rows = $model->entries($filters)
+				->ordered('sort', 'sort_order')
+				->paginated()
+				->rows();
+
+			foreach ($rows as $i => $entry)
 			{
 				$obj = new stdClass;
 				$obj->id        = $entry->get('id');
@@ -122,9 +143,9 @@ class Entriesv1_0 extends ApiController
 				$obj->state     = $entry->get('state');
 				$obj->published = $entry->get('publish_up');
 				$obj->scope     = $entry->get('scope');
-				$obj->author    = $entry->creator('name');
+				$obj->author    = $entry->creator()->get('name');
 				$obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), DS));
-				$obj->comments  = $entry->comments('count');
+				$obj->comments  = $entry->comments()->whereIn('state', array(1, 3))->count();
 
 				$response->posts[] = $obj;
 			}
@@ -256,7 +277,7 @@ class Entriesv1_0 extends ApiController
 
 		$row = new Entry();
 
-		if (!$row->bind($fields))
+		if (!$row->set($fields))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
 		}
@@ -264,7 +285,7 @@ class Entriesv1_0 extends ApiController
 		$row->set('email', (isset($fields['email']) ? 1 : 0));
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
@@ -277,7 +298,7 @@ class Entriesv1_0 extends ApiController
 			}
 		}
 
-		$this->send($row);
+		$this->send($row->toObject());
 	}
 
 	/**
@@ -298,9 +319,9 @@ class Entriesv1_0 extends ApiController
 	{
 		$id = Request::getInt('id', 0);
 
-		$row = new Entry($id);
+		$row = Entry::oneOrFail($id);
 
-		if (!$row->exists())
+		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 		}
@@ -442,9 +463,9 @@ class Entriesv1_0 extends ApiController
 			'tags'           => Request::getVar('tags', null, 'post')
 		);
 
-		$row = new Entry($fields['id']);
+		$row = Entry::oneOrFail($fields['id']);
 
-		if (!$row->exists())
+		if ($row->isNew())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 		}
@@ -457,7 +478,7 @@ class Entriesv1_0 extends ApiController
 		$row->set('email', (isset($fields['email']) ? 1 : 0));
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
 		}
@@ -470,7 +491,7 @@ class Entriesv1_0 extends ApiController
 			}
 		}
 
-		$this->send($row);
+		$this->send($row->toObject());
 	}
 
 	/**
@@ -501,14 +522,14 @@ class Entriesv1_0 extends ApiController
 
 		foreach ($ids as $id)
 		{
-			$row = new Entry(intval($id));
+			$row = Entry::oneOrNew(intval($id));
 
-			if (!$row->exists())
+			if (!$row->get('it'))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 			}
 
-			if (!$row->delete())
+			if (!$row->destroy())
 			{
 				throw new Exception($row->getError(), 500);
 			}

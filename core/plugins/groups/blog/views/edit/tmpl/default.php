@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -68,7 +67,7 @@ $this->css()
 
 		<label for="entry_content">
 			<?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-			<?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 30, 'entry_content'); ?>
+			<?php echo $this->editor('entry[content]', $this->escape($this->entry->get('content')), 50, 30, 'entry_content'); ?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 			<p class="error"><?php echo Lang::txt('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -97,10 +96,10 @@ $this->css()
 			<div class="col span6 omega">
 				<label for="field-state">
 					<?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_PRIVACY'); ?>
-					<select name="entry[state]" id="field-state">
-						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
-						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
-						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
+					<select name="entry[access]" id="field-access">
+						<option value="1"<?php if ($this->entry->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+						<option value="2"<?php if ($this->entry->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+						<option value="5"<?php if ($this->entry->get('access') > 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
 					</select>
 				</label>
 			</div>
@@ -139,7 +138,7 @@ $this->css()
 	<input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
 	<input type="hidden" name="entry[scope]" value="group" />
 	<input type="hidden" name="entry[scope_id]" value="<?php echo $this->escape($this->group->get('gidNumber')); ?>" />
-	<input type="hidden" name="entry[access]" value="0" />
+	<input type="hidden" name="entry[state]" value="<?php echo $this->entry->get('state', 1); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="blog" />
 	<input type="hidden" name="action" value="save" />

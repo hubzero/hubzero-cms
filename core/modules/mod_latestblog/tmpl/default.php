@@ -73,13 +73,13 @@ $c = 0;
 								</dd>
 								<dd class="author">
 									<a href="<?php echo Route::url('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
-										<?php echo $this->escape(stripslashes($post->creator('name'))); ?>
+										<?php echo $this->escape(stripslashes($post->creator()->get('name'))); ?>
 									</a>
 								</dd>
 								<dd class="location">
 									<a href="<?php echo $post->link('base'); ?>">
 										<?php 
-										switch ($post->get('scope'))
+										/*switch ($post->get('scope'))
 										{
 											case 'site':
 												echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_SITE');
@@ -92,7 +92,8 @@ $c = 0;
 											case 'group':
 												echo $this->escape(stripslashes($post->item('title')));
 											break;
-										}
+										}*/
+										echo $this->escape(stripslashes($post->item('title')));
 										?>
 									</a>
 								</dd>
@@ -102,11 +103,11 @@ $c = 0;
 									<?php 
 									if ($this->pullout && $c == 0)
 									{
-										echo $post->content('clean', $this->params->get('pulloutlimit', 500));
+										echo \Hubzero\Utility\String::truncate(strip_tags($post->content()), $this->params->get('pulloutlimit', 500));
 									}
 									else
 									{
-										echo $post->content('clean', $this->params->get('charlimit', 100));
+										echo \Hubzero\Utility\String::truncate(strip_tags($post->content()), $this->params->get('charlimit', 100));
 									}
 									?>
 								</div>

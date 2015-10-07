@@ -84,11 +84,11 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_BLOG_COL_COMMENT', 'content', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_BLOG_COL_ANONYMOUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_COMMENT', 'content', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_BLOG_COL_ANONYMOUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -104,26 +104,26 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
+		<?php
+		$k = 0;
 
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
 
-	if (!$row->get('anonymous'))
-	{
-		$calt = Lang::txt('JOFF');
-		$cls2 = 'off';
-		$state = 1;
-	}
-	else
-	{
-		$calt = Lang::txt('JON');
-		$cls2 = 'on';
-		$state = 0;
-	}
-?>
+			if (!$row->get('anonymous'))
+			{
+				$calt = Lang::txt('JOFF');
+				$cls2 = 'off';
+				$state = 1;
+			}
+			else
+			{
+				$calt = Lang::txt('JON');
+				$cls2 = 'on';
+				$state = 0;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
@@ -135,16 +135,16 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->get('treename'); ?>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
+							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content())), 90); ?>
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
+							<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->content())), 90); ?>
 						</span>
 					<?php } ?>
 				</td>
 				<td class="priority-2">
-					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 				</td>
 				<td class="priority-3">
 					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
@@ -157,10 +157,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</time>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

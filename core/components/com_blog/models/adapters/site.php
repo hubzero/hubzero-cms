@@ -71,10 +71,11 @@ class Site extends Base
 	/**
 	 * Retrieve a property from the internal item object
 	 *
-	 * @param   string  $key  Property to retrieve
+	 * @param   string  $key      Property to retrieve
+	 * @param   mixed   $default
 	 * @return  string
 	 */
-	public function item($key='')
+	public function item($key='', $default = null)
 	{
 		switch (strtolower($key))
 		{

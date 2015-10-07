@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -41,7 +40,6 @@ if ($this->getError())
 }
 else if ($this->row)
 {
-	$row = new \Components\Blog\Models\Entry($this->row);
 	$base = rtrim(Request::base(true), '/');
 	?>
 	<div class="<?php echo $this->cls; ?>">
@@ -55,7 +53,7 @@ else if ($this->row)
 				<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 			</a>:
 			<?php if ($row->get('content')) { ?>
-				<?php echo $row->content('clean', $this->txt_length); ?>
+				<?php echo \Hubzero\Utility\String::truncate(strip_tags($row->content()), $this->txt_length); ?>
 			<?php } ?>
 		</p>
 	</div>

@@ -32,12 +32,11 @@
 
 namespace Components\Blog\Models;
 
-use Components\Blog\Tables;
 use Hubzero\Base\Object;
-use Hubzero\Base\ItemList;
 use Component;
 use Lang;
 use User;
+use Date;
 
 require_once(__DIR__ . DS . 'entry.php');
 
@@ -46,27 +45,6 @@ require_once(__DIR__ . DS . 'entry.php');
  */
 class Archive extends Object
 {
-	/**
-	 * Tables\Entry
-	 *
-	 * @var  object
-	 */
-	private $_tbl = null;
-
-	/**
-	 * Models\Entry
-	 *
-	 * @var  object
-	 */
-	private $_entry = null;
-
-	/**
-	 * \JDatabase
-	 *
-	 * @var  object
-	 */
-	private $_db = NULL;
-
 	/**
 	 * Registry
 	 *
@@ -90,10 +68,6 @@ class Archive extends Object
 	 */
 	public function __construct($scope='site', $scope_id=0)
 	{
-		$this->_db = \App::get('db');
-
-		$this->_tbl = new Tables\Entry($this->_db);
-
 		$this->set('scope', $scope);
 		$this->set('scope_id', $scope_id);
 	}
@@ -125,22 +99,6 @@ class Archive extends Object
 	}
 
 	/**
-	 * Get a specific entry
-	 *
-	 * @param   mixed   $id  String (alias) or integer (ID) of an entry
-	 * @return  object
-	 */
-	public function entry($id=null)
-	{
-		if (!isset($this->_entry)
-		 || ($id !== null && (int) $this->_entry->get('id') != $id && (string) $this->_entry->get('alias') != $id))
-		{
-			$this->_entry = Entry::getInstance($id, $this->get('scope'), $this->get('scope_id'));
-		}
-		return $this->_entry;
-	}
-
-	/**
 	 * Get a count of, model for, or list of entries
 	 *
 	 * @param   string   $rtrn     Data to return
@@ -148,7 +106,7 @@ class Archive extends Object
 	 * @param   boolean  $reset    Clear cached data?
 	 * @return  mixed
 	 */
-	public function entries($rtrn='list', $filters=array(), $reset=false)
+	public function entries($filters = array())
 	{
 		if (!isset($filters['scope']))
 		{
@@ -159,40 +117,69 @@ class Archive extends Object
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
-		switch (strtolower($rtrn))
+		$results = Entry::all();
+
+		if ($filters['scope'])
 		{
-			case 'count':
-				return (int) $this->_tbl->find('count', $filters);
-			break;
-
-			case 'first':
-				$filters['sort']     = 'publish_up';
-				$filters['sort_Dir'] = 'ASC';
-
-				$result = $this->_tbl->find('first', $filters);
-				return new Entry($result);
-			break;
-
-			case 'popular':
-				$filters['sort']     = 'hits';
-				$filters['sort_Dir'] = 'DESC';
-			break;
-
-			case 'recent':
-				$filters['sort']     = 'publish_up';
-				$filters['sort_Dir'] = 'DESC';
-			break;
+			$results->whereEquals('scope', $filters['scope'])
+				->whereEquals('scope_id', $filters['scope_id']);
 		}
 
-		if ($results = $this->_tbl->find('list', $filters))
+		if (isset($filters['state']))
 		{
-			foreach ($results as $key => $result)
+			$results->whereEquals('state', $filters['state']);
+		}
+
+		if (isset($filters['access']))
+		{
+			$results->whereIn('access', $filters['access']);
+		}
+
+		if (isset($filters['year']) && $filters['year'] != 0)
+		{
+			if (isset($filters['month']) && $filters['month'] != 0)
 			{
-				$results[$key] = new Entry($result);
+				$startdate = $filters['year'] . '-' . $filters['month'] . '-01 00:00:00';
+
+				if ($filters['month']+1 == 13)
+				{
+					$year  = $filters['year'] + 1;
+					$month = 1;
+				}
+				else
+				{
+					$month = ($filters['month']+1);
+					$year  = $filters['year'];
+				}
+				$enddate = sprintf("%4d-%02d-%02d 00:00:00", $year, $month, 1);
 			}
+			else
+			{
+				$startdate = $filters['year'] . '-01-01 00:00:00';
+				$enddate   = ($filters['year']+1) . '-01-01 00:00:00';
+			}
+
+			$results->where('publish_up', '>=', $startdate)
+					->where('publish_up', '<', $enddate);
+		}
+		else
+		{
+			$results->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+						->orWhere('publish_up', '<=', Date::toSql(), 1);
 		}
 
-		return new ItemList($results);
+		$results->resetDepth();
+		$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+					->orWhere('publish_down', '>=', Date::toSql(), 1);
+
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$filters['search'] = '%' . strtolower(stripslashes($filters['search'])) . '%';
+			$results->where('title', 'LIKE', $filters['search'])
+				->orWhere('content', 'LIKE', $filters['search']);
+		}
+
+		return $results;
 	}
 
 	/**

@@ -79,84 +79,53 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span4">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-			<?php if ($this->filters['scope'] == 'group') { ?>
-				<label for="filter_scope_id"><?php echo Lang::txt('COM_BLOG_SCOPE_GROUP'); ?>:</label>
-				<select name="scope_id" id="filter_scope_id">
-					<?php
-					$groups = \Hubzero\User\Group::find(array(
-						'authorized' => 'admin',
-						'fields'     => array('cn','description','published','gidNumber','type'),
-						'type'       => array(1,3),
-						'sortby'     => 'description'
-					));
+				<input type="submit" value="<?php echo Lang::txt('COM_BLOG_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span8 align-right">
+				<label for="filter-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label>
+				<?php echo \Components\Blog\Admin\Helpers\Html::scopes($this->filters['scope'], 'scope', 'filter-scope', 'onchange="this.form.submit()"'); ?>
 
-					$html  = '<option value="0"';
-					if ($this->filters['scope_id'] == 0)
-					{
-						$html .= ' selected="selected"';
-					}
-					$html .= '>' . Lang::txt('JNONE') . '</option>' . "\n";
-					if ($groups)
-					{
-						foreach ($groups as $group)
-						{
-							$html .= ' <option value="' . $group->gidNumber . '"';
-							if ($this->filters['scope_id'] == $group->gidNumber)
-							{
-								$html .= ' selected="selected"';
-							}
-							$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>' . "\n";
-						}
-					}
-					echo $html;
-					?>
+				<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] === 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
-			<?php } ?>
 
-			<input type="submit" value="<?php echo Lang::txt('COM_BLOG_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
-			<select name="state" id="filter-state" onchange="this.form.submit();">
-				<option value=""<?php if ($this->filters['state'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_ALL_STATES'); ?></option>
-				<option value="public"<?php if ($this->filters['state'] == 'public') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>
-				<option value="registered"<?php if ($this->filters['state'] == 'registered') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_REGISTERED'); ?></option>
-				<option value="private"<?php if ($this->filters['state'] == 'private') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_PRIVATE'); ?></option>
-				<option value="trashed"<?php if ($this->filters['state'] == 'trashed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_TRASHED'); ?></option>
-			</select>
+				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<select name="access" id="filter-access" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_BLOG_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-1"><?php echo $this->grid('sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2" colspan="2"><?php echo $this->grid('sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<?php if ($this->filters['scope'] == 'group') { ?>
-					<th scope="col"><?php echo $this->grid('sort', 'COM_BLOG_COL_GROUP', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<?php } ?>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-1"><?php echo Html::grid('sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2" colspan="2"><?php echo Html::grid('sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_SCOPE', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo ($this->filters['scope'] == 'group') ? '9' : '8'; ?>"><?php
+				<td colspan="9"><?php
 				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination
 				?></td>
 			</tr>
 		</tfoot>
@@ -274,7 +243,7 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+					<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 				</td>
 				<td class="priority-1">
 					<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
@@ -310,13 +279,11 @@ foreach ($this->rows as $row)
 						</span>
 					<?php } ?>
 				</td>
-				<?php if ($this->filters['scope'] == 'group') { ?>
-					<td>
-						<span>
-							<?php echo $this->escape($row->get('scope_id')); ?>
-						</span>
-					</td>
-				<?php } ?>
+				<td>
+					<span>
+						<?php echo $this->escape($row->get('scope') . ' (' . $row->get('scope_id') . ')'); ?>
+					</span>
+				</td>
 			</tr>
 <?php
 	$i++;
@@ -330,7 +297,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="scope" value="<?php echo $this->filters['scope']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 

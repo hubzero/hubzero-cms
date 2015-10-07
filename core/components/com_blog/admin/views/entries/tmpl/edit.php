@@ -57,136 +57,146 @@ Joomla.submitbutton = function(pressbutton) {
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// do field validation
 	if ($('#field-title').val() == ''){
 		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_TITLE'); ?>");
 	} else if ($('#field-content').val() == ''){
 		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		Joomla.submitform(pressbutton, document.getElementById('item-form'));
 	}
 }
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_HINT'); ?>">
-					<label for="field-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label><br />
-					<?php if (!$this->row->exists()) { ?>
-						<select name="fields[scope]" id="field-scope">
-							<option value="site"<?php if ($this->row->get('scope') == 'site' || $this->row->get('scope') == '') { echo ' selected="selected"'; } ?>>site</option>
-							<option value="member"<?php if ($this->row->get('scope') == 'member') { echo ' selected="selected"'; } ?>>member</option>
-							<option value="group"<?php if ($this->row->get('scope') == 'group') { echo ' selected="selected"'; } ?>>group</option>
-						</select>
-					<?php } else { ?>
-						<input type="text" name="fields[scope]" id="field-scope" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
-					<?php } ?>
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_HINT'); ?>">
+							<label for="field-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label><br />
+							<?php if ($this->row->isNew()) { ?>
+								<?php echo \Components\Blog\Admin\Helpers\Html::scopes($this->row->get('scope'), 'fields[scope]', 'field-scope'); ?>
+							<?php } else { ?>
+								<input type="text" name="fields[scope]" id="field-scope" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
+							<?php } ?>
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="field-scope_id"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_ID'); ?>:</label><br />
+							<?php if ($this->row->isNew()) { ?>
+								<input type="text" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
+							<?php } else { ?>
+								<input type="text" name="fields[scope_id]" id="field-scope_id" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
+							<?php } ?>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
+
 				<div class="input-wrap">
-					<label for="field-scope_id"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE_ID'); ?>:</label><br />
-					<?php if (!$this->row->exists()) { ?>
-						<input type="text" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
-					<?php } else { ?>
-						<input type="text" name="fields[scope_id]" id="field-scope_id" disabled="disabled" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
-					<?php } ?>
+					<label for="field-title"><?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-			</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_ALIAS_HINT'); ?>">
+					<label for="field-alias"><?php echo Lang::txt('COM_BLOG_FIELD_ALIAS'); ?>:</label><br />
+					<input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_ALIAS_HINT'); ?></span>
+				</div>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-alias"><?php echo Lang::txt('COM_BLOG_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_ALIAS_HINT'); ?></span>
-			</div>
+				<div class="input-wrap">
+					<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content', array('buttons' => false)); ?>
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content', array('buttons' => false)); ?>
-			</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?>">
+					<label for="field-tags"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS'); ?>:</label><br />
+					<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+					<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_BLOG_FIELD_ID'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('id', 0); ?>
+							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+							<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_BLOG_FIELD_CREATOR'); ?>:</th>
+						<td>
+							<?php
+							$editor = User::getInstance($this->row->get('created_by'));
+							echo $this->escape(stripslashes($editor->get('name')));
+							?>
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_BLOG_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('created'); ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_BLOG_FIELD_HITS'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('hits'); ?>
+							<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->escape($this->row->get('hits')); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?>">
-				<label for="field-tags"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS'); ?>:</label><br />
-				<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
-				<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
-			</div>
-		</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
+
+				<div class="input-wrap">
+					<input class="option" type="checkbox" name="fields[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->row->get('allow_comments')) { echo ' checked="checked"'; } ?> />
+					<label for="field-allow_comments"><?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?></label>
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-access"><?php echo Lang::txt('COM_BLOG_FIELD_ACCESS_LEVEL'); ?>:</label>
+					<select name="fields[access]" id="field-access">
+						<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
+					</select>
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label><br />
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+						<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+					</select>
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-publish_up"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>:</label><br />
+					<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-publish_down"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>:</label><br />
+					<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
+				</div>
+			</fieldset>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_BLOG_FIELD_CREATOR'); ?>:</th>
-					<td>
-						<?php
-						$editor = User::getInstance($this->row->get('created_by'));
-						echo $this->escape(stripslashes($editor->get('name')));
-						?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_BLOG_FIELD_CREATED'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('created'); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_BLOG_FIELD_HITS'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('hits'); ?>
-						<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->escape($this->row->get('hits')); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
 
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
-
-			<div class="input-wrap">
-				<input class="option" type="checkbox" name="fields[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->row->get('allow_comments')) { echo ' checked="checked"'; } ?> />
-				<label for="field-allow_comments"><?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?></label>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label><br />
-				<select name="fields[state]" id="field-state">
-					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>
-					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_REGISTERED'); ?></option>
-					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_PRIVATE'); ?></option>
-					<option value="-1"<?php if ($this->row->get('state') == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_TRASHED'); ?></option>
-				</select>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-publish_up"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-publish_down"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
-			</div>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
-
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-	<input type="hidden" name="fields[access]" value="<?php echo $this->row->get('access', 0); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

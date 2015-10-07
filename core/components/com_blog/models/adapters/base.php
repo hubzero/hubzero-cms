@@ -73,14 +73,15 @@ abstract class Base extends Object
 	/**
 	 * Retrieve a property from the internal item object
 	 *
-	 * @param   string  $key  Property to retrieve
+	 * @param   string  $key      Property to retrieve
+	 * @param   mixed   $default
 	 * @return  string
 	 */
-	public function item($key='')
+	public function item($key='', $default = null)
 	{
 		if ($key && is_object($this->_item))
 		{
-			return $this->_item->$key;
+			return $this->_item->get($key, $default);
 		}
 		return $this->_item;
 	}

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -35,7 +34,7 @@ defined('_HZEXEC_') or die();
 ?>
 <ol class="comments" id="t<?php echo (isset($this->parent) ? $this->parent : '0'); ?>">
 	<?php
-	if ($this->comments && $this->comments instanceof \Hubzero\Base\ItemList)
+	if ($this->comments)
 	{
 		$cls = 'odd';
 		if (isset($this->cls))

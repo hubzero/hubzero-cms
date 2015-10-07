@@ -25,72 +25,82 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Blog\Models;
 
-use Components\Blog\Tables;
-use Hubzero\Base\Model;
+use Hubzero\Database\Relational;
 use Hubzero\User\Profile;
-use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Hubzero\Config\Registry;
+use Component;
 use Lang;
 use User;
 use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'entry.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'comment.php');
 
 /**
  * Model class for a blog entry
  */
-class Entry extends Model
+class Entry extends Relational
 {
 	/**
-	 * Table name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Blog\\Tables\\Entry';
+	protected $namespace = 'blog';
 
 	/**
-	 * Model context
+	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	protected $_context = 'com_blog.entry.content';
+	public $orderBy = 'publish_up';
 
 	/**
-	 * BlogModelComment
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_comment = null;
+	public $orderDir = 'desc';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Fields and their validation criteria
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_comments = null;
+	protected $rules = array(
+		'title'    => 'notempty',
+		'content'  => 'notempty',
+		'scope'    => 'notempty'
+	);
 
 	/**
-	 * Comment count
+	 * Automatically fillable fields
 	 *
-	 * @var integer
+	 * @var  array
 	 */
-	private $_comments_count = null;
+	public $always = array(
+		'alias',
+		'created',
+		'created_by',
+		'publish_up',
+		'publish_down'
+	);
 
 	/**
-	 * User
+	 * Fields to be parsed
 	 *
-	 * @var object
+	 * @var array
 	 */
-	private $_creator = NULL;
+	protected $parsed = array(
+		'content'
+	);
 
 	/**
 	 * Registry
@@ -104,65 +114,133 @@ class Entry extends Model
 	 *
 	 * @var object
 	 */
-	private $_adapter = null;
+	protected $adapter = null;
 
 	/**
-	 * Constructor
+	 * Sets up additional custom rules
 	 *
-	 * @param   mixed    $oid       ID (int) or alias (string)
-	 * @param   string   $scope     site|member|group
-	 * @param   integer  $scope_id  ID of the scope object
 	 * @return  void
 	 */
-	public function __construct($oid, $scope=null, $scope_id=null)
+	public function setup()
 	{
-		$this->_db = \App::get('db');
-
-		$this->_tbl = new Tables\Entry($this->_db);
-
-		if ($oid)
+		$this->addRule('publish_down', function($data)
 		{
-			if (is_numeric($oid) && $scope_id == null)
+			if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00')
 			{
-				$this->_tbl->load($oid);
+				return false;
 			}
-			else if (is_string($oid))
-			{
-				$this->_tbl->loadAlias($oid, $scope, $scope_id);
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-
-			$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
-		}
+			return $data['publish_down'] >= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it begins');
+		});
 	}
 
 	/**
-	 * Returns a reference to a blog entry model
+	 * Generates automatic owned by field value
 	 *
-	 * @param   mixed    $oid       ID (int) or alias (string)
-	 * @param   string   $scope     site|member|group
-	 * @param   integer  $scope_id  ID of the scope object
-	 * @return  object
+	 * @param   array   $data  the data being saved
+	 * @return  string
 	 */
-	static function &getInstance($oid=null, $scope=null, $scope_id=null)
+	public function automaticAlias($data)
 	{
-		static $instances;
-
-		if (!isset($instances))
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+		if (strlen($alias) > 100)
 		{
-			$instances = array();
+			$alias = substr($alias . ' ', 0, 100);
+			$alias = substr($alias, 0, strrpos($alias,' '));
 		}
+		$alias = str_replace(' ', '-', $alias);
 
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new static($oid, $scope, $scope_id);
-		}
-
-		return $instances[$oid];
+		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
 	}
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAllowComments($data)
+	{
+		$allow = intval(isset($data['allow_comments']) ? $data['allow_comments'] : 1);
+
+		return ($allow ? $allow : 0);
+	}
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishUp($data)
+	{
+		if (!isset($data['publish_up']))
+		{
+			$data['publish_up'] = null;
+		}
+
+		$publish_up = $data['publish_up'];
+
+		if (!$publish_up || $publish_up == '0000-00-00 00:00:00')
+		{
+			$publish_up = ($data['id'] ? $this->created : \Date::toSql());
+		}
+
+		return $publish_up;
+	}
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishDown($data)
+	{
+		if (!isset($data['publish_down']) || !$data['publish_down'])
+		{
+			$data['publish_down'] = '0000-00-00 00:00:00';
+		}
+		return $data['publish_down'];
+	}
+
+	/**
+	 * Retrieves one row loaded by an alias field
+	 *
+	 * @param   string   $alias     The alias to load by
+	 * @param   string   $scope     Scope
+	 * @param   integer  $scope_id  Scope ID
+	 * @return  mixed
+	 */
+	public static function oneByScope($alias, $scope, $scope_id)
+	{
+		return self::blank()
+			->whereEquals('alias', $alias)
+			->whereEquals('scope', $scope)
+			->whereEquals('scope_id', $scope_id)
+			->row();
+	}
+
+	/**
+	 * Has the publish window started?
+	 *
+	 * @return  boolean
+	 */
+	/*public static function published()
+	{
+		$results = self::all();
+
+		$results->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+					->orWhere('publish_up', '<=', \Date::toSql(), 1);
+
+		$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+					->orWhere('publish_down', '>=', \Date::toSql(), 1);
+
+		$results->whereEquals('state', '1');
+
+		return $results;
+	}*/
 
 	/**
 	 * Has the publish window started?
@@ -172,13 +250,13 @@ class Entry extends Model
 	public function started()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists())
+		if ($this->isNew())
 		{
 			return false;
 		}
 
 		if ($this->get('publish_up')
-		 && $this->get('publish_up') != $this->_db->getNullDate()
+		 && $this->get('publish_up') != '0000-00-00 00:00:00'
 		 && $this->get('publish_up') > Date::toSql())
 		{
 			return false;
@@ -195,13 +273,13 @@ class Entry extends Model
 	public function ended()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists())
+		if ($this->isNew())
 		{
 			return true;
 		}
 
 		if ($this->get('publish_down')
-		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') != '0000-00-00 00:00:00'
 		 && $this->get('publish_down') <= Date::toSql())
 		{
 			return true;
@@ -213,7 +291,7 @@ class Entry extends Model
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isDeleted()
 	{
@@ -232,7 +310,7 @@ class Entry extends Model
 	public function isAvailable()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || $this->isDeleted())
+		if ($this->isNew() || $this->isDeleted())
 		{
 			return false;
 		}
@@ -259,7 +337,7 @@ class Entry extends Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof Profile))
+		/*if (!($this->_creator instanceof Profile))
 		{
 			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
@@ -276,116 +354,18 @@ class Entry extends Model
 			}
 			return $this->_creator->get($property, $default);
 		}
-		return $this->_creator;
+		return $this->_creator;*/
+		return Profile::getInstance($this->get('created_by'));
 	}
 
 	/**
-	 * Set and get a specific comment
+	 * Get a list of comments
 	 *
-	 * @param   integer  $id  ID of specific comment to fetch
-	 * @return  object   BlogModelComment
+	 * @return  object
 	 */
-	public function comment($id=null)
+	public function comments()
 	{
-		if (!isset($this->_comment)
-		 || ($id !== null && (int) $this->_comment->get('id') != $id))
-		{
-			$this->_comment = null;
-			if ($this->_comments instanceof ItemList)
-			{
-				foreach ($this->_comments as $key => $comment)
-				{
-					if ((int) $comment->get('id') == $id)
-					{
-						$this->_comment = $comment;
-						break;
-					}
-				}
-			}
-			if (!$this->_comment)
-			{
-				$this->_comment = Comment::getInstance($id);
-			}
-		}
-		return $this->_comment;
-	}
-
-	/**
-	 * Get a list or count of comments
-	 *
-	 * @param   string   $rtrn     Data format to return
-	 * @param   array    $filters  Filters to apply to data fetch
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
-	 */
-	public function comments($rtrn='list', $filters=array(), $clear = false)
-	{
-		$tbl = new Tables\Comment($this->_db);
-
-		if (!isset($filters['entry_id']))
-		{
-			$filters['entry_id'] = $this->get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
-				{
-					$this->_comments_count = 0;
-
-					if (!$this->_comments)
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($this->_comments as $com)
-					{
-						$this->_comments_count++;
-						if ($com->replies())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$this->_comments_count++;
-								if ($rep->replies())
-								{
-									$this->_comments_count += $rep->replies()->total();
-								}
-							}
-						}
-					}
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_comments instanceof ItemList) || $clear)
-				{
-					if ($results = $tbl->getAllComments($this->get('id'), $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Comment($result);
-							$results[$key]->set('option', $this->_adapter()->get('option'));
-							$results[$key]->set('scope', $this->_adapter()->get('scope'));
-							$results[$key]->set('alias', $this->_adapter()->get('alias'));
-							$results[$key]->set('path', $this->_adapter()->get('path'));
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_comments = new ItemList($results);
-				}
-				return $this->_comments;
-			break;
-		}
+		return $this->oneToMany('Comment', 'entry_id');
 	}
 
 	/**
@@ -397,7 +377,7 @@ class Entry extends Model
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
-		if (!$this->exists())
+		if (!$this->get('id'))
 		{
 			switch (strtolower($what))
 			{
@@ -448,42 +428,77 @@ class Entry extends Model
 		{
 			switch ($this->get('state'))
 			{
-				case 1:
-					return 'public';
-				break;
-				case 2:
-					return 'registered';
-				break;
+				case 1:  return 'published';   break;
+				case 2:  return 'trashed';     break;
 				case 0:
-				default:
-					return 'private';
-				break;
+				default: return 'unpublished'; break;
 			}
 		}
-		else
-		{
-			return $this->get('state');
-		}
+
+		return $this->get('state');
 	}
 
 	/**
-	 * The magic call method is used to call object methods using the adapter.
+	 * Get the access level of the entry as either text or numerical value
 	 *
-	 * @param   string  $method     The name of the method called.
-	 * @param   array   $arguments  The arguments of the method called.
-	 * @return  array   An array of values returned by the methods called on the objects in the data set.
-	 * @since   1.3.1
+	 * @param   string  $as  Format to return state in [text, number]
+	 * @return  mixed   String or Integer
 	 */
-	public function __call($method, $arguments = array())
+	public function visibility($as='text')
 	{
-		$callback = array($this->_adapter(), $method);
+		static $access;
 
-		if (is_callable($callback))
+		if ($as == 'text')
 		{
-			return call_user_func_array($callback, $arguments);
+			if (!isset($access))
+			{
+				$access = \Html::access('assetgroups');
+			}
+			foreach ($access as $a)
+			{
+				if ($this->get('access') == $a->value)
+				{
+					return $a->text;
+				}
+			}
 		}
 
-		throw new \BadMethodCallException(Lang::txt('Method "%s" does not exist.', $method));
+		return $this->get('access');
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
+	 */
+	public function link($type='', $params=null)
+	{
+		return $this->adapter()->link($type, $params);
+	}
+
+	/**
+	 * Retrieve a property from the internal item object
+	 *
+	 * @param   string  $key  Property to retrieve
+	 * @return  string
+	 */
+	public function item($key='')
+	{
+		return $this->adapter()->item($key);
+	}
+
+	/**
+	 * Get the path to the storage location for
+	 * this blog's files
+	 *
+	 * @return  string
+	 */
+	public function filespace()
+	{
+		return $this->adapter()->filespace();
 	}
 
 	/**
@@ -492,9 +507,9 @@ class Entry extends Model
 	 *
 	 * @return  object
 	 */
-	private function _adapter()
+	public function adapter()
 	{
-		if (!$this->_adapter)
+		if (!$this->adapter)
 		{
 			$scope = strtolower($this->get('scope'));
 
@@ -503,19 +518,22 @@ class Entry extends Model
 			if (!class_exists($cls))
 			{
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
+
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id')));
 				}
+
 				include_once($path);
 			}
 
-			$this->_adapter = new $cls($this->get('scope_id'));
-			$this->_adapter->set('publish_up', $this->get('publish_up'));
-			$this->_adapter->set('id', $this->get('id'));
-			$this->_adapter->set('alias', $this->get('alias'));
+			$this->adapter = with(new $cls($this->get('scope_id')))
+				->set('publish_up', $this->get('publish_up'))
+				->set('id', $this->get('id'))
+				->set('alias', $this->get('alias'));
 		}
-		return $this->_adapter;
+
+		return $this->adapter;
 	}
 
 	/**
@@ -537,76 +555,33 @@ class Entry extends Model
 			break;
 
 			default:
+				if ($as)
+				{
+					return Date::of($this->get('publish_up'))->toLocal($as);
+				}
 				return $this->get('publish_up');
 			break;
 		}
 	}
 
 	/**
-	 * Get the content of the entry
+	 * Transform params
 	 *
-	 * @param   string   $as       Format to return state in [text, number]
-	 * @param   integer  $shorten  Number of characters to shorten text to
 	 * @return  string
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function transformParams()
 	{
-		$as = strtolower($as);
-		$options = array();
-
-		switch ($as)
+		if (!is_object($this->params))
 		{
-			case 'parsed':
-				$content = $this->get('content.parsed', null);
+			$params = new Registry($this->get('params'));
 
-				if ($content === null)
-				{
-					$published = Date::of($this->get('publish_up'));
+			$p = Component::params('com_blog');
+			$p->merge($params);
 
-					$scope  = $published->toLocal('Y') . '/';
-					$scope .= $published->toLocal('m');
-
-					$config = array(
-						'option'   => $this->_adapter()->get('option'),
-						'scope'    => $this->_adapter()->get('scope') . '/' . $scope,
-						'pagename' => $this->get('alias'),
-						'pageid'   => 0, //$this->get('id'),
-						'filepath' => $this->_adapter()->get('path'),
-						'domain'   => ''
-					);
-
-					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('content', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('content.parsed', (string) $this->get('content', ''));
-					$this->set('content', $content);
-
-					return $this->content($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = strip_tags($this->content('parsed'));
-			break;
-
-			case 'raw':
-			default:
-				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('content'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
+			$this->params = $p;
 		}
 
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-		return $content;
+		return $this->params;
 	}
 
 	/**
@@ -617,13 +592,23 @@ class Entry extends Model
 	 */
 	public function access($action='view')
 	{
+		if (!is_object($this->params))
+		{
+			$params = new Registry($this->get('params'));
+
+			$p = Component::params('com_blog');
+			$p->merge($params);
+
+			$this->params = $p;
+		}
+
 		if (!$this->params->get('access-check-done', false))
 		{
 			// Set NOT viewable by default
 			// We need to ensure the forum is published first
 			$this->params->set('access-view-entry', false);
 
-			if ($this->exists() && $this->isAvailable())
+			if (!$this->isNew() && $this->isAvailable())
 			{
 				$this->params->set('access-view-entry', true);
 			}
@@ -687,30 +672,29 @@ class Entry extends Model
 	 *
 	 * @return  boolean  False if error, True on success
 	 */
-	public function delete()
+	public function destroy()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists())
+		if ($this->isNew())
 		{
 			return true;
 		}
 
 		// Remove comments
-		$comment = new Tables\Comment($this->_db);
-		if (!$comment->deleteByEntry($this->get('id')))
+		foreach ($this->comments() as $comment)
 		{
-			$this->setError($comment->getError());
-			return false;
+			if (!$comment->destroy())
+			{
+				$this->setError($comment->getError());
+				return false;
+			}
 		}
 
-		$cloud = new Tags($this->get('id'));
-		if (!$cloud->removeAll())
-		{
-			$this->setError(Lang::txt('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
-			return false;
-		}
+		// Remove all tags
+		$this->tag('');
 
-		return parent::delete();
+		// Attempt to delete the record
+		return parent::destroy();
 	}
 
 	/**
@@ -720,17 +704,9 @@ class Entry extends Model
 	 */
 	public function toObject()
 	{
-		$data = new \stdClass;
+		$data = parent::toObject();
 
-		$properties = $this->_tbl->getProperties();
-		foreach ($properties as $key => $value)
-		{
-			if ($key && substr($key, 0, 1) != '_')
-			{
-				$data->$key = $this->get($key);
-			}
-		}
-
+		$this->access();
 		$data->params = $this->params->toObject();
 
 		return $data;

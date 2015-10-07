@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -51,7 +50,7 @@ defined('_HZEXEC_') or die();
 	}
 	else
 	{
-		$comment  = $this->comment->content('parsed');
+		$comment  = $this->comment->content();
 	}
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -165,6 +164,8 @@ defined('_HZEXEC_') or die();
 						<input type="hidden" name="task" value="view" />
 						<input type="hidden" name="action" value="savecomment" />
 
+						<?php echo Html::input('token'); ?>
+
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_COMMENTS'); ?></span>
 							<?php
@@ -195,7 +196,7 @@ defined('_HZEXEC_') or die();
 			     ->set('cls', $cls)
 			     ->set('depth', $this->depth)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies())
+			     ->set('comments', $this->comment->replies()->whereIn('state', array(1, 3))->ordered()->rows())
 			     ->set('config', $this->config)
 			     ->set('base', $this->base)
 			     ->display();

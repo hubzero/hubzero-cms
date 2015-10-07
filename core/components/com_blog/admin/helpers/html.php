@@ -29,69 +29,47 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\Featuredblog;
-
-use Hubzero\Module\Module;
-use Components\Blog\Models\Entry;
+namespace Components\Blog\Admin\Helpers;
 
 /**
- * Module class for displaying a random, featured blog entry
+ * HTML helper
  */
-class Helper extends Module
+class Html
 {
 	/**
-	 * Display module contents
+	 * Outputs a <select> element with a specific value chosen
 	 *
-	 * @return  void
+	 * @param   mixed   $val   Chosen value
+	 * @param   string  $name  Field name
+	 * @param   string  $id    ID
+	 * @param   string  $atts  Attributes
+	 * @return  string  HTML <select>
 	 */
-	public function display()
+	public static function scopes($val, $name, $id = null, $atts = null)
 	{
-		if ($content = $this->getCacheContent())
+		$adapters = \Filesystem::files(dirname(dirname(__DIR__)) . '/models/adapters', '\.php$');
+
+		$out  = '<select name="' . $name . '" id="' . ($id ? $id : str_replace(array('[', ']'), '', $name)) . '"' . ($atts ? ' ' . $atts : '') . '>';
+		$out .= '<option value="">' . \Lang::txt('COM_BLOG_SELECT_SCOPE') . '</option>';
+		foreach ($adapters as $adapter)
 		{
-			echo $content;
-			return;
+			$adapter = ltrim($adapter, DS);
+			$adapter = preg_replace('#\.[^.]*$#', '', $adapter);
+
+			if ($adapter == 'base')
+			{
+				continue;
+			}
+
+			$selected = ($adapter == $val)
+					  ? ' selected="selected"'
+					  : '';
+
+			$out .= '<option value="' . $adapter . '"' . $selected . '>' . $adapter . '</option>';
 		}
+		$out .= '</select>';
 
-		$this->run();
-	}
-
-	/**
-	 * Build module contents
-	 *
-	 * @return  void
-	 */
-	public function run()
-	{
-		include_once(\Component::path('com_blog') . DS . 'models' . DS . 'entry.php');
-
-		$this->row = null;
-
-		$filters = array(
-			'state'      => 1,
-			'access'     => 1,
-			'sort'       => "RAND()",
-			'sort_Dir'   => '',
-			'search'     => '',
-			'scope'      => 'member',
-			'scope_id'   => 0,
-			'authorized' => false
-		);
-
-		$row = Entry::all()
-			->whereEquals('scope', $filters['scope'])
-			->whereEquals('state', $filters['state'])
-			->whereEquals('access', $filters['access'])
-			->row();
-
-		// Did we have a result to display?
-		if ($row->get('id'))
-		{
-			$this->row = $row;
-			$this->cls = trim($this->params->get('moduleclass_sfx'));
-			$this->txt_length = trim($this->params->get('txt_length'));
-
-			require $this->getLayoutPath();
-		}
+		return $out;
 	}
 }
 
