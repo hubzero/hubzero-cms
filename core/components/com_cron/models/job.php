@@ -87,9 +87,9 @@ class Job extends Relational
 	 * @var array
 	 */
 	protected $rules = array(
-		'title' => 'notempty',
+		'title'      => 'notempty',
 		'recurrence' => 'notempty',
-		'event' => 'notempty'
+		'event'      => 'notempty'
 	);
 
 	/**
@@ -99,6 +99,8 @@ class Job extends Relational
 	 */
 	public $always = array(
 		'event',
+		'created',
+		'created_by',
 		'publish_up',
 		'publish_down'
 	);
