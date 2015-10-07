@@ -55,12 +55,10 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 
 		$query  = "SELECT rc.id, rc.content as text, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'kb' AS parent_category,
 					s.alias AS section, c.alias AS category, f.alias AS article
-					FROM `#__faq_comments` AS rc
-					LEFT JOIN `#__faq` AS f
+					FROM `#__kb_comments` AS rc
+					LEFT JOIN `#__kb_articles` AS f
 						ON f.id = rc.entry_id
-					LEFT JOIN `#__faq_categories` AS s
-						ON s.id = f.section
-					LEFT JOIN `#__faq_categories` AS c
+					LEFT JOIN `#__categories` AS c
 						ON c.id = f.category
 					WHERE rc.id=" . $refid;
 
@@ -75,7 +73,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 				{
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
-				$rows[$key]->href = Route::url('index.php?option=com_kb&section=' . $row->section . '&category=' . $row->category . '&alias=' . $row->article);
+				$rows[$key]->href = Route::url('index.php?option=com_kb&category=' . $row->category . '&alias=' . $row->article);
 			}
 		}
 		return $rows;
