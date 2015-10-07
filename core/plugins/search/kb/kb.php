@@ -77,21 +77,15 @@ class plgSearchKB extends \Hubzero\Plugin\Plugin
 			"SELECT
 				f.title,
 				coalesce(f.`fulltxt`, '') AS description,
-				concat('index.php?option=com_kb&section=', coalesce(concat(s.alias, '/'), ''), f.alias) AS link,
+				concat('index.php?option=com_kb&category=', coalesce(concat(c.alias, '/'), ''), f.alias) AS link,
 				$weight AS weight,
 				created AS date,
-				CASE
-					WHEN s.alias IS NULL THEN c.alias
-					WHEN c.alias IS NULL THEN s.alias
-					ELSE concat(s.alias, ', ', c.alias)
-				END AS section
-			FROM `#__faq` f
-			LEFT JOIN `#__faq_categories` s
-				ON s.id = f.section
-			LEFT JOIN `#__faq_categories` c
+				c.path AS section
+			FROM `#__kb_articles` f
+			LEFT JOIN `#__categories` c
 				ON c.id = f.category
 			WHERE
-				f.state = 1 AND s.state = 1 AND
+				f.state = 1 AND c.published = 1 AND
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"

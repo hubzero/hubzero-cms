@@ -95,7 +95,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 			. " f.fulltxt AS text,"
 			. " CONCAT('index.php?option=com_kb&task=article&id=', f.id) AS href";
 
-		$f_from = " FROM #__faq AS f";
+		$f_from = " FROM #__kb_articles AS f";
 
 		$f_where = "f.state=1 AND f.created > '$period->cStartDate' AND f.created < '$period->cEndDate' AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
 

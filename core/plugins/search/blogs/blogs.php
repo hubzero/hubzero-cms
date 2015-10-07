@@ -53,19 +53,6 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
-		if ($authz->is_guest())
-		{
-			$authorization = 'state = 1';
-		}
-		else if ($authz->is_super_admin())
-		{
-			$authorization = '1 = 1';
-		}
-		else
-		{
-			$authorization = 'state IN (1,2)';
-		}
-
 		$now = Date::toSql();
 
 		$terms = $request->get_term_ar();
@@ -81,6 +68,7 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 		}
 		$addtl_where[] = "(be.publish_up <= '$now')";
 		$addtl_where[] = "(be.publish_down = '0000-00-00 00:00:00' OR (be.publish_down != '0000-00-00 00:00:00' AND be.publish_down > '$now'))";
+		$addtl_where[] = '(be.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
 		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
@@ -103,7 +91,7 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 			INNER JOIN `#__users` u ON u.id = be.created_by
 			LEFT JOIN `#__xgroups` AS g ON g.gidNumber=be.scope_id AND be.scope='group'
 			WHERE
-				$authorization AND
+				be.state=1 AND
 				$weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);

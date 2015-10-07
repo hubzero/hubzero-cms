@@ -84,6 +84,26 @@ class Comment extends Relational
 	);
 
 	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'content'  => 'notempty',
+		'entry_id' => 'positive|nonzero'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'created',
+		'created_by'
+	);
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param   string  $as  What data to return

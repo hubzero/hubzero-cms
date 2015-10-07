@@ -88,7 +88,9 @@ class Article extends Relational
 	 * @var  array
 	 **/
 	public $always = array(
-		'alias'
+		'alias',
+		'created',
+		'created_by'
 	);
 
 	/**
