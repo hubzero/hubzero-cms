@@ -680,12 +680,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "26dbd95f3eab684fccdc90ea431fda8d5982d776"
+                "reference": "e89cd99deb48c6690c152ee47fd5a01f0ef05967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/26dbd95f3eab684fccdc90ea431fda8d5982d776",
-                "reference": "26dbd95f3eab684fccdc90ea431fda8d5982d776",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/e89cd99deb48c6690c152ee47fd5a01f0ef05967",
+                "reference": "e89cd99deb48c6690c152ee47fd5a01f0ef05967",
                 "shasum": ""
             },
             "require": {
@@ -716,20 +716,20 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2015-10-01 21:27:00"
+            "time": "2015-10-06 21:12:46"
         },
         {
             "name": "hubzero/orcid-php",
-            "version": "v0.1",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "570841355da67b842d2026f197a21e7e513aa79c"
+                "reference": "884e4c825737ba605da9877fcfc8c129adffc6ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/570841355da67b842d2026f197a21e7e513aa79c",
-                "reference": "570841355da67b842d2026f197a21e7e513aa79c",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/884e4c825737ba605da9877fcfc8c129adffc6ef",
+                "reference": "884e4c825737ba605da9877fcfc8c129adffc6ef",
                 "shasum": ""
             },
             "require": {
@@ -737,9 +737,9 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9.*",
+                "mockery/mockery": "dev-master",
                 "phpunit/phpunit": "4.*",
-                "squizlabs/php_codesniffer": "2.*"
+                "satooshi/php-coveralls": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -757,7 +757,7 @@
                 "orcid",
                 "php"
             ],
-            "time": "2015-09-23 17:47:27"
+            "time": "2015-09-29 14:32:15"
         },
         {
             "name": "leafo/lessphp",
