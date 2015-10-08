@@ -82,59 +82,60 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php endif; ?>
 
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_TOOLS_USER_PREFS_LEGEND'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_TOOLS_USER_PREFS_LEGEND'); ?></span></legend>
 
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="save" />
+				<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="save" />
 
-			<?php if (!$this->row->id) : ?>
+				<?php if (!$this->row->id) : ?>
+					<div class="input-wrap">
+						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
+						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
+
+						<label for="field-user_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER'); ?>:</label>
+						<input type="text" name="fields[user_id]" id="field-user_id" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
+						<span><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER_HINT'); ?></span>
+					</div>
+				<?php else : ?>
+					<input type="hidden" name="fields[user_id]" id="field-user_id" value="<?php echo $this->row->user_id; ?>" />
+				<?php endif; ?>
 				<div class="input-wrap">
-					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
-					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
-
-					<label for="field-user_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER'); ?>:</label>
-					<input type="text" name="fields[user_id]" id="field-user_id" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
-					<span><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER_HINT'); ?></span>
+					<label for="class_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_CLASS'); ?>:</label>
+					<?php echo $this->classes; ?>
 				</div>
-			<?php else : ?>
-				<input type="hidden" name="fields[user_id]" id="field-user_id" value="<?php echo $this->row->user_id; ?>" />
-			<?php endif; ?>
-			<div class="input-wrap">
-				<label for="class_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_CLASS'); ?>:</label>
-				<?php echo $this->classes; ?>
-			</div>
-			<div class="input-wrap">
-				<label for="field-jobs"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_JOBS'); ?>:</label>
-				<input <?php echo ($this->row->class_id) ? 'readonly' : ''; ?> type="text" name="fields[jobs]" id="field-jobs" value="<?php echo $this->escape(stripslashes($this->row->jobs)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-params"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_PREFERENCES'); ?>:</label>
-				<textarea name="fields[params]" id="field-params" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->row->params)); ?></textarea>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-jobs"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_JOBS'); ?>:</label>
+					<input <?php echo ($this->row->class_id) ? 'readonly' : ''; ?> type="text" name="fields[jobs]" id="field-jobs" value="<?php echo $this->escape(stripslashes($this->row->jobs)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-params"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_PREFERENCES'); ?>:</label>
+					<textarea name="fields[params]" id="field-params" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->row->params)); ?></textarea>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_ID'); ?></th>
+						<td><?php echo $this->row->user_id; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USERNAME'); ?></th>
+						<td><?php echo ($user ? $user->username : ''); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_NAME'); ?></th>
+						<td><?php echo ($user ? $user->name : ''); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_ID'); ?></th>
-					<td><?php echo $this->row->user_id; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USERNAME'); ?></th>
-					<td><?php echo ($user ? $user->username : ''); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_NAME'); ?></th>
-					<td><?php echo ($user ? $user->name : ''); ?></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 	<?php echo Html::input('token'); ?>
 </form>

@@ -73,40 +73,41 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
-			<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-by"><?php echo Lang::txt('COM_WISHLIST_FILTERBY'); ?>:</label>
-			<select name="filterby" id="filter-by" onchange="this.form.submit()">
-				<option value="all"<?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_NONE'); ?></option>
-				<option value="granted"<?php echo ($this->filters['filterby'] == 'granted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_GRANTED'); ?></option>
-				<option value="open"<?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_OPEN'); ?></option>
-				<option value="accepted"<?php echo ($this->filters['filterby'] == 'accepted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ACCEPTED'); ?></option>
-				<option value="pending"<?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PENDING'); ?></option>
-				<option value="rejected"<?php echo ($this->filters['filterby'] == 'rejected') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_REJECTED'); ?></option>
-				<option value="withdrawn"<?php echo ($this->filters['filterby'] == 'withdrawn') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_WITHDRAWN'); ?></option>
-				<option value="deleted"<?php echo ($this->filters['filterby'] == 'deleted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_DELETED'); ?></option>
-				<option value="useraccepted"<?php echo ($this->filters['filterby'] == 'useraccepted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED'); ?></option>
-				<option value="private"<?php echo ($this->filters['filterby'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PRIVATE'); ?></option>
-				<option value="public"<?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PUBLIC'); ?></option>
-				<option value="assigned"<?php echo ($this->filters['filterby'] == 'assigned') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ASSIGNED'); ?></option>
-			</select>
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-by"><?php echo Lang::txt('COM_WISHLIST_FILTERBY'); ?>:</label>
+				<select name="filterby" id="filter-by" onchange="this.form.submit()">
+					<option value="all"<?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_NONE'); ?></option>
+					<option value="granted"<?php echo ($this->filters['filterby'] == 'granted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_GRANTED'); ?></option>
+					<option value="open"<?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_OPEN'); ?></option>
+					<option value="accepted"<?php echo ($this->filters['filterby'] == 'accepted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ACCEPTED'); ?></option>
+					<option value="pending"<?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PENDING'); ?></option>
+					<option value="rejected"<?php echo ($this->filters['filterby'] == 'rejected') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_REJECTED'); ?></option>
+					<option value="withdrawn"<?php echo ($this->filters['filterby'] == 'withdrawn') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_WITHDRAWN'); ?></option>
+					<option value="deleted"<?php echo ($this->filters['filterby'] == 'deleted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_DELETED'); ?></option>
+					<option value="useraccepted"<?php echo ($this->filters['filterby'] == 'useraccepted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED'); ?></option>
+					<option value="private"<?php echo ($this->filters['filterby'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PRIVATE'); ?></option>
+					<option value="public"<?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PUBLIC'); ?></option>
+					<option value="assigned"<?php echo ($this->filters['filterby'] == 'assigned') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ASSIGNED'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
 			<?php if ($this->wishlist->id) { ?>
-			<tr>
-				<th colspan="8">
-					(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->wishlist->title)); ?>
-				</th>
-			</tr>
+				<tr>
+					<th colspan="8">
+						(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->wishlist->title)); ?>
+					</th>
+				</tr>
 			<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
@@ -135,64 +136,64 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
-	switch ($row->status)
-	{
-		case 1:
-			$class = 'granted';
-			$task = 'pending';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_GRANTED');
-		break;
-		case 2:
-			$class = 'trashed';
-			$task = 'grant';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_DELETED');
-		break;
-		case 3:
-			$class = 'rejected';
-			$task = 'pending';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_REJECTED');
-		break;
-		case 4:
-			$class = 'withdrawn';
-			$task = 'pending';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
-		break;
-		case 6:
-			$class = 'accepted';
-			$task = 'grant';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
-		break;
-		case 7:
-			$class = 'flagged';
-			$task = 'pending';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
-		break;
-		case 0:
-		default;
-			$class = 'pending';
-			$task = 'grant';
-			$alt = Lang::txt('COM_WISHLIST_STATUS_PENDING');
-		break;
-	}
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
+			switch ($row->status)
+			{
+				case 1:
+					$class = 'granted';
+					$task = 'pending';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_GRANTED');
+				break;
+				case 2:
+					$class = 'trashed';
+					$task = 'grant';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_DELETED');
+				break;
+				case 3:
+					$class = 'rejected';
+					$task = 'pending';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_REJECTED');
+				break;
+				case 4:
+					$class = 'withdrawn';
+					$task = 'pending';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
+				break;
+				case 6:
+					$class = 'accepted';
+					$task = 'grant';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
+				break;
+				case 7:
+					$class = 'flagged';
+					$task = 'pending';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
+				break;
+				case 0:
+				default;
+					$class = 'pending';
+					$task = 'grant';
+					$alt = Lang::txt('COM_WISHLIST_STATUS_PENDING');
+				break;
+			}
 
-	if ($row->private)
-	{
-		$color_access = 'access private';
-		$task_access = 'accesspublic';
-		$groupname = 'Private';
-	}
-	else
-	{
-		$color_access = 'access public';
-		$task_access = 'accessregistered';
-		$groupname = 'Public';
-	}
-?>
+			if ($row->private)
+			{
+				$color_access = 'access private';
+				$task_access = 'accesspublic';
+				$groupname = 'Private';
+			}
+			else
+			{
+				$color_access = 'access public';
+				$task_access = 'accessregistered';
+				$groupname = 'Public';
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
@@ -250,10 +251,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

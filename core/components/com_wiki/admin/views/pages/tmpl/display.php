@@ -71,37 +71,38 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-40 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span5">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-60 fltrt">
-			<label for="filter_group"><?php echo Lang::txt('COM_WIKI_FILTER_GROUP'); ?>:</label>
-			<select name="group" id="filter_group" onchange="document.adminForm.submit( );">
-				<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_GROUP_SELECT'); ?></option>
-				<?php
-				if ($this->groups) {
-					foreach ($this->groups as $group) {
-				?>
-				<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($group->cn == $this->filters['group']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->cn)); ?></option>
-				<?php
+				<input type="submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span7">
+				<label for="filter_group"><?php echo Lang::txt('COM_WIKI_FILTER_GROUP'); ?>:</label>
+				<select name="group" id="filter_group" onchange="document.adminForm.submit( );">
+					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_GROUP_SELECT'); ?></option>
+					<?php
+					if ($this->groups) {
+						foreach ($this->groups as $group) {
+					?>
+					<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($group->cn == $this->filters['group']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->cn)); ?></option>
+					<?php
+						}
 					}
-				}
-				?>
-			</select>
+					?>
+				</select>
 
-			<label for="filter_namespace"><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE'); ?>:</label>
-			<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
-				<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE_SELECT'); ?></option>
-				<option value="Help"<?php if (strtolower($this->filters['namespace']) == 'help') { echo ' selected="selected"'; } ?>>Help</option>
-				<option value="Template"<?php if (strtolower($this->filters['namespace']) == 'template') { echo ' selected="selected"'; } ?>>Template</option>
-			</select>
+				<label for="filter_namespace"><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE'); ?>:</label>
+				<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
+					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE_SELECT'); ?></option>
+					<option value="Help"<?php if (strtolower($this->filters['namespace']) == 'help') { echo ' selected="selected"'; } ?>>Help</option>
+					<option value="Template"<?php if (strtolower($this->filters['namespace']) == 'template') { echo ' selected="selected"'; } ?>>Template</option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -129,37 +130,37 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$i = 0;
+		<?php
+		$k = 0;
+		$i = 0;
 
-foreach ($this->rows as $row)
-{
-	switch ($row->get('state'))
-	{
-		case 2:
-			$color_access = 'trashed';
-			$class = 'trash';
-			$task = '0';
-			$alt = Lang::txt('COM_WIKI_STATE_TRASHED');
-		break;
+		foreach ($this->rows as $row)
+		{
+			switch ($row->get('state'))
+			{
+				case 2:
+					$color_access = 'trashed';
+					$class = 'trash';
+					$task = '0';
+					$alt = Lang::txt('COM_WIKI_STATE_TRASHED');
+				break;
 
-		case 1:
-			$color_access = 'private';
-			$class = 'locked';
-			$task = '0';
-			$alt = Lang::txt('COM_WIKI_STATE_LOCKED');
-		break;
+				case 1:
+					$color_access = 'private';
+					$class = 'locked';
+					$task = '0';
+					$alt = Lang::txt('COM_WIKI_STATE_LOCKED');
+				break;
 
-		case 0:
-		default:
-			$color_access = 'public';
-			$class = 'open';
-			$task = '1';
-			$alt = Lang::txt('COM_WIKI_STATE_OPEN');
-		break;
-	}
-?>
+				case 0:
+				default:
+					$color_access = 'public';
+					$class = 'open';
+					$task = '1';
+					$alt = Lang::txt('COM_WIKI_STATE_OPEN');
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
@@ -221,11 +222,11 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

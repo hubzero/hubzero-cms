@@ -90,7 +90,7 @@ jQuery(document).ready(function($){
 			<?php echo $text; ?>
 		</div>
 	</fieldset>
-	<div class="col width-100">
+	<div class="width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -126,7 +126,6 @@ jQuery(document).ready(function($){
 			</table>
 		</fieldset>
 	</div>
-	<div class="clr"></div>
 
 	<?php echo Html::input('token'); ?>
 </form>

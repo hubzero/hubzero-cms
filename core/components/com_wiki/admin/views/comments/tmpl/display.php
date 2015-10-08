@@ -75,7 +75,6 @@ function submitbutton(pressbutton)
 		<input type="submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -107,49 +106,49 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
+		<?php
+		$k = 0;
 
-$rows = $this->rows;
-for ($i=0, $n=count($rows); $i < $n; $i++)
-{
-	$row =& $rows[$i];
+		$rows = $this->rows;
+		for ($i=0, $n=count($rows); $i < $n; $i++)
+		{
+			$row =& $rows[$i];
 
-	if (!$row->anonymous)
-	{
-		$calt2  = Lang::txt('JOFF');
-		$cls2   = 'off';
-		$state2 = 1;
-	}
-	else
-	{
-		$calt2  = Lang::txt('JON');
-		$cls2   = 'on';
-		$state2 = 0;
-	}
+			if (!$row->anonymous)
+			{
+				$calt2  = Lang::txt('JOFF');
+				$cls2   = 'off';
+				$state2 = 1;
+			}
+			else
+			{
+				$calt2  = Lang::txt('JON');
+				$cls2   = 'on';
+				$state2 = 0;
+			}
 
-	switch ($row->status)
-	{
-		case 2:
-			$calt1  = Lang::txt('JTRASHED');
-			$cls1   = 'trash';
-			$state1 = 'publish';
-		break;
+			switch ($row->status)
+			{
+				case 2:
+					$calt1  = Lang::txt('JTRASHED');
+					$cls1   = 'trash';
+					$state1 = 'publish';
+				break;
 
-		case 1:
-			$calt1  = Lang::txt('COM_WIKI_STATE_ABUSIVE');
-			$cls1   = 'unpublish';
-			$state1 = 'publish';
-		break;
+				case 1:
+					$calt1  = Lang::txt('COM_WIKI_STATE_ABUSIVE');
+					$cls1   = 'unpublish';
+					$state1 = 'publish';
+				break;
 
-		case 0:
-		default:
-			$calt1  = Lang::txt('JPUBLISHED');
-			$cls1   = 'publish';
-			$state1 = 'unpublish';
-		break;
-	}
-?>
+				case 0:
+				default:
+					$calt1  = Lang::txt('JPUBLISHED');
+					$cls1   = 'publish';
+					$state1 = 'unpublish';
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
@@ -188,10 +187,10 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 					</time>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

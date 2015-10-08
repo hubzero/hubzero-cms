@@ -65,7 +65,6 @@ function submitbutton(pressbutton)
 			<span><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></span>
 		</a>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -95,58 +94,58 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-if ($this->rows)
-{
-	$i = 0;
-	foreach ($this->rows as $row)
-	{
-?>
-			<tr>
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" onclick="isChecked(this.checked, this);" />
-				</td>
-				<td>
-					<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $row->exechost; ?>&lt;br /&gt;IP: <?php echo $row->remoteip; ?>">
-						<span><?php echo $this->escape($row->sessnum); ?></span>
-					</span>
-				</td>
-				<td class="priority-2">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&username=' . $row->username); ?>">
-						<span><?php echo $this->escape($row->username); ?></span>
-					</a>
-				</td>
-				<td class="priority-4">
-					<time datetime="<?php echo $this->escape($row->start); ?>">
-						<?php echo $this->escape($row->start); ?>
-					</time>
-				</td>
-				<td class="priority-3">
-					<time datetime="<?php echo $this->escape($row->accesstime); ?>">
-						<?php echo $this->escape($row->accesstime); ?>
-					</time>
-				</td>
-				<td class="priority-3">
-					<a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&appname=' . $row->appname); ?>">
-						<span><?php echo $this->escape($row->appname); ?></span>
-					</a>
-				</td>
-				<td class="priority-4">
-					<a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&exechost=' . $row->exechost); ?>">
-						<span><?php echo $this->escape($row->exechost); ?></span>
-					</a>
-				</td>
-				<td>
-					<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=remove&id[]=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
-						<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
-					</a>
-				</td>
-			</tr>
-<?php
-		$i++;
-	}
-}
-?>
+		<?php
+		if ($this->rows)
+		{
+			$i = 0;
+			foreach ($this->rows as $row)
+			{
+				?>
+				<tr>
+					<td>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" onclick="isChecked(this.checked, this);" />
+					</td>
+					<td>
+						<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $row->exechost; ?>&lt;br /&gt;IP: <?php echo $row->remoteip; ?>">
+							<span><?php echo $this->escape($row->sessnum); ?></span>
+						</span>
+					</td>
+					<td class="priority-2">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&username=' . $row->username); ?>">
+							<span><?php echo $this->escape($row->username); ?></span>
+						</a>
+					</td>
+					<td class="priority-4">
+						<time datetime="<?php echo $this->escape($row->start); ?>">
+							<?php echo $this->escape($row->start); ?>
+						</time>
+					</td>
+					<td class="priority-3">
+						<time datetime="<?php echo $this->escape($row->accesstime); ?>">
+							<?php echo $this->escape($row->accesstime); ?>
+						</time>
+					</td>
+					<td class="priority-3">
+						<a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&appname=' . $row->appname); ?>">
+							<span><?php echo $this->escape($row->appname); ?></span>
+						</a>
+					</td>
+					<td class="priority-4">
+						<a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&exechost=' . $row->exechost); ?>">
+							<span><?php echo $this->escape($row->exechost); ?></span>
+						</a>
+					</td>
+					<td>
+						<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=remove&id[]=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
+							<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
+						</a>
+					</td>
+				</tr>
+				<?php
+				$i++;
+			}
+		}
+		?>
 		</tbody>
 	</table>
 

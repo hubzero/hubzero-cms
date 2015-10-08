@@ -50,19 +50,16 @@ Toolbar::help('tagged');
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltrt">
-			<label for="filter-tbl"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
-			<select name="tbl" id="filter-tbl" onchange="document.adminForm.submit();">
-				<option value=""<?php if (!$this->filters['tbl']) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TAGS_FILTER_TYPE'); ?></option>
-				<?php foreach ($this->types as $type) { ?>
-					<option value="<?php echo $type; ?>"<?php if ($this->filters['tbl'] == $type) { echo ' selected="selected"'; } ?>><?php echo $type; ?></option>
-				<?php } ?>
-			</select>
-		</div>
+		<label for="filter-tbl"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
+		<select name="tbl" id="filter-tbl" onchange="document.adminForm.submit();">
+			<option value=""<?php if (!$this->filters['tbl']) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TAGS_FILTER_TYPE'); ?></option>
+			<?php foreach ($this->types as $type) { ?>
+				<option value="<?php echo $type; ?>"<?php if ($this->filters['tbl'] == $type) { echo ' selected="selected"'; } ?>><?php echo $type; ?></option>
+			<?php } ?>
+		</select>
 
 		<input type="hidden" name="tagid" value="<?php echo $this->filters['tagid']; ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<?php if ($this->filters['tagid']) { ?>
@@ -104,7 +101,7 @@ Toolbar::help('tagged');
 		{
 			$row = new \Components\Tags\Models\Object($row);
 			$row->set('id', $row->get('taggedid'));
-		?>
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
@@ -170,7 +167,7 @@ Toolbar::help('tagged');
 					<?php } ?>
 				</td>
 			</tr>
-		<?php
+			<?php
 			$i++;
 			$k = 1 - $k;
 		}

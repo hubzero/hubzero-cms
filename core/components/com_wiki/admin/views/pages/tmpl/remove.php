@@ -49,24 +49,25 @@ function submitbutton(pressbutton)
 }
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_WIKI_CONFIRM_DELETE'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_WIKI_CONFIRM_DELETE'); ?></span></legend>
 
-			<div class="input-wrap">
-				<input type="checkbox" name="confirm" id="confirm" value="1" />
-				<label for="confirm"><?php echo Lang::txt('COM_WIKI_DELETE'); ?></label>
-			</div>
+				<div class="input-wrap">
+					<input type="checkbox" name="confirm" id="confirm" value="1" />
+					<label for="confirm"><?php echo Lang::txt('COM_WIKI_DELETE'); ?></label>
+				</div>
 
-			<div class="input-wrap">
-				<input type="submit" value="<?php echo Lang::txt('COM_WIKI_NEXT'); ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<input type="submit" value="<?php echo Lang::txt('COM_WIKI_NEXT'); ?>" />
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<p class="warning"><?php echo Lang::txt('COM_WIKI_DELETE_WARNING'); ?></p>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<p class="warning"><?php echo Lang::txt('COM_WIKI_DELETE_WARNING'); ?></p>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="step" value="2" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />

@@ -55,12 +55,12 @@ defined('_HZEXEC_') or die();
 				</tr>
 			</tbody>
 		</table>
-	<?php
-		if ($this->getError())
-		{
-			echo '<p class="error">' . $this->getError() . '</p>';
-		}
-	?>
+		<?php
+			if ($this->getError())
+			{
+				echo '<p class="error">' . $this->getError() . '</p>';
+			}
+		?>
 		<table class="formed">
 			<thead>
 				<tr>
@@ -68,7 +68,7 @@ defined('_HZEXEC_') or die();
 				</tr>
 			</thead>
 			<tbody>
-		<?php
+			<?php
 			$k = 0;
 
 			$path = $zone->logo('path');
@@ -78,7 +78,7 @@ defined('_HZEXEC_') or die();
 			{
 				$this_size = filesize($path . DS . $file);
 				list($width, $height, $type, $attr) = getimagesize($path . DS . $file);
-		?>
+				?>
 				<tr>
 					<td rowspan="6">
 						<img src="<?php echo '../' . substr($path, strlen(PATH_CORE . '/')) . DS . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
@@ -102,14 +102,14 @@ defined('_HZEXEC_') or die();
 					<td><input type="hidden" name="currentfile" value="<?php echo $file; ?>" /></td>
 					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('JDELETE'); ?> ]</a></td>
 				</tr>
-		<?php } else { ?>
+			<?php } else { ?>
 				<tr>
 					<td colspan="4">
 						<?php echo Lang::txt('COM_TOOLS_IMAGE_NONE'); ?>
 						<input type="hidden" name="currentfile" value="" />
 					</td>
 				</tr>
-		<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
 		<?php echo Html::input('token'); ?>

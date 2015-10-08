@@ -59,41 +59,42 @@ function submitbutton(pressbutton)
 	<?php if ($this->getErrors()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
-	<div class="col width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-name"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</label><br />
-				<input type="text" name="fields[name]" id="field-name" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-name"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</label><br />
+					<input type="text" name="fields[name]" id="field-name" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-value"><?php echo Lang::txt('COM_TOOLS_FIELD_VALUE'); ?>:</label><br />
-				<input type="text" name="fields[value]" id="field-value" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->value)); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-value"><?php echo Lang::txt('COM_TOOLS_FIELD_VALUE'); ?>:</label><br />
+					<input type="text" name="fields[value]" id="field-value" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->value)); ?>" />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-description"><?php echo Lang::txt('COM_TOOLS_FIELD_DESCRIPTION'); ?>:</label><br />
-				<input type="text" name="fields[description]" id="field-description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-description"><?php echo Lang::txt('COM_TOOLS_FIELD_DESCRIPTION'); ?>:</label><br />
+					<input type="text" name="fields[description]" id="field-description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span6">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_BIT'); ?></th>
+						<td><?php echo $this->escape($this->bit); ?></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?></th>
+						<td><?php echo $this->escape($this->refs); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-50 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_BIT'); ?></th>
-					<td><?php echo $this->escape($this->bit); ?></td>
-				</tr>
-				<tr>
-					<th scope="row"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?></th>
-					<td><?php echo $this->escape($this->refs); ?></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="fields[status]" value="<?php echo (isset($this->status)) ? $this->status : 'new'; ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->name); ?>" />

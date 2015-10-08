@@ -79,55 +79,56 @@ function submitbutton(pressbutton)
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php endif; ?>
 		<div id="page-details" class="tab">
-			<div class="col width-60 fltlft">
-				<fieldset class="adminform">
-					<legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DETAILS'); ?></span></legend>
+			<div class="grid">
+				<div class="col span7">
+					<fieldset class="adminform">
+						<legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DETAILS'); ?></span></legend>
 
-					<div class="input-wrap">
-						<label for="field-command"><?php echo Lang::txt('COM_TOOLS_FIELD_COMMAND'); ?>:</label><br />
-						<input type="text" name="fields[vnc_command]" id="field-command" value="<?php echo $this->escape(stripslashes($this->row->vnc_command));?>" size="50" />
-					</div>
+						<div class="input-wrap">
+							<label for="field-command"><?php echo Lang::txt('COM_TOOLS_FIELD_COMMAND'); ?>:</label><br />
+							<input type="text" name="fields[vnc_command]" id="field-command" value="<?php echo $this->escape(stripslashes($this->row->vnc_command));?>" size="50" />
+						</div>
 
-					<div class="input-wrap">
-						<label for="field-timeout"><?php echo Lang::txt('COM_TOOLS_FIELD_TIMEOUT'); ?>:</label><br />
-						<input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?php echo $this->escape(stripslashes($this->row->vnc_timeout));?>" size="50" />
-					</div>
+						<div class="input-wrap">
+							<label for="field-timeout"><?php echo Lang::txt('COM_TOOLS_FIELD_TIMEOUT'); ?>:</label><br />
+							<input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?php echo $this->escape(stripslashes($this->row->vnc_timeout));?>" size="50" />
+						</div>
 
-					<div class="input-wrap">
-						<label for="field-hostreq"><?php echo Lang::txt('COM_TOOLS_FIELD_HOSTREQ'); ?>:</label><br />
-						<input type="text" name="fields[hostreq]" id="field-hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', $this->row->hostreq)));?>" size="50" />
-					</div>
+						<div class="input-wrap">
+							<label for="field-hostreq"><?php echo Lang::txt('COM_TOOLS_FIELD_HOSTREQ'); ?>:</label><br />
+							<input type="text" name="fields[hostreq]" id="field-hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', $this->row->hostreq)));?>" size="50" />
+						</div>
 
-					<div class="input-wrap">
-						<label for="field-mw"><?php echo Lang::txt('COM_TOOLS_FIELD_MIDDLEWARE'); ?>:</label><br />
-						<input type="text" name="fields[mw]" id="field-mw" value="<?php echo $this->escape(stripslashes($this->row->mw));?>" size="50" />
-					</div>
+						<div class="input-wrap">
+							<label for="field-mw"><?php echo Lang::txt('COM_TOOLS_FIELD_MIDDLEWARE'); ?>:</label><br />
+							<input type="text" name="fields[mw]" id="field-mw" value="<?php echo $this->escape(stripslashes($this->row->mw));?>" size="50" />
+						</div>
 
-					<div class="input-wrap">
-						<label for="field-params"><?php echo Lang::txt('COM_TOOLS_FIELD_PARAMS'); ?>:</label><br />
-						<textarea name="fields[params]" id="field-params" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->params));?></textarea>
-					</div>
-				</fieldset>
+						<div class="input-wrap">
+							<label for="field-params"><?php echo Lang::txt('COM_TOOLS_FIELD_PARAMS'); ?>:</label><br />
+							<textarea name="fields[params]" id="field-params" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->params));?></textarea>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col span5">
+					<table class="meta">
+						<tbody>
+							<tr>
+								<th><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>:</th>
+								<td><?php echo $this->escape(stripslashes($this->parent->title));?></td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_TOOLS_FIELD_TOOLNAME'); ?>:</th>
+								<td><?php echo $this->escape(stripslashes($this->parent->toolname));?></td>
+							</tr>
+							<tr>
+								<th><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION'); ?>:</th>
+								<td><?php echo $this->escape($this->row->id);?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
-			<div class="col width-40 fltrt">
-				<table class="meta">
-					<tbody>
-						<tr>
-							<th><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>:</th>
-							<td><?php echo $this->escape(stripslashes($this->parent->title));?></td>
-						</tr>
-						<tr>
-							<th><?php echo Lang::txt('COM_TOOLS_FIELD_TOOLNAME'); ?>:</th>
-							<td><?php echo $this->escape(stripslashes($this->parent->toolname));?></td>
-						</tr>
-						<tr>
-							<th><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION'); ?>:</th>
-							<td><?php echo $this->escape($this->row->id);?></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="clr"></div>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->parent->id; ?>" />
 			<input type="hidden" name="fields[version]" value="<?php echo $this->row->id; ?>" />

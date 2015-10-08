@@ -67,53 +67,54 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="colspan7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> />
-				<label for="field-anonymous"><?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?></label>
-			</div>
+				<div class="input-wrap">
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> />
+					<label for="field-anonymous"><?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?></label>
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-ctext"><?php echo Lang::txt('COM_WIKI_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<textarea name="fields[ctext]" id="field-ctext" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->get('ctext'))); ?></textarea>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-ctext"><?php echo Lang::txt('COM_WIKI_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<textarea name="fields[ctext]" id="field-ctext" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->get('ctext'))); ?></textarea>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
+						<td>
+							<?php
+							$editor = User::getInstance($this->row->get('created_by'));
+							echo $this->escape($editor->get('name'));
+							?>
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('created'); ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_WIKI_FIELD_PAGE'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('pageid'); ?>
+							<input type="hidden" name="fields[pageid]" id="field-pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
+							<input type="hidden" name="pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
-					<td>
-						<?php
-						$editor = User::getInstance($this->row->get('created_by'));
-						echo $this->escape($editor->get('name'));
-						?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('created'); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_WIKI_FIELD_PAGE'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('pageid'); ?>
-						<input type="hidden" name="fields[pageid]" id="field-pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
-						<input type="hidden" name="pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->row->get('parent')); ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />

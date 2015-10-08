@@ -75,24 +75,25 @@ Toolbar::help('lists');
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-category"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>:</label>
-			<select name="category" id="filter-category" onchange="this.form.submit()">
-				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
-				<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
-				<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
-				<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
-			</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-category"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>:</label>
+				<select name="category" id="filter-category" onchange="this.form.submit()">
+					<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
+					<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
+					<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
+					<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -118,43 +119,43 @@ Toolbar::help('lists');
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
-	switch ($row->state)
-	{
-		case 1:
-			$class = 'publish';
-			$task  = 'unpublish';
-			$alt   = Lang::txt('COM_WISHLIST_PUBLISHED');
-		break;
-		case 2:
-			$class = 'expire';
-			$task  = 'publish';
-			$alt   = Lang::txt('COM_WISHLIST_TRASHED');
-		break;
-		case 0:
-			$class = 'unpublish';
-			$task  = 'publish';
-			$alt   = Lang::txt('COM_WISHLIST_UNPUBLISHED');
-		break;
-	}
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
+			switch ($row->state)
+			{
+				case 1:
+					$class = 'publish';
+					$task  = 'unpublish';
+					$alt   = Lang::txt('COM_WISHLIST_PUBLISHED');
+				break;
+				case 2:
+					$class = 'expire';
+					$task  = 'publish';
+					$alt   = Lang::txt('COM_WISHLIST_TRASHED');
+				break;
+				case 0:
+					$class = 'unpublish';
+					$task  = 'publish';
+					$alt   = Lang::txt('COM_WISHLIST_UNPUBLISHED');
+				break;
+			}
 
-	if (!$row->public)
-	{
-		$color_access = 'access private';
-		$task_access  = 'accessregistered';
-		$groupname    = 'Private';
-	}
-	else
-	{
-		$color_access = 'access public';
-		$task_access  = 'accesspublic';
-		$groupname    = 'Public';
-	}
-?>
+			if (!$row->public)
+			{
+				$color_access = 'access private';
+				$task_access  = 'accessregistered';
+				$groupname    = 'Private';
+			}
+			else
+			{
+				$color_access = 'access public';
+				$task_access  = 'accesspublic';
+				$groupname    = 'Public';
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
@@ -214,10 +215,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

@@ -64,7 +64,6 @@ function submitbutton(pressbutton)
 		<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -94,27 +93,27 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
 
-	switch ($row['state'])
-	{
-		case 0: $state = 'unpublished'; break;
-		case 1: $state = 'registered';  break;
-		case 2: $state = 'created';     break;
-		case 3: $state = 'uploaded';    break;
-		case 4: $state = 'installed';   break;
-		case 5: $state = 'updated';     break;
-		case 6: $state = 'approved';    break;
-		case 7: $state = 'published';   break;
-		case 8: $state = 'retired';     break;
-		case 9: $state = 'abandoned';   break;
-		default: $state = 'unknown';    break;
-	}
-?>
+			switch ($row['state'])
+			{
+				case 0: $state = 'unpublished'; break;
+				case 1: $state = 'registered';  break;
+				case 2: $state = 'created';     break;
+				case 3: $state = 'uploaded';    break;
+				case 4: $state = 'installed';   break;
+				case 5: $state = 'updated';     break;
+				case 6: $state = 'approved';    break;
+				case 7: $state = 'published';   break;
+				case 8: $state = 'retired';     break;
+				case 9: $state = 'abandoned';   break;
+				default: $state = 'unknown';    break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="radio" name="id" id="cb<?php echo $i; ?>" value="<?php echo $row['id'] ?>" onclick="isChecked(this.checked);" />
@@ -149,10 +148,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

@@ -75,63 +75,65 @@ if ($this->getError())
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TAGID_HINT'); ?>">
-				<label for="field-tagid"><?php echo Lang::txt('COM_TAGS_FIELD_TAGID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[tagid]" id="field-tagid" maxlength="11" value="<?php echo $this->escape($this->row->get('tagid')); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TAGID_HINT'); ?></span>
-			</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TAGID_HINT'); ?>">
+					<label for="field-tagid"><?php echo Lang::txt('COM_TAGS_FIELD_TAGID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[tagid]" id="field-tagid" maxlength="11" value="<?php echo $this->escape($this->row->get('tagid')); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TAGID_HINT'); ?></span>
+				</div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID_HINT'); ?>">
-					<label for="field-objectid"><?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[objectid]" id="field-objectid" maxlength="11" value="<?php echo $this->escape($this->row->get('objectid')); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID_HINT'); ?></span>
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID_HINT'); ?>">
+							<label for="field-objectid"><?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+							<input type="text" name="fields[objectid]" id="field-objectid" maxlength="11" value="<?php echo $this->escape($this->row->get('objectid')); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID_HINT'); ?></span>
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TBL_HINT'); ?>">
+							<label for="field-tbl"><?php echo Lang::txt('COM_TAGS_FIELD_TBL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+							<input type="text" name="fields[tbl]" id="field-tbl" maxlength="250" value="<?php echo $this->escape($this->row->get('tbl')); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TBL_HINT'); ?></span>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TBL_HINT'); ?>">
-					<label for="field-tbl"><?php echo Lang::txt('COM_TAGS_FIELD_TBL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[tbl]" id="field-tbl" maxlength="250" value="<?php echo $this->escape($this->row->get('tbl')); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TBL_HINT'); ?></span>
-				</div>
-			</div>
-			<div class="clr"></div>
-		</fieldset>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_TAGS_FIELD_ID'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('id'); ?>
+							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
+						<td>
+							<?php
+							echo $this->escape($this->row->creator('name', Lang::txt('COM_TAGS_UNKNOWN')));
+							?>
+							<input type="hidden" name="fields[taggerid]" id="field-taggerid" value="<?php echo $this->escape($this->row->get('taggerid')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo ($this->row->created() != '0000-00-00 00:00:00' ? $this->row->created() : Lang::txt('COM_TAGS_UNKNOWN')); ?>
+							<input type="hidden" name="fields[taggedon]" id="field-taggedon" value="<?php echo $this->escape($this->row->get('taggedon')); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_TAGS_FIELD_ID'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('id'); ?>
-						<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
-					<td>
-						<?php
-						echo $this->escape($this->row->creator('name', Lang::txt('COM_TAGS_UNKNOWN')));
-						?>
-						<input type="hidden" name="fields[taggerid]" id="field-taggerid" value="<?php echo $this->escape($this->row->get('taggerid')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
-					<td>
-						<?php echo ($this->row->created() != '0000-00-00 00:00:00' ? $this->row->created() : Lang::txt('COM_TAGS_UNKNOWN')); ?>
-						<input type="hidden" name="fields[taggedon]" id="field-taggedon" value="<?php echo $this->escape($this->row->get('taggedon')); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
