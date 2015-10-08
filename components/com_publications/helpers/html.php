@@ -968,12 +968,13 @@ class PublicationsHtml
 			switch ($publication->state)
 			{
 				case 1:
+					$dt = (isset($publication->accepted) && $publication->accepted != '0000-00-00 00:00:00') ? $publication->accepted : $publication->published_up;
 					$text .= ' - ';
 					$text .= ($publication->published_up > $now)
 						? JText::_('COM_PUBLICATIONS_TO_BE_RELEASED')
 						: strtolower(JText::_('COM_PUBLICATIONS_PUBLISHED'));
 					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON').' '
-						  .JHTML::_('date', $publication->published_up, $dateFormat, $tz).' ';
+						  .JHTML::_('date', $dt, $dateFormat, $tz).' ';
 					break;
 				case 4:
 					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_READY')).')';
