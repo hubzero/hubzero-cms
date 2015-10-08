@@ -408,6 +408,12 @@ class Publication extends Object
 	 */
 	public function published($as='')
 	{
+		if ($this->get('accepted')
+		 && $this->get('accepted') != '0000-00-00 00:00:00'
+		 && $this->get('accepted') > $this->get('published_up'))
+		{
+			return $this->_date('accepted', $as);
+		}
 		return $this->_date('published_up', $as);
 	}
 
