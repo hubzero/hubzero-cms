@@ -142,7 +142,6 @@ function submitbutton(pressbutton) {
 			</select>
 		<?php } ?>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -171,139 +170,139 @@ function submitbutton(pressbutton) {
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-if ($this->results)
-{
-	$k = 0;
-	for ($i=0, $n=count($this->results); $i < $n; $i++)
-	{
-		$row =& $this->results[$i];
-		switch (intval($row->state))
+		<?php
+		if ($this->results)
 		{
-			case 2:
-				$task = 'publish';
-				$alt = Lang::txt('JTRASHED');
-				$cls = 'trash';
-			break;
-			case 1:
-				$task = 'unpublish';
-				$alt = Lang::txt('JPUBLISHED');
-				$cls = 'publish';
-			break;
-			case 0:
-			default:
-				$task = 'publish';
-				$alt = Lang::txt('JUNPUBLISHED');
-				$cls = 'unpublish';
-			break;
-		}
+			$k = 0;
+			for ($i=0, $n=count($this->results); $i < $n; $i++)
+			{
+				$row =& $this->results[$i];
+				switch (intval($row->state))
+				{
+					case 2:
+						$task = 'publish';
+						$alt = Lang::txt('JTRASHED');
+						$cls = 'trash';
+					break;
+					case 1:
+						$task = 'unpublish';
+						$alt = Lang::txt('JPUBLISHED');
+						$cls = 'publish';
+					break;
+					case 0:
+					default:
+						$task = 'publish';
+						$alt = Lang::txt('JUNPUBLISHED');
+						$cls = 'unpublish';
+					break;
+				}
 
-		switch ($row->sticky)
-		{
-			case '1':
-				$stickyTask = '0';
-				$stickyAlt = Lang::txt('COM_FORUM_STICKY');
-				$stickyTitle = Lang::txt('COM_FORUM_NOT_STICKY');
-				$scls = 'publish';
-			break;
-			case '0':
-			default:
-				$stickyTask = '1';
-				$stickyAlt = Lang::txt('COM_FORUM_NOT_STICKY');
-				$stickyTitle = Lang::txt('COM_FORUM_STICKY');
-				$scls = 'unpublish';
-			break;
-		}
+				switch ($row->sticky)
+				{
+					case '1':
+						$stickyTask = '0';
+						$stickyAlt = Lang::txt('COM_FORUM_STICKY');
+						$stickyTitle = Lang::txt('COM_FORUM_NOT_STICKY');
+						$scls = 'publish';
+					break;
+					case '0':
+					default:
+						$stickyTask = '1';
+						$stickyAlt = Lang::txt('COM_FORUM_NOT_STICKY');
+						$stickyTitle = Lang::txt('COM_FORUM_STICKY');
+						$scls = 'unpublish';
+					break;
+				}
 
-		switch ($row->access)
-		{
-			case 0:
-				$color_access = 'public';
-				$task_access  = '1';
-				$row->groupname = Lang::txt('COM_FORUM_ACCESS_PUBLIC');
-				break;
-			case 1:
-				$color_access = 'registered';
-				$task_access  = '2';
-				$row->groupname = Lang::txt('COM_FORUM_ACCESS_REGISTERED');
-				break;
-			case 2:
-				$color_access = 'special';
-				$task_access  = '3';
-				$row->groupname = Lang::txt('COM_FORUM_ACCESS_SPECIAL');
-				break;
-			case 3:
-				$color_access = 'protected';
-				$task_access  = '4';
-				$row->groupname = Lang::txt('COM_FORUM_ACCESS_PROTECTED');
-				break;
-			case 4:
-				$color_access = 'private';
-				$task_access  = '0';
-				$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
-				break;
+				switch ($row->access)
+				{
+					case 0:
+						$color_access = 'public';
+						$task_access  = '1';
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PUBLIC');
+						break;
+					case 1:
+						$color_access = 'registered';
+						$task_access  = '2';
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_REGISTERED');
+						break;
+					case 2:
+						$color_access = 'special';
+						$task_access  = '3';
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_SPECIAL');
+						break;
+					case 3:
+						$color_access = 'protected';
+						$task_access  = '4';
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PROTECTED');
+						break;
+					case 4:
+						$color_access = 'private';
+						$task_access  = '0';
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
+						break;
+				}
+				?>
+				<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
+					<td>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+					</td>
+					<td class="priority-5">
+						<?php echo $row->id; ?>
+					</td>
+					<td>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread); ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</a>
+					</td>
+					<td>
+						<?php if ($canDo->get('core.edit.state')) { ?>
+							<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+								<span><?php echo $alt; ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="state <?php echo $cls; ?>">
+								<span><?php echo $alt; ?></span>
+							</span>
+						<?php } ?>
+					</td>
+					<td class="priority-4">
+						<?php if ($canDo->get('core.edit.state')) { ?>
+							<a class="state <?php echo $scls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky=' . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $stickyTitle); ?>">
+								<span><?php echo $stickyAlt; ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="state <?php echo $scls; ?>">
+								<span><?php echo $stickyAlt; ?></span>
+							</span>
+						<?php } ?>
+					</td>
+					<td class="priority-3">
+						<span class="access <?php echo $color_access; ?>">
+							<span><?php echo $this->escape($row->groupname); ?></span>
+						</span>
+					</td>
+					<td class="priority-3">
+						<span class="scope">
+							<span><?php echo $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')'; ?></span>
+						</span>
+					</td>
+					<td class="priority-5">
+						<span class="creator">
+							<span><?php echo $this->escape($row->created_by); ?></span>
+						</span>
+					</td>
+					<td class="priority-4">
+						<span class="created">
+							<span><?php echo $this->escape($row->created); ?></span>
+						</span>
+					</td>
+				</tr>
+				<?php
+				$k = 1 - $k;
+			}
 		}
-?>
-			<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
-				</td>
-				<td class="priority-5">
-					<?php echo $row->id; ?>
-				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread); ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</a>
-				</td>
-				<td>
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
-							<span><?php echo $alt; ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="state <?php echo $cls; ?>">
-							<span><?php echo $alt; ?></span>
-						</span>
-					<?php } ?>
-				</td>
-				<td class="priority-4">
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $scls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky=' . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $stickyTitle); ?>">
-							<span><?php echo $stickyAlt; ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="state <?php echo $scls; ?>">
-							<span><?php echo $stickyAlt; ?></span>
-						</span>
-					<?php } ?>
-				</td>
-				<td class="priority-3">
-					<span class="access <?php echo $color_access; ?>">
-						<span><?php echo $this->escape($row->groupname); ?></span>
-					</span>
-				</td>
-				<td class="priority-3">
-					<span class="scope">
-						<span><?php echo $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')'; ?></span>
-					</span>
-				</td>
-				<td class="priority-5">
-					<span class="creator">
-						<span><?php echo $this->escape($row->created_by); ?></span>
-					</span>
-				</td>
-				<td class="priority-4">
-					<span class="created">
-						<span><?php echo $this->escape($row->created); ?></span>
-					</span>
-				</td>
-			</tr>
-<?php
-		$k = 1 - $k;
-	}
-}
-?>
+		?>
 		</tbody>
 	</table>
 

@@ -104,14 +104,13 @@ function submitbutton(pressbutton)
 		<select name="status" id="filter-status">
 			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></option>
 			<!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
-			<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>>Manager</option>
-			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
-			<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>>Invitee</option>
+			<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Manager'); ?></option>
+			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Applicant'); ?></option>
+			<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Invitee'); ?></option>
 		</select>
 
 		<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -120,10 +119,10 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_GROUPS_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_GROUPS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_GROUPS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_GROUPS_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_GROUPS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_GROUPS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></th>
 				<th scope="col" colspan="2"><?php echo Lang::txt('COM_GROUPS_MEMBER_ACTION'); ?></th>
 			</tr>
@@ -140,24 +139,24 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$i = 0;
-foreach ($this->rows as $row)
-{
-	if (isset($row->username))
-	{
-		$reason = new \Components\Groups\Tables\Reason($database);
-		$reason->loadReason($row->username, $this->filters['gidNumber']);
-		$reasonforjoin = '';
-		if ($reason)
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$reasonforjoin = stripslashes( $reason->reason );
-		}
-	}
+			if (isset($row->username))
+			{
+				$reason = new \Components\Groups\Tables\Reason($database);
+				$reason->loadReason($row->username, $this->filters['gidNumber']);
+				$reasonforjoin = '';
+				if ($reason)
+				{
+					$reasonforjoin = stripslashes($reason->reason);
+				}
+			}
 
-	$status = $row->role;
-?>
+			$status = $row->role;
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>" onclick="isChecked(this.checked);" />
@@ -166,15 +165,15 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->uidNumber); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
-					<a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->uidNumber); ?>">
-						<?php echo $this->escape(stripslashes($row->name)); ?>
-					</a>
-				<?php else : ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->name)); ?>
-					</span>
-				<?php endif; ?>
+					<?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
+						<a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->uidNumber); ?>">
+							<?php echo $this->escape(stripslashes($row->name)); ?>
+						</a>
+					<?php else : ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->name)); ?>
+						</span>
+					<?php endif; ?>
 				</td>
 				<td class="priority-3">
 					<span>
@@ -192,66 +191,65 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-	<?php
-	switch ($status)
-	{
-		case 'invitee':
-		case 'inviteemail':
-	?>
-					<a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uninvite&gid=' . $this->filters['gid'] . '&id=' . (isset($row->uidNumber) ? $row->uidNumber : $row->email) . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
-					</a>
-				</td>
-				<td>
-
-	<?php
-		break;
-		case 'applicant':
-	?>
-					<a class="state publish" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_APPROVE'); ?></span>
-					</a>
-				</td>
-				<td>
-					<a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deny&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
-					</a>
-	<?php
-		break;
-		case 'manager':
-	?>
-					<a class="state demote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=demote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DEMOTE'); ?></span>
-					</a>
-				</td>
-				<td>
-					&nbsp;
-	<?php
-		break;
-		default:
-		case 'member':
-	?>
-					<a class="state promote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=promote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_PROMOTE'); ?></span>
-					</a>
-				</td>
-				<td>
-					<a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
-					</a>
-	<?php
-		break;
-	}
-	?>
-<?php } ?>
+		<?php if ($canDo->get('core.edit')) { ?>
+			<?php
+			switch ($status)
+			{
+				case 'invitee':
+				case 'inviteemail':
+					?>
+						<a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uninvite&gid=' . $this->filters['gid'] . '&id=' . (isset($row->uidNumber) ? $row->uidNumber : $row->email) . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
+						</a>
+					</td>
+					<td>
+					<?php
+				break;
+				case 'applicant':
+					?>
+						<a class="state publish" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo Lang::txt('COM_GROUPS_MEMBER_APPROVE'); ?></span>
+						</a>
+					</td>
+					<td>
+						<a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deny&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
+						</a>
+					<?php
+				break;
+				case 'manager':
+					?>
+						<a class="state demote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=demote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo Lang::txt('COM_GROUPS_MEMBER_DEMOTE'); ?></span>
+						</a>
+					</td>
+					<td>
+						&nbsp;
+					<?php
+				break;
+				default:
+				case 'member':
+					?>
+						<a class="state promote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=promote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo Lang::txt('COM_GROUPS_MEMBER_PROMOTE'); ?></span>
+						</a>
+					</td>
+					<td>
+						<a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+							<span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
+						</a>
+					<?php
+				break;
+			}
+			?>
+		<?php } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-	$i++;
-}
-?>
+			<?php
+			$k = 1 - $k;
+			$i++;
+		}
+		?>
 		</tbody>
 	</table>
 

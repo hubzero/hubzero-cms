@@ -59,8 +59,9 @@ Toolbar::cancel();
 			<option value="unsubscribed" <?php if ($this->filters['status'] == 'unsubscribed') { echo 'selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED'); ?></option>
 			<option value="inactive" <?php if ($this->filters['status'] == 'inactive') { echo 'selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE'); ?></option>
 		</select>
-		<input type="submit" value="Go" onclick="javascript:submitbutton('manage');" />
+		<input type="submit" value="<?php echo Lang::txt('Go'); ?>" onclick="javascript:submitbutton('manage');" />
 	</fieldset>
+
 	<table class="adminlist">
 		<thead>
 			<tr>

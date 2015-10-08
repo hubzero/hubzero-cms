@@ -105,11 +105,11 @@ jQuery(document).ready(function($){
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-usernames"><?php echo Lang::txt('COM_GROUPS_ADD_USERNAME'); ?>:</label></td>
+						<th><label for="field-usernames"><?php echo Lang::txt('COM_GROUPS_ADD_USERNAME'); ?>:</label></th>
 						<td><input type="text" name="usernames" class="input-username" id="field-usernames" value="" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-tbl"><?php echo Lang::txt('COM_GROUPS_TO'); ?>:</label></td>
+						<th><label for="field-tbl"><?php echo Lang::txt('COM_GROUPS_TO'); ?>:</label></th>
 						<td>
 							<select name="tbl" id="field-tbl">
 								<option value="invitees"><?php echo Lang::txt('COM_GROUPS_INVITEES'); ?></option>

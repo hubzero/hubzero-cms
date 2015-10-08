@@ -115,7 +115,6 @@ function submitbutton(pressbutton)
 			?>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -142,117 +141,117 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-if ($this->results)
-{
-	$k = 0;
-	foreach ($this->results as $i => $row)
-	{
-		switch ($row->get('state'))
+		<?php
+		if ($this->results)
 		{
-			case '2':
-				$task = 'publish';
-				$alt = Lang::txt('JTRASHED');
-				$cls = 'trash';
-			break;
-			case '1':
-				$task = 'unpublish';
-				$alt = Lang::txt('JPUBLISHED');
-				$cls = 'publish';
-			break;
-			case '0':
-			default:
-				$task = 'publish';
-				$alt = Lang::txt('JUNPUBLISHED');
-				$cls = 'unpublish';
-			break;
-		}
+			$k = 0;
+			foreach ($this->results as $i => $row)
+			{
+				switch ($row->get('state'))
+				{
+					case '2':
+						$task = 'publish';
+						$alt = Lang::txt('JTRASHED');
+						$cls = 'trash';
+					break;
+					case '1':
+						$task = 'unpublish';
+						$alt = Lang::txt('JPUBLISHED');
+						$cls = 'publish';
+					break;
+					case '0':
+					default:
+						$task = 'publish';
+						$alt = Lang::txt('JUNPUBLISHED');
+						$cls = 'unpublish';
+					break;
+				}
 
-		switch ($row->get('access'))
-		{
-			case 0:
-				$color_access = 'public';
-				$task_access  = '1';
-				$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PUBLIC'));
-				break;
-			case 1:
-				$color_access = 'registered';
-				$task_access  = '2';
-				$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_REGISTERED'));
-				break;
-			case 2:
-				$color_access = 'special';
-				$task_access  = '3';
-				$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_SPECIAL'));
-				break;
-			case 3:
-				$color_access = 'protected';
-				$task_access  = '4';
-				$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PROTECTED'));
-				break;
-			case 4:
-				$color_access = 'private';
-				$task_access  = '0';
-				$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PRIVATE'));
-				break;
-		}
+				switch ($row->get('access'))
+				{
+					case 0:
+						$color_access = 'public';
+						$task_access  = '1';
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PUBLIC'));
+						break;
+					case 1:
+						$color_access = 'registered';
+						$task_access  = '2';
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_REGISTERED'));
+						break;
+					case 2:
+						$color_access = 'special';
+						$task_access  = '3';
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_SPECIAL'));
+						break;
+					case 3:
+						$color_access = 'protected';
+						$task_access  = '4';
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PROTECTED'));
+						break;
+					case 4:
+						$color_access = 'private';
+						$task_access  = '0';
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PRIVATE'));
+						break;
+				}
 
-		$cat = $row->categories('count', array('state' => -1));
-?>
-			<tr class="<?php echo "row$k" . ($row->get('state') ==2 ? ' archived' : ''); ?>">
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
-				</td>
-				<td class="priority-5">
-					<?php echo $row->get('id'); ?>
-				</td>
-				<td>
-					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-					<?php } else { ?>
-						<span>
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+				$cat = $row->categories('count', array('state' => -1));
+				?>
+				<tr class="<?php echo "row$k" . ($row->get('state') ==2 ? ' archived' : ''); ?>">
+					<td>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+					</td>
+					<td class="priority-5">
+						<?php echo $row->get('id'); ?>
+					</td>
+					<td>
+						<?php if ($canDo->get('core.edit')) { ?>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</a>
+						<?php } else { ?>
+							<span>
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</span>
+						<?php } ?>
+					</td>
+					<td class="priority-2">
+						<?php if ($canDo->get('core.edit.state')) { ?>
+							<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+								<span><?php echo $alt; ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="state <?php echo $cls; ?>">
+								<span><?php echo $alt; ?></span>
+							</span>
+						<?php } ?>
+					</td>
+					<td class="priority-4">
+						<span class="access <?php echo $color_access; ?>"><?php echo $this->escape($row->get('access_level')); ?></span>
+					</td>
+					<td class="priority-3">
+						<span class="scope">
+							<span><?php echo $this->escape($row->get('scope')) . ' (' . (isset($list[$row->get('scope')][$row->get('scope_id')]) ? $this->escape($list[$row->get('scope')][$row->get('scope_id')]->caption) : $this->escape($row->get('scope_id'))) . ')'; ?></span>
 						</span>
-					<?php } ?>
-				</td>
-				<td class="priority-2">
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
-							<span><?php echo $alt; ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="state <?php echo $cls; ?>">
-							<span><?php echo $alt; ?></span>
-						</span>
-					<?php } ?>
-				</td>
-				<td class="priority-4">
-					<span class="access <?php echo $color_access; ?>"><?php echo $this->escape($row->get('access_level')); ?></span>
-				</td>
-				<td class="priority-3">
-					<span class="scope">
-						<span><?php echo $this->escape($row->get('scope')) . ' (' . (isset($list[$row->get('scope')][$row->get('scope_id')]) ? $this->escape($list[$row->get('scope')][$row->get('scope_id')]->caption) : $this->escape($row->get('scope_id'))) . ')'; ?></span>
-					</span>
-				</td>
-				<td>
-					<?php if ($cat > 0) { ?>
-						<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&section_id=' . $row->get('id')); ?>">
-							<span><?php echo $cat; ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="glyph category">
-							<span><?php echo $cat; ?></span>
-						</span>
-					<?php } ?>
-				</td>
-			</tr>
-<?php
-		$k = 1 - $k;
-	}
-}
-?>
+					</td>
+					<td>
+						<?php if ($cat > 0) { ?>
+							<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&section_id=' . $row->get('id')); ?>">
+								<span><?php echo $cat; ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="glyph category">
+								<span><?php echo $cat; ?></span>
+							</span>
+						<?php } ?>
+					</td>
+				</tr>
+				<?php
+				$k = 1 - $k;
+			}
+		}
+		?>
 		</tbody>
 	</table>
 

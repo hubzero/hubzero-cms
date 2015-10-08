@@ -101,44 +101,46 @@ $this->js()
 
 	<fieldset class="adminform">
 		<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENS_BY_LOCATION'); ?></legend>
-		<div class="col width-30">
-			<table class="adminlist">
-				<thead>
-					<tr>
-						<th colspan="2"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?></th>
-						<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($this->opensGeo['country'] as $country => $count) : ?>
+		<div class="grid">
+			<div class="col span4">
+				<table class="adminlist">
+					<thead>
 						<tr>
-							<td>
-								<?php if ($country != 'undetermined') : ?>
-									<img src="<?php echo Request::base(); ?>/core/assets/images/flags/<?php echo strtolower($country); ?>.gif" alt="<?php echo $country; ?>" />
-								<?php endif; ?>
-							</td>
-							<td><?php echo strtoupper($country); ?></td>
-							<td><?php echo $count; ?></td>
+							<th colspan="2"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?></th>
+							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'); ?></th>
 						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		<div class="col width-70 fltrt">
-			<?php
-				//removed undertermined as we cant put that on the map
-				//json encode so we can get value with js
-				unset($this->opensGeo['country']['undetermined']);
-				unset($this->opensGeo['state']['undetermined']);
-				$countryGeo = strtoupper(json_encode( $this->opensGeo['country'] ));
-				$stateGeo = strtoupper(json_encode( $this->opensGeo['state'] ));
-			?>
-			<div id="world-map-data" data-src='<?php echo $countryGeo; ?>'></div>
-			<div id="us-map-data" data-src='<?php echo $stateGeo; ?>'></div>
-			<div id="location-map-container">
-				<div id="us-map"></div>
-				<div id="world-map"></div>
-				<div class="jvectormap-world"><?php echo Lang::txt('COM_NEWSLETTER_WORLD_MAP'); ?></div>
+					</thead>
+					<tbody>
+						<?php foreach ($this->opensGeo['country'] as $country => $count) : ?>
+							<tr>
+								<td>
+									<?php if ($country != 'undetermined') : ?>
+										<img src="<?php echo Request::base(); ?>/core/assets/images/flags/<?php echo strtolower($country); ?>.gif" alt="<?php echo $country; ?>" />
+									<?php endif; ?>
+								</td>
+								<td><?php echo strtoupper($country); ?></td>
+								<td><?php echo $count; ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="col span8">
+				<?php
+					//removed undertermined as we cant put that on the map
+					//json encode so we can get value with js
+					unset($this->opensGeo['country']['undetermined']);
+					unset($this->opensGeo['state']['undetermined']);
+					$countryGeo = strtoupper(json_encode( $this->opensGeo['country'] ));
+					$stateGeo = strtoupper(json_encode( $this->opensGeo['state'] ));
+				?>
+				<div id="world-map-data" data-src='<?php echo $countryGeo; ?>'></div>
+				<div id="us-map-data" data-src='<?php echo $stateGeo; ?>'></div>
+				<div id="location-map-container">
+					<div id="us-map"></div>
+					<div id="world-map"></div>
+					<div class="jvectormap-world"><?php echo Lang::txt('COM_NEWSLETTER_WORLD_MAP'); ?></div>
+				</div>
 			</div>
 		</div>
 	</fieldset>

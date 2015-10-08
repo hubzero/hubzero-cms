@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 						<tr>
-							<th width="200px">
+							<th>
 								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS'); ?>:<br />
 								<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_HINT'); ?></span>
 							</th>

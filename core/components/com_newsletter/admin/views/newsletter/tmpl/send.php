@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<th width="200px"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
+							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->name; ?>
 								<input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->newsletter->name; ?>" />
@@ -131,7 +131,7 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 						<tr>
-							<th width="200px"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE'); ?>:</th>
+							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE'); ?>:</th>
 							<td>
 								<div id="scheduler">
 									<input type="radio" name="scheduler" value="1" checked="checked" /> <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_NOW'); ?> <br />

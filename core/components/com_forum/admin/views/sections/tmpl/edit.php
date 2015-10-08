@@ -74,91 +74,92 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-scope"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE'); ?>:</label><br />
-					<input type="text" name="fields[scope]" id="field-scope" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="field-scope"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE'); ?>:</label><br />
+							<input type="text" name="fields[scope]" id="field-scope" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="field-scope_id"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE_ID'); ?>:</label><br />
+							<input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
+
 				<div class="input-wrap">
-					<label for="field-scope_id"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE_ID'); ?>:</label><br />
-					<input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
+					<label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-			</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?>">
+					<label for="field-alias"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS'); ?>:</label><br />
+					<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?></span>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo $this->escape($this->row->creator('name')); ?>
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_FORUM_FIELD_CREATOR'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('created'); ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-alias"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?></span>
-			</div>
-		</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
+
+				<div class="input-wrap">
+					<label for="field-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label><br />
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+						<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+					</select>
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
+					<select name="fields[access]" id="field-access">
+						<option value="0"<?php echo ($this->row->get('access') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PUBLIC'); ?></option>
+						<option value="1"<?php echo ($this->row->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_REGISTERED'); ?></option>
+						<option value="2"<?php echo ($this->row->get('access') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_SPECIAL'); ?></option>
+						<option value="3"<?php echo ($this->row->get('access') == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PROTECTED'); ?></option>
+						<option value="4"<?php echo ($this->row->get('access') == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PRIVATE'); ?></option>
+					</select>
+				</div>
+			</fieldset>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
-					<td>
-						<?php echo $this->escape($this->row->creator('name')); ?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_FORUM_FIELD_CREATOR'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('created'); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
-
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label><br />
-				<select name="fields[state]" id="field-state">
-					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
-				</select>
-			</div>
-
-			<div class="input-wrap">
-				<label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
-				<select name="fields[access]" id="field-access">
-					<option value="0"<?php echo ($this->row->get('access') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PUBLIC'); ?></option>
-					<option value="1"<?php echo ($this->row->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_REGISTERED'); ?></option>
-					<option value="2"<?php echo ($this->row->get('access') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_SPECIAL'); ?></option>
-					<option value="3"<?php echo ($this->row->get('access') == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PROTECTED'); ?></option>
-					<option value="4"<?php echo ($this->row->get('access') == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ACCESS_PRIVATE'); ?></option>
-				</select>
-			</div>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
 
 	<?php if ($canDo->get('core.admin')): ?>
-		<div class="col width-100 fltlft">
+		<div class="col width-100">
 			<fieldset class="panelform">
 				<legend><span><?php echo Lang::txt('COM_FORUM_FIELDSET_RULES'); ?></span></legend>
 				<?php echo $this->form->getLabel('rules'); ?>
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
 		</div>
-		<div class="clr"></div>
 	<?php endif; ?>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />

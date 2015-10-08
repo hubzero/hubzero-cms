@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<?php require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
+<?php require_once dirname(dirname(___DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
 	<table class="adminlist">
@@ -71,19 +71,19 @@ function submitbutton(pressbutton)
 			</tr>
 		</thead>
 		<tbody>
-<?php if ($this->categories->count() > 0) : ?>
-	<?php foreach ($this->categories as $k => $category) : ?>
-			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="isChecked(this.checked);" /></td>
-				<td><?php echo $this->escape($category->get('title')); ?></td>
-				<td><?php echo '#' . $this->escape($category->get('color')); ?></td>
-			</tr>
-	<?php endforeach; ?>
-<?php else : ?>
-			<tr>
-				<td colspan="3"><?php echo Lang::txt('COM_GROUPS_PAGES_NO_CATEGORIES'); ?></td>
-			</tr>
-<?php endif; ?>
+			<?php if ($this->categories->count() > 0) : ?>
+				<?php foreach ($this->categories as $k => $category) : ?>
+					<tr>
+						<td><input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="isChecked(this.checked);" /></td>
+						<td><?php echo $this->escape($category->get('title')); ?></td>
+						<td><?php echo '#' . $this->escape($category->get('color')); ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php else : ?>
+				<tr>
+					<td colspan="3"><?php echo Lang::txt('COM_GROUPS_PAGES_NO_CATEGORIES'); ?></td>
+				</tr>
+			<?php endif; ?>
 		</tbody>
 	</table>
 

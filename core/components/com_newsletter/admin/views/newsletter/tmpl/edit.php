@@ -70,190 +70,192 @@ function submitbutton(pressbutton)
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" data-formwatcher-message="<?php echo Lang::txt('You are now leaving this page to add stories and your current changes have not been saved. Click &quot;Stay on Page&quot; and then save the newsletter first before proceeding to add stories.'); ?>">
-	<div class="col width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>
 
-			<div class="input-wrap">
-				<label for="newsletter-name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME'); ?>:</label>
-				<input type="text" name="newsletter[name]" id="newsletter-name" value="<?php echo $this->escape($this->newsletter->name); ?>" />
-			</div>
-
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?>">
-				<label for="newsletter-alias"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS'); ?>:</label>
-				<input type="text" name="newsletter[alias]" id="newsletter-alias" value="<?php echo $this->escape($this->newsletter->alias); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?></span>
-			</div>
-
-			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="newsletter-issue"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ISSUE'); ?>:</label>
-					<input type="text" name="newsletter[issue]" id="newsletter-issue" value="<?php echo $this->escape($this->newsletter->issue); ?>" />
+					<label for="newsletter-name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME'); ?>:</label>
+					<input type="text" name="newsletter[name]" id="newsletter-name" value="<?php echo $this->escape($this->newsletter->name); ?>" />
 				</div>
-			</div>
-			<div class="col width-50 fltlft">
+
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?>">
+					<label for="newsletter-alias"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS'); ?>:</label>
+					<input type="text" name="newsletter[alias]" id="newsletter-alias" value="<?php echo $this->escape($this->newsletter->alias); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?></span>
+				</div>
+
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="newsletter-issue"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ISSUE'); ?>:</label>
+							<input type="text" name="newsletter[issue]" id="newsletter-issue" value="<?php echo $this->escape($this->newsletter->issue); ?>" />
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="newsletter-type"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?>:</label>
+							<select name="newsletter[type]" id="newsletter-type">
+								<option value="html" <?php if ($this->newsletter->type == 'html') : ?>selected="selected"<?php endif; ?>>
+									<?php echo Lang::txt('COM_NEWSLETTER_FORMAT_HTML'); ?>
+								</option>
+								<option value="plain" <?php if ($this->newsletter->type == 'plain') : ?>selected="selected"<?php endif; ?>>
+									<?php echo Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?>
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
 				<div class="input-wrap">
-					<label for="newsletter-type"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?>:</label>
-					<select name="newsletter[type]" id="newsletter-type">
-						<option value="html" <?php if ($this->newsletter->type == 'html') : ?>selected="selected"<?php endif; ?>>
-							<?php echo Lang::txt('COM_NEWSLETTER_FORMAT_HTML'); ?>
+					<label for="newsletter-template"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
+					<select name="newsletter[template]" id="newsletter-template">
+						<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
+						<option value="-1" <?php if ($this->newsletter->template == '-1') : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
 						</option>
-						<option value="plain" <?php if ($this->newsletter->type == 'plain') : ?>selected="selected"<?php endif; ?>>
-							<?php echo Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?>
-						</option>
+						<?php foreach ($this->templates as $t) : ?>
+							<?php echo $sel = ($t->id == $this->newsletter->template) ? 'selected="selected"' : '' ; ?>
+							<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
+								<?php echo $t->name; ?>
+							</option>
+						<?php endforeach; ?>
 					</select>
 				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="input-wrap">
-				<label for="newsletter-template"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
-				<select name="newsletter[template]" id="newsletter-template">
-					<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
-					<option value="-1" <?php if ($this->newsletter->template == '-1') : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
-					</option>
-					<?php foreach ($this->templates as $t) : ?>
-						<?php echo $sel = ($t->id == $this->newsletter->template) ? 'selected="selected"' : '' ; ?>
-						<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
-							<?php echo $t->name; ?>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_HINT'); ?>">
+					<label for="newsletter-published"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW'); ?>:</label>
+					<select name="newsletter[published]" id="newsletter-published">
+						<option value="1" <?php if ($this->newsletter->published == '1') : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_SHOW'); ?>
 						</option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_HINT'); ?>">
-				<label for="newsletter-published"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW'); ?>:</label>
-				<select name="newsletter[published]" id="newsletter-published">
-					<option value="1" <?php if ($this->newsletter->published == '1') : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_SHOW'); ?>
-					</option>
-					<option value="0" <?php if ($this->newsletter->published == '0') : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_DONT_SHOW'); ?>
-					</option>
-				</select>
-				<span class="hint">
-					<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_HINT'); ?>
-				</span>
-			</div>
-
-			<?php
-				$link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
-				$hint = Lang::txt('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
-			?>
-			<div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">
-				<label for="newsletter-tracking"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_TRACKING'); ?>:</label>
-				<select name="newsletter[tracking]" id="newsletter-tracking">
-					<option value="1" <?php if ($this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('JYES'); ?>
-					</option>
-					<option value="0" <?php if (!$this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('JNO'); ?>
-					</option>
-				</select>
-				<span class="hint">
-					<?php echo $hint; ?>
-				</span>
-			</div>
-		</fieldset>
-	</div>
-
-	<div class="col width-50 fltrt">
-		<?php if ($this->newsletter->id) : ?>
-			<table class="meta">
-				<tbody>
-					<?php if ($this->newsletter->id) : ?>
-						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ID'); ?>:</th>
-							<td>
-								<?php echo $this->newsletter->id; ?>
-								<input type="hidden" name="newsletter[id]" value="<?php echo $this->newsletter->id; ?>" />
-							</td>
-						</tr>
-					<?php endif; ?>
-
-					<?php if ($this->newsletter->created) : ?>
-						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
-							<td>
-								<?php echo Date::of($this->newsletter->created)->toLocal('F d, Y @ g:ia'); ?>
-								<input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
-							</td>
-						</tr>
-					<?php endif; ?>
-
-					<?php if ($this->newsletter->created_by) : ?>
-						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
-							<td>
-								<?php
-									$user = User::getInstance($this->newsletter->created_by);
-									echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
-								?>
-								<input type="hidden" name="newsletter[created_by]" value="<?php echo $this->newsletter->created_by; ?>" />
-							</td>
-						</tr>
-					<?php endif; ?>
-
-					<?php if ($this->newsletter->modified) : ?>
-						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
-							<td>
-								<?php echo Date::of($this->newsletter->modified)->toLocal('F d, Y @ g:ia'); ?>
-								<input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
-							</td>
-						</tr>
-					<?php endif; ?>
-
-					<?php if ($this->newsletter->modified_by) : ?>
-						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
-							<td>
-								<?php
-									$user = User::getInstance($this->newsletter->modified_by);
-									echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
-								?>
-								<input type="hidden" name="newsletter[modified_by]" value="<?php echo $this->newsletter->modified_by; ?>" />
-							</td>
-						</tr>
-					<?php endif; ?>
-				</tbody>
-			</table>
-
-			<?php
-				$params = new \Hubzero\Config\Registry($this->newsletter->params);
-			?>
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>
-
-				<div class="input-wrap">
-					<label for="param-from_name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME'); ?>:</label>
-					<input type="text" name="newsletter[params][from_name]" id="param-from_name" value="<?php echo $this->escape($params->get('from_name')); ?>" />
+						<option value="0" <?php if ($this->newsletter->published == '0') : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_DONT_SHOW'); ?>
+						</option>
+					</select>
+					<span class="hint">
+						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_HINT'); ?>
+					</span>
 				</div>
 
-				<div class="input-wrap">
-					<label for="param-from_address"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL'); ?>:</label>
-					<input type="text" name="newsletter[params][from_address]" id="param-from_address" value="<?php echo $this->escape($params->get('from_address')); ?>" />
-				</div>
-
-				<div class="input-wrap">
-					<label for="param-replyto_name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME'); ?>:</label>
-					<input type="text" name="newsletter[params][replyto_name]" id="param-replyto_name" value="<?php echo $this->escape($params->get('replyto_name')); ?>" />
-				</div>
-
-				<div class="input-wrap">
-					<label for="param-replyto_address"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL'); ?>:</label>
-					<input type="text" name="newsletter[params][replyto_address]" id="param-replyto_address" value="<?php echo $this->escape($params->get('replyto_address')); ?>" />
+				<?php
+					$link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
+					$hint = Lang::txt('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
+				?>
+				<div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">
+					<label for="newsletter-tracking"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_TRACKING'); ?>:</label>
+					<select name="newsletter[tracking]" id="newsletter-tracking">
+						<option value="1" <?php if ($this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('JYES'); ?>
+						</option>
+						<option value="0" <?php if (!$this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('JNO'); ?>
+						</option>
+					</select>
+					<span class="hint">
+						<?php echo $hint; ?>
+					</span>
 				</div>
 			</fieldset>
-		<?php else : ?>
-			<p class="info">
-				<?php echo Lang::txt('COM_NEWSLETTER_MUST_SAVE_TO_ADD_CONTENT'); ?>
-			</p>
-		<?php endif; ?>
+		</div>
+
+		<div class="col span6">
+			<?php if ($this->newsletter->id) : ?>
+				<table class="meta">
+					<tbody>
+						<?php if ($this->newsletter->id) : ?>
+							<tr>
+								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ID'); ?>:</th>
+								<td>
+									<?php echo $this->newsletter->id; ?>
+									<input type="hidden" name="newsletter[id]" value="<?php echo $this->newsletter->id; ?>" />
+								</td>
+							</tr>
+						<?php endif; ?>
+
+						<?php if ($this->newsletter->created) : ?>
+							<tr>
+								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
+								<td>
+									<?php echo Date::of($this->newsletter->created)->toLocal('F d, Y @ g:ia'); ?>
+									<input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
+								</td>
+							</tr>
+						<?php endif; ?>
+
+						<?php if ($this->newsletter->created_by) : ?>
+							<tr>
+								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
+								<td>
+									<?php
+										$user = User::getInstance($this->newsletter->created_by);
+										echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
+									?>
+									<input type="hidden" name="newsletter[created_by]" value="<?php echo $this->newsletter->created_by; ?>" />
+								</td>
+							</tr>
+						<?php endif; ?>
+
+						<?php if ($this->newsletter->modified) : ?>
+							<tr>
+								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
+								<td>
+									<?php echo Date::of($this->newsletter->modified)->toLocal('F d, Y @ g:ia'); ?>
+									<input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
+								</td>
+							</tr>
+						<?php endif; ?>
+
+						<?php if ($this->newsletter->modified_by) : ?>
+							<tr>
+								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
+								<td>
+									<?php
+										$user = User::getInstance($this->newsletter->modified_by);
+										echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
+									?>
+									<input type="hidden" name="newsletter[modified_by]" value="<?php echo $this->newsletter->modified_by; ?>" />
+								</td>
+							</tr>
+						<?php endif; ?>
+					</tbody>
+				</table>
+
+				<?php
+					$params = new \Hubzero\Config\Registry($this->newsletter->params);
+				?>
+				<fieldset class="adminform">
+					<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>
+
+					<div class="input-wrap">
+						<label for="param-from_name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME'); ?>:</label>
+						<input type="text" name="newsletter[params][from_name]" id="param-from_name" value="<?php echo $this->escape($params->get('from_name')); ?>" />
+					</div>
+
+					<div class="input-wrap">
+						<label for="param-from_address"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL'); ?>:</label>
+						<input type="text" name="newsletter[params][from_address]" id="param-from_address" value="<?php echo $this->escape($params->get('from_address')); ?>" />
+					</div>
+
+					<div class="input-wrap">
+						<label for="param-replyto_name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME'); ?>:</label>
+						<input type="text" name="newsletter[params][replyto_name]" id="param-replyto_name" value="<?php echo $this->escape($params->get('replyto_name')); ?>" />
+					</div>
+
+					<div class="input-wrap">
+						<label for="param-replyto_address"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL'); ?>:</label>
+						<input type="text" name="newsletter[params][replyto_address]" id="param-replyto_address" value="<?php echo $this->escape($params->get('replyto_address')); ?>" />
+					</div>
+				</fieldset>
+			<?php else : ?>
+				<p class="info">
+					<?php echo Lang::txt('COM_NEWSLETTER_MUST_SAVE_TO_ADD_CONTENT'); ?>
+				</p>
+			<?php endif; ?>
+		</div>
 	</div>
 
-	<br class="clear" />
 	<hr />
 
 	<div class="col width-100">

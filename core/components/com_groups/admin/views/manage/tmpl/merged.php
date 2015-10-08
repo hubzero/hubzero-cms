@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 	<?php if (!empty($this->success)) : ?>
 		<table class="adminlist success">
 			<thead>
-			 	<tr>
+				<tr>
 					<th scope="col"><?php echo Lang::txt('COM_GROUPS_PULL_SUCCESS'); ?></th>
 				</tr>
 			</thead>

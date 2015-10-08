@@ -49,42 +49,44 @@ Toolbar::cancel('cancelemail');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-50">
-		<fieldset class="adminform">
-			<legend><?php echo Lang::txt('%s Mailing List Email', $text); ?></legend>
-			<table class="admintable">
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><?php echo Lang::txt('%s Mailing List Email', $text); ?></legend>
+				<table class="admintable">
+					<tbody>
+						<tr>
+							<td class="key" width="200px"><?php echo Lang::txt('Mailing List'); ?>:</td>
+							<td><strong><?php echo $this->escape($this->list->name); ?></strong></td>
+						</tr>
+						<tr>
+							<td class="key"><?php echo Lang::txt('Email'); ?>:</td>
+							<td><input type="text" name="email[email]" value="<?php echo $this->escape($this->email->email); ?>" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+		</div>
+		<div class="col span6">
+			<table class="meta">
 				<tbody>
 					<tr>
-						<td class="key" width="200px"><?php echo Lang::txt('Mailing List'); ?>:</td>
-						<td><strong><?php echo $this->escape($this->list->name); ?></strong></td>
+						<th><?php echo Lang::txt('Date Added'); ?>:</th>
+						<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_added)); ?></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo Lang::txt('Email'); ?>:</td>
-						<td><input type="text" name="email[email]" value="<?php echo $this->escape($this->email->email); ?>" /></td>
+						<th><?php echo Lang::txt('Confirmed?'); ?></th>
+						<td><?php echo ($this->email->confirmed) ? Lang::txt('JYes') : Lang::txt('JNo'); ?></td>
 					</tr>
+					<?php if ($this->email->confirmed) : ?>
+						<tr>
+							<th><?php echo Lang::txt('Date Confirmed'); ?>:</th>
+							<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_confirmed)); ?></td>
+						</tr>
+					<?php endif; ?>
 				</tbody>
 			</table>
-		</fieldset>
-	</div>
-	<div class="col width-50">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('Date Added'); ?>:</th>
-					<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_added)); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('Confirmed?'); ?></th>
-					<td><?php echo ($this->email->confirmed) ? Lang::txt('JYes') : Lang::txt('JNo'); ?></td>
-				</tr>
-				<?php if ($this->email->confirmed) : ?>
-					<tr>
-						<th><?php echo Lang::txt('Date Confirmed'); ?>:</th>
-						<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_confirmed)); ?></td>
-					</tr>
-				<?php endif; ?>
-			</tbody>
-		</table>
+		</div>
 	</div>
 	<input type="hidden" name="option" value="com_newsletter" />
 	<input type="hidden" name="controller" value="mailinglist" />

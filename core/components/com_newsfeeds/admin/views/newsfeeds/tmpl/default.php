@@ -52,42 +52,41 @@ $saveOrder = $listOrder == 'a.ordering';
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
 					<?php echo $this->grid('sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th>
 					<?php echo $this->grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th width="20%">
+				<th>
 					<?php echo $this->grid('sort',  'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th>
 					<?php echo $this->grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'newsfeeds.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="5%">
+				<th>
 					<?php echo $this->grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th>
 					<?php echo $this->grid('sort',  'COM_NEWSFEEDS_NUM_ARTICLES_HEADING', 'numarticles', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th>
 					<?php echo $this->grid('sort', 'COM_NEWSFEEDS_CACHE_TIME_HEADING', 'a.cache_time', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th>
 					<?php echo $this->grid('sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th class="nowrap">
 					<?php echo $this->grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>

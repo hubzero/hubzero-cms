@@ -113,7 +113,6 @@ function submitbutton(pressbutton)
 		|
 		<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=manage&type=hub&discoverability=&policy=&approved=&published=&created='); ?>"><?php echo Lang::txt('COM_GROUPS_RESET'); ?></a>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -142,46 +141,46 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$database = App::get('db');
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
+		<?php
+		$database = App::get('db');
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
 
-	$group = new \Hubzero\User\Group();
-	$group->read($row->gidNumber);
+			$group = new \Hubzero\User\Group();
+			$group->read($row->gidNumber);
 
-	switch ($row->type)
-	{
-		case '0': $type = Lang::txt('COM_GROUPS_TYPE_SYSTEM');  break;
-		case '1': $type = Lang::txt('COM_GROUPS_TYPE_HUB');     break;
-		case '2': $type = Lang::txt('COM_GROUPS_TYPE_PROJECT'); break;
-		case '3': $type = Lang::txt('COM_GROUPS_TYPE_SUPER');   break;
-		case '4': $type = Lang::txt('COM_GROUPS_TYPE_COURSE');  break;
-	}
+			switch ($row->type)
+			{
+				case '0': $type = Lang::txt('COM_GROUPS_TYPE_SYSTEM');  break;
+				case '1': $type = Lang::txt('COM_GROUPS_TYPE_HUB');     break;
+				case '2': $type = Lang::txt('COM_GROUPS_TYPE_PROJECT'); break;
+				case '3': $type = Lang::txt('COM_GROUPS_TYPE_SUPER');   break;
+				case '4': $type = Lang::txt('COM_GROUPS_TYPE_COURSE');  break;
+			}
 
-	//get group invite emails
-	$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
-	$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
+			//get group invite emails
+			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
+			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 
-	//get group membership
-	$members    = $group->get('members');
-	$managers   = $group->get('managers');
-	$applicants = $group->get('applicants');
-	$invitees   = $group->get('invitees');
+			//get group membership
+			$members    = $group->get('members');
+			$managers   = $group->get('managers');
+			$applicants = $group->get('applicants');
+			$invitees   = $group->get('invitees');
 
-	//remove any managers from members list
-	$true_members = array_diff($members, $managers);
+			//remove any managers from members list
+			$true_members = array_diff($members, $managers);
 
-	//build membership tooltip
-	$tip  = '<table><tbody>';
-	$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_MEMBERS') . '</th><td>' . count($true_members) . '</td></tr>';
-	$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_MANAGERS') . '</th><td>' . count($managers) . '</td></tr>';
-	$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_APPLICANTS') . '</th><td>' . count($applicants) . '</td></tr>';
-	$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_INVITEES') . '</th><td>' . (count($invitees) + count($inviteemails)) . '</td></tr>';
-	$tip .= '</tbody></table>';
-?>
+			//build membership tooltip
+			$tip  = '<table><tbody>';
+			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_MEMBERS') . '</th><td>' . count($true_members) . '</td></tr>';
+			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_MANAGERS') . '</th><td>' . count($managers) . '</td></tr>';
+			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_APPLICANTS') . '</th><td>' . count($applicants) . '</td></tr>';
+			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_INVITEES') . '</th><td>' . (count($invitees) + count($inviteemails)) . '</td></tr>';
+			$tip .= '</tbody></table>';
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row->cn); ?>" onclick="isChecked(this.checked);" />
@@ -261,10 +260,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

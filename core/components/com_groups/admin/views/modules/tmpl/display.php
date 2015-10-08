@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<?php require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
+<?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
 <?php if ($this->needsAttention->count() > 0) : ?>
 	<table class="adminlist attention">

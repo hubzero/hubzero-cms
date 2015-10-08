@@ -24,38 +24,39 @@ $type      = $this->state->get('filter.type');
 <h2 class="modal-title"><?php echo Lang::txt('COM_MODULES'); ?></h2>
 <form action="<?php echo Route::url('index.php?option=com_modules&view=positions&layout=modal&tmpl=component&function='.$function.'&client_id=' .$clientId);?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filters clearfix">
-		<div class="col width-40 fltlft">
-			<label for="filter_search">
-				<?php echo Lang::txt('JSearch_Filter_Label'); ?>
-			</label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo Lang::txt('COM_MODULES_FILTER_SEARCH_DESC'); ?>" />
+		<div class="grid">
+			<div class="col span5">
+				<label for="filter_search">
+					<?php echo Lang::txt('JSearch_Filter_Label'); ?>
+				</label>
+				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo Lang::txt('COM_MODULES_FILTER_SEARCH_DESC'); ?>" />
 
-			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
+				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span7">
+				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+					<?php echo Html::select('options', Html::modules('templateStates'), 'value', 'text', $state, true);?>
+				</select>
 
-		<div class="col width-60 fltrt">
-			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', Html::modules('templateStates'), 'value', 'text', $state, true);?>
-			</select>
+				<select name="filter_type" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE');?></option>
+					<?php echo Html::select('options', Html::modules('types'), 'value', 'text', $type, true);?>
+				</select>
 
-			<select name="filter_type" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE');?></option>
-				<?php echo Html::select('options', Html::modules('types'), 'value', 'text', $type, true);?>
-			</select>
-
-			<select name="filter_template" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE');?></option>
-				<?php echo Html::select('options', Html::modules('templates', $clientId), 'value', 'text', $template, true);?>
-			</select>
+				<select name="filter_template" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE');?></option>
+					<?php echo Html::select('options', Html::modules('templates', $clientId), 'value', 'text', $template, true);?>
+				</select>
+			</div>
 		</div>
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th class="title" width="20%">
+				<th class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
 				</th>
 				<th>

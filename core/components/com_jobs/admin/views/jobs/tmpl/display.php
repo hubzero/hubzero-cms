@@ -80,7 +80,6 @@ function submitbutton(pressbutton)
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_JOBS_GO'); ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -109,67 +108,67 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
+		<?php
+		$k = 0;
 
-$now = Date::toSql();
+		$now = Date::toSql();
 
-$database = App::get('db');
+		$database = App::get('db');
 
-$jt = new \Components\Jobs\Tables\JobType($database);
-$jc = new \Components\Jobs\Tables\JobCategory($database);
+		$jt = new \Components\Jobs\Tables\JobType($database);
+		$jc = new \Components\Jobs\Tables\JobCategory($database);
 
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
 
-	$admin = $row->employerid == 1 ? 1 : 0;
-	$adminclass = $admin ? 'class="adminpost"' : '';
+			$admin = $row->employerid == 1 ? 1 : 0;
+			$adminclass = $admin ? 'class="adminpost"' : '';
 
-	$curtype = $row->type > 0 ? $jt->getType($row->type) : '';
-	$curcat  = $row->cid > 0  ? $jc->getCat($row->cid)   : '';
+			$curtype = $row->type > 0 ? $jt->getType($row->type) : '';
+			$curcat  = $row->cid > 0  ? $jc->getCat($row->cid)   : '';
 
-	// Build some publishing info
-	$info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
-	$info .= Lang::txt('COM_JOBS_FIELD_CREATOR') . ': ' . $row->addedBy;
-	$info .= $admin ? ' ' . Lang::txt('COM_JOBS_ADMIN') : '';
-	$info .= '<br />';
-	$info .= Lang::txt('COM_JOBS_FIELD_CATEGORY') . ': ' . $curcat . '<br />';
-	$info .= Lang::txt('COM_JOBS_FIELD_TYPE') . ': ' . $curtype . '<br />';
+			// Build some publishing info
+			$info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+			$info .= Lang::txt('COM_JOBS_FIELD_CREATOR') . ': ' . $row->addedBy;
+			$info .= $admin ? ' ' . Lang::txt('COM_JOBS_ADMIN') : '';
+			$info .= '<br />';
+			$info .= Lang::txt('COM_JOBS_FIELD_CATEGORY') . ': ' . $curcat . '<br />';
+			$info .= Lang::txt('COM_JOBS_FIELD_TYPE') . ': ' . $curtype . '<br />';
 
-	// Get the published status
-	switch ($row->status)
-	{
-		case 0:
-			$alt   = Lang::txt('COM_JOBS_STATUS_PENDING');
-			$class = 'post_pending';
-		break;
-		case 1:
-			$alt =  $row->inactive && $row->inactive < $now
-				 ? Lang::txt('COM_JOBS_STATUS_EXPIRED')
-				 : Lang::txt('COM_JOBS_STATUS_ACTIVE');
-			$class = $row->inactive && $row->inactive < $now
-				   ? 'post_invalidsub'
-				   : 'post_active';
-		break;
-		case 2:
-			$alt   = Lang::txt('COM_JOBS_STATUS_DELETED');
-			$class = 'post_deleted';
-		break;
-		case 3:
-			$alt   = Lang::txt('COM_JOBS_STATUS_INACTIVE');
-			$class = 'post_inactive';
-		break;
-		case 4:
-			$alt   = Lang::txt('COM_JOBS_STATUS_DRAFT');
-			$class = 'post_draft';
-		break;
-		default:
-			$alt   = '-';
-			$class = '';
-		break;
-	}
-?>
+			// Get the published status
+			switch ($row->status)
+			{
+				case 0:
+					$alt   = Lang::txt('COM_JOBS_STATUS_PENDING');
+					$class = 'post_pending';
+				break;
+				case 1:
+					$alt =  $row->inactive && $row->inactive < $now
+						 ? Lang::txt('COM_JOBS_STATUS_EXPIRED')
+						 : Lang::txt('COM_JOBS_STATUS_ACTIVE');
+					$class = $row->inactive && $row->inactive < $now
+						   ? 'post_invalidsub'
+						   : 'post_active';
+				break;
+				case 2:
+					$alt   = Lang::txt('COM_JOBS_STATUS_DELETED');
+					$class = 'post_deleted';
+				break;
+				case 3:
+					$alt   = Lang::txt('COM_JOBS_STATUS_INACTIVE');
+					$class = 'post_inactive';
+				break;
+				case 4:
+					$alt   = Lang::txt('COM_JOBS_STATUS_DRAFT');
+					$class = 'post_draft';
+				break;
+				default:
+					$alt   = '-';
+					$class = '';
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo Html::grid('id', $i, $row->id, false, 'id'); ?>
@@ -216,10 +215,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->applications; ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

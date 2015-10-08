@@ -58,7 +58,6 @@ $saveOrder = $listOrder == 'ordering';
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist" id="modules-mgr">
 		<thead>

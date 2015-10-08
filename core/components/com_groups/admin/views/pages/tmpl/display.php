@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 							</li>
 						</ol>
 					</td>
-					<td width="20%">
+					<td>
 						<ol class="attention-actions">
 							<?php if ($needsAttention->version()->get('checked_errors') && $needsAttention->version()->get('scanned')) : ?>
 								<li class="approve">

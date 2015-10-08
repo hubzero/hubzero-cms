@@ -52,72 +52,75 @@ Toolbar::cancel();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-70 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES') . ': '. $text; ?></span></legend>
+	<div class="grid">
+		<div class="col span8">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES') . ': '. $text; ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-name"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_NAME'); ?>:</label><br />
-				<input type="text" name="template[name]" id="field-name" value="<?php echo $this->escape($this->template->name); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-name"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_NAME'); ?>:</label><br />
+					<input type="text" name="template[name]" id="field-name" value="<?php echo $this->escape($this->template->name); ?>" />
+				</div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
-					<label for="field-primary_title_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY_TITLE_COLOR'); ?>:</label><br />
-					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
-					<input type="text" name="template[primary_title_color]" id="field-primary_title_color" value="<?php echo $this->escape($this->template->primary_title_color); ?>" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
+							<label for="field-primary_title_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY_TITLE_COLOR'); ?>:</label><br />
+							<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
+							<input type="text" name="template[primary_title_color]" id="field-primary_title_color" value="<?php echo $this->escape($this->template->primary_title_color); ?>" />
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
+							<label for="field-primary_text_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY_TEXT_COLOR'); ?>:</label><br />
+							<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
+							<input type="text" name="template[primary_text_color]" id="field-primary_text_color" value="<?php echo $this->escape($this->template->primary_text_color); ?>" />
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
-					<label for="field-primary_text_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY_TEXT_COLOR'); ?>:</label><br />
-					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
-					<input type="text" name="template[primary_text_color]" id="field-primary_text_color" value="<?php echo $this->escape($this->template->primary_text_color); ?>" />
-				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
-					<label for="field-secondary_title_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY_TITLE_COLOR'); ?>:</label><br />
-					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
-					<input type="text" name="template[secondary_title_color]" id="field-secondary_title_color" value="<?php echo $this->escape($this->template->secondary_title_color); ?>" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
+							<label for="field-secondary_title_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY_TITLE_COLOR'); ?>:</label><br />
+							<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
+							<input type="text" name="template[secondary_title_color]" id="field-secondary_title_color" value="<?php echo $this->escape($this->template->secondary_title_color); ?>" />
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
+							<label for="field-secondary_text_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY_TEXT_COLOR'); ?>:</label><br />
+							<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
+							<input type="text" name="template[secondary_text_color]" id="field-secondary_text_color" value="<?php echo $this->escape($this->template->secondary_text_color); ?>" />
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
-					<label for="field-secondary_text_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY_TEXT_COLOR'); ?>:</label><br />
-					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
-					<input type="text" name="template[secondary_text_color]" id="field-secondary_text_color" value="<?php echo $this->escape($this->template->secondary_text_color); ?>" />
-				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="input-wrap">
-				<label for="field-template"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TEMPLATE') ?>:</label><br />
-				<textarea name="template[template]" id="field-template" cols="100" rows="30"><?php echo $this->escape( $this->template->template ); ?></textarea>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-template"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TEMPLATE') ?>:</label><br />
+					<textarea name="template[template]" id="field-template" cols="100" rows="30"><?php echo $this->escape( $this->template->template ); ?></textarea>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span4">
+			<?php if ($this->config->get('template_tips')) : ?>
+				<span class="hint">
+					<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS') ?><br />
+					<a target="_blank" href="<?php echo $this->config->get('template_tips'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS_HINT'); ?></a>
+				</span>
+				<br /><br />
+			<?php endif; ?>
+			<?php if ($this->config->get('template_templates')) : ?>
+				<span class="hint">
+					<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES'); ?><br />
+					<a target="_blank" href="<?php echo $this->config->get('template_templates'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES_HINT'); ?></a>
+				</span>
+				<br /><br />
+			<?php endif; ?>
+			<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PLACEHOLDERS'); ?></span><br />
+			<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PLACEHOLDERS_HINT'); ?>
+		</div>
 	</div>
-	<div class="col width-30 fltrt">
-		<?php if ($this->config->get('template_tips')) : ?>
-			<span class="hint">
-				<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS') ?><br />
-				<a target="_blank" href="<?php echo $this->config->get('template_tips'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS_HINT'); ?></a>
-			</span>
-			<br /><br />
-		<?php endif; ?>
-		<?php if ($this->config->get('template_templates')) : ?>
-			<span class="hint">
-				<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES'); ?><br />
-				<a target="_blank" href="<?php echo $this->config->get('template_templates'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES_HINT'); ?></a>
-			</span>
-			<br /><br />
-		<?php endif; ?>
-		<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PLACEHOLDERS'); ?></span><br />
-		<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PLACEHOLDERS_HINT'); ?>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="template[id]" value="<?php echo $this->template->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
