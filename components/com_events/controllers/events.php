@@ -714,9 +714,6 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		//$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
 		$row->contact_info = preg_replace("/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"$1$2$5$8\">$1$2$5$8</a>", $row->contact_info);
 
-		$autoLink = new \Hubzero\View\Helper\Autolink;
-		$row->content = $autoLink->__invoke($row->content);
-
 		$fields = $this->config->getCfg('fields');
 		if (!empty($fields))
 		{
@@ -1753,10 +1750,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$row->catid = intval($row->catid);
 		}
 
-		//$row->title = htmlentities($row->title);
-
 		$row->content = $_POST['econtent'];
-		$row->content = $this->_clean($row->content);
+		$row->content = \Hubzero\Utility\Sanitize::clean($row->content);
 
 		// Get the custom fields defined in the events configuration
 		if (isset($_POST['fields']))
