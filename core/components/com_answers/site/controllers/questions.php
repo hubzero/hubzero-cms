@@ -1248,12 +1248,24 @@ class Questions extends SiteController
 		// Send the message
 		if (!in_array($authorid, $receivers) && $question->get('email'))
 		{
-			if (!Event::trigger('xmessage.onSendMessage', array('answers_reply_submitted', $subject, $message, $from, array($authorid), $this->_option)))
+			// Flag to mask identity of anonymous question asker
+			// MCRN Ticket #134
+			if ($question->get('anonymous') == '1')
+			{
+				$messageType = 'answers_reply_submitted_anonymous';
+			}
+			else
+			{
+				$messageType = 'answers_reply_submitted';
+			}
+
+			if (!Event::trigger('xmessage.onSendMessage', array($messageType , $subject, $message, $from, array($authorid), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
 
+		// Send the answers admins message
 		if (!empty($receivers))
 		{
 			if (!Event::trigger('xmessage.onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
