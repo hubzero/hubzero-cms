@@ -60,38 +60,40 @@ Html::behavior('formvalidation');
 
 	<?php
 	echo Html::tabs('start', 'config-tabs-'.$this->component->option.'_configuration', array('useCookie'=>1));
-		$fieldSets = $this->form->getFieldsets();
-		foreach ($fieldSets as $name => $fieldSet) :
-			$label = empty($fieldSet->label) ? 'COM_CONFIG_'.$name.'_FIELDSET_LABEL' : $fieldSet->label;
-			echo Html::tabs('panel', Lang::txt($label), 'publishing-details');
-			if (isset($fieldSet->description) && !empty($fieldSet->description)) :
-				echo '<p class="tab-description">'.Lang::txt($fieldSet->description).'</p>';
-			endif;
-	?>
-			<ul class="config-option-list">
-			<?php
-			foreach ($this->form->getFieldset($name) as $field):
-			?>
-				<li>
-				<?php if (!$field->hidden) : ?>
-				<?php echo $field->label; ?>
-				<?php endif; ?>
-				<?php echo $field->input; ?>
-				</li>
-			<?php
+
+		if ($this->form) :
+			$fieldSets = $this->form->getFieldsets();
+
+			foreach ($fieldSets as $name => $fieldSet) :
+				$label = empty($fieldSet->label) ? 'COM_CONFIG_'.$name.'_FIELDSET_LABEL' : $fieldSet->label;
+				echo Html::tabs('panel', Lang::txt($label), 'publishing-details');
+				if (isset($fieldSet->description) && !empty($fieldSet->description)) :
+					echo '<p class="tab-description">'.Lang::txt($fieldSet->description).'</p>';
+				endif;
+				?>
+				<ul class="config-option-list">
+					<?php foreach ($this->form->getFieldset($name) as $field): ?>
+						<li>
+							<?php if (!$field->hidden) : ?>
+								<?php echo $field->label; ?>
+							<?php endif; ?>
+							<?php echo $field->input; ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+				<div class="clr"></div>
+				<?php
 			endforeach;
-			?>
-			</ul>
+		else :
+			echo '<p class="warning">' . Lang::txt('COM_CONFIG_ERROR_COMPONENT_CONFIG_NOT_FOUND', $this->component->option) . '</p>';
+		endif;
 
-
-	<div class="clr"></div>
-	<?php
-		endforeach;
 	echo Html::tabs('end');
 	?>
 
 	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
 	<input type="hidden" name="component" value="<?php echo $this->component->option; ?>" />
 	<input type="hidden" name="task" value="" />
+
 	<?php echo Html::input('token'); ?>
 </form>
