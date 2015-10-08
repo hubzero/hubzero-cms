@@ -79,8 +79,17 @@ $this->css()
 
 						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}</a>";
 
-						//get who the message is to
-						$to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">' . $row->name . '</a>';
+						// Check for identity masking flag
+						if (strpos($row->type, '_anonymous') === false )
+						{
+							// Display who the message is to
+							$to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">' . $row->name . '</a>';
+						}
+						else
+						{
+							// Mask the destination
+							$to = 'Anonymous';
+						}
 
 						//date received
 						$date = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
