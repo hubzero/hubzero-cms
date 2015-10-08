@@ -1258,14 +1258,27 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher = JDispatcher::getInstance();
 
+		// Notify the answerer and asker
 		if (!in_array($authorid, $receivers) && $question->get('email'))
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_submitted', $subject, $message, $from, array($authorid), $this->_option)))
+			// Hide identity of destination if question is anonymously asked.
+			// MCRN Ticket #134
+			if ($question->get('anonymous') == '1')
+			{
+				$messageType = 'answers_reply_submitted_anonymous';
+			}
+			else
+			{
+				$messageType = 'answers_reply_submitted';
+			}
+
+			if (!$dispatcher->trigger('onSendMessage', array($messageType , $subject, $message, $from, array($authorid), $this->_option)))
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
 
+		// Send answers admins a message
 		if (!empty($receivers))
 		{
 			if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))

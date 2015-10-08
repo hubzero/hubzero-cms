@@ -82,8 +82,18 @@ $this->css()
 						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
 						$subject .= "</a>";
 
-						//get who the message is to
-						$to = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$row->uid) . "\">" . $row->name . "</a>";
+						// Check to see if identity should be hidden
+						if (strpos($row->type, '_anonymous') === false)
+						{
+							// Display  and link  who the message is to
+							$to = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$row->uid) . "\">" . $row->name . "</a>";
+						}
+						else
+						{
+							// Hide identity 
+							$to = 'Anonymous';
+						}
+
 
 						//date received
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
