@@ -70,23 +70,24 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-redeemed').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-redeemed"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
-			<select name="redeemed" id="filter-redeemed" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['redeemed'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
-				<option value="1"<?php if ($this->filters['redeemed'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_FILTER_REDEEMED'); ?></option>
-				<option value="0"<?php if ($this->filters['redeemed'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_FILTER_UNREDEEMED'); ?></option>
-			</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-redeemed').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-redeemed"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
+				<select name="redeemed" id="filter-redeemed" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['redeemed'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+					<option value="1"<?php if ($this->filters['redeemed'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_FILTER_REDEEMED'); ?></option>
+					<option value="0"<?php if ($this->filters['redeemed'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_FILTER_UNREDEEMED'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<caption>
@@ -127,11 +128,11 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-foreach ($this->rows as $i => $row)
-{
-?>
+		<?php
+		$k = 0;
+		foreach ($this->rows as $i => $row)
+		{
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
@@ -140,15 +141,15 @@ foreach ($this->rows as $i => $row)
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('code'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('code'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes($row->get('code'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('code'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-4">
 					<time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
@@ -156,27 +157,27 @@ foreach ($this->rows as $i => $row)
 				<td>
 					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? Date::of($row->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
-			<?php if ($row->get('redeemed')) { ?>
-				<td>
-					<span class="state <?php echo (($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') || $row->get('redeemed_by')) ? 'yes' : 'no'; ?>">
-						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . Date::of($row->get('redeemed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
-					</span>
-				</td>
-				<td class="priority-3">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
-						<?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
-					</a>
-				</td>
-			<?php } else { ?>
-				<td colspan="2">
-					<?php echo Lang::txt('COM_COURSES_UNREDEEMED'); ?>
-				</td>
-			<?php } ?>
+				<?php if ($row->get('redeemed')) { ?>
+					<td>
+						<span class="state <?php echo (($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') || $row->get('redeemed_by')) ? 'yes' : 'no'; ?>">
+							<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . Date::of($row->get('redeemed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
+						</span>
+					</td>
+					<td class="priority-3">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
+							<?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
+						</a>
+					</td>
+				<?php } else { ?>
+					<td colspan="2">
+						<?php echo Lang::txt('COM_COURSES_UNREDEEMED'); ?>
+					</td>
+				<?php } ?>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

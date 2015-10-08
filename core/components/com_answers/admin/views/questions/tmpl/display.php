@@ -67,23 +67,24 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="q" id="filter_search" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo Lang::txt('COM_ANSWERS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="q" id="filter_search" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo Lang::txt('COM_ANSWERS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filterby"><?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?></label>
-			<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
-				<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_OPEN'); ?></option>
-				<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_CLOSED'); ?></option>
-				<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL'); ?></option>
-			</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6 rtl">
+				<label for="filterby"><?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?></label>
+				<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
+					<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_OPEN'); ?></option>
+					<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_CLOSED'); ?></option>
+					<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -110,26 +111,26 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->results); $i < $n; $i++)
-{
-	$row =& $this->results[$i];
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->results); $i < $n; $i++)
+		{
+			$row =& $this->results[$i];
 
-	switch ($row->get('state'))
-	{
-		case '1':
-			$task = 'open';
-			$alt = Lang::txt('COM_ANSWERS_STATE_CLOSED');
-			$cls = 'unpublished';
-		break;
-		case '0':
-			$task = 'close';
-			$alt = Lang::txt('COM_ANSWERS_STATE_OPEN');
-			$cls = 'published';
-		break;
-	}
-?>
+			switch ($row->get('state'))
+			{
+				case '1':
+					$task = 'open';
+					$alt = Lang::txt('COM_ANSWERS_STATE_CLOSED');
+					$cls = 'unpublished';
+				break;
+				case '0':
+					$task = 'close';
+					$alt = Lang::txt('COM_ANSWERS_STATE_OPEN');
+					$cls = 'published';
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
@@ -182,10 +183,10 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

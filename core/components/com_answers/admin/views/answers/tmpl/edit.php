@@ -52,6 +52,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
+		return;
+	}
+
 	if (pressbutton =='resethelpful') {
 		if (confirm('<?php echo Lang::txt("COM_ANSWERS_CONFIRM_RESET"); ?>')){
 			submitform(pressbutton);
@@ -61,17 +66,12 @@ function submitbutton(pressbutton)
 		}
 	}
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
+	<?php echo $this->editor()->save('text'); ?>
 
 	// do field validation
 	if (document.getElementById('field-answer').value == ''){
 		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_ANSWER'); ?>');
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }

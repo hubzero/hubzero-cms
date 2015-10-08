@@ -76,24 +76,25 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>:</label>
-			<select name="state" id="filter-state" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ALL_STATES'); ?></option>
-				<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-				<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-				<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
-			</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-state"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -120,92 +121,92 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$i = 0;
-foreach ($this->rows as $row)
-{
-	//$row =& $this->rows[$i];
-	switch ($row->get('state'))
-	{
-		case 1:
-			$class = 'publish';
-			$task = 'unpublish';
-			$alt = Lang::txt('JPUBLISHED');
-			break;
-		case 2:
-			$class = 'trash';
-			$task = 'publish';
-			$alt = Lang::txt('JTRASHED');
-			break;
-		case 0:
-			$class = 'unpublish';
-			$task = 'publish';
-			$alt = Lang::txt('JUNPUBLISHED');
-			break;
-	}
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
+		{
+			//$row =& $this->rows[$i];
+			switch ($row->get('state'))
+			{
+				case 1:
+					$class = 'publish';
+					$task = 'unpublish';
+					$alt = Lang::txt('JPUBLISHED');
+					break;
+				case 2:
+					$class = 'trash';
+					$task = 'publish';
+					$alt = Lang::txt('JTRASHED');
+					break;
+				case 0:
+					$class = 'unpublish';
+					$task = 'publish';
+					$alt = Lang::txt('JUNPUBLISHED');
+					break;
+			}
 
-	switch ($row->get('access', 0))
-	{
-		case 0:
-			$color_access = 'public';
-			$task_access = 'accessregistered';
-			$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC'));
-		break;
-		case 1:
-			$color_access = 'registered';
-			//$task_access = 'accessspecial';
-			$task_access = 'accessprivate';
-			$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED'));
-		break;
-		/*case 2:
-			$color_access = 'special';
-			$task_access = 'accessprivate';
-			$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_SPECIAL'));
-		break;*/
-		case 4:
-			$color_access = 'private';
-			$task_access = 'accesspublic';
-			$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE'));
-		break;
-	}
-?>
+			switch ($row->get('access', 0))
+			{
+				case 0:
+					$color_access = 'public';
+					$task_access = 'accessregistered';
+					$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC'));
+				break;
+				case 1:
+					$color_access = 'registered';
+					//$task_access = 'accessspecial';
+					$task_access = 'accessprivate';
+					$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED'));
+				break;
+				/*case 2:
+					$color_access = 'special';
+					$task_access = 'accessprivate';
+					$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_SPECIAL'));
+				break;*/
+				case 4:
+					$color_access = 'private';
+					$task_access = 'accesspublic';
+					$row->set('groupname', Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE'));
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="glyph category">
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="glyph category">
+							<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-2">
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_SET_TASK', $task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-4">
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" class="access <?php echo $color_access; ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_CHANGE_ACCESS'); ?>">
-						<span><?php echo $row->get('groupname'); ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="access <?php echo $color_access; ?>">
-						<span><?php echo $row->get('groupname'); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" class="access <?php echo $color_access; ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_CHANGE_ACCESS'); ?>">
+							<span><?php echo $row->get('groupname'); ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="access <?php echo $color_access; ?>">
+							<span><?php echo $row->get('groupname'); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-3">
 					<span class="scope">
@@ -213,22 +214,22 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 				<td>
-				<?php if ($row->get('posts', 0) > 0) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&collection_id=' . $row->get('id')); ?>">
-						<span><?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $row->get('posts', 0)); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $row->get('posts', 0); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($row->get('posts', 0) > 0) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=posts&collection_id=' . $row->get('id')); ?>">
+							<span><?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $row->get('posts', 0)); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $row->get('posts', 0); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

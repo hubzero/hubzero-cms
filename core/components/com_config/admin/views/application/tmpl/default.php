@@ -63,26 +63,26 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 	<?php if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftplogin'); ?>
 	<?php endif; ?>
-	<div id="config-document">
+	<div id="config-document" class="clearfix">
 		<div id="page-site" class="tab">
-			<div class="noshow">
-				<div class="width-60 fltlft">
+			<div class="grid noshow">
+				<div class="col span6">
 					<?php echo $this->loadTemplate('site'); ?>
 					<?php echo $this->loadTemplate('offline'); ?>
 					<?php echo $this->loadTemplate('metadata'); ?>
 				</div>
-				<div class="width-40 fltrt">
+				<div class="col span6">
 					<?php echo $this->loadTemplate('seo'); ?>
 					<?php echo $this->loadTemplate('cookie'); ?>
 				</div>
 			</div>
 		</div>
 		<div id="page-system" class="tab">
-			<div class="noshow">
-				<div class="width-60 fltlft">
+			<div class="grid noshow">
+				<div class="col span7">
 					<?php echo $this->loadTemplate('system'); ?>
 				</div>
-				<div class="width-40 fltrt">
+				<div class="col span5">
 					<?php echo $this->loadTemplate('debug'); ?>
 					<?php echo $this->loadTemplate('cache'); ?>
 					<?php echo $this->loadTemplate('session'); ?>
@@ -90,13 +90,13 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 			</div>
 		</div>
 		<div id="page-server" class="tab">
-			<div class="noshow">
-				<div class="width-60 fltlft">
+			<div class="grid noshow">
+				<div class="col span7">
 					<?php echo $this->loadTemplate('server'); ?>
 					<?php echo $this->loadTemplate('locale'); ?>
 					<?php //echo $this->loadTemplate('ftp'); ?>
 				</div>
-				<div class="width-40 fltrt">
+				<div class="col span5">
 					<?php echo $this->loadTemplate('database'); ?>
 					<?php echo $this->loadTemplate('mail'); ?>
 				</div>
@@ -115,5 +115,4 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 		<input type="hidden" name="task" value="" />
 		<?php echo Html::input('token'); ?>
 	</div>
-	<div class="clr"></div>
 </form>

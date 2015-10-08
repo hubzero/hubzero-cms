@@ -53,7 +53,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -65,13 +64,13 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th scope="col" class="title nowrap">
-					<?php echo $this->grid('sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center nowrap priority-2">
-					<?php echo $this->grid('sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center">
-					<?php echo $this->grid('sort', 'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>

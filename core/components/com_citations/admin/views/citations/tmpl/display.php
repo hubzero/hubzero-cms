@@ -72,34 +72,35 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="sort"><?php echo Lang::txt('SORT'); ?>: </label>
-			<select name="sort" id="sort" onchange="document.adminForm.submit();">
-				<option value="created DESC"<?php if ($this->filters['sort'] == 'created DESC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('DATE'); ?></option>
-				<option value="year"<?php if ($this->filters['sort'] == 'year') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('YEAR'); ?></option>
-				<option value="type"<?php if ($this->filters['sort'] == 'type') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TYPE'); ?></option>
-				<option value="author ASC"<?php if ($this->filters['sort'] == 'author ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('AUTHORS'); ?></option>
-				<option value="title ASC"<?php if ($this->filters['sort'] == 'title ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TITLE'); ?></option>
-				<option value="scope_id ASC"<?php if ($this->filters['sort'] == 'scope_id ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SCOPE_ID'); ?></option>
-			</select>
+				<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="sort"><?php echo Lang::txt('SORT'); ?>: </label>
+				<select name="sort" id="sort" onchange="document.adminForm.submit();">
+					<option value="created DESC"<?php if ($this->filters['sort'] == 'created DESC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('DATE'); ?></option>
+					<option value="year"<?php if ($this->filters['sort'] == 'year') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('YEAR'); ?></option>
+					<option value="type"<?php if ($this->filters['sort'] == 'type') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TYPE'); ?></option>
+					<option value="author ASC"<?php if ($this->filters['sort'] == 'author ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('AUTHORS'); ?></option>
+					<option value="title ASC"<?php if ($this->filters['sort'] == 'title ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TITLE'); ?></option>
+					<option value="scope_id ASC"<?php if ($this->filters['sort'] == 'scope_id ASC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SCOPE_ID'); ?></option>
+				</select>
 
-			<label for="scope"><?php echo Lang::txt('SCOPE'); ?>: </label>
-			<select name="scope" id="scope" onchange="document.adminForm.submit();">
-				<option value="all"<?php if ($this->filters['scope'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('ALL'); ?></option>
-				<option value="hub"<?php if ($this->filters['scope'] == 'hub') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('HUB'); ?></option>
-				<option value="group"<?php if ($this->filters['scope'] == 'group') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('GROUP'); ?></option>
-				<option value="member"<?php if ($this->filters['scope'] == 'member') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('MEMBER'); ?></option>
-			</select>
+				<label for="scope"><?php echo Lang::txt('SCOPE'); ?>: </label>
+				<select name="scope" id="scope" onchange="document.adminForm.submit();">
+					<option value="all"<?php if ($this->filters['scope'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('ALL'); ?></option>
+					<option value="hub"<?php if ($this->filters['scope'] == 'hub') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('HUB'); ?></option>
+					<option value="group"<?php if ($this->filters['scope'] == 'group') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('GROUP'); ?></option>
+					<option value="member"<?php if ($this->filters['scope'] == 'member') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('MEMBER'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -130,13 +131,13 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
+		<?php
+		$k = 0;
 
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
-?>
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
 				<td class="priority-2">
@@ -199,11 +200,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php endif; ?>
 				</td>
 				<td class="priority-4">
-						<?php if ($row->fundedby == 1) : ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fund&id=' . $row->id); ?>"><span class="state publish"><span><?php echo Lang::txt('NO'); ?></span></span></a>
-						<?php else : ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fund&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo Lang::txt('YES'); ?></span></span></a>
-						<?php endif; ?>
+					<?php if ($row->fundedby == 1) : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fund&id=' . $row->id); ?>"><span class="state publish"><span><?php echo Lang::txt('NO'); ?></span></span></a>
+					<?php else : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fund&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo Lang::txt('YES'); ?></span></span></a>
+					<?php endif; ?>
 				</td>
 				<td class="priority-4">
 					<?php echo ($row->scope == '' ? Lang::txt('Hub') : $this->escape($row->scope)); ?>
@@ -212,7 +213,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->scope_id == 0 ? Lang::txt('N/A') : $this->escape($row->scope_id)); ?>
 				</td>
 			</tr>
-		<?php
+			<?php
 		$k = 1 - $k;
 		}
 		?>

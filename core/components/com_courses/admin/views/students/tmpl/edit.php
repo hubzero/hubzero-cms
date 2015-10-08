@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 	}
 
 	// form field validation
-	if ($('offering_id').value == '') {
+	if ($('#offering_id').val() == '') {
 		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -82,23 +82,24 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="offering" value="<?php echo $this->row->get('offering_id'); ?>" />
-			<input type="hidden" name="section" value="<?php echo $this->row->get('section_id'); ?>" />
-			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id'); ?>" />
-			<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->get('user_id'); ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+				<input type="hidden" name="task" value="save" />
+				<input type="hidden" name="offering" value="<?php echo $this->row->get('offering_id'); ?>" />
+				<input type="hidden" name="section" value="<?php echo $this->row->get('section_id'); ?>" />
+				<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id'); ?>" />
+				<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->get('user_id'); ?>" />
 
-			<div class="input-wrap">
-				<label for="field-offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
-				<select name="fields[offering_id]" id="field-offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
-					<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
-					<?php
+				<div class="input-wrap">
+					<label for="field-offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
+					<select name="fields[offering_id]" id="field-offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
+						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
+						<?php
 						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 						$model = \Components\Courses\Models\Courses::getInstance();
 						if ($model->courses()->total() > 0)
@@ -124,77 +125,57 @@ function submitbutton(pressbutton)
 							<?php
 							}
 						}
-					?>
-				</select>
-			</div>
-			<div class="input-wrap">
-				<label for="field-section_id"><?php echo Lang::txt('COM_COURSES_SECTION'); ?>:</label><br />
-				<select name="fields[section_id]" id="field-section_id">
-					<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
-					<?php
-					foreach ($this->offering->sections() as $k => $section)
-					{
-					?>
-					<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-					<?php
-					}
-					?>
-				</select>
-			</div>
-			<div class="input-wrap">
-				<label for="field-enrolled"><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
-				<?php echo Html::input('calendar', 'fields[enrolled]', $this->row->get('enrolled'), array('id' => 'field-enrolled')); ?>
-			</div>
-			<div class="input-wrap">
-				<label for="field-token"><?php echo Lang::txt('COM_COURSES_FIELD_SERIAL_NUM'); ?></label><br />
-				<input type="text" name="fields[token]" id="field-token" value="<?php echo $this->escape($this->row->get('token')); ?>" />
-			</div>
-		</fieldset>
-
-		<?php /*<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('Progress'); ?></span></legend>
-
-			<table class="admintable">
+						?>
+					</select>
+				</div>
+				<div class="input-wrap">
+					<label for="field-section_id"><?php echo Lang::txt('COM_COURSES_SECTION'); ?>:</label><br />
+					<select name="fields[section_id]" id="field-section_id">
+						<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
+						<?php foreach ($this->offering->sections() as $k => $section) { ?>
+							<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<div class="input-wrap">
+					<label for="field-enrolled"><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
+					<?php echo Html::input('calendar', 'fields[enrolled]', $this->row->get('enrolled'), array('id' => 'field-enrolled')); ?>
+				</div>
+				<div class="input-wrap">
+					<label for="field-token"><?php echo Lang::txt('COM_COURSES_FIELD_SERIAL_NUM'); ?></label><br />
+					<input type="text" name="fields[token]" id="field-token" value="<?php echo $this->escape($this->row->get('token')); ?>" />
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
 				<tbody>
 					<tr>
-						<td class="paramlist_key"><label for="enrolled">Key:</label></th>
-						<td>
-							--
-						</td>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
+						<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
+					</tr>
+					<?php if ($profile) { ?>
+						<tr>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
+							<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
+							<td><?php echo $this->escape(stripslashes($profile->get('username'))); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
+							<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
+						</tr>
+					<?php } ?>
 				</tbody>
 			</table>
-		</fieldset>*/ ?>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('id')); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
-				</tr>
-			<?php if ($profile) { ?>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
-					<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
-					<td><?php echo $this->escape(stripslashes($profile->get('username'))); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
-					<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
-				</tr>
-			<?php } ?>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<script type="text/javascript">
 		var offeringsections = new Array;

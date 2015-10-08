@@ -78,25 +78,26 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
-			<select name="state" id="filter-state" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
-				<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-				<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
-				<option value="3"<?php if ($this->filters['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
-				<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
-			</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
+					<option value="3"<?php if ($this->filters['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<caption>
@@ -138,36 +139,36 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$i = 0;
-$k = 0;
-$n = count($this->rows);
-$ordering = true;
-foreach ($this->rows as $row)
-{
-	$orderkey = array_search($row->get('id'), $this->ordering[$row->get('parent')]);
+		<?php
+		$i = 0;
+		$k = 0;
+		$n = count($this->rows);
+		$ordering = true;
+		foreach ($this->rows as $row)
+		{
+			$orderkey = array_search($row->get('id'), $this->ordering[$row->get('parent')]);
 
-	$assets = $row->assets()->total();
+			$assets = $row->assets()->total();
 
-	switch ($row->get('state'))
-	{
-		case 1:
-			$class = 'publish';
-			$task = 'unpublish';
-			$alt = Lang::txt('COM_COURSES_PUBLISHED');
-		break;
-		case 2:
-			$class = 'trash';
-			$task = 'publish';
-			$alt = Lang::txt('COM_COURSES_TRASHED');
-		break;
-		case 0:
-			$class = 'unpublish';
-			$task = 'publish';
-			$alt = Lang::txt('COM_COURSES_UNPUBLISHED');
-		break;
-	}
-?>
+			switch ($row->get('state'))
+			{
+				case 1:
+					$class = 'publish';
+					$task = 'unpublish';
+					$alt = Lang::txt('COM_COURSES_PUBLISHED');
+				break;
+				case 2:
+					$class = 'trash';
+					$task = 'publish';
+					$alt = Lang::txt('COM_COURSES_TRASHED');
+				break;
+				case 0:
+					$class = 'unpublish';
+					$task = 'publish';
+					$alt = Lang::txt('COM_COURSES_UNPUBLISHED');
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k" . ($row->get('state') == 2 ? ' archived' : ''); ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
@@ -177,37 +178,37 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php echo $row->treename; ?>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&unit=' . $this->unit->get('id') . '&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&unit=' . $this->unit->get('id') . '&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-4">
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&unit=' . $this->unit->get('id') . '&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&unit=' . $this->unit->get('id') . '&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-3">
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&unit=' . $this->unit->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK',$task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&unit=' . $this->unit->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK',$task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $row->treename; ?>
@@ -216,22 +217,22 @@ foreach ($this->rows as $row)
 					<span><?php echo $pageNav->orderDownIcon($i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', $ordering); ?></span>
 				</td>
 				<td class="priority-3">
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph assets" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<?php echo $assets; ?>
-					</a>
-				<?php } else { ?>
-					<span class="glyph assets">
-						<?php echo $assets; ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a class="glyph assets" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $assets; ?>
+						</a>
+					<?php } else { ?>
+						<span class="glyph assets">
+							<?php echo $assets; ?>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

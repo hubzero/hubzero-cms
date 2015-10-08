@@ -44,7 +44,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo Route::url('index.php?option=com_checkin'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="filter-search fltlft">
+		<div class="filter-search">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
 			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_CHECKIN_FILTER_SEARCH_DESC'); ?>" />
 
@@ -52,7 +52,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table id="global-checkin" class="adminlist">
 		<thead>

@@ -53,7 +53,6 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist">
 		<thead>

@@ -72,7 +72,6 @@ function submitbutton(pressbutton)
 
 		<input type="hidden" name="collection_id" value="<?php echo $this->filters['collection_id']; ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -91,9 +90,9 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_POSTED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_POSTEDBY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_ITEM_ID', 'item_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<?php if (!$this->filters['collection_id']) { ?>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_COLLECTION_ID', 'collection_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<?php } ?>
+				<?php if (!$this->filters['collection_id']) { ?>
+					<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_COLLECTION_ID', 'collection_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php } ?>
 				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_COLLECTIONS_COL_ORIGINAL', 'original', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
@@ -111,45 +110,45 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$i = 0;
-foreach ($this->rows as $row)
-{
-	switch ($row->get('original'))
-	{
-		case 1:
-			$class = 'yes';
-			$task = 'unoriginal';
-			$alt = Lang::txt('COM_COLLECTIONS_IS_ORIGINAL');
-		break;
+		<?php
+		$k = 0;
+		$i = 0;
+		foreach ($this->rows as $row)
+		{
+			switch ($row->get('original'))
+			{
+				case 1:
+					$class = 'yes';
+					$task = 'unoriginal';
+					$alt = Lang::txt('COM_COLLECTIONS_IS_ORIGINAL');
+				break;
 
-		case 0:
-			$class = 'no';
-			$task = 'original';
-			$alt = Lang::txt('COM_COLLECTIONS_IS_NOT_ORIGINAL');
-		break;
-	}
+				case 0:
+					$class = 'no';
+					$task = 'original';
+					$alt = Lang::txt('COM_COLLECTIONS_IS_NOT_ORIGINAL');
+				break;
+			}
 
-	if (!($content = $row->description('clean', 75)))
-	{
-		$content = Lang::txt('COM_COLLECTIONS_NONE');
-	}
-?>
+			if (!($content = $row->description('clean', 75)))
+			{
+				$content = Lang::txt('COM_COLLECTIONS_NONE');
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<span><?php echo $content; ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $content; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<span><?php echo $content; ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $content; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-5">
 					<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
@@ -162,28 +161,22 @@ foreach ($this->rows as $row)
 				<td class="priority-2">
 					<?php echo $this->escape($row->get('item_id')); ?>
 				</td>
-			<?php if (!$this->filters['collection_id']) { ?>
-				<td class="priority-2">
-					<?php echo $this->escape($row->get('collection_id')); ?>
-				</td>
-			<?php } ?>
+				<?php if (!$this->filters['collection_id']) { ?>
+					<td class="priority-2">
+						<?php echo $this->escape($row->get('collection_id')); ?>
+					</td>
+				<?php } ?>
 				<td class="priority-4">
-				<?php /*if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else {*/ ?>
 					<span class="state <?php echo $class; ?>">
 						<span><?php echo $alt; ?></span>
 					</span>
-				<?php //} ?>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

@@ -115,34 +115,35 @@ function saveAndUpdate()
 			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>">
 			<input type="hidden" name="task" value="save" />
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-type"><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?>:</label>
-					<select name="fields[type]" id="field-type">
-						<option value="video"<?php if ($this->row->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO'); ?></option>
-						<option value="file"<?php if ($this->row->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FILE'); ?></option>
-						<option value="form"<?php if ($this->row->get('type') == 'form') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FORM'); ?></option>
-						<option value="text"<?php if ($this->row->get('type') == 'text') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_TEXT'); ?></option>
-						<option value="url"<?php if ($this->row->get('type') == 'url') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_URL'); ?></option>
-					</select>
+			<div class="grid">
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-type"><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?>:</label>
+						<select name="fields[type]" id="field-type">
+							<option value="video"<?php if ($this->row->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO'); ?></option>
+							<option value="file"<?php if ($this->row->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FILE'); ?></option>
+							<option value="form"<?php if ($this->row->get('type') == 'form') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FORM'); ?></option>
+							<option value="text"<?php if ($this->row->get('type') == 'text') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_TEXT'); ?></option>
+							<option value="url"<?php if ($this->row->get('type') == 'url') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_URL'); ?></option>
+						</select>
+					</div>
+				</div>
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-subtype"><?php echo Lang::txt('COM_COURSES_FIELD_SUBTYPE'); ?>:</label>
+						<select name="fields[subtype]" id="field-subtype">
+							<option value="video"<?php if ($this->row->get('subtype') == 'video') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO'); ?></option>
+							<option value="embedded"<?php if ($this->row->get('subtype') == 'embedded') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED'); ?></option>
+							<option value="file"<?php if ($this->row->get('subtype') == 'file') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FILE'); ?></option>
+							<option value="exam"<?php if ($this->row->get('subtype') == 'exam') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_EXAM'); ?></option>
+							<option value="quiz"<?php if ($this->row->get('subtype') == 'quiz') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ'); ?></option>
+							<option value="homework"<?php if ($this->row->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK'); ?></option>
+							<option value="note"<?php if ($this->row->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_NOTE'); ?></option>
+							<option value="wiki"<?php if ($this->row->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_WIKI'); ?></option>
+						</select>
+					</div>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-subtype"><?php echo Lang::txt('COM_COURSES_FIELD_SUBTYPE'); ?>:</label>
-					<select name="fields[subtype]" id="field-subtype">
-						<option value="video"<?php if ($this->row->get('subtype') == 'video') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO'); ?></option>
-						<option value="embedded"<?php if ($this->row->get('subtype') == 'embedded') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED'); ?></option>
-						<option value="file"<?php if ($this->row->get('subtype') == 'file') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FILE'); ?></option>
-						<option value="exam"<?php if ($this->row->get('subtype') == 'exam') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_EXAM'); ?></option>
-						<option value="quiz"<?php if ($this->row->get('subtype') == 'quiz') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ'); ?></option>
-						<option value="homework"<?php if ($this->row->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK'); ?></option>
-						<option value="note"<?php if ($this->row->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_NOTE'); ?></option>
-						<option value="wiki"<?php if ($this->row->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_WIKI'); ?></option>
-					</select>
-				</div>
-			</div>
-			<div class="clr"></div>
 
 			<div class="input-wrap">
 				<label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
@@ -168,7 +169,6 @@ function saveAndUpdate()
 			<iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&listdir=' . $id . '&course=' . $this->escape($this->course_id)); ?>"></iframe>
 		</fieldset>
 	</div>
-	<div class="clr"></div>
 
 	<?php echo Html::input('token'); ?>
 </form>

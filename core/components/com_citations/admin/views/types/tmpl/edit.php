@@ -106,65 +106,66 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('CITATION_TYPES'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('CITATION_TYPES'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-type"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></label><br />
-				<input type="text" name="type[type]" id="field-type" value="<?php echo $type; ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-type"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></label><br />
+					<input type="text" name="type[type]" id="field-type" value="<?php echo $type; ?>" />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-type_title"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></label><br />
-				<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $title; ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-type_title"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></label><br />
+					<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $title; ?>" />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-type_desc"><?php echo Lang::txt('CITATION_TYPES_DESC'); ?></label><br />
-				<textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $desc; ?></textarea>
-			</div>
+				<div class="input-wrap">
+					<label for="field-type_desc"><?php echo Lang::txt('CITATION_TYPES_DESC'); ?></label><br />
+					<textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $desc; ?></textarea>
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-fields"><?php echo Lang::txt('CITATION_TYPES_FIELDS'); ?></label><br />
-				<textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $fields; ?></textarea>
-				<span class="hint"><?php echo Lang::txt('CITATION_TYPES_FIELDS_HINT'); ?></span>
-			</div>
-		</fieldset>
-	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('ID'); ?>:</th>
-					<td>
-						<?php echo ($id ? $id : 0); ?>
-						<input type="hidden" name="type[id]" value="<?php echo $id; ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<div class="data-wrap">
-			<table class="admintable">
-				<thead>
-					<tr>
-						<th><?php echo Lang::txt('CITATION_TYPES_PLACEHOLDER'); ?></th>
-						<th><?php echo Lang::txt('CITATION_TYPES_FIELD'); ?></th>
-					</tr>
-				</thead>
+				<div class="input-wrap">
+					<label for="field-fields"><?php echo Lang::txt('CITATION_TYPES_FIELDS'); ?></label><br />
+					<textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $fields; ?></textarea>
+					<span class="hint"><?php echo Lang::txt('CITATION_TYPES_FIELDS_HINT'); ?></span>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
 				<tbody>
-					<?php foreach ($f as $k => $v) : ?>
-						<tr>
-							<td><?php echo $k; ?></td>
-							<td><?php echo $v; ?></td>
-						</tr>
-					<?php endforeach; ?>
+					<tr>
+						<th class="key"><?php echo Lang::txt('ID'); ?>:</th>
+						<td>
+							<?php echo ($id ? $id : 0); ?>
+							<input type="hidden" name="type[id]" value="<?php echo $id; ?>" />
+						</td>
+					</tr>
 				</tbody>
 			</table>
+
+			<div class="data-wrap">
+				<table class="admintable">
+					<thead>
+						<tr>
+							<th scope="col"><?php echo Lang::txt('CITATION_TYPES_PLACEHOLDER'); ?></th>
+							<th scope="col"><?php echo Lang::txt('CITATION_TYPES_FIELD'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($f as $k => $v) : ?>
+							<tr>
+								<td><?php echo $k; ?></td>
+								<td><?php echo $v; ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

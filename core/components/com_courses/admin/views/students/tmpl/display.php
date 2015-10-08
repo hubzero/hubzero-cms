@@ -65,65 +65,66 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-30 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span4">
+				<label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-70 fltrt">
-			<label for="filter_offering"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label>
-			<select name="offering" id="filter_offering" onchange="document.adminForm.submit();">
-				<option value="0"><?php echo Lang::txt('COM_COURSES_OFFERING_SELECT'); ?></option>
-				<?php
-				$offerings = array();
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-				$model = \Components\Courses\Models\Courses::getInstance();
-				if ($model->courses()->total() > 0)
-				{
-					foreach ($model->courses() as $course)
-					{
-					?>
-					<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+				<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span8">
+				<label for="filter_offering"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label>
+				<select name="offering" id="filter_offering" onchange="document.adminForm.submit();">
+					<option value="0"><?php echo Lang::txt('COM_COURSES_OFFERING_SELECT'); ?></option>
 					<?php
-					foreach ($course->offerings() as $offering)
+					$offerings = array();
+					require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+					$model = \Components\Courses\Models\Courses::getInstance();
+					if ($model->courses()->total() > 0)
 					{
-						$offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
+						foreach ($model->courses() as $course)
+						{
 						?>
-						<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+						<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
 						<?php
+						foreach ($course->offerings() as $offering)
+						{
+							$offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
+							?>
+							<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+							<?php
+						}
+						?>
+						</optgroup>
+						<?php
+						}
 					}
 					?>
-					</optgroup>
-					<?php
-					}
-				}
-				?>
-			</select>
+				</select>
 
-		<?php if ($this->filters['offering']) { ?>
-			<label for="filter_section"><?php echo Lang::txt('COM_COURSES_SECTION'); ?>:</label>
-			<select name="section" id="filter_section" onchange="document.adminForm.submit();">
-				<option value="0"><?php echo Lang::txt('COM_COURSES_SECTION_SELECT'); ?></option>
-				<?php
-				if ($this->offering->sections()->total() > 0)
-				{
-					foreach ($this->offering->sections() as $section)
-					{
-				?>
-						<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-				<?php
-					}
-				}
-				?>
-			</select>
-		<?php } else { ?>
-			<input type="hidden" name="section" id="filter_section" value="0" />
-		<?php } ?>
+				<?php if ($this->filters['offering']) { ?>
+					<label for="filter_section"><?php echo Lang::txt('COM_COURSES_SECTION'); ?>:</label>
+					<select name="section" id="filter_section" onchange="document.adminForm.submit();">
+						<option value="0"><?php echo Lang::txt('COM_COURSES_SECTION_SELECT'); ?></option>
+						<?php
+						if ($this->offering->sections()->total() > 0)
+						{
+							foreach ($this->offering->sections() as $section)
+							{
+						?>
+								<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+						<?php
+							}
+						}
+						?>
+					</select>
+				<?php } else { ?>
+					<input type="hidden" name="section" id="filter_section" value="0" />
+				<?php } ?>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<?php if ($this->filters['offering']) { ?>
@@ -145,9 +146,9 @@ function submitbutton(pressbutton)
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_NAME'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_EMAIL'); ?></th>
-			<?php if (!$this->filters['offering']) { ?>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_COURSE_OFFERING'); ?></th>
-			<?php } ?>
+				<?php if (!$this->filters['offering']) { ?>
+					<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_COURSE_OFFERING'); ?></th>
+				<?php } ?>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_SECTION'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
@@ -168,14 +169,14 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$i = 0;
-$k = 0;
-$n = count($this->rows);
-foreach ($this->rows as $row)
-{
-	$section = \Components\Courses\Models\Section::getInstance($row->get('section_id'));
-?>
+		<?php
+		$i = 0;
+		$k = 0;
+		$n = count($this->rows);
+		foreach ($this->rows as $row)
+		{
+			$section = \Components\Courses\Models\Section::getInstance($row->get('section_id'));
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
@@ -205,11 +206,11 @@ foreach ($this->rows as $row)
 						</span>
 					<?php } ?>
 				</td>
-			<?php if (!$this->filters['offering']) { ?>
-				<td>
-					<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : Lang::txt('COM_COURSES_UNKNOWN'); ?>
-				</td>
-			<?php } ?>
+				<?php if (!$this->filters['offering']) { ?>
+					<td>
+						<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : Lang::txt('COM_COURSES_UNKNOWN'); ?>
+					</td>
+				<?php } ?>
 				<td>
 					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE'); ?>
 				</td>
@@ -226,11 +227,11 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$i++;
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$i++;
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

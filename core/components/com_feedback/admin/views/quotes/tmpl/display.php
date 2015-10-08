@@ -77,7 +77,6 @@ function submitbutton(pressbutton)
 		<input type="submit" value="<?php echo Lang::txt('COM_FEEDBACK_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>

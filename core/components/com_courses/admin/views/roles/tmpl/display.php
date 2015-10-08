@@ -59,7 +59,6 @@ Toolbar::help('roles');
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -87,42 +86,42 @@ Toolbar::help('roles');
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row =& $this->rows[$i];
-?>
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row =& $this->rows[$i];
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<?php } ?>
 				</td>
 				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
 				<td class="priority-3">
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
-						<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+							<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->offering_id; ?>
@@ -131,10 +130,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->total; ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

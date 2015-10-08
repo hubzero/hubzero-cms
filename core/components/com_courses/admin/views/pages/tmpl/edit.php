@@ -58,103 +58,104 @@ Joomla.submitbutton = function(pressbutton) {
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// do field validation
 	if ($('#field-title').val() == ''){
 		alert("<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>");
 	} else if ($('#field-content').val() == ''){
 		alert("<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_CONTENT'); ?>");
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		Joomla.submitform(pressbutton, document.getElementById('item-form'));
 	}
 }
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-70 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span8">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="course" value="<?php echo $this->course->get('id'); ?>" />
-			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
-			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
-			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="course" value="<?php echo $this->course->get('id'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
+				<input type="hidden" name="task" value="save" />
+				<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+				<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
+				<input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
-			</div>
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape($this->row->get('url')); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
-			</div>
-			<div class="input-wrap">
-				<label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
-				<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content'); ?>
-			</div>
-		</fieldset>
-	</div>
-	<div class="col width-30 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?></th>
-				<?php if ($this->row->get('course_id')) { ?>
-					<?php if ($this->row->get('offering_id')) { ?>
-						<td><?php echo Lang::txt('COM_COURSES_PAGES_OFFERING'); ?></td>
-					<?php } else { ?>
-						<td><?php echo Lang::txt('COM_COURSES_PAGES_COURSE'); ?></td>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+				</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
+					<label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
+					<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape($this->row->get('url')); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
+				</div>
+				<div class="input-wrap">
+					<label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content'); ?>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span4">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?></th>
+						<?php if ($this->row->get('course_id')) { ?>
+							<?php if ($this->row->get('offering_id')) { ?>
+								<td><?php echo Lang::txt('COM_COURSES_PAGES_OFFERING'); ?></td>
+							<?php } else { ?>
+								<td><?php echo Lang::txt('COM_COURSES_PAGES_COURSE'); ?></td>
+							<?php } ?>
+						<?php } else { ?>
+							<td><?php echo Lang::txt('COM_COURSES_PAGES_USER_GUIDE'); ?></td>
+						<?php } ?>
+					</tr>
+					<?php if ($this->row->get('course_id')) { ?>
+						<tr>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
+							<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
+						</tr>
 					<?php } ?>
+					<?php if ($this->row->get('offering_id')) { ?>
+						<tr>
+							<th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
+							<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
+						</tr>
+					<?php } ?>
+					<tr>
+						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<td><?php echo $this->escape($this->row->get('id')); ?></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
+
+				<div class="input-wrap">
+					<label for="field-active"><?php echo Lang::txt('COM_COURSES_FIELD_ACTIVE'); ?>:</label><br />
+					<select name="fields[active]" id="field-active">
+						<option value="1" <?php if ($this->row->get('active')) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('JYES'); ?></option>
+						<option value="0" <?php if (!$this->row->get('active')) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('JNO'); ?></option>
+					</select>
+				</div>
+			</fieldset>
+
+			<fieldset class="adminform">
+				<?php if (!$this->row->get('id')) { ?>
+					<p><?php echo Lang::txt('COM_COURSES_UPLOAD_ADDED_LATER'); ?></p>
 				<?php } else { ?>
-					<td><?php echo Lang::txt('COM_COURSES_PAGES_USER_GUIDE'); ?></td>
+					<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=pages&task=files&tmpl=component&listdir=' . $this->row->get('offering_id') . '&course=' . $this->course->get('id')); ?>"></iframe>
 				<?php } ?>
-				</tr>
-			<?php if ($this->row->get('course_id')) { ?>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
-				</tr>
-			<?php } ?>
-			<?php if ($this->row->get('offering_id')) { ?>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
-				</tr>
-			<?php } ?>
-				<tr>
-					<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('id')); ?></td>
-				</tr>
-			</tbody>
-		</table>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
-
-			<div class="input-wrap">
-				<label for="field-active"><?php echo Lang::txt('COM_COURSES_FIELD_ACTIVE'); ?>:</label><br />
-				<select name="fields[active]" id="field-active">
-					<option value="1" <?php if ($this->row->get('active')) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('JYES'); ?></option>
-					<option value="0" <?php if (!$this->row->get('active')) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('JNO'); ?></option>
-				</select>
-			</div>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<?php if (!$this->row->get('id')) { ?>
-				<p><?php echo Lang::txt('COM_COURSES_UPLOAD_ADDED_LATER'); ?></p>
-			<?php } else { ?>
-				<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=pages&task=files&tmpl=component&listdir=' . $this->row->get('offering_id') . '&course=' . $this->course->get('id')); ?>"></iframe>
-			<?php } ?>
-		</fieldset>
+			</fieldset>
+		</div>
 	</div>
-	<div class="clr"></div>
 
 	<?php echo Html::input('token'); ?>
 </form>

@@ -69,25 +69,26 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
-			<select name="state" id="filter-state" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
-				<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-				<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
-				<option value="3"<?php if ($this->filters['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
-				<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
-			</select>
+				<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
+				<select name="state" id="filter-state" onchange="this.form.submit();">
+					<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+					<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
+					<option value="3"<?php if ($this->filters['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
+					<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<caption>
@@ -123,33 +124,33 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$i = 0;
-$k = 0;
-foreach ($this->rows as $row)
-{
-	$units    = $row->units(array('count' => true));
-	$students = 0;
-
-	$s = $row->sections();
-	if ($s->total() >  0)
-	{
-		$sids = array();
-		foreach ($s as $section)
+		<?php
+		$i = 0;
+		$k = 0;
+		foreach ($this->rows as $row)
 		{
-			$sids[] = $section->get('id');
-		}
+			$units    = $row->units(array('count' => true));
+			$students = 0;
 
-		$students = $row->members(array(
-						'count' => true,
-						'student' => 1,
-						'section_id' => $sids
-					));
-	}
+			$s = $row->sections();
+			if ($s->total() >  0)
+			{
+				$sids = array();
+				foreach ($s as $section)
+				{
+					$sids[] = $section->get('id');
+				}
 
-	$pages    = $row->pages(array('count' => true, 'active' => array(0, 1)));
-	$sections = $row->sections(array('count' => true));
-?>
+				$students = $row->members(array(
+								'count' => true,
+								'student' => 1,
+								'section_id' => $sids
+							));
+			}
+
+			$pages    = $row->pages(array('count' => true, 'active' => array(0, 1)));
+			$sections = $row->sections(array('count' => true));
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
@@ -158,15 +159,15 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td class="priority-4">
 					<?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE'); ?>
@@ -175,33 +176,33 @@ foreach ($this->rows as $row)
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_down'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
 				<td class="priority-3">
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<?php if ($row->get('state') == 1) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
-						<span class="state publish">
-							<span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
-						</span>
-					</a>
-					<?php } else if ($row->get('state') == 2) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
-						<span class="state trash">
-							<span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
-						</span>
-					</a>
-					<?php } else if ($row->get('state') == 3) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
-						<span class="state pending">
-							<span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
-						</span>
-					</a>
-					<?php } else if ($row->get('state') == 0) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
-						<span class="state unpublish">
-							<span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
-						</span>
-					</a>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<?php if ($row->get('state') == 1) { ?>
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
+							<span class="state publish">
+								<span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
+							</span>
+						</a>
+						<?php } else if ($row->get('state') == 2) { ?>
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+							<span class="state trash">
+								<span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
+							</span>
+						</a>
+						<?php } else if ($row->get('state') == 3) { ?>
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+							<span class="state pending">
+								<span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
+							</span>
+						</a>
+						<?php } else if ($row->get('state') == 0) { ?>
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+							<span class="state unpublish">
+								<span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
+							</span>
+						</a>
+						<?php } ?>
 					<?php } ?>
-				<?php } ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage') && $sections > 0) { ?>
@@ -262,11 +263,11 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-	$i++;
-}
-?>
+			<?php
+			$k = 1 - $k;
+			$i++;
+		}
+		?>
 		</tbody>
 	</table>
 

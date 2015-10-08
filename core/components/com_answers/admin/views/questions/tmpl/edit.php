@@ -57,14 +57,14 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// do field validation
 	if (document.getElementById('field-subject').value == ''){
 		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_SUBJECT'); ?>');
 	} else if (document.getElementById('field-tags').value == ''){
 		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_TAG'); ?>');
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }
@@ -118,16 +118,16 @@ function submitbutton(pressbutton)
 							<input type="hidden" name="question[id]" value="<?php echo $this->row->get('id'); ?>" />
 						</td>
 					</tr>
-				<?php if ($this->row->get('id')) { ?>
-					<tr>
-						<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATED'); ?>:</th>
-						<td><?php echo $this->row->get('created'); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
-						<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
-					</tr>
-				<?php } ?>
+					<?php if ($this->row->get('id')) { ?>
+						<tr>
+							<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATED'); ?>:</th>
+							<td><?php echo $this->row->get('created'); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
+							<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
+						</tr>
+					<?php } ?>
 				</tbody>
 			</table>
 

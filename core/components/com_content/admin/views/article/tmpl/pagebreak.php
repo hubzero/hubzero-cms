@@ -28,28 +28,28 @@ $script .= '}'."\n";
 
 Document::addScriptDeclaration($script);
 ?>
-		<form>
-		<table width="100%" align="center">
-			<tr width="40%">
-				<td class="key" align="right">
+	<form>
+		<table>
+			<tr>
+				<th>
 					<label for="title">
-						<?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_TITLE' ); ?>
+						<?php echo Lang::txt('COM_CONTENT_PAGEBREAK_TITLE'); ?>
 					</label>
-				</td>
+				</th>
 				<td>
 					<input type="text" id="title" name="title" />
 				</td>
 			</tr>
-			<tr width="60%">
-				<td class="key" align="right">
+			<tr>
+				<th>
 					<label for="alias">
-						<?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_TOC' ); ?>
+						<?php echo Lang::txt('COM_CONTENT_PAGEBREAK_TOC'); ?>
 					</label>
-				</td>
+				</th>
 				<td>
 					<input type="text" id="alt" name="alt" />
 				</td>
 			</tr>
 		</table>
-		</form>
-		<button onclick="insertPagebreak();"><?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_INSERT_BUTTON' ); ?></button>
+	</form>
+	<button onclick="insertPagebreak();"><?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_INSERT_BUTTON' ); ?></button>

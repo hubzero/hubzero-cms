@@ -63,14 +63,14 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// do field validation
 	if ($('#field-item_id').val() == '') {
 		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'); ?>');
 	} else if ($('#field-collection_id').val() == '') {
 		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'); ?>');
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }
@@ -80,60 +80,61 @@ function submitbutton(pressbutton)
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
+	<div class="grid">
+		<div class="col span7">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-item_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ITEM_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[item_id]" id="field-item_id" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('item_id'))); ?>" />
+			<div class="grid">
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-item_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ITEM_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+						<input type="text" name="fields[item_id]" id="field-item_id" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('item_id'))); ?>" />
+					</div>
+				</div>
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-collection_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_COLLECTION_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+						<input type="text" name="fields[collection_id]" id="field-collection_id" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('collection_id'))); ?>" />
+					</div>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-collection_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_COLLECTION_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[collection_id]" id="field-collection_id" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('collection_id'))); ?>" />
-				</div>
-			</div>
-			<div class="clr"></div>
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
 				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')), 35, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 			</div>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
+						<td>
+							<?php
+							$editor = User::getInstance($this->row->get('created_by'));
+							echo $this->escape(stripslashes($editor->get('name')));
+							?>
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('created'); ?>
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ORIGINAL'); ?>:</th>
+						<td>
+							<?php echo ($this->row->get('original') ? Lang::txt('JYES') : Lang::txt('JNO')); ?>
+							<input type="hidden" name="fields[original]" id="field-original" value="<?php echo $this->escape($this->row->get('original')); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
-					<td>
-						<?php
-						$editor = User::getInstance($this->row->get('created_by'));
-						echo $this->escape(stripslashes($editor->get('name')));
-						?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('created'); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ORIGINAL'); ?>:</th>
-					<td>
-						<?php echo ($this->row->get('original') ? Lang::txt('JYES') : Lang::txt('JNO')); ?>
-						<input type="hidden" name="fields[original]" id="field-original" value="<?php echo $this->escape($this->row->get('original')); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

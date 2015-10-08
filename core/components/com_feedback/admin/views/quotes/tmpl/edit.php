@@ -73,14 +73,14 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// form field validation
 	if ($('#field-fullname').val() == '') {
 		alert('<?php echo Lang::txt('COM_FEEDBACK_AUTHOR_MUST_HAVE_NAME'); ?>');
 	} else if ($('#field-org').val() == '') {
 		alert('<?php echo Lang::txt('COM_FEEDBACK_AUTHOR_MUST_HAVE_AFFILIATION'); ?>');
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }

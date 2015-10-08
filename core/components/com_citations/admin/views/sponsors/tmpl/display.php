@@ -70,9 +70,9 @@ function submitbutton(pressbutton)
 				<?php foreach ($this->sponsors as $sponsor) : ?>
 					<tr>
 						<td class="priority-3"><?php echo $sponsor['id']; ?></td>
-						<td><?php echo $sponsor['sponsor']; ?></td>
-						<td class="priority-2"><?php echo $sponsor['link']; ?></td>
-						<td class="priority-4"><?php echo $sponsor['image']; ?></td>
+						<td><?php echo $this->escape($sponsor['sponsor']); ?></td>
+						<td class="priority-2"><?php echo $this->escape($sponsor['link']); ?></td>
+						<td class="priority-4"><?php echo $this->escape($sponsor['image']); ?></td>
 						<td>
 							<?php if ($canDo->get('core.edit')) { ?>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_EDIT'); ?></a> |

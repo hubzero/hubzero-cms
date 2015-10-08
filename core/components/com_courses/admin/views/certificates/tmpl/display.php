@@ -62,19 +62,20 @@ $this->css('certificates.css');
 	<?php } ?>
 
 	<fieldset class="placeholders">
-		<div class="col width-60 fltlft">
-			<button class="placeholder" data-id="username"><?php echo Lang::txt('COM_COURSES_BTN_USERNAME'); ?></button>
-			<button class="placeholder" data-id="name"><?php echo Lang::txt('COM_COURSES_BTN_NAME'); ?></button>
-			<button class="placeholder" data-id="date"><?php echo Lang::txt('COM_COURSES_BTN_DATE'); ?></button>
-			<button class="placeholder" data-id="email"><?php echo Lang::txt('COM_COURSES_BTN_EMAIL'); ?></button>
-			<button class="placeholder" data-id="course"><?php echo Lang::txt('COM_COURSES_BTN_COURSE'); ?></button>
-			<button class="placeholder" data-id="offering"><?php echo Lang::txt('COM_COURSES_BTN_OFFERING'); ?></button>
-			<button class="placeholder" data-id="section"><?php echo Lang::txt('COM_COURSES_BTN_SECTION'); ?></button>
+		<div class="grid">
+			<div class="col span7">
+				<button class="placeholder" data-id="username"><?php echo Lang::txt('COM_COURSES_BTN_USERNAME'); ?></button>
+				<button class="placeholder" data-id="name"><?php echo Lang::txt('COM_COURSES_BTN_NAME'); ?></button>
+				<button class="placeholder" data-id="date"><?php echo Lang::txt('COM_COURSES_BTN_DATE'); ?></button>
+				<button class="placeholder" data-id="email"><?php echo Lang::txt('COM_COURSES_BTN_EMAIL'); ?></button>
+				<button class="placeholder" data-id="course"><?php echo Lang::txt('COM_COURSES_BTN_COURSE'); ?></button>
+				<button class="placeholder" data-id="offering"><?php echo Lang::txt('COM_COURSES_BTN_OFFERING'); ?></button>
+				<button class="placeholder" data-id="section"><?php echo Lang::txt('COM_COURSES_BTN_SECTION'); ?></button>
+			</div>
+			<div class="col span5">
+				<button class="delete" id="clear-canvas" data-id="clear"> <?php echo Lang::txt('COM_COURSES_BTN_CLEAR'); ?></button>
+			</div>
 		</div>
-		<div class="col width-40 fltrt">
-			<button class="delete" id="clear-canvas" data-id="clear"> <?php echo Lang::txt('COM_COURSES_BTN_CLEAR'); ?></button>
-		</div>
-		<div class="clr"></div>
 	</fieldset>
 
 	<div id="certificate">

@@ -75,7 +75,6 @@ function submitbutton(pressbutton)
 			<option value="rejected"<?php if ($this->filters['filterby'] == 'rejected') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED'); ?></option>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -93,11 +92,11 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_ANSWERS_COL_ANSWER', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_ANSWERS_COL_ACCEPTED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_ANSWERS_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_ANSWERS_COL_VOTES', 'helpful', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ANSWER', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ACCEPTED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_VOTES', 'helpful', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -113,26 +112,26 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->results); $i < $n; $i++)
-{
-	$row =& $this->results[$i];
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->results); $i < $n; $i++)
+		{
+			$row =& $this->results[$i];
 
-	switch (intval($row->get('state')))
-	{
-		case 1:
-			$task = 'reject';
-			$alt = Lang::txt('COM_ANSWERS_STATE_ACCEPTED');
-			$cls = 'published';
-		break;
-		case 0:
-			$task = 'accept';
-			$alt = Lang::txt('COM_ANSWERS_STATE_UNACCEPTED');
-			$cls = 'unpublished';
-		break;
-	}
-?>
+			switch (intval($row->get('state')))
+			{
+				case 1:
+					$task = 'reject';
+					$alt = Lang::txt('COM_ANSWERS_STATE_ACCEPTED');
+					$cls = 'published';
+				break;
+				case 0:
+					$task = 'accept';
+					$alt = Lang::txt('COM_ANSWERS_STATE_UNACCEPTED');
+					$cls = 'unpublished';
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
@@ -163,10 +162,10 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<span class="vote dislike" style="color:red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 
