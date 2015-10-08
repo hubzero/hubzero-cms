@@ -453,22 +453,22 @@ if (!$this->question->get('anonymous'))
 						</div>
 					<?php } //if ($this->responses) { ?>
 				</div><!-- / .subject -->
-
-				<?php var_dump($this->question->isOpen() && $this->responding!=2 && !$this->question->isReported());  ?> 
-				<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported()): ?>
 				<div class="aside">
-					<div class="container">
+					<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != User::get('id')) { ?>
+						<div class="container">
 							<p><a class="icon-add add btn" href="<?php
 							$route = Route::url($this->question->link('answer'), false, true);
 							echo (User::isGuest() ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route);
 							?>"><?php echo Lang::txt('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+						</div><!-- / .container -->
+					<?php } ?>
 
-					<?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen()): ?>
+					<?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
+						<div class="container">
 							<p class="info"><?php echo Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE') . ($this->question->config('banking') ? ' ' . Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS') : ''); ?></p>
-					<?php endif; ?>
-					</div><!-- / .container -->
+						</div><!-- / .container -->
+					<?php } ?>
 				</div><!-- / .aside -->
-				<?php endif; ?>
 			</div><!-- / .section-inner -->
 		</section>
 		<!-- end comment block -->
