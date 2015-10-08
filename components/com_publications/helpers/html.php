@@ -968,7 +968,7 @@ class PublicationsHtml
 			switch ($publication->state)
 			{
 				case 1:
-					$dt = (isset($publication->accepted) && $publication->accepted != '0000-00-00 00:00:00') ? $publication->accepted : $publication->published_up;
+					$dt = (isset($publication->accepted) && $publication->accepted != '0000-00-00 00:00:00' && $publication->accepted > $publication->published_up) ? $publication->accepted : $publication->published_up;
 					$text .= ' - ';
 					$text .= ($publication->published_up > $now)
 						? JText::_('COM_PUBLICATIONS_TO_BE_RELEASED')
