@@ -454,7 +454,7 @@ if (!$this->question->get('anonymous'))
 					<?php } //if ($this->responses) { ?>
 				</div><!-- / .subject -->
 				<div class="aside">
-					<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != User::get('id')) { ?>
+					<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported()) { ?>
 						<div class="container">
 							<p><a class="icon-add add btn" href="<?php
 							$route = Route::url($this->question->link('answer'), false, true);
