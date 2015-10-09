@@ -366,6 +366,7 @@ $this->css()
 					);
 					$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
 					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 					$pageNav->setAdditionalUrlParam('show', $this->filters['show']);
 					echo $pageNav->render();
 				?>
