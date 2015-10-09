@@ -20,42 +20,44 @@ $published = $this->state->get('filter.published');
 
 	<p><?php echo Lang::txt('COM_MENUS_BATCH_TIP'); ?></p>
 
-	<div class="col width-50 fltlft">
-		<div class="input-wrap">
-			<?php echo Html::batch('access');?>
-		</div>
+	<div class="grid">
+		<div class="col span6">
+			<div class="input-wrap">
+				<?php echo Html::batch('access');?>
+			</div>
 
-		<div class="input-wrap">
-			<?php echo Html::batch('language'); ?>
+			<div class="input-wrap">
+				<?php echo Html::batch('language'); ?>
+			</div>
+		</div>
+		<div class="col span6">
+			<?php if ($published >= 0) : ?>
+				<div class="input-wrap combo" id="batch-choose-action">
+					<label id="batch-choose-action-lbl" for="batch-choose-action">
+						<?php echo Lang::txt('COM_MENUS_BATCH_MENU_LABEL'); ?>
+					</label><br />
+					<div class="grid">
+						<div class="col span6">
+							<select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
+								<option value=""><?php echo Lang::txt('JSELECT') ?></option>
+								<?php echo Html::select('options', JHtml::_('menu.menuitems', array('published' => $published)));?>
+							</select>
+						</div>
+						<div class="col span6">
+							<?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+						</div>
+					</div>
+				</div>
+			<?php endif; ?>
+
+			<div class="input-wrap">
+				<button type="submit" onclick="Joomla.submitbutton('item.batch');">
+					<?php echo Lang::txt('JGLOBAL_BATCH_PROCESS'); ?>
+				</button>
+				<button type="button" onclick="$('#batch-menu-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
+					<?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
+				</button>
+			</div>
 		</div>
 	</div>
-	<div class="col width-50 fltrt">
-	<?php if ($published >= 0) : ?>
-		<div class="input-wrap combo" id="batch-choose-action">
-			<label id="batch-choose-action-lbl" for="batch-choose-action">
-				<?php echo Lang::txt('COM_MENUS_BATCH_MENU_LABEL'); ?>
-			</label><br />
-			<div class="col width-50 fltlft">
-				<select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
-					<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-					<?php echo Html::select('options', JHtml::_('menu.menuitems', array('published' => $published)));?>
-				</select>
-			</div>
-			<div class="col width-50 fltrt">
-				<?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
-			</div>
-			<div class="clr"></div>
-		</div>
-	<?php endif; ?>
-
-		<div class="input-wrap">
-			<button type="submit" onclick="Joomla.submitbutton('item.batch');">
-				<?php echo Lang::txt('JGLOBAL_BATCH_PROCESS'); ?>
-			</button>
-			<button type="button" onclick="$('#batch-menu-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
-				<?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
-			</button>
-		</div>
-	</div>
-	<div class="clr"></div>
 </fieldset>

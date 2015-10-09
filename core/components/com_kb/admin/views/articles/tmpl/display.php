@@ -75,25 +75,26 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-40 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+		<div class="grid">
+			<div class="col span5">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_KB_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-60 fltrt">
-			<label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-			<?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'onchange="this.form.submit()"'); ?>
+				<input type="submit" value="<?php echo Lang::txt('COM_KB_GO'); ?>" />
+				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span7">
+				<label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
+				<?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'onchange="this.form.submit()"'); ?>
 
-			<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
-			<select name="access" id="filter-access" onchange="this.form.submit()">
-				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', $access, 'value', 'text', $this->filters['access']); ?>
-			</select>
+				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<select name="access" id="filter-access" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php echo Html::select('options', $access, 'value', 'text', $this->filters['access']); ?>
+				</select>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>

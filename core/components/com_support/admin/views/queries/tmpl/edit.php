@@ -51,7 +51,6 @@ if (!$tmpl)
 ?>
 <?php if (!$tmpl) { ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-		<div class="col width-100">
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('JDETAILS'); ?></legend>
 
@@ -126,7 +125,6 @@ if (!$tmpl)
 					</tbody>
 				</table>
 			</fieldset>
-		</div>
 
 		<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />
@@ -181,7 +179,7 @@ if (!$tmpl)
 				<?php echo Lang::txt('COM_SUPPORT_QUERY_BUILDER'); ?>
 			</div>
 		</fieldset>
-		<div class="col width-100">
+
 			<fieldset class="fields title">
 				<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?></label>
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
@@ -253,7 +251,6 @@ if (!$tmpl)
 					</select>
 				</p>
 			</fieldset>
-		</div>
 
 		<input type="hidden" name="fields[id]" value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />

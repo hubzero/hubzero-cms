@@ -59,72 +59,73 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-70 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span8">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<thead>
-					<tr>
-						<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_RESOURCE'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_NAME'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_ORGANIZATION'); ?></th>
-						<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_ROLE'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php
-				$i = 0;
-				foreach ($this->rows as $row)
-				{
-					?>
-					<tr>
-						<td>
-							<input type="text" name="fields[<?php echo $i; ?>][subid]" maxlength="250" size="4" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
-							<input type="hidden" name="fields[<?php echo $i; ?>][ordering]" value="<?php echo $this->escape(stripslashes($row->ordering)); ?>" />
-						</td>
-						<td>
-							<input type="text" name="fields[<?php echo $i; ?>][name]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->name)); ?>" />
-						</td>
-						<td>
-							<input type="text" name="fields[<?php echo $i; ?>][organization]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->organization)); ?>" />
-						</td>
-						<td>
-							<select name="fields[<?php echo $i; ?>][role]">
-								<option value=""<?php if ($row->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
-								<?php
-								if ($this->roles)
-								{
-									foreach ($this->roles as $role)
-									{
-										?>
-										<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($row->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
-										<?php
-									}
-								}
-								?>
-							</select>
-						</td>
-					</tr>
+				<table class="admintable">
+					<thead>
+						<tr>
+							<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_RESOURCE'); ?></th>
+							<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_NAME'); ?></th>
+							<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_ORGANIZATION'); ?></th>
+							<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_ROLE'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
 					<?php
-					$i++;
-				}
-				?>
-				</tbody>
-			</table>
-		</fieldset>
-	</div>
-	<div class="col width-30 fltrt">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_RESOURCES_FIELDSET_AUTHOR'); ?></span></legend>
+					$i = 0;
+					foreach ($this->rows as $row)
+					{
+						?>
+						<tr>
+							<td>
+								<input type="text" name="fields[<?php echo $i; ?>][subid]" maxlength="250" size="4" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
+								<input type="hidden" name="fields[<?php echo $i; ?>][ordering]" value="<?php echo $this->escape(stripslashes($row->ordering)); ?>" />
+							</td>
+							<td>
+								<input type="text" name="fields[<?php echo $i; ?>][name]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->name)); ?>" />
+							</td>
+							<td>
+								<input type="text" name="fields[<?php echo $i; ?>][organization]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->organization)); ?>" />
+							</td>
+							<td>
+								<select name="fields[<?php echo $i; ?>][role]">
+									<option value=""<?php if ($row->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
+									<?php
+									if ($this->roles)
+									{
+										foreach ($this->roles as $role)
+										{
+											?>
+											<option value="<?php echo $this->escape($role->alias); ?>"<?php if ($row->role == $role->alias) { echo ' selected="selected"'; }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+											<?php
+										}
+									}
+									?>
+								</select>
+							</td>
+						</tr>
+						<?php
+						$i++;
+					}
+					?>
+					</tbody>
+				</table>
+			</fieldset>
+		</div>
+		<div class="col span4">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_RESOURCES_FIELDSET_AUTHOR'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-authorid"><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?>:</label><br />
-				<input type="text" name="authorid" id="field-authorid" value="<?php echo $this->escape($this->authorid); ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-authorid"><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?>:</label><br />
+					<input type="text" name="authorid" id="field-authorid" value="<?php echo $this->escape($this->authorid); ?>" />
+				</div>
+			</fieldset>
+		</div>
 	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="id" value="<?php echo $this->authorid; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

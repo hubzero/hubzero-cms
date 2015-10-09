@@ -31,7 +31,6 @@ $saveOrder	= $listOrder == 'a.ordering';
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist">
 		<thead>

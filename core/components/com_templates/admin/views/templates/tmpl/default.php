@@ -35,7 +35,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist" id="template-mgr">
 		<thead>

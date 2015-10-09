@@ -82,7 +82,7 @@ function saveAndUpdate()
 		</fieldset>
 		<input type="hidden" name="no_html" value="1" />
 	<?php } ?>
-	<div class="col width-100">
+	<div class="width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -97,60 +97,62 @@ function saveAndUpdate()
 				<?php } ?>
 			</div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label>
-					<?php
-					$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'fields[group]', 'acgroup','','','','owner')));
-					if (count($gc) > 0) {
-						echo $gc[0];
-					} else { ?>
-					<input type="text" name="group" value="" id="acgroup" value="" size="30" autocomplete="off" />
-					<?php } ?>
+			<div class="grid">
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label>
+						<?php
+						$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'fields[group]', 'acgroup','','','','owner')));
+						if (count($gc) > 0) {
+							echo $gc[0];
+						} else { ?>
+						<input type="text" name="group" value="" id="acgroup" value="" size="30" autocomplete="off" />
+						<?php } ?>
+					</div>
+				</div>
+				<div class="col span6">
+					<div class="input-wrap">
+						<label><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OWNER'); ?></label>
+						<?php echo $this->lists['owner']; ?>
+					</div>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OWNER'); ?></label>
-					<?php echo $this->lists['owner']; ?>
-				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-severity"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?></label>
-					<select name="fields[severity]" id="field-severity">
-						<option value=""><?php echo Lang::txt('Select...'); ?></option>
-						<option value="critical"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_CRITICAL'); ?></option>
-						<option value="major"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MAJOR'); ?></option>
-						<option value="normal"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_NORMAL'); ?></option>
-						<option value="minor"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MINOR'); ?></option>
-						<option value="trivial"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_TRIVIAL'); ?></option>
-					</select>
+			<div class="grid">
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-severity"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?></label>
+						<select name="fields[severity]" id="field-severity">
+							<option value=""><?php echo Lang::txt('Select...'); ?></option>
+							<option value="critical"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_CRITICAL'); ?></option>
+							<option value="major"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MAJOR'); ?></option>
+							<option value="normal"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_NORMAL'); ?></option>
+							<option value="minor"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MINOR'); ?></option>
+							<option value="trivial"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_TRIVIAL'); ?></option>
+						</select>
+					</div>
+				</div>
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-status"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?></label>
+						<select name="fields[status]" id="field-status">
+							<option value=""><?php echo Lang::txt('Select...'); ?></option>
+							<?php $row = new \Components\Support\Models\Ticket(); ?>
+							<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
+								<?php foreach ($row->statuses('open') as $status) { ?>
+									<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+								<?php } ?>
+							</optgroup>
+							<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
+								<option value="0"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
+								<?php foreach ($row->statuses('closed') as $status) { ?>
+									<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+								<?php } ?>
+							</optgroup>
+						</select>
+					</div>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-status"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?></label>
-					<select name="fields[status]" id="field-status">
-						<option value=""><?php echo Lang::txt('Select...'); ?></option>
-						<?php $row = new \Components\Support\Models\Ticket(); ?>
-						<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
-							<?php foreach ($row->statuses('open') as $status) { ?>
-								<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
-							<?php } ?>
-						</optgroup>
-						<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
-							<option value="0"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
-							<?php foreach ($row->statuses('closed') as $status) { ?>
-								<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
-							<?php } ?>
-						</optgroup>
-					</select>
-				</div>
-			</div>
-			<div class="clr"></div>
 
 			<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
 				<div class="input-wrap">
@@ -202,7 +204,8 @@ function saveAndUpdate()
 					<?php } ?>
 				</label>
 			</div>
-			<div class="col width-50 fltlft">
+			<div class="grid">
+			<div class="col span6">
 				<div class="input-wrap">
 					<label for="email_submitter">
 						<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
@@ -210,7 +213,7 @@ function saveAndUpdate()
 					</label>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
+			<div class="col span6">
 				<div class="input-wrap">
 					<label for="email_owner">
 						<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
@@ -218,7 +221,7 @@ function saveAndUpdate()
 					</label>
 				</div>
 			</div>
-			<div class="clr"></div>*/ ?>
+			</div>*/ ?>
 		</fieldset>
 	</div>
 

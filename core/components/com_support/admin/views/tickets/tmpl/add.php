@@ -62,131 +62,134 @@ function submitbutton(pressbutton)
 }
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
-	<div class="col width-70 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span8">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<input type="hidden" name="summary" id="field-summary" value="<?php echo $this->escape($this->row->get('summary')); ?>" size="50" />
+				<input type="hidden" name="summary" id="field-summary" value="<?php echo $this->escape($this->row->get('summary')); ?>" size="50" />
 
-			<div class="input-wrap">
-				<label for="field-login"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_LOGIN'); ?>:</label>
-				<input type="text" name="login" id="field-login" value="<?php echo $this->escape(trim($this->row->get('login'))); ?>" size="50" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-name"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_NAME'); ?>:</label>
-				<input type="text" name="name" id="field-name" value="<?php echo $this->escape(trim($this->row->get('name'))); ?>" size="50" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-email"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_EMAIL'); ?>:</label>
-				<input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-report"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
-				<textarea name="report" id="field-report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->content('raw'))); ?></textarea>
-			</div>
-			<div class="input-wrap">
-				<label for="actags"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label>
-				<?php
-				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
-				if (count($tf) > 0) {
-					echo $tf[0];
-				} else { ?>
-					<input type="text" name="tags" id="actags" value="" />
-				<?php } ?>
-			</div>
-
-			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label></td>
+					<label for="field-login"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_LOGIN'); ?>:</label>
+					<input type="text" name="login" id="field-login" value="<?php echo $this->escape(trim($this->row->get('login'))); ?>" size="50" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-name"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_NAME'); ?>:</label>
+					<input type="text" name="name" id="field-name" value="<?php echo $this->escape(trim($this->row->get('name'))); ?>" size="50" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-email"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_EMAIL'); ?>:</label>
+					<input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-report"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
+					<textarea name="report" id="field-report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->content('raw'))); ?></textarea>
+				</div>
+				<div class="input-wrap">
+					<label for="actags"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label>
 					<?php
-					$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')));
-					if (count($gc) > 0) {
-						echo $gc[0];
+					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
+					if (count($tf) > 0) {
+						echo $tf[0];
 					} else { ?>
-					<input type="text" name="group" value="" id="acgroup" value="" size="30" autocomplete="off" />
+						<input type="text" name="tags" id="actags" value="" />
 					<?php } ?>
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OWNER'); ?></label>
-					<?php echo $this->lists['owner']; ?>
-				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-severity"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?></label>
-					<select name="severity" id="field-severity">
-						<option value="critical"<?php if ($this->row->get('severity') == 'critical') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_CRITICAL'); ?></option>
-						<option value="major"<?php if ($this->row->get('severity') == 'major') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MAJOR'); ?></option>
-						<option value="normal"<?php if ($this->row->get('severity') == 'normal') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_NORMAL'); ?></option>
-						<option value="minor"<?php if ($this->row->get('severity') == 'minor') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MINOR'); ?></option>
-						<option value="trivial"<?php if ($this->row->get('severity') == 'trivial') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_TRIVIAL'); ?></option>
-					</select>
-				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-status"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?></label>
-					<select name="status" id="field-status">
-						<?php $row = new \Components\Support\Models\Ticket(); ?>
-						<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
-							<option value="0" selected="selected"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_NEW'); ?></option>
-							<?php foreach ($this->row->statuses('open') as $status) { ?>
-								<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
-							<?php } ?>
-						</optgroup>
-						<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
-							<option value="0"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
-							<?php foreach ($this->row->statuses('closed') as $status) { ?>
-								<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
-							<?php } ?>
-						</optgroup>
-					</select>
-				</div>
-			</div>
-			<div class="clr"></div>
-
-			<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
-				<div class="input-wrap">
-					<label for="ticket-field-category">
-						<?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_CATEGORY'); ?>
-						<select name="category" id="ticket-field-category">
-							<option value=""><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label></td>
 							<?php
-							foreach ($this->lists['categories'] as $category)
-							{
-								?>
-							<option value="<?php echo $this->escape($category->alias); ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
-								<?php
-							}
-							?>
-						</select>
-					</label>
+							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')));
+							if (count($gc) > 0) {
+								echo $gc[0];
+							} else { ?>
+							<input type="text" name="group" value="" id="acgroup" value="" size="30" autocomplete="off" />
+							<?php } ?>
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OWNER'); ?></label>
+							<?php echo $this->lists['owner']; ?>
+						</div>
+					</div>
 				</div>
-			<?php } ?>
 
-			<div class="input-wrap">
-				<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?></label>
-				<?php
-				$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
-				if (count($mc) > 0) {
-					echo $mc[0];
-				} else { ?>
-				<input type="text" name="cc" id="acmembers" value="<?php echo implode(', ', $cc); ?>" size="35" />
+				<div class="grid">
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="field-severity"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?></label>
+							<select name="severity" id="field-severity">
+								<option value="critical"<?php if ($this->row->get('severity') == 'critical') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_CRITICAL'); ?></option>
+								<option value="major"<?php if ($this->row->get('severity') == 'major') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MAJOR'); ?></option>
+								<option value="normal"<?php if ($this->row->get('severity') == 'normal') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_NORMAL'); ?></option>
+								<option value="minor"<?php if ($this->row->get('severity') == 'minor') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_MINOR'); ?></option>
+								<option value="trivial"<?php if ($this->row->get('severity') == 'trivial') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_TRIVIAL'); ?></option>
+							</select>
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="input-wrap">
+							<label for="field-status"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?></label>
+							<select name="status" id="field-status">
+								<?php $row = new \Components\Support\Models\Ticket(); ?>
+								<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
+									<option value="0" selected="selected"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_NEW'); ?></option>
+									<?php foreach ($this->row->statuses('open') as $status) { ?>
+										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+									<?php } ?>
+								</optgroup>
+								<optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
+									<option value="0"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
+									<?php foreach ($this->row->statuses('closed') as $status) { ?>
+										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+									<?php } ?>
+								</optgroup>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
+					<div class="input-wrap">
+						<label for="ticket-field-category">
+							<?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_CATEGORY'); ?>
+							<select name="category" id="ticket-field-category">
+								<option value=""><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+								<?php
+								foreach ($this->lists['categories'] as $category)
+								{
+									?>
+								<option value="<?php echo $this->escape($category->alias); ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
+									<?php
+								}
+								?>
+							</select>
+						</label>
+					</div>
 				<?php } ?>
-			</div>
-			<input type="hidden" name="section" value="1" />
-			<input type="hidden" name="uas" value="<?php echo Request::getVar('HTTP_USER_AGENT', '', 'server'); ?>" />
-			<input type="hidden" name="severity" value="normal" />
-		</fieldset>
-	</div><!-- / .col width-70 -->
-	<div class="col width-30 fltrt">
-		<p><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION'); ?></p>
-	</div><!-- / .col width-30 -->
-	<div class="clr"></div>
+
+				<div class="input-wrap">
+					<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?></label>
+					<?php
+					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
+					if (count($mc) > 0) {
+						echo $mc[0];
+					} else { ?>
+					<input type="text" name="cc" id="acmembers" value="<?php echo implode(', ', $cc); ?>" size="35" />
+					<?php } ?>
+				</div>
+				<input type="hidden" name="section" value="1" />
+				<input type="hidden" name="uas" value="<?php echo Request::getVar('HTTP_USER_AGENT', '', 'server'); ?>" />
+				<input type="hidden" name="severity" value="normal" />
+			</fieldset>
+		</div>
+		<div class="col span4">
+			<p><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION'); ?></p>
+		</div>
+	</div>
 
 	<input type="hidden" name="referer" value="<?php echo Request::getVar('HTTP_REFERER', NULL, 'server'); ?>" />
 	<input type="hidden" name="os" value="<?php echo $browser->platform(); ?>" />

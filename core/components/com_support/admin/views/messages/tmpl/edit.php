@@ -62,35 +62,36 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_SUPPORT_MESSAGE_LEGEND'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_SUPPORT_MESSAGE_LEGEND'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_SUMMARY'); ?>:</label><br />
-				<input type="text" name="msg[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_SUMMARY'); ?>:</label><br />
+					<input type="text" name="msg[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<textarea name="msg[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->message)); ?></textarea>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<textarea name="msg[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->message)); ?></textarea>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<p><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TEXT_EXPLANATION'); ?></p>
+			<dl>
+				<dt>{ticket#}</dt>
+				<dd><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
+
+				<dt>{sitename}</dt>
+				<dd><?php echo Config::get('sitename'); ?></dd>
+
+				<dt>{siteemail}</dt>
+				<dd><?php echo Config::get('mailfrom'); ?></dd>
+			</dl>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<p><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TEXT_EXPLANATION'); ?></p>
-		<dl>
-			<dt>{ticket#}</dt>
-			<dd><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
-
-			<dt>{sitename}</dt>
-			<dd><?php echo Config::get('sitename'); ?></dd>
-
-			<dt>{siteemail}</dt>
-			<dd><?php echo Config::get('mailfrom'); ?></dd>
-		</dl>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="msg[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -74,75 +74,76 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_SUPPORT_REPORT_ITEM_REPORTED_AS_ABUSIVE'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_SUPPORT_REPORT_ITEM_REPORTED_AS_ABUSIVE'); ?></span></legend>
 
-			<table class="admintable">
+				<table class="admintable">
+					<tbody>
+						<tr>
+							<td>
+								<h4><?php echo '<a class="modals" href="' . $link . '">'.$this->escape($this->title) . '</a>: '; ?></h4>
+								<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
+								<?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
+									echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';
+								} ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+
+			<table class="meta">
 				<tbody>
 					<tr>
-						<td>
-							<h4><?php echo '<a class="modals" href="' . $link . '">'.$this->escape($this->title) . '</a>: '; ?></h4>
-							<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
-							<?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
-								echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';
-							} ?>
-						</td>
+						<th><?php echo Lang::txt('COM_SUPPORT_COL_DATE'); ?></th>
+						<td><?php echo $this->report->created; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
+						<td><?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
+						<td><?php echo $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)); ?></td>
 					</tr>
 				</tbody>
 			</table>
-		</fieldset>
+		</div>
+		<div class="col span5">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_SUPPORT_REPORT_TAKE_ACTION'); ?></span></legend>
 
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_SUPPORT_COL_DATE'); ?></th>
-					<td><?php echo $this->report->created; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
-					<td><?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
-					<td><?php echo $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)); ?></td>
-				</tr>
-			</tbody>
-		</table>
+				<?php if ($this->report->state == 0) { ?>
+					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM_HINT'); ?>">
+						<input type="radio" name="task" id="field-task-release" value="release" />
+						<label for="field-task-release"><?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM'); ?></label>
+					</div>
+
+					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM_HINT'); ?>">
+						<input type="radio" name="task" id="field-task-spam" value="spam" />
+						<label for="field-task-spam"><?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM'); ?></label>
+					</div>
+
+					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?>">
+						<input type="radio" name="task" id="field-task-remove" value="remove" />
+						<label for="field-task-remove"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM'); ?></label>
+						<span class="hint"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?></span><br />
+						<textarea name="note" id="note" rows="5" cols="25"></textarea>
+					</div>
+
+					<div class="input-wrap">
+						<input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" />
+						<label for="field-task-cancel"><?php echo Lang::txt('COM_SUPPORT_REPORT_DECIDE_LATER'); ?></label>
+					</div>
+				<?php } else { ?>
+					<p class="warning"><?php echo Lang::txt('COM_SUPPORT_REPORT_ACTION_TAKEN'); ?></p>
+					<input type="hidden" name="task" value="view" />
+				<?php } ?>
+			</fieldset>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_SUPPORT_REPORT_TAKE_ACTION'); ?></span></legend>
-
-			<?php if ($this->report->state == 0) { ?>
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM_HINT'); ?>">
-					<input type="radio" name="task" id="field-task-release" value="release" />
-					<label for="field-task-release"><?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM'); ?></label>
-				</div>
-
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM_HINT'); ?>">
-					<input type="radio" name="task" id="field-task-spam" value="spam" />
-					<label for="field-task-spam"><?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM'); ?></label>
-				</div>
-
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?>">
-					<input type="radio" name="task" id="field-task-remove" value="remove" />
-					<label for="field-task-remove"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM'); ?></label>
-					<span class="hint"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?></span><br />
-					<textarea name="note" id="note" rows="5" cols="25"></textarea>
-				</div>
-
-				<div class="input-wrap">
-					<input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" />
-					<label for="field-task-cancel"><?php echo Lang::txt('COM_SUPPORT_REPORT_DECIDE_LATER'); ?></label>
-				</div>
-			<?php } else { ?>
-				<p class="warning"><?php echo Lang::txt('COM_SUPPORT_REPORT_ACTION_TAKEN'); ?></p>
-				<input type="hidden" name="task" value="view" />
-			<?php } ?>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

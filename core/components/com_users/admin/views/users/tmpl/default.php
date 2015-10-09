@@ -55,7 +55,6 @@ $loggeduser = User::getRoot();
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist">
 		<thead>

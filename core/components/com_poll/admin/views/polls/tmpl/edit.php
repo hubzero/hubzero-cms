@@ -85,53 +85,54 @@ Toolbar::help('poll');
 	}
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_POLL_FIELD_TITLE'); ?>:</label><br />
-				<input class="inputbox" type="text" name="title" id="field-title" value="<?php echo $this->escape($this->poll->title); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-alias"><?php echo Lang::txt('COM_POLL_FIELD_ALIAS'); ?>:</label><br />
-				<input class="inputbox" type="text" name="alias" id="field-alias" value="<?php echo $this->escape($this->poll->alias); ?>" />
-			</div>
-			<div class="input-wrap" data-hint="<?php echo Lang::txt( 'COM_POLL_FIELD_LAG_HINT'); ?>">
-				<label for="field-lag"><?php echo Lang::txt('COM_POLL_FIELD_LAG'); ?>:</label><br />
-				<input class="inputbox" type="text" name="lag" id="field-lag" value="<?php echo $this->escape($this->poll->lag); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?></span>
-			</div>
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:</label><br />
-				<?php echo Html::select('booleanlist', 'published', 'class="inputbox"', $this->poll->published); ?>
-			</div>
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_POLL_FIELD_OPEN'); ?>:</label><br />
-				<?php echo Html::select('booleanlist', 'open', 'class="inputbox"', $this->poll->open); ?>
-			</div>
-		</fieldset>
-		<p class="warning"><?php echo Lang::txt('COM_POLL_WARNING'); ?></p>
-	</div>
-	<div class="col width-50 fltrt">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_POLL_FIELDSET_OPTIONS'); ?></span></legend>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_POLL_FIELD_TITLE'); ?>:</label><br />
+					<input class="inputbox" type="text" name="title" id="field-title" value="<?php echo $this->escape($this->poll->title); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-alias"><?php echo Lang::txt('COM_POLL_FIELD_ALIAS'); ?>:</label><br />
+					<input class="inputbox" type="text" name="alias" id="field-alias" value="<?php echo $this->escape($this->poll->alias); ?>" />
+				</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt( 'COM_POLL_FIELD_LAG_HINT'); ?>">
+					<label for="field-lag"><?php echo Lang::txt('COM_POLL_FIELD_LAG'); ?>:</label><br />
+					<input class="inputbox" type="text" name="lag" id="field-lag" value="<?php echo $this->escape($this->poll->lag); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?></span>
+				</div>
+				<div class="input-wrap">
+					<label><?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:</label><br />
+					<?php echo Html::select('booleanlist', 'published', 'class="inputbox"', $this->poll->published); ?>
+				</div>
+				<div class="input-wrap">
+					<label><?php echo Lang::txt('COM_POLL_FIELD_OPEN'); ?>:</label><br />
+					<?php echo Html::select('booleanlist', 'open', 'class="inputbox"', $this->poll->open); ?>
+				</div>
+			</fieldset>
+			<p class="warning"><?php echo Lang::txt('COM_POLL_WARNING'); ?></p>
+		</div>
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_POLL_FIELDSET_OPTIONS'); ?></span></legend>
 
-			<?php for ($i=0, $n=count($this->options); $i < $n; $i++) { ?>
-				<div class="input-wrap">
-					<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo ($i+1); ?></label><br />
-					<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" />
-				</div>
-			<?php } ?>
-			<?php for (; $i < 12; $i++) { ?>
-				<div class="input-wrap">
-					<label for="polloption<?php echo $i + 1; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo $i + 1; ?></label><br />
-					<input class="inputbox" type="text" name="polloption[]" id="polloption<?php echo $i + 1; ?>" value="" />
-				</div>
-			<?php } ?>
-		</fieldset>
+				<?php for ($i=0, $n=count($this->options); $i < $n; $i++) { ?>
+					<div class="input-wrap">
+						<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo ($i+1); ?></label><br />
+						<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" />
+					</div>
+				<?php } ?>
+				<?php for (; $i < 12; $i++) { ?>
+					<div class="input-wrap">
+						<label for="polloption<?php echo $i + 1; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo $i + 1; ?></label><br />
+						<input class="inputbox" type="text" name="polloption[]" id="polloption<?php echo $i + 1; ?>" value="" />
+					</div>
+				<?php } ?>
+			</fieldset>
+		</div>
 	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

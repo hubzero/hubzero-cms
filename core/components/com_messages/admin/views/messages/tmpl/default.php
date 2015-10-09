@@ -33,7 +33,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</select>
 		</div>
 	</fieldset>
-	<div class="clr"> </div>
 
 	<table class="adminlist">
 		<thead>
@@ -42,16 +41,16 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo $this->grid('sort',  'COM_MESSAGES_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_MESSAGES_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo $this->grid('sort', 'COM_MESSAGES_HEADING_READ', 'a.state', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_READ', 'a.state', $listDirn, $listOrder); ?>
 				</th>
 				<th width="15%">
-					<?php echo $this->grid('sort', 'COM_MESSAGES_HEADING_FROM', 'a.user_id_from', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_FROM', 'a.user_id_from', $listDirn, $listOrder); ?>
 				</th>
 				<th width="20%" class="nowrap">
-					<?php echo $this->grid('sort', 'JDATE', 'a.date_time', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JDATE', 'a.date_time', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>

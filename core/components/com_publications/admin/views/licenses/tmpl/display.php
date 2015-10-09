@@ -46,7 +46,6 @@ Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLI
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>

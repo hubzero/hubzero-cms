@@ -45,23 +45,24 @@ Request::setVar('hidemainmenu', 1);
 
 		<?php if ($this->getError()) { echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>'; } ?>
 
-		<div class="col width-50 fltlft">
-			<div class="input-wrap">
-				<input type="radio" name="method" id="child_create" value="create" checked="checked" />
-				<label for="child_create"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_CREATE'); ?></label>
+		<div class="grid">
+			<div class="col span6">
+				<div class="input-wrap">
+					<input type="radio" name="method" id="child_create" value="create" checked="checked" />
+					<label for="child_create"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_CREATE'); ?></label>
+				</div>
+			</div>
+			<div class="col span6">
+				<div class="input-wrap">
+					<input type="radio" name="method" id="child_existing" value="existing" />
+					<label for="child_existing"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_EXISTING'); ?></label>
+				</div>
+				<div class="input-wrap">
+					<label for="childid"><?php echo Lang::txt('COM_RESOURCES_FIELD_RESOURCE_ID'); ?>:</label>
+					<input type="text" name="childid" id="childid" value="" />
+				</div>
 			</div>
 		</div>
-		<div class="col width-50 fltrt">
-			<div class="input-wrap">
-				<input type="radio" name="method" id="child_existing" value="existing" />
-				<label for="child_existing"><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_EXISTING'); ?></label>
-			</div>
-			<div class="input-wrap">
-				<label for="childid"><?php echo Lang::txt('COM_RESOURCES_FIELD_RESOURCE_ID'); ?>:</label>
-				<input type="text" name="childid" id="childid" value="" />
-			</div>
-		</div>
-		<div class="clr"></div>
 
 		<input type="hidden" name="step" value="2" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />

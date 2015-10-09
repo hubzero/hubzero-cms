@@ -103,81 +103,78 @@ function submitbutton(pressbutton)
 			<div class="resource-data">
 				<div class="grid">
 					{{#if record.errors}}
-						<div class="col width-100">
-							<div class="errors">
-								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
-								<ol>
-									{{#each record.errors}}
-										<li>{{this}}</li>
-									{{/each}}
-								</ol>
-							</div>
+						<div class="errors">
+							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
+							<ol>
+								{{#each record.errors}}
+									<li>{{this}}</li>
+								{{/each}}
+							</ol>
 						</div>
 					{{/if}}
 
 					{{#if record.notices}}
-						<div class="col width-100">
-							<div class="notices">
-								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
-								<ol>
-									{{#each record.notices}}
-										<li>{{{this}}}</li>
-									{{/each}}
-								</ol>
-							</div>
+						<div class="notices">
+							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
+							<ol>
+								{{#each record.notices}}
+									<li>{{{this}}}</li>
+								{{/each}}
+							</ol>
 						</div>
 					{{/if}}
 
-					<div class="col width-60 fltlft">
-						{{{entry_data record}}}
+					<div class="grid">
+						<div class="col span7">
+							{{{entry_data record}}}
+						</div>
+						<div class="col span5">
+
+							<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_DISABILITY'); ?></h4>
+							<table>
+								<tr>
+									<td>
+										{{#each record.entry.disability}}
+											{{{ this }}}<br />
+										{{else}}
+											<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
+										{{/each}}
+									</td>
+								</tr>
+							</table>
+
+							<hr />
+
+							<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_RACE'); ?></h4>
+							<table>
+								<tr>
+									<td>
+										{{#each record.entry.race}}
+											{{{ this }}}<br />
+										{{else}}
+											<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
+										{{/each}}
+									</td>
+								</tr>
+							</table>
+
+							<hr />
+
+							<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_TAGS'); ?></h4>
+							<table>
+								<tr>
+									<td>
+										{{#each record.tags}}
+											{{{ this }}}<br />
+										{{else}}
+											<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
+										{{/each}}
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
-					<div class="col width-40 fltrt">
 
-						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_DISABILITY'); ?></h4>
-						<table>
-							<tr>
-								<td>
-									{{#each record.entry.disability}}
-										{{{ this }}}<br />
-									{{else}}
-										<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
-									{{/each}}
-								</td>
-							</tr>
-						</table>
-
-						<hr />
-
-						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_RACE'); ?></h4>
-						<table>
-							<tr>
-								<td>
-									{{#each record.entry.race}}
-										{{{ this }}}<br />
-									{{else}}
-										<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
-									{{/each}}
-								</td>
-							</tr>
-						</table>
-
-						<hr />
-
-						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_TAGS'); ?></h4>
-						<table>
-							<tr>
-								<td>
-									{{#each record.tags}}
-										{{{ this }}}<br />
-									{{else}}
-										<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
-									{{/each}}
-								</td>
-							</tr>
-						</table>
-
-					</div>
-					<br class="clr" />
 					<hr />
 
 					<div class="unused-data">

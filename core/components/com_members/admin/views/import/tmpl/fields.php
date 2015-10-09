@@ -70,45 +70,47 @@ function submitbutton(pressbutton)
 <?php endforeach; ?>
 
 <form action="<?php echo Route::url('index.php?option=com_members&controller=import&task=save'); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
-	<div class="col width-60 fltlft">
+	<div class="grid">
+		<div class="col span7">
 
-		<p class="warning"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_MAPPING_REQUIRED'); ?></p>
+			<p class="warning"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_MAPPING_REQUIRED'); ?></p>
 
-		<?php
-		$this->view('_fieldmap')
-			->set('import', $this->import)
-			->display();
-		?>
+			<?php
+			$this->view('_fieldmap')
+				->set('import', $this->import)
+				->display();
+			?>
 
-	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_ID'); ?></th>
-					<td><?php echo $this->import->get('id'); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
-					<td>
-						<?php
-							if ($created_by = Hubzero\User\Profile::getInstance($this->import->get('created_by')))
-							{
-								echo $created_by->get('name');
-							}
-						?>
-					</td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
-					<td>
-						<?php
-							echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
-						?>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_ID'); ?></th>
+						<td><?php echo $this->import->get('id'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
+						<td>
+							<?php
+								if ($created_by = Hubzero\User\Profile::getInstance($this->import->get('created_by')))
+								{
+									echo $created_by->get('name');
+								}
+							?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
+						<td>
+							<?php
+								echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
+							?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />

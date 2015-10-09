@@ -112,51 +112,52 @@ $cache     = $this->cache;
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="OB" value="<?php echo $this->MYREQUEST['OB']; ?>" />
-		<div class="col width-60 fltlft">
-		<label for="filter-scope">Scope:</label>
-		<select name="SCOPE" id="filter-scope">
-			<option value="A"<?php echo $this->MYREQUEST['SCOPE']=='A' ? ' selected="selected"' : ''; ?>>Active</option>
-			<option value="D"<?php echo $this->MYREQUEST['SCOPE']=='D' ? ' selected="selected"' : ''; ?>>Deleted</option>
-		</select>
+		<div class="grid">
+			<div class="col span7">
+				<label for="filter-scope">Scope:</label>
+				<select name="SCOPE" id="filter-scope">
+					<option value="A"<?php echo $this->MYREQUEST['SCOPE']=='A' ? ' selected="selected"' : ''; ?>>Active</option>
+					<option value="D"<?php echo $this->MYREQUEST['SCOPE']=='D' ? ' selected="selected"' : ''; ?>>Deleted</option>
+				</select>
 
-		<label for="filter-sort1">Sorting:</label>
-		<select name="SORT1" id="filter-sort1">
-			<option value="H"<?php echo $this->MYREQUEST['SORT1']=='H' ? ' selected="selected"' : ''; ?>>Hits</option>
-			<option value="Z"<?php echo $this->MYREQUEST['SORT1']=='Z' ? ' selected="selected"' : ''; ?>>Size</option>
-			<option value="S"<?php echo $this->MYREQUEST['SORT1']=='S' ? ' selected="selected"' : ''; ?>><?php echo $fieldheading; ?></option>
-			<option value="A"<?php echo $this->MYREQUEST['SORT1']=='A' ? ' selected="selected"' : ''; ?>>Last accessed</option>
-			<option value="M"<?php echo $this->MYREQUEST['SORT1']=='M' ? ' selected="selected"' : ''; ?>>Last modified</option>
-			<option value="C"<?php echo $this->MYREQUEST['SORT1']=='C' ? ' selected="selected"' : ''; ?>>Created at</option>
-			<option value="D"<?php echo $this->MYREQUEST['SORT1']=='D' ? ' selected="selected"' : ''; ?>>Deleted at</option>
-		<?php if ($fieldname=='info') { ?>
-			<option value="D"<?php echo $this->MYREQUEST['SORT1']=='T' ? ' selected="selected"' : ''; ?>>Timeout</option>
-		<?php } ?>
-		</select>
+				<label for="filter-sort1">Sorting:</label>
+				<select name="SORT1" id="filter-sort1">
+					<option value="H"<?php echo $this->MYREQUEST['SORT1']=='H' ? ' selected="selected"' : ''; ?>>Hits</option>
+					<option value="Z"<?php echo $this->MYREQUEST['SORT1']=='Z' ? ' selected="selected"' : ''; ?>>Size</option>
+					<option value="S"<?php echo $this->MYREQUEST['SORT1']=='S' ? ' selected="selected"' : ''; ?>><?php echo $fieldheading; ?></option>
+					<option value="A"<?php echo $this->MYREQUEST['SORT1']=='A' ? ' selected="selected"' : ''; ?>>Last accessed</option>
+					<option value="M"<?php echo $this->MYREQUEST['SORT1']=='M' ? ' selected="selected"' : ''; ?>>Last modified</option>
+					<option value="C"<?php echo $this->MYREQUEST['SORT1']=='C' ? ' selected="selected"' : ''; ?>>Created at</option>
+					<option value="D"<?php echo $this->MYREQUEST['SORT1']=='D' ? ' selected="selected"' : ''; ?>>Deleted at</option>
+				<?php if ($fieldname=='info') { ?>
+					<option value="D"<?php echo $this->MYREQUEST['SORT1']=='T' ? ' selected="selected"' : ''; ?>>Timeout</option>
+				<?php } ?>
+				</select>
 
-		<select name="SORT2">
-			<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
-			<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
-		</select>
+				<select name="SORT2">
+					<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
+					<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
+				</select>
 
-		<select name="COUNT" onChange="form.submit()">
-			<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
-			<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
-			<option value="50" <?php echo $this->MYREQUEST['COUNT']=='50' ? ' selected="selected"' : ''; ?>>Top 50</option>
-			<option value="100"<?php echo $this->MYREQUEST['COUNT']=='100'? ' selected="selected"' : ''; ?>>Top 100</option>
-			<option value="150"<?php echo $this->MYREQUEST['COUNT']=='150'? ' selected="selected"' : ''; ?>>Top 150</option>
-			<option value="200"<?php echo $this->MYREQUEST['COUNT']=='200'? ' selected="selected"' : ''; ?>>Top 200</option>
-			<option value="500"<?php echo $this->MYREQUEST['COUNT']=='500'? ' selected="selected"' : ''; ?>>Top 500</option>
-			<option value="0"  <?php echo $this->MYREQUEST['COUNT']=='0'  ? ' selected="selected"' : ''; ?>>All</option>
-		</select>
-		</div>
-		<div class="col width-40 fltrt">
-		<label for="filter_search">Search:</label>
-		<input name="SEARCH" id="filter_search" value="<?php echo $this->MYREQUEST['SEARCH']; ?>" type="text" size="25" />
+				<select name="COUNT" onChange="form.submit()">
+					<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
+					<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
+					<option value="50" <?php echo $this->MYREQUEST['COUNT']=='50' ? ' selected="selected"' : ''; ?>>Top 50</option>
+					<option value="100"<?php echo $this->MYREQUEST['COUNT']=='100'? ' selected="selected"' : ''; ?>>Top 100</option>
+					<option value="150"<?php echo $this->MYREQUEST['COUNT']=='150'? ' selected="selected"' : ''; ?>>Top 150</option>
+					<option value="200"<?php echo $this->MYREQUEST['COUNT']=='200'? ' selected="selected"' : ''; ?>>Top 200</option>
+					<option value="500"<?php echo $this->MYREQUEST['COUNT']=='500'? ' selected="selected"' : ''; ?>>Top 500</option>
+					<option value="0"  <?php echo $this->MYREQUEST['COUNT']=='0'  ? ' selected="selected"' : ''; ?>>All</option>
+				</select>
+			</div>
+			<div class="col span5">
+				<label for="filter_search">Search:</label>
+				<input name="SEARCH" id="filter_search" value="<?php echo $this->MYREQUEST['SEARCH']; ?>" type="text" size="25" />
 
-		&nbsp;<input type="submit" value="GO!" />
+				&nbsp;<input type="submit" value="GO!" />
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 <?php
 		if (isset($this->MYREQUEST['SEARCH']))

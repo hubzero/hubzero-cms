@@ -46,9 +46,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php echo Html::select('options', $this->levels, 'value', 'text', $this->state->get('filter.level_end'));?>
 			</select>
 		</div>
-
 	</fieldset>
-	<div class="clr"> </div>
 
 	<div>
 		<?php echo Lang::txt('COM_USERS_DEBUG_LEGEND'); ?>

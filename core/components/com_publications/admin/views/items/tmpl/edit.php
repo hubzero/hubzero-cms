@@ -165,7 +165,8 @@ function popratings()
 }
 </script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
-	<div class="col width-60 fltlft">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 			<div class="input-wrap">
@@ -259,7 +260,7 @@ function popratings()
 		</fieldset>
 	</fieldset>
 </div>
-<div class="col width-40 fltrt">
+<div class="col span5">
 <table class="meta">
 	<tbody>
 		<tr>
@@ -494,7 +495,7 @@ function popratings()
 		</fieldset>
 	</fieldset>
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->model->versionAlias(); ?>" />

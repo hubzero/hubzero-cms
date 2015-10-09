@@ -74,7 +74,6 @@ function submitbutton(pressbutton)
 			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(Lang::txt('COM_STORE_ORDER')).' '.strtoupper(Lang::txt('COM_STORE_ID')); ?></option>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -103,30 +102,30 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
 
-	$status = '';
-	$class  = 'completed-item';
-	switch ($row->status)
-	{
-		case '1':
-			$status = strtolower(Lang::txt('COM_STORE_COMPLETED'));
-		break;
-		case '0':
-		default:
-			$status = strtolower(Lang::txt('COM_STORE_NEW'));
-			$class  = 'new-item';
-		break;
-		case '2':
-			$status = strtolower(Lang::txt('COM_STORE_CANCELLED'));
-			$class  = 'cancelled-item';
-		break;
-	}
-?>
+			$status = '';
+			$class  = 'completed-item';
+			switch ($row->status)
+			{
+				case '1':
+					$status = strtolower(Lang::txt('COM_STORE_COMPLETED'));
+				break;
+				case '0':
+				default:
+					$status = strtolower(Lang::txt('COM_STORE_NEW'));
+					$class  = 'new-item';
+				break;
+				case '2':
+					$status = strtolower(Lang::txt('COM_STORE_CANCELLED'));
+					$class  = 'cancelled-item';
+				break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td class="priority-5">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=order&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_STORE_VIEW_ORDER'); ?>">
@@ -155,10 +154,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=receipt&id=' . $row->id) . '">' . Lang::txt('COM_STORE_RECEIPT') . '</a>'; } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

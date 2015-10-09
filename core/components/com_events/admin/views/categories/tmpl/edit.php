@@ -65,31 +65,26 @@ function submitbutton(pressbutton, section)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_EVENTS_DETAILS'); ?></span></legend>
+	<fieldset class="adminform">
+		<legend><span><?php echo Lang::txt('COM_EVENTS_DETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
-				<input type="text" name="category[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" maxlength="50" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-alias"><?php echo Lang::txt('COM_EVENTS_CATEGORY_ALIAS'); ?>:</label>
-				<input type="text" name="category[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" maxlength="255" />
-			</div>
-			<div class="input-wrap">
-				<label><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
-				<?php echo $this->orderlist; ?>
-			</div>
-			<div class="input-wrap">
-				<label for="field-description"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</label>
-				<?php echo $this->editor('category[description]', $this->escape($this->row->description), '', '', 50, 15, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
-			</div>
-		</fieldset>
-	</div>
-	<div class="col width-40 fltrt">
-	</div>
-	<div class="clr"></div>
+		<div class="input-wrap">
+			<label for="field-title"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
+			<input type="text" name="category[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" maxlength="50" />
+		</div>
+		<div class="input-wrap">
+			<label for="field-alias"><?php echo Lang::txt('COM_EVENTS_CATEGORY_ALIAS'); ?>:</label>
+			<input type="text" name="category[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" maxlength="255" />
+		</div>
+		<div class="input-wrap">
+			<label><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
+			<?php echo $this->orderlist; ?>
+		</div>
+		<div class="input-wrap">
+			<label for="field-description"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</label>
+			<?php echo $this->editor('category[description]', $this->escape($this->row->description), '', '', 50, 15, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
+		</div>
+	</fieldset>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

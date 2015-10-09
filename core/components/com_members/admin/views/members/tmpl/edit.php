@@ -84,8 +84,8 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
 <?php } ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-
-<div class="col width-60 fltlft">
+	<div class="grid">
+<div class="col span7">
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
@@ -116,19 +116,20 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<input type="checkbox" name="profile[public]" id="field-public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> />
-					<label for="field-public"><?php echo Lang::txt('COM_MEMBERS_FIELD_PUBLIC_PROFILE'); ?></label>
+			<div class="grid">
+				<div class="col span6">
+					<div class="input-wrap">
+						<input type="checkbox" name="profile[public]" id="field-public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> />
+						<label for="field-public"><?php echo Lang::txt('COM_MEMBERS_FIELD_PUBLIC_PROFILE'); ?></label>
+					</div>
+				</div>
+				<div class="col span6">
+					<div class="input-wrap">
+						<input type="checkbox" name="profile[vip]" id="field-vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> />
+						<label for="field-vip"><?php echo Lang::txt('COM_MEMBERS_FIELD_VIP'); ?></label>
+					</div>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<input type="checkbox" name="profile[vip]" id="field-vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> />
-					<label for="field-vip"><?php echo Lang::txt('COM_MEMBERS_FIELD_VIP'); ?></label>
-				</div>
-			</div>
-			<div class="clr"></div>
 
 			<div class="input-wrap">
 				<label for="field-givenName"><?php echo Lang::txt('COM_MEMBERS_FIELD_FIRST_NAME'); ?>:</label><br />
@@ -171,50 +172,51 @@ function submitbutton(pressbutton)
 				<input type="text" name="profile[organization]" id="field-organization" value="<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>" />
 			</div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-corigin"><?php echo Lang::txt('COM_MEMBERS_PROFILE_CITIZEN'); ?>:</label>
-					<select name="profile[countryorigin]" id="field-corigin">
-						<?php if (!$this->profile->get('countryorigin') || $this->profile->get('countryorigin') == 'US') { ?>
-							<option value=""><?php echo Lang::txt('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
-						<?php } ?>
-						<?php
-						$countries = \Hubzero\Geocode\Geocode::countries();
-						if ($countries)
-						{
-							foreach ($countries as $country)
+			<div class="grid">
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-corigin"><?php echo Lang::txt('COM_MEMBERS_PROFILE_CITIZEN'); ?>:</label>
+						<select name="profile[countryorigin]" id="field-corigin">
+							<?php if (!$this->profile->get('countryorigin') || $this->profile->get('countryorigin') == 'US') { ?>
+								<option value=""><?php echo Lang::txt('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
+							<?php } ?>
+							<?php
+							$countries = \Hubzero\Geocode\Geocode::countries();
+							if ($countries)
 							{
-								?>
-								<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->profile->get('countryorigin')) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
-								<?php
+								foreach ($countries as $country)
+								{
+									?>
+									<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->profile->get('countryorigin')) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+									<?php
+								}
 							}
-						}
-						?>
-					</select>
+							?>
+						</select>
+					</div>
+				</div>
+				<div class="col span6">
+					<div class="input-wrap">
+						<label for="field-cresident"><?php echo Lang::txt('COM_MEMBERS_PROFILE_RESIDENT'); ?>:</label>
+						<select name="profile[countryresident]" id="field-cresident">
+							<?php if (!$this->profile->get('countryresident') || strcasecmp($this->profile->get('countryresident'), 'US') == 0) { ?>
+								<option value=""><?php echo Lang::txt('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
+							<?php } ?>
+							<?php
+							if ($countries)
+							{
+								foreach ($countries as $country)
+								{
+									?>
+									<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->profile->get('countryresident')) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+									<?php
+								}
+							}
+							?>
+						</select>
+					</div>
 				</div>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-cresident"><?php echo Lang::txt('COM_MEMBERS_PROFILE_RESIDENT'); ?>:</label>
-					<select name="profile[countryresident]" id="field-cresident">
-						<?php if (!$this->profile->get('countryresident') || strcasecmp($this->profile->get('countryresident'), 'US') == 0) { ?>
-							<option value=""><?php echo Lang::txt('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
-						<?php } ?>
-						<?php
-						if ($countries)
-						{
-							foreach ($countries as $country)
-							{
-								?>
-								<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->profile->get('countryresident')) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
-								<?php
-							}
-						}
-						?>
-					</select>
-				</div>
-			</div>
-			<div class="clr"></div>
 
 			<div class="input-wrap">
 				<label for="field-url"><?php echo Lang::txt('COM_MEMBERS_FIELD_ORCID'); ?>:</label><br />
@@ -487,7 +489,7 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="clr"></div>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 				<tr>
@@ -601,6 +603,6 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 	</div>
-	<div class="clr"></div>
+	</div>
 	<?php echo Html::input('token'); ?>
 </form>

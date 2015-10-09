@@ -59,35 +59,36 @@ function submitbutton(pressbutton)
 	<?php if ($this->getErrors()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-component"><?php echo Lang::txt('COM_MEMBERS_FIELD_COMPONENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-action"><?php echo Lang::txt('COM_MEMBERS_FIELD_ACTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[action]" id="field-action" value="<?php echo $this->escape(stripslashes($this->row->action)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-component"><?php echo Lang::txt('COM_MEMBERS_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-component"><?php echo Lang::txt('COM_MEMBERS_FIELD_COMPONENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-action"><?php echo Lang::txt('COM_MEMBERS_FIELD_ACTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="fields[action]" id="field-action" value="<?php echo $this->escape(stripslashes($this->row->action)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-component"><?php echo Lang::txt('COM_MEMBERS_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?></th>
+						<td><?php echo $this->row->id; ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?></th>
-					<td><?php echo $this->row->id; ?></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

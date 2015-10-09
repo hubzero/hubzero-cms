@@ -131,64 +131,64 @@ function submitbutton(pressbutton)
 										</div>
 									{{/if}}
 
-									<div class="col width-60 fltlft">
-										{{{resource_data record}}}
-									</div>
-									<div class="col width-40 fltrt">
-										<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CHILDREN'); ?></h4>
-										{{{child_resource_data record.children}}}
-										<hr />
+									<div class="grid">
+										<div class="col span7">
+											{{{resource_data record}}}
+										</div>
+										<div class="col span5">
+											<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CHILDREN'); ?></h4>
+											{{{child_resource_data record.children}}}
+											<hr />
 
-										<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTRIBUTORS'); ?></h4>
-										<table>
-											{{#each record.contributors}}
+											<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTRIBUTORS'); ?></h4>
+											<table>
+												{{#each record.contributors}}
+													<tr>
+														<td>
+															<span class="contributor-name">{{{ name }}}</span>
+															<span class="contributor-org">{{{ organization }}}</span>
+														</td>
+														<td>
+															<span class="contributor-role">
+																{{#if role}}
+																	{{{ucfirst role }}}
+																{{else}}
+																	Author
+																{{/if}}
+															</span>
+														</td>
+													</tr>
+												{{/each}}
+											</table>
+
+											<hr />
+
+											<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_TAGS'); ?></h4>
+											<table>
 												<tr>
 													<td>
-														<span class="contributor-name">{{{ name }}}</span>
-														<span class="contributor-org">{{{ organization }}}</span>
-													</td>
-													<td>
-														<span class="contributor-role">
-															{{#if role}}
-																{{{ucfirst role }}}
-															{{else}}
-																Author
-															{{/if}}
-														</span>
+														{{#each record.tags}}
+															{{{ this }}}<br />
+														{{else}}
+															<span class="hint">No Tags</span>
+														{{/each}}
 													</td>
 												</tr>
-											{{/each}}
-										</table>
+											</table>
 
-										<hr />
+											<hr />
 
-										<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_TAGS'); ?></h4>
-										<table>
-											<tr>
-												<td>
-													{{#each record.tags}}
-														{{{ this }}}<br />
-													{{else}}
-														<span class="hint">No Tags</span>
-													{{/each}}
-												</td>
-											</tr>
-										</table>
-
-										<hr />
-
-										<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CUSTOM'); ?></h4>
-										<table>
-											{{#each record.custom}}
-												<tr>
-													<th width="25%">{{{ ucfirst @key }}}</th>
-													<td>{{{ this }}}</td>
-												</tr>
-											{{/each}}
-										</table>
-
+											<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CUSTOM'); ?></h4>
+											<table>
+												{{#each record.custom}}
+													<tr>
+														<th width="25%">{{{ ucfirst @key }}}</th>
+														<td>{{{ this }}}</td>
+													</tr>
+												{{/each}}
+											</table>
+										</div>
 									</div>
-									<br class="clr" />
 									<hr />
 
 									<div class="unused-data">

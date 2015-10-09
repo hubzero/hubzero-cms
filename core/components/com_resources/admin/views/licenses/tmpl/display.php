@@ -56,7 +56,6 @@ if ($canDo->get('core.delete'))
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -82,12 +81,12 @@ if ($canDo->get('core.delete'))
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-?>
+		<?php
+		$k = 0;
+		for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
@@ -129,10 +128,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<input type="hidden" name="order[]" value="<?php echo $this->escape($row->ordering); ?>" />
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

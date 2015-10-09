@@ -89,70 +89,71 @@ function submitbutton(pressbutton)
 	<?php } ?>
 
 	<?php if (!$tmpl) { ?>
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->title); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->title); ?>" />
+				</div>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-alias"><?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS'); ?>:</label>
-				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->alias); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?></span>
-			</div>
-		</fieldset>
-	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_ID'); ?>:</th>
-					<td>
-						<?php echo $this->row->id; ?>
-						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
-					</td>
-				</tr>
-			<?php if ($this->row->created_by) { ?>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
-					<td>
-						<?php echo Date::of($this->row->created)->toLocal('Y-m-d H:i:s'); ?>
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
-					<td>
-						<?php 
-						$user = User::getInstance($this->row->created_by);
-						echo $this->escape($user->get('name'));
-						?>
-					</td>
-				</tr>
-				<?php if ($this->row->modified_by) { ?>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?>">
+					<label for="field-alias"><?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS'); ?>:</label>
+					<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->alias); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?></span>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
+						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_ID'); ?>:</th>
 						<td>
-							<?php echo Date::of($this->row->modified)->toLocal('Y-m-d H:i:s'); ?>
+							<?php echo $this->row->id; ?>
+							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
+						</td>
+					</tr>
+				<?php if ($this->row->created_by) { ?>
+					<tr>
+						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
+						<td>
+							<?php echo Date::of($this->row->created)->toLocal('Y-m-d H:i:s'); ?>
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
+						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php 
-							$user = User::getInstance($this->row->modified_by);
+							$user = User::getInstance($this->row->created_by);
 							echo $this->escape($user->get('name'));
 							?>
 						</td>
 					</tr>
+					<?php if ($this->row->modified_by) { ?>
+						<tr>
+							<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
+							<td>
+								<?php echo Date::of($this->row->modified)->toLocal('Y-m-d H:i:s'); ?>
+							</td>
+						</tr>
+						<tr>
+							<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
+							<td>
+								<?php 
+								$user = User::getInstance($this->row->modified_by);
+								echo $this->escape($user->get('name'));
+								?>
+							</td>
+						</tr>
+					<?php } ?>
 				<?php } ?>
-			<?php } ?>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="clr"></div>
 	<?php } else { ?>
 		<fieldset class="adminform">
 			<div class="input-wrap">

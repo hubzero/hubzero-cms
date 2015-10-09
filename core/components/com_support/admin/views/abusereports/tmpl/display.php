@@ -66,7 +66,6 @@ function submitbutton(pressbutton)
 			<option value="a.created DESC"<?php if ($this->filters['sortby'] == 'a.created DESC') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_SORT_MOST_RECENT'); ?></option>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>

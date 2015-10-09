@@ -54,7 +54,7 @@ Toolbar::help('quotaclasses');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
-		 	<tr>
+			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th class="priority-5"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ALIAS'); ?></th>
@@ -79,12 +79,12 @@ Toolbar::help('quotaclasses');
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-?>
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
@@ -112,10 +112,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->hard_files); ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

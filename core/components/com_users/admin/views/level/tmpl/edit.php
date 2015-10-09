@@ -84,27 +84,27 @@ jQuery(document).ready(function($){
 
 
 <form action="<?php echo Route::url('index.php?option=com_users&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
-	<div class="col width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_USERS_LEVEL_DETAILS');?></span></legend>
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_USERS_LEVEL_DETAILS');?></span></legend>
 
-			<div class="input-wrap">
-				<?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<?php echo $this->form->getLabel('title'); ?>
+					<?php echo $this->form->getInput('title'); ?>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_USERS_USER_GROUPS_HAVING_ACCESS');?></span></legend>
+
+				<div class="input-wrap">
+					<?php echo Html::access('usergroups', 'jform[rules]', $this->item->rules); ?>
+				</div>
+			</fieldset>
+		</div>
 	</div>
-
-	<div class="col width-50 fltrt">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_USERS_USER_GROUPS_HAVING_ACCESS');?></span></legend>
-
-			<div class="input-wrap">
-				<?php echo Html::access('usergroups', 'jform[rules]', $this->item->rules); ?>
-			</div>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
 	<?php echo Html::input('token'); ?>

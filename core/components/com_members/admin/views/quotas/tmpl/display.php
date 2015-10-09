@@ -88,27 +88,28 @@ $this->css('quotas.css');
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-40 fltlft">
-			<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
-			<select name="search_field" id="filter_search_field">
-				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
-				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></option>
-			</select>
+		<div class="grid">
+			<div class="col span5">
+				<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
+				<select name="search_field" id="filter_search_field">
+					<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
+					<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></option>
+				</select>
 
-			<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+				<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
+			</div>
+			<div class="col span7">
+				<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
+					<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
+					<?php foreach ($this->classes as $class) : ?>
+						<option value="<?php echo $class->alias; ?>"<?php if ($this->filters['class_alias'] == $class->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->alias); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
 		</div>
-		<div class="col width-60 fltrt">
-			<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
-				<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
-				<?php foreach ($this->classes as $class) : ?>
-					<option value="<?php echo $class->alias; ?>"<?php if ($this->filters['class_alias'] == $class->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->alias); ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-		<div class="clr"></div>
 	</fieldset>
 	<table class="adminlist">
 		<thead>
@@ -136,12 +137,12 @@ $this->css('quotas.css');
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-?>
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
+			?>
 			<tr class="<?php echo "row$k quota-row"; ?>">
 				<td>
 					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
@@ -170,10 +171,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<div class="usage-unavailable"><?php echo Lang::txt('COM_MEMBERS_QUOTA_UNAVAILABLE'); ?></div>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

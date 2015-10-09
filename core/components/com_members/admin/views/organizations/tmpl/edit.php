@@ -61,30 +61,31 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-organization"><?php echo Lang::txt('COM_MEMBERS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-organization"><?php echo Lang::txt('COM_MEMBERS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" />
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?>:</th>
+						<td>
+							<?php echo $this->model->id; ?>
+							<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?>:</th>
-					<td>
-						<?php echo $this->model->id; ?>
-						<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

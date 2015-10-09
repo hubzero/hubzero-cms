@@ -65,58 +65,59 @@ function submitbutton(pressbutton)
 <?php endif; ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_LEGEND'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_LEGEND'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-alias"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ALIAS'); ?>:</label>
-				<input <?php echo ($this->row->alias == 'default') ? 'readonly' : ''; ?> type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-soft_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?>:</label>
-				<input type="text" name="fields[soft_blocks]" id="field-soft_blocks" value="<?php echo $this->escape(stripslashes($this->row->soft_blocks)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-hard_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?>:</label>
-				<input type="text" name="fields[hard_blocks]" id="field-hard_blocks" value="<?php echo $this->escape(stripslashes($this->row->hard_blocks)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-soft_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_FILES'); ?>:</label>
-				<input type="text" name="fields[soft_files]" id="field-soft_files" value="<?php echo $this->escape(stripslashes($this->row->soft_files)); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-hard_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_FILES'); ?>:</label>
-				<input type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->hard_files)); ?>" />
-			</div>
-		</fieldset>
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_LEGEND'); ?></span></legend>
-			<p><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_DESC'); ?></p>
-			<?php
-			// Include the component HTML helpers.
-			Html::addIncludePath(PATH_CORE . '/components/com_users/admin/helpers/html');
-			?>
-			<div class="input-wrap">
-				<?php echo Html::access('usergroups', 'fields[groups]', $this->row->getGroupIds(), true); ?>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-alias"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ALIAS'); ?>:</label>
+					<input <?php echo ($this->row->alias == 'default') ? 'readonly' : ''; ?> type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-soft_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?>:</label>
+					<input type="text" name="fields[soft_blocks]" id="field-soft_blocks" value="<?php echo $this->escape(stripslashes($this->row->soft_blocks)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-hard_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?>:</label>
+					<input type="text" name="fields[hard_blocks]" id="field-hard_blocks" value="<?php echo $this->escape(stripslashes($this->row->hard_blocks)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-soft_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_FILES'); ?>:</label>
+					<input type="text" name="fields[soft_files]" id="field-soft_files" value="<?php echo $this->escape(stripslashes($this->row->soft_files)); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="field-hard_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_FILES'); ?>:</label>
+					<input type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->hard_files)); ?>" />
+				</div>
+			</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_LEGEND'); ?></span></legend>
+				<p><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_DESC'); ?></p>
+				<?php
+				// Include the component HTML helpers.
+				Html::addIncludePath(PATH_CORE . '/components/com_users/admin/helpers/html');
+				?>
+				<div class="input-wrap">
+					<?php echo Html::access('usergroups', 'fields[groups]', $this->row->getGroupIds(), true); ?>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
+						<td><?php echo $this->row->id; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USER_COUNT'); ?></th>
+						<td><?php echo ($this->row->id) ? $this->user_count : 0; ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
-					<td><?php echo $this->row->id; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USER_COUNT'); ?></th>
-					<td><?php echo ($this->row->id) ? $this->user_count : 0; ?></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

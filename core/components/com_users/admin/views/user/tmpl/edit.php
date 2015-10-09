@@ -30,54 +30,55 @@ $fieldsets = $this->form->getFieldsets();
 </script>
 
 <form action="<?php echo Route::url('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" enctype="multipart/form-data">
-	<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_USERS_USER_ACCOUNT_DETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_USERS_USER_ACCOUNT_DETAILS'); ?></span></legend>
 
-			<?php foreach ($this->form->getFieldset('user_details') as $field) :?>
-				<div class="input-wrap">
-					<?php echo $field->label; ?>
-					<?php echo $field->input; ?>
-				</div>
-			<?php endforeach; ?>
-		</fieldset>
-
-		<?php if ($this->grouplist) :?>
-		<fieldset id="user-groups" class="adminform">
-			<legend><?php echo Lang::txt('COM_USERS_ASSIGNED_GROUPS'); ?></legend>
-
-			<?php echo $this->loadTemplate('groups');?>
-		</fieldset>
-		<?php endif; ?>
-	</div>
-
-	<div class="width-40 fltrt">
-		<?php
-		echo Html::sliders('start');
-
-		foreach ($fieldsets as $fieldset) :
-			if ($fieldset->name == 'user_details') :
-				continue;
-			endif;
-			echo Html::sliders('panel', Lang::txt($fieldset->label), $fieldset->name);
-		?>
-		<fieldset class="panelform">
-			<?php foreach ($this->form->getFieldset($fieldset->name) as $field): ?>
-				<?php if ($field->hidden): ?>
-					<?php echo $field->input; ?>
-				<?php else: ?>
+				<?php foreach ($this->form->getFieldset('user_details') as $field) :?>
 					<div class="input-wrap">
 						<?php echo $field->label; ?>
 						<?php echo $field->input; ?>
 					</div>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</fieldset>
-		<?php endforeach; ?>
-		<?php echo Html::sliders('end'); ?>
+				<?php endforeach; ?>
+			</fieldset>
 
-		<input type="hidden" name="task" value="" />
-		<?php echo Html::input('token'); ?>
+			<?php if ($this->grouplist) :?>
+			<fieldset id="user-groups" class="adminform">
+				<legend><?php echo Lang::txt('COM_USERS_ASSIGNED_GROUPS'); ?></legend>
+
+				<?php echo $this->loadTemplate('groups');?>
+			</fieldset>
+			<?php endif; ?>
+		</div>
+
+		<div class="col span5">
+			<?php
+			echo Html::sliders('start');
+
+			foreach ($fieldsets as $fieldset) :
+				if ($fieldset->name == 'user_details') :
+					continue;
+				endif;
+				echo Html::sliders('panel', Lang::txt($fieldset->label), $fieldset->name);
+			?>
+			<fieldset class="panelform">
+				<?php foreach ($this->form->getFieldset($fieldset->name) as $field): ?>
+					<?php if ($field->hidden): ?>
+						<?php echo $field->input; ?>
+					<?php else: ?>
+						<div class="input-wrap">
+							<?php echo $field->label; ?>
+							<?php echo $field->input; ?>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</fieldset>
+			<?php endforeach; ?>
+			<?php echo Html::sliders('end'); ?>
+
+			<input type="hidden" name="task" value="" />
+			<?php echo Html::input('token'); ?>
+		</div>
 	</div>
-	<div class="clr"></div>
 </form>

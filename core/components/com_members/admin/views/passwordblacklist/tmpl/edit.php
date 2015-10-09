@@ -61,32 +61,33 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></span></legend>
 
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="save" />
+				<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="save" />
 
-			<div class="input-wrap">
-				<label for="field-word"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" />
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="field-word"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" />
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_ID'); ?></th>
+						<td><?php echo $this->row->id; ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_ID'); ?></th>
-					<td><?php echo $this->row->id; ?></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<?php echo Html::input('token'); ?>
 </form>

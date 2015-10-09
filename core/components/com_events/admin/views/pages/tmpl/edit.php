@@ -52,60 +52,61 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_EVENTS_PAGE'); ?></span></legend>
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_EVENTS_PAGE'); ?></span></legend>
 
-			<div class="input-wrap">
-				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id); ?>">
-					<?php echo $this->escape(stripslashes($this->event->title)); ?>
-				</a>
-			</div>
+				<div class="input-wrap">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id); ?>">
+						<?php echo $this->escape(stripslashes($this->event->title)); ?>
+					</a>
+				</div>
 
-			<div class="input-wrap">
-				<label for="title"><?php echo Lang::txt('COM_EVENTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="title" id="title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="title"><?php echo Lang::txt('COM_EVENTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="title" id="title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
+				</div>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?>">
-				<label for="alias"><?php echo Lang::txt('COM_EVENTS_ALIAS'); ?>:</label>
-				<input type="text" name="alias" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" />
-				<span class="hint"><?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?></span>
-			</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?>">
+					<label for="alias"><?php echo Lang::txt('COM_EVENTS_ALIAS'); ?>:</label>
+					<input type="text" name="alias" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" />
+					<span class="hint"><?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?></span>
+				</div>
 
-			<div class="input-wrap">
-				<label for="pagetext"><?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<?php echo $this->editor('pagetext', $this->escape(stripslashes($this->page->pagetext)), 40, 20); ?>
-			</div>
-		</fieldset>
+				<div class="input-wrap">
+					<label for="pagetext"><?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<?php echo $this->editor('pagetext', $this->escape(stripslashes($this->page->pagetext)), 40, 20); ?>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_EVENTS_PAGE_ORDERING'); ?></th>
+						<td><?php echo $this->page->ordering; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_EVENTS_PAGE_CREATED'); ?></th>
+						<td><?php echo $this->page->created; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_EVENTS_PAGE_CREATED_BY'); ?></th>
+						<td><?php echo $this->page->created_by; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_EVENTS_PAGE_LAST_MODIFIED'); ?></th>
+						<td><?php echo $this->page->modified; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_EVENTS_PAGE_LAST_MODIFIED_BY'); ?></th>
+						<td><?php echo $this->page->modified_by; ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_EVENTS_PAGE_ORDERING'); ?></th>
-					<td><?php echo $this->page->ordering; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_EVENTS_PAGE_CREATED'); ?></th>
-					<td><?php echo $this->page->created; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_EVENTS_PAGE_CREATED_BY'); ?></th>
-					<td><?php echo $this->page->created_by; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_EVENTS_PAGE_LAST_MODIFIED'); ?></th>
-					<td><?php echo $this->page->modified; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo Lang::txt('COM_EVENTS_PAGE_LAST_MODIFIED_BY'); ?></th>
-					<td><?php echo $this->page->modified_by; ?></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->page->id; ?>" />

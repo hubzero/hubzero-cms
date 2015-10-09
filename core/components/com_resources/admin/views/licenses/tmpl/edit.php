@@ -62,56 +62,57 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
-	<div class="col width-70 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
+	<div class="grid">
+		<div class="col span8">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-			</div>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				</div>
 
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-name"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" /><br />
-				<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
-			</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
+					<label for="field-name"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
+					<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" /><br />
+					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-url"><?php echo Lang::txt('COM_RESOURCES_FIELD_URL'); ?>:</label><br />
-				<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" /><br />
-			</div>
+				<div class="input-wrap">
+					<label for="field-url"><?php echo Lang::txt('COM_RESOURCES_FIELD_URL'); ?>:</label><br />
+					<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" /><br />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-text"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<textarea name="fields[text]" id="field-text" cols="45" rows="15"><?php echo $this->escape(stripslashes($this->row->text)); ?></textarea>
-				<?php //echo $this->editor('fields[text]', $this->escape(stripslashes($this->row->text)), 45, 15, 'field-text', array('class' => 'minimal no-footer')); ?>
-			</div>
+				<div class="input-wrap">
+					<label for="field-text"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<textarea name="fields[text]" id="field-text" cols="45" rows="15"><?php echo $this->escape(stripslashes($this->row->text)); ?></textarea>
+					<?php //echo $this->editor('fields[text]', $this->escape(stripslashes($this->row->text)), 45, 15, 'field-text', array('class' => 'minimal no-footer')); ?>
+				</div>
 
-			<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="save" />
-		</fieldset>
+				<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />
+				<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="save" />
+			</fieldset>
+		</div>
+		<div class="col span4">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?></th>
+						<td><?php echo $this->row->id; ?></td>
+					</tr>
+				<?php if ($this->row->id) { ?>
+					<tr>
+						<th><?php echo Lang::txt('COM_RESOURCES_FIELD_ORDERING'); ?></th>
+						<td><?php echo $this->row->ordering; ?></td>
+					</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<div class="col width-30 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?></th>
-					<td><?php echo $this->row->id; ?></td>
-				</tr>
-			<?php if ($this->row->id) { ?>
-				<tr>
-					<th><?php echo Lang::txt('COM_RESOURCES_FIELD_ORDERING'); ?></th>
-					<td><?php echo $this->row->ordering; ?></td>
-				</tr>
-			<?php } ?>
-			</tbody>
-		</table>
-	</div>
-	<div class="clr"></div>
 
 	<?php echo Html::input('token'); ?>
 </form>

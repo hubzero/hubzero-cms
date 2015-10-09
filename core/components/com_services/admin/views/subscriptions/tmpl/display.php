@@ -73,7 +73,6 @@ function submitbutton(pressbutton)
 			<option value="status"<?php if ($this->filters['sortby'] == 'status') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SERVICES_COL_STATUS'); ?></option>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -103,40 +102,40 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
 
-	$name  = Lang::txt('COM_SERVICES_UNKNOWN');
-	$login = Lang::txt('COM_SERVICES_UNKNOWN');
-	$ruser = User::getInstance($row->uid);
-	if (is_object($ruser))
-	{
-		$name  = $ruser->get('name');
-		$login = $ruser->get('username');
-	}
+			$name  = Lang::txt('COM_SERVICES_UNKNOWN');
+			$login = Lang::txt('COM_SERVICES_UNKNOWN');
+			$ruser = User::getInstance($row->uid);
+			if (is_object($ruser))
+			{
+				$name  = $ruser->get('name');
+				$login = $ruser->get('username');
+			}
 
-	$status = '';
-	$pending = Lang::txt('COM_SERVICES_FOR_UNITS', $row->currency . ' ' . $row->pendingpayment, $row->pendingunits);
+			$status = '';
+			$pending = Lang::txt('COM_SERVICES_FOR_UNITS', $row->currency . ' ' . $row->pendingpayment, $row->pendingunits);
 
-	$expires = (intval($row->expires) <> 0) ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+			$expires = (intval($row->expires) <> 0) ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 
-	switch ($row->status)
-	{
-		case '1':
-			$status = ($row->expires > $now) ? '<span style="color:#197f11;">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span style="color:#ef721e;">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
-			break;
-		case '0':
-			$status = '<span style="color:#ff0000;">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
-			break;
-		case '2':
-			$status = '<span style="color:#999;">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
-			$pending .= $row->pendingpayment ? ' (' . Lang::txt('COM_SERVICES_REFUND') . ')' : '';
-			break;
-	}
-?>
+			switch ($row->status)
+			{
+				case '1':
+					$status = ($row->expires > $now) ? '<span style="color:#197f11;">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span style="color:#ef721e;">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
+					break;
+				case '0':
+					$status = '<span style="color:#ff0000;">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
+					break;
+				case '2':
+					$status = '<span style="color:#999;">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
+					$pending .= $row->pendingpayment ? ' (' . Lang::txt('COM_SERVICES_REFUND') . ')' : '';
+					break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>"><?php echo $row->id . ' -- ' . $row->code; ?></a></td>
 				<td><?php echo $status;  ?></td>
@@ -151,10 +150,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><?php echo $row->updated ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER'); ?></td>
 				<td><?php echo $expires; ?></td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

@@ -58,7 +58,6 @@ Toolbar::deleteList();
 			<option value="1"<?php if ($this->filters['open'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_FOR_OPEN'); ?></option>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>

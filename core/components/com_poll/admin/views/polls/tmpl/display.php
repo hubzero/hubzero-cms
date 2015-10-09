@@ -67,18 +67,19 @@ Toolbar::help('polls');
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->lists['search']); ?>" placeholder="<?php echo Lang::txt('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="grid">
+			<div class="col span6">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->lists['search']); ?>" placeholder="<?php echo Lang::txt('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
 
-			<button onclick="this.form.submit();"><?php echo Lang::txt('COM_POLL_GO'); ?></button>
-			<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="col width-50 fltrt">
-			<?php echo $this->lists['state']; ?>
+				<button onclick="this.form.submit();"><?php echo Lang::txt('COM_POLL_GO'); ?></button>
+				<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="col span6">
+				<?php echo $this->lists['state']; ?>
+			</div>
 		</div>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -142,7 +143,7 @@ Toolbar::help('polls');
 			$task2  = ($row->open == 1) ? 'close' : 'open';
 			$class2 = ($row->open == 1) ? 'published' : 'unpublished';
 			$alt2   = ($row->open == 1) ? Lang::txt('COM_POLL_OPEN') : Lang::txt('COM_POLL_CLOSED');
-		?>
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $pagination->getRowOffset($i); ?>
@@ -201,9 +202,9 @@ Toolbar::help('polls');
 				</td>
 			</tr>
 			<?php
-				$k = 1 - $k;
-			}
-			?>
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

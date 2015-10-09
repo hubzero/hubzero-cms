@@ -54,21 +54,22 @@ Toolbar::cancel();
 			</tr>
 		</thead>
 		<tbody>
-<?php
+		<?php
 		$rows = 50;
 		$i = 1;
-		for ( $r = 0; $r < $rows; $r++ ) {
-?>
+		for ( $r = 0; $r < $rows; $r++ )
+		{
+			?>
 			<tr>
 				<th scope="row">(<?php echo $i; ?>)</th>
 				<td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo @$this->params[$i-1]->points; ?>" size="10" maxlength="10" /></td>
 				<td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i-1]->alias); ?>" size="20" maxlength="50" /></td>
 				<td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i-1]->description); ?>" size="100" maxlength="255" /></td>
-<?php
-				$i++;
-?>
 			</tr>
-<?php } ?>
+			<?php
+			$i++;
+		}
+		?>
 		</tbody>
 	</table>
 

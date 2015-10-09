@@ -78,7 +78,6 @@ function submitbutton(pressbutton)
 			<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(Lang::txt('COM_STORE_CATEGORY')); ?></option>
 		</select>
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
@@ -106,40 +105,40 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
 
-	$status = '';
-	switch ($row->available)
-	{
-		case '1':
-			$a_class = 'publish';
-			$a_task = 'unavailable';
-			$a_alt = Lang::txt('COM_STORE_TIP_MARK_UNAVAIL');
-			break;
-		case '0':
-			$a_class = 'unpublish';
-			$a_task = 'available';
-			$a_alt = Lang::txt('COM_STORE_TIP_MARK_AVAIL');
-			break;
-	}
-	switch ($row->published)
-	{
-		case '1':
-			$p_class = 'publish';
-			$p_task = 'unpublish';
-			$p_alt = Lang::txt('COM_STORE_TIP_REMOVE_ITEM');
-			break;
-		case '0':
-			$p_class = 'unpublish';
-			$p_task = 'publish';
-			$p_alt = Lang::txt('COM_STORE_TIP_ADD_ITEM');
-			break;
-	}
-?>
+			$status = '';
+			switch ($row->available)
+			{
+				case '1':
+					$a_class = 'publish';
+					$a_task = 'unavailable';
+					$a_alt = Lang::txt('COM_STORE_TIP_MARK_UNAVAIL');
+					break;
+				case '0':
+					$a_class = 'unpublish';
+					$a_task = 'available';
+					$a_alt = Lang::txt('COM_STORE_TIP_MARK_AVAIL');
+					break;
+			}
+			switch ($row->published)
+			{
+				case '1':
+					$p_class = 'publish';
+					$p_task = 'unpublish';
+					$p_alt = Lang::txt('COM_STORE_TIP_REMOVE_ITEM');
+					break;
+				case '0':
+					$p_class = 'unpublish';
+					$p_task = 'publish';
+					$p_alt = Lang::txt('COM_STORE_TIP_ADD_ITEM');
+					break;
+			}
+			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_STORE_VIEW_ITEM_DETAILS'); ?>">
@@ -150,15 +149,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->category)); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_STORE_VIEW_ITEM_DETAILS'); ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_STORE_VIEW_ITEM_DETAILS'); ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->description), 300); ?></td>
@@ -169,32 +168,32 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->allorders) ? $row->allorders : '0'; ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $a_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $a_task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $a_alt; ?>">
-						<span><?php echo $a_alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $a_class; ?>">
-						<span><?php echo $a_alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $a_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $a_task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $a_alt; ?>">
+							<span><?php echo $a_alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $a_class; ?>">
+							<span><?php echo $a_alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $p_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $p_task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $p_alt; ?>">
-						<span></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $p_class; ?>">
-						<span><?php echo $p_alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $p_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $p_task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $p_alt; ?>">
+							<span></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $p_class; ?>">
+							<span><?php echo $p_alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

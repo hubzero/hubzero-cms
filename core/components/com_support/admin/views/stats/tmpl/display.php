@@ -293,7 +293,8 @@ $base = rtrim($base, '/');
 			</div>
 		</fieldset>
 
-		<div class="col width-50 fltlft">
+		<div class="grid">
+		<div class="col span6">
 			<fieldset class="adminform breakdown pies">
 				<legend><span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_SEVERITY'); ?></span></legend>
 				<div id="severities-container" style="min-width: 300px; height: 300px; margin: 60px 0 20px 0;">
@@ -384,7 +385,7 @@ $base = rtrim($base, '/');
 			</fieldset>
 		</div>
 
-		<div class="col width-50 fltrt">
+		<div class="col span6">
 			<fieldset class="adminform breakdown pies">
 				<legend><span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_RESOLUTION'); ?></span></legend>
 				<div id="resolutions-container" style="min-width: 300px; height: 300px; margin: 60px 0 20px 0;">
@@ -453,12 +454,12 @@ $base = rtrim($base, '/');
 								hoverable: false
 							}
 						});
-				    });
+					});
 				}
 				</script>
 			</fieldset>
 		</div>
-		<div class="clr"></div>
+		</div>
 
 		<?php
 		if ($this->users)
@@ -476,7 +477,7 @@ $base = rtrim($base, '/');
 					{
 						?>
 						</div><!-- / .col width-50 fltlft -->
-						<div class="col width-50 fltrt">
+						<div class="col span6">
 						<?php
 					}
 					else if ($z == 2)
@@ -484,14 +485,15 @@ $base = rtrim($base, '/');
 						$z = 0;
 						?>
 						</div><!-- / .col width-50 fltrt -->
-						<div class="clr"></div>
-						<div class="col width-50 fltlft">
+						</div>
+						<div class="col span6">
 						<?php
 					}
 					else
 					{
 						?>
-						<div class="col width-50 fltlft">
+						<div class="grid">
+						<div class="col span6">
 						<?php
 					}
 
@@ -615,7 +617,7 @@ $base = rtrim($base, '/');
 			}
 		?>
 			</div><!-- / .col width-50 fltrt -->
-			<div class="clr"></div>
+			</div>
 		<?php
 		}
 		?>

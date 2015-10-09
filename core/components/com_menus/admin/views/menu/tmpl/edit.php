@@ -26,27 +26,24 @@ Html::behavior('formvalidation');
 </script>
 
 <form action="<?php echo Route::url('index.php?option=com_menus&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-	<div class="width-40">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_MENUS_MENU_DETAILS');?></span></legend>
+	<fieldset class="adminform">
+		<legend><span><?php echo Lang::txt('COM_MENUS_MENU_DETAILS');?></span></legend>
 
-			<div class="input-wrap">
-				<?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?>
-			</div>
+		<div class="input-wrap">
+			<?php echo $this->form->getLabel('title'); ?>
+			<?php echo $this->form->getInput('title'); ?>
+		</div>
 
-			<div class="input-wrap">
-				<?php echo $this->form->getLabel('menutype'); ?>
-				<?php echo $this->form->getInput('menutype'); ?>
-			</div>
+		<div class="input-wrap">
+			<?php echo $this->form->getLabel('menutype'); ?>
+			<?php echo $this->form->getInput('menutype'); ?>
+		</div>
 
-			<div class="input-wrap">
-				<?php echo $this->form->getLabel('description'); ?>
-				<?php echo $this->form->getInput('description'); ?>
-			</div>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
+		<div class="input-wrap">
+			<?php echo $this->form->getLabel('description'); ?>
+			<?php echo $this->form->getInput('description'); ?>
+		</div>
+	</fieldset>
 
 	<input type="hidden" name="task" value="" />
 	<?php echo Html::input('token'); ?>

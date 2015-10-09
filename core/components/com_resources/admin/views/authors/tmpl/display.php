@@ -66,7 +66,6 @@ function submitbutton(pressbutton)
 
 		<input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
-	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>

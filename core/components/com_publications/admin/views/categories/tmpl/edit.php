@@ -61,149 +61,149 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="item-form" name="adminForm">
-	<div class="col width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATEGORY_INFORMATION'); ?></span></legend>
-<?php if ($this->row->id) { ?>
-	<table>
-		<tbody>
-			<tr>
-				<th><?php echo Lang::txt('ID'); ?></th>
-				<td><?php echo $this->row->id; ?></td>
-			</tr>
-		</tbody>
-	</table>
-<?php } ?>
-			<div class="input-wrap">
-				<label for="field-name"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="prop[name]" id="field-name" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
-				<input type="text" name="prop[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
-			</div>
-			<div class="input-wrap">
-				<label for="field-url_alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL_ALIAS'); ?>:</label>
-				<input type="text" name="prop[url_alias]" id="field-url_alias" maxlength="100" value="<?php echo $this->escape($this->row->url_alias); ?>" />
-			</div>
-			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?>">
-				<label for="field-dc_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE'); ?>:</label>
-				<select name="prop[dc_type]" id="field-dc_type">
-					<?php foreach ($dcTypes as $dct) { ?>
-					<option value="<?php echo $dct; ?>" <?php if ($this->escape($this->row->dc_type) == $dct) { echo 'selected="selected"'; } ?>><?php echo $dct; ?></option>
-					<?php } ?>
-				</select>
-				<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>
-			</div>
-			<div class="input-wrap">
-				<label for="field-description"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ABOUT'); ?>:</label>
-				<input type="text" name="prop[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
-			</div>
-
-			<input type="hidden" name="prop[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="save" />
-		</fieldset>
-	</div>
-	<div class="col width-50 fltrt">
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ITEM_CONFIG'); ?></span></legend>
-
-			<fieldset>
-				<legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></legend>
-
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATEGORY_INFORMATION'); ?></span></legend>
+				<?php if ($this->row->id) { ?>
+					<table>
+						<tbody>
+							<tr>
+								<th><?php echo Lang::txt('ID'); ?></th>
+								<td><?php echo $this->row->id; ?></td>
+							</tr>
+						</tbody>
+					</table>
+				<?php } ?>
 				<div class="input-wrap">
-					<input class="option" name="prop[state]" id="field-state1" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-state1"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
-					<br />
-					<input class="option" name="prop[state]" id="field-state0" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-state0"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
+					<label for="field-name"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="prop[name]" id="field-name" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
 				</div>
-			</fieldset>
-			<fieldset>
-				<legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'); ?></legend>
-				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?>">
-					<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?></span>
-
-					<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-contributable1"><?php echo Lang::txt('JYES'); ?></label>
-					<br />
-					<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
-					<label for="field-contributable0"><?php echo Lang::txt('JNO'); ?></label>
+				<div class="input-wrap">
+					<label for="field-alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
+					<input type="text" name="prop[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
 				</div>
+				<div class="input-wrap">
+					<label for="field-url_alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL_ALIAS'); ?>:</label>
+					<input type="text" name="prop[url_alias]" id="field-url_alias" maxlength="100" value="<?php echo $this->escape($this->row->url_alias); ?>" />
+				</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?>">
+					<label for="field-dc_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE'); ?>:</label>
+					<select name="prop[dc_type]" id="field-dc_type">
+						<?php foreach ($dcTypes as $dct) { ?>
+						<option value="<?php echo $dct; ?>" <?php if ($this->escape($this->row->dc_type) == $dct) { echo 'selected="selected"'; } ?>><?php echo $dct; ?></option>
+						<?php } ?>
+					</select>
+					<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>
+				</div>
+				<div class="input-wrap">
+					<label for="field-description"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ABOUT'); ?>:</label>
+					<input type="text" name="prop[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
+				</div>
+
+				<input type="hidden" name="prop[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="save" />
 			</fieldset>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
+		</div>
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ITEM_CONFIG'); ?></span></legend>
 
-	<div class="col width-50 fltrt">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATS_MASTER_TYPE_CONFIG'); ?></span></legend>
-
-			<?php foreach ($this->types as $mt) { ?>
 				<fieldset>
-					<legend><?php echo $mt; ?></legend>
+					<legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></legend>
+
 					<div class="input-wrap">
-						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> />
-						<label for="field-type_<?php echo $mt; ?>1"><?php echo  Lang::txt('COM_PUBLICATIONS_INCLUDE_CHOICE'); ?></label>
+						<input class="option" name="prop[state]" id="field-state1" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-state1"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
 						<br />
-						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> />
-						<label for="field-type_<?php echo $mt; ?>0"><?php echo Lang::txt('COM_PUBLICATIONS_NOT_APPLICABLE'); ?></label>
+						<input class="option" name="prop[state]" id="field-state0" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-state0"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 					</div>
 				</fieldset>
-			<?php } ?>
-		</fieldset>
+				<fieldset>
+					<legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'); ?></legend>
+					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?>">
+						<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?></span>
+
+						<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
+						<label for="field-contributable1"><?php echo Lang::txt('JYES'); ?></label>
+						<br />
+						<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
+						<label for="field-contributable0"><?php echo Lang::txt('JNO'); ?></label>
+					</div>
+				</fieldset>
+			</fieldset>
+		</div>
 	</div>
-	<div class="col width-50 ltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_PLUGINS'); ?></span></legend>
 
-			<table class="admintable">
-				<thead>
-					<tr>
-						<th><?php echo Lang::txt('COM_PUBLICATIONS_PLUGIN'); ?></th>
-						<th colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php
-				$database = App::get('db');
-				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='publications'" );
+	<div class="grid">
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATS_MASTER_TYPE_CONFIG'); ?></span></legend>
 
-				if ($plugins = $database->loadObjectList())
-				{
-					$found = array();
-					foreach ($plugins as $plugin)
-					{
-						if (in_array('plg_' . $plugin->element, $found))
-						{
-							continue;
-						}
-						$found[] = 'plg_' . $plugin->element;
-						if (strstr($plugin->name, '_'))
-						{
-							Lang::load($plugin->name) ||
-							Lang::load($plugin->name, PATH_CORE . DS . 'plugins' . DS . $plugin->folder . DS . $plugin->element);
-						}
-						?>
+				<?php foreach ($this->types as $mt) { ?>
+					<fieldset>
+						<legend><?php echo $mt; ?></legend>
+						<div class="input-wrap">
+							<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> />
+							<label for="field-type_<?php echo $mt; ?>1"><?php echo  Lang::txt('COM_PUBLICATIONS_INCLUDE_CHOICE'); ?></label>
+							<br />
+							<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> />
+							<label for="field-type_<?php echo $mt; ?>0"><?php echo Lang::txt('COM_PUBLICATIONS_NOT_APPLICABLE'); ?></label>
+						</div>
+					</fieldset>
+				<?php } ?>
+			</fieldset>
+		</div>
+		<div class="col span6">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_PLUGINS'); ?></span></legend>
+
+				<table class="admintable">
+					<thead>
 						<tr>
-							<td><?php echo (strstr($plugin->name, '_') ? Lang::txt(stripslashes($plugin->name)) : stripslashes(ucfirst($plugin->name))); ?></td>
-							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
-							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_PLUGIN'); ?></th>
+							<th colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
 						</tr>
-						<?php
+					</thead>
+					<tbody>
+					<?php
+					$database = App::get('db');
+					$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='publications'" );
+
+					if ($plugins = $database->loadObjectList())
+					{
+						$found = array();
+						foreach ($plugins as $plugin)
+						{
+							if (in_array('plg_' . $plugin->element, $found))
+							{
+								continue;
+							}
+							$found[] = 'plg_' . $plugin->element;
+							if (strstr($plugin->name, '_'))
+							{
+								Lang::load($plugin->name) ||
+								Lang::load($plugin->name, PATH_CORE . DS . 'plugins' . DS . $plugin->folder . DS . $plugin->element);
+							}
+							?>
+							<tr>
+								<td><?php echo (strstr($plugin->name, '_') ? Lang::txt(stripslashes($plugin->name)) : stripslashes(ucfirst($plugin->name))); ?></td>
+								<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
+								<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+							</tr>
+							<?php
+						}
 					}
-				}
-				?>
-				</tbody>
-			</table>
-		</fieldset>
+					?>
+					</tbody>
+				</table>
+			</fieldset>
+		</div>
 	</div>
-	<div class="clr"></div>
 	<?php if (!$this->config->get('curation', 0)) { ?>
-		<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 
@@ -476,8 +476,6 @@ function submitbutton(pressbutton)
 				});
 			</script>
 		</fieldset>
-		</div>
-		<div class="clr"></div>
 		<?php } ?>
 	<?php echo Html::input('token'); ?>
 </form>

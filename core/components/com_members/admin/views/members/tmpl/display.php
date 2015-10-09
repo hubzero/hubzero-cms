@@ -76,35 +76,36 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-40 fltlft">
-			<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
-			<select name="search_field" id="filter_search_field">
-				<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?></option>
-				<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?></option>
-				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?></option>
-				<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_LAST_NAME'); ?></option>
-				<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_FIRST_NAME'); ?></option>
-				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_FULL_NAME'); ?></option>
-			</select>
+		<div class="grid">
+			<div class="col span5">
+				<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
+				<select name="search_field" id="filter_search_field">
+					<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?></option>
+					<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?></option>
+					<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?></option>
+					<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_LAST_NAME'); ?></option>
+					<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_FIRST_NAME'); ?></option>
+					<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_FULL_NAME'); ?></option>
+				</select>
 
-			<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+				<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
+			</div>
+			<div class="col span7">
+				<select name="emailConfirmed" id="filter_emailConfirmed" onchange="document.adminForm.submit( );">
+					<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
+					<option value="1"<?php if ($this->filters['emailConfirmed'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
+					<option value="-1"<?php if ($this->filters['emailConfirmed'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
+				</select>
+				<select name="public" id="filter_public" onchange="document.adminForm.submit( );">
+					<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS'); ?></option>
+					<option value="1"<?php if ($this->filters['public'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_PROFILE_ACCESS_PUBLIC'); ?></option>
+					<option value="0"<?php if ($this->filters['public'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_PROFILE_ACCESS_PRIVATE'); ?></option>
+				</select>
+			</div>
 		</div>
-		<div class="col width-60 fltrt">
-			<select name="emailConfirmed" id="filter_emailConfirmed" onchange="document.adminForm.submit( );">
-				<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
-				<option value="1"<?php if ($this->filters['emailConfirmed'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
-				<option value="-1"<?php if ($this->filters['emailConfirmed'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
-			</select>
-			<select name="public" id="filter_public" onchange="document.adminForm.submit( );">
-				<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS'); ?></option>
-				<option value="1"<?php if ($this->filters['public'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_PROFILE_ACCESS_PUBLIC'); ?></option>
-				<option value="0"<?php if ($this->filters['public'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_PROFILE_ACCESS_PRIVATE'); ?></option>
-			</select>
-		</div>
-		<div class="clr"></div>
 	</fieldset>
 
 	<table class="adminlist">
