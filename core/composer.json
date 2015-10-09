@@ -83,6 +83,9 @@
         "league/flysystem-dropbox": "1.0.*",
         "hubzero/framework": "dev-master"
     },
+    "require-dev": {
+        "mockery/mockery": "dev-master"
+    },
     "autoload": {
     "psr-0": { "Hubzero": "libraries/" },
         "classmap": [ "libraries/joomla" ]

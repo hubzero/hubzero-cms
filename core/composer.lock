@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "17a536a9ec27008e13528bccc520525d",
+    "hash": "b7462a2b14e1b1e6aa70913520579474",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -251,12 +251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
-                "reference": "v4.5.0",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -295,12 +295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebookarchive/facebook-php-sdk.git",
-                "reference": "v3.2.2"
+                "reference": "bf99924386be074da30a8e9d6bbcb49d3333da12"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/facebookarchive/facebook-php-sdk/zipball/bf99924386be074da30a8e9d6bbcb49d3333da12",
-                "reference": "v3.2.2",
+                "reference": "bf99924386be074da30a8e9d6bbcb49d3333da12",
                 "shasum": ""
             },
             "require": {
@@ -330,6 +330,7 @@
                 "facebook",
                 "sdk"
             ],
+            "abandoned": "facebook/php-sdk-v4",
             "time": "2013-01-15 21:37:15"
         },
         {
@@ -684,7 +685,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/e89cd99deb48c6690c152ee47fd5a01f0ef05967",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/aa665cb519b4428b60181700b1a73fe81e76758b",
                 "reference": "e89cd99deb48c6690c152ee47fd5a01f0ef05967",
                 "shasum": ""
             },
@@ -765,12 +766,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "v0.3.9"
+                "reference": "a11a6141b5715162b933c405379765d817891c5d"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/leafo/lessphp/zipball/a11a6141b5715162b933c405379765d817891c5d",
-                "reference": "v0.3.9",
+                "reference": "a11a6141b5715162b933c405379765d817891c5d",
                 "shasum": ""
             },
             "type": "library",
@@ -1469,7 +1470,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -1647,7 +1650,7 @@
             "source": {
                 "type": "git",
                 "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "6.0.017"
+                "reference": "bb21d56f9416cb72e62f4dac2ed0f92b96e24b8d"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -1696,6 +1699,7 @@
                 "pdf417",
                 "qrcode"
             ],
+            "abandoned": "tecnickcom/tcpdf",
             "time": "2013-05-16 16:17:45"
         },
         {
@@ -1763,13 +1767,125 @@
             "time": "2015-01-07 13:23:35"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "hamcrest/hamcrest-php",
+            "version": "v1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hamcrest/hamcrest-php.git",
+                "reference": "b37020aa976fa52d3de9aa904aa2522dc518f79c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/b37020aa976fa52d3de9aa904aa2522dc518f79c",
+                "reference": "b37020aa976fa52d3de9aa904aa2522dc518f79c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "replace": {
+                "cordoval/hamcrest-php": "*",
+                "davedevelopment/hamcrest-php": "*",
+                "kodova/hamcrest-php": "*"
+            },
+            "require-dev": {
+                "phpunit/php-file-iterator": "1.3.3",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "hamcrest"
+                ],
+                "files": [
+                    "hamcrest/Hamcrest.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "description": "This is the PHP port of Hamcrest Matchers",
+            "keywords": [
+                "test"
+            ],
+            "time": "2015-05-11 14:41:42"
+        },
+        {
+            "name": "mockery/mockery",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/padraic/mockery.git",
+                "reference": "bb19cd92e91aee51c344d8bd1a453dc85de47c21"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/bb19cd92e91aee51c344d8bd1a453dc85de47c21",
+                "reference": "bb19cd92e91aee51c344d8bd1a453dc85de47c21",
+                "shasum": ""
+            },
+            "require": {
+                "hamcrest/hamcrest-php": "~1.1",
+                "lib-pcre": ">=7.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mockery": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Pádraic Brady",
+                    "email": "padraic.brady@gmail.com",
+                    "homepage": "http://blog.astrumfutura.com"
+                },
+                {
+                    "name": "Dave Marshall",
+                    "email": "dave.marshall@atstsolutions.co.uk",
+                    "homepage": "http://davedevelopment.co.uk"
+                }
+            ],
+            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succinct API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
+            "homepage": "http://github.com/padraic/mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "library",
+                "mock",
+                "mock objects",
+                "mockery",
+                "stub",
+                "test",
+                "test double",
+                "testing"
+            ],
+            "time": "2015-10-02 20:03:43"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "guzzle/guzzle": 20,
         "pelago/emogrifier": 20,
-        "hubzero/framework": 20
+        "hubzero/framework": 20,
+        "mockery/mockery": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
