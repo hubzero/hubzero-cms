@@ -362,6 +362,7 @@ $juser = JFactory::getUser();
 				<?php
 					$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
 					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 					$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
 					echo $this->pageNav->getListFooter();
 				?>
