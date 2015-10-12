@@ -522,12 +522,12 @@ class Cloud extends Object
 		{
 			$filters['label'] = $label;
 		}
-		if (!$admin)
+		/*if (!$admin)
 		{
 			$filters['by']        = 'user';
 			$filters['admin']     = 0;
 			$filters['tagger_id'] = $tagger_id;
-		}
+		}*/
 		$oldTags = $this->tags('list', $filters, true);
 
 		$preserveTags = array();
