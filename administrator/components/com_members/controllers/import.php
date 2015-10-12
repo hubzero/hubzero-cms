@@ -158,7 +158,10 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		// get all files in import filespace
 		if ($this->view->import->exists())
 		{
-			$this->view->files = JFolder::files($this->view->import->fileSpacePath(), '.');
+			if ($this->_createImportFilespace($this->view->import))
+			{
+				$this->view->files = JFolder::files($this->view->import->fileSpacePath(), '.');
+			}
 		}
 
 		// get all imports from archive
