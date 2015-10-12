@@ -90,7 +90,7 @@ class ColumnMacro extends WikiMacro
 		{
 			$this->_cursor++;
 
-			$cls = array('columns');
+			$cls = array('col');
 
 			switch ($this->_columns)
 			{
