@@ -152,7 +152,7 @@ class Import extends AdminController
 		// get all files in import filespace
 		if ($this->view->import->exists())
 		{
-			if ($this->_createImportFilespace($this->import))
+			if ($this->_createImportFilespace($this->view->import))
 			{
 				$this->view->files = Filesystem::files($this->view->import->fileSpacePath(), '.');
 			}
