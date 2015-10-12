@@ -41,7 +41,7 @@ class RandomPageMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -54,21 +54,21 @@ class RandomPageMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
 		// Perform query
-		$this->_db->setQuery("SELECT pagename, scope, title FROM `#__wiki_page` WHERE state < 2 ORDER BY rand() LIMIT 1");
-		$a = $this->_db->loadRow();
+		$this->_db->setQuery("SELECT * FROM `#__wiki_page` WHERE state < 2 ORDER BY rand() LIMIT 1");
+		$a = $this->_db->loadObject();
 
 		// Did we get a result from the database?
 		if ($a)
 		{
-			$title = ($a[2]) ? stripslashes($a[2]) : $a[0];
+			$row = new \Components\Wiki\Models\Page($a);
 
 			// Build and return the link
-			return '<a href="' . Route::url('index.php?option=' . $this->option . '&scope=' . $a[1] . '&pagename=' . $a[0]) . '">' . $title . '</a>';
+			return '<a href="' . Route::url($row->link()) . '">' . $row->get('title', $row->get('pagename')) . '</a>';
 		}
 	}
 }

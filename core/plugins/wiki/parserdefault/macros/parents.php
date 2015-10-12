@@ -140,16 +140,12 @@ class ParentsMacro extends WikiMacro
 			// Get the last element in the array
 			$row = array_pop($rows);
 
-			$title = ($row->title) ? $row->title : $row->pagename;
-
-			$url  = 'index.php?option=' . $this->option;
-			$url .= '&scope=' . $row->scope;
-			$url .= '&pagename=' . $row->pagename;
+			$row = new \Components\Wiki\Models\Page($row);
 
 			// Build the HTML
 			$html .= '<ul>';
-			$html .= '<li><a href="' . Route::url($url) . '">';
-			$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
+			$html .= '<li><a href="' . Route::url($row->link()) . '">';
+			$html .= stripslashes($row->get('title', $row->get('pagename')));
 			$html .= '</a>';
 			$html .= $this->_buildTree($rows);
 			$html .= '</li>' . "\n";
