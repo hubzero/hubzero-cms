@@ -123,25 +123,27 @@ class RecentPageMacro extends WikiMacro
 		{
 			foreach ($rows as $row)
 			{
+				$row = new \Components\Wiki\Models\Page($row);
+
 				$html .= '<div';
 				if ($cls)
 				{
 					$html .= ' class="' . $cls . '"';
 				}
 				$html .= '>' . "\n";
-				$html .= "\t" . '<h3><a href="' . Route::url('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) . '">' . stripslashes($row->title) . '</a></h3>' . "\n";
+				$html .= "\t" . '<h3><a href="' . Route::url($row->link()) . '">' . stripslashes($row->get('title', $row->get('pagename'))) . '</a></h3>' . "\n";
 				$html .= "\t" . '<p class="modified-date">';
-				if ($row->version > 1)
+				if ($row->get('version') > 1)
 				{
-					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_MODIFIED_ON', Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
+					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_MODIFIED_ON', Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 				}
 				else
 				{
-					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_CREATED_ON', Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
+					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_CREATED_ON', Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 				}
 				$html .= '</p>' . "\n";
-				$html .= $this->_shortenText($row->pagehtml);
-				$html .= "\t" . '<p><a href="' . Route::url('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) . '">' . Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE') . '</a></p>' . "\n";
+				$html .= $this->_shortenText($row->get('pagehtml'));
+				$html .= "\t" . '<p><a href="' . Route::url($row->link()) . '">' . Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE') . '</a></p>' . "\n";
 				$html .= '</div>' . "\n";
 			}
 

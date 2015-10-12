@@ -115,21 +115,23 @@ if ($rows)
 			$name = $this->escape(stripslashes($xprofile->get('name')));
 			$name = ($xprofile->get('public') ? '<a href="' . Route::url($xprofile->getLink()) . '">' . $name . '</a>' : $name);
 		}
+
+		$row = new \Components\Wiki\Models\Page($row);
 ?>
 				<tr>
 					<td>
-						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
+						<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
 					</td>
 					<td>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
+						<a href="<?php echo Route::url($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title', $row->get('pagename')))); ?>
 						</a>
 					</td>
 					<td>
 						<?php echo $name; ?>
 					</td>
 					<td>
-						<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($row->length)); ?>
+						<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($row->get('length'))); ?>
 					</td>
 				</tr>
 <?php

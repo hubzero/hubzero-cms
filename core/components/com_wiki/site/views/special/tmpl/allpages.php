@@ -157,10 +157,12 @@ if ($rows)
 						<ul>
 						<?php
 					}
+
+					$row = new \Components\Wiki\Models\Page($row);
 				?>
 					<li>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
+						<a href="<?php echo Route::url($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</li>
 				<?php
