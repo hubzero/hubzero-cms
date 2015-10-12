@@ -57,16 +57,16 @@ class RandomPageMacro extends WikiMacro
 	public function render()
 	{
 		// Perform query
-		$this->_db->setQuery("SELECT pagename, scope, title FROM #__wiki_page WHERE state < 2 ORDER BY rand() LIMIT 1");
-		$a = $this->_db->loadRow();
+		$this->_db->setQuery("SELECT * FROM `#__wiki_page` WHERE state < 2 ORDER BY rand() LIMIT 1");
+		$a = $this->_db->loadObject();
 
 		// Did we get a result from the database?
 		if ($a)
 		{
-			$title = ($a[2]) ? stripslashes($a[2]) : $a[0];
+			$row = new WikiModelPage($a);
 
 			// Build and return the link
-			return '<a href="' . JRoute::_('index.php?option=' . $this->option . '&scope=' . $a[1] . '&pagename=' . $a[0]) . '">' . $title . '</a>';
+			return '<a href="' . JRoute::_($row->link()) . '">' . $row->get('title', $row->get('pagename')) . '</a>';
 		}
 	}
 }

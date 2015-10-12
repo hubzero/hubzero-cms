@@ -159,10 +159,12 @@ if ($rows)
 						<ul>
 						<?php
 					}
+
+					$row = new WikiModelPage($row);
 				?>
 					<li>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
+						<a href="<?php echo JRoute::_($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</li>
 				<?php

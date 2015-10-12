@@ -133,19 +133,12 @@ class ChildrenMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				$title = ($row->title) ? $row->title : $row->pagename;
+				$row = new WikiModelPage($row);
 
-				$url  = 'index.php?option=' . $this->option;
-				$url .= '&scope=' . $row->scope;
-				$url .= '&pagename=' . $row->pagename;
-
-				/*$html .= ' * ['.$url;
-				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
-				$html .= ']'."\n";*/
-				$html .= '<li><a href="' . $url . '">';
-				$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
+				$html .= '<li><a href="' . JRoute::_($row->link()) . '">';
+				$html .= stripslashes($row->get('title', $row->get('pagename')));
 				$html .= '</a>';
-				$html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->scope . DS . $row->pagename);
+				$html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->get('scope') . '/' . $row->get('pagename'));
 				$html .= '</li>'."\n";
 			}
 			$html .= '</ul>';
@@ -153,7 +146,6 @@ class ChildrenMacro extends WikiMacro
 		elseif ($currentDepth == 1)
 		{
 			// Return error message
-			//return '(TitleIndex('.$et.') failed)';
 			return '<p>(No sub-pages to display)</p>';
 		}
 

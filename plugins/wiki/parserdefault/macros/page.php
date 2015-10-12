@@ -102,29 +102,21 @@ class PageMacro extends WikiMacro
 		}
 
 		// No, get resource by alias
-		$g = new WikiTablePage($this->_db);
-		$g->load($page, $scope);
-		if (!$g->id)
+		$row = new WikiModelPage($page, $scope);
+
+		if (!$row->exists())
 		{
 			return '(Page(' . $et . ') failed)';
 		}
 
 		if ($nolink)
 		{
-			return stripslashes($g->title);
+			return stripslashes($row->get('title', $row->get('pagename')));
 		}
 		else
 		{
 			// Build and return the link
-			if ($g->group_cn != '' && $g->scope != '')
-			{
-				$link = 'index.php?option=com_groups&scope=' . $g->scope . '&pagename=' . $g->pagename;
-			}
-			else
-			{
-				$link = 'index.php?option=com_wiki&scope=' . $g->scope . '&pagename=' . $g->pagename;
-			}
-			return '<a href="' . JRoute::_($link) . '">' . stripslashes($g->title) . '</a>';
+			return '<a href="' . JRoute::_($row->link()) . '">' . stripslashes($row->get('title', $row->get('pagename'))) . '</a>';
 		}
 	}
 }

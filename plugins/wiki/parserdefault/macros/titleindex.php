@@ -145,19 +145,11 @@ class TitleIndexMacro extends WikiMacro
 				{
 					continue;
 				}
-				$title = ($row->title) ? $row->title : $row->pagename;
 
-				if (substr($row->pagename, 0, strlen('Help:')) == 'Help:')
-				{
-					$row->scope = $this->scope;
-				}
+				$row = new WikiModelPage($row);
 
-				$url  = 'index.php?option=' . $this->option;
-				$url .= '&scope=' . $row->scope;
-				$url .= '&pagename=' . $row->pagename;
-
-				$html .= '<li><a href="' . JRoute::_($url) . '">';
-				$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
+				$html .= '<li><a href="' . JRoute::_($row->link()) . '">';
+				$html .= stripslashes($row->get('title', $row->get('pagename')));
 				$html .= '</a></li>' . "\n";
 			}
 			$html .= '</ul>';

@@ -118,21 +118,23 @@ if ($rows)
 			$name = $this->escape(stripslashes($xprofile->get('name')));
 			$name = ($xprofile->get('public') ? '<a href="' . JRoute::_($xprofile->getLink()) . '">' . $name . '</a>' : $name);
 		}
+
+		$row = new WikiModelPage($row);
 ?>
 				<tr>
 					<td>
-						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
+						<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
 					</td>
 					<td>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
+						<a href="<?php echo JRoute::_($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title', $row->get('pagename')))); ?>
 						</a>
 					</td>
 					<td>
 						<?php echo $name; ?>
 					</td>
 					<td>
-						<?php echo JText::sprintf('COM_WIKI_HISTORY_BYTES', number_format($row->length)); ?>
+						<?php echo JText::sprintf('COM_WIKI_HISTORY_BYTES', number_format($row->get('length'))); ?>
 					</td>
 				</tr>
 <?php
