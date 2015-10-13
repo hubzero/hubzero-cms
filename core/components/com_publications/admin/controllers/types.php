@@ -204,6 +204,7 @@ class Types extends AdminController
 			. '&task=edit&id[]=' . $id, false);
 
 		$manifest   = new stdClass;
+		$manifest->blocks = new stdClass;
 		$oManifest  = $curation->_manifest;
 
 		if ($newblock)
