@@ -38,11 +38,13 @@ Html::behavior('modal');
 
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 
+$menu = App::get('menu');
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(
 	$this->direction,
 	$browser->name(),
-	$browser->name() . $browser->major()
+	$browser->name() . $browser->major(),
+	($menu->getActive() == $menu->getDefault() ? 'home' : '')
 );
 
 $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
@@ -159,10 +161,10 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 					<?php endif; ?>
 					<jdoc:include type="modules" name="search" />
 					<div id="trail">
-						<?php if (!$this->countModules('welcome')) : ?>
-							<jdoc:include type="modules" name="breadcrumbs" />
-						<?php else: ?>
+						<?php if ($menu->getActive() == $menu->getDefault()) : ?>
 							<span class="pathway"><?php echo Lang::txt('TPL_HUBBASIC_TAGLINE'); ?></span>
+						<?php else: ?>
+							<jdoc:include type="modules" name="breadcrumbs" />
 						<?php endif; ?>
 					</div><!-- / #trail -->
 				</div><!-- / .inner -->

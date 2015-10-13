@@ -153,12 +153,12 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 									</a>
 								</p>
 							<?php endif; ?>
-							<?php /*<jdoc:include type="modules" name="search" />*/ ?>
+
 							<div id="trail">
-								<?php if (!$this->countModules('welcome')) : ?>
-									<jdoc:include type="modules" name="breadcrumbs" />
-								<?php else: ?>
+								<?php if ($menu->getActive() == $menu->getDefault()) : ?>
 									<span class="pathway"><?php echo Lang::txt('TPL_KIMERA_TAGLINE'); ?></span>
+								<?php else: ?>
+									<jdoc:include type="modules" name="breadcrumbs" />
 								<?php endif; ?>
 							</div>
 						</div><!-- / #sub-masthead -->
