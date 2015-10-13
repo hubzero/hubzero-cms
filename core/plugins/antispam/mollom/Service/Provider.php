@@ -155,9 +155,7 @@ class Provider extends AbstractService
 
 		if (!is_array($result) || !isset($result['id']))
 		{
-			// log the error, continue on instead of throwing exception.
-			error_log('The content moderation system is currently unavailable. Please try again later.');
-			return true;
+			throw new Exception('The content moderation system is currently unavailable. Please try again later.');
 		}
 
 		// Check the final spam classification.
