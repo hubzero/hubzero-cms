@@ -88,6 +88,8 @@ class JApplicationHelper
 			$obj->name = 'administrator';
 			$obj->bootstrap = PATH_CORE . DS . 'bootstrap' . DS . 'administrator';
 			$obj->path = JPATH_ADMINISTRATOR;
+			// [!] Hubzero
+			$obj->alias = 'admin';
 			self::$_clients[1] = clone $obj;
 
 			// Installation Client

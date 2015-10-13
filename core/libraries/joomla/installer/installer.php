@@ -1330,7 +1330,7 @@ class JInstaller extends JAdapter
 		// Here we set the folder we are going to copy the files to.
 		// 'languages' Files are copied to JPATH_BASE/language/ folder
 		// [!] HUBzero - Temporarily changed path
-		$destination = PATH_APP . '/bootstrap/' . $client->name . '/language';
+		$destination = $this->getPath('extension_root') . '/language'; //PATH_APP . '/bootstrap/' . $client->name . '/language';
 
 		// Here we set the folder we are going to copy the files from.
 
@@ -1365,11 +1365,14 @@ class JInstaller extends JAdapter
 			{
 				$path['src'] = $source . '/' . $file;
 
-				if ((string) $file->attributes()->client != '')
+				if ((string) $file->attributes()->client != '' && $file->attributes()->type == 'component')
 				{
 					// Override the client
 					$langclient = JApplicationHelper::getClientInfo((string) $file->attributes()->client, true);
-					$path['dest'] = $langclient->path . '/language/' . $file->attributes()->tag . '/' . basename((string) $file);
+					// [!] Hubzero
+					//$path['dest'] = $langclient->path . '/language/' . $file->attributes()->tag . '/' . basename((string) $file);
+					//$path['dest'] = PATH_APP . '/bootstrap/' . $client->name . '/language/' . $file->attributes()->tag . '/' . basename((string) $file);
+					$path['dest'] = $this->getPath('extension_root') . '/' . (isset($client->alias) ? $client->alias : $client->name) . '/language/' . $file->attributes()->tag . '/' . basename((string) $file);
 				}
 				else
 				{
@@ -1380,12 +1383,13 @@ class JInstaller extends JAdapter
 				// If the language folder is not present, then the core pack hasn't been installed... ignore
 				if (!JFolder::exists(dirname($path['dest'])))
 				{
-					continue;
+					// [!] Hubzero
+					//continue;
 				}
 			}
 			else
 			{
-				$path['src'] = $source . '/' . $file;
+				$path['src']  = $source . '/' . $file;
 				$path['dest'] = $destination . '/' . $file;
 			}
 
@@ -1442,7 +1446,7 @@ class JInstaller extends JAdapter
 		//	Default 'media' Files are copied to the JPATH_BASE/media folder
 
 		$folder = ((string) $element->attributes()->destination) ? '/' . $element->attributes()->destination : null;
-		$destination = JPath::clean(JPATH_ROOT . '/media' . $folder);
+		$destination = JPath::clean(PATH_APP . '/media' . $folder);
 
 		// Here we set the folder we are going to copy the files from.
 
