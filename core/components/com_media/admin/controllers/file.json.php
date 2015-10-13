@@ -25,7 +25,7 @@ class MediaControllerFile extends JControllerLegacy
 	{
 		$params = Component::params('com_media');
 		// Check for request forgeries
-		if (!Session::checkToken('request'))
+		if (!Session::checkToken(['get', 'post'], true))
 		{
 			$response = array(
 				'status' => '0',

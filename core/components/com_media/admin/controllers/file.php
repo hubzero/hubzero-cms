@@ -29,7 +29,7 @@ class MediaControllerFile extends JControllerLegacy
 	public function upload()
 	{
 		// Check for request forgeries
-		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken(['get', 'post']);
 
 		$params = Component::params('com_media');
 
@@ -189,11 +189,11 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken(['get', 'post']);
 
 		// Get some data from the request
-		$tmpl	= Request::getCmd('tmpl');
-		$paths	= Request::getVar('rm', array(), '', 'array');
+		$tmpl   = Request::getCmd('tmpl');
+		$paths  = Request::getVar('rm', array(), '', 'array');
 		$folder = Request::getVar('folder', '', '', 'path');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
