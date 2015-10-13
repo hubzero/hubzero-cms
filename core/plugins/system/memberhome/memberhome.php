@@ -101,6 +101,7 @@ class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
 		if ($activeMenu == $defaultMenu)
 		{
 			$menu->setActive($menuId);
+			$menu->setDefault($menuId, $defaultMenu->language);
 			$item = $menu->getItem($menuId);
 			$vars = $item->query;
 			$vars['Itemid'] = $menuId;
