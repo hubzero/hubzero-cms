@@ -217,10 +217,13 @@ class Guard extends Object
 		// Create authentication response
 		$response = new Response;
 
+		// Track whether or not we have a valid plugin matching the requested auth type
+		$match = false;
+
 		// Loop through the plugins and check of the credentials can be used to authenticate
 		// the user
 		//
-		// Any errors raised in the plugin should be returned via the JAuthenticationResponse
+		// Any errors raised in the plugin should be returned via the Response
 		// and handled appropriately.
 		foreach ($plugins as $plugin)
 		{
@@ -241,11 +244,16 @@ class Guard extends Object
 				continue;
 			}
 
-			// If backend login, make sure plugin is enabled for backend
-			if ($options['action'] == 'core.login.admin' && !$plugin->params->get('admin_login', false))
+			$client = $this->app['client']->alias . '_login';
+
+			// Make sure plugin is enabled for a given client
+			if (!$plugin->params->get($client, false))
 			{
 				continue;
 			}
+
+			// At this point, we'll consider this a match
+			$match = true;
 
 			// Try to authenticate
 			$plugin->onUserAuthenticate($credentials, $options, $response);
@@ -259,6 +267,12 @@ class Guard extends Object
 				}
 				break;
 			}
+		}
+
+		// If we didn't get a match at all, set a somewhat meaningful error
+		if (!$match)
+		{
+			$response->error_message = 'Invalid authenticator';
 		}
 
 		if (empty($response->username))
