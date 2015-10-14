@@ -51,8 +51,16 @@ else
 	$lid = Request::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 
-$macros = $this->book->pages('list', array('search' => 'Help:WikiMacros', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
-$formatting = $this->book->pages('list', array('search' => 'Help:WikiFormatting', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
+$db = App::get('db');
+$tbl = new \Components\Wiki\Tables\Page($db);
+
+$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiMacros', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0)));
+$macros = new \Components\Wiki\Models\Page($db->loadObject());
+$macros->set('group_cn', null);
+
+$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiFormatting', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0)));
+$formatting = new \Components\Wiki\Models\Page($db->loadObject());
+$formatting->set('group_cn', null);
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
