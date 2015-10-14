@@ -26,8 +26,6 @@ class UsersControllerUser extends UsersController
 	 */
 	public function login()
 	{
-		$app = JFactory::getApplication();
-
 		// Populate the data array:
 		$data             = array();
 		$options          = array();
@@ -68,6 +66,7 @@ class UsersControllerUser extends UsersController
 					}
 
 					$options['authenticator'] = $authenticator;
+					$options['action'] = 'core.login.site';
 
 					break;
 				}
@@ -102,6 +101,7 @@ class UsersControllerUser extends UsersController
 			$options = array();
 			$options['remember'] = Request::getBool('remember', false);
 			$options['return'] = $data['return'];
+			$options['action'] = 'core.login.site';
 			if (!empty($authenticator))
 			{
 				$options['authenticator'] = $authenticator;
@@ -124,9 +124,9 @@ class UsersControllerUser extends UsersController
 
 		try
 		{
-			$result = $app->login($credentials, $options);
+			$result = App::get('auth')->login($credentials, $options);
 		}
-		catch (JException $e)
+		catch (Exception $e)
 		{
 			$result = $e;
 		}
