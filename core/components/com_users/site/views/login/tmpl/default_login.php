@@ -47,10 +47,16 @@ $hash  = App::hash(App::get('client')->name . ':authenticator');
 
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
 {
-	$primary  = $cookie->authenticator;
-	$user     = User::getInstance($cookie->user_id);
-	$user_img = $cookie->user_img;
-	Request::setVar('primary', $primary);
+	$primary = $cookie->authenticator;
+
+	// Make sure primary is still enabled
+	if (array_key_exists($primary, $this->authenticators)
+	|| (isset($this->local) && $this->local && $primary == 'hubzero'))
+	{
+		$user     = User::getInstance($cookie->user_id);
+		$user_img = $cookie->user_img;
+		Request::setVar('primary', $primary);
+	}
 }
 
 $usersConfig = Component::params('com_users');
@@ -109,12 +115,14 @@ endforeach;
 							<?php endif; ?>
 					<?php endforeach; ?>
 				</div>
-				<div class="or"></div>
-				<div class="local">
-					<a href="<?php echo Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
-						<?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))); ?>
-					</a>
-				</div>
+				<?php if (isset($this->local) && $this->local) : ?>
+					<div class="or"></div>
+					<div class="local">
+						<a href="<?php echo Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
+							<?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))); ?>
+						</a>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="hz" style="display:<?php echo ($primary == 'hubzero' || count($this->authenticators) == 0) ? 'block' : 'none'; ?>;">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>

@@ -102,18 +102,26 @@ class UsersViewLogin extends JViewLegacy
 
 		foreach ($plugins as $p)
 		{
+			$client  = App::get('client')->alias . '_login';
+			$pparams = new \Hubzero\Config\Registry($p->params);
+
+			// Make sure plugin is enabled for a given client
+			if (!$pparams->get($client, false))
+			{
+				continue;
+			}
+
 			if ($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$pparams = new \Hubzero\Config\Registry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
 			{
-				$pparams = new \Hubzero\Config\Registry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
 				$this->site_display  = $pparams->get('display_name', Config::get('sitename'));
+				$this->local         = true;
 			}
 		}
 
