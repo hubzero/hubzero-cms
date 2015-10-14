@@ -57,11 +57,11 @@ else
 $db = JFactory::getDBO();
 $tbl = new WikiTablePage($db);
 
-$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiMacros', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0)));
+$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiMacros', 'sortby' => 'title asc', 'limit' => 1, 'start' => 0)));
 $macros = new WikiModelPage($db->loadObject());
 $macros->set('group_cn', null);
 
-$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiFormatting', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0)));
+$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiFormatting', 'sortby' => 'title asc', 'limit' => 1, 'start' => 0)));
 $formatting = new WikiModelPage($db->loadObject());
 $formatting->set('group_cn', null);
 ?>
