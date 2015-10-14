@@ -1,0 +1,4 @@
+app/cache/**
+app/config/**
+app/site/**
+app/logs/**
