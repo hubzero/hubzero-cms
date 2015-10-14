@@ -57,7 +57,7 @@ class WikiModelAdapterSite extends WikiModelAdapterAbstract
 	{
 		$this->_segments['pagename'] = $pagename;
 		$this->_segments['scope']    = $scope;
-		$this->_segments['option']   = JRequest::getCmd('option', 'com_wiki');
+		$this->_segments['option']   = 'com_wiki';
 	}
 
 	/**

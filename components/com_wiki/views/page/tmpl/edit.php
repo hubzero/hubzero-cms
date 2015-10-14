@@ -54,8 +54,16 @@ else
 	$lid = JRequest::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 
-$macros = $this->book->pages('list', array('search' => 'Help:WikiMacros', 'group' => '', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
-$formatting = $this->book->pages('list', array('search' => 'Help:WikiFormatting', 'group' => '', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
+$db = JFactory::getDBO();
+$tbl = new WikiTablePage($db);
+
+$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiMacros', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0)));
+$macros = new WikiModelPage($db->loadObject());
+$macros->set('group_cn', null);
+
+$db->setQuery($tbl->buildQuery(array('search' => 'Help:WikiFormatting', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0)));
+$formatting = new WikiModelPage($db->loadObject());
+$formatting->set('group_cn', null);
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
