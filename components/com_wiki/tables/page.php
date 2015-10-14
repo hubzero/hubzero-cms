@@ -716,7 +716,7 @@ class WikiTablePage extends JTable
 			}
 			else
 			{
-				$query .= " ORDER BY t.id ASC GROUP BY `t.group_cn`";
+				$query .= " ORDER BY t.id ASC GROUP BY t.`group_cn`";
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 			{
