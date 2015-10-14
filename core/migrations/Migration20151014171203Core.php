@@ -1,0 +1,35 @@
+<?php
+
+use Hubzero\Content\Migration\Base;
+
+/**
+ * Migration script for ensuring plugins are enabled for site login by default
+ **/
+class Migration20151014171203Core extends Base
+{
+	/**
+	 * Up
+	 **/
+	public function up()
+	{
+		// If a plugin is enabled, we'll assume that it should also be enabled for site login if not already saved
+		// We changed the CMS to enforce the configuration option of site_login enabled.  Prior to this, it was
+		// assuming true.  We need to default the database to emulate current behavior.
+		$plugins = Plugin::byType('authentication');
+
+		if (count($plugins) > 0)
+		{
+			foreach ($plugins as $plugin)
+			{
+				$params = json_decode($plugin->params);
+
+				if (!isset($params->site_login))
+				{
+					$params->site_login = "1";
+
+					$this->saveParams('plg_authentication_' . $plugin->name, (array) $params);
+				}
+			}
+		}
+	}
+}
