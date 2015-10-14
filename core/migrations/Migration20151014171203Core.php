@@ -23,6 +23,11 @@ class Migration20151014171203Core extends Base
 			{
 				$params = json_decode($plugin->params);
 
+				if (is_null($params))
+				{
+					$params = new \stdClass();
+				}
+
 				if (!isset($params->site_login))
 				{
 					$params->site_login = "1";
