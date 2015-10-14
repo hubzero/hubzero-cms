@@ -54,8 +54,8 @@ else
 	$lid = JRequest::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 
-$macros = $this->book->pages('list', array('search' => 'Help:WikiMacros', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
-$formatting = $this->book->pages('list', array('search' => 'Help:WikiFormatting', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
+$macros = $this->book->pages('list', array('search' => 'Help:WikiMacros', 'group' => '', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
+$formatting = $this->book->pages('list', array('search' => 'Help:WikiFormatting', 'group' => '', 'sort' => 'title', 'sort_Dir' => 'asc', 'limit' => 1, 'start' => 0), true)->first();
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
