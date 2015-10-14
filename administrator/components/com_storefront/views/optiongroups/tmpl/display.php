@@ -143,6 +143,10 @@ foreach ($this->rows as $row)
 							}
 							?></span>
 						</a>
+						&nbsp;
+						<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=options&task=add&ogId=' . $row->ogId); ?>">
+							<span>[ + ]</span>
+						</a>
 					<?php } else { ?>
 						<span><?php $key = $row->ogId; echo $this->options->$key; ?></span>
 					</span>

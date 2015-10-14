@@ -141,11 +141,11 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="-glyph -product" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->pId); ?>" title="<?php echo JText::_('COM_STOREFRONT_EDIT_PRODUCT'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->pId); ?>" title="<?php echo JText::_('COM_STOREFRONT_EDIT_PRODUCT'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->pName)); ?></span>
 					</a>
 				<?php } else { ?>
-					<span class="-glyph -product">
+					<span>
 						<span><?php echo $this->escape(stripslashes($row->pName)); ?></span>
 					</span>
 				<?php } ?>
@@ -169,6 +169,10 @@ foreach ($this->rows as $row)
 							}
 							?></span>
 						</a>
+						&nbsp;
+						<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=skus&task=add&pId=' . $row->pId); ?>">
+							<span>[ + ]</span>
+						</a>
 					<?php } else { ?>
 						<span><?php $key = $row->pId; echo $this->skus->$key; ?></span>
 					</span>
@@ -186,15 +190,7 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->pId); ?>" title="<?php echo JText::_('COM_STOREFRONT_CHANGE_ACCESS'); ?>">
-							<?php echo $row->access; ?>
-						</a>
-					<?php } else { ?>
-						<span class="access <?php echo $color_access; ?>">
-						<?php echo $row->access; ?>
-					</span>
-					<?php } ?>
+					<?php echo $row->access; ?>
 				</td>
 			</tr>
 <?php

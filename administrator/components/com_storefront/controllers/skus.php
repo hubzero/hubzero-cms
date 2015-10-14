@@ -156,7 +156,7 @@ class StorefrontControllerSkus extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			// Get corrent SKU instance
+			// Get correct SKU instance
 			$pId = JRequest::getVar('pId');
 			$row = $this->instantiateSkuForProduct($id, $pId);
 			$this->view->row = $row;

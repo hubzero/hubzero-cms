@@ -164,8 +164,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-access"><?php echo JText::_('COM_STOREFRONT_ACCESS_LEVEL'); ?>:</label>
 				<?php
-				echo JHtml::_('access.level', 'fields[access]', $this->row->getAccessLevel());
-
+					echo JHtml::_('access.level', 'fields[access]', $this->row->getAccessLevel());
 				?>
 			</div>
 		</fieldset>
