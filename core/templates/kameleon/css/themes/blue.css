@@ -14,6 +14,9 @@
 	}
 
 /* Light header */
+	.light #header {
+		background-color: #2f8dc9;
+	}
 	#login-body #toolbar-box,
 	div.configuration,
 	h2.modal-title,
