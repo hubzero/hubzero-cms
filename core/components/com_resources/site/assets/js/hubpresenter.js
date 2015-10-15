@@ -752,9 +752,13 @@ HUB.Presenter = {
 		if( jQ("#presenter-left #media").length ) {
 			jQ("#media").prependTo("#presenter-right");
 			jQ("#slides").prependTo("#presenter-left");
+			jQ("#slides").css({'padding-left':'50px', 'padding-right':'55px'});
 		} else {
 			jQ("#media").prependTo("#presenter-left");
 			jQ("#slides").prependTo("#presenter-right");
+			jQ("#presenter-left").css('width', '745px');
+			jQ("#presenter-right").css('width', '320px');
+			jQ("#slides").css('padding', '0px');
 		}
 		
 		jQ("#slides ul").css('margin-top', 0);
