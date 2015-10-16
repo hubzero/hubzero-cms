@@ -222,7 +222,7 @@ $this->css()
 <?php if ($this->row->get('allow_comments')) { ?>
 	<section class="section below">
 		<div class="subject">
-			<h3 class="below_heading">
+			<h3 id="comments" class="below_heading">
 				<?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
