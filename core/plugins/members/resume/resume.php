@@ -120,7 +120,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$emp = $employer->isEmployer(User::get('id'));
 
 		// check if they belong to a dedicated admin group
-		if ($this->config->get('admingroup'))
+		if ($this->config->get('admingroup') && User::get('id') != 0)
 		{
 			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			$ugs = $profile->getGroups('all');
