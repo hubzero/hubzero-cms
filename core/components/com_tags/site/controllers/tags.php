@@ -103,7 +103,7 @@ class Tags extends SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$tagstring = urldecode(trim(Request::getVar('tag', '', 'request', 'none', 2)));
+		$tagstring = urldecode(htmlspecialchars_decode(trim(Request::getVar('tag', '', 'request', 'none', 2))));
 
 		$addtag = trim(Request::getVar('addtag', ''));
 
