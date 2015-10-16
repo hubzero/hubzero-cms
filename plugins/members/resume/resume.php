@@ -118,7 +118,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$emp = $employer->isEmployer($juser->get('id'));
 
 		// check if they belong to a dedicated admin group
-		if ($this->config->get('admingroup'))
+		if ($this->config->get('admingroup') && $juser->get('id') != 0)
 		{
 			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
