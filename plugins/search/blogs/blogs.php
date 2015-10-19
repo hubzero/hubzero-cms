@@ -88,7 +88,7 @@ class plgSearchBlogs extends SearchPlugin
 				be.content AS description,
 				(CASE WHEN be.scope_id > 0 AND be.scope='group' THEN
 					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
-				WHEN be.scope='member' THEN
+				WHEN be.scope='member' AND be.scope_id != 0 THEN
 					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				ELSE
 					concat('index.php?option=com_blog&year=', extract(year from be.created), '&month=', extract(month from be.created), '&alias=', be.alias)
