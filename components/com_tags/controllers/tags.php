@@ -86,7 +86,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$tagstring = urldecode(trim(JRequest::getVar('tag', '', 'request', 'none', 2)));
+		$tagstring = urldecode(htmlspecialchars_decode(trim(JRequest::getVar('tag', '', 'request', 'none', 2))));
 
 		$addtag = trim(JRequest::getVar('addtag', ''));
 
