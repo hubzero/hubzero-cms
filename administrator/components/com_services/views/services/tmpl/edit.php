@@ -140,6 +140,13 @@ function submitbutton(pressbutton)
 				</div>
 			</div>
 			<div class="clr"></div>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-params"><?php echo JText::_('COM_SERVICES_FIELD_PARAMS'); ?>:</label><br />
+					<input type="text" name="fields[params]" id="field-params" value="<?php echo $this->escape(stripslashes($this->row->params)); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
