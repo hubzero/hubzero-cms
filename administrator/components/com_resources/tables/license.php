@@ -201,15 +201,15 @@ class ResourcesLicense extends JTable
 
 		if (!isset($filters['sort']) || !$filters['sort'])
 		{
-			$filters['sort'] = 'title';
+			$filters['sort'] = 'ordering';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
-			$filters['sort_Dir'] = 'DESC';
+			$filters['sort_Dir'] = 'ASC';
 		}
 		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 		{
-			$filters['sort_Dir'] = 'DESC';
+			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
