@@ -681,12 +681,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "7a4e264fbb99021c6c217f3d7b1dbea8456589db"
+                "reference": "6bf620e79ed9394b5b9cf007c4179140cf68ab0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/7a4e264fbb99021c6c217f3d7b1dbea8456589db",
-                "reference": "7a4e264fbb99021c6c217f3d7b1dbea8456589db",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/6bf620e79ed9394b5b9cf007c4179140cf68ab0f",
+                "reference": "6bf620e79ed9394b5b9cf007c4179140cf68ab0f",
                 "shasum": ""
             },
             "require": {
@@ -718,7 +718,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2015-10-14 18:15:18"
+            "time": "2015-10-21 00:50:10"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1098,7 +1098,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/0951159aeeecfad9827b6dbacbd6fd76d336ef50",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/db4ec91a62364a8d4ff67b93504f56cfdf5d8986",
                 "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
                 "shasum": ""
             },
