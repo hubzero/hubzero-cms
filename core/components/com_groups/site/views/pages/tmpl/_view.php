@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 // group params for displaying comments/author
 // use global params if group has not set params
 $groupParams     = new \Hubzero\Config\Registry($this->group->get('params'));
-$displayComments = $groupParams->get('page_comments', $this->config->get('page_comments', 3));
+$displayComments = $groupParams->get('page_comments', $this->config->get('page_comments', 0));
 
 $displayAuthor   = $groupParams->get('page_author', $this->config->get('page_author', 0));
 
