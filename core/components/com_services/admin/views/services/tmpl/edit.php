@@ -102,46 +102,40 @@ function submitbutton(pressbutton)
 					<input type="text" name="fields[currency]" id="field-currency" maxlength="10" value="<?php echo $this->escape(stripslashes($this->row->currency)); ?>" />
 				</div>
 
-				<div class="col width-50 fltlft">
 					<div class="input-wrap">
 						<label for="field-unitprice"><?php echo Lang::txt('COM_SERVICES_FIELD_UNITPRICE'); ?>:</label><br />
 						<input type="text" name="fields[unitprice]" id="field-unitprice" value="<?php echo $this->escape(stripslashes($this->row->unitprice)); ?>" />
 					</div>
-				</div>
-				<div class="col width-50 fltrt">
 					<div class="input-wrap">
 						<label for="field-pointsprice"><?php echo Lang::txt('COM_SERVICES_FIELD_POINTSPRICE'); ?>:</label><br />
 						<input type="text" name="fields[pointsprice]" id="field-pointsprice" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->pointsprice)); ?>" />
 					</div>
-				</div>
 				<div class="clr"></div>
 
-				<div class="col width-50 fltlft">
 					<div class="input-wrap">
 						<label for="field-minunits"><?php echo Lang::txt('COM_SERVICES_FIELD_MINUNITS'); ?>:</label><br />
 						<input type="text" name="fields[minunits]" id="field-minunits" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->minunits)); ?>" />
 					</div>
-				</div>
-				<div class="col width-50 fltrt">
 					<div class="input-wrap">
 						<label for="field-maxunits"><?php echo Lang::txt('COM_SERVICES_FIELD_MAXUNITS'); ?>:</label><br />
 						<input type="text" name="fields[maxunits]" id="field-maxunits" value="<?php echo $this->escape(stripslashes($this->row->maxunits)); ?>" />
 					</div>
-				</div>
 				<div class="clr"></div>
 
-				<div class="col width-50 fltlft">
 					<div class="input-wrap">
 						<label for="field-unitsize"><?php echo Lang::txt('COM_SERVICES_FIELD_UNITSIZE'); ?>:</label><br />
 						<input type="text" name="fields[unitsize]" id="field-unitsize" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->unitsize)); ?>" />
 					</div>
-				</div>
-				<div class="col width-50 fltrt">
 					<div class="input-wrap">
 						<label for="field-unitmeasure"><?php echo Lang::txt('COM_SERVICES_FIELD_UNITMEASURE'); ?>:</label><br />
 						<input type="text" name="fields[unitmeasure]" id="field-unitmeasure" value="<?php echo $this->escape(stripslashes($this->row->unitmeasure)); ?>" />
 					</div>
-				</div>
+				<div class="clr"></div>
+
+					<div class="input-wrap">
+						<label for="field-params"><?php echo Lang::txt('COM_SERVICES_FIELD_PARAMS'); ?>:</label><br />
+						<input type="text" name="fields[params]" id="field-params" value="<?php echo $this->escape(stripslashes($this->row->params)); ?>" />
+					</div>
 				<div class="clr"></div>
 			</fieldset>
 		</div>
