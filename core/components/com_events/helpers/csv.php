@@ -134,7 +134,7 @@ class Csv
 
 		// Output header
 		usort($fields, array('\Components\Events\Helpers\Csv', 'fieldSorter'));
-		echo self::quoteCsvRow(array_map('ucfirst', $fields));
+		echo self::quoteRow(array_map('ucfirst', $fields));
 
 		$rows = $resp->getRecords();
 
@@ -198,7 +198,7 @@ class Csv
 					break;
 				}
 			}
-			echo self::quoteCsvRow($row);
+			echo self::quoteRow($row);
 		}
 		exit;
 	}
