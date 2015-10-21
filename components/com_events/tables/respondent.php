@@ -311,7 +311,7 @@ class EventsRespondent extends JTable
 	public function getPaginator()
 	{
 		jimport('joomla.html.pagination');
-		return new JPagination($this->getCount(), $this->limit, $this->offset);
+		return new JPagination($this->getCount(), $this->offset, $this->limit);
 	}
 
 	/**
