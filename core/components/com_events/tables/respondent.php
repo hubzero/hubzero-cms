@@ -136,7 +136,7 @@ class Respondent extends \JTable
 	 */
 	public function getPaginator()
 	{
-		return new \Hubzero\Pagination\Paginator($this->getCount(), $this->limit, $this->offset);
+		return new \Hubzero\Pagination\Paginator($this->getCount(), $this->offset, $this->limit);
 	}
 
 	/**
