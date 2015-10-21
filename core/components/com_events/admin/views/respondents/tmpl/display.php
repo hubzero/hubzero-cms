@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="6">
-					<?php echo $pageNav->getListFooter(); ?>
+					<?php echo $pageNav; ?>
 				</td>
 			</tr>
 		</tfoot>
