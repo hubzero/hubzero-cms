@@ -84,39 +84,3 @@ $this->css('tools.css');
 		</tbody>
 	</table>
 </section><!-- / .section -->
-
-<?php if ($this->config->get('access-manage-session')) { ?>
-	<section class="main section<?php if ($this->active == 'all') { echo ''; } else { echo ' hide'; }?>" id="allsessions-section">
-		<table class="sessions">
-			<thead>
-				<tr>
-					<th><?php echo Lang::txt('COM_TOOLS_MYSESSIONS_COL_SESSION'); ?></th>
-					<th><?php echo Lang::txt('COM_TOOLS_MYSESSIONS_COL_OWNER'); ?></th>
-					<th><?php echo Lang::txt('COM_TOOLS_MYSESSIONS_COL_STARTED'); ?></th>
-					<th><?php echo Lang::txt('COM_TOOLS_MYSESSIONS_COL_LAST_ACCESSED'); ?></th>
-					<th><?php echo Lang::txt('COM_TOOLS_MYSESSIONS_COL_OPTION'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php
-			if ($this->allsessions) {
-				$cls = 'even';
-				foreach ($this->allsessions as $session)
-				{
-					$cls = ($cls == 'odd') ? 'even' : 'odd';
-			?>
-				<tr class="<?php echo $cls; ?>">
-					<td><a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=session&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $session->sessname; ?></a></td>
-					<td><?php echo $session->username; ?></td>
-					<td><?php echo $session->start; ?></td>
-					<td><?php echo $session->accesstime; ?></td>
-					<td><a class="closetool" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=stop&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></a></td>
-				</tr>
-			<?php
-				}
-			}
-			?>
-			</tbody>
-		</table>
-	</section><!-- / .section -->
-<?php } ?>
