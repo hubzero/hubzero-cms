@@ -43,8 +43,8 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
-				<field name="master_type" type="text" default="8" label="Type" description="Type to allow data consumption for." />
+			<fieldset name="basic" addfieldpath="/core/plugins/oaipmh/publications">
+				<field name="type" type="publicationcategory" default="0" label="PLG_OAIPMH_PUBLICATIONS_CATEGORY_LABEL" description="PLG_OAIPMH_PUBLICATIONS_CATEGORY_DESC" />
 			</fieldset>
 		</fields>
 	</config>

@@ -128,8 +128,8 @@ class Miner extends Object implements Provider
 	 */
 	public function sets()
 	{
-		$query = "SELECT alias, type, description, " . $this->database->quote($this->name()) . " as base
-				FROM `#__publication_master_types`";
+		$query = "SELECT alias, name AS type, description, " . $this->database->quote($this->name()) . " as base
+				FROM `#__publication_categories`";
 		if ($type = $this->get('type'))
 		{
 			$query .= " WHERE id=" . $this->database->quote($type);
@@ -252,7 +252,7 @@ class Miner extends Object implements Provider
 			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
-			INNER JOIN `#__publication_master_types` AS rt ON rt.id = p.master_type
+			INNER JOIN `#__publication_categories` AS rt ON rt.id = p.category
 			WHERE p.id = " . $this->database->quote($id)
 		);
 		$record = $this->database->loadObject();
