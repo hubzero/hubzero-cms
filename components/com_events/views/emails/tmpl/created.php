@@ -41,7 +41,7 @@ $message  = JText::sprintf('EVENTS_CAL_LANG_ACT_ADDED_BY', $this->juser->get('na
 $message .= ''."\n";
 $message .= ''."\n";
 $message .= JText::_('EVENTS_CAL_LANG_EVENT_TITLE').': '.stripslashes($this->row->title)."\n\n";
-$message .= JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.stripslashes($this->row->content)."\n\n";
+$message .= JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.stripslashes(strip_tags($this->row->content))."\n\n";
 $message .= ''."\n";
 $message .= $juri->base().$sef."\n";
 
