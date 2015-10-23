@@ -21,6 +21,15 @@
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 /*
+| Apps may have their own separate composer instance. So, let's check
+| for that and include it, if found.
+*/
+if (file_exists(PATH_APP . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php'))
+{
+	require PATH_APP . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+}
+
+/*
 |--------------------------------------------------------------------------
 | Include Helper Functions
 |--------------------------------------------------------------------------
