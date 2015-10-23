@@ -230,9 +230,9 @@ class ToolsHelperHtml
 	 */
 	public static function getNumofTools($status, $toolnum='')
 	{
-        // get hub parameters
-        $jconfig = JFactory::getConfig();
-        $sitename = $jconfig->getValue('config.sitename');
+		// get hub parameters
+		$jconfig = JFactory::getConfig();
+		$sitename = $jconfig->get('sitename');
 
 		$toolnum = ($status['state']!=9) ? JText::_('COM_TOOLS_THIS_TOOL').'  ': '';
 		if (!$status['published'] && self::toolActive($status['state']))
@@ -556,21 +556,22 @@ class ToolsHelperHtml
 		$html .= "\t\t".' <li>'.JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
 
 		for ($i=0, $n=count($stages); $i < $n; $i++)
+		{
+			$html .= "\t\t".' <li';
+
+			if (strtolower($active_stage) == strtolower($stages[$i]))
 			{
-				$html .= "\t\t".' <li';
-
-				if(strtolower($active_stage) == strtolower($stages[$i])) {
-					$html .= ' class="active"';
-
-				}
-				else if (count($key) == 0 or $i > $key[0]) {
-					$html .= ' class="future"';
-				}
-
-				$html .= '>';
-				$html .= $stages[$i];
-				$html .= '</li>'."\n";
+				$html .= ' class="active"';
 			}
+			else if (count($key) == 0 or $i > $key[0])
+			{
+				$html .= ' class="future"';
+			}
+
+			$html .= '>';
+			$html .= $stages[$i];
+			$html .= '</li>'."\n";
+		}
 		$html .= "\t\t".'</ol>'."\n";
 		$html .= "\t\t".'<div class="clear"></div>'."\n";
 
@@ -683,11 +684,11 @@ class ToolsHelperHtml
 	public static function addNoteArea($i, $option, $type = 'item')
 	{
 		$out  = '';
-	 	$out .= '<label>'."\n";
+		$out .= '<label>'."\n";
 		$out .= ' <span class="selectgroup editnote">'."\n";
 		$out .= '   <textarea name="'.$type.'[]" id="'.$type.$i.'"  rows="6" cols="35"></textarea>'."\n";
-        $out .= '   <span class="extras"><span></span></span>'."\n";
-        $out .= ' </span>'."\n";
+		$out .= '   <span class="extras"><span></span></span>'."\n";
+		$out .= ' </span>'."\n";
 		$out .= '</label>'."\n";
 
 		return $out;
@@ -783,7 +784,7 @@ class ToolsHelperHtml
 		$path = JPATH_ROOT . $path;
 
 		jimport('joomla.filesystem.file');
-	    $type = strtoupper(JFile::getExt($path));
+		$type = strtoupper(JFile::getExt($path));
 
 		$fs = '';
 
