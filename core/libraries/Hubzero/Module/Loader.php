@@ -24,7 +24,7 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
+ * @package   framework
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
@@ -281,7 +281,12 @@ class Loader
 
 		// Get module path
 		$module->module = preg_replace('/[^A-Z0-9_\.-]/i', '', $module->module);
-		$path = PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
+		$path = PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
+
+		if (!file_exists($path))
+		{
+			$path = PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
+		}
 
 		// Load the module
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
@@ -381,8 +386,15 @@ class Loader
 
 		// Build the template and base path for the layout
 		$tPath = $path . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
-		$bPath = PATH_CORE . '/modules/' . $module . '/tmpl/' . $default . '.php';
-		$dPath = PATH_CORE . '/modules/' . $module . '/tmpl/default.php';
+
+		$base = PATH_APP . '/modules/' . $module;
+		if (!is_dir($base))
+		{
+			$base = PATH_CORE . '/modules/' . $module;
+		}
+
+		$bPath = $base . '/tmpl/' . $default . '.php';
+		$dPath = $base . '/tmpl/default.php';
 
 		// If the template has a layout override use it
 		if (file_exists($tPath))
@@ -426,7 +438,7 @@ class Loader
 			$db = $this->app['db'];
 
 			$query = $db->getQuery(true);
-			$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params, mm.menuid');
+			$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params, mm.menuid, e.protected');
 			$query->from('#__modules AS m');
 			$query->join('LEFT', '#__modules_menu AS mm ON mm.moduleid = m.id');
 			$query->where('m.published = 1');
