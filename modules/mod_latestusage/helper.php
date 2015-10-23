@@ -53,10 +53,10 @@ class modLatestusage extends \Hubzero\Module\Module
 
 		if ($udb)
 		{
-			$udb->setQuery('SELECT value FROM summary_user_vals WHERE datetime = (SELECT MAX(datetime) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"');
+			$udb->setQuery('SELECT value FROM summary_user_vals WHERE datetime = (SELECT CAST(MAX(datetime) AS CHAR) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"');
 			$this->users = $udb->loadResult();
 
-			$udb->setQuery('SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT MAX(datetime) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"');
+			$udb->setQuery('SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT CAST(MAX(datetime) AS CHAR) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"');
 			$this->sims = $udb->loadResult();
 		}
 		else
