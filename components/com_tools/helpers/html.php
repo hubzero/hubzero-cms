@@ -437,18 +437,16 @@ class ToolsHelperHtml
 	}
 
 	/**
-	 * Short description for 'getGroups'
+	 * Turn a list of groups into a comma-separated string
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $groups Parameter description (if any) ...
-	 * @param      integer $obj Parameter description (if any) ...
-	 * @param      string $list Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   array    $groups  List of groups
+	 * @param   integer  $obj     Incoming data are objects?
+	 * @param   string   $list    String to append to
+	 * @return  string
 	 */
 	public static function getGroups($groups, $obj = 1, $list='')
 	{
-		if ($groups && count($groups) > 0)
+		if (is_array($groups) || $groups instanceof Traversable)
 		{
 			foreach ($groups as $group)
 			{
