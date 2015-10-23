@@ -31,7 +31,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('impact.css', 'projects', 'publications');
+$this->css('impact.css', 'plg_projects_publications');
 
 $thisMonth = date('M Y');
 $lastMonth = date('M Y', strtotime("-1 month"));

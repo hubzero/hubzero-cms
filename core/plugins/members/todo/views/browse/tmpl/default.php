@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 $this->css('jquery.datepicker.css', 'system')
 	 ->css('jquery.timepicker.css', 'system')
 	 ->css()
-	 ->css('todo.css', 'projects', 'todo')
+	 ->css('todo.css', 'plg_projects_todo')
 	 ->js()
 	 ->js('jquery.timepicker', 'system');
 
