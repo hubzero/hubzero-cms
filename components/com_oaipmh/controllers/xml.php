@@ -47,7 +47,15 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		// Incoming
 		$metadata   = \JRequest::getVar('metadataPrefix', 'oai_dc');
 		$from       = \JRequest::getVar('from');
+		if ($from)
+		{
+			$from = with(new JDate($from))->toSql();
+		}
 		$until      = \JRequest::getVar('until');
+		if ($until)
+		{
+			$until = with(new JDate($until))->toSql();
+		}
 		$set        = \JRequest::getVar('set');
 		$resumption = \JRequest::getVar('resumptionToken');
 
