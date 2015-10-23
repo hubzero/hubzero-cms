@@ -56,7 +56,7 @@ class JFormFieldPublicationcategory extends \JFormFieldList
 	{
 		$options = array();
 
-		$options[] =  JHtml::_('select.option', '0', Lang::txt('All'));
+		$options[] =  JHtml::_('select.option', '0', JText::_('All'));
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 
