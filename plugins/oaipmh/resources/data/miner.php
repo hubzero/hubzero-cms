@@ -471,7 +471,7 @@ class Miner extends Object implements Provider
 				$cite = str_replace('&quot;', '"', $cite);
 
 				$record->relation[] = array(
-					'type'  => 'references',
+					'type'  => 'isReferencedBy',
 					'value' => trim($cite)
 				);
 			}

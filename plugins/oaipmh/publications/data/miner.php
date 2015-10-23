@@ -128,8 +128,8 @@ class Miner extends Object implements Provider
 	 */
 	public function sets()
 	{
-		$query = "SELECT alias, type, description, " . $this->database->quote($this->name()) . " as base
-				FROM `#__publication_master_types`";
+		$query = "SELECT alias, name AS type, description, " . $this->database->quote($this->name()) . " as base
+				FROM `#__publication_categories`";
 		if ($type = $this->get('type'))
 		{
 			$query .= " WHERE id=" . $this->database->quote($type);
@@ -154,7 +154,7 @@ class Miner extends Object implements Provider
 			}
 
 			$set = trim($matches[1]);
-			$this->database->setQuery("SELECT t.id FROM `#__publication_master_types` AS t WHERE t.alias=" . $this->database->quote($set));
+			$this->database->setQuery("SELECT t.id FROM `#__publication_categories` AS t WHERE t.alias=" . $this->database->quote($set));
 			$this->set('type', $this->database->loadResult());
 		}
 
@@ -166,7 +166,7 @@ class Miner extends Object implements Provider
 
 		if ($type = $this->get('type'))
 		{
-			$query .= " AND p.master_type=" . $this->database->quote($type);
+			$query .= " AND p.category=" . $this->database->quote($type);
 		}
 
 		if (isset($filters['from']) && $filters['from'])
@@ -252,7 +252,7 @@ class Miner extends Object implements Provider
 			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
-			INNER JOIN `#__publication_master_types` AS rt ON rt.id = p.master_type
+			INNER JOIN `#__publication_categories` AS rt ON rt.id = p.category
 			WHERE p.id = " . $this->database->quote($id)
 		);
 		$record = $this->database->loadObject();
@@ -296,7 +296,34 @@ class Miner extends Object implements Provider
 			"SELECT *
 			FROM `#__citations` AS a
 			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`='owner' AND a.`published`=1
+			ORDER BY `year` DESC"
+		);
+		$references = $this->database->loadObjectList();
+		if (count($references) && file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+
+			$formatter = new \CitationFormat;
+			$formatter->setTemplate('apa');
+
+			foreach ($references as $reference)
+			{
+				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \CitationFormat::formatReference($reference, '')));
+				$cite = str_replace('&quot;', '"', $cite);
+
+				$record->relation[] = array(
+					'type'  => 'isReferencedBy',
+					'value' => trim($cite)
+				);
+			}
+		}
+
+		$this->database->setQuery(
+			"SELECT *
+			FROM `#__citations` AS a
+			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`!='owner' AND a.`published`=1
 			ORDER BY `year` DESC"
 		);
 		$references = $this->database->loadObjectList();
