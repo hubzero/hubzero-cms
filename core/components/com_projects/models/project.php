@@ -627,6 +627,10 @@ class Project extends Model
 		if (!isset($this->_owner) || !($this->_owner instanceof \Hubzero\User\Profile))
 		{
 			$this->_owner = \Hubzero\User\Profile::getInstance($this->get('owned_by_user'));
+			if (!$this->_owner)
+			{
+				$this->_owner = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
