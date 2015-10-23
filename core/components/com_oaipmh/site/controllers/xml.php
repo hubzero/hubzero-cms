@@ -52,7 +52,15 @@ class Xml extends SiteController
 		// Incoming
 		$metadata   = Request::getVar('metadataPrefix', 'oai_dc');
 		$from       = Request::getVar('from');
+		if ($from)
+		{
+			$from = Date::of($from)->toSql();
+		}
 		$until      = Request::getVar('until');
+		if ($until)
+		{
+			$until = Date::of($until)->toSql();
+		}
 		$set        = Request::getVar('set');
 		$resumption = Request::getVar('resumptionToken');
 
