@@ -54,7 +54,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	{
 		// Initialise variables.
 		$config = App::get('config');
-		$mail_to_user = $this->params->get('mail_to_user', 1);
+		$mail_to_user = $this->params->get('mail_to_user', 0); // [!] HUBzero - changed default value
 
 		if ($isnew)
 		{
