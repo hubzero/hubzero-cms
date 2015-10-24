@@ -380,6 +380,8 @@ class Import extends \Hubzero\Content\Import\Model\Import
 		{
 			foreach ($raw as $key => $val)
 			{
+				$val = trim($val);
+
 				if (!$field = $this->fields($key))
 				{
 					$record->_unused[$key] = $val;
@@ -393,6 +395,8 @@ class Import extends \Hubzero\Content\Import\Model\Import
 		{
 			foreach (get_object_vars($raw) as $key => $val)
 			{
+				$val = trim($val);
+
 				if (!$field = $this->fields($key))
 				{
 					$record->_unused[$key] = $val;
