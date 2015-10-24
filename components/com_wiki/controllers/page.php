@@ -231,7 +231,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			$scope = trim($scope, '/');
 			if ($scope)
 			{
-				$bits = explode('/', $this->page->get('scope'));
+				$bits = explode('/', $scope);
 				foreach ($bits as $bit)
 				{
 					$bit = trim($bit);
