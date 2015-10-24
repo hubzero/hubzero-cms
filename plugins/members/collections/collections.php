@@ -120,10 +120,22 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			{
 				$path = str_replace($juri->base(true), '', $path);
 				$path = str_replace('index.php', '', $path);
-				$path = DS . trim($path, DS);
-				$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
-				$path = ltrim($path, DS);
-				$bits = explode('/', $path);
+				$path = trim($path, '/');
+				$parts = explode('/', $path);
+				$start = false;
+				$bits = array();
+				foreach ($parts as $p)
+				{
+					if ($p == $this->_name)
+					{
+						$start = true;
+						continue;
+					}
+					if ($start)
+					{
+						$bits[] = $p;
+					}
+				}
 
 				if (isset($bits[0]) && $bits[0])
 				{
