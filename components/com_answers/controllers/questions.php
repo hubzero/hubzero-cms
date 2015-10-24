@@ -112,6 +112,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
+		$this->_task = 'search';
 		$this->view->setLayout('search');
 		return $this->searchTask();
 	}
