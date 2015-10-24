@@ -33,7 +33,7 @@
 				<field
 					name="mail_to_user"
 					type="radio"
-					default="1"
+					default="0"
 					label="PLG_USER_JOOMLA_FIELD_MAILTOUSER_LABEL"
 					description="PLG_USER_JOOMLA_FIELD_MAILTOUSER_DESC">
 					<option
