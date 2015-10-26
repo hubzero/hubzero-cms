@@ -49,7 +49,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		if (($article instanceof \Hubzero\Base\Object) || $context != 'com_content.article')
+		if (($article instanceof \Hubzero\Base\Object) || !in_array($context, ['com_content.article', 'text']))
 		{
 			return;
 		}
@@ -284,6 +284,10 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 		else if ($options == 'hubShortURL')
 		{
 			return $live_site;
+		}
+		else if ($options == 'hubHostname')
+		{
+			return Request::getHost();
 		}
 
 		return '';
