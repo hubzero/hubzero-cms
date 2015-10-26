@@ -499,7 +499,7 @@ class Miner extends Object implements Provider
 	{
 		if ($doi)
 		{
-			$identifier = 'http://dx.doi.org/' . $doi;
+			$identifier = $doi; //'http://dx.doi.org/' . $doi;
 		}
 		else
 		{
