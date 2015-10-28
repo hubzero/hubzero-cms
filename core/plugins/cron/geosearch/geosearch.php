@@ -193,13 +193,15 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 
 		foreach ($creations as $creation)
 		{
-
-			$m = new \Components\Geosearch\Tables\GeosearchMarkers($this->database);
-			$m->addressLatitude = $creation->location->getLatitude();
-			$m->addressLongitude = $creation->location->getLongitude();
-			$m->scope_id = $creation->scope_id;
-			$m->scope = $creation->scope;
-			$m->store(true);
+			if ($creation->location != '' && $creation->location != NULL)
+			{
+				$m = new \Components\Geosearch\Tables\GeosearchMarkers($this->database);
+				$m->addressLatitude = $creation->location->getLatitude();
+				$m->addressLongitude = $creation->location->getLongitude();
+				$m->scope_id = $creation->scope_id;
+				$m->scope = $creation->scope;
+				$m->store(true);
+			}
 		}
 
 		return true;
@@ -244,6 +246,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				break;
 			} //end switch
 
+
 			if ($address != "")
 			{
 				try
@@ -260,6 +263,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 					continue; //skip bad locations
 				}
 			}
+
 		} //end foreach
 
 		return $createMarkers;
