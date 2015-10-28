@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "b7462a2b14e1b1e6aa70913520579474",
+    "content-hash": "59a14dad65e296f1405f5897835ba5a1",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -681,12 +682,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "6bf620e79ed9394b5b9cf007c4179140cf68ab0f"
+                "reference": "9ffdaa9feb23285b3eb1af0d1eac30303712aeb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/6bf620e79ed9394b5b9cf007c4179140cf68ab0f",
-                "reference": "6bf620e79ed9394b5b9cf007c4179140cf68ab0f",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/9ffdaa9feb23285b3eb1af0d1eac30303712aeb8",
+                "reference": "9ffdaa9feb23285b3eb1af0d1eac30303712aeb8",
                 "shasum": ""
             },
             "require": {
@@ -718,7 +719,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2015-10-21 00:50:10"
+            "time": "2015-10-23 20:22:26"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1098,7 +1099,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/db4ec91a62364a8d4ff67b93504f56cfdf5d8986",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/193ee757ed8e6686e117df7142020e0b54cd1afd",
                 "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
                 "shasum": ""
             },
