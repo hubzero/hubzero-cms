@@ -162,7 +162,7 @@ jQuery(document).ready(function($){
 		<?php if ($this->row->get('background_img', false)) : ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_BILLBOARDS_CURRENT_IMG'); ?></span></legend>
-				<?php $image = new \Hubzero\Image\Processor(PATH_APP . DS . $this->row->background_img); ?>
+				<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim($this->row->background_img, DS)); ?>
 				<?php if (count($image->getErrors()) == 0) : ?>
 					<?php $image->resize(500); ?>
 					<div style="padding: 10px;"><img src="<?php echo $image->inline(); ?>" alt="billboard image" /></div>

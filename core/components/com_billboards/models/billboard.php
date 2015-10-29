@@ -124,7 +124,7 @@ class Billboard extends Relational
 	public function transformBackgroundImg()
 	{
 		$params = Component::params('com_billboards');
-		$base   = $params->get('image_location', DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards' . DS);
+		$base   = $params->get('image_location', DS . 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards' . DS);
 
 		return DS . trim($base, DS) . DS . $this->get('background_img');
 	}
