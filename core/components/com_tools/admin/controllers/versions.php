@@ -108,7 +108,15 @@ class Versions extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
+		if (!$this->view->filters['id'])
+		{
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
+		}
 		$this->view->tool  = Tool::getInstance($this->view->filters['id']);
+		if (!$this->view->tool)
+		{
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+		}
 		$this->view->total = count($this->view->tool->version);
 		$this->view->rows  = $this->view->tool->getToolVersionSummaries($this->view->filters, true);
 
