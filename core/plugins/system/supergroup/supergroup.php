@@ -100,7 +100,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 			}
 
 			// remove "sg_" prefix for super group query params
-			foreach (Request::get() as $k => $v)
+			foreach (Request::query() as $k => $v)
 			{
 				if (strpos($k, 'sg_') !== false)
 				{
