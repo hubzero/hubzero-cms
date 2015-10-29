@@ -36,6 +36,8 @@ use Hubzero\Base\Object;
 use Hubzero\Utility\String;
 use App;
 
+require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'document' . DS . 'renderer.php';
+
 class Document extends Object
 {
 	public $document     = null;
@@ -156,17 +158,13 @@ class Document extends Object
 		// class name for renderer
 		$renderClass = '\\Components\\Groups\\Helpers\\Document\\Renderer\\' . ucfirst($type);
 
-		// if we dont already have the class instantiated
-		if (!class_exists($renderClass))
-		{
-			// build path to renderer
-			$path = __DIR__ . DS . 'document' . DS . 'renderer' . DS . $type . '.php';
+		// build path to renderer
+		$path = __DIR__ . DS . 'document' . DS . 'renderer' . DS . $type . '.php';
 
-			// include renderer if exists
-			if (file_exists($path))
-			{
-				require_once $path;
-			}
+		// include renderer if exists
+		if (file_exists($path))
+		{
+			require_once $path;
 		}
 
 		// if we still dont have a class return null
