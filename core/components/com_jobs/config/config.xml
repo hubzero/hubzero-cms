@@ -50,6 +50,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">COM_JOBS_US_ONLY_YES</option>
 			<option value="0">COM_JOBS_US_ONLY_NO</option>
 		</field>
+		<field name="expiry" type="list" default="1" label="COM_JOBS_EXPIRY" description="COM_JOBS_EXPIRY_DESC">
+			<option value="1">COM_JOBS_EXPIRY_ON</option>
+			<option value="0">COM_JOBS_EXPIRY_OFF</option>
+		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_jobs" section="component" />
