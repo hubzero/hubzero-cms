@@ -189,6 +189,8 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$pages = array_merge($spages, $opages);
 		$pages = array_merge($pages, $gpages);
 
+		$page = new CoursesModelPage();
+
 		if ($active)
 		{
 			foreach ($pages as $p)
@@ -200,9 +202,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		if (!$active || !$page->exists())
+		if (!$active)
 		{
 			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
+		}
+		if (!$page || !$page->exists())
+		{
+			JError::raiseError(404, JText::_('PLG_COURSES_PAGES_ERROR_PAGE_NOT_FOUND'));
 		}
 		$this->view->pages = $pages;
 		$this->view->page  = $page;
