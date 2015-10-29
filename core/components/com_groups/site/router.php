@@ -314,7 +314,7 @@ class Router extends Base
 			}
 
 			// rewrite all query string params to have "g_" prefix
-			foreach (\Request::get('get') as $k => $v)
+			foreach (\Request::query() as $k => $v)
 			{
 				$old = (isset($vars[$k])) ? $vars[$k] : null;
 				\Request::setVar('sg_' . $k, $v);
