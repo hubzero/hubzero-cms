@@ -274,6 +274,16 @@ abstract class JError
 	 */
 	public static function raiseWarning($code, $msg, $info = null)
 	{
+		// [!] Hubzero
+		if (class_exists('\\App'))
+		{
+			if (\App::has('notification'))
+			{
+				\App::get('notification')->warning($msg);
+				return;
+			}
+		}
+
 		// Deprecation warning.
 		JLog::add('JError::raiseWarning() is deprecated.', JLog::WARNING, 'deprecated');
 
@@ -298,6 +308,16 @@ abstract class JError
 	 */
 	public static function raiseNotice($code, $msg, $info = null)
 	{
+		// [!] Hubzero
+		if (class_exists('\\App'))
+		{
+			if (\App::has('notification'))
+			{
+				\App::get('notification')->warning($msg);
+				return;
+			}
+		}
+
 		// Deprecation warning.
 		JLog::add('JError::raiseNotice() is deprecated.', JLog::WARNING, 'deprecated');
 
