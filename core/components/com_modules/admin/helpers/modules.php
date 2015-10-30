@@ -149,7 +149,7 @@ abstract class ModulesHelper
 		$db    = App::get('db');
 		$query = $db->getQuery(true);
 
-		$query->select('element AS value, name AS text');
+		$query->select('element AS value, name AS text, protected');
 		$query->from('#__extensions as e');
 		$query->where('e.client_id = '.(int)$clientId);
 		$query->where('type = '.$db->quote('module'));
@@ -163,7 +163,7 @@ abstract class ModulesHelper
 		foreach ($modules as $i => $module)
 		{
 			$extension = $module->value;
-			$path = $clientId ? JPATH_ADMINISTRATOR : JPATH_SITE;
+			$path = $module->protected ? PATH_CORE : PATH_APP;
 			$source = $path . "/modules/$extension";
 				$lang->load("$extension.sys", $path, null, false, true)
 			||	$lang->load("$extension.sys", $source, null, false, true);
