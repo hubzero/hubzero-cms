@@ -128,6 +128,8 @@ HUB.ProjectFiles = {
 		// Show more/less version history
 		HUB.ProjectFiles.showRevisions();
 
+		HUB.ProjectFiles.addAnnotation();
+
 		// Show diffs
 		HUB.ProjectFiles.showDiffs();
 
@@ -964,6 +966,24 @@ HUB.ProjectFiles = {
 		}
 	},
 
+	addAnnotation: function ()
+	{
+		var $ = this.jQuery;
+
+		$('body').on('click', '.add-new-annotation', function (e) {
+			var html = [],
+				idx  = $('.key-value-pair').last().data('idx') + 1;
+
+			html = ['<li><div class="entry key-value-pair" data-idx="' + idx + '">',
+			        '<div class="entry-label"><input type="text" name="key[' + idx + ']" maxlength="250" value="" /></div>',
+			        '<div class="separator">:</div>',
+			        '<div class="entry-value"><input type="text" name="value[' + idx + ']" value="" /></div>',
+			        '</div></li>'];
+
+			$('#metadata-entries').append(html.join("\n"));
+		});
+	},
+
 	previewFiles: function ()
 	{
 		var $ = this.jQuery;
@@ -1169,6 +1189,9 @@ HUB.ProjectFiles = {
 			if ($('#a-download').length && $('#a-download').hasClass('inactive') && dir == 0) {
 				$('#a-download').removeClass('inactive');
 			}
+			if ($('#a-annotate').length && $('#a-annotate').hasClass('inactive') && dir == 0) {
+				$('#a-annotate').removeClass('inactive');
+			}
 			if ($('#a-history').length && $('#a-history').hasClass('inactive') && dir == 0 && (untracked == 0)) {
 				$('#a-history').removeClass('inactive');
 			}
@@ -1236,6 +1259,11 @@ HUB.ProjectFiles = {
 			if($('#a-more').length && !$('#a-more').hasClass('inactive') )
 			{
 				$('#a-more').addClass('inactive');
+			}
+
+			if($('#a-annotate').length && !$('#a-annotate').hasClass('inactive') )
+			{
+				$('#a-annotate').addClass('inactive');
 			}
 
 			if ($('#a-compile').length && !$('#a-compile').hasClass('inactive')) {

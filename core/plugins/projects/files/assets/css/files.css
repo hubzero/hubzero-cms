@@ -537,7 +537,8 @@
 	.open_file:before,
 	#a-sync:before,
 	#a-compile:before,
-	#a-rename:before
+	#a-rename:before,
+	#a-annotate:before
 	{
 		content: "";
 		width: 16px;
@@ -575,6 +576,10 @@
 	}
 	#a-rename:before {
 		content: "\270D";
+	}
+	#a-annotate:before {
+		/*content: "\270E";*/
+		content: "\f0ca";
 	}
 	#a-upload:before {
 		content: "\2295";
@@ -1286,6 +1291,49 @@
 	}
 	.sharing-option-extra label.original-format {
 		background: #faf3cc;
+	}
+
+/* Annotations
+--------------------------------------------- */
+	.key-value-pair {
+		padding-bottom: 1px;
+		overflow: hidden;
+	}
+	.buttons {
+		margin-top: 10px;
+	}
+	.entry-label {
+		width: 27%;
+		float: left;
+	}
+	.entry-value {
+		width: 70%;
+		float: left;
+	}
+	.separator {
+		width: 3%;
+		float: left;
+		min-height: 36px;
+		line-height: 36px;
+		text-align: center;
+	}
+	#metadata-entries .entry input {
+		width: 100% !important;
+	}
+	#metadata-entries .entry .dublin {
+		opacity: 0.6;
+		color: blue;
+	}
+	#metadata-entries .entry .dublin:hover {
+		background: rgba(200,200,200,0.15);
+		border: 1px solid rgba(0,0,0,0.15);
+	}
+	#metadata-entries .entry .dublin:focus {
+		background: rgba(200,200,200,0.15);
+		border: 1px solid rgba(0,0,0,0.15);
+	}
+	#metadata-entries li {
+		overflow: hidden;
 	}
 
 /* Misc
