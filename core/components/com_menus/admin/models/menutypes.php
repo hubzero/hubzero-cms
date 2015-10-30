@@ -198,6 +198,7 @@ class MenusModelMenutypes extends JModelLegacy
 
 		foreach ($views as $view)
 		{
+			$view = trim($view, '/');
 			// Ignore private views.
 			if (strpos($view, '_') !== 0) {
 				// Determine if a metadata file exists for the view.
@@ -292,6 +293,7 @@ class MenusModelMenutypes extends JModelLegacy
 		// build list of standard layout names
 		foreach ($layouts as $layout)
 		{
+			$layout = trim($layout, '/');
 			// Ignore private layouts.
 			if (strpos(basename($layout), '_') === false)
 			{
@@ -318,7 +320,7 @@ class MenusModelMenutypes extends JModelLegacy
 
 				foreach ($templateLayouts as $layout)
 				{
-					$file = $layout;
+					$file = trim($layout, '/');
 					// Get the layout name.
 					$templateLayoutName = Filesystem::name(basename($layout));
 
@@ -336,6 +338,7 @@ class MenusModelMenutypes extends JModelLegacy
 		// Process the found layouts.
 		foreach ($layouts as $layout)
 		{
+			$layout = trim($layout, '/');
 			// Ignore private layouts.
 			if (strpos(basename($layout), '_') === false)
 			{
