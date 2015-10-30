@@ -25,12 +25,22 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 return array(
+	// Base Services
+	'Hubzero\Base\JoomlaServiceProvider',
+	'Hubzero\Events\EventServiceProvider',
+	'Hubzero\Language\TranslationServiceProvider',
+	'Hubzero\Database\DatabaseServiceProvider',
+	'Hubzero\Plugin\PluginServiceProvider',
+	'Hubzero\Debug\ProfilerServiceProvider',
+	'Hubzero\Log\LogServiceProvider',
+	'Hubzero\Routing\RouterServiceProvider',
+	'Hubzero\Filesystem\FilesystemServiceProvider',
+	// Site-specific services
 	'Hubzero\Component\ComponentServiceProvider',
 	'Hubzero\Error\ErrorServiceProvider',
 	'Hubzero\Session\SessionServiceProvider',
