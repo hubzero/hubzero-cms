@@ -64,43 +64,6 @@ class Application extends Container
 	protected $booted = false;
 
 	/**
-	 * Array of core services
-	 * 
-	 * @var  array
-	 */
-	private static $baseServices = array(
-		'Hubzero\Base\JoomlaServiceProvider',
-		'Hubzero\Events\EventServiceProvider',
-		'Hubzero\Language\TranslationServiceProvider',
-		'Hubzero\Database\DatabaseServiceProvider',
-		'Hubzero\Plugin\PluginServiceProvider',
-		'Hubzero\Debug\ProfilerServiceProvider',
-		'Hubzero\Log\LogServiceProvider',
-		'Hubzero\Routing\RouterServiceProvider',
-		'Hubzero\Filesystem\FilesystemServiceProvider',
-	);
-
-	/**
-	 * Array of core container aliases
-	 * 
-	 * @var  array
-	 */
-	private static $baseAliases = array(
-		'App'        => 'Hubzero\Facades\App',
-		'Config'     => 'Hubzero\Facades\Config',
-		'Request'    => 'Hubzero\Facades\Request',
-		'Response'   => 'Hubzero\Facades\Response',
-		'Event'      => 'Hubzero\Facades\Event',
-		'Route'      => 'Hubzero\Facades\Route',
-		'User'       => 'Hubzero\Facades\User',
-		'Lang'       => 'Hubzero\Facades\Lang',
-		'Log'        => 'Hubzero\Facades\Log',
-		'Date'       => 'Hubzero\Facades\Date',
-		'Plugin'     => 'Hubzero\Facades\Plugin',
-		'Filesystem' => 'Hubzero\Facades\Filesystem',
-	);
-
-	/**
 	 * All of the registered service providers.
 	 *
 	 * @var  array
@@ -120,8 +83,6 @@ class Application extends Container
 
 		$this['request']  = ($request  ?: Request::createFromGlobals());
 		$this['response'] = ($response ?: new Response());
-
-		$this->registerBaseServiceProviders();
 	}
 
 	/**
@@ -183,35 +144,18 @@ class Application extends Container
 	}
 
 	/**
-	 * Register all of the base service providers.
-	 *
-	 * @return  void
-	 */
-	protected function registerBaseServiceProviders()
-	{
-		// Load all services we know of now
-		foreach (static::$baseServices as $service)
-		{
-			$this->register(new $service($this));
-		}
-	}
-
-	/**
 	 * Register facades with the autoloader
 	 * 
 	 * @param   array  $aliases
 	 * @return  void
 	 */
-	public function registerBaseFacades($aliases = array())
+	public function registerFacades($aliases = array())
 	{
 		// Set the application to resolve Facades
 		Facade::setApplication($this);
 
 		// Create aliaes for runtime
-		Facade::createAliases(array_merge(
-			static::$baseAliases,
-			$aliases
-		));
+		Facade::createAliases((array) $aliases);
 	}
 
 	/**
@@ -255,7 +199,10 @@ class Application extends Container
 		// If the application has already booted, we will call this boot method on
 		// the provider class so it has an opportunity to do its boot logic and
 		// will be ready for any usage by the developer's application logics.
-		if ($this->booted) $this->bootProvider($provider);
+		if ($this->booted)
+		{
+			$this->bootProvider($provider);
+		}
 
 		return $this;
 	}
@@ -401,7 +348,10 @@ class Application extends Container
 	 */
 	public function boot()
 	{
-		if ($this->booted) return;
+		if ($this->booted)
+		{
+			return;
+		}
 
 		array_walk($this->serviceProviders, function($p)
 		{

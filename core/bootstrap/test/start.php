@@ -161,4 +161,4 @@ foreach ($services as $service)
 
 $aliases = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 
-$app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
+$app->registerFacades(file_exists($aliases) ? require $aliases : array());

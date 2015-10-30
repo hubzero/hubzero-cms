@@ -135,7 +135,7 @@ $aliases = file_exists($facades) ? require $facades : array();
 $facades = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
 
-$app->registerBaseFacades($aliases);
+$app->registerFacades($aliases);
 
 /*
 |--------------------------------------------------------------------------
