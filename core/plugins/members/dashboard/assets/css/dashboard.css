@@ -4,6 +4,7 @@
 /* Modules */
 .modules {
 	position: relative;
+	min-width: 100%;
 }
 .modules > * {
 	margin: 0 auto;
