@@ -198,6 +198,7 @@ class MenusModelMenutypes extends JModelLegacy
 
 		foreach ($views as $view)
 		{
+			$view = trim($view, '/');
 			// Ignore private views.
 			if (strpos($view, '_') !== 0) {
 				// Determine if a metadata file exists for the view.
