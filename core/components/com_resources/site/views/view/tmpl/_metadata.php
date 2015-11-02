@@ -62,11 +62,11 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 			if ($this->model->isTool())
 			{
-				$stats = new \Components\Resources\Tables\Usage\Tools($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
 			}
 			else
 			{
-				$stats = new \Components\Resources\Tables\Usage\Andmore($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
+				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
 			}
 
 			$rank = round($this->model->resource->ranking, 1);
