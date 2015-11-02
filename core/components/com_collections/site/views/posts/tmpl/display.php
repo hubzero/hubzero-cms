@@ -39,7 +39,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 $no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) {
-	$this->css();
+	$this->css()
+	     ->js('post.js');
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_COLLECTIONS'); ?></h2>
@@ -272,6 +273,7 @@ if (!$no_html) {
 								<?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $this->collection->count('post')); ?>
 							</span>
 						</p>
+						<?php if (!$no_html) { ?>
 						<div class="actions">
 							<?php if (!User::isGuest()) { ?>
 								<?php if ($this->collection->get('object_type') == 'member' && $this->collection->get('object_id') == User::get('id')) { ?>
@@ -304,6 +306,7 @@ if (!$no_html) {
 								</a>
 							<?php } ?>
 						</div>
+						<?php } ?>
 					</div>
 					<div class="convo attribution">
 						<?php
@@ -372,6 +375,7 @@ if (!$no_html) {
 									<?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $collection->count('posts')); ?>
 								</span>
 							</p>
+							<?php if (!$no_html) { ?>
 							<div class="actions">
 								<?php if (!User::isGuest()) { ?>
 									<?php if ($collection->get('object_type') == 'member' && $collection->get('object_id') == User::get('id')) { ?>
@@ -404,6 +408,7 @@ if (!$no_html) {
 									</a>
 								<?php } ?>
 							</div><!-- / .actions -->
+							<?php } ?>
 						</div><!-- / .meta -->
 						<div class="convo attribution">
 							<?php
