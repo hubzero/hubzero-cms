@@ -64,7 +64,7 @@ jQuery(document).ready(function(jq){
 	}
 
 	// show/hide plan area
-	if ($('#section-plan').length && $('#part_plan').length) { 
+	if ($('#plan').length && $('#part_plan').length) { 
 		$('#part_plan').on('click', function() {
 			if ($(this).hasClass('collapse')) {
 				$('#full_plan').css('display', "none");
