@@ -23,7 +23,7 @@
 		width: auto;
 	}
 	#queryForm fieldset {
-		width: auto;
+		/*width: auto;*/
 		display: block;
 	}
 	#queryForm fieldset.wrapper {
