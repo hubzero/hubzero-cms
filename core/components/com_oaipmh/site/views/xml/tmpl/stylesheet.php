@@ -688,7 +688,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 				<td class="value">
 					<xsl:value-of select="."/>
 					<xsl:text> </xsl:text>
-					<a class="link" href="?verb={/oai:OAI-PMH/oai:request/@verb}&amp;resumptionToken={.}">Resume</a>
+					<a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb={/oai:OAI-PMH/oai:request/@verb}&resumptionToken={.}'); ?>">Resume</a>
 				</td>
 			</tr>
 		</tbody>
