@@ -477,7 +477,7 @@ class Service extends Object
 			{
 				if (!isset($data['prefix']) || $data['prefix'] != $this->get('metadataPrefix'))
 				{
-					return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN);
+					//return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN);
 				}
 				$start = (isset($data['start']) && isset($data['limit'])) ? $data['start'] + $data['limit']: $start;
 			}
