@@ -500,7 +500,7 @@ class Resources extends SiteController
 				if ($this->config->get('show_audience') && $bits['type'] == 7)
 				{
 					include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'audience.php');
-					include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'audience.level.php');
+					include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'audiencelevel.php');
 					$rL = new AudienceLevel($this->database);
 					$bits['filters'] = $rL->getLevels();
 				}
