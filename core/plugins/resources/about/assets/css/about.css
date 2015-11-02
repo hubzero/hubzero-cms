@@ -132,13 +132,13 @@
 		z-index: 2;
 		border-right: 1px solid #c8cfd8;
 		border-left: 1px solid #e8e8e8;
-		background: #f4f5f7 url("/components/com_resources/assets/img/showcase_prev.png") 100% 50% no-repeat;
+		background: #f4f5f7 url("/core/components/com_resources/site/assets/img/showcase_prev.png") 100% 50% no-repeat;
 	}
 	#showcase-next {
 		float: right;
 		border-left: 1px solid #c8cfd8;	
 		border-right: 1px solid #e8e8e8;
-		background: #f4f5f7 url("/components/com_resources/assets/img/showcase_next.png") 0 50% no-repeat;
+		background: #f4f5f7 url("/core/components/com_resources/site/assets/img/showcase_next.png") 0 50% no-repeat;
 	}
 	#showcase-window {
 		float: left;
