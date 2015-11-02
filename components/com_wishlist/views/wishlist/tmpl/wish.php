@@ -736,7 +736,7 @@ $this->css()
 	<?php } ?>
 
 	<?php if ($this->wishlist->access('manage')) {  // let advisory committee view this too ?>
-		<section class="below section" id="section-plan">
+		<section class="below section" id="plan">
 			<div class="subject" id="full_plan">
 				<h3>
 					<?php echo JText::_('COM_WISHLIST_IMPLEMENTATION_PLAN'); ?>
