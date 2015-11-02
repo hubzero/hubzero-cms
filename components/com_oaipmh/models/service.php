@@ -509,7 +509,7 @@ class Service extends Object
 			{
 				if (!isset($data['prefix']) || $data['prefix'] != $this->get('metadataPrefix'))
 				{
-					return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN);
+					//return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN);
 				}
 				$start = (isset($data['start']) && isset($data['limit'])) ? $data['start'] + $data['limit']: $start;
 			}
@@ -553,7 +553,7 @@ class Service extends Object
 		$this->schema->records($records, ($verb == 'ListIdentifiers' ? false : true));
 
 		// Write resumption token if needed
-		if ($total > $limit)
+		if ($total > ($start + $limit))
 		{
 			$this->response
 				->element('resumptionToken', $resumption)
