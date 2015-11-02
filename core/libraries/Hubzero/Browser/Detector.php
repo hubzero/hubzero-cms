@@ -377,11 +377,25 @@ class Detector extends Object
 					$this->minorVersion = 0;
 				}
 			}
+			// Iceweasel needs to come before Firefox and Mozilla
+			elseif (preg_match('|Iceweasel/([0-9.]+)|', $this->agent, $version))
+			{
+				$this->setBrowser('iceweasel');
+
+				list($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+			}
+			// Iceweasel needs to come before Mozilla
+			elseif (preg_match('|Firefox/([0-9.]+)|', $this->agent, $version))
+			{
+				$this->setBrowser('firefox');
+
+				list($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+			}
 			elseif (preg_match('|Mozilla/([0-9.]+)|', $this->agent, $version))
 			{
 				$this->setBrowser('mozilla');
 
-				list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+				list($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
 			}
 			elseif (preg_match('|Lynx/([0-9]+)|', $this->agent, $version))
 			{
