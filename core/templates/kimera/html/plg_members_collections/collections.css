@@ -95,6 +95,12 @@
 	#sbox-content .in-collections li {
 		margin: 0.2em 0;
 	}
+	#post-content fieldset {
+		width: auto;
+	}
+	#post-content fieldset label {
+		padding: 1em 0 0 0;
+	}
 	.post-modal section.section {
 		background: transparent;
 	}
