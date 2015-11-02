@@ -81,8 +81,7 @@ class Xml extends SiteController
 				->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
 				->set('deletedRecord', $this->config->get('del'))
 				->set('granularity', $igran)
-				->set('max', $this->config->get('max', 500))
-				->set('limit', $this->config->get('limig', 50))
+				->set('limit', $this->config->get('limit', 50))
 				->set('allow_ore', $this->config->get('allow_ore', 0))
 				->set('gran', $this->config->get('gran', 'c'))
 				->set('resumption', $resumption);

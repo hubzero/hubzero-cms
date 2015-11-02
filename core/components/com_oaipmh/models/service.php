@@ -472,14 +472,26 @@ class Service extends Object
 		// Check completion
 		if (!empty($resumption))
 		{
-			$start = \App::get('session')->get($resumption);
+			$data = \App::get('session')->get($resumption);
+			if (is_array($data))
+			{
+				if (!isset($data['prefix']) || $data['prefix'] != $this->get('metadataPrefix'))
+				{
+					return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN);
+				}
+				$start = (isset($data['start']) && isset($data['limit'])) ? $data['start'] + $data['limit']: $start;
+			}
 		}
-		if (empty($resumption))
-		{
-			$resumption = uniqid();
-		}
-		\App::get('session')->set($resumption, $start + $limit);
 
+		$resumption = md5(uniqid());
+
+		\App::get('session')->set($resumption, array(
+			'limit'  => $limit,
+			'start'  => $start,
+			'prefix' => $this->get('metadataPrefix')
+		));
+
+		// Get Records
 		$sql = "SELECT COUNT(*) FROM (" . implode(' UNION ', $queries) . ") AS m";
 		$this->database->setQuery($sql);
 		$total = $this->database->loadResult();
@@ -509,7 +521,7 @@ class Service extends Object
 		$this->schema->records($records, ($verb == 'ListIdentifiers' ? false : true));
 
 		// Write resumption token if needed
-		if ($total > $limit)
+		if ($total > ($start + $limit))
 		{
 			$this->response
 				->element('resumptionToken', $resumption)
