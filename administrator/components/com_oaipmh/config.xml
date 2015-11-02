@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<fieldset name="basic">
-		<field name="max" label="COM_OAIPMH_MAX_LABEL" type="text" default="500" description="COM_OAIPMH_MAX_DESC" />
+		<field name="limit" label="COM_OAIPMH_MAX_LABEL" type="text" default="50" description="COM_OAIPMH_MAX_DESC" />
 		<field name="allow_ore" type="radio" default="0" label="COM_OAIPMH_ALLOW_ORE_LABEL" description="COM_OAIPMH_ALLOW_ORE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
