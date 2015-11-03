@@ -61,6 +61,8 @@ class Js extends AbstractHelper
 
 		$asset = new Javascript($extension, $asset);
 
+		$asset = $this->isSuperGroupAsset($asset);
+
 		if ($asset->exists())
 		{
 			if ($asset->isDeclaration())
@@ -88,5 +90,31 @@ class Js extends AbstractHelper
 		}
 
 		return $this->getView()->get('option', Request::getCmd('option'));
+	}
+
+	/**
+	 * Modify paths if in a super group
+	 *
+	 * @param   object  $asset  Asset
+	 * @return  object
+	 */
+	private function isSuperGroupAsset($asset)
+	{
+		if ($asset->extensionType() != 'components'
+		 || $asset->isDeclaration()
+		 || $asset->isExternal())
+		{
+			return $asset;
+		}
+
+		if (defined('JPATH_GROUPCOMPONENT'))
+		{
+			$base = JPATH_GROUPCOMPONENT;
+
+			$asset->setPath('source', $base . DS . 'assets' . DS . $asset->type() . DS . $asset->file());
+			//$asset->setPath('source', $base . DS . $asset->file());
+		}
+
+		return $asset;
 	}
 }
