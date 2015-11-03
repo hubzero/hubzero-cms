@@ -259,7 +259,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			$cls = '';
 			if ($mode && $mode != 'knol')
 			{
-				$cls = ' class="hide"';
+				$cls = 'hide';
 			}
 
 			if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) { ?>
@@ -277,7 +277,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
 			<?php } ?>
 
-				<label<?php echo $cls; ?> for="params_authors">
+				<label class="<?php echo $cls; ?> params-knol" for="params_authors">
 					<?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:
 					<?php
 					$mc = $dispatcher->trigger(
@@ -297,18 +297,18 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 					<?php } ?>
 				</label>
 
-				<label<?php echo $cls; ?>>
+				<label class="<?php echo $cls; ?> params-knol">
 					<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) { echo ' checked="checked"'; } ?> value="1" />
 					<?php echo JText::_('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
 				</label>
 				&nbsp;
 
-				<label<?php echo $cls; ?> for="params_allow_changes">
+				<label class="<?php echo $cls; ?> params-knol" for="params_allow_changes">
 					<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) { echo ' checked="checked"'; } ?> value="1" />
 					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
 				</label>
 
-				<label<?php echo $cls; ?> for="params_allow_comments">
+				<label class="<?php echo $cls; ?> params-knol" for="params_allow_comments">
 					<input class="option" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) { echo ' checked="checked"'; } ?> value="1" />
 					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
 				</label>
@@ -359,6 +359,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
 <?php } else { ?>
+		<fieldset>
+			<legend><?php echo JText::_('COM_WIKI_FIELDSET_METADATA'); ?></legend>
 			<input type="hidden" name="tags" value="<?php echo $this->escape($tags); ?>" />
 <?php } ?>
 

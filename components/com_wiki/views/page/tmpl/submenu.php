@@ -83,7 +83,7 @@ if ($tmpl != 'component') { ?>
 		</li>
 <?php if ($tmpl != 'component') { ?>
 	<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->get('namespace') != 'special') { ?>
-		<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
+		<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('modify'))) { ?>
 			<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
 				<a href="<?php echo JRoute::_($this->page->link('edit')); ?>" title="<?php echo JText::_('COM_WIKI_TAB_EDIT'); ?>">
 					<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
