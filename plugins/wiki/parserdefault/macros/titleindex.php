@@ -148,6 +148,12 @@ class TitleIndexMacro extends WikiMacro
 
 				$row = new WikiModelPage($row);
 
+				if ($row->get('namespace') == 'help')
+				{
+					$row->set('scope', ($row->get('scope') ? rtrim($this->scope, '/') . '/' . ltrim($row->get('scope'), '/') : $this->scope));
+					$row->set('group_cn', $this->domain);
+				}
+
 				$html .= '<li><a href="' . JRoute::_($row->link()) . '">';
 				$html .= stripslashes($row->get('title', $row->get('pagename')));
 				$html .= '</a></li>' . "\n";
