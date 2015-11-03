@@ -729,7 +729,10 @@ class Page extends SiteController
 				return;
 			}
 
-			$this->page->set('version_id', $this->revision->get('id'));
+			if ($this->revision->get('approved'))
+			{
+				$this->page->set('version_id', $this->revision->get('id'));
+			}
 			$this->page->set('modified', $this->revision->get('created'));
 		}
 		else
