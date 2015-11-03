@@ -590,6 +590,10 @@ class Page extends SiteController
 		}
 		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
 		$this->page->set('scope', trim(Request::getVar('scope', '', 'post')));
+		if (!isset($page['state']))
+		{
+			$this->page->set('state', 0);
+		}
 
 		// Get parameters
 		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));
