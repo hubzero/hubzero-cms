@@ -447,7 +447,7 @@ $defaultCountries = array(
 									foreach ($countries as $c)
 									{
 										echo '<option value="' . $c->code . '"';
-										if (strtoupper($country) == strtoupper($c['code']))
+										if (strtoupper($country) == strtoupper($c->code))
 										{
 											echo ' selected="selected"';
 										}
@@ -480,11 +480,11 @@ $defaultCountries = array(
 										$countries = $defaultCountries;
 									}
 									foreach ($countries as $c) {
-										echo '<option value="' . $c['code'] . '"';
-										if ($country == $c['code']) {
+										echo '<option value="' . $c->code . '"';
+										if ($country == $c->code) {
 											echo ' selected="selected"';
 										}
-										echo '>' . htmlentities($c['name'], ENT_COMPAT, 'UTF-8') . '</option>'."\n";
+										echo '>' . htmlentities($c->name, ENT_COMPAT, 'UTF-8') . '</option>'."\n";
 									}
 								?>
 								</select>
