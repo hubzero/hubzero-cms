@@ -594,6 +594,10 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 		$this->page->set('pagename', trim(JRequest::getVar('pagename', '', 'post')));
 		$this->page->set('scope', trim(JRequest::getVar('scope', '', 'post')));
+		if (!isset($page['state']))
+		{
+			$this->page->set('state', 0);
+		}
 
 		// Get parameters
 		$paramClass = 'JRegistry';

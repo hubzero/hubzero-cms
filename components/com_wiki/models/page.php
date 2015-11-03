@@ -279,16 +279,21 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof JUser))
+		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new JUser();
+				$this->_creator = new \Hubzero\User\Profile();
 			}
 		}
 		if ($property)
 		{
+			$property = ($property == 'id') ? 'uidNumber' : $property;
+			if ($property == 'picture')
+			{
+				return $this->_creator->getPicture();
+			}
 			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
