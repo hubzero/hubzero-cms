@@ -149,6 +149,11 @@ class TitleIndexMacro extends WikiMacro
 				}
 
 				$row = new \Components\Wiki\Models\Page($row);
+				if ($row->get('namespace') == 'help')
+				{
+					$row->set('scope', ($row->get('scope') ? rtrim($this->scope, '/') . '/' . ltrim($row->get('scope'), '/') : $this->scope));
+					$row->set('group_cn', $this->domain);
+				}
 
 				$html .= '<li><a href="' . Route::url($row->link()) . '">';
 				$html .= stripslashes($row->get('title', $row->get('pagename')));
