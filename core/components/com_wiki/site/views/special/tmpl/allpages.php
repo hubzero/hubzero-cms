@@ -70,12 +70,11 @@ else
 $query = "SELECT COUNT(*)
 			FROM `#__wiki_version` AS wv
 			INNER JOIN `#__wiki_page` AS wp
-				ON wp.id = wv.pageid
+				ON wp.version_id = wv.id
 			WHERE wv.approved = 1
 				$scope
 				AND wp.state < 2
-				$where
-				AND wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` AS wv2 WHERE wv2.pageid = wv.pageid)";
+				$where";
 
 $database->setQuery($query);
 $total = $database->loadResult();
@@ -83,12 +82,11 @@ $total = $database->loadResult();
 $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !='') THEN wp.`title` ELSE wp.`pagename` END) AS `title`, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
 			FROM `#__wiki_version` AS wv
 			INNER JOIN `#__wiki_page` AS wp
-				ON wp.id = wv.pageid
+				ON wp.version_id = wv.id
 			WHERE wv.approved = 1
 				$scope
 				AND wp.state < 2
 				$where
-				AND wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY title $dir";
 
 $database->setQuery($query);
