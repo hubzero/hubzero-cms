@@ -99,7 +99,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 				<td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
 				<td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote;?></td>
 				<td class="mini"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?></a></td>
-				<td><?php if (!$row->isComplete()) { ?><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF'); ?>" class="unchecked confirm-checkoff">&nbsp;</a><?php } ?></td>
+				<td><?php if (!$row->isComplete()) { ?><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1&' .  Session::getFormToken() . '=1'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF'); ?>" class="unchecked confirm-checkoff">&nbsp;</a><?php } ?></td>
 			</tr>
 			<?php $order++; } ?>
 		<?php } else { ?>
