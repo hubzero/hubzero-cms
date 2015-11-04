@@ -170,9 +170,9 @@ switch ($this->level)
 			$helper->getLastCitationDate();
 
 			if ($resource->type == 7) {
-				$stats = new \Components\Resources\Tables\Usage\Tools($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
 			} else {
-				$stats = new \Components\Resources\Tables\Usage\Andmore($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 
 			$statshtml = $stats->display();
