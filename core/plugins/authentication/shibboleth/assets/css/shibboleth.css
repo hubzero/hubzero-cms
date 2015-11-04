@@ -51,11 +51,6 @@
 	margin-top: -48px;
 	width: 334px;
 }
-.shibboleth.account .bootstrap-select {
-	margin-top: 0;
-	height: 46px;
-	width: 300px !important;
-}
 .shibboleth.account .dropdown-menu {
 	border-top: 0;
 	margin-top: -15px;
@@ -98,7 +93,7 @@
     position: absolute;
     right: 0;
     text-align: center;
-    top: -5px;
+    top: -12px;
     width: 1em;
 }
 .shibboleth.account .dropdown-menu li.no-results:after {
@@ -109,4 +104,10 @@
 }
 .shibboleth.account .dropdown-menu .glyphicon-ok:before {
 	content: '';
+}
+.shibboleth.account .bootstrap-select:not([class*=span]):not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+	margin-top: 0;
+	height: 46px;
+	width: 300px;
+	float: right;
 }
