@@ -99,7 +99,7 @@ $router->rules('build')->append('content', function ($uri)
 		// Don't parse calls to other com_content views
 		if (isset($query['view']) && $query['view'] == 'article' && !empty($query['id']))
 		{
-			$db = \JFactory::getDBO();
+			$db = \App::get('db');
 			$db->setQuery("SELECT `path` FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id={$query['id']}' AND published=1");
 			if ($menuitem = $db->loadResult())
 			{
@@ -508,7 +508,7 @@ $router->rules('parse')->append('content', function ($uri)
 	//$view  = 'article';
 	$menu  = \App::get('menu.manager')->menu('site');
 	$item  = $menu->getActive();
-	$db    = \JFactory::getDBO();
+	$db    = \App::get('db');
 	$segments = explode('/', $uri->getPath());
 	$count = count($segments);
 
@@ -677,7 +677,7 @@ $router->rules('parse')->append('component', function ($uri)
 */
 $router->rules('parse')->append('redirect', function ($uri)
 {
-	$db = \JFactory::getDBO();
+	$db = \App::get('db');
 	$db->setQuery("SELECT * FROM `#__redirect_links` WHERE `old_url`=" . $db->Quote($uri->getPath()));
 
 	if ($row = $db->loadObject())
