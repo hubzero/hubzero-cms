@@ -98,14 +98,13 @@ class Service extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $schema      Schema to use
 	 * @param   string  $stylesheet  Optional stylesheet to link to
 	 * @param   object  $db          Optional database connection
 	 * @param   string  $version     XML Version
 	 * @param   string  $encoding    XML Encoding
 	 * @return  void
 	 */
-	public function __construct($schema=null, $stylesheet=null, $db=null, $version = '1.0', $encoding = 'utf-8')
+	public function __construct($stylesheet=null, $db=null, $version = '1.0', $encoding = 'utf-8')
 	{
 		$this->response = new Response($version, $encoding);
 		if ($stylesheet)
@@ -121,10 +120,10 @@ class Service extends Object
 
 		$this->loadSchemas();
 
-		if ($schema)
+		/*if ($schema)
 		{
 			$this->setSchema($schema);
-		}
+		}*/
 
 		$this->loadProviders();
 
@@ -216,7 +215,7 @@ class Service extends Object
 
 		if (!$this->schema)
 		{
-			throw new Exception(Lang::txt('No schema handler found for schema "%s".', $this->schema));
+			return $this->error(self::ERROR_BAD_FORMAT, Lang::txt('Invalid or missing metadataPrefix'));
 		}
 
 		$this->schema->setService($this);
@@ -305,10 +304,19 @@ class Service extends Object
 	 * @param   string  $message
 	 * @return  object
 	 */
-	public function error($error='', $message=null)
+	public function error($error='', $message=null, $verb=null)
 	{
+		$this->setError($error ?: self::ERROR_BAD_ARGUMENT);
+
 		$this->response
-			->element('request', $this->get('baseURL') . '/oaipmh')->end()
+			->element('request', $this->get('baseURL') . '/oaipmh');
+
+		if ($verb)
+		{
+			$this->response->attr('verb', $verb);
+		}
+
+		$this->response->end()
 			->element('error', $message)
 				->attr('code', ($error ?: self::ERROR_BAD_ARGUMENT))
 			->end();
@@ -406,7 +414,7 @@ class Service extends Object
 
 		if (!count($records))
 		{
-			return $this->error(self::ERROR_NO_SET_HIERARCHY);
+			return $this->error(self::ERROR_NO_SET_HIERARCHY, null, 'ListSets');
 		}
 
 		$this->response
@@ -461,7 +469,7 @@ class Service extends Object
 
 		if (!count($queries))
 		{
-			return $this->error(self::ERROR_RECORD_NOT_FOUND);
+			return $this->error(self::ERROR_RECORD_NOT_FOUND, null, $verb);
 		}
 
 		// Set flow control vars
@@ -473,6 +481,12 @@ class Service extends Object
 		if (!empty($resumption))
 		{
 			$data = \App::get('session')->get($resumption);
+
+			if (!$data)
+			{
+				return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+			}
+
 			if (is_array($data))
 			{
 				if (!isset($data['prefix']) || $data['prefix'] != $this->get('metadataPrefix'))
@@ -502,7 +516,7 @@ class Service extends Object
 
 		if (!count($records))
 		{
-			return $this->error(self::ERROR_RECORD_NOT_FOUND);
+			return $this->error(self::ERROR_RECORD_NOT_FOUND, null, $verb);
 		}
 
 		// Hook for post processing
@@ -557,7 +571,7 @@ class Service extends Object
 
 		if (!$result)
 		{
-			return $this->error(self::ERROR_RECORD_NOT_FOUND);
+			return $this->error(self::ERROR_RECORD_NOT_FOUND, null, 'GetRecord');
 		}
 
 		$this->response

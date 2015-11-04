@@ -239,7 +239,7 @@ class QualifiedDC extends DublinCore
 				{
 					if ($dc == 'date')
 					{
-						$this->response->element('dc:' . $dc, Date::of($result->date)->format($gran))->end();
+						$this->response->element('dc:' . $dc, $datestamp)->end();
 					}
 					else
 					{
