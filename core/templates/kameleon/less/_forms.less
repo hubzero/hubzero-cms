@@ -289,6 +289,7 @@
 		border-color: rgba(200, 0, 0, 0.7) transparent transparent transparent;
 	}
 
+	.input-color,
 	.input-datetime {
 		//margin-right: 2.9em;
 		//padding-right: 2.8em;
@@ -329,6 +330,11 @@
 		&:focus:after {
 			border-color: rgba(0, 0, 0, 0.2)
 		}*/
+	}
+	.input-color {
+		&:after {
+			content: "\f061";
+		}
 	}
 	.input-modal {
 		display: table;
