@@ -226,6 +226,24 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 		-ms-border-radius: 0.25em;
 		border-radius: 0.25em;
 	}
+	.errors {
+		color: #fff;
+		padding: 1.5em;
+		background-color: #dd5555;
+		border: 2px solid #e84c3d;
+		border: 2px solid rgba(0, 0, 0, 0.2);
+	}
+	.errors h2 {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.errors th.key,
+	.errors td.value {
+		border-color: #fff;
+		border-color: rgba(255, 255, 255, 0.2);
+		color: #fff;
+		color: rgba(255, 255, 255, 0.8);
+	}
 	<xsl:call-template name='xmlstyle' />
 </xsl:template>
 

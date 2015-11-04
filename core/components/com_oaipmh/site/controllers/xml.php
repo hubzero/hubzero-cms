@@ -50,7 +50,7 @@ class Xml extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$metadata   = Request::getVar('metadataPrefix', 'oai_dc');
+		$metadata   = Request::getVar('metadataPrefix');
 		$from       = Request::getVar('from');
 		if ($from)
 		{
@@ -63,16 +63,20 @@ class Xml extends SiteController
 		}
 		$set        = Request::getVar('set');
 		$resumption = Request::getVar('resumptionToken');
+		$identifier = Request::getVar('identifier');
 
 		$igran  = "YYYY-MM-DD";
 		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
 
-		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', \Request::base())), '/');
+		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', Request::base())), '/');
 
 		$edate = $this->config->get('edate');
 		$edate = ($edate ? strtotime($edate) : time());
 
-		$service = new Service($metadata, rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
+		Document::setType('xml');
+
+		$service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
+
 		$service->set('metadataPrefix', $metadata)
 				->set('repositoryName', $this->config->get('repository_name', \Config::get('sitename')))
 				->set('baseURL', $hubname)
@@ -89,50 +93,167 @@ class Xml extends SiteController
 		$verb = Request::getVar('verb');
 		switch ($verb)
 		{
-			case 'GetRecord':
-				$service->record(Request::getVar('identifier'));
-			break;
-
 			case 'Identify':
-				$service->identify();
+				if (!$service->getError() && $identifier)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+				}
+
+				if (!$service->getError() && $set)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+				}
+
+				if (!$service->getError() && $from)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+				}
+
+				if (!$service->getError() && $until)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+				}
+
+				if (!$service->getError() && $resumption)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'), $verb);
+				}
+
+				if (!$service->getError())
+				{
+					$service->identify();
+				}
 			break;
 
 			case 'ListMetadataFormats':
-				$service->formats();
-			break;
-
-			case 'ListIdentifiers':
-				$service->identifiers($from, $until, $set);
-			break;
-
-			case 'ListRecords':
-				$sessionTokenResumptionTemp = Session::get($resumption);
-
-				if (!empty($resumption) && empty($sessionTokenResumptionTemp))
+				if (!$service->getError() && $identifier)
 				{
-					$service->error($service::ERROR_BAD_RESUMPTION_TOKEN);
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
 				}
 
-				$service->records($from, $until, $set);
+				if (!$service->getError() && $set)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+				}
+
+				if (!$service->getError() && $from)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+				}
+
+				if (!$service->getError() && $until)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+				}
+
+				if (!$service->getError() && $resumption)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'), $verb);
+				}
+
+				if (!$service->getError())
+				{
+					$service->formats();
+				}
 			break;
 
 			case 'ListSets':
-				$sessionTokenResumptionTemp = Session::get($resumption);
+				$service->setSchema($metadata);
 
-				if (!empty($resumption) && empty($sessionTokenResumptionTemp))
+				if (!$service->getError() && $identifier)
 				{
-					$service->error($service::ERROR_BAD_RESUMPTION_TOKEN);
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
 				}
 
-				$service->sets();
+				if (!$service->getError() && $set)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+				}
+
+				if (!$service->getError() && $from)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+				}
+
+				if (!$service->getError() && $until)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+				}
+
+				if (!$service->getError())
+				{
+					$service->sets();
+				}
+			break;
+
+			case 'ListIdentifiers':
+				$service->setSchema($metadata);
+
+				if (!$service->getError() && $identifier)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+				}
+
+				if (!$this->getError())
+				{
+					$service->identifiers($from, $until, $set);
+				}
+			break;
+
+			case 'ListRecords':
+				$service->setSchema($metadata);
+
+				if (!$service->getError() && $identifier)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+				}
+
+				if (!$service->getError())
+				{
+					$service->records($from, $until, $set);
+				}
+			break;
+
+			case 'GetRecord':
+				$service->setSchema($metadata);
+
+				if (!$service->getError() && $set)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+				}
+
+				if (!$service->getError() && $from)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+				}
+
+				if (!$service->getError() && $until)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+				}
+
+				if (!$service->getError() && $resumption)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'), $verb);
+				}
+
+				if (!$service->getError())
+				{
+					if (!$identifier)
+					{
+						$service->error($service::ERROR_BAD_ID);
+					}
+					else
+					{
+						$service->record($identifier);
+					}
+				}
 			break;
 
 			default:
 				$service->error($service::ERROR_BAD_VERB, Lang::txt('COM_OAIPMH_ILLEGAL_VERB'));
 			break;
 		}
-
-		Document::setType('xml');
 
 		echo $service;
 	}
