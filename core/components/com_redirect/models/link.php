@@ -89,10 +89,14 @@ class Link extends Relational
 	{
 		$this->addRule('old_url', function($data)
 		{
-			$row = Link::blank()
-				->whereEquals('old_url', $data['old_url'])
-				->where('id', '!=', $data['id'])
-				->row();
+			$row = Link::blank();
+
+			if (isset($data['id']))
+			{
+				$row->whereEquals('old_url', $data['old_url'])
+					->where('id', '!=', $data['id'])
+					->row();
+			}
 
 			return !$row->id ? false : Lang::txt('COM_REDIRECT_ERROR_DUPLICATE_OLD_URL');
 		});
@@ -133,7 +137,7 @@ class Link extends Relational
 		{
 			$data['modified_date'] = '0000-00-00 00:00:00';
 		}
-		if ($data['id'])
+		if (isset($data['id']) && $data['id'])
 		{
 			$data['modified_date'] = Date::of('now')->toSql();
 		}
