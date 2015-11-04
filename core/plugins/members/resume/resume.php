@@ -582,7 +582,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _deleteresume($database, $option, $member, $emp)
 	{
-		$row = new Resume($database);
+		$row = new \Components\Jobs\Tables\Resume($database);
 		if (!$row->loadResume($member->get('uidNumber')))
 		{
 			$this->setError(Lang::txt('Resume ID not found.'));
