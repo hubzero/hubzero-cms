@@ -55,10 +55,10 @@ class Xml extends Base
 		parent::__construct($options);
 
 		// set mime type
-		$this->mime = 'application/xml';
+		$this->_mime = 'application/xml';
 
 		// set document type
-		$this->type = 'xml';
+		$this->_type = 'xml';
 	}
 
 	/**
@@ -70,6 +70,8 @@ class Xml extends Base
 	 */
 	public function render($cache = false, $params = array())
 	{
+		$this->setMimeEncoding($this->_mime);
+
 		parent::render();
 
 		\App::get('response')->headers->set('Content-disposition', 'inline; filename="' . $this->getName() . '.xml"', true);
