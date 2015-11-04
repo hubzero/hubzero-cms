@@ -872,7 +872,7 @@ class Resources extends SiteController
 		$database = \App::get('db');
 
 		//media tracking object
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'media.tracking.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mediatracking.php');
 		$mediaTracking = new MediaTracking($database);
 
 		//get tracking for this user for this resource
