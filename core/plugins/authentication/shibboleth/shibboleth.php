@@ -234,7 +234,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		}
 
 		// attach style and scripts
-		foreach (array('bootstrap.min.js', 'bootstrap-select.min.js', 'shibboleth.js', 'bootstrap.min.css', 'bootstrap-select.min.css', 'bootstrap-theme.min.css', 'shibboleth.css') as $asset)
+		foreach (array('bootstrap.min.js', 'bootstrap-select.min.js', 'shibboleth.js', 'bootstrap-select.min.css', 'bootstrap-theme.min.css', 'shibboleth.css') as $asset)
 		{
 			$isJs = preg_match('/[.]js$/', $asset);
 			if ($isJs)
