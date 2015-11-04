@@ -20,9 +20,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
@@ -31,6 +29,7 @@ namespace Components\Redirect\Helpers;
 use Hubzero\Base\Object;
 use Exception;
 use User;
+use Html;
 
 /**
  * Redirect component helper.
@@ -73,11 +72,11 @@ class Redirect
 	{
 		// Build the active state filter options.
 		$options = array();
-		$options[] = \Html::select('option', '*', 'JALL');
-		$options[] = \Html::select('option', '1', 'JENABLED');
-		$options[] = \Html::select('option', '0', 'JDISABLED');
-		$options[] = \Html::select('option', '2', 'JARCHIVED');
-		$options[] = \Html::select('option', '-2', 'JTRASHED');
+		$options[] = Html::select('option', '*', 'JALL');
+		$options[] = Html::select('option', '1', 'JENABLED');
+		$options[] = Html::select('option', '0', 'JDISABLED');
+		$options[] = Html::select('option', '2', 'JARCHIVED');
+		$options[] = Html::select('option', '-2', 'JTRASHED');
 
 		return $options;
 	}
@@ -89,18 +88,6 @@ class Redirect
 	 */
 	public static function isEnabled()
 	{
-		$db = \App::get('db');
-		$db->setQuery(
-			'SELECT enabled' .
-			' FROM #__extensions' .
-			' WHERE folder = ' . $db->quote('system') .
-			'  AND element = ' . $db->quote('redirect')
-		);
-		$result = (boolean) $db->loadResult();
-		if ($error = $db->getErrorMsg())
-		{
-			throw new Exception($error, 500);
-		}
-		return $result;
+		return \Plugin::isEnabled('system', 'redirect');
 	}
 }

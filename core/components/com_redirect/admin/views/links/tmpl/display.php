@@ -20,9 +20,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
@@ -42,26 +40,26 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.edit.state'))
 {
-	if ($this->state->get('filter.state') != 2)
+	if ($this->filters['state'] != 2)
 	{
 		Toolbar::divider();
 		Toolbar::publish('publish', 'JTOOLBAR_ENABLE', true);
 		Toolbar::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
 	}
-	if ($this->state->get('filter.state') != -1 )
+	if ($this->filters['state'] != -1 )
 	{
 		Toolbar::divider();
-		if ($this->state->get('filter.state') != 2)
+		if ($this->filters['state'] != 2)
 		{
 			Toolbar::archiveList('archive');
 		}
-		elseif ($this->state->get('filter.state') == 2)
+		elseif ($this->filters['state'] == 2)
 		{
 			Toolbar::unarchiveList('publish', 'JTOOLBAR_UNARCHIVE');
 		}
 	}
 }
-if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete'))
+if ($this->filters['state'] == -2 && $canDo->get('core.delete'))
 {
 	Toolbar::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
 	Toolbar::divider();
@@ -83,8 +81,14 @@ Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction'));
+$this->css('.adminlist tr td {
+	-ms-word-break: break-all;
+	word-wrap: break-word;
+	word-break: break-all;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&view=links'); ?>" method="post" name="adminForm" id="adminForm">
@@ -92,14 +96,14 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<div class="grid">
 			<div class="col span6">
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_REDIRECT_SEARCH_LINKS'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_REDIRECT_SEARCH_LINKS'); ?>" />
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-					<?php echo Html::select('options', \Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
+					<?php echo Html::select('options', \Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
 				</select>
 			</div>
 		</div>
@@ -112,32 +116,32 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th scope="col" class="title">
-					<?php echo $this->grid('sort', 'COM_REDIRECT_HEADING_OLD_URL', 'a.old_url', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_OLD_URL', 'old_url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_REDIRECT_HEADING_NEW_URL', 'a.new_url', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_NEW_URL', 'new_url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo $this->grid('sort', 'COM_REDIRECT_HEADING_REFERRER', 'a.referer', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_REFERRER', 'referer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-5">
-					<?php echo $this->grid('sort', 'COM_REDIRECT_HEADING_CREATED_DATE', 'a.created_date', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_CREATED_DATE', 'created_date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-2">
-					<?php echo $this->grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-3">
-					<?php echo $this->grid('sort', 'COM_REDIRECT_HEADING_HITS', 'a.hits', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_HITS', 'hits', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-5 nowrap">
-					<?php echo $this->grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="8">
-					<?php echo $this->pagination->getListFooter(); ?>
+					<?php echo $this->rows->pagination; ?>
 				</td>
 			</tr>
 			<tr>
@@ -157,11 +161,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		$canCreate = User::authorise('core.create', $this->option);
 		$canEdit   = User::authorise('core.edit', $this->option);
 		$canChange = User::authorise('core.edit.state', $this->option);
-		foreach ($this->items as $i => $item) :
-		?>
+		$i = 0;
+		foreach ($this->rows as $item) :
+			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo Html::grid('id', $i, $item->id); ?>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 					<?php if ($canEdit) : ?>
@@ -191,18 +196,23 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
-			<?php endforeach; ?>
+			<?php
+			$i++;
+		endforeach;
+		?>
 		</tbody>
 	</table>
 
-	<?php if (!empty($this->items)) : ?>
+	<?php if ($this->rows->count()) : ?>
 		<?php echo $this->loadTemplate('addform'); ?>
 	<?php endif; ?>
 
+	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
