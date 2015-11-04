@@ -188,7 +188,7 @@ HUB.Register = {
 	disableRacialBackground: function() {
 		var $ = HUB.Register.jQuery;
 
-		if ($('#corigin_usyes').attr('checked')) {
+		if ($('#corigin_usyes').attr('checked') || $('#corigin_usyes').length == 0 ) {
 			$('#racenativeamerican').attr('checked', HUB.Register.racenativeamerican);
 			$('#racenativeamerican').attr('disabled', false);
 			$('#raceasian').attr('checked', HUB.Register.raceasian);
