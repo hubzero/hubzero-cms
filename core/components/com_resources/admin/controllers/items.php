@@ -1808,18 +1808,32 @@ class Items extends AdminController
 				$path = ltrim($result->path, DS);
 				$path = trim($path);
 
+				if (preg_match('/^(https?:|mailto:|ftp:|gopher:|news:)/i', $path)
+				 || substr($path, 0, strlen('://')) == '://')
+				{
+					$this->view->good[] = '<span style="color: blue">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span>';
+					continue;
+				}
+
 				// checks
-				if (is_dir($path))
+				try
 				{
-					$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_PATH_IS_DIRECTORY') . ' ' . $path . '</span>';
+					if (is_dir($path))
+					{
+						$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_PATH_IS_DIRECTORY') . ' ' . $path . '</span>';
+					}
+					elseif (\JURI::isInternal($path) && !file_exists($base . $path) && $result->type != 12)
+					{
+						$this->view->missing[] = '<span style="color: red">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_MISSING_RESOURCE_AT', $base . $path) . '</span>';
+					}
+					else
+					{
+						$this->view->good[] = '<span style="color: green">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span>';
+					}
 				}
-				elseif (\JURI::isInternal($path) && !file_exists($base . $path) && $result->type != 12)
+				catch (\Exception $e)
 				{
-					$this->view->missing[] = '<span style="color: red">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_MISSING_RESOURCE_AT', $base . $path) . '</span>';
-				}
-				else
-				{
-					$this->view->good[] = '<span style="color: green">#' . $result->id . ': ' . Lang::txt('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span>';
+					$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . $path . '</span>';
 				}
 			}
 		}
