@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,13 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Html::behavior('modal');
-
 // push scripts and styles
 $this->css()
-     ->css('media.css')
-     ->js()
-     ->js('groups.mediabrowser')
+     ->js('groups.mediabrowser.js', 'com_groups')
      ->js('jquery.fileuploader', 'system')
      ->js('jquery.contextMenu', 'system')
      ->css('jquery.contextMenu.css', 'system');
@@ -63,7 +58,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 		<div class="toolbar cf">
 			<div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_GROUP_FILES'); ?></div>
 			<div class="buttons">
-				<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=addfolder&tmpl=component'); ?>" class="icon-add action-addfolder"></a>
+				<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=addfolder&tmpl=component'); ?>" class="icon-add action-addfolder"><?php echo Lang::txt('Add folder'); ?></a>
 			</div>
 		</div>
 		<div class="foldertree" data-activefolder="<?php echo $this->activeFolder; ?>">

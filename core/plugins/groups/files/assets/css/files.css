@@ -2,6 +2,17 @@
  	Group Media Browser
 ===========================================*/
 
+	#page_main {
+		position: relative;
+	}
+	#page_content.group_files {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+	}
+
 /* Within File Browser */
 	.upload-browser {
 	}
@@ -612,6 +623,14 @@
 }
 
 @media screen and (max-width: 690px), (max-height: 233px) {
+	#page_content.group_files {
+		position: relative;
+		top: auto;
+		left: auto;
+		height: auto;
+		width: auto;
+		min-height: 500px;
+	}
 	.upload-filelist-toolbar {
 		display: none;
 	}
