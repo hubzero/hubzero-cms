@@ -67,11 +67,12 @@ HUB.GroupsMediaBrowser = {
 							success: function( data, status, jqXHR )
 							{
 								// builld redirect url
-								var newHref = window.location.protocol + '//' + window.location.host + window.location.pathname;
-								newHref += '?tmpl=component&path=' + data;
+								//var newHref = window.location.protocol + '//' + window.location.host + window.location.pathname;
+								//newHref += '?tmpl=component&path=' + data;
 								
 								//redirect
-								window.location.href = newHref;
+								//window.location.href = newHref;
+								window.location.reload();
 							},
 							error: function( status, data, jqXHR )
 							{
@@ -201,66 +202,60 @@ HUB.GroupsMediaBrowser = {
 	
 	uploader: function()
 	{
-		var $ = this.jQuery;
-		
-		if($("#ajax-uploader").length)
-		{
+		var $ = this.jQuery,
+			attach = $("#ajax-uploader");
+
+		if (attach.length) {
 			var totalFiles = 0;
+
 			var uploader = new qq.FileUploader({
-					element: $("#ajax-uploader")[0],
-					action: $("#ajax-uploader").attr("data-action"),
-					multiple: true,
-					showDrop: true,
-					template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button">Upload a file</div>' + 
-								'<div class="qq-upload-drop-area" style="display:block;"><span>or drop files here</span></div>' +
-								'<ul class="qq-upload-list"></ul>' + 
-							   '</div>',
-					onSubmit: function(id, file)
-					{
-						totalFiles++;
+				element: attach[0],
+				action: attach.attr("data-action"),
+				multiple: true,
+				showDrop: true,
+				template: '<div class="qq-uploader">' +
+							'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
+							'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
+							'<ul class="qq-upload-list"></ul>' + 
+						'</div>',
+				onSubmit: function(id, file) {
+					totalFiles++;
 
-						// set folder params
-						uploader.setParams({
-							'folder' : $('.foldertree').attr('data-activefolder')
-						});
-						
-						// add uploading indicator
-						if(!$(".qq-uploading").length)
-						{
-							$(".upload-browser-col.right").append("<div class=\"qq-uploading\"><span>Uploading 1 file, 0 completed</span></div>");
-						}
-						// otherwise add 
-						else
-						{
-							$('.qq-uploading span').text('Uploading ' + totalFiles + ' files, 0 completed');
-						}
-					},
-					onComplete: function(id, file, response)
-					{
-						if (uploader._filesInProgress == 0)
-						{
-							$(".upload-browser-filelist-iframe").attr("src", $(".upload-browser-filelist-iframe").attr("src"));
-							$(".qq-uploading").fadeOut("slow", function() {
-								$(".qq-uploading").remove();
-							});
-							
-							// tell the parent that images were just uploaded
-							// group edit screen - picking group logo
-							if (parent.HUB.Groups)
-							{
-								parent.HUB.Groups.imagesUploaded();
-							}
+					// set folder params
+					uploader.setParams({
+						'folder' : $('.foldertree').attr('data-activefolder')
+					});
 
-							// reset count
-							totalFiles = 0;
-						}
-						else
-						{
-							$('.qq-uploading span').text('Uploading ' + totalFiles + ' files, ' + (totalFiles - uploader._filesInProgress) + ' completed')
-						}
+					// add uploading indicator
+					if (!$(".qq-uploading").length) {
+						$(".upload-browser-col.right").append("<div class=\"qq-uploading\"><span>Uploading 1 file, 0 completed</span></div>");
 					}
-				});
+					// otherwise add 
+					else {
+						$('.qq-uploading span').text('Uploading ' + totalFiles + ' files, 0 completed');
+					}
+				},
+				onComplete: function(id, file, response) {
+					if (uploader._filesInProgress == 0) {
+						$(".upload-browser-filelist-iframe").attr("src", $(".upload-browser-filelist-iframe").attr("src"));
+						$(".qq-uploading").fadeOut("slow", function() {
+							$(".qq-uploading").remove();
+						});
+
+						// tell the parent that images were just uploaded
+						// group edit screen - picking group logo
+						if (parent.HUB.Groups)
+						{
+							parent.HUB.Groups.imagesUploaded();
+						}
+
+						// reset count
+						totalFiles = 0;
+					} else {
+						$('.qq-uploading span').text('Uploading ' + totalFiles + ' files, ' + (totalFiles - uploader._filesInProgress) + ' completed')
+					}
+				}
+			});
 		}
 	},
 	
