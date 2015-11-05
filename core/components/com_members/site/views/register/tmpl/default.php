@@ -108,6 +108,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 		if ($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing))
 		{
 			// Check to see if third party auth plugins are enabled
+			Plugin::import('authentication');
 			$plugins        = Plugin::byType('authentication');
 			$authenticators = array();
 
@@ -135,11 +136,24 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 				<fieldset>
 					<legend>Connect With</legend>
 					<div id="providers" class="auth">
-						<?php foreach ($authenticators as $a) { ?>
-							<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']); ?>">
-								<div class="signin">Sign in with <?php echo $a['display']; ?></div>
-							</a>
-						<?php } ?>
+					<?php
+						foreach ($authenticators as $a)
+						{
+							$refl = new \ReflectionClass('plgauthentication'.$a['name']);
+							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL)))
+							{
+								echo is_array($html) ? implode("\n", $html) : $html;
+							}
+							else
+							{
+					?>
+								<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']); ?>">
+									<div class="signin">Sign in with <?php echo $a['display']; ?></div>
+								</a>
+					<?php
+							}
+						}
+					?>
 					</div>
 				</fieldset>
 				<div class="clear"></div>
