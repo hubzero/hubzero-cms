@@ -45,7 +45,7 @@ use Lang;
 use App;
 
 require_once dirname(dirname(dirname(__FILE__))) . DS . 'models' . DS . 'version' . DS . 'zone.php';
-require_once dirname(dirname(dirname(__FILE__))) . DS . 'tables' . DS . 'mw.zones.php';
+require_once dirname(dirname(dirname(__FILE__))) . DS . 'tables' . DS . 'zones.php';
 
 /**
  * Tools controller class for tool versions
