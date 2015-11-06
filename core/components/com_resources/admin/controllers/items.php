@@ -694,7 +694,7 @@ class Items extends AdminController
 		}
 
 		// Get params definitions
-		$this->view->params  = new \Hubzero\Html\Parameter($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
+		$this->view->params  = new \Hubzero\Html\Parameter($this->view->row->params, dirname(dirname(__DIR__)) . DS . 'resources.xml');
 		$this->view->attribs = new \Hubzero\Config\Registry($this->view->row->attribs);
 
 		// Build selects of various types
