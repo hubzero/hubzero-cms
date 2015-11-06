@@ -88,15 +88,20 @@ $this->css()
 					$plugin       = Plugin::byType('authentication', $domain->name);
 					$pparams      = new \Hubzero\Config\Registry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($domain->name));
+					$refl         = new \ReflectionClass('plgauthentication' . $domain->name);
 					?>
-					<a href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">
-						<div class="account inactive <?php echo $domain->name; ?>">
-							<div class="account-info">
-								<div class="account-type"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+
+					<?php if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL))) : ?>
+						<?php echo is_array($html) ? implode("\n", $html) : $html; ?>
+					<?php else : ?>
+						<a href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">
+							<div class="account inactive <?php echo $domain->name; ?>">
+								<div class="account-info">
+									<div class="account-type"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+								</div>
 							</div>
-						</div>
-					</a>
-					<?php
+						</a>
+					<?php endif;
 				}
 			}
 			?>
