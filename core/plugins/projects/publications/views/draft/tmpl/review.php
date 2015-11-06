@@ -170,37 +170,22 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 						</label>
 					<?php } ?>
 
-					<?php if ($this->pub->config()->get('repository')) { ?>
-						<?php
-						$name  = '';
-						$email = '';
-						$phone = '';
-
-						if ($this->pub->submitter())
-						{
-							$profile = \Hubzero\User\Profile::getInstance($this->pub->submitter()->user_id);
-							if ($profile)
-							{
-								$name  = $profile->get('name');
-								$email = $profile->get('email');
-								$phone = $profile->get('phone');
-							}
-						}
-						?>
+					<?php if ($this->pub->config()->get('repository', 1)) { ?>
 						<h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT'); ?></h6>
 						<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'); ?></p>
-						<label for="contact_name">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-							<input type="text" name="contact[name]" id="contact_name" value="<?php echo $this->escape($name); ?>" />
-						</label>
-						<label for="contact_email">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-							<input type="text" name="contact[email]" id="contact_email" value="<?php echo $this->escape($email); ?>" />
-						</label>
-						<label for="contact_phone">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-							<input type="text" name="contact[phone]" id="contact_phone" value="<?php echo $this->escape($phone); ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_CONTACT_PHONE_HINT'); ?>" />
-						</label>
+						<ul class="itemlist" id="author-list">
+						<?php foreach ($this->pub->authors() as $author) {
+							$org = $author->organization ? $author->organization : $author->p_organization;
+							$name = $author->name ? $author->name : $author->p_name;
+							$name = trim($name) ? $name : $author->invited_name;
+							$name = trim($name) ? $name : $author->invited_email;
+							?>
+							<li>
+								<span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php if ($author->repository_contact) { echo ' checked="checked"'; } ?>/></span>
+								<span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
+							</li>
+						<?php } ?>
+						</ul>
 					<?php } ?>
 
 					<?php if ($requireDoi == 2 && !$this->pub->doi) { 	// Choice of publish/post  ?>

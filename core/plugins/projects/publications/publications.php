@@ -2012,47 +2012,24 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INFO_MISSING'));
 			}
 
-			foreach (array('name', 'email', 'phone') as $key)
+			$db = \App::get('db');
+
+			foreach ($contact as $key)
 			{
-				if (!isset($contact[$key]) || !$contact[$key])
+				$author = new \Components\Publications\Tables\Author($db);
+				if (!$author->load($key))
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INFO_MISSING'));
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_NOT_FOUND'));
+					continue;
+				}
+
+				$author->repository_contact = 1;
+
+				if (!$author->store())
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_NOT_SAVED'));
 				}
 			}
-
-			if (!\Hubzero\Utility\Validate::email($contact['email']))
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INVALID_EMAIL'));
-			}
-
-			if (!\Hubzero\Utility\Validate::phone($contact['phone']))
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INVALID_PHONE'));
-			}
-
-			$data = array();
-			preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $pub->version->metadata, $matches, PREG_SET_ORDER);
-			if (count($matches) > 0)
-			{
-				foreach ($matches as $match)
-				{
-					$data[$match[1]] = $match[2];
-				}
-			}
-
-			foreach ($contact as $key => $val)
-			{
-				$data['repository_' . $key] = $val;
-			}
-
-			$metadata = '';
-
-			foreach ($data as $k => $v)
-			{
-				$metadata .= "\n" . '<nb:' . $k . '>' . $v . '</nb:' . $k . '>' . "\n";
-			}
-
-			$pub->version->metadata = $metadata;
 		}
 
 		// Main version?
