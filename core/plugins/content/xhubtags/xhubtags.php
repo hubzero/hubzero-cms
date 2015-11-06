@@ -132,6 +132,15 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 		if (preg_match($regex, $options, $style))
 		{
 			$attribs['style'] = $style[2];
+
+			if ($attribs['style'] == -1 || $attribs['style'] == '-1')
+			{
+				$attribs['style'] = 'none';
+			}
+			if ($attribs['style'] == -2 || $attribs['style'] == '-2')
+			{
+				$attribs['style'] = 'xhtml';
+			}
 		}
 
 		$regex = "/params\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
