@@ -333,7 +333,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		{
 			$sess = json_decode($sess, TRUE);
 			self::log('found resumable session:', $sess);
-			return array('username' => $sess['username'], 'eppn' => $sess['eppn'], 'idp' => $sess['idp']);
+			return $sess;
 		}
 		self::log('no shib session', $_GET);
 		self::log('no shib session', $_COOKIE);
