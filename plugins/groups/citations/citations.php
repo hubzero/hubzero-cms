@@ -562,7 +562,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			|| ($allowImport == 2 && $this->juser->get('usertype') != 'Super Administrator'))
 		{
 			// Redirect
-			$this->setRedirect(
+			$this->redirect(
 				JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&active=' . $this->_name . '&action=browse', false),
 				JText::_('PLG_GROUPS_CITATION_EDIT_NOTALLOWED'),
 				'warning'
