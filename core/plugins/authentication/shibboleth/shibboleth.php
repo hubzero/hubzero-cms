@@ -48,13 +48,20 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 * @param   string|object  $data  additional data to log
 	 * @return  void
 	 **/
-	private function log($msg, $data='')
+	private static function log($msg, $data='')
 	{
-		if ($this->params->get('debug_enabled', false))
+		static $params;
+
+		if (!isset($params))
+		{
+			$params = Plugin::params('authentication', 'shibboleth');
+		}
+
+		if ($params->get('debug_enabled', false))
 		{
 			if (!\Log::has('shib'))
 			{
-				$location = $this->params->get('debug_location', '/var/log/apache2/php/shibboleth.log');
+				$location = $params->get('debug_location', '/var/log/apache2/php/shibboleth.log');
 				$location = explode(DS, $location);
 				$file     = array_pop($location);
 
@@ -101,7 +108,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		$dbh->setQuery('SELECT domain FROM `#__auth_domain` WHERE id = '.(int)$adid);
 
 		// oops ... hopefully not reachable
-		if (!($idp = $dbh->loadResult()) || !($label = $this->getInstitutionByEntityId($idp, 'label')))
+		if (!($idp = $dbh->loadResult()) || !($label = self::getInstitutionByEntityId($idp, 'label')))
 		{
 			return 'InCommon';
 		}
@@ -155,17 +162,17 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		return $inst;
 	}
 
-	public function getInstitutionByEntityId($eid, $key = NULL)
+	public static function getInstitutionByEntityId($eid, $key = NULL)
 	{
 		foreach (self::getInstitutions() as $inst)
 		{
 			if ($inst['entity_id'] == $eid)
 			{
-				$this->log('getInstitutionByEntityId', array('eid' => $eid, 'key' => $key, 'rv' => $key ? $inst[$key] : $inst));
+				self::log('getInstitutionByEntityId', array('eid' => $eid, 'key' => $key, 'rv' => $key ? $inst[$key] : $inst));
 				return $key ? $inst[$key] : $inst;
 			}
 		}
-		$this->log('getInstitutionByEntityId', array('eid' => $eid, 'key' => $key, 'rv' => NULL));
+		self::log('getInstitutionByEntityId', array('eid' => $eid, 'key' => $key, 'rv' => NULL));
 		return NULL;
 	}
 
@@ -181,7 +188,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	public static function onGetLinkDescription()
 	{
 		$sess = App::get('session')->get('shibboleth.session', NULL);
-		if ($sess && $sess['idp'] && ($rv = $this->getInstitutionByEntityId($sess['idp'], 'label')))
+		if ($sess && $sess['idp'] && ($rv = self::getInstitutionByEntityId($sess['idp'], 'label')))
 		{
 			return $rv;
 		}
@@ -201,7 +208,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		$com_user = 'com_users';
 		$task     = (User::isGuest()) ? 'user.login' : 'user.link';
 
-		$this->log('getLoginParams', array($service, $com_user, $task));
+		self::log('getLoginParams', array($service, $com_user, $task));
 		return array($service, $com_user, $task);
 	}
 
@@ -214,15 +221,15 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	public static function onGetSubsequentLoginDescription($return)
 	{
 		// look up id provider
-		if (isset($_COOKIE['shib-entity-id']) && ($idp = $this->getInstitutionByEntityId($_COOKIE['shib-entity-id'])))
+		if (isset($_COOKIE['shib-entity-id']) && ($idp = self::getInstitutionByEntityId($_COOKIE['shib-entity-id'])))
 		{
-			$this->log('found eid context', $idp);
+			self::log('found eid context', $idp);
 			return '<input type="hidden" name="idp" value="'.$idp['entity_id'].'" />Sign in with '.htmlentities($idp['label']);
 		}
 
 		// if we couldn't figure out where they want to go to log in, we can't really help, so we redirect them with ?reset to get the full log-in provider list
 		list($service, $com_user, $task) = $this->getLoginParams();
-		$this->log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+		self::log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 	}
 
@@ -311,11 +318,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function status()
 	{
-		$this->log('status');
+		self::log('status');
 		$sess = null;
 		if (($key = trim(isset($_COOKIE['shib-session']) ? $_COOKIE['shib-session'] : (isset($_GET['shib-session']) ? $_GET['shib-session'] : NULL))))
 		{
-			$this->log('status', $key);
+			self::log('status', $key);
 			$dbh = App::get('db');
 			$dbh->setQuery('SELECT data FROM `#__shibboleth_sessions` WHERE session_key = '.$dbh->quote($key));
 			$dbh->execute();
@@ -325,11 +332,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		if ($sess)
 		{
 			$sess = json_decode($sess, TRUE);
-			$this->log('found resumable session:', $sess);
+			self::log('found resumable session:', $sess);
 			return array('username' => $sess['username'], 'eppn' => $sess['eppn'], 'idp' => $sess['idp']);
 		}
-		$this->log('no shib session', $_GET);
-		$this->log('no shib session', $_COOKIE);
+		self::log('no shib session', $_GET);
+		self::log('no shib session', $_COOKIE);
 		return array();
 	}
 
@@ -355,7 +362,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// If someone is logged in already, then we're linking an account
 		if (!User::get('guest'))
 		{
-			$this->log('already logged in, redirect for link');
+			self::log('already logged in, redirect for link');
 			list($service, $com_user, $task) = $this->getLoginParams();
 			App::redirect($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=shibboleth&shib-session=' . urlencode($_COOKIE['shib-session']));
 		}
@@ -394,9 +401,9 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				$attrs['displayName'] = $attrs['givenName'].' '.$attrs['sn'];
 			}
 			$options['shibboleth'] = $attrs;
-			$this->log('session attributes: ', $attrs);
-			$this->log('cookie', $_COOKIE);
-			$this->log('server attributes: ', $_SERVER);
+			self::log('session attributes: ', $attrs);
+			self::log('cookie', $_COOKIE);
+			self::log('server attributes: ', $_SERVER);
 			//JFactory::getSession()->set('shibboleth.session', $attrs);
 			$key = trim(base64_encode(openssl_random_pseudo_bytes(128)));
 			setcookie('shib-session', $key);
@@ -425,19 +432,19 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		{
 			if (isset($_GET['return']) && isset($_COOKIE['shib-entity-id']))
 			{
-				$this->log('wayf passthru', $_COOKIE['shib-entity-id']);
+				self::log('wayf passthru', $_COOKIE['shib-entity-id']);
 				App::redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
 			}
-			$this->log('failed wayf', $service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+			self::log('failed wayf', $service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 			// invalid request, back to the login page with you
 			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 		}
 
 		// invalid idp in request, send back to login landing
 		$eid = isset($_GET['idp']) ? $_GET['idp'] : (isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : NULL);
-		if (!isset($eid) || !$this->getInstitutionByEntityId($eid))
+		if (!isset($eid) || !self::getInstitutionByEntityId($eid))
 		{
-			$this->log('failed to look up entity id, redirect', array('eid' => $eid, 'url' => $service.'/index.php?option='.$com_user.'&task=login'.$return));
+			self::log('failed to look up entity id, redirect', array('eid' => $eid, 'url' => $service.'/index.php?option='.$com_user.'&task=login'.$return));
 			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.$return);
 		}
 
@@ -446,7 +453,10 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		//
 		// we don't use the session store because we'd like it to outlive the
 		// session so we can suggest this idp next time
-		setcookie('shib-entity-id', $_GET['idp'], time()+60*60*24, '/');
+		if (isset($_GET['idp']))
+		{
+			setcookie('shib-entity-id', $_GET['idp'], time()+60*60*24, '/');
+		}
 		// send the request to mod_shib.
 		//
 		// this path should be set up in your configuration something like this:
@@ -485,7 +495,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		//
 		// either way, the rewrite directs us back here to our login() method
 		// where we can extract info about the authn from mod_shib
-		$this->log('passing throuugh to shibd');
+		self::log('passing throuugh to shibd');
 		App::redirect($service.'/login/shibboleth');
 	}
 
@@ -520,7 +530,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// anything without it
 		if (isset($options['shibboleth']['eppn']))
 		{
-			$this->log('auth with', $options['shibboleth']);
+			self::log('auth with', $options['shibboleth']);
 			$method = (\Component::params('com_users')->get('allowUserRegistration', FALSE)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'shibboleth', $options['shibboleth']['idp'], $options['shibboleth']['eppn']);
 
@@ -533,7 +543,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 			$hzal->email = isset($options['shibboleth']['email']) ? $options['shibboleth']['email'] : NULL;
 
-			$this->log('hzal', $hzal);
+			self::log('hzal', $hzal);
 			$response->auth_link = $hzal;
 			$response->type = 'shibboleth';
 			$response->status = \Hubzero\Auth\Status::SUCCESS;
@@ -567,7 +577,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 					'user_img'      => \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false),
 					'authenticator' => 'shibboleth'
 				);
-				$this->log('auth cookie', $prefs);
+				self::log('auth cookie', $prefs);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;
@@ -577,7 +587,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$this->log('missing eppn in options, return failure', $options);
+			self::log('missing eppn in options, return failure', $options);
 			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'An error occurred verifying your credentials.';
 		}
@@ -590,17 +600,17 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function link($options = array())
 	{
-		$this->log('do link', $options);
+		self::log('do link', $options);
 		if (($status = $this->status()))
 		{
-			$this->log('link', $status);
+			self::log('link', $status);
 			// Get unique username
 			$username = $status['eppn'];
 			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'shibboleth', $status['idp']);
 
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
-				$this->log('already linked', array('domain' => $hzad->id, 'username' => $username));
+				self::log('already linked', array('domain' => $hzad->id, 'username' => $username));
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This account appears to already be linked to a hub account',
@@ -612,13 +622,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
 				$hzal->user_id = User::get('id');
 				$hzal->email   = $status['email'];
-				$this->log('setting link', $hzal);
+				self::log('setting link', $hzal);
 				$hzal->update();
 			}
 		}
 		else
 		{
-			$this->log('link failed, bad status, redir');
+			self::log('link failed, bad status, redir');
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
 			App::redirect(Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'), 'There was an error linking your account, please try again later.', 'error');
 		}
