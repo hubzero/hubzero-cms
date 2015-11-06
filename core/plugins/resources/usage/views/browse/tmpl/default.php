@@ -119,8 +119,8 @@ if ($results)
 </h3>
 <form method="get" action="<?php echo Route::url($url); ?>">
 	<?php
-	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
-	if (file_exists(PATH_APP . $tool_map . '.gif')) { ?>
+	$tool_map = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/stats/resource_maps/' . $this->resource->id;
+	if (file_exists(PATH_ROOT . $tool_map . '.gif')) { ?>
 		<div id="geo-overview-wrap" class="usage-wrap">
 			<div class="grid">
 				<div class="col span3">

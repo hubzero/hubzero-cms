@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_resources_usage.ini</language>
 	</languages>
 	<config>
-		<fields name="fields">
+		<fields name="params">
 			<fieldset name="basic">
 				<field name="period" type="text" size="5" default="14" label="PLG_RESOURCES_USAGE_TIME_PERIOD" description="PLG_RESOURCES_USAGE_TIME_PERIOD_DESC"/>
 				<field name="pie_chart_path" type="text" size="25" default="/site/usage/pie_chart_resources/" label="PLG_RESOURCES_USAGE_CHART_PATH_LABEL" description="PLG_RESOURCES_USAGE_CHART_PATH_DESC"/>
