@@ -58,7 +58,7 @@ class Helper extends Module
 	 *
 	 * @var array
 	 */
-	private $mod_path = '/core/modules/mod_incremental_registration';
+	private $mod_path = '/core/modules/mod_incremental_registration/assets';
 
 	/**
 	 * Determines if the file ($path) passed to it exists

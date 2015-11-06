@@ -95,7 +95,7 @@
 	}
 	#questions strong {
 		padding-left: 17px;
-		background: url('/components/com_store/assets/img/coin.gif') no-repeat top left;
+		background: url('/core/components/com_store/site/assets/img/coin.gif') no-repeat top left;
 	}
 	#questions ol {
 		background: #fafafa;
