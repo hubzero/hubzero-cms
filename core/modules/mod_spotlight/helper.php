@@ -433,6 +433,11 @@ class Helper extends Module
 							$thumb = '/core/modules/mod_spotlight/assets/img/default.gif';
 						}
 					}
+					if (substr($thumb, 0, strlen('/modules')) == '/modules'
+					 || substr($thumb, 0, strlen('/components')) == '/components')
+					{
+						$thumb = '/core' . $thumb;
+					}
 				}
 
 				$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($row->typetitle));
