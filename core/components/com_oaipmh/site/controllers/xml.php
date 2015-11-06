@@ -126,11 +126,6 @@ class Xml extends SiteController
 			break;
 
 			case 'ListMetadataFormats':
-				if (!$service->getError() && $identifier)
-				{
-					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
-				}
-
 				if (!$service->getError() && $set)
 				{
 					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
@@ -158,7 +153,14 @@ class Xml extends SiteController
 			break;
 
 			case 'ListSets':
-				$service->setSchema($metadata);
+				if (!$metadata)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+				}
+				if (!$service->getError())
+				{
+					$service->setSchema($metadata);
+				}
 
 				if (!$service->getError() && $identifier)
 				{
@@ -187,7 +189,14 @@ class Xml extends SiteController
 			break;
 
 			case 'ListIdentifiers':
-				$service->setSchema($metadata);
+				if (!$metadata)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+				}
+				if (!$service->getError())
+				{
+					$service->setSchema($metadata);
+				}
 
 				if (!$service->getError() && $identifier)
 				{
@@ -201,7 +210,14 @@ class Xml extends SiteController
 			break;
 
 			case 'ListRecords':
-				$service->setSchema($metadata);
+				if (!$metadata)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+				}
+				if (!$service->getError())
+				{
+					$service->setSchema($metadata);
+				}
 
 				if (!$service->getError() && $identifier)
 				{
@@ -215,7 +231,14 @@ class Xml extends SiteController
 			break;
 
 			case 'GetRecord':
-				$service->setSchema($metadata);
+				if (!$metadata)
+				{
+					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+				}
+				if (!$service->getError())
+				{
+					$service->setSchema($metadata);
+				}
 
 				if (!$service->getError() && $set)
 				{
