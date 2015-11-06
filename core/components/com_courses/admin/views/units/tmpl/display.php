@@ -69,7 +69,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="i<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
