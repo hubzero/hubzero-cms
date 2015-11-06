@@ -96,7 +96,7 @@ class Miner extends Object implements Provider
 
 		if (is_null(self::$base))
 		{
-			self::$base = rtrim(\Request::base(), '/');
+			self::$base = rtrim(\Request::getSchemeAndHttpHost(), '/');
 		}
 	}
 
@@ -158,7 +158,7 @@ class Miner extends Object implements Provider
 			$this->set('type', $this->database->loadResult());
 		}
 
-		$query = "SELECT pv.id, " . $this->database->quote($this->name()) . " AS `base`
+		$query = "SELECT p.id, " . $this->database->quote($this->name()) . " AS `base`
 				FROM `#__publications` p, `#__publication_versions` pv
 				WHERE p.id = pv.publication_id
 				AND pv.state=1";
@@ -236,11 +236,9 @@ class Miner extends Object implements Provider
 	 */
 	public function match($identifier)
 	{
-		if (preg_match('/(.*?)\/publications\/(\d+)(?:\/(\d+))?/i', $identifier, $matches))
+		if (preg_match('/(.*?)\/publications\/(\d+)/i', $identifier, $matches))
 		{
-			$id = $matches[2];
-			$rev = $matches[3];
-			return ($rev ? $rev : $id);
+			return $matches[2];
 		}
 
 		$this->database->setQuery(
@@ -276,20 +274,15 @@ class Miner extends Object implements Provider
 		}
 
 		$this->database->setQuery(
-			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type, pv.publication_id
+			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
 			INNER JOIN `#__publication_categories` AS rt ON rt.id = p.category
-			WHERE pv.id = " . $this->database->quote($id)
+			WHERE p.id = " . $this->database->quote($id)
 		);
 		$record = $this->database->loadObject();
 		$record->version_id = $record->id;
-		$id = $record->publication_id;
 		$record->id = $id;
-		if (!$record->identifier)
-		{
-			$record->identifier = self::$base . '/' . ltrim(\Route::url('index.php?option=com_publications&id=' . $id . ($record->version_id ? '&v=' . $record->version_id : '')), '/');
-		}
 
 		$record->base = $this->name();
 		$record->type = $record->base . ':' . $record->type;
@@ -298,12 +291,25 @@ class Miner extends Object implements Provider
 		$record->description = trim($record->description);
 
 		$this->database->setQuery(
-			"SELECT pv.submitted
+			"SELECT pv.created, pv.submitted, pv.published_up, pv.accepted
 			FROM `#__publication_versions` pv, `#__publications` p
 			WHERE p.id = pv.publication_id AND p.id = " . $this->database->quote($id) . "
 			ORDER BY pv.submitted DESC LIMIT 1"
 		);
-		$record->date = $this->database->loadResult();
+		$dates = $this->database->loadObject();
+		$record->date = $dates->created;
+		if ($dates->submitted && $dates->submitted != '0000-00-00 00:00:00')
+		{
+			$record->date = $dates->submitted;
+		}
+		if ($dates->accepted && $dates->accepted != '0000-00-00 00:00:00')
+		{
+			$record->date = $dates->accepted;
+		}
+		if ($dates->published_up && $dates->published_up != '0000-00-00 00:00:00' && $dates->published_up > $record->date)
+		{
+			$record->date = $dates->published_up;
+		}
 
 		$this->database->setQuery(
 			"SELECT pa.name
