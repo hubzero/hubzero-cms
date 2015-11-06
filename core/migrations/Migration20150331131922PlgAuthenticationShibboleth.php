@@ -15,7 +15,7 @@ class Migration20150331131922PlgAuthenticationShibboleth extends Base
 	 **/
 	public function up()
 	{
-		$this->db->setQuery('create table if not exists #__shibboleth_sessions(id serial not null primary key, session_key varchar(200) not null unique ey, data text not null, created timestamp not null default current_timestamp)');
+		$this->db->setQuery('create table if not exists #__shibboleth_sessions(id serial not null primary key, session_key varchar(200) not null unique key, data text not null, created timestamp not null default current_timestamp)');
 		$this->db->query();
 	}
 
