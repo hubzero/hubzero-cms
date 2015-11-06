@@ -44,7 +44,7 @@ class Utilities
 	 */
 	public static function getMkAipBase()
 	{
-		return PATH_ROOT . DS . 'cli/mkaip/bin/mkaip';
+		return PATH_APP . DS . 'mkAIP/cli/mkaip/bin/mkaip';
 	}
 
 	/**
