@@ -175,8 +175,9 @@
 	#page_menu li .alrt,
 	#page_menu li .alrt:hover {
 		position: absolute;
-		top: 11px;
-		right: 33px;
+		top: 50%;
+		left: -15px;
+		margin-top: -4px;
 		border: 1px solid #a62525;
 		-webkit-box-shadow: 0 0 2px #aaa, inset 0 1px 2px #f47575;
 		   -moz-box-shadow: 0 0 2px #aaa, inset 0 1px 2px #f47575;
