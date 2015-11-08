@@ -335,7 +335,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 */
 	public function filter(Closure $callback)
 	{
-		return new static(array_filter($this->_data, $callback));
+		$vals = array_filter($this->_data, $callback);
+		return new static(array_values($vals));
 	}
 
 	/**
