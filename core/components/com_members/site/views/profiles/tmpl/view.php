@@ -139,8 +139,8 @@ if (!$no_html)
 							<?php if ($meta_count) : ?>
 								<span class="count"><?php echo $meta_count; ?></span>
 							<?php endif; ?>
+							<?php echo $meta_alert; ?>
 						</span>
-						<?php echo $meta_alert; ?>
 						<?php if (isset($metadata['options']) && is_array($metadata['options'])) : ?>
 							<ul class="tab-options">
 							<?php
