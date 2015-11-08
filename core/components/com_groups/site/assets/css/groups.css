@@ -562,6 +562,8 @@
 	}
 	#page_menu li ul li.active:after {
 		background: none;
+		border-bottom: none;
+		border-left: none;
 	}
 
 /* Page info */
