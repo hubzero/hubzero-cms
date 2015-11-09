@@ -192,7 +192,7 @@ $this->css()
 						{
 							$html .= ($this->wish->get('due') <= Date::of('now')->toSql())
 									? '<span class="overdue"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_OVERDUE')
-									: '<span class="due"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->get('due'));
+									: '<span class="due"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_WISH_DUE_IN').' '.\Components\Wishlist\Helpers\Html::nicetime($this->wish->get('due'));
 							$html .= '</a></span>';
 						}
 						//$html .= '</div>'."\n";
