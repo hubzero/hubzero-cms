@@ -83,7 +83,8 @@ class Media extends Base
 		}
 
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit') && !$this->_authorizedForTask('group.pages'))
+		//if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.edit') && !$this->_authorizedForTask('group.pages'))
+		if (!in_array(User::get('id'), $this->group->get('members')))
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
