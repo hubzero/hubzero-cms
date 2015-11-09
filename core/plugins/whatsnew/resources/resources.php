@@ -299,10 +299,11 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	{
 		$database = App::get('db');
 
+		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
+
 		// Instantiate a helper object
 		if (!isset($row->authors))
 		{
-			$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
 			$helper->getContributors();
 
 			$row->authors = $helper->contributors;
