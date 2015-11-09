@@ -212,7 +212,7 @@ HUB.GroupsMediaBrowser = {
 				element: attach[0],
 				action: attach.attr("data-action"),
 				multiple: true,
-				showDrop: true,
+				//showDrop: true,
 				template: '<div class="qq-uploader">' +
 							'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
 							'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
