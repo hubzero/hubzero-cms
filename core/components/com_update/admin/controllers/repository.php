@@ -37,6 +37,7 @@ use Components\Update\Helpers\Cli;
 use Component;
 use Request;
 use Config;
+use Event;
 
 /**
  * Update repository controller class
@@ -136,11 +137,16 @@ class Repository extends AdminController
 		$source      = Component::params('com_update')->get('git_repository_source', null);
 		$autoPushRef = Component::params('com_update')->get('git_auto_push_ref', null);
 		$allowNonFf  = ($env == 'production') ? false : true;
-		$response    = Cli::update(false, $allowNonFf, $source, $autoPushRef);
-		$response    = json_decode($response);
-		$response    = $response[0];
-		$message     = 'Update complete!';
-		$type        = 'success';
+
+		// Trigger before update event
+		Event::trigger('update.onBeforeRepositoryUpdate');
+
+		// Do the actual update
+		$response = Cli::update(false, $allowNonFf, $source, $autoPushRef);
+		$response = json_decode($response);
+		$response = $response[0];
+		$message  = 'Update complete!';
+		$type     = 'success';
 
 		if (!empty($response) && stripos($response, 'fix conflicts and then commit the result') === false)
 		{
@@ -166,6 +172,12 @@ class Repository extends AdminController
 					}
 				}
 			}
+		}
+
+		// If success, trigger after update
+		if ($type == 'success')
+		{
+			Event::trigger('update.onAfterRepositoryUpdate');
 		}
 
 		// Set the redirect
