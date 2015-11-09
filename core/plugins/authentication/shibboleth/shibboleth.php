@@ -196,7 +196,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		return 'InCommon';
 	}
 
-	private function getLoginParams()
+	private static function getLoginParams()
 	{
 		$service = rtrim(Request::base(),'/');
 
@@ -228,7 +228,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		}
 
 		// if we couldn't figure out where they want to go to log in, we can't really help, so we redirect them with ?reset to get the full log-in provider list
-		list($service, $com_user, $task) = $this->getLoginParams();
+		list($service, $com_user, $task) = self::getLoginParams();
 		self::log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 	}
@@ -293,7 +293,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function logout()
 	{
-		list($service) = $this->getLoginParams();
+		list($service) = self::getLoginParams();
 		$return = '/';
 		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
@@ -363,7 +363,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		if (!User::get('guest'))
 		{
 			self::log('already logged in, redirect for link');
-			list($service, $com_user, $task) = $this->getLoginParams();
+			list($service, $com_user, $task) = self::getLoginParams();
 			App::redirect($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=shibboleth&shib-session=' . urlencode($_COOKIE['shib-session']));
 		}
 
@@ -423,7 +423,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	 */
 	public function display($view, $tpl)
 	{
-		list($service, $com_user, $task) = $this->getLoginParams();
+		list($service, $com_user, $task) = self::getLoginParams();
 		$return = $view->return ? '&return='.$view->return : '';
 
 		// discovery service for mod_shib to feed back the appropriate id provider
