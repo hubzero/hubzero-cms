@@ -33,17 +33,19 @@
 namespace Components\Poll\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Components\Poll\Tables\Poll;
-use Exception;
+use Components\Poll\Models\Poll;
+//use Exception;
 use Document;
 use Request;
 use Pathway;
+use Notify;
 use Route;
-use Date;
+//use Date;
 use Lang;
 use Html;
+use App;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'poll.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'poll.php');
 
 /**
  * Poll controller
@@ -51,15 +53,24 @@ require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'poll.php');
 class Polls extends SiteController
 {
 	/**
-	 * Determine task and execute it
+	 * Method to show the search view
 	 *
 	 * @return  void
 	 */
-	public function execute()
+	public function displayTask()
 	{
-		$this->registerTask('results', 'display');
+		Document::setTitle(Lang::txt('COM_POLL'));
 
-		parent::execute();
+		//Set pathway information
+		Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
+
+		$polls = Poll::all()
+			->whereEquals('published', 1)
+			->rows();
+
+		$this->view
+			->set('polls', $polls)
+			->display();
 	}
 
 	/**
@@ -67,24 +78,23 @@ class Polls extends SiteController
 	 *
 	 * @return  void
 	 */
-	public function displayTask()
+	public function resultsTask()
 	{
-		$poll_id = Request::getVar('id', 0, '', 'int');
+		$poll_id = Request::getInt('id', 0);
 
-		$poll = new Poll($this->database);
-		$poll->load($poll_id);
+		$poll = Poll::oneOrFail($poll_id);
 
 		// if id value is passed and poll not published then exit
-		if ($poll->id > 0 && $poll->published != 1)
+		if ($poll->id && $poll->published != 1)
 		{
-			throw new Exception(Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'), 403);
+			App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
 		// Adds parameter handling
-		$params = \App::get('menu.params');
+		$params = App::get('menu.params');
 
 		// Set page title information
-		$menus = \App::get('menu');
+		$menus = App::get('menu');
 		$menu  = $menus->getActive();
 
 		// because the application sets a default page title, we need to get it
@@ -101,63 +111,51 @@ class Polls extends SiteController
 		{
 			$params->set('page_title', $poll->title);
 		}
+
 		Document::setTitle($params->get('page_title'));
 
 		//Set pathway information
-		Pathway::append($poll->title, '');
+		Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
+		Pathway::append($poll->title, Route::url('index.php?option=' . $this->_option . '&id=' . $poll->id . ':' . $poll->alias));
 
 		$params->def('show_page_title', 1);
 		$params->def('page_title', $poll->title);
 
 		$first_vote = '';
 		$last_vote  = '';
-		$votes      = '';
+		$votes      = array();
 
 		// Check if there is a poll corresponding to id and if poll is published
-		if ($poll->id > 0)
+		if ($poll->id)
 		{
-			if (empty($poll->title))
-			{
-				$poll->id = 0;
-				$poll->title = Lang::txt('COM_POLL_SELECT_POLL');
-			}
-
-			$query = 'SELECT MIN(date) AS mindate, MAX(date) AS maxdate'
-				. ' FROM #__poll_date'
-				. ' WHERE poll_id = '. (int) $poll->id;
-			$this->database->setQuery($query);
-			$dates = $this->database->loadObject();
+			$dates = $poll->dates()
+				->select('MIN(date)', 'mindate')
+				->select('MAX(date)', 'maxdate')
+				->row();
 
 			if (isset($dates->mindate))
 			{
-				$first_vote = Date::of($dates->mindate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
-				$last_vote  = Date::of($dates->maxdate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+				$first_vote = \Date::of($dates->mindate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+				$last_vote  = \Date::of($dates->maxdate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
 			}
 
-			$query = 'SELECT a.id, a.text, a.hits, b.voters '
-				. ' FROM #__poll_data AS a'
-				. ' INNER JOIN #__polls AS b ON b.id = a.pollid'
-				. ' WHERE a.pollid = '. (int) $poll->id
-				. ' AND a.text <> ""'
-				. ' ORDER BY a.hits DESC';
-			$this->database->setQuery($query);
-			$votes = $this->database->loadObjectList();
-		}
-		else
-		{
-			$votes = array();
+			$votes = $poll->options()
+				->where('text', '!=', '')
+				->order('hits', 'desc')
+				->ordered()
+				->rows()
+				->raw();
+
+			$votes = array_values($votes);
 		}
 
 		// list of polls for dropdown selection
-		$query = 'SELECT id, title, alias'
-			. ' FROM #__polls'
-			. ' WHERE published = 1'
-			. ' ORDER BY id'
-		;
-		$this->database->setQuery($query);
-		$pList = $this->database->loadObjectList();
+		$pList = Poll::all()
+			->whereEquals('published', 1)
+			->rows()
+			->raw();
 
-		foreach ($pList as $k=>$p)
+		foreach ($pList as $k => $p)
 		{
 			$pList[$k]->url = Route::url('index.php?option=com_poll&id=' . $p->id . ':' . $p->alias);
 		}
@@ -165,14 +163,13 @@ class Polls extends SiteController
 		array_unshift($pList, Html::select('option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
 
 		// dropdown output
-		$lists = array();
-
-		$lists['polls'] = Html::select('genericlist', $pList, 'id',
-			'class="inputbox" size="1" style="width:200px" onchange="if (this.options[selectedIndex].value != \'\') {document.location.href=this.options[selectedIndex].value}"',
-			'url', 'title',
-			Route::url('index.php?option=com_poll&id=' . $poll->id . ':' . $poll->alias)
+		$lists = array(
+			'polls' => Html::select('genericlist', $pList, 'id',
+				'class="inputbox" size="1" onchange="if (this.options[selectedIndex].value != \'\') {document.location.href=this.options[selectedIndex].value}"',
+				'url', 'title',
+				Route::url('index.php?option=com_poll&id=' . $poll->id . ':' . $poll->alias)
+			)
 		);
-
 
 		$graphwidth = 200;
 		$barheight  = 4;
@@ -182,7 +179,7 @@ class Polls extends SiteController
 		$colorx     = 0;
 
 		$maxval = isset($votes[0]) ? $votes[0]->hits : 0;
-		$sumval = isset($votes[0]) ? $votes[0]->voters : 0;
+		$sumval = $poll->voters; //isset($votes[0]) ? $votes[0]->voters : 0;
 
 		$k = 0;
 		for ($i = 0; $i < count($votes); $i++)
@@ -211,11 +208,11 @@ class Polls extends SiteController
 				{
 					$colorx = 1;
 				}
-				$vote->class = "polls_color_" . $colorx;
+				$vote->class = 'polls_color_' . $colorx;
 			}
 			else
 			{
-				$vote->class = "polls_color_" . $barcolor;
+				$vote->class = 'polls_color_' . $barcolor;
 			}
 
 			$vote->barheight = $barheight;
@@ -232,7 +229,6 @@ class Polls extends SiteController
 			->set('params', $params)
 			->set('poll', $poll)
 			->set('votes', $votes)
-			->setLayout('default')
 			->display();
 	}
 
@@ -243,22 +239,25 @@ class Polls extends SiteController
 	 */
 	public function latestTask()
 	{
-		$model = new Poll($this->database);
-		$poll = $model->getLatest();
+		$poll = Poll::current();
 
 		// if id value is passed and poll not published then exit
-		if ($poll->id > 0 && $poll->published != 1)
+		if ($poll->id && $poll->published != 1)
 		{
-			throw new Exception(Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'), 403);
+			App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
-		$options = $model->getPollOptions($poll->id);
+		$options = $poll->options()
+			->where('text', '!=', '')
+			->order('hits', 'desc')
+			->ordered()
+			->rows();
 
 		// Adds parameter handling
-		$params = \App::get('menu.params');
+		$params = App::get('menu.params');
 
 		//Set page title information
-		$menus = \App::get('menu');
+		$menus = App::get('menu');
 		$menu  = $menus->getActive();
 
 		// because the application sets a default page title, we need to get it
@@ -275,10 +274,12 @@ class Polls extends SiteController
 		{
 			$params->set('page_title', $poll->title);
 		}
+
 		Document::setTitle($params->get('page_title'));
 
 		//Set pathway information
-		Pathway::append($poll->title, '');
+		Pathway::append(Lang::txt('COM_POLL'), Route::url('index.php?option=' . $this->_option));
+		Pathway::append($poll->title, Route::url('index.php?option=' . $this->_option . '&id=' . $poll->id . ':' . $poll->alias));
 
 		$params->def('show_page_title', 1);
 		$params->def('page_title', $poll->title);
@@ -301,13 +302,14 @@ class Polls extends SiteController
 		$poll_id   = Request::getVar('id', 0, '', 'int');
 		$option_id = Request::getVar('voteid', 0, 'post', 'int');
 
-		$poll = new Poll($this->database);
-		if (!$poll->load($poll_id) || $poll->published != 1)
+		$poll = Poll::oneOrFail($poll_id);
+
+		if ($poll->published != 1)
 		{
-			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 404);
+			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$cookieName = \App::hash(\App::get('client')->name . 'poll' . $poll_id);
+		$cookieName = App::hash(App::get('client')->name . 'poll' . $poll_id);
 
 		// ToDo - may be adding those information to the session?
 		$voted = Request::getVar($cookieName, '0', 'COOKIE', 'INT');
@@ -316,12 +318,12 @@ class Polls extends SiteController
 		{
 			if ($voted)
 			{
-				$msg = Lang::txt('COM_POLL_ALREADY_VOTED');
+				Notify::warning(Lang::txt('COM_POLL_ALREADY_VOTED'));
 			}
 
 			if (!$option_id)
 			{
-				$msg = Lang::txt('COM_POLL_WARNSELECT');
+				Notify::warning(Lang::txt('COM_POLL_WARNSELECT'));
 			}
 		}
 		else
@@ -330,30 +332,29 @@ class Polls extends SiteController
 			$secure   = false;
 			$forceSsl = \Config::get('force_ssl', false);
 
-			if (\App::isAdmin() && $forceSsl >= 1)
+			if (App::isAdmin() && $forceSsl >= 1)
 			{
 				$secure = true;
 			}
-			else if (\App::isSite() && $forceSsl == 2)
+			else if (App::isSite() && $forceSsl == 2)
 			{
 				$secure = true;
 			}
 
 			setcookie($cookieName, '1', time() + $poll->lag, '/', '', $secure, true);
 
-			$poll->vote($poll_id, $option_id);
+			$poll->vote($option_id);
 
-			$msg = Lang::txt('COM_POLL_THANK_YOU');
+			Notify::success(Lang::txt('COM_POLL_THANK_YOU'));
 		}
 
 		// set Itemid id for links
-		$menu   = \App::get('menu');
+		$menu   = App::get('menu');
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
 		App::redirect(
-			Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->alias . $itemid, false),
-			$msg
+			Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->alias . $itemid, false)
 		);
 	}
 }

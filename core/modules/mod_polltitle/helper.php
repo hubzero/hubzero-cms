@@ -26,7 +26,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,7 @@
 namespace Modules\PollTitle;
 
 use Hubzero\Module\Module;
-use Components\Poll\Tables\Poll;
+use Components\Poll\Models\Poll;
 use Component;
 
 /**
@@ -51,10 +50,8 @@ class Helper extends Module
 	{
 		require_once(Component::path('com_poll') . DS . 'models' . DS . 'poll.php');
 
-		$model = new Poll();
-
 		// Load the latest poll
-		$this->poll = $model->getLatest();
+		$this->poll = Poll::current();
 
 		require $this->getLayoutPath();
 	}

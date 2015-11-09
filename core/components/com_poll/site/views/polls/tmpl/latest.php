@@ -26,7 +26,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +33,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$this->css('poll_bars.css');
+$this->css();
 ?>
 <header id="content-header" class="full">
 	<h2><?php echo Lang::txt('COM_POLL') . ': ' . Lang::txt('COM_POLL_LATEST'); ?></h2>
@@ -45,27 +44,35 @@ $this->css('poll_bars.css');
 </header>
 
 <section class="main section">
-	<?php if (count($this->options) > 0) { ?>
-		<form id="pollform" method="post" action="<?php echo Route::url('index.php?option=com_poll&task=vote'); ?>">
-			<h3><?php echo stripslashes($this->poll->title); ?></h3>
-			<ul class="poll">
-				<?php for ($i=0, $n=count($this->options); $i < $n; $i++) { ?>
-					<li>
-						<input type="radio" name="voteid" id="voteid<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->options[$i]->id; ?>" alt="<?php echo $this->options[$i]->id; ?>" />
-						<label for="voteid<?php echo $this->options[$i]->id; ?>"><?php echo $this->options[$i]->text; ?></label>
-					</li>
-				<?php } ?>
-			</ul>
-			<p>
-				<input type="submit" name="task_button" value="<?php echo Lang::txt('Vote!'); ?>" />&nbsp;&nbsp;
-				<a href="<?php echo Route::url('index.php?option=com_poll&view=poll&id=' . $this->poll->id .':' . $this->poll->alias); ?>"><?php echo Lang::txt('COM_POLL_RESULTS'); ?></a>
-			</p>
+	<?php if ($this->options->count() > 0) { ?>
+		<div class="poll">
+			<div class="details">
+				<h3><?php echo stripslashes($this->poll->title); ?></h3>
 
-			<input type="hidden" name="option" value="com_poll" />
-			<input type="hidden" name="task" value="vote" />
-			<input type="hidden" name="id" value="<?php echo $this->poll->id; ?>" />
-			<?php echo Html::input('token'); ?>
-		</form>
+				<form id="pollform" method="post" action="<?php echo Route::url('index.php?option=com_poll&task=vote'); ?>">
+					<fieldset>
+						<ul class="poll-options">
+							<?php foreach ($this->options as $option) { ?>
+								<li>
+									<input type="radio" name="voteid" id="voteid<?php echo $option->id; ?>" value="<?php echo $option->id; ?>" alt="<?php echo $option->id; ?>" />
+									<label for="voteid<?php echo $option->id; ?>"><?php echo $option->text; ?></label>
+								</li>
+							<?php } ?>
+						</ul>
+						<p>
+							<input type="submit" name="task_button" value="<?php echo Lang::txt('COM_POLL_VOTE'); ?>" />
+							 &nbsp;
+							<a href="<?php echo Route::url('index.php?option=com_poll&view=poll&id=' . $this->poll->id .':' . $this->poll->alias); ?>"><?php echo Lang::txt('COM_POLL_RESULTS'); ?></a>
+						</p>
+
+						<input type="hidden" name="option" value="com_poll" />
+						<input type="hidden" name="task" value="vote" />
+						<input type="hidden" name="id" value="<?php echo $this->poll->id; ?>" />
+						<?php echo Html::input('token'); ?>
+					</fieldset>
+				</form>
+			</div>
+		</div>
 	<?php } else { ?>
 		<p><?php echo Lang::txt('COM_POLL_NO_RESULTS'); ?></p>
 	<?php } ?>

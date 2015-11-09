@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -62,7 +61,7 @@ class Router extends Base
 		if (!$items)
 		{
 			$menu      = \App::get('menu');
-			$component = Component::load('com_poll');
+			$component = \Component::load('com_poll');
 			$items     = $menu->getItems('component_id', $component->id);
 		}
 
@@ -171,12 +170,13 @@ class Router extends Base
 		if (!isset($item))
 		{
 			$vars['id'] = $segments[$count - 1];
+			$vars['task'] = 'results';
 			return $vars;
 		}
 
 		// Count route segments
-		$vars['id']   = $segments[$count-1];
-		$vars['task'] = 'poll';
+		$vars['id']   = $segments[$count - 1];
+		$vars['task'] = 'results';
 
 		return $vars;
 	}

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,14 +33,14 @@
 <form action="">
 	<fieldset>
 		<div class="configuration">
-			<?php echo Lang::txt('COM_POLL_PREVIEV'); ?>
+			<?php echo Lang::txt('COM_POLL_PREVIEW'); ?>
 		</div>
 	</fieldset>
 
 	<br /><br />
 
 	<table>
-		<caption><?php echo $this->poll->title; ?></caption>
+		<caption><?php echo $this->escape($this->poll->title); ?></caption>
 		<tfoot>
 			<tr>
 				<td colspan="2">
@@ -53,12 +52,12 @@
 		<tbody>
 			<?php foreach ($this->options as $option)
 			{
-				if ($option->text <> "")
+				if ($option->text != '')
 				{
 					?>
 					<tr>
-						<td valign="top" height="30"><input type="radio" name="poll" value="<?php echo $this->escape($option->text); ?>"></td>
-						<td class="poll" width="100%" valign="top"><?php echo $option->text; ?></td>
+						<td><input type="radio" name="poll" value="<?php echo $this->escape($option->text); ?>"></td>
+						<td class="poll"><?php echo $this->escape($option->text); ?></td>
 					</tr>
 					<?php
 				}

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -36,22 +35,19 @@ defined('_HZEXEC_') or die(); ?>
 	<fieldset>
 		<h4><?php echo $this->escape($poll->title); ?></h4>
 		<ul class="poll">
-	<?php for ($i = 0, $n = count($options); $i < $n; $i ++) : ?>
-			<li class="<?php echo $this->escape($tabclass_arr[$tabcnt]); ?><?php echo $this->params->get('moduleclass_sfx'); ?>">
-				<input type="radio" name="voteid" id="voteid<?php echo $options[$i]->id;?>" value="<?php echo $this->escape($options[$i]->id);?>" />
-				<label for="voteid<?php echo $options[$i]->id; ?>" class="<?php echo $this->escape($tabclass_arr[$tabcnt]); ?><?php echo $this->params->get('moduleclass_sfx'); ?>">
-					<?php echo $this->escape(str_replace('&#039;', "'", $options[$i]->text)); ?>
-				</label>
-			</li>
-			<?php
-				$tabcnt = 1 - $tabcnt;
-			?>
-	<?php endfor; ?>
+			<?php foreach ($poll->options()->where('text', '!=', '')->ordered()->rows() as $option) : ?>
+				<li class="poll-option <?php echo $this->params->get('moduleclass_sfx'); ?>">
+					<input type="radio" name="voteid" id="voteid<?php echo $option->id; ?>" value="<?php echo $this->escape($option->id); ?>" />
+					<label for="voteid<?php echo $option->id; ?>" class="poll-option-text <?php echo $this->params->get('moduleclass_sfx'); ?>">
+						<?php echo $this->escape(str_replace('&#039;', "'", $option->text)); ?>
+					</label>
+				</li>
+			<?php endforeach; ?>
 		</ul>
 		<p>
 			<input type="submit" name="task_button" class="button" value="<?php echo Lang::txt('MOD_POLL_VOTE'); ?>" />
 			 &nbsp;
-			<a href="<?php echo Route::url('index.php?option=com_poll&view=poll&id=' . $this->escape($poll->slug)); ?>"><?php echo Lang::txt('MOD_POLL_RESULTS'); ?></a>
+			<a href="<?php echo Route::url('index.php?option=com_poll&view=poll&id=' . $this->escape($poll->id . ':' . $poll->alias)); ?>"><?php echo Lang::txt('MOD_POLL_RESULTS'); ?></a>
 		</p>
 
 		<input type="hidden" name="option" value="com_poll" />

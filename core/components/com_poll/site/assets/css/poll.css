@@ -1,0 +1,206 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_poll/assets/css/poll.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+.poll {
+	display: block;
+}
+
+.polls .poll {
+	float: left;
+	width: 31.18279569892473%;
+	margin-left: 3.225806451612903%;
+	margin-bottom: 2em;
+	background: #fff;
+}
+.polls .poll:first-child,
+.polls .poll:nth-child(3n+1) {
+	margin-left: 0;
+}*/
+.poll {
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+}
+.poll:hover {
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.poll h3 {
+	font-size: 1.2em;
+	margin: 0;
+	padding: 0;
+}
+.poll ul {
+	list-style: none;
+	margin: 1em 0;
+	padding: 0;
+}
+.poll li {
+	margin: 0;
+	padding: 0.5em;
+	position: relative;
+}
+.poll .poll-options li {
+	border: 1px solid #f1f1f1;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.poll .poll-options li:hover {
+	background: #f1f1f1;
+	background: rgba(0, 0, 0, 0.05);
+}
+.poll li input {
+	margin-right: 0.5em;
+}
+.poll .optn {
+	margin-right: 2em;
+}
+.poll .hits {
+	position: absolute;
+	right: 0;
+}
+
+.meta {
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+	background: rgba(0, 0, 0, 0.02);
+	padding: 1.5em;
+	position: relative;
+}
+
+.icon-votes:before {
+	content: "\2605";
+}
+.opt {
+	display: block;
+	float: left;
+	position: relative;
+	padding-left: 1.8em;
+	line-height: 1.7;
+	margin-right: 1.8em;
+	color: #999;
+}
+.opt:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 1.7em;
+	color: #ddd;
+	line-height: 1;
+}
+.details {
+	padding: 1.5em;
+	min-height: 8em;
+	position: relative;
+}
+
+.meta .omega {
+	text-align: right;
+}
+.description {
+	margin: 1em 0;
+	color: #999;
+}
+
+.status {
+	border: 1px solid #ddd;
+	color: #aaa;
+	padding: 0.1em 0.7em;
+	text-transform: uppercase;
+	border-radius: 0.25em;
+	font-size: 0.75%;
+	letter-spacing: 0.1em;
+}
+.open {
+	color: green;
+	border-color: green;
+}
+.closed {
+	color: red;
+	border-color: red;
+}
+
+/* Results data table */
+	.pollresults thead th {
+		background: #e1e1e1;
+	}
+	.pollresults form {
+		margin: 0;
+		padding: 1em;
+		background: #e1e1e1;
+		border: none;
+	}
+	.pollresults .votes {
+		text-align: right;
+	}
+	.pollresults tfoot td {
+		text-align: right;
+		border-top: 1px solid #eee;
+	}
+	.pollresults tfoot td span {
+		text-transform: uppercase;
+		font-size: 90%;
+		letter-spacing: 1px;
+		color: #aaa;
+		padding-right: 2em;
+	}
+	.pollresults tbody th {
+		width: 220px;
+	}
+	.com_poll .below {
+		padding-top: 0;
+	}
+
+	/*ul.poll {
+		list-style: none;
+		margin: 1em 0;
+	}
+	ul.poll li {
+		margin: 0.2em 0;
+		border: 1px solid #eee;
+		padding: 0.4em 0.91em;
+	}
+	ul.poll li:hover {
+		border-color: #bbb;
+		background-color: #fff;
+	}*/
+
+/* CSS bar graph */
+	.graph { 
+		position: relative;
+		background-color: #f1f1f1;
+		padding: 0;
+		margin: 0.3em 0;
+	}
+	.graph .bar {
+		display: block;
+		position: relative;
+		color: #333;
+		height: 0.5em;
+		line-height: 0.5em;
+	}
+	.graph .bar span {
+		position: absolute;
+		top: 0;
+		left: -2em;
+		display: none;
+	}
+	table .graph {
+		width: 200px;
+	}
+
+	.polls_color_1 { background-color: #DDC0C0; }
+	.polls_color_2 { background-color: #D1C8F0; }
+	.polls_color_3 { background-color: #DADADA; }
+	.polls_color_4 { background-color: #EDDBBA; }
+	.polls_color_5 { background-color: #CFD7C0; }
+	.polls_color_6 { background-color: #CFD7C0; }
+	.polls_color_7 { background-color: #CFD7C0; }
+	.polls_color_8 { background-color: #CFD7C0; }
+	.polls_color_9 { background-color: #CFD7C0; }
+	.polls_color_10 { background-color: #CFD7C0; }
+	.polls_color_11 { background-color: #CFD7C0; }
+	.polls_color_12 { background-color: #CFD7C0; }

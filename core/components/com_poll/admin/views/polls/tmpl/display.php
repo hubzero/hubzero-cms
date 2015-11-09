@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -70,13 +69,13 @@ Toolbar::help('polls');
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->lists['search']); ?>" placeholder="<?php echo Lang::txt('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
 
 				<button onclick="this.form.submit();"><?php echo Lang::txt('COM_POLL_GO'); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
-				<?php echo $this->lists['state']; ?>
+				<?php echo $this->filters['states']; ?>
 			</div>
 		</div>
 	</fieldset>
@@ -85,31 +84,31 @@ Toolbar::help('polls');
 		<thead>
 			<tr>
 				<th scope="col">
+					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" />
+				</th>
+				<th scope="col">
 					<?php echo Lang::txt('COM_POLL_COL_NUM'); ?>
 				</th>
-				<th scope="col">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
-				</th>
 				<th scope="col" class="title">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 				<th scope="col" class="priority-2">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 				<th scope="col" class="priority-3">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 				<th scope="col" class="priority-5">
-					<?php echo Html::grid('sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_ID', 'm.id', @$this->filters['order_Dir'], @$this->filters['order'] ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -117,12 +116,7 @@ Toolbar::help('polls');
 			<tr>
 				<td colspan="9">
 					<?php
-					$pagination = $this->pagination(
-						$this->total,
-						$this->limitstart,
-						$this->limit
-					);
-					echo $pagination->render();
+					echo $this->rows->pagination;
 					?>
 				</td>
 			</tr>
@@ -130,12 +124,9 @@ Toolbar::help('polls');
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count( $this->items ); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row = &$this->items[$i];
-
-			$link = Route::url('index.php?option=' . $this->option . '&view=poll&task=edit&cid='. $row->id);
-
 			$task  = $row->published ? 'unpublish' : 'publish';
 			$class = $row->published ? 'published' : 'unpublished';
 			$alt   = $row->published ? Lang::txt('JPUBLISHED') : Lang::txt('JUNPUBLISHED');
@@ -146,21 +137,21 @@ Toolbar::help('polls');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php echo $pagination->getRowOffset($i); ?>
-				</td>
-				<td>
-					<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) { ?>
+					<?php if (($row->checked_out && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
 						<span> </span>
 					<?php } else { ?>
-						<input type="checkbox" name="cid[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 					<?php } ?>
 				</td>
 				<td>
-					<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) {
+					<?php echo $row->id; ?>
+				</td>
+				<td>
+					<?php if (($row->checked_out && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) {
 						echo $row->title;
 					} else { ?>
 						<span class="editlinktip hasTip" title="<?php echo $this->escape($row->title); ?>">
-							<a href="<?php echo $link; ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=poll&task=edit&id='. $row->id); ?>">
 								<?php echo $this->escape($row->title); ?>
 							</a>
 						</span>
@@ -168,7 +159,7 @@ Toolbar::help('polls');
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task); ?>">
+						<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -179,7 +170,7 @@ Toolbar::help('polls');
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task2 . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task2); ?>">
+						<a class="state <?php echo $class2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task2 . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task2); ?>">
 							<span><?php echo $alt2; ?></span>
 						</a>
 					<?php } else { ?>
@@ -211,8 +202,8 @@ Toolbar::help('polls');
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['order_Dir']; ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

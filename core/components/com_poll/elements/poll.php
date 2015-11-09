@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -44,18 +43,15 @@ class JElementPoll extends JElement
 
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = \App::get('db');
+		require_once(dirname(__DIR__) . DS . 'models' . DS . 'poll.php');
 
-		$query = 'SELECT a.id, a.title'
-		. ' FROM #__polls AS a'
-		. ' WHERE a.published = 1'
-		. ' ORDER BY a.title'
-		;
-		$db->setQuery( $query );
-		$options = $db->loadObjectList();
+		$options = \Components\Poll\Models\Poll::all()
+			->whereEquals('published', 1)
+			->rows()
+			->raw();
 
-		array_unshift($options, \Html::select('option', '0', '- '. \Lang::txt('Select Poll').' -', 'id', 'title'));
+		array_unshift($options, \Html::select('option', '0', '- '. \Lang::txt('Select Poll') . ' -', 'id', 'title'));
 
-		return \Html::select('genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'id', 'title', $value, $control_name.$name );
+		return \Html::select('genericlist',  $options, $control_name . '[' . $name . ']', 'class="inputbox"', 'id', 'title', $value, $control_name . $name);
 	}
 }

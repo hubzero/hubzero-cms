@@ -25,25 +25,20 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
 
-$cid  = Request::getVar('cid', array(0), '', 'array');
-$edit = Request::getVar('edit', true );
-\Hubzero\Utility\Arr::toInteger($cid, array(0));
-
 $canDo = \Components\Poll\Helpers\Permissions::getActions('component');
 
-$text = ($edit ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
+$text = ($this->poll->id ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_POLL') . ': ' . $text, 'poll.png');
 if ($this->poll->id)
 {
-	Toolbar::preview('index.php?option=' . $this->option . '&task=preview&cid=' . $cid[0]);
+	Toolbar::preview('index.php?option=' . $this->option . '&task=preview&id=' . $this->poll->id);
 	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
@@ -52,7 +47,7 @@ if ($canDo->get('core.edit'))
 	Toolbar::apply();
 	Toolbar::spacer();
 }
-if ($edit)
+if ($this->poll->id)
 {
 	// for existing items the button is renamed `close`
 	Toolbar::cancel('cancel', 'COM_POLL_CLOSE');
@@ -68,10 +63,12 @@ Toolbar::help('poll');
 <script type="text/javascript">
 	function submitbutton(pressbutton) {
 		var form = document.adminForm;
+
 		if (pressbutton == 'cancel') {
 			submitform( pressbutton );
 			return;
 		}
+
 		// do field validation
 		if (form.title.value == "") {
 			alert( "<?php echo Lang::txt('COM_POLL_ERROR_MISSING_TITLE', true); ?>" );
@@ -118,12 +115,17 @@ Toolbar::help('poll');
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_POLL_FIELDSET_OPTIONS'); ?></span></legend>
 
-				<?php for ($i=0, $n=count($this->options); $i < $n; $i++) { ?>
+				<?php
+				$i = 0;
+				$n = $this->options->count();
+				foreach ($this->options as $option) { ?>
 					<div class="input-wrap">
-						<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo ($i+1); ?></label><br />
-						<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" />
+						<label for="polloption<?php echo $option->id; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo ($i+1); ?></label><br />
+						<input class="inputbox" type="text" name="polloption[<?php echo $option->id; ?>]" id="polloption<?php echo $option->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $option->text)); ?>" />
 					</div>
-				<?php } ?>
+				<?php
+					$i++;
+				} ?>
 				<?php for (; $i < 12; $i++) { ?>
 					<div class="input-wrap">
 						<label for="polloption<?php echo $i + 1; ?>"><?php echo Lang::txt('COM_POLL_FIELD_OPTION'); ?> <?php echo $i + 1; ?></label><br />

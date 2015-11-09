@@ -25,45 +25,69 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\Poll;
+namespace Components\Poll\Models;
 
-use Hubzero\Module\Module;
+use Hubzero\Database\Relational;
 
 /**
- * Module class for displaying a poll
+ * Poll option model
  */
-class Helper extends Module
+class Option extends Relational
 {
 	/**
-	 * Display module content
+	 * The table namespace
 	 *
-	 * @return  void
+	 * @var  string
 	 */
-	public function display()
+	protected $namespace = 'poll';
+
+	/**
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__poll_data';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'id';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'text'   => 'notempty',
+		'pollid' => 'positive|nonzero'
+	);
+
+	/**
+	 * Defines a belongs to one relationship between option and poll
+	 *
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+	 */
+	public function poll()
 	{
-		require_once(\Component::path('com_poll') . DS . 'models' . DS . 'poll.php');
-
-		$menu   = \App::get('menu');
-		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
-		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
-
-		if ($id = $this->params->get('id', 0))
-		{
-			$poll = \Components\Poll\Models\Poll::oneOrNew($id);
-		}
-		else
-		{
-			$poll = \Components\Poll\Models\Poll::current();
-		}
-
-		if ($poll && $poll->id)
-		{
-			require $this->getLayoutPath();
-		}
+		return $this->belongsToOne('Poll', 'pollid');
 	}
 }
+

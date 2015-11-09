@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Poll Layout">
+		<message>
+			<![CDATA[Polls Main Page]]>
+		</message>
+	</layout>
+	<state>
+		<name>Polls Main Page</name>
+		<description>Polls Main Page</description>
+		<url addpath="/core/components/com_poll/elements">
+			<param name="id" type="poll" default="0" label="Poll" description="A poll" />
+		</url>
+	</state>
+</metadata>

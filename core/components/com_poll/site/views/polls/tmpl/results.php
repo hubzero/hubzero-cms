@@ -25,14 +25,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
 
-$this->css('poll_bars.css');
+$this->css();
 ?>
 
 <header id="content-header">
@@ -56,7 +55,7 @@ $this->css('poll_bars.css');
 	</section>
 	<section class="below section">
 		<?php
-		$this->view('default_graph')
+		$this->view('results_graph')
 			->set('first_vote', $this->first_vote)
 			->set('last_vote', $this->last_vote)
 			->set('lists', $this->lists)

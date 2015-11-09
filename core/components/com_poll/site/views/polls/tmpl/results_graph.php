@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,12 +32,12 @@
 defined('_HZEXEC_') or die(); ?>
 
 <div class="subject">
-<?php if ($this->poll->id) { ?>
+<?php if ($this->poll->get('id')) { ?>
 	<table class="pollresults">
 		<thead>
 			<tr>
 				<th colspan="3" class="sectiontableheader">
-					<?php echo $this->escape($this->poll->title); ?>
+					<?php echo $this->escape($this->poll->get('title')); ?>
 				</th>
 			</tr>
 		</thead>

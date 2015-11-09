@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,11 +37,10 @@ if (!\User::authorise('core.manage', 'com_poll'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'poll.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'poll.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 require_once(__DIR__ . DS . 'controllers' . DS . 'polls.php');
 
 // Create the controller
-$controller	= new Controllers\Polls();
+$controller = new Controllers\Polls();
 $controller->execute();
-$controller->redirect();
