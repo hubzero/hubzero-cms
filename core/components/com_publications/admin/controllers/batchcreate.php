@@ -163,7 +163,7 @@ class Batchcreate extends AdminController
 
 		// Project ID must be supplied
 		$this->project = new \Components\Projects\Models\Project($id);
-		if ($this->project->exists())
+		if (!$this->project->exists())
 		{
 			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'), 'records' => NULL));
 			exit();
