@@ -64,11 +64,12 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = $match[2];
+		$data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
 	}
 }
 $this->model->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->model->resource->fulltxt);
 $this->model->resource->fulltxt = trim($this->model->resource->fulltxt);
+$this->model->resource->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->resource->fulltxt);
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
