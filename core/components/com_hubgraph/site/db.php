@@ -1,4 +1,5 @@
-<?php defined('JPATH_BASE') or die();
+<?php
+defined('_HZEXEC_') or die();
 
 class Db
 {
@@ -7,7 +8,7 @@ class Db
 	public static function getHandle()
 	{
 		if (!self::$dbh) {
-			$cfg = new \Hubzero\Config\Repository;
+			$cfg = new \Hubzero\Config\Repository('site');
 			self::$dbh = new PDO('mysql:host=localhost;dbname='.$cfg->get('db'), $cfg->get('user'), $cfg->get('password'), array(
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 			));

@@ -170,7 +170,7 @@ jQuery(function($) {
 
 	// load on scroll
 	var throbber = new Image();
-	throbber.src = '/core/components/com_hubgraph/assets/throbber.gif';
+	throbber.src = '/core/components/com_hubgraph/site/assets/throbber.gif';
 	throbber = $(throbber).addClass('throbber');
 	var pageList = $('.pages'), page = pageList.find('.current').text()*1, maxPage = pageList.find('li:last-child').text().replace(/\s/g, '')*1, working = false;
 	$('.results').css('borderBottom', 0);
@@ -196,7 +196,7 @@ jQuery(function($) {
 	$(document.body).append('<style type="text/css">.result:hover .related { visibility: visible; }</style>');
 	$('.related').click(function(evt) {
 		var el = $(evt.target),
-		throbber = $('<img src="/core/components/com_hubgraph/assets/throbber.gif" class="throbber related" />');
+		throbber = $('<img src="/core/components/com_hubgraph/site/assets/throbber.gif" class="throbber related" />');
 		el.replaceWith(throbber);
 		$.get('/hubgraph?task=getRelated&domain=' + encodeURIComponent(el.data('domain')) + '&id=' + encodeURIComponent(el.data('id')), function(res) {
 			if (!res || !res.length) {

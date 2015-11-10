@@ -1,5 +1,5 @@
 <?php
-defined('JPATH_BASE') or die();
+defined('_HZEXEC_') or die();
 
 require 'Inflect.php';
 
@@ -22,7 +22,7 @@ foreach (array('SCRIPT_URL', 'URL', 'REDIRECT_SCRIPT_URL', 'REDIRECT_URL') as $k
 		break;
 	}
 }
-$basePath = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', dirname(__FILE__));
+$basePath = preg_replace('#^'.preg_quote(PATH_ROOT).'#', '', __DIR__);
 
 
 \Pathway::append('Search', $base);

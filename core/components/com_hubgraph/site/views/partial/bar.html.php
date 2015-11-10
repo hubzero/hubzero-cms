@@ -1,4 +1,6 @@
-<?php defined('JPATH_BASE') or die(); ?>
+<?php
+defined('_HZEXEC_') or die();
+?>
 <div class="search-bar">
 	<input type="text" name="terms" class="terms" autocomplete="off" value="<?php echo str_replace('"', '&quot;', $req->getTerms()); ?>" />
 	<a href="<?php echo preg_replace('/[?&]+$/', '', $base.($_SERVER['QUERY_STRING'] ? '?'.preg_replace('/^&/', '', preg_replace('/&?terms=[^&]*/', '', urldecode($_SERVER['QUERY_STRING']))) : '')); ?>"></a>

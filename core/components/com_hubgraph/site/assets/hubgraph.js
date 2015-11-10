@@ -1,6 +1,6 @@
 jQuery(function($) {
 	var throbber = new Image();
-	throbber.src = '/core/components/com_hubgraph/resources/throbber.gif';
+	throbber.src = '/core/components/com_hubgraph/site/assets/throbber.gif';
 
 	var request = {
 		'tagString': '',
