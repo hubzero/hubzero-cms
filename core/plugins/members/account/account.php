@@ -184,6 +184,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'overview');
 
 		// Get linked accounts, if any
+		Plugin::import('authentication');
 		$view->domains_avail = Plugin::byType('authentication');
 		$view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get("id"));
 
