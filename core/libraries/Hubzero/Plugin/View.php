@@ -258,7 +258,7 @@ class View extends AbstractView
 				$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 
 				// set the alternative template search dir
-				if (isset($app))
+				if (\App::has('template'))
 				{
 					$this->_addPath(
 						'template',
