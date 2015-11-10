@@ -1,4 +1,5 @@
-<?php defined('JPATH_BASE') or die();
+<?php
+defined('_HZEXEC_') or die();
 
 require_once 'db.php';
 
@@ -11,7 +12,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	private static $inst;
 	private static $defaultSettings = array(
 		'host' => 'unix:///var/run/hubgraph/hubgraph-server.sock',
-	        'port' => NULL,
+		'port' => NULL,
 		'showTagCloud' => TRUE,
 		'enabledOptions' => ''
 	);
@@ -29,14 +30,8 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	{
 		if (!self::$inst)
 		{
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$query = 'SELECT params FROM jos_components WHERE `option` = \'com_hubgraph\'';
-			}
-			else
-			{
-				$query = 'SELECT params FROM jos_extensions WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
-			}
+			$query = 'SELECT params FROM jos_extensions WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
+
 			$conf = Db::scalarQuery($query);
 			if ($conf)
 			{
@@ -63,14 +58,10 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	public function save()
 	{
 		$params = json_encode($this->settings);
-		if (version_compare(JVERSION, '1.6', 'lt')) {
-			$updateQuery = 'UPDATE jos_components SET params = ? WHERE `option` = \'com_hubgraph\'';
-			$insertQuery = 'INSERT INTO jos_components(name, `option`, params) VALUES (\'HubGraph\', \'com_hubgraph\', ?)';
-		}
-		else {
-			$updateQuery = 'UPDATE jos_extensions SET params = ? WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
-			$insertQuery = 'INSERT INTO jos_extensions(name, `type`, `element`, params) VALUES (\'HubGraph\', \'component\', \'com_hubgraph\', ?)';
-		}
+
+		$updateQuery = 'UPDATE jos_extensions SET params = ? WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
+		$insertQuery = 'INSERT INTO jos_extensions(name, `type`, `element`, params) VALUES (\'HubGraph\', \'component\', \'com_hubgraph\', ?)';
+
 		if (!Db::update($updateQuery, array($params))) {
 			Db::execute($insertQuery, array($params));
 		}

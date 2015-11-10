@@ -1,4 +1,5 @@
-<?php defined('JPATH_BASE') or die();
+<?php
+defined('_HZEXEC_') or die();
 
 $doc = App::get('document');
 if (!defined('HG_INLINE')) {
