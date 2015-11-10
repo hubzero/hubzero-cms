@@ -134,7 +134,7 @@ foreach ($assets as $asset)
 
 	if ($isValidForm)
 	{
-		$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+		$dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
 
 		switch ($dep->getState())
 		{
