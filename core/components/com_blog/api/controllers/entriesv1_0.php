@@ -470,7 +470,7 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 		}
 
-		if (!$row->bind($fields))
+		if (!$row->set($fields))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
 		}
@@ -524,7 +524,7 @@ class Entriesv1_0 extends ApiController
 		{
 			$row = Entry::oneOrNew(intval($id));
 
-			if (!$row->get('it'))
+			if (!$row->get('id'))
 			{
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 			}
