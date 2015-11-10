@@ -71,6 +71,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_SESSION', 'sessnum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_OWNER', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_VIEWER', 'viewuser', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_STARTED', 'start', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_LAST_ACCESSED', 'accesstime', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_TOOL', 'appname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -80,7 +81,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -104,6 +105,9 @@ if ($this->rows)
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=<?php echo $row->username; ?>">
 						<span><?php echo $this->escape($row->username); ?></span>
 					</a>
+				</td>
+				<td>
+					<span><?php echo $this->escape($row->viewuser); ?></span>
 				</td>
 				<td>
 					<time datetime="<?php echo $this->escape($row->start); ?>">
