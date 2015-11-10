@@ -1165,6 +1165,7 @@ class Resource extends Object
 		{
 			$content = stripslashes($this->resource->fulltxt);
 			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+			$content = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
 
 			$this->set('description', trim($content));
 		}
