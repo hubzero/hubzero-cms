@@ -169,16 +169,19 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$lines = $this->database->loadObjectList();
 
 	$data = array();
+	$data['tickets']['id'] = 0;
 	$data['tickets']['create'] = 0;
 	$data['tickets']['read'] = 0;
 	$data['tickets']['update'] = 0;
 	$data['tickets']['delete'] = 0;
 
+	$data['comments']['id'] = 0;
 	$data['comments']['create'] = 0;
 	$data['comments']['read'] = 0;
 	$data['comments']['update'] = 0;
 	$data['comments']['delete'] = 0;
 
+	$data['private_comments']['id'] = 0;
 	$data['private_comments']['create'] = 0;
 	$data['private_comments']['read'] = 0;
 	$data['private_comments']['update'] = 0;
