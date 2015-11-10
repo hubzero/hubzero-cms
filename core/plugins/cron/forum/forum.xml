@@ -43,7 +43,7 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/mail">
+			<fieldset name="basic" addfieldpath="/core/plugins/mail">
 				<field name="email_transport_mechanism" type="mailers" default="0" label="PLG_CRON_FORUM_EMAIL_TRANSPORT_MECHANISM_LABEL" description="PLG_CRON_FORUM_EMAIL_TRANSPORT_MECHANISM_DESC" />
 			</fieldset>
 		</fields>

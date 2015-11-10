@@ -144,6 +144,9 @@
 		content: "\2191";
 		font-family: "Fontcons";
 	}
+	.group_forum .relative-container {
+		position: relative;
+	}
 
 	.group_forum .entry-details a {
 		color: #666;
@@ -283,10 +286,13 @@
 		background: #FFFFFF;
 		border: 2px solid #CCCCCC;
 		padding: 20px;
-		top: 0;
-		right: 246px;
+		top: 53px;
+		right: 274px;
 		width: 300px;
 		border-radius: 5px;
+	}
+	.edit-forum-options-panel label {
+		display: inline;
 	}
 	.edit-forum-options-panel:before,
 	.edit-forum-options-panel:after {
