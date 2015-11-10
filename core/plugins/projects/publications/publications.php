@@ -2118,12 +2118,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->version->set('modified_by', $this->_uid);
 
 		// Issue DOI
-		/*if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
+		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
 			// Get DOI service
 			$doiService = new \Components\Publications\Models\Doi($pub);
 			$extended = $state == 5 ? false : true;
-			$doi = $doiService->register($extended);
+			$doi = $doiService->register($extended, ($state == 5 ? 'reserved' : 'public'));
 
 			// Store DOI
 			if ($doi)
@@ -2134,10 +2134,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI')
-					. ' ' . $doiService->getError());
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
 			}
-		}*/
+		}
 
 		// Proceed if no error
 		if (!$this->getError())

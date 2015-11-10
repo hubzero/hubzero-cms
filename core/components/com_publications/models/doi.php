@@ -346,10 +346,10 @@ class Doi extends Object
 	/**
 	 * Start input
 	 *
-	 *
-	 * @return	   response string
+	 * @param   string  $status  DOI status [public, reserved]
+	 * @return  string  response string
 	 */
-	public function startInput()
+	public function startInput($status = 'public')
 	{
 		if (!$this->checkRequired())
 		{
@@ -364,6 +364,14 @@ class Doi extends Object
 		$input .= "datacite.publicationyear: " . $this->get('pubYear') . "\n";
 		$input .= "datacite.resourcetype: " . $this->get('resourceType') . "\n";
 		$input .= "_profile: datacite". "\n";
+
+		$status = strtolower($status);
+		if (!in_array($status, array('public', 'reserved')))
+		{
+			$status = 'public';
+		}
+
+		$input .= "_status: " . $status . "\n";
 
 		return $input;
 	}
@@ -415,9 +423,11 @@ class Doi extends Object
 	/**
 	 * Register a DOI
 	 *
-	 * @return boolean
+	 * @param   boolean  $sendXml
+	 * @param   string   $status  DOI status [public, reserved]
+	 * @return  boolean
 	 */
-	public function register($sendXml = false)
+	public function register($sendXml = false, $status = 'public')
 	{
 		if (!$this->on())
 		{
@@ -425,7 +435,7 @@ class Doi extends Object
 			return false;
 		}
 
-		$input = $this->startInput();
+		$input = $this->startInput($status);
 		if (!$input)
 		{
 			// Cannot procees if any required fields are missing
@@ -469,9 +479,12 @@ class Doi extends Object
 	/**
 	 * Update a DOI
 	 *
-	 * @return boolean
+	 * @param   string   $doi
+	 * @param   boolean  $sendXml
+	 * @param   string   $status  DOI status [public, reserved]
+	 * @return  boolean
 	 */
-	public function update($doi = NULL, $sendXml = false)
+	public function update($doi = NULL, $sendXml = false, $status = 'public')
 	{
 		$doi = $doi ? $doi : $this->get('doi');
 		if (!$doi)
@@ -492,7 +505,7 @@ class Doi extends Object
 			return false;
 		}
 
-		$input = $this->startInput();
+		$input = $this->startInput($status);
 		if (!$input)
 		{
 			// Cannot procees if any required fields are missing
