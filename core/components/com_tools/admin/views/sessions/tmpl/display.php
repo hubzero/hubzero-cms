@@ -70,18 +70,19 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_SESSION', 'sessnum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_TOOLS_COL_OWNER', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_COL_STARTED', 'start', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_LAST_ACCESSED', 'accesstime', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_TOOL', 'appname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_COL_EXEC_HOST', 'exechost', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SESSION', 'sessnum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_OWNER', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VIEWER', 'viewuser', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STARTED', 'start', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_LAST_ACCESSED', 'accesstime', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TOOL', 'appname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_EXEC_HOST', 'exechost', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_STOP'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8">
+				<td colspan="9">
 					<?php
 					// Initiate paging
 					echo $this->pagination(
@@ -115,6 +116,9 @@ function submitbutton(pressbutton)
 							<span><?php echo $this->escape($row->username); ?></span>
 						</a>
 					</td>
+					<td class="priority-2">
+						<span><?php echo $this->escape($row->viewuser); ?></span>
+					</td>
 					<td class="priority-4">
 						<time datetime="<?php echo $this->escape($row->start); ?>">
 							<?php echo $this->escape($row->start); ?>
@@ -136,7 +140,7 @@ function submitbutton(pressbutton)
 						</a>
 					</td>
 					<td>
-						<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=remove&id[]=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
+						<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=remove&id=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
 							<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
 						</a>
 					</td>
