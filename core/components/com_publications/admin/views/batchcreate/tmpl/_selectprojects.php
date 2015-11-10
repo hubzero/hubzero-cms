@@ -41,5 +41,3 @@ foreach ($this->projects as $project)
 }
 $html .= '</select>'."\n";
 echo $html;
-
-?>

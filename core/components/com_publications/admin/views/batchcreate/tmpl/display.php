@@ -38,41 +38,44 @@ $this->css('batchcreate');
 $this->js('batchcreate');
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=process' ); ?>" method="post" name="adminForm" id="adminForm" class="batchupload" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=process' ); ?>" method="post" name="adminForm" id="item-form" class="batchupload" enctype="multipart/form-data">
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_IMPORT'); ?></span></legend>
-		<div class="input-wrap">
-			<div class="col width-70 fltlft">
-				<div class="input-wrap">
-					<label for="projectid"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ADD_IN_PROJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<?php 
-					// Draw project list
-					$this->view('_selectprojects')
-					     ->set('projects', $this->projects)
-					     ->display(); ?>
-				</div>
-				<div class="input-wrap file-import" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACH_HINT'); ?>">
-					<label for="field-file">
-						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DATA'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					</label>
-					<input type="file" name="file" id="field-file" />
-				</div>
-				<div class="input-wrap">
-					<input type="submit" name="batch_submit" id="batch_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_UPLOAD_AND_PREPROCESS'); ?>" />
-				</div>
+
+		<div class="col width-70 fltlft">
+			<div class="input-wrap">
+				<label for="projectid">
+					<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ADD_IN_PROJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+				</label>
+				<?php 
+				// Draw project list
+				$this->view('_selectprojects')
+				     ->set('projects', $this->projects)
+				     ->display(); ?>
 			</div>
-			<div class="input-wrap col width-30 fltrt">
-				<p><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_XSD_INSTRUCT'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=xsd'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_XSD'); ?></a></p>
+			<div class="input-wrap file-import" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACH_HINT'); ?>">
+				<label for="field-file">
+					<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DATA'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+				</label>
+				<input type="file" name="file" id="field-file" />
+			</div>
+			<div class="input-wrap">
+				<input type="submit" name="batch_submit" id="batch_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_UPLOAD_AND_PREPROCESS'); ?>" />
 			</div>
 		</div>
+		<div class="col width-30 fltrt">
+			<p><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_XSD_INSTRUCT'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=xsd'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_XSD'); ?></a></p>
+		</div>
+
 		<div class="clr"></div>
+
 		<div class="output-wrap" id="results">
 		</div>
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="process" />
-	<input type="hidden" name="base" value="files" />
-	<?php echo Html::input('token'); ?>
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="process" />
+		<input type="hidden" name="base" value="files" />
+		<?php echo Html::input('token'); ?>
 	</fieldset>
 </form>
