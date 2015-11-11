@@ -555,7 +555,7 @@ class Admin extends SiteController
 			$newtool = $status['toolname'] . '_r' . $status['revision'];
 
 			// get version id
-			$currentid = $hztv_cur->id;
+			$currentid = (is_object($hztv_cur) ? $hztv_cur->id : null);
 			$new       = ($currentid) ? 0 : 1;
 			$devid     = $hztv_dev->id;
 
