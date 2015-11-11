@@ -208,7 +208,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$client->setClientSecret($this->params->get('app_secret'));
 
 		// Create OAuth2 Instance
-		$oauth2 = new \Google_Service_OAuth2($client);
+		$oauth2 = new Google_Service_Oauth2($client);
 
 		// Check if there's an active token in the session
 		$jsession = App::get('session');
