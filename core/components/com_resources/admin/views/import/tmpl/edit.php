@@ -140,7 +140,9 @@ function submitbutton(pressbutton)
 					<?php if (isset($hooks->postparse)) : ?>
 						<?php foreach ($hooks->postparse as $hook) : ?>
 							<?php $importHook = $this->hooks->fetch('id', $hook); ?>
+							<?php if (!empty($importHook)): ?>
 							<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+							<?php endif; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 
@@ -166,7 +168,9 @@ function submitbutton(pressbutton)
 				<select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple" size="4">
 					<?php foreach ($hooks->postmap as $hook) : ?>
 						<?php $importHook = $this->hooks->fetch('id', $hook); ?>
+						<?php if (!empty($importHook)): ?>
 						<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+						<?php endif; ?>
 					<?php endforeach; ?>
 
 					<?php foreach ($this->hooks as $hook): ?>
@@ -191,7 +195,9 @@ function submitbutton(pressbutton)
 				<select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple" size="4">
 					<?php foreach ($hooks->postconvert as $hook) : ?>
 						<?php $importHook = $this->hooks->fetch('id', $hook); ?>
+						<?php if (!empty($importHook)): ?>
 						<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+						<?php endif; ?>
 					<?php endforeach; ?>
 					<?php foreach ($this->hooks as $hook): ?>
 						<?php if ($hook->get('type') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) { continue; } ?>
@@ -322,3 +328,4 @@ function submitbutton(pressbutton)
 
 	<?php echo Html::input('token'); ?>
 </form>
+
