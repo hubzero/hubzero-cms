@@ -650,9 +650,9 @@ class Admin extends SiteController
 				// transfer screenshots
 				if ($devid && $currentid)
 				{
-					include_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'screenshots.php');
+					include_once(__DIR__ . DS . 'screenshots.php');
 
-					$screenshots = new ToolsControllerScreenshots();
+					$screenshots = new Screenshots();
 					if ($screenshots->transfer($devid, $currentid, $status['resourceid']))
 					{
 						$this->setMessage(Lang::txt('COM_TOOLS_SCREENSHOTS_TRANSFERRED'));
@@ -663,9 +663,9 @@ class Admin extends SiteController
 					}
 				}
 
-				include_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'resource.php');
+				include_once(__DIR__ . DS . 'resource.php');
 
-				$resource = new ToolsControllerResource();
+				$resource = new Resource();
 				// update and publish resource page
 				$resource->updatePage($status['resourceid'], $status, '1', $new);
 			}
@@ -709,11 +709,7 @@ class Admin extends SiteController
 			return false;
 		}
 
-		$tarball_path = $this->config->get('sourcecodePath','site/protected/source');
-		if ($tarball_path[0] != DS)
-		{
-			$tarball_path = rtrim(PATH_CORE . DS . $tarball_path, DS);
-		}
+		$tarball_path = PATH_APP . DS . trim($this->config->get('sourcecodePath','site/protected/source'), DS);
 
 		Log::debug("finalizeTool(): checkpoint 2");
 
