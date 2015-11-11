@@ -132,7 +132,7 @@ if ($mode != 'preview')
 										case 'mpe':
 										case 'mp2':
 										case 'mpv2':
-											$videos++;
+											$video++;
 										break;
 
 										case 'mp3':
