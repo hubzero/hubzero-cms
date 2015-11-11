@@ -588,7 +588,7 @@ class FileMacro extends WikiMacro
 				}
 				else
 				{
-					$attr['alt'] = '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a></div>';
+					$attr['alt'] = '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . \Request::scheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a></div>';
 				}
 
 				$html  = '<script type="text/javascript" src="' . \Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
