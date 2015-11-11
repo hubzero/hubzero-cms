@@ -5,6 +5,7 @@
  */
 abstract class PPXmlMessage
 {
+
 	/**
 	 * @return string
 	 */
@@ -13,21 +14,19 @@ abstract class PPXmlMessage
 		return $this->toXMLString();
 	}
 
+
+
 	/**
 	 * @return string
 	 */
 	public function toXMLString()
 	{
-		if (count($properties = get_object_vars($this)) >= 2 && array_key_exists('value', $properties))
-		{
+		if (count($properties = get_object_vars($this)) >= 2 && array_key_exists('value', $properties)) {
 			$attributes = array();
-			foreach (array_keys($properties) as $property)
-			{
+			foreach (array_keys($properties) as $property) {
 				if ($property === 'value') continue;
-				if (($annots = PPUtils::propertyAnnotations($this, $property)) && isset($annots['attribute']))
-				{
-					if (($propertyValue = $this->{$property}) === NULL || $propertyValue == NULL)
-					{
+				if (($annots = PPUtils::propertyAnnotations($this, $property)) && isset($annots['attribute'])) {
+					if (($propertyValue = $this->{$property}) === NULL || $propertyValue == NULL) {
 						$attributes[] = NULL;
 						continue;
 					}
@@ -36,42 +35,35 @@ abstract class PPXmlMessage
 				}
 			}
 
-			if (count($attributes))
-			{
+			if (count($attributes)) {
 				return implode(' ', $attributes) . '>' . PPUtils::escapeInvalidXmlCharsRegex($this->value);
 			}
 		}
 
 		$xml = array();
-		foreach ($properties as $property => $defaultValue)
-		{
-			if (($propertyValue = $this->{$property}) === NULL || $propertyValue == NULL)
-			{
+		foreach ($properties as $property => $defaultValue) {
+			if (($propertyValue = $this->{$property}) === NULL || $propertyValue == NULL) {
 				continue;
 			}
 
-			if (is_array($defaultValue) || is_array($propertyValue))
-			{
-				foreach ($propertyValue as $item)
-				{
-					if (!is_object($item))
-					{
+			if (is_array($defaultValue) || is_array($propertyValue)) {
+				foreach ($propertyValue as $item) {
+					if (!is_object($item)) {
 						$xml[] = $this->buildProperty($property, $item);
-					}
-					else
-					{
+					}else{
 						$xml[] = $this->buildProperty($property, $item);
 					}
 				}
-			}
-			else
-			{
+
+			} else {
 				$xml[] = $this->buildProperty($property, $propertyValue);
 			}
 		}
 
 		return implode($xml);
 	}
+
+
 
 	/**
 	 * @param string $property
@@ -82,28 +74,22 @@ abstract class PPXmlMessage
 	private function buildProperty($property, $value, $namespace = 'ebl')
 	{
 		$annotations = PPUtils::propertyAnnotations($this, $property);
-		if (!empty($annotations['namespace']))
-		{
+		if (!empty($annotations['namespace'])) {
 			$namespace = $annotations['namespace'];
 		}
-		if (!empty($annotations['name']))
-		{
+		if (!empty($annotations['name'])) {
 			$property = $annotations['name'];
 		}
 
 		$el = '<' . $namespace . ':' . $property;
-		if (!is_object($value))
-		{
+		if (!is_object($value)) {
 			$el .= '>' . PPUtils::escapeInvalidXmlCharsRegex($value);
-		}
-		else
-		{
-			if (substr($value = $value->toXMLString(), 0, 1) === '<' || $value=='')
-			{
+
+		} else {
+			if (substr($value = $value->toXMLString(), 0, 1) === '<' || $value=='') {
 				$el .= '>' . $value;
-			}
-			else
-			{
+
+			} else {
 				$el .= ' ' . $value;
 			}
 		}
@@ -111,35 +97,32 @@ abstract class PPXmlMessage
 		return $el . '</' . $namespace . ':' . $property . '>';
 	}
 
+
+
 	/**
 	 * @param array $map
 	 * @param string $prefix
 	 */
 	public function init(array $map = array(), $prefix = '')
 	{
-		if (empty($map))
-		{
+		if (empty($map)) {
 			return;
 		}
 
-		if (($first = reset($map)) && !is_array($first) && !is_numeric(key($map)))
-		{
+		if (($first = reset($map)) && !is_array($first) && !is_numeric(key($map))) {
 			parent::init($map, $prefix);
 			return;
 		}
 
 		$propertiesMap = PPUtils::objectProperties($this);
-		$arrayCtr = array();
-		foreach ($map as $element)
-		{
-			if (empty($element) || empty($element['name']))
-			{
+		$arrayCtr = array();		
+		foreach ($map as $element) {
+		
+			if (empty($element) || empty($element['name'])) {
 				continue;
-			}
-			elseif (!array_key_exists($property = strtolower($element['name']), $propertiesMap))
-			{
-				if (!preg_match('~^(.+)[\[\(](\d+)[\]\)]$~', $property, $m))
-				{
+
+			} elseif (!array_key_exists($property = strtolower($element['name']), $propertiesMap)) {
+				if (!preg_match('~^(.+)[\[\(](\d+)[\]\)]$~', $property, $m)) {
 					continue;
 				}
 
@@ -147,23 +130,19 @@ abstract class PPXmlMessage
 				$element['num'] = $m[2];
 			}
 			$element['name'] = $propertiesMap[strtolower($element['name'])];
-			if (PPUtils::isPropertyArray($this, $element['name']))
-			{
-				$arrayCtr[$element['name']] = isset($arrayCtr[$element['name']]) ? ($arrayCtr[$element['name']]+1) : 0;
+			if(PPUtils::isPropertyArray($this, $element['name'])) {				
+				$arrayCtr[$element['name']] = isset($arrayCtr[$element['name']]) ? ($arrayCtr[$element['name']]+1) : 0;				
 				$element['num'] = $arrayCtr[$element['name']];
-			}
-			if (!empty($element["attributes"]) && is_array($element["attributes"]))
-			{
-				foreach ($element["attributes"] as $key => $val)
-				{
+			} 
+			if (!empty($element["attributes"]) && is_array($element["attributes"])) {
+				foreach ($element["attributes"] as $key => $val) {
 					$element["children"][] = array(
 						'name' => $key,
 						'text' => $val,
 					);
 				}
 
-				if (isset($element['text']))
-				{
+				if (isset($element['text'])) {
 					$element["children"][] = array(
 						'name' => 'value',
 						'text' => $element['text'],
@@ -171,17 +150,17 @@ abstract class PPXmlMessage
 				}
 
 				$this->fillRelation($element['name'], $element);
-			}
-			elseif (!empty($element['text']))
-			{
+
+			} elseif (!empty($element['text'])) {
 				$this->{$element['name']} = $element['text'];
-			}
-			elseif (is_array($element["children"]) && !empty($element["children"]))
-			{
+
+			} elseif (is_array($element["children"]) && !empty($element["children"])) {
 				$this->fillRelation($element['name'], $element);
 			}
-		}
+		}		
 	}
+
+
 
 	/**
 	 * @param string $property
@@ -189,21 +168,19 @@ abstract class PPXmlMessage
 	 */
 	private function fillRelation($property, array $element)
 	{
-		if (!class_exists($type = PPUtils::propertyType($this, $property)))
-		{
+		if (!class_exists($type = PPUtils::propertyType($this, $property))) {
 			trigger_error("Class $type not found.", E_USER_NOTICE);
 			return; // just ignore
 		}
 
-		if (isset($element['num']))
-		{ // array of objects
+		if (isset($element['num'])) { // array of objects
 			$this->{$property}[$element['num']] = $item = new $type();
 			$item->init($element['children']);
-		}
-		else
-		{
+
+		} else {
 			$this->{$property} = new $type();
 			$this->{$property}->init($element["children"]);
 		}
 	}
+
 }

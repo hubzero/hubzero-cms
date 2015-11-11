@@ -2,35 +2,33 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * UPay payment provider
@@ -54,11 +52,11 @@ class PaymentProvider
 	 */
 	public function __construct()
 	{
-		$hubName  = Config::get('sitename');
+		$hubName  = Config::get('config.sitename');
 
 		$params = Component::params(Request::getVar('option'));
 
-		$this->options = new stdClass();
+		$this->options = new \stdClass();
 		// Default action is payment
 		$this->options->postbackAction = 'payment';
 		$this->options->transactionName = "$hubName online purchase";
@@ -67,7 +65,7 @@ class PaymentProvider
 		// Posting Key should be configured in uPay to be the same as a validation key (UPAY_VALIDATION_KEY)
 		$this->options->postingKey = $this->options->validationKey;
 
-		$this->siteDetails = new stdClass();
+		$this->siteDetails = new \stdClass();
 		$this->siteDetails->siteId = $params->get('UPAY_SITE_ID');
 	}
 
@@ -82,7 +80,8 @@ class PaymentProvider
 		$this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
 		$this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
 		$this->transactionDetails['VALIDATION_KEY'] = $this->generateValidationKey();
-		$this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' . $transactionDetails->token . '-' . $transactionDetails->info->tId;
+		$this->transactionDetails['SUCCESS_LINK'] = JURI::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
+													$transactionDetails->token . '-' . $transactionDetails->info->tId;
 	}
 
 	/**
@@ -124,8 +123,7 @@ class PaymentProvider
 
 		// Get transaction ID from the data received
 		$tId = $postBack['EXT_TRANS_ID'];
-		if (empty($tId) || !is_numeric($tId))
-		{
+		if (empty($tId) || !is_numeric($tId)) {
 			return false;
 		}
 
@@ -145,6 +143,7 @@ class PaymentProvider
 	{
 		return $this->options->postbackAction;
 	}
+
 
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment
@@ -180,7 +179,7 @@ class PaymentProvider
 		$errorMessage = sprintf(Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_ERROR'), $payment, $moreLess, $tAmount);
 
 		// Set error
-		$this->error = new stdClass();
+		$this->error = new \stdClass();
 		$this->error->msg = $errorMessage;
 
 		return false;
@@ -194,14 +193,11 @@ class PaymentProvider
 	 */
 	private function getPostURL()
 	{
-		//return('http://www.conmerge.com/temp/post.php');
 		if ($this->options->env == 'LIVE')
 		{
 			return 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
 		}
-		else
-		{
-			//return 'http://www.conmerge.com/temp/post.php';
+		else {
 			return 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
 		}
 	}
@@ -215,4 +211,5 @@ class PaymentProvider
 		$base = $this->options->validationKey . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
 		return base64_encode(md5($base, true));
 	}
+
 }

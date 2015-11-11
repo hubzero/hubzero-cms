@@ -2,42 +2,47 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Cart\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Helper.php');
+use Hubzero\Base\Model;
+use Lang;
+use Components\Storefront\Models\Warehouse;
+use Components\Cart\Helpers\CartHelper;
+use Components\Cart\Helpers\Audit;
+
+require_once(dirname(__DIR__) . DS. 'helpers' . DS . 'Helper.php');
+require_once(dirname(__DIR__) . DS. 'helpers' . DS . 'Audit.php');
+require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Core shopping cart
  */
-abstract class CartModelCart
+abstract class Cart
 {
 	// Database instance
 	var $db = NULL;
@@ -65,10 +70,13 @@ abstract class CartModelCart
 	public function __construct()
 	{
 		// Initialize DB
-		$this->_db = App::get('db');
+		$this->_db = \App::get('db');
 
 		// Load language file
-		Lang::load('com_cart');
+		\App::get('language')->load('com_cart');
+		//JFactory::getLanguage()->load('com_cart');
+
+		$this->warehouse = new Warehouse();
 	}
 
 	/**
@@ -105,7 +113,7 @@ abstract class CartModelCart
 	public function delete($sId)
 	{
 		// Not sure if it is still in use
-		throw new Exception('I thought it was not in use anymore...');
+		throw new \Exception('I thought it was not in use anymore...');
 		$this->doItem($sId, 'set', 0);
 
 		// Update session
@@ -120,9 +128,9 @@ abstract class CartModelCart
 	 */
 	public function getSavedShippingAddresses($uId)
 	{
-		if (!Cart_Helper::isNonNegativeInt($uId, false))
+		if (!CartHelper::isNonNegativeInt($uId, false))
 		{
-			throw new Exception(JGLOBAL_AUTH_USER_NOT_FOUND);
+			throw new \Exception(JGLOBAL_AUTH_USER_NOT_FOUND);
 		}
 
 		// Get all user addresses
@@ -158,7 +166,7 @@ abstract class CartModelCart
 		// Get just sku IDs
 		$skus = $this->_db->loadColumn();
 
-		$items = new stdClass();
+		$items = new \stdClass();
 		$items->allSkuInfo = $allSkuInfo;
 		$items->skus = $skus;
 		return $items;
@@ -268,9 +276,9 @@ abstract class CartModelCart
 	protected function doItem($sId, $mode = 'add', $qty = 1, $retainOldValue = false)
 	{
 		// Check quantity: must be a positive integer or zero
-		if (!Cart_Helper::isNonNegativeInt($qty))
+		if (!CartHelper::isNonNegativeInt($qty))
 		{
-			throw new Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
+			throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
 		}
 		elseif ($qty == 0 && !$retainOldValue)
 		{
@@ -281,7 +289,7 @@ abstract class CartModelCart
 				return;
 			}
 			else {
-				throw new Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
+				throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
 			}
 		}
 
@@ -295,25 +303,31 @@ abstract class CartModelCart
 		// If setting, ignore the current cart value
 		else
 		{
-			$skuCartInfo = new stdClass();
+			$skuCartInfo = new \stdClass();
 			$skuCartInfo->crtiQty = 0;
 		}
 
-		// Get SKU pricing and inventory level & policies
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
-		$allSkuInfo = $warehouse->getSkusInfo(array($sId));
+		// Get SKU pricing and inventory level & policies as well as permissions to access products
+		$warehouse = $this->warehouse;
+		try
+		{
+			$allSkuInfo = $warehouse->getSkuInfo($sId, false);
+		}
+		catch (\Exception $e)
+		{
+			throw new \Exception(Lang::txt($e->getMessage()));
+		}
 
 		if (empty($allSkuInfo))
 		{
-			throw new Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
+			throw new \Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
 		}
 
-		$skuInfo = $allSkuInfo[$sId]['info'];
+		$skuInfo = $allSkuInfo['info'];
 		$skuName = $skuInfo->pName;
-		if (!empty($allSkuInfo[$sId]['options']) && count($allSkuInfo[$sId]['options']))
+		if (!empty($allSkuInfo['options']) && count($allSkuInfo['options']))
 		{
-			foreach ($allSkuInfo[$sId]['options'] as $oName)
+			foreach ($allSkuInfo['options'] as $oName)
 			{
 				$skuName .= ', ' . $oName;
 			}
@@ -327,28 +341,33 @@ abstract class CartModelCart
 				// Check this SKU qty to make sure no multiple SKUs are there
 				if ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))
 				{
-					throw new Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+					//throw new \Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+					throw new \Exception($skuInfo->pName . " is already in the cart and cannot be added multiple times");
 				}
-				// Check if there is this project already in the cart (different SKU)
+				// Check if there is this product already in the cart (different SKU)
 				$allSkus = $warehouse->getProductSkus($skuInfo->pId);
-				foreach ($allSkus as $skuId)
+				if (is_array($allSkus) || is_object($allSkus))
 				{
-					// Skip the current SKU, look only at other SKUs
-					if ($skuId != $sId)
+					foreach ($allSkus as $skuId)
 					{
-						$otherSkuInfo = $this->getCartItem($skuId);
-						// Error if there is already another SKU of the same product in the cart
-						if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0)
+						// Skip the current SKU, look only at other SKUs
+						if ($skuId != $sId)
 						{
-							throw new Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+							$otherSkuInfo = $this->getCartItem($skuId);
+							// Error if there is already another SKU of the same product in the cart
+							if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0)
+							{
+								//throw new \Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+								throw new \Exception($skuInfo->pName . " is already in the cart and cannot be added multiple times");
+							}
 						}
-					}
 
+					}
 				}
 			}
 			// Don't allow purchasing multiple SKUs for those that are not allowed
 			if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))) {
-				throw new Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+				throw new \Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
 			}
 
 			// Make sure there is enough inventory
@@ -357,12 +376,12 @@ abstract class CartModelCart
 				// See if qty can be added
 				if ($qty > $skuInfo->sInventory)
 				{
-					throw new Exception(Lang::txt('COM_CART_NOT_ENOUGH_INVENTORY'));
+					throw new \Exception(Lang::txt('COM_CART_NOT_ENOUGH_INVENTORY'));
 				}
 				elseif (!empty($skuCartInfo->crtiQty) && ($qty + $skuCartInfo->crtiQty > $skuInfo->sInventory))
 				{
 					// This is how much they can add: $skuInfo->sInventory - $skuCartInfo->crtiQty
-					throw new Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
+					throw new \Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
 				}
 			}
 		}
@@ -370,13 +389,15 @@ abstract class CartModelCart
 		// Run the auditor
 		if ($mode != 'sync')
 		{
-			require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
+			//require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
 			$auditor = Audit::getAuditor($skuInfo, $this->crtId);
+			$auditor->setSku($skuInfo->sId);
+			//print_r($auditor); die;
 			$auditorResponse = $auditor->audit();
 
 			if ($auditorResponse->status == 'error')
 			{
-				throw new Exception($skuInfo->pName . $auditor->getResponseError());
+				throw new \Exception($skuInfo->pName . ', ' . $skuInfo->sSku . $auditor->getResponseError());
 			}
 		}
 
@@ -411,6 +432,7 @@ abstract class CartModelCart
 		// keep the qty value if syncing
 
 		$this->_db->setQuery($sql);
+		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$this->_db->query();
 	}
 
@@ -440,9 +462,9 @@ abstract class CartModelCart
 	 */
 	public static function verifySecurityToken($token, $tId)
 	{
-		if (!Cart_Helper::isNonNegativeInt($tId, false))
+		if (!CartHelper::isNonNegativeInt($tId, false))
 		{
-			throw new Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
+			throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
 		}
 		return md5(self::$securitySalt . $tId) == $token;
 	}
@@ -454,7 +476,7 @@ abstract class CartModelCart
 	 */
 	public static function getCartUser($crtId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		$sql = 'SELECT `uidNumber` AS uId FROM `#__cart_carts` WHERE `crtId` = ' . $db->quote($crtId);
 		$db->setQuery($sql);
@@ -476,7 +498,7 @@ abstract class CartModelCart
 	 */
 	protected static function removeItem($sId, $qty, $crtId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		$sql = "UPDATE `#__cart_cart_items` SET `crtiQty` = `crtiQty` - {$qty} WHERE `sId` = '{$sId}' AND `crtId` = {$crtId}";
 		$db->setQuery($sql);
@@ -491,7 +513,7 @@ abstract class CartModelCart
 	 */
 	protected static function kill($crtId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		// delete cart items
 		$sql = "DELETE FROM `#__cart_cart_items` WHERE `crtId` = {$crtId}";
@@ -534,7 +556,7 @@ abstract class CartModelCart
 		}
 
 		// Can be purchased -- get transaction items
-		$transaction = new stdClass();
+		$transaction = new \stdClass();
 		$transaction->items = $items;
 
 		$tInfo = self::getTransactionInfo($tId);
@@ -554,7 +576,7 @@ abstract class CartModelCart
 	 */
 	protected static function getTransactionItems($tId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		$sql = "SELECT `sId`, `tiQty`, `tiPrice` FROM `#__cart_transaction_items` ti WHERE ti.`tId` = {$tId}";
 		$db->setQuery($sql);
@@ -568,15 +590,15 @@ abstract class CartModelCart
 		$allSkuInfo = $db->loadObjectList('sId');
 		$skus = $db->loadColumn();
 
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+
+		$warehouse = new Warehouse();
 
 		$skuInfo = $warehouse->getSkusInfo($skus);
 
 		// Update skuInfo with transaction info
 		foreach ($skuInfo as $sId => $sku)
 		{
-			$transactionInfo = new stdClass();
+			$transactionInfo = new \stdClass();
 			$transactionInfo->qty = $allSkuInfo[$sId]->tiQty;
 			$transactionInfo->tiPrice = $allSkuInfo[$sId]->tiPrice;
 			$skuInfo[$sId]['transactionInfo'] = $transactionInfo;
@@ -599,7 +621,7 @@ abstract class CartModelCart
 	 */
 	protected static function getTransactionInfo($tId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		// Get info
 		$sql = 'SELECT t.*, TIMESTAMPDIFF(MINUTE, t.`tLastUpdated`, NOW()) AS tAge, ti.*
@@ -631,12 +653,12 @@ abstract class CartModelCart
 		// Extract transaction items
 		$transactionItems = unserialize($tInfo->info->tiItems);
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'ProductHandler.php');
+		require_once (dirname(__DIR__) . DS . 'helpers' . DS . 'ProductHandler.php');
 
 		// Handle each item in the transaction
 		foreach ($transactionItems as $sId => $item)
 		{
-			$productHandler = new Cart_ProductHandler($item, $crtId);
+			$productHandler = new \Components\Cart\Helpers\CartProductHandler($item, $crtId);
 			$productHandler->handle();
 		}
 
@@ -650,7 +672,7 @@ abstract class CartModelCart
 		self::removeTransactionCouponsFromCart($tInfo);
 
 		/* Clean up cart */
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		// Delete zero and negative qty items in the cart
 		$sql = "DELETE FROM `#__cart_cart_items` WHERE `crtiQty` <= 0 AND `crtId` = {$tInfo->info->crtId}";
@@ -667,7 +689,7 @@ abstract class CartModelCart
 	 */
 	public static function updateTransactionStatus($status, $tId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		$sql = "UPDATE `#__cart_transactions` SET `tStatus` = '{$status}' WHERE `tId` = {$tId}";
 		$db->setQuery($sql);
@@ -733,7 +755,7 @@ abstract class CartModelCart
 			}
 		}
 
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		$sqlCoupons = '0';
 		foreach ($couponIds as $cnId)
@@ -771,7 +793,7 @@ abstract class CartModelCart
 	 */
 	public static function releaseTransaction($tId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		// Check if the transaction can be released (status is pending)
 		// Get info
@@ -788,8 +810,7 @@ abstract class CartModelCart
 		$tItems = self::getTransactionItems($tId);
 
 		/* Go through each item and return the quantity back to inventory if needed */
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = new Warehouse();
 
 		if (!empty($tItems))
 		{
@@ -811,7 +832,7 @@ abstract class CartModelCart
 	 */
 	protected static function killTransaction($tId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
 		$sql = "DELETE FROM `#__cart_transactions` WHERE `tId` = {$tId}";
 		$db->setQuery($sql);

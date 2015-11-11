@@ -6,8 +6,8 @@
  * Potential frameworks to use are PEAR logger, log4php from Apache
  */
 
-class PPLoggingLevel
-{
+class PPLoggingLevel {
+
 	// FINE Logging Level
 	const FINE = 3;
 
@@ -21,8 +21,8 @@ class PPLoggingLevel
 	const ERROR = 0;
 }
 
-class PPLoggingManager
-{
+class PPLoggingManager {
+
 	// Default Logging Level
 	const DEFAULT_LOGGING_LEVEL = 0;
 
@@ -38,8 +38,7 @@ class PPLoggingManager
 	// Configured logging file
 	private $loggerFile;
 
-	public function __construct($loggerName)
-	{
+	public function __construct($loggerName) {
 		$this->loggerName = $loggerName;
 		$config = PPConfigManager::getInstance();
 		$this->loggerFile = JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'payment.log';
@@ -47,34 +46,30 @@ class PPLoggingManager
 		$this->isLoggingEnabled = (isset($loggingEnabled)) ? $loggingEnabled : false;
 		$loggingLevel = strtoupper($config->get('log.LogLevel'));
 		$this->loggingLevel = (isset($loggingLevel) && defined("PPLoggingLevel::$loggingLevel")) ? constant("PPLoggingLevel::$loggingLevel") : PPLoggingManager::DEFAULT_LOGGING_LEVEL;
+
 	}
 
-	public function log($message, $level=PPLoggingLevel::INFO)
-	{
-		if ($this->isLoggingEnabled && ($level <= $this->loggingLevel))
-		{
+	public function log($message, $level=PPLoggingLevel::INFO) {
+		if($this->isLoggingEnabled && ($level <= $this->loggingLevel)) {
 			//echo $this->loggerFile;
 			error_log( $this->loggerName . ": $message\n", 3, $this->loggerFile);
 		}
 	}
 
-	public function error($message)
-	{
+	public function error($message) {
 		$this->log($message, PPLoggingLevel::ERROR);
 	}
 
-	public function warning($message)
-	{
+	public function warning($message) {
 		$this->log($message, PPLoggingLevel::WARN);
 	}
 
-	public function info($message)
-	{
+	public function info($message) {
 		$this->log($message, PPLoggingLevel::INFO);
 	}
 
-	public function fine($message)
-	{
+	public function fine($message) {
 		$this->log($message, PPLoggingLevel::FINE);
 	}
+
 }

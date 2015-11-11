@@ -2,14 +2,11 @@
 
 require_once 'PPGenericServiceHandler.php';
 
-class PPMerchantServiceHandler extends PPGenericServiceHandler
-{
-	public function handle($httpConfig, $request)
-	{
-		parent::handle($httpConfig, $request);
+class PPMerchantServiceHandler extends PPGenericServiceHandler {
 
-		if ($httpConfig->getHeader('X-PAYPAL-AUTHORIZATION'))
-		{
+	public function handle($httpConfig, $request) {
+		parent::handle($httpConfig, $request);
+		if($httpConfig->getHeader('X-PAYPAL-AUTHORIZATION')) {
 			$httpConfig->addHeader('X-PP-AUTHORIZATION', $httpConfig->getHeader('X-PAYPAL-AUTHORIZATION'));
 			$httpConfig->removeHeader('X-PAYPAL-AUTHORIZATION');
 		}

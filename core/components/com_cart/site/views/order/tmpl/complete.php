@@ -2,36 +2,34 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
  * @author    HUBzero
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
@@ -49,6 +47,8 @@ defined('_HZEXEC_') or die();
 		<section class="section">
 		<?php
 
+		//print_r($this->transactionInfo); die;
+
 			if (!empty($this->transactionInfo))
 			{
 
@@ -61,26 +61,43 @@ defined('_HZEXEC_') or die();
 				echo '<h2>Order summary</h2>';
 				echo '<table id="cartContents">';
 				echo '<tr><th>Item</th><th>Status</th><th>Notes</th></tr>';
+
+				require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+				$warehouse = new \Components\Storefront\Models\Warehouse();
+
 				foreach ($transactionItems as $sId => $item)
 				{
 					$info = $item['info'];
-					$skuMeta = $item['meta'];
 					$action = '';
 
+					$productType = $warehouse->getProductTypeInfo($item['info']->ptId)['ptName'];
+					//print_r($item); die;
+
 					// If course
-					if ($info->ptId == 20)
+					if ($productType == 'Course')
 					{
 						$status = 'Registered';
 						$action = '<a href="' . Route::url('index.php?option=com_courses/' . $item['meta']['courseId']);
 						$action .= '">Go to the course page</a>';
 					}
-					else
+					// If software
+					elseif ($productType == 'Software Download')
 					{
-						$status = 'Purchased';
+						$status = 'Ready';
+						$action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transactionInfo->tId . '/' . $info->sId;
+						$action .= '" target="_blank">Download</a>';
 
-						if (!empty($skuMeta['purchaseNote']))
+						if (isset($item['meta']['serial']) && !empty($item['meta']['serial']))
 						{
-							$action = $skuMeta['purchaseNote'];
+							$action .= "<br>";
+							$action .= " Serial number: <strong>" . $item['meta']['serial'] . '</strong>';
+						}
+					}
+					else {
+						$status = 'Purchased';
+						if (!empty($item['meta']['purchaseNote']))
+						{
+							$action = $item['meta']['purchaseNote'];
 						}
 					}
 

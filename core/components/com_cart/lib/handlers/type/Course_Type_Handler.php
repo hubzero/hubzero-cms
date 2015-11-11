@@ -2,81 +2,78 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   Hubzero
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 class Course_Type_Handler extends Type_Handler
 {
-	/**
-	 * Constructor
-	 *
-	 * @param 	void
-	 * @return 	void
-	 */
-	public function __construct($item, $crtId)
-	{
-		parent::__construct($item, $crtId);
-	}
+    /**
+     * Constructor
+     *
+     * @param 	void
+     * @return 	void
+     */
+    public function __construct($item, $crtId)
+    {
+        parent::__construct($item, $crtId);
+    }
 
-	public function handle()
-	{
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
-		$ms = new StorefrontModelMemberships();
+    public function handle()
+    {
+        require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+        $ms = new \Components\Storefront\Models\Memberships();
 
-		// Get current registration
-		$membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
-		$expiration = $membership['crtmExpires'];
+        // Get current registration
+        $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
+        $expiration = $membership['crtmExpires'];
 
-		// Get course ID
-		$courseId = $this->item['meta']['courseId'];
+        // Get course ID
+        $courseId = $this->item['meta']['courseId'];
 
-		// Get user ID for the cart
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
-		$userId = CartModelCart::getCartUser($this->crtId);
+        // Get user ID for the cart
+        require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+        $userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
-		// Load courses model and register
-		// registerForCourse($userId, $courseId, $expiration);
+        // Load courses model and register
+        // registerForCourse($userId, $courseId, $expiration);
 
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+        require_once PATH_CORE . DS. 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
 
-		$course = \Components\Courses\Models\Course::getInstance($this->item['meta']['courseId']);
+        $course = \Components\Courses\Models\Course::getInstance($this->item['meta']['courseId']);
 
-		if (!$course->offerings()->count())
-		{
-			// error enrolling
-		}
-		else
-		{
-			// Get to the first and probably the only offering
-			//$offering = $course->offerings()->current();
-			$offering = $course->offering($this->item['meta']['offeringId']);
+        if (!$course->offerings()->count()) {
+            // error enrolling
+        }
+        else
+        {
+            // Get to the first and probably the only offering
+            //$offering = $course->offerings()->current();
+            $offering = $course->offering($this->item['meta']['offeringId']);
 
-			$offering->add($userId);
-			//$offering->remove($userId);
-		}
-	}
+            $offering->add($userId);
+            //$offering->remove($userId);
+        }
+    }
 }
