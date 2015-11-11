@@ -95,7 +95,8 @@ class PaymentDispatcher
 	 * Return a transaction ID variable name in the return from payment gatevay site payment URL
 	 *
 	 */
-	public static function getTransactionIdVerificationVarName($paymentGatewayProivder) {
+	public static function getTransactionIdVerificationVarName($paymentGatewayProivder)
+	{
 		switch ($paymentGatewayProivder)
 		{
 			case "PAYPAL STANDARD":

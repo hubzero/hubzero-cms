@@ -33,15 +33,15 @@ require_once('BaseSubscription.php');
 class Access_Group_Membership_Subscription extends BaseSubscription
 {
 
-    public function __construct($pId, $uId)
-    {
-        parent::__construct($pId, $uId);
-    }
+	public function __construct($pId, $uId)
+	{
+		parent::__construct($pId, $uId);
+	}
 
-    public function _getExpiration()
-    {
-        // This will get expiration from the correct place
-        throw new \Exception('not implemented');
-    }
+	public function _getExpiration()
+	{
+		// This will get expiration from the correct place
+		throw new \Exception('not implemented');
+	}
 
 }

@@ -72,7 +72,7 @@ class Coupon
 
 	public function getCode()
 	{
-		if(!empty($this->data->code))
+		if (!empty($this->data->code))
 		{
 			return $this->data->code;
 		}
@@ -93,7 +93,7 @@ class Coupon
 
 	public function getDescription()
 	{
-		if(!empty($this->data->description))
+		if (!empty($this->data->description))
 		{
 			return $this->data->description;
 		}
@@ -119,7 +119,7 @@ class Coupon
 
 	public function getUseLimit()
 	{
-		if(!empty($this->data->useLimit))
+		if (!empty($this->data->useLimit))
 		{
 			return $this->data->useLimit;
 		}
@@ -145,7 +145,7 @@ class Coupon
 
 	public function getObjectLimit()
 	{
-		if(!empty($this->data->objectLimit))
+		if (!empty($this->data->objectLimit))
 		{
 			return $this->data->objectLimit;
 		}
@@ -207,7 +207,7 @@ class Coupon
 
 	public function getExpiration()
 	{
-		if(!empty($this->data->expires))
+		if (!empty($this->data->expires))
 		{
 			return $this->data->expires;
 		}
@@ -235,7 +235,7 @@ class Coupon
 
 	public function getObjectType()
 	{
-		if(!empty($this->data->objectType))
+		if (!empty($this->data->objectType))
 		{
 			return $this->data->objectType;
 		}
@@ -269,6 +269,7 @@ class Coupon
 
 		}
 
+		$act = new \stdClass();
 		$act->action = $action;
 		$act->value = $actionValue;
 		$this->data->action = $act;
@@ -277,7 +278,7 @@ class Coupon
 
 	public function getAction()
 	{
-		if(!empty($this->data->action))
+		if (!empty($this->data->action))
 		{
 			return $this->data->action;
 		}
@@ -298,6 +299,7 @@ class Coupon
 			throw new \Exception(Lang::txt('Use limit must be a non-negative integer number'));
 		}
 
+		$obj = new \stdClass();
 		$obj->id = $object;
 		$obj->objectLimit = ceil($objectLimit);
 
@@ -307,7 +309,7 @@ class Coupon
 
 	public function getObjects()
 	{
-		if(!empty($this->data->objects))
+		if (!empty($this->data->objects))
 		{
 			return $this->data->objects;
 		}

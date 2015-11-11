@@ -41,7 +41,7 @@ class PaymentProvider
 	private $credentials;
 	private $postMessage;
 	private $error;
-    private $options;
+	private $options;
 
 	/**
 	 * Constructor
@@ -55,17 +55,17 @@ class PaymentProvider
 
 		$params =  Component::params(Request::getVar('option'));
 
-        $this->options = new \stdClass();
-        // Default action is payment
-        $this->options->postbackAction = 'payment';
+		$this->options = new \stdClass();
+		// Default action is payment
+		$this->options->postbackAction = 'payment';
 
 		$paymentOptions = new \stdClass();
-        $paymentOptions->transactionName = "$hubName online purchase";
+		$paymentOptions->transactionName = "$hubName online purchase";
 		$paymentOptions->businessName = $params->get('PPS_businessName');
 		$this->setPaymentOptions($paymentOptions);
 
-        $paymentGatewayCredentials = new \stdClass();
-        $paymentGatewayCredentials->user = $params->get('PPS_user');
+		$paymentGatewayCredentials = new \stdClass();
+		$paymentGatewayCredentials->user = $params->get('PPS_user');
 		$paymentGatewayCredentials->password = $params->get('PPS_password');
 		$paymentGatewayCredentials->signature = $params->get('PPS_signature');
 		$this->setCredentials($paymentGatewayCredentials);
@@ -172,13 +172,13 @@ class PaymentProvider
 		return $tId;
 	}
 
-    /**
-     * Get the post back action (payment, cancel transaction...)
-     */
-    public function getPostBackAction()
-    {
-        return $this->options->postbackAction;
-    }
+	/**
+	 * Get the post back action (payment, cancel transaction...)
+	 */
+	public function getPostBackAction()
+	{
+		return $this->options->postbackAction;
+	}
 
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment
@@ -227,7 +227,7 @@ class PaymentProvider
 	 */
 	public function getError()
 	{
-	 	if (empty($this->error))
+		if (empty($this->error))
 		{
 			return false;
 		}

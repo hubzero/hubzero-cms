@@ -33,10 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!empty($this->notifications))
 {
-    echo '<div class="section notifications">';
-    foreach ($this->notifications as $n)
-    {
-        echo '<p class="' . $n[1] . '">' . $n[0] . '</p>';
-    }
-    echo '</div>';
+	echo '<div class="section notifications">';
+	foreach ($this->notifications as $n)
+	{
+		echo '<p class="' . $n[1] . '">' . $n[0] . '</p>';
+	}
+	echo '</div>';
 }

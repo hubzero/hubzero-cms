@@ -50,7 +50,7 @@ class Membership_Model_Handler extends Model_Handler
 
         // Get product type
         require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
-        $warehouse = new \Components\Storefront\Models\Warehouse();
+		$warehouse = new \Components\Storefront\Models\Warehouse();
         $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
         $type = $pType['ptName'];
 

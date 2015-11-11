@@ -46,7 +46,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 		<form action="" id="frm" method="post">
 
 		<?php
-			foreach($_POST as $k => $v)
+			foreach ($_POST as $k => $v)
 			{
 				echo '<input type="hidden" name="' . $k . '" value="' . $v . '"></input>';
 			}

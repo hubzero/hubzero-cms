@@ -35,22 +35,22 @@ defined('_HZEXEC_') or die();
  */
 class Type_Handler
 {
-    // Database instance
-    var $db = NULL;
+	// Database instance
+	var $db = NULL;
 
-    // Item info
-    var $item;
+	// Item info
+	var $item;
 
-    // Cart ID
-    var $crtId;
+	// Cart ID
+	var $crtId;
 
-    /**
-     * Constructor
-     *
-     */
-    public function __construct($item, $crtId)
-    {
-        $this->item = $item;
-        $this->crtId = $crtId;
-    }
+	/**
+	 * Constructor
+	 *
+	 */
+	public function __construct($item, $crtId)
+	{
+		$this->item = $item;
+		$this->crtId = $crtId;
+	}
 }

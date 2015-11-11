@@ -40,12 +40,12 @@ class PaymentProvider
 	private $buttonVars;
 	private $credentials;
 
-    public function __construct()
-    {
-        $this->options = new \stdClass();
-        // Default action is payment
-        $this->options->postbackAction = 'payment';
-    }
+	public function __construct()
+	{
+		$this->options = new \stdClass();
+		// Default action is payment
+		$this->options->postbackAction = 'payment';
+	}
 
 	/**
 	 * Set transaction details
@@ -92,13 +92,13 @@ class PaymentProvider
 		return $tId;
 	}
 
-    /**
-     * Get the post back action (payment, cancel transaction...)
-     */
-    public function getPostBackAction()
-    {
-        return $this->options->postbackAction;
-    }
+	/**
+	 * Get the post back action (payment, cancel transaction...)
+	 */
+	public function getPostBackAction()
+	{
+		return $this->options->postbackAction;
+	}
 
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment
