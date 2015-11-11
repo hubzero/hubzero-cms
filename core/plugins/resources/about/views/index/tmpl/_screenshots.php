@@ -33,8 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$upath = (isset($this->upath) ? $this->upath : '');
-$wpath = (isset($this->wpath) ? $this->wpath : '');
+$base = substr(PATH_APP, strlen(PATH_ROOT));
+
+$upath = $base . (isset($this->upath) ? $this->upath : '');
+$wpath = $base . (isset($this->wpath) ? $this->wpath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
 $versionid = (isset($this->versionid) ? $this->versionid : 0);
 
@@ -50,7 +52,7 @@ if ($versionid && $allowversions)
 	$path .= DS . $versionid;
 }
 
-$d = @dir(PATH_APP . $upath . $path);
+$d = @dir(PATH_ROOT . $upath . $path);
 
 $images = array();
 $tns = array();
@@ -63,7 +65,7 @@ if ($d)
 	while (false !== ($entry = $d->read()))
 	{
 		$img_file = $entry;
-		if (is_file(PATH_APP . $upath . $path . DS . $img_file)
+		if (is_file(PATH_ROOT . $upath . $path . DS . $img_file)
 		 && substr($entry, 0, 1) != '.'
 		 && strtolower($entry) !== 'index.html')
 		{
@@ -131,7 +133,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 	$tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
 	$els .=  ($this->slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
 
-	if (is_file(PATH_APP . $upath . $path . DS . $tn))
+	if (is_file(PATH_ROOT . $upath . $path . DS . $tn))
 	{
 		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 		{
