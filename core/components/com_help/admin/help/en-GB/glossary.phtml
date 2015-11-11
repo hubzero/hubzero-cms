@@ -1,0 +1,51 @@
+<article>
+	<h1 class="page-title">Glossary</h1>
+
+	<p>The Glossary is helpful for learning common terms used throughout the hub, in help pages, and in advanced documentation.</p>
+
+	<div class="toc">
+		<ul class="nav">
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=com_help&page=glossary#Access_Control_List'); ?>">Access Control List</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=com_help&page=glossary#Alias'); ?>">Alias</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=com_help&page=glossary#Search_Engine_Friendly_URLs'); ?>">Search Engine Friendly URLs</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=com_help&page=glossary#Template'); ?>">Template</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=com_help&page=glossary#Template_style'); ?>">Template style</a></li>
+		</ul>
+	</div>
+
+	<section id="Access_Control_List">
+		<h2>Access Control List</h2>
+		<p>Access Control List or ACL is <a href="http://en.wikipedia.org/wiki/Access_control_list" rel="external" title="Wikipedia definition">“...ACL specifies which users or system processes are granted access to objects, as well as what operations are allowed to be performed on given objects.”</a> In the case of Hubzero there are two separate aspects to its Access Control List which site administrators can control:</p>
+		<ul>
+			<li><strong>Which users can gain access to what parts of the website?</strong> For example, will a given menu choice be visible for a given user? A registered user can view, but the public at large cannot. Perhaps the menu choice is hidden from all except an Editor user and higher.</li>
+			<li><strong>What operations (or actions) can a user perform on any given object?</strong> For example, can a user listed as an "Editor" submit an article or only edit an existing article. The ACL settings could allow submitting and editing, or allow a change an article's category, add tags or any combination.</li>
+		</ul>
+	</section>
+	<section id="Alias">
+		<h2>Alias</h2>
+		<p>Aliases are short pieces of text that represent the title of certain items (Menu items, <a href="<?php echo Route::url('index.php?option=com_help&component=com_content'); ?>">Articles</a> and <a href="<?php echo Route::url('index.php?option=com_help&component=com_categories'); ?>">Categories</a>) in a machine-friendly format. This format allows only lowercase alpha-numeric characters (letters and numbers), underscores, and dashes (-).</p>
+		<p>Aliases are used throughout the site to make <a href="<?php echo Route::url('index.php?option=com_help&component=com_help&page=glossary#Search_Engine_Friendly_URLs'); ?>">Search Engine Friendly URLs</a>. There are technical limitations to the types of characters that can be included in URLs, so the CMS prevents problems with invalid characters by allowing editors to specify an alias.</p>
+		<p>You can fill in an alias yourself. <strong>If you leave the alias field empty</strong>, the CMS will automatically create an alias from the Title field of an item when it is saved. <strong>This means that if you edit the title of an item, but you leave the old alias in its field, the alias (and the URL that is created from it) will not change.</strong> Empty the alias field if you want generate a new alias.</p>
+	</section>
+	<section id="Search_Engine_Friendly_URLs">
+		<h2>Search Engine Friendly URLs</h2>
+		<p>Search engine friendly URLs is a term commonly abbreviated as SEF URLs or SEF for short. Normal hub URLs look something like this:</p>
+		<pre>http://myhub.org/index.php?option=com_blog&amp;task=view&amp;post=Welcome_to_my_hub</pre>
+		<p>You can optionally have URLs display to look like static HTML pages like this:</p>
+		<pre>http://myhub.org/faq.html</pre>
+		<p>The CMS has built-in options for generating SEF URLs which can be enabled by changing the "SEO Settings" (Search Engine Optimisation) in the Site tab in the Global Configuration screen in the Administrative back-end.</p>
+	</section>
+	<section id="Template">
+		<h2>Template</h2>
+		<p>A template is a type of <a href="<?php echo Route::url('index.php?option=com_help&component=com_installer'); ?>">extension</a> that changes the way a site looks. There are two types of templates used by the CMS: <a href="/proxy/index.php?option=com_help&view=help&keyref=Template#Front-end_Templates" title="Template">Front-end Templates</a> and <a href="/proxy/index.php?option=com_help&view=help&keyref=Template#Back-end_Templates" title="Template">Back-end Templates</a>. The Front-end Template controls the way your website is presented to the user viewing the website's content. The Back-end Template controls the way your website's administrative tasks are presented for controlling management functions by a Joomla! Administrator. These would include common tasks such as: user, menu, article, category, module, component, plugin and template management.</p>
+	</section>
+	<section id="Template_style">
+		<h2>Template style</h2>
+		<p><b>Template style</b> is a feature that allows users to assign different template styles to individual menu items. By default, the CMS assigns a template style to all menu items upon installation. A yellow star indicates the default template style in use. A default template style can be partially or completely overridden by assigning different template styles to the desired menu items in order to obtain a different look for their respective pages.</p>
+		<p>A template style can be assigned to menu items one of two ways.</p>
+		<ul>
+			<li>Template manager <strong>Extensions <span>&rarr;</span> Template Manager</strong></li>
+			<li>Editing a menu item under <strong>Menus <span>&rarr;</span> Menu Name <span>&rarr;</span> Menu item</strong></li>
+		</ul>
+	</section>
+</article>

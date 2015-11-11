@@ -90,7 +90,7 @@ class Help extends AdminController
 			$pages[] = Finder::pages($component);
 
 			// Display page
-			$this->view->content = $this->displayHelpPageIndexForPages($pages, 'h2');
+			$this->view->content = $this->displayHelpPageIndexForPages($pages, 'h1');
 		}
 		else
 		{
@@ -119,7 +119,7 @@ class Help extends AdminController
 	{
 		// Initialise variables.
 		$lang   = Lang::getRoot();
-		$db     = \App::get('db');
+		$db     = App::get('db');
 		$query  = $db->getQuery(true);
 		$result = array();
 		$langs  = array();
@@ -169,9 +169,9 @@ class Help extends AdminController
 					{
 						// Load the core file then
 						// Load extension-local file.
-						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false)
+						$lang->load($component->element . '.sys', PATH_APP . '/bootstrap/admin', null, false, false)
 						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', null, false, false)
-						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
+						|| $lang->load($component->element . '.sys', PATH_APP . '/bootstrap/admin', $lang->getDefault(), false, false)
 						|| $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', $lang->getDefault(), false, false);
 					}
 					$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
@@ -222,6 +222,10 @@ class Help extends AdminController
 
 		// Get help pages for this component
 		$pages = \Filesystem::files($path, '.phtml');
+		$pages = array_map(function($file)
+		{
+			return ltrim($file, DS);
+		}, $pages);
 
 		// Return pages
 		return array(
