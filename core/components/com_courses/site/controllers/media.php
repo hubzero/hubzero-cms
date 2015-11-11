@@ -57,8 +57,8 @@ class Media extends SiteController
 	public function trackingTask()
 	{
 		// Include need media tracking library
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'mediatracking.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'mediatrackingdetailed.php');
 
 		// Instantiate objects
 		$database = \App::get('db');
