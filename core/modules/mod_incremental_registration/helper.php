@@ -68,10 +68,10 @@ class Helper extends Module
 	 */
 	public function media($path)
 	{
-		$this->tpl_path = App::get('template')->path . '/html/mod_incremental_registration';
-
+		$this->tpl_path = substr(App::get('template')->path, strlen(PATH_ROOT)) . '/html/mod_incremental_registration';
 		$b = rtrim(Request::base(true), '/');
-		return file_exists(PATH_APP . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
+
+		return file_exists(PATH_ROOT . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
 	}
 
 	/**
