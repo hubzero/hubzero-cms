@@ -397,7 +397,7 @@ class Helper extends Module
 				else
 				{
 					$rconfig = Component::params('com_resources');
-					$path = substr(PATH_APP, strlen(PATH_ROOT)) . trim($rconfig->get('uploadpath', '/site/resources'), DS);
+					$path = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
 					$path = DS . trim($path, DS);
 
 					$path = $this->_buildPath($row->created, $row->id, $path);
@@ -432,6 +432,7 @@ class Helper extends Module
 					{
 						$thumb = '/core' . $thumb;
 					}
+					$thumb = str_replace('com_resources/assets', 'com_resources/site/assets', $thumb);
 				}
 
 				$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($row->typetitle));
