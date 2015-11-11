@@ -30,23 +30,22 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Geosearch\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
  * Controller class for Libreviews admin
  */
-class GeosearchControllerAdmin extends \Hubzero\Component\AdminController
+class Admin extends AdminController
 {
 	/**
 	 * Display
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// title
-		$this->view->title = "Geo Search";
-
 		// show it
 		$this->view->display();
 	}

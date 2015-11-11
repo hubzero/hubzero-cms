@@ -32,8 +32,9 @@
 
 defined('_HZEXEC_') or die();
 
-Toolbar::title($this->title);
-Toolbar::preferences($this->option,500);
+Toolbar::title(Lang::txt('COM_GEOSEARCH'));
+Toolbar::preferences($this->option, 500);
 ?>
-
-<p>Currently there is no admin interface for this component. This serves as a way to access and set component params (options).</p>
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="item-form">
+	<p class="warning"><?php echo Lang::txt('COM_GEOSEARCH_NOTICE'); ?></p>
+</form>

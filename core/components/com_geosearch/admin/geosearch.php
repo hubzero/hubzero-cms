@@ -30,25 +30,23 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-$option = 'com_geosearch';
+namespace Components\Geosearch\Admin;
 
-if (!User::authorise('core.manage', $option))
+if (!\User::authorise('core.manage', 'com_geosearch'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-$controllerName = Request::getCmd('controller', 'categories');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \Request::getCmd('controller', 'admin');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'admin';
 }
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'GeosearchController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
 
