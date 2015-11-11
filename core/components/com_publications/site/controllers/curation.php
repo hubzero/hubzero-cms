@@ -877,7 +877,7 @@ class Curation extends SiteController
 			$curatorgroups[] = $curatorgroup;
 		}
 
-		if (!empty($curatorgroups) && $this->config->get('curation', 0))
+		if (!empty($curatorgroups))
 		{
 			foreach ($curatorgroups as $curatorgroup)
 			{
