@@ -251,7 +251,7 @@ class Pipeline extends SiteController
 				$listid = $objWishlist->get_wishlistID($status['resourceid'], 'resource');
 				if ($listid)
 				{
-					$controller = new \Components\Wishlist\Controllers\Wishlist();
+					$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 					$filters = $controller->getFilters(1);
 					$wishes = $objWish->get_wishes($listid, $filters, 1, User::getRoot());
 					$status['wishes'] = count($wishes);
