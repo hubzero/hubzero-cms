@@ -152,6 +152,11 @@ class Finder
 			$pages = \Filesystem::files($helpPagesPath , '.' . self::$ext);
 		}
 
+		$pages = array_map(function($file)
+		{
+			return ltrim($file, DS);
+		}, $pages);
+
 		// Return pages
 		return array(
 			'name'   => $name,

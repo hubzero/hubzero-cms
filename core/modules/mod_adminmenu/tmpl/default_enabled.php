@@ -397,13 +397,13 @@ if ($params->get('showhelp', 0) == 1)
 		new Node(Lang::txt('MOD_MENU_HELP'), '#'), true
 	);
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_HELP_DOCUMENTATION'), 'http://hubzero.org/documentation', 'class:help', false, '_blank')
+		new Node(Lang::txt('MOD_MENU_HELP_PAGES'), 'index.php?option=com_help', 'class:help')
 	);
 	$menu->addSeparator();
 
-	$menu->addChild(
+	/*$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_FORUM'), 'http://hubzero.org/answers', 'class:help-forum', false, '_blank')
-	);
+	);*/
 	if ($forum_url = $params->get('forum_url'))
 	{
 		$menu->addChild(
@@ -420,6 +420,9 @@ if ($params->get('showhelp', 0) == 1)
 		);
 	}
 	$lang->setDebug($debug);*/
+	$menu->addChild(
+		new Node(Lang::txt('MOD_MENU_HELP_DOCUMENTATION'), 'http://hubzero.org/documentation', 'class:help', false, '_blank')
+	);
 	$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_HELP_HUBZERO'), 'http://hubzero.org/support', 'class:help-docs', false, '_blank')
 	);
