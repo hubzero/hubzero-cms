@@ -397,15 +397,9 @@ class Helper extends Module
 				else
 				{
 					$rconfig = Component::params('com_resources');
-					$path = $rconfig->get('uploadpath');
-					if (substr($path, 0, 1) != DS)
-					{
-						$path = DS . $path;
-					}
-					if (substr($path, -1, 1) == DS)
-					{
-						$path = substr($path, 0, (strlen($path) - 1));
-					}
+					$path = substr(PATH_APP, strlen(PATH_ROOT)) . trim($rconfig->get('uploadpath', '/site/resources'), DS);
+					$path = DS . trim($path, DS);
+
 					$path = $this->_buildPath($row->created, $row->id, $path);
 
 					if ($row->type == 7)
@@ -425,7 +419,7 @@ class Helper extends Module
 
 					$thumb = $path . DS . $picture;
 
-					if (!is_file(PATH_APP . $thumb) or !$picture)
+					if (!is_file(PATH_ROOT . $thumb) or !$picture)
 					{
 						$thumb = DS . trim($rconfig->get('defaultpic', '/core/modules/mod_spotlight/assets/img/default.gif'), DS);
 						if ($thumb == '/modules/mod_spotlight/default.gif')
@@ -544,7 +538,7 @@ class Helper extends Module
 	 */
 	private function _getImage($path)
 	{
-		$d = @dir(PATH_APP . $path);
+		$d = @dir(PATH_ROOT . $path);
 
 		$images = array();
 
@@ -552,7 +546,7 @@ class Helper extends Module
 		{
 			while (false !== ($entry = $d->read()))
 			{
-				if (is_file(PATH_APP . $path . DS . $entry)
+				if (is_file(PATH_ROOT . $path . DS . $entry)
 				 && substr($entry,0,1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
@@ -600,7 +594,7 @@ class Helper extends Module
 			//$path .= DS.$versionid;
 		}
 
-		$d = @dir(PATH_APP . $path);
+		$d = @dir(PATH_ROOT . $path);
 
 		$images = array();
 
@@ -608,7 +602,7 @@ class Helper extends Module
 		{
 			while (false !== ($entry = $d->read()))
 			{
-				if (is_file(PATH_APP . $path . DS . $entry)
+				if (is_file(PATH_ROOT . $path . DS . $entry)
 				 && substr($entry,0,1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
