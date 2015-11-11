@@ -742,7 +742,7 @@ class Screenshots extends SiteController
 
 		// do we have files to transfer?
 		$files = Filesystem::files($src, '.', false, true, array());
-		Log::debug(__FUNCTION__ . "() $files");
+		Log::debug(__FUNCTION__ . "() " . implode(',', $files));
 		if (!empty($files))
 		{
 			// Copy directory
