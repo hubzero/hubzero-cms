@@ -62,7 +62,7 @@ class Helper extends Module
 			$areas = array();
 
 			// Trigger the functions that return the areas we'll be searching
-			$searchareas = Event::trigger('whatsnew.onWhatsNewAreas');
+			$searchareas = Event::trigger('whatsnew.onWhatsnewAreas');
 
 			// Build an array of the areas
 			foreach ($searchareas as $area)
