@@ -261,12 +261,12 @@ class Publications extends SiteController
 	 * @param  string $type
 	 * @return void
 	 */
-	public function setNotification( $message, $type = 'success' )
+	public function setNotification($message, $type = 'success')
 	{
 		// If message is set push to notifications
 		if ($message != '')
 		{
-			$this->addComponentMessage($message, $type);
+			\Notify::message($message, $type, $this->_option);
 		}
 	}
 
@@ -279,7 +279,7 @@ class Publications extends SiteController
 	public function getNotifications($type = 'success')
 	{
 		// Get messages in quene
-		$messages = $this->getComponentMessage();
+		$messages = \Notify::messages($this->_option);
 
 		// Return first message of type
 		if ($messages && count($messages) > 0)
@@ -292,10 +292,8 @@ class Publications extends SiteController
 				}
 			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
