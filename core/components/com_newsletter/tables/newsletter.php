@@ -293,6 +293,7 @@ class Newsletter extends \JTable
 		$campaignParsed = str_replace("{{PRIMARY_STORIES}}", $campaignPrimaryStories, $campaignParsed);
 		$campaignParsed = str_replace("{{SECONDARY_STORIES}}", $campaignSecondaryStories, $campaignParsed);
 		$campaignParsed = str_replace("{{COPYRIGHT}}", date("Y"), $campaignParsed);
+		$campaignParsed = str_replace('src="/site', 'src="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $campaignParsed);
 
 		//replace .org, .com., .net, .edu 's
 		// if ($campaign->type == 'html')
