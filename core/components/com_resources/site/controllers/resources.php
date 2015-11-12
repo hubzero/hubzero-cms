@@ -2295,7 +2295,6 @@ class Resources extends SiteController
 	{
 		$yearFormat = 'Y';
 		$monthFormat = 'M';
-		$tz = false;
 
 		// Get contribtool params
 		$tconfig = Component::params('com_tools');
@@ -2390,7 +2389,7 @@ class Resources extends SiteController
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate)
 				{
-					$doc .= "%8 " . Date::of($thedate, $tz)->toLocal($monthFormat) . "\r\n";
+					$doc .= "%8 " . Date::of($thedate)->toLocal($monthFormat) . "\r\n";
 				}
 				//$doc .= "\r\n";
 				if ($handle)
@@ -2435,9 +2434,9 @@ class Resources extends SiteController
 						$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
 					}
 				}
-				$addarray['month'] = Date::of($thedate, $tz)->toLocal($monthFormat);
+				$addarray['month'] = Date::of($thedate)->toLocal($monthFormat);
 				$addarray['url']   = $url;
-				$addarray['year']  = Date::of($thedate, $tz)->toLocal($yearFormat);
+				$addarray['year']  = Date::of($thedatez)->toLocal($yearFormat);
 				if ($handle)
 				{
 					$addarray['doi'] = $handle;
