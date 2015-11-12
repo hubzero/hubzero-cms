@@ -50,7 +50,7 @@ class Atom extends Renderer
 	 *
 	 * @var  string
 	 */
-	protected $_mime = "application/atom+xml";
+	protected $mime = "application/atom+xml";
 
 	/**
 	 * Render the feed.

@@ -45,7 +45,7 @@ class Rss extends Renderer
 	 *
 	 * @var  string
 	 */
-	protected $_mime = 'application/rss+xml';
+	protected $mime = 'application/rss+xml';
 
 	/**
 	 * Render the feed.
