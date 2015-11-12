@@ -402,5 +402,7 @@ class Posts extends SiteController
 				$doc->addItem($item);
 			}
 		}
+		// Output the feed
+		echo $doc->render();
 	}
 }
