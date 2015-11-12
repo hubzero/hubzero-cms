@@ -48,6 +48,7 @@ $bgcolor = array(
 	'trivial'  => '#d3f9ff'
 );
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
+$site = rtrim(Request::base(), '/');
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -125,7 +126,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 			$sef = Route::url($base . $ticket->id);
-			$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
+			if (substr($site, -13) == 'administrator')
+			{
+				$sef = 'support/ticket/' . $ticket->id;
+			}
+			$link = $site . '/' . trim($sef, '/');
+			$link = str_replace('/administrator', '', $link);
 
 			$st = new \Components\Support\Models\Tags($ticket->id);
 			$tags = $st->render('string');
@@ -218,7 +224,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 			$sef = Route::url($base . $ticket->id);
-			$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
+			if (substr($site, -13) == 'administrator')
+			{
+				$sef = 'support/ticket/' . $ticket->id;
+			}
+			$link = $site . '/' . trim($sef, '/');
+			$link = str_replace('/administrator', '', $link);
 
 			$st = new \Components\Support\Models\Tags($ticket->id);
 			$tags = $st->render('string');
@@ -347,7 +358,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 			$sef = Route::url($base . $ticket->id);
-			$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
+			if (substr($site, -13) == 'administrator')
+			{
+				$sef = 'support/ticket/' . $ticket->id;
+			}
+			$link = $site . '/' . trim($sef, '/');
+			$link = str_replace('/administrator', '', $link);
 			?>
 			<table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor[$severity]; ?>; background: <?php echo $bgcolor[$severity]; ?>; font-size: 0.9em; line-height: 1.6em;
 				background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));

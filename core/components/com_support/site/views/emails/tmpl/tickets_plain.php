@@ -48,6 +48,7 @@ $bgcolor = array(
 	'trivial'  => '#d3f9ff'
 );
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
+$site = rtrim(Request::base(), '/');
 
 $message  = 'The following is a list of open tickets.' . "\n\n";
 
@@ -83,9 +84,15 @@ if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 		}
 
 		$sef = Route::url($base . $ticket->id);
+		if (substr($site, -13) == 'administrator')
+		{
+			$sef = 'support/ticket/' . $ticket->id;
+		}
+		$link = $site . '/' . trim($sef, '/');
+		$link = str_replace('/administrator', '', $link);
 
 		$message .= '#' . $ticket->id . ' "' . $ticket->summary . '"' . "\n";
-		$message .= rtrim(Request::base(), '/') . '/' . trim($sef, '/') . "\n\n";
+		$message .= $link . "\n\n";
 	}
 }
 
@@ -121,9 +128,15 @@ if (isset($this->tickets['major']) && count($this->tickets['major']) > 0)
 		}
 
 		$sef = Route::url($base . $ticket->id);
+		if (substr($site, -13) == 'administrator')
+		{
+			$sef = 'support/ticket/' . $ticket->id;
+		}
+		$link = $site . '/' . trim($sef, '/');
+		$link = str_replace('/administrator', '', $link);
 
 		$message .= '#' . $ticket->id . ' "' . $ticket->summary . '"' . "\n";
-		$message .= rtrim(Request::base(), '/') . '/' . trim($sef, '/') . "\n\n";
+		$message .= $link . "\n\n";
 	}
 }
 
@@ -170,9 +183,15 @@ foreach ($this->tickets as $severity => $tickets)
 		}
 
 		$sef = Route::url($base . $ticket->id);
+		if (substr($site, -13) == 'administrator')
+		{
+			$sef = 'support/ticket/' . $ticket->id;
+		}
+		$link = $site . '/' . trim($sef, '/');
+		$link = str_replace('/administrator', '', $link);
 
 		$message .= '#' . $ticket->id . ' "' . $ticket->summary . '"' . "\n";
-		$message .= rtrim(Request::base(), '/') . '/' . trim($sef, '/') . "\n\n";
+		$message .= $link . "\n\n";
 		$i++;
 		// Subtract one from total for each ticket passed
 		$more--;
