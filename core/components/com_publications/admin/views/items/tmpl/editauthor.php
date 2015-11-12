@@ -40,26 +40,24 @@ $tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_PUBLICATIONS').': [ ' . $pageTitle . ' '
-	. Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #'
-	. $this->pub->id . ' (v.' . $this->row->version_label . ')' . ' ]', 'groups.png');
+	Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . $pageTitle . ' ' . Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')', 'groups.png');
 	Toolbar::save('saveauthor');
 	Toolbar::cancel();
 }
 
-$name 		= $this->author->name ? $this->author->name : NULL;
-$firstname 	= NULL;
-$lastname 	= NULL;
+$name      = $this->author->name ? $this->author->name : NULL;
+$firstname = NULL;
+$lastname  = NULL;
 
 if (trim($name))
 {
-	$nameParts    = explode(" ", $name);
-	$lastname  	  = end($nameParts);
-	$firstname    = count($nameParts) > 1 ? $nameParts[0] : '';
+	$nameParts = explode(' ', $name);
+	$lastname  = end($nameParts);
+	$firstname = count($nameParts) > 1 ? $nameParts[0] : '';
 }
 
-$firstname 	= $this->author->firstName ? htmlspecialchars($this->author->firstName) : $firstname;
-$lastname 	= $this->author->lastName ? htmlspecialchars($this->author->lastName) : $lastname;
+$firstname = $this->author->firstName ? htmlspecialchars($this->author->firstName) : $firstname;
+$lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName) : $lastname;
 
 ?>
 <script type="text/javascript">

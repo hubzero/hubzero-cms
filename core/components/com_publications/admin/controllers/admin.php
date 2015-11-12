@@ -34,6 +34,8 @@ namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
+use Route;
+use App;
 
 /**
  * Publication administrative support
@@ -43,7 +45,7 @@ class Admin extends AdminController
 	/**
 	 * List available admin tasks
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -52,16 +54,5 @@ class Admin extends AdminController
 			Route::url('index.php?option=' . $this->_option . '&controller=items', false)
 		);
 		return;
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(Route::url('index.php?option=' . $this->_option
-			. '&controller=' . $this->_controller, false));
 	}
 }

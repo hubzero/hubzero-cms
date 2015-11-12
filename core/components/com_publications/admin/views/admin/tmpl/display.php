@@ -33,5 +33,4 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title('<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . '</a>: ' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS_ADMIN_CONTROLS'), 'addedit.png');
-?>
 

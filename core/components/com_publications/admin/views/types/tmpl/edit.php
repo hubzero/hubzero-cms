@@ -33,7 +33,7 @@
 defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': ' . $text, 'addedit.png');
 Toolbar::apply();
 Toolbar::save();
 Toolbar::cancel();
@@ -53,16 +53,16 @@ $params = new \Hubzero\Config\Registry($this->row->params);
 
 // Available panels and default config
 $panels = array(
-	'content' 		=> 2,
-	'description' 	=> 2,
-	'authors'		=> 2,
-	'audience'		=> 0,
-	'gallery'		=> 1,
-	'tags'			=> 1,
-	'access'		=> 0,
-	'license'		=> 2,
-	'citations'		=> 1,
-	'notes'			=> 1
+	'content'     => 2,
+	'description' => 2,
+	'authors'     => 2,
+	'audience'    => 0,
+	'gallery'     => 1,
+	'tags'        => 1,
+	'access'      => 0,
+	'license'     => 2,
+	'citations'   => 1,
+	'notes'       => 1
 );
 
 // Sections that cannot be hidden, ever

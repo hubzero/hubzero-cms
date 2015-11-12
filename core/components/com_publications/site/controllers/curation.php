@@ -51,13 +51,13 @@ class Curation extends SiteController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$this->_task  = Request::getVar( 'task', '');
-		$this->_id    = Request::getInt( 'id', 0 );
-		$this->_pub	  = NULL;
+		$this->_task  = Request::getVar('task', '');
+		$this->_id    = Request::getInt('id', 0);
+		$this->_pub   = NULL;
 
 		// View individual curation
 		if ($this->_id && !$this->_task)
@@ -75,7 +75,7 @@ class Curation extends SiteController
 	/**
 	 * Display task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -91,7 +91,7 @@ class Curation extends SiteController
 		$usergroups = \Hubzero\User\Helper::getGroups(User::get('id'));
 
 		// Check authorization
-		$mt  = new Tables\MasterType( $this->database );
+		$mt  = new Tables\MasterType($this->database);
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Incoming
@@ -99,11 +99,11 @@ class Curation extends SiteController
 
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= Request::getInt('limit', 25);
-		$filters['start'] 	 		= Request::getInt('limitstart', 0);
-		$filters['sortby']   		= Request::getVar( 't_sortby', 'submitted');
-		$filters['sortdir']  		= Request::getVar( 't_sortdir', 'DESC');
-		$filters['ignore_access']   = 1;
+		$filters['limit']         = Request::getInt('limit', 25);
+		$filters['start']         = Request::getInt('limitstart', 0);
+		$filters['sortby']        = Request::getVar('t_sortby', 'submitted');
+		$filters['sortdir']       = Request::getVar('t_sortdir', 'DESC');
+		$filters['ignore_access'] = 1;
 
 		// Only get types for which authorized
 		if ($authorized == 'limited')
@@ -111,13 +111,13 @@ class Curation extends SiteController
 			$filters['master_type'] = $mt->getAuthTypes($usergroups, $authorized);
 		}
 
-		$filters['dev']   	 		= 1; // get dev versions
-		$filters['status']   	 	= array(5, 7); // submitted/pending
-		$filters['curator']   		= $assigned || $authorized == false ? 'owner' : NULL;
-		$this->view->filters		= $filters;
+		$filters['dev']     = 1; // get dev versions
+		$filters['status']  = array(5, 7); // submitted/pending
+		$filters['curator'] = $assigned || $authorized == false ? 'owner' : NULL;
+		$this->view->filters = $filters;
 
 		// Instantiate project publication
-		$objP = new Tables\Publication( $this->database );
+		$objP = new Tables\Publication($this->database);
 
 		// Get all publications
 		$this->view->rows = $objP->getRecords($filters);
@@ -141,18 +141,15 @@ class Curation extends SiteController
 		//push the stylesheet to the view
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->option 	= $this->_option;
-		$this->view->database 	= $this->database;
-		$this->view->config		= $this->config;
-		$this->view->title 		= $this->_title;
+		$this->view->option     = $this->_option;
+		$this->view->database   = $this->database;
+		$this->view->config     = $this->config;
+		$this->view->title      = $this->_title;
 		$this->view->authorized = $authorized;
 		$this->view->display();
 	}
@@ -160,22 +157,21 @@ class Curation extends SiteController
 	/**
 	 * Build the title for this component
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
 		if (!$this->_title)
 		{
-			$this->_title = Lang::txt(strtoupper($this->_option)) . ': '
-				. Lang::txt(strtoupper($this->_option . '_' . $this->_controller));
+			$this->_title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_controller));
 		}
-		Document::setTitle( $this->_title );
+		Document::setTitle($this->_title);
 	}
 
 	/**
 	 * Build the "trail"
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -183,7 +179,7 @@ class Curation extends SiteController
 		{
 			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
-				'index.php?option='.$this->_option
+				'index.php?option=' . $this->_option
 			);
 		}
 		Pathway::append(
@@ -195,8 +191,7 @@ class Curation extends SiteController
 		{
 			Pathway::append(
 				$this->_pub->title,
-				'index.php?option=' . $this->_option . '&controller='
-					. $this->_controller .  '&task=view' . '&id=' . $this->_pub->id
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=view' . '&id=' . $this->_pub->id
 			);
 		}
 	}
@@ -204,36 +199,31 @@ class Curation extends SiteController
 	/**
 	 * View publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function viewTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$version 	= Request::getVar( 'version', 'default' );
+		$pid     = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$version = Request::getVar('version', 'default');
 
 		if (!$pid)
 		{
-			throw new Exception( Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404 );
-			return;
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, $version );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, $version);
 
 		// If publication not found, raise error
 		if (!$this->_pub->exists())
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
-			return;
 		}
 
 		// We can only view pending publications
@@ -256,8 +246,8 @@ class Curation extends SiteController
 				$this->_login();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		//push the stylesheet to the view
@@ -279,46 +269,45 @@ class Curation extends SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		$this->view->pub 		    = $this->_pub;
-		$this->view->title  		= $this->_title;
-		$this->view->option 		= $this->_option;
+		$this->view->pub    = $this->_pub;
+		$this->view->title  = $this->_title;
+		$this->view->option = $this->_option;
 		$this->view->display();
 	}
 
 	/**
 	 * View curation history
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function historyTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$version 	= Request::getVar( 'version', 'default' );
-		$ajax 		= Request::getInt( 'ajax', 0 );
+		$pid     = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$version = Request::getVar('version', 'default');
+		$ajax    = Request::getInt('ajax', 0);
 
 		if (!$pid)
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, $version );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, $version);
 
 		// Publication version exists?
 		if (!$this->_pub->exists())
 		{
 			if ($ajax)
 			{
-				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'restricted'));
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'), 404);
-			return;
 		}
 
 		// Check authorization
@@ -326,14 +315,14 @@ class Curation extends SiteController
 		{
 			if ($ajax)
 			{
-				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'restricted'));
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		// Set curation
@@ -351,63 +340,63 @@ class Curation extends SiteController
 			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');
 		}
 
-		$this->view->pub 		    = $this->_pub;
-		$this->view->title  		= $this->_title;
-		$this->view->option 		= $this->_option;
-		$this->view->ajax			= $ajax;
+		$this->view->pub    = $this->_pub;
+		$this->view->title  = $this->_title;
+		$this->view->option = $this->_option;
+		$this->view->ajax   = $ajax;
 		$this->view->display();
 	}
 
 	/**
 	 * Assign curation
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function assignTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$vid 		= Request::getInt( 'vid', 0 );
-		$owner 		= Request::getInt( 'owner', 0 );
-		$confirm 	= Request::getInt( 'confirm', 0 );
-		$ajax 		= Request::getInt( 'ajax', 0 );
+		$pid     = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid     = Request::getInt('vid', 0);
+		$owner   = Request::getInt('owner', 0);
+		$confirm = Request::getInt('confirm', 0);
+		$ajax    = Request::getInt('ajax', 0);
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
 
 		if (!$this->_pub->exists())
 		{
 			if ($ajax)
 			{
-				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'restricted'));
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'), 404);
-			return;
 		}
 
 		if (!$this->_pub->access('curator'))
 		{
 			if ($ajax)
 			{
-				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'restricted'));
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		// Perform assignment
 		if ($confirm)
 		{
 			$previousOwner = $this->_pub->version->get('curator');
-			$selected = Request::getInt( 'selected', 0 );
+			$selected = Request::getInt('selected', 0);
 
 			// Make sure owner profile exists
 			if ($owner)
@@ -418,7 +407,7 @@ class Curation extends SiteController
 					$this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
 				}
 			}
-			elseif ($selected && Request::getVar( 'owner', ''))
+			elseif ($selected && Request::getVar('owner', ''))
 			{
 				$owner = $selected;
 			}
@@ -463,13 +452,13 @@ class Curation extends SiteController
 					}
 
 					// Create new record
-					$obj->publication_version_id 	= $this->_pub->version->id;
-					$obj->created 					= Date::toSql();
-					$obj->created_by				= User::get('id');
-					$obj->changelog					= $changelog;
-					$obj->curator					= 1;
-					$obj->newstatus					= $this->_pub->version->state;
-					$obj->oldstatus					= $this->_pub->version->state;
+					$obj->publication_version_id = $this->_pub->version->id;
+					$obj->created    = Date::toSql();
+					$obj->created_by = User::get('id');
+					$obj->changelog  = $changelog;
+					$obj->curator    = 1;
+					$obj->newstatus  = $this->_pub->version->state;
+					$obj->oldstatus  = $this->_pub->version->state;
 					$obj->store();
 				}
 			}
@@ -487,10 +476,10 @@ class Curation extends SiteController
 				// Add plugin style
 				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');
 			}
-			$this->view->pub 		    = $this->_pub;
-			$this->view->title  		= $this->_title;
-			$this->view->option 		= $this->_option;
-			$this->view->ajax			= $ajax;
+			$this->view->pub    = $this->_pub;
+			$this->view->title  = $this->_title;
+			$this->view->option = $this->_option;
+			$this->view->ajax   = $ajax;
 			$this->view->display();
 			return;
 		}
@@ -511,21 +500,20 @@ class Curation extends SiteController
 	/**
 	 * Approve publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function approveTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$vid 	= Request::getInt('vid', 0);
+		$pid = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid = Request::getInt('vid', 0);
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
 
 		if (!$this->_pub->exists())
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Check authorization
@@ -537,8 +525,8 @@ class Curation extends SiteController
 				$this->_login();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		$this->_pub->version->set('state', 1);
@@ -572,7 +560,6 @@ class Curation extends SiteController
 		if (!$this->_pub->version->store())
 		{
 			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
-			return;
 		}
 
 		// Get DOI service
@@ -588,8 +575,7 @@ class Curation extends SiteController
 		// On after status change
 		$this->onAfterStatusChange();
 
-		$message = $this->getError() ? $this->getError()
-			: Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_APPROVED');
+		$message = $this->getError() ? $this->getError() : Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_APPROVED');
 		$class   = $this->getError() ? 'error' : 'success';
 
 		// Redirect to main listing
@@ -605,21 +591,20 @@ class Curation extends SiteController
 	/**
 	 * Kick back to developers
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function kickbackTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$vid 	= Request::getInt('vid', 0);
+		$pid = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid = Request::getInt('vid', 0);
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
 
 		if (!$this->_pub->exists())
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-			return;
 		}
 
 		// Check authorization
@@ -631,8 +616,8 @@ class Curation extends SiteController
 				$this->_login();
 				return;
 			}
+
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
-			return;
 		}
 
 		// Change publication status
@@ -643,7 +628,6 @@ class Curation extends SiteController
 		if (!$this->_pub->version->store())
 		{
 			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
-			return;
 		}
 
 		// Set curation
@@ -664,17 +648,17 @@ class Curation extends SiteController
 	/**
 	 * Save review for curation item (AJAX)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : Request::getInt('id', 0);
-		$vid 	= Request::getInt('vid', 0);
-		$props  = Request::getVar( 'p', '' );
-		$pass 	= Request::getInt( 'pass', 0 );
+		$pid    = $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid    = Request::getInt('vid', 0);
+		$props  = Request::getVar('p', '');
+		$pass   = Request::getInt('pass', 0);
 		$action = $pass ? 'pass' : 'fail';
-		$review = Request::getVar( 'review', '' );
+		$review = Request::getVar('review', '');
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -684,39 +668,51 @@ class Curation extends SiteController
 
 		if (!$block || !$step)
 		{
-			echo json_encode(array('success' => 0, 'error' => Lang::txt('Error parsing publication manifest')));
+			echo json_encode(array(
+				'success' => 0,
+				'error'   => Lang::txt('Error parsing publication manifest')
+			));
 			return;
 		}
 		if ($action == 'fail' && !$review)
 		{
-			echo json_encode(array('success' => 0, 'error' => Lang::txt('Please explain why the item requires changes')));
+			echo json_encode(array(
+				'success' => 0,
+				'error'   => Lang::txt('Please explain why the item requires changes')
+			));
 			return;
 		}
 
 		// Load publication model
-		$this->_pub = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
+		$this->_pub = new \Components\Publications\Models\Publication($pid, NULL, $vid);
 
 		// If publication not found, raise error
 		if (!$this->_pub)
 		{
-			echo json_encode(array('success' => 0, 'error' => Lang::txt('Error loading publication')));
+			echo json_encode(array(
+				'success' => 0,
+				'error'   => Lang::txt('Error loading publication')
+			));
 			return;
 		}
 
 		// Check authorization
 		if (!$this->_pub->access('curator'))
 		{
-			echo json_encode(array('success' => 0, 'error' => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')));
+			echo json_encode(array(
+				'success' => 0,
+				'error'  => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')
+			));
 			return;
 		}
 
 		// Set curation model
 		$this->_pub->setCuration();
 
-		$data 					= new stdClass;
-		$data->reviewed 		= Date::toSql();
-		$data->reviewed_by 		= User::get('id');
-		$data->review_status 	= $action == 'pass' ? 1 : 2;
+		$data = new stdClass;
+		$data->reviewed      = Date::toSql();
+		$data->reviewed_by   = User::get('id');
+		$data->review_status = $action == 'pass' ? 1 : 2;
 		if ($action == 'pass')
 		{
 			$data->update = '';
@@ -732,19 +728,19 @@ class Curation extends SiteController
 		if ($this->_pub->_curationModel->saveUpdate($data, $element, $block, $this->_pub, $step))
 		{
 			echo json_encode(array(
-				'success' 	=> 1,
-				'error' 	=> $this->getError(),
-				'notice' 	=> $notice)
-			);
+				'success' => 1,
+				'error'   => $this->getError(),
+				'notice'  => $notice
+			));
 			return;
 		}
 		else
 		{
 			echo json_encode(array(
-				'success' 	=> 0,
-				'error'  	=> Lang::txt('There was a problem saving curation item'),
-				'notice' 	=> '')
-			);
+				'success' => 0,
+				'error'   => Lang::txt('There was a problem saving curation item'),
+				'notice'  => ''
+			));
 			return;
 		}
 	}
@@ -752,7 +748,7 @@ class Curation extends SiteController
 	/**
 	 * On after approve/kickback
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function onAfterStatusChange()
 	{
@@ -767,10 +763,10 @@ class Curation extends SiteController
 					? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
 					: Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
 
-		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
+		$pubtitle = \Hubzero\Utility\String::truncate($pub->title, 100);
 
 		// Log activity in curation history
-		$pub->_curationModel->saveHistory(User::get('id'), $pub->state, $status, 1 );
+		$pub->_curationModel->saveHistory(User::get('id'), $pub->state, $status, 1);
 
 		// Add activity
 		$activity .= ' ' . strtolower(Lang::txt('version')) . ' ' . $pub->version_label . ' '
@@ -778,21 +774,21 @@ class Curation extends SiteController
 		. $pubtitle . '" ';
 
 		// Record activity
-		$aid   = $pub->project()->recordActivity(
-				$activity,
-				$pub->id,
-				$pubtitle,
-				$pub->link('version'),
-				'publication',
-				0,
-				$admin = 1
+		$aid = $pub->project()->recordActivity(
+			$activity,
+			$pub->id,
+			$pubtitle,
+			$pub->link('version'),
+			'publication',
+			0,
+			$admin = 1
 		);
 
 		// Start message
-		$sef	 = 'publications' . DS . $pub->id . DS . $pub->version_number;
-		$link 	 = rtrim(Request::base(), DS) . DS . trim($pub->link('version'), DS);
+		$sef     = 'publications' . DS . $pub->id . DS . $pub->version_number;
+		$link    = rtrim(Request::base(), DS) . DS . trim($pub->link('version'), DS);
 		$manage  = rtrim(Request::base(), DS) . DS . trim($pub->link('editversion'), DS);
-		$message  = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
+		$message = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
 		if ($status != 1)
 		{
@@ -804,8 +800,8 @@ class Curation extends SiteController
 			$message .= ' ' . $link;
 		}
 
-		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
-		$subject 	= ucfirst(Lang::txt('COM_PUBLICATIONS_CURATION_VERSION'))
+		$pubtitle = \Hubzero\Utility\String::truncate($pub->title, 100);
+		$subject  = ucfirst(Lang::txt('COM_PUBLICATIONS_CURATION_VERSION'))
 					. ' ' . $pub->version_label . ' ' . Lang::txt('COM_PUBLICATIONS_OF') . ' '
 					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
 					. ' "' . $pubtitle . '" ';
@@ -826,7 +822,7 @@ class Curation extends SiteController
 		if ($status == 1 && $pub->get('version_number') > 1)
 		{
 			// Notify subsrcibers
-			Event::trigger( 'publications.onWatch', array( $pub ));
+			Event::trigger('publications.onWatch', array($pub));
 		}
 
 		// Make sure there are no duplicates
@@ -847,10 +843,11 @@ class Curation extends SiteController
 	/**
 	 * Check user access
 	 *
-	 * @param      array $curatorgroups
-	 * @return     mixed False if no access, string if has access
+	 * @param   array    $curatorgroups
+	 * @param   integer  $curator
+	 * @return  mixed    False if no access, string if has access
 	 */
-	protected function _authorize( $curatorgroups = array(), $curator = 0 )
+	protected function _authorize($curatorgroups = array(), $curator = 0)
 	{
 		// Check if they are logged in
 		if (User::isGuest())
@@ -905,12 +902,12 @@ class Curation extends SiteController
 	/**
 	 * Login view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _login()
 	{
-		$rtrn = Request::getVar('REQUEST_URI',
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,

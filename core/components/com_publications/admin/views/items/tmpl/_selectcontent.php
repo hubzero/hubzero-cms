@@ -132,5 +132,3 @@ else
 }
 
 echo $html;
-
-?>

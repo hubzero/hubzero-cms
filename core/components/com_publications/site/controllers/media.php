@@ -42,7 +42,7 @@ class Media extends SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -62,13 +62,13 @@ class Media extends SiteController
 	/**
 	 * Download a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
 		// Incoming
-		$pid 	= Request::getInt('id', 0);
-		$vid 	= Request::getInt( 'v', 0 );
+		$pid    = Request::getInt('id', 0);
+		$vid    = Request::getInt( 'v', 0 );
 		$source = NULL;
 
 		// Need pub and version ID
@@ -125,8 +125,7 @@ class Media extends SiteController
 					}
 					if (!is_file(PATH_APP . DS . $source))
 					{
-						$source = PATH_CORE . DS . trim($this->config->get('masterimage',
-						'components/com_publications/site/assets/img/master.png'), DS);
+						$source = PATH_CORE . DS . trim($this->config->get('masterimage', 'components/com_publications/site/assets/img/master.png'), DS);
 					}
 				}
 			}
@@ -138,8 +137,7 @@ class Media extends SiteController
 				// Default image
 				if (!is_file($source))
 				{
-					$source = PATH_CORE . DS . trim($this->config->get('gallery_thumb',
-					'components/com_publications/site/assets/img/gallery_thumb.gif'), DS);
+					$source = PATH_CORE . DS . trim($this->config->get('gallery_thumb', 'components/com_publications/site/assets/img/gallery_thumb.gif'), DS);
 				}
 			}
 		}

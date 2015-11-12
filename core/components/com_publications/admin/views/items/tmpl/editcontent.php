@@ -38,8 +38,7 @@ $tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_PUBLICATIONS').': [ ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #'
-	. $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')' . ' ]', 'groups.png');
+	Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #' . $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')', 'groups.png');
 	Toolbar::save('savecontent');
 	Toolbar::cancel();
 }
@@ -56,7 +55,6 @@ function submitbutton(pressbutton)
 	}
 
 	submitform(pressbutton);
-
 }
 </script>
 <?php if ($this->getError()) { ?>
@@ -81,27 +79,29 @@ function submitbutton(pressbutton)
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></span></legend>
+
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 				<input type="hidden" name="no_html" value="<?php echo ($tmpl == 'component') ? '1' : '0'; ?>">
 				<input type="hidden" name="id" value="<?php echo $this->pub->get('id'); ?>" />
 				<input type="hidden" name="task" value="savecontent" />
 				<input type="hidden" name="version" value="<?php echo $this->pub->get('version_number'); ?>" />
-				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></span></legend>
+
 				<?php if ($this->getError()) {
 					echo '<p class="error">' . $this->getError() . '</p>';
 				} else { ?>
 
 				<input type="hidden" name="el" value="<?php echo $this->elementId; ?>" />
 				<?php
-				$element		= $this->element->element;
-				$block			= $this->element->block;
-				$elName   		= 'element' . $this->elementId;
+				$element = $this->element->element;
+				$block   = $this->element->block;
+				$elName  = 'element' . $this->elementId;
 				// Customize title
-				$defaultTitle	= $element->params->title
+				$defaultTitle = $element->params->title
 								? str_replace('{pubtitle}', $this->pub->title,
 								$element->params->title) : NULL;
-				$defaultTitle	= $element->params->title
+				$defaultTitle = $element->params->title
 								? str_replace('{pubversion}', $this->pub->version_label,
 								$defaultTitle) : NULL;
 
@@ -110,9 +110,9 @@ function submitbutton(pressbutton)
 							 ? $attachments['elements'][$this->elementId] : NULL;
 
 				// Get version params and extract bundle name
-				$bundleName		= $this->pub->params->get($elName . 'bundlename', $defaultTitle);
+				$bundleName = $this->pub->params->get($elName . 'bundlename', $defaultTitle);
 
-				$multiZip 		= (isset($element->params->typeParams->multiZip)
+				$multiZip = (isset($element->params->typeParams->multiZip)
 								&& $element->params->typeParams->multiZip == 0)
 								? false : true;
 

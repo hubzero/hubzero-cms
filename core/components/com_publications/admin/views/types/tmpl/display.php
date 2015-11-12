@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES') . ']', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'), 'addedit.png');
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::spacer();
@@ -44,11 +44,11 @@ Toolbar::deleteList();
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
-				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -69,34 +69,36 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	$sClass  = $row->supporting == 1 ? 'on' : 'off';
-	$cClass  = $row->contributable == 1 ? 'on' : 'off';
+	$sClass = $row->supporting == 1 ? 'on' : 'off';
+	$cClass = $row->contributable == 1 ? 'on' : 'off';
 
 	// Determine whether master type is supported in current version of hub code
-	$aClass  = 'off';
-	$active  = 'off';
+	$aClass = 'off';
+	$active = 'off';
 
 	// If we got a plugin - type is supported
 	if (Plugin::isEnabled('projects', $row->alias))
 	{
-		$aClass  = 'on';
-		$active  = 'on';
+		$aClass = 'on';
+		$active = 'on';
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td class="narrow">
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td class="narrow">
+				<td class="priority-3 narrow">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id ); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->type); ?></span>
 					</a>
 				</td>
-				<td><span class="block faded"><?php echo $this->escape($row->alias); ?></span></td>
-				<td class="centeralign narrow">
+				<td class="priority-4">
+					<span class="block faded"><?php echo $this->escape($row->alias); ?></span>
+				</td>
+				<td class="priority-3 centeralign narrow">
 					<span class="state <?php echo $cClass; ?>">
 						<span><?php echo Lang::txt($cClass); ?></span>
 					</span>

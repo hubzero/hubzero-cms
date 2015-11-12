@@ -32,7 +32,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ELEMENTS') . ' ]', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ELEMENTS'), 'addedit.png');
 Toolbar::save('saveelements');
 Toolbar::cancel();
 
@@ -50,17 +50,21 @@ function submitbutton(pressbutton)
 	return;
 }
 </script>
-<p class="backto"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->row->id ); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+<p class="backto"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
-		<fieldset class="adminform">
-			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="bid" value="<?php echo $this->blockId; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="saveelements" />
-			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ELEMENTS'); ?></span></legend>
-			<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ELEMENTS_WARNING'); ?></p>
-			<?php foreach ($block->elements as $elementId => $element) { ?>
+	<fieldset class="adminform">
+		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ELEMENTS'); ?></span></legend>
+
+		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+		<input type="hidden" name="bid" value="<?php echo $this->blockId; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="saveelements" />
+
+		<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ELEMENTS_WARNING'); ?></p>
+
+		<?php foreach ($block->elements as $elementId => $element) { ?>
 			<fieldset class="adminform">
 				<legend><span class="block-id"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span></legend>
 				<div class="input-wrap">
@@ -160,7 +164,7 @@ function submitbutton(pressbutton)
 				</div>
 				<?php } ?>
 			</fieldset>
-			<?php } ?>
-		</fieldset>
+		<?php } ?>
+	</fieldset>
 	<?php echo Html::input('token'); ?>
 </form>

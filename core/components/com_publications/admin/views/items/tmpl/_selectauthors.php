@@ -76,5 +76,3 @@ if (count($this->authNames) > 1) {
 }
 
 echo $html;
-
-?>

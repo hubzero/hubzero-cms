@@ -35,6 +35,12 @@ namespace Components\Publications\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use stdClass;
+use Document;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage publication master types
@@ -44,39 +50,40 @@ class Types extends AdminController
 	/**
 	 * List types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit'] = Request::getState(
-			$this->_option . '.types.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => Request::getState(
+				$this->_option . '.types.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.types.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => Request::getState(
+				$this->_option . '.types.search',
+				'search',
+				''
+			),
+			'sort' => Request::getState(
+				$this->_option . '.types.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.types.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start'] = Request::getState(
-			$this->_option . '.types.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search'] = trim(Request::getState(
-			$this->_option . '.types.search',
-			'search',
-			''
-		));
-		$this->view->filters['sort'] = trim(Request::getState(
-			$this->_option . '.types.sort',
-			'filter_order',
-			'id'
-		));
-		$this->view->filters['sort_Dir'] = trim(Request::getState(
-			$this->_option . '.types.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		$this->view->filters['state'] = 'all';
 
@@ -104,18 +111,17 @@ class Types extends AdminController
 	/**
 	 * Add a new type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
 	 * Edit block order
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addblockTask()
 	{
@@ -144,7 +150,8 @@ class Types extends AdminController
 		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
 		// Get available blocks
-		$this->view->blocks = $blocksModel->getBlocks('*',
+		$this->view->blocks = $blocksModel->getBlocks(
+			'*',
 			" WHERE status=1",
 			" ORDER BY ordering, id"
 		);
@@ -198,7 +205,7 @@ class Types extends AdminController
 			$row->curation
 		);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id, false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
 
 		$manifest   = new stdClass;
 		$manifest->blocks = new stdClass;
@@ -277,7 +284,7 @@ class Types extends AdminController
 	/**
 	 * Curation editing for experts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function advancedTask()
 	{
@@ -321,7 +328,7 @@ class Types extends AdminController
 	/**
 	 * Curation editing for experts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveadvancedTask()
 	{
@@ -343,8 +350,7 @@ class Types extends AdminController
 			return;
 		}
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id, false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
 
 		if (!trim($curation) || $this->isJson(trim($curation)))
 		{
@@ -370,6 +376,7 @@ class Types extends AdminController
 	/**
 	 * Is string valid json?
 	 *
+	 * @param   string   $string
 	 * @return  boolean
 	 */
 	public function isJson($string)
@@ -381,7 +388,7 @@ class Types extends AdminController
 	/**
 	 * Edit block elements
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editelementsTask()
 	{
@@ -427,7 +434,7 @@ class Types extends AdminController
 	/**
 	 * Save block elements
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveelementsTask()
 	{
@@ -523,7 +530,7 @@ class Types extends AdminController
 	/**
 	 * Edit block order
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editblockorderTask()
 	{
@@ -552,7 +559,8 @@ class Types extends AdminController
 		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
 		// Get available blocks
-		$this->view->blocks = $blocksModel->getBlocks('*',
+		$this->view->blocks = $blocksModel->getBlocks(
+			'*',
 			" WHERE status=1",
 			" ORDER BY ordering, id"
 		);
@@ -577,7 +585,8 @@ class Types extends AdminController
 	/**
 	 * Save block order
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect
+	 * @return  void
 	 */
 	public function saveblockorderTask($redirect = false)
 	{
@@ -587,7 +596,7 @@ class Types extends AdminController
 		// Incoming
 		$id       = Request::getInt('id', 0);
 		$neworder = Request::getVar('neworder', '');
-		$order 	  = explode('-', $neworder);
+		$order    = explode('-', $neworder);
 
 		$row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -607,8 +616,7 @@ class Types extends AdminController
 			$row->curation
 		);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id, false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
 
 		$manifest = new stdClass;
 		if ($neworder && !empty($order))
@@ -636,46 +644,39 @@ class Types extends AdminController
 	/**
 	 * Edit a type
 	 *
-	 * @return     void
+	 * @param   object  $row
+	 * @return  void
 	 */
-	public function editTask( $row = null )
+	public function editTask($row = null)
 	{
-		$this->view->setLayout('curation');
+		Request::setVar('hidemainmenu', 1);
 
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = Request::getVar('id', array(0));
-			if (is_array($id))
-			{
-				$id = $id[0];
-			}
-			else
-			{
-				$id = 0;
-			}
+			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
-			$this->view->row->load($id);
-
-			$this->view->curation = new \Components\Publications\Models\Curation(
-				$this->view->row->curation
-			);
-
-			// Get blocks model
-			$blocksModel = new \Components\Publications\Models\Blocks($this->database);
-
-			// Get available blocks
-			$this->view->blocks = $blocksModel->getBlocks('*',
-				" WHERE status=1",
-				" ORDER BY ordering, id"
-			);
+			$row = new \Components\Publications\Tables\MasterType($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
+
+		$this->view->curation = new \Components\Publications\Models\Curation(
+			$this->view->row->curation
+		);
+
+		// Get blocks model
+		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+
+		// Get available blocks
+		$this->view->blocks = $blocksModel->getBlocks(
+			'*',
+			" WHERE status=1",
+			" ORDER BY ordering, id"
+		);
 
 		// Set any errors
 		if ($this->getError())
@@ -694,13 +695,15 @@ class Types extends AdminController
 		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('curation')
+			->display();
 	}
 
 	/**
 	 * Save a publication and fall through to edit view
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -710,7 +713,8 @@ class Types extends AdminController
 	/**
 	 * Save a type
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect
+	 * @return  void
 	 */
 	public function saveTask($redirect = false)
 	{
@@ -723,8 +727,7 @@ class Types extends AdminController
 		// Initiate extended database class
 		$row = new \Components\Publications\Tables\MasterType($this->database);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $fields['id'], false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false);
 
 		// Load record
 		if ($fields['id'])
@@ -850,14 +853,23 @@ class Types extends AdminController
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
 			);
 		}
-		return;
 	}
 
+	/**
+	 * Reorder up
+	 *
+	 * @return  void
+	 */
 	public function orderupTask()
 	{
 		$this->reorderTask(-1);
 	}
 
+	/**
+	 * Reorder down
+	 *
+	 * @return  void
+	 */
 	public function orderdownTask()
 	{
 		$this->reorderTask(1);
@@ -866,7 +878,8 @@ class Types extends AdminController
 	/**
 	 * Reorders types
 	 *
-	 * @return     void
+	 * @param   integer  $dir
+	 * @return  void
 	 */
 	public function reorderTask($dir = 0)
 	{
@@ -889,19 +902,9 @@ class Types extends AdminController
 	}
 
 	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
-	}
-
-	/**
 	 * Remove one or more types
 	 *
-	 * @return     void Redirects back to main listing
+	 * @return  void  Redirects back to main listing
 	 */
 	public function removeTask()
 	{

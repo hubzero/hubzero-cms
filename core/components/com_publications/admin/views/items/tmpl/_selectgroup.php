@@ -53,5 +53,3 @@ if ($this->groups)
 $html .= '</select>'."\n";
 
 echo $html;
-
-?>

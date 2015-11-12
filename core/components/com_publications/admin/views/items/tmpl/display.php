@@ -92,14 +92,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo Lang::txt('@v.'); ?></th>
+				<th class="priority-4"><?php echo Lang::txt('@v.'); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
-				<th colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
-				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
+				<th class="priority-2"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
+				<th class="priority-4" colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
+				<th class="priority-5"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -119,9 +119,9 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$filterstring  = $this->filters['sortby']   ? '&amp;sort=' . $this->filters['sortby']    : '';
+$filterstring  = $this->filters['sortby'] ? '&amp;sort=' . $this->filters['sortby'] : '';
 $filterstring .= '&amp;status=' . $this->filters['status'];
-$filterstring .= ($this->filters['category'])   ? '&amp;category=' . $this->filters['category']     : '';
+$filterstring .= ($this->filters['category']) ? '&amp;category=' . $this->filters['category'] : '';
 
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -170,7 +170,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $checked; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
@@ -178,25 +178,25 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a><?php if ($checkedInfo) { echo $checkedInfo; } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->version_label; ?>
 				</td>
 				<td>
 					<span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
 				</td>
-				<td>
+				<td class="priority-2">
 					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id[]=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
 				</td>
-				<td>
+				<td class="priority-4">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring ); ?>"><?php echo $this->escape($row->versions); ?></a>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->base); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->cat_name); ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $date; ?>
 				</td>
 			</tr>

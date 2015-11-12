@@ -45,5 +45,3 @@ for ($i=0, $n=count( $as ); $i < $n; $i++)
 }
 $html .= '</select>' . "\n";
 echo $html;
-
-?>

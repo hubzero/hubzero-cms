@@ -39,14 +39,14 @@ use Components\Publications\Helpers;
 use Exception;
 
 /**
- * Primary component controller (extends \Hubzero\Component\SiteController)
+ * Primary component controller
  */
 class Publications extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -79,7 +79,7 @@ class Publications extends SiteController
 		$this->registerTask('start', 'contribute');
 		$this->registerTask('publication', 'contribute');
 
-		$this->_task = trim(Request::getVar( 'task', '' ));
+		$this->_task = trim(Request::getVar('task', ''));
 		if (($this->_id || $this->_alias) && !$this->_task)
 		{
 			$this->_task = 'page';
@@ -95,7 +95,7 @@ class Publications extends SiteController
 	/**
 	 * Parse component params and set configs
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _setConfigs()
 	{
@@ -116,13 +116,13 @@ class Publications extends SiteController
 	/**
 	 * Receive incoming data, get model and set url
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _incoming()
 	{
-		$this->_id      = Request::getInt( 'id', 0 );
-		$this->_alias   = Request::getVar( 'alias', '' );
-		$this->_version = Request::getVar( 'v', 'default' );
+		$this->_id      = Request::getInt('id', 0);
+		$this->_alias   = Request::getVar('alias', '');
+		$this->_version = Request::getVar('v', 'default');
 
 		$this->_identifier = $this->_alias ? $this->_alias : $this->_id;
 
@@ -134,7 +134,7 @@ class Publications extends SiteController
 	/**
 	 * Build the "trail"
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -207,7 +207,7 @@ class Publications extends SiteController
 
 				default:
 					Pathway::append(
-						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+						Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
 					);
 					break;
@@ -218,7 +218,7 @@ class Publications extends SiteController
 	/**
 	 * Build the title for this component
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
@@ -235,23 +235,23 @@ class Publications extends SiteController
 					case 'intro':
 						if ($this->_task_title)
 						{
-							$this->_title .= ': '.$this->_task_title;
+							$this->_title .= ': ' . $this->_task_title;
 						}
 						break;
 
 					case 'serve':
 					case 'wiki':
-						$this->_title .= ': '. Lang::txt('COM_PUBLICATIONS_SERVING_CONTENT');
+						$this->_title .= ': ' . Lang::txt('COM_PUBLICATIONS_SERVING_CONTENT');
 						break;
 
 					default:
-						$this->_title .= ': '.Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task));
+						$this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
 						break;
 				}
 			}
 		}
 
-		Document::setTitle( $this->_title );
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -299,12 +299,12 @@ class Publications extends SiteController
 	/**
 	 * Login view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _login()
 	{
-		$rtrn = Request::getVar('REQUEST_URI',
-			Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
@@ -315,7 +315,7 @@ class Publications extends SiteController
 	/**
 	 * View for main DOI
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function mainTask()
 	{
@@ -329,7 +329,7 @@ class Publications extends SiteController
 	/**
 	 * Intro to publications (main view)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function introTask()
 	{
@@ -342,37 +342,35 @@ class Publications extends SiteController
 		$this->_buildPathway();
 
 		// Instantiate a new view
-		$this->view->title 			= $this->_title;
-		$this->view->option 		= $this->_option;
-		$this->view->database 		= $this->database;
-		$this->view->config 		= $this->config;
-		$this->view->contributable 	= $this->_contributable;
+		$this->view->title         = $this->_title;
+		$this->view->option        = $this->_option;
+		$this->view->database      = $this->database;
+		$this->view->config        = $this->config;
+		$this->view->contributable = $this->_contributable;
 
-		$this->view->filters 		   = array();
-		$this->view->filters['sortby'] = 'date_published';
-		$this->view->filters['limit']  = $this->config->get('listlimit', 10);
-		$this->view->filters['start']  = Request::getInt( 'limitstart', 0 );
+		$this->view->filters = array(
+			'sortby' => 'date_published',
+			'limit'  => $this->config->get('listlimit', 10),
+			'start'  => Request::getInt('limitstart', 0)
+		);
 
 		// Instantiate a publication object
 		$model = new Models\Publication();
 
 		// Get most recent pubs
-		$this->view->results = $model->entries( 'list', $this->view->filters );
+		$this->view->results = $model->entries('list', $this->view->filters);
 
 		// Get most popular/oldest pubs
 		$this->view->filters['sortby'] = 'popularity';
-		$this->view->best = $model->entries( 'list', $this->view->filters );
+		$this->view->best = $model->entries('list', $this->view->filters);
 
 		// Get major types
-		$t = new Tables\Category( $this->database );
+		$t = new Tables\Category($this->database);
 		$this->view->categories = $t->getCategories(array('itemCount' => 1));
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -382,7 +380,7 @@ class Publications extends SiteController
 	/**
 	 * Browse publications
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function browseTask()
 	{
@@ -395,24 +393,24 @@ class Publications extends SiteController
 
 		// Incoming
 		$this->view->filters = array(
-			'category'   	=> Request::getVar('category', ''),
-			'sortby' 		=> Request::getCmd('sortby', $default_sort),
-			'limit'  		=> Request::getInt('limit', Config::get('list_limit')),
-			'start'  		=> Request::getInt('limitstart', 0),
-			'search' 		=> Request::getVar('search', ''),
-			'tag'    		=> trim(Request::getVar('tag', '', 'request', 'none', 2)),
-			'tag_ignored' 	=> array()
+			'category'    => Request::getVar('category', ''),
+			'sortby'      => Request::getCmd('sortby', $default_sort),
+			'limit'       => Request::getInt('limit', Config::get('list_limit')),
+			'start'       => Request::getInt('limitstart', 0),
+			'search'      => Request::getVar('search', ''),
+			'tag'         => trim(Request::getVar('tag', '', 'request', 'none', 2)),
+			'tag_ignored' => array()
 		);
 
 		// Get projects user has access to
 		if (!User::isGuest())
 		{
-			$obj = new \Components\Projects\Tables\Project( $this->database );
-			$this->view->filters['projects']  = $obj->getUserProjectIds(User::get('id'));
+			$obj = new \Components\Projects\Tables\Project($this->database);
+			$this->view->filters['projects'] = $obj->getUserProjectIds(User::get('id'));
 		}
 
 		// Get major types
-		$t = new Tables\Category( $this->database );
+		$t = new Tables\Category($this->database);
 		$this->view->categories = $t->getCategories();
 
 		if (!is_int($this->view->filters['category']))
@@ -431,10 +429,10 @@ class Publications extends SiteController
 		$model = new Models\Publication();
 
 		// Execute count query
-		$this->view->total = $model->entries( 'count', $this->view->filters );
+		$this->view->total = $model->entries('count', $this->view->filters);
 
 		// Run query with limit
-		$this->view->results = $model->entries( 'list', $this->view->filters );
+		$this->view->results = $model->entries('list', $this->view->filters);
 
 		// Initiate paging
 		$this->view->pageNav = new \Hubzero\Pagination\Paginator(
@@ -447,7 +445,7 @@ class Publications extends SiteController
 		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
 		if ($this->view->filters['category'] != '')
 		{
-			$t->load( $this->view->filters['category'] );
+			$t->load($this->view->filters['category']);
 			$this->_title .= $t->name;
 			$this->_task_title = $t->name;
 		}
@@ -466,26 +464,27 @@ class Publications extends SiteController
 		// Output HTML
 		$this->view->title = $this->_title;
 		$this->view->config = $this->config;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->setName('browse')
-					->setLayout('default')
-					->display();
-		return;
+
+		$this->view
+			->setName('browse')
+			->setLayout('default')
+			->display();
 	}
 
 	/**
      * Retrieves the data from database and compose the RDF file for download.
+     *
+     * @return  void
      */
 	protected function _resourceMap()
 	{
 		$resourceMap = new \ResourceMapGenerator();
-		$id = "";
+		$id = '';
 
 		// Retrieves the ID from alias
 		if (substr(strtolower($this->_alias), -4) == ".rdf")
@@ -503,15 +502,15 @@ class Publications extends SiteController
 	/**
 	 * View publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function pageTask()
 	{
 		$this->view->setName('view');
 
 		// Incoming
-		$tab      = Request::getVar( 'active', '' );   // The active tab (section)
-		$no_html  = Request::getInt( 'no_html', 0 );   // No-html display?
+		$tab      = Request::getVar('active', '');   // The active tab (section)
+		$no_html  = Request::getInt('no_html', 0);   // No-html display?
 
 		// Ensure we have an ID or alias to work with
 		if (!$this->_identifier)
@@ -590,14 +589,14 @@ class Publications extends SiteController
 		$extended = $lastPubRelease && $lastPubRelease->id == $this->model->version->id ? true : false;
 
 		// Trigger the functions that return the areas we'll be using
-		$cats = Event::trigger( 'publications.onPublicationAreas', array(
+		$cats = Event::trigger('publications.onPublicationAreas', array(
 			$this->model,
 			$this->model->versionAlias,
 			$extended)
 		);
 
 		// Get the sections
-		$sections = Event::trigger( 'publications.onPublication', array(
+		$sections = Event::trigger('publications.onPublication', array(
 			$this->model,
 			$this->_option,
 			array($tab),
@@ -628,15 +627,15 @@ class Publications extends SiteController
 				'name'   => 'about',
 				'layout' => 'default'
 			));
-			$view->option 		= $this->_option;
-			$view->config 		= $this->config;
-			$view->database 	= $this->database;
-			$view->publication 	= $this->model;
-			$view->authorized 	= $authorized;
-			$view->restricted 	= $restricted;
-			$view->version 		= $this->model->versionAlias;
-			$view->sections 	= $sections;
-			$body               = $view->loadTemplate();
+			$view->option      = $this->_option;
+			$view->config      = $this->config;
+			$view->database    = $this->database;
+			$view->publication = $this->model;
+			$view->authorized  = $authorized;
+			$view->restricted  = $restricted;
+			$view->version     = $this->model->versionAlias;
+			$view->sections    = $sections;
+			$body              = $view->loadTemplate();
 
 			// Log page view (public pubs only)
 			if ($this->_logging && $this->_task == 'view')
@@ -649,43 +648,42 @@ class Publications extends SiteController
 		$cat = array();
 		$cat['about'] = Lang::txt('COM_PUBLICATIONS_ABOUT');
 		array_unshift($cats, $cat);
-		array_unshift($sections, array( 'html' => $body, 'metadata' => '' ));
+		array_unshift($sections, array('html' => $body, 'metadata' => ''));
 
 		// Get filters (for series & workshops listing)
-		$filters 			= array();
-		$defaultsort 		= ($this->model->_category->alias == 'series') ? 'date' : 'ordering';
-		$defaultsort 		= ($this->model->_category->alias == 'series'
-							&& $this->config->get('show_ranking'))
-							? 'ranking' : $defaultsort;
-		$filters['sortby'] 	= Request::getVar( 'sortby', $defaultsort );
-		$filters['limit']  	= Request::getInt( 'limit', 0 );
-		$filters['start']  	= Request::getInt( 'limitstart', 0 );
-		$filters['id']     	= $this->model->publication->id;
+		$defaultsort = ($this->model->_category->alias == 'series') ? 'date' : 'ordering';
+		$defaultsort = ($this->model->_category->alias == 'series' && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
+
+		$filters = array(
+			'sortby' => Request::getVar('sortby', $defaultsort),
+			'limit'  => Request::getInt('limit', 0),
+			'start'  => Request::getInt('limitstart', 0),
+			'id'     => $this->model->publication->id
+		);
 
 		// Write title & build pathway
-		Document::setTitle( Lang::txt(strtoupper($this->_option))
-			. ': ' . stripslashes($this->model->version->title) );
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->version->title));
 
 		// Set the pathway
 		$this->_buildPathway();
 
-		$this->view->version 		= $this->model->versionAlias;
-		$this->view->config 		= $this->config;
-		$this->view->option 		= $this->_option;
-		$this->view->publication 	= $this->model;
-		$this->view->authorized 	= $authorized;
-		$this->view->restricted 	= $restricted;
-		$this->view->cats 			= $cats;
-		$this->view->tab 			= $tab;
-		$this->view->sections 		= $sections;
-		$this->view->database 		= $this->database;
-		$this->view->filters 		= $filters;
+		$this->view->version        = $this->model->versionAlias;
+		$this->view->config         = $this->config;
+		$this->view->option         = $this->_option;
+		$this->view->publication    = $this->model;
+		$this->view->authorized     = $authorized;
+		$this->view->restricted     = $restricted;
+		$this->view->cats           = $cats;
+		$this->view->tab            = $tab;
+		$this->view->sections       = $sections;
+		$this->view->database       = $this->database;
+		$this->view->filters        = $filters;
 		$this->view->lastPubRelease = $lastPubRelease;
-		$this->view->contributable 	= $this->_contributable;
+		$this->view->contributable  = $this->_contributable;
 
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		// Output HTML
@@ -693,27 +691,25 @@ class Publications extends SiteController
 
 		// Insert .rdf link in the header
 		\ResourceMapGenerator::putRDF($this->model->publication->id);
-
-		return;
 	}
 
-	 /**
+	/**
 	 * Serve publication content
 	 * Determine how to render depending on master type, attachment type and user choice
 	 * Defaults to download
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function serveTask()
 	{
 		// Incoming
-		$aid	    = Request::getInt( 'a', 0 );             // Attachment id
-		$elementId  = Request::getInt( 'el', 1 );            // Element id
-		$render     = Request::getVar( 'render', '' );
-		$vid        = Request::getInt( 'vid', '' );
-		$file       = Request::getVar( 'file', '' );
-		$disp		= Request::getVar( 'disposition');
-		$disp		= in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';
+		$aid        = Request::getInt('a', 0);             // Attachment id
+		$elementId  = Request::getInt('el', 1);            // Element id
+		$render     = Request::getVar('render', '');
+		$vid        = Request::getInt('vid', '');
+		$file       = Request::getVar('file', '');
+		$disp       = Request::getVar('disposition');
+		$disp       = in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';
 
 		// Get our model and load publication data
 		$this->model = new Models\Publication($this->_identifier, $this->_version, $vid);
@@ -835,27 +831,22 @@ class Publications extends SiteController
 		if ($content === NULL || $content == false)
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
+		}
+
+		// Do we need to redirect to content?
+		if ($attModel->get('redirect'))
+		{
+			App::redirect($attModel->get('redirect'));
 			return;
 		}
-		else
-		{
-			// Do we need to redirect to content?
-			if ($attModel->get('redirect'))
-			{
-				App::redirect($attModel->get('redirect'));
-				return;
-			}
 
-			return $content;
-		}
-
-		return;
+		return $content;
 	}
 
 	/**
 	 * Display a license for a publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function licenseTask()
 	{
@@ -878,13 +869,12 @@ class Publications extends SiteController
 		$this->view->option      = $this->_option;
 		$this->view->config      = $this->config;
 		$this->view->publication = $this->model;
-		$this->view->title       = stripslashes($this->model->version->get('title'))
-								. ': ' . Lang::txt('COM_PUBLICATIONS_LICENSE');
+		$this->view->title       = stripslashes($this->model->version->get('title')) . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSE');
 
 		// Output HTML
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError($this->getError());
 		}
 
 		$this->view->display();
@@ -893,12 +883,12 @@ class Publications extends SiteController
 	/**
 	 * Download a citation for a publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function citationTask()
 	{
 		// Incoming
-		$format = Request::getVar( 'type', 'bibtex' );
+		$format = Request::getVar('type', 'bibtex');
 
 		// Get our model and load publication data
 		$this->model = new Models\Publication($this->_identifier, $this->_version);
@@ -920,11 +910,11 @@ class Publications extends SiteController
 		// Build publication path
 		$path = $this->model->path('base', true);
 
-		if (!is_dir( $path ))
+		if (!is_dir($path))
 		{
-			if (!Filesystem::makeDirectory( PATH_APP . $path, 0755, true, true))
+			if (!Filesystem::makeDirectory(PATH_APP . $path, 0755, true, true))
 			{
-				$this->setError( 'Error. Unable to create path.' );
+				$this->setError('Error. Unable to create path.');
 			}
 		}
 
@@ -945,7 +935,7 @@ class Publications extends SiteController
 					foreach ($authors as $author)
 					{
 						$name = $author->name ? $author->name : $author->p_name;
-						$auth = preg_replace( '/{{(.*?)}}/s', '', $name );
+						$auth = preg_replace('/{{(.*?)}}/s', '', $name);
 						if (!strstr($auth,','))
 						{
 							$bits = explode(' ',$auth);
@@ -974,7 +964,7 @@ class Publications extends SiteController
 
 			case 'bibtex':
 			default:
-				include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php' );
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 
 				$bibtex = new \Structures_BibTex();
 				$addarray = array();
@@ -1026,12 +1016,12 @@ class Publications extends SiteController
 	 * Call a plugin method
 	 * NOTE: This view should normally only be called through AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function pluginTask()
 	{
 		// Incoming
-		$trigger = trim(Request::getVar( 'trigger', '' ));
+		$trigger = trim(Request::getVar('trigger', ''));
 
 		// Ensure we have a trigger
 		if (!$trigger)
@@ -1041,7 +1031,7 @@ class Publications extends SiteController
 		}
 
 		// Call the trigger
-		$results = Event::trigger( 'publications.' . $trigger, array($this->_option) );
+		$results = Event::trigger('publications.' . $trigger, array($this->_option));
 		if (is_array($results))
 		{
 			$html = $results[0]['html'];
@@ -1054,15 +1044,15 @@ class Publications extends SiteController
 	/**
 	 * Serve up a file
 	 *
-	 * @param      boolean $inline Disposition
-	 * @param      string  $p      File path
-	 * @param      string  $f      File name
-	 * @param      string  $mime   Mimetype
-	 * @return     void
+	 * @param   boolean  $inline  Disposition
+	 * @param   string   $p       File path
+	 * @param   string   $f       File name
+	 * @param   string   $mime    Mimetype
+	 * @return  void
 	 */
 	protected function _serveup($inline = false, $p, $f, $mime)
 	{
-		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]) )
+		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
 					? $_SERVER["HTTP_USER_AGENT"]
 					: $HTTP_USER_AGENT;
 
@@ -1070,8 +1060,8 @@ class Publications extends SiteController
 		while (@ob_end_clean());
 		$file = $p . DS . $f;
 
-		$fsize = filesize( $file );
-		$mod_date = date('r', filemtime( $file ) );
+		$fsize = filesize($file);
+		$mod_date = date('r', filemtime($file));
 
 		$cont_dis = $inline ? 'inline' : 'attachment';
 
@@ -1080,13 +1070,14 @@ class Publications extends SiteController
 		header("Expires: 0");
 
 		header("Content-Transfer-Encoding: binary");
-		header('Content-Disposition:' . $cont_dis .';'
+		header(
+			'Content-Disposition:' . $cont_dis .';'
 			. ' filename="' . $f . '";'
 			. ' modification-date="' . $mod_date . '";'
 			. ' size=' . $fsize .';'
-			); //RFC2183
-			header("Content-Type: "    . $mime ); // MIME type
-			header("Content-Length: "  . $fsize);
+		); //RFC2183
+		header("Content-Type: "    . $mime); // MIME type
+		header("Content-Length: "  . $fsize);
 
 		// No encoding - we aren't using compression... (RFC1945)
 
@@ -1096,9 +1087,9 @@ class Publications extends SiteController
 	/**
 	 * Read file contents
 	 *
-	 * @param      unknown $filename Parameter description (if any) ...
-	 * @param      boolean $retbytes Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string   $filename
+	 * @param   boolean  $retbytes
+	 * @return  mixed
 	 */
 	protected function _readfile_chunked($filename, $retbytes=true)
 	{
@@ -1130,16 +1121,16 @@ class Publications extends SiteController
 	/**
 	 * Contribute a publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function contributeTask()
 	{
 		// Incoming
 		$pid     = Request::getInt('pid', 0);
-		$action  = Request::getVar( 'action', '' );
-		$active  = Request::getVar( 'active', 'publications' );
+		$action  = Request::getVar('action', '');
+		$active  = Request::getVar('active', 'publications');
 		$action  = $this->_task == 'start' ? 'start' : $action;
-		$ajax 	 = Request::getInt( 'ajax', 0 );
+		$ajax    = Request::getInt('ajax', 0);
 
 		// Redirect if publishing is turned off
 		if (!$this->_contributable)
@@ -1149,8 +1140,8 @@ class Publications extends SiteController
 		}
 
 		// Load language file
-		Lang::load('com_projects') || Lang::load('com_projects', PATH_CORE .
-			DS . 'components' . DS . 'com_projects' . DS . 'site');
+		Lang::load('com_projects') ||
+		Lang::load('com_projects', PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site');
 
 		// Instantiate a new view
 		$this->view  = new \Hubzero\Component\View(array(
@@ -1204,8 +1195,8 @@ class Publications extends SiteController
 			// Redirect to project if not provisioned
 			if (!$project->isProvisioned())
 			{
-				App::redirect(Route::url($project->link('publications')
-					. '&pid=' . $pid . '&action=' . $action)
+				App::redirect(
+					Route::url($project->link('publications') . '&pid=' . $pid . '&action=' . $action)
 				);
 				return;
 			}
@@ -1215,7 +1206,7 @@ class Publications extends SiteController
 		if ($action == 'start' && !$project->access('create'))
 		{
 			$this->_buildPathway(null);
-			$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+			$this->view = new \Hubzero\Component\View(array('name'=>'error', 'layout' =>'restricted'));
 			$this->view->error  = Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
 			$this->view->title  = $this->title;
 			$this->view->option = $this->_option;
@@ -1230,12 +1221,13 @@ class Publications extends SiteController
 		}
 
 		// Plugin params
-		$plugin_params = array( $project,
-								$action,
-								$areas = array($plugin)
+		$plugin_params = array(
+			$project,
+			$action,
+			$areas = array($plugin)
 		);
 
-		$content = Event::trigger( 'projects.onProject', $plugin_params);
+		$content = Event::trigger('projects.onProject', $plugin_params);
 		$this->view->content = (is_array($content) && isset($content[0]['html'])) ? $content[0]['html'] : '';
 
 		if (isset($content[0]['msg']) && !empty($content[0]['msg']))
@@ -1269,7 +1261,7 @@ class Publications extends SiteController
 		$error               = $this->getError() ? $this->getError() : $this->getNotifications('error');
 		if ($error)
 		{
-			$this->view->setError( $error );
+			$this->view->setError($error);
 		}
 		$this->view->display();
 
@@ -1279,7 +1271,7 @@ class Publications extends SiteController
 	/**
 	 * Save tags on a publication
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savetagsTask()
 	{
@@ -1292,12 +1284,12 @@ class Publications extends SiteController
 		}
 
 		// Incoming
-		$id      = Request::getInt( 'id', 0 );
-		$tags    = Request::getVar( 'tags', '' );
-		$no_html = Request::getInt( 'no_html', 0 );
+		$id      = Request::getInt('id', 0);
+		$tags    = Request::getVar('tags', '');
+		$no_html = Request::getInt('no_html', 0);
 
 		// Process tags
-		$rt = new Helpers\Tags( $this->database );
+		$rt = new Helpers\Tags($this->database);
 		$rt->tag_object(User::get('id'), $id, $tags, 1, 0);
 
 		if (!$no_html)
@@ -1312,9 +1304,8 @@ class Publications extends SiteController
 	/**
 	 * Block access to restricted publications
 	 *
-	 * @param  object $publication
-	 *
-	 * @return string
+	 * @param   object  $publication
+	 * @return  string
 	 */
 	protected function _blockAccess()
 	{
@@ -1331,17 +1322,13 @@ class Publications extends SiteController
 		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_PUBLICATIONS_PRIVATE_PUB_LOGIN');
-			$this->_login();
-			return;
+			return $this->_login();
 		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option),
-				Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
-				'error'
-			);
-			return;
-		}
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option),
+			Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+			'error'
+		);
 	}
 }

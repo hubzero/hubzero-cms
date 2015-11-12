@@ -34,6 +34,11 @@ namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage publication licenses
@@ -43,39 +48,40 @@ class Licenses extends AdminController
 	/**
 	 * List resource types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = Request::getState(
-			$this->_option . '.licenses.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => Request::getState(
+				$this->_option . '.licenses.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => Request::getState(
+				$this->_option . '.licenses.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => Request::getState(
+				$this->_option . '.licenses.search',
+				'search',
+				''
+			),
+			'sort' => Request::getState(
+				$this->_option . '.licenses.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.licenses.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']    = Request::getState(
-			$this->_option . '.licenses.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search']     = trim(Request::getState(
-			$this->_option . '.licenses.search',
-			'search',
-			''
-		));
-		$this->view->filters['sort']     = trim(Request::getState(
-			$this->_option . '.licenses.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir'] = trim(Request::getState(
-			$this->_option . '.licenses.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		// Instantiate an object
 		$rt = new \Components\Publications\Tables\License($this->database);
@@ -99,42 +105,35 @@ class Licenses extends AdminController
 	/**
 	 * Add a new type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
 	 * Edit a type
 	 *
-	 * @return     void
+	 * @param   object  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		Request::setVar('hidemainmenu', 1);
+
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = Request::getVar('id', array(0));
-			if (is_array($id))
-			{
-				$id = $id[0];
-			}
-			else
-			{
-				$id = 0;
-			}
+			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$this->view->row = new \Components\Publications\Tables\License($this->database);
-			$this->view->row->loadLicense($id);
+			$row = new \Components\Publications\Tables\License($this->database);
+			$row->loadLicense($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -152,9 +151,9 @@ class Licenses extends AdminController
 	}
 
 	/**
-	 * Save a publication and fall through to edit view
+	 * Save record and fall through to edit view
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -162,9 +161,10 @@ class Licenses extends AdminController
 	}
 
 	/**
-	 * Save a type
+	 * Save record
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect
+	 * @return  void
 	 */
 	public function saveTask($redirect = false)
 	{
@@ -174,8 +174,7 @@ class Licenses extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit&id[]=' . $fields['id'], false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false);
 
 		// Initiate extended database class
 		$row = new \Components\Publications\Tables\License($this->database);
@@ -185,10 +184,10 @@ class Licenses extends AdminController
 			return;
 		}
 
-		$row->customizable 	= Request::getInt('customizable', 0, 'post');
-		$row->agreement 	= Request::getInt('agreement', 0, 'post');
-		$row->active 		= Request::getInt('active', 0, 'post');
-		$row->icon			= $row->icon ? $row->icon : '/core/components/com_publications/site/assets/img/logos/license.gif';
+		$row->customizable = Request::getInt('customizable', 0, 'post');
+		$row->agreement    = Request::getInt('agreement', 0, 'post');
+		$row->active       = Request::getInt('active', 0, 'post');
+		$row->icon         = $row->icon ? $row->icon : '/core/components/com_publications/site/assets/img/logos/license.gif';
 
 		if (!$row->id)
 		{
@@ -226,14 +225,23 @@ class Licenses extends AdminController
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
 			);
 		}
-		return;
 	}
 
+	/**
+	 * Reorder up
+	 *
+	 * @return  void
+	 */
 	public function orderupTask()
 	{
 		$this->reorderTask(-1);
 	}
 
+	/**
+	 * Reorder down
+	 *
+	 * @return  void
+	 */
 	public function orderdownTask()
 	{
 		$this->reorderTask(1);
@@ -243,7 +251,8 @@ class Licenses extends AdminController
 	 * Reorders licenses
 	 * Redirects to license listing
 	 *
-	 * @return     void
+	 * @param   integer  $dir
+	 * @return  void
 	 */
 	public function reorderTask($dir = 0)
 	{
@@ -269,9 +278,9 @@ class Licenses extends AdminController
 	 * Makes one license default
 	 * Redirects to license listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function makedefaultTask($dir = 0)
+	public function makedefaultTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
@@ -295,7 +304,7 @@ class Licenses extends AdminController
 		$id = intval($id[0]);
 
 		// Load row
-		$row->loadLicense( $id );
+		$row->loadLicense($id);
 
 		// Make default
 		$row->main = 1;
@@ -325,9 +334,9 @@ class Licenses extends AdminController
 	 * Change license status
 	 * Redirects to license listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function changestatusTask($dir = 0)
+	public function changestatusTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
@@ -340,22 +349,25 @@ class Licenses extends AdminController
 
 		foreach ($ids as $id)
 		{
-			if (intval($id))
+			$id = intval($id);
+			if (!$id)
 			{
-				// Load row
-				$row->loadLicense( $id );
-				$row->active = $row->active == 1 ? 0 : 1;
+				continue;
+			}
 
-				// Save
-				if (!$row->store())
-				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						$row->getError(),
-						'error'
-					);
-					return;
-				}
+			// Load row
+			$row->loadLicense($id);
+			$row->active = $row->active == 1 ? 0 : 1;
+
+			// Save
+			if (!$row->store())
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					$row->getError(),
+					'error'
+				);
+				return;
 			}
 		}
 
@@ -364,15 +376,5 @@ class Licenses extends AdminController
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED')
 		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 }

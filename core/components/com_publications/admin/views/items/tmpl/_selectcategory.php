@@ -56,5 +56,3 @@ foreach ($this->categories as $anode)
 $html .= '</select>'."\n";
 
 echo $html;
-
-?>

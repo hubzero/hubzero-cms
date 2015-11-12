@@ -36,6 +36,12 @@ use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use stdClass;
 use Exception;
+use Request;
+use Route;
+use Date;
+use Lang;
+use User;
+use App;
 
 /**
  * Manage publication batch
@@ -45,20 +51,18 @@ class Batchcreate extends AdminController
 	/**
 	 * Start page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// set layout
-		$this->view->setLayout('display');
-
 		$project = new \Components\Projects\Tables\Project($this->database);
 
 		// Get filters
-		$filters = array();
-		$filters['sortby']     = 'title';
-		$filters['sortdir']    = 'DESC';
-		$filters['authorized'] = true;
+		$filters = array(
+			'sortby'     => 'title',
+			'sortdir'    => 'DESC',
+			'authorized' => true
+		);
 		$this->view->projects  = $project->getRecords($filters, true, 0, 1);
 
 		// Set any errors
@@ -68,13 +72,15 @@ class Batchcreate extends AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Download XSD
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function xsdTask()
 	{
@@ -98,22 +104,18 @@ class Batchcreate extends AdminController
 				exit;
 			}
 		}
-		else
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
-				'error'
-			);
-		}
 
-		return;
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
+			'error'
+		);
 	}
 
 	/**
 	 * Validate XML
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function validateTask()
 	{
@@ -146,13 +148,13 @@ class Batchcreate extends AdminController
 	/**
 	 * Import, validate and parse data
 	 *
-	 * @param   integer $dryRun
+	 * @param   integer  $dryRun
 	 * @return  void
 	 */
-	public function processTask( $dryRun = 0 )
+	public function processTask($dryRun = 0)
 	{
 		// check token
-		\Session::checkToken();
+		Request::checkToken();
 
 		// Incoming
 		$id     = Request::getInt('projectid', 0);
@@ -165,21 +167,33 @@ class Batchcreate extends AdminController
 		$this->project = new \Components\Projects\Models\Project($id);
 		if (!$this->project->exists())
 		{
-			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'), 'records' => NULL));
+			echo json_encode(array(
+				'result'  => 'error',
+				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'),
+				'records' => NULL
+			));
 			exit();
 		}
 
 		// Check for file
 		if (!is_array($file) || $file['size'] == 0 || $file['error'] != 0)
 		{
-			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'), 'records' => NULL));
+			echo json_encode(array(
+				'result'  => 'error',
+				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
+				'records' => NULL
+			));
 			exit();
 		}
 
 		// Check for correct type
 		if (!in_array($file['type'], array('application/xml', 'text/xml')))
 		{
-			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'), 'records' => NULL));
+			echo json_encode(array(
+				'result'  => 'error',
+				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'),
+				'records' => NULL
+			));
 			exit();
 		}
 
@@ -190,22 +204,26 @@ class Batchcreate extends AdminController
 		}
 		if (!$this->data)
 		{
-			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'), 'records' => NULL));
+			echo json_encode(array(
+				'result'  => 'error',
+				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'),
+				'records' => NULL
+			));
 			exit();
 		}
 
 		// Load reader
 		libxml_use_internal_errors(true);
-		$this->reader   = new \XMLReader();
+		$this->reader = new \XMLReader();
 
 		// Open and validate XML against schema
 		if (!$this->reader->XML($this->data, 'UTF-8', \XMLReader::VALIDATE | \XMLReader::SUBST_ENTITIES))
 		{
 			echo json_encode(array(
-				'result' 	=> 'error',
-				'error' 	=> Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
-				'records' 	=> NULL)
-			);
+				'result'  => 'error',
+				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
+				'records' => NULL
+			));
 			exit();
 		}
 
@@ -229,24 +247,30 @@ class Batchcreate extends AdminController
 		if ($this->getError())
 		{
 			echo json_encode(array(
-				'result' 	=> 'error',
-				'error' 	=> $this->getError(),
-				'records' 	=> $outputData,
-				'dryrun'	=> $dryRun)
-			);
+				'result'  => 'error',
+				'error'   => $this->getError(),
+				'records' => $outputData,
+				'dryrun'  => $dryRun
+			));
 			exit();
 		}
 
 		// return results to user
-		echo json_encode(array('result' => 'success', 'error' => NULL, 'records' => $outputData, 'dryrun' => $dryRun));
+		echo json_encode(array(
+			'result'  => 'success',
+			'error'   => NULL,
+			'records' => $outputData,
+			'dryrun'  => $dryRun
+		));
 		exit();
 	}
 
 	/**
 	 * Parse loaded data for further processing
 	 *
-	 * @access public
-	 * @return string
+	 * @param   integer  $dryRun
+	 * @param   string   $output
+	 * @return  string
 	 */
 	public function parse($dryRun = 1, $output = NULL)
 	{
@@ -258,15 +282,15 @@ class Batchcreate extends AdminController
 		$this->reader->XML($this->data);
 
 		// Load classes
-		$objCat = new Tables\Category( $this->database );
-		$objL = new Tables\License( $this->database );
+		$objCat = new Tables\Category($this->database);
+		$objL   = new Tables\License($this->database);
 
 		// Get base type
-		$base = Request::getVar( 'base', 'files' );
+		$base = Request::getVar('base', 'files');
 
 		// Determine publication master type
-		$mt 		= new Tables\MasterType( $this->database );
-		$choices  	= $mt->getTypes('alias', 1);
+		$mt = new Tables\MasterType($this->database);
+		$choices    = $mt->getTypes('alias', 1);
 		$mastertype = in_array($base, $choices) ? $base : 'files';
 
 		// Get type params
@@ -321,7 +345,7 @@ class Batchcreate extends AdminController
 				$item['authors']  = array();
 
 				// Publication properties
-				$item['publication'] = new Tables\Publication( $this->database );
+				$item['publication'] = new Tables\Publication($this->database);
 				$item['publication']->master_type = $mType->id;
 				$item['publication']->category    = $catId ? $catId : $cat;
 				$item['publication']->project_id  = $this->project->get('id');
@@ -330,17 +354,16 @@ class Batchcreate extends AdminController
 				$item['publication']->access      = 0;
 
 				// Version properties
-				$item['version'] 		= new Tables\Version( $this->database );
-				$item['version']->title = isset($node->title) && trim($node->title)
-										? trim($node->title) : $title;
-				$item['version']->abstract 	= isset($node->synopsis) ? trim($node->synopsis) : '';
-				$item['version']->description = isset($node->abstract) ? trim($node->abstract) : '';
+				$item['version'] = new Tables\Version($this->database);
+				$item['version']->title         = isset($node->title) && trim($node->title) ? trim($node->title) : $title;
+				$item['version']->abstract      = isset($node->synopsis) ? trim($node->synopsis) : '';
+				$item['version']->description   = isset($node->abstract) ? trim($node->abstract) : '';
 				$item['version']->version_label = isset($node->version) ? trim($node->version) : '1.0';
 				$item['version']->release_notes = isset($node->notes) ? trim($node->notes) : '';
 
 				// Check license
-				$license 			= isset($node->license) ? $node->license : '';
-				$item['license'] 	= $objL->getLicenseByTitle($license);
+				$license = isset($node->license) ? $node->license : '';
+				$item['license'] = $objL->getLicenseByTitle($license);
 				if (!$item['license'])
 				{
 					$item['errors'][] = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_LICENSE');
@@ -424,11 +447,10 @@ class Batchcreate extends AdminController
 		// Show what you'll get
 		if ($dryRun == 1)
 		{
-			$eview       = new \Hubzero\Component\View( array(
+			$eview = new \Hubzero\Component\View(array(
 				'name'   =>'batchcreate',
 				'layout' => 'dryrun'
-				)
-			);
+			));
 			$eview->option = $this->_option;
 			$eview->items  = $items;
 			$output       .= $eview->loadTemplate();
@@ -457,18 +479,20 @@ class Batchcreate extends AdminController
 				$output = '<p class="error">' . Lang::txt('COM_PUBLICATIONS_BATCH_FAILED_CREATED') . ' ' .  (count($items) - $i) . ' ' . Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
 			}
 
-			$output.= $out;
+			$output .= $out;
 		}
 
 		$this->reader->close();
+
 		return $output;
 	}
 
 	/**
 	 * Process parsed data
 	 *
-	 * @access public
-	 * @return string
+	 * @param   object  $item
+	 * @param   object  $out
+	 * @return  boolean
 	 */
 	public function processRecord($item, &$out)
 	{
@@ -481,14 +505,14 @@ class Batchcreate extends AdminController
 		$pid = $item['publication']->id;
 
 		// Create version record
-		$item['version']->publication_id 	= $pid;
-		$item['version']->version_number 	= 1;
-		$item['version']->created_by 		= $this->_uid;
-		$item['version']->created 			= Date::toSql();
-		$item['version']->secret			= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
-		$item['version']->access			= 0;
-		$item['version']->main				= 1;
-		$item['version']->state				= 3;
+		$item['version']->publication_id = $pid;
+		$item['version']->version_number = 1;
+		$item['version']->created_by     = $this->_uid;
+		$item['version']->created        = Date::toSql();
+		$item['version']->secret         = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+		$item['version']->access         = 0;
+		$item['version']->main           = 1;
+		$item['version']->state          = 3;
 
 		if (!$item['version']->store())
 		{
@@ -528,7 +552,7 @@ class Batchcreate extends AdminController
 		{
 			$tags = '';
 			$i = 0;
-			foreach ($item['tags'] as $tag )
+			foreach ($item['tags'] as $tag)
 			{
 				$i++;
 				$tags .= trim($tag);
@@ -536,7 +560,7 @@ class Batchcreate extends AdminController
 			}
 
 			// Add tags
-			$tagsHelper = new \Components\Publications\Helpers\Tags( $this->database );
+			$tagsHelper = new \Components\Publications\Helpers\Tags($this->database);
 			$tagsHelper->tag_object($this->_uid, $pid, $tags, 1);
 		}
 
@@ -551,8 +575,12 @@ class Batchcreate extends AdminController
 	/**
 	 * Collect file data
 	 *
-	 * @access public
-	 * @return string
+	 * @param   object   $file
+	 * @param   string   $role
+	 * @param   integer  $ordering
+	 * @param   object   $item
+	 * @param   integer  $element_id
+	 * @return  void
 	 */
 	public function collectFileData($file, $role, $ordering, &$item, $element_id = 0)
 	{
@@ -565,13 +593,13 @@ class Batchcreate extends AdminController
 		$error = NULL;
 
 		// Start new attachment record
-		$attach = new Tables\Attachment( $this->database );
-		$attach->path   	= trim($file->path, DS);
-		$attach->title  	= isset($file->title) ? trim($file->title) : '';
-		$attach->role		= $role;
-		$attach->ordering	= $ordering;
-		$attach->element_id	= $element_id;
-		$attach->type		= 'file';
+		$attach = new Tables\Attachment($this->database);
+		$attach->path       = trim($file->path, DS);
+		$attach->title      = isset($file->title) ? trim($file->title) : '';
+		$attach->role       = $role;
+		$attach->ordering   = $ordering;
+		$attach->element_id = $element_id;
+		$attach->type       = 'file';
 
 		// Check if file exists
 		$filePath = $this->projectPath . DS . trim($file->path, DS);
@@ -606,8 +634,10 @@ class Batchcreate extends AdminController
 	/**
 	 * Process file data
 	 *
-	 * @access public
-	 * @return void
+	 * @param   array   $fileRecord
+	 * @param   object  $pub
+	 * @param   object  $version
+	 * @return  void
 	 */
 	public function processFileData($fileRecord, $pub, $version)
 	{
@@ -621,11 +651,11 @@ class Batchcreate extends AdminController
 		// Create attachment record
 		if ($this->curationModel || $fileRecord['type'] != 'gallery')
 		{
-			$attachment->publication_id 			= $pid;
-			$attachment->publication_version_id 	= $vid;
-			$attachment->vcs_hash 					= $vcs_hash;
-			$attachment->created_by 				= $this->_uid;
-			$attachment->created 					= Date::toSql();
+			$attachment->publication_id         = $pid;
+			$attachment->publication_version_id = $vid;
+			$attachment->vcs_hash               = $vcs_hash;
+			$attachment->created_by             = $this->_uid;
+			$attachment->created                = Date::toSql();
 			$attachment->store();
 		}
 
@@ -662,7 +692,7 @@ class Batchcreate extends AdminController
 			// Save params if applicable
 			if ($suffix)
 			{
-				$pa = new \Components\Publications\Tables\Attachment( $this->database );
+				$pa = new \Components\Publications\Tables\Attachment($this->database);
 				$pa->saveParam($attachment, 'suffix', $suffix);
 			}
 
@@ -674,21 +704,23 @@ class Batchcreate extends AdminController
 	/**
 	 * Process author data
 	 *
-	 * @access public
-	 * @return void
+	 * @param   object   $author
+	 * @param   integer  $pid
+	 * @param   integer  $vid
+	 * @return  void
 	 */
 	public function processAuthorData($author, $pid, $vid)
 	{
 		// Need to create project owner
 		if (!$author->project_owner_id)
 		{
-			$objO = new Tables\Owner( $this->database );
+			$objO = new Tables\Owner($this->database);
 
-			$objO->projectid 	 = $this->project->get('id');
-			$objO->userid 		 = $author->user_id;
-			$objO->status 		 = $author->user_id ? 1 : 0;
-			$objO->added 		 = Date::toSql();
-			$objO->role 		 = 2;
+			$objO->projectid     = $this->project->get('id');
+			$objO->userid        = $author->user_id;
+			$objO->status        = $author->user_id ? 1 : 0;
+			$objO->added         = Date::toSql();
+			$objO->role          = 2;
 			$objO->invited_email = '';
 			$objO->invited_name  = $author->name;
 			$objO->store();
@@ -697,7 +729,7 @@ class Batchcreate extends AdminController
 
 		$author->publication_version_id = $vid;
 		$author->created_by = $this->_uid;
-		$author->created 	= Date::toSql();
+		$author->created    = Date::toSql();
 
 		$author->store();
 	}
@@ -705,23 +737,25 @@ class Batchcreate extends AdminController
 	/**
 	 * Collect author data
 	 *
-	 * @access public
-	 * @return string
+	 * @param   object   $author
+	 * @param   integer  $ordering
+	 * @param   integer  $uid
+	 * @param   object   $item
+	 * @return  string
 	 */
 	public function collectAuthorData($author, $ordering, $uid, &$item)
 	{
-		$firstName 	= NULL;
-		$lastName 	= NULL;
-		$org		= NULL;
-		$error 		= NULL;
+		$firstName = NULL;
+		$lastName  = NULL;
+		$org       = NULL;
+		$error     = NULL;
 
 		// Check that user ID exists
 		if (trim($uid))
 		{
 			if (!intval($uid))
 			{
-				$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_INVALID_USER_ID')
-					. ': ' . trim($uid);
+				$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_INVALID_USER_ID') . ': ' . trim($uid);
 				$item['errors'][] = $error;
 			}
 			else
@@ -729,37 +763,36 @@ class Batchcreate extends AdminController
 				$profile = \Hubzero\User\Profile::getInstance($uid);
 				if (!$profile || !$profile->get('uidNumber'))
 				{
-					$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND')
-						. ': ' . trim($uid);
+					$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND') . ': ' . trim($uid);
 					$item['errors'][] = $error;
 				}
 				else
 				{
-					$firstName 	= $profile->get('givenName');
-					$lastName 	= $profile->get('lastName');
-					$org		= $profile->get('organization');
+					$firstName = $profile->get('givenName');
+					$lastName  = $profile->get('lastName');
+					$org       = $profile->get('organization');
 				}
 			}
 		}
 
-		$pAuthor 					= new Tables\Author( $this->database );
-		$pAuthor->user_id 			= trim($uid);
-		$pAuthor->ordering 			= $ordering;
-		$pAuthor->credit 			= '';
-		$pAuthor->role 				= '';
-		$pAuthor->status 			= 1;
-		$pAuthor->organization 		= isset($author->organization) && $author->organization
-									? trim($author->organization) : $org;
-		$pAuthor->firstName 		= isset($author->firstname) && $author->firstname
-									? trim($author->firstname) : $firstName;
-		$pAuthor->lastName 			= isset($author->lastname) && $author->lastname
-									? trim($author->lastname) : $lastName;
-		$pAuthor->name 				= trim($pAuthor->firstName . ' ' . $pAuthor->lastName);
+		$pAuthor = new Tables\Author($this->database);
+		$pAuthor->user_id      = trim($uid);
+		$pAuthor->ordering     = $ordering;
+		$pAuthor->credit       = '';
+		$pAuthor->role         = '';
+		$pAuthor->status       = 1;
+		$pAuthor->organization = isset($author->organization) && $author->organization
+								? trim($author->organization) : $org;
+		$pAuthor->firstName    = isset($author->firstname) && $author->firstname
+								? trim($author->firstname) : $firstName;
+		$pAuthor->lastName     = isset($author->lastname) && $author->lastname
+								? trim($author->lastname) : $lastName;
+		$pAuthor->name         = trim($pAuthor->firstName . ' ' . $pAuthor->lastName);
 
 		// Check if project member
 		$objO   = $this->project->table('Owner');
-		$owner  = $objO->getOwnerId( $this->project->get('id'), $uid, $pAuthor->name );
-		$pAuthor->project_owner_id 	= $owner;
+		$owner  = $objO->getOwnerId($this->project->get('id'), $uid, $pAuthor->name);
+		$pAuthor->project_owner_id = $owner;
 
 		if (!$pAuthor->name)
 		{
@@ -775,8 +808,9 @@ class Batchcreate extends AdminController
 	/**
 	 * Show parsing errors
 	 *
-	 * @access public
-	 * @return string
+	 * @param   object  $error
+	 * @param   string  $xml
+	 * @return  string
 	 */
 	public function displayXmlError($error, $xml)
 	{
@@ -802,27 +836,16 @@ class Batchcreate extends AdminController
 			"\n  Column: $error->column";
 		}
 
-	    return "$return\n\n--------------------------------------------\n\n";
+		return "$return\n\n--------------------------------------------\n\n";
 	}
 
 	/**
 	 * Return schema file
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
 	 */
 	public function getSchema()
 	{
 		return dirname(__DIR__) . DS . 'import' . DS . 'publications.xsd';
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 }
