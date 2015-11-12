@@ -67,7 +67,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 			$userGId = \Components\Storefront\Models\Product::getMeta($this->item['info']->pId, 'userGroupId');
 
 			$add = JUserHelper::addUserToGroup($userId, $userGId);
-			if($add instanceof Exception) {
+			if ($add instanceof Exception) {
 				mail(Config::get('config.mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
 			}
 
