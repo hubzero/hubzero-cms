@@ -278,8 +278,12 @@ class Option
 		$this->db->query();
 
 		// Find all SKUs that use this option before removing all references
-		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'storefront.php');
-		$sIds = StorefrontHelperStorefront::getSkuIdsByOption($this->getId());
+		$sql = 'SELECT o.`sId` FROM `#__storefront_sku_options` o
+				LEFT JOIN `#__storefront_skus` s ON o.`sId` = s.`sId`
+				WHERE o.`oId` = ' . $this->db->quote($this->getId());
+		$sql .= ' AND s.`sActive` = 1';
+		$this->db->setQuery($sql);
+		$sIds = $this->db->loadColumn();
 
 		// Delete the SKU-option relation
 		$sql = 'DELETE FROM `#__storefront_sku_options` WHERE `oId` = ' . $this->db->quote($this->getId());

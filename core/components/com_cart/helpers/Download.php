@@ -61,4 +61,74 @@ class CartDownload
 	{
 		return CartDownload::countSkuDownloads($sId, $uId);
 	}
+
+	/**
+	 * Get a count or list of downloads
+	 *
+	 * @param      string  $rtrn    What data to return
+	 * @param      array   $filters Filters to apply to data retrieval
+	 * @return     mixed
+	 */
+	public static function getDownloads($rtrn = 'list', $filters = array())
+	{
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir']  = 'ASC';
+		}
+
+		if (strtolower($rtrn) == 'count')
+		{
+			// no limit for count
+			unset($filters['limit']);
+		}
+
+		$sql = 'SELECT * FROM `#__cart_downloads` WHERE 1';
+
+		// Filter by filters
+		//print_r($filters);
+		if (isset($filters['active']) && $filters['active'] == 1)
+		{
+			$sql .= " AND dActive = 1";
+		}
+
+		if (isset($filters['sort']))
+		{
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+		else {
+			$sql .= " ORDER BY dDownloaded DESC";
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
+
+		$db = \App::get('db');
+		$db->setQuery($sql);
+		$db->execute();
+		if ($rtrn == 'count')
+		{
+			return($db->getNumRows());
+		}
+
+		$res = $db->loadObjectList();
+		//print_r($res); die;
+
+		return $res;
+	}
 }

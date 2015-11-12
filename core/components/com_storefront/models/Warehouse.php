@@ -425,7 +425,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 * @param  void
 	 * @return void
 	 */
-	public function getProducts ($return = 'rows', $showOnlyActive = true, $filters = false)
+	public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
 	{
 		$sql = "SELECT DISTINCT p.*, pt.ptName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`

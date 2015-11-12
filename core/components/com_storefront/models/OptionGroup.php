@@ -244,7 +244,6 @@ class OptionGroup
 		// Delete option group record
 		$sql = 'DELETE FROM `#__storefront_option_groups` WHERE `ogId` = ' . $this->db->quote($this->getId());
 		$this->db->setQuery($sql);
-		//print_r($this->db->replacePrefix($this->db->getQuery()));
 		$this->db->query();
 
 		// Delete all options
@@ -304,6 +303,11 @@ class OptionGroup
 		{
 			$option = new Option($option->oId);
 			$this->addOption($option);
+		}
+
+		if (!isset($this->data->options))
+		{
+			$this->data->options = array();
 		}
 
 		return $this->data->options;

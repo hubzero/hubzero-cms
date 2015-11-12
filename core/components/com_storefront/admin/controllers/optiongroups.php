@@ -33,6 +33,7 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
+use Components\Storefront\Models\OptionGroup;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php');
@@ -279,7 +280,7 @@ class Optiongroups extends AdminController
 
 				// Incoming
 				$ogIds = Request::getVar('ogId', 0);
-				//print_r($oIds); die;
+				//print_r($ogIds); die;
 
 				// Make sure we have ID(s) to work with
 				if (empty($ogIds))

@@ -29,7 +29,7 @@
 
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete SKU', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete Option Group', 'storefront.png');
 JToolBarHelper::cancel();
 
 ?>

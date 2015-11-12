@@ -284,7 +284,6 @@ class Options extends AdminController
 
 				// Incoming
 				$oIds = Request::getVar('oId', 0);
-				//print_r($oIds); die;
 
 				// Make sure we have ID(s) to work with
 				if (empty($oIds))
@@ -344,7 +343,7 @@ class Options extends AdminController
 
 				// Set the redirect
 				App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $ogId, false),
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&ogId=' . $ogId, false),
 						$msg,
 						$type
 				);

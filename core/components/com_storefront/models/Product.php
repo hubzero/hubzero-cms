@@ -239,6 +239,7 @@ class Product
 
 				foreach ($skuIds as $sId)
 				{
+					//print_r($instanceName); die;
 					$sku = new $instanceName($sId);
 					$skus[] = $sku;
 				}
@@ -959,6 +960,9 @@ class Product
 	{
 		$db = \App::get('db');
 
+		// First get all SKUs to delete later
+		$skus = $this->getSkus();
+
 		// Delete product record
 		$sql = 'DELETE FROM `#__storefront_products` WHERE `pId` = ' . $db->quote($this->getId());
 		$db->setQuery($sql);
@@ -996,7 +1000,6 @@ class Product
 
 
 		// Delete all SKUs
-		$skus = $this->getSkus();
 		foreach ($skus as $sku)
 		{
 			//print_r($sku);

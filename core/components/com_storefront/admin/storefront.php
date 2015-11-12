@@ -44,8 +44,6 @@ require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'products');
 
-$controllerName = \Request::getCmd('controller', 'products');
-
 \Submenu::addEntry(
 		Lang::txt('COM_STOREFRONT_PRODUCTS'),
 		\Route::url('index.php?option=com_storefront&id=0'),
