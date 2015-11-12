@@ -254,7 +254,7 @@ $maintext = $this->model->description('parsed');
 			<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
 			<p class="resource-content"><time><?php
 				// If the resource had a specific event date/time
-				if (substr(Date::of($this->model->attribs->get('timeof', ''))->toLocal(), -8, 8) == '00:00:00')
+				if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00')
 				{
 					$exp = Lang::txt('DATE_FORMAT_HZ1'); //'%B %d %Y';
 				}
