@@ -61,10 +61,9 @@ class SoftwareSku extends Sku
 		}
 
 		// Check if the download file really exists
-		$params = JComponentHelper::getParams('com_storefront');
-		$downloadFolder = $params->get('downloadFolder');
-		$dir = JPATH_ROOT . $downloadFolder;
-		$file = $dir . DS . $this->data->meta['downloadFile'];
+		$storefrontConfig = Component::params('com_storefront');
+		$dir = $storefrontConfig->get('downloadFolder');
+		$file = PATH_ROOT . $dir . DS . $this->data->meta['downloadFile'];
 
 		if (!file_exists($file))
 		{

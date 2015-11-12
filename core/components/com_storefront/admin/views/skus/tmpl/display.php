@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = StorefrontHelperPermissions::getActions('product');
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT') . ': SKUs', 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKUs', 'storefront.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -83,14 +83,21 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+		<tr>
+			<td colspan="3"><?php
+				// Initiate paging
+				echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+				);
+				?></td>
+		</tr>
 		</tfoot>
 		<tbody>
 <?php
@@ -154,7 +161,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->sId) . '&pId=' . $row->pId; ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->sId) . '&pId=' . $row->pId; ?>" title="<?php echo Lang::txt('COM_STOREFRONT_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>

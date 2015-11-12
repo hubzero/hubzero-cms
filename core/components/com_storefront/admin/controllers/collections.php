@@ -32,8 +32,9 @@ namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
+use Components\Storefront\Models\Collection;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Collection.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php');
 
 /**
  * Controller class for storefront collections
@@ -47,12 +48,13 @@ class Collections extends AdminController
 	 */
 	public function displayTask()
 	{
+		// Get filters
 		$this->view->filters = array(
 			// Get sorting variables
 				'sort' => Request::getState(
 						$this->_option . '.' . $this->_controller . '.sort',
 						'filter_order',
-						'created'
+						'title'
 				),
 				'sort_Dir' => Request::getState(
 						$this->_option . '.' . $this->_controller . '.sortdir',
@@ -73,7 +75,6 @@ class Collections extends AdminController
 						'int'
 				)
 		);
-
 		//print_r($this->view->filters);
 
 		$obj = new Archive();
@@ -85,13 +86,6 @@ class Collections extends AdminController
 		$this->view->rows  = $obj->collections('list', $this->view->filters);
 		//print_r($this->view->rows); die;
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -181,7 +175,7 @@ class Collections extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'array', Request_ALLOWHTML);
+		$fields = Request::getVar('fields', array(), 'post');
 
 		// Get the collection
 		$collection = new Collection($fields['cId']);
@@ -208,7 +202,7 @@ class Collections extends AdminController
 		}
 		catch (\Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			\Notify::error($e->getMessage());
 			$this->editTask($collection);
 			return;
 		}
@@ -216,9 +210,9 @@ class Collections extends AdminController
 		if ($redirect)
 		{
 			// Redirect
-			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_STOREFRONT_COLLECTION_SAVED')
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Lang::txt('COM_STOREFRONT_COLLECTION_SAVED')
 			);
 			return;
 		}
@@ -272,10 +266,10 @@ class Collections extends AdminController
 				// Make sure we have IDs to work with
 				if (empty($cIds))
 				{
-					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						Lang::txt('COM_STOREFRONT_NO_ID'),
-						'error'
+					App::redirect(
+							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+							Lang::txt('COM_STOREFRONT_NO_ID'),
+							'error'
 					);
 					return;
 				}
@@ -297,10 +291,10 @@ class Collections extends AdminController
 						}
 						catch (\Exception $e)
 						{
-							$this->setRedirect(
-								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
-								$e->getMessage(),
-								$type
+							App::redirect(
+									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+									$e->getMessage(),
+									$type
 							);
 							return;
 						}
@@ -311,10 +305,10 @@ class Collections extends AdminController
 				}
 
 				// Set the redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
-					$msg,
-					$type
+				App::redirect(
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+						$msg,
+						$type
 				);
 				break;
 		}
@@ -354,10 +348,10 @@ class Collections extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-				'error'
+			App::redirect(
+					Route::url('index.php?option='. $this->_option . '&controller=' . $this->_controller, false),
+					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+					'error'
 			);
 			return;
 		}
@@ -383,13 +377,13 @@ class Collections extends AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_STOREFRONT_ARCHIVED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_STOREFRONT_PUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_STOREFRONT_UNPUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_UNPUBLISHED', count($ids));
 			break;
 		}
 
@@ -416,10 +410,10 @@ class Collections extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-			$message,
-			$type
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				$message,
+				$type
 		);
 	}
 
@@ -431,8 +425,8 @@ class Collections extends AdminController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -444,8 +438,8 @@ class Collections extends AdminController
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
-		$integrityCheck = Integrity::collectionIntegrityCheck($collection);
+		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Integrity.php');
+		$integrityCheck = \Integrity::collectionIntegrityCheck($collection);
 
 		if ($integrityCheck->status != 'ok')
 		{

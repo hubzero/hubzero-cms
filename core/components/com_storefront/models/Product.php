@@ -30,7 +30,9 @@
 
 namespace Components\Storefront\Models;
 
-//use Components\Storefront\Models\Warehouse;
+use Components\Storefront\Models\Warehouse;
+use Exception;
+use Filesystem;
 
 require_once(__DIR__ . DS . 'Warehouse.php');
 
@@ -225,12 +227,14 @@ class Product
 				// software
 				if ($this->getType() == 30)
 				{
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
-					$instanceName = 'StorefrontModelSoftwareSku';
+					//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
+					require_once(__DIR__ . DS . 'SoftwareSku.php');
+					$instanceName = '\Components\Storefront\Models\SoftwareSku';
 				}
 				else
 				{
-					$instanceName = 'StorefrontModelSku';
+					require_once(__DIR__ . DS . 'Sku.php');
+					$instanceName = '\Components\Storefront\Models\Sku';
 				}
 
 				foreach ($skuIds as $sId)
@@ -281,7 +285,7 @@ class Product
 	 */
 	protected function setSku($sku)
 	{
-		if (!($sku instanceof StorefrontModelSku))
+		if (!($sku instanceof Sku))
 		{
 			throw new \Exception(Lang::txt('Bad SKU. Unable to add.'));
 		}
@@ -291,7 +295,7 @@ class Product
 
 	public function addSku($sku)
 	{
-		if (!($sku instanceof StorefrontModelSku))
+		if (!($sku instanceof Sku))
 		{
 			throw new \Exception(Lang::txt('Bad SKU. Unable to add.'));
 		}
@@ -368,7 +372,7 @@ class Product
 	public function setAlias($pAlias)
 	{
 		// Check if the alias is valid
-		$badAliasException = new Exception('Bad product alias. Alias should be a non-empty non-numeric alphanumeric string.');
+		$badAliasException = new \Exception('Bad product alias. Alias should be a non-empty non-numeric alphanumeric string.');
 		if (preg_match("/^[0-9a-zA-Z]+[\-_0-9a-zA-Z]*$/i", $pAlias))
 		{
 			if (is_numeric($pAlias))
@@ -569,9 +573,11 @@ class Product
 				unset($this->data->images[$key]);
 
 				// Remove the actual file
-						$path = JPATH_ROOT . DS . trim($jconfig->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->getId();
+				$config = Component::params('com_storefront');
+				$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+				$path = PATH_APP . DS . $imgWebPath . DS . $this->getId();
 
-				JFile::delete($path . DS . $img->imgName);
+				Filesystem::delete($path . DS . $img->imgName);
 				return true;
 			}
 		}
@@ -960,8 +966,9 @@ class Product
 		$db->query();
 
 		// Delete product-related files (product image)
-		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $this->getId();
-		$dir = JPATH_ROOT . $imgWebPath;
+		$config = Component::params('com_storefront');
+		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+		$dir = PATH_APP . DS . $imgWebPath . DS . $this->getId();
 
 		if (file_exists($dir))
 		{

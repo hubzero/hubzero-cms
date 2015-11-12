@@ -31,6 +31,7 @@
 namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Storefront\Models\Archive;
 
 /**
  * Controller class for knowledge base categories
@@ -88,14 +89,6 @@ class Meta extends AdminController
 		$this->view->rows  = $obj->products('list', $this->view->filters);
 
 		//print_r($this->view->rows); die;
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -200,7 +193,7 @@ class Meta extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'array', Request_ALLOWHTML);
+		$fields = Request::getVar('fields', array(), 'post');
 
 		$obj = new Archive();
 
@@ -210,7 +203,7 @@ class Meta extends AdminController
 		}
 		catch (\Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			\Notify::error($e->getMessage());
 			// Get the product
 			$product = $obj->product($fields['pId']);
 			$this->editTask($product);

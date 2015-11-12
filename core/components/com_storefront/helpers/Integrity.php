@@ -28,7 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'Collection.php');
 
 class Integrity
 {
@@ -41,7 +42,7 @@ class Integrity
 		$options = $sku->getOptions();
 
 		// Check if there are other SKUs that have the same set of options
-		$warehouse = new Warehouse();
+		$warehouse = new \Components\Storefront\Models\Warehouse();
 		$skuMatch = $warehouse->mapSku($sku->getProductId(), $options, false);
 
 		if ($skuMatch && $skuMatch != $sku->getId())
@@ -70,7 +71,7 @@ class Integrity
 		// Check if there are other collections that have the same alias
 		try
 		{
-			$conflictingCollectionId = StorefrontModelCollection::findActiveCollectionByAlias($collection->getAlias());
+			$conflictingCollectionId = \Components\Storefront\Models\Collection::findActiveCollectionByAlias($collection->getAlias());
 			if ($conflictingCollectionId && $conflictingCollectionId != $collection->getId())
 			{
 				$return->status = 'error';

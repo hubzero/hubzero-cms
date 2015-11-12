@@ -36,7 +36,8 @@
 			$globalDownloadLimit = $skuMeta['globalDownloadLimit'];
 		}
 
-		echo JFactory::getEditor()->display('fields[meta][eula]', $this->escape(stripslashes($eula)), '', '', 50, 10, false, 'eula');
+		//echo JFactory::getEditor()->display('fields[meta][eula]', $this->escape(stripslashes($eula)), '', '', 50, 10, false, 'eula');
+		echo $this->editor('fields[meta][eula]', $this->escape(stripslashes($eula)), 50, 10, 'eula', array('buttons' => false));
 		?>
 	</div>
 

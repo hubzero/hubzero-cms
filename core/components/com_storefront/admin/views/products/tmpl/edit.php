@@ -33,7 +33,7 @@ $canDo = StorefrontHelperPermissions::getActions('product');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text, 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text, 'storefront.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -52,7 +52,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
-	<?php echo JFactory::getEditor()->save('text'); ?>
+	<?php echo $this->editor()->save('text'); ?>
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
@@ -89,12 +89,12 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_STOREFRONT_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), '', '', 50, 10, false, 'field-description'); ?>
+				<?php echo $this->editor('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), 50, 10, 'field-description', array('buttons' => false)); ?>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-features"><?php echo Lang::txt('COM_STOREFRONT_FEATURES'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), '', '', 50, 10, false, 'field-features'); ?>
+				<?php echo $this->editor('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), 50, 10, 'field-features', array('buttons' => false)); ?>
 			</div>
 		</fieldset>
 	</div>
@@ -252,12 +252,18 @@ function submitbutton(pressbutton)
 
 			<?php
 			if ($this->row->getId()) {
-				$image = $this->row->getImage();
-				if (!empty($image))
+				$img = $this->row->getImage();
+				if (!empty($img))
 				{
-					$image = stripslashes($this->row->getImage()->imgName);
+					$image = stripslashes($img->imgName);
 					$pics = explode(DS, $image);
 					$file = end($pics);
+				}
+				else {
+					$image = false;
+					$file = false;
+					$img = new \stdClass();
+					$img->imgId = NULL;
 				}
 				?>
 				<div style="padding-top: 2.5em">
@@ -271,24 +277,26 @@ function submitbutton(pressbutton)
 			$width = 0;
 			$height = 0;
 			$this_size = 0;
-			if ($image)
-			{
-				$path = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
+			$pathl = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
 
-				$this_size = filesize(JPATH_ROOT . $path . DS . $file);
-				list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . DS . $file);
-				$pic = $this->row->getImage()->imgName;
+			if ($image && file_exists(PATH_ROOT . $pathl . DS . $file))
+			{
+				$this_size = filesize(PATH_ROOT . $pathl . DS . $file);
+				list($width, $height, $type, $attr) = getimagesize(PATH_ROOT . $pathl . DS . $file);
+				$pic  = $file;
+				$path = $pathl;
 			}
 			else
 			{
 				$pic = 'noimage.png';
-				$path = DS . 'components' . DS . 'com_storefront' . DS . 'assets' . DS . 'img' . DS;
+				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
 			}
 			?>
 				<div id="img-container">
-					<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
 					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($image); ?>" />
 				</div>
+
 				<table class="formed">
 					<tbody>
 					<tr>
@@ -297,12 +305,15 @@ function submitbutton(pressbutton)
 							<span id="img-name"><?php echo $image; ?></span>
 						</td>
 						<td>
-							<a id="img-delete" <?php echo $image ? '' : 'style="display: none;"'; ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $this->row->getImage()->imgId; ?>&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
+							<a id="img-delete" <?php echo $image ? '' : 'style="display: none;"'; ?>
+							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $img->imgId; ?>&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
+							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span>
+						</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -318,7 +329,7 @@ function submitbutton(pressbutton)
 					</tbody>
 				</table>
 
-				<script type="text/javascript" src="../media/system/js/jquery.fileuploader.js"></script>
+				<script type="text/javascript" src="<?php echo rtrim(Request::root(true), '/'); ?>/core/assets/js/jquery.fileuploader.js"></script>
 				<script type="text/javascript">
 					String.prototype.nohtml = function () {
 						if (this.indexOf('?') == -1) {
@@ -347,10 +358,6 @@ function submitbutton(pressbutton)
 										$('#img-width').text(response.width);
 										$('#img-height').text(response.height);
 
-										var newHref = "index.php?option=<?php echo $this->option; ?>&controller=images&tmpl=component&task=remove&currentfile=" + response.imgId + "&type=product&id=<?php echo $this->row->getId(); ?>&<?php echo JUtility::getToken(); ?>=1";
-
-										$('#img-delete').attr('href', newHref);
-
 										$('#img-delete').show();
 									}
 								}
@@ -361,7 +368,7 @@ function submitbutton(pressbutton)
 							var el = $(this);
 							$.getJSON(el.attr('href').nohtml(), {}, function(response) {
 								if (response.success) {
-									$('#img-display').attr('src', '../administrator/components/com_courses/assets/img/blank.png');
+									$('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_storefront/site/assets/img/noimage.png');
 									$('#img-name').text('[ none ]');
 									$('#img-size').text('0');
 									$('#img-width').text('0');

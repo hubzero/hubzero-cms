@@ -31,8 +31,11 @@
 namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Storefront\Models\Archive;
+use Components\Storefront\Models\Warehouse;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php');
 
 /**
  * Controller class for knowledge base collections
@@ -46,40 +49,32 @@ class Optiongroups extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
-
-		// Get filters
 		$this->view->filters = array(
-			'access' => -1
+			// Get sorting variables
+				'sort' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.sort',
+						'filter_order',
+						'title'
+				),
+				'sort_Dir' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.sortdir',
+						'filter_order_Dir',
+						'ASC'
+				),
+			// Get paging variables
+				'limit' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.limit',
+						'limit',
+						Config::get('list_limit'),
+						'int'
+				),
+				'start' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.limitstart',
+						'limitstart',
+						0,
+						'int'
+				)
 		);
-		$this->view->filters['sort'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		// Get paging variables
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			Config::get('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		//print_r($this->view->filters);
 
 		$obj = new Archive();
 
@@ -121,13 +116,6 @@ class Optiongroups extends AdminController
 		//print_r($options); die;
 		$this->view->options = $options;
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -172,7 +160,7 @@ class Optiongroups extends AdminController
 		else
 		{
 			// Incoming
-			$id = Request::getVar('id', array(0));
+			$id = Request::getVar('ogId', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -217,7 +205,7 @@ class Optiongroups extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'array', Request_ALLOWHTML);
+		$fields = Request::getVar('fields', array(), 'post');
 
 		//print_r($fields); die;
 
@@ -229,7 +217,7 @@ class Optiongroups extends AdminController
 		}
 		catch (\Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			\Notify::error($e->getMessage());
 			// Get the product
 			$optionGroup = $obj->optionGroup($fields['ogId']);
 			$this->editTask($optionGroup);
@@ -239,9 +227,9 @@ class Optiongroups extends AdminController
 		if ($redirect)
 		{
 			// Redirect
-			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED')
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED')
 			);
 			return;
 		}
@@ -296,10 +284,10 @@ class Optiongroups extends AdminController
 				// Make sure we have ID(s) to work with
 				if (empty($ogIds))
 				{
-					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
-						Lang::txt('COM_STOREFRONT_NO_ID'),
-						'error'
+					App::redirect(
+							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+							Lang::txt('COM_STOREFRONT_NO_ID'),
+							'error'
 					);
 					return;
 				}
@@ -336,10 +324,10 @@ class Optiongroups extends AdminController
 						}
 						catch (\Exception $e)
 						{
-							$this->setRedirect(
-								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
-								$e->getMessage(),
-								$type
+							App::redirect(
+									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+									$e->getMessage(),
+									$type
 							);
 							return;
 						}
@@ -350,16 +338,16 @@ class Optiongroups extends AdminController
 				}
 
 				// Set the redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly',
-					$msg,
-					$type
+				App::redirect(
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+						$msg,
+						$type
 				);
 				if ($warnings)
 				{
 					foreach ($warnings as $warning)
 					{
-						JFactory::getApplication()->enqueueMessage($warning, 'warning');
+						\Notify::warning($warning);
 					}
 				}
 				break;
@@ -402,10 +390,10 @@ class Optiongroups extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-				'error'
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+					'error'
 			);
 			return;
 		}
@@ -421,7 +409,7 @@ class Optiongroups extends AdminController
 			}
 			catch (\Exception $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				\Notify::error($e->getMessage());
 				return;
 			}
 		}
@@ -430,20 +418,20 @@ class Optiongroups extends AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_STOREFRONT_ARCHIVED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_STOREFRONT_PUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_STOREFRONT_UNPUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_UNPUBLISHED', count($ids));
 			break;
 		}
 
 		// Redirect
-		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-			$message
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				$message
 		);
 	}
 
@@ -455,8 +443,8 @@ class Optiongroups extends AdminController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

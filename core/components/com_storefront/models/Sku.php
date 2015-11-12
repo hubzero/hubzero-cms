@@ -305,8 +305,9 @@ class Sku
 
 		// Delete the SKU-related files
 		//	-- SKU image
-		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $this->getProductId() . DS . $this->getId();
-		$dir = JPATH_ROOT . $imgWebPath;
+		$config = Component::params('com_storefront');
+		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+		$dir = PATH_APP . DS . $imgWebPath . DS . $this->getProductId() . DS . $this->getId();
 
 		if (file_exists($dir))
 		{
@@ -331,9 +332,9 @@ class Sku
 		if ($this->getMeta('downloadFile'))
 		{
 			// Path and file name
-			$params = JComponentHelper::getParams('com_storefront');
+			$params = Component::params('com_storefront');
 			$downloadFolder = $params->get('downloadFolder');
-			$dir = JPATH_ROOT . $downloadFolder;
+			$dir = PATH_ROOT . $downloadFolder;
 			$file = $dir . DS . $this->getMeta('downloadFile');
 
 			if (file_exists($file))
@@ -514,8 +515,7 @@ class Sku
 	*/
 	public function setTimeToLive($ttl)
 	{
-		StorefrontModelMemberships::checkTtl($ttl);
-
+		Memberships::checkTtl($ttl);
 		$this->data->meta['ttl'] = $ttl;
 	}
 

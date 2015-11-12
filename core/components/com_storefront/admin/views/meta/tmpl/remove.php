@@ -29,7 +29,7 @@
 
 defined('_HZEXEC_') or die();
 
-JToolBarHelper::title(Lang::txt('COM_KB'), 'kb.png');
+Toolbar::title(Lang::txt('COM_KB'), 'storefront.png');
 JToolBarHelper::cancel();
 
 ?>

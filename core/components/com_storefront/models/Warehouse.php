@@ -575,7 +575,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 */
 	public function setProductMeta($pId, $meta)
 	{
-		StorefrontModelProduct::setMeta($pId, $meta);
+		Product::setMeta($pId, $meta);
 	}
 
 	/**
@@ -734,7 +734,7 @@ class Warehouse extends \Hubzero\Base\Object
 	 * @param	int			option group ID
 	 * @return	array 		options IDs
 	 */
-	public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true)
+	public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true, $filters = false)
 	{
 		$sql = "SELECT * FROM `#__storefront_options` WHERE 1";
 		if ($showOnlyActive)
@@ -742,9 +742,43 @@ class Warehouse extends \Hubzero\Base\Object
 			$sql .= " AND `oActive` = 1";
 		}
 		$sql .= " AND `ogId` = " . $this->_db->quote($ogId);
+
+		// Filter by filters
+		//print_r($filters);
+		if (isset($filters['sort']))
+		{
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'oName';
+			}
+			if ($filters['sort'] == 'state')
+			{
+				$filters['sort'] = 'oActive';
+			}
+
+			$sql .= " ORDER BY " . $filters['sort'];
+
+			if (isset($filters['sort_Dir']))
+			{
+				$sql .= ' ' . $filters['sort_Dir'];
+			}
+		}
+		else
+		{
+			$sql .= " ORDER BY `oId`";
+		}
+
+		if (isset($filters['limit']) && is_numeric($filters['limit']))
+		{
+			$sql .= ' LIMIT ' . $filters['limit'];
+
+			if (isset($filters['start']) && is_numeric($filters['start']))
+			{
+				$sql .= ' OFFSET ' . $filters['start'];
+			}
+		}
 		$this->_db->setQuery($sql);
 		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
-
 		$this->_db->execute();
 		if ($return == 'count')
 		{
@@ -869,10 +903,8 @@ class Warehouse extends \Hubzero\Base\Object
 
 		// Filter by filters
 		//print_r($filters);
-
 		if (isset($filters['sort']))
 		{
-
 			if ($filters['sort'] == 'title')
 			{
 				$filters['sort'] = 'sSku';
@@ -1344,7 +1376,7 @@ class Warehouse extends \Hubzero\Base\Object
 		$product->verify($action);
 
 		// check if this is a product
-		if (!($product instanceof StorefrontModelProduct))
+		if (!($product instanceof Product))
 		{
 			throw new \Exception(Lang::txt('Bad product.'));
 		}
@@ -1748,7 +1780,7 @@ class Warehouse extends \Hubzero\Base\Object
 		}
 
 		// check if this is a coupon
-		if (!($coupon instanceof StorefrontModelCoupon))
+		if (!($coupon instanceof Coupon))
 		{
 			throw new \Exception(Lang::txt('Bad coupon. Unable to continue.'));
 		}

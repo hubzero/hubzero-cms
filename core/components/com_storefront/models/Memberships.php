@@ -188,7 +188,7 @@ class Memberships
 	{
 		$db = \App::get('db');
 
-		$now = JFactory::getDate()->toSql();
+		$now = Date::of(time())->toSql();
 		$sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
 		$sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
 		$sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);

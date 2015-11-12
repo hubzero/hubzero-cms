@@ -152,7 +152,7 @@ class Archive extends \Hubzero\Base\Object
 	 * @param      array   	$filters Filters to apply to data retrieval
 	 * @return     mixed
 	 */
-	public function skus($rtrn='list', $pId, $filters=array())
+	public function skus($rtrn='list', $pId, $filters = array())
 	{
 		if (!isset($filters['sort']))
 		{
@@ -212,12 +212,12 @@ class Archive extends \Hubzero\Base\Object
 		// Initialize the correct SKU
 		if (!empty($productType) && $productType == 'Software Download')
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
+			require_once(__DIR__ . DS . 'SoftwareSku.php');
 			$sku = new SoftwareSku($sId);
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+			require_once(__DIR__ . DS . 'Sku.php');
 			$sku = new Sku($sId);
 		}
 		return $sku;
@@ -279,8 +279,8 @@ class Archive extends \Hubzero\Base\Object
 		// Before saving SKU, check the for possible conflicts (integrity check) except when the SKU gets unpublished
 		if ($checkIntegrity)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'helpers' . DS . 'Integrity.php');
-			$integrityCheck = Integrity::skuIntegrityCheck($sku);
+			require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
+			$integrityCheck = \Integrity::skuIntegrityCheck($sku);
 
 			if ($integrityCheck->status != 'ok')
 			{
@@ -331,7 +331,7 @@ class Archive extends \Hubzero\Base\Object
 			case 'rows':
 			case 'results':
 			default:
-				if (!$results = $warehouse->getOptionGroupOptions($ogId, 'rows', false))
+				if (!$results = $warehouse->getOptionGroupOptions($ogId, 'rows', false, $filters))
 				{
 					$results = array();
 				}
@@ -342,7 +342,7 @@ class Archive extends \Hubzero\Base\Object
 
 	public function option($oId)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Option.php');
+		require_once(__DIR__ . DS . 'Option.php');
 		$option = new Option($oId);
 
 		//print_r(($option)); die;
@@ -458,7 +458,7 @@ class Archive extends \Hubzero\Base\Object
 
 	public function optionGroup($ogId)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
+		require_once(__DIR__ . DS . 'OptionGroup.php');
 		$optionGroup = new OptionGroup($ogId);
 
 		//print_r(($optionGroup)); die;
@@ -487,7 +487,7 @@ class Archive extends \Hubzero\Base\Object
 		{
 			case 'count':
 				$warehouse = new Warehouse();
-				$count = $warehouse->getOptionGroups('count', $filters);
+				$count = $warehouse->getOptionGroups('count');
 				return $count;
 				break;
 
@@ -515,7 +515,7 @@ class Archive extends \Hubzero\Base\Object
 	 */
 	public function updateOptionGroup($ogId, $fields)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'OptionGroup.php');
+		require_once(__DIR__ . DS . 'OptionGroup.php');
 		$optionGroup = new OptionGroup($ogId);
 
 		//print_r($fields);die;

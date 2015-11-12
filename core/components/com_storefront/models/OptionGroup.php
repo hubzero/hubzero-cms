@@ -299,7 +299,7 @@ class OptionGroup
 		$this->db->execute();
 		$res = $this->db->loadObjectList();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Option.php');
+		require_once(__DIR__ . DS . 'Option.php');
 		foreach ($res as $option)
 		{
 			$option = new Option($option->oId);

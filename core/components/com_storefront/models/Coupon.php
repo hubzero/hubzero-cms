@@ -326,7 +326,7 @@ class Coupon
 	{
 		$this->verify();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		require_once(__DIR__ . DS . 'Option.php');
 		$warehouse = new Warehouse();
 
 		return($warehouse->addCoupon($this));

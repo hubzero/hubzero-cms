@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = StorefrontHelperPermissions::getActions('product');
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT'), 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Products', 'storefront.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="6"><?php
+			<td colspan="7"><?php
 				// Initiate paging
 				echo $this->pagination(
 						$this->total,
@@ -186,7 +186,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->pId); ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->pId); ?>" title="<?php echo Lang::txt('COM_STOREFRONT_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -196,7 +196,16 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php echo $this->ag[$row->access]; ?>
+					<?php
+						if (array_key_exists($row->access, $this->ag))
+						{
+							echo $this->ag[$row->access];
+						}
+						else
+						{
+							echo $this->ag[0];
+						}
+					?>
 				</td>
 			</tr>
 <?php
@@ -210,7 +219,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="cid" value="<?php echo $this->filters['section']; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />

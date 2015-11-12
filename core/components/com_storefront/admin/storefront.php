@@ -34,18 +34,17 @@ $option = 'com_storefront';
 
 if (!\User::authorise('core.manage', $option))
 {
-	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'Archive.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
+$scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'products');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'products';
-}
+
+$controllerName = \Request::getCmd('controller', 'products');
 
 \Submenu::addEntry(
 		Lang::txt('COM_STOREFRONT_PRODUCTS'),
@@ -63,6 +62,10 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 		$controllerName == 'optiongroups'
 );
 
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'products';
+}
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 

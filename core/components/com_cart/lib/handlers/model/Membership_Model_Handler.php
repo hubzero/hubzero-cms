@@ -29,40 +29,40 @@
 
 class Membership_Model_Handler extends Model_Handler
 {
-    /**
-     * Constructor
-     *
-     * @param 	void
-     * @return 	void
-     */
-    public function __construct($item, $crtId)
-    {
-        parent::__construct($item, $crtId);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	void
+	 * @return 	void
+	 */
+	public function __construct($item, $crtId)
+	{
+		parent::__construct($item, $crtId);
+	}
 
-    public function handle()
-    {
-        $itemInfo = $this->item['info'];
+	public function handle()
+	{
+		$itemInfo = $this->item['info'];
 
-        // Get user
-        require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
-        $uId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
+		// Get user
+		require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+		$uId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
-        // Get product type
-        require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+		// Get product type
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 		$warehouse = new \Components\Storefront\Models\Warehouse();
-        $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
-        $type = $pType['ptName'];
+		$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
+		$type = $pType['ptName'];
 
-        require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
-        $subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $uId);
-        // Get the expiration for the current subscription (if any)
-        $currentExpiration = $subscription->getExpiration();
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+		$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $uId);
+		// Get the expiration for the current subscription (if any)
+		$currentExpiration = $subscription->getExpiration();
 
-        // Calculate new expiration
-        $newExpires = Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $this->item);
+		// Calculate new expiration
+		$newExpires = Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $this->item);
 
-        // Update/Create membership expiration date with new value
-        $subscription->setExpiration($newExpires);
-    }
+		// Update/Create membership expiration date with new value
+		$subscription->setExpiration($newExpires);
+	}
 }

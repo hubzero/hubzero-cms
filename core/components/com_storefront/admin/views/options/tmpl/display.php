@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = StorefrontHelperPermissions::getActions('product');
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT') . ': Options', 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Options', 'storefront.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="4">
-					 Options for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=optiongroups&task=edit&id=' . $this->optionGroup->getId()); ?>" title="<?php echo Lang::txt('Edit option group'); ?>"><?php echo $this->optionGroup->getName(); ?></a>
+					 Options for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=optiongroups&task=edit&ogId=' . $this->optionGroup->getId()); ?>" title="<?php echo Lang::txt('Edit option group'); ?>"><?php echo $this->optionGroup->getName(); ?></a>
 				</th>
 			</tr>
 			<tr>
@@ -88,9 +88,16 @@ function submitbutton(pressbutton)
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+		<tr>
+			<td colspan="6"><?php
+				// Initiate paging
+				echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+				);
+				?></td>
+		</tr>
 		</tfoot>
 		<tbody>
 <?php
@@ -138,7 +145,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->oId) . '&ogId=' . $row->ogId; ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->oId) . '&ogId=' . $row->ogId; ?>" title="<?php echo Lang::txt('COM_STOREFRONT_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>

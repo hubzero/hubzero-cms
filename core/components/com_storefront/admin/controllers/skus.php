@@ -31,6 +31,9 @@
 namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Storefront\Models\Archive;
+use Components\Storefront\Models\Product;
+use Components\Storefront\Models\Warehouse;
 
 /**
  * Controller class for knowledge base categories
@@ -44,12 +47,12 @@ class Skus extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
-
 		// Get product ID
-		$pId = Request::getVar('id', array(0));
+		$pId = Request::getVar('id');
+		if (empty($pId))
+		{
+			$pId = Request::getVar('pId', array(0));
+		}
 		$this->view->pId = $pId;
 
 		// Get product
@@ -58,31 +61,30 @@ class Skus extends AdminController
 
 		// Get filters
 		$this->view->filters = array(
-			'access' => -1
-		);
-		$this->view->filters['sort'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		// Get paging variables
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			Config::get('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+			// Get sorting variables
+				'sort' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.sort',
+						'filter_order',
+						'title'
+				),
+				'sort_Dir' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.sortdir',
+						'filter_order_Dir',
+						'ASC'
+				),
+			// Get paging variables
+				'limit' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.limit',
+						'limit',
+						Config::get('list_limit'),
+						'int'
+				),
+				'start' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.limitstart',
+						'limitstart',
+						0,
+						'int'
+				)
 		);
 
 		$obj = new Archive();
@@ -93,13 +95,6 @@ class Skus extends AdminController
 		// Get records
 		$this->view->rows = $obj->skus('list', $pId, $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -125,7 +120,7 @@ class Skus extends AdminController
 	}
 
 	/**
-	 * Edit a category
+	 * Edit a SKU
 	 *
 	 * @return  void
 	 */
@@ -211,7 +206,7 @@ class Skus extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'array', Request_ALLOWHTML);
+		$fields = Request::getVar('fields', array(), 'post');
 		//print_r($fields); die;
 
 		// Get the proper SKU
@@ -225,8 +220,8 @@ class Skus extends AdminController
 		}
 		catch (\Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			// Get the sku
+			//\Notify::error($e->getMessage());
+			Notify::error($e->getMessage());
 			$this->editTask($sku);
 			return;
 		}
@@ -234,9 +229,9 @@ class Skus extends AdminController
 		if ($redirect)
 		{
 			// Redirect
-			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0),
-				Lang::txt('COM_STOREFRONT_SKU_SAVED')
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false),
+					Lang::txt('COM_STOREFRONT_SKU_SAVED')
 			);
 			return;
 		}
@@ -294,10 +289,10 @@ class Skus extends AdminController
 				// Make sure we have an ID to work with
 				if (empty($sIds))
 				{
-					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						Lang::txt('COM_STOREFRONT_NO_ID'),
-						'error'
+					App::redirect(
+							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+							Lang::txt('COM_STOREFRONT_NO_ID'),
+							'error'
 					);
 					return;
 				}
@@ -321,10 +316,10 @@ class Skus extends AdminController
 						}
 						catch (\Exception $e)
 						{
-							$this->setRedirect(
-								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
-								$e->getMessage(),
-								$type
+							App::redirect(
+									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId, false),
+									$e->getMessage(),
+									$type
 							);
 							return;
 						}
@@ -335,10 +330,10 @@ class Skus extends AdminController
 				}
 
 				// Set the redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
-					$msg,
-					$type
+				App::redirect(
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId, false),
+						$msg,
+						$type
 				);
 			break;
 		}
@@ -380,10 +375,10 @@ class Skus extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-				'error'
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+					'error'
 			);
 			return;
 		}
@@ -409,13 +404,13 @@ class Skus extends AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_STOREFRONT_ARCHIVED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_STOREFRONT_PUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_STOREFRONT_UNPUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_UNPUBLISHED', count($ids));
 			break;
 		}
 
@@ -442,10 +437,10 @@ class Skus extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId,
-			$message,
-			$type
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId, false),
+				$message,
+				$type
 		);
 	}
 
@@ -457,8 +452,8 @@ class Skus extends AdminController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0)
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . Request::getInt('pId', 0), false)
 		);
 	}
 
@@ -486,13 +481,13 @@ class Skus extends AdminController
 		// Initialize the correct SKU based on the product type
 		if (!empty($productType) && $productType == 'Software Download')
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SoftwareSku.php');
-			$sku = new SoftwareSku($sId);
+			require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'SoftwareSku.php');
+			$sku = new \Components\Storefront\Models\SoftwareSku($sId);
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
-			$sku = new Sku($sId);
+			require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Sku.php');
+			$sku = new \Components\Storefront\Models\Sku($sId);
 		}
 
 		// If this is a new SKU, set the product ID

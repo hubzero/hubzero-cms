@@ -33,9 +33,11 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
+use Components\Storefront\Models\Product;
 use Hubzero\Html\Builder\Access;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php');
 
 /**
  * Controller class for knowledge base categories
@@ -84,7 +86,6 @@ class Products extends AdminController
 		$this->view->total = $obj->products('count', $this->view->filters);
 
 		// Get records
-		print_r($obj->products('list', $this->view->filters)); die;
 		$this->view->rows = $obj->products('list', $this->view->filters);
 
 		// For all records here get SKUs
@@ -228,7 +229,7 @@ class Products extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = Request::getVar('fields', array(), 'post', 'array', Request_ALLOWHTML);
+		$fields = Request::getVar('fields', array(), 'post');
 
 		$obj = new Archive();
 
@@ -284,7 +285,7 @@ class Products extends AdminController
 		}
 		catch (\Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			\Notify::error($e->getMessage());
 			// Get the product
 			$product = $obj->product($fields['pId']);
 			$this->editTask($product);
@@ -297,7 +298,8 @@ class Products extends AdminController
 		{
 			foreach ($warnings as $warning)
 			{
-				JFactory::getApplication()->enqueueMessage($warning, 'warning');
+				\Notify::warning($warning);
+
 			}
 		}
 
@@ -312,7 +314,7 @@ class Products extends AdminController
 			{
 				foreach ($warnings as $warning)
 				{
-					JFactory::getApplication()->enqueueMessage($warning, 'warning');
+					\Notify::warning($warning);
 				}
 			}
 			return;
@@ -367,10 +369,10 @@ class Products extends AdminController
 				// Make sure we have IDs to work with
 				if (empty($pIds))
 				{
-					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						Lang::txt('COM_STOREFRONT_NO_ID'),
-						'error'
+					App::redirect(
+							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+							Lang::txt('COM_STOREFRONT_NO_ID'),
+							'error'
 					);
 					return;
 				}
@@ -394,10 +396,10 @@ class Products extends AdminController
 						}
 						catch (\Exception $e)
 						{
-							$this->setRedirect(
-								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
-								$e->getMessage(),
-								$type
+							App::redirect(
+									Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
+									$e->getMessage(),
+									$type
 							);
 							return;
 						}
@@ -408,10 +410,10 @@ class Products extends AdminController
 				}
 
 				// Set the redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId,
-					$msg,
-					$type
+				App::redirect(
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $pId),
+						$msg,
+						$type
 				);
 				break;
 		}
@@ -461,10 +463,10 @@ class Products extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_STOREFRONT_NO_ID'),
-				'error'
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					Lang::txt('COM_STOREFRONT_NO_ID'),
+					'error'
 			);
 			return;
 		}
@@ -476,17 +478,16 @@ class Products extends AdminController
 		// Check and store the changes
 		if (!$row->store(true))
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$row->getError(),
-				'error'
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					$row->getError(),
+					'error'
 			);
 			return;
 		}
 
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 		);
 	}
 
@@ -526,10 +527,10 @@ class Products extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
-				'error'
+			App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+					'error'
 			);
 			return;
 		}
@@ -547,7 +548,7 @@ class Products extends AdminController
 			}
 			catch (\Exception $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				\Notify::error($e->getMessage());
 				return;
 			}
 		}
@@ -556,20 +557,20 @@ class Products extends AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_STOREFRONT_ARCHIVED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_STOREFRONT_PUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_STOREFRONT_UNPUBLISHED', count($ids));
+				$message = Lang::txt('COM_STOREFRONT_UNPUBLISHED', count($ids));
 			break;
 		}
 
 		// Redirect
-		$this->setRedirect(
-			'index.php?option='.$this->_option . '&controller=' . $this->_controller,
-			$message
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				$message
 		);
 	}
 
@@ -581,9 +582,8 @@ class Products extends AdminController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 		);
 	}
 }
-

@@ -31,8 +31,9 @@
 namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Storefront\Models\Product;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php');
 
 /**
  * Manage logo for a course
@@ -47,7 +48,7 @@ class Images extends AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken(array('get', 'post')) or jexit('Invalid Token');
+		Request::checkToken(['get', 'post']);
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -94,8 +95,7 @@ class Images extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -117,7 +117,7 @@ class Images extends AdminController
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)));
+			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -126,9 +126,8 @@ class Images extends AdminController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -159,13 +158,21 @@ class Images extends AdminController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
+		if (!Filesystem::isSafe($file))
+		{
+			Filesystem::delete($file);
+
+			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE')));
+			return;
+		}
+
 		// Do we have an old file we're replacing?
 		if (($curfile = Request::getVar('currentfile', '')))
 		{
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
 			{
-				if (!JFile::delete($path . DS . $curfile))
+				if (!Filesystem::delete($path . DS . $curfile))
 				{
 					echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_DELETE_FILE')));
 					return;
@@ -201,7 +208,7 @@ class Images extends AdminController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'directory' => str_replace(PATH_ROOT, '', $path),
 			'id'        => $id,
 			'imgId'		=> $imgId,
 			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
@@ -223,7 +230,7 @@ class Images extends AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -256,8 +263,7 @@ class Images extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -266,27 +272,35 @@ class Images extends AdminController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UPLOADING'));
 			$file = $curfile;
 		}
 		else
 		{
+			if (!Filesystem::isSafe($path . DS . $file['name']))
+			{
+				Filesystem::delete($path . DS . $file['name']);
+
+				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE'));
+				$this->displayTask($curfile, $id);
+				return;
+			}
+
 			// Do we have an old file we're replacing?
 			if (($curfile = Request::getVar('currentfile', '')))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!JFile::delete($path . DS . $curfile))
+					if (!Filesystem::delete($path . DS . $curfile))
 					{
-						$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_DELETE_FILE'));
+						$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
 						return;
 					}
@@ -298,7 +312,7 @@ class Images extends AdminController
 				case 'product':
 					// Instantiate a model, change some info and save
 					$product = new Product($id);
-					$product->setImage($filename . '.' . $ext);
+					$product->setImage($file['name']);
 					break;
 
 				default:
@@ -363,7 +377,7 @@ class Images extends AdminController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => '',
-			//'directory' => str_replace(JPATH_ROOT, '', $path),
+			//'directory' => str_replace(PATH_ROOT, '', $path),
 			'id'        => $id,
 			'size'      => 0,
 			'width'     => 0,
@@ -392,7 +406,9 @@ class Images extends AdminController
 	 */
 	protected function _path($type, $id)
 	{
-		$path = JPATH_ROOT . DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS;
+		$config = Component::params('com_storefront');
+		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+		$path = PATH_APP . DS . $imgWebPath . DS;
 
 		switch ($type)
 		{

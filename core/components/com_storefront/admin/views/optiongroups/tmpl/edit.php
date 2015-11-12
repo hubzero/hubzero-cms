@@ -33,7 +33,7 @@ $canDo = StorefrontHelperPermissions::getActions('product');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_OPTION_GROUP') . ': ' . $text, 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_OPTION_GROUP') . ': ' . $text, 'storefront.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
-	<?php echo JFactory::getEditor()->save('text'); ?>
+	<?php echo $this->editor()->save('text'); ?>
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){

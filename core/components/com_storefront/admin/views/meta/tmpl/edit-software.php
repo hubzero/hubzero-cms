@@ -33,7 +33,7 @@ $canDo = StorefrontHelperPermissions::getActions('product');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT_META') . ': ' . $text, 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT_META') . ': ' . $text, 'storefront.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="eula"><?php echo 'EULA (if required, can be overridden on a SKU level)' ?>: </label><br />
-				<?php echo JFactory::getEditor()->display('fields[eula]', $this->escape(stripslashes($this->meta->eula)), '', '', 50, 10, false, 'eula'); ?>
+				<?php echo $this->editor('fields[eula]', $this->escape(stripslashes($this->meta->eula)), 50, 10, 'eula', array('buttons' => false)); ?>
 			</div>
 
 			<div class="input-wrap">

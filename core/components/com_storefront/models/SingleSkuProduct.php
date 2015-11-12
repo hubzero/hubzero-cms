@@ -32,6 +32,7 @@ namespace Components\Storefront\Models;
 
 require_once(__DIR__ . DS . 'Product.php');
 require_once(__DIR__ . DS . 'Sku.php');
+require_once(__DIR__ . DS . 'Warehouse.php');
 
 /**
  *
@@ -109,7 +110,6 @@ class SingleSkuProduct extends Product
 	{
 		// For single product update SKU must save the original SKU ID (since SKU was generated automatically)
 		// Find the SKU ID for this product and save
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new Warehouse();
 
 		$sku = $warehouse->getProductSkus($this->data->id);

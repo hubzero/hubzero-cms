@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = StorefrontHelperPermissions::getActions('product');
 
-JToolBarHelper::title(Lang::txt('COM_STOREFRONT'), 'kb.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT'), 'storefront.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -152,7 +152,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->pId); ?>" title="<?php echo JText::sprintf('COM_STOREFRONT_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->pId); ?>" title="<?php echo Lang::txt('COM_STOREFRONT_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>

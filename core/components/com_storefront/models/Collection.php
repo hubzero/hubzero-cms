@@ -29,6 +29,7 @@
  */
 
 namespace Components\Storefront\Models;
+use Exception;
 
 require_once(__DIR__ . DS . 'Warehouse.php');
 

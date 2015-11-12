@@ -29,58 +29,58 @@
 
 class Access_Group_Membership_Type_Handler extends Type_Handler
 {
-    /**
-     * Constructor
-     *
-     * @param 	void
-     * @return 	void
-     */
-    public function __construct($item, $crtId)
-    {
-        parent::__construct($item, $crtId);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	void
+	 * @return 	void
+	 */
+	public function __construct($item, $crtId)
+	{
+		parent::__construct($item, $crtId);
+	}
 
-    public function handle()
-    {
-        require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
-        $ms = new \Components\Storefront\Models\Memberships();
+	public function handle()
+	{
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+		$ms = new \Components\Storefront\Models\Memberships();
 
-        /* NEW
-        $subscription = StorefrontModelMemberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
-        // Get the expiration for the current subscription (if any)
-        $currentExpiration = $subscription->getExpiration();
-        */
+		/* NEW
+		$subscription = StorefrontModelMemberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
+		// Get the expiration for the current subscription (if any)
+		$currentExpiration = $subscription->getExpiration();
+		*/
 
-        // Get current registration
-        $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
-        $expiration = $membership['crtmExpires'];
+		// Get current registration
+		$membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
+		$expiration = $membership['crtmExpires'];
 
-        /* Add the user to the corresponding user access group (pull access group ID from the meta) */
-        try
-        {
-            // Get user ID for the cart
-            require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
-            $userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
+		/* Add the user to the corresponding user access group (pull access group ID from the meta) */
+		try
+		{
+			// Get user ID for the cart
+			require_once(dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php');
+			$userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
-            // Get the user group ID to set the user to (from meta)
-            require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
-            $userGId = \Components\Storefront\Models\Product::getMeta($this->item['info']->pId, 'userGroupId');
+			// Get the user group ID to set the user to (from meta)
+			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
+			$userGId = \Components\Storefront\Models\Product::getMeta($this->item['info']->pId, 'userGroupId');
 
-            $add = JUserHelper::addUserToGroup($userId, $userGId);
-            if($add instanceof Exception) {
-                mail(Config::get('config.mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
-            }
+			$add = JUserHelper::addUserToGroup($userId, $userGId);
+			if($add instanceof Exception) {
+				mail(Config::get('config.mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
+			}
 
-            $table = JTable::getInstance('User', 'JTable', array());
-            $table->load($userId);
+			$table = JTable::getInstance('User', 'JTable', array());
+			$table->load($userId);
 
-            // Trigger the onAftereStoreUser event
-            Event::trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
-        }
-        catch (Exception $e)
-        {
-            // Error
-            return false;
-        }
-    }
+			// Trigger the onAftereStoreUser event
+			Event::trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+		}
+		catch (Exception $e)
+		{
+			// Error
+			return false;
+		}
+	}
 }
