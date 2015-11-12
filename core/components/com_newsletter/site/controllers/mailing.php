@@ -36,11 +36,12 @@ use Components\Newsletter\Helpers\Helper;
 use Components\Newsletter\Tables\MailingRecipientAction;
 use Hubzero\Component\SiteController;
 use stdClass;
+use Request;
 
 /**
  * Newsletter Mailing Controller
  */
-class NewsletterControllerMailing extends SiteController
+class Mailing extends SiteController
 {
 	/**
 	 * General Tracking Task - Routes to open and click tracking based on type
