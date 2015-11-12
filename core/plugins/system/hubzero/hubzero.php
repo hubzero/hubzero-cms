@@ -191,6 +191,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			{
 				apache_note('auth','cookie');
 				apache_note('userid', $tracker['user_id']);
+				apache_note('tracker', $tracker['rsid']);
 			}
 		}
 	}
