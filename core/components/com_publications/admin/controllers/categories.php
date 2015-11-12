@@ -117,11 +117,7 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = Request::getVar('id', array(0));
@@ -135,9 +131,11 @@ class Categories extends AdminController
 			}
 
 			// Load the object
-			$this->view->row = new \Components\Publications\Tables\Category($this->database);
-			$this->view->row->load($id);
+			$row = new \Components\Publications\Tables\Category($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -152,8 +150,7 @@ class Categories extends AdminController
 		$this->view->types = $objMT->getTypes('alias', 1);
 
 		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
 		$this->view->display();
@@ -181,15 +178,13 @@ class Categories extends AdminController
 
 		$prop = Request::getVar('prop', array(), 'post');
 
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit&id[]=' . $prop['id'];
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $prop['id'];
 
 		// Initiate extended database class
 		$row = new \Components\Publications\Tables\Category($this->database);
 		if (!$row->bind($prop))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			App::redirect($url);
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
@@ -235,8 +230,7 @@ class Categories extends AdminController
 				}
 			}
 
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-				. DS . 'models' . DS . 'elements.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 			$re = new \Components\Publications\Models\Elements($elements);
 			$row->customFields = $re->toString();
 		}
@@ -313,9 +307,10 @@ class Categories extends AdminController
 				// Save
 				if (!$row->store())
 				{
-					$this->addComponentMessage($row->getError(), 'error');
 					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+						$row->getError(),
+						'error'
 					);
 					return;
 				}

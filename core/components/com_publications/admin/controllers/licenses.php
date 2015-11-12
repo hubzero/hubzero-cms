@@ -139,14 +139,16 @@ class Licenses extends AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			\Notify::error($this->getError());
 		}
 
 		// Push some styles to the template
 		$this->css();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -179,8 +181,7 @@ class Licenses extends AdminController
 		$row = new \Components\Publications\Tables\License($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			App::redirect($url);
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
@@ -197,8 +198,7 @@ class Licenses extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -206,8 +206,7 @@ class Licenses extends AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -256,7 +255,7 @@ class Licenses extends AdminController
 
 		// Load row
 		$row = new \Components\Publications\Tables\License($this->database);
-		$row->loadLicense( (int) $id[0]);
+		$row->loadLicense((int) $id[0]);
 
 		// Update order
 		$row->changeOrder($dir);
@@ -282,9 +281,10 @@ class Licenses extends AdminController
 
 		if (count($id) > 1)
 		{
-			$this->addComponentMessage(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'), 'error');
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'),
+				'error'
 			);
 			return;
 		}
@@ -303,9 +303,10 @@ class Licenses extends AdminController
 		// Save
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				$row->getError(),
+				'error'
 			);
 			return;
 		}
@@ -348,9 +349,10 @@ class Licenses extends AdminController
 				// Save
 				if (!$row->store())
 				{
-					$this->addComponentMessage($row->getError(), 'error');
 					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+						$row->getError(),
+						'error'
 					);
 					return;
 				}

@@ -158,10 +158,8 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'js' . DS . 'curation.js');
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -200,8 +198,7 @@ class Types extends AdminController
 			$row->curation
 		);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id, false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id, false);
 
 		$manifest   = new stdClass;
 		$manifest->blocks = new stdClass;
@@ -314,10 +311,8 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'js' . DS . 'curation.js');
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -331,11 +326,11 @@ class Types extends AdminController
 	public function saveadvancedTask()
 	{
 		// Incoming
-		$id 		= Request::getInt('id', 0);
-		$curation 	= Request::getVar('curation', '', 'post', 'none', 2);
+		$id       = Request::getInt('id', 0);
+		$curation = Request::getVar('curation', '', 'post', 'none', 2);
 		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
 
-		$row 		= new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -391,10 +386,10 @@ class Types extends AdminController
 	public function editelementsTask()
 	{
 		// Incoming
-		$id 	  				= Request::getInt('id', 0);
-		$this->view->blockId 	= Request::getInt('bid', 0);
+		$id = Request::getInt('id', 0);
+		$this->view->blockId = Request::getInt('bid', 0);
 
-		$this->view->row 		= new \Components\Publications\Tables\MasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -421,10 +416,8 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'js' . DS . 'curation.js');
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -439,10 +432,10 @@ class Types extends AdminController
 	public function saveelementsTask()
 	{
 		// Incoming
-		$id 	  	= Request::getInt('id', 0);
-		$blockId 	= Request::getInt('bid', 0);
+		$id = Request::getInt('id', 0);
+		$blockId = Request::getInt('bid', 0);
 
-		$row 		= new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -460,8 +453,7 @@ class Types extends AdminController
 			$row->curation
 		);
 
-		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id, false);
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id, false);
 
 		$objC = new \Components\Publications\Models\Curation($row->curation);
 		$manifest = $objC->_manifest;
@@ -574,10 +566,8 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'js' . DS . 'curation.js');
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -700,10 +690,8 @@ class Types extends AdminController
 		$this->view->cats = $objC->getCategories();
 
 		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets'
-			. DS . 'js' . DS . 'curation.js');
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -747,8 +735,7 @@ class Types extends AdminController
 		// Bind new data
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			App::redirect($url);
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
