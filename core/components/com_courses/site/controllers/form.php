@@ -156,6 +156,7 @@ class Form extends SiteController
 
 		$this->view->title = $this->_title;
 		$this->view->base  = $this->base;
+		$this->view->course = $this->course;
 
 		// Display
 		$this->view->display();
@@ -226,6 +227,7 @@ class Form extends SiteController
 		$this->view->title    = $this->view->pdf->getTitle();
 		$this->view->readonly = Request::getInt('readonly', false);
 		$this->view->base     = $this->base;
+		$this->view->course   = $this->course;
 		$this->view->display();
 	}
 
@@ -279,6 +281,7 @@ class Form extends SiteController
 		$this->view->dep   = ($dep) ? $dep : new PdfFormDeployment;
 		$this->view->title = $this->view->pdf->getTitle();
 		$this->view->base  = $this->base;
+		$this->view->course = $this->course;
 
 		$this->view->display();
 	}
@@ -388,6 +391,7 @@ class Form extends SiteController
 		$this->view->title = $this->view->pdf->getTitle();
 		$this->view->dep   = ($dep) ? $dep : PdfFormDeployment::load($id);
 		$this->view->base  = $this->base;
+		$this->view->course = $this->course;
 
 		// Display
 		$this->view->display();
@@ -435,6 +439,7 @@ class Form extends SiteController
 				$this->view->title = $this->view->pdf->getTitle();
 				$this->view->base  = $this->base;
 				$this->view->dep   = $dep;
+				$this->view->course = $this->course;
 
 				// Display
 				$this->view->display();
@@ -465,6 +470,7 @@ class Form extends SiteController
 					$this->view->base       = $this->base;
 					$this->view->dep        = $dep;
 					$this->view->resp       = $resp;
+					$this->view->course     = $this->course;
 					$this->view->display();
 					return;
 				}
@@ -480,6 +486,7 @@ class Form extends SiteController
 					$this->view->dep        = $dep;
 					$this->view->resp       = $resp;
 					$this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : array();
+					$this->view->course     = $this->course;
 					$this->view->display();
 				}
 			break;

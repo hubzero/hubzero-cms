@@ -102,6 +102,8 @@ if ($this->resp->getStartTime())
 				<input type="hidden" name="option" value="com_courses" />
 				<input type="hidden" name="controller" value="form" />
 				<input type="hidden" name="task" value="submit" />
+				<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 				<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
 				<input type="hidden" name="attempt" value="<?php echo $this->resp->getAttemptNumber() ?>" />
 				<button class="btn btn-primary" type="submit"><?php echo Lang::txt('COM_COURSES_SUBMIT'); ?></button>
