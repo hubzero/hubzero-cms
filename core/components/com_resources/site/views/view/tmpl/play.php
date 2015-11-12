@@ -39,7 +39,7 @@ $html = '';
 	$url = $this->activechild->path;
 
 	// Get some attributes
-	$attribs = new \Hubzero\Config\Registry( $this->activechild->attribs );
+	$attribs = new \Hubzero\Config\Registry($this->activechild->attribs);
 	$width  = $attribs->get('width', '');
 	$height = $attribs->get('height', '');
 
@@ -126,6 +126,12 @@ $html = '';
 	}
 	else if (is_file(PATH_APP . $url))
 	{
+		$base = substr(PATH_APP, strlen(PATH_ROOT));
+		if (substr($url, 0, strlen($base)) != $base)
+		{
+			$url = $base . $url;
+		}
+
 		if (strtolower($type) == 'swf')
 		{
 			$height = '400px';
