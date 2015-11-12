@@ -34,6 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
+$site = rtrim(Request::base(), '/');
 
 $message = '----------------------------'."\n\n";
 
@@ -69,6 +70,12 @@ if (isset($this->tickets) && count($this->tickets) > 0)
 		$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 		$sef = Route::url($base . $ticket->id);
+		if (substr($site, -13) == 'administrator')
+		{
+			$sef = 'support/ticket/' . $ticket->id;
+		}
+		$link = $site . '/' . trim($sef, '/');
+		$link = str_replace('/administrator', '', $link);
 
 		$cells = array();
 		$cells[] = '"#' . addslashes($ticket->id) . '"';

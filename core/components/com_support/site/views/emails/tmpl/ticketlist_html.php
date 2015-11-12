@@ -48,6 +48,7 @@ $bgcolor = array(
 	'trivial'  => '#d3f9ff'
 );
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
+$site = rtrim(Request::base(), '/');
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -115,7 +116,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 				$sef = Route::url($base . $ticket->id);
-				$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
+				if (substr($site, -13) == 'administrator')
+				{
+					$sef = 'support/ticket/' . $ticket->id;
+				}
+				$link = $site . '/' . trim($sef, '/');
+				$link = str_replace('/administrator', '', $link);
 				?>
 				<tr style="background: <?php echo $bgcolor[$ticket->severity]; ?>; border: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>">
 					<td style="text-align: left; padding: 0.7em;" valign="top" align="left"><a href="<?php echo $link; ?>">#<?php echo $ticket->id; ?></a></td>
