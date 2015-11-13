@@ -106,4 +106,4 @@ $this->css('introduction.css', 'system')
 			</table>
 		</div><!-- / .col span9 omega -->
 	</div>
-</div><!-- / .section -->
+</section><!-- / .section -->
