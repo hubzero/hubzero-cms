@@ -123,7 +123,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			$view->option    = $option;
 			$view->resource  = $model->resource;
 			$view->citations = $citations;
-			$view->format    = $this->params->get('format', 'APA');
+			$view->citationFormat    = $this->params->get('format', 'APA');
 			if ($this->getError())
 			{
 				$view->setError($this->getError());

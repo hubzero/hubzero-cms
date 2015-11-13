@@ -221,8 +221,8 @@ $area = Request::getVar('area', 'about');
 				echo strip_tags($cf->formatCitation($citation, null, false, $config));
 			?>
 			<div class="download">
-				<a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&format=bibtex&id=' . $citation->id . '&no_html=1'); ?>" title="Download in BibTex Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX'); ?></a> |
-				<a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&format=endnote&id=' . $citation->id . '&no_html=1'); ?>" title="Download in Endnote Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE'); ?></a>
+				<a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&citationFormat=bibtex&id=' . $citation->id . '&no_html=1'); ?>" title="Download in BibTex Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX'); ?></a> |
+				<a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&citationFormat=endnote&id=' . $citation->id . '&no_html=1'); ?>" title="Download in Endnote Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE'); ?></a>
 			</div>
 		</div>
 

@@ -936,7 +936,7 @@ class Citations extends SiteController
 	{
 		// Incoming
 		$id = Request::getInt('id', 0, 'request');
-		$format = strtolower(Request::getVar('format', 'bibtex', 'request'));
+		$format = strtolower(Request::getVar('citationFormat', 'bibtex', 'request'));
 
 		// Esnure we have an ID to work with
 		if (!$id)
