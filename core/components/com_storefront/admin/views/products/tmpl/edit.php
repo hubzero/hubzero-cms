@@ -108,6 +108,21 @@ function submitbutton(pressbutton)
 						<input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
 					</td>
 				</tr>
+				<tr>
+					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_DOWNLOADED'); ?>:</th>
+					<td>
+						<?php
+						echo $this->downloaded;
+						if ($this->downloaded == 0 || $this->downloaded > 1)
+						{
+							echo(' times');
+						}
+						else {
+							echo 'time';
+						}
+						?>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 

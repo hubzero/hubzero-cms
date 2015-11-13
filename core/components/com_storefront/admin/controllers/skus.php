@@ -34,6 +34,9 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Warehouse;
+use Components\Cart\Helpers\CartDownload;
+
+require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Download.php';
 
 /**
  * Controller class for knowledge base categories
@@ -94,7 +97,6 @@ class Skus extends AdminController
 
 		// Get records
 		$this->view->rows = $obj->skus('list', $pId, $this->view->filters);
-
 
 		// Set any errors
 		if ($this->getError())
@@ -171,6 +173,10 @@ class Skus extends AdminController
 
 		// Get current SKU options
 		$this->view->options = $row->getOptions();
+
+		// Get number of downloads
+		$downloaded = CartDownload::countSkuDownloads($id);
+		$this->view->downloaded = $downloaded;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

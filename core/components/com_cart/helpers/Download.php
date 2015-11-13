@@ -37,7 +37,7 @@ class CartDownload
 		$db = \App::get('db');
 		$sql = 'SELECT COUNT(*) FROM `#__cart_downloads` d
 				LEFT JOIN `#__storefront_skus` s ON d.`sId` = s.`sId`
-				WHERE s.pId = ' . $db->quote($pId);
+				WHERE d.dStatus > 0 AND s.pId = ' . $db->quote($pId);
 		$db->setQuery($sql);
 		$downloadsCount = $db->loadResult();
 		return $downloadsCount;
@@ -47,7 +47,7 @@ class CartDownload
 	{
 		$db = \App::get('db');
 		$sql = 'SELECT COUNT(*) FROM `#__cart_downloads`
-				WHERE sId = ' . $db->quote($sId);
+				WHERE dStatus > 0 AND sId = ' . $db->quote($sId);
 		if ($uId)
 		{
 			$sql .= 'AND `uId` = ' . $db->quote($uId);
@@ -86,7 +86,11 @@ class CartDownload
 			unset($filters['limit']);
 		}
 
-		$sql = 'SELECT * FROM `#__cart_downloads` WHERE 1';
+		$sql  = 'SELECT d.*, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
+		$sql .= ' LEFT JOIN `#__xprofiles` x ON (d.uId = x.uidNumber)';
+		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
+		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
+		$sql .= ' WHERE 1';
 
 		// Filter by filters
 		//print_r($filters);
@@ -97,11 +101,25 @@ class CartDownload
 
 		if (isset($filters['sort']))
 		{
+			if ($filters['sort'] == 'title')
+			{
+				$filters['sort'] = 'uId';
+			}
+			elseif ($filters['sort'] == 'product')
+			{
+				$filters['sort'] = 'pName';
+			}
+
 			$sql .= " ORDER BY " . $filters['sort'];
 
 			if (isset($filters['sort_Dir']))
 			{
 				$sql .= ' ' . $filters['sort_Dir'];
+			}
+
+			if ($filters['sort'] == 'product')
+			{
+				$sql .= ', sSku';
 			}
 		}
 		else {
@@ -127,8 +145,29 @@ class CartDownload
 		}
 
 		$res = $db->loadObjectList();
-		//print_r($res); die;
-
 		return $res;
+	}
+
+	/**
+	 * Set downloads status
+	 *
+	 * @param      array  	download ids
+	 * @param      int   	status (0 - deactivate, 1 - activate)
+	 * @return     mixed
+	 */
+	public static function setStatus($dIds, $status = 1)
+	{
+		$ids = '0';
+		foreach ($dIds as $dId)
+		{
+			$ids .= ',' . $dId;
+		}
+
+		$db = \App::get('db');
+		$sql  = 'UPDATE `#__cart_downloads` SET `dStatus` = ' . $db->quote($status) . ' WHERE dId IN(';
+		$sql .= $ids;
+		$sql .= ')';
+		$db->setQuery($sql);
+		$db->execute();
 	}
 }

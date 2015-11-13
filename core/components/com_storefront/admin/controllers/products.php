@@ -35,7 +35,9 @@ use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
 use Hubzero\Html\Builder\Access;
+use Components\Cart\Helpers\CartDownload;
 
+require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Download.php';
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php');
 
@@ -194,6 +196,10 @@ class Products extends AdminController
 		{
 			$this->view->metaNeeded = true;
 		}
+
+		// Get number of downloads
+		$downloaded = CartDownload::countProductDownloads($id);
+		$this->view->downloaded = $downloaded;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Storefront\Admin;
+namespace Components\Cart\Admin;
 
 $option = 'com_cart';
 
@@ -37,11 +37,13 @@ if (!\User::authorise('core.manage', $option))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+
 $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'downloads');
 
 \Submenu::addEntry(
-		Lang::txt('COM_STOREFRONT_SOFTWARE_DOWNLOADS'),
+		Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
 		\Route::url('index.php?option=com_storefront&controller=downloads'),
 		$controllerName == 'downloads'
 );
