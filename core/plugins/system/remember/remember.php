@@ -17,7 +17,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 	public function onAfterInitialise()
 	{
 		// No remember me for admin
-		if (App::isAdmin())
+		if (!App::isSite())
 		{
 			return;
 		}
