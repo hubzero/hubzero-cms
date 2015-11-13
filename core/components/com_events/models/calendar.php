@@ -263,8 +263,9 @@ class Calendar extends Model
 		$lastRefreshed   = Date::of($this->get('last_fetched_attempt'));
 		$refreshInterval = new DateInterval("PT{$interval}M");
 
+		// Assumes minutes
 		// add refresh interval to last refreshed
-		$lastRefreshed->add($refreshInterval);
+		$lastRefreshed->add($refreshInterval->i);
 
 		// if we havent passed our need to refresh date stop
 		if ($now < $lastRefreshed && !$force)
