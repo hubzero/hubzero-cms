@@ -58,6 +58,9 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-title').value == ''){
 		alert("<?php echo 'Title cannot be empty' ?>");
 	}
+	else if (document.getElementById('field-pTagline').value == ''){
+		alert("<?php echo 'Tagline cannot be empty' ?>");
+	}
 	else if (document.getElementById('field-description').value == ''){
 		alert("<?php echo 'Description cannot be empty' ?>");
 	}
@@ -78,7 +81,7 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-alais"><?php echo Lang::txt('Alias'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-alais"><?php echo Lang::txt('Alias'); ?>:</label><br />
 				<input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
 			</div>
 

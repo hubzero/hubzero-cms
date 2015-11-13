@@ -47,9 +47,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 			echo '<ul>';
 			foreach ($this->products as $product)
 			{
+				// find if there is an alias
+				$productIdentificator = $product->pId;
+				if (!empty($product->pAlias))
+				{
+					$productIdentificator = $product->pAlias;
+				}
+
 				echo '<li>';
 					echo '<a href="';
-					echo Route::url('index.php?option=' . Request::getVar('option')) . 'product/' . $product->pId;
+					echo Route::url('index.php?option=' . Request::getVar('option')) . 'product/' . $productIdentificator;
 					echo '">';
 					echo $product->pName;
 					echo '</a>';

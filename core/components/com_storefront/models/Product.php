@@ -754,14 +754,25 @@ class Product
 	/**
 	 * Check if everything checks out and the product is ready to go
 	 *
-	 * @param  void
-	 * @return bool		true on sucess, throws exception on failure
+	 * @param  	void
+	 * @return 	void
 	 */
 	public function verify()
 	{
 		if (empty($this->data->name))
 		{
 			throw new \Exception(Lang::txt('No product name set'));
+		}
+
+		// Check if the alias is used by another product (only if gets published, allow duplicates for unpublished items)
+		$warehouse = new Warehouse();
+		if ($this->getAlias() && $this->getActiveStatus())
+		{
+			$otherProduct = $warehouse->checkProduct($this->getAlias(), true);
+			if ($otherProduct->status > 0 && $otherProduct->pId != $this->getId())
+			{
+				throw new \Exception(Lang::txt('There is another product with the same alias. Alias cannot be set.'));
+			}
 		}
 
 		return true;
@@ -807,7 +818,7 @@ class Product
 	 * Save product
 	 *
 	 * @param  	void
-	 * @return 	void
+	 * @return 	bool		true
 	 */
 	public function save()
 	{
