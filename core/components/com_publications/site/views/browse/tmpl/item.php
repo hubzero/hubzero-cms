@@ -60,7 +60,7 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking'))
 
 	$html .= "\t\t" . '<div class="metadata">' . "\n";
 	$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-	$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('COM_PUBLICATIONS_THIS_HAS') . '</span> ' . number_format($ranking, 1) . ' '.Lang::txt('COM_PUBLICATIONS_RANKING') . '</dt>' . "\n";
+	$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank"><span class="rank-' . $r . '" style="width: ' . $r . '%;">' . Lang::txt('COM_PUBLICATIONS_THIS_HAS') . '</span></span> ' . number_format($ranking, 1) . ' '.Lang::txt('COM_PUBLICATIONS_RANKING') . '</dt>' . "\n";
 	$html .= "\t\t\t\t".'<dd>' . "\n";
 	$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('COM_PUBLICATIONS_RANKING_EXPLANATION') . '</p>' . "\n";
 	$html .= "\t\t\t\t\t" . '<div>' . "\n";
