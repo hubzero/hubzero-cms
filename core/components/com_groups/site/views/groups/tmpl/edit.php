@@ -175,7 +175,8 @@ else
 							<div class="preview" id="logo">
 								<div id="logo_picked">
 									<?php if ($this->group->get('logo')) { ?>
-										<img src="/site/groups/<?php echo $this->group->get('gidNumber'); ?>/uploads/<?php echo $this->group->get('logo'); ?>" alt="<?php echo $this->group->get('cn') ?>" />
+										<?php $selectedPath = substr(PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS . $this->group->get('logo'), strlen(PATH_ROOT)); ?>
+										<img src="<?php echo $selectedPath; ?>" alt="<?php echo $this->group->get('cn') ?>" />
 									<?php } else { ?>
 										<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 									<?php } ?>
