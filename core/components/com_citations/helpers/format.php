@@ -531,9 +531,9 @@ class Format
 		// are we allowing downloading
 		if ($downloading)
 		{
-			$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+			$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&citationFormat=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
 			$html .= '<span> | </span>';
-			$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+			$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&citationFormat=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
 		}
 
 		// if we have an open url link and we want to use open urls

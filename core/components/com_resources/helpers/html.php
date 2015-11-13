@@ -750,8 +750,8 @@ class Html
 			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev'))
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&citationFormat=bibtex&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&citationFormat=endnote&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
 				$html .= "\t\t" . '</p>' . "\n";
 			}
 			$html .= "\t" . '</li>' . "\n";
