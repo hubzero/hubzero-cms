@@ -122,7 +122,7 @@ class File extends Base
 		// Set paths
 		$configs->path    = $pub->_project->repo()->get('path');
 		$configs->pubBase = $pub->path('base', true);
-		$configs->pubPath = $configs->pubBase . DS . $configs->directory;
+		$configs->pubPath = $configs->pubBase . DS . $configs->dirPath;
 		$configs->logPath = $pub->path('logs', true);
 
 		// Get default title
