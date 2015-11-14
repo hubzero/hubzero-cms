@@ -140,7 +140,7 @@ class Discover extends Extension
 				if (!$result)
 				{
 					$failed = true;
-					$app->enqueueMessage(Lang::txt('COM_INSTALLER_MSG_DISCOVER_INSTALLFAILED').': '. $id);
+					Notify::error(Lang::txt('COM_INSTALLER_MSG_DISCOVER_INSTALLFAILED').': '. $id);
 				}
 			}
 			$this->setState('action', 'remove');
