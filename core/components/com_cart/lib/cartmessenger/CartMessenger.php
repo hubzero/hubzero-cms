@@ -74,9 +74,16 @@ class CartMessenger
 
 	public function log($loggingLevel = 2)
 	{
-		if (!is_writable($this->logFile))
+		if (!file_exists($this->logFile))
 		{
-			Filesystem::write($this->logFile, '');
+			try
+			{
+				Filesystem::write($this->logFile, '');
+			}
+			catch (\Exception $e)
+			{
+				$this->emailError($this->logFile, 'NO_LOG');
+			}
 		}
 
 		if (is_writable($this->logFile))
@@ -317,6 +324,11 @@ class CartMessenger
 		{
 			$mailSubject = ': Error logging payment postback information.';
 			$mailMessage = 'Log file is not writable.' . "\n\n";
+		}
+		elseif ($errorType == 'NO_LOG')
+		{
+			$mailSubject = ': Error logging payment postback information.';
+			$mailMessage = 'Log file does not exist' . "\n\n";
 		}
 		else
 		{
