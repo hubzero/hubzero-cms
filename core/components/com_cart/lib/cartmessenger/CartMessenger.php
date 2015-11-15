@@ -58,7 +58,8 @@ class CartMessenger
 	{
 		setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-		$this->logFile = PATH_APP . DS . 'logs' . DS . 'cart.log';
+		$logPath = Config::get('log_path', PATH_APP . DS . 'logs');
+		$this->logFile = $logPath  . DS . 'cart.log';
 		$this->caller = $caller;
 	}
 
