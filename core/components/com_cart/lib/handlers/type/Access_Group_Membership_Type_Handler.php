@@ -66,12 +66,12 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
 			$userGId = \Components\Storefront\Models\Product::getMeta($this->item['info']->pId, 'userGroupId');
 
-			$add = JUserHelper::addUserToGroup($userId, $userGId);
-			if ($add instanceof Exception) {
+			$add = \JUserHelper::addUserToGroup($userId, $userGId);
+			if ($add instanceof \Exception) {
 				mail(Config::get('config.mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
 			}
 
-			$table = JTable::getInstance('User', 'JTable', array());
+			$table = \JTable::getInstance('User', 'JTable', array());
 			$table->load($userId);
 
 			// Trigger the onAftereStoreUser event
