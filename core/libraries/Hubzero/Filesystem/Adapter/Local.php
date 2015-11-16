@@ -546,15 +546,10 @@ class Local implements AdapterInterface
 		{
 			$dh = opendir($path);
 
-			$items = new FilesystemIterator($path);
+			$items = new FilesystemIterator($path, FilesystemIterator::SKIP_DOTS);
 
 			foreach ($items as $item)
 			{
-				if ($item->isDot())
-				{
-					continue;
-				}
-
 				if ($item->isDir())
 				{
 					if ($this->setPermissions($item->getPathname(), $filemode, $foldermode))
