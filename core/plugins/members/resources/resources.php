@@ -444,11 +444,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		$html .= '</p>' . "\n";
 		if ($row->itext)
 		{
-			$html .= \Hubzero\Utility\String::truncate(stripslashes($row->itext))."\n";
+			$html .= \Hubzero\Utility\String::truncate(stripslashes($row->itext), array('html'=>true))."\n";
 		}
 		else if ($row->ftext)
 		{
-			$html .= \Hubzero\Utility\String::truncate(stripslashes($row->ftext))."\n";
+			$html .= \Hubzero\Utility\String::truncate(stripslashes($row->ftext), array('html'=>true))."\n";
 		}
 		$html .= "\t" . '</li>' . "\n";
 		return $html;
