@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
 		"aoColumns": dv_data.aoColumns,
 		"bProcessing": true,
 		"bServerSide": dv_settings.serverside,
-		"sAjaxSource": (dv_settings.serverside)? dv_settings.data_url + '&type=json&format=none': null,
+		"sAjaxSource": (dv_settings.serverside)? dv_settings.data_url + '&type=json&format=raw': null,
 		"sDom": '<"H"lpf<"clear">>rt<"F"lip<"clear">>',
 		"sPaginationType": "full_numbers",
 		"iDisplayLength": +dv_settings.limit,
