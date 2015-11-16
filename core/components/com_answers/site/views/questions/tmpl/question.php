@@ -203,6 +203,14 @@ if (!$this->question->get('anonymous'))
 
 					foreach ($tags as $tag)
 					{
+						if (!$tag)
+						{
+							continue;
+						}
+						if (!is_object($tag))
+						{
+							$tag = new \Components\Tags\Models\Tag($tag);
+						}
 						if (preg_match('/^tool:/i', $tag->get('raw_tag')))
 						{
 							$resource = 'alias=' . substr($tag->get('raw_tag'), strlen('tool:'));
