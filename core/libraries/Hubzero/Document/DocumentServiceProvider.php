@@ -51,6 +51,7 @@ class DocumentServiceProvider extends Middleware
 		{
 			$raw  = $app['request']->getBool('no_html');
 			$type = $app['request']->getWord('format', $raw ? 'raw' : 'html');
+			$type = ($type == 'none' ? 'raw' : $type);
 
 			$options = array(
 				'charset'   => 'utf-8',
