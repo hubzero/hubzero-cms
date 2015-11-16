@@ -123,7 +123,7 @@ class plgTagsKb extends \Hubzero\Plugin\Plugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
 		$row->href = Route::url('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
 
