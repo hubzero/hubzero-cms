@@ -38,7 +38,11 @@ HUBzero is a registered trademark of Purdue University.
 	<state>
 		<name>Member Profile</name>
 		<description>Member Profile</description>
-		<params>
-		</params>
 	</state>
+	<!-- Add fields to the request variables for the layout. -->
+	<fields name="request">
+		<fieldset name="request">
+			<field name="id" type="text" label="User ID" description="Enter a user ID to view the profile for" />
+		</fieldset>
+	</fields>
 </metadata>
