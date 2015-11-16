@@ -181,8 +181,7 @@ class Miner extends Object implements Provider
 			}
 
 			$query .= " AND (
-				(pv.`published_up` != '0000-00-00 00:00:00' AND pv.`published_up` >= " . $this->database->quote($filters['from']) . ") OR
-				(pv.`accepted` != '0000-00-00 00:00:00' AND pv.`accepted` >= " . $this->database->quote($filters['from']) . ")
+				(CASE WHEN pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE pv.`published_up` END) >= " . $this->database->quote($filters['from']) . "
 			)";
 		}
 		if (isset($filters['until']) && $filters['until'])
@@ -198,8 +197,7 @@ class Miner extends Object implements Provider
 			}
 
 			$query .= " AND (
-				(pv.`published_up` != '0000-00-00 00:00:00' AND pv.`published_up` < " . $this->database->quote($filters['until']) . ") OR
-				(pv.`accepted` != '0000-00-00 00:00:00' AND pv.`accepted` < " . $this->database->quote($filters['until']) . ")
+				(CASE WHEN pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE pv.`published_up` END) < " . $this->database->quote($filters['until']) . "
 			)";
 		}
 
