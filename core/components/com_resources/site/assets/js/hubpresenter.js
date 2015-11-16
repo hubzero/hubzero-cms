@@ -763,6 +763,12 @@ HUB.Presenter = {
 		
 		jQ("#slides ul").css('margin-top', 0);
 		
+		var leftWidth = jQ("#presenter-left").width();
+		var rightWidth = jQ("#presenter-right").width();
+		var totalWidth = leftWidth + rightWidth;	
+		
+		jQ("#presenter-content").width(totalWidth);	
+
 		if(!paused) {
 			player.play();
 		}
@@ -1294,6 +1300,10 @@ HUB.Presenter = {
 			
 			//add replay to video container
 			jQ( resume ).hide().appendTo("#presenter-container").fadeIn("slow");
+			var leftWidth = jQ("#presenter-left").width();
+			var rightWidth = jQ("#presenter-right").width();
+			var totalWidth = leftWidth + rightWidth;	
+			jQ("#resume").width(totalWidth);
 			
 			//restart video button
 			jQ("#restart-video").on('click',function(event){
@@ -1319,6 +1329,7 @@ HUB.Presenter = {
 	
 	doResume: function() 
 	{
+		
 		jQ("#resume").fadeOut("slow", function() {
 			//remove replay container
 			jQ(this).remove();
