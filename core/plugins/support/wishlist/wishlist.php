@@ -303,7 +303,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 				$wish->delete_wish($referenceid);
 
 				// also delete all votes for this wish
-				$objR = new \Components\Wishlist\Tables\Rank($database);
+				$objR = new \Components\Wishlist\Tables\Wish\Rank($database);
 				$objR->remove_vote($referenceid);
 
 				$message .= Lang::txt('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_WISH_REMOVAL', $parentid);
