@@ -188,7 +188,7 @@ class UsersModelReset extends JModelForm
 			$this->setError( Lang::txt('you must enter your new password twice to ensure we have it correct') );
 		} elseif ($password1 != $password2) {
 			$this->setError( Lang::txt('the new password and confirmation you entered do not match. Please try again') );
-		} elseif (!MembersHelperUtility::validpassword($password1)) {
+		} elseif (!\Components\Members\Helpers\Utility::validpassword($password1)) {
 			$this->setError( Lang::txt('the password you entered was invalid password. You may be using characters that are not allowed') );
 		} elseif (!empty($msg)) {
 			$this->setError( Lang::txt('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
