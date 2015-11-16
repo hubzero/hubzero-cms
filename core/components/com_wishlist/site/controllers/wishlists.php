@@ -38,6 +38,7 @@ use Components\Wishlist\Models\Attachment;
 use Components\Wishlist\Models\Comment;
 use Components\Wishlist\Models\Plan;
 use Components\Wishlist\Tables;
+use Components\Wishlist\Helpers\Economy;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Hubzero\Content\Server;
