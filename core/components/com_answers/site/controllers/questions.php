@@ -464,6 +464,7 @@ class Questions extends SiteController
 		}
 
 		// Record user's vote (old way)
+		$al = new Tables\Log($this->database);
 		$al->response_id = $row->get('id');
 		$al->ip      = $ip;
 		$al->helpful = $vote;
