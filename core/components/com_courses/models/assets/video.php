@@ -93,8 +93,13 @@ class Video extends File
 					// Remove original archive
 					Filesystem::delete($asset['target_path']);
 
-					// Remove MACOSX dirs if there and set permissions
-					Filesystem::deleteDirectory($asset['upload_path'] . '__MACOSX');
+					// Remove MACOSX dirs if there
+					if (Filesystem::exists($asset['upload_path'] . '__MACOSX'))
+					{
+						Filesystem::deleteDirectory($asset['upload_path'] . '__MACOSX');
+					}
+
+					// Set permissions
 					Filesystem::setPermissions($asset['upload_path'], '0664', '0775');
 				}
 				else
