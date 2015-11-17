@@ -86,9 +86,12 @@ switch ($this->line->access)
 	default: $cls = 'public';    break;
 }
 
-if ($this->config->get('supportedtag'))
+if ($this->config->get('supportedtag') && isset($this->supported))
 {
-	$cls .= ' supported';
+	if (in_array($this->line->id, $this->supported))
+	{
+		$cls .= ' supported';
+	}
 }
 ?>
 

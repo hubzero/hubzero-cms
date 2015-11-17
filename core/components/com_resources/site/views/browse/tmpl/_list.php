@@ -47,6 +47,7 @@ defined('_HZEXEC_') or die();
 			     ->set('option', 'com_resources')
 			     ->set('config', $config)
 			     ->set('line', $line)
+			     ->set('supported', isset($this->supported) ? $this->supported : array())
 			     ->display();
 		}
 	}
