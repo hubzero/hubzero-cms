@@ -53,7 +53,14 @@ class CacheServiceProvider extends ServiceProvider
 
 		$this->app['cache.store'] = function($app)
 		{
-			return $app['cache']->storage(!$app['config']->get('caching') ? 'none' : $app['config']->get('cache_handler'));
+			$handler = !$app['config']->get('caching') ? 'none' : $app['config']->get('cache_handler');
+
+			if ($app->isAdmin())
+			{
+				$handler = 'none';
+			}
+
+			return $app['cache']->storage($handler);
 		};
 	}
 }
