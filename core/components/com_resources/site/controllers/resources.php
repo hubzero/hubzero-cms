@@ -743,14 +743,14 @@ class Resources extends SiteController
 		}
 
 		//base url for the resource
-		$base = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
+		$base = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 		//build the rest of the resource path and combine with base
 		$path = $path ? $path : Html::build_path($activechild->created, $activechild->id, '');
 		$path = $base . $path;
 
 		// we must have a folder
-		if (!\Filesystem::exists(PATH_APP . DS . $path))
+		if (!\Filesystem::exists(PATH_ROOT . DS . $path))
 		{
 			$this->setError(Lang::txt('Folder containing assets does nto exist.'));
 
@@ -762,13 +762,13 @@ class Resources extends SiteController
 		}
 
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
-		//$manifest_path_json = PATH_APP . $path . DS . 'presentation.json';
-		$manifests = \Filesystem::files(PATH_APP . DS . $path, '.json');
+		//$manifest_path_json = PATH_ROOT . $path . DS . 'presentation.json';
+		$manifests = \Filesystem::files(PATH_ROOT . DS . $path, '.json');
 		$manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
-		$manifest_path_xml  = PATH_APP . $path . DS . 'presentation.xml';
+		$manifest_path_xml  = PATH_ROOT . $path . DS . 'presentation.xml';
 
 		//check if the formatted json exists
-		if (!file_exists(PATH_APP . $path . DS . $manifest_path_json))
+		if (!file_exists(PATH_ROOT . $path . DS . $manifest_path_json))
 		{
 			//check to see if we just havent converted yet
 			if (!file_exists($manifest_path_xml))
@@ -786,7 +786,7 @@ class Resources extends SiteController
 		}
 
 		//path to media
-		$media_path = PATH_APP . $path;
+		$media_path = PATH_ROOT . $path;
 
 		//check if path exists
 		if (!is_dir($media_path))
