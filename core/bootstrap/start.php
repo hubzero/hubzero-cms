@@ -64,6 +64,7 @@ $client = $app->detectClient(array(
 	'api'           => 'api',
 	'cli'           => 'cli',
 	'install'       => 'install',
+	'files'         => 'files',
 
 ))->name;
 

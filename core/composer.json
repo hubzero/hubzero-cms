@@ -87,7 +87,8 @@
         "mockery/mockery": "dev-master"
     },
     "autoload": {
-    "psr-0": { "Hubzero": "libraries/" },
+        "psr-0": { "Hubzero": "libraries/" },
+        "psr-4": { "Bootstrap\\": "bootstrap/"},
         "classmap": [ "libraries/joomla" ]
     },
     "config": {
