@@ -40,7 +40,7 @@ $this->css('hubpresenter.css')
      ->js('jquery.colpick', 'system');
 
 //get the manifest for the presentation
-$contents = file_get_contents(PATH_APP . $this->manifest);
+$contents = file_get_contents(PATH_ROOT . $this->manifest);
 
 //content folder
 $content_folder = $this->content_folder;
@@ -488,7 +488,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								<?php
 									//use thumb if possible
 									$thumb = $content_folder.DS.$slide->media;
-									if ($slide->thumb && file_exists(PATH_APP . $content_folder.DS.$slide->thumb))
+									if ($slide->thumb && file_exists(PATH_ROOT . $content_folder.DS.$slide->thumb))
 									{
 										$thumb = $content_folder.DS.$slide->thumb;
 									}
