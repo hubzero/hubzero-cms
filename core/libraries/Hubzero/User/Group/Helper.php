@@ -388,7 +388,7 @@ class Helper
 	public static function getDbo($config = array(), $cname = '')
 	{
 		// empty instance of db
-		$db = \JDatabase::getInstance();
+		$db = App::get('db');
 
 		// make sure we have a group object
 		if (!$group = Group::getInstance(\Request::getVar('cn', $cname)))

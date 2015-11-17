@@ -677,9 +677,16 @@ class Manage extends AdminController
 			return;
 		}
 
+		// Run as hubadmin
+		if (!isset($user))
+		{
+			$user = Component::params('com_update')->get('system_user', 'hubadmin');
+		}
+		$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+
 		// build command to run via shell
 		// this will init the git repo, make the inital commit and push to the repo management machine
-		$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
+		$cmd  = $sudo . 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
 		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabProject['ssh_url_to_repo'] . ' 2>&1';
 
 		// execute command
@@ -797,8 +804,15 @@ class Manage extends AdminController
 					continue;
 				}
 
+				// Run as hubadmin
+				if (!isset($user))
+				{
+					$user = Component::params('com_update')->get('system_user', 'hubadmin');
+				}
+				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+
 				// setup stage environment
-				$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
+				$cmd  = $sudo . 'sh ' . dirname(dirname(__DIR__)). DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
 				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $group->get('cn') . ' ' . $gitlabProject['ssh_url_to_repo'] . ' 2>&1';
 
 				// execute command
@@ -806,10 +820,24 @@ class Manage extends AdminController
 			}
 
 			// build command to run via shell
-			$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_fetch.sh ';
-			$cmd .= $uploadPath . ' ' . PATH_ROOT . ' 2>&1';
+			$cmd = "cd {$uploadPath} && ";
 
-			// execute command
+			if (!isset($user))
+			{
+				$user = Component::params('com_update')->get('system_user', 'hubadmin');
+			}
+
+			// The tasks and command to be perofmred
+			$task = 'group';
+			$museCmd = 'update';
+
+			// Run as (hubadmin)
+			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+
+			// Determines the path to muse and run the group update muse command
+			$cmd .= $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+
+			// Execute and format the output
 			$output = shell_exec($cmd);
 			$output = json_decode($output);
 
@@ -860,7 +888,8 @@ class Manage extends AdminController
 		if (empty($ids))
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('There are no eligible merge requests.'), 'warning'
 			);
 			return;
 		}
@@ -901,13 +930,41 @@ class Manage extends AdminController
 				}
 			}
 
-			// build command to run via shell
-			// this will run a "git pull --rebase origin master"
-			$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_merge_and_migrate.sh ';
-			$cmd .= $uploadPath . ' ' . PATH_ROOT . ' 2>&1';
 
-			// execute command
+			// build command to run via shell
+			$cmd = "cd {$uploadPath} && ";
+
+			if (!isset($user))
+			{
+				$user = Component::params('com_update')->get('system_user', 'hubadmin');
+			}
+
+			// The tasks and command to be perofmred
+			$task = 'group';
+			$museCmd = 'update';
+
+			// Run as (hubadmin)
+			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+
+			// Determines the path to muse and run the group update muse command
+			$cmd .= $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
+
+			// this will run a "git pull --rebase origin master"
 			$output = shell_exec($cmd);
+
+			if (strpos($output, 'ineligble') === FALSE)
+			{
+				$museCmd = 'migrate';
+				$cmd = "cd {$uploadPath} && ";
+				$cmd .= $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
+
+				$output .= shell_exec($cmd);
+			}
+			else
+			{
+				// Error message - refusing to run migrations due to failed update
+			}
+
 
 			// did we succeed
 			if (preg_match("/Updating the repository.../uis", $output))
