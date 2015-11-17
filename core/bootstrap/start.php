@@ -111,7 +111,7 @@ if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $ap
 $providers = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
 $services  = file_exists($providers) ? require $providers : array();
 
-$providers = PATH_APP . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'services.php';
+$providers = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'services.php';
 $services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
 
 $providers = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
@@ -136,7 +136,7 @@ foreach ($services as $service)
 $facades = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? require $facades : array();
 
-$facades = PATH_APP . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'aliases.php';
+$facades = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
 
 $facades = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
