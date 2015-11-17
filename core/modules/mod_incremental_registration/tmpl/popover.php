@@ -192,12 +192,9 @@ defined('_HZEXEC_') or die();
 								<label for="countryorigin">If not, please select your country of origin</label>
 								<select style="display: block" name="countryorigin" id="countryorigin">
 									<option value="">Select country...</option>
-								<?php
+									<?php
 									$countries = \Hubzero\Geocode\Geocode::countries();
-									if (!$countries)
-									{
-										$countries = $defaultCountries;
-									}
+
 									foreach ($countries as $c)
 									{
 										echo '<option value="' . $c->code . '"';
@@ -207,7 +204,7 @@ defined('_HZEXEC_') or die();
 										}
 										echo '>' . htmlentities($c->name, ENT_COMPAT, 'UTF-8') . '</option>'."\n";
 									}
-								?>
+									?>
 								</select>
 							</div>
 					</li>
@@ -228,18 +225,20 @@ defined('_HZEXEC_') or die();
 								<label for="countryresident">If not, please select the country where you currently reside</label>
 								<select style="display: block" name="countryresident" id="countryresident">
 									<option value="">Select country...</option>
-								<?php
+									<?php
 									// Make sure service provider is on
-									$countries = \Hubzero\Geocode\Geocode::getcountries();
+									$countries = \Hubzero\Geocode\Geocode::countries();
 
-									foreach ($countries as $c) {
+									foreach ($countries as $c)
+									{
 										echo '<option value="' . $c->code . '"';
-										if ($country == $c->code) {
+										if (strtoupper($country) == strtoupper($c->code))
+										{
 											echo ' selected="selected"';
 										}
 										echo '>' . htmlentities($c->name, ENT_COMPAT, 'UTF-8') . '</option>'."\n";
 									}
-								?>
+									?>
 								</select>
 							</div>
 					</li>
