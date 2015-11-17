@@ -269,17 +269,17 @@ class Points extends AdminController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
 
-		$id = Request::getInt('id', 0);
+		$account = Request::getVar('account', array(), 'post');
 
 		$row = new \Hubzero\Bank\Account($this->database);
-		if (!$row->bind($_POST))
+		if (!$row->bind($account))
 		{
 			App::abort(500, $row->getError());
 			return;
@@ -289,16 +289,25 @@ class Points extends AdminController
 		$row->balance  = intval($row->balance);
 		$row->earnings = intval($row->earnings);
 
-		if (isset($_POST['amount']) && intval($_POST['amount'])>0 && intval($_POST['amount']))
+		$data = Request::getVar('transaction', array(), 'post');
+
+		if (isset($data['amount']) && intval($data['amount']) > 0)
 		{
-			$data = array(
-				'uid'         => $row->uid,
-				'type'        => Request::getVar('type', ''),
-				'category'    => Request::getVar('category', 'general', 'post'),
-				'amount'      => Request::getInt('amount', 0),
-				'description' => Request::getVar('description', 'Reason unspecified', 'post'),
-				'created'     => Date::toSql()
-			);
+			$data['uid'] = $row->uid;
+			$data['created'] = Date::toSql();
+			$data['amount'] = intval($data['amount']);
+			if (!isset($data['category']) || !$data['category'])
+			{
+				$data['category'] = 'general';
+			}
+			if (!isset($data['description']) || !$data['description'])
+			{
+				$data['description'] = 'Reason unspecified';
+			}
+			if (!isset($data['type']) || !$data['type'])
+			{
+				$data['type'] = '';
+			}
 
 			switch ($data['type'])
 			{
@@ -318,14 +327,6 @@ class Points extends AdminController
 			$data['balance'] = $row->balance;
 
 			$BT = new \Hubzero\Bank\Transaction($this->database);
-			if ($data['description'] == '')
-			{
-				$data['description'] = 'Reason unspecified';
-			}
-			if ($data['category'] == '')
-			{
-				$data['category'] = 'general';
-			}
 
 			if (!$BT->bind($data))
 			{
@@ -357,7 +358,7 @@ class Points extends AdminController
 		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=edit&uid=' . $row->uid, false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&uid=' . $row->uid, false),
 			Lang::txt('User info saved')
 		);
 	}
@@ -365,11 +366,11 @@ class Points extends AdminController
 	/**
 	 * Configure items that can earn points
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function configTask()
 	{
-		$this->database->setQuery("SELECT * FROM #__users_points_config");
+		$this->database->setQuery("SELECT * FROM `#__users_points_config`");
 		$this->view->params = $this->database->loadObjectList();
 
 		// Set any errors
