@@ -32,13 +32,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title( Lang::txt( 'MEMBERS' ).': Manage Points', 'user.png' );
+Toolbar::title(Lang::txt('MEMBERS') . ': ' . Lang::txt('Manage Points'), 'user.png');
 
-?>
-
-<?php
-	$this->view('_submenu')
-	     ->display();
+$this->view('_submenu')
+     ->display();
 ?>
 
 <script type="text/javascript">
@@ -53,77 +50,73 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.uid.value == ''){
-		alert( 'You must fill in a UID' );
+		alert("<?php echo Lang::txt('You must fill in a UID'); ?>");
 	} else {
 		submitform( pressbutton );
 	}
 }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span5">
-			<fieldset>
-				<legend><span>User Details</span></legend>
-				<table class="adminform">
-					<tbody>
-						<tr>
-							<td><label for="uid">UID:</label></td>
-							<td><input type="text" name="uid" id="uid" size="20" maxlength="250" value="<?php echo $this->row->uid; ?>" /></td>
-						</tr>
-						<tr>
-							<td><label for="raw_tag">Point Balance:</label></td>
-							<td><input type="text" name="balance" id="balance" size="20" maxlength="250" value="<?php echo $this->row->balance; ?>" /></td>
-						</tr>
-						<tr>
-							<td><label for="alias">Total Earnings:</label></td>
-							<td><input type="text" name="earnings" id="earnings" size="20" maxlength="250" value="<?php echo $this->row->earnings; ?>" /></td>
-						</tr>
-					</tbody>
-				</table>
-			</fieldset>
-			<fieldset>
-				<legend><span>New Transaction</span></legend>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('User Details'); ?></span></legend>
 
-				<table class="adminform">
-					<tbody>
-						<tr>
-							<td><label for="type">Type:</label></td>
-							<td><select name="type" id="type">
-									<option>deposit</option>
-									<option>withdraw</option>
-									<option>creation</option>
-								</select></td>
-						</tr>
-						<tr>
-							<td><label for="amount">Amount:</label></td>
-							<td><input type="text" name="amount" id="amount" size="11" maxlength="11" value="" /></td>
-						</tr>
-						<tr>
-							<td><label for="description">Description:</label></td>
-							<td><input type="text" name="description" id="description" size="20" maxlength="250" value="" /></td>
-						</tr>
-						<tr>
-							<td><label for="category">Category:</label></td>
-							<td><input type="text" name="category" id="category" size="20" maxlength="250" value="" /> <span style="display:block;margin-bottom:1em;">E.g. answers, store, survey, general etc.</span>
-								<input type="submit" name="submit" value="Save changes" style="margin-bottom:1.5em;" />
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="input-wrap">
+					<label for="account-uid"><?php echo Lang::txt('User ID:'); ?></label>
+					<input type="text" name="account[uid]" id="account-uid" size="20" maxlength="250" value="<?php echo $this->escape($this->row->uid); ?>" />
+					<input type="hidden" name="uid" value="<?php echo $this->escape($this->row->uid); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="account-balance"><?php echo Lang::txt('Point Balance:'); ?></label>
+					<input type="text" name="account[balance]" id="account-balance" size="20" maxlength="250" value="<?php echo $this->escape($this->row->balance); ?>" />
+				</div>
+				<div class="input-wrap">
+					<label for="account-earnings"><?php echo Lang::txt('Total Earnings:'); ?></label>
+					<input type="text" name="account[earnings]" id="account-earnings" size="20" maxlength="250" value="<?php echo $this->escape($this->row->earnings); ?>" />
+				</div>
+			</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('New Transaction'); ?></span></legend>
+
+				<div class="input-wrap">
+					<label for="type"><?php echo Lang::txt('Type:'); ?></label>
+					<select name="transaction[type]" id="type">
+						<option><?php echo Lang::txt('deposit'); ?></option>
+						<option><?php echo Lang::txt('withdraw'); ?></option>
+						<option><?php echo Lang::txt('creation'); ?></option>
+					</select>
+				</div>
+				<div class="input-wrap">
+					<label for="transaction-amount"><?php echo Lang::txt('Amount:'); ?></label>
+					<input type="text" name="transaction[amount]" id="transaction-amount" size="11" maxlength="11" value="" />
+				</div>
+				<div class="input-wrap">
+					<label for="transaction-description"><?php echo Lang::txt('Description:'); ?></label>
+					<input type="text" name="transaction[description]" id="transaction-description" size="20" maxlength="250" value="" />
+				</div>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('E.g. answers, store, survey, general etc.'); ?>">
+					<label for="transaction-category"><?php echo Lang::txt('Category:'); ?></label>
+					<input type="text" name="transaction[category]" id="transaction-category" size="20" maxlength="250" value="" />
+					<span class="hint"><?php echo Lang::txt('E.g. answers, store, survey, general etc.'); ?></span>
+				</div>
+				<p>
+					<input type="submit" name="submit" value="<?php echo Lang::txt('Save change'); ?>" />
+				</p>
 			</fieldset>
 		</div>
 		<div class="col span7">
 			<table class="adminlist">
-				<caption>Transaction History</caption>
+				<caption><?php echo Lang::txt('Transaction History'); ?></caption>
 				<thead>
 					<tr>
-						<th>Date</th>
-						<th>Description</th>
-						<th>Category</th>
-						<th>Type</th>
-						<th>Amount</th>
-						<th>Balance</th>
+						<th><?php echo Lang::txt('Date'); ?></th>
+						<th><?php echo Lang::txt('Description'); ?></th>
+						<th><?php echo Lang::txt('Category'); ?></th>
+						<th><?php echo Lang::txt('Type'); ?></th>
+						<th><?php echo Lang::txt('Amount'); ?></th>
+						<th><?php echo Lang::txt('Balance'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -134,24 +127,24 @@ function submitbutton(pressbutton)
 					?>
 					<tr>
 						<td><?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' ' . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
-						<td><?php echo $item->description; ?></td>
-						<td><?php echo $item->category; ?></td>
-						<td><?php echo $item->type; ?></td>
+						<td><?php echo $this->escape($item->description); ?></td>
+						<td><?php echo $this->escape($item->category); ?></td>
+						<td><?php echo $this->escape($item->type); ?></td>
 						<?php if ($item->type == 'withdraw') { ?>
-							<td class="aRight"><span style="color: red;">-<?php echo $item->amount; ?></span></td>
+							<td class="aRight"><span style="color: red;">-<?php echo $this->escape($item->amount); ?></span></td>
 						<?php } else if ($item->type == 'hold') { ?>
-							<td class="aRight"><span style="color: #999;"> <?php echo $item->amount; ?></span></td>
+							<td class="aRight"><span style="color: #999;"> <?php echo $this->escape($item->amount); ?></span></td>
 						<?php } else { ?>
-							<td class="aRight"><span style="color: green;">+<?php echo $item->amount; ?></span></td>
+							<td class="aRight"><span style="color: green;">+<?php echo $this->escape($item->amount); ?></span></td>
 						<?php } ?>
-						<td class="aRight"><?php echo $item->balance; ?></td>
+						<td class="aRight"><?php echo $this->escape($item->balance); ?></td>
 					</tr>
-				<?php
+					<?php
 					}
 				} else {
 				?>
 					<tr>
-						<td colspan="6">There is no information available on this user's transactions.</td>
+						<td colspan="6"><?php echo Lang::txt('There is no information available on this user\'s transactions.'); ?></td>
 					</tr>
 				<?php
 				}
@@ -161,7 +154,7 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="account[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
