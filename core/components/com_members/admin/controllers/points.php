@@ -450,8 +450,9 @@ class Points extends AdminController
 
 		$log = Request::getVar('log', array());
 		$log = array_map('trim', $log);
-		$log['category'] = ($log['category']) ? $log['category'] : 'general';
-		$log['action']   = ($log['action'])   ? $log['action']   : 'batch';
+		$log['category'] = (isset($log['category']) && $log['category']) ? $log['category'] : 'general';
+		$log['action']   = (isset($log['action']) && $log['action'])     ? $log['action']   : 'batch';
+		$log['ref']      = (isset($log['ref']) && $log['ref'])           ? $log['ref']      : '';
 
 		$data = Request::getVar('transaction', array());
 		$data = array_map('trim', $data);
@@ -460,7 +461,7 @@ class Points extends AdminController
 
 		// make sure this function was not already run
 		$MH = new MarketHistory($this->database);
-		$duplicate = $MH->getRecord($ref, $action, $category, '', $data['description']);
+		$duplicate = $MH->getRecord(intval($log['ref']), $log['action'], $log['category'], '', $data['description']);
 
 		if ($data['amount'] && $data['description'] && $data['users'])
 		{
@@ -491,24 +492,35 @@ class Points extends AdminController
 
 				// Save log
 				$MH = new MarketHistory($this->database);
-				$data['itemid']       = $log['ref'];
-				$data['date']         = Date::toSql();
-				$data['market_value'] = $data['amount'];
-				$data['category']     = $log['category'];
-				$data['action']       = $log['action'];
-				$data['log']          = $data['description'];
+				$dat = array();
+				$dat['itemid']       = $log['ref'];
+				$dat['date']         = Date::toSql();
+				$dat['market_value'] = $data['amount'];
+				$dat['category']     = $log['category'];
+				$dat['action']       = $log['action'];
+				$dat['log']          = $data['description'];
 
-				if (!$MH->bind($data))
+				if (!$MH->bind($dat))
 				{
-					$err = $MH->getError();
+					$this->setError($MH->getError());
 				}
 
-				if (!$MH->store())
+				if (!$this->getError())
 				{
-					$err = $MH->getError();
+					if (!$MH->store())
+					{
+						$this->setError($MH->getError());
+					}
 				}
 
-				Notify::success(Lang::txt('Batch transaction was processed successfully.'));
+				if ($err = $this->getError())
+				{
+					Notify::error($err);
+				}
+				else
+				{
+					Notify::success(Lang::txt('Batch transaction was processed successfully.'));
+				}
 			}
 			else
 			{
