@@ -213,7 +213,7 @@ $this->css()
 				</p>
 			<?php } ?>
 
-			<h3>
+			<h3 id="comments">
 				<?php echo Lang::txt('PLG_MEMBERS_BLOG_ADD_A_COMMENT'); ?>
 			</h3>
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
