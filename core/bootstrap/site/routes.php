@@ -330,7 +330,8 @@ $router->rules('parse')->append('prep', function ($uri)
 */
 $router->rules('parse')->append('limit', function ($uri)
 {
-	if ($limitstart = $uri->getVar('start'))
+	$limitstart = $uri->getVar('start');
+	if (!is_null($limitstart))
 	{
 		$uri->setVar('limitstart', (int) $limitstart);
 		$uri->delVar('start');
