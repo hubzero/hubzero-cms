@@ -89,16 +89,15 @@ class ClientDetector
 		{
 			if ($client = ClientManager::client($environment, true))
 			{
-				//$client->url = $url;
-
 				$const = 'JPATH_' . strtoupper($environment);
-
-				if (!defined($const)) continue;
 
 				// To determine the current environment, we'll simply iterate through the possible
 				// environments and look for the host that matches the host for this request we
 				// are currently processing here, then return back these environment's names.
-				if (JPATH_BASE == constant($const)) return $client;
+				if ((defined($const) && JPATH_BASE == constant($const)) || $this->request->segment(1) == $url)
+				{
+					return $client;
+				}
 			}
 		}
 
