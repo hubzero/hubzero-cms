@@ -282,7 +282,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 <section class="below section">
 	<div class="section-inner">
 		<div class="subject">
-			<h3>
+			<h3 id="comments">
 				<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 

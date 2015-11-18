@@ -178,7 +178,7 @@ $this->css()
 <?php if ($this->row->get('allow_comments')) { ?>
 	<section class="section below">
 		<div class="subject">
-			<h3>
+			<h3 id="comments">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
