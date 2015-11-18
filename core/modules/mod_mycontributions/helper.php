@@ -116,7 +116,7 @@ class Helper extends Module
 							->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
 							->join('#__tags', '#__tags.id', '#__tags_object.tagid')
 							->whereEquals('#__tags_object.tbl', 'answers')
-							->whereIn('#__tags.tag', 'tool' . $rows[$i]->toolname)
+							->whereIn('#__tags.tag', ['tool' . $rows[$i]->toolname])
 							->limit($limit)
 							->ordered()
 							->rows();
