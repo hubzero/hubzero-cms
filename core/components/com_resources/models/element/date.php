@@ -34,6 +34,7 @@ namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
 use stdClass;
+use Lang;
 
 /**
  * Renders a category element
