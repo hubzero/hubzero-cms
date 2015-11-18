@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -63,7 +62,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
 				</td>
 				<td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
-					Questions &amp; Answers
+					<?php echo Lang::txt('Questions &amp; Answers'); ?>
 				</td>
 			</tr>
 		</tbody>
@@ -85,7 +84,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-					A question has been posted by <?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator('name'))); ?>.
+					<?php echo Lang::txt('A question has been posted by %s.', ($this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator()->get('name')))); ?>
 				</td>
 			</tr>
 		</tbody>
@@ -112,27 +111,27 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 					<table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 						<tbody>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Question:</th>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('Question:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"># <?php echo $this->question->get('id'); ?></td>
 							</tr>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('Created:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?php echo $this->question->created('time'); ?> on <?php echo $this->question->created('date'); ?></td>
 							</tr>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator('name'))); ?></td>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('Creator:'); ?></th>
+								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator()->get('name'))); ?></td>
 							</tr>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('Status:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $status ?></td>
 							</tr>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Tags:</th>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Tags:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->question->tags('string')); ?></td>
 							</tr>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('Link:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
 							</tr>
 						</tbody>
@@ -142,12 +141,12 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 						<tbody>
 							<tr>
 								<td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-									<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->question->subject('parsed'); ?></div>
+									<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->question->subject; ?></div>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-									<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->question->content('parsed'); ?></div>
+									<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->question->question; ?></div>
 								</td>
 							</tr>
 						</tbody>

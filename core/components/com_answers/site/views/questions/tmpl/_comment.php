@@ -33,7 +33,6 @@
 defined('_HZEXEC_') or die();
 
 $cls = isset($this->cls) ? $this->cls : 'odd';
-
 if ($this->question->get('created_by') == $this->comment->get('created_by'))
 {
 	$cls .= ' author';
@@ -44,27 +43,14 @@ if ($this->comment->get('state') == 1)
 	$cls .= ' chosen';
 }
 
-$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
-if (!$this->comment->get('anonymous'))
+if (!$this->comment->get('item_type'))
 {
-	$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
-	if ($this->comment->creator('public'))
-	{
-		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
-	}
+	$this->comment->set('item_type', 'response');
 }
-
-if ($this->comment->isReported())
+if (!$this->comment->get('item_id'))
 {
-	$comment = '<p class="warning">' . Lang::txt('COM_ANSWERS_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
+	$this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : $this->item_id));
 }
-else
-{
-	$comment  = $this->comment->content('parsed');
-}
-
-$this->comment->set('item_type', 'answer'); // ($this->depth == 1 ? 'answer' : 'answercomment'));
-$this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : $this->item_id));
 ?>
 	<li class="comment <?php echo $cls; ?>" id="<?php echo ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
@@ -74,27 +60,30 @@ $this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : 
 			<?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
 				<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 					<?php
-					$view = $this->view('rateitem');
-					$view->set('option', $this->option)
+					$this->view('_vote')
+					     ->set('option', $this->option)
 					     ->set('item', $this->comment)
-					     ->set('type', 'question')
-					     ->set('vote', '')
-					     ->set('id', '');
-					if (!User::isGuest())
-					{
-						if ($this->comment->get('created_by') == User::get('username'))
-						{
-							$view->set('vote', $this->comment->get('vote'))
-							     ->set('id', $this->comment->get('id'));
-						}
-					}
-					$view->display();
+					     ->set('vote', $this->comment->ballot())
+					     ->display();
 					?>
 				</p><!-- / .comment-voting -->
 			<?php } ?>
 
 			<p class="comment-title">
-				<strong><?php echo $name; ?></strong>
+				<strong>
+					<?php
+					$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
+					if (!$this->comment->get('anonymous'))
+					{
+						$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+						if ($this->comment->creator()->get('public'))
+						{
+							$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+						}
+					}
+					echo $name;
+					?>
+				</strong>
 				<a class="permalink" href="<?php echo Route::url($this->base . '#' . ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_PERMALINK'); ?>">
 					<span class="comment-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
@@ -104,7 +93,16 @@ $this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : 
 			</p>
 
 			<div class="comment-body">
-				<?php echo $comment; ?>
+				<?php
+				$comment  = $this->comment->content;
+
+				if ($this->comment->isReported())
+				{
+					$comment = '<p class="warning">' . Lang::txt('COM_ANSWERS_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
+				}
+
+				echo $comment;
+				?>
 			</div>
 
 			<p class="comment-options">
@@ -123,11 +121,11 @@ $this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : 
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_ANSWERS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
@@ -142,18 +140,18 @@ $this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : 
 			</p>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>">
 				<?php if (User::get('guest')) { ?>
 				<p class="warning">
 					<?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
 				</p>
 				<?php } else { ?>
-				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
+				<form id="cform<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
 						<legend><span><?php echo Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
-						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type', 'answer'); ?>" />
+						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type', 'response'); ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
 						<input type="hidden" name="comment[parent]" value="<?php echo ($this->depth == 1 ? 0 : $this->comment->get('id')); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
@@ -195,7 +193,7 @@ $this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : 
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('question', $this->question)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies('list'))
+			     ->set('comments', $this->comment->replies()->where('state', '!=', 2)->rows())
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
 			     ->set('cls', $cls)

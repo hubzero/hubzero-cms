@@ -109,27 +109,26 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this publication
-		$this->a = new \Components\Answers\Tables\Question($this->database);
-
-		$this->filters = array();
-		$this->filters['limit']    	= Request::getInt( 'limit', 0 );
-		$this->filters['start']    	= Request::getInt( 'limitstart', 0 );
-		$identifier 		 		= $this->publication->identifier();
-		$this->filters['tag']      	= $this->publication->isTool()
+		$this->filters = array('sort_Dir' => 'desc');
+		$this->filters['limit']     = Request::getInt( 'limit', 0 );
+		$this->filters['start']     = Request::getInt( 'limitstart', 0 );
+		$identifier = $this->publication->identifier();
+		$this->filters['tag']       = $this->publication->isTool()
 									? 'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['rawtag']   	= $this->publication->isTool()
+		$this->filters['rawtag']    = $this->publication->isTool()
 									?  'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['q']        	= Request::getVar( 'q', '' );
-		$this->filters['filterby'] 	= Request::getVar( 'filterby', '' );
-		$this->filters['sortby']   	= Request::getVar( 'sortby', 'withinplugin' );
+		$this->filters['search']    = Request::getVar( 'q', '' );
+		$this->filters['filterby']  = Request::getVar( 'filterby', '' );
+		$this->filters['sortby']    = Request::getVar( 'sortby', 'withinplugin' );
 
-		$this->count = $this->a->getCount($this->filters);
+		$this->count = $this->_find()->count();
 
 		$arr['count'] = $this->count;
 		$arr['name']  = 'questions';
 
 		// Load component language file
-		Lang::load('com_answers') || Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
+		Lang::load('com_answers') ||
+		Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -154,16 +153,11 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'publications',
-					'element' => $this->_name,
-					'name'    => 'metadata'
-				)
-			);
-			$view->publication 	= $this->publication;
-			$view->count    	= $this->count;
-			$arr['metadata'] 	= $view->loadTemplate();
+			$view = $this->view('default', 'metadata');
+			$view->publication = $this->publication;
+			$view->count       = $this->count;
+
+			$arr['metadata'] = $view->loadTemplate();
 		}
 
 		// Return output
@@ -171,44 +165,89 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Parse a list of filters to return data for
+	 *
+	 * @return  object
+	 */
+	private function _find()
+	{
+		$records = \Components\Answers\Models\Question::all()
+			->including(['responses', function ($response)
+			{
+				$response
+					->select('id')
+					->select('question_id')
+					->where('state', '!=', 2);
+			}]);
+
+		if ($this->filters['tag'])
+		{
+			$cloud = new \Components\Answers\Models\Tags();
+			$tags = $cloud->parse($this->filters['tag']);
+
+			$records
+				->select('#__answers_questions.*')
+				->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+				->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+				->whereEquals('#__tags_object.tbl', 'answers')
+				->whereIn('#__tags.tag', $tags);
+		}
+
+		if ($this->filters['search'])
+		{
+			$this->filters['search'] = strtolower((string)$this->filters['search']);
+
+			$records->whereLike('subject', $this->filters['search'], 1)
+					->orWhereLike('question', $this->filters['search'], 1)
+					->resetDepth();
+		}
+
+		if ($this->filters['filterby'] == 'open')
+		{
+			$records->whereEquals('state', 0);
+		}
+		if ($this->filters['filterby'] == 'closed')
+		{
+			$records->whereEquals('state', 1);
+		}
+		if (!$this->filters['filterby'] || $this->filters['filterby'] == 'both')
+		{
+			$records->where('state', '<', 2);
+		}
+
+		return $records;
+	}
+
+	/**
 	 * Show a list of questions attached to this publication
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _browse()
 	{
-		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'publications',
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
-
-		// Are we banking?
-		$upconfig = Component::params('com_members');
-		$view->banking = $upconfig->get('bankAccounts');
-
-		// Info aboit points link
-		$aconfig = Component::params('com_answers');
-		$view->infolink = $aconfig->get('infolink', '/kb/points/');
-
-		// Pass the view some info
-		$view->option   	= $this->option;
-		$view->publication 	= $this->publication;
+		switch ($this->filters['sortby'])
+		{
+			case 'rewards': $order = 'points'; break;
+			case 'votes':   $order = 'helpful'; break;
+			case 'date':
+			default:        $order = 'created'; break;
+		}
 
 		// Get results
-		$view->rows     = $this->a->getResults($this->filters);
-		$view->count    = $this->count;
-		$view->limit    = $this->params->get('display_limit', 10);
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
-		}
+		$results = $this->_find()
+			->limit($this->params->get('display_limit', 10))
+			->order($order, $this->filters['sort_Dir'])
+			->paginated()
+			->rows();
+
+		$view = $this->view('default', 'browse')
+			->setError($this->getErrors())
+			->set('option', $this->option)
+			->set('resource', $this->model->resource)
+			->set('banking', Component::params('com_members')->get('bankAccounts'))
+			->set('infolink', Component::params('com_answers')->get('infolink', '/kb/points/'))
+			->set('rows', $results)
+			->set('count', $this->count);
 
 		return $view->loadTemplate();
 	}
@@ -216,8 +255,8 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for adding a question
 	 *
-	 * @param      object $row
-	 * @return     string
+	 * @param   object  $row
+	 * @return  string
 	 */
 	private function _new($row=null)
 	{
@@ -232,28 +271,15 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		Lang::load('com_answers');
-
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'publications',
-				'element' => $this->_name,
-				'name'    => 'question',
-				'layout'  => 'new'
-			)
-		);
-		$view->option   	= $this->option;
-		$view->publication 	= $this->publication;
-
-		if (is_object($row))
+		$view = $this->view('new', 'question');
+		$view->option      = $this->option;
+		$view->publication = $this->publication;
+		if (!is_object($row))
 		{
-			$view->row  = $row;
+			$row  = new \Components\Answers\Models\Question();
 		}
-		else
-		{
-			$view->row  = new \Components\Answers\Models\Question(0);
-		}
-		$view->tag      = $this->filters['tag'];
+		$view->row = $row;
+		$view->tag = $this->filters['tag'];
 
 		// Are we banking?
 		$upconfig = Component::params('com_members');
@@ -267,12 +293,9 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -319,12 +342,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Initiate class and bind posted items to database fields
 		$fields = Request::getVar('question', array(), 'post', 'none', 2);
 
-		$row = new \Components\Answers\Models\Question($fields['id']);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			return $this->_new($row);
-		}
+		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
 
 		if ($reward && $this->banking)
 		{
@@ -332,10 +350,8 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$row->set('tags', $tags);
-
 			$this->setError($row->getError());
 			return $this->_new($row);
 		}

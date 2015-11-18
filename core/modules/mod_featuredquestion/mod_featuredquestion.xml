@@ -52,7 +52,7 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="MOD_FEATUREDQUESTION_PARAM_CLASS_LABEL" description="MOD_FEATUREDQUESTION_PARAM_CLASS_DESC" />
 				<field name="txt_length" type="text" default="200" label="MOD_FEATUREDQUESTION_PARAM_TXTLENGTH_LABEL" description="MOD_FEATUREDQUESTION_PARAM_TXTLENGTH_DESC" />
-				<field name="defaultpic" type="text" menu="hide" default="/modules/mod_featuredquestion/assets/img/question_thumb.gif" label="MOD_FEATUREDQUESTION_PARAM_DEFAULTPIC_LABEL" description="MOD_FEATUREDQUESTION_PARAM_DEFAULTPIC_DESC" />
+				<field name="defaultpic" type="text" menu="hide" default="/core/modules/mod_featuredquestion/assets/img/question_thumb.gif" label="MOD_FEATUREDQUESTION_PARAM_DEFAULTPIC_LABEL" description="MOD_FEATUREDQUESTION_PARAM_DEFAULTPIC_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
 				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">

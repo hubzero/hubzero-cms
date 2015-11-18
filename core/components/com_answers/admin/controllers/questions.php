@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,10 +33,7 @@ namespace Components\Answers\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Answers\Models\Question;
-use Components\Answers\Tables;
-use Exception;
 use Request;
-use Config;
 use Notify;
 use Route;
 use Lang;
@@ -73,37 +69,24 @@ class Questions extends AdminController
 	public function displayTask()
 	{
 		// Filters
-		$this->view->filters = array(
+		$filters = array(
 			'tag' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.tag',
 				'tag',
 				''
 			),
-			'q' => Request::getstate(
-				$this->_option . '.' . $this->_controller . '.q',
-				'q',
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
 				''
 			),
-			'filterby' => Request::getstate(
-				$this->_option . '.' . $this->_controller . '.filterby',
-				'filterby',
-				'all'
-			),
-			// Paging
-			'limit' => Request::getstate(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getstate(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
+			'state' => Request::getstate(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				-1,
 				'int'
 			),
 			// Sorting
-			'sortby' => '',
 			'sort' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
@@ -116,25 +99,36 @@ class Questions extends AdminController
 			)
 		);
 
-		$aq = new Tables\Question($this->database);
+		$records = Question::all()
+			->including(['responses', function ($response){
+				$response
+					->select('id')
+					->select('question_id');
+			}]);
 
-		// Get a record count
-		$this->view->total = $aq->getCount($this->view->filters);
-
-		// Get records
-		$this->view->results = $aq->getResults($this->view->filters);
-
-		// Did we get any results?
-		if ($this->view->results)
+		if ($filters['search'])
 		{
-			foreach ($this->view->results as $key => $result)
-			{
-				$this->view->results[$key] = new Question($result);
-			}
+			$filters['search'] = strtolower((string)$filters['search']);
+
+			$records->whereLike('subject', $filters['search'], 1)
+					->orWhereLike('question', $filters['search'], 1)
+					->resetDepth();
 		}
 
+		if ($filters['state'] >= 0)
+		{
+			$records->whereEquals('state', $filters['state']);
+		}
+
+		$rows = $records
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('filters', $filters)
+			->display();
 	}
 
 	/**
@@ -154,7 +148,7 @@ class Questions extends AdminController
 			$id = Request::getVar('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
-			$row = new Question($id);
+			$row = Question::oneOrNew($id);
 		}
 
 		// Output the HTML
@@ -176,18 +170,18 @@ class Questions extends AdminController
 
 		// Incoming data
 		$fields = Request::getVar('question', array(), 'post', 'none', 2);
-
-		// Initiate model
-		$row = new Question($fields['id']);
-
-		if (!$row->bind($fields))
+		$tags = null;
+		if (isset($fields['tags']))
 		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
+			$tags = $fields['tags'];
+			unset($fields['tags']);
 		}
 
+		// Initiate model
+		$row = Question::oneOrNew($fields['id'])->set($fields);
+
 		// Ensure we have at least one tag
-		if (!isset($fields['tags']) || !$fields['tags'])
+		if (!$tags)
 		{
 			Notify::error(Lang::txt('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'));
 			return $this->editTask($row);
@@ -197,14 +191,14 @@ class Questions extends AdminController
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
 		// Store content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
 		}
 
 		// Add the tag(s)
-		$row->tag($fields['tags'], User::get('id'));
+		$row->tag($tags, User::get('id'));
 
 		Notify::success(Lang::txt('COM_ANSWERS_QUESTION_SAVED'));
 
@@ -244,24 +238,13 @@ class Questions extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the record
-			$aq = new Question(intval($id));
+			$aq = Question::oneOrFail(intval($id));
 
 			// Delete the question
-			if (!$aq->delete())
+			if (!$aq->destroy())
 			{
-				$this->setError($aq->getError());
+				Notify::error($aq->getError());
 			}
-		}
-
-		// Redirect
-		if ($this->getError())
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				implode('<br />', $this->getErrors()),
-				'error'
-			);
-			return;
 		}
 
 		App::redirect(
@@ -284,7 +267,7 @@ class Questions extends AdminController
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$publish = ($this->getTask() == 'close') ? 1 : 0;
+		$publish = ($this->_task == 'close') ? 1 : 0;
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -302,21 +285,17 @@ class Questions extends AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$aq = new Question(intval($id));
-			if (!$aq->exists())
-			{
-				continue;
-			}
+			$aq = Question::oneOrFail(intval($id));
 			$aq->set('state', $publish);
 
-			if ($publish == 1)
+			/*if ($publish == 1)
 			{
 				$aq->adjustCredits();
-			}
+			}*/
 
-			if (!$aq->store())
+			if (!$aq->save())
 			{
-				throw new Exception($aq->getError(), 500);
+				Notify::error($aq->getError());
 			}
 		}
 

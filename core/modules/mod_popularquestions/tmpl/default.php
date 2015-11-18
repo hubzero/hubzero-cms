@@ -42,22 +42,23 @@ defined('_HZEXEC_') or die();
 			$name = Lang::txt('MOD_POPULARQUESTIONS_ANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
-				$name = $row->creator('name');
+				$name = $row->creator()->get('name');
 			}
+			$rcount = $row->responses()->where('state', '<', 2)->count();
 			?>
 			<li>
 				<?php if ($this->style == 'compact') { ?>
-					<a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a>
+					<a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->subject)); ?></a>
 				<?php } else { ?>
-					<h4><a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a></h4>
+					<h4><a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->subject)); ?></a></h4>
 					<p class="entry-details">
 						<?php echo Lang::txt('MOD_POPULARQUESTIONS_ASKED_BY', $this->escape($name)); ?> @
 						<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> on
 						<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-comments">
-							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('MOD_RECENTQUESTIONS_RESPONSES', $row->get('rcount', 0)); ?>">
-								<?php echo $row->get('rcount', 0); ?>
+							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('MOD_RECENTQUESTIONS_RESPONSES', $rcount); ?>">
+								<?php echo $rcount; ?>
 							</a>
 						</span>
 					</p>

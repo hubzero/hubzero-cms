@@ -45,7 +45,7 @@ $this->css();
 	<table class="questions entries">
 		<caption>
 			<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?>
-			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
+			<span>(<?php echo $this->rows->count(); ?>)</span>
 		</caption>
 		<tbody>
 	<?php if ($this->rows) { ?>
@@ -54,20 +54,13 @@ $this->css();
 
 		foreach ($this->rows as $row)
 		{
-			if ($i > $this->limit)
-			{
-				break;
-			}
-
-			$row = new \Components\Answers\Models\Question($row);
-
 			$i++;
 
 			$name = Lang::txt('PLG_RESOURCES_QUESTIONS_ANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
-				$name = $this->escape(stripslashes($row->creator('name', $name)));
-				if ($row->creator('public'))
+				$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
+				if ($row->creator()->get('public'))
 				{
 					$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
 				}
@@ -83,7 +76,7 @@ $this->css();
 				</th>
 				<td>
 				<?php if (!$row->isReported()) { ?>
-					<a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a><br />
+					<a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->subject)); ?></a><br />
 				<?php } else { ?>
 					<span class="entry-title"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
 				<?php } ?>
@@ -100,7 +93,7 @@ $this->css();
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-comments">
 							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_RESPONSES', $row->get('rcount')); ?>">
-								<?php echo $row->get('rcount'); ?>
+								<?php echo $row->responses->count(); ?>
 							</a>
 						</span>
 					</span>
@@ -119,7 +112,7 @@ $this->css();
 							<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
 						</span>
 					<?php } else { ?>
-						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)); ?>">
+						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)); ?>">
 							<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
 						</a>
 					<?php } ?>

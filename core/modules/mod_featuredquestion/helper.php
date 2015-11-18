@@ -33,7 +33,7 @@
 namespace Modules\Featuredquestion;
 
 use Hubzero\Module\Module;
-use Components\Answers\Tables\Question;
+use Components\Answers\Models\Question;
 use Component;
 
 /**
@@ -50,29 +50,19 @@ class Helper extends Module
 	{
 		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
 
-		$database = \App::get('db');
-		$row = null;
-
 		// randomly choose one
-		$filters = array(
-			'limit'    => 1,
-			'start'    => 0,
-			'sortby'   => 'random',
-			'tag'      => '',
-			'filterby' => 'open',
-			'created_before' => gmdate('Y-m-d', mktime(0, 0, 0, gmdate('m'), (gmdate('d')+7), gmdate('Y'))) . ' 00:00:00'
-		);
+		$rows = Question::all()
+			->select('id')
+			->whereEquals('state', 0)
+			->ordered()
+			->rows()
+			->toArray();
 
-		$mp = new Question($database);
-
-		$rows = $mp->getResults($filters);
-		if (count($rows) > 0)
-		{
-			$row = $rows[0];
-		}
+		$key = array_rand($rows);
+		$row = Question::oneOrNew($rows[$key]['id']);
 
 		// Did we have a result to display?
-		if ($row)
+		if ($row->get('id'))
 		{
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));

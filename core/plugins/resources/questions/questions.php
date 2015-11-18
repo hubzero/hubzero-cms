@@ -112,21 +112,21 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this tool
-		$this->a = new \Components\Answers\Tables\Question($this->database);
-
 		$this->filters = array(
 			'limit'    => Request::getInt('limit', 0),
 			'start'    => Request::getInt('limitstart', 0),
 			'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id),
-			'q'        => Request::getVar('q', ''),
+			'search'   => Request::getVar('q', ''),
 			'filterby' => Request::getVar('filterby', ''),
-			'sortby'   => Request::getVar('sortby', 'withinplugin')
+			'sortby'   => Request::getVar('sortby', 'withinplugin'),
+			'sort_Dir' => 'desc'
 		);
 
-		$this->count = $this->a->getCount($this->filters);
+		$this->count = $this->_find()->count();
 
 		// Load component language file
-		Lang::load('com_answers') || Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
+		Lang::load('com_answers') ||
+		Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -163,36 +163,89 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Parse a list of filters to return data for
+	 *
+	 * @return  object
+	 */
+	private function _find()
+	{
+		$records = \Components\Answers\Models\Question::all()
+			->including(['responses', function ($response)
+			{
+				$response
+					->select('id')
+					->select('question_id')
+					->where('state', '!=', 2);
+			}]);
+
+		if ($this->filters['tag'])
+		{
+			$cloud = new \Components\Answers\Models\Tags();
+			$tags = $cloud->parse($this->filters['tag']);
+
+			$records
+				->select('#__answers_questions.*')
+				->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+				->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+				->whereEquals('#__tags_object.tbl', 'answers')
+				->whereIn('#__tags.tag', $tags);
+		}
+
+		if ($this->filters['search'])
+		{
+			$this->filters['search'] = strtolower((string)$this->filters['search']);
+
+			$records->whereLike('subject', $this->filters['search'], 1)
+					->orWhereLike('question', $this->filters['search'], 1)
+					->resetDepth();
+		}
+
+		if ($this->filters['filterby'] == 'open')
+		{
+			$records->whereEquals('state', 0);
+		}
+		if ($this->filters['filterby'] == 'closed')
+		{
+			$records->whereEquals('state', 1);
+		}
+		if (!$this->filters['filterby'] || $this->filters['filterby'] == 'both')
+		{
+			$records->where('state', '<', 2);
+		}
+
+		return $records;
+	}
+
+	/**
 	 * Show a list of questions attached to this resource
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _browse()
 	{
-		// Instantiate a view
-		$view = $this->view('default', 'browse');
-
-		// Are we banking?
-		$upconfig = Component::params('com_members');
-		$view->banking = $upconfig->get('bankAccounts');
-
-		// Info aboit points link
-		$aconfig = Component::params('com_answers');
-		$view->infolink = $aconfig->get('infolink', '/kb/points/');
-
-		// Pass the view some info
-		$view->option   = $this->option;
-		$view->resource = $this->model->resource;
+		switch ($this->filters['sortby'])
+		{
+			case 'rewards': $order = 'points'; break;
+			case 'votes':   $order = 'helpful'; break;
+			case 'date':
+			default:        $order = 'created'; break;
+		}
 
 		// Get results
-		$view->rows     = $this->a->getResults($this->filters);
-		$view->count    = $this->count;
-		$view->limit    = $this->params->get('display_limit', 10);
+		$results = $this->_find()
+			->limit($this->params->get('display_limit', 10))
+			->order($order, $this->filters['sort_Dir'])
+			->paginated()
+			->rows();
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view('default', 'browse')
+			->setError($this->getErrors())
+			->set('option', $this->option)
+			->set('resource', $this->model->resource)
+			->set('banking', Component::params('com_members')->get('bankAccounts'))
+			->set('infolink', Component::params('com_answers')->get('infolink', '/kb/points/'))
+			->set('rows', $results)
+			->set('count', $this->count);
 
 		return $view->loadTemplate();
 	}
@@ -200,8 +253,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for adding a question
 	 *
-	 * @param      object $row
-	 * @return     string
+	 * @param   object  $row
+	 * @return  string
 	 */
 	private function _new($row=null)
 	{
@@ -218,20 +271,14 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		Lang::load('com_answers', PATH_ROOT) ||
-		Lang::load('com_answers', PATH_CORE . DS . 'com_answers' . DS . 'site');
-
 		$view = $this->view('new', 'question');
 		$view->option   = $this->option;
 		$view->resource = $this->model->resource;
-		if (is_object($row))
+		if (!is_object($row))
 		{
-			$view->row  = $row;
+			$row  = new \Components\Answers\Models\Question();
 		}
-		else
-		{
-			$view->row  = new \Components\Answers\Models\Question(0);
-		}
+		$view->row  = $row;
 		$view->tag      = $this->filters['tag'];
 
 		// Are we banking?
@@ -257,7 +304,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save a question and redirect to the main listing when done
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _save()
 	{
@@ -297,32 +344,16 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Initiate class and bind posted items to database fields
 		$fields = Request::getVar('question', array(), 'post', 'none', 2);
 
-		$row = new \Components\Answers\Models\Question($fields['id']);
-		if (!$row->bind($fields))
-		{
-			$this->setError($row->getError());
-			return $this->_new($row);
-		}
+		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
 
 		if ($reward && $this->banking)
 		{
 			$row->set('reward', 1);
 		}
 
-		// Ensure the user added a tag
-		/*
-		if (!$tags)
-		{
-			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
-			return $this->_new($row);
-		}
-		*/
-
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$row->set('tags', $tags);
-
 			$this->setError($row->getError());
 			return $this->_new($row);
 		}

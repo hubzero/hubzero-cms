@@ -55,13 +55,6 @@ $this->css();
 
 		foreach ($this->rows as $row)
 		{
-			if ($i > $this->limit)
-			{
-				break;
-			}
-
-			$row = new \Components\Answers\Models\Question($row);
-
 			$i++;
 
 			// author name
@@ -104,7 +97,7 @@ $this->css();
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-comments">
 							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('There are %s responses to this question.', $row->get('rcount')); ?>">
-								<?php echo $row->get('rcount'); ?>
+								<?php echo $row->responses->count(); ?>
 							</a>
 						</span>
 					</span>
@@ -123,7 +116,7 @@ $this->css();
 							<?php echo $row->get('helpful', 0); ?><span> Like</span>
 						</span>
 					<?php } else { ?>
-						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
+						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
 							<?php echo $row->get('helpful', 0); ?><span> Like</span>
 						</a>
 					<?php } ?>

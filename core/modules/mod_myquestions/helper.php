@@ -122,93 +122,91 @@ class Helper extends Module
 	 */
 	private function _getQuestions($kind='open', $interests=array())
 	{
-		$database = \App::get('db');
-
 		// Get some classes we need
 		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
-		require_once(Component::path('com_answers') . DS . 'tables' . DS . 'response.php');
-		require_once(Component::path('com_answers') . DS . 'tables' . DS . 'log.php');
-		require_once(Component::path('com_answers') . DS . 'tables' . DS . 'questionslog.php');
 		require_once(Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php');
 
-		$aq = new \Components\Answers\Tables\Question($database);
-		if ($this->banking)
+		$limit = intval($this->params->get('limit', 10));
+		$tags  = null;
+
+		$records = \Components\Answers\Models\Question::all()
+			->whereEquals('state', 0);
+
+		if ($kind == 'mine')
 		{
-			$AE = new \Components\Answers\Helpers\Economy($database);
-			$BT = new \Hubzero\Bank\Transaction($database);
+			$records->whereEquals('created_by', User::get('id'));
 		}
 
-		$params =& $this->params;
-		$moduleclass = $params->get('moduleclass');
-		$limit = intval($params->get('limit', 10));
-		$limit = ($limit) ? $limit : 10;
-
-		$filters = array(
-			'limit'    => $limit,
-			'start'    => 0,
-			'tag'      => '',
-			'filterby' => 'open',
-			'sortby'   => 'date'
-		);
-
-		switch ($kind)
+		if ($kind == 'interest')
 		{
-			case 'mine':
-				$filters['mine'] = 1;
-				$filters['sortby'] = 'responses';
-			break;
-
-			case 'assigned':
-				$filters['mine'] = 0;
-				require_once(Component::path('com_tools') . DS . 'tables' . DS . 'author.php');
-
-				$TA = new \Components\Tools\Tables\Author($database);
-				$tools = $TA->getToolContributions(User::get('id'));
-				if ($tools)
-				{
-					foreach ($tools as $tool)
-					{
-						$filters['tag'] .= 'tool'.$tool->toolname.',';
-					}
-				}
-				if (!$filters['tag'])
-				{
-					$filters['filterby'] = 'none';
-				}
-			break;
-
-			case 'interest':
-				$filters['mine'] = 0;
-				$interests = (count($interests) <= 0) ? $this->_getInterests() : $interests;
-				$filters['filterby'] = (!$interests) ? 'none' : 'open';
-				$filters['tag'] = $interests;
-			break;
+			$tags = (count($interests) <= 0) ? $this->_getInterests() : $interests;
 		}
 
-		$results = $aq->getResults($filters);
+		if ($kind == 'assigned')
+		{
+			require_once(Component::path('com_tools') . DS . 'tables' . DS . 'author.php');
+
+			$database = \App::get('db');
+
+			$TA = new \Components\Tools\Tables\Author($database);
+			$tools = $TA->getToolContributions(User::get('id'));
+			if ($tools)
+			{
+				foreach ($tools as $tool)
+				{
+					$tags .= 'tool' . $tool->toolname . ',';
+				}
+				$tags = rtrim($tags, ',');
+			}
+		}
+
+		if ($tags)
+		{
+			$cloud = new \Components\Answers\Models\Tags();
+			$tags = $cloud->parse($tags);
+
+			$records
+				->select('#__answers_questions.*')
+				->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+				->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+				->whereEquals('#__tags_object.tbl', 'answers')
+				->whereIn('#__tags.tag', $tags);
+		}
+
+		$data = $records
+			->limit($limit)
+			->ordered()
+			->rows();
+
+		$results = array();
+		foreach ($data as $datum)
+		{
+			$results[] = $datum;
+		}
+
 		if ($this->banking && $results)
 		{
+			$database = \App::get('db');
+
+			$AE = new \Components\Answers\Helpers\Economy($database);
+			$BT = new \Hubzero\Bank\Transaction($database);
+
 			$awards = array();
 
 			foreach ($results as $result)
 			{
 				// Calculate max award
-				$result->marketvalue = round($AE->calculate_marketvalue($result->id, 'maxaward'));
-				$result->maxaward = round(2*(($result->marketvalue)/3));
+				$result->set('marketvalue', round($AE->calculate_marketvalue($result->get('id'), 'maxaward')));
+				$result->set('maxaward', round(2*($result->get('marketvalue', 0)/3)));
 				if ($kind != 'mine')
 				{
-					$result->maxaward = $result->maxaward + $result->reward;
+					$result->set('maxaward', $result->get('maxaward') + $result->get('reward'));
 				}
-				$awards[] = ($result->maxaward) ? $result->maxaward : 0;
+				$awards[] = $result->get('maxaward', 0);
 			}
 
 			// re-sort by max reponses
 			array_multisort($awards, SORT_DESC, $results);
-		}
-
-		foreach ($results as $k => $result)
-		{
-			$results[$k] = new \Components\Answers\Models\Question($result);
 		}
 
 		return $results;

@@ -221,48 +221,6 @@ class Pipeline extends SiteController
 			return;
 		}
 
-		// get tickets/wishes/questions
-		if ($status['published'])
-		{
-			$status['questions'] = 'N/A';
-			if (Component::isEnabled('com_answers'))
-			{
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
-
-				$aq = new \Components\Answers\Tables\Question($this->database);
-				$status['questions'] = $aq->getCount(array(
-					'filterby' => 'all',
-					'sortby'   => 'date',
-					'tag'      => 'tool' . $status['toolname']
-				));
-			}
-
-			$status['wishes'] = 'N/A';
-			if (Component::isEnabled('com_wishlist'))
-			{
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
-
-				$objWishlist = new \Components\Wishlist\Tables\Wishlist($this->database);
-				$objWish = new \Components\Wishlist\Tables\Wish($this->database);
-				$listid = $objWishlist->get_wishlistID($status['resourceid'], 'resource');
-				if ($listid)
-				{
-					$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
-					$filters = $controller->getFilters(1);
-					$wishes = $objWish->get_wishes($listid, $filters, 1, User::getRoot());
-					$status['wishes'] = count($wishes);
-				}
-				else
-				{
-					$status['wishes']= 0;
-				}
-			}
-		}
-
 		$this->view->status = $status;
 		$this->view->msg    = (isset($this->_msg)) ? $this->_msg : '';
 		$this->view->config = $this->config;

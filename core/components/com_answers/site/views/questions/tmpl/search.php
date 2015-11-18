@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,23 +32,31 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+if (Pathway::count() <= 0)
+{
+	Pathway::append(
+		Lang::txt(strtoupper($this->option)),
+		'index.php?option=' . $this->option
+	);
+}
+
+Document::setTitle(Lang::txt('COM_ANSWERS'));
+
 $this->css()
-     ->js()
-     ->js('vote.js');
+     ->js();
 
 if (!$this->filters['filterby'])
 {
 	$this->filters['filterby'] = 'all';
 }
-if (!$this->filters['filterby'] == 'none')
+if ($this->filters['filterby'] == 'none')
 {
 	$this->filters['filterby'] = 'all';
 }
 $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
-
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_ANSWERS'); ?></h2>
 
 	<?php if (User::authorise('core.create', $this->option)) { ?>
 	<div id="content-header-extra">
@@ -70,7 +77,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo Lang::txt('COM_ANSWERS_SEARCH_PLACEHOLDER'); ?>" />
+						<input type="text" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_ANSWERS_SEARCH_PLACEHOLDER'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="area" value="<?php echo $this->escape($this->filters['area']); ?>" />
 						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
@@ -150,21 +157,22 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 					<table class="questions entries">
 						<caption>
 							<?php
-								$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
-								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-								if ($this->filters['q'] != '')
+								$total = $this->results->count();
+								$s = ($total > 0) ? $this->filters['start']+1 : $this->filters['start'];
+								$e = ($total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $total;
+								if ($this->filters['search'] != '')
 								{
-									echo Lang::txt('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
+									echo Lang::txt('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['search']), Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
 								}
 								else
 								{
 									echo Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby']));
 								}
 							?>
-							<span>(<?php echo Lang::txt('COM_ANSWERS_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
+							<span>(<?php echo Lang::txt('COM_ANSWERS_RESULTS_TOTAL', $s, $e, $total); ?>)</span>
 						</caption>
 						<tbody>
-				<?php if (count($this->results) > 0) { ?>
+				<?php if ($total > 0) { ?>
 					<?php
 					foreach ($this->results as $row)
 					{
@@ -172,8 +180,8 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
 						if (!$row->get('anonymous'))
 						{
-							$name = $this->escape(stripslashes($row->creator('name', $name)));
-							if ($row->creator('public'))
+							$name = $this->escape(stripslashes($row->creator()->get('name', $name)));
+							if ($row->creator()->get('public'))
 							{
 								$name = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
 							}
@@ -189,7 +197,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 								<td>
 									<?php if (!$row->isReported()) { ?>
 										<a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
-											<?php echo $this->escape($row->subject('clean')); ?>
+											<?php echo $this->escape(strip_tags($row->get('subject'))); ?>
 										</a><br />
 									<?php } else { ?>
 										<span class="entry-title">
@@ -209,7 +217,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 										<span class="entry-details-divider">&bull;</span>
 										<span class="entry-comments">
 											<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_RESPONSES_TO_THIS_QUESTION', $row->get('rcount')); ?>">
-												<?php echo $row->get('rcount'); ?>
+												<?php echo $row->responses->count(); ?>
 											</a>
 										</span>
 									</span>
@@ -227,17 +235,13 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 									</td>
 								<?php } ?>
 								<td class="priority-4 voting">
-									<span class="vote-like">
-										<?php if (User::isGuest()) { ?>
-											<span class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
-												<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
-											</span>
-										<?php } else { ?>
-											<a class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $row->get('helpful')); ?>">
-												<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
-											</a>
-										<?php } ?>
-									</span>
+									<?php
+									$this->view('_vote')
+									     ->set('option', $this->option)
+									     ->set('item', $row)
+									     ->set('vote', $row->ballot())
+									     ->display();
+									?>
 								</td>
 							</tr>
 					<?php } // end foreach ?>
@@ -252,17 +256,13 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 					</table>
 					<?php
 					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('q', $this->filters['q']);
+					$pageNav = $this->results->pagination;
+					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
 					$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 					$pageNav->setAdditionalUrlParam('area', $this->filters['area']);
 					$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
-					echo $pageNav->render();
+					echo $pageNav;
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->

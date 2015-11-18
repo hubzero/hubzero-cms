@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,40 +37,36 @@ if ($this->getError()) { ?>
 <?php } else {
 	if ($this->row) {
 		$name = Lang::txt('MOD_FEATUREDQUESTION_ANONYMOUS');
-		if ($this->row->anonymous == 0)
+		if (!$this->row->get('anonymous'))
 		{
-			$user = User::getInstance($this->row->created_by);
-			if (is_object($user))
-			{
-				$name = $user->get('name');
-			}
+			$name = $row->creator()->get('name');
 		}
 
-		$when = Date::of($this->row->created)->relative();
+		$rcount = $this->row->responses()->where('state', '<', 2)->count();
+		$when = Date::of($this->row->get('created'))->relative();
 	?>
 	<div class="<?php echo $this->cls; ?>">
 		<h3><?php echo Lang::txt('MOD_FEATUREDQUESTION'); ?></h3>
-	<?php if (is_file(PATH_APP . $this->thumb)) { ?>
-		<p class="featured-img">
-			<a href="<?php echo Route::url('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
-				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
-			</a>
-		</p>
-	<?php } ?>
+		<?php if (is_file(PATH_APP . $this->thumb)) { ?>
+			<p class="featured-img">
+				<a href="<?php echo Route::url($this->row->link()); ?>">
+					<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
+				</a>
+			</p>
+		<?php } ?>
 		<p>
-			<a href="<?php echo Route::url('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
+			<a href="<?php echo Route::url($this->row->link()); ?>">
 				<?php echo $this->escape(strip_tags($this->row->subject)); ?>
 			</a>
-		<?php if ($this->row->question) { ?>
-			: <?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
-		<?php } ?>
+			<?php if ($this->row->get('question')) { ?>
+				: <?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
+			<?php } ?>
 			<br />
 			<span><?php echo Lang::txt('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> -
 			<span><?php echo Lang::txt('MOD_FEATUREDQUESTION_AGO', $when); ?></span> -
-			<span><?php echo ($this->row->rcount == 1) ? Lang::txt('MOD_FEATUREDQUESTION_RESPONSE', $this->row->rcount) : Lang::txt('MOD_FEATUREDQUESTION_RESPONSES', $this->row->rcount); ?></span>
+			<span><?php echo ($rcount == 1) ? Lang::txt('MOD_FEATUREDQUESTION_RESPONSE', $rcount) : Lang::txt('MOD_FEATUREDQUESTION_RESPONSES', $rcount); ?></span>
 		</p>
 	</div>
 	<?php
 	}
 }
-?>

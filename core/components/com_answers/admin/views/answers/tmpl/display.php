@@ -68,11 +68,11 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filterby"><?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?></label>
-		<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL_RESPONSES'); ?></option>
-			<option value="accepted"<?php if ($this->filters['filterby'] == 'accepted') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ACCEPTED'); ?></option>
-			<option value="rejected"<?php if ($this->filters['filterby'] == 'rejected') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED'); ?></option>
+		<label for="filter-state"><?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?></label>
+		<select name="state" id="filter-state" onchange="document.adminForm.submit();">
+			<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL_RESPONSES'); ?></option>
+			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ACCEPTED'); ?></option>
+			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED'); ?></option>
 		</select>
 	</fieldset>
 
@@ -80,10 +80,10 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="6">
-					<?php if ($this->question->exists()) { ?>
+					<?php if ($this->question->get('id')) { ?>
 						#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> -
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=questions&task=edit&id=' . $this->question->get('id')); ?>">
-							<?php echo $this->escape($this->question->subject('clean')); ?>
+							<?php echo $this->escape(strip_tags($this->question->get('subject'))); ?>
 						</a>
 					<?php } else { ?>
 						<?php echo Lang::txt('COM_ANSWERS_RESPONSES_TO_ALL'); ?>
@@ -91,7 +91,7 @@ function submitbutton(pressbutton)
 				</th>
 			</tr>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ANSWER', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ACCEPTED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -103,21 +103,16 @@ function submitbutton(pressbutton)
 			<tr>
 				<td colspan="6"><?php
 				// initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
+				echo $this->rows->pagination;
 				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count($this->results); $i < $n; $i++)
+		$i = 0;
+		foreach ($this->rows as $row)
 		{
-			$row =& $this->results[$i];
-
 			switch (intval($row->get('state')))
 			{
 				case 1:
@@ -138,7 +133,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&qid=' . $this->question->get('id')); ?>">
-						<span><?php echo $row->content('clean', 75); ?></span>
+						<span><?php echo $this->truncate(strip_tags($row->get('answer')), 75); ?></span>
 					</a>
 				</td>
 				<td>
@@ -150,8 +145,8 @@ function submitbutton(pressbutton)
 					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td class="priority-3">
-					<a class="glyph user" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->creator('id')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->creator('name'))).' ('.$row->creator('id').')'; ?></span>
+					<a class="glyph user" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
+						<span><?php echo $this->escape(stripslashes($row->creator()->get('name'))).' ('.$row->get('created_by').')'; ?></span>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
 						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_ANONYMOUS'); ?>)</span>
@@ -163,6 +158,7 @@ function submitbutton(pressbutton)
 				</td>
 			</tr>
 			<?php
+			$i++;
 			$k = 1 - $k;
 		}
 		?>

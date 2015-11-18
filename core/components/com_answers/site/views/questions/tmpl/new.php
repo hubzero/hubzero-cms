@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,14 +32,28 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+if (Pathway::count() <= 0)
+{
+	Pathway::append(
+		Lang::txt(strtoupper($this->option)),
+		'index.php?option=' . $this->option
+	);
+}
+Pathway::append(
+	Lang::txt('COM_ANSWERS_NEW'),
+	'index.php?option=' . $this->option . '&task=new'
+);
+
+Document::setTitle(Lang::txt('COM_ANSWERS') . ': ' . Lang::txt('COM_ANSWERS_NEW'));
+
 $this->css();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_ANSWERS') . ': ' . Lang::txt('COM_ANSWERS_NEW'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-search search btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search'); ?>">
+			<a class="icon-search search btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 				<span><?php echo Lang::txt('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
 			</a>
 		</p>
@@ -49,9 +62,6 @@ $this->css();
 
 <section class="main section">
 	<div class="section-inner">
-		<?php foreach ($this->notifications as $notification) { ?>
-			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } ?>
 		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<p><?php echo Lang::txt('COM_ANSWERS_BE_POLITE'); ?></p>
@@ -97,7 +107,7 @@ $this->css();
 					<?php
 						echo $this->editor(
 							'fields[question]', // name
-							$this->question->content('raw'), // content
+							$this->question->get('question'), // content
 							35,  // cols
 							10,   // rows
 							'field-question'   // id
@@ -122,7 +132,7 @@ $this->css();
 			<p class="submit">
 				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 
-				<a class="btn btn-secondary" href="<?php echo $this->question->exists() ? Route::url($this->question->link()) : Route::url('index.php?option=' . $this->option); ?>">
+				<a class="btn btn-secondary" href="<?php echo $this->question->get('id') ? Route::url($this->question->link()) : Route::url('index.php?option=' . $this->option); ?>">
 					<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>
 				</a>
 			</p>

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -36,22 +35,27 @@ defined('_HZEXEC_') or die();
 $dcls = '';
 $lcls = '';
 
-if ($this->item->get('vote', null))
+if ($ballot = $this->vote->get('vote', null))
 {
-	switch ($this->item->get('vote'))
+	switch ($ballot)
 	{
-		case 'yes':
-		case 'positive':
-		case 'like':
+		case 1:
 			$lcls = ' chosen';
 		break;
 
-		case 'no':
-		case 'negative':
-		case 'dislike':
+		case -1:
 			$dcls = ' chosen';
 		break;
 	}
+}
+
+if ($pos = $this->item->get('positive'))
+{
+	$this->item->set('helpful', $pos);
+}
+if ($neg = $this->item->get('negative'))
+{
+	$this->item->set('nothelpful', $neg);
 }
 
 if (!User::isGuest())
@@ -67,8 +71,8 @@ else
 	$cls = ' tooltips';
 }
 ?>
-<?php if (!$this->item->get('vote')) { ?>
-	<?php if (User::isGuest()) { ?>
+<?php if (!$this->vote->get('id')) { ?>
+	<?php if (User::isGuest() || User::get('id') == $this->item->get('created_by')) { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
@@ -81,12 +85,12 @@ else
 		</span>
 	<?php } else { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=rateitem&refid=' . $this->item->get('id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=vote&category=' . $this->vote->get('item_type') . '&id=' . $this->vote->get('item_id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</a>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=rateitem&refid=' . $this->item->get('id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=vote&category=' . $this->vote->get('item_type') . '&id=' . $this->vote->get('item_id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
 				<?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_DISLIKE'); ?></span>
 			</a>
 		</span>
@@ -99,13 +103,13 @@ else
 			</span>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=rateitem&refid=' . $this->item->get('id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=vote&category=' . $this->vote->get('item_type') . '&id=' . $this->vote->get('item_id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
 				<?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_DISLIKE'); ?></span>
 			</a>
 		</span>
 	<?php } else { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=rateitem&refid=' . $this->item->get('id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=vote&category=' . $this->vote->get('item_type') . '&id=' . $this->vote->get('item_id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</a>
 		</span>

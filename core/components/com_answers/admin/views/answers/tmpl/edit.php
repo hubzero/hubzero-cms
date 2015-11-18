@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
-		<div class="col span6">
+		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -89,15 +89,15 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-question"><?php echo Lang::txt('COM_ANSWERS_FIELD_QUESTION'); ?></label><br />
-					<input type="text" id="field-question" disabled="disabled" readonly="readonly" value="<?php echo $this->escape($this->question->subject('clean')); ?>" />
+					<input type="text" id="field-question" disabled="disabled" readonly="readonly" value="<?php echo $this->escape(strip_tags($this->question->get('subject'))); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-answer"><?php echo Lang::txt('COM_ANSWERS_FIELD_ANSWER'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('answer[answer]', $this->escape($this->row->content('raw')), 50, 15, 'field-answer', array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('answer[answer]', $this->escape($this->row->get('answer')), 50, 15, 'field-answer', array('class' => 'minimal no-footer')); ?>
 				</div>
 			</fieldset>
 		</div>
-		<div class="col span6">
+		<div class="col span5">
 			<table class="meta">
 				<tbody>
 					<tr>
@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
-						<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->row->creator()->get('name'))); ?></td>
 					</tr>
 				<?php } ?>
 					<tr>

@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -33,17 +32,22 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css()
-     ->css('vote.css')
-     ->js()
-     ->js('vote.js');
-
-$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
-if (!$this->question->get('anonymous'))
+if (Pathway::count() <= 0)
 {
-	$name = $this->escape(stripslashes($this->question->creator('name', Lang::txt('COM_ANSWERS_UNKNOWN'))));
+	Pathway::append(
+		Lang::txt(strtoupper($this->option)),
+		'index.php?option=' . $this->option
+	);
 }
+Pathway::append(
+	\Hubzero\Utility\String::truncate(strip_tags($this->question->get('subject')), 50),
+	$this->question->link()
+);
 
+Document::setTitle(Lang::txt('COM_ANSWERS') . ': ' . strip_tags($this->question->get('subject')));
+
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_ANSWERS'); ?></h2>
@@ -64,13 +68,13 @@ if (!$this->question->get('anonymous'))
 		<?php } ?>
 
 	<!-- start question block -->
-	<?php if ($this->question->isDeleted() or !$this->question->exists()) { ?>
+	<?php if ($this->question->isDeleted() or !$this->question->get('id')) { ?>
 		<h3><?php echo Lang::txt('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h3>
-		<?php if ($this->note['msg']!='') { ?>
+		<?php /*if ($this->note['msg']!='') { ?>
 		<p class="help"><?php echo urldecode($this->note['msg']); ?></p>
-		<?php } else { ?>
+		<?php } else {*/ ?>
 		<p class="error"><?php echo Lang::txt('COM_ANSWERS_NOTICE_QUESTION_REMOVED'); ?></p>
-		<?php } ?>
+		<?php //} ?>
 	</div><!-- / .section-inner -->
 </section><!-- / .main section -->
 
@@ -82,21 +86,27 @@ if (!$this->question->get('anonymous'))
 					<img src="<?php echo $this->question->creator()->getPicture($this->question->get('anonymous')); ?>" alt="" />
 				</p><!-- / .question-member-photo -->
 				<div class="entry-content">
-				<?php if (!$this->question->isReported()) { ?>
-					<p class="entry-voting voting">
-						<?php
-							$this->view('vote')
-								 ->set('option', $this->option)
-								 ->set('controller', $this->controller)
-								 ->set('question', $this->question)
-								 ->set('voted', $this->voted)
-								 ->display();
-						?>
-					</p><!-- / .question-voting -->
-				<?php } ?>
+					<?php if (!$this->question->isReported()) { ?>
+						<p class="entry-voting voting">
+							<?php
+							$this->view('_vote')
+							     ->set('option', $this->option)
+							     ->set('item', $this->question)
+							     ->set('vote', $this->question->ballot())
+							     ->display();
+							?>
+						</p><!-- / .question-voting -->
+					<?php } ?>
 
 					<p class="entry-title">
-						<strong><?php echo $name; ?></strong>
+						<strong><?php
+						$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
+						if (!$this->question->get('anonymous'))
+						{
+							$name = $this->escape(stripslashes($this->question->creator()->get('name', Lang::txt('COM_ANSWERS_UNKNOWN'))));
+						}
+						echo $name;
+						?></strong>
 						<a class="permalink" href="<?php echo Route::url($this->question->link()); ?>" title="<?php echo Lang::txt('COM_ANSWERS_PERMALINK'); ?>">
 							<span class="entry-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
 							<span class="icon-time time"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('time'); ?></time></span>
@@ -105,55 +115,100 @@ if (!$this->question->get('anonymous'))
 						</a>
 					</p><!-- / .question-title -->
 
-			<?php if ($this->question->isReported()) { ?>
-					<p class="warning">
-						<?php echo Lang::txt('COM_ANSWERS_NOTICE_QUESTION_REPORTED'); ?>
-					</p>
-			<?php } else { ?>
-					<div class="entry-subject">
-						<?php echo $this->question->subject('parsed'); ?>
-					</div><!-- / .question-subject -->
+					<?php if ($this->question->isReported()) { ?>
+						<p class="warning">
+							<?php echo Lang::txt('COM_ANSWERS_NOTICE_QUESTION_REPORTED'); ?>
+						</p>
+					<?php } else { ?>
+						<div class="entry-subject">
+							<?php echo $this->question->subject; ?>
+						</div><!-- / .question-subject -->
 
-				<?php if ($this->question->get('question')) { ?>
-					<div class="entry-long">
-						<?php echo $this->question->content('parsed'); ?>
-					</div><!-- / .question-long -->
-				<?php } ?>
+						<?php if ($this->question->get('question')) { ?>
+							<div class="entry-long">
+								<?php echo $this->question->question; ?>
+							</div><!-- / .question-long -->
+						<?php } ?>
 
-					<div class="entry-tags">
-						<?php echo $this->question->tags('cloud', 0); ?>
-					</div><!-- / .question-tags -->
-			<?php } ?>
+						<div class="entry-tags">
+							<?php echo $this->question->tags('cloud', 0); ?>
+						</div><!-- / .question-tags -->
+					<?php } ?>
 				</div><!-- / .question-content -->
 
 				<p class="entry-status">
-			<?php if (!$this->question->isReported()) { ?>
-					<span>
-						<a class="icon-abuse abuse" href="<?php echo Route::url($this->question->link('report')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
-							<?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?>
-						</a>
-					</span>
-				<?php if (($this->question->get('created_by') == User::get('id') && User::authorise('core.delete', $this->option)) || User::authorise('core.manage', $this->option)) { //$this->question->isOpen() ?>
-					<span>
-						<a class="icon-delete delete" href="<?php echo Route::url($this->question->link('delete')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>">
-							<?php echo Lang::txt('COM_ANSWERS_DELETE'); ?>
-						</a>
-					</span>
-				<?php } ?>
-			<?php } ?>
+					<?php if (!$this->question->isReported()) { ?>
+							<span>
+								<a class="icon-abuse abuse" href="<?php echo Route::url($this->question->link('report')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?>
+								</a>
+							</span>
+						<?php if (($this->question->get('created_by') == User::get('id') && User::authorise('core.delete', $this->option)) || User::authorise('core.manage', $this->option)) { //$this->question->isOpen() ?>
+							<span>
+								<a class="icon-delete delete" href="<?php echo Route::url($this->question->link('delete')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>">
+									<?php echo Lang::txt('COM_ANSWERS_DELETE'); ?>
+								</a>
+							</span>
+						<?php } ?>
+					<?php } ?>
 				</p><!-- / .question-status -->
 			</div><!-- / .question -->
 
-		<?php if (count($this->notifications) > 0) { ?>
-			<div class="subject-wrap">
-			<?php foreach ($this->notifications as $notification) { ?>
-				<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
+			<?php if ($this->question->isOpen() && $this->question->config('banking') && $this->question->get('reward')) { ?>
+				<div class="subject-wrap">
+					<p><?php echo Lang::txt('COM_ANSWERS_POINT_BREAKDOWN_TBL_SUMMARY'); ?></p>
+					<table id="pointbreakdown">
+						<thead>
+							<tr>
+								<th scope="col"><?php echo Lang::txt('COM_ANSWERS_POINTS_BREAKDOWN'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_ANSWERS_POINTS'); ?></th>
+								<th scope="col"><?php echo Lang::txt('COM_ANSWERS_DETAILS'); ?></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<td colspan="3">
+									* <?php echo Lang::txt('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo Lang::txt('COM_ANSWERS_READ_FURTHER_DETAILS'); ?></a>.
+								</td>
+							</tr>
+						</tfoot>
+						<tbody>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_ANSWERS_ACTIVITY'); ?>*</th>
+								<td><?php echo $this->question->reward('marketvalue'); ?></td>
+								<td> </td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_ANSWERS_BONUS'); ?></th>
+								<td><?php echo $this->question->reward(); ?></td>
+								<td> </td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?></th>
+								<td><?php echo $this->question->reward('totalmarketvalue') ?></td>
+								<td><?php echo Lang::txt('COM_ANSWERS_TOTAL'); ?></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_EARN'); ?></th>
+								<td><?php echo $this->question->reward('asker_earnings'); ?></td>
+								<td><?php echo Lang::txt('COM_ANSWERS_ONE_THIRD_OF_ACTIVITY_POINTS'); ?></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_PAY'); ?></th>
+								<td><?php echo $this->question->reward(); ?></td>
+								<td><?php echo Lang::txt('COM_ANSWERS_REWARD_ASSIGNED_BY_ASKER'); ?></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_ANSWERS_BEST_ANSWER_MAY_EARN'); ?></th>
+								<td><?php echo $this->question->reward('answer_earnings'); ?></td>
+								<td><?php echo Lang::txt('COM_ANSWERS_UP_TO_TWO_THIRDS_OF_ACTIVITY_POINTS'); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			<?php } ?>
-			</div>
-		<?php } ?>
-		<!-- end question block -->
 
-			<?php if ($this->responding == 4 && $this->question->isOpen() && !$this->question->isReported()) { // delete question ?>
+			<?php if ($this->task == 'delete' && $this->question->isOpen() && !$this->question->isReported()) { // delete question ?>
 				<section class="below section">
 					<div class="subject-wrap">
 						<p class="warning"><?php echo Lang::txt('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
@@ -163,6 +218,7 @@ if (!$this->question->get('anonymous'))
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="deleteq" />
+
 							<?php echo Html::input('token'); ?>
 
 							<p class="submit">
@@ -260,72 +316,8 @@ if (!$this->question->get('anonymous'))
 </section>
 
 	<?php if (!$this->question->isReported()) { ?>
-		<?php if ($this->responding == 6 && $this->question->isOpen() && $this->question->config('banking')) { // show how points are awarded   ?>
-			<section class="below section">
-				<div class="section-inner">
-					<div class="subject">
-						<div class="subject-wrap">
-							<table id="pointbreakdown">
-								<caption><?php echo Lang::txt('COM_ANSWERS_POINTS_BREAKDOWN'); ?></caption>
-								<thead>
-									<tr>
-										<th> </th>
-										<th scope="col"><?php echo Lang::txt('COM_ANSWERS_POINTS'); ?></th>
-										<th scope="col"><?php echo Lang::txt('COM_ANSWERS_DETAILS'); ?></th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<td colspan="3">
-											* <?php echo Lang::txt('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo Lang::txt('COM_ANSWERS_READ_FURTHER_DETAILS'); ?></a>.
-										</td>
-									</tr>
-								</tfoot>
-								<tbody>
-									<tr>
-										<th scope="row"><?php echo Lang::txt('COM_ANSWERS_ACTIVITY'); ?>*</th>
-										<td><?php echo $this->question->reward('marketvalue'); ?></td>
-										<td> </td>
-									</tr>
-									<tr>
-										<th scope="row"><?php echo Lang::txt('COM_ANSWERS_BONUS'); ?></th>
-										<td><?php echo $this->question->reward(); ?></td>
-										<td> </td>
-									</tr>
-									<tr>
-										<th scope="row"><?php echo Lang::txt('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?></th>
-										<td><?php echo $this->question->reward('totalmarketvalue') ?></td>
-										<td><?php echo Lang::txt('COM_ANSWERS_TOTAL'); ?></td>
-									</tr>
-									<tr>
-										<th scope="row"><?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_EARN'); ?></th>
-										<td><?php echo $this->question->reward('asker_earnings'); ?></td>
-										<td><?php echo Lang::txt('COM_ANSWERS_ONE_THIRD_OF_ACTIVITY_POINTS'); ?></td>
-									</tr>
-									<tr>
-										<th scope="row"><?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_PAY'); ?></th>
-										<td><?php echo $this->question->reward(); ?></td>
-										<td><?php echo Lang::txt('COM_ANSWERS_REWARD_ASSIGNED_BY_ASKER'); ?></td>
-									</tr>
-									<tr>
-										<th scope="row"><?php echo Lang::txt('COM_ANSWERS_BEST_ANSWER_MAY_EARN'); ?></th>
-										<td><?php echo $this->question->reward('answer_earnings'); ?></td>
-										<td><?php echo Lang::txt('COM_ANSWERS_UP_TO_TWO_THIRDS_OF_ACTIVITY_POINTS'); ?></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div><!-- / .subject -->
-					<div class="aside">
-						<div class="container">
-							<p class="info"><?php echo Lang::txt('COM_ANSWERS_POINT_BREAKDOWN_TBL_SUMMARY'); ?></p>
-						</div><!-- / .container -->
-					</div><!-- / .aside -->
-				</div><!-- / .section-inner -->
-			</section><!-- / .below section -->
-		<?php } ?>
 
-		<?php if ($this->responding == 1) { // answer form ?>
+		<?php if ($this->task == 'answer') { // answer form ?>
 			<section class="below section">
 				<div class="section-inner">
 					<div class="subject">
@@ -333,55 +325,49 @@ if (!$this->question->get('anonymous'))
 							<?php echo Lang::txt('COM_ANSWERS_YOUR_ANSWER'); ?>
 						</h3>
 						<?php if (!User::isGuest()) { ?>
-						<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform">
-							<p class="comment-member-photo">
-								<span class="comment-anchor"></span>
-								<?php
-									$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
-									if (!User::isGuest()) {
-										$anon = 0;
-									} else {
-										$anon = 1;
-									}
-								?>
-								<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
-							</p>
-							<fieldset>
-								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-								<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-								<input type="hidden" name="task" value="savea" />
-
-								<?php echo Html::input('token'); ?>
-
-								<input type="hidden" name="response[id]" value="0" />
-								<input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />
-
-								<label for="responseanswer">
-									<?php echo Lang::txt('COM_ANSWERS_YOUR_RESPONSE'); ?>:
+							<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform">
+								<p class="comment-member-photo">
+									<span class="comment-anchor"></span>
 									<?php
-									echo $this->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'minimal'));
+										$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
+										$anon = (!User::isGuest() ? 0 : 1);
 									?>
-								</label>
-
-								<label for="answer-anonymous" id="answer-anonymous-label">
-									<input class="option" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
-									<?php echo Lang::txt('COM_ANSWERS_POST_ANON'); ?>
-								</label>
-
-								<p class="submit">
-									<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+									<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
 								</p>
+								<fieldset>
+									<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+									<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+									<input type="hidden" name="task" value="savea" />
 
-								<div class="sidenote">
-									<p>
-										<strong><?php echo Lang::txt('COM_ANSWERS_COMMENT_KEEP_RELEVANT'); ?></strong>
+									<?php echo Html::input('token'); ?>
+
+									<input type="hidden" name="response[id]" value="0" />
+									<input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />
+
+									<label for="responseanswer">
+										<?php echo Lang::txt('COM_ANSWERS_YOUR_RESPONSE'); ?>:
+										<?php echo $this->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'minimal')); ?>
+									</label>
+
+									<label for="answer-anonymous" id="answer-anonymous-label">
+										<input class="option" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
+										<?php echo Lang::txt('COM_ANSWERS_POST_ANON'); ?>
+									</label>
+
+									<p class="submit">
+										<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 									</p>
-									<p>
-										<?php echo Lang::txt('COM_ANSWERS_COMMENT_HELP'); ?>
-									</p>
-								</div>
-							</fieldset>
-						</form>
+
+									<div class="sidenote">
+										<p>
+											<strong><?php echo Lang::txt('COM_ANSWERS_COMMENT_KEEP_RELEVANT'); ?></strong>
+										</p>
+										<p>
+											<?php echo Lang::txt('COM_ANSWERS_COMMENT_HELP'); ?>
+										</p>
+									</div>
+								</fieldset>
+							</form>
 						<?php } else { ?>
 							<p>
 								<?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->question->link('answer'), false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
@@ -395,7 +381,7 @@ if (!$this->question->get('anonymous'))
 			</section><!-- / .below section -->
 		<?php } ?>
 
-		<?php if ($this->question->chosen('count')) { ?>
+		<?php if ($this->question->chosen()->count()) { ?>
 			<!-- list of chosen answers -->
 			<section class="below section" id="bestanswer">
 				<div class="section-inner">
@@ -411,16 +397,16 @@ if (!$this->question->get('anonymous'))
 							 ->set('depth', 0)
 							 ->set('option', $this->option)
 							 ->set('question', $this->question)
-							 ->set('comments', $this->question->chosen('list'))
+							 ->set('comments', $this->question->chosen()->rows())
 							 ->set('base', $this->question->link())
 							 ->set('config', $this->question->config())
 							 ->display();
 						?>
-					</div><!-- / .subject -->
+					</div>
 					<div class="aside">
-					</div><!-- / .aside -->
-				</div><!-- / .section-inner -->
-			</section><!-- / .below section -->
+					</div>
+				</div>
+			</section>
 			<!-- end list of chosen answers -->
 		<?php } ?>
 
@@ -428,10 +414,11 @@ if (!$this->question->get('anonymous'))
 		<section class="below section" id="answers">
 			<div class="section-inner">
 				<div class="subject">
+					<?php $responses = $this->question->responses()->whereIn('state', [0, 3])->rows(); ?>
 					<h3>
-						<span class="comment-count"><?php echo $this->question->comments('count'); ?></span> <?php echo Lang::txt('COM_ANSWERS_RESPONSES'); ?>
+						<span class="comment-count"><?php echo $responses->count(); ?></span> <?php echo Lang::txt('COM_ANSWERS_RESPONSES'); ?>
 					</h3>
-					<?php if ($this->question->comments('count')) { ?>
+					<?php if ($responses->count()) { ?>
 						<?php
 						$this->view('_list')
 							 ->set('item_id', 0)
@@ -440,14 +427,14 @@ if (!$this->question->get('anonymous'))
 							 ->set('depth', 0)
 							 ->set('option', $this->option)
 							 ->set('question', $this->question)
-							 ->set('comments', $this->question->comments('list'))
+							 ->set('comments', $responses)
 							 ->set('config', $this->question->config())
 							 ->set('base', $this->question->link())
 							 ->display();
 						?>
 					<?php } else if ($this->question->chosen('count')) { ?>
 						<div class="subject-wrap">
-							<p>No other responses made.</p>
+							<p><?php echo Lang::txt('No other responses made.'); ?></p>
 						</div>
 					<?php } else { ?>
 						<div class="subject-wrap">
@@ -459,10 +446,10 @@ if (!$this->question->get('anonymous'))
 							</p>
 						<?php } ?>
 						</div>
-					<?php } //if ($this->responses) { ?>
-				</div><!-- / .subject -->
+					<?php } ?>
+				</div>
 				<div class="aside">
-					<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported()) { ?>
+					<?php if ($this->question->isOpen() && $this->task != 'answer' && !$this->question->isReported()) { ?>
 						<div class="container">
 							<p><a class="icon-add add btn" href="<?php
 							$route = Route::url($this->question->link('answer'), false, true);
@@ -476,8 +463,8 @@ if (!$this->question->get('anonymous'))
 							<p class="info"><?php echo Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE') . ($this->question->config('banking') ? ' ' . Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS') : ''); ?></p>
 						</div><!-- / .container -->
 					<?php } ?>
-				</div><!-- / .aside -->
-			</div><!-- / .section-inner -->
+				</div>
+			</div>
 		</section>
 		<!-- end comment block -->
 	<?php } ?>

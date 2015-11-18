@@ -73,7 +73,7 @@ $this->css();
 			?>
 			<li class="question">
 				<a href="<?php echo Route::url($this->openquestions[$i]->link()); ?>">
-					<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->openquestions[$i]->subject('clean'), 60)); ?>
+					<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($this->openquestions[$i]->subject), 60)); ?>
 				</a>
 				<span><span class="responses_<?php echo $rclass; ?>"><?php echo $rcount; ?></span></span>
 
@@ -108,7 +108,7 @@ $this->css();
 				?>
 				<li class="question">
 					<a href="<?php echo Route::url($this->assigned[$i]->link()); ?>">
-						<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->assigned[$i]->subject('clean'), 60)); ?>
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($this->assigned[$i]->subject), 60)); ?>
 					</a>
 				<?php if ($this->banking) { ?>
 					<span ><span class="pts"><?php echo $this->escape($this->assigned[$i]->get('maxaward', 0)) . ' ' . strtolower(Lang::txt('MOD_MYQUESTIONS_PTS')); ?></span></span>
@@ -154,7 +154,7 @@ $this->css();
 				?>
 				<li class="question">
 					<a href="<?php echo Route::url($this->otherquestions[$i]->link()); ?>">
-						<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->otherquestions[$i]->subject('clean'), 60)); ?>
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($this->otherquestions[$i]->subject), 60)); ?>
 					</a>
 				<?php if ($this->banking) { ?>
 					<span><span class="pts"><?php echo $this->escape($this->otherquestions[$i]->get('maxaward', 0)) . ' ' . strtolower(Lang::txt('MOD_MYQUESTIONS_PTS')); ?></span></span>

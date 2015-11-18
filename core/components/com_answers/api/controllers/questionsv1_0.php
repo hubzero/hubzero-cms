@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -90,37 +89,53 @@ class Questionsv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		$database = \App::get('db');
-		$model = new \Components\Answers\Tables\Question($database);
-
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('search', ''),
-			'filterby'   => Request::getword('filterby', ''),
-			'sortby'     => Request::getWord('sort', 'date'),
+			'state'      => Request::getInt('state', -1),
+			'sort'       => Request::getWord('sort', 'created'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
 		);
 
+		$records = Question::all();
+
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+
+			$records->whereLike('subject', $filters['search'], 1)
+					->orWhereLike('question', $filters['search'], 1)
+					->resetDepth();
+		}
+
+		if ($filters['state'] >= 0)
+		{
+			$records->whereEquals('state', $filters['state']);
+		}
+
+		$rows = $records
+			->limit($filters['limit'])
+			->ordered('sort', 'sortDir')
+			->paginated();
+
 		$response = new stdClass;
 		$response->questions = array();
-		$response->total = $model->getCount($filters);
+		$response->total     = $records->rows()->count();
 
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
 
-			foreach ($model->getResults($filters) as $i => $q)
+			foreach ($records->rows() as $question)
 			{
-				$question = new \Components\Answers\Models\Question($q);
-
 				$obj = new stdClass;
 				$obj->id      = $question->get('id');
-				$obj->subject = $question->subject();
-				$obj->quesion = $question->content();
+				$obj->subject = $question->get('subject');
+				$obj->quesion = $question->get('question');
 				$obj->state   = $question->get('state');
 				$obj->url     = str_replace('/api', '', $base . '/' . ltrim(Route::url($question->link()), '/'));
-				$obj->responses = $question->comments('count');
+				$obj->responses = $question->responses()->count();
 
 				$response->questions[] = $obj;
 			}
@@ -219,7 +234,7 @@ class Questionsv1_0 extends ApiController
 
 		$row = new Question();
 
-		if (!$row->bind($fields))
+		if (!$row->set($fields))
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 500);
 		}
@@ -227,7 +242,7 @@ class Questionsv1_0 extends ApiController
 		$row->set('email', (isset($fields['email']) ? 1 : 0));
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
 		}
@@ -240,7 +255,7 @@ class Questionsv1_0 extends ApiController
 			}
 		}
 
-		$this->send($row);
+		$this->send($row->toObject());
 	}
 
 	/**
@@ -261,9 +276,9 @@ class Questionsv1_0 extends ApiController
 	{
 		$id = Request::getInt('id', 0);
 
-		$row = new Question($id);
+		$row = Question::oneOrFail($id);
 
-		if (!$row->exists())
+		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
 		}
@@ -365,14 +380,14 @@ class Questionsv1_0 extends ApiController
 			'tags'       => Request::getVar('tags', null)
 		);
 
-		$row = new Question($fields['id']);
+		$row = Question::oneOrFail($fields['id']);
 
-		if (!$row->exists())
+		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
 		}
 
-		if (!$row->bind($fields))
+		if (!$row->set($fields))
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 422);
 		}
@@ -380,7 +395,7 @@ class Questionsv1_0 extends ApiController
 		$row->set('email', (isset($fields['email']) ? 1 : 0));
 		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
 		}
@@ -393,7 +408,7 @@ class Questionsv1_0 extends ApiController
 			}
 		}
 
-		$this->send($row);
+		$this->send($row->toObject());
 	}
 
 	/**
@@ -424,14 +439,14 @@ class Questionsv1_0 extends ApiController
 
 		foreach ($ids as $id)
 		{
-			$row = new Question(intval($id));
+			$row = Question::oneOrNew(intval($id));
 
-			if (!$row->exists())
+			if (!$row->get('id'))
 			{
 				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
 			}
 
-			if (!$row->delete())
+			if (!$row->destroy())
 			{
 				throw new Exception($row->getError(), 500);
 			}

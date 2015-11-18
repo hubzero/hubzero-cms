@@ -37,43 +37,11 @@ HUBzero is a registered trademark of Purdue University.
 	<description>Manage Questions and Answers</description>
 	<files folder="site">
 		<filename>router.php</filename>
-		<filename>answers.css</filename>
 		<filename>answers.php</filename>
-		<filename>answers.js</filename>
-		<filename>vote.css</filename>
-		<filename>vote.js</filename>
-		<filename>controller.php</filename>
+		<filename>assets/css/answers.css</filename>
+		<filename>assets/js/answers.js</filename>
+		<filename>controllers/answers.php</filename>
 		<filename>index.html</filename>
-		<filename>images/answer.gif</filename>
-		<filename>images/ask.gif</filename>
-		<filename>images/contributor.gif</filename>
-		<filename>images/green-check.gif</filename>
-		<filename>images/minus_small.gif</filename>
-		<filename>images/plus_small.gif</filename>
-		<filename>images/q.gif</filename>
-		<filename>images/qa.gif</filename>
-		<filename>images/question_answerbutton.gif</filename>
-		<filename>images/question_bg.gif</filename>
-		<filename>images/question_bg1.gif</filename>
-		<filename>images/srch.gif</filename>
-		<filename>images/a_letter.gif</filename>
-		<filename>images/abuse.gif</filename>
-		<filename>images/accepted.gif</filename>
-		<filename>images/checker.gif</filename>
-		<filename>images/coin.gif</filename>
-		<filename>images/comment.gif</filename>
-		<filename>images/delete.gif</filename>
-		<filename>images/earn.gif</filename>
-		<filename>images/no_lit.gif</filename>
-		<filename>images/q_letter.gif</filename>
-		<filename>images/qr.gif</filename>
-		<filename>images/redflag.gif</filename>
-		<filename>images/reply.gif</filename>
-		<filename>images/thumb.gif</filename>
-		<filename>images/thumbdown.gif</filename>
-		<filename>images/thumbup.gif</filename>
-		<filename>images/thumbup_ok.gif</filename>
-		<filename>images/yes_lit.gif</filename>
 	</files>
 	<languages folder="site">
 		<language tag="en-GB">en-GB.com_answers.ini</language>

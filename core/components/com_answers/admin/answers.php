@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -38,8 +37,8 @@ if (!\User::authorise('core.manage', 'com_answers'))
 }
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 
 $controllerName = \Request::getCmd('controller', 'questions');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -64,4 +63,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 // initiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();

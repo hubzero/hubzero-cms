@@ -65,6 +65,10 @@
 		content: "\2716";
 	}
 
+	.question .entry-content {
+		background-color: #fff;
+	}
+
 /* Submenu styling */
 	.container .user-options li {
 		float: left;

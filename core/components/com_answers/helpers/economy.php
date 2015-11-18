@@ -25,14 +25,14 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Answers\Helpers;
 
-use Components\Answers\Tables;
+use Components\Answers\Models\Question;
+use Components\Answers\Models\Response;
 use Hubzero\Base\Object;
 use Hubzero\Bank\Config;
 use Hubzero\Bank\Transaction;
@@ -113,26 +113,28 @@ class Economy extends Object
 		$calc = 0;
 
 		// Get actons and sum up
-		$ar = new Tables\Response($this->_db);
-		$result = $ar->getActions($id);
+		$results = Response::all()
+			->whereEquals('question_id', $id)
+			->where('state', '!=', 2)
+			->rows();
 
 		if ($type != 'royalty')
 		{
 			$calc += $p_Q;  // ! this is different from version before code migration !
-			$calc += (count($result))*$p_A;
+			$calc += ($results->count())*$p_A;
 		}
 
 		// Calculate as if there is at leat one answer
-		if ($type == 'maxaward' && count($result)==0)
+		if ($type == 'maxaward' && $results->count() == 0)
 		{
 			$calc += $p_A;
 		}
 
-		for ($i=0, $n=count($result); $i < $n; $i++)
+		foreach ($results as $result)
 		{
-			$calc += ($result[$i]->helpful)*$p_R;
-			$calc += ($result[$i]->nothelpful)*$p_R;
-			if ($result[$i]->state == 1 && $type != 'royalty')
+			$calc += ($result->get('helpful'))*$p_R;
+			$calc += ($result->get('nothelpful'))*$p_R;
+			if ($result->get('state') == 1 && $type != 'royalty')
 			{
 				$accepted = 1;
 			}
@@ -144,11 +146,10 @@ class Economy extends Object
 		}
 
 		// Add question votes
-		$aq = new Tables\Question($this->_db);
-		$aq->load($id);
-		if ($aq->state != 2)
+		$aq = Question::oneOrNew($id);
+		if ($aq->get('state') != 2)
 		{
-			$calc += $aq->helpful * $p_RQ;
+			$calc += $aq->get('helpful') * $p_RQ;
 		}
 
 		$calc = ($calc) ? $calc : '0';
@@ -186,23 +187,25 @@ class Economy extends Object
 		$A_owner_share  = 0;
 
 		// Calculate commissions for other answers
-		$ar = new Tables\Response($this->_db);
-		$result = $ar->getActions($qid);
+		$results = Response::all()
+			->whereEquals('question_id', $qid)
+			->where('state', '!=', 2)
+			->rows();
 
-		$n = count($result);
+		$n = $results->count();
 		$eligible = array();
 
 		if ($n > 1)
 		{
 			// More than one answer found
-			for ($i=0; $i < $n; $i++)
+			foreach ($results as $result)
 			{
 				// Check if a regular answer has a good rating (at least 50% of positive votes)
-				if (($result[$i]->helpful + $result[$i]->nothelpful) >= 3
-				 && ($result[$i]->helpful >= $result[$i]->nothelpful)
-				 && $result[$i]->state=='0')
+				if (($result->get('helpful') + $result->get('nothelpful')) >= 3
+				 && ($result->get('helpful') >= $result->get('nothelpful'))
+				 && $result->get('state') == 0)
 				{
-					$eligible[] = $result[$i]->created_by;
+					$eligible[] = $result->get('created_by');
 				}
 			}
 			if (count($eligible) > 0)

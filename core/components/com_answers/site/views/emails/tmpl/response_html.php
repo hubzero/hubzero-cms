@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -63,7 +62,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
 				</td>
 				<td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
-					Questions &amp; Answers
+					<?php echo Lang::txt('Questions &amp; Answers'); ?>
 				</td>
 			</tr>
 		</tbody>
@@ -85,7 +84,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-					A response has been posted to Question #<?php echo $this->question->get('id'); ?> by <?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator('name'))); ?>.
+					A response has been posted to Question #<?php echo $this->question->get('id'); ?> by <?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator()->get('name'))); ?>.
 				</td>
 			</tr>
 		</tbody>
@@ -128,7 +127,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 		<thead>
 			<tr>
 				<th colspan="2" style="font-weight: normal; border-bottom: 1px solid #c8e3c2; padding: 8px; text-align: left" align="left">
-					<?php echo $this->question->subject('parsed'); ?>
+					<?php echo $this->question->subject; ?>
 				</th>
 			</tr>
 		</thead>
@@ -150,7 +149,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator('name'))); ?></td>
+								<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->question->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->question->creator()->get('name'))); ?></td>
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
@@ -175,12 +174,12 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 		<tbody>
 			<tr>
 				<td class="mobilehide" rowspan="2" style="font-size: 2.5em; font-weight: bold; text-align: center; vertical-align: top; padding: 0 30px 8px 0;" align="center" valign="top"><p style="display: block; border: 1px solid #c2e1e3; margin:0; padding: 1em; background-color: #e6fafb;">!</p></td>
-				<th style="text-align: left;" align="left"><?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator('name'))); ?></th>
+				<th style="text-align: left;" align="left"><?php echo $this->row->get('anonymous') ? Lang::txt('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator()->get('name'))); ?></th>
 				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo $this->row->created('time'); ?> on <?php echo $this->row->created('date'); ?></span></th>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 0" cellpadding="0" cellspacing="0" border="0">
-					<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->row->content('parsed'); ?></div>
+					<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->row->content; ?></div>
 				</td>
 			</tr>
 		</tbody>

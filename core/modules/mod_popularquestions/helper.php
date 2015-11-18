@@ -34,6 +34,7 @@ namespace Modules\PopularQuestions;
 
 use Hubzero\Module\Module;
 use Components\Answers\Models\Question;
+use Components\Answers\Models\Tags;
 use Component;
 use Request;
 use Date;
@@ -50,56 +51,42 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$this->database = \App::get('db');
-
 		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
-
-		$state = $this->params->get('state', 'open');
-		$limit = intval($this->params->get('limit', 5));
-
-		switch ($state)
-		{
-			case 'open':   $st = "a.state=0"; break;
-			case 'closed': $st = "a.state=1"; break;
-			case 'both':
-			default: $st = ""; break;
-		}
 
 		$this->tag   = Request::getVar('tag', '', 'get');
 		$this->style = Request::getVar('style', '', 'get');
 
+		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
+
+		$records = Question::all();
+
+		switch ($this->params->get('state', 'open'))
+		{
+			case 'open':   $records->whereEquals('state', 0); break;
+			case 'closed': $records->whereEquals('state', 1); break;
+			case 'both':
+			default:       $records->where('state', '<', 2); break;
+		}
+
 		if ($this->tag)
 		{
-			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
-				." FROM `#__answers_questions` AS a, `#__tags_object` AS t, `#__tags` AS tg, `#__answers_responses` AS r"
-				." WHERE r.qid=a.id AND a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag=" . $this->database->quote($this->tag) . " OR tg.raw_tag=" . $this->database->quote($this->tag) . ")";
-		}
-		else
-		{
-			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
-				." FROM `#__answers_questions` AS a, `#__answers_responses` AS r"
-				." WHERE r.qid=a.id";
-		}
-		if ($st)
-		{
-			$query .= " AND ".$st;
-		}
-		$query .= " GROUP BY id ORDER BY a.helpful DESC";
-		$query .= ($limit) ? " LIMIT " . $limit : "";
+			$cloud = new Tags();
+			$tags = $cloud->parse($this->tag);
 
-		$this->database->setQuery($query);
-		$this->rows = $this->database->loadObjectList();
-
-		if ($this->rows)
-		{
-			require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
-
-			foreach ($this->rows as $k => $row)
-			{
-				$this->rows[$k] = new Question($row);
-			}
+			$records
+				->select('#__answers_questions.*')
+				->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+				->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+				->whereEquals('#__tags_object.tbl', 'answers')
+				->whereIn('#__tags.tag', $tags);
 		}
+
+		$this->rows = $records
+			->limit(intval($this->params->get('limit', 5)))
+			->order('helpful', 'desc')
+			->ordered()
+			->rows();
 
 		require $this->getLayoutPath();
 	}

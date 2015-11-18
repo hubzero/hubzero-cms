@@ -35,7 +35,7 @@ namespace Components\Answers\Site\Controllers;
 use Components\Answers\Models\Question;
 use Components\Answers\Models\Response;
 use Components\Answers\Models\Comment;
-use Components\Answers\Tables;
+use Components\Answers\Models\Tags;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
@@ -74,58 +74,6 @@ class Questions extends SiteController
 	}
 
 	/**
-	 * Build the document pathway (breadcrumbs)
-	 *
-	 * @param   object  $question
-	 * @return  void
-	 */
-	protected function _buildPathway($question=null)
-	{
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task && in_array($this->_task, array('new', 'myquestions', 'search')))
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-		}
-		if (is_object($question) && $question->get('subject'))
-		{
-			Pathway::append(
-				String::truncate($question->subject('clean'), 50),
-				$question->link()
-			);
-		}
-	}
-
-	/**
-	 * Build the document title
-	 *
-	 * @param   object  $question
-	 * @return  void
-	 */
-	protected function _buildTitle($question=null)
-	{
-		$this->view->title = Lang::txt(strtoupper($this->_option));
-		if ($this->_task && $this->_task != 'view')
-		{
-			$this->view->title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
-		}
-		if (is_object($question) && $question->get('subject'))
-		{
-			$this->view->title .= ': ' . String::truncate($question->subject('clean'), 50);
-		}
-
-		Document::setTitle($this->view->title);
-	}
-
-	/**
 	 * Redirect to login form
 	 *
 	 * @return  void
@@ -155,8 +103,7 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_LOGIN_TO_COMMENT'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		// Incoming
@@ -171,33 +118,26 @@ class Questions extends SiteController
 
 		if (!$comment['item_id'])
 		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'), 500);
+			App::abort(404, Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 		}
 
-		if ($comment['item_type'])
+		$row = Comment::oneOrNew($comment['id'])->set($comment);
+
+		// Perform some text cleaning, etc.
+		$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
+		$row->set('created', Date::toSql());
+		$row->set('state', 0);
+		$row->set('created_by', User::get('id'));
+
+		// Save the data
+		if (!$row->save())
 		{
-			$row = new Comment(0);
-			if (!$row->bind($comment))
-			{
-				throw new Exception($row->getError(), 500);
-			}
-
-			// Perform some text cleaning, etc.
-			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
-			$row->set('created', Date::toSql());
-			$row->set('state', 0);
-			$row->set('created_by', User::get('id'));
-
-			// Save the data
-			if (!$row->store(true))
-			{
-				throw new Exception($row->getError(), 500);
-			}
+			throw new Exception($row->getError(), 500);
 		}
 
-		//For email
+		// For email
 		// Load question
-		$question = new Question($questionID);
+		$question = Question::oneOrFail($questionID);
 
 		// Get users who need to be notified on updates
 		$apu = $this->config->get('notify_users', '');
@@ -239,7 +179,7 @@ class Questions extends SiteController
 
 		// ---
 
-		$authorid = $question->creator('id');
+		$authorid = $question->get('created_by');
 
 		$apu = $this->config->get('notify_users', '');
 		$apu = explode(',', $apu);
@@ -279,7 +219,7 @@ class Questions extends SiteController
 		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . Request::getInt('rid', 0))
+			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $questionID)
 		);
 	}
 
@@ -294,48 +234,18 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_LOGIN_TO_COMMENT'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
-		// Retrieve a review or comment ID and category
-		$id    = Request::getInt('id', 0);
-		$refid = Request::getInt('refid', 0);
-		$cat   = Request::getVar('category', '');
-
-		// Do we have an ID?
-		if (!$id)
-		{
-			// Cannot proceed
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
-			);
-			return;
-		}
-
-		// Do we have a category?
-		if (!$cat)
-		{
-			// Cannot proceed
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $id)
-			);
-			return;
-		}
-
-		// Store the comment object in our registry
-		$this->category = $cat;
-		$this->referenceid = $refid;
-		$this->qid = $id;
 		$this->questionTask();
 	}
 
 	/**
-	 * Rate an item
+	 * Vote for an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function rateitemTask()
+	public function voteTask()
 	{
 		$no_html = Request::getInt('no_html', 0);
 
@@ -351,10 +261,10 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$id      = Request::getInt('refid', 0);
-		$cat     = Request::getVar('category', '');
-		$vote    = Request::getVar('vote', '');
-		$ip      = Request::ip();
+		$id   = Request::getInt('id', 0);
+		$type = Request::getVar('category', '');
+		$vote = Request::getVar('vote', '');
+		$ip   = Request::ip();
 
 		// Check for reference ID
 		if (!$id)
@@ -371,18 +281,26 @@ class Questions extends SiteController
 			return;
 		}
 
-		// load answer
-		$row = new Response($id);
-
-		$qid = $row->get('question_id');
+		if ($type == 'question')
+		{
+			$row = Question::oneOrFail($id);
+		}
+		elseif ($type == 'response')
+		{
+			$row = Response::oneOrFail($id);
+		}
+		elseif ($type == 'comment')
+		{
+			$row = Comment::oneOrFail($id);
+		}
 
 		// Can't vote for your own comment
-		if ($row->get('created_by') == User::get('username'))
+		if ($row->get('created_by') == User::get('id'))
 		{
 			if (!$no_html)
 			{
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $qid),
+					Route::url($row->link()),
 					Lang::txt('Cannot vote for your own entries.'),
 					'warning'
 				);
@@ -390,13 +308,12 @@ class Questions extends SiteController
 			return;
 		}
 
-		// Can't vote for your own comment
 		if (!$vote)
 		{
 			if (!$no_html)
 			{
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $qid),
+					Route::url($row->link()),
 					Lang::txt('No vote provided.'),
 					'warning'
 				);
@@ -404,107 +321,9 @@ class Questions extends SiteController
 			return;
 		}
 
-		// Get vote log
-		$al = new Tables\Log($this->database);
-		$al->loadByIp($id, $ip);
-
-		if (!$al->id)
-		{
-			// new vote;
-			// record if it was helpful or not
-			switch ($vote)
-			{
-				case 'yes':
-				case 'like':
-				case 'up':
-				case 1:
-					$row->set('helpful', $row->get('helpful') + 1);
-				break;
-
-				case 'no':
-				case 'dislike':
-				case 'down':
-				case -1:
-					$row->set('nothelpful', $row->get('nothelpful') + 1);
-				break;
-			}
-		}
-		else if ($al->helpful != $vote)
-		{
-			// changing vote;
-			// Adjust values to reflect vote change
-			switch ($vote)
-			{
-				case 'yes':
-				case 'like':
-				case 'up':
-				case 1:
-					$row->set('helpful', $row->get('helpful') + 1);
-					$row->set('nothelpful', $row->get('nothelpful') - 1);
-				break;
-
-				case 'no':
-				case 'dislike':
-				case 'down':
-				case -1:
-					$row->set('helpful', $row->get('helpful') - 1);
-					$row->set('nothelpful', $row->get('nothelpful') + 1);
-				break;
-			}
-		}
-		else
-		{
-			// no vote change;
-		}
-
-		if (!$row->store(false))
+		if (!$row->vote($vote, User::get('id'), $ip))
 		{
 			$this->setError($row->getError());
-			return;
-		}
-
-		// Record user's vote (old way)
-		$al = new Tables\Log($this->database);
-		$al->response_id = $row->get('id');
-		$al->ip      = $ip;
-		$al->helpful = $vote;
-		if (!$al->check())
-		{
-			echo $al->getError();
-			$this->setError($al->getError());
-			return;
-		}
-		if (!$al->store())
-		{
-			echo $al->getError();
-			$this->setError($al->getError());
-			return;
-		}
-
-		// Record user's vote (new way)
-		if ($cat)
-		{
-			require_once(dirname(dirname(__DIR__)) . DS  . 'tables' . DS . 'vote.php');
-
-			$v = new Tables\Vote($this->database);
-			$v->referenceid = $row->get('id');
-			$v->category    = $cat;
-			$v->voter       = User::get('id');
-			$v->ip          = $ip;
-			$v->voted       = Date::toSql();
-			$v->helpful     = $vote;
-			if (!$v->check())
-			{
-				echo $v->getError();
-				$this->setError($v->getError());
-				return;
-			}
-			if (!$v->store())
-			{
-				echo $v->getError();
-				$this->setError($v->getError());
-				return;
-			}
 		}
 
 		// update display
@@ -512,20 +331,17 @@ class Questions extends SiteController
 		{
 			$row->set('vote', $vote);
 
-			$this->view->option = $this->_option;
-			$this->view->item   = $row;
-
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-
-			$this->view->display();
+			$this->view
+				->setError($this->getErrors())
+				->set('item', $row)
+				->set('vote', $row->ballot())
+				->setLayout('_vote')
+				->display();
 		}
 		else
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $qid)
+				Route::url($row->link())
 			);
 		}
 	}
@@ -533,19 +349,16 @@ class Questions extends SiteController
 	/**
 	 * Search entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function searchTask()
 	{
-		$this->view->config = $this->config;
-		$this->view->task   = $this->_task;
-
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'limit'    => Request::getInt('limit', Config::get('list_limit')),
 			'start'    => Request::getInt('limitstart', 0),
 			'tag'      => Request::getVar('tags', ''),
-			'q'        => Request::getVar('q', ''),
+			'search'   => Request::getVar('q', ''),
 			'filterby' => Request::getWord('filterby', ''),
 			'sortby'   => Request::getWord('sortby', 'date'),
 			'sort_Dir' => Request::getWord('sortdir', 'DESC'),
@@ -553,45 +366,47 @@ class Questions extends SiteController
 		);
 
 		// Validate inputs
-		$this->view->filters['tag'] = ($this->view->filters['tag'] ? $this->view->filters['tag'] : Request::getVar('tag', ''));
+		$filters['tag'] = ($filters['tag'] ? $filters['tag'] : Request::getVar('tag', ''));
 
-		if ($this->view->filters['filterby']
-		 && !in_array($this->view->filters['filterby'], array('open', 'closed')))
+		if ($filters['filterby']
+		 && !in_array($filters['filterby'], array('open', 'closed')))
 		{
-			$this->view->filters['filterby'] = '';
+			$filters['filterby'] = '';
 		}
 
-		if (!in_array($this->view->filters['sortby'], array('date', 'votes', 'rewards')))
+		if (!in_array($filters['sortby'], array('date', 'votes', 'rewards')))
 		{
-			$this->view->filters['sortby'] = 'date';
+			$filters['sortby'] = 'date';
 		}
 
-		if ($this->view->filters['area']
-		 && !in_array($this->view->filters['area'], array('mine', 'assigned', 'interest')))
+		if ($filters['area']
+		 && !in_array($filters['area'], array('mine', 'assigned', 'interest')))
 		{
-			$this->view->filters['area'] = '';
+			$filters['area'] = '';
 		}
 
 		// Get questions of interest
-		if ($this->view->filters['area'] == 'interest')
+		// @TODO: Remove reference to members. Add getTags() to user?
+		if ($filters['area'] == 'interest')
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 			// Get tags of interest
 			$mt = new \Components\Members\Models\Tags(User::get('id'));
-			$mytags  = $mt->render('string');
 
-			$this->view->filters['tag']  = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytags;
-			$this->view->filters['mine'] = 0;
+			$filters['tag'] = $mt->render('string');
 		}
 
 		// Get assigned questions
-		if ($this->view->filters['area'] == 'assigned')
+		// @TODO: Remove reference to tools. Turn into an event call?
+		if ($filters['area'] == 'assigned')
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
-			$TA = new \Components\Tools\Tables\Author($this->database);
+			$db = App::get('db');
+
+			$TA = new \Components\Tools\Tables\Author($db);
 			$tools = $TA->getToolContributions(User::get('id'));
 			$mytooltags = array();
 			if ($tools)
@@ -602,59 +417,77 @@ class Questions extends SiteController
 				}
 			}
 
-			$this->view->filters['tag'] = ($this->view->filters['tag']) ? $this->view->filters['tag'] : implode(',', $mytooltags);
-
-			$this->view->filters['mine'] = 0;
+			$filters['tag'] = implode(',', $mytooltags);
 		}
 
-		if ($this->view->filters['area'] == 'mine')
-		{
-			$this->view->filters['mine'] = 1;
-		}
-
-		// Instantiate a Questions object
-		$aq = new Tables\Question($this->database);
-
-		if (($this->view->filters['area'] == 'interest' || $this->view->filters['area'] == 'assigned') && !$this->view->filters['tag'])
-		{
-			// Get a record count
-			$this->view->total = 0;
-
-			// Get records
-			$this->view->results = array();
-		}
-		else
-		{
-			// Get a record count
-			$this->view->total = $aq->getCount($this->view->filters);
-
-			// Get records
-			$this->view->results = $aq->getResults($this->view->filters);
-		}
-
-		// Did we get any results?
-		if (count($this->view->results) > 0)
-		{
-			// Do some processing on the results
-			foreach ($this->view->results as $i => $result)
+		$records = Question::all()
+			->including(['responses', function ($response)
 			{
-				$this->view->results[$i] = new Question($result);
-			}
+				$response
+					->select('id')
+					->select('question_id')
+					->where('state', '!=', 2);
+			}]);
+
+		if ($filters['tag'] || $filters['area'] == 'interest' || $filters['area'] == 'assigned')
+		{
+			$cloud = new Tags();
+			$tags = $cloud->parse($filters['tag']);
+
+			$records
+				->select('#__answers_questions.*')
+				->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+				->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+				->whereEquals('#__tags_object.tbl', 'answers')
+				->whereIn('#__tags.tag', $tags);
 		}
 
-		// Set the page title
-		$this->_buildTitle();
+		if ($filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
 
-		// Set the pathway
-		$this->_buildPathway();
+			$records->whereLike('subject', $filters['search'], 1)
+					->orWhereLike('question', $filters['search'], 1)
+					->resetDepth();
+		}
+
+		if ($filters['filterby'] == 'open')
+		{
+			$records->whereEquals('state', 0);
+		}
+		if ($filters['filterby'] == 'closed')
+		{
+			$records->whereEquals('state', 1);
+		}
+		if (!$filters['filterby'] || $filters['filterby'] == 'both')
+		{
+			$records->where('state', '<', 2);
+		}
+
+		if ($filters['area'] == 'mine')
+		{
+			$records->whereEquals('created_by', User::get('id'));
+		}
+
+		switch ($filters['sortby'])
+		{
+			case 'rewards': $order = 'points'; break;
+			case 'votes':   $order = 'helpful'; break;
+			case 'date':
+			default:        $order = 'created'; break;
+		}
+
+		$results = $records
+			->order($order, $filters['sort_Dir'])
+			->paginated()
+			->rows();
 
 		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
+			->setError($this->getErrors())
+			->set('results', $results)
+			->set('filters', $filters)
+			->set('config', $this->config)
 			->setLayout('search')
 			->display();
 	}
@@ -662,53 +495,25 @@ class Questions extends SiteController
 	/**
 	 * Display a question
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function questionTask()
 	{
 		// Incoming
-		$this->view->id   = Request::getInt('id', 0);
-		$this->view->note = $this->_note(Request::getInt('note', 0));
-
-		$this->view->question = Question::getInstance($this->view->id);
+		$id = Request::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id)
+		if (!$id)
 		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'), 500);
+			App::abort(404, Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 		}
 
-		// Check if person voted
-		$this->view->voted = 0;
-		if (!User::isGuest())
-		{
-			$this->view->voted = $this->view->question->voted();
-		}
-
-		// Set the page title
-		$this->_buildTitle($this->view->question);
-
-		// Set the pathway
-		$this->_buildPathway($this->view->question);
-
-		// Output HTML
-		$this->view->config = $this->config;
-
-		if (!isset($this->view->responding))
-		{
-			$this->view->responding = 0;
-		}
-
-		$this->view->notifications = array();
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->notifications[] = array(
-				'type'    => 'error',
-				'message' => $error
-			);
-		}
+		$question = Question::oneOrFail($id);
 
 		$this->view
+			->set('question', $question)
+			->set('config', $this->config)
+			->set('responding', 0)
 			->setLayout('question')
 			->display();
 	}
@@ -720,7 +525,6 @@ class Questions extends SiteController
 	 */
 	public function answerTask()
 	{
-		$this->view->responding = 1;
 		$this->questionTask();
 	}
 
@@ -731,7 +535,6 @@ class Questions extends SiteController
 	 */
 	public function deleteTask()
 	{
-		$this->view->responding = 4;
 		$this->questionTask();
 	}
 
@@ -746,57 +549,40 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		if (!User::authorise('core.create', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{
-			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 		}
 
-		// Instantiate a new view
-		$this->view->config = $this->config;
-		$this->view->task   = $this->_task;
-
-		// Incoming
-		$this->view->tag = Request::getVar('tag', '');
-
-		if (is_object($question))
+		// Instantiate if doesn't exist
+		if (!is_object($question))
 		{
-			$this->view->question = $question;
-		}
-		else
-		{
-			$this->view->question = new Question(0);
+			$question = new Question();
 		}
 
 		// Is banking turned on?
-		$this->view->funds = 0;
+		$funds = 0;
+
 		if ($this->config->get('banking'))
 		{
-			$BTL = new Teller($this->database, User::get('id'));
+			$db = App::get('db');
+			$BTL = new Teller($db, User::get('id'));
+
 			$funds = $BTL->summary() - $BTL->credit_summary();
-			$this->view->funds = ($funds > 0) ? $funds : 0;
+			$funds = ($funds > 0) ? $funds : 0;
 		}
 
-		// Set the page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Output HTML
-		$this->view->notifications = array();
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->notifications[] = array(
-				'type'    => 'error',
-				'message' => $error
-			);
-		}
+		// Render view
 		$this->view
+			->setError($this->getErrors())
+			->set('question', $question)
+			->set('config', $this->config)
+			->set('funds', $funds)
+			->set('tag', Request::getVar('tag', ''))
 			->setLayout('new')
 			->display();
 	}
@@ -815,15 +601,14 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{
-			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 		}
 
 		// Incoming
@@ -848,6 +633,7 @@ class Questions extends SiteController
 				throw new Exception(Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'), 500);
 			}
 		}
+		unset($fields['funds']);
 
 		// clean input
 		array_walk($fields, function(&$field, $key)
@@ -856,11 +642,7 @@ class Questions extends SiteController
 		});
 
 		// Initiate class and bind posted items to database fields
-		$row = new Question($fields['id']);
-		if (!$row->bind($fields))
-		{
-			throw new Exception($row->getError(), 500);
-		}
+		$row = Question::oneOrNew($fields['id'])->set($fields);
 
 		if ($fields['reward'] && $this->config->get('banking'))
 		{
@@ -871,37 +653,31 @@ class Questions extends SiteController
 		if (!Request::checkHoneypot())
 		{
 			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'));
-			$this->newTask($row);
-			return;
+			return $this->newTask($row);
 		}
 
 		// Ensure the user added a tag
 		if (!$tags)
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
-			$this->newTask($row);
-			return;
+			return $this->newTask($row);
 		}
 
-		// We need to temporarily set this so the store() method
-		// has access to the tags string to be able to run it
-		// through spam checkers and validation.
-		$row->set('tags', $tags);
-
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			Request::setVar('tag', $tags);
 
 			$this->setError($row->getError());
-			$this->newTask($row);
-			return;
+			return $this->newTask($row);
 		}
 
 		// Hold the reward for this question if we're banking
 		if ($fields['reward'] && $this->config->get('banking'))
 		{
-			$BTL = new Teller($this->database, User::get('id'));
+			$db = App::get('db');
+
+			$BTL = new Teller($db, User::get('id'));
 			$BTL->hold(
 				$fields['reward'],
 				Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'),
@@ -929,8 +705,10 @@ class Questions extends SiteController
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-				$TA = new \Components\Tools\Tables\Author($this->database);
-				$objV = new \Components\Tools\Tables\Version($this->database);
+				$db = App::get('db');
+
+				$TA = new \Components\Tools\Tables\Author($db);
+				$objV = new \Components\Tools\Tables\Version($db);
 
 				foreach ($tags as $tag)
 				{
@@ -1022,7 +800,7 @@ class Questions extends SiteController
 	/**
 	 * Delete a question
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteqTask()
 	{
@@ -1030,52 +808,33 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		if (!User::authorise('core.delete', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))
 		{
-			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 		}
 
 		// Incoming
 		$id = Request::getInt('qid', 0);
 		$ip = (!User::isGuest()) ? Request::ip() : '';
+		$db = App::get('db');
 
 		$reward = 0;
 		if ($this->config->get('banking'))
 		{
-			$BT = new Transaction($this->database);
-			$reward = $BT->getAmount('answers', 'hold', $id);
-		}
-		$email = 0;
-
-		$question = new Question($id);
-
-		// Check if user is authorized to delete
-		if ($question->get('created_by') != User::get('id'))
-		{
-			App::redirect(
-				Route::url($question->link() . '&note=3')
-			);
-			return;
+			$transaction = new Transaction($db);
+			$reward = $transaction->getAmount('answers', 'hold', $id);
 		}
 
-		if ($question->get('state') == 1)
-		{
-			App::redirect(
-				Route::url($question->link() . '&note=2')
-			);
-			return;
-		}
-
-		$question->set('state', 2);  // Deleted by user
+		$question = Question::oneOrFail($id);
+		$question->set('state', 2);
 		$question->set('reward', 0);
 
 		// Store new content
-		if (!$question->store(false))
+		if (!$question->save())
 		{
 			throw new Exception($question->getError(), 500);
 		}
@@ -1083,12 +842,14 @@ class Questions extends SiteController
 		if ($reward && $this->config->get('banking'))
 		{
 			// Get all the answers for this question
-			if ($question->comments('list', array('filterby' => 'all')))
+			$responses = $question->responses()->rows();
+
+			if ($responses->count())
 			{
 				$users = array();
 				foreach ($responses as $r)
 				{
-					$users[] = $r->creator('id');
+					$users[] = $r->get('created_by');
 				}
 
 				// Build the "from" info
@@ -1131,12 +892,12 @@ class Questions extends SiteController
 			}
 
 			// Remove hold
-			$BT->deleteRecords('answers', 'hold', $id);
+			$transaction->deleteRecords('answers', 'hold', $id);
 
 			// Make credit adjustment
-			$BTL_Q = new Teller($this->database, User::get('id'));
-			$adjusted = $BTL_Q->credit_summary() - $reward;
-			$BTL_Q->credit_adjustment($adjusted);
+			$teller = new Teller($db, User::get('id'));
+			$adjusted = $teller->credit_summary() - $reward;
+			$teller->credit_adjustment($adjusted);
 		}
 
 		// Redirect to the question
@@ -1148,7 +909,7 @@ class Questions extends SiteController
 	/**
 	 * Save an answer (reply to question)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveaTask()
 	{
@@ -1159,8 +920,7 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		// Incoming
@@ -1173,20 +933,16 @@ class Questions extends SiteController
 		});
 
 		// Initiate class and bind posted items to database fields
-		$row = new Response($response['id']);
-		if (!$row->bind($response))
-		{
-			throw new Exception($row->getError(), 500);
-		}
+		$row = Response::oneOrNew($response['id'])->set($response);
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			throw new Exception($row->getError(), 500);
 		}
 
 		// Load the question
-		$question = new Question($row->get('question_id'));
+		$question = Question::oneOrFail($row->get('question_id'));
 
 		// ---
 
@@ -1225,7 +981,7 @@ class Questions extends SiteController
 
 		// ---
 
-		$authorid = $question->creator('id');
+		$authorid = $question->get('created_by');
 
 		$apu = $this->config->get('notify_users', '');
 		$apu = explode(',', $apu);
@@ -1294,15 +1050,14 @@ class Questions extends SiteController
 		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-			$this->loginTask();
-			return;
+			return $this->loginTask();
 		}
 
 		// Incoming
 		$id  = Request::getInt('id', 0);
 		$rid = Request::getInt('rid', 0);
 
-		$question = new Question($id);
+		$question = Question::oneOrFail($id);
 
 		// verify the orignial poster is the only one accepting the answer
 		if ($question->get('created_by') != User::get('id'))
@@ -1328,182 +1083,52 @@ class Questions extends SiteController
 
 		// Redirect to the question
 		App::redirect(
-			Route::url($question->link() . '&note=10'),
-			Lang::txt('COM_ANSWERS_NOTICE_QUESTION_CLOSED'),
-			'success'
+			Route::url($question->link()),
+			($this->getError() ? $this->getError() : Lang::txt('COM_ANSWERS_NOTICE_QUESTION_CLOSED')),
+			($this->getError() ? 'error' : 'success')
 		);
-	}
-
-	/**
-	 * Vote for an item
-	 *
-	 * @return  void
-	 */
-	public function voteTask()
-	{
-		$no_html = Request::getInt('no_html', 0);
-		$id      = Request::getInt('id', 0);
-		$vote    = Request::getInt('vote', 0);
-
-		// Login required
-		if (User::isGuest())
-		{
-			if (!$no_html)
-			{
-				$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'));
-				$this->loginTask();
-			}
-			return;
-		}
-
-		// Load the question
-		$row = new Question($id);
-
-		// Record the vote
-		if (!$row->vote($vote))
-		{
-			if ($no_html)
-			{
-				$response = new \stdClass;
-				$response->success = false;
-				$response->message = $row->getError();
-				echo json_encode($response);
-				return;
-			}
-			else
-			{
-				App::redirect(
-					Route::url($row->link()),
-					$row->getError(),
-					'warning'
-				);
-				return;
-			}
-		}
-
-		// Update display
-		if ($no_html)
-		{
-			$this->qid = $id;
-
-			$this->view->question = $row;
-			$this->view->voted    = $vote;
-
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-
-			$this->view->display();
-		}
-		else
-		{
-			App::redirect(
-				Route::url($row->link())
-			);
-		}
-	}
-
-	/**
-	 * Authorization check
-	 *
-	 * @param      string  $assetType Asset type to authorize
-	 * @param      integer $assetId   ID of asset to authorize
-	 * @return     void
-	 */
-	protected function _authorize($assetType='component', $assetId=null)
-	{
-		$this->config->set('access-view-' . $assetType, true);
-		if (!User::isGuest())
-		{
-			$asset  = $this->_option;
-			if ($assetId)
-			{
-				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-				$asset .= ($assetId) ? '.' . $assetId : '';
-			}
-
-			$at = '';
-			if ($assetType != 'component')
-			{
-				$at .= '.' . $assetType;
-			}
-
-			// Admin
-			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
-			// Permissions
-			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
-		}
-	}
-
-	/**
-	 * Get a message
-	 *
-	 * @param      integer $type Note ID
-	 * @param      array   $note Array to populate
-	 * @return     array
-	 */
-	private function _note($type, $note=array('msg'=>'','class'=>'warning'))
-	{
-		switch ($type)
-		{
-			case '1' :  // question was removed
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_QUESTION_REMOVED');
-				$note['class'] = 'info';
-			break;
-			case '2' : // can't delete a closed question
-				$note['msg'] = Lang::txt('COM_ANSWERS_WARNING_CANT_DELETE_CLOSED');
-			break;
-			case '3' : // not authorized to delete question
-				$note['msg'] = Lang::txt('COM_ANSWERS_WARNING_CANT_DELETE');
-			break;
-			case '4' : // answer posted
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_POSTED_THANKS');
-				$note['class'] = 'passed';
-			break;
-			case '5' : // question posted
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS');
-				$note['class'] = 'passed';
-			break;
-			case '6' : // can't answer own question
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_CANT_ANSWER_OWN_QUESTION');
-			break;
-			case '7' : // can't delete question
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_CANNOT_DELETE');
-			break;
-			case '8' : // can't vote again
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION');
-			break;
-			case '9' : // can't vote for own question
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION');
-			break;
-			case '10' : // answer accepted
-				$note['msg'] = Lang::txt('COM_ANSWERS_NOTICE_QUESTION_CLOSED');
-			break;
-		}
-		return $note;
 	}
 
 	/**
 	 * Latest Questions Feed
 	 *
-	 * @return     string XML
+	 * @return  void
 	 */
 	public function latestTask()
 	{
-		//instantiate database object
-		$database = \App::get('db');
-
 		//get the id of module so we get the right params
 		$mid = Request::getInt('m', 0);
 
 		//get module params
 		$params = \Module::params($mid);
+
+		//number of questions to get
+		$limit = intval($params->get('limit', 5));
+
+		//open, closed, or both
+		$state = $params->get('state', 'both');
+
+		$records = Question::all();
+
+		if ($state == 'open')
+		{
+			$records->whereEquals('state', 0);
+		}
+		if ($state == 'closed')
+		{
+			$records->whereEquals('state', 1);
+		}
+		if (!$state || $state == 'both')
+		{
+			$records->where('state', '<', 2);
+		}
+
+		$questions = $records
+			->ordered()
+			->limit($limit)
+			->start(0)
+			->paginated()
+			->rows();
 
 		//force mime type of document to be rss
 		Document::setType('feed');
@@ -1518,47 +1143,17 @@ class Questions extends SiteController
 		$doc->copyright   = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_CATEGORY');
 
-		//number of questions to get
-		$limit = intval($params->get('limit', 5));
-
-		//open, closed, or both
-		$state = $params->get('state', 'both');
-		switch ($state)
-		{
-			case 'open':   $st = "a.state=0"; break;
-			case 'closed': $st = "a.state=1"; break;
-			case 'both':   $st = "a.state<2"; break;
-		}
-
-		//get questions based on params
-		$sql = "SELECT
-					a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous,
-					(SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount
-				FROM `#__answers_questions` AS a
-				WHERE {$st}
-				ORDER BY a.created DESC
-				LIMIT {$limit}";
-		$database->setQuery($sql);
-		$questions = $database->loadAssocList();
-
 		//add each question to the feed
 		foreach ($questions as $question)
 		{
-			//get the authors name
-			$a = User::getInstance($question['created_by']);
-			$author = ($a) ? $a->get("name") : "";
-			$author = ($question['anonymous']) ? "Anonymous" : $author;
-
-			$link = Route::url('index.php?option=com_answers&task=question&id=' . $question['id']);
-
 			//set feed item attibs and add item to feed
 			$item = new \Hubzero\Document\Type\Feed\Item();
-			$item->title       = html_entity_decode(Sanitize::stripAll(stripslashes($question['subject'])));
-			$item->link        = $link;
-			$item->description = html_entity_decode(Sanitize::stripAll(stripslashes($question['question'])));
-			$item->date        = date("r", strtotime($question['created']));
+			$item->title       = html_entity_decode(Sanitize::stripAll(stripslashes($question->subject)));
+			$item->link        = Route::url($question->link());
+			$item->description = html_entity_decode(Sanitize::stripAll(stripslashes($question->question)));
+			$item->date        = date("r", strtotime($question->get('created')));
 			$item->category    = 'Recent Question';
-			$item->author      = $author;
+			$item->author      = $question->creator()->get('name', Lang::txt('COM_ANSWERS_ANONYMOUS'));
 
 			$doc->addItem($item);
 		}

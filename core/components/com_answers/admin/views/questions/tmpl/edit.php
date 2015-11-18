@@ -93,12 +93,12 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-subject"><?php echo Lang::txt('COM_ANSWERS_FIELD_SUBJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="question[subject]" id="field-subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->subject('raw')); ?>" />
+					<input type="text" name="question[subject]" id="field-subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-question"><?php echo Lang::txt('COM_ANSWERS_FIELD_QUESTION'); ?>:</label><br />
-					<?php echo $this->editor('question[question]', $this->escape($this->row->content('raw')), 50, 15, 'field-question', array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('question[question]', $this->escape($this->row->get('question')), 50, 15, 'field-question', array('class' => 'minimal no-footer')); ?>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_ANSWERS_FIELD_TAGS_HINT'); ?>">
@@ -125,7 +125,7 @@ function submitbutton(pressbutton)
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
-							<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
+							<td><?php echo $this->escape(stripslashes($this->row->creator()->get('name'))); ?></td>
 						</tr>
 					<?php } ?>
 				</tbody>

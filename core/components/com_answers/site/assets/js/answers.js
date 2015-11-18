@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_answers/assets/js/answers.jquery.js
+ * @file        components/com_answers/site/assets/js/answers.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -11,6 +11,14 @@
 if (!jq) {
 	var jq = $;
 }
+
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+};
 
 jQuery(document).ready(function(jq){
 	var $ = jq;
@@ -47,23 +55,38 @@ jQuery(document).ready(function(jq){
 		li.appendTo(el);
 	});
 
-	$('a.reply').on('click', function (e) {
-		e.preventDefault();
+	$('#content')
+		.on('click', '.vote-button', function (e) {
+			if ($(this).attr('href')) {
+				e.preventDefault();
 
-		var frm = $('#' + $(this).attr('data-rel'));
+				var item = $(this);
 
-		if (frm.hasClass('hide')) {
-			frm.removeClass('hide');
-			$(this)
-				.addClass('active')
-				.text($(this).attr('data-txt-active'));
-		} else {
-			frm.addClass('hide');
-			$(this)
-				.removeClass('active')
-				.text($(this).attr('data-txt-inactive'));
-		}
-	});
+				$.get(item.attr('href').nohtml(), {}, function(data) {
+					if (data) {
+						item.closest('.voting').html(data);
+						$('.tooltip').hide();
+					}
+				});
+			}
+		})
+		.on('click', 'a.reply', function (e) {
+			e.preventDefault();
+
+			var frm = $('#' + $(this).attr('data-rel'));
+
+			if (frm.hasClass('hide')) {
+				frm.removeClass('hide');
+				$(this)
+					.addClass('active')
+					.text($(this).attr('data-txt-active'));
+			} else {
+				frm.addClass('hide');
+				$(this)
+					.removeClass('active')
+					.text($(this).attr('data-txt-inactive'));
+			}
+		});
 
 	$('a.abuse').fancybox({
 		type: 'ajax',

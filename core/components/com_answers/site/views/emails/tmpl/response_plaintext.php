@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -45,10 +44,10 @@ $message .= strtoupper(Lang::txt('COM_ANSWERS_SUMMARY')) . ': ' . $this->questio
 $message .= strtoupper(Lang::txt('COM_ANSWERS_CREATED')) . ': ' . $this->question->get('created') ."\n";
 $message .= '----------------------------' . "\n\n";
 $message .= 'A response has been posted to Question #' . $this->question->get('id') . ' by: ';
-$message .= ($this->row->get('anonymous')) ? 'Anonymous' . "\n" : $this->row->creator('name') . "\n";
+$message .= ($this->row->get('anonymous')) ? 'Anonymous' . "\n" : $this->row->creator()->get('name') . "\n";
 $message .= 'Response created: ' . $this->row->get('created') . "\n";
 $message .= 'Response: ' . "\n\n";
-$message .= '"' . $this->row->get('answer') . '"' . "\n\n";
+$message .= '"' . $this->row->content . '"' . "\n\n";
 $message .= 'To view the full question and responses, go to: ' . "\n";
 $message .= $this->link . "\n";
 

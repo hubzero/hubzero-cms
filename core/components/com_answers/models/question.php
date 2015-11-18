@@ -25,127 +25,116 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Answers\Models;
 
-use Components\Answers\Tables;
-use Components\Answers\Helpers;
-use Hubzero\Base\ItemList;
+use Components\Answers\Helpers\Economy;
+use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
+use Hubzero\Config\Registry;
+use Hubzero\User\Profile;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
+use Request;
+use Route;
 use Lang;
-use User;
 use Date;
+use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'questionslog.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'question.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
 require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'response.php');
 
 /**
- * Answers mdoel class for a question
+ * Question model for Q&A
  */
-class Question extends Base
+class Question extends Relational
 {
 	/**
 	 * Open state
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const ANSWERS_STATE_OPEN   = 0;
 
 	/**
 	 * Closed state
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const ANSWERS_STATE_CLOSED = 1;
 
 	/**
 	 * Deleted
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const ANSWERS_STATE_DELETE = 2;
 
 	/**
-	 * Table class name
+	 * Reported
+	 *
+	 * @var  integer
+	 */
+	const ANSWERS_STATE_REPORTED = 3;
+
+	/**
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Answers\\Tables\\Question';
+	protected $namespace = 'answers';
 
 	/**
-	 * Model context
+	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	protected $_context = 'com_answers.question.question';
+	public $orderBy = 'created';
 
 	/**
-	 * Comment
+	 * Default order direction for select queries
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	private $_comment = null;
+	public $orderDir = 'desc';
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * Fields and their validation criteria
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	private $_comments = null;
+	protected $rules = array(
+		'subject'  => 'notempty'
+	);
 
 	/**
-	 * Comment count
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var integer
-	 */
-	private $_comments_count = null;
+	 * @var  array
+	 **/
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
 
 	/**
-	 * Flag for if authorization checks have been run
+	 * Fields to be parsed
 	 *
-	 * @var boolean
-	 */
-	private $_authorized = false;
+	 * @var array
+	 **/
+	protected $parsed = array(
+		'question'
+	);
 
 	/**
-	 * URL for this entry
+	 * Base URL
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_base = 'index.php?option=com_answers';
-
-	/**
-	 * Returns a reference to a question model
-	 *
-	 * @param   integer $oid Question ID
-	 * @return  object
-	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
-	}
 
 	/**
 	 * Is the question closed?
@@ -154,11 +143,7 @@ class Question extends Base
 	 */
 	public function isClosed()
 	{
-		if ($this->get('state') == static::ANSWERS_STATE_CLOSED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == static::ANSWERS_STATE_CLOSED);
 	}
 
 	/**
@@ -168,230 +153,98 @@ class Question extends Base
 	 */
 	public function isOpen()
 	{
-		if ($this->get('state') == static::ANSWERS_STATE_OPEN)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == static::ANSWERS_STATE_OPEN);
 	}
 
 	/**
-	 * Get reward value
+	 * Is the question open?
 	 *
-	 * @param   string $val Value to return
+	 * @return  boolean
+	 */
+	public function isDeleted()
+	{
+		return ($this->get('state') == static::ANSWERS_STATE_DELETE);
+	}
+
+	/**
+	 * Is the question open?
+	 *
+	 * @return  boolean
+	 */
+	public function isReported()
+	{
+		return ($this->get('state') == static::ANSWERS_STATE_REPORTED);
+	}
+
+	/**
+	 * Return a formatted timestamp for created date
+	 *
+	 * @param   string  $as  What data to return
 	 * @return  string
 	 */
-	public function reward($val='reward')
+	public function created($as='')
 	{
-		if (!$this->config('banking'))
+		switch (strtolower($as))
 		{
-			return 0;
+			case 'date':
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+			break;
+
+			case 'time':
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			break;
+
+			default:
+				return $this->get('created');
+			break;
 		}
-
-		if ($this->get('reward', -1) == 1)
-		{
-			$BT = new Transaction($this->_db);
-			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
-
-			$AE = new Helpers\Economy($this->_db);
-
-			$this->set('marketvalue', round($AE->calculate_marketvalue($this->get('id'), 'maxaward')));
-			$this->set('maxaward', round(2* $this->get('marketvalue', 0)/3 + $this->get('reward', 0)));
-
-			$this->set('totalmarketvalue', $this->get('marketvalue', 0) + $this->get('reward', 0));
-
-			$this->set('asker_earnings', round($this->get('marketvalue', 0)/3));
-			$this->set('answer_earnings', (round(($this->get('marketvalue', 0))/3) + $this->get('reward', 0)) .' &mdash; ' . (round(2*(($this->get('marketvalue', 0))/3)) + $this->get('reward', 0)));
-		}
-
-		return $this->get($val, 0);
 	}
 
 	/**
-	 * Set and get a specific comment
+	 * Defines a belongs to one relationship between article and user
 	 *
-	 * @return     void
+	 * @return  object  \Hubzero\Database\Relationship\BelongsToOne
 	 */
-	public function comment($id=null)
+	public function creator()
 	{
-		if (!isset($this->_comment)
-		 || ($id !== null && (int) $this->_comment->get('id') != $id))
+		if ($profile = Profile::getInstance($this->get('created_by')))
 		{
-			$this->_comment = null;
-
-			// See if we already have a list of comments that we can look through
-			if ($this->_comments instanceof ItemList)
-			{
-				foreach ($this->_comments as $key => $comment)
-				{
-					if ((int) $comment->get('id') == $id)
-					{
-						$this->_comment = $comment;
-						break;
-					}
-				}
-			}
-
-			// Nothing found so far?
-			if (!$this->_comment)
-			{
-				// Load the record
-				$this->_comment = Comment::getInstance($id);
-			}
+			return $profile;
 		}
-		return $this->_comment;
+		return new Profile;
 	}
 
 	/**
 	 * Get a list of responses
 	 *
-	 * @param   string  $rtrn    Data type to return [count, list]
-	 * @param   array   $filters Filters to apply to query
-	 * @param   boolean $clear   Clear cached data?
-	 * @return  mixed   Returns an integer or array depending upon format chosen
+	 * @return  object
 	 */
-	public function comments($rtrn='list', $filters=array(), $clear=false)
+	public function responses()
 	{
-		$tbl = new Tables\Response($this->_db);
-
-		if (!isset($filters['question_id']))
-		{
-			$filters['question_id'] = $this->get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state']    = 0;
-		}
-		if (!isset($filters['filterby']))
-		{
-			$filters['filterby'] = 'rejected';
-		}
-		if (!isset($filters['replies']))
-		{
-			$filters['replies'] = true;
-		}
-		$filters['sort']     = 'created';
-		$filters['sort_Dir'] = 'DESC';
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!isset($this->_comments_count) || $clear)
-				{
-					$total = 0;
-
-					if (!($c = $this->get('comments')))
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($c as $com)
-					{
-						$total++;
-						if ($filters['replies'] && $com->replies()->total())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$total++;
-								if ($rep->replies())
-								{
-									$total += $rep->replies()->total();
-								}
-							}
-						}
-					}
-
-					$this->_comments_count = $total;
-				}
-				return $this->_comments_count;
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_comments instanceof ItemList) || $clear)
-				{
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Response($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_comments = new ItemList($results);
-				}
-				return $this->_comments;
-			break;
-		}
+		return $this->oneToMany('Components\Answers\Models\Response', 'question_id');
 	}
 
 	/**
 	 * Get a list of chosen responses
 	 *
-	 * @param   string $rtrn    Data type to return [count, list]
-	 * @param   array  $filters Filters to apply to query
-	 * @return  mixed  Returns an integer or array depending upon format chosen
+	 * @return  object
 	 */
-	public function chosen($rtrn='list', $filters=array())
+	public function chosen()
 	{
-		$tbl = new Tables\Response($this->_db);
-
-		if (!isset($filters['question_id']))
-		{
-			$filters['question_id'] = $this->get('id');
-		}
-		$filters['state']    = 1;
-		$filters['filterby'] = 'accepted';
-		$filters['sort']     = 'created';
-		$filters['sort_Dir'] = 'DESC';
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if ($this->get('chosen_count', null) === null)
-				{
-					$this->set('chosen_count', $tbl->find('count', $filters));
-				}
-				return $this->get('chosen_count');
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof ItemList))
-				{
-					if ($results = $tbl->find('list', $filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Response($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->set('chosen', new ItemList($results));
-				}
-				return $this->get('chosen');
-			break;
-		}
+		return $this->responses()->whereEquals('state', 1);
 	}
 
 	/**
 	 * Get tags on the entry
 	 * Optinal first agument to determine format of tags
 	 *
-	 * @param   string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
-	 * @param   integer $admin Include amdin tags? (defaults to no)
+	 * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param   integer  $admin  Include amdin tags? (defaults to no)
 	 * @return  mixed
 	 */
 	public function tags($as='cloud', $admin=0)
 	{
-		if (!$this->exists())
+		if (!$this->get('id'))
 		{
 			switch (strtolower($as))
 			{
@@ -416,6 +269,9 @@ class Question extends Base
 	/**
 	 * Tag the entry
 	 *
+	 * @param   string   $tags     Comma-separated list of tags to apply
+	 * @param   integer  $user_id  Tagger ID
+	 * @param   integer  $admin    Include amdin tags? (defaults to no)
 	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -428,6 +284,9 @@ class Question extends Base
 	/**
 	 * Add a single tag to the entry
 	 *
+	 * @param   string   $tags     Comma-separated list of tags to apply
+	 * @param   integer  $user_id  Tagger ID
+	 * @param   integer  $admin    Include amdin tags? (defaults to no)
 	 * @return  boolean
 	 */
 	public function addTag($tag=null, $user_id=0, $admin=0)
@@ -440,8 +299,8 @@ class Question extends Base
 	/**
 	 * Get the state of the entry as either text or numerical value
 	 *
-	 * @param   string $as Format to return state in [text, number]
-	 * @return  mixed  String or Integer
+	 * @param   string  $as  Format to return state in [text, number]
+	 * @return  mixed   String or Integer
 	 */
 	public function state($as='text')
 	{
@@ -449,28 +308,17 @@ class Question extends Base
 
 		if ($as == 'text')
 		{
-			switch ($this->get('state'))
-			{
-				case 1:
-					return 'closed';
-				break;
-				case 0:
-				default:
-					return 'open';
-				break;
-			}
+			return ($this->get('state') == static::ANSWERS_STATE_CLOSED ? 'closed' : 'open');
 		}
-		else
-		{
-			return $this->get('state');
-		}
+
+		return $this->get('state');
 	}
 
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type The type of link to return
+	 * @param   string  $type  The type of link to return
 	 * @return  string
 	 */
 	public function link($type='')
@@ -514,159 +362,65 @@ class Question extends Base
 	}
 
 	/**
-	 * Get the content of the record.
-	 * Optional argument to determine how content should be handled
+	 * Get a list of votes
 	 *
-	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
-	 * clean  - parses content and then strips tags
-	 * raw    - as is, no parsing
-	 *
-	 * @param   string  $as      Format to return content in [parsed, clean, raw]
-	 * @param   integer $shorten Number of characters to shorten text to
-	 * @return  string
+	 * @return  object
 	 */
-	public function content($as='parsed', $shorten=0)
+	public function votes()
 	{
-		$as = strtolower($as);
-		$options = array();
-
-		switch ($as)
-		{
-			case 'parsed':
-				$content = $this->get('question.parsed', null);
-
-				if ($content === null)
-				{
-					$config = array(
-						'option'   => 'com_answers',
-						'scope'    => 'question',
-						'pagename' => $this->get('id'),
-						'pageid'   => 0,
-						'filepath' => '',
-						'domain'   => ''
-					);
-
-					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('question', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						$this->_context,
-						&$this,
-						&$config
-					));
-
-					$this->set('question.parsed', (string) $this->get('question', ''));
-					$this->set('question', $content);
-
-					return $this->content($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = html_entity_decode(strip_tags($this->content('parsed')), ENT_COMPAT, 'UTF-8');
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
-
-			case 'raw':
-			default:
-				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('question'));
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
-		}
-
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Get the subject in various formats
-	 *
-	 * @param   string  $as      Format to return state in [text, number]
-	 * @param   integer $shorten Number of characters to shorten text to
-	 * @return  string
-	 */
-	public function subject($as='parsed', $shorten=0)
-	{
-		$as = strtolower($as);
-		$options = array();
-
-		switch ($as)
-		{
-			case 'parsed':
-				$content = $this->get('subject.parsed', null);
-
-				if ($content === null)
-				{
-					$config = array(
-						'option'   => 'com_answers',
-						'scope'    => 'question',
-						'pagename' => $this->get('id'),
-						'pageid'   => 0,
-						'filepath' => '',
-						'domain'   => ''
-					);
-
-					$content = (string) $this->get('subject', '');
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
-						'com_answers.question.subject',
-						&$this,
-						&$config
-					));
-
-					$this->set('subject.parsed', (string) $this->get('subject', ''));
-					$this->set('subject', $content);
-
-					return $this->subject($as, $shorten);
-				}
-
-				$options['html'] = true;
-			break;
-
-			case 'clean':
-				$content = html_entity_decode(strip_tags($this->subject('parsed')), ENT_COMPAT, 'UTF-8');
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
-
-			case 'raw':
-			default:
-				$content = $this->get('subject');
-				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-			break;
-		}
-
-		if ($shorten)
-		{
-			$content = String::truncate($content, $shorten, $options);
-		}
-
-		return $content;
+		return $this->oneShiftsToMany('Vote', 'item_id', 'item_type');
 	}
 
 	/**
 	 * Check if a user has voted for this entry
 	 *
-	 * @param   integer $user_id Optinal user ID to set as voter
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @param   string   $ip       IP Address
 	 * @return  integer
 	 */
-	public function voted($user_id=0)
+	public function ballot($user_id = 0, $ip = null)
 	{
-		if ($this->get('voted', -1) == -1)
+		if (User::isGuest())
 		{
-			$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+			$vote = new Vote();
+			$vote->set('item_type', 'question');
+			$vote->set('item_id', $this->get('id'));
+			$vote->set('created_by', $user_id);
+			$vote->set('ip', $ip);
 
-			// See if a person from this IP has already voted in the last week
-			$aql = new Tables\QuestionsLog($this->_db);
-			$this->set(
-				'voted',
-				$aql->checkVote($this->get('id'), Request::ip(), $user->get('id'))
-			);
+			return $vote;
 		}
 
-		return $this->get('voted', 0);
+		$user = $user_id ? User::getInstance($user_id) : User::getRoot();
+		$ip   = $ip ?: Request::ip();
+
+		// See if a person from this IP has already voted in the last week
+		$votes = $this->votes();
+
+		if ($user->get('id'))
+		{
+			$votes->whereEquals('created_by', $user->get('id'));
+		}
+		elseif ($ip)
+		{
+			$votes->whereEquals('ip', $ip);
+		}
+
+		$vote = $votes
+			->ordered()
+			->limit(1)
+			->row();
+
+		if (!$vote || !$vote->get('id'))
+		{
+			$vote = new Vote();
+			$vote->set('item_type', 'question');
+			$vote->set('item_id', $this->get('id'));
+			$vote->set('created_by', $user_id);
+			$vote->set('ip', $ip);
+		}
+
+		return $vote;
 	}
 
 	/**
@@ -674,11 +428,12 @@ class Question extends Base
 	 *
 	 * @param   integer  $vote     The vote [0, 1]
 	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @param   string   $ip       Optional IP address
 	 * @return  boolean  False if error, True on success
 	 */
-	public function vote($vote=0, $user_id=0)
+	public function vote($vote = 0, $user_id = 0, $ip = null)
 	{
-		if (!$this->exists())
+		if (!$this->get('id'))
 		{
 			$this->setError(Lang::txt('No record found'));
 			return false;
@@ -690,53 +445,152 @@ class Question extends Base
 			return false;
 		}
 
-		$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+		$al = $this->ballot($user_id, $ip);
+		$al->set('item_type', 'question');
+		$al->set('item_id', $this->get('id'));
+		$al->set('created_by', $user_id);
+		$al->set('ip', $ip);
 
-		$al = new Tables\QuestionsLog($this->_db);
-		$al->question_id = $this->get('id');
-		$al->ip          = Request::ip();
-		$al->voter       = $user->get('id');
+		$vote = $al->automaticVote(['vote' => $vote]);
 
-		if ($al->checkVote($al->question_id, $al->ip, $al->voter))
+		if ($this->get('created_by') == $user_id)
 		{
-			$this->setError(Lang::txt('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
+			$this->setError(Lang::txt('Cannot vote for your own entry'));
 			return false;
 		}
 
-		if ($this->get('created_by') == $user->get('id'))
+		if ($vote != $al->get('vote', 0))
 		{
-			$this->setError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
-			return false;
-		}
+			if ($vote > 0)
+			{
+				$this->set('helpful', (int) $this->get('helpful') + 1);
+				if ($al->get('id'))
+				{
+					$this->set('nothelpful', (int) $this->get('nothelpful') - 1);
+				}
+			}
+			else
+			{
+				if ($al->get('id'))
+				{
+					$this->set('helpful', (int) $this->get('helpful') - 1);
+				}
+				$this->set('nothelpful', (int) $this->get('nothelpful') + 1);
+			}
 
-		$this->set('helpful', (int) $this->get('helpful') + 1);
+			if (!$this->save())
+			{
+				return false;
+			}
 
-		if (!$this->store())
-		{
-			return false;
-		}
+			$al->set('vote', $vote);
 
-		$al->expires = Date::add('1 week')->toSql();
-
-		if (!$al->check())
-		{
-			$this->setError($al->getError());
-			return false;
-		}
-		if (!$al->store())
-		{
-			$this->setError($al->getError());
-			return false;
+			if (!$al->save())
+			{
+				$this->setError($al->getError());
+				return false;
+			}
 		}
 
 		return true;
 	}
 
 	/**
+	 * Get reward value
+	 *
+	 * @param   string   $val  Value to return
+	 * @return  integer
+	 */
+	public function reward($val='reward')
+	{
+		if (!$this->config('banking'))
+		{
+			return 0;
+		}
+
+		if ($this->get('reward', -1) == 1)
+		{
+			$db = \App::get('db');
+
+			$BT = new Transaction($db);
+			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
+
+			$AE = new Economy($db);
+
+			$this->set('marketvalue', round($AE->calculate_marketvalue($this->get('id'), 'maxaward')));
+			$this->set('maxaward', round(2* $this->get('marketvalue', 0)/3 + $this->get('reward', 0)));
+
+			$this->set('totalmarketvalue', $this->get('marketvalue', 0) + $this->get('reward', 0));
+
+			$this->set('asker_earnings', round($this->get('marketvalue', 0)/3));
+			$this->set('answer_earnings', ($this->get('asker_earnings') + $this->get('reward', 0)) . ' &mdash; ' . $this->get('maxaward'));
+		}
+
+		return $this->get($val, 0);
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
+	{
+		// Remove comments
+		foreach ($this->responses() as $response)
+		{
+			if (!$response->destroy())
+			{
+				$this->setError($response->getError());
+				return false;
+			}
+		}
+
+		// Remove all tags
+		$this->tag('');
+
+		// Remove vote logs
+		foreach ($this->votes() as $vote)
+		{
+			if (!$vote->destroy())
+			{
+				$this->setError($vote->getError());
+				return false;
+			}
+		}
+
+		// Attempt to delete the record
+		return parent::destroy();
+	}
+
+	/**
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
+	 *
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default  Default value if key not found
+	 * @return  mixed
+	 */
+	public function config($key=null, $default=null)
+	{
+		$config = Component::params('com_answers');
+
+		if ($key)
+		{
+			if ($key == 'banking' && $config->get('banking', -1) == -1)
+			{
+				$config->set('banking', Component::params('com_members')->get('bankAccounts'));
+			}
+			return $config->get($key, $default);
+		}
+		return $config;
+	}
+
+	/**
 	 * Accept a response as the chosen answer
 	 *
-	 * @param   integer $answer_id ID of response to be chosen
-	 * @return  boolean False if error, True on success
+	 * @param   integer  $answer_id  ID of response to be chosen
+	 * @return  boolean  False if error, True on success
 	 */
 	public function accept($answer_id=0)
 	{
@@ -747,15 +601,11 @@ class Question extends Base
 		}
 
 		// Load the answer
-		$answer = new Response($answer_id);
-		if (!$answer->exists())
-		{
-			$this->setError(Lang::txt('Answer not found.'));
-			return false;
-		}
+		$answer = Response::oneOrFail($answer_id);
+
 		// Mark it at the chosen one
 		$answer->set('state', 1);
-		if (!$answer->store(true))
+		if (!$answer->save())
 		{
 			$this->setError($answer->getError());
 			return false;
@@ -767,23 +617,25 @@ class Question extends Base
 		// If banking is enabled
 		if ($this->config('banking'))
 		{
+			$db = \App::get('db');
+
 			// Accepted answer is same person as question submitter?
 			if ($this->get('created_by') == $answer->get('created_by'))
 			{
-				$BT = new Transaction($this->_db);
+				$BT = new Transaction($db);
 				$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
 
 				// Remove hold
 				$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 				// Make credit adjustment
-				$BTL_Q = new Teller($this->_db, User::get('id'));
+				$BTL_Q = new Teller($db, User::get('id'));
 				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
 			}
 			else
 			{
 				// Calculate and distribute earned points
-				$AE = new Helpers\Economy($this->_db);
+				$AE = new Economy($db);
 				$AE->distribute_points(
 					$this->get('id'),
 					$this->get('created_by'),
@@ -797,7 +649,7 @@ class Question extends Base
 		}
 
 		// Save changes
-		return $this->store(true);
+		return $this->save();
 	}
 
 	/**
@@ -809,16 +661,18 @@ class Question extends Base
 	{
 		if ($this->get('reward'))
 		{
+			$db = \App::get('db');
+
 			// Adjust credits
 			// Remove hold
-			$BT = new Transaction($this->_db);
+			$BT = new Transaction($db);
 			$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
 			$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 			// Make credit adjustment
 			if (is_object($this->creator()))
 			{
-				$BTL = new Teller($this->_db, $this->creator('id'));
+				$BTL = new Teller($db, $this->get('created_by'));
 				$credit = $BTL->credit_summary();
 				$adjusted = $credit - $reward;
 				$BTL->credit_adjustment($adjusted);
@@ -826,85 +680,6 @@ class Question extends Base
 
 			$this->set('reward', 0);
 		}
-	}
-
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function delete()
-	{
-		// Can't delete what doesn't exist
-		if (!$this->exists())
-		{
-			return true;
-		}
-
-		// Adjust credits
-		$this->adjustCredits();
-
-		// Remove comments
-		foreach ($this->comments('list', array('filterby' => 'all')) as $comment)
-		{
-			if (!$comment->delete())
-			{
-				$this->setError($comment->getError());
-				return false;
-			}
-		}
-
-		// Remove all tags
-		$this->tag('');
-
-		// Attempt to delete the record
-		return parent::delete();
-	}
-
-	/**
-	 * Store changes to this database entry
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->check())
-			{
-				return false;
-			}
-
-			if ($this->_context)
-			{
-				$txt = $this->get('subject') . ' ' . $this->get('question') . ' ' . $this->get('tags');
-				$results = $this->importPlugin('content')->trigger('onContentBeforeSave', array(
-					$this->_context,
-					&$txt,
-					$this->exists()
-				));
-				foreach ($results as $result)
-				{
-					if ($result === false)
-					{
-						$this->setError(\Lang::txt('Content failed validation.'));
-						return false;
-					}
-				}
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
 	}
 }
 
