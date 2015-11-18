@@ -47,7 +47,7 @@ require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'plan.php');
 require_once(__DIR__ . DS . 'vote.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
 
 /**
  * Wishlist model class for a wish
@@ -856,7 +856,7 @@ class Wish extends Base
 			return false;
 		}
 
-		$tbl = new \Components\Answers\Tables\Vote($this->_db);
+		$tbl = new \Components\Wishlist\Tables\Vote($this->_db);
 
 		$vote = strtolower($vote);
 
@@ -942,7 +942,7 @@ class Wish extends Base
 			default:
 				if (!($this->_cache['votes.list'] instanceof ItemList) || $clear)
 				{
-					$tbl = new \Components\Answers\Tables\Vote($this->_db);
+					$tbl = new \Components\Wishlist\Tables\Vote($this->_db);
 
 					$results = $tbl->getResults($filters);
 					if (!$results)
@@ -1239,7 +1239,7 @@ class Wish extends Base
 			case 'vote':
 			case 'votes':
 			case 'feedback':
-				$v = new \Components\Answers\Tables\Vote($this->_db);
+				$v = new \Components\Wishlist\Tables\Vote($this->_db);
 				if (!$v->deleteVotes(array('id' => $this->get('id'), 'category' => 'wish')))
 				{
 					$this->setError($v->getError());
