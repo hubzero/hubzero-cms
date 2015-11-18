@@ -99,10 +99,18 @@ class Job extends Relational
 	 */
 	public $always = array(
 		'event',
-		'created',
-		'created_by',
 		'publish_up',
 		'publish_down'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
 	);
 
 	/**
@@ -265,11 +273,7 @@ class Job extends Relational
 	 */
 	public function isPublished()
 	{
-		if ($this->get('state') == self::STATE_PUBLISHED)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_PUBLISHED);
 	}
 
 	/**

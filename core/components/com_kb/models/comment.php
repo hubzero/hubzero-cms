@@ -94,11 +94,11 @@ class Comment extends Relational
 	);
 
 	/**
-	 * Automatically fillable fields
+	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var  array
 	 */
-	public $always = array(
+	public $initiate = array(
 		'created',
 		'created_by'
 	);
@@ -134,7 +134,11 @@ class Comment extends Relational
 	 */
 	public function creator()
 	{
-		return Profile::getInstance($this->get('created_by'));
+		if ($profile = Profile::getInstance($this->get('created_by')))
+		{
+			return $profile;
+		}
+		return new Profile;
 	}
 
 	/**
@@ -144,11 +148,7 @@ class Comment extends Relational
 	 */
 	public function isReported()
 	{
-		if ($this->get('state') == 3)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == 3);
 	}
 
 	/**

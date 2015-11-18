@@ -88,7 +88,15 @@ class Article extends Relational
 	 * @var  array
 	 **/
 	public $always = array(
-		'alias',
+		'alias'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
 		'created',
 		'created_by'
 	);

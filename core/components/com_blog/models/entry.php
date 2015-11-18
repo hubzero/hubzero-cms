@@ -87,10 +87,18 @@ class Entry extends Relational
 	 */
 	public $always = array(
 		'alias',
-		'created',
-		'created_by',
 		'publish_up',
 		'publish_down'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
 	);
 
 	/**
@@ -105,14 +113,14 @@ class Entry extends Relational
 	/**
 	 * Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $params = NULL;
 
 	/**
 	 * Scope adapter
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $adapter = null;
 
@@ -227,26 +235,6 @@ class Entry extends Relational
 	 *
 	 * @return  boolean
 	 */
-	/*public static function published()
-	{
-		$results = self::all();
-
-		$results->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
-					->orWhere('publish_up', '<=', \Date::toSql(), 1);
-
-		$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
-					->orWhere('publish_down', '>=', \Date::toSql(), 1);
-
-		$results->whereEquals('state', '1');
-
-		return $results;
-	}*/
-
-	/**
-	 * Has the publish window started?
-	 *
-	 * @return  boolean
-	 */
 	public function started()
 	{
 		// If it doesn't exist or isn't published
@@ -295,11 +283,7 @@ class Entry extends Relational
 	 */
 	public function isDeleted()
 	{
-		if ($this->get('state') == -1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == -1);
 	}
 
 	/**
@@ -327,35 +311,15 @@ class Entry extends Relational
 	/**
 	 * Get the creator of this entry
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string  $property
-	 * @param   mixed   $default
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function creator($property=null, $default=null)
+	public function creator()
 	{
-		/*if (!($this->_creator instanceof Profile))
+		if ($profile = Profile::getInstance($this->get('created_by')))
 		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
+			return $profile;
 		}
-		if ($property)
-		{
-			$property = ($property == 'id') ? 'uidNumber' : $property;
-			if ($property == 'picture')
-			{
-				return $this->_creator->getPicture();
-			}
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;*/
-		return Profile::getInstance($this->get('created_by'));
+		return new Profile;
 	}
 
 	/**
