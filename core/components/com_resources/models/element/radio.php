@@ -33,6 +33,7 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
+use Lang;
 
 /**
  * Renders a radio element
