@@ -50,9 +50,14 @@ class AuthServiceProvider extends Middleware
 	{
 		$response = $this->next($request);
 
+		// Get the referer to parse for the applicable app
+		$referer = $request->header('referer');
+		$app     = Request::create($referer)->segment(1, 'site');
+		$app     = (in_array($app, ['site', 'administrator'])) ? $app : 'site';
+
 		// Get secret and session name manually
 		$secret      = $this->app['config']->get('secret');
-		$cookie_name = md5(md5($secret . 'site'));
+		$cookie_name = md5(md5($secret . $app));
 		$session_id  = $request->getVar($cookie_name, false, 'COOKIE');
 
 		// Build moderator
