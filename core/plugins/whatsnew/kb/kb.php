@@ -88,30 +88,36 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 
 		// Build the query
 		$f_count = "SELECT COUNT(*)";
-		$f_fields = "SELECT"
-			. " f.id, "
-			. " f.title, "
-			. " 'kb' AS section, NULL AS subsection, "
-			. " f.fulltxt AS text,"
-			. " CONCAT('index.php?option=com_kb&task=article&id=', f.id) AS href";
+		$f_fields = "SELECT
+			f.id,
+			f.title,
+			f.fulltxt AS `text`,
+			concat('index.php?option=com_kb&section=', coalesce(concat(c.path, '/'), ''), f.alias) AS href,
+			'kb' AS section,
+			c.alias AS subsection";
 
-		$f_from = " FROM #__kb_articles AS f";
+		$f_from = " FROM `#__kb_articles` AS f
+			LEFT JOIN `#__categories` AS c
+				ON c.id = f.category
+			WHERE f.state=1
+				AND c.published = 1
+				AND f.created > " . $database->quote($period->cStartDat) . "
+				AND f.created < " . $database->quote($period->cEndDate) . "
+				AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
 
-		$f_where = "f.state=1 AND f.created > '$period->cStartDate' AND f.created < '$period->cEndDate' AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
-
-		$order_by  = " ORDER BY created DESC, title";
+		$order_by  = " ORDER BY f.created DESC, f.title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
 		if (!$limit)
 		{
 			// Get a count
-			$database->setQuery($f_count . $f_from . " WHERE " . $f_where);
+			$database->setQuery($f_count . $f_from);
 			return $database->loadResult();
 		}
 		else
 		{
 			// Get results
-			$database->setQuery($f_fields . $f_from . " WHERE " . $f_where . $order_by);
+			$database->setQuery($f_fields . $f_from . $order_by);
 			$rows = $database->loadObjectList();
 
 			foreach ($rows as $key => $row)
