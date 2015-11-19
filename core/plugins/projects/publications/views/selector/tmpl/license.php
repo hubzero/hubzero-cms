@@ -38,6 +38,13 @@ $pubParams = $this->publication->params;
 	<?php foreach ($this->selections as $item)
 	{
 		$selected = $this->publication->get('license_type') && $this->publication->get('license_type') == $item->id ? true : false;
+
+		// Automatically seleçt default license
+		if ($item->main)
+		{
+			$selected = true;
+		}
+
 		$liId = 'choice-' . $item->id;
 
 		$info = $item->info;
