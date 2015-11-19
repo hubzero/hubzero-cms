@@ -422,7 +422,7 @@ class Parser
 				$macro =& $_macros[$matches[1]];
 			}
 
-			if (!is_object($macro))
+			if (!isset($macro) || !is_object($macro))
 			{
 				return '';
 			}
