@@ -62,8 +62,8 @@ class Xml extends SiteController
 			$until = Date::of($until)->toSql();
 		}
 		$set        = Request::getVar('set');
-		$resumption = Request::getVar('resumptionToken');
-		$identifier = Request::getVar('identifier');
+		$resumption = urldecode(Request::getVar('resumptionToken'));
+		$identifier = urldecode(Request::getVar('identifier'));
 
 		$igran  = "YYYY-MM-DD";
 		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
@@ -86,6 +86,7 @@ class Xml extends SiteController
 				->set('deletedRecord', $this->config->get('del'))
 				->set('granularity', $igran)
 				->set('limit', $this->config->get('limit', 50))
+				->set('start', 0)
 				->set('allow_ore', $this->config->get('allow_ore', 0))
 				->set('gran', $this->config->get('gran', 'c'))
 				->set('resumption', $resumption);
@@ -189,7 +190,37 @@ class Xml extends SiteController
 			break;
 
 			case 'ListIdentifiers':
-				if (!$metadata)
+				if (!empty($resumption))
+				{
+					try
+					{
+						$data = $service->decodeToken($resumption);
+					}
+					catch (\Exception $e)
+					{
+						$service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+					}
+
+					if (!$service->getError())
+					{
+						if (!$data || !is_array($data))
+						{
+							$service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+						}
+						else
+						{
+							$service->set('limit', isset($data['limit']) ? $data['limit'] : $service->get('limit'));
+							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
+							$from     = isset($data['from'])   ? $data['from']   : $from;
+							$until    = isset($data['until'])  ? $data['until']  : $until;
+							$set      = isset($data['set'])    ? $data['set']    : $set;
+							$metadata = isset($data['prefix']) ? $data['prefix'] : $metadata;
+							$service->set('metadataPrefix', $metadata);
+						}
+					}
+				}
+
+				if (!$service->getError() && !$metadata)
 				{
 					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
 				}
@@ -210,7 +241,37 @@ class Xml extends SiteController
 			break;
 
 			case 'ListRecords':
-				if (!$metadata)
+				if (!empty($resumption))
+				{
+					try
+					{
+						$data = $service->decodeToken($resumption);
+					}
+					catch (\Exception $e)
+					{
+						$service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+					}
+
+					if (!$service->getError())
+					{
+						if (!$data || !is_array($data))
+						{
+							$service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+						}
+						else
+						{
+							$service->set('limit', isset($data['limit']) ? $data['limit'] : $service->get('limit'));
+							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
+							$from     = isset($data['from'])   ? $data['from']   : $from;
+							$until    = isset($data['until'])  ? $data['until']  : $until;
+							$set      = isset($data['set'])    ? $data['set']    : $set;
+							$metadata = isset($data['prefix']) ? $data['prefix'] : $metadata;
+							$service->set('metadataPrefix', $metadata);
+						}
+					}
+				}
+
+				if (!$service->getError() && !$metadata)
 				{
 					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
 				}

@@ -213,7 +213,7 @@ class Service extends Object
 
 		$this->schema = $type;
 
-		if (!$this->schema)
+		if (!($this->schema instanceof Schema))
 		{
 			return $this->error(self::ERROR_BAD_FORMAT, Lang::txt('Invalid or missing metadataPrefix'));
 		}
@@ -455,6 +455,10 @@ class Service extends Object
 	 */
 	public function records($from, $until, $set = null, $verb = 'ListRecords')
 	{
+		// Set flow control vars
+		$limit = $this->get('limit', 50);
+		$start = $this->get('start', 0);
+
 		$queries = array();
 
 		foreach ($this->providers as $provider)
@@ -471,39 +475,6 @@ class Service extends Object
 		{
 			return $this->error(self::ERROR_RECORD_NOT_FOUND, null, $verb);
 		}
-
-		// Set flow control vars
-		$limit      = $this->get('limit', 50);
-		$start      = 0;
-		$resumption = $this->get('resumption');
-
-		// Check completion
-		if (!empty($resumption))
-		{
-			$data = \App::get('session')->get($resumption);
-
-			if (!$data)
-			{
-				return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
-			}
-
-			if (is_array($data))
-			{
-				if (!isset($data['prefix']) || $data['prefix'] != $this->get('metadataPrefix'))
-				{
-					//return $this->error(self::ERROR_BAD_RESUMPTION_TOKEN);
-				}
-				$start = (isset($data['start']) && isset($data['limit'])) ? $data['start'] + $data['limit']: $start;
-			}
-		}
-
-		$resumption = md5(uniqid());
-
-		\App::get('session')->set($resumption, array(
-			'limit'  => $limit,
-			'start'  => $start,
-			'prefix' => $this->get('metadataPrefix')
-		));
 
 		// Get Records
 		$sql = "SELECT COUNT(*) FROM (" . implode(' UNION ', $queries) . ") AS m";
@@ -537,6 +508,15 @@ class Service extends Object
 		// Write resumption token if needed
 		if ($total > ($start + $limit))
 		{
+			$resumption = $this->encodeToken(
+				$limit,
+				$start,
+				$from,
+				$until,
+				$set,
+				$this->get('metadataPrefix')
+			);
+
 			$this->response
 				->element('resumptionToken', $resumption)
 					->attr('completeListSize', $total)
@@ -548,6 +528,62 @@ class Service extends Object
 			->end();
 
 		return $this;
+	}
+
+	/**
+	 * Create a resumption token
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $start
+	 * @param   string   $from
+	 * @param   string   $until
+	 * @param   string   $set
+	 * @param   string   $prefix
+	 * @return  string
+	 */
+	public function encodeToken($limit, $start, $from, $until, $set, $prefix)
+	{
+		$resumption = implode(',', array(
+			$limit,
+			$start,
+			$from,
+			$until,
+			$set,
+			$prefix
+		));
+		if (function_exists('gzcompress'))
+		{
+			$resumption = gzcompress($resumption);
+		}
+		$resumption = base64_encode($resumption);
+
+		return rtrim(strtr($resumption, '+/', '-_'), '=');
+	}
+
+	/**
+	 * Decode a resumption token
+	 *
+	 * @param   string  $resumption
+	 * @return  array
+	 */
+	public function decodeToken($resumption)
+	{
+		$resumption = base64_decode(str_pad(strtr($resumption, '-_', '+/'), strlen($resumption) % 4, '=', STR_PAD_RIGHT));
+		if (function_exists('gzuncompress'))
+		{
+			$resumption = gzuncompress($resumption);
+		}
+
+		list($limit, $start, $from, $until, $set, $prefix) = explode(',', $resumption);
+
+		return array(
+			'limit'  => $limit,
+			'start'  => $start,
+			'from'   => $from,
+			'until'  => $until,
+			'set'    => $set,
+			'prefix' => $prefix
+		);
 	}
 
 	/**
