@@ -234,7 +234,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 			);
 
 			$comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
-			echo $comments[0];
+			echo implode("\n", $comments);
 		?>
 	</div>
 <?php endif; ?>
