@@ -205,13 +205,7 @@ foreach ($this->cats as $cat)
 					$feed = Route::url('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
 					if (substr($feed, 0, 4) != 'http')
 					{
-						if (substr($feed, 0, 1) != DS)
-						{
-							$feed = DS . $feed;
-						}
-						$live_site = rtrim(Request::base(),'/');
-
-						$feed = $live_site . $feed;
+						$feed = rtrim(Request::getSchemeAndHttpHost(), '/') . '/' . ltrim($feed, '/');
 					}
 					$feed = str_replace('https:://', 'http://', $feed);
 
@@ -254,13 +248,9 @@ foreach ($this->cats as $cat)
 						}
 						else
 						{
-							if (strstr( $row->href, 'index.php' ))
+							if (strstr($row->href, 'index.php'))
 							{
 								$row->href = Route::url($row->href);
-							}
-							if (substr($row->href,0,1) == '/')
-							{
-								$row->href = substr($row->href, 1, strlen($row->href));
 							}
 
 							$html .= "\t" . '<li>' . "\n";
@@ -268,7 +258,7 @@ foreach ($this->cats as $cat)
 							if ($row->text) {
 								$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text))), 200) . '</p>' . "\n";
 							}
-							$html .= "\t\t" . '<p class="href">' . Request::base() . $row->href . '</p>' . "\n";
+							$html .= "\t\t" . '<p class="href">' . rtrim(Request::getSchemeAndHttpHost(), '/') . '/' . ltrim($row->href, '/') . '</p>' . "\n";
 							$html .= "\t" . '</li>' . "\n";
 						}
 					}
