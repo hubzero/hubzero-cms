@@ -11,6 +11,9 @@ defined('_HZEXEC_') or die();
 
 $params = new \Hubzero\Config\Registry;
 
+$this->_tmp_doc->name  = ltrim($this->_tmp_doc->name, DS);
+$this->_tmp_doc->title = ltrim($this->_tmp_doc->title, DS);
+
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
 		<div class="imgOutline">

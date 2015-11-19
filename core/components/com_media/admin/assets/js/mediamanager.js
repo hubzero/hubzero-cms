@@ -59,7 +59,7 @@
 
 		submit: function(task)
 		{
-			form = window.frames['folderframe'].$('#mediamanager-form');
+			form = window.frames['folderframe'].document.forms['mediamanager-form'];
 			form.task.value = task;
 			if ($('#username').length) {
 				form.username.value = $('#username').val();
