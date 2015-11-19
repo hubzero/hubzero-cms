@@ -34,6 +34,7 @@ namespace Hubzero\Routing;
 
 use Hubzero\Base\Middleware;
 use Hubzero\Http\Request;
+use Hubzero\Http\RedirectResponse;
 
 /**
  * Router service provider
@@ -51,6 +52,29 @@ class RouterServiceProvider extends Middleware
 		{
 			return new Manager($app);
 		};
+	}
+
+	/**
+	 * Force SSL if site is configured to and
+	 * the connection is not secure.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		if ($this->app->isSite() && $this->app['config']->get('force_ssl') == 2)
+		{
+			if (!$this->app['request']->isSecure())
+			{
+				$uri = str_replace('http:', 'https:', $this->app['request']->getUri());
+
+				$redirect = new RedirectResponse($uri);
+				$redirect->setRequest($this->app['request']);
+				$redirect->send();
+
+				$this->app->close();
+			}
+		}
 	}
 
 	/**
