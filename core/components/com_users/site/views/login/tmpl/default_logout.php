@@ -10,18 +10,18 @@
 defined('_HZEXEC_') or die();
 
 // If the user is already logged in, redirect to the return or profile page.
-if (User::isGuest())
+if (!User::isGuest())
 {
 	$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
 
 	if ($return)
 	{
-		JFactory::getApplication()->redirect(Route::url($return, false));
+		App::redirect(Route::url($return, false));
 		return;
 	}
 
 	// Redirect to profile page.
-	JFactory::getApplication()->redirect(Route::url('index.php?option=com_members&task=myaccount', false));
+	App::redirect(Route::url('index.php?option=com_members&task=myaccount', false));
 	return;
 }
 
