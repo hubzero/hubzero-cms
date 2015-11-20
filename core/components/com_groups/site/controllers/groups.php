@@ -770,19 +770,20 @@ class Groups extends Base
 
 		// Build the e-mail message
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new \Hubzero\Mail\View(array(
+		$eview = new \Hubzero\Component\View(array(
 			'name'   => 'emails',
-			'layout' => 'saved_plain'
+			'layout' => 'saved'
 		));
+
 		$eview->option = $this->_option;
 		$eview->user   = User::getRoot();
 		$eview->group  = $group;
-		$plain = $eview->loadTemplate(false);
-		$plain = str_replace("\n", "\r\n", $plain);
+		$message['plaintext'] = $eview->loadTemplate();
+		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 		$eview->setLayout('saved');
-		$html = $eview->loadTemplate();
-		$html = str_replace("\n", "\r\n", $html);
+		$message['multipart'] = $eview->loadTemplate();
+		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 		// Get the administrator e-mail
 		$emailadmin = Config::get('mailfrom');
@@ -797,30 +798,15 @@ class Groups extends Base
 		if ($type == 'groups_changed')
 		{
 			// build array of managers
-			$managers = array();
-			foreach ($group->get('managers') as $m)
-			{
-				$profile = \Hubzero\User\Profile::getInstance($m);
-				if ($profile)
-				{
-					$managers[$profile->get('email')] = $profile->get('name');
-				}
-			}
+			$managers = $group->get('managers');
 
 			// create new message
-			$message = new \Hubzero\Mail\Message();
+			Plugin::import('xmessage');
 
-			// build message object and send
-			$message->setSubject($subject)
-					->addFrom($from['email'], $from['name'])
-					->setTo($managers)
-					->addHeader('X-Mailer', 'PHP/' . phpversion())
-					->addHeader('X-Component', 'com_groups')
-					->addHeader('X-Component-Object', 'group_saved')
-					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
-					->addPart($plain, 'text/plain')
-					->addPart($html, 'text/html')
-					->send();
+			if (!Event::trigger('onSendMessage', array($type, $subject, $message, $from, $managers, $this->_option)))
+			{
+				$this->setNotification(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
+			}
 		}
 
 		//only inform site admin if the group wasn't auto-approved
