@@ -57,6 +57,9 @@
 	.th_image {
 		width: 25px;
 	}
+	td.th_image {
+		width: auto;
+	}
 	.th_image img {
 		width: 25px;
 		height: 25px;
