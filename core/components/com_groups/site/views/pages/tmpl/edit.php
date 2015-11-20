@@ -150,9 +150,9 @@ if ($this->page->get('id'))
 								//'autoGrowMinHeight'           => 500,
 								'height'                      => '500px',
 								'fileBrowserWindowWidth'      => 1200,
-								'fileBrowserBrowseUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', true),
-								'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', true),
-								'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ckeditorupload&tmpl=component&' . Session::getFormToken() . '=1', true),
+								'fileBrowserBrowseUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
+								'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
+								'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ckeditorupload&tmpl=component&' . Session::getFormToken() . '=1', false),
 								'allowPhpTags'                => $allowPhp,
 								'allowScriptTags'             => $allowScripts
 							);
@@ -161,7 +161,7 @@ if ($this->page->get('id'))
 							if ($this->group->isSuperGroup())
 							{
 								$config['templates_replace'] = false;
-								$config['templates_files']   = array('pagelayouts' => '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
+								$config['templates_files']   = array('pagelayouts' => '/app/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
 							}
 
 							// display with ckeditor
