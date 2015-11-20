@@ -777,12 +777,21 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Build the e-mail message
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
-		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'saved'));
+		$eview = new \Hubzero\Component\View(array(
+			'name' => 'emails',
+			'layout' => 'saved'));
 		$eview->option = $this->_option;
 		$eview->juser  = $this->juser;
 		$eview->group  = $group;
-		$html = $eview->loadTemplate();
-		$html = str_replace("\n", "\r\n", $html);
+
+		// HTML email
+		$message['multipart'] = $eview->loadTemplate();
+		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+		// Plaintext email
+		$eview->setLayout('saved_plain');
+		$message['plaintext'] = $eview->loadTemplate();
+		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 		// Get the administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
@@ -797,29 +806,16 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if ($type == 'groups_changed')
 		{
 			// build array of managers
-			$managers = array();
-			foreach ($group->get('managers') as $m)
+			$managers = $group->get('managers');
+
+			// Get the xmessage plugin
+			JPluginHelper::importPlugin('xmessage');
+			$dispatcher = JDispatcher::getInstance();
+
+			if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $managers, $this->_option)))
 			{
-				$profile = \Hubzero\User\Profile::getInstance( $m );
-				if ($profile)
-				{
-					$managers[$profile->get('email')] = $profile->get('name');
-				}
+				$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
 			}
-
-			// create new message
-			$message = new \Hubzero\Mail\Message();
-
-			// build message object and send
-			$message->setSubject($subject)
-					->addFrom($from['email'], $from['name'])
-					->setTo($managers)
-					->addHeader('X-Mailer', 'PHP/' . phpversion())
-					->addHeader('X-Component', 'com_groups')
-					->addHeader('X-Component-Object', 'group_saved')
-					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
-					->addPart($html, 'text/html')
-					->send();
 		}
 
 		//only inform site admin if the group wasnt auto-approved
