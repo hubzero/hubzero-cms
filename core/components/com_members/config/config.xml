@@ -56,7 +56,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="orcid_members_token" type="text" menu="hide" default="" label="ORCID Members Token" description="Authorization token for the members ORCID service." />
 		<field name="orcid_sandbox_token" type="text" menu="hide" default="" label="ORCID Sandbox Token" description="Authorization token for the sandbox ORCID service." />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
+		<field name="defaultpic" type="text" menu="hide" default="/core/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<field name="identicon" type="list" default="0" label="Random Picture" description="Enable generation of a random picture for profiles that do not have one set">
 			<option value="1">On</option>
 			<option value="0">Off</option>

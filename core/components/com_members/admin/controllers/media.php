@@ -272,6 +272,7 @@ class Media extends AdminController
 			$id = Request::getInt('id', 0);
 		}
 		$this->view->id = $id;
+		$this->view->profile = \Hubzero\User\Profile::getInstance($id);
 
 		if (!$file)
 		{
