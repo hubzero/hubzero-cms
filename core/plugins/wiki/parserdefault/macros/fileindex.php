@@ -87,11 +87,19 @@ class FileIndexMacro extends WikiMacro
 				$config->set('filepath', $this->filepath);
 			}
 
+			$page = new \Components\Wiki\Models\Page($this->pageid);
+			if ($page->get('namespace') == 'help')
+			{
+				$page->set('scope', ($page->get('scope') ? rtrim($this->scope, '/') . '/' . ltrim($page->get('scope'), '/') : $this->scope));
+				$page->set('group_cn', $this->domain);
+			}
+
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				$link  = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
+				$page->set('pagename', $page->get('pagename') . '/' . 'File:' . $row->filename);
+				$link  = $page->link(); //$live_site . substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
 				$fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
 
 				$html .= '<li><a href="' . Route::url($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
