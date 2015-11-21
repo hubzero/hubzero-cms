@@ -524,7 +524,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
 					***/
 					$authorEntry = explode(',', $author);
-					if (count($authorEntry == 2))
+					if (count($authorEntry) == 2)
 					{
 						$author = $authorEntry[1] . ' ' . $authorEntry[0];
 					}
@@ -983,6 +983,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$format = Request::getVar('citation-format', '');
 
 			$params = json_decode($this->group->get('params'));
+			if (!is_object($params))
+			{
+				$params = new stdClass;
+			}
 
 			// craft a clever name
 			$name =  "custom-group-" . $this->group->cn;
