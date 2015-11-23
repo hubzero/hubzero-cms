@@ -41,7 +41,8 @@ $this->css('video.css')
      ->js('jquery.colpick', 'system');
 
 //base url for the resource
-$base = DS . trim($this->config->get('uploadpath'), DS);
+$base = PATH_APP . DS . trim($this->config->get('uploadpath'), DS);
+$base = substr($base, strlen(PATH_ROOT));
 
 //presentation manifest
 $presentation = $this->manifest->presentation;
