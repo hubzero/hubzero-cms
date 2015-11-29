@@ -20,6 +20,8 @@
 // Set some needed defines
 define('PATH_APP', __DIR__);
 define('PATH_ROOT', dirname(__DIR__));
+define('DS', DIRECTORY_SEPARATOR);
 
 // Load the webroot application
 require_once PATH_ROOT . DS . 'index.php';
+
