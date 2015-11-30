@@ -227,7 +227,7 @@ class Authors extends SiteController
 
 				$this->_authorCheck($uid);
 
-				$xprofile = Profile::getInstance(User::get('id'));
+				$xprofile = Profile::getInstance($uid);
 				$rcc->subtable     = 'resources';
 				$rcc->subid        = $id;
 				$rcc->authorid     = $uid;
