@@ -31,6 +31,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Members\Tables\OrganizationType;
+
+require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
+
+
 /**
  * Resources Plugin class for usage
  */
@@ -153,6 +158,10 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
+
+			$organizationTypes = new OrganizationType($database);
+			$types = $organizationTypes->find('*');
+
 			// Instantiate a view
 			$view = $this->view('default', 'browse');
 
@@ -165,6 +174,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			$view->dthis      = $dthis;
 			$view->period     = $period;
 			$view->params     = $this->params;
+			$view->organizations = $types;
 			if ($this->getError())
 			{
 				$view->setError($this->getError());
