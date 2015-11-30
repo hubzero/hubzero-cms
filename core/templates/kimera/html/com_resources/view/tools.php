@@ -176,7 +176,7 @@ if ($mode != 'preview')
 						// Open/closed source
 						if (isset($this->model->resource->toolsource) && $this->model->resource->toolsource == 1 && isset($this->model->resource->tool)) { // open source
 							$html .= '<p class="opensource_license">'.Lang::txt('Open source').': <a class="popup" href="index.php?option='.$this->option.'&task=license&tool='.$this->model->resource->tool.'&no_html=1">license</a> ';
-							$html .= ($this->model->resource->taravailable) ? ' |  <a href="index.php/'.$this->model->resource->tarname.'?option='.$this->option.'&task=sourcecode&tool='.$this->model->resource->tool.'">'.Lang::txt('download').'</a> '."\n" : ' | <span class="unavail">'.Lang::txt('code unavaialble').'</span>'."\n";
+							$html .= ($this->model->resource->taravailable) ? ' |  <a href="index.php/'.$this->model->resource->tarname.'?option='.$this->option.'&task=sourcecode&tool='.$this->model->resource->tool.'">'.Lang::txt('download').'</a> '."\n" : ' | <span class="unavail">'.Lang::txt('code unavailable').'</span>'."\n";
 							$html .= '</p>'."\n";
 						} elseif (isset($this->model->resource->toolsource) && !$this->model->resource->toolsource) { // closed source, archive page
 							$html .= '<p class="closedsource_license">'.Lang::txt('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE').'</p>'."\n";
