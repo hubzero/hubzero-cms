@@ -603,7 +603,7 @@ class Version extends \JTable
 		$tarball_path = $config->get('sourcecodePath','site/protected/source');
 		if ($tarball_path[0] != DS)
 		{
-			$tarball_path = rtrim(PATH_CORE . DS . $tarball_path, DS);
+			$tarball_path = rtrim(PATH_APP . DS . $tarball_path, DS);
 		}
 		$resource->tarpath = $tarball_path.DS.$resource->alias.DS;
 		// Is tarball available?
