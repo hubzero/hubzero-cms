@@ -54,6 +54,9 @@ class Rules
 		{
 			if (array_key_exists($k, $rules))
 			{
+				// (Re)set rule variable
+				$rule = null;
+
 				if (is_callable($rules[$k]))
 				{
 					if ($error = call_user_func_array($rules[$k], [$data]))
