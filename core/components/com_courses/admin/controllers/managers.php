@@ -209,7 +209,7 @@ class Managers extends AdminController
 
 		$entries = Request::getVar('entries', array(0), 'post');
 
-		require_once(dirname(dirname(__DIIR__)) . DS . 'tables' . DS . 'member.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php');
 
 		foreach ($entries as $key => $data)
 		{
