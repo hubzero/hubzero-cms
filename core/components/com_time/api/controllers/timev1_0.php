@@ -92,7 +92,7 @@ class Timev1_0 extends ApiController
 	 * 		"description": "Maximim number of records to return",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     20
+	 * 		"default":     1000
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "start",
@@ -137,7 +137,7 @@ class Timev1_0 extends ApiController
 		{
 			$record->where('date', '<=', $end_date);
 		}
-		if ($limit = Request::getInt('limit', 20))
+		if ($limit = Request::getInt('limit', 1000))
 		{
 			$record->limit($limit);
 		}
@@ -253,7 +253,7 @@ class Timev1_0 extends ApiController
 	 * 		"description": "Maximim number of tasks to return",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     20
+	 * 		"default":     1000
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "start",
@@ -294,7 +294,7 @@ class Timev1_0 extends ApiController
 		{
 			$task->whereEquals('active', $active);
 		}
-		if ($limit = Request::getInt('limit', 20))
+		if ($limit = Request::getInt('limit', 1000))
 		{
 			$task->limit($limit);
 		}
@@ -333,7 +333,7 @@ class Timev1_0 extends ApiController
 	 * 		"description": "Maximim number of hubs to return",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":     20
+	 * 		"default":     1000
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "start",
@@ -370,7 +370,7 @@ class Timev1_0 extends ApiController
 		{
 			$hub->whereEquals('active', $active);
 		}
-		if ($limit = Request::getInt('limit', 100))
+		if ($limit = Request::getInt('limit', 1000))
 		{
 			$hub->limit($limit);
 		}
