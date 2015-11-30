@@ -314,6 +314,16 @@ if ($results)
 							{
 								$row->name = Lang::txt('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 							}
+							elseif ($row->name != '?' && isset($this->organizations))
+							{
+								foreach ($this->organizations as $org)
+								{
+									if ($row->name == $org->type)
+									{
+										$row->name = $org->title;
+									}
+								}
+							}
 
 							$cls = ($cls == 'even') ? 'odd' : 'even';
 							?>
