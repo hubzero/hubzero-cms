@@ -116,7 +116,7 @@ $this->css()
 					<?php endif; ?>
 				</h3>
 			<?php
-			$rows = $this->model->entries('list', $this->filters);
+			$rows = $this->model->entries('list', $this->filters, false, false);
 			if ($rows->total() > 0) { ?>
 				<ol class="blog-entries entries">
 			<?php

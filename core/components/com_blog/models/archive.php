@@ -148,7 +148,7 @@ class Archive extends Object
 	 * @param   boolean  $reset    Clear cached data?
 	 * @return  mixed
 	 */
-	public function entries($rtrn='list', $filters=array(), $reset=false)
+	public function entries($rtrn='list', $filters=array(), $reset=false, $admin=true)
 	{
 		if (!isset($filters['scope']))
 		{
@@ -184,7 +184,7 @@ class Archive extends Object
 			break;
 		}
 
-		if ($results = $this->_tbl->find('list', $filters))
+		if ($results = $this->_tbl->find('list', $filters, NULL ,$admin))
 		{
 			foreach ($results as $key => $result)
 			{

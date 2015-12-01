@@ -137,7 +137,7 @@ class Entry extends \JTable
 	 * @param   array    $select   List of fields to select
 	 * @return  mixed
 	 */
-	public function find($what='', $filters=array(), $select=array())
+	public function find($what='', $filters=array(), $select=array(), $admin=true)
 	{
 		$what = strtolower($what);
 		$select = (array) $select;
@@ -198,11 +198,23 @@ class Entry extends \JTable
 
 				if (empty($select))
 				{
-					$select = array(
-						'm.*',
-						'(SELECT COUNT(*) FROM `#__blog_comments` AS c WHERE c.entry_id=m.id) AS comments',
-						'u.name'
-					);
+					if ($admin)
+					{
+						$select = array(
+							'm.*',
+							'(SELECT COUNT(*) FROM `#__blog_comments` AS c WHERE c.entry_id=m.id) AS comments',
+							'u.name'
+						);
+					}
+					else
+					{
+						$select = array(
+							'm.*',
+							'(SELECT COUNT(*) FROM `#__blog_comments` AS c WHERE c.entry_id=m.id AND c.state = 1) AS comments',
+							'u.name'
+						);
+					}
+
 				}
 
 				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
