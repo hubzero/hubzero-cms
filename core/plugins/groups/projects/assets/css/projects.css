@@ -67,6 +67,11 @@
 		margin-left: 0.3em;
 		padding: 0.1em 0.4em;
 	}
+	.th_image .s-new {
+		margin-left: 0;
+		top: 0.5em;
+		left: 0.5em;
+	}
 	.faded {
 		color: #999 !important;
 	}
@@ -85,9 +90,10 @@
 
 /* Browse Projects - project thumbnail 
 --------------------------------------------- 
+*/
 	.th_image {
-		width: 30px;
-	}*/
+		position: relative;
+	}
 	.th_image img {
 		width: 30px;
 		height: 30px;
