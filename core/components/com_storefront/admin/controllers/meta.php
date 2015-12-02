@@ -45,10 +45,6 @@ class Meta extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
 			'access' => -1
@@ -68,7 +64,7 @@ class Meta extends AdminController
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
-			Config::get('config.list_limit'),
+			Config::get('list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
