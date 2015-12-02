@@ -217,6 +217,12 @@ class Provider extends AbstractService
 	 */
 	public function isKeyValid()
 	{
+		// Key cannot contain spaces
+		if (strstr($this->apiKey, ' '))
+		{
+			return false;
+		}
+
 		// Check to see if the key is valid
 		$response = $this->_sendRequest('key=' . $this->apiKey . '&blog=' . $this->url, $this->akismetServer, '/' . $this->akismetVersion . '/verify-key');
 		return ($response[1] == 'valid');
