@@ -52,7 +52,7 @@ class PaymentProvider
 	 */
 	public function __construct()
 	{
-		$hubName  = Config::get('config.sitename');
+		$hubName  = Config::get('sitename');
 
 		$params = Component::params(Request::getVar('option'));
 

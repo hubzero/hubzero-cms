@@ -68,7 +68,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 
 			$add = \JUserHelper::addUserToGroup($userId, $userGId);
 			if ($add instanceof \Exception) {
-				mail(Config::get('config.mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
+				mail(Config::get('mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
 			}
 
 			$table = \JTable::getInstance('User', 'JTable', array());

@@ -143,9 +143,9 @@ class Order extends ComponentController
 
 		if (!$transaction)
 		{
-			$redirect_url  = Route::url('index.php?option=' . 'com_cart');
-			$app  =  JFactory::getApplication();
-			$app->redirect($redirect_url);
+			App::redirect(
+					Route::url('index.php?option=' . 'com_cart')
+			);
 		}
 
 		// get security token (Parameter 0)

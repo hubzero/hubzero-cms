@@ -98,7 +98,7 @@ class CartMessenger
 			$message .= "\n";
 
 			$hzl = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(Config::get('config.application_env')),
+				new \Monolog\Logger(Config::get('application_env')),
 				\JDispatcher::getInstance()
 			);
 			$hzl->useFiles($this->logFile);
@@ -131,12 +131,10 @@ class CartMessenger
 		// Build emails
 
 		// Build order summary
-		$summary = 'Order summary:';
+		$summary = 'Order number: ' . $transactionInfo->tId . "\n\n";
 		$summary .= "\n====================\n\n";
 
-		$summary .= 'Order number: ' . $transactionInfo->tId . "\n\n";
-
-		$summary .= 'Order subtotal: ' . money_format('%n', $transactionInfo->tiSubtotal) . "\n";
+		$summary .= 'Subtotal: ' . money_format('%n', $transactionInfo->tiSubtotal) . "\n";
 		if (!$transactionInfo->tiShipping)
 		{
 			$transactionInfo->tiShipping = 0;
@@ -157,7 +155,7 @@ class CartMessenger
 		{
 			$summary .= 'Tax: ' . money_format('%n', $transactionInfo->tiTax) . "\n";
 		}
-		$summary .= 'Order total: ' . money_format('%n', $transactionInfo->tiTotal) . "\n";
+		$summary .= 'Total: ' . money_format('%n', $transactionInfo->tiTotal) . "\n";
 
 		if (!empty($transactionInfo->tiShippingToFirst))
 		{
@@ -238,8 +236,8 @@ class CartMessenger
 
 		// "from" info
 		$from = array();
-		$from['name']  = Config::get('config.sitename');
-		$from['email'] = Config::get('config.mailfrom');
+		$from['name']  = Config::get('sitename');
+		$from['email'] = Config::get('mailfrom');
 
 		// Email to admin
 		$adminEmail = "There is a new online store order: \n\n";
@@ -250,7 +248,7 @@ class CartMessenger
 		Event::trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
 
 		// Email to client
-		$clientEmail = 'Thank you for your order at ' . Config::get('config.sitename') . "!\n\n";
+		$clientEmail = 'Thank you for your order at ' . Config::get('sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
@@ -264,7 +262,7 @@ class CartMessenger
 
 			$notifyTo = explode(',', str_replace(' ', '', $notifyTo));
 
-			$notifyEmail = 'There is a new online store order at ' . Config::get('config.sitename') . "\n\n";
+			$notifyEmail = 'There is a new online store order at ' . Config::get('sitename') . "\n\n";
 			$notifyEmail .= $summary;
 			// Plain text email
 			$eview = new \Hubzero\Component\View(array(
@@ -281,8 +279,8 @@ class CartMessenger
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
 			$message->addFrom(
-					Config::get('config.mailfrom'),
-					Config::get('config.sitename')
+					Config::get('mailfrom'),
+					Config::get('sitename')
 			);
 			$message->addPart($plain, 'text/plain');
 			foreach ($notifyTo as $email)
@@ -308,8 +306,8 @@ class CartMessenger
 		// "from" info
 		$from = array();
 
-		$from['name']  = Config::get('config.sitename');
-		$from['email'] = Config::get('config.mailfrom');
+		$from['name']  = Config::get('sitename');
+		$from['email'] = Config::get('mailfrom');
 
 		// get admin id
 		$adminId = array($params->get('storeAdminId'));
