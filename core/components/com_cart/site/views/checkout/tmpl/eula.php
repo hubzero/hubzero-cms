@@ -79,11 +79,13 @@ if (!empty($this->notifications))
 						<fieldset>
 							<legend>Please confirm that you accept the user agreement</legend>
 							<label for="acceptEula"><input type="checkbox" class="option" name="acceptEula" id="acceptEula" /> I Accept</label>
+
+							<p>If you don't accept the user agreement, <a href="/cart">cancel and return to cart</a></p>
 						</fieldset>
 
-						<p class="submit">
+						<div class="submit">
 							<input type="submit" value="Next" name="submitEula" id="submitEula" class="btn" />
-						</p>
+						</div>
 					</fieldset>
 				</form>
 			</div>
