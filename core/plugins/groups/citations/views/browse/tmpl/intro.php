@@ -70,7 +70,7 @@ if (isset($this->messages))
 	<p id="who">A group manager may:</p>
 	<ul>
 		<li>
-			<div class="instruction">
+			<div class="instruction cf">
 			<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
 				<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
 		</a>
