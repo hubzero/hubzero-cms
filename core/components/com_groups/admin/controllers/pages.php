@@ -263,33 +263,36 @@ class Pages extends AdminController
 		$children = $this->page->getChildren();
 
 		// if we are publishing/unpublishing
-		if ($page['state'] == 0 || $page['state'] == 1)
+		if (isset($page['state']))
 		{
-			// lets mark each child the same as parent
-			foreach ($children as $child)
+			if ($page['state'] == 0 || $page['state'] == 1)
 			{
-				$child->set('state', $page['state']);
-				$child->store(false);
-			}
-		}
-
-		// if deleting lets set the first childs parent 
-		// to be the deleted pages parents
-		else if ($page['state'] == 2)
-		{
-			// update the first childs parent
-			if ($firstChild = $children->first())
-			{
-				$firstChild->set('parent', $this->page->get('parent'));
-				$firstChild->store(false);
+				// lets mark each child the same as parent
+				foreach ($children as $child)
+				{
+					$child->set('state', $page['state']);
+					$child->store(false);
+				}
 			}
 
-			// adjust depth foreach child
-			// the proper depth is needed when viewing pages
-			foreach ($children as $child)
+			// if deleting lets set the first childs parent 
+			// to be the deleted pages parents
+			else if ($page['state'] == 2)
 			{
-				$child->set('depth', $child->get('depth') - 1);
-				$child->store(false);
+				// update the first childs parent
+				if ($firstChild = $children->first())
+				{
+					$firstChild->set('parent', $this->page->get('parent'));
+					$firstChild->store(false);
+				}
+
+				// adjust depth foreach child
+				// the proper depth is needed when viewing pages
+				foreach ($children as $child)
+				{
+					$child->set('depth', $child->get('depth') - 1);
+					$child->store(false);
+				}
 			}
 		}
 
