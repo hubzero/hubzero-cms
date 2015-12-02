@@ -1101,3 +1101,15 @@
 		display: block;
 		position: relative;
 	}
+	.suggested {
+		color: orange;
+	}
+	.approved {
+		color: green;
+	}
+	.icon-suggested:before {
+		content: "\2757";
+	}
+	.icon-approved:before {
+		content: "\2714";
+	}

@@ -1048,6 +1048,18 @@
 		display: block;
 		position: relative;
 	}
+	.suggested {
+		color: orange;
+	}
+	.approved {
+		color: green;
+	}
+	.icon-suggested:before {
+		content: "\2757";
+	}
+	.icon-approved:before {
+		content: "\2714";
+	}
 
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1064px) {
