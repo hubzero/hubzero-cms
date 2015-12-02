@@ -1238,7 +1238,8 @@ class Publication extends Object
 			if ($this->get('master_access') >= 2)
 			{
 				$groups = $this->getAccessGroups();
-				if (array_intersect($usersgroups, $groups) > 1)
+				$common = array_intersect($usersgroups, $groups);
+				if (count($common) > 1)
 				{
 					$this->params->set('access-view-publication', true);
 					$this->params->set('access-view-all-publication', true);
@@ -1271,7 +1272,8 @@ class Publication extends Object
 		$curatorGroups = $this->curatorGroups();
 		if (!empty($curatorGroups))
 		{
-			if (array_intersect($usersgroups, $curatorGroups) > 1)
+			$common = array_intersect($usersgroups, $curatorGroups);
+			if (count($common) > 1)
 			{
 				$this->params->set('access-curator-publication', true);
 			}
