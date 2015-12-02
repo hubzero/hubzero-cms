@@ -65,6 +65,7 @@ class Storage extends SiteController
 
 		// Get the task
 		$this->_task = Request::getVar('task', '');
+		$this->exceeded = false;
 
 		// Check if middleware is enabled
 		if ($this->_task != 'image'
@@ -145,7 +146,7 @@ class Storage extends SiteController
 	 *
 	 * @return     void
 	 */
-	public function exceededTask()
+	public function storageexceededTask()
 	{
 		$this->displayTask(true);
 	}
@@ -178,8 +179,8 @@ class Storage extends SiteController
 		$this->view->monitor = '';
 		if ($this->config->get('show_storage'))
 		{
+			$this->exceeded = $exceeded;
 			$this->getDiskUsage();
-			$this->_redirect = '';
 
 			$view = new \Hubzero\Component\View(array(
 				'name'   => $this->_controller,
@@ -317,7 +318,7 @@ class Storage extends SiteController
 		$this->total     = $total;
 
 		//if ($this->percent >= 100 && $this->remaining == 0) {
-		if ($this->percent >= 100)
+		if ($this->percent >= 100 && !$this->exceeded)
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
