@@ -125,10 +125,10 @@ if (!$this->sub)
 
 						switch ($revision->get('approved'))
 						{
-							case 1: $status = 'approved'; break;
+							case 1: $status = '<span class="approved icon-approved">approved</span>'; break;
 							case 0:
 							default:
-								$status = 'suggested';
+								$status = '<span class="suggested icon-suggested">suggested</span>';
 								break;
 						}
 
@@ -192,7 +192,7 @@ if (!$this->sub)
 									<?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($revision->get('length'))); ?> (<span class="page-length <?php echo ($diff > 0) ? 'increase' : ($diff == 0 ? 'created' : 'decrease'); ?>"><?php echo ($diff > 0) ? '+' . number_format($diff) : ($diff == 0 ? number_format($diff) : number_format($diff)); ?></span>)
 								</td>
 								<td>
-									<?php echo $this->escape($status); ?>
+									<?php echo $status; ?>
 									<?php if (!$revision->get('approved') && $this->page->access('manage')) { ?>
 										<br />
 										<a href="<?php echo Route::url($this->page->link('approve') . '&oldid=' . $revision->get('id')); ?>">

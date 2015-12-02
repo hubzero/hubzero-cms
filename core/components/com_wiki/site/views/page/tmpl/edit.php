@@ -88,7 +88,7 @@ $formatting->set('group_cn', null);
 
 <section class="main section">
 <?php
-if ($this->page->exists() && !$this->page->access('modify')) {
+if ($this->page->exists() && !$this->page->access('edit')) {
 	if ($this->page->param('allow_changes') == 1) { ?>
 		<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
 <?php } else { ?>
