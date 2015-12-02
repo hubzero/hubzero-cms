@@ -2,35 +2,33 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'PaymentGateway'
@@ -56,20 +54,21 @@ class PaymentDispatcher
 	public function __construct($paymentGatewayProivder)
 	{
 		// Load language file
-		Lang::load('com_cart');
+		//JFactory::getLanguage()->load('com_cart');
+		\App::get('language')->load('com_cart');
 
 		switch ($paymentGatewayProivder)
 		{
 			case "PAYPAL STANDARD":
-				$path = JPATH_COMPONENT . '/lib/payment/paypal_standard';
+				$path = __DIR__ . DS . 'paypal_standard';
 				set_include_path($path);
 			break;
 			case "UPAY":
-				$path = JPATH_COMPONENT . '/lib/payment/upay';
+				$path = __DIR__ . DS . 'upay';
 				set_include_path($path);
 			break;
 			case "DUMMY AUTO PAYMENT":
-				$path = JPATH_COMPONENT . '/lib/payment/dummy';
+				$path = __DIR__ . DS . 'dummy';
 				set_include_path($path);
 			break;
 			default:
@@ -88,6 +87,7 @@ class PaymentDispatcher
 	{
 		return $this->paymentHandler;
 	}
+
 
 	/* --------------------- Static methods -------------------- */
 
@@ -112,4 +112,5 @@ class PaymentDispatcher
 				die('Wrong payment gateway provider.');
 		}
 	}
+
 }

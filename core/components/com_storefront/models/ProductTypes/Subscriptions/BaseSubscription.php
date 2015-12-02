@@ -7,7 +7,7 @@ class BaseSubscription
 	{
 		$this->pId = $pId;
 		$this->uId = $uId;
-		$this->_db = App::get('db');
+		$this->_db = \App::get('db');
 	}
 
 	/**
@@ -19,7 +19,8 @@ class BaseSubscription
 	 */
 	public function getExpiration()
 	{
-		$now = Date::toSql();
+		//$now = JFactory::getDate()->toSql();
+		$now = Date::getRoot()->toSql();
 
 		$sql = 'SELECT `crtmExpires`,
 				IF(`crtmExpires` < \'' . $now . '\', 0, 1) AS `crtmActive`

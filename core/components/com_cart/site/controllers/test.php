@@ -2,41 +2,38 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
  * @author    Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Cart\Site\Controllers;
 
 /**
  * Cart controller class
  */
-class CartControllerTest extends ComponentController
+class Test extends ComponentController
 {
 	/**
 	 * Execute a task
@@ -80,11 +77,11 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// CREATE COUPON
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
 			try
 			{
 				// Constructor take the coupon code
-				$coupon = new StorefrontModelCoupon('hui');
+				$coupon = new Coupon('hui');
 				// Coupon description (shows up in the cart)
 				$coupon->setDescription('Test coupon, 10% off product with ID 3');
 				// Expiration date
@@ -102,7 +99,7 @@ class CartControllerTest extends ComponentController
 				// Add coupon
 				$coupon->add();
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -112,13 +109,13 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// DELETE COUPON
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-			$warehouse = new StorefrontModelWarehouse();
+
+			$warehouse = new Warehouse();
 			try
 			{
 				$warehouse->deleteCoupon('couponcode3');
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -128,9 +125,9 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// CREATE NEW COURSE
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
-			$course = new StorefrontModelCourse();
+			$course = new Course();
 			$course->setName('Name of the course');
 			$course->setDescription('Short description');
 			$course->setPrice(12.00);
@@ -145,7 +142,7 @@ class CartControllerTest extends ComponentController
 				$info = $course->add();
 				//print_r($info);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -155,8 +152,8 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// GET EXISTING COURSE, modify it and save
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-			$warehouse = new StorefrontModelWarehouse();
+
+			$warehouse = new Warehouse();
 			try
 			{
 				// Get course by pID returned with $course->add() above
@@ -168,17 +165,18 @@ class CartControllerTest extends ComponentController
 				$course->setTimeToLive('10 YEAR');
 				$course->update();
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
 			return;
 		}
 
-		if (0) {
+		if (0)
+		{
 			// UPDATE COURSE by recreating it
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
-			$course = new StorefrontModelCourse();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
+			$course = new Course();
 			$course->setName('Operations Management 104');
 			$course->setDescription('Operations Management 104 is some kind of test course for now...');
 			$course->setPrice(13.05);
@@ -191,7 +189,7 @@ class CartControllerTest extends ComponentController
 				$info = $course->update();
 				//print_r($info);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -201,8 +199,8 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// DELETE COURSE
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-			$warehouse = new StorefrontModelWarehouse();
+
+			$warehouse = new Warehouse();
 			// Delete by existing course ID (pID returned with $course->add() when the course was created)
 			$warehouse->deleteProduct(1023);
 			return;
@@ -212,7 +210,7 @@ class CartControllerTest extends ComponentController
 	public function postTask()
 	{
 
-		//$user =& User::getInstance((int)1057);
+		//$user =& JUser::getInstance((int)1057);
 
 		//echo '==>' . $user->get( 'gid' );
 
@@ -220,7 +218,8 @@ class CartControllerTest extends ComponentController
 		//$user->delete();
 		//die;
 
-		Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -275,7 +274,8 @@ class CartControllerTest extends ComponentController
 		//print_r($curl_result);
 		die('+');
 
-		Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -323,13 +323,13 @@ class CartControllerTest extends ComponentController
 	public function passportTask()
 	{
 		// Instantiate badges manager, provide badges provider (right now there is only one: 'PASSPORT').
-		$badges = new \Hubzero\Badges\Badge('PASSPORT');
+		//$badges = new Hubzero_Badges('PASSPORT');
 
 		// Get the actual badges provider class
 		$passport = $badges->getProvider();
 
 		// Set credentials and settings (outh in not secured at this point)
-		$credentials = new stdClass();
+		$credentials = new \stdClass();
 		$credentials->clientId = 43;
 		$credentials->issuerId = 17;
 		// These are not used so far, but have some value
@@ -339,21 +339,23 @@ class CartControllerTest extends ComponentController
 		$credentials->password = 'xxx';
 
 		// Set credentials
-		try {
+		try
+		{
 			$passport->setCredentials($credentials);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			echo $e->getMessage();
 		}
 
 		// Set badges details
-		$badge = new stdClass();
+		$badge = new \stdClass();
 		$badge->id = 83;
 		$badge->evidenceUrl = 'http://hubzero.org';
 
 		// Award a badge
-		try {
+		try
+		{
 			// Single user
 			//$passport->grantBadge($badge, 'ishunko@purdue.edu');
 
@@ -363,7 +365,7 @@ class CartControllerTest extends ComponentController
 
 			echo 'Badges granted';
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			echo 'Error: ' . $e->getMessage();
 		}
@@ -389,7 +391,7 @@ class CartControllerTest extends ComponentController
 				}
 			}
 
-			//echo $req;
+			//echo  Request::root() . 'cart/order/postback'; die;
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, Request::root() . 'cart/order/postback');
@@ -400,6 +402,7 @@ class CartControllerTest extends ComponentController
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 			$curl_result = @curl_exec($ch);
@@ -409,8 +412,9 @@ class CartControllerTest extends ComponentController
 			//print_r($req); echo '<br>'; print_r($curl_err); die;
 
 			// Redirect to confirmation page
-			$redirect_url  = Request::root() . 'cart/order/complete?' . $req;
-			App::redirect($redirect_url);
+			App::redirect(
+					Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req
+			);
 		}
 
 		$this->view->display();

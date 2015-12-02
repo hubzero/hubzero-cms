@@ -2,38 +2,35 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
-class LoggingLevel
-{
+class LoggingLevel {
 	const INFO = 2;
 	const WARN = 1;
 	const ERROR = 0;
@@ -61,7 +58,8 @@ class CartMessenger
 	{
 		setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-		$this->logFile = PATH_APP . DS . 'site' . DS . 'com_cart' . DS . 'cart.log';
+		$logPath = Config::get('log_path', PATH_APP . DS . 'logs');
+		$this->logFile = $logPath  . DS . 'cart.log';
 		$this->caller = $caller;
 	}
 
@@ -77,33 +75,40 @@ class CartMessenger
 
 	public function log($loggingLevel = 2)
 	{
+		if (!file_exists($this->logFile))
+		{
+			try
+			{
+				Filesystem::write($this->logFile, '');
+			}
+			catch (\Exception $e)
+			{
+				$this->emailError($this->logFile, 'NO_LOG');
+			}
+		}
+
 		if (is_writable($this->logFile))
 		{
 			$message = 'Log info: ';
-			if (!empty($this->postback))
-			{
-				$message = $this->message . "\n" . "Postback info: " . serialize($this->postback) . "\n";
+			$message .= $this->message;
+			if (!empty($this->postback)) {
+				$message .= "\n" . "Postback info: " . serialize($this->postback) . "\n";
 			}
 
 			$message .= "\n";
 
 			$hzl = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(Config::get('application_env')),
-				Event::getRoot()
+				new \Monolog\Logger(Config::get('config.application_env')),
+				\JDispatcher::getInstance()
 			);
 			$hzl->useFiles($this->logFile);
 
-			if ($loggingLevel == 0)
-			{
+			if ($loggingLevel == 0) {
 				$hzl->error($this->caller . ': ' . $message);
-			}
-			elseif ($loggingLevel == 1)
-			{
+			} elseif ($loggingLevel == 1) {
 				$log = $hzl->warning($this->caller . ': ' . $message);
 				return $log;
-			}
-			elseif ($loggingLevel == 2)
-			{
+			} elseif ($loggingLevel == 2) {
 				$log = $hzl->info($this->caller . ': ' . $message);
 				return $log;
 			}
@@ -111,18 +116,16 @@ class CartMessenger
 			// If error, needs to send email to admin
 			$this->emailError($this->message, 'POSTBACK');
 		}
-		else
-		{
+		else {
 			$this->emailError($this->logFile, 'LOG');
 		}
 	}
 
 	public function emailOrderComplete($transactionInfo)
 	{
-		$params = Component::params(Request::getVar('option'));
+		$params =  Component::params(Request::getVar('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
-		$meta = unserialize($transactionInfo->tiMeta);
 		//print_r($items); die;
 
 		// Build emails
@@ -168,17 +171,35 @@ class CartMessenger
 		$summary .= "\n\nItems ordered:";
 		$summary .= "\n--------------------\n";
 
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+		$warehouse = new \Components\Storefront\Models\Warehouse();
+
 		foreach ($items as $k => $item)
 		{
 			$itemInfo = $item['info'];
 			$cartInfo = $item['cartInfo'];
+			$itemMeta = $item['meta'];
+
+			//print_r($item); die;
+
+			$productType = $warehouse->getProductTypeInfo($itemInfo->ptId)['ptName'];
 
 			// If course, generate a link to the course
 			$action = false;
-			if ($itemInfo->ptId == 20)
+			if ($productType == 'Course')
 			{
 				$action = ' Go to the course page at: ' .
-				$action .= Route::url('index.php?option=com_courses/' . $item['meta']['courseId'] . '/' . $item['meta']['offeringId'], true, -1);
+				$action .= Route::url('index.php?option=com_courses', true, -1) . $itemMeta['courseId'] . '/' . $itemMeta['offeringId'];
+			}
+			elseif ($productType == 'Software Download')
+			{
+				$action = ' Download at: ' .
+				$action .= Route::url('index.php?option=com_cart', true, -1) . 'download/' . $transactionInfo->tId . '/' . $itemInfo->sId;
+				if (isset($itemMeta['serial']) && !empty($itemMeta['serial']))
+				{
+					$action .= "\n\t";
+					$action .= " Serial number: " . $itemMeta['serial'];
+				}
 			}
 
 			$summary .= "$cartInfo->qty x ";
@@ -210,13 +231,15 @@ class CartMessenger
 
 			$summary .= "\n";
 		}
-
 		//print_r($summary); die;
+
+		// Get message plugin
+		JPluginHelper::importPlugin('xmessage');
 
 		// "from" info
 		$from = array();
-		$from['name']  = Config::get('sitename');
-		$from['email'] = Config::get('mailfrom');
+		$from['name']  = Config::get('config.sitename');
+		$from['email'] = Config::get('config.mailfrom');
 
 		// Email to admin
 		$adminEmail = "There is a new online store order: \n\n";
@@ -224,32 +247,74 @@ class CartMessenger
 
 		// Admin email
 		$to = array($params->get('storeAdminId'));
-		Event::trigger('xmessage.onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
+		Event::trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
 
 		// Email to client
-		$clientEmail = 'Thank you for your order at ' .  Config::get('sitename') . "!\n\n";
+		$clientEmail = 'Thank you for your order at ' . Config::get('config.sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
-		$to = array(CartModelCart::getCartUser($transactionInfo->crtId));
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php');
+		$to = array(\Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId));
 
-		Event::trigger('xmessage.onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
+		Event::trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
+
+		// Email notification extra
+		$notifyTo = $params->get('sendNotificationTo');
+		if (!empty($notifyTo)) {
+
+			$notifyTo = explode(',', str_replace(' ', '', $notifyTo));
+
+			$notifyEmail = 'There is a new online store order at ' . Config::get('config.sitename') . "\n\n";
+			$notifyEmail .= $summary;
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'name' => 'emails',
+				'layout' => 'order_notify'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->message = $notifyEmail;
+
+			$plain = $eview->loadTemplate();
+			$plain = str_replace("\n", "\r\n", $plain);
+
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
+			$message->addFrom(
+					Config::get('config.mailfrom'),
+					Config::get('config.sitename')
+			);
+			$message->addPart($plain, 'text/plain');
+			foreach ($notifyTo as $email)
+			{
+				if (\Hubzero\Utility\Validate::email($email))
+				{
+					$message->addTo($email);
+				}
+			}
+			$message->setBody($plain);
+			$message->send();
+		}
 	}
 
 	private function emailError($error, $errorType = NULL)
 	{
 		$params = Component::params(Request::getVar('option'));
 
+		// Get message plugin
+		JPluginHelper::importPlugin('xmessage');
+		$dispatcher = JDispatcher::getInstance();
+
 		// "from" info
 		$from = array();
 
-		$from['name']  = Config::get('sitename');
-		$from['email'] = Config::get('mailfrom');
+		$from['name']  = Config::get('config.sitename');
+		$from['email'] = Config::get('config.mailfrom');
 
 		// get admin id
 		$adminId = array($params->get('storeAdminId'));
 
-		$mailMessage = Date::toSql() . "\n";
+		$mailMessage = Date::getRoot() . "\n";
 
 		if ($errorType == 'POSTBACK')
 		{
@@ -261,6 +326,11 @@ class CartMessenger
 			$mailSubject = ': Error logging payment postback information.';
 			$mailMessage = 'Log file is not writable.' . "\n\n";
 		}
+		elseif ($errorType == 'NO_LOG')
+		{
+			$mailSubject = ': Error logging payment postback information.';
+			$mailMessage = 'Log file does not exist' . "\n\n";
+		}
 		else
 		{
 			$mailSubject = 'Cart error';
@@ -268,12 +338,12 @@ class CartMessenger
 
 		$mailMessage .= $error;
 
-		if ($errorType != 'LOG')
-		{
+		if ($errorType != 'LOG') {
 			$mailMessage .= "\n\n" . 'Please see log for details';
 		}
 
 		// Send emails
-		Event::trigger('xmessage.onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
+		Event::trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
 	}
+
 }

@@ -2,42 +2,45 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Cart\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+use Components\Cart\Models\Cart;
+use Components\Cart\Helpers\CartHelper;
+use Hubzero\Base\Model;
+use User;
+
+require_once 'Cart.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
 
 /**
  * Current user shopping cart
  */
-class CartModelCurrentCart extends CartModelCart
+class CurrentCart extends Cart
 {
 	// Session cart
 	var $cart = NULL;
@@ -58,7 +61,14 @@ class CartModelCurrentCart extends CartModelCart
 	{
 		parent::__construct();
 
-		$this->cart = new stdClass();
+		// Get user
+		$juser = User::getRoot();
+		//print_r($juser); die;
+
+		//Set the user scope
+		$this->warehouse->addAccessLevels($juser->getAuthorisedViewLevels());
+
+		$this->cart = new \stdClass();
 
 		/* Load current user cart */
 
@@ -68,14 +78,17 @@ class CartModelCurrentCart extends CartModelCart
 		$cart = $this->liftSessionCart();
 
 		// If no session cart, try to locate a cookie cart (only for not logged in users)
-		if (!$cart && User::isGuest()) {
+		if (!$cart && $juser->get('guest'))
+		{
 			$cart = $this->liftCookie();
 		}
 
-		if ($cart) {
+		if ($cart)
+		{
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!User::isGuest()) {
-				if (empty($this->cart->linked) || !$this->cart->linked) {
+			if (!$juser->get('guest')) {
+				if (empty($this->cart->linked) || !$this->cart->linked)
+				{
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
 					if (!$this->linkCarts()) {
@@ -83,18 +96,22 @@ class CartModelCurrentCart extends CartModelCart
 					}
 				}
 			} // Make sure cart is marked as unlinked is the user is not logged in
-			else {
+			else
+			{
 				$this->cart->linked = 0;
 			}
 		} // If no session & cookie cart found, but user is logged in
-		elseif (!User::isGuest()) {
+		elseif (!$juser->get('guest'))
+		{
 			// Try to get the saved cart in the DB
-			if (!$this->liftUserCart(User::get('id'))) {
+			if (!$this->liftUserCart($juser->id))
+			{
 				// If no session, no cookie, no DB cart -- create a brand new cart
 				$this->createCart();
 			}
 		} // No session, no cookie -- create new cart
-		else {
+		else
+		{
 			$this->createCart();
 		}
 	}
@@ -202,7 +219,8 @@ class CartModelCurrentCart extends CartModelCart
 
 		$cartItems = $this->cart->items;
 
-		foreach ($items as $item) {
+		foreach ($items as $item)
+		{
 			// Build item name
 			$itemName = false;
 			if (!empty($cartItems[$item->sId]['info']->pName))
@@ -231,9 +249,11 @@ class CartModelCurrentCart extends CartModelCart
 
 			if (!empty($item->crtiOldQty) && $item->crtiOldQty > $item->crtiQty)
 			{
-				if ($item->crtiQty) {
+				if ($item->crtiQty)
+				{
 					$changes[] = array($itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info');
-				} else {
+				} else
+				{
 					$changes[] = array($itemName . ' is no longer in stock', 'info');
 				}
 			}
@@ -248,7 +268,8 @@ class CartModelCurrentCart extends CartModelCart
 		$this->cart->hasChanges = false;
 
 		// Reset all messages
-		if (!empty($changes)) {
+		if (!empty($changes))
+		{
 			// Delete zero inventory items and unavailable SKUs
 			$sql = "DELETE FROM `#__cart_cart_items` WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
@@ -263,7 +284,7 @@ class CartModelCurrentCart extends CartModelCart
 			return $changes;
 		}
 
-		throw new Exception('Failed attempt to get cart changes. No changes detected. This shouldn\'t happen.');
+		throw new \Exception('Failed attempt to get cart changes. No changes detected. This shouldn\'t happen.');
 		return false;
 	}
 
@@ -352,10 +373,12 @@ class CartModelCurrentCart extends CartModelCart
 		}
 		else
 		{
-			$redirect_url  = Route::url('index.php?option=' . 'com_cart') . '/checkout/' . $where;
+			$redirect_url  = Route::url('index.php?option=' . 'com_cart') . 'checkout/' . $where;
 		}
 
-		App::redirect($redirect_url);
+		App::redirect(
+				$redirect_url
+		);
 	}
 
 	/**
@@ -369,16 +392,23 @@ class CartModelCurrentCart extends CartModelCart
 	public function getNextCheckoutStep()
 	{
 		// Get DB steps for this transaction
-		$sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId DESC";
+		$sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId DESC";
 		$this->_db->setQuery($sql);
-		$nextStep = $this->_db->loadResult();
+		$nextStep = $this->_db->loadObject();
 
-		if (!$nextStep)
+		// Initialize stepInfo
+		$stepInfo = new \stdClass();
+
+		if (empty($nextStep))
 		{
-			$nextStep = 'summary';
+			$stepInfo->step = 'summary';
+		}
+		else {
+			$stepInfo->step = $nextStep->tsStep;
+			$stepInfo->meta = $nextStep->tsMeta;
 		}
 
-		return $nextStep;
+		return $stepInfo;
 	}
 
 	/**
@@ -458,7 +488,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// Can be purchased -- get transaction items
-		$transaction = new stdClass();
+		$transaction = new \stdClass();
 		$transaction->items = $this->getTransactionItems($this->cart->tId);
 
 		if (!empty($transaction->items))
@@ -506,32 +536,32 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// Check values
-		if (empty($errors) && !Cart_Helper::validZip(Request::getVar('shippingZip', false, 'post', 'string')))
+		if (empty($errors) && !CartHelper::validZip(Request::getVar('shippingZip', false, 'post', 'string')))
 		{
 			$errors[] = Lang::txt('COM_CART_INCORRECT_ZIP');
 		}
 
 		// Init return object
-		$ret = new stdClass();
+		$ret = new \stdClass();
 
 		if (empty($errors))
 		{
 			// save shipping info
-			$shippingToFirst = Cart_Helper::escapeDb(Request::getVar('shippingToFirst', false, 'post', 'string'));
-			$shippingToLast = Cart_Helper::escapeDb(Request::getVar('shippingToLast', false, 'post', 'string'));
-			$shippingAddress = Cart_Helper::escapeDb(Request::getVar('shippingAddress', false, 'post', 'string'));
-			$shippingCity = Cart_Helper::escapeDb(Request::getVar('shippingCity', false, 'post', 'string'));
-			$shippingState = Cart_Helper::escapeDb(Request::getVar('shippingState', false, 'post', 'string'));
-			$shippingZip = Cart_Helper::escapeDb(Request::getVar('shippingZip', false, 'post', 'string'));
+			$shippingToFirst = $this->_db->quote(Request::getVar('shippingToFirst', false, 'post', 'string'));
+			$shippingToLast = $this->_db->quote(Request::getVar('shippingToLast', false, 'post', 'string'));
+			$shippingAddress = $this->_db->quote(Request::getVar('shippingAddress', false, 'post', 'string'));
+			$shippingCity = $this->_db->quote(Request::getVar('shippingCity', false, 'post', 'string'));
+			$shippingState = $this->_db->quote(Request::getVar('shippingState', false, 'post', 'string'));
+			$shippingZip = $this->_db->quote(Request::getVar('shippingZip', false, 'post', 'string'));
 
 			if ($this->debug)
 			{
 				echo '<br>saving transaction shipping info';
 			}
 
-			$sqlUpdateValues = "`tiShippingToFirst` = '{$shippingToFirst}', `tiShippingToLast` = '{$shippingToLast}',
-								`tiShippingAddress` = '{$shippingAddress}', `tiShippingCity` = '{$shippingCity}',
-								`tiShippingState` = '{$shippingState}', `tiShippingZip` = '{$shippingZip}'";
+			$sqlUpdateValues = "`tiShippingToFirst` = {$shippingToFirst}, `tiShippingToLast` = {$shippingToLast},
+								`tiShippingAddress` = {$shippingAddress}, `tiShippingCity` = {$shippingCity},
+								`tiShippingState` = {$shippingState}, `tiShippingZip` = {$shippingZip}";
 
 			$sql = "INSERT INTO `#__cart_transaction_info`
 					SET `tId` = {$this->cart->tId}, {$sqlUpdateValues}
@@ -539,7 +569,7 @@ class CartModelCurrentCart extends CartModelCart
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 
-			$saveAddress = Cart_Helper::escapeDb(Request::getVar('saveAddress', false, 'post', 'string'));
+			$saveAddress = $this->_db->quote(Request::getVar('saveAddress', false, 'post', 'string'));
 			// Save the address for future use if requested
 			if ($saveAddress)
 			{
@@ -547,7 +577,8 @@ class CartModelCurrentCart extends CartModelCart
 				$sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 
 				// Get user
-				$uId = User::get('id');
+				$juser = User::getRoot();
+				$uId = $juser->id;
 
 				$sql = "INSERT IGNORE INTO `#__cart_saved_addresses`
 						SET `uidNumber` = {$uId}, {$sqlUpdateValues}";
@@ -578,7 +609,7 @@ class CartModelCurrentCart extends CartModelCart
 
 		if (empty($this->tInfo))
 		{
-			throw new Exception(Lang::txt('No transaction info.'));
+			throw new \Exception(Lang::txt('No transaction info.'));
 		}
 
 		$shippingDiscountAmount = 0;
@@ -614,6 +645,24 @@ class CartModelCurrentCart extends CartModelCart
 				`tiShipping` = " . $this->_db->quote($shippingCost) . ",
 				`tiShippingDiscount` = " . $this->_db->quote($shippingDiscountAmount) . "
 				WHERE `tId` = " . $this->_db->quote($this->cart->tId);
+
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+	}
+
+	/**
+	 * Set the meta information for a given transaction item
+	 *
+	 * @param int 		sId		SKU id of the item that needs to e updated
+	 * @param mixed		meta	Meta info
+	 * @return void
+	 */
+	public function setTransactionItemMeta($sId, $meta)
+	{
+		$sql = "UPDATE `#__cart_transaction_items` SET
+				`tiMeta` = " . $this->_db->quote($meta) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId) . "
+				AND `sId` = " . $this->_db->quote($sId);
 
 		$this->_db->setQuery($sql);
 		$this->_db->query();
@@ -685,7 +734,8 @@ class CartModelCurrentCart extends CartModelCart
 
 		$affectedRows = $this->_db->getAffectedRows();
 
-		if (!$affectedRows) {
+		if (!$affectedRows)
+		{
 			return false;
 		}
 
@@ -701,9 +751,9 @@ class CartModelCurrentCart extends CartModelCart
 	public function setSavedShippingAddress($saId)
 	{
 		// check if the address correct
-		if (!Cart_Helper::isNonNegativeInt($saId))
+		if (!CartHelper::isNonNegativeInt($saId))
 		{
-			throw new Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
+			throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
 		}
 
 		$sql = "SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->_db->quote($saId);
@@ -712,7 +762,7 @@ class CartModelCurrentCart extends CartModelCart
 
 		if ($this->_db->getNumRows() < 1)
 		{
-			throw new Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
+			throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
 		}
 
 		$sql = "UPDATE `#__cart_transaction_info` ti, (SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->_db->quote($saId) . ") sa
@@ -741,7 +791,7 @@ class CartModelCurrentCart extends CartModelCart
 	{
 		if (empty($this->tInfo))
 		{
-			throw new Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
+			throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
 		}
 
 		return md5(parent::$securitySalt . $this->tInfo->tId);
@@ -759,7 +809,7 @@ class CartModelCurrentCart extends CartModelCart
 		{
 			if (empty($this->tInfo))
 			{
-				throw new Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
+				throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
 			}
 			$tId = $this->tInfo->tId;
 		}
@@ -777,7 +827,7 @@ class CartModelCurrentCart extends CartModelCart
 	{
 		if (empty($this->tInfo))
 		{
-			throw new Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
+			throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
 		}
 
 		$tiTotal = $this->tInfo->tiSubtotal + $this->tInfo->tiShipping - $this->tInfo->tiShippingDiscount - $this->tInfo->tiDiscounts;
@@ -794,21 +844,19 @@ class CartModelCurrentCart extends CartModelCart
 	 * Mark step for current transaction as completed (default) or not-completed
 	 *
 	 * @param 	string Step
+	 * @param 	mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA steps for each SKU)
 	 * @param 	bool Completed (true) ar not completed (false)
 	 * @return 	bool
 	 */
-	public function setStepStatus($step, $status = true)
+	public function setStepStatus($step, $meta = '', $status = true)
 	{
-		$allowedSteps = array('shipping');
-
-		if (!in_array($step, $allowedSteps))
-		{
-			return false;
-		}
-
 		$sql = "UPDATE `#__cart_transaction_steps`
 				SET `tsStatus` = " .  $this->_db->quote($status) . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
+		if (!empty($meta))
+		{
+			$sql .= "AND `tsMeta` = '{$meta}'";
+		}
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
@@ -826,8 +874,8 @@ class CartModelCurrentCart extends CartModelCart
 	public function addCoupon($couponCode)
 	{
 		// Check if coupon is valid and active (throws exception if invalid)
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$coupons = new StorefrontModelCoupons;
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php';
+		$coupons = new \Components\Storefront\Models\Coupons();
 
 		// Get coupons
 		$this->cartCoupons = $this->getCoupons();
@@ -835,7 +883,7 @@ class CartModelCurrentCart extends CartModelCart
 		// Check if coupon has already been applied
 		if ($this->isCouponApplied($couponCode))
 		{
-			throw new Exception(Lang::txt('COM_CART_COUPON_ALREADY_APPLIED'));
+			throw new \Exception(Lang::txt('COM_CART_COUPON_ALREADY_APPLIED'));
 		}
 
 		$cnId = $coupons->isValid($couponCode);
@@ -844,7 +892,8 @@ class CartModelCurrentCart extends CartModelCart
 		$this->applyCoupon($cnId);
 
 		// If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
-		if (User::get('id'))
+		$juser = User::getRoot();
+		if ($juser->id)
 		{
 			$coupons->apply($cnId);
 		}
@@ -866,9 +915,9 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	public function applyCoupon($cnId)
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$cmodel = new StorefrontModelCoupons;
-		$coupon = $cmodel->getCouponInfo($cnId, true, true, true, true);
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php';
+		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
+		$coupon = $storefrontCoupons->getCouponInfo($cnId, true, true, true, true);
 
 		if (!$coupon->info->itemCoupon)
 		{
@@ -909,8 +958,7 @@ class CartModelCurrentCart extends CartModelCart
 			elseif ($coupon->info->cnObject == 'product')
 			{
 				// Check product SKUs
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-				$warehouse = new StorefrontModelWarehouse();
+				$warehouse = $this->warehouse;
 				$productOptions = $warehouse->getProductOptions($couponObject->cnoObjectId);
 
 				// See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to add if there are several of them)
@@ -928,7 +976,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// Coupon is not applicable
-		throw new Exception(Lang::txt('COM_CART_CANNOT_APPLY_COUPON'));
+		throw new \Exception(Lang::txt('COM_CART_CANNOT_APPLY_COUPON'));
 	}
 
 	/**
@@ -943,9 +991,9 @@ class CartModelCurrentCart extends CartModelCart
 		$cnIds = $this->_db->loadColumn();
 
 		// Get coupon types
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$cmodel = new StorefrontModelCoupons;
-		$coupons = $cmodel->getCouponsInfo($cnIds);
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php';
+		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
+		$coupons = $storefrontCoupons->getCouponsInfo($cnIds);
 
 		return $coupons;
 	}
@@ -1042,7 +1090,8 @@ class CartModelCurrentCart extends CartModelCart
 				$itemCoupon = false;
 			}
 
-			$coupon = StorefrontModelCoupons::getCouponInfo($cn->cnId, $itemCoupon); // Load objects for itemCoupons only
+			$storefrontCoupons = new \Components\Storefront\Models\Coupons();
+			$coupon = $storefrontCoupons->getCouponInfo($cn->cnId, $itemCoupon); // Load objects for itemCoupons only
 
 			// check if coupon applies and if it does, get the perk info
 			/*
@@ -1068,7 +1117,7 @@ class CartModelCurrentCart extends CartModelCart
 				case 'shipping':
 					break;
 				default:
-					throw new Exception(Lang::txt('Invalid coupon. Invalid object type.'));
+					throw new \Exception(Lang::txt('Invalid coupon. Invalid object type.'));
 			}
 
 			// Get coupon action in case we need to apply it.
@@ -1092,12 +1141,12 @@ class CartModelCurrentCart extends CartModelCart
 				// make sure discount is numeric
 				if (!is_numeric($couponDiscount))
 				{
-					throw new Exception(Lang::txt('Invalid coupon. Invalid discount amount ' . $couponDiscount . '.'));
+					throw new \Exception(Lang::txt('Invalid coupon. Invalid discount amount ' . $couponDiscount . '.'));
 				}
 
 			}
 			else {
-				throw new Exception(Lang::txt('Invalid coupon. Invalid action type.'));
+				throw new \Exception(Lang::txt('Invalid coupon. Invalid action type.'));
 			}
 
 			// Check if we need to match against the object type to make sure the coupon is applicable
@@ -1106,7 +1155,7 @@ class CartModelCurrentCart extends CartModelCart
 				// check if there are options available
 				if (empty($coupon->objects))
 				{
-					throw new Exception(Lang::txt('Invalid coupon. No object found.'));
+					throw new \Exception(Lang::txt('Invalid coupon. No object found.'));
 				}
 
 				// Go through each coupon object and try to find a match in a cart
@@ -1120,7 +1169,7 @@ class CartModelCurrentCart extends CartModelCart
 						{
 							// Initialize the perk
 							unset($perk);
-							$perk = new stdClass();
+							$perk = new \stdClass();
 							$perk->name = $cn->cnDescription;
 							$perk->forSku = $sId;
 							$perk->couponId = $cn->cnId;
@@ -1175,7 +1224,7 @@ class CartModelCurrentCart extends CartModelCart
 							}
 							else
 							{
-								throw new Exception(Lang::txt('Invalid coupon. Only discounts are available for SKUs and products'));
+								throw new \Exception(Lang::txt('Invalid coupon. Only discounts are available for SKUs and products'));
 							}
 
 							if ($couponObjectType == 'sku')
@@ -1196,10 +1245,11 @@ class CartModelCurrentCart extends CartModelCart
 			}
 			// Coupon is generic, not item based and not shipping.
 			// All item coupons have been processed by this time, save to calculate total discounts
-			elseif ($couponObjectType != 'shipping') {
+			elseif ($couponObjectType != 'shipping')
+			{
 				// Initialize the perk
 				unset($perk);
-				$perk = new stdClass();
+				$perk = new \stdClass();
 				$perk->name = $cn->cnDescription;
 				$perk->couponId = $cn->cnId;
 
@@ -1258,7 +1308,7 @@ class CartModelCurrentCart extends CartModelCart
 			{
 				// Initialize the perk
 				unset($perk);
-				$perk = new stdClass();
+				$perk = new \stdClass();
 				$perk->name = $cn->cnDescription;
 				$perk->couponId = $cn->cnId;
 
@@ -1291,7 +1341,7 @@ class CartModelCurrentCart extends CartModelCart
 			}
 		}
 
-		$perksInfo = new stdClass();
+		$perksInfo = new \stdClass();
 		$perksInfo->itemsDiscountsTotal = $itemsDiscountsTotal;
 		$perksInfo->genericDiscountsTotal = $genericDiscountsTotal;
 		$perksInfo->discountsTotal = $itemsDiscountsTotal + $genericDiscountsTotal;
@@ -1307,10 +1357,11 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	public function removeCoupon($cnId)
 	{
-		$coupons = new StorefrontModelCoupons;
+		$coupons = new Coupons;
 
 		// If user is logged in return coupon back to the coupons pool.
-		if (User::get('id'))
+		$juser = User::getRoot();
+		if ($juser->id)
 		{
 			$coupons->recycle($cnId);
 		}
@@ -1341,8 +1392,8 @@ class CartModelCurrentCart extends CartModelCart
 		// init membership info
 		$memberships = array();
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
-		$ms = new StorefrontModelMemberships();
+		require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+		$ms = new \Components\Storefront\Models\Memberships();
 
 		// Get membership types
 		$membershipTypes = $ms->getMembershipTypes();
@@ -1355,20 +1406,22 @@ class CartModelCurrentCart extends CartModelCart
 				$itemInfo = $item['info'];
 
 				// Get product type
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-				$warehouse = new StorefrontModelWarehouse();
+				$warehouse = $this->warehouse;
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
 
+				// Get user
+				$jUser = User::getRoot();
+
 				// Get the correct membership Object
-				$subscription = StorefrontModelMemberships::getSubscriptionObject($type, $itemInfo->pId, User::get('id'));
+				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $jUser->id);
 				// Get the expiration for the current subscription (if any)
 				$currentExpiration = $subscription->getExpiration();
 
 				// Calculate new expiration
-				$newExpires = StorefrontModelMemberships::calculateNewExpiration($currentExpiration, $item);
+				$newExpires = \Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $item);
 
-				$membershipSIdInfo = new stdClass();
+				$membershipSIdInfo = new \stdClass();
 				$membershipSIdInfo->newExpires = strtotime($newExpires);
 
 				if ($currentExpiration && $currentExpiration['crtmActive'])
@@ -1418,8 +1471,7 @@ class CartModelCurrentCart extends CartModelCart
 		$allSkuInfo = $items->allSkuInfo;
 		$skus = $items->skus;
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = $this->warehouse;
 
 		$skuInfo = $warehouse->getSkusInfo($skus);
 
@@ -1443,7 +1495,7 @@ class CartModelCurrentCart extends CartModelCart
 
 			$updated = false;
 
-			$cartInfo = new stdClass();
+			$cartInfo = new \stdClass();
 
 			// Check if this item has been already processed by the doItem (i.e. through cart update quantities call)
 			if (!empty($sku->crtiOldPrice) && $sku->crtiPrice != $sku->crtiOldPrice)
@@ -1533,7 +1585,7 @@ class CartModelCurrentCart extends CartModelCart
 			echo "<br>Lifting session cart";
 		}
 
-		$session = App::get('session');
+		$session = \App::get('session'); //Factory::getSession();
 		$cart = $session->get('cart');
 
 		if ($cart && !empty($cart->crtId))
@@ -1599,7 +1651,8 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	private function updateSession()
 	{
-		App::get('session')->set('cart', $this->cart);
+		$session = \App::get('session');
+		$session->set('cart', $this->cart);
 	}
 
 	/**
@@ -1610,7 +1663,8 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	private function clearSessionCart()
 	{
-		App::get('session')->clear('cart');
+		$session = \App::get('session');
+		$session->clear('cart');
 	}
 
 	/**
@@ -1692,11 +1746,13 @@ class CartModelCurrentCart extends CartModelCart
 			echo "<br>Creating new cart";
 		}
 
+		$juser = User::getRoot();
+
 		$uId = 'NULL';
-		$cart = new stdClass();
-		if (!User::isGuest())
+		$cart = new \stdClass();
+		if (!$juser->get('guest'))
 		{
-			$uId = User::get('id');
+			$uId = $juser->id;
 			$cart->linked = 1;
 		}
 		else {
@@ -1708,13 +1764,13 @@ class CartModelCurrentCart extends CartModelCart
 		$this->_db->query();
 		$crtId = $this->_db->insertid();
 
-		$session = App::get('session');
+		$session = \App::get('session');
 		$cart->crtId = $crtId;
 		$this->crtId = $cart->crtId;
 		$session->set('cart', $cart);
 
 		// Set cookie for non logged-in users to recover the cart
-		if (User::isGuest())
+		if ($juser->get('guest'))
 		{
 			if ($this->debug)
 			{
@@ -1743,14 +1799,16 @@ class CartModelCurrentCart extends CartModelCart
 
 		//print_r($this); die;
 
-
 		// Kill the old cookie
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
+
+		// Get user
+		$juser = User::getRoot();
 
 		// Check if session cart is not someone else's. Otherwise load user's cart and done
 		if ($this->cartIsLinked($this->crtId))
 		{
-			if (!$this->liftUserCart(User::get('id')))
+			if (!$this->liftUserCart($juser->id))
 			{
 				return false;
 			}
@@ -1758,7 +1816,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// Get user's cart
-		$userCartId = $this->getUserCartId(User::get('id'));
+		$userCartId = $this->getUserCartId($juser->id);
 
 		// Get coupons
 		$coupons = $this->getCoupons();
@@ -1766,7 +1824,7 @@ class CartModelCurrentCart extends CartModelCart
 		// If no user cart -- make the session cart a user's cart. Easy.
 		if (!$userCartId)
 		{
-			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = " . User::get('id') . " WHERE `crtId` = {$this->crtId}";
+			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 			$existingCnIds = array();
@@ -1775,8 +1833,8 @@ class CartModelCurrentCart extends CartModelCart
 		else
 		{
 			// Get a static instance of the users' cart
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'UserCart.php');
-			$userCart = new CartModelUserCart($userCartId);
+			require_once(__DIR__ . DS . 'UserCart.php');
+			$userCart = new UserCart($userCartId);
 			// Get items from the user's cart to see if it is empty or nor
 			$userCartItems = $userCart->getCartItems();
 
@@ -1798,7 +1856,7 @@ class CartModelCurrentCart extends CartModelCart
 					{
 						$userCart->add($item['info']->sId, $item['cartInfo']->qty);
 					}
-					catch (Exception $e)
+					catch (\Exception $e)
 					{
 						$this->cart->messages[] = array($e->getMessage(), 'warning');
 						$this->cart->hasMessages = true;
@@ -1843,8 +1901,8 @@ class CartModelCurrentCart extends CartModelCart
 			$this->crtId = $userCartId;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
-		$storefrontCoupons = new StorefrontModelCoupons;
+		require_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		$storefrontCoupons = new \Components\Storefront\Models\Coupons();
 
 		// Go through each coupon and apply all that are not applied
 		// (if merging, or all if making the session cart a user's cart)
@@ -1912,13 +1970,15 @@ class CartModelCurrentCart extends CartModelCart
 		// Add cart items to transaction
 		$sqlValues = '';
 
-		// Initialize required steps
-		$steps = array();
+		// Initialize required steps, split it into logical parts
+		$preSteps = array();
+		$postSteps = array();
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = $this->warehouse;
 
 		$transactionSubtotalAmount = 0;
+
+		//print_r($cartItems); die;
 
 		foreach ($cartItems as $sId => $skuInfo)
 		{
@@ -1930,10 +1990,32 @@ class CartModelCurrentCart extends CartModelCart
 
 			$transactionSubtotalAmount += ($skuInfo['info']->sPrice * $skuInfo['cartInfo']->qty);
 
-			// check steps
-			if ($skuInfo['info']->ptId == 1 && !in_array('shipping', $steps))
+			/* Steps */
+
+			// EULA: for software, license agreement may be needed, if so, add the step for each product
+
+			// get product type
+			$productInfo = $warehouse->getProductInfo($skuInfo['info']->pId);
+			// if soft, check if EULA is needed
+			if ($productInfo->ptModel == 'software')
 			{
-				$steps[] = 'shipping';
+				$productMeta = $warehouse->getProductMeta($skuInfo['info']->pId);
+				// If EULA is needed, add step, note the EULA required for each SKU, so for multiple SKUs of the same product, multiple EULA will be required
+				if (!empty($productMeta['eulaRequired']) && $productMeta['eulaRequired']->pmValue)
+				{
+					$step = new \stdClass();
+					$step->name = 'eula';
+					$step->meta = $sId;
+					$preSteps[] = $step;
+				}
+			}
+
+			// shipping: if any of the products require shipping, add the shipping step
+			if ($skuInfo['info']->ptId == 1 && !in_array('shipping', $postSteps))
+			{
+				$step = new \stdClass();
+				$step->name = 'shipping';
+				$postSteps[] = $step;
 			}
 
 			// lock items
@@ -1945,10 +2027,17 @@ class CartModelCurrentCart extends CartModelCart
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
+		// merge pre- and post- steps to ensure the correct order
+		$steps = array_merge($preSteps, $postSteps);
 		// populate steps
 		foreach ($steps as $step)
 		{
-			$sql = "INSERT INTO `#__cart_transaction_steps` (`tId`, `tsStep`) VALUES ({$this->cart->tId}, '{$step}')";
+			if (empty($step->meta))
+			{
+				$step->meta = '';
+			}
+			$sql = "INSERT INTO `#__cart_transaction_steps` (`tId`, `tsStep`, `tsMeta`)
+					VALUES ({$this->cart->tId}, '{$step->name}', '{$step->meta}')";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 		}
@@ -2005,8 +2094,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// lock transaction items
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+		$warehouse = $this->warehouse;
 
 		foreach ($tItems as $sId => $item)
 		{
@@ -2036,12 +2124,14 @@ class CartModelCurrentCart extends CartModelCart
 		$this->_db->setQuery($sql);
 		$tIds = $this->_db->loadColumn();
 
-		foreach ($tIds as $tId)
+		if (is_array($tIds))
 		{
-			$this->releaseTransaction($tId);
-			parent::killTransaction($tId);
+			foreach ($tIds as $tId)
+			{
+				$this->releaseTransaction($tId);
+				parent::killTransaction($tId);
+			}
 		}
-
 		$this->cart->tId = NULL;
 	}
 }

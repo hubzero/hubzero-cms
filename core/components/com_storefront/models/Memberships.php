@@ -2,43 +2,40 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
  * @author    Hubzero
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
+namespace Components\Storefront\Models;
 
 /**
  *
  * Memberships lookup and management
  *
  */
-class StorefrontModelMemberships
+class Memberships
 {
 	// Database instance
 	var $_db = NULL;
@@ -51,10 +48,10 @@ class StorefrontModelMemberships
 	 */
 	public function __construct()
 	{
-		$this->_db = App::get('db');
+		$this->_db = \App::get('db');
 
 		// Load language file
-		Lang::load('com_storefront');
+		\App::get('language')->load('com_storefront');
 	}
 
 	/**
@@ -81,7 +78,7 @@ class StorefrontModelMemberships
 	 */
 	public function getMembershipInfo($crtId, $pId)
 	{
-		$now = Date::toSql();
+		$now = Date::getRoot()->toSql();
 		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
@@ -101,8 +98,7 @@ class StorefrontModelMemberships
 	public static function getSubscriptionObject($type, $pId, $uId)
 	{
 		// Find if there is a corresponding object
-		$lookupPath  = __DIR__ . DS . 'ProductTypes';
-		$lookupPath .= DS . 'Subscriptions';
+		$lookupPath = dirname(dirname(__DIR__)) . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS .'Subscriptions';
 
 		$objectClass = str_replace(' ', '_', ucwords(strtolower($type))) . '_Subscription';
 		if (file_exists($lookupPath . DS . $objectClass . '.php'))
@@ -141,7 +137,7 @@ class StorefrontModelMemberships
 		else
 		{
 			// Get current time
-			$date = Date::of('now');
+			$date = Date::getRoot();
 			// Add TTL to the current time
 			$date->modify('+ ' . $ttl);
 		}
@@ -177,7 +173,7 @@ class StorefrontModelMemberships
 	{
 		if (!preg_match("/^[1-9]+[0-9]* (year|month|day)+$/i", $ttl))
 		{
-			throw new Exception(Lang::txt('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
+			throw new \Exception(Lang::txt('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
 		}
 	}
 
@@ -190,9 +186,9 @@ class StorefrontModelMemberships
 	 */
 	public static function getMembershipInfoByUser($uId, $pId)
 	{
-		$db = App::get('db');
+		$db = \App::get('db');
 
-		$now = Date::toSql();
+		$now = Date::of(time())->toSql();
 		$sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
 		$sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
 		$sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);

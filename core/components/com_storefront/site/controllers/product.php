@@ -2,41 +2,47 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
  * @author    Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
+namespace Components\Storefront\Site\Controllers;
+
+use Pathway;
+use Components\Storefront\Models\Warehouse;
+use Components\Cart\Models\CurrentCart;
+use Components\Cart\Helpers\Audit;
+
+require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php';
+require_once PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php';
+
 
 /**
  * Product viewing controller class
  */
-class StorefrontControllerProduct extends \Hubzero\Component\SiteController
+class Product extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -45,8 +51,9 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php');
-		$this->warehouse = new StorefrontModelWarehouse();
+		$this->warehouse = new Warehouse();
+		$user = User::getRoot();
+		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
 
 		parent::execute();
 	}
@@ -59,11 +66,13 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$pId = $this->warehouse->productExists(Request::getVar('product', ''));
-		if (!$pId)
+		$pInfo = $this->warehouse->checkProduct(Request::getVar('product', ''));
+
+		if (!$pInfo->status)
 		{
-			App::abort(404, Lang::txt('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
+			App::abort($pInfo->errorCode, Lang::txt($pInfo->message));
 		}
+		$pId = $pInfo->pId;
 
 		$this->view->pId = $pId;
 		$this->view->css();
@@ -75,8 +84,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$pageMessages = array();
 
 		// Get the cart
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
-		$cart = new CartModelCurrentCart();
+		$cart = new CurrentCart();
 
 		// POST add to cart request
 		$addToCartRequest = Request::getVar('addToCart', false, 'post');
@@ -94,7 +102,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 				$sku = $this->warehouse->mapSku($pId, $options);
 				$cart->add($sku, $qty);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				$errors[] = $e->getMessage();
 				$pageMessages[] = array($e->getMessage(), 'error');
@@ -104,12 +112,10 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			{
 				$this->view->setError($errors);
 			}
-			else
-			{
+			else {
 				// prevent resubmitting by refresh
 				// If not an ajax call, redirect to cart
-				$redirect_url  = Route::url('index.php?option=' . 'com_cart');
-				App::redirect($redirect_url);
+				App::redirect(Route::url('index.php?option=com_cart'));
 			}
 		}
 
@@ -118,10 +124,9 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$this->view->product = $product;
 
 		// Run the auditor
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
 		$auditor = Audit::getAuditor($product, $cart->getCartInfo()->crtId);
 		$auditorResponse = $auditor->audit();
-		//print_r($auditor); die;
+		//print_r($auditorResponse); die;
 
 		if (!empty($auditorResponse) && $auditorResponse->status != 'ok')
 		{
@@ -138,9 +143,10 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 
 		// Get option groups with options and SKUs
 		$data = $this->warehouse->getProductOptions($pId);
+
 		if ($data)
 		{
-			//throw new Exception(Lang::txt('COM_STOREFRONT_PRODUCT_ERROR'), 404);
+			//App::abort(404 , Lang::txt('COM_STOREFRONT_PRODUCT_ERROR'));
 			$this->view->options = $data->options;
 		}
 		//print_r($data); die;
@@ -168,7 +174,8 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			$qtyDropDownMaxValLimit = 20;
 
 			// Get the first and the only value
-			$sku = array_shift(array_values($data->skus));
+			$arrayValues = array_values($data->skus);
+			$sku = array_shift($arrayValues);
 
 			// If no inventory tracking, there is no limit on how many can be purchased
 			$qtyDropDownMaxVal = $qtyDropDownMaxValLimit;
@@ -198,16 +205,13 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 
 		if ($data)
 		{
-			foreach ($data->skus as $sId => $info)
-			{
+			foreach ($data->skus as $sId => $info) {
 				$info = $info['info'];
 
-				if ($info->sPrice > $priceRange['high'])
-				{
+				if ($info->sPrice > $priceRange['high']) {
 					$priceRange['high'] = $info->sPrice;
 				}
-				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice)
-				{
+				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice) {
 					$priceRange['low'] = $info->sPrice;
 				}
 			}
@@ -215,43 +219,14 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$this->view->price = $priceRange;
 
 		// Add custom page JS
-		if ($data && (count($data->options) > 1 || count($data->skus) > 1))
-		{
+		if ($data && (count($data->options) > 1 || count($data->skus) > 1)) {
 			$js = $this->getDisplayJs($data->options, $data->skus);
-
+			//$doc =& JFactory::getDocument();
+			//$doc->addScriptDeclaration($js);
 			Document::addScriptDeclaration($js);
 		}
 
-		// Get images (if any), gets all images from /site/storefront/products/$pId
-		$allowedImgExt = array('jpg', 'gif', 'png');
-		$productImg = array();
-		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $pId;
-		$imgPath = PATH_APP . $imgWebPath;
-
-		if (file_exists($imgPath))
-		{
-			$files = scandir($imgPath);
-			foreach ($files as $file)
-			{
-				if (in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedImgExt))
-				{
-					if (substr($file, 0, 7) == 'default')
-					{
-						// Let the default image to be the first one
-						array_unshift($productImg, $imgWebPath . DS . $file);
-					}
-					else
-					{
-						$productImg[] = $imgWebPath . DS . $file;
-					}
-				}
-			}
-		}
-		else
-		{
-			$productImg[] = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . 'noimage.png';
-		}
-		$this->view->productImg = $productImg;
+		$this->view->config = $this->config;
 
 		$this->view->productAvailable = $productAvailable;
 
