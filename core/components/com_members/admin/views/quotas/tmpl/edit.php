@@ -64,8 +64,7 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 	jQuery(document).ready(function($){
 		$('#class_id').on('change', function (e) {
 			//e.preventDefault();
-
-			var req = $.getJSON('<?php echo Route::url('index.php?option=' . $this->option . '&controller=quotas&task=getClassValues&class_id='); ?>' + $(this).val(), {}, function (data) {
+			$.getJSON('<?php echo Route::url('index.php?option=' . $this->option . '&controller=quotas&task=getClassValues&class_id=', false); ?>' + $(this).val(), {}, function (data) {
 				$.each(data, function (key, val) {
 					var item = $('#field-'+key);
 					item.val(val);
