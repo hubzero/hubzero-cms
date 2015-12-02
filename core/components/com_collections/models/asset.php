@@ -145,6 +145,11 @@ class Asset extends Base
 		$path = $this->filespace() . DS . $this->get('item_id') . DS;
 		$file = ltrim($this->get('filename'), DS);
 
+		if (!file_exists($path . $file))
+		{
+			return $file;
+		}
+
 		switch ($size)
 		{
 			case 't':
