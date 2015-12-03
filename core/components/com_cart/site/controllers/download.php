@@ -30,6 +30,7 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use Request;
 use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
 
@@ -163,6 +164,7 @@ class Download extends \Hubzero\Component\SiteController
 		$sql = "INSERT INTO `#__cart_downloads` SET
 				`uId` = " . $currentUser . ",
 				`sId` = " . $sId . ",
+				`dIp` = INET_ATON(" . $db->quote(Request::getClientIp()) . "),
 				`dDownloaded` = NOW()";
 		$db->setQuery($sql);
 		$db->query();

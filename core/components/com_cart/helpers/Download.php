@@ -86,7 +86,7 @@ class CartDownload
 			unset($filters['limit']);
 		}
 
-		$sql  = 'SELECT d.*, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
+		$sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
 		$sql .= ' LEFT JOIN `#__xprofiles` x ON (d.uId = x.uidNumber)';
 		$sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
 		$sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
