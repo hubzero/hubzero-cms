@@ -43,6 +43,9 @@ if ($canDo->get('core.edit.state'))
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
+
+Toolbar::custom('download', 'download.png', '', 'Download CSV', false);
+
 JToolBarHelper::spacer();
 JToolBarHelper::help('downloads');
 ?>
