@@ -759,7 +759,7 @@ class Data extends Base
 		mb_internal_encoding('UTF-8');
 
 		// component path for "com_dataviewer"
-		$dv_com_path = PATH_CORE . DS . 'components' . DS . 'com_dataviewer';
+		$dv_com_path = PATH_CORE . DS . 'components' . DS . 'com_dataviewer' . DS . 'site';
 
 		require_once($dv_com_path . DS . 'dv_config.php');
 		require_once($dv_com_path . DS . 'lib' . DS . 'db.php');
