@@ -1112,17 +1112,21 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (!$post->get('id'))
 		{
 			// No record found -- we're OK to add one
+			$post = new \Components\Collections\Tables\Post($this->database);
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
 			$post->description   = Request::getVar('description', '', 'none', 2);
-			if ($post->check())
+			if (!$post->check())
 			{
 				$this->setError($post->getError());
 			}
-			// Store new content
-			if (!$post->store())
+			else
 			{
-				$this->setError($post->getError());
+				// Store new content
+				if (!$post->store())
+				{
+					$this->setError($post->getError());
+				}
 			}
 		}
 		if ($this->getError())
@@ -1543,8 +1547,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->setError($row->getError());
 			return $this->_editcollection($row);
 		}
-
-		$row->item()->tag(trim(Request::getVar('tags', '')));
 
 		// Redirect to collection
 		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all'));
