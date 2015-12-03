@@ -38,8 +38,8 @@ $sef = Route::url('index.php?option='.$this->option.'&task=details&id='.$this->e
 $message  = Lang::txt('EVENTS_CAL_LANG_ACT_DELETED_BY', $this->user->get('name'), $this->user->get('login'));
 $message .= ''."\n";
 $message .= ''."\n";
-$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE').': '.stripslashes($this->event->title)."\n";
-$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.stripslashes($this->event->content)."\n";
+$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE').': '.strip_tags(stripslashes($this->event->title))."\n";
+$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.strip_tags(stripslashes($this->event->content))."\n";
 $message .= ''."\n";
 //$message .= Request::base() . ltrim($sef, '/')."\n";
 
