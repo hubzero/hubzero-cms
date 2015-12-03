@@ -583,6 +583,9 @@ class Setup extends Base
 			// Send out emails
 			$this->_notifyTeam();
 		}
+
+		// Trigger project create event
+		Event::trigger('projects.onProjectCreate', array($this->model));
 	}
 
 	/**
