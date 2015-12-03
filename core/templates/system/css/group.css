@@ -437,6 +437,12 @@
 	border-color: transparent transparent #aaa transparent;
 	top: 16px;
 }
-.opened #group-info .links li {
+/*
+[!] Firefox 42 has issues with rendering transtions after the
+    slide open event.
+
+.opened #group-info .links li
+*/
+#group-info .links li {
 	top: 0;
 }
