@@ -474,17 +474,21 @@ class Posts extends SiteController
 		if (!$post->get('id'))
 		{
 			// No record found -- we're OK to add one
+			$post = new Tables\Post($this->database);
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
 			$post->description   = Request::getVar('description', '');
-			if ($post->check())
+			if (!$post->check())
 			{
 				$this->setError($post->getError());
 			}
-			// Store new content
-			if (!$post->store())
+			else
 			{
-				$this->setError($post->getError());
+				// Store new content
+				if (!$post->store())
+				{
+					$this->setError($post->getError());
+				}
 			}
 		}
 		if ($this->getError())
