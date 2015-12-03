@@ -775,10 +775,10 @@ class Items extends AdminController
 			$this->model->version->doi = $doi;
 		}
 
-		$this->model->version->published_up  = $published_up
+		$this->model->version->published_up   = $published_up
 							? Date::of($published_up, Config::get('offset'))->toSql()
 							: '0000-00-00 00:00:00';
-		$this->model->version->published_down= $published_down && trim($published_down) != 'Never'
+		$this->model->version->published_down = $published_down && trim($published_down) != 'Never'
 							? Date::of($published_down, Config::get('offset'))->toSql()
 							: '0000-00-00 00:00:00';
 
@@ -841,6 +841,8 @@ class Items extends AdminController
 			{
 				case 'publish':
 				case 'republish':
+					// Unset the published_down timestamp if publishing
+					$this->model->version->published_down = '0000-00-00 00:00:00';
 
 					$activity = $action == 'publish'
 						? Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
