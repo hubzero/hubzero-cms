@@ -614,4 +614,28 @@
 			width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1));
 			*width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%);
 		}
+
+		.grid {
+			max-width: 100%;
+			.clearfix(left);
+		}
+
+		.col {
+			float: left;
+			margin-left: @fluidGridGutterWidth;
+			*margin-left: @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
+		}
+	}
+
+	// Breaking the grid
+	// Full-width spanning column when broken down
+	.basicColumn {
+		float: none !important;
+		width: 100% !important;
+		margin-right: 0;
+		margin-bottom: @gridColCollapseMargin;
+
+		&:nth-last-child(1) {
+			margin-bottom: 0;
+		}
 	}
