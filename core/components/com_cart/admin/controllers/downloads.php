@@ -156,4 +156,57 @@ class Downloads extends AdminController
 				$message
 		);
 	}
+
+	/**
+	 * Download CSV report
+	 *
+	 * @return     void
+	 */
+	public function downloadTask()
+	{
+		// Get filters
+		$filters = array(
+			// Get sorting variables
+				'sort' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.sort',
+						'filter_order',
+						'dDownloaded'
+				),
+				'sort_Dir' => Request::getState(
+						$this->_option . '.' . $this->_controller . '.sortdir',
+						'filter_order_Dir',
+						'ASC'
+				)
+		);
+		$rowsRaw = CartDownload::getDownloads('array', $filters);
+		$date = date('d-m-Y');
+
+		$rows = array();
+
+		foreach ($rowsRaw as $row)
+		{
+			$status = 'active';
+			if (!$row['dStatus'])
+			{
+				$status = 'inactive';
+			}
+			$rows[] = array($row['dDownloaded'], $row['pName'], $row['sSku'], $row['dName'], $row['username'], $row['uId'], $row['dIp'], $status);
+		}
+
+		header("Content-Type: text/csv");
+		header("Content-Disposition: attachment; filename=cart-downloads-" . $date . ".csv");
+		// Disable caching
+		header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+		header("Pragma: no-cache"); // HTTP 1.0
+		header("Expires: 0"); // Proxies
+
+		$output = fopen("php://output", "w");
+		$row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'IP', 'Status');
+		fputcsv($output, $row);
+		foreach ($rows as $row) {
+			fputcsv($output, $row);
+		}
+		fclose($output);
+		die;
+	}
 }

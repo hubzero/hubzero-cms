@@ -143,6 +143,10 @@ class CartDownload
 		{
 			return($db->getNumRows());
 		}
+		elseif ($rtrn == 'array')
+		{
+			return($db->loadAssocList());
+		}
 
 		$res = $db->loadObjectList();
 		return $res;
