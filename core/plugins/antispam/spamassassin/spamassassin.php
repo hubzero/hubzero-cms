@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die;
 /**
  * Spam Assassin antispam Plugin
  */
-class plgAntispamAkismet extends \Hubzero\Plugin\Plugin
+class plgAntispamSpamassassin extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Instantiate and return a spam detector.
