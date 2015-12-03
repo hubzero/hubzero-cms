@@ -276,7 +276,24 @@ class Legacy extends Registry
 		$file = ($file ?: $this->file);
 
 		$contents = $this->toString('PHP', array('class' => 'JConfig', 'closingtag' => false));
+		$original = '0640';
 
-		return file_put_contents($file, $contents);
+		if (is_file($file))
+		{
+			// Track original permissions
+			$original = '0' . decoct(fileperms($file) & 0777);
+
+			// First try and make sure the file is writable
+			@chmod($file, octdec('0640'));
+		}
+
+		$result = file_put_contents($file, $contents);
+
+		if (is_file($file))
+		{
+			@chmod($file, octdec($original));
+		}
+
+		return $result;
 	}
 }
