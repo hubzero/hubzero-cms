@@ -67,6 +67,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">IP</th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
@@ -132,6 +133,9 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<span><?php echo $this->escape(stripslashes($row->dDownloaded)); ?></span>
+				</td>
+				<td>
+					<span><?php echo $this->escape(stripslashes($row->dIp)); ?></span>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
