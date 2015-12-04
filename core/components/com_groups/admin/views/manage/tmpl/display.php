@@ -46,6 +46,12 @@ if ($canDo->get('core.manage') && $this->config->get('super_gitlab', 0))
 	Toolbar::custom('update', 'refresh', '', 'COM_GROUPS_UPDATE_CODE');
 	Toolbar::spacer();
 }
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
+}
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
