@@ -687,7 +687,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/125eb2999bb95b6f04109f7f19282763e1401db1",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/fdef2303da798bf590b2f6757bcc4d961e5d7c82",
                 "reference": "125eb2999bb95b6f04109f7f19282763e1401db1",
                 "shasum": ""
             },
@@ -724,16 +724,16 @@
         },
         {
             "name": "hubzero/orcid-php",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "884e4c825737ba605da9877fcfc8c129adffc6ef"
+                "reference": "1370539e4483a050a6c8766e093f64c4201dc647"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/884e4c825737ba605da9877fcfc8c129adffc6ef",
-                "reference": "884e4c825737ba605da9877fcfc8c129adffc6ef",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/1370539e4483a050a6c8766e093f64c4201dc647",
+                "reference": "1370539e4483a050a6c8766e093f64c4201dc647",
                 "shasum": ""
             },
             "require": {
@@ -761,7 +761,7 @@
                 "orcid",
                 "php"
             ],
-            "time": "2015-09-29 14:32:15"
+            "time": "2015-12-04 15:09:31"
         },
         {
             "name": "leafo/lessphp",
