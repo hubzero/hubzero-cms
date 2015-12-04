@@ -1038,7 +1038,7 @@ class Ticket extends Model
 				}
 				if (!$this->_acl->check('update', 'tickets'))
 				{
-					$this->_acl->setAccess('update', 'tickets', -1);
+					$this->_acl->setAccess('update', 'tickets', $this->isOwner() ? 1 : -1);
 				}
 				if (!$this->_acl->check('create', 'comments'))
 				{
