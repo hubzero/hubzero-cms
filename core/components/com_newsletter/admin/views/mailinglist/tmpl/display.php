@@ -62,7 +62,9 @@ Toolbar::preferences($this->option, '550');
 							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
-							<?php echo $this->escape($list->name); ?>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $list->id); ?>">
+								<?php echo $this->escape($list->name); ?>
+							</a>
 						</td>
 						<td class="priority-3">
 							<span class="access <?php echo ($list->private) ? 'private' : 'public'; ?>">
