@@ -55,6 +55,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				<field name="auto_approve" type="radio" label="PLG_AUTHENTICATION_GOOGLE_PARAM_AUTO_APPROVE_LABEL" default="0" description="PLG_AUTHENTICATION_GOOGLE_PARAM_AUTO_APPROVE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
