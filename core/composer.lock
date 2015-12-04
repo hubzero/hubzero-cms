@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "29c278e372a67d83e7b5987218e08f56",
+    "hash": "af97bdacf92741ef288166eae0432173",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -676,16 +676,16 @@
         },
         {
             "name": "hubzero/orcid-php",
-            "version": "v0.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "570841355da67b842d2026f197a21e7e513aa79c"
+                "reference": "1370539e4483a050a6c8766e093f64c4201dc647"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/570841355da67b842d2026f197a21e7e513aa79c",
-                "reference": "570841355da67b842d2026f197a21e7e513aa79c",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/1370539e4483a050a6c8766e093f64c4201dc647",
+                "reference": "1370539e4483a050a6c8766e093f64c4201dc647",
                 "shasum": ""
             },
             "require": {
@@ -693,9 +693,9 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9.*",
+                "mockery/mockery": "dev-master",
                 "phpunit/phpunit": "4.*",
-                "squizlabs/php_codesniffer": "2.*"
+                "satooshi/php-coveralls": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -713,7 +713,7 @@
                 "orcid",
                 "php"
             ],
-            "time": "2015-09-23 17:47:27"
+            "time": "2015-12-04 15:09:31"
         },
         {
             "name": "leafo/lessphp",
@@ -1052,7 +1052,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/b9404fc2e14f08e03ed27a24ca0782116d3f77c4",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/25022e3e9d019085570879c60b8cc08abd71c057",
                 "reference": "d4fdf7e12971d31f223e81f0d7298cab274ce49a",
                 "shasum": ""
             },
@@ -1444,12 +1444,12 @@
             "version": "v2.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher.git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
                 "reference": "be3c5ff8d503c46768aeb78ce6333051aa6f26d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/be3c5ff8d503c46768aeb78ce6333051aa6f26d9",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/be3c5ff8d503c46768aeb78ce6333051aa6f26d9",
                 "reference": "be3c5ff8d503c46768aeb78ce6333051aa6f26d9",
                 "shasum": ""
             },
@@ -1503,12 +1503,12 @@
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/HttpFoundation.git",
+                "url": "https://github.com/symfony/http-foundation.git",
                 "reference": "650e115af152d7a5e857d01c2cdb9a22809de9b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/650e115af152d7a5e857d01c2cdb9a22809de9b4",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/650e115af152d7a5e857d01c2cdb9a22809de9b4",
                 "reference": "650e115af152d7a5e857d01c2cdb9a22809de9b4",
                 "shasum": ""
             },

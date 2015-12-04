@@ -43,15 +43,27 @@ class Curl
     }
 
     /**
+     * Sets a generic option on the curl resource
+     *
+     * @param   int    $opt    The curl option to set
+     * @param   mixed  $value  The curl option value to use
+     * @return  $this
+     **/
+    public function setOpt($opt, $value)
+    {
+        curl_setopt($this->resource, $opt, $value);
+
+        return $this;
+    }
+
+    /**
      * Returns string response
      *
      * @return  $this
      **/
     public function setReturnTransfer()
     {
-        curl_setopt($this->resource, CURLOPT_RETURNTRANSFER, 1);
-
-        return $this;
+        return $this->setOpt(CURLOPT_RETURNTRANSFER, 1);
     }
 
     /**
@@ -62,9 +74,7 @@ class Curl
      **/
     public function setUrl($url)
     {
-        curl_setopt($this->resource, CURLOPT_URL, $url);
-
-        return $this;
+        return $this->setOpt(CURLOPT_URL, $url);
     }
 
     /**
@@ -89,8 +99,8 @@ class Curl
             $first = false;
         }
 
-        curl_setopt($this->resource, CURLOPT_POST, count($fields));
-        curl_setopt($this->resource, CURLOPT_POSTFIELDS, $raw);
+        $this->setOpt(CURLOPT_POST, count($fields));
+        $this->setOpt(CURLOPT_POSTFIELDS, $raw);
 
         return $this;
     }
@@ -113,7 +123,7 @@ class Curl
             $headers[] = $header;
         }
 
-        curl_setopt($this->resource, CURLOPT_HTTPHEADER, $headers);
+        $this->setOpt(CURLOPT_HTTPHEADER, $headers);
 
         return $this;
     }

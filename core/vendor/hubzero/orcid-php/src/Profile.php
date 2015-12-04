@@ -87,7 +87,9 @@ class Profile
 
         if (isset($bio->{'contact-details'})) {
             if (isset($bio->{'contact-details'}->email)) {
-                $email = $bio->{'contact-details'}->email[0]->value;
+                if (is_array($bio->{'contact-details'}->email) && isset($bio->{'contact-details'}->email[0])) {
+                    $email = $bio->{'contact-details'}->email[0]->value;
+                }
             }
         }
 

@@ -1,0 +1,9 @@
+{
+    "access_token"  : "123456789",
+    "token_type"    : "bearer",
+    "refresh_token" : "123456789abc",
+    "expires_in"    : "631138518",
+    "scope"         : "/authenticate",
+    "name"          : "Test User",
+    "orcid"         : "0000-0000-0000-0000"
+}

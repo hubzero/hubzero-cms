@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit>
+<phpunit backupGlobals="false"
+         bootstrap="phpunit.php"
+>
     <testsuites>
         <testsuite name="ORCID PHP Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
 </phpunit>

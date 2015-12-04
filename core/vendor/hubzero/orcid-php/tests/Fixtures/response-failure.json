@@ -1,0 +1,8 @@
+{
+    "message-version"      : "1.2",
+    "orcid-profile"        : null,
+    "orcid-search-results" : null,
+    "error-desc"           : {
+        "value" : "OAuth2 problem : Invalid authorization code: tnT1Cq"
+    }
+}

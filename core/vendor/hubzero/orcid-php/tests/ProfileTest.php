@@ -5,11 +5,9 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Profile.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Oauth.php';
-
 use Orcid\Profile;
 use Orcid\Oauth;
+use \Mockery as m;
 
 /**
  * Base ORCID profile tests
@@ -49,19 +47,14 @@ class ProfileTest extends \PHPUnit_Framework_TestCase
      **/
     public function profile($complete = true)
     {
-        // Mock the Oauth class to return an ORCID iD
-        $oauth = $this->getMockBuilder('Oauth')
-                      ->setMethods(['getOrcid', 'getProfile'])
-                      ->getMock();
+        $oauth = m::mock('Orcid\Oauth');
 
         $complete = $complete ? 'complete' : 'basic';
         $contents = json_decode(file_get_contents($this->$complete));
 
         // Tell the oauth method to return an empty ORCID iD
-        $oauth->method('getOrcid')
-              ->willReturn('0000-0000-0000-0000');
-        $oauth->method('getProfile')
-              ->willReturn($contents);
+        $oauth->shouldReceive('getOrcid')->andReturn('0000-0000-0000-0000');
+        $oauth->shouldReceive('getProfile')->andReturn($contents);
 
         $profile = new Profile($oauth);
 
