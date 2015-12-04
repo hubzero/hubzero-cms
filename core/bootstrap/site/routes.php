@@ -253,7 +253,12 @@ $router->rules('build')->append('rewrite', function ($uri)
 	}
 
 	// Add basepath to the uri
-	$uri->setPath(\App::get('request')->base(true) . '/' . $route);
+	$base = \App::get('request')->base(true);
+	if (!\App::isSite())
+	{
+		$base = '/' . ltrim(substr(ltrim($base, '/'), strlen(\App::get('client')->name)), '/');
+	}
+	$uri->setPath($base . '/' . $route);
 
 	return $uri;
 });
