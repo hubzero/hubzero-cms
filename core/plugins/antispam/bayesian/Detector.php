@@ -117,11 +117,6 @@ class Detector implements DetectorInterface
 	 */
 	public function setDbo($db)
 	{
-		if (!($db instanceof \JDatabase))
-		{
-			throw new Exception('Database object must extend \JDatabase');
-		}
-
 		$this->db = $db;
 
 		return $this;
