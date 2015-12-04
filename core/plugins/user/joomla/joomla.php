@@ -295,6 +295,22 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 			$instance->set('approved', 2);
 		}
 
+		// Now, also check to see if user came in via an auth plugin, as that may affect their approval status
+		if (isset($user['auth_link']))
+		{
+			$domain = \Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
+
+			if ($domain && is_object($domain))
+			{
+				$params = Plugin::params('authentication', $domain->authenticator);
+
+				if ($params && is_object($params) && $params->get('auto_approve', false))
+				{
+					$instance->set('approved', 2);
+				}
+			}
+		}
+
 		// If autoregister is set let's register the user
 		$autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
 
