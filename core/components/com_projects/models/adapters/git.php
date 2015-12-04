@@ -249,6 +249,7 @@ class Git extends Models\Adapter
 				$file->set('author', $syncRecord->remote_author);
 				$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
 				$file->set('mimeType', $syncRecord->remote_format);
+				$file->set('converted', $syncRecord->remote_editing);
 			}
 
 			// Add to list

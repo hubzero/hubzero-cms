@@ -52,14 +52,14 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 <tr class="mini faded mline">
 	<?php if ($this->model->access('content')) { ?>
 	<td>
-		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } if ($this->item->get('converted')) { echo ' remote'; } ?>" />
+		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } if ($this->item->get('converted')) { echo ' remote service-google'; } ?>" />
 	</td>
 	<?php } ?>
 	<td class="top_valign nobsp">
 		<?php echo $this->item->drawIcon($ext); ?>
 		<?php if ($this->item->get('type') == 'file') { ?>
 		<a href="<?php echo Route::url($this->model->link('files')
-		. '&action=download' . $subdirPath
+		. '&action=' . (($this->item->get('converted')) ? 'open' : 'download') . $subdirPath
 		. '&asset=' . urlencode($this->item->get('name'))); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?></a>
 		<?php } else { ?>
 			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
