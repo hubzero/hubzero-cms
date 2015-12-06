@@ -74,19 +74,19 @@ $this->css('introduction.css', 'system')
 			<h2>Finding Content</h2>
 		</div><!-- / .col span3 -->
 		<div class="col span3">
-			<div class="presentation">
+			<div class="content-presentation">
 				<h3><a class="com-resources" href="<?php echo Route::url('index.php?option=com_resources'); ?>">Resources</a></h3>
 				<p>Find the latest cutting-edge research in our <a class="com-resources" href="<?php echo Route::url('index.php?option=com_resources'); ?>">resources</a>.</p>
 			</div><!-- / .presentations -->
 		</div><!-- / .col span3 -->
 		<div class="col span3">
-			<div class="tag">
+			<div class="content-tag">
 				<h3><a class="com-tags" href="<?php echo Route::url('index.php?option=com_tags'); ?>">Tags</a></h3>
 				<p>Explore all our content through <a class="com-tags" href="<?php echo Route::url('index.php?option=com_tags'); ?>">tags</a> or even tag content yourself.</p>
 			</div><!-- / .tag -->
 		</div><!-- / .col span3 -->
 		<div class="col span3 omega">
-			<div class="search">
+			<div class="content-search">
 				<h3><a class="com-search" href="<?php echo Route::url('index.php?option=com_search'); ?>">Search</a></h3>
 				<p>Try <a class="com-search" href="<?php echo Route::url('index.php?option=com_search'); ?>">searching</a> for a title, author, tag, phrase, or keywords.</p>
 			</div><!-- / .search -->
