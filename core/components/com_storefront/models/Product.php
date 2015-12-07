@@ -576,7 +576,7 @@ class Product
 				// Remove the actual file
 				$config = Component::params('com_storefront');
 				$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
-				$path = PATH_APP . DS . $imgWebPath . DS . $this->getId();
+				$path = PATH_ROOT . DS . $imgWebPath . DS . $this->getId();
 
 				Filesystem::delete($path . DS . $img->imgName);
 				return true;
