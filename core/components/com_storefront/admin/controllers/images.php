@@ -408,7 +408,7 @@ class Images extends AdminController
 	{
 		$config = Component::params('com_storefront');
 		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
-		$path = PATH_APP . DS . $imgWebPath . DS;
+		$path = PATH_ROOT . DS . $imgWebPath . DS;
 
 		switch ($type)
 		{
