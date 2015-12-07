@@ -219,7 +219,7 @@ class ResourceMapGenerator
 	 */
 	private function dataTypeDescriptor($aggregation, $xmlwriter)
 	{
-		$datatype = mime_content_type($this->resourceSite . $aggregation['path']);
+		$datatype = mime_content_type(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
 
 		if (isset($datatype) && !empty($datatype))
 		{
@@ -237,7 +237,7 @@ class ResourceMapGenerator
 					break;
 				}
 
-				$imageData = getimagesize($this->resourceSite . $aggregation['path']);
+				$imageData = getimagesize(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
 				$xmlwriter->writeElement('exif:width', $imageData[0]);
 				$xmlwriter->writeElement('exif:height', $imageData[1]);
 				break;
