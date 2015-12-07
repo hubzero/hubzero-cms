@@ -385,7 +385,7 @@ class Ticket extends \JTable
 						OR LOWER(w.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
-				$sql .= " OR id=" . $filters['search'];
+				$sql .= " OR f.id=" . $filters['search'];
 			}
 			$sql .= ") ";
 		}
@@ -448,7 +448,7 @@ class Ticket extends \JTable
 						OR LOWER(w.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
-				$sql .= " OR id=" . $filters['search'];
+				$sql .= " OR f.id=" . $filters['search'];
 			}
 			$sql .= ") ";
 		}
