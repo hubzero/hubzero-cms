@@ -295,7 +295,7 @@ function submitbutton(pressbutton)
 			$width = 0;
 			$height = 0;
 			$this_size = 0;
-			$pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
+			$pathl = DS . trim($this->config->get('imagesFolder', '/app/site/storefront/products'), DS) . DS . $this->row->getId();
 
 			if ($image && file_exists(PATH_ROOT . $pathl . DS . $file))
 			{

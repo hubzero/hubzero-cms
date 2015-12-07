@@ -407,7 +407,7 @@ class Images extends AdminController
 	protected function _path($type, $id)
 	{
 		$config = Component::params('com_storefront');
-		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+		$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
 		$path = PATH_ROOT . DS . $imgWebPath . DS;
 
 		switch ($type)
