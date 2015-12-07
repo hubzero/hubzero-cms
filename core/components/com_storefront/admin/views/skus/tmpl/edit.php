@@ -233,7 +233,7 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative ingeger.'; ?>">
+			<div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative integer.'; ?>">
 				<label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
 				<input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="100" value="<?php echo $this->row->getInventoryLevel(); ?>" />
 			</div>
