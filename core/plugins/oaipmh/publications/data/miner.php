@@ -158,10 +158,10 @@ class Miner extends Object implements Provider
 			$this->set('type', $this->database->loadResult());
 		}
 
-		$query = "SELECT p.id, " . $this->database->quote($this->name()) . " AS `base`
-				FROM `#__publications` p, `#__publication_versions` pv
-				WHERE p.id = pv.publication_id
-				AND pv.state=1";
+		$query = "SELECT CONCAT(p.id, ':', pv.version_number) AS id, " . $this->database->quote($this->name()) . " AS `base`
+				FROM `#__publications` AS p
+				INNER JOIN `#__publication_versions` AS pv ON pv.publication_id = p.id
+				WHERE pv.state=1";
 
 		if ($type = $this->get('type'))
 		{
@@ -234,20 +234,27 @@ class Miner extends Object implements Provider
 	 */
 	public function match($identifier)
 	{
-		if (preg_match('/(.*?)\/publications\/(\d+)/i', $identifier, $matches))
+		if (preg_match('/(.*?)\/publications\/(\d+)(?:\/(\d+))?/i', $identifier, $matches))
 		{
-			return $matches[2];
+			return $matches[2] . (isset($matches[3]) && is_numeric($matches[3]) ? ':' . $matches[3] : '');
+		}
+
+		$resolver = $this->doiResolver();
+		if (substr($identifier, 0, strlen($resolver)) == $resolver)
+		{
+			$identifier = substr($identifier, strlen($resolver));
 		}
 
 		$this->database->setQuery(
-			"SELECT pv.`id`
+			"SELECT pv.`publication_id`, pv.`version_number`
 			FROM `#__publication_versions` AS pv
 			WHERE pv.`doi`=" . $this->database->quote($identifier) . "
 			LIMIT 1"
 		);
-		if ($id = $this->database->loadResult())
+		$doi = $this->database->loadObject();
+		if ($doi && $doi->publication_id)
 		{
-			return $id;
+			return $doi->publication_id . ($doi->version_number ? ':' . $doi->version_number : '');
 		}
 
 		return 0;
@@ -276,7 +283,7 @@ class Miner extends Object implements Provider
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
 			INNER JOIN `#__publication_categories` AS rt ON rt.id = p.category
-			WHERE p.id = " . $this->database->quote($id)
+			WHERE p.id = " . $this->database->quote($id) . ($revision ? " AND pv.version_number=" . $this->database->quote($revision) : "")
 		);
 		$record = $this->database->loadObject();
 		$record->version_id = $record->id;
@@ -285,13 +292,15 @@ class Miner extends Object implements Provider
 		$record->base = $this->name();
 		$record->type = $record->base . ':' . $record->type;
 
+		$record->title .= ' [version ' . $record->version_label . ']';
 		$record->description = strip_tags($record->description);
 		$record->description = trim($record->description);
+		$record->identifier  = $this->identifier($id, $record->identifier, $revision);
 
 		$this->database->setQuery(
 			"SELECT pv.created, pv.submitted, pv.published_up, pv.accepted
-			FROM `#__publication_versions` pv, `#__publications` p
-			WHERE p.id = pv.publication_id AND p.id = " . $this->database->quote($id) . "
+			FROM `#__publication_versions` AS pv
+			WHERE pv.id = " . $this->database->quote($record->version_id) . "
 			ORDER BY pv.submitted DESC LIMIT 1"
 		);
 		$dates = $this->database->loadObject();
@@ -311,8 +320,8 @@ class Miner extends Object implements Provider
 
 		$this->database->setQuery(
 			"SELECT pa.name
-			FROM `#__publication_authors` pa, `#__publication_versions` pv, `#__publications` p
-			WHERE pa.publication_version_id = pv.id AND pa.role != 'submitter' AND pv.publication_id = p.id AND p.id=" . $this->database->quote($id) . "
+			FROM `#__publication_authors` AS pa
+			WHERE pa.role != 'submitter' AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
 			ORDER BY pa.name"
 		);
 		$record->creator = $this->database->loadColumn();
@@ -327,6 +336,26 @@ class Miner extends Object implements Provider
 
 		// Relations
 		$record->relation = array();
+
+		$this->database->setQuery(
+			"SELECT v.id, v.publication_id, v.version_number, v.doi
+			FROM `#__publication_versions` as v
+			WHERE v.state=1 AND v.publication_id = " . $this->database->quote($record->id) . "
+			ORDER BY v.version_number DESC"
+		);
+		$versions = $this->database->loadObjectList();
+		foreach ($versions as $i => $v)
+		{
+			if (!$v->version_number || $v->version_number == $revision)
+			{
+				continue;
+			}
+
+			$record->relation[] = array(
+				'type'  => 'hasVersion',
+				'value' => $this->identifier($id, $v->doi, $v->version_number)
+			);
+		}
 
 		$this->database->setQuery(
 			"SELECT *
@@ -383,5 +412,45 @@ class Miner extends Object implements Provider
 		}
 
 		return $record;
+	}
+
+	/**
+	 * Build the identifier URI for a resource
+	 *
+	 * @param   integer  $id
+	 * @param   string   $doi
+	 * @param   integer  $rev
+	 * @return  string
+	 */
+	protected function identifier($id, $doi, $rev=0)
+	{
+		if ($doi)
+		{
+			$identifier = $this->doiResolver() . $doi;
+		}
+		else
+		{
+			$identifier = self::$base . '/' . ltrim(\Route::url('index.php?option=com_publications&pid=' . $id . ($rev ? '&v=' . $rev : '')), '/');
+		}
+
+		return $identifier;
+	}
+
+	/**
+	 * Get the DOI resolver
+	 *
+	 * @return  string
+	 */
+	protected function doiResolver()
+	{
+		static $resolver;
+
+		if (!$resolver)
+		{
+			$resolver = \Component::params('com_publications')->get('doi_resolve', 'http://dx.doi.org/');
+			$resolver = rtrim($resolver, '/') . '/';
+		}
+
+		return $resolver;
 	}
 }

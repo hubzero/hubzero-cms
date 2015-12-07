@@ -205,8 +205,16 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 		margin: 0.2em 0 0 0;
 		padding: 0;
 	}
-	.relations li:first-child {
+	.relations li.ref {
+		margin: 1em 0 0 0;
+		padding: 1em 0 0 0;
+		border-top: 1px solid #f1f1f1;
+	}
+	.relations li:first-child,
+	.relations li.ref:first-child {
 		margin-top: 0;
+		padding-top: 0;
+		border-top: none;
 	}
 	.keywords { 
 		list-style-type: none;
@@ -870,11 +878,11 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </xsl:template>
 
 <xsl:template match="dcterms:references" xmlns:dcterms="http://purl.org/dc/terms/">
-	<li><xsl:value-of select="."/></li>
+	<li class="ref"><xsl:value-of select="."/></li>
 </xsl:template>
 
 <xsl:template match="dcterms:isReferencedBy" xmlns:dcterms="http://purl.org/dc/terms/">
-	<li><xsl:value-of select="."/></li>
+	<li class="ref"><xsl:value-of select="."/></li>
 </xsl:template>
 
 <xsl:template match="dc:description" xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -922,7 +930,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <xsl:template match="dc:identifier" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<tr>
 		<th class="key">Resource Identifier</th>
-		<td class="value"><a href="{.}"><xsl:value-of select="." /></a></td>
+		<td class="value"><a href="{.}"><xsl:value-of select="."/></a></td>
 	</tr>
 </xsl:template>
 

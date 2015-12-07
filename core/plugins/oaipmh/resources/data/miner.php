@@ -161,7 +161,10 @@ class Miner extends Object implements Provider
 			$this->set('type', $this->database->loadResult());
 		}
 
-		$query = "SELECT r.id, " . $this->database->quote($this->name()) . " AS `base` FROM `#__resources` AS r WHERE r.`standalone`=1 AND r.`published`=1";
+		$query = "SELECT CASE WHEN v.revision THEN CONCAT(r.id, ':', v.revision) ELSE r.id END AS id, " . $this->database->quote($this->name()) . " AS `base`
+				FROM `#__resources` AS r
+				LEFT JOIN `#__tool_version` AS v ON v.`toolname`=r.`alias`
+				WHERE r.`standalone`=1 AND r.`published`=1";
 		if ($type = $this->get('type'))
 		{
 			$query .= " AND r.`type`=" . $this->database->quote($type);
@@ -236,6 +239,12 @@ class Miner extends Object implements Provider
 			return $matches[2] . (isset($matches[3]) && is_numeric($matches[3]) ? ':' . $matches[3] : '');
 		}
 
+		$resolver = $this->doiResolver();
+		if (substr($identifier, 0, strlen($resolver)) == $resolver)
+		{
+			$identifier = substr($identifier, strlen($resolver));
+		}
+
 		$this->database->setQuery(
 			"SELECT a.`rid`, v.`revision`
 			FROM `#__doi_mapping` AS a
@@ -281,6 +290,23 @@ class Miner extends Object implements Provider
 		$record->base = $this->name();
 		$record->type = $record->base . ':' . $record->type;
 
+		if ($revision)
+		{
+			$this->database->setQuery(
+				"SELECT *
+				FROM `#__tool_version`
+				WHERE toolname=" . $this->database->quote($record->alias) . " AND revision=" . $this->database->quote($revision) . "
+				LIMIT 1"
+			);
+			$tool = $this->database->loadObject();
+			if ($tool->id)
+			{
+				$record->title .= ' [version ' . $tool->version . ']';
+				$record->fulltxt = $tool->fulltxt;
+				$record->publish_up = $tool->released;
+			}
+		}
+
 		$record->date = $record->created;
 		if ($record->publish_up && $record->publish_up != $this->database->getNullDate())
 		{
@@ -314,11 +340,15 @@ class Miner extends Object implements Provider
 
 		if ($revision)
 		{
-			$this->database->setQuery(
-				"SELECT a.`doi`
+			/*"SELECT a.`doi`
 				FROM `#__doi_mapping` AS a
 				LEFT JOIN `#__tool_version` AS v ON v.id=a.versionid
 				WHERE a.rid=" . $this->database->quote($id) . " AND v.revision=" . $this->database->quote($revision) . "
+				LIMIT 1"*/
+			$this->database->setQuery(
+				"SELECT a.`doi`
+				FROM `#__doi_mapping` AS a
+				WHERE a.rid=" . $this->database->quote($id) . " AND a.local_revision=" . $this->database->quote($revision) . "
 				LIMIT 1"
 			);
 		}
@@ -406,14 +436,11 @@ class Miner extends Object implements Provider
 					ORDER BY t.ordering"
 				);
 				$record->creator = $this->database->loadColumn();
-			}
 
-			if ($revision)
-			{
-				$record->relation[] = array(
+				/*$record->relation[] = array(
 					'type'  => 'isVersionOf',
 					'value' => $this->identifier($id, '', 0)
-				);
+				);*/
 			}
 
 			$this->database->setQuery(
@@ -499,7 +526,7 @@ class Miner extends Object implements Provider
 	{
 		if ($doi)
 		{
-			$identifier = $doi; //'http://dx.doi.org/' . $doi;
+			$identifier = $this->doiResolver() . $doi;
 		}
 		else
 		{
@@ -507,5 +534,23 @@ class Miner extends Object implements Provider
 		}
 
 		return $identifier;
+	}
+
+	/**
+	 * Get the DOI resolver
+	 *
+	 * @return  string
+	 */
+	protected function doiResolver()
+	{
+		static $resolver;
+
+		if (!$resolver)
+		{
+			$resolver = \Component::params('com_tools')->get('doi_resolve', 'http://dx.doi.org/');
+			$resolver = rtrim($resolver, '/') . '/';
+		}
+
+		return $resolver;
 	}
 }
