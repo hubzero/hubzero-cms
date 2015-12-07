@@ -90,8 +90,12 @@
 	margin: 2em 0;
 }
 
+form#shoppingCart .options {
+	padding: 1em 0;
+}
+
 #updateCart {
-	margin: 1em 0;
+	float: right;
 }
 
 #cartContents {
