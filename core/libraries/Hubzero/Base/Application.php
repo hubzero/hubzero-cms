@@ -443,8 +443,9 @@ class Application extends Container
 		$this['stack']
 			->send($this['request'])
 			->through($this->middleware($this->serviceProviders))
-			->then(function($response)
+			->then(function($request, $response)
 			{
+				$response->prepare($request);
 				$response->send();
 			});
 	}

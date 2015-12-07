@@ -130,7 +130,7 @@ class Stack
 	{
 		$response = $this->layers[0]->handle($this->request);
 
-		return call_user_func($callback, $response);
+		return call_user_func($callback, $this->request, $response);
 	}
 
 	/**

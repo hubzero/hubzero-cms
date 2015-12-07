@@ -107,6 +107,7 @@ class Request extends BaseRequest
 				//$this->request->set($name, $value);
 			break;
 
+			case 'head':
 			case 'get':
 			case 'query':
 				$hash = 'query';
