@@ -22,9 +22,7 @@
 		text-transform: uppercase;
 		color: orange;
 		font-size: 0.75em;
-		position: absolute;
-		top: 0.65em;
-		left: 0.5em;
+		padding-right: 0.5em;
 	}
 	#mod-whatsnew ul {
 		list-style: none;
