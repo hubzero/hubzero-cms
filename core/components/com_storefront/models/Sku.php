@@ -306,8 +306,8 @@ class Sku
 		// Delete the SKU-related files
 		//	-- SKU image
 		$config = Component::params('com_storefront');
-		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
-		$dir = PATH_APP . DS . $imgWebPath . DS . $this->getProductId() . DS . $this->getId();
+		$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
+		$dir = PATH_ROOT . DS . $imgWebPath . DS . $this->getProductId() . DS . $this->getId();
 
 		if (file_exists($dir))
 		{

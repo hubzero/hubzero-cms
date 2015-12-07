@@ -575,7 +575,7 @@ class Product
 
 				// Remove the actual file
 				$config = Component::params('com_storefront');
-				$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+				$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
 				$path = PATH_ROOT . DS . $imgWebPath . DS . $this->getId();
 
 				Filesystem::delete($path . DS . $img->imgName);
@@ -982,8 +982,8 @@ class Product
 
 		// Delete product-related files (product image)
 		$config = Component::params('com_storefront');
-		$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
-		$dir = PATH_APP . DS . $imgWebPath . DS . $this->getId();
+		$imgWebPath = trim($config->get('imagesFolder', '/app/site/storefront/products'), DS);
+		$dir = PATH_ROOT . DS . $imgWebPath . DS . $this->getId();
 
 		if (file_exists($dir))
 		{
