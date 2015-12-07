@@ -180,8 +180,10 @@ if (!empty($errors))
 					}
 					echo '</table>';
 
+					echo '<div class="options cf">';
+					echo '<a href="' . Route::url('index.php?option=com_storefront') . '" class="btn">Continue shopping</a>';
 					echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';
-
+					echo '</div>';
 				}
 				else
 				{
