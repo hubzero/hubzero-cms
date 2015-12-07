@@ -134,14 +134,14 @@ class CartMessenger
 		$summary = 'Order number: ' . $transactionInfo->tId . "\n\n";
 		$summary .= "\n====================\n\n";
 
-		$summary .= 'Subtotal: ' . money_format('%n', $transactionInfo->tiSubtotal) . "\n";
+		$summary .= 'Subtotal: ' . '$' . number_format($transactionInfo->tiSubtotal, 2) . "\n";
 		if (!$transactionInfo->tiShipping)
 		{
 			$transactionInfo->tiShipping = 0;
 		}
 		if ($transactionInfo->tiShipping > 0)
 		{
-			$summary .= 'Shipping and handling: ' . money_format('%n', $transactionInfo->tiShipping) . "\n";
+			$summary .= 'Shipping and handling: ' . '$' . number_format($transactionInfo->tiShipping, 2) . "\n";
 		}
 		if (!$transactionInfo->tiTax)
 		{
@@ -149,13 +149,13 @@ class CartMessenger
 		}
 		if ($transactionInfo->tiDiscounts > 0 || $transactionInfo->tiShippingDiscount > 0)
 		{
-			$summary .= 'Discounts: ' . money_format('%n', $transactionInfo->tiDiscounts + $transactionInfo->tiShippingDiscount) . "\n";
+			$summary .= 'Discounts: ' . '$' . number_format($transactionInfo->tiDiscounts + $transactionInfo->tiShippingDiscount, 2) . "\n";
 		}
 		if ($transactionInfo->tiTax > 0)
 		{
-			$summary .= 'Tax: ' . money_format('%n', $transactionInfo->tiTax) . "\n";
+			$summary .= 'Tax: ' . '$' . number_format($transactionInfo->tiTax, 2) . "\n";
 		}
-		$summary .= 'Total: ' . money_format('%n', $transactionInfo->tiTotal) . "\n";
+		$summary .= 'Total: ' . '$' . number_format($transactionInfo->tiTotal, 2) . "\n";
 
 		if (!empty($transactionInfo->tiShippingToFirst))
 		{
@@ -219,7 +219,7 @@ class CartMessenger
 				$summary .= ')';
 			}
 
-			$summary .= ' @ ' . money_format('%n', $itemInfo->sPrice);
+			$summary .= ' @ ' . '$' . number_format($itemInfo->sPrice, 2);
 
 			if ($action)
 			{

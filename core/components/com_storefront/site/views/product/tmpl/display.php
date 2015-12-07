@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-setlocale(LC_MONETARY, 'en_US.UTF-8');
-
 ?>
 
 <header id="content-header">
@@ -97,10 +95,10 @@ if (!empty($this->notifications))
 
 				if ($price['high'] == $price['low'])
 				{
-					$priceRange .= money_format('%n', $price['high']);
+					$priceRange .=  '$' . number_format($price['high'], 2);
 				}
 				else {
-					$priceRange .= money_format('%n', $price['low']) . ' &ndash; ' . money_format('%n', $price['high']);
+					$priceRange .= '$' . number_format($price['low'], 2) . ' &ndash; ' . '$' . number_format($price['high'], 2);
 				}
 
 				$out = false;

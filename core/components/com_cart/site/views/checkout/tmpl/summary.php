@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-setlocale(LC_MONETARY, 'en_US.UTF-8');
-
 $this->css();
 ?>
 
@@ -112,18 +110,18 @@ if (!empty($this->notifications))
 
 				echo '<h2>Order summary:</h2>';
 
-				echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
+				echo '<p>Order subtotal: ' . '$' . number_format($this->transactionInfo->tiSubtotal, 2) . '</p>';
 
 				if ($this->transactionInfo->tiShipping > 0)
 				{
-					echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
+					echo '<p>Shipping: ' . '$' . number_format($this->transactionInfo->tiShipping, 2) . '</p>';
 				}
 				if ($discount > 0)
 				{
-					echo '<p>Discounts: ' . money_format('%n', $discount) . '</p>';
+					echo '<p>Discounts: ' . '$' . number_format($discount, 2) . '</p>';
 				}
 
-				echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';
+				echo '<p class="orderTotal">Order total: ' . '$' . number_format($orderTotal, 2) . '</p>';
 			}
 
 			echo '</div>';

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-setlocale(LC_MONETARY, 'en_US.UTF-8');
-
 ?>
 
 <!--h2>Items</h2-->
@@ -83,7 +81,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			echo '</td>';
 
 			echo '<td>';
-			echo money_format('%n', $transactionInfo->tiPrice);
+			echo '$' . number_format($transactionInfo->tiPrice, 2);
 			echo '</td>';
 
 			echo '<td>';
@@ -102,7 +100,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 				echo '</td>';
 
 				echo '<td class="cartDiscountDiscount">';
-				echo money_format('-%n', $this->perks['items'][$sId]->discount);
+				echo '-$' . number_format($this->perks['items'][$sId]->discount, 2);
 				echo '</td>';
 
 				echo '<td>';
@@ -127,7 +125,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 					echo '</td>';
 
 					echo '<td class="cartDiscountDiscount">';
-					echo money_format('-%n', $coupon->discount);
+					echo '-$' . number_format($coupon->discount, 2);
 					echo '</td>';
 
 					echo '<td>';
@@ -152,7 +150,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 				echo '</td>';
 
 				echo '<td class="cartDiscountDiscount">';
-				echo money_format('-%n', $this->tiShippingDiscount);
+				echo '-$' . number_format($this->tiShippingDiscount, 2);
 				echo '</td>';
 
 				echo '<td>';

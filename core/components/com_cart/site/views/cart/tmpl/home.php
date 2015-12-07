@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-setlocale(LC_MONETARY, 'en_US.UTF-8');
-
 $this->css()
      ->js()
 ?>
@@ -146,11 +144,11 @@ if (!empty($errors))
 						echo '</td>';
 
 						echo '<td class="rightJustify price">';
-						echo '<p>' . money_format('%n', $info->sPrice * $item['cartInfo']->qty);
+						echo '<p>' . '$' . number_format($info->sPrice * $item['cartInfo']->qty, 2);
 
 						if ($item['cartInfo']->qty > 1)
 						{
-							echo '<br><span>' . money_format('%n', $info->sPrice) . ' each</span>';
+							echo '<br><span>' . '$' . number_format($info->sPrice, 2) . ' each</span>';
 						}
 
 						echo '</p>';
@@ -173,7 +171,7 @@ if (!empty($errors))
 							echo '</td>';
 
 							echo '<td class="cartDiscountDiscount rightJustify price">';
-							echo money_format('-%n', $itemsPerks[$sId]->discount);
+							echo '-$' . number_format($itemsPerks[$sId]->discount, 2);
 							echo '</td>';
 
 							echo '</tr>';
@@ -204,12 +202,12 @@ if (!empty($errors))
 						echo '<h3>Cart summary:</h3>';
 
 						echo '<p>Items: <span>' . $this->cartInfo->totalItems . '</span></p>';
-						echo '<p>Items subtotal: <span>' . money_format('%n', $this->cartInfo->totalCart) . '</span></p>';
+						echo '<p>Items subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart, 2) . '</span></p>';
 
 						$discountsTotal = 0;
 						if (!empty($this->couponPerks['info']->itemsDiscountsTotal))
 						{
-							echo '<p>Items discounts: <span>' .  money_format('-%n', $this->couponPerks['info']->itemsDiscountsTotal) . '</span></p>';
+							echo '<p>Items discounts: <span>' .  '-$' . number_format($this->couponPerks['info']->itemsDiscountsTotal, 2) . '</span></p>';
 							$discountsTotal += $this->couponPerks['info']->itemsDiscountsTotal;
 						}
 
@@ -223,7 +221,7 @@ if (!empty($errors))
 								echo '<p class="cartDiscountName"><span>Discount</span>: ' . $perk->name . ': ';
 								if ($perk->discount > 0)
 								{
-									echo money_format('-%n', $perk->discount);
+									echo '-$' . number_format($perk->discount, 2);
 								}
 								else
 								{
@@ -245,7 +243,7 @@ if (!empty($errors))
 
 						if ($discountsTotal)
 						{
-							echo '<p class="totalValue">Cart subtotal: <span>' . money_format('%n', $this->cartInfo->totalCart - $discountsTotal) . '</span></p>';
+							echo '<p class="totalValue">Cart subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart - $discountsTotal, 2) . '</span></p>';
 						}
 
 						if ($this->cartInfo->totalItems)
