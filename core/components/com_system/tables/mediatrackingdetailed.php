@@ -25,67 +25,71 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\System\Api;
-
-use Hubzero\Component\Router\Base;
+namespace Components\System\Tables;
 
 /**
- * Routing class for the component
+ * Table class for resource detailed media tracking
  */
-class Router extends Base
+class MediaTrackingDetailed extends \JTable
 {
 	/**
-	 * Build the route for the component
+	 * Constructor
 	 *
-	 * @param   array  &$query  An array of URL arguments
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
-	public function build(&$query)
+	public function __construct(&$db)
 	{
-		$segments = array();
-
-		if (!empty($query['task']))
-		{
-			$segments[] = $query['task'];
-			unset($query['task']);
-		}
-
-		return $segments;
+		parent::__construct('#__media_tracking_detailed', 'id', $db);
 	}
 
 	/**
-	 * Parse the segments of a URL.
-	 *
-	 * @param   array  &$segments  The segments of the URL to parse.
-	 * @return  array  The URL attributes to be used by the application.
+	 * Check method used to verify data on save
+	 * 
+	 * @return  bool  Validation check result
 	 */
-	public function parse(&$segments)
+	public function check()
 	{
-		$vars = array();
-		$vars['controller'] = 'system';
-
-		if (isset($segments[0]))
+		// session id check
+		if (trim($this->session_id) == '')
 		{
-			if ($segments[0] == 'media')
-			{
-				$vars['controller'] = 'media';
-
-				if (isset($segments[1]))
-				{
-					$vars['task'] = $segments[1];
-				}
-			}
-			else
-			{
-				$vars['task'] = $segments[0];
-			}
+			$this->setError(\Lang::txt('Missing required session identifier.'));
 		}
 
-		return $vars;
+		// IP check
+		if (trim($this->ip_address) == '')
+		{
+			$this->setError(\Lang::txt('Missing required session identifier.'));
+		}
+
+		// object id/type check
+		if (trim($this->object_id) == '' || trim($this->object_type) == '')
+		{
+			$this->setError(\Lang::txt('Missing required object id or object type.'));
+		}
+
+		if ($this->getError())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Load a record by ID
+	 *
+	 * @param   integer  $id  Record ID
+	 * @return  object
+	 */
+	public function loadByDetailId($id)
+	{
+		$this->_db->setQuery("SELECT m.* FROM $this->_tbl AS m WHERE id=" . $this->_db->quote($id));
+		return $this->_db->loadObject();
 	}
 }
