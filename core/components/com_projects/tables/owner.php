@@ -465,7 +465,7 @@ class Owner extends \JTable
 
 			if ($name && $email)
 			{
-				$connected[$name] = $email;
+				$connected[$email] = $name;
 			}
 		}
 

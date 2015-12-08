@@ -695,22 +695,22 @@ class Connect extends Object
 			{
 				// Get current permissions
 				$permlist = $apiService->permissions->listPermissions($folderID);
-				$permNames = array();
+				$permEmails = array();
 
 				// Collect permission names
 				foreach ($permlist['items'] as $p)
 				{
-					if (isset($p['name']))
+					if (isset($p['emailAddress']))
 					{
-						$permNames[] = $p['name'];
+						$permEmails[] = $p['emailAddress'];
 					}
 				}
 
 				// Go through array of connected users
-				foreach ($shared as $name => $email)
+				foreach ($shared as $email => $name)
 				{
 					// Need to add permission
-					if (!in_array($name, $permNames))
+					if (!in_array($email, $permEmails))
 					{
 						$permission = new Google_Service_Drive_Permission;
 						$permission->setRole('writer');
