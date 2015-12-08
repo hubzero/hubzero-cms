@@ -171,7 +171,7 @@ class Resource extends SiteController
 				$fields[$field->name] = $field;
 			}
 
-			$nbtag = $_POST['nbtag'];
+			$nbtag = Request::getVar('nbtag', array());
 			$found = array();
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
