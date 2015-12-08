@@ -2747,7 +2747,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->params = new \Hubzero\Config\Registry( $this->model->table()->params );
 
 		// Get connection details for user
-		$member = $this->model->member();
+		$member = $this->model->member(true);
 		$view->oparams = new \Hubzero\Config\Registry( $member->params );
 
 		// Get messages	and errors
