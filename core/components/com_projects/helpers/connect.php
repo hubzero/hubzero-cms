@@ -523,10 +523,7 @@ class Connect extends Object
 			$client->setAccessToken($access_token);
 		}
 
-		if ($uid == $this->_uid)
-		{
-			$this->_client[$service] = $client;
-		}
+		$this->_client[$service] = $client;
 
 		return $client;
 	}
