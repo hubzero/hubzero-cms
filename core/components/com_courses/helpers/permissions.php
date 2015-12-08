@@ -57,7 +57,7 @@ class Permissions
 	public static function getActions($assetType='component', $assetId = 0)
 	{
 		$assetName  = self::$extension;
-		$assetName .= '.' . $assetType;
+		//$assetName .= '.' . $assetType;
 		if ($assetId)
 		{
 			$assetName .= '.' . (int) $assetId;
