@@ -63,8 +63,8 @@ class FileServiceProvider extends Middleware
 		// Initiate a new content server
 		$server = new Server();
 		$server->disposition('inline');
-		$server->acceptranges(false);
-
+		$server->acceptranges(true);
+		$server->allowXsendFile();
 		$server->filename($filename);
 
 		// Serve up the file
