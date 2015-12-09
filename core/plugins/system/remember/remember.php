@@ -78,7 +78,8 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 						throw new Exception('Malformed password.');
 					}
 
-					$return = App::get('auth')->login($credentials, array('silent' => true));
+					// We're only doing this for the site app, so we explicitly set the action here
+					$return = App::get('auth')->login($credentials, array('silent' => true, 'action' => 'core.login.site'));
 					if (!$return)
 					{
 						throw new Exception('Log-in failed.');
