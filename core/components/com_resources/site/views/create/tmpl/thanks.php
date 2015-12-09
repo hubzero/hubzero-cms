@@ -169,7 +169,7 @@ $this->css('create.css');
 			<?php } else { ?>
 				<div class="entry-content" id="submission">
 					<h4>What happens now?</h4>
-					<p>Your contribution is now publicly available. You may view it <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id); ?>">here</a>.</p>
+					<p>Your contribution is now published. You may view it <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id); ?>">here</a>.</p>
 				</div>
 				<div class="entry-content" id="retract">
 					<h4>Ooops! I missed something and/or submitted too early!</h4>
