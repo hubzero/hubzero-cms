@@ -51,6 +51,7 @@ use Route;
 use Lang;
 use Date;
 use User;
+use App;
 
 /**
  * Answers controller class for questions
