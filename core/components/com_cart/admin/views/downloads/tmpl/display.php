@@ -34,8 +34,8 @@ $canDo = CartHelperPermissions::getActions('downloads');
 Toolbar::title(Lang::txt('COM_CART') . ': ' . Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'), 'cart.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	//JToolBarHelper::preferences($this->option, '550');
+	//JToolBarHelper::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
