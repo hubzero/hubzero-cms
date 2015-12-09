@@ -220,32 +220,34 @@ function submitbutton(pressbutton)
 				<td class="priority-3">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<?php if ($row->published) { ?>
-						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNPUBLISH'); ?>">
-							<span class="state publish">
-								<span class="text"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></span>
-							</span>
-						</a>
+							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNPUBLISH'); ?>">
+								<span class="state publish">
+									<span class="text"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></span>
+								</span>
+							</a>
 						<?php } else { ?>
-						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_PUBLISH'); ?>">
-							<span class="state unpublish">
-								<span class="text"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></span>
-							</span>
-						</a>
+							<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_PUBLISH'); ?>">
+								<span class="state unpublish">
+									<span class="text"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></span>
+								</span>
+							</a>
 						<?php } ?>
 					<?php } ?>
 				</td>
 				<td class="priority-3">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<?php if (!$group->get('approved')) { ?>
-						<a class="jgrid state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>">
-							<span class="not-approved">
-								<span class="text"><?php echo Lang::txt('COM_GROUPS_APPROVE'); ?></span>
-							</span>
-						</a>
+							<a class="jgrid state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>">
+								<span class="not-approved">
+									<span class="text"><?php echo Lang::txt('COM_GROUPS_APPROVE'); ?></span>
+								</span>
+							</a>
 						<?php } else { ?>
-							<span class="state yes approved">
-								<span class="text"><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></span>
-							</span>
+							<a class="jgrid state yes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unapprove&id=' . $row->cn); ?>" title="<?php echo Lang::txt('COM_GROUPS_UNAPPROVE'); ?>">
+								<span class="approved">
+									<span class="text"><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></span>
+								</span>
+							</a>
 						<?php } ?>
 					<?php } ?>
 				</td>

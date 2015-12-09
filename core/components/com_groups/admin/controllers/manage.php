@@ -350,6 +350,8 @@ class Manage extends AdminController
 		// Set the group changes and save
 		$group->set('cn', $g['cn']);
 		$group->set('type', $g['type']);
+		$group->set('approved', $g['approved']);
+		$group->set('published', $g['published']);
 		if ($isNew)
 		{
 			$group->create();
@@ -1232,7 +1234,7 @@ class Manage extends AdminController
 					continue;
 				}
 
-				//set the group to be published and update
+				// Set the group to be published and update
 				$group->set('approved', 1);
 				$group->update();
 
@@ -1245,6 +1247,59 @@ class Manage extends AdminController
 			}
 
 			Notify::success(Lang::txt('COM_GROUPS_APPROVED'));
+		}
+
+		// Output messsage and redirect
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
+	}
+
+	/**
+	 * Unapprove a group
+	 *
+	 * @return  void
+	 */
+	public function unapproveTask()
+	{
+		// Incoming
+		$ids = Request::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids))
+		{
+			$ids = array($ids);
+		}
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			// foreach group id passed in
+			foreach ($ids as $id)
+			{
+				// Load the group page
+				$group = new Group();
+				$group->read($id);
+
+				// Ensure we found the group info
+				if (!$group)
+				{
+					continue;
+				}
+
+				// Set the group to be published and update
+				$group->set('approved', 0);
+				$group->update();
+
+				// log publishing
+				Log::log(array(
+					'gidNumber' => $group->get('gidNumber'),
+					'action'    => 'group_unapproved',
+					'comments'  => 'unapproved by administrator'
+				));
+			}
+
+			Notify::success(Lang::txt('COM_GROUPS_UNAPPROVED'));
 		}
 
 		// Output messsage and redirect
