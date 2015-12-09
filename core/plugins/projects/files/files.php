@@ -3377,8 +3377,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_cleanData();
 
 		// Incoming
-		$checked = Request::getVar( 'asset', array() );
-		$folders = Request::getVar( 'folder', array() );
+		$checked = Request::getVar('asset', array());
+		$folders = Request::getVar('folder', array());
 
 		$combined = array();
 		if (!empty($checked) && is_array($checked))
@@ -3391,10 +3391,28 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($file = Request::getVar( 'asset', ''))
+		elseif ($file = Request::getVar('asset', ''))
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
+
+		// [!] Legacy support
+		$files = Request::getVar('file', array());
+		if (!empty($files) && is_array($files))
+		{
+			foreach ($files as $ch)
+			{
+				if (trim($ch) != '')
+				{
+					$combined[] = array('file' => urldecode($ch));
+				}
+			}
+		}
+		elseif ($file = Request::getVar('file', ''))
+		{
+			$combined[] = array('file' => urldecode($file));
+		}
+
 		if (!empty($folders) && is_array($folders))
 		{
 			foreach ($folders as $f)
@@ -3405,7 +3423,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($folder = Request::getVar( 'folder', ''))
+		elseif ($folder = Request::getVar('folder', ''))
 		{
 			$combined[] = array('folder' => urldecode($folder));
 		}
