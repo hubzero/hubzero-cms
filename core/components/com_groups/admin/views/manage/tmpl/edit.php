@@ -113,6 +113,27 @@ function submitbutton(pressbutton)
 					<option value="4"<?php echo ($this->group->type == '4') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_COURSE'); ?></option>
 				</select>
 			</div>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-published"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?>:</label>
+					<select name="group[published]" id="field-published">
+						<option <?php if ($this->group->published == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></option>
+						<option <?php if ($this->group->published == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></option>
+					</select>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-approved"><?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>:</label>
+					<select name="group[approved]" id="field-approved">
+						<option <?php if ($this->group->approved == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo Lang::txt('COM_GROUPS_UNAPPROVED'); ?></option>
+						<option <?php if ($this->group->approved == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></option>
+					</select>
+				</div>
+			</div>
+			<div class="clr"></div>
+
 			<div class="input-wrap">
 				<label for="field-cn"><?php echo Lang::txt('COM_GROUPS_CN'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="group[cn]" id="field-cn" value="<?php echo $this->escape(stripslashes($this->group->cn)); ?>" />
