@@ -33,9 +33,10 @@
 namespace Components\Publications\Models;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 
 use Hubzero\Base\Model;
-use Components\Publications\Helpers;
+use Components\Publications\Helpers\Html;
 use Components\Publications\Tables;
 
 /**
@@ -113,7 +114,6 @@ class Log extends Model
 				// Add to non-unique list
 				$all++;
 			}
-
 		}
 		fclose($file_handle);
 		return $category == 'filtered' ? $all : $unique;
@@ -158,7 +158,7 @@ class Log extends Model
 			{
 				$yearNum  = intval(date('y', strtotime("-" . $a . " month")));
 				$monthNum = intval(date('m', strtotime("-" . $a . " month")));
-				$date 	  = date('Y-m', strtotime("-" . $a . " month"));
+				$date     = date('Y-m', strtotime("-" . $a . " month"));
 				$logFile  = 'pub-' . $pid . '-v-' . $version->id . '.' . $date . '.log';
 
 				$fpath = $logPath . DS . $logFile;
@@ -244,7 +244,7 @@ class Log extends Model
 		}
 
 		// Build log path (access logs)
-		$logPath = Helpers\Html::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
+		$logPath = Html::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
 
 		if (!is_dir($logPath))
 		{
