@@ -195,7 +195,7 @@ class Helper extends Module
 			{
 				$pparams = new Registry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
-				$authenticators[] = array('name' => $p->name, 'display' => $display);
+				$authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
