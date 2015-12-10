@@ -105,7 +105,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$link = Route::url('index.php?option=com_plugins&task=plugin.edit&extension_id='.$row->id.'&component=resources');
+	$link = Route::url('index.php?option=com_plugins&task=edit&extension_id='.$row->id.'&component=resources');
 
 	//$access    = $this->grid('access', $row, $i);
 	//$checked = $this->grid('checkedout', $row, $i);
