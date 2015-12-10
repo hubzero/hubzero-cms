@@ -57,7 +57,7 @@ Toolbar::deleteList();
 					$this->filters['start'],
 					$this->filters['limit']
 				);
-				echo $pageNav->getListFooter();
+				echo $pageNav;
 				?></td>
 			</tr>
 		</tfoot>
