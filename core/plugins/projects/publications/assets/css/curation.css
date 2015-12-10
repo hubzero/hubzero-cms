@@ -812,18 +812,20 @@
 	}
 	.pane-output:before,
 	.handler-controls:before {
-		width: 85px;
+		width: 45px;
 		height: 85px;
 		font-size: 85px;
 		font-family: 'Fontcons';
+		line-height: 1;
+		text-indent: -20px;
 		color: #d1dcd9;
 		border: none;
 		content: "\f0da";
 		position: absolute;
-		margin: 30px 0 0 -80px;
+		margin: 0 0 0 -60px;
 	}
 	.handler-controls:before {
-		margin-left: -60px;
+		margin-left: -40px;
 	}
 	.output-content ul {
 		min-height: 40px;
