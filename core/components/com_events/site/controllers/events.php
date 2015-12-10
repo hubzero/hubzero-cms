@@ -1409,20 +1409,21 @@ class Events extends SiteController
 			}
 
 			//get timezone
-			$timezone = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+			$timezone = timezone_name_from_abbr('',$this->offset*3600, NULL);
+			$timezone = new DateTimeZone($timezone);
 
 			// get start date and time
-			$start_publish = Date::of($row->publish_up, $timezone)->toLocal('Y-m-d');
-			$start_time = Date::of($row->publish_up, $timezone)->toLocal('H:i');
+			$start_publish = Date::of($row->publish_up, $timezone)->format('Y-m-d');
+			$start_time = Date::of($row->publish_up, $timezone)->format('H:i');
 
 			// get end date and time
-			$stop_publish = Date::of($row->publish_down, $timezone)->toLocal('Y-m-d');
-			$end_time = Date::of($row->publish_down, $timezone)->toLocal('H:i');
+			$stop_publish = Date::of($row->publish_down, $timezone)->format('Y-m-d');
+			$end_time = Date::of($row->publish_down, $timezone)->format('H:i');
 
 			$time_zone = $row->time_zone;
 
-			$registerby_date = Date::of($row->registerby, $timezone)->toLocal('Y-m-d');
-			$registerby_time = Date::of($row->registerby, $timezone)->toLocal('H:i');
+			$registerby_date = Date::of($row->registerby, $timezone)->format('Y-m-d');
+			$registerby_time = Date::of($row->registerby, $timezone)->format('H:i');
 
 			$arr = array(
 				\Html::select('option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
@@ -1854,7 +1855,7 @@ class Events extends SiteController
 			case 11.5:   $tz = 'Asia/Vladivostok';       break;
 			case 13:     $tz = 'Pacific/Tongatapu';      break;
 			case 14:     $tz = 'Pacific/Kiritimati';     break;
-			default:     $tz = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+			default:     $tz = timezone_name_from_abbr('',$offset*3600, NULL);
 		}
 
 		// create timezone objects

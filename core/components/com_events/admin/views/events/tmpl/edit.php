@@ -197,6 +197,7 @@ var HUB = {};
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="time_zone" value="<?php echo $this->row->time_zone; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="images" value="" />
 
