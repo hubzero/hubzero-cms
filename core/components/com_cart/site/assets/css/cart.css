@@ -182,6 +182,13 @@ form#shoppingCart .options {
 	left: 50%;
 }
 
+.eula {
+	max-height: 600px;
+	background: #efefef;
+	overflow-y: auto;
+	padding: 1em;
+}
+
 .theclearfix:before, .theclearfix:after { content: ""; display: table; }
 .theclearfix:after { clear: both; }
 .theclearfix { *zoom: 1; height: auto; }

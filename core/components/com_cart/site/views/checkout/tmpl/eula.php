@@ -73,7 +73,7 @@ if (!empty($this->notifications))
 				<form name="eula" class="full" method="post" id="hubForm">
 					<fieldset>
 						<label>Please read the user agreement:
-							<textarea rows="20" readonly><?php echo $this->productEula; ?></textarea>
+							<div class="eula"><?php echo $this->productEula; ?></div>
 						</label>
 
 						<fieldset>
