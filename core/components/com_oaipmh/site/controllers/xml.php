@@ -234,7 +234,7 @@ class Xml extends SiteController
 					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
 				}
 
-				if (!$this->getError())
+				if (!$service->getError())
 				{
 					$service->identifiers($from, $until, $set);
 				}
