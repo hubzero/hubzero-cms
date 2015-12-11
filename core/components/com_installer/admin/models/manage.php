@@ -343,8 +343,8 @@ class Manage extends Extension
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		\JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-		\JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
+		\JForm::addFormPath(__DIR__ . '/forms');
+		\JForm::addFieldPath(__DIR__ . '/fields');
 		$form = \JForm::getInstance('com_installer.manage', 'manage', array('load_data' => $loadData));
 
 		// Check for an error.
@@ -374,7 +374,7 @@ class Manage extends Extension
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = User::getState('com_installer.manage.data', array());
+		$data = User::getState($this->context . '.data', array());
 
 		return $data;
 	}
