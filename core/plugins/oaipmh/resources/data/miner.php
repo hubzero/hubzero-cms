@@ -159,6 +159,10 @@ class Miner extends Object implements Provider
 			$set = trim($matches[1]);
 			$this->database->setQuery("SELECT t.id FROM `#__resource_types` AS t WHERE t.alias=" . $this->database->quote($set));
 			$this->set('type', $this->database->loadResult());
+			if (!$this->get('type'))
+			{
+				return '';
+			}
 		}
 
 		$query = "SELECT CASE WHEN v.revision THEN CONCAT(r.id, ':', v.revision) ELSE r.id END AS id, " . $this->database->quote($this->name()) . " AS `base`

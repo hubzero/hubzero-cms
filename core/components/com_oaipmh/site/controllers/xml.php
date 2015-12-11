@@ -154,11 +154,37 @@ class Xml extends SiteController
 			break;
 
 			case 'ListSets':
-				if (!$metadata)
+				if (!empty($resumption))
 				{
-					$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+					try
+					{
+						$data = $service->decodeToken($resumption);
+					}
+					catch (\Exception $e)
+					{
+						$service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+					}
+
+					if (!$service->getError())
+					{
+						if (!$data || !is_array($data))
+						{
+							$service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
+						}
+						else
+						{
+							$service->set('limit', isset($data['limit']) ? $data['limit'] : $service->get('limit'));
+							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
+							$from     = isset($data['from'])   ? $data['from']   : $from;
+							$until    = isset($data['until'])  ? $data['until']  : $until;
+							$set      = isset($data['set'])    ? $data['set']    : $set;
+							$metadata = isset($data['prefix']) ? $data['prefix'] : $metadata;
+							$service->set('metadataPrefix', $metadata);
+						}
+					}
 				}
-				if (!$service->getError())
+
+				if ($metadata)
 				{
 					$service->setSchema($metadata);
 				}

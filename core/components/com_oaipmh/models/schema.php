@@ -45,14 +45,14 @@ interface Schema
 	public static function handles($type);
 
 	/**
-	 * Count import records
+	 * Output set data
 	 *
-	 * @param  array  $iterator
+	 * @param  array  $set
 	 */
-	public function sets($iterator);
+	public function set($set);
 
 	/**
-	 * Count import records
+	 * Output a lsit of records
 	 *
 	 * @param  array    $iterator
 	 * @param  boolean  $metadata
@@ -60,7 +60,7 @@ interface Schema
 	public function records($iterator, $metadata=true);
 
 	/**
-	 * Process an import
+	 * Output a record
 	 *
 	 * @param  object   $result
 	 * @param  boolean  $metadata
