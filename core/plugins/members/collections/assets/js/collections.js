@@ -43,7 +43,7 @@ jQuery(document).ready(function(jq){
 			}
 		});
 
-		var opts = $('.view-options a');
+		/*var opts = $('.view-options a');
 		opts.each(function(i, el) {
 			if ($(this).hasClass('selected') && $(this).hasClass('icon-list')) {
 				isActive = false;
@@ -70,7 +70,7 @@ jQuery(document).ready(function(jq){
 			}
 
 			isActive = !isActive;
-		});
+		});*/
 
 		// Masonry
 		if (isActive) {
