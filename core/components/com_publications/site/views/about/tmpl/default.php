@@ -240,7 +240,6 @@ $schema 	= $metaElements->getSchema();
 if (($this->publication->params->get('show_notes')) && $this->publication->get('release_notes'))
 {
 	$notes = $this->publication->notes('parsed');
-	$notes = NULL;
 	?>
 	<h4><?php echo Lang::txt('COM_PUBLICATIONS_NOTES'); ?></h4>
 	<div class="pub-content">
