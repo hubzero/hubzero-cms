@@ -94,7 +94,7 @@ class TagObject extends Relational
 	 **/
 	public function tag()
 	{
-		return $this->belongsToOne('Tag', 'tagid', 'id')->where('tbl', '=', 'citations');
+		return $this->belongsToOne('Tag', 'id', 'tagid');
 	}
 
 }

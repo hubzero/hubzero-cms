@@ -87,7 +87,7 @@ class Citation extends Relational
 	 **/
 	public function relatedAuthors()
 	{
-		return $this->oneToMany('Author', 'cid', 'id')->order('ordering', 'ASC');
+		return $this->oneToMany('Author', 'cid', 'id');
 	}
 
 	/**
@@ -597,14 +597,15 @@ class Citation extends Relational
 	 */
 	public function tagCloud()
 	{
+		$tags = clone $this->tags;
 		if ($this->tags()->count() > 0)
 		{
 			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
 
 			$html  = '<ol class="tags">';
-			foreach ($this->tags as $tag)
+			foreach ($tags as $tag)
 			{
-				if ($tag->tagObject->label == NULL )
+				if ($tag->tagObject->tbl == 'citations' && $tag->tagObject->label == '')
 				{
 					//display tag if not admin tag or if admin tag and user is adminstrator
 					if (!$tag->admin || ($tag->admin && $isAdmin))
