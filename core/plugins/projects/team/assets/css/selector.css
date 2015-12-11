@@ -31,7 +31,7 @@
 		min-height: 34px;
 	}
 	.team-selector li.even {
-		background: #f7f7fa;			
+		background: #f7f7fa;
 	}
 	ul.team-selector {
 		max-height: 300px;
@@ -50,7 +50,8 @@
 	.abox-controls {
 		float: right;
 	}
-	#b-save.disabled, #b-save.disabled:hover {
+	#b-save.disabled,
+	#b-save.disabled:hover {
 		background: #CCC;
 		cursor: default;
 	}
@@ -113,7 +114,7 @@
 		font-size: 90%;
 		height: 40px;
 		border-top: 1px dotted #CCC;
-	}	
+	}
 	.newauthor-question span {
 		float: right;
 	}
@@ -165,7 +166,6 @@
 		font-weight: bold;
 	}
 	.add-author .token-input-list-acm {
-		
 	}
 	.autoc {
 		display: block;
@@ -179,11 +179,12 @@
 
 /* Selectable
 ---------------------------- */
-
 	#team-selector .selectedfilter,
-	.team-selector .selectedfilter, .team-selector .selectedfilter:hover {
+	.team-selector .selectedfilter,
+	.team-selector .selectedfilter:hover {
 		background: #ddf4fd;
 		cursor: pointer;
+		position: relative;
 	}
 	.team-selector .selectedfilter .item-info:after, 
 	.team-selector .selectedfilter:hover .item-info:after {
@@ -224,11 +225,9 @@
 		float: right;
 		text-transform: uppercase;
 	}
-	
+
 /* Provisioned projects
 ---------------------------- */
 	#abox-content {
 		text-align: left;
 	}
-	
-	
