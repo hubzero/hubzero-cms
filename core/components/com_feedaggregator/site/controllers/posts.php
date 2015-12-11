@@ -34,6 +34,7 @@ namespace Components\Feedaggregator\Site\Controllers;
 
 use Components\Feedaggregator\Models;
 use Hubzero\Component\SiteController;
+use Hubzero\Utility\Sanitize;
 use Guzzle\Http\Client;
 use Exception;
 use Document;
@@ -389,7 +390,10 @@ class Posts extends SiteController
 
 				// sanitize ouput
 				$item->title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
-				$item->title = (string) html_entity_decode(strip_tags($item->title));
+				$item->title = preg_replace("/&#?[a-z1-9]{2,8};/i","",$post->title);
+				$item->title = (string) strip_tags($item->title);
+				$item->title = html_entity_decode($item->title);
+				$item->title = Sanitize::clean($item->title);
 
 				// encapsulate link in unparseable
 				$item->link = '<![CDATA[' . $post->link . ']]>';
@@ -397,7 +401,10 @@ class Posts extends SiteController
 
 				// sanitize ouput
 				$item->description = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->description);
-				$item->description = (string) html_entity_decode(strip_tags($item->description, '<img>'));
+				$item->description = preg_replace('/[^A-Za-z0-9 ]/', '', $item->description);
+				$item->description = preg_replace("/&#?[a-z1-9]{2,8};/i","",$post->description);
+				$item->description = html_entity_decode($post->description);
+				$item->description = Sanitize::html($post->description);
 
 				$doc->addItem($item);
 			}
