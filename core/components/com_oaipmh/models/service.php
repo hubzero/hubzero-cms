@@ -395,6 +395,10 @@ class Service extends Object
 	 */
 	public function sets()
 	{
+		// Set flow control vars
+		$total   = 0;
+		$limit   = $this->get('limit', 50);
+		$start   = $this->get('start', 0);
 		$records = array();
 
 		foreach ($this->providers as $provider)
@@ -412,9 +416,16 @@ class Service extends Object
 			}
 		}
 
-		if (!count($records))
+		$total = count($records);
+
+		if (!$total)
 		{
 			return $this->error(self::ERROR_NO_SET_HIERARCHY, null, 'ListSets');
+		}
+
+		if ($total > $limit)
+		{
+			$records = array_slice($records, $start, $limit);
 		}
 
 		$this->response
@@ -423,7 +434,74 @@ class Service extends Object
 			->end()
 			->element('ListSets');
 
-		$this->schema->sets($records);
+		foreach ($records as $index => $set)
+		{
+			// Make sure we have a record
+			if ($set === null)
+			{
+				continue;
+			}
+
+			$spec = '';
+			if (!empty($set[0]))
+			{
+				$spec = $set[0];
+			}
+			elseif (empty($set[0]) && !empty($set[1]))
+			{
+				$spec = strtolower($set[1]);
+				$spec = str_replace(' ', '_', $spec);
+			}
+			if (isset($set[3]) && !empty($set[3]))
+			{
+				$spec = $set[3] . ':' . $spec;
+			}
+
+			$this->response
+					->element('set')
+						->element('setSpec', $spec)->end();
+
+			if (!empty($set[1]))
+			{
+				$this->response->element('setName', $set[1])->end();
+			}
+
+			if (!empty($set[2]) && $this->schema)
+			{
+				$set[2] = html_entity_decode($set[2]);
+				$set[2] = strip_tags($set[2]);
+
+				$this->response
+					->element('setDescription');
+
+				$this->schema->set($set);
+
+				$this->response
+					->end();
+			}
+
+			$this->response
+					->end();
+		}
+
+		// Write resumption token if needed
+		if ($total > ($start + $limit))
+		{
+			$resumption = $this->encodeToken(
+				$limit,
+				$start,
+				'',
+				'',
+				'',
+				$this->get('metadataPrefix')
+			);
+
+			$this->response
+				->element('resumptionToken', $resumption)
+					->attr('completeListSize', $total)
+					->attr('cursor', ($start + $limit))
+				->end();
+		}
 
 		$this->response
 			->end();

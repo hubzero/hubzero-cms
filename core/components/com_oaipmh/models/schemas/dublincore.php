@@ -204,9 +204,9 @@ class DublinCore implements Schema
 	 * @param   array   $iterator
 	 * @return  object  $this
 	 */
-	public function sets($iterator)
+	public function set($set) //$iterator)
 	{
-		foreach ($iterator as $index => $set)
+		/*foreach ($iterator as $index => $set)
 		{
 			// Make sure we have a record
 			if ($set === null)
@@ -257,7 +257,15 @@ class DublinCore implements Schema
 
 			$this->response
 					->end();
-		}
+		}*/
+		$this->response
+				->element('oai_dc:dc')
+					->attr('xmlns:' . self::$prefix, self::$ns)
+					->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
+					->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+					->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema)
+					->element('dc:description', $this->escape($set[2]))->end()
+				->end();
 
 		return $this;
 	}

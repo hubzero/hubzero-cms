@@ -156,6 +156,10 @@ class Miner extends Object implements Provider
 			$set = trim($matches[1]);
 			$this->database->setQuery("SELECT t.id FROM `#__publication_categories` AS t WHERE t.alias=" . $this->database->quote($set));
 			$this->set('type', $this->database->loadResult());
+			if (!$this->get('type'))
+			{
+				return '';
+			}
 		}
 
 		$query = "SELECT CONCAT(p.id, ':', pv.version_number) AS id, " . $this->database->quote($this->name()) . " AS `base`
