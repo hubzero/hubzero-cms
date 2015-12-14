@@ -82,7 +82,10 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 				}
 				else if (substr(User::get('email'), -8) == '@invalid') // force auth_link users to registration update page
 				{
-					if (Session::get('linkaccount', true))
+					$usersConfig        = Component::params('com_users');
+					$simpleRegistration = $usersConfig->get('simple_registration', false);
+
+					if (Session::get('linkaccount', true) && !$simpleRegistration)
 					{
 						Request::setVar('option', 'com_users');
 						Request::setVar('view',   'link');
