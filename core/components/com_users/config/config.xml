@@ -56,6 +56,18 @@
 		</field>
 
 		<field
+			name="simple_registration"
+			type="radio"
+			default="0"
+			label="COM_USERS_CONFIG_FIELD_SIMPLE_REGISTRATION_LABEL"
+			description="COM_USERS_CONFIG_FIELD_SIMPLE_REGISTRATION_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+
+		<field
 			name="allow_duplicate_emails"
 			type="list"
 			default="0"

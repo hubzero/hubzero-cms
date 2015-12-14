@@ -356,7 +356,12 @@ class Register extends SiteController
 
 		$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
 
-		if (Request::getMethod() == 'POST')
+		// Get users component config options, specifically whether or not 'simple' registration is enabled
+		$method             = Request::getMethod();
+		$usersConfig        = Component::params('com_users');
+		$simpleRegistration = $usersConfig->get('simple_registration', false);
+
+		if ($method == 'POST')
 		{
 			// Load POSTed data
 			$xregistration->loadPOST();
@@ -383,13 +388,22 @@ class Register extends SiteController
 				$xregistration->set('orcid', Session::get('auth_link.tmp_orcid', ''));
 				$xregistration->set('email', $hzal->email);
 				$xregistration->set('confirmEmail', $hzal->email);
-				$force = true;
+
+				if ($simpleRegistration)
+				{
+					$force  = false;
+					$method = 'POST';
+				}
+				else
+				{
+					$force = true;
+				}
 			}
 		}
 
 		$check = $xregistration->check('update');
 
-		if (!$force && $check && Request::getMethod() == 'GET')
+		if (!$force && $check && $method == 'GET')
 		{
 			Session::set('registration.incomplete', false);
 			if ($_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/register/update'
@@ -404,7 +418,7 @@ class Register extends SiteController
 			return(true);
 		}
 
-		if (!$force && $check && Request::getMethod() == 'POST')
+		if (!$force && $check && $method == 'POST')
 		{
 			// Before going any further, we need to do a sanity check to make sure username isn't being changed.
 			// This really only happens on a race condition where someone is creating the same account
@@ -532,7 +546,7 @@ class Register extends SiteController
 			}
 
 			// Notify administration
-			if (Request::getMethod() == 'POST')
+			if ($method == 'POST')
 			{
 				$subject = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
@@ -561,7 +575,7 @@ class Register extends SiteController
 			if (!$updateEmail)
 			{
 				$suri = Request::getVar('REQUEST_URI', '/', 'server');
-				if ($suri == '/register/update' || $suri == '/members/update')
+				if ($suri == '/register/update' || $suri == '/members/update' || $suri == '/members/register/update')
 				{
 					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&task=myaccount')
