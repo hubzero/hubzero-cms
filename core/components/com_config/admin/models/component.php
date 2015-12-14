@@ -96,9 +96,9 @@ class Component extends \JModelForm
 		else
 		{
 			// Add the search path for the admin component config.xml file.
-			\JForm::addFormPath(PATH_CORE . '/components/' . $this->getState('component.option'));
+			\JForm::addFormPath(\Component::path($this->getState('component.option')));
 		}
-		\JForm::addFormPath(PATH_CORE . '/components/' . $this->getState('component.option') . '/config');
+		\JForm::addFormPath(\Component::path($this->getState('component.option')) . '/config');
 
 		// Get the form.
 		$form = $this->loadForm(
@@ -129,9 +129,9 @@ class Component extends \JModelForm
 		$option = $this->getState('component.option');
 
 		// Load common and local language files.
-		Lang::load($option, JPATH_BASE, null, false, true)
-		|| Lang::load($option, PATH_CORE . "/components/$option/admin", null, false, true)
-		|| Lang::load($option, JPATH_BASE . "/components/$option", null, false, true);
+		Lang::load($option, PATH_APP . "/bootstrap/administrator", null, false, true)
+		|| Lang::load($option, \Component::path($option) . "/admin", null, false, true)
+		|| Lang::load($option, \Component::path($option) . "/site", null, false, true);
 
 		return \Component::load($option);
 	}
