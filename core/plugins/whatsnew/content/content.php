@@ -87,15 +87,9 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Build the query
-		$c_count = " SELECT count(DISTINCT c.id)";
-		$c_fields = " SELECT "
-			. " c.id,"
-			. " c.title, c.alias, c.created, "
-			. " CONCAT(c.introtext, c.fulltext) AS text,"
-			. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category,"
-			. " 'content' AS section, NULL AS subsection";
-		$c_from = " FROM #__content AS c"
-			. " INNER JOIN #__categories AS b ON b.id=c.catid";
+		$c_count  = " SELECT count(DISTINCT c.id)";
+		$c_fields = " SELECT c.id, c.title, c.alias, c.created, b.path, CONCAT(c.introtext, c.fulltext) AS text, CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category, 'content' AS section, NULL AS subsection";
+		$c_from   = " FROM #__content AS c INNER JOIN #__categories AS b ON b.id=c.catid";
 
 		$c_where = "c.publish_up > " . $database->quote($period->cStartDate) . " AND c.publish_up < " . $database->quote($period->cEndDate) . " AND c.state='1'";
 
@@ -113,6 +107,10 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 				foreach ($rows as $key => $row)
 				{
 					$path = Route::url($row->href);
+					if ($row->path)
+					{
+						$path = ltrim(Request::base(true), '/') . '/' . $row->path . '/' . $row->alias;
+					}
 
 					preg_match_all("/\{xhub:\s*[^\}]*\}/i", $rows[$key]->text, $matches, PREG_SET_ORDER);
 					if ($matches)
