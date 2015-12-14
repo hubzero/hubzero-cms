@@ -27,39 +27,74 @@
  * @package   hubzero-cms
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
+ * @since	 Class available since release 1.3.2
  */
 
-namespace Components\Search\Admin;
+namespace Components\Search\Models;
 
-// Authorization check
-if (!\User::authorise('core.manage', 'com_search'))
+use Hubzero\Database\Relational;
+use Hubzero\Utility\String;
+use Hubzero\Base\Object;
+
+/**
+ * Hubs database model
+ *
+ * @uses \Hubzero\Database\Relational
+ */
+class IndexQueue extends Relational
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+	/**
+	 * The table namespace
+	 *
+	 * @var string
+	 **/
+	protected $namespace = 'search';
+	// table name jos_citations
 
-if (Request::getVar('controller') === 'dataindexing')
-{
-	$controllerName = 'dataindexing';
-}
-else
-{
-	// Get the preferred search mechanism
-	$controllerName = \Component::params('com_search')->get('engine');
-}
+	/**
+	 * Default order by for model
+	 *
+	 * @var string
+	 **/
+	public $orderBy = 'id';
 
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	\App::abort(404, \Lang::txt('Controller not found'));
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var array
+	 **/
+	protected $rules = array(
+		//'type'	=> 'notempty',
+		//'title' => 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var array
+	 **/
+	public $always = array(
+		'created_by',
+		'created'
+	);
+
+	/**
+	 * Defines a one to many relationship with authors
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	/*public function relatedAuthors()
+	{
+		return $this->oneToMany('Author', 'cid', 'id')->order('ordering', 'ASC');
+	}
+	*/
+	public function created_by()
+	{
+		$this->set('created_by', User::get('id'));
+	}
+	public function created()
+	{
+		$this->set('created', \Date::of()->toSql());
+	}
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();

@@ -29,37 +29,29 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Search\Admin;
+// No direct access.
+defined('_HZEXEC_') or die();
+\Submenu::addEntry(
+	Lang::txt('Overview'),
+	'index.php?option='.$option.'&task=configure'
+);
+\Submenu::addEntry(
+	Lang::txt('Search Index'),
+	'index.php?option='.$option.'&task=searchindex'
+);
+\Submenu::addEntry(
+	Lang::txt('Index Blacklist'),
+	'index.php?option='.$option.'&task=manageBlacklist'
+);
+?>
 
-// Authorization check
-if (!\User::authorise('core.manage', 'com_search'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
-
-if (Request::getVar('controller') === 'dataindexing')
-{
-	$controllerName = 'dataindexing';
-}
-else
-{
-	// Get the preferred search mechanism
-	$controllerName = \Component::params('com_search')->get('engine');
-}
-
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	\App::abort(404, \Lang::txt('Controller not found'));
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+<table class="adminlist searchDocument">
+	<thead>
+		<tr>
+			<th><b>Schema:</b></th>
+			<?php foreach ($this->view->hubDocument as $column): ?>
+				<th><?php echo $column ?></th>
+			<?php endforeach; ?>
+			</tr>
+	</thead>
+</table>

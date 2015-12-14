@@ -1,0 +1,133 @@
+/**
+ * @package     hubzero-cms
+ * @file        components.com_search/admin/assets/css/update.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.com_search .widget {
+	float: left;
+	width: 50%;
+}
+.com_search .widget .inner {
+	margin: 20px;
+	background-color: #FFFFFF;
+	overflow: hidden;
+	border: 1px solid #D6D6D6;
+	border: 1px solid rgba(0,0,0,0.1);
+	-webkit-border-radius: .25em;
+	   -moz-border-radius: .25em;
+			border-radius: .25em;
+}
+.com_search .widget .title {
+	float: left;
+	width: 100%;
+	color: #333;
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: 500;
+	letter-spacing: .15em;
+	background: transparent;
+	border-bottom: 1px solid #D6D6D6;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	-webkit-border-radius: .25em .25em 0 0;
+	   -moz-border-radius: .25em .25em 0 0;
+			border-radius: .25em .25em 0 0;
+}
+.com_search .widget .title div {
+	padding: 10px 0;
+}
+.com_search .widget .content {
+	width: 100%;
+	float: left;
+}
+.com_search .widget .content p {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font-size: 1.2em;
+}
+.com_search .widget .content-inner {
+	padding: 20px;
+}
+.com_search .widget .sub-title {
+	width: 50%;
+	float: left;
+}
+.com_search .widget .sub-title .sub-title-inner {
+	border-bottom: 1px solid #D6D6D6;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	font-weight: bold;
+	text-align: center;
+	font-size: .8em;
+	padding: 5px 0;
+	background: #EFEFEF;
+}
+.com_search .widget .sub-title:nth-child(2) .sub-title-inner {
+	border-right: 1px solid #D6D6D6;
+	border-right: 1px solid rgba(0,0,0,0.1);
+}
+.com_search .widget .status-items {
+	padding: 20px;
+	background: #EFEFEF;
+	font-family: "Courier New", Courier, monospace;
+	color: #222;
+	margin: 10px -20px;
+	border-top: 1px solid #D6D6D6;
+	border-top: 1px solid rgba(0,0,0,0.1);
+	border-bottom: 1px solid #D6D6D6;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.com_search .widget .status-item {
+	margin-left: 10px;
+}
+.com_search .good,
+.com_search .alert {
+	text-align: center;
+	font-size: 5em;
+	line-height: 1em;
+}
+.com_search .good:before,
+.com_search .alert:before {
+	font-family: "fontcons";
+}
+.com_search .good:before {
+	content: "\2714";
+	color: green;
+}
+.com_search .alert:before {
+	content: "\26A0";
+	color: #FFD40D;
+}
+.com_search .emphasize {
+	background: #7E7E7E;
+	color: #EFEFEF;
+	padding: 3px;
+	font-weight: bold;
+}
+.com_search .action {
+	display: block;
+	padding: 5px 20px;
+	background: #FF6F6F;
+	width: 150px;
+	text-align: center;
+	margin: 20px auto 0 auto;
+	border-radius: 1.25em;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.com_search .action:hover {
+	border-bottom: none;
+	text-decoration: none;
+}
+.com_search tr.upcoming {
+	background-color: #AFFFAF;
+	background-color: rgba(0, 255, 0, 0.05);
+}
+.com_search td.no-rows {
+	text-align: center;
+	font-size: 1.5em;
+}
+.com_search td.status {
+	text-align: center;
+}

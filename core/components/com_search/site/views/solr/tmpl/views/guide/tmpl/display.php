@@ -25,41 +25,58 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Search\Admin;
+// No direct access
+defined('_HZEXEC_') or die();
 
-// Authorization check
-if (!\User::authorise('core.manage', 'com_search'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+$this->css()
+		->css('syntaxhighlighter/shCore')
+		->css('syntaxhighlighter/shThemeDefault')
+		->js('syntaxhighlighter/shCore')
+		->js('syntaxhighlighter/shBrushCss')
+		->js('syntaxhighlighter/shBrushXml')
+		->js();
+?>
 
-if (Request::getVar('controller') === 'dataindexing')
-{
-	$controllerName = 'dataindexing';
-}
-else
-{
-	// Get the preferred search mechanism
-	$controllerName = \Component::params('com_search')->get('engine');
-}
+<div class="guide">
+	<nav class="guide-nav">
+		<nav class="guide-nav-menu">
+			<?php
+			$view = new \Hubzero\Component\View(array('name'=>'guide', 'layout' => 'navigation'));
+			$view->display();
+			?>
+		</nav>
 
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	\App::abort(404, \Lang::txt('Controller not found'));
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+		<div class="guide-controls">
+			<a class="guide-panels-toggle" href="#">
+					Hide the panel
+					<button>
+						<span>Toggle the panel</span>
+					</button>
+			</a>
+		</div>
+	</nav>
+	<main>
+		<div id="component">
+			<?php
+				// Try to load the page requested
+				$layout = $this->page;
+				$view = new \Hubzero\Component\View(array('name'=>'pages', 'layout' => $layout));
+				try
+				{
+					$view->display();
+				}
+				// The view for the requested page doesn't exist, load the 404 view instead
+				catch (\Exception $e)
+				{
+					$view = new \Hubzero\Component\View(array('name'=>'guide', 'layout' => '404'));
+					$view->display();
+				}
+			?>
+		</div>
+	</main>
+</div>

@@ -29,37 +29,63 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Search\Admin;
+// No direct access.
+defined('_HZEXEC_') or die();
 
-// Authorization check
-if (!\User::authorise('core.manage', 'com_search'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+// Push some resources to the tmeplate
+$this->css('solr')
+     ->js();
+?>
+<div class="page-container">
+	<nav class="guide-nav">
+		<nav class="guide-nav-menu">
+			<section>
+				<ul>
+					<li><a href="/webdevguide">Guide home</a></li>
+				</ul>
+			</section>
+			<section>
+				<h3>Basics</h3>
+				<ul>
+					<li><a href="/webdevguide/base-structure">Base structure</a></li>
+				</ul>
+			</section>
+			<section>
+				<h3>Elements</h3>
+				<ul>
+					<li><a href="/webdevguide/main-heading">Main heading</a></li>
+				</ul>
+			</section>
+		</nav>
+	
+		<div class="guide-controls">
+			<a class="guide-panels-toggle" href="#">
+			Hide the panel
+			<button>
+			<span>Toggle the panel</span>
+			</button>
+			</a>
+		</div>
+	</nav>
 
-if (Request::getVar('controller') === 'dataindexing')
-{
-	$controllerName = 'dataindexing';
-}
-else
-{
-	// Get the preferred search mechanism
-	$controllerName = \Component::params('com_search')->get('engine');
-}
-
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	\App::abort(404, \Lang::txt('Controller not found'));
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+	<main>
+		<div id="component">
+		<!-- Guide page heading -->
+		<header class="guide-header">
+			<h1><?php echo Lang::txt('COM_SEARCH'); ?></h1>
+		</header>
+		<!-- End guide page heading -->
+		
+		<!-- Guide container -->
+		<section class="guide-section container">
+			<div class="inner">
+				<h2>Basic heading, no options or any auxiliary info</h2>
+				
+				<div class="content">
+					<p>This heading is the simpliest and probably the most common heading.</p>
+				</div>
+			</div>
+		</section>
+		<!-- End guide container -->
+	</main>
+</div>

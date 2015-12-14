@@ -29,37 +29,60 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Search\Admin;
+// No direct access
+defined('_HZEXEC_') or die();
 
-// Authorization check
-if (!\User::authorise('core.manage', 'com_search'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
+$layout = 'fullsearch';
+?>
 
-if (Request::getVar('controller') === 'dataindexing')
-{
-	$controllerName = 'dataindexing';
-}
-else
-{
-	// Get the preferred search mechanism
-	$controllerName = \Component::params('com_search')->get('engine');
-}
+<div class="guide">
 
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	\App::abort(404, \Lang::txt('Controller not found'));
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+<?php if (0): ?>
+	<nav class="guide-nav">
+		<nav class="guide-nav-menu">
+			<?php
+			$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => 'navigation'));
+			$view->display();
+			?>
+		</nav>
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'noindex.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'hubtype.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'indexqueue.php');
+		<div class="guide-controls">
+			<a class="guide-panels-toggle" href="#">
+					Hide the panel
+					<button>
+						<span>Toggle the panel</span>
+					</button>
+			</a>
+		</div>
+	</nav>
+<?php endif; ?>
+	<div id="search-params">
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+	</div>
+
+	<div id="component">
+		<?php
+			// Try to load the page requested
+			//$layout = $this->page;
+			$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => $layout));
+			$view->results = $this->results;
+			$view->queryString = $this->queryString;
+			$view->option = $this->option;
+			$view->controller = $this->controller;
+
+			try
+			{
+				$view->display();
+			}
+			// The view for the requested page doesn't exist, load the 404 view instead
+			catch (\Exception $e)
+			{
+				echo "<pre>";
+				var_dump($e);
+				die;
+				$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => '404'));
+				$view->display();
+			}
+		?>
+	</div>
+</div>
