@@ -116,7 +116,7 @@ $this->css('pipeline.css')
 						// get wiki access text
 						$wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
-						$handle = ($t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '' ;
+						$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '' ;
 
 						$t->version = ($t->state==3 && $t->version==$this->status['currentversion']) ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
 				?>
