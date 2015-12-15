@@ -32,6 +32,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->css()
+     ->js('curation.js');
+
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ORDER'), 'addedit.png');
 Toolbar::save('saveblockorder');
 Toolbar::cancel();

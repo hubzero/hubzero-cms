@@ -32,13 +32,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->css();
+
+$canDo = \Components\Publications\Helpers\Permissions::getActions('category');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': ' . $text, 'addedit.png');
-if ($this->row->id)
+if ($canDo->get('core.edit'))
 {
-	Toolbar::apply();
+	if ($this->row->id)
+	{
+		Toolbar::apply();
+	}
+	Toolbar::save();
 }
-Toolbar::save();
 Toolbar::cancel();
 
 $dcTypes = array(

@@ -102,21 +102,22 @@ function submitbutton(pressbutton)
 		<input type="hidden" name="task" value="saveauthor" />
 		<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="version" value="<?php echo $this->row->version_number; ?>" />
+
 		<table class="admintable">
 			<tbody>
 				<?php if (!$this->author->id) { ?>
-				<tr>
-					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_EMAIL'); ?>:</label></td>
-					<td>
-						<input type="text" name="email" value="" />
-					</td>
-				</tr>
+					<tr>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_EMAIL'); ?>:</label></td>
+						<td>
+							<input type="text" name="email" value="" />
+						</td>
+					</tr>
 				<?php } ?>
 				<tr>
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_USER_ID'); ?>:</label></td>
 					<td>
 						<?php if (!$this->author->id || !$this->author->user_id) { ?>
-						<input type="text" name="uid" value="<?php echo $this->author->user_id; ?>" size="25" />
+							<input type="text" name="uid" value="<?php echo $this->author->user_id; ?>" size="25" />
 						<?php } else { ?>
 							<input type="hidden" name="uid" value="<?php echo $this->author->user_id; ?>" />
 							<span><?php echo $this->author->user_id; ?></span>
@@ -124,19 +125,19 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
+					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 					<td>
 						<input type="text" name="firstName" value="<?php echo $firstname; ?>" size="25" />
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
+					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 					<td>
 						<input type="text" name="lastName" value="<?php echo $lastname; ?>" size="25" />
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
+					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 					<td>
 						<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
 					</td>

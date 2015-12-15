@@ -46,9 +46,9 @@ if ($this->authNames != NULL)
 		$name = $authname->name;
 
 		$org = ($authname->organization)
-			? htmlentities($authname->organization,ENT_COMPAT,'UTF-8') : '';
+			? $this->escape($authname->organization) : '';
 		$credit = ($authname->credit)
-			? htmlentities($authname->credit,ENT_COMPAT,'UTF-8') : '';
+			? $this->escape($authname->credit) : '';
 		$userid = $authname->user_id ? $authname->user_id : 'unregistered';
 
 		$html .= "\t".'<li id="author_'.$authname->id.'" class="pick reorder">'
@@ -69,7 +69,8 @@ else
 {
 	$html.= '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_AUTHORS') . '</p>';
 }
-if (count($this->authNames) > 1) {
+if (count($this->authNames) > 1)
+{
 	$html.= '<input type="hidden" value="" name="list" id="neworder" />';
 	$html.= '<p class="tip">' . Lang::txt('COM_PUBLICATIONS_AUTHORS_REORDER_TIP') . '</p>';
 	$html.= '<input type="button" onclick="submitbutton(\'saveorder\');" class="btn" value="Save Order" id="saveorder" />';

@@ -37,14 +37,19 @@ $this->js();
 
 $site = str_replace('/administrator', '', rtrim(Request::base(), DS));
 
+$canDo = \Components\Publications\Helpers\Permissions::getActions('item');
+
 $text = ($this->task == 'edit'
 	? Lang::txt('JACTION_EDIT') . ' #' . $this->model->get('id') . ' (v.' . $this->model->get('version_label') . ')'
 	: Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': ' . $text, 'addedit.png');
-Toolbar::spacer();
-Toolbar::apply();
-Toolbar::save();
+if ($canDo->get('core.edit'))
+{
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 
 $database = App::get('db');
@@ -160,7 +165,7 @@ function submitbutton(pressbutton)
 
 function popratings()
 {
-	window.open('index.php?option=<?php echo $this->option; ?>&task=ratings&id=<?php echo $this->model->id; ?>&no_html=1', 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
+	window.open("<?php echo Route::url('index.php?option=' . $this->option . '&task=ratings&id=' . $this->model->id . '&no_html=1'); ?>", 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
 	return false;
 }
 </script>
@@ -215,35 +220,35 @@ function popratings()
 			</fieldset>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addauthor&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') ); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
+
 				<fieldset>
-					<div class="input-wrap" id="publiction-authors">
-						<?php
-						// Draw author list
-						$this->view('_selectauthors')
-						     ->set('authNames', $this->model->authors())
-						     ->set('option', $this->option)
-						     ->display();
-						?>
-					</div>
+				<div class="input-wrap" id="publiction-authors">
+					<?php
+					// Draw author list
+					$this->view('_selectauthors')
+					     ->set('authNames', $this->model->authors())
+					     ->set('option', $this->option)
+					     ->display();
+					?>
+				</div>
 				</fieldset>
 			</fieldset>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_TAGS'); ?></span></legend>
-				<fieldset>
-					<div class="input-wrap">
-						<?php
-						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true))) );
-						if (count($tf) > 0) {
-							echo $tf[0];
-						} else { ?>
-							<input type="text" name="tags" id="actags" value="<?php echo $this->model->getTagsForEditing(); ?>" />
-						<?php } ?>
-					</div>
-				</fieldset>
+
+				<div class="input-wrap">
+					<?php
+					$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true))) );
+					if (count($tf) > 0) {
+						echo $tf[0];
+					} else { ?>
+						<input type="text" name="tags" id="actags" value="<?php echo $this->model->getTagsForEditing(); ?>" />
+					<?php } ?>
+				</div>
 			</fieldset>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_LICENSE'); ?></span></legend>
-				<fieldset>
+
 				<div class="input-wrap">
 					<label for="license_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
 					<?php // Draw license selector
@@ -257,7 +262,6 @@ function popratings()
 					<label for="license_text"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
 					<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->model->get('license_text'))); ?></textarea>
 				</div>
-				</fieldset>
 			</fieldset>
 		</div>
 		<div class="col span5">
@@ -276,7 +280,7 @@ function popratings()
 					<tr>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR'); ?></th>
 						<td>
-							<?php echo $this->model->creator('name'); ?>
+							<?php echo $this->model->creator()->get('name', Lang::txt('(unknown)')); ?>
 						</td>
 					</tr>
 					<tr>
@@ -337,7 +341,7 @@ function popratings()
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
-							<td><?php echo $this->model->modifier('name'); ?></td>
+							<td><?php echo $this->model->modifier()->get('name', Lang::txt('(unknown)')); ?></td>
 						</tr>
 					</tbody>
 				</table>

@@ -32,12 +32,24 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSES'), 'addedit.png');
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::save('makedefault', Lang::txt('COM_PUBLICATIONS_MAKE_DEFAULT'));
-Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
+$canDo = \Components\Publications\Helpers\Permissions::getActions('license');
 
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSES'), 'addedit.png');
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+}
+if ($canDo->get('core.edit'))
+{
+	Toolbar::editList();
+}
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::save('makedefault', Lang::txt('COM_PUBLICATIONS_MAKE_DEFAULT'));
+	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
+}
+
+$this->css();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -87,12 +99,12 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td class="priority-3">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->title); ?></span>
 					</a>
 				</td>
@@ -103,9 +115,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td class="priority-2 centeralign">
 					<?php if ($row->main == 1) { ?>
-					<span class="state default">
-						<span><?php echo Lang::txt('JYES'); ?></span>
-					</span>
+						<span class="state default">
+							<span><?php echo Lang::txt('JYES'); ?></span>
+						</span>
 					<?php } ?>
 				</td>
 				<td class="order">

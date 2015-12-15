@@ -35,12 +35,23 @@ defined('_HZEXEC_') or die();
 $this->css();
 $this->js();
 
+$canDo = \Components\Publications\Helpers\Permissions::getActions('item');
+
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
-Toolbar::preferences($this->option, '550');
-Toolbar::spacer();
-Toolbar::editList();
-Toolbar::spacer();
-Toolbar::deleteList();
+if ($canDo->get('core.admin'))
+{
+	Toolbar::preferences($this->option, '550');
+}
+if ($canDo->get('core.edit'))
+{
+	Toolbar::spacer();
+	Toolbar::editList();
+}
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	Toolbar::deleteList();
+}
 
 Html::behavior('tooltip');
 ?>
@@ -56,9 +67,11 @@ function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
+
 <?php if ($this->config->get('enabled') == 0) { ?>
-<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<label for="status"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
@@ -117,55 +130,56 @@ function submitbutton(pressbutton)
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-$filterstring  = $this->filters['sortby'] ? '&amp;sort=' . $this->filters['sortby'] : '';
-$filterstring .= '&amp;status=' . $this->filters['status'];
-$filterstring .= ($this->filters['category']) ? '&amp;category=' . $this->filters['category'] : '';
+		<?php
+		$k = 0;
+		$filterstring  = $this->filters['sortby'] ? '&sort=' . $this->filters['sortby'] : '';
+		$filterstring .= '&status=' . $this->filters['status'];
+		$filterstring .= ($this->filters['category']) ? '&category=' . $this->filters['category'] : '';
 
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = $this->rows[$i];
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = $this->rows[$i];
 
-	// Build some publishing info
-	$info  = Lang::txt('COM_PUBLICATIONS_FIELD_CREATED') . ': ' . $row->created . '<br />';
-	$info .= Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR') . ': ' . $this->escape($row->created_by) . '<br />';
+			// Build some publishing info
+			$info  = Lang::txt('COM_PUBLICATIONS_FIELD_CREATED') . ': ' . $row->created . '<br />';
+			$info .= Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR') . ': ' . $this->escape($row->created_by) . '<br />';
 
-	// Get the published status
-	$now = Date::toSql();
+			// Get the published status
+			$now = Date::toSql();
 
-	// See if it's checked out or not
-	$checked = '';
-	$checkedInfo = '';
-	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
-	{
-		$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
-		$time = Date::of($row->checked_out_time)->toLocal('H:i');
+			// See if it's checked out or not
+			$checked = '';
+			$checkedInfo = '';
+			if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
+			{
+				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
+				$time = Date::of($row->checked_out_time)->toLocal('H:i');
 
-		$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->checked_out) . '<br />' . $date . '<br />' . $time . '">';
-		$checked .= Html::asset('image', 'admin/checked_out.png', null, null, true) . '</span>';
+				$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->checked_out) . '<br />' . $date . '<br />' . $time . '">';
+				$checked .= '<span class="checkedout">' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
+				$checked .= '</span>';
 
-		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
-				? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
-				. $date . '<br />'
-				: '';
-		$info .= ($row->checked_out)
-				 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': ' . $row->checked_out . '<br />'
-				 : '';
-		$checkedInfo = ' ['.Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
+				$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+						? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
+						. $date . '<br />'
+						: '';
+				$info .= ($row->checked_out)
+						 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': ' . $row->checked_out . '<br />'
+						 : '';
+				$checkedInfo = ' ['.Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
 
-	}
-	else
-	{
-		$checked = Html::grid('id', $i, $row->id, false, 'id');
-	}
+			}
+			else
+			{
+				$checked = Html::grid('id', $i, $row->id, false, 'id');
+			}
 
-	// What's the publication status?
-	$status = $this->model->getStatusName($row->state);
-	$class  = $this->model->getStatusCss($row->state);
+			// What's the publication status?
+			$status = $this->model->getStatusName($row->state);
+			$class  = $this->model->getStatusCss($row->state);
 
-	$date 	= $row->modified() ? $row->modified('datetime') : $row->created('datetime');
-?>
+			$date   = $row->modified() ? $row->modified('datetime') : $row->created('datetime');
+			?>
 			<tr class="<?php echo "row$k"; ?> <?php echo $row->isPending() ? 'attention' : ''; ?>">
 				<td>
 					<?php echo $checked; ?>
@@ -174,7 +188,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring ); ?>" title="<?php echo Lang::txt( 'COM_PUBLICATIONS_PUBLISH_INFO' );?>::<?php echo $info; ?>">
+					<a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . $filterstring); ?>" title="<?php echo Lang::txt( 'COM_PUBLICATIONS_PUBLISH_INFO' );?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a><?php if ($checkedInfo) { echo $checkedInfo; } ?>
 				</td>
@@ -185,7 +199,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
 				</td>
 				<td class="priority-2">
-					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id[]=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
 				</td>
 				<td class="priority-4">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring ); ?>"><?php echo $this->escape($row->versions); ?></a>
@@ -200,10 +214,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $date; ?>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

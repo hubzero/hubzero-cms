@@ -35,7 +35,6 @@ namespace Components\Publications\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use stdClass;
-use Document;
 use Request;
 use Config;
 use Route;
@@ -88,7 +87,8 @@ class Types extends AdminController
 		$this->view->filters['state'] = 'all';
 
 		// Instantiate an object
-		$rt = new \Components\Publications\Tables\MasterType($this->database);
+		$database = App::get('db');
+		$rt = new \Components\Publications\Tables\MasterType($database);
 
 		// Get a record count
 		$this->view->total = $rt->getCount($this->view->filters);
@@ -125,10 +125,13 @@ class Types extends AdminController
 	 */
 	public function addblockTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// Incoming
 		$id = Request::getInt('id', 0);
+		$database = App::get('db');
 
-		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -147,7 +150,7 @@ class Types extends AdminController
 		);
 
 		// Get blocks model
-		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($database);
 
 		// Get available blocks
 		$this->view->blocks = $blocksModel->getBlocks(
@@ -164,10 +167,6 @@ class Types extends AdminController
 
 		$this->view->config = $this->config;
 
-		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -175,7 +174,8 @@ class Types extends AdminController
 	/**
 	 * Save new block
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect
+	 * @return  void
 	 */
 	public function saveblockTask($redirect = false)
 	{
@@ -187,7 +187,9 @@ class Types extends AdminController
 		$newblock = Request::getVar('newblock', '');
 		$before   = Request::getInt('before', 1);
 
-		$row = new \Components\Publications\Tables\MasterType($this->database);
+		$database = App::get('db');
+
+		$row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -214,7 +216,7 @@ class Types extends AdminController
 		if ($newblock)
 		{
 			// Get blocks model
-			$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+			$blocksModel = new \Components\Publications\Models\Blocks($database);
 
 			// Get max used block and element IDs
 			$maxBlockId   = 0;
@@ -288,10 +290,14 @@ class Types extends AdminController
 	 */
 	public function advancedTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
-		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
+		$database = App::get('db');
+
+		$this->view->row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -317,10 +323,6 @@ class Types extends AdminController
 
 		$this->view->config = $this->config;
 
-		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -336,8 +338,9 @@ class Types extends AdminController
 		$id       = Request::getInt('id', 0);
 		$curation = Request::getVar('curation', '', 'post', 'none', 2);
 		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
+		$database = App::get('db');
 
-		$row = new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -392,11 +395,14 @@ class Types extends AdminController
 	 */
 	public function editelementsTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 		$this->view->blockId = Request::getInt('bid', 0);
+		$database = App::get('db');
 
-		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -422,10 +428,6 @@ class Types extends AdminController
 
 		$this->view->config = $this->config;
 
-		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
-
 		// Output the HTML
 		$this->view->display();
 
@@ -441,8 +443,9 @@ class Types extends AdminController
 		// Incoming
 		$id = Request::getInt('id', 0);
 		$blockId = Request::getInt('bid', 0);
+		$database = App::get('db');
 
-		$row = new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -534,10 +537,13 @@ class Types extends AdminController
 	 */
 	public function editblockorderTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// Incoming
 		$id = Request::getInt('id', 0);
+		$database = App::get('db');
 
-		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -556,7 +562,7 @@ class Types extends AdminController
 		);
 
 		// Get blocks model
-		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($database);
 
 		// Get available blocks
 		$this->view->blocks = $blocksModel->getBlocks(
@@ -572,10 +578,6 @@ class Types extends AdminController
 		}
 
 		$this->view->config = $this->config;
-
-		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -597,8 +599,9 @@ class Types extends AdminController
 		$id       = Request::getInt('id', 0);
 		$neworder = Request::getVar('neworder', '');
 		$order    = explode('-', $neworder);
+		$database = App::get('db');
 
-		$row = new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -651,6 +654,8 @@ class Types extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
+		$database = App::get('db');
+
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
@@ -658,7 +663,7 @@ class Types extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			// Load the object
-			$row = new \Components\Publications\Tables\MasterType($this->database);
+			$row = new \Components\Publications\Tables\MasterType($database);
 			$row->load($id);
 		}
 
@@ -669,7 +674,7 @@ class Types extends AdminController
 		);
 
 		// Get blocks model
-		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($database);
 
 		// Get available blocks
 		$this->view->blocks = $blocksModel->getBlocks(
@@ -687,12 +692,8 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Get all active categories
-		$objC = new \Components\Publications\Tables\Category($this->database);
+		$objC = new \Components\Publications\Tables\Category($database);
 		$this->view->cats = $objC->getCategories();
-
-		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		Document::addScript('components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view
@@ -723,9 +724,10 @@ class Types extends AdminController
 
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
+		$database = App::get('db');
 
 		// Initiate extended database class
-		$row = new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($database);
 
 		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false);
 
@@ -888,9 +890,10 @@ class Types extends AdminController
 
 		// Incoming
 		$id = Request::getVar('id', array(0), '', 'array');
+		$database = App::get('db');
 
 		// Load row
-		$row = new \Components\Publications\Tables\MasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($database);
 		$row->load( (int) $id[0]);
 
 		// Update order
@@ -927,7 +930,8 @@ class Types extends AdminController
 			return;
 		}
 
-		$rt = new \Components\Publications\Tables\MasterType($this->database);
+		$database = App::get('db');
+		$rt = new \Components\Publications\Tables\MasterType($database);
 
 		foreach ($ids as $id)
 		{

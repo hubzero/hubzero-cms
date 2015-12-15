@@ -32,9 +32,6 @@
 
 namespace Components\Publications\Admin;
 
-$option = Request::getCmd('option', 'com_publications');
-$task = Request::getWord('task', '');
-
 if (!\User::authorise('core.manage', 'com_publications'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -42,9 +39,10 @@ if (!\User::authorise('core.manage', 'com_publications'))
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'publication.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
 // get controller name
-$controllerName = Request::getCmd('controller', 'items');
+$controllerName = \Request::getCmd('controller', 'items');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'items';
@@ -52,27 +50,27 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 
 \Submenu::addEntry(
 	\Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
-	\Route::url('index.php?option=' .  $option . '&controller=items'),
+	\Route::url('index.php?option=com_publications&controller=items'),
 	$controllerName == 'items'
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_PUBLICATIONS_LICENSES'),
-	\Route::url('index.php?option=' .  $option . '&controller=licenses'),
+	\Route::url('index.php?option=com_publications&controller=licenses'),
 	$controllerName == 'licenses'
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
-	\Route::url('index.php?option=' .  $option . '&controller=categories'),
+	\Route::url('index.php?option=com_publications&controller=categories'),
 	$controllerName == 'categories'
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
-	\Route::url('index.php?option=' .  $option . '&controller=types'),
+	\Route::url('index.php?option=com_publications&controller=types'),
 	$controllerName == 'types'
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
-	\Route::url('index.php?option=' .  $option . '&controller=batchcreate'),
+	\Route::url('index.php?option=com_publications&controller=batchcreate'),
 	$controllerName == 'batchcreate'
 );
 

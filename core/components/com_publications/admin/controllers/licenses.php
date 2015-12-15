@@ -141,9 +141,6 @@ class Licenses extends AdminController
 			\Notify::error($this->getError());
 		}
 
-		// Push some styles to the template
-		$this->css();
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')

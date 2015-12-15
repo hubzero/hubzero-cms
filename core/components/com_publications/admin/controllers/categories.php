@@ -151,9 +151,6 @@ class Categories extends AdminController
 		$objMT = new \Components\Publications\Tables\MasterType($this->database);
 		$this->view->types = $objMT->getTypes('alias', 1);
 
-		// Push some styles to the template
-		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')

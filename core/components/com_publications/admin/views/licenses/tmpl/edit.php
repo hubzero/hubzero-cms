@@ -32,13 +32,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$canDo = \Components\Publications\Helpers\Permissions::getActions('license');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_LICENSE') . ': ' . $text, 'addedit.png');
-if ($this->row->id)
+if ($canDo->get('core.edit'))
 {
-	Toolbar::apply();
+	if ($this->row->id)
+	{
+		Toolbar::apply();
+	}
+	Toolbar::save();
 }
-Toolbar::save();
 Toolbar::cancel();
 
 $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
@@ -54,7 +59,7 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=licenses'); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">
-		<div class="col span6">
+		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_DETAILS'); ?></span></legend>
 
@@ -74,12 +79,12 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_DESC_HINT'); ?>">
 					<label for="field-info"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ABOUT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<textarea name="fields[info]" id="field-info" cols="40" rows="10"><?php echo $this->row->info; ?></textarea>
+					<textarea name="fields[info]" id="field-info" cols="40" rows="5"><?php echo $this->row->info; ?></textarea>
 					<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_DESC_HINT'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="field-text"><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?>:</label></td>
-					<textarea name="fields[text]" id="field-text" cols="40" rows="10"><?php echo $text; ?></textarea>
+					<textarea name="fields[text]" id="field-text" cols="40" rows="20"><?php echo $text; ?></textarea>
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ICON_HINT'); ?>">
 					<label for="field-icon"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ICON'); ?>:</label>
@@ -94,7 +99,7 @@ function submitbutton(pressbutton)
 				<input type="hidden" name="task" value="save" />
 			</fieldset>
 		</div>
-		<div class="col span6">
+		<div class="col span5">
 			<table class="meta">
 				<tbody>
 					<tr>

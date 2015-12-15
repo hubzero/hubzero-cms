@@ -39,7 +39,7 @@ if (!$pub->_attachments)
 {
 	return '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 }
-$html 	= '';
+$html   = '';
 $prime  = $pub->_attachments[1];
 $second = $pub->_attachments[2];
 

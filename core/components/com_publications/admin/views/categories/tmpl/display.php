@@ -32,17 +32,26 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_CATEGORIES'), 'addedit.png');
-Toolbar::addNew();
-Toolbar::editList();
-Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
+$canDo = \Components\Publications\Helpers\Permissions::getActions('category');
 
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_CATEGORIES'), 'addedit.png');
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+}
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::editList();
+	Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
+}
+
+$this->css();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -62,44 +71,44 @@ Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS')
 			</tr>
 		</tfoot>
 		<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-?>
+		<?php
+		$k = 0;
+		for ($i=0, $n=count($this->rows); $i < $n; $i++)
+		{
+			$row = &$this->rows[$i];
+			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td class="narrow">
+				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td class="priority-4 narrow">
+				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
-					<span class="block faded">
-						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS') . ': ' .$this->escape($row->alias); ?> |
-						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL_ALIAS') . ': ' .$this->escape($row->url_alias); ?> |
-						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE') . ': ' .$this->escape($row->dc_type); ?>
+					<span class="block">
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS') . ': ' . $this->escape($row->alias); ?> |
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL_ALIAS') . ': ' . $this->escape($row->url_alias); ?> |
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE') . ': ' . $this->escape($row->dc_type); ?>
 					</span>
 				</td>
-				<td class="priority-3 centeralign narrow">
+				<td class="priority-3 centeralign">
 					<span class="state <?php echo ($row->contributable == 1 ? 'yes' : 'no'); ?>">
 						<span><?php echo ($row->contributable == 1 ? Lang::txt('JYES') : Lang::txt('JNO')); ?></span>
 					</span>
 				</td>
-				<td class="priority-2 centeralign narrow">
+				<td class="priority-2 centeralign">
 					<span class="state <?php echo ($row->state == 1 ? 'on' : 'off'); ?>">
 						<span><?php echo ($row->state == 1 ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF')); ?></span>
 					</span>
 				</td>
 			</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 	</table>
 

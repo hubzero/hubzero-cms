@@ -91,49 +91,48 @@ function submitbutton(pressbutton)
 				<?php if ($this->getError()) {
 					echo '<p class="error">' . $this->getError() . '</p>';
 				} else { ?>
+					<input type="hidden" name="el" value="<?php echo $this->elementId; ?>" />
+					<?php
+					$element = $this->element->element;
+					$block   = $this->element->block;
+					$elName  = 'element' . $this->elementId;
+					// Customize title
+					$defaultTitle = $element->params->title
+									? str_replace('{pubtitle}', $this->pub->title,
+									$element->params->title) : NULL;
+					$defaultTitle = $element->params->title
+									? str_replace('{pubversion}', $this->pub->version_label,
+									$defaultTitle) : NULL;
 
-				<input type="hidden" name="el" value="<?php echo $this->elementId; ?>" />
-				<?php
-				$element = $this->element->element;
-				$block   = $this->element->block;
-				$elName  = 'element' . $this->elementId;
-				// Customize title
-				$defaultTitle = $element->params->title
-								? str_replace('{pubtitle}', $this->pub->title,
-								$element->params->title) : NULL;
-				$defaultTitle = $element->params->title
-								? str_replace('{pubversion}', $this->pub->version_label,
-								$defaultTitle) : NULL;
+					$attachments = $this->pub->_attachments;
+					$attachments = isset($attachments['elements'][$this->elementId])
+								 ? $attachments['elements'][$this->elementId] : NULL;
 
-				$attachments = $this->pub->_attachments;
-				$attachments = isset($attachments['elements'][$this->elementId])
-							 ? $attachments['elements'][$this->elementId] : NULL;
+					// Get version params and extract bundle name
+					$bundleName = $this->pub->params->get($elName . 'bundlename', $defaultTitle);
 
-				// Get version params and extract bundle name
-				$bundleName = $this->pub->params->get($elName . 'bundlename', $defaultTitle);
+					$multiZip = (isset($element->params->typeParams->multiZip)
+									&& $element->params->typeParams->multiZip == 0)
+									? false : true;
 
-				$multiZip = (isset($element->params->typeParams->multiZip)
-								&& $element->params->typeParams->multiZip == 0)
-								? false : true;
-
-				?>
-				<?php if (count($attachments) > 1 && $multiZip) { ?>
-				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
-					<input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $bundleName; ?>" />
-				</div>
-				<?php } ?>
-				<?php if ($attachments) { ?>
-				<?php foreach ($attachments as $attach) { ?>
-					<div class="input-wrap withdivider">
-						<p>[<?php echo $attach->type; ?>] <?php echo $attach->path; ?></p>
-						<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_TITLE'); ?>:</label>
-						<input type="text" name="attachments[<?php echo $attach->id; ?>][title]" maxlength="250" value="<?php echo $attach->title; ?>" />
+					?>
+					<?php if (count($attachments) > 1 && $multiZip) { ?>
+					<div class="input-wrap">
+						<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
+						<input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $bundleName; ?>" />
 					</div>
 					<?php } ?>
-				<?php } else { ?>
-					<p class="notice"><?php echo Lang::txt('COM_PUBLICATIONS_NO_CONTENT'); ?></p>
-				<?php } ?>
+					<?php if ($attachments) { ?>
+						<?php foreach ($attachments as $attach) { ?>
+							<div class="input-wrap withdivider">
+								<p>[<?php echo $attach->type; ?>] <?php echo $attach->path; ?></p>
+								<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_TITLE'); ?>:</label>
+								<input type="text" name="attachments[<?php echo $attach->id; ?>][title]" maxlength="250" value="<?php echo $attach->title; ?>" />
+							</div>
+						<?php } ?>
+					<?php } else { ?>
+						<p class="notice"><?php echo Lang::txt('COM_PUBLICATIONS_NO_CONTENT'); ?></p>
+					<?php } ?>
 				<?php } ?>
 			</fieldset>
 		</div>

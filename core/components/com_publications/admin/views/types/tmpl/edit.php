@@ -32,10 +32,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->css()
+     ->js('curation.js');
+
+$canDo = \Components\Publications\Helpers\Permissions::getActions('type');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': ' . $text, 'addedit.png');
-Toolbar::apply();
-Toolbar::save();
+if ($canDo->get('core.edit'))
+{
+	Toolbar::apply();
+	Toolbar::save();
+}
 Toolbar::cancel();
 
 // Determine whether master type is supported in current version of hub code
