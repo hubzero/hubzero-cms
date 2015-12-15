@@ -32,57 +32,28 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$layout = 'fullsearch';
+$this->css('solr');
 ?>
 
-<div class="guide">
+<div id="component">
+<?php
+	// Try to load the page requested
+	//$layout = $this->page;
+	$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => 'fullsearch'));
+	$view->results = $this->results;
+	$view->queryString = $this->queryString;
+	$view->option = $this->option;
+	$view->controller = $this->controller;
 
-<?php if (0): ?>
-	<nav class="guide-nav">
-		<nav class="guide-nav-menu">
-			<?php
-			$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => 'navigation'));
-			$view->display();
-			?>
-		</nav>
-
-		<div class="guide-controls">
-			<a class="guide-panels-toggle" href="#">
-					Hide the panel
-					<button>
-						<span>Toggle the panel</span>
-					</button>
-			</a>
-		</div>
-	</nav>
-<?php endif; ?>
-	<div id="search-params">
-
-	</div>
-
-	<div id="component">
-		<?php
-			// Try to load the page requested
-			//$layout = $this->page;
-			$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => $layout));
-			$view->results = $this->results;
-			$view->queryString = $this->queryString;
-			$view->option = $this->option;
-			$view->controller = $this->controller;
-
-			try
-			{
-				$view->display();
-			}
-			// The view for the requested page doesn't exist, load the 404 view instead
-			catch (\Exception $e)
-			{
-				echo "<pre>";
-				var_dump($e);
-				die;
-				$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => '404'));
-				$view->display();
-			}
-		?>
-	</div>
+	try
+	{
+		$view->display();
+	}
+	// The view for the requested page doesn't exist, load the 404 view instead
+	catch (\Exception $e)
+	{
+		$view = new \Hubzero\Component\View(array('name'=>'solr', 'layout' => '404'));
+		$view->display();
+	}
+?>
 </div>
