@@ -915,42 +915,27 @@ class JSession extends JObject
 			}
 		}
 
-		// Record proxy forwarded for in the session in case we need it later
-		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		{
-			$this->set('session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
-		}
-
 		// Check for client address
-		if (in_array('fix_adress', $this->_security) && isset($_SERVER['REMOTE_ADDR']))
+		if(in_array('fix_adress', $this->_security) && isset($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false)
 		{
 			$ip = $this->get('session.client.address');
 
-			if ($ip === null)
+			if($ip === null)
 			{
 				$this->set('session.client.address', $_SERVER['REMOTE_ADDR']);
 			}
-			elseif ($_SERVER['REMOTE_ADDR'] !== $ip)
+			elseif($_SERVER['REMOTE_ADDR'] !== $ip)
 			{
 				$this->_state = 'error';
+
 				return false;
 			}
 		}
 
-		// Check for clients browser
-		if (in_array('fix_browser', $this->_security) && isset($_SERVER['HTTP_USER_AGENT']))
+		// Record proxy forwarded for in the session in case we need it later
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false)
 		{
-			$browser = $this->get('session.client.browser');
-
-			if ($browser === null)
-			{
-				$this->set('session.client.browser', $_SERVER['HTTP_USER_AGENT']);
-			}
-			elseif ($_SERVER['HTTP_USER_AGENT'] !== $browser)
-			{
-				// @todo remove code: 				$this->_state	=	'error';
-				// @todo remove code: 				return false;
-			}
+			$this->set('session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
 		}
 
 		return true;
