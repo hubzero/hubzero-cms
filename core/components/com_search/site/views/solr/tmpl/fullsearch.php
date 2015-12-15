@@ -96,10 +96,31 @@
 						<div class="statistics">
 						<span class="stat" id="numberorResults">Found:<?php echo $this->results->getNumFound(); ?></span>
 						</div><!-- end search-area -->
-						<?php else: ?>
+						<?php elseif ($this->queryString != ''): ?>
 							<div class="no-result">
 								<div class="inner">
 								<?php echo Lang::txt('COM_SEARCH_NO_RESULTS'); ?>
+								</div> <!-- end inner -->
+							</div> <!-- end no-result -->
+						<?php else: ?>
+							<div class="no-result">
+								<div class="inner">
+									<h2 class="intro-title"><?php echo  Lang::txt('What are you looking for?'); ?></h2>
+									<div class="intro-suggestion">
+										<p>You are able to search fields by entering the fieldname and the term you are searching for. 
+										For example: <code>title:hubzero</code>
+										</p>
+									</div><!-- end intro suggestion -->
+									<div class="intro-suggestion">
+										<p>Narrow your search by using logical operators. 
+										For example: <code>(blog AND author:Bob) OR burgers</code>
+										</p>
+									</div><!-- end intro suggestion -->
+									<div class="intro-suggestion">
+										<p>Perform wildcard searches by using an asterisk (*).
+										For example: <code>nano*</code>
+										</p>
+									</div><!-- end intro suggestion -->
 								</div> <!-- end inner -->
 							</div> <!-- end no-result -->
 						<?php endif; ?>

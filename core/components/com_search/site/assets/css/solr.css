@@ -1,4 +1,65 @@
 /* Desktop View */
+@-moz-keyframes fadein {
+	0% {opacity: 0.0;}
+	25% {opacity: 0.3;}
+	75% {opacity: 0.75;}
+	100% {opacity: 1;}
+}
+@-webkit-keyframes fadein {
+	0% {opacity: 0.0;}
+	25% {opacity: 0.3;}
+	75% {opacity: 0.75;}
+	100% {opacity: 1;}
+}/* animation */
+@-o-keyframes fadein {
+	0% {opacity: 0.0;}
+	25% {opacity: 0.3;}
+	75% {opacity: 0.75;}
+	100% {opacity: 1;}
+}
+.intro-suggestion {
+	-moz-animation: fadein 1s linear 1s;
+	-webkit-animation: fadein 1s linear 1s;
+	-ms-animation: fadein 1s linear 1s;
+	-o-animation: fadein 1s linear 1s;
+	-moz-animation-fill-mode: forwards;
+	-webkit-animation-fill-mode: forwards;
+	-ms-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+	background-color: #62AED3;
+	margin-bottom: 15px;
+	padding: 10px;
+	border-radius: 10px;
+	opacity: 0;
+	width: 85%;
+	display:table;
+	height: 80px;
+}
+.intro-suggestion:before{
+	font-family: "Fontcons";
+	content: '\f078';
+	font-size: 48pt;
+	padding:5px;
+	color: white;
+	display:table-cell;
+	vertical-align: middle;
+}
+.intro-title {
+	-moz-animation: fadein 1s linear;
+	-webkit-animation: fadein 1s linear;
+	-ms-animation: fadein 1s linear;
+	-o-animation: fadein 1s linear;
+}
+.intro-suggestion p {
+	color: white;
+	font-size: large;
+	line-height: 1.5em;
+	vertical-align: middle;
+	display: table-cell;
+}
+.intro-suggestion code {
+	color: black;
+}
 .search-container {
 	background: #FFFFFF;
 	height: 100%;
