@@ -107,10 +107,12 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 
 		$result = $db->loadObjectList();
 
-		if (is_array($result) && count($result) > 1)
+		if (is_array($result) && (empty($result) || count($result) > 1))
 		{
 			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_UNKNOWN_USER');
+			$response->error_message = (strpos($credentials['username'], '@')
+							? Lang::txt('PLG_AUTHENTICATION_HUBZERO_UNKNOWN_USER')
+							: Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED'));
 			return false;
 		}
 		elseif (is_array($result) && isset($result[0]))
