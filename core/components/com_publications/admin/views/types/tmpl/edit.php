@@ -32,8 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->css()
+     ->js('curation.js');
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': ' . $text);
 Toolbar::apply();
 Toolbar::save();
 Toolbar::cancel();

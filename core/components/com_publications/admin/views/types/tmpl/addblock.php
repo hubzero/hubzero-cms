@@ -32,7 +32,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK') . ' ]', 'addedit.png');
+$this->css()
+     ->js('curation.js');
+
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'), 'addedit.png');
 Toolbar::save('saveblock');
 Toolbar::cancel();
 
