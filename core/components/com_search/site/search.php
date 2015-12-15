@@ -56,6 +56,8 @@ if ($fallback || !file_exists(__DIR__ . DS . 'controllers' . DS . $controllerNam
 	$controllerName = 'basic';
 }
 
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'search.php');
+
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 

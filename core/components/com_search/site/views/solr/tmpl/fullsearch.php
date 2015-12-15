@@ -107,17 +107,17 @@
 								<div class="inner">
 									<h2 class="intro-title"><?php echo  Lang::txt('What are you looking for?'); ?></h2>
 									<div class="intro-suggestion">
-										<p>You are able to search fields by entering the fieldname and the term you are searching for. 
+										<p>You are able to search fields by entering the fieldname and the term you are searching for.</br>
 										For example: <code>title:hubzero</code>
 										</p>
 									</div><!-- end intro suggestion -->
 									<div class="intro-suggestion">
-										<p>Narrow your search by using logical operators. 
+										<p>Narrow your search by using logical operators.</br> 
 										For example: <code>(blog AND author:Bob) OR burgers</code>
 										</p>
 									</div><!-- end intro suggestion -->
 									<div class="intro-suggestion">
-										<p>Perform wildcard searches by using an asterisk (*).
+										<p>Perform wildcard searches by using an asterisk (*).</br>
 										For example: <code>nano*</code>
 										</p>
 									</div><!-- end intro suggestion -->

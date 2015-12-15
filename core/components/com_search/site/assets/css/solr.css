@@ -37,9 +37,9 @@
 }
 .intro-suggestion:before{
 	font-family: "Fontcons";
-	content: '\f078';
-	font-size: 48pt;
-	padding:5px;
+	content: '\f05a';
+	font-size: 32pt;
+	padding: 10px;
 	color: white;
 	display:table-cell;
 	vertical-align: middle;
