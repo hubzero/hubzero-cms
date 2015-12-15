@@ -1320,6 +1320,10 @@ class Publication extends Object
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -1343,6 +1347,10 @@ class Publication extends Object
 		if (!($this->_modifier instanceof \Hubzero\User\Profile))
 		{
 			$this->_modifier = \Hubzero\User\Profile::getInstance($this->get('modified_by'));
+			if (!$this->_modifier)
+			{
+				$this->_modifier = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
