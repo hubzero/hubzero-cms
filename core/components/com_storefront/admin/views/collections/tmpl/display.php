@@ -29,7 +29,7 @@
 
 defined('_HZEXEC_') or die();
 
-$canDo = StorefrontHelperPermissions::getActions('collection');
+$canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('collection');
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Collections', 'storefront.png');
 if (0  && $canDo->get('core.admin'))
