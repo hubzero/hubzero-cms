@@ -61,7 +61,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="all">PLG_CRON_SUPPORT_ALL</option>
 					<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
 					<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
-					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
+					<option value="minor">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketpending_activity" type="list" default="-2week" label="Last activity" description="When the last activity on the ticket was.">
 					<option value="all">PLG_CRON_SUPPORT_ALL</option>
@@ -91,7 +91,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="all">PLG_CRON_SUPPORT_ALL</option>
 					<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
 					<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
-					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
+					<option value="minor">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketreminder_group" type="text" menu="hide" label="For users in group" default="" description="Only users within the group specified will be messaged." />
 			</fieldset>
@@ -105,7 +105,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="all">PLG_CRON_SUPPORT_ALL</option>
 					<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
 					<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
-					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
+					<option value="minor">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketlist_created" type="list" default="+week" label="Created" description="Ticket creation time.">
 					<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
@@ -166,7 +166,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="all">PLG_CRON_SUPPORT_ALL</option>
 			<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
 			<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
-			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
+			<option value="minor">PLG_CRON_SUPPORT_LOW</option>
 		</param>
 		<param name="support_ticketpending_activity" type="list" default="-2week" label="PLG_CRON_SUPPORT_TICKETPENDING_ACTIVITY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_ACTIVITY_DESC">
 			<option value="all">PLG_CRON_SUPPORT_ALL</option>
@@ -196,7 +196,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="all">PLG_CRON_SUPPORT_ALL</option>
 			<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
 			<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
-			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
+			<option value="minor">PLG_CRON_SUPPORT_LOW</option>
 		</param>
 		<param name="support_ticketreminder_group" type="text" menu="hide" label="PLG_CRON_SUPPORT_TICKETREMINDER_GROUP_LABEL" default="" description="PLG_CRON_SUPPORT_TICKETREMINDER_GROUP_DESC" />
 	</params>
@@ -212,7 +212,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="all">PLG_CRON_SUPPORT_ALL</option>
 			<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
 			<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
-			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
+			<option value="minor">PLG_CRON_SUPPORT_LOW</option>
 		</param>
 		<param name="support_ticketlist_created" type="list" default="+week" label="PLG_CRON_SUPPORT_TICKETLIST_CREATED_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_CREATED_DESC">
 			<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>

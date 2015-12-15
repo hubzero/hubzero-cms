@@ -367,6 +367,11 @@ class Query extends \JTable
 				default: break;
 			}
 
+			if ($expr->val == 'trivial')
+			{
+				$expr->val = 'minor';
+			}
+
 			//$prfx = (strtolower($expr->fldval) == 'tag') ? 't' : 'f';
 			$prfx = 'f';
 			if (strtolower($expr->fldval) == 'tag')

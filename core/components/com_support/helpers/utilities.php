@@ -42,86 +42,89 @@ class Utilities
 	/**
 	 * Send an email
 	 *
-	 * @param      string  $email             Address to send to
-	 * @param      string  $subject           Message subject
-	 * @param      mixed   $contents          Message to send
-	 * @param      array   $from              Who the message is from
-	 * @param      array   $replyto           Reply to information
-	 * @param      array   $additionalHeaders More headers to apply
-	 * @return     boolean
+	 * @param   string   $email              Address to send to
+	 * @param   string   $subject            Message subject
+	 * @param   mixed    $contents           Message to send
+	 * @param   array    $from               Who the message is from
+	 * @param   array    $replyto            Reply to information
+	 * @param   array    $additionalHeaders  More headers to apply
+	 * @return  boolean
 	 */
 	public static function sendEmail($email, $subject, $contents, $from, $replyto = '', $additionalHeaders = null)
 	{
-		if ($from)
+		if (!$from)
 		{
-			$message = new Message();
-			$message->setSubject($subject)
-			        ->addFrom($from['email'], $from['name'])
-			        ->addTo($email);
+			return false;
+		}
 
-			if ($replyto)
-			{
-				$message->addReplyTo($replyto, $from['name']);
-			}
-			else
-			{
-				$message->addReplyTo($from['email'], $from['name']);
-			}
+		$message = new Message();
+		$message->setSubject($subject)
+		        ->addFrom($from['email'], $from['name'])
+		        ->addTo($email);
 
-			if (is_array($additionalHeaders))
-			{
-				// The xheaders array has name and value pairs
-				foreach ($additionalHeaders as $header)
-				{
-					$message->addHeader($header['name'], $header['value']);
-				}
-			}
+		if ($replyto)
+		{
+			$message->addReplyTo($replyto, $from['name']);
+		}
+		else
+		{
+			$message->addReplyTo($from['email'], $from['name']);
+		}
 
-			if (is_array($contents))
+		if (is_array($additionalHeaders))
+		{
+			// The xheaders array has name and value pairs
+			foreach ($additionalHeaders as $header)
 			{
-				if (isset($contents['attachments']))
-				{
-					if (!is_array($contents['attachments']))
-					{
-						$contents['attachments'] = array($contents['attachments']);
-					}
-					foreach ($contents['attachments'] as $path)
-					{
-						if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path))
-						{
-							$file = basename($path);
-							$size = getimagesize($path);
-							$width = ($size[0] > 650 ? 650 : $size[0]);
-							$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img width="' . $width . '" src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
-						}
-						else
-						{
-							$message->addAttachment($path);
-						}
-					}
-				}
-
-				$message->addPart($contents['plaintext'], 'text/plain')
-				        ->addPart($contents['multipart'], 'text/html');
-			}
-			else
-			{
-				$message->setBody($contents);
-			}
-
-			if ($message->send())
-			{
-				return true;
+				$message->addHeader($header['name'], $header['value']);
 			}
 		}
+
+		if (is_array($contents))
+		{
+			if (isset($contents['attachments']))
+			{
+				if (!is_array($contents['attachments']))
+				{
+					$contents['attachments'] = array($contents['attachments']);
+				}
+				foreach ($contents['attachments'] as $path)
+				{
+					if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path))
+					{
+						$file = basename($path);
+						$size = getimagesize($path);
+						$width = ($size[0] > 650 ? 650 : $size[0]);
+						$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img width="' . $width . '" src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
+					}
+					else
+					{
+						$message->addAttachment($path);
+					}
+				}
+			}
+
+			$message->addPart($contents['plaintext'], 'text/plain')
+			        ->addPart($contents['multipart'], 'text/html');
+		}
+		else
+		{
+			$message->setBody($contents);
+		}
+
+		if ($message->send())
+		{
+			return true;
+		}
+
 		return false;
 	}
 
 	/**
 	 * Check if a username is valid
 	 *
-	 * @param      string $login Username to check
-	 * @return     boolean True if valid
+	 * @param   string   $login  Username to check
+	 * @return  boolean  True if valid
 	 */
 	public static function checkValidLogin($login)
 	{
@@ -135,8 +138,8 @@ class Utilities
 	/**
 	 * Check if an email address is valid
 	 *
-	 * @param      string $email Address to check
-	 * @return     boolean True if valid
+	 * @param   string   $email  Address to check
+	 * @return  boolean  True if valid
 	 */
 	public static function checkValidEmail($email)
 	{
@@ -150,31 +153,26 @@ class Utilities
 	/**
 	 * Generate an array of severities
 	 *
-	 * @param      string $severities Comma-separated list
-	 * @return     array
+	 * @param   string  $severities  Comma-separated list
+	 * @return  array
 	 */
-	public static function getSeverities($severities)
+	public static function getSeverities($severities=null)
 	{
+		/*$s = array('major', 'normal', 'minor');
+
 		if ($severities)
 		{
-			$s = array();
-			$svs = explode(',', $severities);
-			foreach ($svs as $sv)
-			{
-				$s[] = trim($sv);
-			}
-		}
-		else
-		{
-			$s = array('critical', 'major', 'normal', 'minor', 'trivial');
-		}
-		return $s;
+			$s = explode(',', $severities);
+			$s = array_map('trim', $s);
+		}*/
+
+		return array('critical', 'major', 'normal', 'minor');
 	}
 
 	/**
 	 * Retrieve and parse incoming filters
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public static function getFilters()
 	{
@@ -297,8 +295,8 @@ class Utilities
 	/**
 	 * Calculate the average life of a ticket
 	 *
-	 * @param      array $data A list of ticket's opened and closed dates
-	 * @return     array [days, hours, minutes]
+	 * @param   array  $data  A list of ticket's opened and closed dates
+	 * @return  array  [days, hours, minutes]
 	 */
 	public static function calculateAverageLife($data=null)
 	{
@@ -319,8 +317,8 @@ class Utilities
 				$difference = 0;
 			}
 
-			$days = floor($difference/60/60/24);
-			$hours = floor(($difference - $days*60*60*24)/60/60);
+			$days    = floor($difference/60/60/24);
+			$hours   = floor(($difference - $days*60*60*24)/60/60);
 			$minutes = floor(($difference - $days*60*60*24 - $hours*60*60)/60);
 
 			$lifetime = array($days, $hours, $minutes);
