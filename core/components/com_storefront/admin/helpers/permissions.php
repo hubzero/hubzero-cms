@@ -26,10 +26,12 @@
  * HUBzero is a registered trademark of Purdue University.
  */
 
-defined('_HZEXEC_') or die();
+namespace Components\Storefront\Admin\Helpers;
+
+use Hubzero\Base\Object;
 
 
-class StorefrontHelperPermissions
+class Permissions
 {
 	/**
 	 * Name of the component
@@ -41,31 +43,34 @@ class StorefrontHelperPermissions
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	string	$extension	The extension.
-	 * @param	int		$categoryId	The category ID.
-	 *
-	 * @return	JObject
-	 * @since	1.6
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The category ID.
+	 * @return  object
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
-		$assetName = 'com_storefront';
-		$user	= User::getRoot();
-		$result	= new JObject;
-
+		$assetName  = self::$extension;
 		$assetName .= '.' . $assetType;
 		if ($assetId)
 		{
 			$assetName .= '.' . (int) $assetId;
 		}
 
+		$user = \User::getRoot();
+		$result = new Object;
+
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+				'admin',
+				'manage',
+				'create',
+				'edit',
+				'edit.state',
+				'delete'
 		);
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set('core.' . $action, $user->authorise($action, $assetName));
 		}
 
 		return $result;

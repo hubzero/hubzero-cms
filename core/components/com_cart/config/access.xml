@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_storefront/config.xml
+@file           components/com_blog/access.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -29,12 +29,12 @@ THE SOFTWARE.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<config>
-    <fieldset name="basic">
-        <field name="downloadFolder" type="text" menu="hide" default="/media/software" label="COM_STORFRONT_CONFIG_DOWNLOAD_FOLDER_LABEL" description="COM_STORFRONT_CONFIG_DOWNLOAD_FOLDER_DESC" size="50" />
-        <field name="imagesFolder" type="text" menu="hide" default="/site/storefront/products" label="COM_STORFRONT_CONFIG_IMAGES_FOLDER_LABEL" description="COM_STORFRONT_CONFIG_IMAGES_FOLDER_DESC" size="50" />
-    </fieldset>
-    <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-        <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_storefront" section="component" />
-    </fieldset>
-</config>
+<access component="com_cart">
+	<section name="download">
+		<action name="core.create" title="JACTION_CREATE" description="COM_CATEGORIES_ACCESS_CREATE_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="COM_CATEGORIES_ACCESS_DELETE_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="COM_CATEGORIES_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_CATEGORIES_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_CATEGORIES_ACCESS_EDITOWN_DESC" />
+	</section>
+</access>

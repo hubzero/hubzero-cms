@@ -29,7 +29,7 @@
 
 defined('_HZEXEC_') or die();
 
-$canDo = StorefrontHelperPermissions::getActions('product');
+$canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 

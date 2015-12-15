@@ -29,7 +29,7 @@
 
 defined('_HZEXEC_') or die();
 
-$canDo = StorefrontHelperPermissions::getActions('product');
+$canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Products', 'storefront.png');
 if ($canDo->get('core.admin'))
@@ -163,25 +163,23 @@ foreach ($this->rows as $row)
 					<?php echo $row->ptName; ?>
 				</td>
 				<td>
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=display&id=' . $row->pId); ?>" title="View SKUs">
-							<span><?php
-							$key = $row->pId;
-							$skuCountInfo = $this->skus->$key;
-							echo $skuCountInfo->active + $skuCountInfo->inactive;
-							if ($skuCountInfo->active + $skuCountInfo->inactive > 0)
-							{
-								echo ' (' . $skuCountInfo->active . ')';
-							}
-							?></span>
-						</a>
+
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=display&id=' . $row->pId); ?>" title="View SKUs">
+						<span><?php
+						$key = $row->pId;
+						$skuCountInfo = $this->skus->$key;
+						echo $skuCountInfo->active + $skuCountInfo->inactive;
+						if ($skuCountInfo->active + $skuCountInfo->inactive > 0)
+						{
+							echo ' (' . $skuCountInfo->active . ')';
+						}
+						?></span>
+					</a>
+					<?php if ($canDo->get('core.edit.create')) { ?>
 						&nbsp;
 						<a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=add&pId=' . $row->pId); ?>">
 							<span>[ + ]</span>
 						</a>
-					<?php } else { ?>
-						<span><?php $key = $row->pId; echo $this->skus->$key; ?></span>
-					</span>
 					<?php } ?>
 				</td>
 				<td>
