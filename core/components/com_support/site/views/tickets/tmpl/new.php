@@ -244,7 +244,11 @@ $group = Request::getVar('group', '');
 					<div class="col span6">
 						<label for="ticket-field-severity">
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>
-							<?php echo \Components\Support\Helpers\Html::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
+							<select name="problem[severity]" id="ticket-field-severity">
+								<?php foreach ($this->lists['severities'] as $severity) { ?>
+									<option value="<?php echo $severity; ?>"<?php if ($severity == 'normal') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+								<?php } ?>
+							</select>
 						</label>
 					</div>
 					<div class="col span6 omega">

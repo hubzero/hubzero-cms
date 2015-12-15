@@ -32,7 +32,6 @@ HUBzero is a registered trademark of Purdue University.
 <config>
 	<fieldset name="basic">
 		<field name="group" type="text" menu="hide" label="COM_SUPPORT_CONFIG_GROUP_LABEL" default="" description="COM_SUPPORT_CONFIG_GROUP_DESC" />
-		<field name="severities" type="text" menu="hide" default="critical,major,normal,minor,trivial" label="COM_SUPPORT_CONFIG_SEVERITIES_LABEL" description="COM_SUPPORT_CONFIG_SEVERITIES_DESC" />
 		<field name="email_processing" type="list" default="0" label="COM_SUPPORT_CONFIG_EMAIL_INTERFACE_LABEL" description="COM_SUPPORT_CONFIG_EMAIL_INTERFACE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

@@ -47,8 +47,7 @@ if ($this->row->get('login'))
 	$submitter = $this->row->submitter();
 	if ($submitter->get('uidNumber'))
 	{
-		jimport('joomla.user.helper');
-		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
+		$usertype = implode(', ', \JUserHelper::getUserGroups($submitter->get('uidNumber')));
 
 		$name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = 0;
@@ -452,9 +451,13 @@ $cc = array();
 
 					<div class="grid">
 						<div class="col span6">
-							<label>
+							<label for="ticket-field-severity">
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>:
-								<?php echo \Components\Support\Helpers\Html::selectArray('ticket[severity]', $this->lists['severities'], $this->row->get('severity')); ?>
+								<select name="ticket[severity]" id="ticket-field-severity">
+									<?php foreach ($this->lists['severities'] as $severity) { ?>
+										<option value="<?php echo $severity; ?>"<?php if ($severity == $this->row->get('severity')) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+									<?php } ?>
+								</select>
 							</label>
 						</div>
 						<div class="col span6 omega">

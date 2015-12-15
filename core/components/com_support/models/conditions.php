@@ -279,7 +279,7 @@ class Conditions extends Object
 				{
 					$sel = true;
 				}
-				$items[] = $this->_value($severity, $severity, $sel);
+				$items[] = $this->_value($severity, Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . $severity), $sel);
 			}
 		}
 		$conditions->severity = $this->_expression(

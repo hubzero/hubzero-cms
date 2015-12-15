@@ -4,21 +4,6 @@
 				<h2><span>Overview</span></h2>
 
 				<p>Here you will find a submitted ticket and all associated data, including comments, change and notification logs, and attachments.</p>
-
-				<p>Default queries are generally divided into three groups:</p>
-
-				<dl>
-					<dt>Common (in ACL)</dt>
-					<dd>Commonly run queries, such as 'Open tickets' or 'New tickets'. Query is built and filtered based on user's ACL entry.</dd>
-
-					<dt>Common (<em>not</em> in ACL)</dt>
-					<dd>Commonly run queries, such as 'Open tickets' or 'New tickets'. Query is built and filtered to exclude data the user does nto have access to. Typically, this means the user will only see tickets they submitted, are assigned to, or tickets assigned to a group they belong to.</dd>
-
-					<dt>Mine</dt>
-					<dd>Commonly run queries, such as 'My open tickets' or 'My submitted tickets'. Queries are filtered to display only tickets associated to the logged in user.</dd>
-				</dl>
-
-				<p>Stats shown may also be filtered by group.</p>
 			</section>
 			<section>
 				<h2><span>Changes</span></h2>
@@ -47,7 +32,19 @@
 
 				<h3>Severity</h3>
 
-				<p>This sets the priority of the ticket.</p>
+				<dl>
+					<dt><span style="color: blue;">Low</span></dt>
+					<dd>Minor loss of application functionality, product feature requests, how-to questions. There is a medium-to-low impact, but continues to function, including by using a procedural workaround.</dd>
+
+					<dt>Medium</dt>
+					<dd>Moderate loss of application functionality or performance resulting in multiple users impacted in their normal functions. Minor feature/product failure, convenient workaround exists/minor performance degradation/not impacting production.</dd>
+
+					<dt><span style="color: orange;">High</span></dt>
+					<dd>Critical loss of application functionality or performance resulting in high number of users unable to perform their normal functions. Major feature/product failure; inconvenient workaround or no workaround exists. The program is usable but severely limited.</dd>
+
+					<dt><span style="color: red;">Critical</span></dt>
+					<dd>Production application down or major malfunction resulting in a product inoperative condition. Users are unable to reasonably perform their normal functions. The specific functionality is mission critical and the situation is considered an emergency.</dd>
+				</dl>
 			</section>
 			<section>
 				<h2><span>Commenting</span></h2>
