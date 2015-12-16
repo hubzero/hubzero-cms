@@ -81,11 +81,6 @@
 	display:table-cell;
 }
 
-.search-settings select {
-	width: 90%;
-	padding: 5px;
-	line-height: 1 !important;
-}
 
 .search-settings fieldset {
 	width: 100%;

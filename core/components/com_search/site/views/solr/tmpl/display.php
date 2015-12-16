@@ -44,6 +44,7 @@ $this->css('solr');
 	$view->queryString = $this->queryString;
 	$view->option = $this->option;
 	$view->controller = $this->controller;
+	$view->types = $this->types;
 
 	try
 	{

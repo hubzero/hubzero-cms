@@ -236,16 +236,6 @@ class SearchHelper
 				$model = new $classpath($database);
 			}
 
-/*			if (is_subclass_of($model, 'Hubzero\Database\Relational'))
-			{
-				var_dump("yessir"); die;
-			}
-			else
-			{
-				var_dump(get_parent_class($model));
-				die;
-			}
-			*/
 			// Get local model fields
 			$modelStructure = $type->structure();
 

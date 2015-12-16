@@ -6,9 +6,10 @@
 				<fieldset>
 					<legend>Filters:</legend>
 					<select name="search[type]">
-						<option>Filter by Type</option>
-						<option>Citations</option>
-						<option>Publications</option>
+						<option value="">Filter by Type</option>
+						<?php foreach ($this->types as $type): ?>
+							<option value="<?php echo $type->type; ?>"><?php echo $type->type; ?></option>
+						<?php endforeach; ?>
 					</select>
 				</fieldset>
 			</div>

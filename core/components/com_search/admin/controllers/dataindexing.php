@@ -36,188 +36,11 @@ use \Solarium;
 use \Hubzero\Utility\Sanitize;
 use Filesystem;
 use \Components\Search\Helpers\SearchHelper as Helper;
+use \Components\Search\Helpers\SolrEngine as SearchEngine;
 use \Components\Search\Models\Noindex;
 use \Components\Search\Models\IndexQueue;
 use \Components\Search\Models\HubType;
 use stdClass;
-
-class SolrEngine
-{
-	public function getConfig()
-	{
-		$config = array('endpoint' => array(
-							'localhost' => array(
-							'host' => '127.0.1.1',
-							'port' =>8983 ,
-							'path' => '/solr/hubsearch',
-							'log_path' => '/opt/solr/server/logs/solr.log')));
-
-		return $config;
-	}
-
-	public function start()
-	{
-		$cmd = "/opt/solr/bin/solr start -s /srv/example/solr/data/";
-		shell_exec($cmd);
-	}
-
-	public function ping()
-	{
-		$config = $this->getConfig();
-		$solr = new Solarium\Client($config);
-		$ping = $solr->createPing();
-		try {
-			$ping = $solr->ping($ping);
-			$ping = $ping->getData();
-			$alive = false;
-			if (isset($ping['status']) && $ping['status'] === "OK")
-			{
-				$alive = true;
-			}
-		} catch (\Solarium\Exception $e) {
-			return false;
-		}
-		return $alive;
-	}
-
-	/** Query Operations **/
-	// Create query object
-	public function search($queryString = '')
-	{
-		$config = $this->getConfig();
-		$this->solr = new Solarium\Client($config);
-		$this->query = $this->solr->createSelect();
-		$this->queryString = $queryString;
-		$this->query->setQuery($queryString);
-		return $this;
-	}
-	public function addFacet($label, $facetQueryString)
-	{
-		$this->facetSet = $this->query->getFacetSet();
-		$this->facetSet->createFacetQuery($label)->setQuery($facetQueryString);
-		return $this;
-	}
-	public function getFacetCount($label)
-	{
-		$count = $this->result->getFacetSet()->getFacet($label)->getValue();
-		return $count;
-	}
-	public function setFields($fields)
-	{
-		if (!isset($this->fields))
-		{
-			$this->fields = array();
-		}
-		if (is_array($fields))
-		{
-			$this->fields = array_unique(array_merge($this->fields, $fields));
-			$this->query->setFields($this->fields);
-		}
-		elseif (is_string($fields))
-		{
-			if (strpos("," , $fields) === FALSE)
-			{
-				$this->fields = array($fields);
-			}
-			else
-			{
-				$this->fields = explode("," , $fields);
-			}
-			$this->query->setFields($this->fields);
-		}
-	}
-	public function getResult()
-	{
-		$this->result = $this->solr->select($this->query);
-		return $this->result;
-	}
-	public function limit($number = 10)
-	{
-		$this->query->setRows($number);
-		return $this;
-	}
-	public function orderBy($field, $direction)
-	{
-		$this->query->addSort($field, $direction);
-		return $this;
-	}
-	public function lastInsert()
-	{
-		$this->search('*:*');
-		$this->setFields('timestamp');
-		$this->limit(1);
-		$this->orderBy('timestamp', 'desc');
-		$result = $this->getResult();
-		if (isset($result->getDocuments()[0]))
-		{
-			return $result->getDocuments()[0]->getFields()['timestamp'];
-		}
-		else
-		{
-			return false;
-		}
-	}
-	/* Update */
-	public function delete($id = NULL)
-	{
-		// @FIXME Perhaps consider using addDeleteById(1234)?
-		$config = $this->getConfig();
-		$this->solr = new Solarium\Client($config);
-
-		if ($id != NULL)
-		{
-			$update = $this->solr->createUpdate();
-			$update->addDeleteQuery('id:'.$id);
-			$update->addCommit();
-			$response = $this->solr->update($update);
-
-			// @FIXME: logical fallicy
-			// Wild assumption that the update was successful
-			return TRUE;
-		}
-		else
-		{
-			return Lang::txt('No record specified.');
-		}
-	}
-	public function add($document, $docID = NULL)
-	{
-			$config = $this->getConfig();
-			$this->solr = new Solarium\Client($config);
-
-			$update = $this->solr->createUpdate();
-			$solrDoc = $update->createDocument();
-			foreach ($document as $key => $value)
-			{
-				$solrDoc->$key = $value;
-			}
-			if ($docID == NULL)
-			{
-				$solrDoc->id = hash('md5', time()*rand());
-			}
-			else
-			{
-				$solrDoc->id = $docID;
-			}
-			$update->addDocuments(array($solrDoc));
-			$update->addCommit();
-			$this->solr->update($update);
-
-			return true;
-	}
-
-	/* Administrative & Mantainace */
-	//public function cleanup($a
-	public function getLog()
-	{
-		$config = $this->getConfig();
-		$log = Filesystem::read($config['endpoint']['localhost']['log_path']);
-		$levels = array();
-		$this->logs = explode("\n",$log);
-
-		return $this;
-	}
-}
 
 /**
  *
@@ -231,60 +54,60 @@ class DataIndexing extends AdminController
 
 		if ($type != '')
 		{
-			//$hubSearch = new SolrEngine();
+			//$hubSearch = new SearchEngine();
 			$helper = new Helper;
 			$this->view->typeStructure = $helper->fetchDataTypes(null, $type);
 			$searchDocument = array(
-														//'id' => '', // Not accessible / managed via user
-														'title' => '',
-														'doi' => '',
-														'isbn' => '',
-														'author' => '',
-														'created' => '', // According to the DB
-														'modified' => '', // According to the DB
-														'scope' => '', // From the DB
-														'scope_id' => '',  // From the DB
-														'fulltext' => '',
-														'description' => '',
-														'abstract' => '',
-														'location' => '',
-														'uid' => '',
-														'gid' => '',
-														'created_by' => '',
-														'child_id' => '',
-														'parent_id' => '',
-														'state' => '',
-														'hits' => '',
-														'publish_up' => '',
-														'publish_down' => '',
-														'type' => '',
-														//'hubtype' => '', // Not accessible 
-														'note' => '',
-														'keywords' => '', // Could be tags if nothing, or differ
-														'language' => '',
-														'tags' => '',
-														'badge' => '',
-														'date' => '',
-														'year' => '',
-														'month' => '',
-														'day' => '',
-														'address' => '',
-														'organization' => '',
-														'name' => '',
-														'access-level' => '', //
-														'access-group' => '', //
-														'permission-level' => '', // All, registered, group-members, project members,
-														'hub-assoc' => '', // Component, Module, or Plugin which inserts the data
-														'organization' => '',
-														'url' => '', // if the content is off-site
-														'cms-ranking' => '',
-														'cms-rating' => '',
-														'params' => '',
-														'meta' => '',
-														'hubID' => '', // the ID of the content within the HUB (differs from the Solr ID)
-														'hubURL' => '', // how to view the record on the hub
-														'cms-state' => '' // published, trashed, hidden, etc.
-													);
+				//'id' => '', // Not accessible / managed via user
+				'title' => '',
+				'doi' => '',
+				'isbn' => '',
+				'author' => '',
+				'created' => '', // According to the DB
+				'modified' => '', // According to the DB
+				'scope' => '', // From the DB
+				'scope_id' => '',  // From the DB
+				'fulltext' => '',
+				'description' => '',
+				'abstract' => '',
+				'location' => '',
+				'uid' => '',
+				'gid' => '',
+				'created_by' => '',
+				'child_id' => '',
+				'parent_id' => '',
+				'state' => '',
+				'hits' => '',
+				'publish_up' => '',
+				'publish_down' => '',
+				'type' => '',
+				//'hubtype' => '', // Not accessible 
+				'note' => '',
+				'keywords' => '', // Could be tags if nothing, or differ
+				'language' => '',
+				'tags' => '',
+				'badge' => '',
+				'date' => '',
+				'year' => '',
+				'month' => '',
+				'day' => '',
+				'address' => '',
+				'organization' => '',
+				'name' => '',
+				'access-level' => '', //
+				'access-group' => '', //
+				'permission-level' => '', // All, registered, group-members, project members,
+				'hub-assoc' => '', // Component, Module, or Plugin which inserts the data
+				'organization' => '',
+				'url' => '', // if the content is off-site
+				'cms-ranking' => '',
+				'cms-rating' => '',
+				'params' => '',
+				'meta' => '',
+				'hubID' => '', // the ID of the content within the HUB (differs from the Solr ID)
+				'hubURL' => '', // how to view the record on the hub
+				'cms-state' => '' // published, trashed, hidden, etc.
+			);
 
 			$this->view->type = $type;
 			$this->view->hubDocument = $searchDocument;
@@ -319,7 +142,8 @@ class DataIndexing extends AdminController
 		}
 
 		App::redirect(
-		Route::url('index.php?option=' . $this->_option . '&controller=solr&task=searchindex', false), 'Successfully added to index queue.', 'success');
+		Route::url('index.php?option=' . $this->_option . '&controller=solr&task=searchindex', false),
+		'Successfully added to index queue.', 'success');
 	}
 	public function setPermissionsTask()
 	{
@@ -427,7 +251,8 @@ class DataIndexing extends AdminController
 		$entry = NoIndex::one($entryID);
 		$entry->destroy();
 		App::redirect(
-		Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false), 'Successfully removed entry #' . $entryID, 'success');
+		Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller. '&task=manageBlacklist', false),
+		'Successfully removed entry #' . $entryID, 'success');
 	}
 
 	private function getRows($hubType, $limit = 10)

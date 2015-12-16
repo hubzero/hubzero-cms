@@ -40,6 +40,7 @@ use Config;
 use Lang;
 use stdClass;
 use Components\Search\Helpers\SolrEngine as SearchEngine;
+use Components\Search\Models\Hubtype;
 
 /**
  * Search controller class
@@ -53,7 +54,6 @@ class Solr extends SiteController
 	 */
 	public function displayTask($response = NULL)
 	{
-		//ddie(User::getInstance(1003));
 		if (isset($response))
 		{
 			$this->view->query = $response->search;
@@ -66,6 +66,7 @@ class Solr extends SiteController
 			$this->view->results = '';
 		}
 
+		$this->view->types = Hubtype::all()->order('type', 'DESC')->rows()->toObject();
 		$this->view->setLayout('display');
 		$this->view->display();
 	}
@@ -74,9 +75,19 @@ class Solr extends SiteController
 	{
 		$searchRequest = Request::getVar('search', array());
 		$query = $searchRequest['query'];
+		$HubtypeFilter = $searchRequest['type'];
 
 		$hubSearch = new SearchEngine();
-		$search = $hubSearch->search($query)->limit(100);
+
+		if ($HubtypeFilter != '')
+		{
+			//$search = $hubSearch->createFilterQuery('hubtype')->setQuery('hubtype:'.$HubtypeFilter)->search($query)->limit(100);
+			$search = $hubSearch->search($query)->limit(100);
+		}
+		else
+		{
+			$search = $hubSearch->search($query)->limit(100);
+		}
 
 		$result = $search->getResult();
 
