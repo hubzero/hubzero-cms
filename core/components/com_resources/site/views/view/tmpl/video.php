@@ -56,7 +56,7 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 /* Bug fix for Firefox bug. */
 /* Firefox fails to update the readyState and does not call the canplay and canplaythrough */
 /* Some background information: http://stackoverflow.com/questions/10235919/the-canplay-canplaythrough-events-for-an-html5-video-are-not-called-on-firefox */
-if (navigator.userAgent.contains("Mozilla"))
+if (navigator.userAgent.indexOf("Mozilla") > -1)
 {
 	setInterval(function(){ 
 		var vid = document.getElementById('video-player');
