@@ -187,6 +187,8 @@ class Helper extends Object
 		{
 			foreach ($cons as $k => $c)
 			{
+				$cons[$k]->authorid = $cons[$k]->id;
+
 				if (!$cons[$k]->name)
 				{
 					$cons[$k]->name = $cons[$k]->xname;
