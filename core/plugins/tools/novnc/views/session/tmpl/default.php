@@ -95,7 +95,7 @@ else
 		//JS globals for noVNC
 		var host     = '<?php echo $this->output->wsproxy_host; ?>',
 			port     = '<?php echo $this->output->wsproxy_port; ?>',
-			password = "<?php echo $this->output->password; ?>",
+			password = "<?php echo addslashes($this->output->password); ?>",
 			token    = '<?php echo $this->output->token; ?>',
 			encrypt  = ('<?php echo $this->output->wsproxy_encrypt; ?>' == 'Yes' ? true : false),
 			connectPath,
