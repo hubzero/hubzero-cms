@@ -1607,7 +1607,7 @@ class Resources extends SiteController
 		$filters['year']  = Request::getInt('year', 0);
 		$filters['id']    = $resource->id;
 
-		$feedtype = Request::getVar('format', 'audio');
+		$feedtype = Request::getVar('content', 'audio');
 
 		// Initiate a resource helper class
 		$helper = new Helper($resource->id, $this->database);
