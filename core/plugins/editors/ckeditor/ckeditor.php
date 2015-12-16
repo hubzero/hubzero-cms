@@ -33,6 +33,8 @@
 // no direct access
 defined('_HZEXEC_') or die;
 
+Html::behavior('core');
+
 /**
  * CKEditor Plugin
  */
