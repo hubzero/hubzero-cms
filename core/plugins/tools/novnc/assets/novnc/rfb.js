@@ -1110,9 +1110,9 @@ var RFB;
                         type: 'iframe',
                         href: url,
                         width: 500,
-                        height: 'auto',
-                        //autoSize: false,
-                        //fitToView: false,
+                        height: 500, //auto',
+                        autoSize: false,
+                        fitToView: true,
                         titleShow: false
                     });
                     return true;
