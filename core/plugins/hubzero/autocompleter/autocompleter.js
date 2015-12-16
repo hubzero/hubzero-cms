@@ -924,258 +924,257 @@ if (!jq) {
 }
 
 HUB.Plugins.Autocomplete = {
-	jQuery: jq,
+	writeSelectList: function(members, id) {
+		var $ = jq,
+			sel = $('#' + id);
 
-	writeSelectList: function( members, id ) {
-		var $ = this.jQuery;
-
-		if (!$('#'+id)) {
+		if (!sel.length) {
 			return;
 		}
 
-		$('#'+id)
+		sel
 			.find('option')
 			.remove()
 			.end();
 
-		for (var i=0; i<members.length; i++) 
+		sel.append('<option value="">(none)</option>');
+
+		for (var i=0; i<members.length; i++)
 		{
-			$('#'+id).append('<option value="'+members[i].username+'">'+members[i].name+'</option>');
+			sel.append('<option value="' + members[i].username + '">' + members[i].name + '</option>');
 		}
-	},
-
-	initialize: function() {
-		var plg = this,
-			$ = this.jQuery;
-
-		//var head = document.head;
-		var head = document.getElementsByTagName('head')[0];
-		var styles = document.createElement('link');
-		styles.type = 'text/css';
-		styles.rel = 'stylesheet';
-		styles.href = plgAutocompleterCss; //$('#plgAutocompleterCss').val();
-		if (!styles.href) {
-			styles.href = '/core/plugins/hubzero/autocompleter/autocompleter.css';
-		}
-		head.appendChild(styles);
-
-		$('.autocomplete').each(function(i, input) {
-			// Set some defaults
-			var option = 'tags',
-				type = 'multi',
-				actkn = '',
-				tagger = null,
-				id = null,
-				wsel = null,
-				showid = false,
-				cls = '',
-				hint = '',
-				limit = null,
-				storeRecent = true;
-
-			id = $(input).attr('id');
-			if (!id) {
-				return;
-			}
-
-			if ($(input).attr('data-options')) {
-				var params = $(input).attr('data-options').split(',');
-				if (params) {
-					option = params[0];
-					type = params[1];
-					wsel = params[2];
-				}
-			}
-
-			// Set the CSS class for the type of autocompleter (affects colors)
-			switch (option) 
-			{
-				case 'members': 
-					cls = 'acm'; 
-					hint = 'Type in a name';
-					showid = true;
-				break; 
-				case 'groups':
-					cls = 'acg';
-					hint = 'Type in a search term';
-				break;
-				case 'tags':
-				default:
-					cls = 'act';
-					hint = 'Type in a search term';
-				break;
-			}
-
-			if ($('#actkn')) {
-				actkn = '&admin=true';
-			}
-
-			// Are multiple entries allowable?
-			if (type == 'multi') {
-				limit = null;
-			} else {
-				limit = 1;
-			}
-
-			// recent use storage
-			var recentStorageKey = 'autocompleter.recent.' + option;
-
-			value = $('#'+id).val();
-			var data = [];
-			if (value) {
-				if (value.indexOf(',') == -1) {
-					var values = [value];
-				} else {
-					var values = value.split(',');
-				}
-				$(values).each(function(i, v){
-					v = v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-					var id = null, 
-						name = null;
-					if (v.match(/(.+?) \((.+?)\)/ig)) {
-						id = v.replace(/(.+?) \((.+?)\)/ig, '$2');
-						name = v.replace(/(.+?) \((.+?)\)/ig, '$1');
-					}
-					id = (id) ? id : v;
-					name = (name) ? name : id;
-
-					data[i] = {
-						'id': id,
-						'name': name
-					};
-				});
-			}
-
-			var src = $(input).attr('data-script');
-			src = src ? src : '/index.php';
-
-			$('#'+id).tokenInput(src + '?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
-				theme: cls,
-				hintText: hint,
-				prePopulate: data,
-				tokenLimit: limit,
-				preventDuplicates: true,
-				resultsFormatter: function(item){ 
-					if (option != 'tags') {
-						var html = "<li>";
-						if (item['picture']) {
-							html += '<img src="'+item['picture']+'" width="30" height="30" alt="picture" />';
-						}
-						html += item[this.propertyToSearch]+ " ("+item['id']+")";
-						if (item['org']) {
-							html += '<span>' + item['org'] + '</span>';
-						}
-						if (item['picture']) {
-							html += '<div style="display:inline;clear:left;"></div>';
-						}
-						html += "</li>";
-						return html;
-					}
-					return "<li>" + item[this.propertyToSearch]+ "</li>";
-				},
-				onResult: function(results)
-				{
-					// if we want to use recent & we have stored recent items
-					if (storeRecent && localStorage && localStorage.getItem(recentStorageKey))
-					{
-						// get recent items
-						var topResults = [];
-						var recent     = JSON.parse(localStorage.getItem(recentStorageKey));
-						var items      = recent.items;
-
-						// loop through each recent item & get its value 
-						// if we have one in the results set
-						for (var i =0; i < items.length; i++)
-						{
-							for (var j=0; j < results.length; j++)
-							{
-								// if found push to top results &
-								// remove from original result set
-								var id = results[j].id;
-								if (items[i] == id)
-								{
-									topResults.push(results[j]);
-									results.splice(j, 1);
-								}
-							}
-						}
-
-						// get top results in reverse order because of how 
-						// we are going to prepend to results array as we iterate
-						topResults = topResults.reverse();
-						for (var i=0, n=topResults.length; i < n; i++)
-						{
-							results.unshift(topResults[i]);
-						}
-					}
-
-					// return  original results of local storage is not 
-					// eligible or user has not existing recent usage 
-					return results;
-				},
-				onAdd: function(item)
-				{
-					// pasting in comma separated items
-					if (item.name.indexOf(',') > -1 || item.name.indexOf(';') > -1)
-					{
-						// remove original item
-						$('#'+id).tokenInput('remove', {id:item.id});
-
-						// split by comma
-						var items = item.name.split(/,|;/g);
-						for (var i = 0, n = items.length; i < n; i++)
-						{
-							// add each individual item
-							var item = items[i].trim();
-							$('#'+id).tokenInput('add', {
-								id: item,
-								name: item
-							});
-						}
-					}
-
-					if (wsel) {
-						$.getJSON('/index.php?option=com_groups&no_html=1&task=memberslist&group=' + $('#'+id).val(), function(data) {
-							HUB.Plugins.Autocomplete.writeSelectList(data.members, wsel);
-						});
-					}
-
-					// if we want to store recent &
-					// we have local storage
-					if (storeRecent && localStorage)
-					{
-						// check to see if we have existing recent items
-						if (recent = localStorage.getItem(recentStorageKey))
-						{
-							// parse and add ids to list
-							recent = JSON.parse(recent);
-
-							// make sure it only exists once
-							// removes it from current location
-							var index = recent.items.indexOf(item.id);
-							if (index != -1)
-							{
-								recent.items.splice(index, 1);
-							}
-
-							// adds to top of list
-							recent.items.unshift(item.id);
-						}
-						else
-						{
-							//otherwise create new list
-							var recent = { items: [item.id] };
-						}
-
-						// set list of recent to local storage
-						localStorage.setItem(recentStorageKey, JSON.stringify(recent));
-					}
-				}
-			});
-		});
 	}
 }
 
-jQuery(document).ready(function($){
-	HUB.Plugins.Autocomplete.initialize();
+jQuery(document).ready(function(jq){
+	var $ = jq;
+
+	//var head = document.head;
+	var head = document.getElementsByTagName('head')[0];
+	var styles = document.createElement('link');
+	styles.type = 'text/css';
+	styles.rel = 'stylesheet';
+	styles.href = plgAutocompleterCss; //$('#plgAutocompleterCss').val();
+	if (!styles.href) {
+		styles.href = '/core/plugins/hubzero/autocompleter/autocompleter.css';
+	}
+	head.appendChild(styles);
+
+	$('.autocomplete').each(function(i, input) {
+		// Set some defaults
+		var option = 'tags',
+			type = 'multi',
+			actkn = '',
+			tagger = null,
+			id = null,
+			wsel = null,
+			showid = false,
+			cls = '',
+			hint = '',
+			limit = null,
+			storeRecent = true;
+
+		id = $(input).attr('id');
+		if (!id) {
+			return;
+		}
+
+		if ($(input).attr('data-options')) {
+			var params = $(input).attr('data-options').split(',');
+			if (params) {
+				option = params[0];
+				type   = params[1];
+				wsel   = params[2];
+			}
+		}
+
+		// Set the CSS class for the type of autocompleter (affects colors)
+		switch (option)
+		{
+			case 'members':
+				cls = 'acm';
+				hint = 'Type in a name';
+				showid = true;
+			break; 
+			case 'groups':
+				cls = 'acg';
+				hint = 'Type in a search term';
+			break;
+			case 'tags':
+			default:
+				cls = 'act';
+				hint = 'Type in a search term';
+			break;
+		}
+
+		if ($('#actkn')) {
+			actkn = '&admin=true';
+		}
+
+		// Are multiple entries allowable?
+		if (type == 'multi') {
+			limit = null;
+		} else {
+			limit = 1;
+		}
+
+		// recent use storage
+		var recentStorageKey = 'autocompleter.recent.' + option;
+
+		value = $('#'+id).val();
+		var data = [];
+		if (value) {
+			if (value.indexOf(',') == -1) {
+				var values = [value];
+			} else {
+				var values = value.split(',');
+			}
+
+			$(values).each(function(i, v) {
+				v = v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+				var id = null,
+					name = null;
+
+				if (v.match(/(.+?) \((.+?)\)/ig)) {
+					id   = v.replace(/(.+?) \((.+?)\)/ig, '$2');
+					name = v.replace(/(.+?) \((.+?)\)/ig, '$1');
+				}
+				id   = (id)   ? id   : v;
+				name = (name) ? name : id;
+
+				data[i] = {
+					'id': id,
+					'name': name
+				};
+			});
+		}
+
+		var src = $(input).attr('data-script');
+		src = src ? src : '/index.php';
+
+		$('#'+id).tokenInput(src + '?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
+			theme: cls,
+			hintText: hint,
+			prePopulate: data,
+			tokenLimit: limit,
+			preventDuplicates: true,
+			resultsFormatter: function(item){ 
+				if (option != 'tags') {
+					var html = "<li>";
+					if (item['picture']) {
+						html += '<img src="'+item['picture']+'" width="30" height="30" alt="picture" />';
+					}
+					html += item[this.propertyToSearch]+ " ("+item['id']+")";
+					if (item['org']) {
+						html += '<span>' + item['org'] + '</span>';
+					}
+					if (item['picture']) {
+						html += '<div style="display:inline;clear:left;"></div>';
+					}
+					html += "</li>";
+					return html;
+				}
+				return "<li>" + item[this.propertyToSearch]+ "</li>";
+			},
+			onResult: function(results)
+			{
+				// if we want to use recent & we have stored recent items
+				if (storeRecent && localStorage && localStorage.getItem(recentStorageKey))
+				{
+					// get recent items
+					var topResults = [];
+					var recent     = JSON.parse(localStorage.getItem(recentStorageKey));
+					var items      = recent.items;
+
+					// loop through each recent item & get its value 
+					// if we have one in the results set
+					for (var i =0; i < items.length; i++)
+					{
+						for (var j=0; j < results.length; j++)
+						{
+							// if found push to top results &
+							// remove from original result set
+							var id = results[j].id;
+							if (items[i] == id)
+							{
+								topResults.push(results[j]);
+								results.splice(j, 1);
+							}
+						}
+					}
+
+					// get top results in reverse order because of how 
+					// we are going to prepend to results array as we iterate
+					topResults = topResults.reverse();
+					for (var i=0, n=topResults.length; i < n; i++)
+					{
+						results.unshift(topResults[i]);
+					}
+				}
+
+				// return  original results of local storage is not 
+				// eligible or user has not existing recent usage 
+				return results;
+			},
+			onAdd: function(item)
+			{
+				// pasting in comma separated items
+				if (item.name.indexOf(',') > -1 || item.name.indexOf(';') > -1)
+				{
+					// remove original item
+					$('#'+id).tokenInput('remove', {id:item.id});
+
+					// split by comma
+					var items = item.name.split(/,|;/g);
+					for (var i = 0, n = items.length; i < n; i++)
+					{
+						// add each individual item
+						var item = items[i].trim();
+						$('#'+id).tokenInput('add', {
+							id: item,
+							name: item
+						});
+					}
+				}
+
+				if (wsel) {
+					$.getJSON('/index.php?option=com_groups&no_html=1&task=memberslist&group=' + $('#'+id).val(), function(data) {
+						HUB.Plugins.Autocomplete.writeSelectList(data.members, wsel);
+					});
+				}
+
+				// if we want to store recent &
+				// we have local storage
+				if (storeRecent && localStorage)
+				{
+					// check to see if we have existing recent items
+					if (recent = localStorage.getItem(recentStorageKey))
+					{
+						// parse and add ids to list
+						recent = JSON.parse(recent);
+
+						// make sure it only exists once
+						// removes it from current location
+						var index = recent.items.indexOf(item.id);
+						if (index != -1)
+						{
+							recent.items.splice(index, 1);
+						}
+
+						// adds to top of list
+						recent.items.unshift(item.id);
+					}
+					else
+					{
+						//otherwise create new list
+						var recent = { items: [item.id] };
+					}
+
+					// set list of recent to local storage
+					localStorage.setItem(recentStorageKey, JSON.stringify(recent));
+				}
+			}
+		});
+	});
 });
