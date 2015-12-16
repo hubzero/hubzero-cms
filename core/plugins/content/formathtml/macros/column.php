@@ -89,6 +89,8 @@ class Column extends Macro
 			return '<div class="grid">' . "\n";
 		}
 
+		$div  = '';
+
 		if (trim($text) == 'start')
 		{
 			$this->_cursor++;
