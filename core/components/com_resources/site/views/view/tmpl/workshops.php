@@ -165,13 +165,13 @@ if ($mode != 'preview')
 						?>
 						<p>
 						<?php if ($audio) { ?>
-							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
+							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
 						<?php } ?>
 						<?php if ($video) { ?>
-							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
+							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
 						<?php } ?>
 						<?php if ($notes) { ?>
-							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
+							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
 						<?php } ?>
 						</p>
 						<?php
