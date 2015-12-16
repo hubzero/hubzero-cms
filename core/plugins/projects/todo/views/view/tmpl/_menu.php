@@ -108,6 +108,7 @@ shuffle($unused);
 				<li class="newcolor">
 					<span class="pin pin_<?php echo $newcolor; ?>">&nbsp;</span>
 					<input type="hidden" name="newcolor" value="<?php echo $newcolor; ?>" />
+					<?php echo Html::input('token');?>
 					<input type="text" name="newlist" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_NEW_LIST'); ?>" value="" maxlength="50" class="newlist-input" />
 					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD'); ?>" class="todo-submit" />
 				</li>
