@@ -94,4 +94,68 @@ class Entriesv1_0 extends ApiController
 
 		$this->send($object);
 	}
+	public function renderlatexTask()
+	{
+		$expression = Request::getVar('expression', '');
+		$dir = PATH_APP .DS. 'cache' .DS. 'ckeditor' .DS. 'hubzeroequation' .DS;
+		$filename = uniqid("equation_");
+		$error = null;
+
+		//build tex document
+		$doc = '\documentclass[12pt]{article}'."\n";
+		$doc .= '\usepackage[utf8]{inputenc}'."\n";
+		$doc .= '\usepackage{amssymb,amsmath}'."\n";
+		$doc .= '\usepackage{color}'."\n";
+		$doc .= '\usepackage{amsfonts}'."\n";
+		$doc .= '\usepackage{amssymb}'."\n";
+		$doc .= '\usepackage{pst-plot}'."\n";
+		$doc .= '\begin{document}'."\n";
+		$doc .= '\pagestyle{empty}'."\n";
+		$doc .= '\begin{displaymath}'."\n";
+		$doc .= $expression."\n";
+		$doc .= '\end{displaymath}'."\n";
+		$doc .= '\end{document}'."\n";
+
+		if (file_put_contents($dir .DS. $filename . '.tex', $doc) === false) {
+			throw new \Exception('Failed to open target file');
+		}
+		try {
+			//execute latex to build dvi
+			$command = 'cd ' . $dir . '; /usr/bin/latex ' . $filename . '.tex < /dev/null |grep ^!|grep -v Emergency > ' . $dir . DS . $filename . '.error 2> /dev/null 2>&1';
+			exec($command, $output_lines, $exit_status);
+
+			//execute dvi2png to build png
+			$command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . $dir .DS. $filename . '.png '. $dir .DS. $filename . '.dvi 2>&1';
+			exec($command, $output_lines, $exit_status);
+			if ($exit_status != 0) {
+				throw new \Exception("dvi2png failed");
+			}
+		} catch (\Exception $e) {
+			$error = $e->getMessage();
+			error_log($error, 0);
+		}
+		//build response
+		$object = new stdClass();
+
+		if ($error)
+		{
+			$object->error = $error;
+			$object->img = 'data:image/png;base64,';
+		}
+		else
+		{
+			//no errors - send base64 encoded image
+			$object->error = "";
+			$imgbinary = fread(fopen($dir .DS. $filename . '.png', 'r'), filesize($dir .DS. $filename .'.png'));
+			$base64img = 'data:image/png;base64,'.base64_encode($imgbinary);
+			$object->img = $base64img;
+		}
+
+		$object->expression = $expression;
+
+		//clean up our cache mess
+		shell_exec('rm' . $dir .DS. $filename . '.*');
+		$this->send($object);
+
+	}
 }
