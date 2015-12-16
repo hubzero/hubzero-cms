@@ -80,9 +80,9 @@ $this->css('resource.css')
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 		<?php if ($this->step !=1 ) { ?>
-			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
+			<span style="float:left;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="btn returntoedit" /></span>
 		<?php } ?>
-			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
+			<span style="float:right;"><input class="btn" type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>
 
@@ -130,9 +130,9 @@ $this->css('resource.css')
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 			<?php if ($this->step != 1) { ?>
-				<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
+				<span style="float:left;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="btn returntoedit" /></span>
 			<?php } ?>
-			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
+			<span style="float:right;"><input class="btn" type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>
 	</form>
