@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/update/support/support.xml
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
+@license        http://opensource.org/licenses/MIT MIT
+
+Copyright 2005-2015 HUBzero Foundation, LLC.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.7" type="plugin" group="update">
+	<name>Update - Support</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>PLG_UPDATE_SUPPORT_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="support">support.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_update_support.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/core/plugins/update/support">
+				<field name="support_ticket_state1" type="ticketstate" default="0" label="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSONE_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSONE_DESC" />
+				<field name="support_ticket_state2" type="ticketstate" default="--" label="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSTWO_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSTWO_DESC" />
+				<field name="support_ticket_state3" type="ticketstate" default="--" label="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSTHREE_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSTHREE_DESC" />
+				<field name="support_ticket_severity" type="list" default="all" label="PLG_UPDATE_SUPPORT_TICKETPENDING_SEVERITY_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_SEVERITY_DESC">
+					<option value="all">PLG_UPDATE_SUPPORT_ALL</option>
+					<option value="critical,major">PLG_UPDATE_SUPPORT_HIGH</option>
+					<option value="normal">PLG_UPDATE_SUPPORT_NORMAL</option>
+					<option value="minor">PLG_UPDATE_SUPPORT_LOW</option>
+				</field>
+				<field name="support_ticket_activity" type="list" default="-2week" label="PLG_UPDATE_SUPPORT_TICKETPENDING_ACTIVITY_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_ACTIVITY_DESC">
+					<option value="all">PLG_UPDATE_SUPPORT_ALL</option>
+					<option value="-day">PLG_UPDATE_SUPPORT_OLDER_THAN_ONE_DAY</option>
+					<option value="-week">PLG_UPDATE_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+					<option value="-2week">PLG_UPDATE_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+					<option value="-3week">PLG_UPDATE_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+					<option value="-month">PLG_UPDATE_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+					<option value="-6month">PLG_UPDATE_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+					<option value="-year">PLG_UPDATE_SUPPORT_OLDER_THAN_ONE_YEAR</option>
+				</field>
+				<field name="support_ticket_group" type="text" menu="hide" label="PLG_UPDATE_SUPPORT_TICKETPENDING_GROUP_LABEL" default="" description="PLG_UPDATE_SUPPORT_TICKETPENDING_GROUP_DESC" />
+				<field name="support_ticket_owners" type="textarea" cols="30" rows="3" default="" label="PLG_UPDATE_SUPPORT_TICKETPENDING_OWNERS_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_OWNERS_DESC" />
+				<field name="support_ticket_submitters" type="textarea" cols="30" rows="3" default="" label="PLG_UPDATE_SUPPORT_TICKETPENDING_SUBMITTERS_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_SUBMITTERS_DESC" />
+				<field name="support_ticket_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_UPDATE_SUPPORT_TICKETPENDING_NOTIFY_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_NOTIFY_DESC" />
+				<field name="support_ticket_excludeTags" type="textarea" cols="30" rows="3" default="" label="PLG_UPDATE_SUPPORT_TICKETPENDING_EXCLUDETAGS_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_EXCLUDETAGS_DESC" />
+				<field name="support_ticket_includeTags" type="textarea" cols="30" rows="3" default="" label="PLG_UPDATE_SUPPORT_TICKETPENDING_INCLUDETAGS_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_INCLUDETAGS_DESC" />
+				<field name="support_ticket_closed" type="ticketstate" default="-1" label="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSCLOSED_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_STATUSCLOSED_DESC" />
+				<field name="support_ticket_message" type="ticketmessage" default="0" label="PLG_UPDATE_SUPPORT_TICKETPENDING_TICKETMESSAGE_LABEL" description="PLG_UPDATE_SUPPORT_TICKETPENDING_TICKETMESSAGE_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
