@@ -36,7 +36,7 @@ $html  = '<select name="group_owner"';
 if (!$this->groups || $this->groupOwner) {
 	$html .= ' disabled="disabled"';
 }
-$html .= ' style="max-width: 15em;">'."\n";
+$html .= '>'."\n";
 $html .= ' <option value="">' . Lang::txt('Select group ...') . '</option>'."\n";
 if ($this->groups)
 {
