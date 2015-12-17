@@ -22,15 +22,15 @@ define('DB_RID', $_SESSION['db']['__rid']);
 
 global $conf, $com_name;
 $document = App::get('document');
-$com_name = str_replace(PATH_CORE.'/components/', '', JPATH_COMPONENT);
+$com_name = Request::get('option'); //str_replace(PATH_CORE.'/components/', '', JPATH_COMPONENT);
 $com_name = str_replace('com_', '' , $com_name);
 
-$com_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT);
+$com_path = str_replace(PATH_ROOT, '', JPATH_COMPONENT);
 
 
 /* Paths */
 define('DB_COM', $com_name);
-define('DB_PATH', '/administrator' . $com_path);
+define('DB_PATH', $com_path);
 
 
 $conf['com_name'] = $com_name;
