@@ -1110,8 +1110,8 @@
 		border: none;
 		-webkit-transition: all 0.3s ease-in-out;
 		-moz-transition: all 0.3s ease-in-out;
-		-o-transition: all 0.3s ease-in-out;
 		-ms-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
 		transition: all 0.3s ease-in-out;
 	}
 	.member_browser .member:hover {
@@ -1278,9 +1278,18 @@
 
 	.member_browser .member {
 		float: left;
-		width: 27%;
+		width: 30%;
 		padding: 1em 1.5%;
 		margin-right: 3%;
+		height: 9em;
+		overflow-y: scroll;
+		text-overflow: ellipsis;
+		border: 1px solid #eee;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		background: #fff;
+	}
+	.member_browser .member:hover {
+		border: 1px solid #333;
 	}
 	.member_browser .member:after {
 		content: "";
@@ -1325,7 +1334,7 @@
 		padding: 15px 30px 15px 60px;
 	}
 	.member_browser .member {
-		width: 20%;
+		width: 23%;
 		padding: 1em 1.5%;
 		margin-right: 2%;
 	}
