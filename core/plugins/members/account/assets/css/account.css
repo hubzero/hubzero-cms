@@ -36,7 +36,7 @@
 #members-account-section .sub-section-content {
 	padding: 10px 25px 15px 25px;
 	margin: 0 0 15px 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	border: 1px solid #999;
 	background-color: #F4F4F4;
 	-webkit-border-radius: 0 0 6px 6px;
@@ -44,6 +44,12 @@
 	-o-border-radius: 0 0 6px 6px;
 	border-radius: 0 0 6px 6px;
 	-webkit-box-shadow: 1px 1px 2px #BFBF9A;
+}
+#members-account-section .sub-section-content:after {
+	content: "";
+	display: table;
+	line-height: 0;
+	clear: left;
 }
 #page_notifications {
 	margin: 0;
