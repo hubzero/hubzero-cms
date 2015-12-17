@@ -94,7 +94,7 @@ if (!$this->comment->get('item_id'))
 
 			<div class="comment-body">
 				<?php
-				$comment  = $this->comment->content;
+				$comment  = htmlspecialchars_decode($this->comment->content);
 
 				if ($this->comment->isReported())
 				{

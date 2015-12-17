@@ -126,7 +126,7 @@ $this->css()
 
 						<?php if ($this->question->get('question')) { ?>
 							<div class="entry-long">
-								<?php echo $this->question->question; ?>
+								<?php echo htmlspecialchars_decode($this->question->question); ?>
 							</div><!-- / .question-long -->
 						<?php } ?>
 
