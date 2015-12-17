@@ -154,7 +154,7 @@ class Entriesv1_0 extends ApiController
 		$object->expression = $expression;
 
 		//clean up our cache mess
-		shell_exec('rm' . $dir .DS. $filename . '.*');
+		shell_exec('rm ' . $dir . $filename . '.*');
 		$this->send($object);
 
 	}
