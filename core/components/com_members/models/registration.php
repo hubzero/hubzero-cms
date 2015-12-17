@@ -1248,8 +1248,8 @@ class Registration
 		{
 			if (is_null($registration['mailPreferenceOption']) || intval($registration['mailPreferenceOption']) < 0)
 			{
-				$this->_missing['mailPreferenceOption'] = 'Opt-In for mailings';
-				$this->_invalid['mailPreferenceOption'] = 'Opt-In for mailings has not been selected'; //'Registration requires Opt-In of mailings.';
+				$this->_missing['mailPreferenceOption'] = 'Receive Email Updates';
+				$this->_invalid['mailPreferenceOption'] = 'Receive Email Updates has not been selected';
 			}
 		}
 
