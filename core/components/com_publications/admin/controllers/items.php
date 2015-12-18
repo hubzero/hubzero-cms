@@ -136,6 +136,8 @@ class Items extends AdminController
 	 */
 	public function editTask($isnew=0)
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		$this->view->isnew = $isnew;
 
 		// Get the publications component config

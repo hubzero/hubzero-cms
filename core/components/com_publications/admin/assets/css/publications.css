@@ -13,32 +13,33 @@
 	.yes,
 	.enabled,
 	.writeable,
-	.public, a.public {
+	.public,
+	a.public {
 		color: green;
-		}
+	}
 	.no,
 	.disabled,
 	.unwriteable,
 	.registered,
 	a.registered {
 		color: red;
-		}
+	}
 	.special,
 	a.special {
 		color: black;
-		}
+	}
 	.enabled,
 	.writeable,
 	.disabled,
 	.unwriteable {
 		font-weight: bold;
-		}
+	}
 
 	.clear {
 		clear: both;
 		margin: 0;
 		padding: 0;
-		}
+	}
 
 	.draft,
 	.draftinternal,
@@ -60,7 +61,7 @@
 		display: block;
 		width: 12px;
 		height: 12px;
-		}
+	}
 
 	.draft span,
 	.draftinternal span,
@@ -80,7 +81,7 @@
 	.wip span,
 	.deleted span {
 		display: none;
-		}
+	}
 
 	/* Status color
 	--------------------------------------------- */
@@ -99,7 +100,9 @@
 	.unpublished {
 		color: #999;
 	}
-	.pending, .new, .wip {
+	.pending,
+	.new,
+	.wip {
 		color: red;
 	}
 	.preserving {
@@ -111,8 +114,18 @@
 
 	/* Publication status
 	--------------------------------------------- */
-	.draft, .published, .unpublished, .expired, .pending,
-	.preserving, .posted, .archived, .ready, .new, .wip, .deleted {
+	.draft,
+	.published,
+	.unpublished,
+	.expired,
+	.pending,
+	.preserving,
+	.posted,
+	.archived,
+	.ready,
+	.new,
+	.wip,
+	.deleted {
 		padding: 0.2em 0.5em;
 	}
 	.archived:before,
@@ -139,7 +152,8 @@
 		margin-right: 0.3em;
 		vertical-align: middle;
 	}
-	.archived:before, .archival:before {
+	.archived:before,
+	.archival:before {
 		content: "\f005";
 	}
 	.published:before,
@@ -156,7 +170,7 @@
 		content: "\f05d";
 	}
 	.deleted:before {
-		content: "\2296";	
+		content: "\2296";
 	}
 	.wip:before {
 		content: "\2757";
@@ -196,23 +210,28 @@
 		width: 12px;
 		height: 12px;
 		border: none;
-		}
-	.hasassoc { background: url("../img/tags.gif") 0 0 no-repeat; }
-	.noassoc { background: url("../img/tags.gif") 0 -12px no-repeat; }
+	}
+	.hasassoc {
+		background: url("../img/tags.gif") 0 0 no-repeat;
+	}
+	.noassoc {
+		background: url("../img/tags.gif") 0 -12px no-repeat;
+	}
 	.hasassoc:hover,
-	.noassoc:hover { border: none; }
-
+	.noassoc:hover {
+		border: none;
+	}
 	.key {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		}
+	}
 	.key li {
 		margin: 0;
 		padding-left: 18px;
 		width: auto;
 		height: auto;
-		}
+	}
 
 	.draft:hover,
 	.draftinternal:hover,
@@ -229,21 +248,26 @@
 	.archived:hover,
 	.upload:hover,
 	.wip:hover,
-	.deleted:hover { border: none; }
+	.deleted:hover {
+		border: none;
+	}
 
-	.check { text-indent: 50px; overflow: hidden; }
+	.check {
+		text-indent: 50px;
+		overflow: hidden;
+	}
 	#author-list, .content-list {
 		list-style: none;
 		margin: 0.5em;
 		padding-left: 0;
-		}
+	}
 	#author-list li, .content-list li {
 		border: 1px solid #ddd;
 		background: #efefef;
 		margin: 0 0 3px 0;
 		padding: 3px;
 		position: relative;
-		}
+	}
 	.content-list li.summary {
 		background: #FFF;
 		border: none;
@@ -254,7 +278,7 @@
 		float: right;
 		font-weight: bold;
 		color: #999;
-		}
+	}
 	fieldset.adminform fieldset legend {
 		padding-left: 1.5em !important;
 		background-color: #E2E2E2;
@@ -274,9 +298,9 @@
 		background: #f4eefa;
 		font-size: 85%;
 	}
-	.adminform label {
+	/*.adminform label {
 		font-style: italic;
-	}
+	}*/
 	.editing label {
 		background: #E2E2E2;
 		width: 100%;
@@ -311,7 +335,7 @@
 		border: 1px solid #fbeec5 !important;
 	}
 	.block {
-	 	display: block;
+		display: block;
 	}
 	.faded {
 		color: #CCC;
@@ -368,7 +392,8 @@
 		height: 15px;
 		width: 100px;
 	}
-	.editform input, .editform textarea {
+	.editform input,
+	.editform textarea {
 		width: 100%;
 	}
 	.editform input.short {
@@ -396,15 +421,18 @@
 		font-weight: bold;
 		color: orange;
 	}
-	.editform span.inactive, #adminForm span.inactive  {
+	.editform span.inactive,
+	#adminForm span.inactive  {
 		font-weight: bold;
 		color: red;
 	}
-	.editform span.deleted, #adminForm span.deleted {
+	.editform span.deleted,
+	#adminForm span.deleted {
 		font-weight: bold;
 		color: #000;
 	}
-	.editform tr.division td, .division {
+	.editform tr.division td,
+	.division {
 		padding-top: 2em;
 	}
 	.editform td.checkoption {
@@ -438,7 +466,8 @@
 	.clr {
 		float: none;
 	}
-	.metadata input[type="text"], .metadata textarea {
+	.metadata input[type="text"],
+	.metadata textarea {
 		width: 100%;
 	}
 	.metadata textarea {
@@ -481,7 +510,7 @@
 		height: 50px;
 	}
 	ul.element-list li .item-image img {
-		width: 60px;	
+		width: 60px;
 	}
 	ul.element-list li .item-title {
 		float: left;
@@ -504,7 +533,8 @@
 
 /* Curation Blocks Configuration
 --------------------------------------------- */
-	fieldset.adminform legend span.block-id, span.block-id {
+	fieldset.adminform legend span.block-id,
+	span.block-id {
 		border: 1px solid #CCC;
 		padding: 0 0.5em;
 		margin-right: 0.5em;

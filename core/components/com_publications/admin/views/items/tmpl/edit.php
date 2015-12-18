@@ -41,7 +41,7 @@ $text = ($this->task == 'edit'
 	? Lang::txt('JACTION_EDIT') . ' #' . $this->model->get('id') . ' (v.' . $this->model->get('version_label') . ')'
 	: Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': ' . $text, 'addedit.png');
 Toolbar::spacer();
 Toolbar::apply();
 Toolbar::save();
@@ -228,7 +228,6 @@ function popratings()
 	</fieldset>
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_TAGS'); ?></span></legend>
-		<fieldset>
 		<div class="input-wrap">
 			<?php
 			$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true))) );
@@ -238,11 +237,9 @@ function popratings()
 				<input type="text" name="tags" id="actags" value="<?php echo $this->model->getTagsForEditing(); ?>" />
 			<?php } ?>
 		</div>
-		</fieldset>
 	</fieldset>
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_LICENSE'); ?></span></legend>
-		<fieldset>
 		<div class="input-wrap">
 			<label for="license_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
 			<?php // Draw license selector
@@ -256,7 +253,6 @@ function popratings()
 			<label for="license_text"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
 			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->model->get('license_text'))); ?></textarea>
 		</div>
-		</fieldset>
 	</fieldset>
 </div>
 <div class="col width-40 fltrt">
