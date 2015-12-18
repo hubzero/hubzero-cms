@@ -47,7 +47,7 @@ class Database extends AdminController
 	/**
 	 * Display the database migration log
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -98,7 +98,7 @@ class Database extends AdminController
 	/**
 	 * Perform rollback
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function migrateTask()
 	{

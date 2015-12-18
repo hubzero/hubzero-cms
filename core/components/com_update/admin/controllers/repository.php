@@ -37,7 +37,9 @@ use Components\Update\Helpers\Cli;
 use Component;
 use Request;
 use Config;
+use Route;
 use Event;
+use App;
 
 /**
  * Update repository controller class
@@ -47,7 +49,7 @@ class Repository extends AdminController
 	/**
 	 * Display the repository details
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -129,7 +131,7 @@ class Repository extends AdminController
 	/**
 	 * Perform update
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateTask()
 	{

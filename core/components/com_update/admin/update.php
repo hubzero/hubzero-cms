@@ -32,16 +32,14 @@
 
 namespace Components\Update\Admin;
 
-$option = 'com_update';
-
-if (!User::authorise('core.admin', $option))
+if (!\User::authorise('core.admin', 'com_update'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'cli.php';
 
-$controllerName = Request::getCmd('controller', 'dashboard');
+$controllerName = \Request::getCmd('controller', 'dashboard');
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
@@ -53,18 +51,18 @@ require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 \Submenu::addEntry(
-	Lang::txt('Dashboard'),
-	'index.php?option='.$option.'&controller=dashboard',
+	\Lang::txt('Dashboard'),
+	\Route::url('index.php?option=com_update&controller=dashboard'),
 	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Dashboard'
 );
 \Submenu::addEntry(
-	Lang::txt('Repository'),
-	'index.php?option='.$option.'&controller=repository',
+	\Lang::txt('Repository'),
+	\Route::url('index.php?option=com_update&controller=repository'),
 	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Repository'
 );
 \Submenu::addEntry(
-	Lang::txt('Database'),
-	'index.php?option='.$option.'&controller=database',
+	\Lang::txt('Database'),
+	\Route::url('index.php?option=com_update&controller=database'),
 	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Database'
 );
 

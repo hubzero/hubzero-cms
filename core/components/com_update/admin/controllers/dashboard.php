@@ -45,7 +45,7 @@ class Dashboard extends AdminController
 	/**
 	 * Display the update dashboard
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
