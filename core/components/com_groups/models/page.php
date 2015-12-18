@@ -95,20 +95,20 @@ class Page extends Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 
 		// load versions
-		$pageVersionArchive = new Page\Version\Archive();
+		/*$pageVersionArchive = new Page\Version\Archive();
 		$this->_versions = $pageVersionArchive->versions('list', array(
 			'pageid'  => $this->get('id', -1),
 			'orderby' => 'version DESC',
 			'limit'   => 25
-		));
+		));*/
 	}
 
 	/**
@@ -118,6 +118,15 @@ class Page extends Model
 	 */
 	public function versions()
 	{
+		if (!isset($this->_versions))
+		{
+			$pageVersionArchive = new Page\Version\Archive();
+			$this->_versions = $pageVersionArchive->versions('list', array(
+				'pageid'  => $this->get('id', -1),
+				'orderby' => 'version DESC',
+				'limit'   => 25
+			));
+		}
 		return $this->_versions;
 	}
 
@@ -127,22 +136,22 @@ class Page extends Model
 	 * @param   mixed  $vid Version Id
 	 * @return  object \Components\Groups\Models\Page\Version
 	 */
-	public function version( $vid = null )
+	public function version($vid = null)
 	{
 		// var to hold version
 		$version = new Page\Version();
 
 		// make sure we have versions to return
-		if ($this->_versions->count() > 0)
+		if ($this->versions()->count() > 0)
 		{
 			// return version object
 			if ($vid == null || $vid == 0 || $vid == 'current')
 			{
-				$version = $this->_versions->first();
+				$version = $this->versions()->first();
 			}
 			else if (is_numeric($vid))
 			{
-				$version = $this->_versions->fetch('version', $vid);
+				$version = $this->versions()->fetch('version', $vid);
 			}
 		}
 
@@ -171,7 +180,7 @@ class Page extends Model
 	 */
 	public function approvedVersion()
 	{
-		return $this->_versions->fetch('approved', 1);
+		return $this->versions()->fetch('approved', 1);
 	}
 
 	/**
