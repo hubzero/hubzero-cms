@@ -27,8 +27,8 @@ $canDo = TemplatesHelper::getActions();
 					<?php echo Html::templates('thumb', $this->template->element, $this->template->client_id); ?>
 
 					<h2><?php echo ucfirst($this->template->element); ?></h2>
-					<?php $client = JApplicationHelper::getClientInfo($this->template->client_id); ?>
-					<p><?php $this->template->xmldata = TemplatesHelper::parseXMLTemplateFile($client->path, $this->template->element);?></p>
+					<?php //$client = JApplicationHelper::getClientInfo($this->template->client_id); ?>
+					<p><?php $this->template->xmldata = TemplatesHelper::parseXMLTemplateFile(($this->template->protected ? PATH_CORE : PATH_APP), $this->template->element);?></p>
 					<p><?php  echo Lang::txt($this->template->xmldata->description); ?></p>
 				</div>
 			</fieldset>

@@ -51,27 +51,28 @@ class TemplatesModelTemplate extends JModelLegacy
 
 		if ($template = $this->getTemplate())
 		{
-			$client = JApplicationHelper::getClientInfo($template->client_id);
-			$path   = Filesystem::cleanPath($client->path.'/templates/'.$template->element.'/');
+			$client = \Hubzero\Base\ClientManager::client($template->client_id); //JApplicationHelper::getClientInfo($template->client_id);
+			$base   = ($template->protected ? PATH_CORE : PATH_APP).'/templates/'.$template->element;
+			$path   = Filesystem::cleanPath($base.'/');
 			$lang   = Lang::getRoot();
 
 			// Load the core and/or local language file(s).
-				$lang->load('tpl_' . $template->element, $client->path, null, false, true)
-			||	$lang->load('tpl_' . $template->element, $client->path . '/templates/' . $template->element, null, false, true);
+				$lang->load('tpl_' . $template->element, $path, null, false, true)
+			||	$lang->load('tpl_' . $template->element, PATH_APP . '/bootstrap/' . (isset($client->alias) ? $client->alias : $client->name), null, false, true);
 
 			// Check if the template path exists.
 			if (is_dir($path))
 			{
 				$result['main'] = array();
-				$result['css'] = array();
-				$result['clo'] = array();
-				$result['mlo'] = array();
+				$result['css']  = array();
+				$result['clo']  = array();
+				$result['mlo']  = array();
 				$result['html'] = array();
 
 				// Handle the main PHP files.
-				$result['main']['index'] = $this->getFile($path, 'index.php');
-				$result['main']['error'] = $this->getFile($path, 'error.php');
-				$result['main']['print'] = $this->getFile($path, 'component.php');
+				$result['main']['index']   = $this->getFile($path, 'index.php');
+				$result['main']['error']   = $this->getFile($path, 'error.php');
+				$result['main']['print']   = $this->getFile($path, 'component.php');
 				$result['main']['offline'] = $this->getFile($path, 'offline.php');
 
 				// Handle the CSS files.
@@ -79,7 +80,7 @@ class TemplatesModelTemplate extends JModelLegacy
 
 				foreach ($files as $file)
 				{
-					$file = str_replace($client->path.'/templates/'.$template->element.'/', '', $file);
+					$file = str_replace($base.'/', '', $file);
 					$result['css'][] = $this->getFile($path.'/css/', $file);
 				}
 			}
@@ -128,7 +129,7 @@ class TemplatesModelTemplate extends JModelLegacy
 
 			// Get the template information.
 			$db->setQuery(
-				'SELECT extension_id, client_id, element' .
+				'SELECT extension_id, client_id, element, protected' .
 				' FROM #__extensions' .
 				' WHERE extension_id = '.(int) $pk.
 				'  AND type = '.$db->quote('template')
