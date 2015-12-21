@@ -132,6 +132,7 @@ class ModulesModelSelect extends JModelList
 			// 1.5 Format; Core files or language packs then
 			// 1.6 3PD Extension Support
 			$lang->load($item->module . '.sys', PATH_APP . DS . 'bootstrap' . DS . $client->name, null, false, true) ||
+			$lang->load($item->module . '.sys', PATH_APP . '/modules/' . $item->module, null, false, true) ||
 			$lang->load($item->module . '.sys', $client->path . '/modules/' . $item->module, null, false, true);
 			$item->name	= Lang::txt($item->name);
 
