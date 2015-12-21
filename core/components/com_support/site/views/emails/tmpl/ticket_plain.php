@@ -50,6 +50,7 @@ else
 }
 $link = $base . '/' . trim($sef, '/');
 
+$message = '';
 if (!$this->config->get('email_terse'))
 {
 	$usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
@@ -59,7 +60,6 @@ if (!$this->config->get('email_terse'))
 		$usertype = implode(', ', \JUserHelper::getUserGroups($this->ticket->submitter('id')));
 	}
 
-	$message = '';
 	if ($this->delimiter)
 	{
 		$message .= $this->delimiter . "\n";
