@@ -39,9 +39,9 @@ class LanguagesModelOverride extends JModelAdmin
 			return false;
 		}
 
-		$client		= $this->getState('filter.client', 'site');
-		$language	= $this->getState('filter.language', 'en-GB');
-		$langName	= JLanguage::getInstance($language)->getName();
+		$client   = $this->getState('filter.client', 'site');
+		$language = $this->getState('filter.language', 'en-GB');
+		$langName = JLanguage::getInstance($language)->getName();
 		if (!$langName)
 		{
 			// If a language only exists in frontend, it's meta data cannot be
@@ -50,7 +50,7 @@ class LanguagesModelOverride extends JModelAdmin
 		}
 		$form->setValue('client', null, Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_CLIENT_'.strtoupper($client)));
 		$form->setValue('language', null, Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE', $langName, $language));
-		$form->setValue('file', null, JPath::clean(constant('JPATH_'.strtoupper($client)) . '/language/overrides/' . $language . '.override.ini'));
+		$form->setValue('file', null, JPath::clean(PATH_APP . '/bootstrap/' . $client . '/language/overrides/' . $language . '.override.ini'));
 
 		return $form;
 	}
@@ -89,7 +89,7 @@ class LanguagesModelOverride extends JModelAdmin
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
 		$pk	= (!empty($pk)) ? $pk : Request::getCmd('id');
-		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))) . '/language/overrides/' . $this->getState('filter.language', 'en-GB').'.override.ini';
+		$filename = PATH_APP . '/bootstrap/' . $this->getState('filter.client') . '/language/overrides/' . $this->getState('filter.language', 'en-GB').'.override.ini';
 		$strings = LanguagesHelper::parseFile($filename);
 
 		$result = new stdClass();
@@ -116,11 +116,10 @@ class LanguagesModelOverride extends JModelAdmin
 	 */
 	public function save($data, $opposite_client = false)
 	{
-		$app = JFactory::getApplication();
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
-		$client   = $app->getUserState('com_languages.overrides.filter.client', 0);
-		$language = $app->getUserState('com_languages.overrides.filter.language', 'en-GB');
+		$client   = User::getState('com_languages.overrides.filter.client', 0);
+		$language = User::getState('com_languages.overrides.filter.language', 'en-GB');
 
 		// If the override should be created for both
 		if ($opposite_client)
@@ -131,8 +130,8 @@ class LanguagesModelOverride extends JModelAdmin
 		$client = $client ? 'administrator' : 'site';
 
 		// Parse the override.ini file in oder to get the keys and strings
-		$filename	= constant('JPATH_'.strtoupper($client)) . '/language/overrides/' . $language . '.override.ini';
-		$strings	= LanguagesHelper::parseFile($filename);
+		$filename = PATH_APP . '/bootstrap/' . $client . '/language/overrides/' . $language . '.override.ini';
+		$strings  = LanguagesHelper::parseFile($filename);
 
 		if (isset($strings[$data['id']]))
 		{

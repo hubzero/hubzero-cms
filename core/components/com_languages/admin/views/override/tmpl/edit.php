@@ -78,23 +78,24 @@ Html::behavior('keepalive');
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_SEARCH_LEGEND'); ?></span></legend>
 
-			<span class="readonly"><?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_SEARCH_TIP'); ?></span>
-			<div class="clr"></div>
+			<p><?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_SEARCH_TIP'); ?></p>
 
-			<ul class="adminformlist">
-				<li id="refresh-status" class="overrider-spinner">
-					<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_REFRESHING'); ?>
-				</li>
-				<li><?php echo $this->form->getInput('searchstring'); ?>
-					<button type="submit" onclick="Joomla.overrider.searchStrings();return false;">
-						<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_SEARCH_BUTTON'); ?>
-					</button>
-				</li>
-				<li>
-					<?php echo $this->form->getLabel('searchtype'); ?>
-					<?php echo $this->form->getInput('searchtype'); ?>
-				</li>
-			</ul>
+			<div id="refresh-status" class="overrider-spinner">
+				<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_REFRESHING'); ?>
+			</div>
+
+			<div class="input-wrap">
+				<?php echo $this->form->getLabel('searchtype'); ?>
+				<?php echo $this->form->getInput('searchtype'); ?>
+			</div>
+			<div class="input-wrap">
+				<?php echo $this->form->getInput('searchstring'); ?>
+			</div>
+			<p>
+				<button type="submit" onclick="Joomla.overrider.searchStrings();return false;">
+					<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_SEARCH_BUTTON'); ?>
+				</button>
+			</p>
 		</fieldset>
 
 		<fieldset id="results-container" class="adminform">
