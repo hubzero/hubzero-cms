@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Content\Mollom\Service\Mollom;
+namespace Plugins\Antispam\Mollom\Service\Mollom;
 
 require_once __DIR__ . '/AbstractMollom.php';
 
