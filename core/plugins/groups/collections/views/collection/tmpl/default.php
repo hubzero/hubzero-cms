@@ -239,7 +239,7 @@ if (!in_array($viewas, array('grid', 'list')))
 		if ($this->posts > $this->filters['limit'])
 		{
 			$pageNav = $this->pagination(
-				$this->total,
+				$this->count,
 				$this->filters['start'],
 				$this->filters['limit']
 			);
