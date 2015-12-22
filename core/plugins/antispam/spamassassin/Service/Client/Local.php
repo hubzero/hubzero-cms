@@ -62,8 +62,8 @@ class Local
 		if (!empty($this->socketPath))
 		{
 			$socket = fsockopen('unix://' . $this->socketPath, NULL, $errno, $errstr);
-		} 
-		else 
+		}
+		else
 		{
 			$socket = fsockopen($this->hostname, $this->port, $errno, $errstr);
 		}
@@ -194,7 +194,7 @@ class Local
 		 * SPAMD/1.5 0 EX_OK
 		 * SPAMD/1.5 68 service unavailable: TELL commands have not been enabled
 		 */
-		if (preg_match('/SPAMD\/(\d\.\d)(\d+)(.*)/', $header, $matches))
+		if (preg_match('/SPAMD\/(\d\.\d) (\d+) (.*)/', $header, $matches))
 		{
 			$result->protocolVersion = $matches[1];
 			$result->responseCode    = $matches[2];
@@ -207,8 +207,8 @@ class Local
 					$result->responseCode
 				);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			throw new Exception('Could not parse response header');
 		}
@@ -230,8 +230,8 @@ class Local
 
 			$result->score    = (float)$matches[2];
 			$result->thresold = (float)$matches[3];
-		} 
-		else 
+		}
+		else
 		{
 			/**
 			 * In PROCESS method with protocol version before 1.3, SpamAssassin 
@@ -245,7 +245,7 @@ class Local
 				  $matches))
 			{
 
-				($matches[1] == 'Yes')? 
+				($matches[1] == 'Yes')?
 					$result->isSpam = true :
 					$result->isSpam = false;
 
@@ -258,8 +258,8 @@ class Local
 		if (preg_match('/DidSet: (\S+)/', $header, $matches))
 		{
 			$result->didSet = true;
-		} 
-		else 
+		}
+		else
 		{
 			$result->didSet = false;
 		}
@@ -268,8 +268,8 @@ class Local
 		if (preg_match('/DidRemove: (\S+)/', $header, $matches))
 		{
 			$result->didRemove = true;
-		} 
-		else 
+		}
+		else
 		{
 			$result->didRemove = false;
 		}
@@ -409,14 +409,14 @@ class Local
 				'Message-class' => 'spam',
 				'Set'           => 'local'
 			);
-		} 
+		}
 		else if ($learnType == self::LEARN_HAM)
 		{
 			$additionalHeaders = array(
 				'Message-class' => 'ham',
 				'Set'           => 'local'
 			);
-		} 
+		}
 		else if ($learnType == self::LEARN_FORGET)
 		{
 			$additionalHeaders = array(
@@ -429,8 +429,8 @@ class Local
 		if ($learnType == self::LEARN_SPAM || $learnType == self::LEARN_HAM)
 		{
 			return $result->didSet;
-		} 
-		else 
+		}
+		else
 		{
 			return $result->didRemove;
 		}
