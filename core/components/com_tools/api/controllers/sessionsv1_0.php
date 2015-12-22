@@ -541,9 +541,28 @@ class Sessionsv1_0 extends ApiController
 	 * This is more than just invoking a tool. We're expecting a driver file to pass to the
 	 * tool to be picked up and automatically run by rappture.
 	 *
-	 * @apiMethod GET
-	 * @apiUri    /tools/{tool}/run
-	 * @return void
+	 * @apiMethod POST
+	 * @apiUri    /tools/run
+	 * @apiParameter {
+	 * 		"name":          "app",
+	 * 		"description":   "Name of app installed as a tool in the hub",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "revision",
+	 * 		"description":   "The specific requested revision of the app",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "default",
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "xml",
+	 * 		"description":   "Content of the driver file that rappture will use to invoke the given app",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * }
+	 * @return     void
 	 */
 	public function runTask()
 	{
@@ -558,7 +577,7 @@ class Sessionsv1_0 extends ApiController
 
 		// Grab tool name and version
 		$tool_name    = Request::getVar('app', '');
-		$tool_version = Request::getVar('version', 'default');
+		$tool_version = Request::getVar('revision', 'default');
 
 		// Build application object
 		$app          = new stdClass;
@@ -739,7 +758,14 @@ class Sessionsv1_0 extends ApiController
 	 * Gets the status of the session identified
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /tools/{session}/status
+	 * @apiUri    /tools/status
+	 * @apiParameter {
+	 * 		"name":          "session_num",
+	 * 		"description":   "a valid hub tool session number",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 *  	"default":       0 
+	 * }
 	 * @return void
 	 **/
 	public function statusTask()
@@ -759,11 +785,16 @@ class Sessionsv1_0 extends ApiController
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
-		$ms = new \Components\Tools\Tables\Session($mwdb);
+
+		// This next part is probably redundant since we can only access the session directories that
+		// are in the user's webdav filesystem, anyway.  Also, it seems that the entry in the session
+		// table exists only as long as the session is alive.  As soon as the session ends, the entry
+		// is zapped and we end up getting a lot of 401 errors even for sessions that we own(ed). (NTD 2015-12-15)
+		/*$ms = new \Components\Tools\Tables\Session($mwdb);
 		if (!$ms->checkSession($session))
 		{
 			throw new Exception(Lang::txt('You can only check the status of your sessions.'), 401);
-		}
+		}*/
 
 		// Check for specific sesssion entry, either sesssion# or session#-expired
 		$dir = DS . 'webdav' . DS . 'home' . DS . $profile->get('username') . DS . 'data' . DS .'sessions' . DS . $session;
@@ -811,7 +842,20 @@ class Sessionsv1_0 extends ApiController
 	 * Grabs the output from a tool session
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /tools/{session}/output
+	 * @apiUri    /tools/output
+	 * @apiParameter {
+	 * 		"name":          "session_num",
+	 * 		"description":   "a valid hub tool session number",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 *  	"default":       0 
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "run_file",
+	 * 		"description":   "the name of the run file that contains the desired output",
+	 * 		"type":          "string",
+	 * 		"required":      true,
+	 * }
 	 * @return void
 	 */
 	public function outputTask()
@@ -833,11 +877,16 @@ class Sessionsv1_0 extends ApiController
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
-		$ms = new \Components\Tools\Tables\Session($mwdb);
+
+		// This next part is probably redundant since we can only access the session directories that
+		// are in the user's webdav filesystem, anyway.  Also, it seems that the entry in the session
+		// table exists only as long as the session is alive.  As soon as the session ends, the entry
+		// is zapped and we end up getting a lot of 401 errors even for sessions that we own(ed). (NTD 2015-12-15)
+		/*$ms = new \Components\Tools\Tables\Session($mwdb);
 		if (!$ms->checkSession($session))
 		{
 			throw new Exception(Lang::txt('You can only check the status of your sessions.'), 401);
-		}
+		}*/
 
 		// Check for specific sesssion entry
 		$dir = DS . 'webdav' . DS . 'home' . DS . User::get('username') . DS . 'data' . DS .'results' . DS . $session;
