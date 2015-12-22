@@ -108,6 +108,6 @@ class Provider extends AbstractService
 			throw new Exception(\Lang::txt('Client type of "%s" not supported.', $this->get('client')));
 		}
 
-		return $client->isSpam($value);
+		return $client->isSpam($this->getValue());
 	}
 }
