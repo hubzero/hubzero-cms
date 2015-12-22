@@ -247,7 +247,7 @@ class Attachments extends SiteController
 
 		// Build the path
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir = \Components\Resources\Tables\Html::build_path($row->created, $row->id, '');
+		$listdir = \Components\Resources\Helpers\Html::build_path($row->created, $row->id, '');
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
