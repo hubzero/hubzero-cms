@@ -107,6 +107,8 @@ class Manager
 
 		if (isset($this->customCreators[$name]))
 		{
+			$config['cache_handler'] = $name;
+
 			return $this->callCustomCreator($config);
 		}
 		else

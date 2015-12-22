@@ -215,7 +215,7 @@ class File extends None
 			return unlink($file);
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -428,6 +428,7 @@ class File extends None
 	 */
 	protected function isDataExpired(array $data)
 	{
-		return $data['ttl'] !== 0 && time() - $data['time'] > $data['ttl'];
+		return $data['ttl'] !== 0 && time() > $data['ttl'];
+		//return $data['ttl'] !== 0 && time() - $data['time'] > $data['ttl'];
 	}
 }

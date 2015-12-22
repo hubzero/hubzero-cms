@@ -153,7 +153,7 @@ class Eaccelerator extends None
 	 */
 	public function forget($key)
 	{
-		return eaccelerator_rm($this->has($key));
+		return eaccelerator_rm($this->id($key));
 	}
 
 	/**

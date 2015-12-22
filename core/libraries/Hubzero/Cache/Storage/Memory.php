@@ -164,14 +164,12 @@ class Memory extends None
 	 */
 	public function forget($key)
 	{
-		$has = $this->has($key);
-
-		if ($has)
+		if ($this->has($key))
 		{
 			unset($this->data[$this->id($key)]);
 		}
 
-		return $has;
+		return true;
 	}
 
 	/**
@@ -241,6 +239,7 @@ class Memory extends None
 	 */
 	protected function isDataExpired(array $data)
 	{
-		return $data['ttl'] !== 0 && time() - $data['time'] > $data['ttl'];
+		return $data['ttl'] !== 0 && time() > $data['ttl'];
+		//return $data['ttl'] !== 0 && time() - $data['time'] > $data['ttl'];
 	}
 }
