@@ -33,7 +33,7 @@
 namespace Plugins\Antispam\Mollom\Service;
 
 use Hubzero\Spam\Detector\Service as AbstractService;
-use Plugins\Antispam\Mollom\Service\Mollom;
+use Plugins\Antispam\Mollom\Service\Mollom\Mollom;
 use Exception;
 
 require_once __DIR__ . '/Mollom/Mollom.php';
