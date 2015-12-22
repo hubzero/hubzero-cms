@@ -37,9 +37,9 @@ $this->css()
      ->js();
 
 $filters = array(
-	'scope' => $this->config->get('show_from', 'site'),
-	'state' => 'public',
-	'group_id' => 0,
+	'scope'      => $this->config->get('show_from', 'site'),
+	'scope_id'   => 0,
+	'state'      => 'public',
 	'authorized' => false
 );
 if ($filters['scope'] == 'both')
@@ -262,7 +262,8 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
 			<?php
-			$popular = $this->model->entries('popular', $this->filters);
+			$filters['limit'] = 5;
+			$popular = $this->model->entries('popular', $filters);
 			if ($popular->total()) { ?>
 				<ol>
 				<?php foreach ($popular as $row) { ?>

@@ -286,7 +286,8 @@ $rows = $this->model->entries('list', $this->filters);
 			<div class="container blog-popular-entries">
 				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
 				<?php
-				$popular = $this->model->entries('popular');
+				$filters['limit'] = 5;
+				$popular = $this->model->entries('popular', $filters);
 				if ($popular->total()) { ?>
 					<ol>
 					<?php foreach ($popular as $row) { ?>
