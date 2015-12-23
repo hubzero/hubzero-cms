@@ -43,6 +43,24 @@ jimport('joomla.application.categories');
 class Router extends Base
 {
 	/**
+	 * Post buld routine.
+	 *
+	 * @param   array  $segments  The URL arguments to use to assemble the subsequent URL.
+	 * @return  array
+	 */
+	protected function postBuild($segments)
+	{
+		$total = count($segments);
+
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = str_replace(':', '-', $segments[$i]);
+		}
+
+		return $segments;
+	}
+
+	/**
 	 * Build the route for the component.
 	 *
 	 * @param   array  &$query  An array of URL arguments
@@ -76,7 +94,7 @@ class Router extends Base
 		else
 		{
 			// we need to have a view in the query or it is an invalid URL
-			return $segments;
+			return $this->postBuild($segments);
 		}
 
 		// are we dealing with an article or category that is attached to a menu item?
@@ -87,11 +105,13 @@ class Router extends Base
 		{
 			unset($query['view']);
 
-			if (isset($query['catid'])) {
+			if (isset($query['catid']))
+			{
 				unset($query['catid']);
 			}
 
-			if (isset($query['layout'])) {
+			if (isset($query['layout']))
+			{
 				unset($query['layout']);
 			}
 
@@ -117,20 +137,20 @@ class Router extends Base
 					// Make sure we have the id and the alias
 					if (strpos($query['id'], ':') === false)
 					{
-						$db = \App::get('db');
+						$db = App::get('db');
 						$aquery = $db->setQuery($db->getQuery(true)
 							->select('alias')
 							->from('#__content')
-							->where('id='.(int)$query['id'])
+							->where('id=' . (int)$query['id'])
 						);
 						$alias = $db->loadResult();
-						$query['id'] = $query['id'].':'.$alias;
+						$query['id'] = $query['id'] . ':' . $alias;
 					}
 				}
 				else
 				{
 					// we should have these two set for this view.  If we don't, it is an error
-					return $segments;
+					return $this->postBuild($segments);
 				}
 			}
 			else
@@ -142,7 +162,7 @@ class Router extends Base
 				else
 				{
 					// we should have id set for this view.  If we don't, it is an error
-					return $segments;
+					return $this->postBuild($segments);
 				}
 			}
 
@@ -161,7 +181,7 @@ class Router extends Base
 			if (!$category)
 			{
 				// we couldn't find the category we were given.  Bail.
-				return $segments;
+				return $this->postBuild($segments);
 			}
 
 			$path = array_reverse($category->getPath());
@@ -184,7 +204,7 @@ class Router extends Base
 
 			if (!$advanced && count($array))
 			{
-				$array[0] = (int)$catid.':'.$array[0];
+				$array[0] = (int)$catid . ':' . $array[0];
 			}
 
 			$segments = array_merge($segments, $array);
@@ -252,7 +272,7 @@ class Router extends Base
 			}
 		}
 
-		return $segments;
+		return $this->postBuild($segments);
 	}
 
 	/**
@@ -270,10 +290,15 @@ class Router extends Base
 		$item   = $menu->getActive();
 		$params = Component::params('com_content');
 		$advanced = $params->get('sef_advanced_link', 0);
-		$db = \App::get('db');
+		$db     = App::get('db');
 
 		// Count route segments
 		$count = count($segments);
+
+		for ($i = 0; $i < $count; $i++)
+		{
+			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+		}
 
 		// Standard routing for articles.  If we don't pick up an Itemid then we get the view from the segments
 		// the first segment is the view and the last segment is the id of the article or category.
@@ -306,7 +331,7 @@ class Router extends Base
 			if ($category && $category->alias == $alias)
 			{
 				$vars['view'] = 'category';
-				$vars['id'] = $id;
+				$vars['id']   = $id;
 
 				return $vars;
 			}
@@ -320,9 +345,9 @@ class Router extends Base
 				{
 					if ($article->alias == $alias)
 					{
-						$vars['view'] = 'article';
+						$vars['view']  = 'article';
 						$vars['catid'] = (int)$article->catid;
-						$vars['id'] = (int)$id;
+						$vars['id']    = (int)$id;
 
 						return $vars;
 					}
@@ -390,7 +415,6 @@ class Router extends Base
 			{
 				if ($advanced)
 				{
-					$db = \App::get('db');
 					$query = 'SELECT id FROM `#__content` WHERE catid = ' . $vars['catid'] . ' AND alias = ' . $db->Quote($segment);
 					$db->setQuery($query);
 					$cid = $db->loadResult();
