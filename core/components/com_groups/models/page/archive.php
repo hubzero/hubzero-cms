@@ -237,7 +237,11 @@ class Archive extends Object
 			$tree[$page->get('parent')][] = $page;
 		}
 
-		// only return base node tree
-		return $tree[0];
+		// only return base node tree if it exists
+		if (count($tree) != 0) 
+		{
+			return $tree[0];
+		}
+		return null;
 	}
 }
