@@ -238,7 +238,7 @@ class Archive extends Object
 		}
 
 		// only return base node tree if it exists
-		if (count($tree) != 0) 
+		if (count($tree) != 0)
 		{
 			return $tree[0];
 		}
