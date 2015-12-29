@@ -32,7 +32,6 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
-Html::behavior('core');
 
 $this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt): stripslashes($this->row->introtext);
 
