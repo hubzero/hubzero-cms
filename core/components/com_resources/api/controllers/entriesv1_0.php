@@ -132,7 +132,6 @@ class Entriesv1_0 extends ApiController
 			}
 		} catch (\Exception $e) {
 			$error = $e->getMessage();
-			error_log($error, 0);
 		}
 		//build response
 		$object = new stdClass();
