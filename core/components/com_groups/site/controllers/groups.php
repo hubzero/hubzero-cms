@@ -819,6 +819,7 @@ class Groups extends Base
 			$link  = 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn');
 			$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
 			$html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
+			$plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
 
 			// create new message
 			$message = new \Hubzero\Mail\Message();
