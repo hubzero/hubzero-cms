@@ -53,7 +53,7 @@ class BillBoards extends AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->rows = Billboard::all()->paginated()->ordered()->rows();
+		$this->view->rows = Billboard::all()->paginated('limitstart')->ordered()->rows();
 		$this->view->display();
 	}
 
