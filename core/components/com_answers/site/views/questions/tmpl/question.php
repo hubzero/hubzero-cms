@@ -116,7 +116,7 @@ if (!$this->question->get('anonymous'))
 
 				<?php if ($this->question->get('question')) { ?>
 					<div class="entry-long">
-						<?php echo $this->question->content('parsed'); ?>
+						<?php echo htmlspecialchars_decode($this->question->content('parsed')); ?>
 					</div><!-- / .question-long -->
 				<?php } ?>
 

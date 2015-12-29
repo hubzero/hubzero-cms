@@ -60,7 +60,7 @@ if ($this->comment->isReported())
 }
 else
 {
-	$comment  = $this->comment->content('parsed');
+	$comment  = htmlspecialchars_decode($this->comment->content('parsed'));
 }
 
 $this->comment->set('item_type', 'answer'); // ($this->depth == 1 ? 'answer' : 'answercomment'));
