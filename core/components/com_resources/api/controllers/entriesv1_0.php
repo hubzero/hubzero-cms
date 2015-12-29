@@ -116,6 +116,11 @@ class Entriesv1_0 extends ApiController
 		$doc .= '\end{displaymath}'."\n";
 		$doc .= '\end{document}'."\n";
 
+		//if cache doesn't exist, create it
+		if(!is_dir($dir))
+		{
+			\Hubzero\Filesystem::makeDirectory($dir);
+		}
 		if (file_put_contents($dir .DS. $filename . '.tex', $doc) === false) {
 			throw new \Exception('Failed to open target file');
 		}
