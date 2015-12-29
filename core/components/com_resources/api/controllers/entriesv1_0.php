@@ -117,7 +117,7 @@ class Entriesv1_0 extends ApiController
 		$doc .= '\end{document}'."\n";
 
 		//if cache doesn't exist, create it
-		if(!is_dir($dir))
+		if (!is_dir($dir))
 		{
 			\Hubzero\Filesystem::makeDirectory($dir);
 		}
