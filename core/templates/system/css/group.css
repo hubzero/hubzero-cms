@@ -33,7 +33,7 @@
 	border: none;
 }
 .super-group-bar .poweredby:before {
-	content: 'poweredby';
+	content: 'powered by';
 }
 .super-group-bar .poweredby span {
 	font-weight: bold;
