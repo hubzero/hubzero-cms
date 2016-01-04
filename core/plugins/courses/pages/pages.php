@@ -207,7 +207,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
 		}
-		if (!$page || !$page->exists())
+		if (!$this->offering->access('manage', 'section') && (!$page || !$page->exists()))
 		{
 			App::abort(404, Lang::txt('PLG_COURSES_PAGES_ERROR_PAGE_NOT_FOUND'));
 		}
