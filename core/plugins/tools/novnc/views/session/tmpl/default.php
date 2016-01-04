@@ -249,6 +249,9 @@ else
 				cancel : 'cancel'
 			});
 		});
+		window.onscriptsload = function () {
+			UI.load();
+		};
 
 		//Final attachment for onload
 		//window.onload = UI.load;
