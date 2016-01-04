@@ -73,7 +73,7 @@ abstract class MediaHelper
 			{
 				if (in_array($extensionName, $explodedFileName))
 				{
-					$app->enqueueMessage(Lang::txt('JLIB_MEDIA_ERROR_WARNFILETYPE'), 'notice');
+					Notify::error(Lang::txt('COM_MEDIA_ERROR_WARNFILETYPE'));
 
 					return false;
 				}
