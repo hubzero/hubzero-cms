@@ -307,7 +307,7 @@ class Publication extends \JTable
 
 		if (!isset($filters['ignore_access']) || $filters['ignore_access'] == 0)
 		{
-			$query .= " AND (V.access != 3)  ";
+			$query .= " AND (V.access != 2)  ";
 		}
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
