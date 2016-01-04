@@ -368,7 +368,7 @@ function popratings()
 		$this->view('_selectgroup')
 		     ->set('groups', $this->groups)
 		     ->set('groupOwner', $this->model->project()->groupOwner())
-		     ->set('value', $this->model->groupOwner()->gidNumber)
+		     ->set('value', $this->model->groupOwner('gidNumber'))
 		     ->display(); ?>
 	</div>
 	<div class="input-wrap">
