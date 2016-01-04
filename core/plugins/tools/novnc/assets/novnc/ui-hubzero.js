@@ -12,7 +12,7 @@
 
 // Load supporting scripts
 window.onscriptsload = function () {
-	UI.load();
+	//UI.load();
 };
 window.onload = function () {
 	//UI.keyboardinputReset();
