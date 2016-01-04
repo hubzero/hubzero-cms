@@ -39,7 +39,7 @@ if ($this->category !== null)
 	$cls .= ' category-' . $this->page->get('category');
 	$style = 'border-left-color: #' .  $this->category->get('color');
 }
-if ($this->version->get('approved') == 0)
+if (isset($this->version) && $this->version->get('approved') == 0)
 {
 	$cls .= ' not-approved';
 }
@@ -68,7 +68,7 @@ if ($this->version->get('approved') == 0)
 		</div>
 	<?php endif; ?>
 
-	<?php if ($this->version->get('approved') == 0) : ?>
+	<?php if (isset($this->version) && $this->version->get('approved') == 0) : ?>
 		<div class="item-approved">
 			<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PENDING_APPROVAL'); ?>
 		</div>
