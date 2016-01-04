@@ -43,7 +43,7 @@ jQuery(document).ready(function(jq){
 			}
 		});
 
-		/*var opts = $('.view-options a');
+		var opts = $('.view-options a');
 		opts.each(function(i, el) {
 			if ($(this).hasClass('selected') && $(this).hasClass('icon-list')) {
 				isActive = false;
@@ -70,7 +70,7 @@ jQuery(document).ready(function(jq){
 			}
 
 			isActive = !isActive;
-		});*/
+		});
 
 		// Masonry
 		if (isActive) {
@@ -293,20 +293,24 @@ jQuery(document).ready(function(jq){
 
 				if (el.children('span').text() == follow) {
 					el.removeClass('follow')
-						.removeClass('icon-follow')
 						.addClass('unfollow')
-						.addClass('icon-unfollow')
 						.attr('href', data.href)
 						.children('span')
 						.text(unfollow);
+					if (el.hasClass('icon-follow')) {
+						el.removeClass('icon-follow')
+							.addClass('icon-unfollow');
+					}
 				} else {
 					el.removeClass('unfollow')
-						.removeClass('icon-unfollow')
 						.addClass('follow')
-						.addClass('icon-follow')
 						.attr('href', data.href)
 						.children('span')
 						.text(follow);
+					if (el.hasClass('icon-unfollow')) {
+						el.removeClass('icon-unfollow')
+							.addClass('icon-follow');
+					}
 				}
 			}
 		});
