@@ -195,6 +195,10 @@ $option = 'com_groups';
 								$guser = $this->groupusers[($i+$this->start)];
 
 								$u = \Hubzero\User\Profile::getInstance($guser);
+								if (!$u)
+								{
+									$u = new \Hubzero\User\Profile();
+								}
 								if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser))
 								{
 									$inviteemail = true;
@@ -224,7 +228,8 @@ $option = 'com_groups';
 									case 'members':
 									default:
 										$status = 'Member';
-										if (in_array($guser,$this->managers)) {
+										if (in_array($guser,$this->managers))
+										{
 											$status = Lang::txt('PLG_GROUPS_MEMBERS_STATUS_MANAGER');
 											$cls .= 'manager';
 										}
