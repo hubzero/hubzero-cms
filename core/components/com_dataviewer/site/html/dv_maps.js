@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
 		dv_show_map();
 		return false;
 	});
-	
+
 	$("#spreadsheet_filter input, tfoot input").bind('keyup', function(e) {
 		if (e.keyCode !== 13) {
 			return;
@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
 		for (var i=0; i<data_arr.length; i++) {
 			var lat, lng, idx, idx_col, title, info, address;
 			var row = data_arr[i];
-			
+
 			if (typeof dv_data.maps[0].rec_index != 'undefined' && typeof dv_data.maps[0].rec_index == 'string') {
 				idx_col = $.inArray(dv_data.maps[0].rec_index, dv_data.vis_cols);
 				idx = ("" + data_arr[i][idx_col]).stripTags();
@@ -163,7 +163,7 @@ jQuery(document).ready(function($) {
 			map.attributionControl.setPrefix('');
 			L.control.scale().addTo(map);
 			var minimal = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//				maxZoom: zoom			
+//				maxZoom: zoom
 			}).addTo(map);
 			map.fitBounds(latlngs);
 		} else {
@@ -173,7 +173,6 @@ jQuery(document).ready(function($) {
 
 		map.setView([locations[0][0], locations[0][1]], zoom);
 
-		
 		marker_index = {};
 		for (var i = 0; i < locations.length; i++) {
 			var loc = locations[i];
@@ -186,18 +185,16 @@ jQuery(document).ready(function($) {
 			}
 		}
 
-		
 		markers = L.layerGroup(marker_group).addTo(map);
 
 		map.on('popupopen', function(e) {
 			$('div.leaflet-popup-content img.lazy-load').each(function() { this.src = $(this).data('original')});
 		});
-
 	}
 
 	$('#dv-spreadsheet-tbl').on('dblclick', 'tr', function() {
 		var selected = '';
-		
+
 		if (typeof dv_data.maps[0].rec_index == 'undefined') {
 			idx_col = 0;
 			if ($(this).find('td:eq(' + idx_col + ')').text() !== '') {
@@ -228,7 +225,7 @@ jQuery(document).ready(function($) {
 		var mkr = marker_index['' + selected]; // TODO: use one list
 		mkr.openPopup();
 		map.panTo(mkr.getLatLng());
-		
+
 		return false;
 	});
 
@@ -241,17 +238,15 @@ jQuery(document).ready(function($) {
 		dv_show_map();
 	});
 
-    $(document).on('dv_event_update_map', function() {
-    	if ($('#dv_maps_panel:visible').length === 1) {
+	$(document).on('dv_event_update_map', function() {
+		if ($('#dv_maps_panel:visible').length === 1) {
 			dv_show_map();
 		}
-    });
+	});
 
 
 	if (typeof dv_data.maps != 'undefined') {
-	
 		// Hide button if the fields are unavailable... custom views
-		
 		if ($.inArray(dv_data.maps[0]['lat'], dv_data.vis_cols) == -1 || $.inArray(dv_data.maps[0]['lng'], dv_data.vis_cols) == -1) {
 			$('#dv-spreadsheet-maps').remove();
 			$('label[for="dv_maps"]').remove();
@@ -271,6 +266,24 @@ jQuery(document).ready(function($) {
 		} else {
 			$('#dv_maps_panel').height(380);
 		}
+	}
+
+	function dms2dc(cood) {
+		cood = cood.split('°');
+		d = cood[0];
+		cood = cood[1].split('\'');
+		m = cood[0];
+		cood = cood[1].split('"');
+		s = cood[0];
+		dir = cood[1];
+
+		var dc = +d + (+m/60) + (+s/(60*60));
+
+		if (dir.trim() == "S" || dir.trim() == "W") {
+			dc = dc * -1;
+		}
+
+		return dc.toFixed(6);
 	}
 
 	if(typeof dv_show_maps != 'undefined') {
