@@ -101,6 +101,11 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if (Document::getType() != 'html')
+		{
+			return;
+		}
+
 		// Only if debugging or language debug is enabled
 		if (Config::get('debug') || Config::get('debug_lang'))
 		{
