@@ -60,7 +60,7 @@ class Rss extends Renderer
 		$now  = new Date('now');
 		$data = $this->doc;
 
-		$url = \App::get('request')->root();
+		$url = rtrim(\App::get('request')->root(), '/') . '/';
 
 		if (\App::get('config')->get('sitename_pagetitles', 0) == 1)
 		{
@@ -76,7 +76,7 @@ class Rss extends Renderer
 		$feed .= '	<channel>' . "\n";
 		$feed .= '		<title>' . $data->title . '</title>' . "\n";
 		$feed .= '		<description><![CDATA[' . $data->description . ']]></description>' . "\n";
-		$feed .= '		<link>' . str_replace(' ', '%20', $url . $data->link) . '</link>' . "\n";
+		$feed .= '		<link>' . str_replace(' ', '%20', $url . ltrim($data->link, '/')) . '</link>' . "\n";
 		$feed .= '		<lastBuildDate>' . $this->escape($now->toRFC822()) . '</lastBuildDate>' . "\n";
 		$feed .= '		<generator>' . $data->getGenerator() . '</generator>' . "\n";
 
@@ -201,7 +201,7 @@ class Rss extends Renderer
 		{
 			if ((strpos($data->items[$i]->link, 'http://') === false) and (strpos($data->items[$i]->link, 'https://') === false))
 			{
-				$data->items[$i]->link = str_replace(' ', '%20', $url . $data->items[$i]->link);
+				$data->items[$i]->link = str_replace(' ', '%20', $url . ltrim($data->items[$i]->link, '/'));
 			}
 
 			$feed .= "		<item>\n";
