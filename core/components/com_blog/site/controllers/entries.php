@@ -563,13 +563,14 @@ class Entries extends SiteController
 				{
 					$item->description = String::truncate($item->description, 300);
 				}
+				$item->description = '<![CDATA[' . $item->description . ']]>';
 
 				// Load individual item creator class
 				$item->title       = html_entity_decode(strip_tags($row->get('title')));
 				$item->link        = Route::url($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $row->creator('name');
+				$item->author      = $row->creator('email') . ' (' . $row->creator('name') . ')';
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -753,14 +754,15 @@ class Entries extends SiteController
 		{
 			$item->description = html_entity_decode(Sanitize::stripAll($row->content('clean')));
 		}
+		$item->description = '<![CDATA[' . $item->description . ']]>';
 
 		if ($row->get('anonymous'))
 		{
-			$item->author = Lang::txt('COM_BLOG_ANONYMOUS');
+			//$item->author = Lang::txt('COM_BLOG_ANONYMOUS');
 		}
 		else
 		{
-			$item->author = $row->creator('name');
+			$item->author = $row->creator('email') . ' (' . $row->creator('name') . ')';
 		}
 		$item->date     = $row->created();
 		$item->category = '';
