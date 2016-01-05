@@ -335,6 +335,7 @@ class Utils
 
 		//instantiate objects
 		$access = new stdClass();
+		$access->error = new stdClass();
 		$database = \App::get('db');
 
 		// Ensure we have a tool
