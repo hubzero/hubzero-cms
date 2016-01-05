@@ -392,7 +392,7 @@ function submitbutton(pressbutton)
 										</tr>
 										<tr>
 											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
-											<td><strong><?php echo $primary[$i]->readmore_title; ?></strong> - <?php echo $primary[$i]->readmore_link; ?></td>
+											<td><strong><?php echo $secondary[$i]->readmore_title; ?></strong> - <?php echo $secondary[$i]->readmore_link; ?></td>
 										</tr>
 									</tbody>
 								</table>
