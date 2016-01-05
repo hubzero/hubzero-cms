@@ -395,24 +395,36 @@ class Entries extends SiteController
 
 		// Incoming
 		$filters = array(
-			'limit'    => Request::getInt('limit', Config::get('list_limit')),
-			'start'    => Request::getInt('limitstart', 0),
-			'year'     => Request::getInt('year', 0),
-			'month'    => Request::getInt('month', 0),
-			'scope'    => 'site',
-			'scope_id' => 0,
-			'search'   => Request::getVar('search','')
+			'year'       => Request::getInt('year', 0),
+			'month'      => Request::getInt('month', 0),
+			'scope'      => $this->config->get('show_from', 'site'),
+			'scope_id'   => 0,
+			'search'     => Request::getVar('search', ''),
+			'authorized' => false,
+			'state'      => 1,
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
-		if (User::isGuest())
+		if ($filters['year'] > date("Y"))
 		{
-			$filters['state'] = 'public';
+			$filters['year'] = 0;
 		}
-		else
+		if ($filters['month'] > 12)
 		{
-			if (!$this->config->get('access-manage-component'))
+			$filters['month'] = 0;
+		}
+		if ($filters['scope'] == 'both')
+		{
+			$filters['scope'] = '';
+		}
+
+		if (!User::isGuest())
+		{
+			if ($this->config->get('access-manage-component'))
 			{
-				$filters['state'] = 'registered';
+				//$filters['state'] = null;
+				$filters['authorized'] = true;
+				array_push($filters['access'], 5);
 			}
 		}
 
@@ -426,10 +438,13 @@ class Entries extends SiteController
 		$doc->category    = Lang::txt('COM_BLOG_RSS_CATEGORY');
 
 		// Get the records
-		$rows = $this->model->entries($filters)->ordered()->paginated()->rows();
+		$rows = $this->model->entries($filters)
+			->ordered()
+			->paginated()
+			->rows();
 
 		// Start outputing results if any found
-		if ($rows->total() > 0)
+		if ($rows->count() > 0)
 		{
 			foreach ($rows as $row)
 			{
@@ -442,13 +457,14 @@ class Entries extends SiteController
 				{
 					$item->description = String::truncate($item->description, 300);
 				}
+				$item->description = '<![CDATA[' . $item->description . ']]>';
 
 				// Load individual item creator class
 				$item->title       = html_entity_decode(strip_tags($row->get('title')));
 				$item->link        = Route::url($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $row->creator()->get('name');
+				$item->author      = $row->creator()->get('email') . ' (' . $row->creator()->get('name') . ')';
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -523,10 +539,9 @@ class Entries extends SiteController
 		}
 
 		// Initiate a blog comment object
-		$comment = new Tables\Comment($this->database);
-		$comment->load($id);
+		$comment = Comment::oneOrFail($id);
 
-		if (User::get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
+		if (User::get('id') != $comment->get('created_by') && !$this->config->get('access-delete-comment'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
@@ -535,7 +550,8 @@ class Entries extends SiteController
 		}
 
 		// Mark all comments as deleted
-		$comment->setState($id, 2);
+		$comment->set('state', 2);
+		$comment->save();
 
 		// Return the topics list
 		App::redirect(
@@ -591,10 +607,13 @@ class Entries extends SiteController
 		$doc->description = Lang::txt('COM_BLOG_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($this->entry->get('title')));
 		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
-		$rows = $this->entry->comments('list');
+		$rows = $this->entry->comments()
+			->whereIn('state', array(1, 3))
+			->ordered()
+			->rows();
 
 		// Start outputing results if any found
-		if ($rows->total() <= 0)
+		if ($rows->count() <= 0)
 		{
 			return;
 		}
@@ -627,14 +646,15 @@ class Entries extends SiteController
 		{
 			$item->description = html_entity_decode(Sanitize::stripAll($row->content()));
 		}
+		$item->description = '<![CDATA[' . $item->description . ']]>';
 
 		if ($row->get('anonymous'))
 		{
-			$item->author = Lang::txt('COM_BLOG_ANONYMOUS');
+			//$item->author = Lang::txt('COM_BLOG_ANONYMOUS');
 		}
 		else
 		{
-			$item->author = $row->creator()->get('name');
+			$item->author = $row->creator()->get('email') . ' (' . $row->creator()->get('name') . ')';
 		}
 		$item->date     = $row->created();
 		$item->category = '';
