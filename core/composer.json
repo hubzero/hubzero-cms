@@ -43,7 +43,7 @@
             "email": "spwilson@purdue.edu",
             "role": "Software Engineer"
         },
-        {
+				{
             "name": "Dave Benham",
             "email": "dbenham@purdue.edu",
             "role": "Software Engineer"
@@ -81,7 +81,8 @@
         "hubzero/orcid-php": "0.*",
         "league/flysystem": "1.0.*",
         "league/flysystem-dropbox": "1.0.*",
-        "hubzero/framework": "dev-master"
+        "hubzero/framework": "dev-master",
+				"solarium/solarium": "3.5.1"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
