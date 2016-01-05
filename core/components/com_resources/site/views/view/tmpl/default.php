@@ -105,7 +105,7 @@ if ($mode != 'preview')
 					$html .= $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
 
 					// Display some supporting documents
-					$children = $this->model->children();
+					$children = $this->model->children('!standalone');
 
 					// Sort out supporting docs
 					$html .= $children && count($children) > 1
