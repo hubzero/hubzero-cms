@@ -631,7 +631,12 @@ class Wish extends Base
 			$this->set('anonymous', 0);
 		}
 
-		$this->set('about', \Hubzero\Utility\Sanitize::clean($this->get('about')));
+		$string = str_replace(
+			array('&amp;', '&lt;',  '&gt;'),
+			array('&#38;', '&#60;', '&#62;'),
+			$this->get('about')
+		);
+		$this->set('about', \Hubzero\Utility\Sanitize::clean($string));
 
 		if (!parent::store($check))
 		{
