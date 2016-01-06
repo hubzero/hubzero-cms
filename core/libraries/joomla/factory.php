@@ -512,7 +512,12 @@ abstract class JFactory
 	{
 		if (class_exists('\\App'))
 		{
-			return \App::get('editor');
+			$e = \App::get('editor');
+			if ($editor && $editor != $e->getName())
+			{
+				$e = new \Hubzero\Html\Editor($editor);
+			}
+			return $e;
 		}
 
 		jimport('joomla.html.editor');
