@@ -117,6 +117,16 @@ class Editor extends Object
 	}
 
 	/**
+	 * Get the name of the Editor
+	 *
+	 * @return  string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
 	 * Get the state of the Editor object
 	 *
 	 * @return  mixed  The state of the object.
@@ -372,11 +382,15 @@ class Editor extends Object
 		$name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
 		$name = ltrim($name, '.');
 
-		$path = PATH_CORE . '/plugins/editors/' . $name . '/' . $name . '.php';
+		$path = PATH_APP . '/plugins/editors/' . $name . '/' . $name . '.php';
 		if (!is_file($path))
 		{
-			\Notify::error(Lang::txt('JLIB_HTML_EDITOR_CANNOT_LOAD'));
-			return false;
+			$path = PATH_CORE . '/plugins/editors/' . $name . '/' . $name . '.php';
+			if (!is_file($path))
+			{
+				\Notify::error(Lang::txt('JLIB_HTML_EDITOR_CANNOT_LOAD'));
+				return false;
+			}
 		}
 
 		// Require plugin file
