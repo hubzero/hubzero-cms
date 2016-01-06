@@ -34,11 +34,11 @@ Html::behavior('keepalive');
 	<fieldset class="adminform">
 		<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_FILENAME', $this->source->filename, $this->template->element); ?></legend>
 
-		<?php echo $this->form->getLabel('source'); ?>
-		<div class="clr"></div>
-
-		<div class="editor-border">
-			<?php echo $this->form->getInput('source'); ?>
+		<div class="input-wrap">
+			<?php echo $this->form->getLabel('source'); ?>
+			<div class="editor-border">
+				<?php echo $this->form->getInput('source'); ?>
+			</div>
 		</div>
 
 		<input type="hidden" name="task" value="" />
