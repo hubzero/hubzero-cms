@@ -264,7 +264,7 @@ class Citation extends Relational
 					// prefer the use of the relational table 
 					if ($this->relatedAuthors->count() > 0)
 					{
-						$authors = $this->relatedAuthors()->order('ordering', 'asc')->ordered();
+						$authors = $this->relatedAuthors()->order('ordering', 'asc');
 						$authorCount = $this->relatedAuthors->count();
 					}
 					elseif ($auth != '' && $this->relatedAuthors->count() == 0)

@@ -57,7 +57,7 @@ class Author extends Relational
 	 *
 	 * @var string
 	 **/
-	public $orderBy = 'name';
+	public $orderBy = 'author';
 
 	/**
 	 * Fields and their validation criteria
