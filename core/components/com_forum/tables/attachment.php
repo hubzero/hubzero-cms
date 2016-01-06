@@ -90,16 +90,13 @@ class Attachment extends \JTable
 		if (!$this->post_id)
 		{
 			$this->setError(Lang::txt('COM_FORUM_ERROR_NO_POST_ID'));
+			return false;
 		}
 
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
 			$this->setError(Lang::txt('COM_FORUM_ERROR_NO_FILENAME'));
-		}
-
-		if ($this->getError())
-		{
 			return false;
 		}
 

@@ -234,6 +234,7 @@ class Category extends \JTable
 		if (!$this->title)
 		{
 			$this->setError(Lang::txt('Please provide a title.'));
+			return false;
 		}
 
 		if (!$this->alias)
@@ -244,10 +245,6 @@ class Category extends \JTable
 		if (!$this->alias)
 		{
 			$this->setError(Lang::txt('Alias cannot be all punctuation or blank.'));
-		}
-
-		if ($this->getError())
-		{
 			return false;
 		}
 

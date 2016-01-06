@@ -222,6 +222,7 @@ class Section extends \JTable
 		if (trim($this->title) == '')
 		{
 			$this->setError(Lang::txt('Please provide a title.'));
+			return false;
 		}
 
 		if (!$this->alias)
@@ -232,10 +233,6 @@ class Section extends \JTable
 		if (!$this->alias)
 		{
 			$this->setError(Lang::txt('Alias cannot be all punctuation or blank.'));
-		}
-
-		if ($this->getError())
-		{
 			return false;
 		}
 
