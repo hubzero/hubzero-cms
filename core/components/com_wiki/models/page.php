@@ -1141,7 +1141,7 @@ class Page extends Model
 			{
 				$scope = strtolower(Request::getCmd('option'));
 				$scope = ($scope ? substr($scope, 4) : 'site');
-				$scope = ($scope == 'wiki' ? 'site' : $scope);
+				$scope = ($scope == 'wiki' || $scope == 'topics' ? 'site' : $scope);
 			}
 			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
