@@ -122,8 +122,9 @@ class TemplatesModelSource extends JModelForm
 		if ($this->_template)
 		{
 			$fileName = $this->getState('filename');
-			$client   = JApplicationHelper::getClientInfo($this->_template->client_id);
-			$filePath = \Hubzero\Filesystem\Util::normalizePath($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
+			//$client   = JApplicationHelper::getClientInfo($this->_template->client_id);
+			//$filePath = \Hubzero\Filesystem\Util::normalizePath($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
+			$filePath = \Hubzero\Filesystem\Util::normalizePath(($this->_template->protected ? PATH_CORE : PATH_APP).'/templates/'.$this->_template->element.'/'.$fileName);
 
 			if (file_exists($filePath))
 			{
@@ -155,7 +156,7 @@ class TemplatesModelSource extends JModelForm
 
 		// Get the template information.
 		$db->setQuery(
-			'SELECT extension_id, client_id, element' .
+			'SELECT extension_id, client_id, element, protected' .
 			' FROM #__extensions' .
 			' WHERE extension_id = '.(int) $pk.
 			'  AND type = '.$db->quote('template')
