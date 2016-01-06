@@ -591,21 +591,21 @@ class Format
 		}
 
 		// do we have an issn or isbn to append?
-		if (isset($citation->isbn) && $citation->isbn != '')
+		if (isset($citation->isbn) && trim($citation->isbn) != '')
 		{
 			// get the issn/isbn in db
-			$issn_isbn = $citation->isbn;;
+			$issn_isbn = trim($citation->isbn);
 
 			// check to see if we need to do any special processing to the issn/isbn before outputting
 			if (strstr($issn_isbn, "\r\n"))
 			{
 				$issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
-				$issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
+				$issn_isbn = isset($issn_isbn[0]) ? preg_replace("/[^0-9\-]/", '', $issn_isbn[0]) : '';
 			}
 			elseif (strstr($issn_isbn, ' '))
 			{
 				$issn_isbn = array_filter(array_values(explode(' ', $issn_isbn)));
-				$issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
+				$issn_isbn = isset($issn_isbn[0]) ? preg_replace("/[^0-9\-]/", '', $issn_isbn[0]) : '';
 			}
 
 			// append to url as issn if journal otherwise as isbn
