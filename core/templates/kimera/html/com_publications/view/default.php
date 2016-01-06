@@ -74,7 +74,7 @@ else
 						</div>
 					<?php }	?>
 
-					<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
+					<p class="ataglance"><?php echo $this->publication->description ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->description), 250) : ''; ?></p>
 
 					<?php echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication ); // Show published date and category ?>
 				</div><!-- / .overviewcontainer -->

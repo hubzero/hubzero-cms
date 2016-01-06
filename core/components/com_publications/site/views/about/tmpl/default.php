@@ -37,7 +37,7 @@ $webpath 	= $this->config->get('webpath');
 
 $authorized = $this->publication->access('view-all');
 
-$abstract	= stripslashes($this->publication->abstract);
+$abstract	= $this->publication->abstract;
 $description = $this->publication->describe('parsed');
 
 $this->publication->authors();
