@@ -534,7 +534,7 @@ class Create extends SiteController
 		$this->database->setQuery(
 			$parent_id
 				// get tags labeled focus area and parented by the tag identified by $parent_id
-				? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag
+				? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag, t2.description
 					FROM #__tags t
 					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.tagid = t.id AND to1.label = \'label\'
 					INNER JOIN #__tags_object to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid
@@ -543,7 +543,7 @@ class Create extends SiteController
 					WHERE t.raw_tag = ' . $this->database->quote($parent_label) . '
 					ORDER BY CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
 				// get tags that are labeled focus areas that are not also a parent of another tag labeled as a focus area
-				: 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag
+				: 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag, t2.description
 					FROM #__tags t
 					LEFT JOIN #__tags_object to1 ON to1.tagid = t.id AND to1.label = \'label\' AND to1.tbl = \'tags\'
 					INNER JOIN #__tags t2 ON t2.id = to1.objectid

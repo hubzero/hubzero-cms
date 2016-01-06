@@ -296,7 +296,7 @@ $this->css('create.css')
 			$multiple = !is_null($props['multiple_depth']) && $props['multiple_depth'] <= $depth;
 			echo '<div class="fa'.($depth === 1 ? ' top-level' : '').'">';
 			echo '<input class="option" class="'.($multiple ? 'checkbox' : 'radio').'" type="'.($multiple ? 'checkbox' : 'radio').'" '.(isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' ).'id="tagfa-'.$idx.'-'.$fa['tag'].'" name="tagfa-'.$idx.($parent ? '-'.$parent : '').'[]" value="' . $fa['tag'] . '"';
-			echo ' /><label style="display: inline;" for="tagfa-'.$idx.'-'.$fa['tag'].'">'.$fa['raw_tag'].'</label>';
+			echo ' /><label style="display: inline;" for="tagfa-'.$idx.'-'.$fa['tag'].'"' . ($fa['description'] ? ' title="' . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>'.$fa['raw_tag'].'</label>';
 			if ($fa['children'])
 			{
 				echo fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
