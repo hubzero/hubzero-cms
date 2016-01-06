@@ -370,16 +370,19 @@ function popratings()
 					     ->display();
 					?>
 				</div>
+				<?php // Verifies that there are groups setup, cannot assume that every hub has groups.
+				if (isset($this->groups) && $this->model->project()->groupOwner()): ?>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
 					<?php
 					// Draw group selector
-					$this->view('_selectgroup')
-					     ->set('groups', $this->groups)
-					     ->set('groupOwner', $this->model->project()->groupOwner())
-					     ->set('value', $this->model->groupOwner()->gidNumber)
-					     ->display(); ?>
+						$this->view('_selectgroup')
+						->set('groups', $this->groups)
+						->set('groupOwner', $this->model->project()->groupOwner())
+						->set('value', $this->model->groupOwner()->gidNumber)
+						->display(); ?>
 				</div>
+			<?php endif; ?>
 				<div class="input-wrap">
 					<label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
 					<?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
