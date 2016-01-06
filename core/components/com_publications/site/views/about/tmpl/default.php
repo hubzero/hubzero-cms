@@ -77,7 +77,7 @@ $schema 	= $metaElements->getSchema();
 
 	<h4><?php echo Lang::txt('COM_PUBLICATIONS_ABSTRACT'); ?></h4>
 	<div class="pub-content">
-		<?php echo $description; ?>
+		<?php echo $abstract; ?>
 	</div>
 
 <?php
