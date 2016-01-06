@@ -291,8 +291,7 @@ class Assetgroups extends AdminController
 			return;
 		}
 
-		$p = new \Hubzero\Config\Registry('');
-		$p->loadArray(Request::getVar('params', array(), 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
 		$model->set('params', $p->toString());
 
