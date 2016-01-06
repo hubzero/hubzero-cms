@@ -41,7 +41,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	/**
 	 * Base path for editor files
 	 */
-	protected $_basePath = 'media/editors/codemirror/';
+	protected $_basePath = 'core/plugins/editors/codemirror/';
 
 	/**
 	 * Initialises the Editor.
@@ -199,13 +199,13 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 
 		foreach ($styleSheet as &$style)
 		{
-			$style = Request::root(true).'/'.$this->_basePath.'css/'.$style;
+			$style = Request::root().'/'.$this->_basePath.'assets/css/'.$style;
 		}
 
 		$options = new stdClass;
 
 		$options->basefiles  = array('basefiles'.$compressed.'.js');
-		$options->path       = Request::root(true).'/'.$this->_basePath.'js/';
+		$options->path       = Request::root().'/'.$this->_basePath.'assets/js/';
 		$options->parserfile = $parserFile;
 		$options->stylesheet = $styleSheet;
 		$options->height     = $height;
