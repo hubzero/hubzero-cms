@@ -229,11 +229,12 @@ HUB.Plugins.GroupCalendar = {
 	{
 		var $ = this.jQuery;
 		var value = $('#calendar-picker').val();
+		var count = $('#calendar-picker').children().length;
 
 		if (value == 0)
 		{
 			var x = 0;
-			for (x = 0; x <= value; x++)
+			for (x = 0; x <= count; x++)
 			{
 				$('.calendar-' + x).show();
 			}
@@ -241,7 +242,7 @@ HUB.Plugins.GroupCalendar = {
 		else
 		{
 			var x = 0;
-			for (x = 0; x <= value; x++)
+			for (x = 0; x <= count; x++)
 			{
 				if (x != value)
 				{
