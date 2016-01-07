@@ -1220,6 +1220,18 @@ class Repo extends Object
 		else
 		{
 			$zip = new \ZipArchive;
+
+			/***
+			Checks to see if the first entity is a file. If no '.' is found assume directory.
+			If no directory is found, create a unique one for the project to contain the files.
+			***/
+			$topLevelDirectory = shell_exec("unzip -qql " .  $tmp_name . " | head -n1 | tr -s ' ' | cut -d' ' -f5-");
+			if (strpos($topLevelDirectory, '.') !== FALSE)
+			{
+				$extractPath = $extractPath . DS . 'archive-' . time() . DS;
+				Filesystem::makeDirectory($extractPath);
+			}
+
 			if ($zip->open($tmp_name) === true)
 			{
 				$zip->extractTo($extractPath);
@@ -1249,6 +1261,22 @@ class Repo extends Object
 		$extracted = Filesystem::files($extractPath, '.', true, true,
 			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
 
+		// check for viruses - scans the directory for efficency
+		$command = "clamscan -i --no-summary --block-encrypted -r " . $extractPath;
+		exec($command, $output, $virus_status);
+		$virusChecked = FALSE;
+
+		if ($virus_status == 0)
+		{
+		  $virusChecked = TRUE;
+		}
+		else
+		{
+			Filesystem::deleteDirectory($extractPath);
+		  $this->setError('The antivirus software has rejected your files.');
+		  return false;
+		}
+
 		$z = 0;
 		foreach ($extracted as $e)
 		{
@@ -1265,7 +1293,7 @@ class Repo extends Object
 			$size = filesize($e);
 
 			// Run some checks, stop in case of a problem
-			if (!$this->_check($file, $e, $size, $available))
+			if (!$this->_check($file, $e, $size, $available, $virusChecked))
 			{
 				return false;
 			}
@@ -1274,6 +1302,14 @@ class Repo extends Object
 			$safe_dir  = $a_dir && $a_dir != '.' ? Filesystem::cleanPath($a_dir) : '';
 			$safe_dir  = trim($safe_dir, DS);
 			$safe_file = Filesystem::clean($file);
+
+			// Strips out temporary path
+			if (strpos($safe_dir, 'tmp/') !== FALSE)
+			{
+				$parts = explode('/', $safe_dir);
+				$safe_dir = str_replace($parts[0].'/', '', $safe_dir);
+				$safe_dir = str_replace($parts[1].'/', '', $safe_dir);
+			}
 
 			$skipDir = false;
 			if (is_array($reserved) && $safe_dir && in_array(strtolower($safe_dir), $reserved))
@@ -1304,6 +1340,14 @@ class Repo extends Object
 				}
 			}
 
+			// Strips out temporary path
+			if (strpos($safeName, 'tmp/') !== FALSE)
+			{
+				$parts = explode('/', $safeName);
+				$safeName = str_replace($parts[0].'/', '', $safeName);
+				$safeName = str_replace($parts[1].'/', '', $safeName);
+			}
+
 			// Copy file into project
 			if (Filesystem::copy($e, $target . DS . $safeName))
 			{
@@ -1326,7 +1370,7 @@ class Repo extends Object
 	 *
 	 * @return  boolean
 	 */
-	protected function _check($file, $tmp_name, $size, &$available)
+	protected function _check($file, $tmp_name, $size, &$available, $virusChecked = FALSE)
 	{
 		if (!isset($this->_sizeLimit))
 		{
@@ -1351,10 +1395,13 @@ class Repo extends Object
 		}
 
 		// One last check
-		if ($tmp_name && Helpers\Html::virusCheck($tmp_name))
+		if ($tmp_name && ($virusChecked !== TRUE || $virusChecked === FALSE))
 		{
-			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
-			return false;
+			if (Helpers\Html::virusCheck($tmp_name))
+			{
+					$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
+					return false;
+			}
 		}
 
 		// Reduce available space
@@ -1398,8 +1445,8 @@ class Repo extends Object
 	/**
 	 * Get files stats for all projects
 	 *
-	 * @param      array 	$aliases	Project aliases for which to compute stats
-	 * @param      string 	$get
+	 * @param      array	$aliases	Project aliases for which to compute stats
+	 * @param      string		$get
 	 *
 	 * @return     mixed
 	 */
@@ -1521,9 +1568,9 @@ class Repo extends Object
 		// Go through versions in reverse (from oldest to newest)
 		for ($k = (count($versions) - 1); $k >= 0; $k--)
 		{
-			$current 	= $versions[$k];
-			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
-			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
+			$current	= $versions[$k];
+			$previous		= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
+			$next			= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
 
 			if (!$current['commitStatus'])
 			{
