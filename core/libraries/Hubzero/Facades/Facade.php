@@ -48,6 +48,13 @@ abstract class Facade
 	protected static $app;
 
 	/**
+	 * The application aliases being loaded
+	 *
+	 * @var  array
+	 */
+	protected static $aliases;
+
+	/**
 	 * Get the application instance behind the facade.
 	 *
 	 * @return  object  \Hubzero\Base\Application
@@ -107,23 +114,35 @@ abstract class Facade
 	 */
 	public static function createAliases(array $aliases)
 	{
-		// Create autoloader that creates class aliases during runtime
-		spl_autoload_register(function($class) use ($aliases)
-		{
-			if (array_key_exists($class, $aliases))
-			{
-				return class_alias($aliases[$class], $class);
-			}
+		static::$aliases = $aliases;
 
-			// Allow calling facade in namespaced class 
-			// without resetting to the root namespace
-			$classPieces = explode('\\', $class);
-			$classAlt    = array_pop($classPieces);
-			if (array_key_exists($classAlt, $aliases))
-			{
-				return class_alias($aliases[$classAlt], $class);
-			}
-		});
+		// Create autoloader that creates class aliases during runtime
+		spl_autoload_register(__NAMESPACE__ . '\Facade::loadAliases');
+	}
+
+	/**
+	 * Load aliases
+	 *
+	 * @param   string  $class  The class being loaded
+	 * @return  void
+	 */
+	public static function loadAliases($class)
+	{
+		$aliases = static::$aliases;
+
+		if (array_key_exists($class, $aliases))
+		{
+			return class_alias($aliases[$class], $class);
+		}
+
+		// Allow calling facade in namespaced class 
+		// without resetting to the root namespace
+		$classPieces = explode('\\', $class);
+		$classAlt    = array_pop($classPieces);
+		if (array_key_exists($classAlt, $aliases))
+		{
+			return class_alias($aliases[$classAlt], $class);
+		}
 	}
 
 	/**
