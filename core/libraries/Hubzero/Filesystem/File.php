@@ -40,6 +40,37 @@ use Hubzero\Filesystem\Util\MimeType;
 class File extends Entity
 {
 	/**
+	 * Creates a new object using a path as our starting point
+	 *
+	 * Don't forget, paths are relative to the adapter root
+	 *
+	 * @param   string  $path     The path to use to build a new entity from
+	 * @param   object  $adapter  The filesystem adapter to use for interaction with the entity
+	 * @return  static
+	 **/
+	public static function fromPath($path, $adapter = null)
+	{
+		// If the entity exists, grab its metadata
+		if (isset($adapter) && $adapter->has($path))
+		{
+			$metadata = $adapter->getMetadata($path);
+		}
+		else
+		{
+			// Otherwise, we'll make our best guess at the appropriate data
+			$path = trim($path, '/');
+
+			// The minimum required data is a path and a type
+			$metadata = [
+				'type' => 'file',
+				'path' => $path
+			];
+		}
+
+		return self::getSpecialized($metadata, $adapter);
+	}
+
+	/**
 	 * Checks to see if file is an image
 	 *
 	 * @return  bool
