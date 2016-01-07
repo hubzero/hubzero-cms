@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5e846b27d6c94001d75de3ba0cd49a83",
-    "content-hash": "1c8e3990ba34af3493e95ece6bbdcd4a",
+    "hash": "208708d384bf9bf22fd53583a131a919",
+    "content-hash": "d73266ed5543acdd44f6b5f5a56f9ddc",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -682,12 +682,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "28ef8037b24eba009e999847a46de0ac3b28801c"
+                "reference": "7028278120f8e352eb788011972840beb0cef0db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/28ef8037b24eba009e999847a46de0ac3b28801c",
-                "reference": "28ef8037b24eba009e999847a46de0ac3b28801c",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/7028278120f8e352eb788011972840beb0cef0db",
+                "reference": "7028278120f8e352eb788011972840beb0cef0db",
                 "shasum": ""
             },
             "require": {
@@ -700,7 +700,7 @@
                 "mockery/mockery": "dev-master",
                 "phpunit/dbunit": "1.4.*",
                 "phpunit/phpunit": "4.*",
-                "satooshi/php-coveralls": "dev-master",
+                "satooshi/php-coveralls": "1.0.*",
                 "squizlabs/php_codesniffer": "2.*"
             },
             "type": "library",
@@ -719,7 +719,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2015-12-23 12:19:59"
+            "time": "2016-01-07 13:59:25"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1102,7 +1102,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/a723a9945f097f4c3c3d7cdc2cc8770dc1350820",
+                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/22d96d7ed4fbe8ae9cf87214cdce8b9f1c0c64f4",
                 "reference": "193ee757ed8e6686e117df7142020e0b54cd1afd",
                 "shasum": ""
             },
@@ -1445,6 +1445,60 @@
                 "rrule"
             ],
             "time": "2014-09-29 21:23:39"
+        },
+        {
+            "name": "solarium/solarium",
+            "version": "3.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/solariumphp/solarium.git",
+                "reference": "96f441f53c4de10f1154b386c925f51b08bf2fa6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/96f441f53c4de10f1154b386c925f51b08bf2fa6",
+                "reference": "96f441f53c4de10f1154b386c925f51b08bf2fa6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/event-dispatcher": "~2.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7",
+                "satooshi/php-coveralls": "~0.6",
+                "squizlabs/php_codesniffer": "~1.4",
+                "zendframework/zendframework1": "~1.12"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "3.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Solarium\\": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "See GitHub contributors",
+                    "homepage": "https://github.com/basdenooijer/solarium/contributors"
+                }
+            ],
+            "description": "PHP Solr client",
+            "homepage": "http://www.solarium-project.org",
+            "keywords": [
+                "php",
+                "search",
+                "solr"
+            ],
+            "time": "2015-12-19 16:00:15"
         },
         {
             "name": "swiftmailer/swiftmailer",
