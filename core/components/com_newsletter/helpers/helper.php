@@ -44,7 +44,7 @@ class Helper
 	 */
 	protected static function getEncrypter()
 	{
-		$key = \App::hash(@$_SERVER['HTTP_USER_AGENT']);
+		$key = \App::hash('newletter');
 
 		$crypt = new \Hubzero\Encryption\Encrypter(
 			new \Hubzero\Encryption\Cipher\Simple,
