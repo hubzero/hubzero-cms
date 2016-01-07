@@ -121,7 +121,7 @@ class Entity extends Object
 	 * @param   object  $adapter     The filesystem adapter to use for interaction with the entity
 	 * @return  static
 	 **/
-	private static function getSpecialized($properties, $adapter)
+	protected static function getSpecialized($properties, $adapter)
 	{
 		// If it's a directory, stop there
 		if ($properties['type'] == 'dir')
@@ -137,7 +137,7 @@ class Entity extends Object
 
 		// If it's a file, do we have a more specialized class?
 		$class = __NAMESPACE__ . '\\Type\\' . ucfirst($properties['extension']);
-		if (class_exists($class))
+		if (classExists($class))
 		{
 			return new $class($properties, $adapter);
 		}
