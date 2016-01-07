@@ -112,31 +112,25 @@ class Format extends AdminController
 				'style' => 'Hub Custom',
 				'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
 				));
-
-			if (!$model->save())
-			{
-				// redirect with error message
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('CITATION_FORMAT_NOT_SAVED'),
-					'error'
-				);
-			}
-
-			// after successful save, grab the ID
-			$formatID = $model->id;
-
 		}
 		else
 		{
-			$formatID = $model->id;
+			$model->set(array(
+				'format' => \Hubzero\Utility\Sanitize::clean($format['format'])));
+		}
+
+		if (!$model->save())
+		{
+			// redirect with error message
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('CITATION_FORMAT_NOT_SAVED'),
+				'error');
 		}
 
 		// successfully set the default value, redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('CITATION_FORMAT_SAVED')
-		);
+			Lang::txt('CITATION_FORMAT_SAVED') . ' ' . $model->style);
 	}
 }
-
