@@ -140,3 +140,38 @@ if ( ! function_exists('with'))
 		return $object;
 	}
 }
+
+if ( ! function_exists('classExists'))
+{
+	/**
+	 * Checks for the existence of the provided class without
+	 * diving into the HUBzero Facade autoloader.
+	 *
+	 * @param   string  $classname  The classname to look for
+	 * @return  bool
+	 **/
+	function classExists($classname)
+	{
+		$result = false;
+
+		foreach (spl_autoload_functions() as $loader)
+		{
+			if (is_array($loader) && isset($loader[0]) && $loader[0] == 'Hubzero\Facades\Facade')
+			{
+				$autoloader = $loader;
+				break;
+			}
+		}
+
+		if (isset($autoloader))
+		{
+			spl_autoload_unregister($autoloader);
+
+			$result = class_exists($classname);
+
+			spl_autoload_register($autoloader);
+		}
+
+		return $result;
+	}
+}
