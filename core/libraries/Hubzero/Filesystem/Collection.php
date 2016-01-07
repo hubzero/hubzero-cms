@@ -125,7 +125,7 @@ class Collection extends ItemList
 
 			$zip->close();
 
-			$local = Manager::getTempPath();
+			$local = Manager::getTempPath($tarname);
 
 			if ($upload)
 			{
