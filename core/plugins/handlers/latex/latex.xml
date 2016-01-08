@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           core/plugins/handlers/latex/latex.xml
+@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
+@license        http://opensource.org/licenses/MIT MIT
+
+Copyright 2005-2015 HUBzero Foundation, LLC.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.7" type="plugin" group="handlers">
+	<name>PLG_HANDLERS_LATEX</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>PLG_HANDLERS_LATEX_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="latex">latex.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_handlers_latex.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="texpath" type="text" menu="hide" default="/usr/bin/pdflatex" label="Path to LaTeX" description="Path to LaTeX" />
+				<field name="compile_dir" type="text" menu="hide" default="site/latex/compiled" label="Compilation directory" description="Location where compiled PDF's and logs should be saved." />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
