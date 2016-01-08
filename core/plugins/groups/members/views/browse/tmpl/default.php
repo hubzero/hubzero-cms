@@ -199,7 +199,7 @@ $option = 'com_groups';
 								{
 									$u = new \Hubzero\User\Profile();
 								}
-								if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser))
+								if (\Components\Members\Helpers\Utility::validemail($guser))
 								{
 									$inviteemail = true;
 									$pic = rtrim(Request::base(true), '/') . '/core/components/com_groups/site/assets/img/emailthumb.png';
@@ -352,7 +352,7 @@ $option = 'com_groups';
 												if (!$inviteemail) {
 													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												} else {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($guser)).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.urlencode(urlencode($guser)).'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($guser)).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												}
 											}
 											$html .= "\t\t\t\t".'<td class="approve-member"> </td>'."\n";
