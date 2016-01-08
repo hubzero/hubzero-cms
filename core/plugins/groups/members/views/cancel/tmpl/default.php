@@ -32,6 +32,8 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
 ?>
 <form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
 	<div class="explaination">
@@ -44,7 +46,7 @@ defined('_HZEXEC_') or die();
 		$names = array();
 		foreach ($this->users as $user)
 		{
-			if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $user))
+			if (\Components\Members\Helpers\Utility::validemail($user))
 			{
 				$names[] = $user;
 			}

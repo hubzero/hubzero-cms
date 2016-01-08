@@ -312,6 +312,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function sortAlphabetically($userIds)
 	{
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+
 		// get each users name
 		$users = array();
 		$emails = array();
@@ -322,7 +324,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			{
 				$users[$profile->get('uidNumber')] = $profile->get('surname');
 			}
-			elseif (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $userid))
+			elseif (\Components\Members\Helpers\Utility::validemail($userid))
 			{
 				$emails[] = $userid;
 			}
@@ -958,10 +960,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Set a flag for emailing any changes made
 		$admchange = '';
 
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+
 		foreach ($mbrs as $mbr)
 		{
 			//if an email address
-			if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $mbr))
+			if (\Components\Members\Helpers\Utility::validemail($mbr))
 			{
 				$user_emails[] = $mbr;
 				$this->notifyEmailInvitedUser($mbr);
