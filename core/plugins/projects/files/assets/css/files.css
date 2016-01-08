@@ -537,6 +537,7 @@
 	.open_file:before,
 	#a-sync:before,
 	#a-compile:before,
+	#a-handle:before,
 	#a-rename:before,
 	#a-annotate:before
 	{
@@ -586,7 +587,8 @@
 		color: #52ad4b;
 		margin-right: 0.5em;
 	}
-	#manage_assets a#a-compile:before {
+	#manage_assets a#a-compile:before,
+	#manage_assets a#a-handle:before {
 		content: "\f06e";
 	}
 	#a-history:before {

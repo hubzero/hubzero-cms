@@ -588,11 +588,25 @@ HUB.ProjectFiles = {
 				{
 					if (href.indexOf('?') == -1)
 					{
-						href = href + '?no_html=1';
+						if (aid == 'a-handle')
+						{
+							href = href + '?tmpl=component';
+						}
+						else
+						{
+							href = href + '?no_html=1';
+						}
 					}
 					else
 					{
-						href = href + '&no_html=1';
+						if (aid == 'a-handle')
+						{
+							href = href + '&tmpl=component';
+						}
+						else
+						{
+							href = href + '&no_html=1';
+						}
 					}
 				}
 				if (href.search('&ajax=1') == -1) {
@@ -653,7 +667,7 @@ HUB.ProjectFiles = {
 					}
 
 					// make AJAX call
-					if (aid != 'a-download' && aid != 'a-history' && connected == true)
+					if (aid != 'a-download' && aid != 'a-history' && connected == true && aid != 'a-handle')
 					{
 						$.fancybox(this,{
 							type: 'ajax',
@@ -684,6 +698,23 @@ HUB.ProjectFiles = {
 										$.fancybox.close();
 									});
 								}
+							}
+						});
+					}
+
+					// make AJAX call
+					if (aid == 'a-handle')
+					{
+						$.fancybox(this,{
+							type: 'iframe',
+							width: '1000',
+							height: 'auto',
+							autoSize: false,
+							fitToView: false,
+							wrapCSS: 'sbp-window',
+							beforeShow: function()
+							{
+								this.width  = $('.fancybox-iframe').contents().find('.width-container').width();
 							}
 						});
 					}
@@ -1203,6 +1234,9 @@ HUB.ProjectFiles = {
 			}
 			if ($('#a-rename').length && $('#a-rename').hasClass('inactive') && (remote == 0) && (untracked == 0)) {
 				$('#a-rename').removeClass('inactive');
+			}
+			if ($('#a-handle').length && $('#a-handle').hasClass('inactive')) {
+				$('#a-handle').removeClass('inactive');
 			}
 
 			// Sharing
