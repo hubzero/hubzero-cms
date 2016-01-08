@@ -893,22 +893,6 @@ class connections
 	 */
 	public function compile()
 	{
-		// Combine file and folder data
-		$items = $this->getCollection();
-
-		// Incoming
-		$download = Request::getInt('download', 0);
-
-		// Check that we have compile enabled
-		// @FIXME: why are latex and compiled preview tied together?
-		//         presumedly we are also 'compiling' pdfs?
-		if (!$this->params->get('latex'))
-		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_COMPILE_NOTALLOWED') );
-			return;
-		}
-
-		// Output HTML
 		$view = new \Hubzero\Plugin\View([
 			'folder'  => 'projects',
 			'element' => 'files',
@@ -916,209 +900,39 @@ class connections
 			'layout'  => 'compiled'
 		]);
 
-		// Make sure we have an item
-		if (count($items) == 0)
+		// Combine file and folder data
+		$items  = $this->getCollection();
+		$output = Event::trigger('handlers.onHandleView', [$items]);
+
+		// Check return type and for multiple responses
+		if ($output && count($output) > 0)
 		{
-			$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
-			$view->loadTemplate();
-			return;
-		}
-
-		// We can only handle one file at a time
-		$file = $items->first();
-
-		// Build path for storing temp previews
-		$imagePath = trim($this->model->config()->get('imagepath', '/site/projects'), DS);
-		$outputDir = DS . $imagePath . DS . strtolower($this->model->get('alias')) . DS . 'compiled';
-
-		// Make sure output dir exists
-		if (!is_dir(PATH_APP . $outputDir))
-		{
-			if (!Filesystem::makeDirectory(PATH_APP . $outputDir))
+			foreach ($output as $o)
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return;
-			}
-		}
-
-		// Get LaTeX helper
-		$compiler = new \Components\Projects\Helpers\Compiler();
-
-		// Tex compiler path
-		$texPath = DS . trim($this->params->get('texpath'), DS);
-
-		// Set view args and defaults
-		$view->file    = $file;
-		$view->oWidth  = '780';
-		$view->oHeight = '460';
-		$view->url     = $this->model->link('files');
-		$cExt          = 'pdf';
-
-		// Tex file?
-		$tex = $compiler->isTexFile($file->getName());
-
-		// Build temp name
-		$tempBase = $tex ? 'temp__' . \Components\Projects\Helpers\Html::takeOutExt($file->getName()) : $file->getName();
-		$tempBase = str_replace(' ', '_', $tempBase);
-
-		$view->data = $file->isImage() ? NULL : $file->read();
-
-		// LaTeX file?
-		if ($tex && !empty($view->data))
-		{
-			// Clean up data from Windows characters - important!
-			$view->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $view->data);
-
-			// Store file locally
-			$tmpfile = PATH_APP . $outputDir . DS . $tempBase;
-			file_put_contents($tmpfile, $view->data);
-
-			// Compile and get path to PDF
-			$contentFile = $compiler->compileTex(
-				$tmpfile,
-				$view->data,
-				$texPath,
-				PATH_APP . $outputDir,
-				1,
-				$tempBase
-			);
-
-			// Read log (to show in case of error)
-			$logFile = $tempBase . '.log';
-			if (file_exists(PATH_APP . $outputDir . DS . $logFile))
-			{
-				$view->log = Filesystem::read(PATH_APP . $outputDir . DS . $logFile);
-			}
-
-			if (!$contentFile)
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_TEX_FAILED'));
-			}
-
-			$cType = Filesystem::mimetype(PATH_APP . $outputDir . DS . $contentFile);
-		}
-		else // "Standard" file
-		{
-			// Make sure we can handle preview of this type of file
-			if ($file->hasExtension('pdf') || $file->isImage() || !$file->isBinary())
-			{
-				$origin = $this->connection->provider->alias . '://' . $file->getPath();
-				$dest   = 'compiled://' . $tempBase;
-
-				// Do the copy
-				Manager::adapter('local', ['path' => PATH_APP . $outputDir . DS], 'compiled');
-				Manager::copy($origin, $dest);
-
-				$contentFile = $tempBase;
-			}
-		}
-
-		// Parse output
-		if (!empty($contentFile) && file_exists(PATH_APP . $outputDir . DS . $contentFile))
-		{
-			// Get compiled content mimetype
-			$cType = Filesystem::mimetype(PATH_APP . $outputDir . DS . $contentFile);
-
-			// Is image?
-			if (strpos($cType, 'image/') !== false)
-			{
-				// Fix up object width & height
-				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $contentFile);
-
-				$xRatio	= $view->oWidth / $width;
-				$yRatio	= $view->oHeight / $height;
-
-				if ($xRatio * $height < $view->oHeight)
+				if ($o instanceof \Hubzero\Plugin\View)
 				{
-					// Resize the image based on width
-					$view->oHeight = ceil($xRatio * $height);
-				}
-				else
-				{
-					// Resize the image based on height
-					$view->oWidth = ceil($yRatio * $width);
-				}
-			}
-
-			// Download compiled file?
-			if ($download)
-			{
-				$pdfName = $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
-
-				// Serve up file
-				$server = new \Hubzero\Content\Server();
-				$server->filename(PATH_APP . $outputDir . DS . $contentFile);
-				$server->disposition('attachment');
-				$server->acceptranges(false);
-				$server->saveas($pdfName);
-				$result = $server->serve();
-
-				if (!$result)
-				{
-					// Should only get here on error
-					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
-				}
-				else
-				{
-					exit;
-				}
-			}
-
-			// Generate preview image for browsers that cannot embed pdf
-			if ($cType == 'application/pdf')
-			{
-				// GS path
-				$gspath = trim($this->params->get('gspath'), DS);
-				if ($gspath && file_exists(DS . $gspath . DS . 'gs' ))
-				{
-					$gspath = DS . $gspath . DS;
-
-					$pdfName    = $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
-					$pdfPath    = PATH_APP . $outputDir . DS . $contentFile;
-					$exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
-
-					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out);
-
-					if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg'))
-					{
-						$hi = new \Hubzero\Image\Processor(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
-						if (count($hi->getErrors()) == 0)
-						{
-							$hi->resize($view->oWidth, false, false, true);
-							$hi->save(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
-						}
-						else
-						{
-							return false;
-						}
-					}
-					if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg'))
-					{
-						$image = $tempBase . '1.jpg';
-					}
+					$handler = $o;
 				}
 			}
 		}
-		elseif (!$this->getError())
+		else
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_PREVIEW_FAILED'));
+			$view->setError(Lang::txt('No handlers are currently available to view file(s).'));
 		}
 
-		$view->file       = $file;
-		$view->outputDir  = $outputDir;
-		$view->embed      = $contentFile;
-		$view->cType      = $cType;
+		if (!isset($handler))
+		{
+			$view->setError(Lang::txt('Failed to compile a view for this combination of file(s).'));
+		}
+		else
+		{
+			$view->handler = $handler;
+		}
+
+		$view->items      = $items;
 		$view->subdir     = $this->subdir;
 		$view->option     = $this->_option;
-		$view->image      = !empty($image) ? $image : NULL;
-		$view->model      = $this->model;
-		$view->repo       = $this->repo;
 		$view->connection = $this->connection;
-
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
 
 		return $view->loadTemplate();
 	}
