@@ -46,6 +46,7 @@ if ($this->isUser) : ?>
 					<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_CANCEL'); ?>" />
 					<input type="hidden" name="field_to_check[]" value="<?php echo $this->registration_field; ?>" />
 					<input type="hidden" name="option" value="com_members" />
+					<input type="hidden" name="controller" value="profiles" />
 					<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
 					<input type="hidden" name="task" value="save" />
 					<input type="hidden" name="no_html" value="1" />
