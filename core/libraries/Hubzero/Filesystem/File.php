@@ -102,6 +102,16 @@ class File extends Entity
 	}
 
 	/**
+	 * Grabs the item name, without extension
+	 *
+	 * @return  string
+	 **/
+	public function getDisplayName()
+	{
+		return str_replace('.' . $this->getExtension(), '', $this->getName());
+	}
+
+	/**
 	 * Gets the file mimetype
 	 *
 	 * @return  string

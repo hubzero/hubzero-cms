@@ -43,6 +43,20 @@ use Hubzero\Base\ItemList;
 class Collection extends ItemList
 {
 	/**
+	 * A flat list of all data and nested files
+	 *
+	 * @var  array
+	 **/
+	private $flatData = null;
+
+	/**
+	 * A flat list of all file extensions
+	 *
+	 * @var  array
+	 **/
+	private $flatExtentions = null;
+
+	/**
 	 * Sorts items by a given field and direction
 	 *
 	 * @param   string  $key  The key to sort by
@@ -84,6 +98,184 @@ class Collection extends ItemList
 		usort($cache, $callback);
 
 		return new static($cache);
+	}
+
+	/**
+	 * Finds the first entity with a given name, optionally returning it
+	 *
+	 * @param   string  $name    The name of the entity to find
+	 * @param   bool    $return  Whether or not to return the found entity
+	 * @return  \Hubzero\Filesystem\File|\Hubzero\Filesystem\Directory|bool
+	 **/
+	public function find($name, $return = true)
+	{
+		foreach ($this as $entity)
+		{
+			if ($entity->isFile())
+			{
+				if ($entity->getName() == $name)
+				{
+					return ($return) ? $entity : true;
+				}
+			}
+			else
+			{
+				// The result of this is already flat, so no need for recursion
+				foreach ($entity->listContents(true) as $sub)
+				{
+					if ($sub->getName() == $name)
+					{
+						return ($return) ? $sub : true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Checks to see if the collection contains a named item
+	 *
+	 * @param   string  $name  The named item to look for
+	 * @return  bool
+	 **/
+	public function has($name)
+	{
+		return $this->find($name, false);
+	}
+
+	/**
+	 * Checks to see whether or not the required extensions are in the current collection
+	 *
+	 * @param   array  $requirements  The extension requirements to locate
+	 * @return  bool
+	 **/
+	public function hasExtensions($requirements)
+	{
+		$files      = $this->getFlatListOfFiles();
+		$extensions = $this->getFlatListOfExtensions();
+		foreach ($requirements as $type => $constraint)
+		{
+			if (is_numeric($constraint))
+			{
+				if (!array_key_exists($type, $extensions) || $extensions[$type] < $constraint)
+				{
+					return false;
+				}
+			}
+			else if (is_callable($constraint))
+			{
+				if (call_user_func_array($constraint, [$extensions, $files]) === false)
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Finds the first item with the given extension
+	 *
+	 * @param   string  $extension  The extension to look for
+	 * @return  \Hubzero\Filesystem\File|bool
+	 **/
+	public function findFirstWithExtension($extension)
+	{
+		foreach ($this->getFlatListOfFiles() as $file)
+		{
+			if ($file->hasExtension($extension))
+			{
+				return $file;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Finds all items with the given extension
+	 *
+	 * @param   string|array  $extension  The extension(s) to look for
+	 * @return  \Hubzero\Filesystem\File
+	 **/
+	public function findAllWithExtension($extensions)
+	{
+		$found = [];
+
+		if (!is_array($extensions))
+		{
+			$extensions = [$extensions];
+		}
+
+		foreach ($this->getFlatListOfFiles() as $file)
+		{
+			$ext = $file->getExtension();
+			if (in_array($ext, $extensions))
+			{
+				$found[] = $file;
+			}
+		}
+
+		return $found;
+	}
+
+	/**
+	 * Builds a flat list of files by diving down recursively
+	 *
+	 * @return  array
+	 **/
+	public function getFlatListOfFiles()
+	{
+		if (!isset($this->flatData))
+		{
+			$this->flatData = [];
+
+			foreach ($this as $entity)
+			{
+				if ($entity->isFile())
+				{
+					$this->flatData[] = $entity;
+				}
+				else
+				{
+					// The result of this is already flat, so no need for recursion
+					foreach ($entity->listContents(true) as $sub)
+					{
+						if ($sub->isfile())
+						{
+							$this->flatData[] = $sub;
+						}
+					}
+				}
+			}
+		}
+
+		return $this->flatData;
+	}
+
+	/**
+	 * Builds a flat list of extensions based on files list
+	 *
+	 * @return  array
+	 **/
+	public function getFlatListOfExtensions()
+	{
+		if (!isset($this->flatExtentions))
+		{
+			$this->flatExtentions = [];
+
+			foreach ($this->getFlatListOfFiles() as $file)
+			{
+				$this->flatExtentions[] = $file->getExtension();
+			}
+
+			$this->flatExtentions = array_count_values($this->flatExtentions);
+		}
+
+		return $this->flatExtentions;
 	}
 
 	/**
