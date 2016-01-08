@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 ?>
 <script type='text/javascript'>
 var image_base_path = '<?php $params = Component::params('com_media');
-echo $params->get('image_path', 'images');?>/';
+echo substr(PATH_APP, strlen(PATH_ROOT)) . "/" . ltrim($params->get('image_path', 'images'), "/");?>/';
 </script>
 <h2 class="modal-title"><?php echo Lang::txt('COM_MEDIA'); ?></h2>
 
