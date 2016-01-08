@@ -269,8 +269,10 @@ class Membership extends Base
 			}
 			else
 			{
+				require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+
 				// If not a userid check if proper email
-				if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $l))
+				if (\Components\Members\Helpers\Utility::validemail($l))
 				{
 					// Try to find an account that might match this e-mail
 					$this->database->setQuery("SELECT u.id FROM `#__users` AS u WHERE u.email='" . $l . "' OR u.email LIKE '" . $l . "\'%' LIMIT 1;");
