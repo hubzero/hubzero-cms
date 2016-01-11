@@ -49,7 +49,7 @@ class Messages extends AdminController
 	/**
 	 * Display a list of messaging settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -102,7 +102,7 @@ class Messages extends AdminController
 	/**
 	 * Create a new record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -113,8 +113,8 @@ class Messages extends AdminController
 	/**
 	 * Edit a record
 	 *
-	 * @param      object $row Database row
-	 * @return     void
+	 * @param   object  $row  Database row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
@@ -153,7 +153,7 @@ class Messages extends AdminController
 	/**
 	 * Save an entry and display edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -163,7 +163,7 @@ class Messages extends AdminController
 	/**
 	 * Save an entry and redirect to main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -215,7 +215,7 @@ class Messages extends AdminController
 	/**
 	 * Delete a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -252,6 +252,238 @@ class Messages extends AdminController
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('Message Action removed')
 		);
+	}
+
+	/**
+	 * Delete a record
+	 *
+	 * @return  void
+	 */
+	public function settingsTask()
+	{
+		$id = Request::getInt('id', 0);
+
+		$member = \Hubzero\User\Profile::getInstance($id);
+		if (!$member || !$member->get('uidNumber'))
+		{
+			// Output messsage and redirect
+			App::abort(404, Lang::txt('Unknown or invalid member ID'));
+		}
+
+		$database = App::get('db');
+
+		$xmc = new \Hubzero\Message\Component($database);
+		$components = $xmc->getRecords();
+
+		/*if ($components)
+		{
+			$this->setError(Lang::txt('No vlaues found'));
+		}*/
+
+		$settings = array();
+		foreach ($components as $component)
+		{
+			$settings[$component->action] = array();
+		}
+
+		// Fetch message methods
+		$notimethods = Event::trigger('xmessage.onMessageMethods', array());
+
+		// A var for storing the default notification method
+		$default_method = null;
+
+		// Instantiate our notify object
+		$notify = new \Hubzero\Message\Notify($database);
+
+		// Get the user's selected methods
+		$methods = $notify->getRecords($member->get('uidNumber'));
+		if ($methods)
+		{
+			foreach ($methods as $method)
+			{
+				$settings[$method->type]['methods'][] = $method->method;
+				$settings[$method->type]['ids'][$method->method] = $method->id;
+			}
+		}
+		else
+		{
+			$default_method = \Plugin::params('members', 'messages')->get('default_method');
+		}
+
+		// Fill in any settings that weren't set.
+		foreach ($settings as $key=>$val)
+		{
+			if (count($val) <= 0)
+			{
+				// If the user has never changed their settings, set up the defaults
+				if ($default_method !== null)
+				{
+					$settings[$key]['methods'][] = 'internal';
+					$settings[$key]['methods'][] = $default_method;
+					$settings[$key]['ids']['internal'] = 0;
+					$settings[$key]['ids'][$default_method] = 0;
+				}
+				else
+				{
+					$settings[$key]['methods'] = array();
+					$settings[$key]['ids'] = array();
+				}
+			}
+		}
+
+		$this->view
+			->set('member', $member)
+			->set('settings', $settings)
+			->set('notimethods', $notimethods)
+			->set('components', $components)
+			->display();
+	}
+
+	/**
+	 * Save settings
+	 *
+	 * @return  void
+	 */
+	public function savesettingsTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		$id = Request::getInt('id', 0);
+
+		$member = \Hubzero\User\Profile::getInstance($id);
+		if (!$member || !$member->get('uidNumber'))
+		{
+			// Output messsage and redirect
+			App::abort(404, Lang::txt('Unknown or invalid member ID'));
+		}
+
+		$database = App::get('db');
+
+		// Incoming
+		$settings = Request::getVar('settings', array());
+		$ids = Request::getVar('ids', array());
+
+		// Ensure we have data to work with
+		if ($settings && count($settings) > 0)
+		{
+			// Loop through each setting
+			foreach ($settings as $key => $value)
+			{
+				foreach ($value as $v)
+				{
+					if ($v)
+					{
+						// Instantiate a Notify object and set its values
+						$notify = new \Hubzero\Message\Notify($database);
+						$notify->uid = $member->get('uidNumber');
+						$notify->method = $v;
+						$notify->type = $key;
+						$notify->priority = 1;
+
+						// Do we have an ID for this setting?
+						// Determines if the store() method is going to INSERT or UPDATE
+						if ($ids[$key][$v] > 0)
+						{
+							$notify->id = $ids[$key][$v];
+							$ids[$key][$v] = -1;
+						}
+
+						// Save
+						if (!$notify->store())
+						{
+							Notify::error(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method));
+						}
+					}
+				}
+			}
+
+			$notify = new \Hubzero\Message\Notify($database);
+			foreach ($ids as $key=>$value)
+			{
+				foreach ($value as $k=>$v)
+				{
+					if ($v > 0)
+					{
+						$notify->delete($v);
+					}
+				}
+			}
+
+			// If they previously had everything turned off, we need to remove that entry saying so
+			$records = $notify->getRecords($member->get('uidNumber'), 'all');
+			if ($records)
+			{
+				foreach ($records as $record)
+				{
+					$notify->delete($record->id);
+				}
+			}
+		}
+		else
+		{
+			// This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
+			// It ensures we can know the difference between someone who has never changed their settings (thus, no database entries)
+			// and someone who purposely wants everything turned off.
+			$notify = new \Hubzero\Message\Notify($database);
+			$notify->uid = $member->get('uidNumber');
+
+			$records = $notify->getRecords($member->get('uidNumber'), 'all');
+			if (!$records)
+			{
+				$notify->clearAll();
+				$notify->method   = 'none';
+				$notify->type     = 'all';
+				$notify->priority = 1;
+				if (!$notify->store())
+				{
+					$this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->method));
+				}
+			}
+		}
+
+		$tmpl = Request::getWord('tmpl');
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=settings&id=' . $id . ($tmpl ? '&tmpl=' . $tmpl : ''), false)
+		);
+	}
+
+	/**
+	 * Build a select list of methods
+	 *
+	 * @param   array   $notimethods  Methods
+	 * @param   string  $name         Field name
+	 * @param   array   $values       Option values
+	 * @param   array   $ids          Option IDs
+	 * @return  string
+	 */
+	public static function selectMethod($notimethods, $name, $values=array(), $ids=array())
+	{
+		$out = '';
+		$i = 0;
+		foreach ($notimethods as $notimethod)
+		{
+			$out .= '<td>' . "\n";
+			$out .= "\t" . '<input type="checkbox" name="settings[' . $name . '][]" class="opt-' . $notimethod . '" value="' . $notimethod . '"';
+			$out .= (in_array($notimethod, $values))
+						  ? ' checked="checked"'
+						  : '';
+			$out .= ' />' . "\n";
+			$out .= "\t" . '<input type="hidden" name="ids[' . $name . '][' . $notimethod . ']" value="';
+			if (isset($ids[$notimethod]))
+			{
+				$out .= $ids[$notimethod];
+			}
+			else
+			{
+				$out .= '0';
+			}
+			$out .= '" />' . "\n";
+			$out .= "\t" . '</td>' . "\n";
+			$i++;
+		}
+		return $out;
 	}
 }
 

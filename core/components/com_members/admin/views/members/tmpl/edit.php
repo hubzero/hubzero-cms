@@ -98,6 +98,7 @@ function submitbutton(pressbutton)
 						<?php endif; ?>
 						<li><a href="#" onclick="return false;" id="groups"><?php echo Lang::txt('COM_MEMBERS_GROUPS'); ?></a></li>
 						<li><a href="#" onclick="return false;" id="hosts"><?php echo Lang::txt('COM_MEMBERS_HOSTS'); ?></a></li>
+						<li><a href="#" onclick="return false;" id="messaging"><?php echo Lang::txt('COM_MEMBERS_MENU_MESSAGING'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -484,6 +485,13 @@ function submitbutton(pressbutton)
 					<legend><span><?php echo Lang::txt('COM_MEMBERS_HOSTS'); ?></span></legend>
 
 					<iframe height="500" name="hosts" id="hosts-list" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=hosts&tmpl=component&id=' . $this->profile->get('uidNumber')); ?>"></iframe>
+				</fieldset>
+			</div>
+			<div id="page-messaging" class="tab">
+				<fieldset class="adminform">
+					<legend><span><?php echo Lang::txt('COM_MEMBERS_MENU_MESSAGING'); ?></span></legend>
+
+					<iframe height="500" name="messaging" id="messaging-settings" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=messages&tmpl=component&task=settings&id=' . $this->profile->get('uidNumber')); ?>"></iframe>
 				</fieldset>
 			</div>
 		</div>
