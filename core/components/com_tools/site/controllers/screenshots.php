@@ -194,6 +194,12 @@ class Screenshots extends SiteController
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir;
 		$this->view->upath = $this->_buildUploadPath($listdir, '');
 
+		// Make sure wpath is preceded by app
+		if (substr($this->view->wpath, 0, 4) != DS . 'app')
+		{
+			$this->view->wpath = DS . 'app' . $this->view->wpath;
+		}
+
 		// Instantiate a new screenshot object
 		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$this->view->shot = $ss->getScreenshot($this->view->file, $pid, $vid);
@@ -812,12 +818,18 @@ class Screenshots extends SiteController
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		$path = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
-		$this->view->upath = PATH_CORE . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
+		$this->view->upath = PATH_APP . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		if ($vid)
 		{
 			$this->view->upath .= DS . $vid;
 			$this->view->wpath .= DS . $vid;
+		}
+
+		// Make sure wpath is preceded by app
+		if (substr($this->view->wpath, 0, 4) != DS . 'app')
+		{
+			$this->view->wpath = DS . 'app' . $this->view->wpath;
 		}
 
 		// get config
