@@ -295,6 +295,10 @@ class Groups extends Base
 		// get active tab
 		$this->view->tab     = Helpers\View::getTab($this->view->group);
 		$this->view->trueTab = strtolower(Request::getVar('active', 'overview'));
+		if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview')
+		{
+			return $this->unapprovedGroupTask();
+		}
 
 		// get group pages if any
 		$pageArchive = Page\Archive::getInstance();

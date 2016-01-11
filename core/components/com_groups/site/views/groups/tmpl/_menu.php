@@ -82,6 +82,12 @@ defined('_HZEXEC_') or die();
 				{
 					$item = '';
 				}
+				elseif (!$this->group->get('approved'))
+				{
+					$item  = '<li class="protected members-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted until the group has been approved!') . '">';
+					$item .= '<span data-icon="&#x' . $section['icon'] . '" class="disabled ' . $class . '">' . $title . '</span>';
+					$item .= '</li>';
+				}
 				elseif ($access == 'members' && !in_array(User::get('id'), $this->group->get('members')))
 				{
 					$item  = '<li class="protected members-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted to group members only!') . '">';
