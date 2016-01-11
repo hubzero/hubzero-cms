@@ -39,19 +39,21 @@ $this->css();
 	<h2><?php echo $this->title; ?></h2>
 </header>
 
-<div class="group-unapproved">
-	<span class="name">
-		<?php echo $this->group->get('description'); ?>
-	</span>
-	<span class="description"><?php echo Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></span>
+<section class="main section">
+	<div class="group-unapproved">
+		<span class="name">
+			<?php echo $this->group->get('description'); ?>
+		</span>
+		<p class="warning"><?php echo Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></p>
 
-	<?php if (in_array(User::get('id'), $this->group->get('invitees'))) : ?>
-		<hr />
-		<a href="<?php echo Route::url('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">
-			<?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE'); ?>
-		</a>
-		<hr />
-	<?php endif; ?>
+		<?php if (in_array(User::get('id'), $this->group->get('invitees'))) : ?>
+			<hr />
+			<a href="<?php echo Route::url('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">
+				<?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE'); ?>
+			</a>
+			<hr />
+		<?php endif; ?>
 
-	<a class="all-groups" href="<?php echo Route::url('index.php?option=com_groups'); ?>"><?php echo Lang::txt('COM_GROUPS_ALL_GROUPS'); ?></a> | <a class="my-groups" href="<?php echo JRout::_('index.php?option=com_members&task=myaccount&active=groups'); ?>"><?php echo Lang::txt('COM_GROUPS_MY_GROUPS'); ?></a>
-</div>
+		<p><a class="all-groups" href="<?php echo Route::url('index.php?option=com_groups'); ?>"><?php echo Lang::txt('COM_GROUPS_ALL_GROUPS'); ?></a> | <a class="my-groups" href="<?php echo Route::url('index.php?option=com_members&task=myaccount&active=groups'); ?>"><?php echo Lang::txt('COM_GROUPS_MY_GROUPS'); ?></a></p>
+	</div>
+</section>
