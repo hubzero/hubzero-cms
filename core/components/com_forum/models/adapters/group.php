@@ -66,6 +66,7 @@ class Group extends Base
 
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'forum';
+		$this->_segments['scope']  = '';
 
 		$this->_name = $group->get('cn');
 	}
@@ -84,7 +85,7 @@ class Group extends Base
 
 		if ($this->get('section'))
 		{
-			$segments['scope'] = $this->get('section');
+			$segments['scope'] .= $this->get('section');
 		}
 		if ($this->get('category'))
 		{
