@@ -2,3 +2,4 @@ app/cache/**
 app/config/**
 app/site/**
 app/logs/**
+app/tmp/**
