@@ -305,7 +305,12 @@ if (isset($this->messages))
 						</select>
 					</label>
 					<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
-					<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
+					<?php
+					/* [!] - zooley: Removed as doesn't seem to be used and 'limit=' in the referer URL can override
+					         pagination settings
+					<input type="hidden" name="referer" value="<?php echo urlencode($this->escape(@$_SERVER['HTTP_REFERER'])); ?>" />
+					*/
+					?>
 					<input type="hidden" name="action" value="browse" />
 
 					<div class="btn-cluster">
