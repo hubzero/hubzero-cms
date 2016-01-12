@@ -54,10 +54,28 @@ else
 			<?php
 			$linkAction = 0;
 			$base = $this->model->params->get('uploadpath');
+			$i = 0;
+
+			$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
+			$usersgroups = array();
+			if (!empty($xgroups))
+			{
+				foreach ($xgroups as $group)
+				{
+					if ($group->regconfirmed)
+					{
+						$usersgroups[] = $group->cn;
+					}
+				}
+			}
+			$allowedgroups = $this->model->resource->getGroups();
+
 			foreach ($children as $child)
 			{
-				if ($child->access == 0 || ($child->access == 1 && !User::isGuest()))
+				if ($child->access == 0 || ($child->access == 1 && !User::isGuest()) || ($child->access == 3 && in_array($this->model->resource->group_owner, $usersgroups)))
 				{
+					$i++;
+
 					$ftype = Filesystem::extension($child->path);
 					if (substr($child->path, 0, 4) == 'http')
 					{
@@ -251,6 +269,12 @@ else
 					</li>
 					<?php
 				}
+			}
+			if ($i <= 0)
+			{
+				?>
+					<li><?php echo Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS_NONE'); ?></li>
+				<?php
 			}
 			?>
 		</ul>
