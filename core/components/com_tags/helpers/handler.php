@@ -135,9 +135,10 @@ class TagsHandler extends \Hubzero\Base\Object
 	 * @param      integer $object_id Object ID
 	 * @param      string  $tag       Tag
 	 * @param      integer $strength  Tag strength
-	 * @return     boolean True on success, false if errors
+	 * @param      string  $tbl 		  Table name	
+	 * @return     boolean True on success, fale if errors
 	 */
-	public function safe_tag($tagger_id, $object_id, $tag, $strength=1, $label='')
+	public function safe_tag($tagger_id, $object_id, $tag, $strength=1, $label='', $tbl='')
 	{
 		if (!isset($tagger_id) || !isset($object_id) || !isset($tag))
 		{
@@ -152,7 +153,7 @@ class TagsHandler extends \Hubzero\Base\Object
 
 		$to = new \Components\Tags\Tables\Object($this->_db);
 		$to->objectid = $object_id;
-		$to->tbl = $this->_tbl;
+		$to->tbl = ($tbl == '' ? $this->_tbl : $tbl);
 		$to->label = $label;
 
 		// First see if the tag exists.
@@ -217,19 +218,20 @@ class TagsHandler extends \Hubzero\Base\Object
 	 * @param      string  $tag_string String of comma-separated tags
 	 * @param      integer $strength   Tag strength
 	 * @param      boolean $admin      Has admin access?
+	 * @param      string  $tbl 			 Table type of the tag 
 	 * @return     boolean True on success, false if errors
 	 */
-	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false, $label='')
+	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false, $label='', $tbl='')
 	{
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
 		$tagArray2 = $this->_parse_tags($tag_string, 1); // array of normalized => raw tags
 		if ($admin)
 		{
-			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1, $label); // tags currently assigned to an object
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1, $label, $tbl); // tags currently assigned to an object
 		}
 		else
 		{
-			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0, $label); // tags currently assigned to an object
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0, $label, $tbl); // tags currently assigned to an object
 		}
 
 		$preserveTags = array();
@@ -262,7 +264,7 @@ class TagsHandler extends \Hubzero\Base\Object
 					$tag = addslashes($tag);
 				}
 				$thistag = $tagArray2[$tag];
-				$this->safe_tag($tagger_id, $object_id, $thistag, $strength, $label);
+				$this->safe_tag($tagger_id, $object_id, $thistag, $strength, $label, $tbl);
 			}
 		}
 		return true;
