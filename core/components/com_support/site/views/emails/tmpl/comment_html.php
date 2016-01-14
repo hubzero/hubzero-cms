@@ -158,7 +158,7 @@ $this->css(
 									-moz-background-size: 30px 30px;
 									background-size: 30px 30px;">
 <?php if (!$this->config->get('email_terse')) { ?>
-		<thead class="mobilehide">
+		<thead>
 			<tr>
 				<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
 					<?php echo $this->escape($this->ticket->get('summary')); ?>
