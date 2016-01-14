@@ -49,7 +49,7 @@ jQuery(document).ready(function(jq){
 				isActive = false;
 			}
 		});
-		opts.on('click', function (e) {
+		/*opts.on('click', function (e) {
 			e.preventDefault();
 
 			opts.each(function (i, el) {
@@ -70,7 +70,7 @@ jQuery(document).ready(function(jq){
 			}
 
 			isActive = !isActive;
-		});
+		});*/
 
 		// Masonry
 		if (isActive) {
