@@ -45,6 +45,7 @@ Html::behavior('modal');
 // include group script
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/group.js');
+\Hubzero\Document\Assets::addSystemScript('placeholder');
 
 // get browser agent
 $browser = new \Hubzero\Browser\Detector();
