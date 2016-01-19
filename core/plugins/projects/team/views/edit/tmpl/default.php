@@ -59,6 +59,11 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 		<input class="option" name="role" id="role_collaborator" type="radio" value="0" checked="checked" />
 		<?php echo Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATORS'); ?>
 	</label>
+	 <label>
+		<span class="and_or"><?php echo Lang::txt('PLG_PROJECTS_TEAM_OR'); ?></span>
+		<input class="option" name="role" id="role_reviewer" type="radio" value="5" />
+		<?php echo Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWERS'); ?>
+	</label>
 </div>
 <p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_TEAM_HINT'); ?></p>
 
