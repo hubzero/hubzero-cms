@@ -301,12 +301,12 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_PROJECTS_FILES'); ?>:</th>
 					<td><?php echo $this->counts['files']; ?></td>
 				</tr>
-				<?php if ($this->publishing) { ?>
+				<?php if (isset($this->counts['publications'])): ?>
 				<tr>
 					<th><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS'); ?>:</th>
 					<td><?php echo $this->counts['publications']; ?></td>
 				</tr>
-				<?php } ?>
+				<?php endif; ?>
 				<tr>
 					<th><?php echo Lang::txt('COM_PROJECTS_TODOS'); ?>:</th>
 					<td><?php echo $this->counts['todo']; ?> <?php if ($this->counts['todos_completed'] > 0) { ?>( +<?php echo $this->counts['todos_completed']; ?> <?php echo Lang::txt('COM_PROJECTS_TODOS_COMPLETED'); ?>)<?php } ?></td>
