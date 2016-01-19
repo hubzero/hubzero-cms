@@ -124,7 +124,6 @@ class Page extends Model
 			$this->_versions = $pageVersionArchive->versions('list', array(
 				'pageid'  => $this->get('id', -1),
 				'orderby' => 'version DESC',
-				'limit'   => 25
 			));
 		}
 		return $this->_versions;

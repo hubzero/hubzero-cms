@@ -103,12 +103,6 @@ class Archive extends Model
 						$filters['pageid'] = 0;
 					}
 
-					//ensure we limit
-					if (!isset($filters['limit']))
-					{
-						$filters['limit'] = 25;
-					}
-
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
