@@ -553,6 +553,10 @@ class Miner extends Object implements Provider
 		{
 			$resolver = \Component::params('com_tools')->get('doi_resolve', 'http://dx.doi.org/');
 			$resolver = rtrim($resolver, '/') . '/';
+			if ($shoulder = \Component::params('com_tools')->get('doi_shoulder'))
+			{
+				$resolver .= $shoulder . '/';
+			}
 		}
 
 		return $resolver;
