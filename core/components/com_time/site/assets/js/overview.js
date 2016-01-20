@@ -71,7 +71,7 @@ jQuery(document).ready(function ( jq ) {
 					success: function ( json ) {
 						$.each(json, function ( i, val ) {
 							points[i] = [i, parseInt(val.length, 10)];
-							total += val.reduce(function(a, b) { return parseInt(a, 10) + parseInt(b, 10); }, 0);
+							total += Math.round(val.reduce(function(a, b) { return parseFloat(a) + parseFloat(b); }, 0));
 						});
 
 						$('.hours').html(total + 'hr' + ((total != 1) ? 's' : ''));
