@@ -30,9 +30,9 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Members\Models;
+namespace Members\Models;
 
-use Components\Members\Models\Import\Record;
+use Members\Models\Import\Record;
 use Hubzero\Content\Importer;
 use stdClass;
 
