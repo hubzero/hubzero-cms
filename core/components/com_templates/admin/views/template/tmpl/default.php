@@ -88,6 +88,19 @@ $canDo = TemplatesHelper::getActions();
 				<input type="hidden" name="task" value="" />
 			</form>
 			<div class="clr"></div>
+
+			<form action="<?php echo Route::url('index.php?option=com_templates&task=template.copy&id=' . Request::getInt('id')); ?>" method="post" name="copyForm">
+				<fieldset class="adminform" id="template-manager-css">
+					<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY');?></legend>
+					<div class="input-wrap">
+						<label id="new_name" class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC'); ?>"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL')?></label>
+						<input class="inputbox" type="text" id="new_name" name="new_name"  />
+						<button type="submit"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY'); ?></button>
+					</div>
+				</fieldset>
+				<input type="hidden" name="task" value="" />
+				<?php echo Html::input('token'); ?>
+			</form>
 		</div>
 
 		<div class="col span6">
@@ -116,18 +129,25 @@ $canDo = TemplatesHelper::getActions();
 				</div>-->
 			</fieldset>
 
-			<form action="<?php echo Route::url('index.php?option=com_templates&task=template.copy&id=' . Request::getInt('id')); ?>" method="post" name="copyForm">
-				<fieldset class="adminform" id="template-manager-css">
-					<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY');?></legend>
-					<div class="input-wrap">
-						<label id="new_name" class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC'); ?>"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL')?></label>
-						<input class="inputbox" type="text" id="new_name" name="new_name"  />
-						<button type="submit"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY'); ?></button>
-					</div>
-				</fieldset>
-				<input type="hidden" name="task" value="" />
-				<?php echo Html::input('token'); ?>
-			</form>
+			<fieldset class="adminform" id="template-manager-html">
+				<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_HTML');?></legend>
+
+				<?php if (!empty($this->files['html'])) : ?>
+				<ul class="item-list css">
+					<?php foreach ($this->files['html'] as $file) : ?>
+					<li>
+						<?php if ($canDo->get('core.edit')) : ?>
+							<a href="<?php echo Route::url('index.php?option=com_templates&task=source.edit&id=' . $file->id); ?>">
+						<?php endif; ?>
+						<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_HTML', $file->name); ?>
+						<?php if ($canDo->get('core.edit')) : ?>
+							</a>
+						<?php endif; ?>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+				<?php endif; ?>
+			</fieldset>
 		</div>
 	</div>
 </div>

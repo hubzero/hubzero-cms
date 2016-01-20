@@ -77,11 +77,20 @@ class TemplatesModelTemplate extends JModelLegacy
 
 				// Handle the CSS files.
 				$files = Filesystem::files($path.'/css', '\.css$', true, true);
+				//$files = Filesystem::files($path, '\.css$', true, true);
 
 				foreach ($files as $file)
 				{
 					$file = str_replace($base.'/', '', $file);
 					$result['css'][] = $this->getFile($path.'/css/', $file);
+				}
+
+				$files = Filesystem::files($path.'/html', '\.css|\.php$', true, true);
+
+				foreach ($files as $file)
+				{
+					$file = str_replace($base.'/', '', $file);
+					$result['html'][] = $this->getFile($path.'/html/', $file);
 				}
 			}
 			else
