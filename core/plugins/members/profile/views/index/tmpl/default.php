@@ -195,6 +195,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<input type="hidden" name="usageAgreement" value="1" />
 				<input type="hidden" name="field_to_check[]" value="usageAgreement" />
 				<input type="hidden" name="option" value="com_members" />
+				<input type="hidden" name="controller" value="profiles" />
 				<input type="hidden" name="id" value="<?php echo User::get("id"); ?>" />
 				<input type="hidden" name="task" value="save" />
 				<?php echo Html::input('token'); ?>
@@ -265,6 +266,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									<input type="submit" class="section-edit-submit" value="Save" />
 									<input type="reset" class="section-edit-cancel" value="Cancel" />
 									<input type="hidden" name="option" value="com_members" />
+									<input type="hidden" name="controller" value="profiles" />
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 									<input type="hidden" name="task" value="changepassword" />
 									<input type="hidden" name="no_html" value="1" />
