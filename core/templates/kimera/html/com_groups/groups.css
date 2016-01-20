@@ -388,9 +388,9 @@
 		top: 45%;
 		left: 0;
 	}
-	#page_menu li ul li a {
+	/*#page_menu li ul li a {
 		padding-left: 20px;
-	}
+	}*/
 	#page_menu li.active ul li a {
 		background: transparent;
 	}
@@ -1204,6 +1204,13 @@
 		width: 1em;
 		text-indent: -500em;
 	}
+	#page_menu li ul li a:after {
+		content: "\f016";
+		font-family: "Fontcons";
+		text-indent: 0;
+		left: 1em;
+		top: 0.3em;
+	}
 	#page_menu li a:before,
 	#page_menu li a:after,
 	#page_menu li a.alrt {
@@ -1253,6 +1260,12 @@
 	#page_menu li a {
 		text-indent: 0;
 		width: auto;
+	}
+	#page_menu li ul li a {
+		padding-left: 20px;
+	}
+	#page_menu li ul li a:after {
+		content: "";
 	}
 	#page_menu li .meta {
 		right: 2em;
