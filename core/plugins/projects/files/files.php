@@ -471,6 +471,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$pid    = Request::getInt( 'pid', 0 );
 		$vid    = Request::getInt( 'vid', 0 );
 		$filter = urldecode(Request::getVar( 'filter', '' ));
+		$directory = urldecode(Request::getVar('directory', ''));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -529,10 +530,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				'showFullMetadata'     => false,
 				'getParents'           => true, // show folders
 				'getChildren'          => true, // look inside directories
+				'selector'						 => true, // applies some limits to prevent JS from crashing
+				'subdir'							 => $directory,
 			);
 
 			// Retrieve items
-			$view->items = $this->repo->filelist($params);
+			$filelist = $this->repo->filelist($params);
+
+			/** Switch between the top-level consolidated view and the 
+			 ** regular view, related to performance issues when the project has
+			 ** an extraordinary number of files. -- Kevin <kevinw@purdue.edu>
+			 **/
+			$view->items = is_object($filelist[0]) ? $filelist : $filelist[0];
+		  $view->folders = is_array($filelist[0]) ? $filelist[1] : NULL;
+
 		}
 
 		$view->option 		= $this->model->isProvisioned() ? 'com_publications' : $this->_option;

@@ -30,7 +30,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
 if (!$this->ajax)
 {
 	$this->css('selector');
@@ -147,7 +146,8 @@ if ($this->task == 'filter')
 	$view->option 		= $this->option;
 	$view->model 		= $this->model;
 	$view->items		= $this->items;
-	$view->showLevels 	= $this->filter ? false : true;
+	//$view->showLevels 	= $this->filter ? false : true;
+	$view->showLevels = true;
 	$view->requirements = $params;
 	$view->publication  = $this->publication;
 	$view->selected		= $selected;
@@ -181,6 +181,7 @@ if ($this->items)
 		<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 		<?php } ?>
 	</span></h3>
+
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url( $this->publication->link('edit')); ?>">
 	<fieldset >
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -206,11 +207,24 @@ if ($this->items)
 			<input type="hidden" name="ajax" value="0" />
 		<?php }  ?>
 	</fieldset>
+
 	<div id="search-filter" class="search-filter">
 		<label><input type="text" value="<?php echo $this->filter; ?>" name="filter" id="item-search" /></label>
 	</div>
 
+
 	<p class="requirement" id="req"><?php echo $req; ?></p>
+	<?php if (isset($this->folders)): ?>
+	<div id="directoryfilter">
+	<label>Directory:</label>
+	<select name="directory" id="directorySelect">
+		<option value="">/</option>
+		<?php foreach ($this->folders as $folder): ?>
+		<option value="<?php echo $folder; ?>"><?php echo $folder; ?></option>
+		<?php endforeach; ?>
+	</select>
+	</div>
+	<?php endif; ?>
 	<div id="content-selector" class="content-selector">
 		<?php
 			// Show files

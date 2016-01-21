@@ -85,10 +85,17 @@ HUB.ProjectFilesFileSelect = {
 	{
 		var $ = this.jQuery;
 		var searchbox = $('#item-search');
+		var directorySelect = $('#directorySelect');
 		var output = $('#content-selector');
 		var keyupTimer = '';
 
 		var url = $('#filterUrl').length ? $('#filterUrl').val() : '';
+
+		$(directorySelect).on('change', function()
+		{
+				HUB.ProjectFilesFileSelect.refreshData(true);
+				return true;
+		});
 
 		if (!searchbox.length || !output.length)
 		{
@@ -118,6 +125,7 @@ HUB.ProjectFilesFileSelect = {
 		var $ = this.jQuery;
 
 		var searchbox = $('#item-search');
+		var directory = $('#directorySelect');
 		var output = $('#content-selector');
 
 		var url = $('#filterUrl').length ? $('#filterUrl').val() : '';
@@ -128,6 +136,12 @@ HUB.ProjectFilesFileSelect = {
 		}
 
 		url = url + '&filter=' + encodeURI($(searchbox).val());
+
+		if (directory.length)
+		{	
+			url = url + '&directory=' + encodeURI($(directory).val());
+		}
+
 		var prev = $(output).html();
 
 		if (useLoader)
