@@ -15,6 +15,10 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	if (!$('html').hasClass('has-notice')) {
+		$('html').addClass('has-notice');
+	}
+
 	$('.modnotices .close').on('click', function(e) {
 		e.preventDefault();
 
