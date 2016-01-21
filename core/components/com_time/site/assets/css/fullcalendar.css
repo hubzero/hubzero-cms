@@ -578,7 +578,7 @@ a.fc-more:hover {
 .fc-toolbar {
 	text-align: center;
 	margin-bottom: 1em;
-	display: none;
+	/*display: none;*/
 }
 
 .fc-toolbar .fc-left {

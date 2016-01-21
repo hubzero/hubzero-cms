@@ -156,9 +156,9 @@ jQuery(document).ready(function ( jq ) {
 
 		calendar.fullCalendar({
 			header         : {
-				left       :   '',
+				left       : 'title',
 				center     : '',
-				right      :  ''
+				right      : 'today,prev,next'
 			},
 			timezone       : 'local',
 			defaultView    : 'agendaDay',
@@ -194,6 +194,9 @@ jQuery(document).ready(function ( jq ) {
 			},
 			eventAfterAllRender : function ( view ) {
 				graphs();
+
+				// Set height of input box (minus margin and borders)
+				$('.details-inner').height($('.calendar').height() - 32);
 			},
 			events : '/api/time/today'
 		});

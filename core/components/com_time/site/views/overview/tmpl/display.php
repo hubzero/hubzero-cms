@@ -66,7 +66,6 @@ $end   = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('G'));
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_overview">
 		<div class="overview-container">
-			<div class="section-header"><h3><?php echo Lang::txt('COM_TIME_OVERVIEW_TODAY'); ?></h3></div>
 			<div class="calendar"></div>
 			<div class="details">
 				<div class="details-inner">

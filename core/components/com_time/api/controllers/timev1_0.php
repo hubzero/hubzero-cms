@@ -584,10 +584,13 @@ class Timev1_0 extends ApiController
 		$this->requiresAuthentication();
 		$this->authorizeOrFail();
 
+		$start = Date::of(Request::getVar('start'), Config::get('offset'))->toSql();
+		$end   = Date::of(Request::getVar('end'), Config::get('offset'))->toSql();
+
 		// Create object and get records
 		$records = Record::whereEquals('user_id', App::get('authn')['user_id'])
-                         ->where('date', '>=', Date::of(strtotime('today'))->toSql())
-                         ->where('date', '<', Date::of(strtotime('today+1day'))->toSql());
+                         ->where('date', '>=', $start)
+                         ->where('date', '<', $end);
 
 		// Restructure response into the format that the calendar plugin expects
 		$response = [];
