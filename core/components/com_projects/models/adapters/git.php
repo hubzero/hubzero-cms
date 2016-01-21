@@ -112,7 +112,8 @@ class Git extends Models\Adapter
 		$sortby        = isset($params['sortby']) ? $params['sortby'] : 'name';
 		$getParents    = isset($params['getParents']) ? $params['getParents'] : false;
 		$getChildren   = isset($params['getChildren']) ? $params['getChildren'] : false;
-		$files   	   = isset($params['files']) && is_array($params['files']) ? $params['files'] : array();
+		$files   		   = isset($params['files']) && is_array($params['files']) ? $params['files'] : array();
+		$selector			 = isset($params['selector']) ? true : false;
 
 		// Get a list of files Git repo
 		$files = empty($files) ? $this->_git->getFiles($dirPath, false) : $files;
@@ -138,9 +139,39 @@ class Git extends Models\Adapter
 		$items 		= array();
 		$sorting 	= array();
 		$folders	= array();
+		$topleveldirs = array();
+
+		// Relates to gathering children
 		if ($dirPath)
 		{
 			$folders[] = $dirPath;
+		}
+
+		// Apply the filter early, reduces iterations through foreach()
+		if (isset($filter) && $filter != '')
+		{
+				$files = preg_grep("(".$filter.")", $files);
+		}
+
+		// Prevent too many files from being loaded in the file selector
+		if (count($files > 500) && $filter == '' && $selector && !($dirPath))
+		{
+				// Get a list of top-level directories
+				$rejects = preg_grep("(\\/)", $files);
+				foreach ($rejects as $key => $rpath)
+				{
+					$pathString = explode("/", $rpath);
+					if (count($pathString) > 1)
+					{
+						array_push($topleveldirs, $pathString[0]);
+					}
+				}
+
+				// Cleanup the list
+				$topleveldirs = array_unique($topleveldirs);
+
+				// Get top-level files 
+				$files = preg_grep("(\\/)", $files, PREG_GREP_INVERT);
 		}
 
 		// Go through items and get what we need
@@ -156,15 +187,10 @@ class Git extends Models\Adapter
 			$file = new Models\File($item, $this->_path);
 
 			// Search filter applied
-			if ($filter
-				&& strpos(trim($file->get('localPath')), trim($filter)) === false
-				&& strpos(trim($file->get('localPath')), trim($filter)) === false)
+			if ($filter)
 			{
-				continue;
-			}
-			elseif ($filter)
-			{
-				$getParents = false;
+				$getParents = true;
+				$getChildren = true;
 			}
 
 			// Untracked?
@@ -186,11 +212,12 @@ class Git extends Models\Adapter
 					// Recursive check
 					if ($getChildren || (!$getChildren && ($file->getDirLevel($dirPath) >  $file->getDirLevel($file->get('dirname')))))
 					{
-						$folders[] = $file->get('localPath');
+						$folders[] =  $file->get('localPath');
 						if (!$getParents)
 						{
 							continue;
 						}
+
 						$items[$file->get('name')] = $file;
 
 						// Collect info for sorting
@@ -255,7 +282,7 @@ class Git extends Models\Adapter
 			// Add to list
 			if (empty($items[$file->get('name')]))
 			{
-				$items[$file->get('name')] = $file;
+				$items[$file->get('localPath')] = $file;
 
 				// Collect info for sorting
 				switch ($sortby)
@@ -285,7 +312,8 @@ class Git extends Models\Adapter
 		array_multisort($sorting, $sortdir, $items );
 
 		// Apply start and limit, get complete metadata and return
-		return $this->_list($items, $params);
+		return $this->_list($items, $params, $topleveldirs);
+
 	}
 
 	/**
@@ -312,20 +340,21 @@ class Git extends Models\Adapter
 	 *
 	 * @return     array
 	 */
-	protected function _list($items, $params)
+	protected function _list($items, $params, $folders = array())
 	{
 		$dirPath       = isset($params['subdir']) ? $params['subdir'] : NULL;
 		$limit         = isset($params['limit']) ? $params['limit'] : 0;
 		$start         = isset($params['start']) ? $params['start'] : 0;
 		$pubLinks      = isset($params['getPubConnections']) ? $params['getPubConnections'] : false;
 		$extended      = isset($params['showFullMetadata']) ? $params['showFullMetadata'] : true;
+		$folders			 = count($folders) > 0 ? $folders : false;
 
 		// Skip forward?
 		if ($start)
 		{
 			$items = array_slice($items, ($start - 1));
 		}
-		// No results
+		// No results, return early
 		if (empty($items))
 		{
 			return array();
@@ -350,9 +379,10 @@ class Git extends Models\Adapter
 			// Even more metadata
 			if ($extended == true)
 			{
+				// Commenting out since it is a huge performance hit.
 				// Pull from Git
-				$this->_file($file, $dirPath);
-				$file->setMd5Hash();
+				/*$this->_file($file, $dirPath);
+				$file->setMd5Hash();*/
 			}
 
 			// Get size from Git?
@@ -365,7 +395,16 @@ class Git extends Models\Adapter
 			$i++;
 		}
 
-		return $results;
+		// Return top level folders or not.
+		if (!isset($folders) || !$folders)
+		{
+			return $results;
+		}
+		else
+		{
+			//ddie('there');
+			return array($results, $folders);
+		}
 	}
 
 	/**
