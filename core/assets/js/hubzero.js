@@ -37,6 +37,9 @@ Hubzero.initApi = function ( callback )
 			{
 				callback();
 			}
+
+			// Check again when the token expires
+			setTimeout(Hubzero.initApi, data.expires_in*1000);
 		}
 	});
 };
