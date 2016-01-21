@@ -35,7 +35,8 @@ defined('_HZEXEC_') or die();
 
 if ($this->publish)
 {
-	$this->css();
+	$this->css()
+	     ->js();
 	?>
 	<div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
 		<p>
@@ -44,8 +45,6 @@ if ($this->publish)
 			$page = Request::getVar('REQUEST_URI', '', 'server');
 			if ($page && $this->params->get('allowClose', 1))
 			{
-				$this->js();
-
 				$page .= (strstr($page, '?')) ? '&' : '?';
 				$page .= $this->moduleid . '=close';
 				?>
