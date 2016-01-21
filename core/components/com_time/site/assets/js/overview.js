@@ -243,6 +243,11 @@ jQuery(document).ready(function ( jq ) {
 				data: "hid="+$(this).val()+"&pactive=1",
 				dataType: "json",
 				cache: false,
+				statusCode: {
+					404: function() {
+						location.reload();
+					}
+				},
 				success: function ( json ) {
 					// If success, update the list of tasks based on the chosen hub
 					var options = '';
