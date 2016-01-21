@@ -709,7 +709,12 @@ class Admin extends SiteController
 			return false;
 		}
 
-		$tarball_path = PATH_APP . DS . trim($this->config->get('sourcecodePath','site/protected/source'), DS);
+		// We need to make sure we don't prepend with PATH_APP if we already have a root-relative path
+		$tarball_path = $this->config->get('sourcecodePath','site/protected/source');
+		if (substr($tarball_path, 0, 1) != DS)
+		{
+			$tarball_path = PATH_APP . DS . trim($this->config->get('sourcecodePath','site/protected/source'), DS);
+		}
 
 		Log::debug("finalizeTool(): checkpoint 2");
 
