@@ -78,7 +78,7 @@ class Records extends Base
 
 		// Display
 		$this->view->filters = $filters;
-		$this->view->records = $records->paginated()->ordered()->including('task', 'user');
+		$this->view->records = $records->paginated()->ordered()->including('task', 'user', 'task.hub');
 		$this->view->display();
 	}
 

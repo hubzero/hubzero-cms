@@ -197,6 +197,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 										$this->filters['search'],
 										array('html' => true)
 									); ?>
+									[<?php echo $record->task->hub->name; ?>]
 								</div>
 							</div>
 							<div class="td last" title="<?php echo $record->description; ?>">
@@ -205,7 +206,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 									<?php echo String::highlight(
 										String::truncate(
 											$record->description,
-											25),
+											50),
 										$this->filters['search'],
 										array('html' => true)
 									); ?>

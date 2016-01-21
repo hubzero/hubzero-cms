@@ -90,7 +90,7 @@ $this->css()
 					<label for="hub_id"><?php echo Lang::txt('COM_TIME_TASKS_HUB_NAME'); ?>:</label>
 					<select name="hub_id" id="hub_id">
 						<option value=""><?php echo Lang::txt('COM_TIME_NO_HUB'); ?></option>
-						<?php foreach (Hub::whereEquals('active', 1) as $hub) : ?>
+						<?php foreach (Hub::whereEquals('active', 1)->order('name', 'asc') as $hub) : ?>
 							<option <?php echo ($hub->id == $this->row->hub->id) ? 'selected="selected" ': ''; ?>value="<?php echo $hub->id; ?>">
 								<?php echo $hub->name; ?>
 							</option>
