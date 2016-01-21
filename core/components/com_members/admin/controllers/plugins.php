@@ -98,12 +98,12 @@ class Plugins extends AdminController
 				'filter_order_Dir',
 				'ASC'
 			),
-			'state' => Request::getState(
+			'state' => strtoupper(Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
-				'state',
+				'filter_state',
 				'',
 				'word'
-			),
+			)),
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
@@ -135,11 +135,11 @@ class Plugins extends AdminController
 		{
 			if ($this->view->filters['state'] == 'P')
 			{
-				$where[] = 'p.published = 1';
+				$where[] = 'p.enabled = 1';
 			}
 			else if ($this->view->filters['state'] == 'U')
 			{
-				$where[] = 'p.published = 0';
+				$where[] = 'p.enabled = 0';
 			}
 		}
 		$where[] = 'p.type = ' . $this->database->Quote('plugin');
@@ -190,8 +190,7 @@ class Plugins extends AdminController
 		$this->view->manage = Event::trigger('members.onCanManage');
 
 		$this->view->client = $this->client;
-		$this->view->states = Html::grid('states'); //, $this->view->filters['state']);
-		$this->view->user   = User::getRoot();
+		$this->view->states = Html::grid('states', $this->view->filters['state']);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
