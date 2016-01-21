@@ -83,7 +83,6 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 		<![endif]-->
 	</head>
 	<body>
-		<jdoc:include type="modules" name="notices" />
 		<div id="outer-wrap">
 			<jdoc:include type="modules" name="helppane" />
 
@@ -92,6 +91,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 					<div class="inner-wrap">
 
 						<header id="masthead" role="banner">
+							<jdoc:include type="modules" name="notices" />
+
 							<h1>
 								<a href="<?php echo Request::root(); ?>" title="<?php echo Config::get('sitename'); ?>">
 									<span><?php echo Config::get('sitename'); ?></span>
