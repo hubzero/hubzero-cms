@@ -39,18 +39,9 @@ if ($canDo->get('core.edit.state'))
 {
 	Toolbar::publishList();
 	Toolbar::unpublishList();
-	//Toolbar::spacer();
 }
-/*if ($canDo->get('core.create'))
-{
-	Toolbar::addNew();
-}
-if ($canDo->get('core.edit'))
-{
-	Toolbar::editListX();
-}*/
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php echo $this->states; ?>
 
@@ -112,12 +103,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	//$link = Route::url( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
-	$link = 'index.php?option=com_plugins&task=plugin.edit&extension_id=' . $row->id . '&component=' . $row->folder;
+	$link = 'index.php?option=com_plugins&task=edit&extension_id=' . $row->id . '&component=' . $row->folder;
 
-	$access 	= $row->groupname;//Html::grid('access', $row, $i);
-	//$checked 	= Html::grid('checkedout', $row, $i);
-	$published 	= $row->published; //Html::grid('published', $row, $i);
+	$access    = $row->groupname;
+	$published = $row->published;
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
 
@@ -155,7 +144,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php
-						if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
+						if ($tbl->isCheckedOut(User::get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
 							echo $this->escape($row->name);
 						} else {
 					?>
@@ -165,7 +154,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td>
-					<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
+					<?php if ($tbl->isCheckedOut(User::get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
 						<span class="state <?php echo $cls; ?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
