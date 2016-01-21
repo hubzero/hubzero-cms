@@ -160,6 +160,11 @@ jQuery(document).ready(function($){
 			}
 		});
 
+	// Adjust the top-padding
+	if ($('#top').length) {
+		$('#top').css('padding-top', header.height());
+	}
+
 	// Append a toggle (for smaller screens)
 	header.find('li.parent>a').each(function (i, el) {
 		$('<a class="toggle" href="#">&nbsp;</a>').on('click', function(e){
@@ -172,19 +177,6 @@ jQuery(document).ready(function($){
 	// Display system messages in Growl-like way
 	var msg = $('#system-message-container');
 	if (msg.length && msg.html().replace(/\s+/, '') != '') {
-		/*if (msg.find('dd.error, dd.warning, dd.info').length) {
-			$.growl.settings.displayTimeout = 0;
-		} else {
-			msg.find('dd.message').each(function(i, el) {
-				var tm = ($(el).text().length * 10) + 500;
-				if (tm > 2000) {
-					$.growl.settings.displayTimeout = tm;
-				}
-			});
-		}
-		msg.find('dd.message').each(function(i, el) {
-			$.growl('', '<dl>' + $(el).html() + '</dl>');
-		});*/
 		$.growl.settings.displayTimeout = 0;
 		$.growl('', msg.html());
 	}
@@ -219,18 +211,8 @@ jQuery(document).ready(function($){
 		}
 	});
 
+	// Set overlays for lightboxed elements
 	if (jQuery.fancybox) {
-		// Set the overlay trigger for launch tool links
-		/*
-		$('.launchtool').on('click', function(e) {
-			$.fancybox({
-				closeBtn: false, 
-				href: HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif'
-			});
-		});
-		*/
-
-		// Set overlays for lightboxed elements
 		$('a[rel=lightbox]').fancybox();
 	}
 

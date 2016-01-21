@@ -1,0 +1,12 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_notices/assets/css/mod_notices.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+@import url('/core/modules/mod_notices/assets/css/mod_notices.css');
+
+	#top {
+		padding-top: 7em;
+	}
