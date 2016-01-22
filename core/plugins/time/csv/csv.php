@@ -97,7 +97,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 	public static function download()
 	{
 		// Load language
-		Lang::load('plg_time_csv', JPATH_ADMINISTRATOR);
+		Lang::load('plg_time_csv', __DIR__);
 
 		$hub_id    = Request::getInt('hub_id', null);
 		$start     = Request::getCmd('start_date', Date::of(strtotime('today - 1 month'))->format('Y-m-d'));
@@ -115,7 +115,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		}
 
 		$all  = true;
-		foreach (Request::get('GET') as $key => $value)
+		foreach (Request::query() as $key => $value)
 		{
 			if (strpos($key, 'fields-') !== false)
 			{
