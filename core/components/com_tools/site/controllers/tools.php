@@ -171,34 +171,34 @@ class Tools extends SiteController
 
 		if ($type == 'css')
 		{
-			$file = JPATH_SITE . \Hubzero\Document\Assets::getComponentStylesheet($this->_option, $file);
-
-			if (is_readable($file))
-			{
-				ob_clean();
-				header("Content-Type: text/css");
-				readfile($file);
-				ob_end_flush();
-				exit;
-			}
-			else
-			{
-				ob_clean();
-				header("HTTP/1.1 404 Not Found");
-				ob_end_flush();
-				exit;
-			}
+			$this->cssTask($file);
 		}
 	}
 
 	/**
 	 * Display the FORGE logo
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function imageTask()
 	{
-		$image = JPATH_SITE . \Hubzero\Document\Assets::getComponentImage($this->_option, 'forge.png', 1);
+		$file = 'forge.png';
+
+		$paths = array(
+			\App::get('template')->path . DS . 'html' . DS . $this->_option . DS . 'images' . DS . $file,
+			dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . $file,
+			dirname(__DIR__) . DS . 'images' . DS . $file
+		);
+
+		// Run through each path until we find one that works
+		$image = null;
+		foreach ($paths as $path)
+		{
+			if (file_exists($path))
+			{
+				$image = $path;
+			}
+		}
 
 		if (is_readable($image))
 		{
@@ -208,16 +208,36 @@ class Tools extends SiteController
 			ob_end_flush();
 			exit;
 		}
+
+		ob_clean();
+		header("HTTP/1.1 404 Not Found");
+		ob_end_flush();
+		exit;
 	}
 
 	/**
 	 * Display CSS
 	 *
-	 * @return     void
+	 * @param   string  $css
+	 * @return  void
 	 */
-	public function cssTask()
+	public function cssTask($css = 'site_css.css')
 	{
-		$file = JPATH_SITE . \Hubzero\Document\Assets::getComponentStylesheet($this->_option, 'site_css.css');
+		$paths = array(
+			\App::get('template')->path . DS . 'html' . DS . $this->_option . DS . $css,
+			dirname(__DIR__) . DS . 'assets' . DS . 'css' . DS . $css,
+			dirname(__DIR__) . DS . 'css' . DS . $css
+		);
+
+		// Run through each path until we find one that works
+		$file = null;
+		foreach ($paths as $path)
+		{
+			if (file_exists($path))
+			{
+				$file = $path;
+			}
+		}
 
 		if (is_readable($file))
 		{
@@ -227,6 +247,11 @@ class Tools extends SiteController
 			ob_end_flush();
 			exit;
 		}
+
+		ob_clean();
+		header("HTTP/1.1 404 Not Found");
+		ob_end_flush();
+		exit;
 	}
 
 	/**
