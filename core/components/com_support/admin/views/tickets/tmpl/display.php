@@ -43,6 +43,7 @@ Toolbar::help('tickets');
 Html::behavior('tooltip');
 
 $this->css();
+//$this->js('jquery.fileuploader.js', 'system');
 ?>
 
 <div class="panel" id="panes">
@@ -446,9 +447,6 @@ jQuery(document).ready(function($){
 				}
 
 				$('#query-list').html(response);
-
-				//var template = Handlebars.compile($("#folder-template").html());
-				//$('#queries').append(template(response));
 			});
 		}
 	});
@@ -488,7 +486,7 @@ jQuery(document).ready(function($){
 		} else {
 			alert('<?php echo Lang::txt('Please select two or more items to batch process.'); ?>');
 		}
-	});*/
+	});
 
 	// Ticket
 	var ticket = $('#ticket');
@@ -497,12 +495,48 @@ jQuery(document).ready(function($){
 		if ($('.pane-item').css('display') != 'none') {
 			e.preventDefault();
 
-			//id = $(this).closest('li').attr('data-id');
-
-			//$(this).closest('li').find('input').prop('checked', true);
-
 			$.get($(this).attr('href').nohtml(), function(response) {
 				ticket.html($(response).hide().fadeIn());
+
+				var attach = $("#ajax-uploader");
+				if (attach.length) {
+					$('#ajax-uploader-list')
+						.on('click', 'a.delete', function (e){
+							e.preventDefault();
+							if ($(this).attr('data-id')) {
+								$.get($(this).attr('href'), {}, function(data) {});
+							}
+							$(this).parent().parent().remove();
+						});
+					var running = 0;
+
+					var uploader = new qq.FileUploader({
+						element: attach[0],
+						action: attach.attr("data-action"),
+						multiple: true,
+						debug: true,
+						template: '<div class="qq-uploader">' +
+									'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+									'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+									'<ul class="qq-upload-list"></ul>' + 
+								'</div>',
+						onSubmit: function(id, file) {
+							running++;
+						},
+						onComplete: function(id, file, response) {
+							running--;
+
+							// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+							response.html = response.html.replace(/&gt;/g, '>');
+							response.html = response.html.replace(/&lt;/g, '<');
+							$('#ajax-uploader-list').append(response.html);
+
+							if (running == 0) {
+								$('ul.qq-upload-list').empty();
+							}
+						}
+					});
+				}
 			});
 		}
 	});
@@ -527,8 +561,13 @@ jQuery(document).ready(function($){
 						$('#ticket-' + id).html(tickets.html());
 					}
 				});
+			}).error(function(xhr, status, error) {
+				console.log(xhr.responseText);
+				console.log(status);
+				console.log(error);
 			});
-		})
+		})*/
+	ticket
 		.on('change', '#comment-field-template', function(e) {
 			var co = $('#comment-field-comment');
 

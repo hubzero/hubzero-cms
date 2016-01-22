@@ -572,18 +572,21 @@ class Tickets extends AdminController
 				$html = $eview->loadTemplate();
 				$html = str_replace("\n", "\r\n", $html);
 
-				foreach ($row->attachments() as $attachment)
+				if (!$this->config->get('email_terse'))
 				{
-					if ($attachment->size() < 2097152)
+					foreach ($row->attachments() as $attachment)
 					{
-						if ($attachment->isImage())
+						if ($attachment->size() < 2097152)
 						{
-							$file = basename($attachment->link('filepath'));
-							$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
-						}
-						else
-						{
-							$message->addAttachment($attachment->link('filepath'));
+							if ($attachment->isImage())
+							{
+								$file = basename($attachment->link('filepath'));
+								$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
+							}
+							else
+							{
+								$message->addAttachment($attachment->link('filepath'));
+							}
 						}
 					}
 				}
@@ -643,6 +646,12 @@ class Tickets extends AdminController
 		}
 
 		Event::trigger('support.onTicketUpdate', array($row, $rowc));
+
+		if ($tmp = Request::getInt('tmp_dir'))
+		{
+			$attach = new Tables\Attachment($this->database);
+			$attach->updateCommentId($tmp, $rowc->get('id'));
+		}
 
 		if (!$isNew)
 		{
@@ -745,11 +754,14 @@ class Tickets extends AdminController
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 				$message['attachments'] = array();
-				foreach ($rowc->attachments() as $attachment)
+				if (!$this->config->get('email_terse'))
 				{
-					if ($attachment->size() < 2097152)
+					foreach ($rowc->attachments() as $attachment)
 					{
-						$message['attachments'][] = $attachment->link('filepath');
+						if ($attachment->size() < 2097152)
+						{
+							$message['attachments'][] = $attachment->link('filepath');
+						}
 					}
 				}
 
@@ -1439,7 +1451,7 @@ class Tickets extends AdminController
 
 		// Incoming file
 		$file = Request::getVar('upload', '', 'files', 'array');
-		if (!$file['name'])
+		if (!is_array($file) || !isset($file['name']) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_NO_FILE'));
 			return '';
