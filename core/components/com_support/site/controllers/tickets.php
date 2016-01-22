@@ -1141,18 +1141,21 @@ class Tickets extends SiteController
 			$html = $eview->loadTemplate();
 			$html = str_replace("\n", "\r\n", $html);
 
-			foreach ($row->attachments() as $attachment)
+			if (!$this->config->get('email_terse'))
 			{
-				if ($attachment->size() < 2097152)
+				foreach ($row->attachments() as $attachment)
 				{
-					if ($attachment->isImage())
+					if ($attachment->size() < 2097152)
 					{
-						$file = basename($attachment->link('filepath'));
-						$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
-					}
-					else
-					{
-						$message->addAttachment($attachment->link('filepath'));
+						if ($attachment->isImage())
+						{
+							$file = basename($attachment->link('filepath'));
+							$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
+						}
+						else
+						{
+							$message->addAttachment($attachment->link('filepath'));
+						}
 					}
 				}
 			}
@@ -1861,11 +1864,14 @@ class Tickets extends SiteController
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 				$message['attachments'] = array();
-				foreach ($rowc->attachments() as $attachment)
+				if (!$this->config->get('email_terse'))
 				{
-					if ($attachment->size() < 2097152)
+					foreach ($rowc->attachments() as $attachment)
 					{
-						$message['attachments'][] = $attachment->link('filepath');
+						if ($attachment->size() < 2097152)
+						{
+							$message['attachments'][] = $attachment->link('filepath');
+						}
 					}
 				}
 

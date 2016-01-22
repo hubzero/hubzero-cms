@@ -837,6 +837,8 @@
 	}
 
 	.pane-list {
+		width: 100%;
+		min-width: 100%;
 		background: #ececec;
 		background: rgba(0, 0, 0, 0.07);
 		border-left: 1px solid #e0e0e0;
@@ -848,25 +850,28 @@
 	}
 
 	.pane-item {
-		width: 50%;
-		min-width: 50%;
-		background: rgba(0, 0, 0, 0.025);
-		border-left: 1px solid #e0e0e0;
+		display: none;
 	}
-	.pane-item .pane-inner {
-		margin-left: 5px;
-		border-left: 1px solid #e0e0e0;
-		background: #fff;
-	}
-	@media (max-width: 1025px) {
+/*
+	@media (min-width: 70em) {
 		.pane-list {
-			width: 100%;
-			min-width: 100%;
+			width: auto;
+			min-width: 200px;
 		}
 		.pane-item {
-			display: none;
+			display: table-cell;
+			width: 50%;
+			min-width: 50%;
+			background: rgba(0, 0, 0, 0.025);
+			border-left: 1px solid #e0e0e0;
+		}
+		.pane-item .pane-inner {
+			margin-left: 5px;
+			border-left: 1px solid #e0e0e0;
+			background: #fff;
 		}
 	}
+*/
 	.pane-item .submit {
 		margin-left: 75px;
 	}
@@ -1764,4 +1769,223 @@
 	.sort-options li:hover ul,
 	.sort-options li:focus ul {
 		visibility: visible;
+	}
+
+/* File upload */
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+	.qq-uploader {
+		position: relative;
+		margin: 1em 0 0 0;
+		padding: 0;
+	}
+	/* Upload list */
+	.qq-upload-list {
+		list-style: none;
+		margin: 1em 0;
+	}
+	.qq-upload-list li {
+		color: #FFFFFF;
+		margin: 0 0 1px;
+		padding: 0.5em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1em;
+		list-style: none;
+		-webkit-text-shadow: none;
+		   -moz-text-shadow: none;
+		    -ms-text-shadow: none;
+		     -o-text-shadow: none;
+		        text-shadow: none;
+		-webkit-border-radius: 0.5em;
+		   -moz-border-radius: 0.5em;
+		    -ms-border-radius: 0.5em;
+		     -o-border-radius: 0.5em;
+		        border-radius: 0.5em;
+		position: relative;
+		background: #BFE613;
+		background: #5DA30C -moz-linear-gradient(-45deg, rgba(45, 170, 60, 0), rgba(45, 170, 60, 0) 10%, rgba(146, 209, 0, 0.4) 30%, rgba(146, 209, 0, 0.4) 50%, rgba(45, 170, 60, 0) 50%, rgba(45, 170, 60, 0));
+		background: #5DA30C -webkit-gradient(linear, 0 0, 60 60, from(rgba(45, 170, 60, 0)), color-stop(.49, rgba(45, 170, 60, 0)), color-stop(.491, rgba(146, 209, 0, .4)), color-stop(.8, rgba(146, 209, 0, .4)), color-stop(.801, rgba(45, 170, 60, 0)), to(rgba(45, 170, 60, 0)));
+		background-size: 120px 120px;
+		-webkit-animation-name: gradientShift;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-fill-mode: both;
+		-webkit-animation-timing-function: linear;
+		-moz-animation-name: gradientShift;
+		-moz-animation-duration: 1s;
+		-moz-animation-iteration-count: infinite;
+		-moz-animation-fill-mode: both;
+		-moz-animation-timing-function: linear;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+		filter: alpha(opacity=75);
+		-webkit-opacity: 0.75;
+		-moz-opacity: 0.75;
+		opacity: 0.75;
+	}
+	@-webkit-keyframes gradientShift {
+		0%   { background-position-x: 0px; }
+		100% { background-position-x: 120px; }
+	}
+
+	@-moz-keyframes gradientShift {
+		0%   { background-position: 0px 0; }
+		100% { background-position: 120px 0; }
+	}
+	.qq-upload-file,
+	.qq-upload-spinner,
+	.qq-upload-size,
+	.qq-upload-cancel,
+	.qq-upload-failed-text {
+		margin-right: 12px;
+		z-index: 250;
+		position: relative;
+	}
+	.qq-upload-spinner {
+		display: inline-block;
+		background: url("../img/loading.gif");
+		width: 15px;
+		height: 15px;
+		vertical-align: text-bottom;
+	}
+	.qq-upload-size,
+	.qq-upload-cancel {
+		font-size: 0.9em;
+		font-weight: normal;
+	}
+	.qq-upload-failed-text {
+		display: none;
+	}
+	.qq-upload-fail .qq-upload-failed-text {
+		display: inline;
+	}
+	.qq-upload-list li.qq-upload-success {
+		background: #5DA30C;
+		color: #FFFFFF;
+	}
+	.qq-upload-list li.qq-upload-fail {
+		background: #AF0000;
+		color: #FFFFFF;
+	}
+	.qq-upload-spinner,
+	.qq-upload-size,
+	.qq-upload-cancel,
+	.qq-upload-failed-text {
+		float: right;
+	}
+	.qq-upload-spinner {
+		display: none;
+	}
+	.qq-progress-bar {
+		width: 51%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: #5DA30C;
+		-webkit-box-shadow: 0px 0px 14px #0D4500;
+		   -moz-box-shadow: 0px 0px 14px #0D4500;
+		    -ms-box-shadow: 0px 0px 14px #0D4500;
+		     -o-box-shadow: 0px 0px 14px #0D4500;
+		        box-shadow: 0px 0px 14px #0D4500;
+		-webkit-border-radius: 0.5em;
+		   -moz-border-radius: 0.5em;
+		    -ms-border-radius: 0.5em;
+		     -o-border-radius: 0.5em;
+		        border-radius: 0.5em;
+	}
+	.qq-upload-cancel {
+		color: #800000;
+		display: none;
+	}
+	.qq-upload-success .qq-progress-bar {
+		display: none;
+	}
+
+	/* Drop areas */
+	.qq-upload-button,
+	.qq-upload-drop-area  {
+		background: #f7f7f7;
+		border: 2px dashed #ddd;
+		text-align: center;
+		color: #bbb;
+		padding: 0;
+		font-size: 1.5em;
+	}
+	.asset-uploader .columns {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		text-align: center;
+		padding: 0.8em 0;
+	}
+	.qq-upload-button span,
+	.qq-upload-drop-area span {
+		position: relative;
+		padding-left: 1.5em;
+	}
+	.qq-upload-button span:before,
+	.qq-upload-drop-area span:before {
+		display: block;
+		position: absolute;
+		top: -0.1em;
+		font-family: "Fontcons";
+		font-size: 1.5em;
+		line-height: 1;
+		content: "\f016";
+		left: 0;
+	}
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		border: 2px solid #333;
+		color: #333;
+		cursor: pointer;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	#hubForm .file-list .item-asset,
+	.file-list .item-asset {
+		background: #f7f7f7;
+		border-radius: 0.25em;
+		position: relative;
+		margin: 0.5em 0;
+		padding: 0.5em 1em;
+	}
+	.file-list .item-asset .asset-file {
+		margin-right: 4em;
+		display: inline-block;
+		width: 80%;
+	}
+	.file-list .item-asset .delete {
+		font-size: 1.2em;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		border: none;
+		position: absolute;
+		top: 0.4em;
+		right: 0.6em;
+	}
+	.file-list .item-asset .delete:before {
+		margin-right: 1em;
+		content: "\f014";
+		font-family: "Fontcons";
 	}
