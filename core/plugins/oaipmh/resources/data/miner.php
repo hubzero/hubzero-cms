@@ -454,6 +454,7 @@ class Miner extends Object implements Provider
 				ON d.alias = v.toolname
 				AND d.local_revision=v.revision
 				WHERE v.toolname = " . $this->database->quote($record->alias) . "
+				AND v.state!=3
 				ORDER BY v.state DESC, v.revision DESC"
 			);
 			$versions = $this->database->loadObjectList();
