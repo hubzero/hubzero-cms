@@ -193,10 +193,10 @@ jQuery(document).ready(function ( jq ) {
 				data.submit();
 			},
 			eventAfterAllRender : function ( view ) {
-				graphs();
-
 				// Set height of input box (minus margin and borders)
-				$('.details-inner').height($('.calendar').height() - 32);
+				$('.details-inner').height(calendar.height() - 32);
+
+				graphs();
 			},
 			events : '/api/time/today'
 		});
