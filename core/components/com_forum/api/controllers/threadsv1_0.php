@@ -116,7 +116,7 @@ class Threadsv1_0 extends ApiController
 				$obj->threads    = $section->count('threads');
 				$obj->posts      = $section->count('posts');
 
-				$obj->uri        = str_replace('/api', '', $base . '/' . ltrim(Route::url($section->link()), '/'));
+				$obj->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url($section->link()), '/'));
 
 				$response->sections[] = $obj;
 			}
@@ -230,7 +230,7 @@ class Threadsv1_0 extends ApiController
 
 				$category->set('section_alias', $section->get('alias'));
 
-				$obj->uri         = str_replace('/api', '', $base . '/' . ltrim(Route::url($category->link()), '/'));
+				$obj->url         = str_replace('/api', '', $base . '/' . ltrim(Route::url($category->link()), '/'));
 
 				$response->categories[] = $obj;
 			}
