@@ -47,7 +47,7 @@ defined('_HZEXEC_') or die();
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($this->config as $key=>$value):?>
+			<?php foreach ($this->config as $key => $value):?>
 				<tr>
 					<td>
 						<?php echo $key;?>
@@ -58,6 +58,11 @@ defined('_HZEXEC_') or die();
 						{
 							foreach ($value as $ky => $val)
 							{
+								if (in_array($ky, array('password','user','smtpuser','smtppass','secret','ftp_user','ftp_pass')))
+								{
+									$val = str_repeat('x', 6);
+								}
+
 								if (is_array($val))
 								{
 									foreach ($val as $k => $v)
