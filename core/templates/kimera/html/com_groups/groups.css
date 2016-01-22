@@ -1200,7 +1200,8 @@
 	#page_menu {
 		margin: 0 0 30px 0;
 	}
-	#page_menu li a {
+	#page_menu li a,
+	#page_menu li .disabled {
 		width: 1em;
 		text-indent: -500em;
 	}
@@ -1213,7 +1214,8 @@
 	}
 	#page_menu li a:before,
 	#page_menu li a:after,
-	#page_menu li a.alrt {
+	#page_menu li a.alrt,
+	#page_menu li .disabled:before {
 		text-indent: 0;
 	}
 	#page_menu.js li {
@@ -1257,7 +1259,8 @@
 		max-width: 225px;
 		min-height: 100px;
 	}
-	#page_menu li a {
+	#page_menu li a,
+	#page_menu li .disabled {
 		text-indent: 0;
 		width: auto;
 	}
