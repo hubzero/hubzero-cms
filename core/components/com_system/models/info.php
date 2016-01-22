@@ -109,11 +109,34 @@ class Info extends \JModelLegacy
 	{
 		if (is_null($this->config))
 		{
-			$this->config = Config::toArray();
+			$config = Config::toArray();
+			$this->config = array();
 
-			foreach (array('host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass') as $key)
+			$blur = array('host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass', 'secret');
+
+			foreach ($config as $section => $data)
 			{
-				$this->config[$key] = 'xxxxxx';
+				if (is_array($data))
+				{
+					foreach ($data as $key => $value)
+					{
+						if (in_array($key, $blur))
+						{
+							$value = 'xxxxxx';
+						}
+
+						$this->config[$section . '.' . $key] = $value;
+					}
+				}
+				else
+				{
+					if (in_array($data, $blur))
+					{
+						$value = 'xxxxxx';
+					}
+
+					$this->config[$section] = $value;
+				}
 			}
 		}
 		return $this->config;
