@@ -47,6 +47,9 @@
 	-moz-box-sizing: border-radius;
 	box-sizing: border-radius;
 }
+.com_time_overview .pie-half2 {
+	border-radius: 0;
+}
 .com_time_overview .hours {
 	font-size: 40px;
 	line-height: 40px;
@@ -79,7 +82,7 @@
 	margin: 0 0 0 15px;
 	padding: 15px;
 	border: 1px solid #DDDDDD;
-	min-height: 370px;
+	height: 410px;
 	position: relative;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
