@@ -756,6 +756,8 @@ class Register extends SiteController
 					{
 						$xprofile->loadRegistration($xregistration);
 
+						$xprofile->set('public', 0);
+
 						if (is_object($hzal))
 						{
 							if ($xprofile->get('email') == $hzal->email)
@@ -770,9 +772,8 @@ class Register extends SiteController
 						else if ($useractivation == 0)
 						{
 							$xprofile->set('emailConfirmed', 1);
+							$xprofile->set('public', $this->config->get('privacy', 0));
 						}
-
-						$xprofile->set('public', 0);
 
 						// Do we have a return URL?
 						$regReturn = Request::getVar('return', '');
