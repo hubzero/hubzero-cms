@@ -201,8 +201,9 @@ class TemplatesModelSource extends JModelForm
 		}
 
 		$fileName   = $this->getState('filename');
-		$client     = JApplicationHelper::getClientInfo($template->client_id);
-		$filePath   = \Hubzero\Filesystem\Util::normalizePath($client->path.'/templates/'.$template->element.'/'.$fileName);
+		//$client     = JApplicationHelper::getClientInfo($template->client_id);
+		//$filePath   = \Hubzero\Filesystem\Util::normalizePath($client->path.'/templates/'.$template->element.'/'.$fileName);
+		$filePath   = \Hubzero\Filesystem\Util::normalizePath(($template->protected ? PATH_CORE : PATH_APP).'/templates/'.$template->element.'/'.$fileName);
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
