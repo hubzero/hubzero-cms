@@ -39,6 +39,8 @@ $this->css()
      ->css('records')
      ->js('records')
      ->js();
+
+HTML::behavior('core');
 ?>
 
 <div id="dialog-confirm"></div>
