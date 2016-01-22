@@ -44,30 +44,37 @@ class Macro
 	/**
 	 * Name of the macro
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_name  = NULL;
 
 	/**
 	 * Container for internal data
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_data  = array();
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_db    = NULL;
 
 	/**
 	 * Container for errors
 	 *
-	 * @var unknown
+	 * @var  string
 	 */
 	protected $_error = NULL;
+
+	/**
+	 * Container for errors
+	 *
+	 * @var  array
+	 */
+	protected $_arguments = NULL;
 
 	/**
 	 * Allow macro in partial parsing?
@@ -141,6 +148,10 @@ class Macro
 	 */
 	public function __set($property, $value)
 	{
+		if ($property == 'args')
+		{
+			$this->_arguments = null;
+		}
 		$this->_data[$property] = $value;
 	}
 
@@ -211,6 +222,98 @@ class Macro
 	public function description()
 	{
 		return \Lang::txt('Not implemented.');
+	}
+
+	/**
+	 * Get macro argumentss
+	 *
+	 * @return  array  List of arguments
+	 */
+	protected function getArguments()
+	{
+		if (!is_array($this->_arguments))
+		{
+			// get the args passed in
+			$arguments = explode(',', (string)$this->args);
+			$arguments = array_map('trim', (array)$arguments);
+
+			$this->_arguments = $arguments;
+		}
+
+		return $this->_arguments;
+	}
+
+	/**
+	 * Get a macro argument
+	 *
+	 * @param   mixed   $key
+	 * @param   mixed   $default
+	 * @return  string
+	 */
+	protected function getArgument($key, $default = null)
+	{
+		$arguments = $this->getArguments();
+
+		if (!$this->hasArgument($key))
+		{
+			return $default;
+		}
+
+		$value = $arguments[$key];
+
+		return $value ? $value : $default;
+	}
+
+	/**
+	 * Set all macro argument values
+	 *
+	 * @param   array   $data
+	 * @return  object
+	 */
+	protected function setArguments($data)
+	{
+		$this->arguments = (array)$data;
+
+		return $this;
+	}
+
+	/**
+	 * Set a macro argument value
+	 *
+	 * @param   mixed   $key
+	 * @param   mixed   $val
+	 * @return  object
+	 */
+	protected function setArgument($key, $val)
+	{
+		$this->_arguments[$key] = $val;
+
+		return $this;
+	}
+
+	/**
+	 * Check if macro has any arguments
+	 *
+	 * @return  boolean
+	 */
+	protected function hasArguments()
+	{
+		$arguments = $this->getArguments();
+
+		return !empty($arguments);
+	}
+
+	/**
+	 * Check if macro has specified argument
+	 *
+	 * @param   string   $key
+	 * @return  boolean
+	 */
+	protected function hasArgument($key)
+	{
+		$arguments = $this->getArguments();
+
+		return isset($arguments[$key]);
 	}
 }
 
