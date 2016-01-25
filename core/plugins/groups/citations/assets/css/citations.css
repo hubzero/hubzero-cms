@@ -8,63 +8,64 @@
 /*
 
  -- -- -- -- -- -- --
- Members Blog plugin CSS
+ Groups Citations plugin CSS
  -- -- -- -- -- -- --
 
 */
 .legend table {
- max-width: 100px;
+	max-width: 100px;
 }
 .legendColorBox {
- max-width: 14px;
+	max-width: 14px;
 }
 #download-frame {
-	display:none;
+	display: none;
 }
 .citation-row {
- margin-bottom: 40px;
+	margin-bottom: 40px;
 }
 .citation-row.unpublished {
- background-color:	#FFFAC0; 
+	background-color: #FFFAC0;
 }
 .citations .citation-label .type {
- font-weight: bold;
+	font-weight: bold;
 }
 .citation-details {
- background-color: rgba(245, 245, 245, 0.33);
+	background-color: rgba(245, 245, 245, 0.33);
 }
 .citation-details a {
- margin-top: 5px;
+	margin-top: 5px;
 }
 .citation-details .badges {
- float: right;
+	float: right;
 }
 .citation-details .badges a {
- background: #8e6e59 !important;
- color: #FFF !important;
+	background: #8e6e59 !important;
+	color: #FFF !important;
 }
 .citation-details .badges a:before {
- border-color: transparent #8e6e59 transparent transparent !important;
+	border-color: transparent #8e6e59 transparent transparent !important;
 }
 .citation-details .tags {
- margin-bottom: 6px;
+	margin-bottom: 6px;
 }
 .citation-details .tags li {
- padding: 0;
- border: none;
+	padding: 0;
+	border: none;
 }
 .unpublished-details {
-background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10px, #F9F3AD 20px );
+	background: repeating-linear-gradient( 150deg, #FFFAC0, #FFFAC0 10px, #F9F3AD 10px, #F9F3AD 20px );
 }
 .admin {
- padding: 10px 10px 10px 10px;	
- background-color: #C1C1C1;
- margin: 25px 0 15px 0;
+	padding: 10px 10px 10px 10px;
+	background-color: #C1C1C1;
+	margin: 25px 0 15px 0;
 }
 
-.admin a.btn, .btn {
- border-color: #5F5E5E;
- }
+.admin a.btn,
+.btn {
+	border-color: #5F5E5E;
+}
 
 a.btn.icon-delete:hover{
 	color: white;
@@ -77,100 +78,98 @@ a.btn.icon-delete:hover{
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
 }
 
-
-	.entries .col-options {
-		white-space: nowrap;
-	}
-	.entries .edit,
-	.entries .delete,
-	.entries .publish {
-		display: inline-block;
-		width: 1em;
-		height: 1em;
-		overflow: hidden;
-		line-height: 1;
-		font-size: 1.2em;
-		border: none;
-		color: #ccc;
-		margin-left: 0.2em;
-	}
-	.entries .edit:hover {
-		color: #222;
-	}
-	.entries .delete:hover {
-		color: red;
-	}
-	.entries .publish:hover {
-		color: green;
-	}
+.entries .col-options {
+	white-space: nowrap;
+}
+.entries .edit,
+.entries .delete,
+.entries .publish {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	overflow: hidden;
+	line-height: 1;
+	font-size: 1.2em;
+	border: none;
+	color: #ccc;
+	margin-left: 0.2em;
+}
+.entries .edit:hover {
+	color: #222;
+}
+.entries .delete:hover {
+	color: red;
+}
+.entries .publish:hover {
+	color: green;
+}
 
 .templateTable {
- font-size: 9pt;
- width: 100%;
- cursor: pointer;
+	font-size: 9pt;
+	width: 100%;
+	cursor: pointer;
 }
 
 #templateExplaination {
- text-align: center;
- margin-right: auto;
- margin-left: auto;
- padding: 5px;
- width: 100%;
- float: left;
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 5px;
+	width: 100%;
+	float: left;
 }
 
 .clickable  tr {
- cursor: pointer;
+	cursor: pointer;
 }
 
 #download-batch {
- padding:10px;
- text-align: center;
+	padding:10px;
+	text-align: center;
 }
 
-#intro-container
-{
- width: inherit;
- height: 100%;
- margin-top: 5%;
+#intro-container {
+	width: inherit;
+	height: 100%;
+	margin-top: 5%;
 }
 
 #citations-introduction {
- height: inherit;
- max-width: 460px;
- -webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
- -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
- -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4); 
- -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4); 
+	height: inherit;
+	max-width: 460px;
+	-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+	-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+	-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4); 
+	-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4); 
 	box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 	border: 1px solid #ddd\9; /* [!] IE 8 */ 
 	*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	margin-right: auto;
 	margin-left: auto;
-	}
-	#citations-introduction .instructions {
-		background-color: #FFFFFF;
-		padding: 0 30px 30px 30px;
-		}
-	#instructions-title:before {
-		content: "\275D";
-		font-family: "Fontcons";
-		padding: 10px;
-		}
-	#instructions-title {
-		margin: 10px 0 0 0;
-		padding: 20px 0 10px 0;
-		}
+}
+#citations-introduction .instructions {
+	background-color: #FFFFFF;
+	padding: 0 30px 30px 30px;
+}
+#instructions-title:before {
+	content: "\275D";
+	font-family: "Fontcons";
+	padding: 10px;
+}
+#instructions-title {
+	margin: 10px 0 0 0;
+	padding: 20px 0 10px 0;
+}
 #who {
 	font-weight: bold;
-	}
+}
 .instructions ul {
 	margin-left: 0;
-	}
+}
 .instructions ul li {
 	padding: 0 0 15px 0; 
 	list-style: none;
-	}
+}
 
 .description {
 	width: 225px;
@@ -184,85 +183,113 @@ a.btn.icon-delete:hover{
 	padding-left: 30px;
 	font-size: 12pt;
 	font-weight: bold;
-	}
+}
 .instruction {
 	padding: 10px;
 	border: 1px solid #f0f0f0;
 	height: auto;
-	}
+}
 
-	#citations-introduction .questions {
-		background-color: #f0f0f0;
-		margin-top: 0;
-		padding: 10px 30px 30px 30px;
-		}
+#citations-introduction .questions {
+	background-color: #f0f0f0;
+	margin-top: 0;
+	padding: 10px 30px 30px 30px;
+}
 
 #noCitations {
 	text-align: center;
 	font-size: 12pt;
 }
 
-	.citation-author {
-		background: #f7f7f7;
-		border-radius: 0.25em;
-		position: relative;
-		margin: 0 0 0.5em 0;
-		padding: 1em;
+.citation-author {
+	background: #f7f7f7;
+	border-radius: 0.25em;
+	position: relative;
+	margin: 0 0 0.5em 0;
+	padding: 1em;
+}
+.citation-author .author-name {
+	margin-right: 4em;
+	display: inline-block;
+	width: 80%;
+}
+.add-author {
+	margin-top: 30px;
 	}
-	.citation-author .author-name {
-		margin-right: 4em;
-		display: inline-block;
-		width: 80%;
-	}
-	.add-author {
-		margin-top: 30px;
-		}
-	.citation-author .author-handle {
-		margin-right: 1em;
-		display: inline-block;
-		width: 16px;
-		height: 16px;
-		position: relative;
-	}
-	.citation-author .author-handle:after {
-		display: inline-block;
-		width: 1em;
-		height: 1em;
-		position: absolute;
-		top: 0.2em;
-		left: 0;
-		content: "\f0dc";
-		font-family: "Fontcons";
-		font-size: 16px;
-		line-height: 1;
-		color: #ccc;
-	}
-	.citation-author:hover .author-handle,
-	.citation-author:hover .author-handle:after,
-	.citation-author .author-handle:hover:after,
-	.citation-author .author-handle:after:hover {
-		cursor: move;
-		color: #333;
-	}
-	.citation-author span.author-description {
-		position: absolute;
-		right: 1em;
-		top: 25%;
-		font-size: 90%;
-	}
-	.citation-author .delete {
-		font-size: 1.7em;
-		display: block;
-		overflow: hidden;
-		width: 1em;
-		height: 1em;
-		border: none;
-	}
-	.citation-author .delete:before {
-		/*margin-right: 1em; */
-		content: "\f014";
-		font-family: "Fontcons";
-	}
+.citation-author .author-handle {
+	margin-right: 1em;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	position: relative;
+}
+.citation-author .author-handle:after {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	position: absolute;
+	top: 0.2em;
+	left: 0;
+	content: "\f0dc";
+	font-family: "Fontcons";
+	font-size: 16px;
+	line-height: 1;
+	color: #ccc;
+}
+.citation-author:hover .author-handle,
+.citation-author:hover .author-handle:after,
+.citation-author .author-handle:hover:after,
+.citation-author .author-handle:after:hover {
+	cursor: move;
+	color: #333;
+}
+.citation-author span.author-description {
+	position: absolute;
+	right: 1em;
+	top: 25%;
+	font-size: 90%;
+}
+.citation-author .delete {
+	font-size: 1.7em;
+	display: block;
+	overflow: hidden;
+	width: 1em;
+	height: 1em;
+	border: none;
+}
+.citation-author .delete:before {
+	content: "\f014";
+	font-family: "Fontcons";
+}
+.citation-links {
+	margin: 0.5em 0;
+	padding: 0;
+	list-style: none;
+	border: none;
+}
+.citation-links li {
+	margin-right: 2em;
+	display: inline;
+	border: none;
+}
+.citation-links li a:before {
+	content: "\f08e";
+	font-family: "Fontcons";
+	margin-right: 0.5em;
+	font-size: 0.85em;
+	color: #ccc;
+	color: rgba(0, 0, 0, 0.3);
+}
+
+.btn-cluster {
+	padding: 5px 15px 15px 5px;
+	margin-left:auto;
+	margin-right: auto;
+	float:left;
+	width: 100%;
+	text-align: center;
+}
+
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1080px) {
 	.group_citations .aside,
@@ -278,12 +305,3 @@ a.btn.icon-delete:hover{
 		margin-right: 0;
 	}
 }
-
-.btn-cluster {
-	padding: 5px 15px 15px 5px;
-	margin-left:auto;
-	margin-right: auto;
-	float:left;
-	width: 100%;
-	text-align: center;
-	}

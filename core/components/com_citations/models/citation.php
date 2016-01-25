@@ -37,6 +37,8 @@ use Hubzero\Database\Relational;
 use Hubzero\Utility\String;
 use Hubzero\Base\Object;
 
+require_once(__DIR__ . DS . 'link.php');
+
 /**
  * Hubs database model
  *
@@ -50,7 +52,6 @@ class Citation extends Relational
 	 * @var string
 	 **/
 	protected $namespace = '';
-	// table name jos_citations
 
 	/**
 	 * Default order by for model
@@ -65,7 +66,7 @@ class Citation extends Relational
 	 * @var array
 	 **/
 	protected $rules = array(
-		'type'	=> 'notempty',
+		'type'  => 'notempty',
 		'title' => 'notempty'
 	);
 
@@ -101,11 +102,33 @@ class Citation extends Relational
 		return $this->belongsToOne('Type', 'type', 'id');
 	}
 
+	/**
+	 * Defines a many to many relationship with tags
+	 *
+	 * @return  object
+	 */
 	public function tags()
 	{
 		return $this->manyToMany('Tag', '#__tags_object', 'objectid', 'tagid');
 	}
 
+	/**
+	 * Defines a one to many relationship with links
+	 *
+	 * @return  object
+	 */
+	public function links()
+	{
+		return $this->oneToMany('Link');
+	}
+
+	/**
+	 * Format a citation
+	 *
+	 * @param   array   $config
+	 * @param   string  $highlight
+	 * @return  object
+	 */
 	//public function formatted($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	public function formatted($config = array('format' => 'apa'), $highlight = NULL)
 	{
@@ -138,14 +161,14 @@ class Citation extends Relational
 			break;
 		}
 
-		//var to hold COinS data
+		// var to hold COinS data
 		$coins_data = array(
 			"ctx_ver=Z39.88-2004",
 			"rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
 			"rfr_id=info:sid/{$hub_url}:{$hub_name}"
 		);
 
-		//array to hold replace vals
+		// array to hold replace vals
 		$replace_values = array();
 
 		// get the template
@@ -159,7 +182,7 @@ class Citation extends Relational
 			$format = \Components\Citations\Models\Format::all()->where('style', 'LIKE', '%IEEE%')->row()->toObject();
 		}
 
-		//get the template keys
+		// get the template keys
 		$template_keys =  array(
 			"type" => "{TYPE}",
 			"cite" => "{CITE KEY}",
@@ -198,11 +221,8 @@ class Citation extends Relational
 			"search_string" => "{SECONDARY LINK}",
 			"sec_cnt" => "{SECONDARY COUNT}"
 		);
-		/**
-		 * Values used by COINs
-		*
-		* @var  array
-		*/
+
+		// Values used by COINs
 		$coins_keys = array(
 			'title'        => 'rft.atitle',
 			'journaltitle' => 'rft.jtitle',
@@ -315,7 +335,7 @@ class Citation extends Relational
 							{
 								if ($author->uidNumber > 0)
 								{
-									 $a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
+									$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
 								}
 								else
 								{
@@ -334,7 +354,7 @@ class Citation extends Relational
 				if ($k == 'title')
 				{
 					$url_format = isset($config['citation_url']) ? $config['citation_url'] : 'url';
-									$custom_url = isset($config['citation_custom_url']) ? $config['citation_custom_url'] : '';
+					$custom_url = isset($config['citation_custom_url']) ? $config['citation_custom_url'] : '';
 
 					$url = $this->url;
 					if ($url_format == 'custom' && $custom_url != '')
@@ -387,7 +407,7 @@ class Citation extends Relational
 
 					//do we want to display single citation
 					//$singleCitationView = $config('citation_single_view', 0);
-									$singleCitationView = isset($config['citation_single_view']) ? $config['citation_single_view'] : 0;
+					$singleCitationView = isset($config['citation_single_view']) ? $config['citation_single_view'] : 0;
 
 					if ($singleCitationView && isset($this->id))
 					{
@@ -504,7 +524,6 @@ class Citation extends Relational
 		}
 
 		// output the citation
-
 		return $cite;
 	}
 
@@ -559,7 +578,7 @@ class Citation extends Relational
 		}
 
 		// citation association - to HUB resources
-	//	$html .= $this->citationAssociation($config, $citation);
+		//$html .= $this->citationAssociation($config, $citation);
 
 		return $html;
 	}
@@ -567,13 +586,10 @@ class Citation extends Relational
 	/**
 	 * Output a tagcloud of badges associated with a citation
 	 *
-	 * @param   object  $citation  Citation
-	 * @param   object  $database  JDatabase
 	 * @return  string  HTML
 	 */
 	public function badgeCloud()
 	{
-		$html = '';
 		$html = '<ul class="tags badges">';
 		foreach ($this->tags as $badge)
 		{
@@ -583,7 +599,7 @@ class Citation extends Relational
 			}
 		}
 
-		$html .= "</ul>";
+		$html .= '</ul>';
 
 		return $html;
 	}
@@ -591,13 +607,14 @@ class Citation extends Relational
 	/**
 	 * Output a tagcloud of tags associated with a citation
 	 *
-	 * @param   object  $citation  Citation
-	 * @param   object  $database  JDatabase
 	 * @return  string  HTML
 	 */
 	public function tagCloud()
 	{
+		$html = '';
+
 		$tags = clone $this->tags;
+
 		if ($this->tags()->count() > 0)
 		{
 			$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
@@ -615,8 +632,9 @@ class Citation extends Relational
 				}
 			}
 			$html .= '</ol>';
-			return $html;
 		}
+
+		return $html;
 	}
 
 	/**
@@ -628,8 +646,7 @@ class Citation extends Relational
 	 */
 	public static function citationOpenUrl($openurl, $citation)
 	{
-		$html = "";
-
+		$html  = '';
 		$text  = $openurl['text'];
 		$icon  = $openurl['icon'];
 		$link  = $openurl['link'];
@@ -733,5 +750,4 @@ class Citation extends Relational
 
 		return $html;
 	}
-
-} //end Citation Class
+}

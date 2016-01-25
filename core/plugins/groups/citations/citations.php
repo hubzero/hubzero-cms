@@ -681,6 +681,27 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$ct2 = new \Components\Tags\Models\Cloud($citation->id, 'citations');
 		$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 
+		// save links
+		$links = Request::getVar('links', array(), 'post');
+		if ($links)
+		{
+			foreach ($links as $link)
+			{
+				$link['citation_id'] = $citation->id;
+
+				$l = \Components\Citations\Models\Link::oneOrNew($link['id']);
+				if ($link['url'] && $link['title'])
+				{
+					$l->set($link);
+					$l->save();
+				}
+				else if ($l->id)
+				{
+					$l->destroy();
+				}
+			}
+		}
+
 		// redirect after save
 		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),

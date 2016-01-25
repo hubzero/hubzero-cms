@@ -183,7 +183,23 @@ if (isset($this->messages))
 											//get this citations rollover param
 											//$params = new \Hubzero\Config\Registry($cite->params);
 											$citation_rollover = 0;
+
+											$links = $cite->links()->rows();
 										?>
+										<?php if ($links->count() > 0) : ?>
+											<ul class="citation-links">
+												<?php
+												foreach ($links as $link)
+												{
+													?>
+													<li>
+														<a href="<?php echo $link->url; ?>"><?php echo $this->escape($link->title); ?></a>
+													</li>
+													<?php 
+												}
+												?>
+											</ul>
+										<?php endif; ?>
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
 												<?php
