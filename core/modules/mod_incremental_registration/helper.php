@@ -319,8 +319,9 @@ class Helper extends Module
 							}
 						}
 
-						$dbh->setQuery('SELECT COALESCE((SELECT balance FROM `#__users_transactions` WHERE uid = ' . $uid . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = ' . $uid . ')), 0)');
-						$new_amount = $dbh->loadResult() + $award;
+						//$dbh->setQuery('SELECT COALESCE((SELECT balance FROM `#__users_transactions` WHERE uid = ' . $uid . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = ' . $uid . ')), 0)');
+						$dbh->setQuery('SELECT balance FROM `#__users_points` WHERE uid = ' . $uid);
+						$new_amount = intval($dbh->loadResult()) + $award;
 
 						if ($award)
 						{
