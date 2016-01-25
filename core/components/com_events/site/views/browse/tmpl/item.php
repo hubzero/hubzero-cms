@@ -33,8 +33,33 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// get the timezone name from offset
-$timezone = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
+// Check to see if the timezone is set by the event.
+if (!isset($this->row->time_zone) || $this->row->time_zone == '')
+{
+	// Get the timezone preferred by the USER, if not use HUB's
+	$timezone = \Config::get('offset');
+	// Handle daylight savings time
+	if (date('I', strtotime($this->row->publish_up)))
+	{
+		// Add 1 hour
+		$publish_up = strtotime($this->row->publish_up . '+ 1 hour');
+		//$this->row->publish_up = $publish_up;
+	}
+	// Handle daylight savings time
+	if (date('I', strtotime($this->row->publish_down)))
+	{
+		// Add 1 hour
+		$publish_down = strtotime($this->row->publish_down. '+ 1 hour');
+		//$this->row->publish_down = $publish_down;
+	}
+}
+elseif (isset($this->row->time_zone))
+{
+	// else use the one provided by the event
+	$timezone = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
+}
+
+// If not timezone is found or cannot be acertained from above
 if ($timezone === false)
 {
 	$timezone = null;
@@ -43,6 +68,7 @@ if ($timezone === false)
 	$abbrarray = timezone_abbreviations_list();
 	foreach ($abbrarray as $abbr)
 	{
+		// match a city to the offset
 		foreach ($abbr as $city)
 		{
 			if ($city['offset'] == $offset)
@@ -52,6 +78,7 @@ if ($timezone === false)
 		}
 	}
 }
+
 
 $this->row->content = stripslashes($this->row->content);
 $this->row->content = str_replace('<br />','',$this->row->content);

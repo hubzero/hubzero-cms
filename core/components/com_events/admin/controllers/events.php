@@ -388,7 +388,7 @@ class Events extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		$offset = Config::get('offset');
+		//$offset = Config::get('offset');
 
 		// Bind the posted data to an event object
 		$row = new Event($this->database);

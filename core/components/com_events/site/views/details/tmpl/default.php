@@ -145,24 +145,50 @@ $this->css()
 			// get publish up/down & timezone
 			$publish_up   = $this->row->publish_up;
 			$publish_down = $this->row->publish_down;
-			$timezone     = timezone_name_from_abbr('',$this->offset*3600, NULL);
 
 			if (date("Y-m-d", strtotime($publish_up)) == date("Y-m-d", strtotime($publish_down)))
 			{
-				$html .= Date::of($publish_up, $timezone)->format('l d F, Y') . ', ';
-				$html .= Date::of($publish_up, $timezone)->format('g:i a ') . ' - ' . Date::of($publish_down, $timezone)->format('g:i a ');
+				$html .= Date::of($publish_up)->format('l d F, Y') . ', ';
+				$html .= Date::of($publish_up)->format('g:i a ') . ' - ' . Date::of($publish_down)->format('g:i a ');
 				$event_timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, NULL);
 				$event_timezone = new DateTimeZone($event_timezone);
 				$html .= Date::of($publish_down, $event_timezone)->format('T', true);
 			}
 			else
 			{
-				$event_timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, NULL);
-				$event_timezone = new DateTimeZone($event_timezone);
-				$event_timezone = Date::of($publish_down, $event_timezone)->format('T', true);
+				if (!isset($this->row->time_zeone) || $this->row->time_zone == '')
+				{
+					// Get the timezone preferred by the USER, if not use HUB's
+					$event_timezone = \Config::get('offset');
 
-				$html .= Date::of($publish_up, $timezone)->format('l d F, Y g:i a ') . $event_timezone . ' - ';
-				$html .= Date::of($publish_down, $timezone)->format('l d F, Y g:i a ') . $event_timezone;
+					// Case if spanning across two days that are on different DST or ST
+					$event_timezone_start = Date::of($publish_up, $event_timezone)->format('T', true);
+					$event_timezone_end = Date::of($publish_down, $event_timezone)->format('T', true);
+
+					// Handle daylight savings time
+					if (date('I', strtotime($this->row->publish_up)))
+					{
+						// Add 1 hour
+						$publish_up = strtotime($this->row->publish_up . '+ 1 hour');
+						//$this->row->publish_up = $publish_up;
+					}
+					// Handle daylight savings time
+					if (date('I', strtotime($this->row->publish_down)))
+					{
+						// Add 1 hour
+						$publish_down = strtotime($this->row->publish_down. '+ 1 hour');
+						//$this->row->publish_down = $publish_down;
+					}
+				}
+				else
+				{
+					$event_timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, NULL);
+					$event_timezone = new DateTimeZone($event_timezone);
+					$event_timezone = Date::of($publish_down, $event_timezone)->format('T', true);
+				}
+
+				$html .= Date::of($publish_up)->format('l d F, Y g:i a ') . $event_timezone_start . ' - ';
+				$html .= Date::of($publish_down)->format('l d F, Y g:i a ') . $event_timezone_end;
 			}
 
 			$html .= '   </td>'."\n";
