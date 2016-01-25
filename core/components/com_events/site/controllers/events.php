@@ -1859,12 +1859,8 @@ class Events extends SiteController
 			case 11.5:   $tz = 'Asia/Vladivostok';       break;
 			case 13:     $tz = 'Pacific/Tongatapu';      break;
 			case 14:     $tz = 'Pacific/Kiritimati';     break;
-			default:     $tz = timezone_name_from_abbr('',$offset*3600, NULL);
+			default:     $tz = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
 		}
-
-		// create timezone objects
-		$utcTimezone   = new DateTimezone('UTC');
-		$eventTimezone = new DateTimezone($tz);
 
 		// create publish up date time string
 		$rpup = $row->publish_up;
@@ -1872,24 +1868,16 @@ class Events extends SiteController
 		if ($row->publish_up)
 		{
 			$publishtime = $row->publish_up . ' ' . $start_time . ':00';
+			$row->publish_up = \Date::of($publishtime)->toSql();
 		}
-
-		// set publish up date/time in UTC
-		$up = new DateTime($publishtime, $eventTimezone);
-		$up->setTimezone($utcTimezone);
-		$row->publish_up = $up->format("Y-m-d H:i:s");
 
 		// create publish down date/time string
 		$publishtime = date('Y-m-d 00:00:00');
 		if ($row->publish_down)
 		{
 			$publishtime = $row->publish_down . ' ' . $end_time . ':00';
+			$row->publish_down = \Date::of($publishtime)->toSql();
 		}
-
-		// set publish date date/time in UTC
-		$up = new DateTime($publishtime, $eventTimezone);
-		$up->setTimezone($utcTimezone);
-		$row->publish_down = $up->format("Y-m-d H:i:s");
 
 		// Always unpublish if no Publisher otherwise publish automatically
 		if ($this->config->getCfg('adminlevel'))
@@ -1903,6 +1891,7 @@ class Events extends SiteController
 
 		$row->state = 1;
 
+		// Verify that the event doesn't start after it ends or ends before it starts.
 		$pubdow = strtotime($row->publish_down);
 		$pubup = strtotime($row->publish_up);
 		if ($pubdow <= $pubup)
@@ -1922,6 +1911,7 @@ class Events extends SiteController
 			// Set the error message
 			$this->setError($row->getError());
 			$this->tags = $tags;
+
 			// Fall through to the edit view
 			$this->editTask($row);
 			return;
