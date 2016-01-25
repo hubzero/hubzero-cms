@@ -35,6 +35,7 @@ namespace Components\Newsletter\Site\Controllers;
 use Components\Newsletter\Helpers\Helper;
 use Components\Newsletter\Tables\MailinglistEmail;
 use Components\Newsletter\Tables\Mailinglist as MailList;
+use Components\Newsletter\Tables\Mailing;
 use Hubzero\Component\SiteController;
 use stdClass;
 use Pathway;
