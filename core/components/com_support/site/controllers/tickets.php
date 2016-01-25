@@ -1223,6 +1223,30 @@ class Tickets extends SiteController
 						'id'    => $row->owner('id')
 					));
 				}
+				elseif ($row->get('group'))
+				{
+					$group = \Hubzero\User\Group::getInstance($row->get('group'));
+
+					if ($group)
+					{
+						foreach ($group->get('managers') as $manager)
+						{
+							$manager = User::getInstance($manager);
+
+							if (!$manager || !$manager->get('id'))
+							{
+								continue;
+							}
+
+							$rowc->addTo(array(
+								'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
+								'name'  => $manager->get('name'),
+								'email' => $manager->get('email'),
+								'id'    => $manager->get('id')
+							));
+						}
+					}
+				}
 
 				// Add any CCs to the e-mail list
 				foreach ($rowc->changelog()->get('cc') as $cc)
@@ -1753,7 +1777,10 @@ class Tickets extends SiteController
 
 		// Only do the following if a comment was posted
 		// otherwise, we're only recording a changelog
-		if ($rowc->get('comment') || $row->get('owner') != $old->get('owner') || $rowc->attachments()->total() > 0)
+		if ($rowc->get('comment')
+		 || $row->get('owner') != $old->get('owner')
+		 || $row->get('group') != $old->get('group')
+		 || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
 			if (Request::getInt('email_submitter', 0) == 1)
@@ -1791,6 +1818,30 @@ class Tickets extends SiteController
 						'email' => $row->owner('email'),
 						'id'    => $row->owner('id')
 					));
+				}
+				elseif ($row->get('group'))
+				{
+					$group = \Hubzero\User\Group::getInstance($row->get('group'));
+
+					if ($group)
+					{
+						foreach ($group->get('managers') as $manager)
+						{
+							$manager = User::getInstance($manager);
+
+							if (!$manager || !$manager->get('id'))
+							{
+								continue;
+							}
+
+							$rowc->addTo(array(
+								'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
+								'name'  => $manager->get('name'),
+								'email' => $manager->get('email'),
+								'id'    => $manager->get('id')
+							));
+						}
+					}
 				}
 			}
 
