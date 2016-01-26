@@ -52,7 +52,7 @@ $ip = trim($opt['i']);
 $op = trim($opt['o']);
 
 if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSION) == 'json') {
-	define('_JEXEC', 'true');
+	define('_HZEXEC_', 'true');
 
 	require_once($ip);
 	$func = 'get_' . pathinfo($ip, PATHINFO_FILENAME);
