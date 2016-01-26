@@ -118,16 +118,22 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 
 			<div class="grid">
-				<div class="col span6">
+				<div class="col span4">
 					<div class="input-wrap">
 						<input type="checkbox" name="profile[public]" id="field-public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> />
 						<label for="field-public"><?php echo Lang::txt('COM_MEMBERS_FIELD_PUBLIC_PROFILE'); ?></label>
 					</div>
 				</div>
-				<div class="col span6">
+				<div class="col span4">
 					<div class="input-wrap">
 						<input type="checkbox" name="profile[vip]" id="field-vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> />
 						<label for="field-vip"><?php echo Lang::txt('COM_MEMBERS_FIELD_VIP'); ?></label>
+					</div>
+				</div>
+				<div class="col span4">
+					<div class="input-wrap">
+						<input type="checkbox" name="profile[usageAgreement]" id="field-usageAgreement" value="1"<?php if ($this->profile->get('usageAgreement') == 1) { echo ' checked="checked"'; } ?> />
+						<label for="field-usageAgreement"><?php echo Lang::txt('COM_MEMBERS_FIELD_USAGE_AGREEMENT'); ?></label>
 					</div>
 				</div>
 			</div>

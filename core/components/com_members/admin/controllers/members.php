@@ -376,6 +376,11 @@ class Members extends AdminController
 		{
 			$profile->set('vip',0);
 		}
+		$profile->set('usageAgreement', 0);
+		if (isset($p['usageAgreement']))
+		{
+			$profile->set('usageAgreement',$p['usageAgreement']);
+		}
 		$profile->set('orcid', trim($p['orcid']));
 		$profile->set('url', trim($p['url']));
 		$profile->set('phone', trim($p['phone']));
