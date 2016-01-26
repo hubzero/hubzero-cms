@@ -31,6 +31,13 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$default = $this->config->get('defaultpic');
+if ($default == '/components/com_members/assets/img/profile.gif'
+ || $default == '/components/com_members/site/assets/img/profile.gif')
+{
+	$default = '/core/components/com_members/site/assets/img/profile.gif';
+}
 ?>
 <div id="media">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
@@ -77,7 +84,7 @@ defined('_HZEXEC_') or die();
 				list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 				?>
 				<tr>
-					<td rowspan="6"><img src="<?php echo '../' . $this->config->get('webpath') . DS . $this->dir . DS . $this->file . '?v=' . time(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" /></td>
+					<td rowspan="6"><img src="<?php echo substr($this->path, strlen(PATH_ROOT)) . DS . $this->file . '?v=' . time(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" id="conimage" /></td>
 					<td><?php echo Lang::txt('COM_MEMBERS_MEDIA_FILE'); ?>:</td>
 					<td><?php echo $this->file; ?></td>
 				</tr>
@@ -100,7 +107,7 @@ defined('_HZEXEC_') or die();
 			<?php } else { ?>
 				<tr>
 					<td colspan="4">
-						<img src="<?php echo '../' . $this->config->get('defaultpic'); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_NO_PICTURE'); ?>" />
+						<img src="<?php echo '../' . ltrim($default, '/'); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_NO_PICTURE'); ?>" />
 						<input type="hidden" name="currentfile" value="" />
 					</td>
 				</tr>
