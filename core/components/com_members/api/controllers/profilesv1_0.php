@@ -420,7 +420,7 @@ class Profilesv1_0 extends ApiController
 		}
 
 		// Get the password
-		$pw = Request::getCmd('password1', null, 'post');
+		$pw = Request::getVar('password1', null, 'post');
 
 		// Validate the password
 		if (!empty($pw))
