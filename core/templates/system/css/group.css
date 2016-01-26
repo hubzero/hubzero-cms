@@ -293,6 +293,8 @@
 	width: 20%;
 	position: relative;
 	top: 180px;
+	/*
+	[!] nanohub, #302291 - causes issues with Firefox
 	-webkit-transition: top 0.3s ease-out;
 }
 #group-info .links li:nth-child(1) {
@@ -308,7 +310,7 @@
 	-webkit-transition-delay: 0.45s;
 }
 #group-info .links li:nth-child(5) {
-	-webkit-transition-delay: 0.5s;
+	-webkit-transition-delay: 0.5s;*/
 }
 #group-info .links a {
 	display: block;
