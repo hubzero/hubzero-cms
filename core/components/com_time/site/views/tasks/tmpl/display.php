@@ -50,6 +50,8 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 HTML::behavior('core');
 ?>
 
+<div id="dialog-confirm"></div>
+
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 	<div id="content-header-extra">
@@ -124,8 +126,18 @@ HTML::behavior('core');
 					</ul>
 				</div>
 			<?php endif; ?>
+			<div class="actions">
+				<a class="action merge" href="#" data-target="<?php echo Route::url($this->base . '&task=merge'); ?>">
+					<?php echo Lang::txt('COM_TIME_TASKS_MERGE'); ?>
+				</a>
+				<a class="action edit" href="#" data-target="<?php echo Route::url($this->base . '&task=edit'); ?>">
+					<?php echo Lang::txt('COM_TIME_TASKS_EDIT'); ?>
+				</a>
+				<a class="action delete" href="#" data-target="<?php echo Route::url($this->base . '&task=delete'); ?>">
+					<?php echo Lang::txt('COM_TIME_TASKS_DELETE'); ?>
+				</a>
+			</div>
 			<div class="entries table">
-				<div class="caption"><?php echo Lang::txt('COM_TIME_TASKS_CAPTION'); ?></div>
 				<div class="thead">
 					<div class="tr">
 						<div class="th"></div>
@@ -175,14 +187,14 @@ HTML::behavior('core');
 				</div>
 				<div class="tbody">
 					<?php foreach ($this->tasks as $task) : ?>
-						<div class="tr<?php if ($task->active == 0) { echo ' inactive'; } ?>">
+						<div class="tr<?php if ($task->active == 0) { echo ' inactive'; } ?>" data-id="<?php echo $task->id; ?>" data-name="<?php echo $task->name; ?>">
 							<div class="td <?php if ($task->active == 0) { echo "in"; } ?>active">
 								<a href="<?php echo Route::url($this->base . '&task=toggleactive&id=' . $task->id); ?>"></a>
 							</div>
 							<div class="td">
 								<div class="small-label"><?php echo Lang::txt('COM_TIME_TASKS_NAME'); ?>:</div>
 								<div class="small-content">
-									<a href="<?php echo Route::url($this->base . '&task=edit&id=' . $task->id); ?>">
+									<a class="not-selectable" href="<?php echo Route::url($this->base . '&task=edit&id=' . $task->id); ?>">
 										<?php echo String::highlight($task->name, $this->filters['search'], array('html' => true)); ?>
 									</a>
 								</div>

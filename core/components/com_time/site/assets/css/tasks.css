@@ -11,7 +11,7 @@
 .com_time_tasks .entries .tbody .td.no_tasks {
 	text-align: center;
 }
-.com_time_tasks .entries .tbody .tr.inactive {
+.com_time_tasks .entries .tbody .inactive {
 	color: #999;
 	background-color: #F1F1F1;
 }
@@ -19,6 +19,7 @@
 .com_time_tasks .entries .tbody .td.active {
 	width: 15px;
 	position: relative;
+	background-color: transparent;
 }
 .com_time_tasks .entries .tbody .td.inactive:before,
 .com_time_tasks .entries .tbody .td.active:before {

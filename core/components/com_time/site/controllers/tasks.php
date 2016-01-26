@@ -151,34 +151,106 @@ class Tasks extends Base
 	}
 
 	/**
+	 * Merge task
+	 *
+	 * @return void
+	 */
+	public function mergeTask()
+	{
+		$ids = (array)Request::getVar('ids');
+
+		if (!$primary = Request::getInt('primary'))
+		{
+			// Set the redirect
+			App::redirect(
+				Route::url($this->base . $this->start(Task::blank())),
+				Lang::txt('COM_TIME_TASKS_MERGE_NO_PRIMARY'),
+				'error'
+			);
+			return;
+		}
+
+		// Loop through the tasks given
+		foreach ($ids as $id)
+		{
+			// Leave the primary task alone
+			if ($id == $primary)
+			{
+				continue;
+			}
+
+			// Get all the records for the given task and update their task id
+			$task = Task::oneOrFail((int)$id);
+			foreach ($task->records as $record)
+			{
+				$record->set('task_id', $primary)->save();
+			}
+
+			$task->destroy();
+		}
+
+		// Set the redirect
+		App::redirect(
+			Route::url($this->base . $this->start($task)),
+			Lang::txt('COM_TIME_TASKS_MERGE_SUCCESSFUL'),
+			'passed'
+		);
+	}
+
+	/**
 	 * Delete task
 	 *
 	 * @return void
 	 */
 	public function deleteTask()
 	{
-		$task = Task::oneOrFail(Request::getInt('id'));
+		$ids = (array)Request::getVar('id');
+		$failed = false;
 
-		// If there are active records, don't allow deletion
-		if ($task->records->count())
+		foreach ($ids as $id)
+		{
+			$task = Task::oneOrFail((int)$id);
+
+			// If there are active records, don't allow deletion
+			if ($task->records->count())
+			{
+				$failed = true;
+			}
+			else
+			{
+				// Delete the task
+				$task->destroy();
+			}
+		}
+
+		// If we only have one id, go to that tasks edit page
+		// Otherwise, we go back to the tasks display
+		if ($failed && count($ids) == 1)
 		{
 			App::redirect(
 				Route::url($this->base . '&task=edit&id=' . Request::getInt('id')),
 				Lang::txt('COM_TIME_TASK_DELETE_HAS_ASSOCIATED_RECORDS'),
 				'warning'
 			);
-			return;
 		}
-
-		// Delete the task
-		$task->destroy();
-
-		// Set the redirect
-		App::redirect(
-			Route::url($this->base . $this->start($task)),
-			Lang::txt('COM_TIME_TASKS_DELETE_SUCCESSFUL'),
-			'passed'
-		);
+		else if ($failed)
+		{
+			// Set the redirect
+			App::redirect(
+				Route::url($this->base . $this->start($task)),
+				Lang::txt('COM_TIME_TASK_DELETE_MULTIPLE_HAS_ASSOCIATED_RECORDS'),
+				'warning'
+			);
+		}
+		else
+		{
+			// Set the redirect
+			App::redirect(
+				Route::url($this->base . $this->start($task)),
+				Lang::txt('COM_TIME_TASKS_DELETE_SUCCESSFUL'),
+				'passed'
+			);
+		}
 	}
 
 	/**
