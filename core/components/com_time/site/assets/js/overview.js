@@ -160,6 +160,7 @@ jQuery(document).ready(function ( jq ) {
 				center     : '',
 				right      : 'today,prev,next'
 			},
+			titleFormat    : 'ddd, MMM D, YYYY',
 			timezone       : 'local',
 			defaultView    : 'agendaDay',
 			contentHeight  : 370,
