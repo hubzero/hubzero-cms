@@ -169,7 +169,7 @@ foreach (Request::query() as $key => $value)
 						<?php endif; ?>
 						<?php if ($date) : ?>
 							<div class="preview-field date">
-								<?php echo $record->date; ?>
+								<?php echo Date::of($record->date)->toLocal(); ?>
 							</div>
 						<?php endif; ?>
 						<?php if ($time) : ?>
