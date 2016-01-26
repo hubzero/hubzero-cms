@@ -330,6 +330,9 @@ class Rule
 			else if ($rule['rule'] === 'true')
 			{
 			}
+			else if ($rule['rule'] == 'notStale')
+			{
+			}
 			else
 			{
 				$fail[] = $rule['failuremsg'];
