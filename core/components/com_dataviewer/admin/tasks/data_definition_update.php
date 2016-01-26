@@ -47,6 +47,6 @@ function dv_data_definition_update()
 	$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);
 	$url .= "/administrator/index.php?option=com_$com_name&task=data_definition&db=$db_id&dd=$dd_name";
 	header("Location: $url");
-	exit;
+	exit();
 }
 ?>

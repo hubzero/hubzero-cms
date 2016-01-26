@@ -36,5 +36,6 @@ function dv_data_definition_remove()
 	$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);
 	$url .= "/administrator/index.php?option=com_$com_name&task=dataview_list&db=$db_id";
 	header("Location: $url");
+	exit();
 }
 ?>

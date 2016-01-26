@@ -24,7 +24,6 @@ function dv_dataview_list()
 
 	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
 
-
 	Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
 	if (!$jdb->getErrorMsg()) {

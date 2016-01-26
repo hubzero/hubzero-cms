@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
 			if (dv_settings.serverside) {
 				$('.dv_header_select_all').each(function() {
 					var id = $(this).val();
-					if (typeof dv.selected_cells !== 'undefined' && dv.selected_cells[id]) {
+					if(dv.selected_cells[id]) {
 						for (i=0; i<dv.selected_cells[id].length; i++) {
 							$('.' + id + ':checkbox[value="' + dv.selected_cells[id][i] + '"]').prop('checked', true);
 						}
@@ -227,7 +227,7 @@ jQuery(document).ready(function($) {
 
 	$('tfoot input').each(function(i) {
 		$(this).data('filter-value', '');
-
+ 
 		if (dv_settings.show_filter_options) {
 			$(this).autocomplete({
 				disabled: true,
@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
 				title: res.title,
 				modal: true
 			}).find('.dv_image').lazyload();
-
+			
 		}
 	}
 
@@ -532,12 +532,11 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 
-		var params = [];
 		$(dv_table.fnGetNodes()).find('.' + id + ':checkbox:checked').each(function() {
-			params.push('file:' + $(this).val());
+			url += $(this).val() + ',';
 		});
 
-		url += params.join('%0d%0a');
+		url = url.slice(0, (url.length-1));
 
 		if (typeof pageTracker != 'undefined') {
 			pageTracker._trackEvent('Data viewer', 'Tools launch (multiple)', url);
@@ -760,8 +759,7 @@ jQuery(document).ready(function($) {
 
 	// Show filter dialog
 	var filters = [];
-	var page_url = window.location.href.replace( /#.*/, "");
-	var tpl_title = '<li><a href="' + page_url + '#dv-filter-tab-{id}">{name}</a></li>';
+	var tpl_title = '<li><a href="' + window.location.href + '#dv-filter-tab-{id}">{name}</a></li>';
 	var tpl_field = '<tr><td>{field_name}</td><td><input type="text" class="filter_dialog_field" data-column-index="{idx}" data-column-id="{col_id}" data-filter_hint="{hint}" /></td></tr>';
 
 
@@ -796,9 +794,9 @@ jQuery(document).ready(function($) {
 				$('#dv_filters_tabs').append(filter_div);
 				$('#dv_filters_tabs ul').append(tpl_title.supplant({'id': i, 'name': dv_data.filters[i].filter_name}));
 			}
-
+			
 		}
-
+		
 		$('#dv_filters_tabs').tabs("refresh").tabs( 'option', "active", 0);
 
 
