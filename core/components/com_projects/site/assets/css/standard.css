@@ -17,8 +17,7 @@
 	background: #fff9ef;
 }
 .main-content {
-	padding: 2em;
-	padding-bottom: 4em;
+	padding: 2em 2em 4em 2em;
 	margin-top: 0;
 	background: #FFF;
 	border-left: 1px solid #e8e8e8;
@@ -28,21 +27,17 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	font-size: 90%;
 	border-top: 1px solid #e8e8e8;
 }
 .main-menu ul.assetlist {
-	padding-top: 0;
-	padding-bottom: 0;
-	margin-bottom: -1px;
+	padding: 0;
+	margin: 0 0 -1px 0;
 }
 .main-menu ul.projecttools li {
-	padding: 0.5em 0 0.5em 1.5em;
+	padding: 0;
 	margin: 0;
 	border-bottom: 1px solid #e8e8e8;
-}
-.main-menu ul.projecttools li.assets {
-	padding-top: 0.5em;
+	position: relative;
 }
 .main-menu ul.projecttools li a:before {
 	color: #c9c4bc;
@@ -57,15 +52,10 @@
 }
 .main-menu ul.assetlist li {
 	background: #f7f3ed;
-	padding-left: 40px;
 }
-.main-menu ul.projecttools li.assets span {
-	padding-left: 20px;
-}
-.main-menu ul.projecttools li a {
-	padding: 0.1em;
-	padding-left: 20px;
-	width: 80%;
+.main-menu ul.projecttools li a,
+.main-menu ul.projecttools li.assets>span {
+	padding: 0.5em 0.5em 0.5em 1.5em;
 	outline: none;
 	display: block;
 }
@@ -91,9 +81,10 @@
 	padding-right: 0;
 }
 .main-menu ul.assetlist {
-	border-bottom: 1px solid #CCC;
+	border-top: 1px solid #CCC;
 }
-.main-menu ul.projecttools li:hover {
+.main-menu ul.projecttools li>a:hover,
+.main-menu ul.projecttools li>span:hover {
 	background: #fff;
 }
 .main-menu ul.projecttools li.pt_title,
@@ -127,21 +118,14 @@ ul.projecttools a:focus {
 /* Counts (left-hand menu)
 --------------------------------------------- */
 .main-menu ul.projecttools li a span.mini {
-	margin: 0 2px 0 0;
-	text-align: center;
-	font-size: 75% !important;
-	color: #000;
-	font-weight: bold;
+	background: #555;
+	background: rgba(0, 0, 0, 0.1);
+	color: #888;
+	font-size: 0.9em;
+	line-height: 1.2;
+	padding: 0.2em 0.4em;
+	border-radius: 0.125em;
 	float: right;
-	background: none;
-	display: inline;
-}
-.main-menu ul.assetlist li a span.mini {
-	margin-right: 6px;
-}
-.main-menu ul.projecttools li a span.mini span {
-	background: #e9e1d5;
-	padding: 1px 4px;
 }
 .main-menu ul.projecttools li a span.highlight span {
 	background: red;
@@ -154,10 +138,9 @@ ul.projecttools a:focus {
 	border-right: 1px solid #ccc;
 	border-left: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
-	border-bottom-left-radius: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	border-bottom-right-radius: 10px;
-	-moz-border-radius-bottomright: 10px;
+	-webkit-border-radius: 0 0 10px 10px;
+	-moz-border-radius: 0 0 10px 10px;
+	border-radius: 0 0 10px 10px;
 	margin-bottom: 3em;
 	margin-top: 0;
 	padding-bottom: 1em;
@@ -215,18 +198,12 @@ ul.projecttools a:focus {
 	.main-menu ul.projecttools li a span.mini span {
 		display: inline;
 	}
-	.main-menu ul.projecttools li a span.mini,
-	.main-menu ul.assetlist li a span.mini {
-		margin-right: 2em;
-	}
 	.main-menu ul.projecttools li.assets {
 		display: none;
 	}
-	.main-menu ul.projecttools li,
-	.main-menu ul.assetlist li {
-		padding-left: 2em;
-		padding-top: 1em;
-		padding-bottom: 1em;
+	.main-menu ul.projecttools li a,
+	.main-menu ul.projecttools li.assets>span {
+		padding: 1em 1em 1em 3em;
 	}
 	.main-menu ul.projecttools li a:before {
 		width: 25px;
@@ -253,11 +230,9 @@ ul.projecttools a:focus {
 	}
 }
 @media (min-width: 50em) {
-	.main-menu ul.projecttools li,
-	.main-menu ul.assetlist li {
-		padding-left: 1.5em;
-		padding-top: 0.5em;
-		padding-bottom: 0.5em;
+	.main-menu ul.projecttools li a,
+	.main-menu ul.projecttools li.assets>span {
+		padding: 0.5em 0.5em 0.5em 3em;
 	}
 	.main-menu ul.projecttools li a span {
 		display: inline;
@@ -269,10 +244,6 @@ ul.projecttools a:focus {
 		width: 16px;
 		height: 16px;
 		font-size: 16px;
-	}
-	.main-menu ul.projecttools li a span.mini,
-	.main-menu ul.assetlist li a span.mini {
-		margin: 0;
 	}
 	#introduction .second {
 		background: none;

@@ -33,10 +33,9 @@
 	border-top: 1px solid #222;
 }
 .main-menu ul.assetlist {
-	padding-top: 0;
-	padding-bottom: 0;
-	/*margin-bottom: -1px;
-	margin-top: -4em;*/
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid #222;
 }
 .main-menu ul.projecttools li {
 	position: relative;
@@ -56,7 +55,7 @@
 #plg-header h3:before {
 	color: black;
 }
-.main-menu ul.projecttools li.assets span {
+.main-menu ul.projecttools li.assets>span {
 	padding-left: 20px;
 }
 .main-menu ul.projecttools li a,
@@ -115,14 +114,6 @@ ul.projecttools a:focus {
 /* Counts (left-hand menu)
 --------------------------------------------- */
 .main-menu ul.projecttools li a span.mini {
-	/*margin: 0 2px 0 0;
-	text-align: center;
-	font-size: 75% !important;
-	color: #000;
-	font-weight: bold;
-	float: right;
-	background: none;
-	display: inline;*/
 	background: #555;
 	background: rgba(255, 255, 255, 0.2);
 	color: #aaa;
@@ -135,10 +126,6 @@ ul.projecttools a:focus {
 .main-menu ul.assetlist li a span.mini {
 	margin-right: 6px;
 }
-/*.main-menu ul.projecttools li a span.mini span {
-	background: #e9e1d5;
-	padding: 1px 4px;
-}*/
 .main-menu ul.projecttools li a span.highlight span {
 	background: red;
 	color: white;
@@ -147,23 +134,16 @@ ul.projecttools a:focus {
 --------------------------------------------- */
 .sidebox {
 	background: #fbfbfb;
-	border-right: 1px solid #cccccc;
-	border-left: 1px solid #cccccc;
-	border-bottom: 1px solid #cccccc;
-	border-bottom-left-radius: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	border-bottom-right-radius: 10px;
-	-moz-border-radius-bottomright: 10px;
+	border: 1px solid #cccccc;
 	margin-bottom: 3em;
 	margin-top: 0;
 	padding-bottom: 1em;
 }
 .sidebox h4 {
+	margin: 0;
 	padding: 0.2em 0.5em 1em 0.5em;
 	color: #333;
 	background-color: #ededed;
-	border-top: 1px solid #cccccc;
-	background-position: 3px 3px;
 }
 .sidebox ul {
 	list-style: none;
@@ -214,9 +194,6 @@ ul.projecttools a:focus {
 		vertical-align: top;
 		width: 100%;
 	}
-	/*.main-menu ul.projecttools {
-		margin: 0 0 30px 0;
-	}*/
 	.main-menu ul.jsm li {
 		display: block;
 	}
