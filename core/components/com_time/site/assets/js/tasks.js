@@ -28,8 +28,9 @@ HUB.Plugins.TimeTasks = {
 		var $ = this.jQuery;
 
 		// Initialize variables
-		var column   = $('#filter-column');
-		var operator = $('#filter-operator');
+		var column    = $('#filter-column'),
+		    operator  = $('#filter-operator'),
+		    selection = [];
 
 		// Show add filters box
 		$('#add-filters').css('display', 'block');
@@ -39,6 +40,92 @@ HUB.Plugins.TimeTasks = {
 		// Capture change events on the column field
 		column.on('change', HUB.Plugins.TimeTasks.col_change);
 		operator.on('change', HUB.Plugins.TimeTasks.operator_change);
+
+		// Create the selectable rows
+		$('.tbody').bind('mousedown', function (e) {
+			// This causes the selection before to function more like a toggle
+			// Otherwise, clicking an already selected row would just reselect it
+			// and you would have to use the meta key to unselect.  This behavior
+			// seems more natural
+			e.metaKey = true;
+		}).selectable({
+			filter: ".tr",
+			cancel: ".not-selectable",
+			stop: function() {
+				selection = [];
+				$(".ui-selected").each(function ( idx, item ) {
+					selection.push($(item).data('id'));
+				});
+
+				if (selection.length == 1) {
+					// Start by hiding all buttons
+					$('.actions .action').hide();
+
+					// Show the edit and delete buttons
+					var edit = $('.action.edit'),
+					    del  = $('.action.delete');
+
+					edit.attr('href', edit.data('target') + '/' + parseInt(selection[0], 10)).show();
+					del.attr('href', del.data('target') + '/' + parseInt(selection[0], 10)).show();
+
+					// Show the action area if it isn't already visible
+					$('.actions').slideDown('fast');
+				} else if (selection.length >= 2) {
+					// Start by hiding all buttons
+					$('.actions .action').hide();
+
+					// Show merge and delete buttons
+					var merge = $('.action.merge'),
+					    dels  = $('.action.delete');
+
+					merge.attr('href', merge.data('target') + "?ids[]=" + selection.join('&ids[]=')).show();
+					dels.attr('href', dels.data('target') + "?id[]=" + selection.join('&id[]=')).show();
+
+					// Show the action area if it isn't already visible
+					$('.actions').slideDown('fast');
+				} else {
+					// Hide the actions area and hide all buttons
+					$('.actions').slideUp('fast');
+					$('.actions .action').hide();
+				}
+			}
+		});
+
+		// We need to ask for a primary before completing the merge itself
+		$('.merge').click(function ( e ) {
+			// Prevent delete action
+			e.preventDefault();
+
+			// Grab the merge url
+			var action = $(this).attr("href");
+
+			// This is the confirmation dialog box message
+			var msg = '';
+			msg += '<p>Which task would you like to remain as the primary?<?p>';
+			$.each(selection, function ( index, id ) {
+				var name = $('.tr[data-id=' + id + ']').data('name');
+				msg += '<div class="primary-option"><a href="' + action + '&primary=' + id + '">' + name + '</a></div>';
+			});
+
+			// Set dialog box message and title
+			var dc = $("#dialog-confirm");
+			dc.html(msg);
+			dc.attr('title','Select a primary');
+
+			// Create the dialog box
+			dc.dialog({
+				resizable: false,
+				height: 250,
+				width: 450,
+				modal: true,
+				buttons: {
+					Cancel: function() {
+						// Close the dialog box, as if nothing happened
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
 	}, // end initialize
 
 	col_change: function() {

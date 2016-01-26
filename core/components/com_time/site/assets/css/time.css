@@ -253,6 +253,9 @@
 	background: transparent;
 	padding: 20px 20px 45px 20px;
 }
+.com_time_content .entries {
+	margin: 0;
+}
 .com_time_content .entries caption {
 	text-align: center;
 }
@@ -330,7 +333,7 @@
 	display: table-cell;
 	vertical-align: top;
 	line-height: 1.6em;
-	padding: .4045084975em .61803399em;
+	padding: .5em 1em;
 	border-bottom: 1px solid #dadada;
 }
 .com_time_content .td {
@@ -384,6 +387,54 @@
 		width: 30%;
 		padding-right: 1em;
 	}
+}
+
+/*-------------------------*/
+/*         Actions         */
+/*-------------------------*/
+.com_time_container .actions {
+	display: none;
+	border: 1px solid #DADADA;
+	padding: 15px;
+	background: rgb(255, 248, 220);
+	background: rgba(255, 248, 220, .6);
+}
+.com_time_container .action {
+	display: none;
+	margin-right: 10px;
+	border: 1px solid #DADADA;
+	padding: 5px;
+}
+.com_time_container .action:hover {
+	background: #FFFFFF;
+	cursor: pointer;
+	text-decoration: none;
+	border: 1px solid #CCCCCC;
+}
+.com_time_container .actions .action:before {
+	content: "";
+	position: relative;
+	font-family: "fontcons";
+}
+.com_time_container .action.merge:before {
+	content: "\f16b";
+}
+.com_time_container .action.edit:before {
+	content: "\270e";
+}
+.com_time_container .action.delete:before {
+	content: "\f014";
+}
+
+/*-------------------------*/
+/*        jQuery UI        */
+/*-------------------------*/
+.com_time_container .entries .tbody.ui-selectable {
+	cursor: pointer;
+}
+.com_time_container .entries .tbody .tr.ui-selected {
+	background: rgb(255, 248, 220);
+	background: rgba(255, 248, 220, .6);
 }
 
 /*-------------------------*/
