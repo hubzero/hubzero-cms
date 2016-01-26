@@ -144,7 +144,7 @@ $end   = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('G'));
 				</div>
 			</div>
 			<div class="week-overview-wrap">
-				<div class="section-header"><h3><?php echo Lang::txt('COM_TIME_OVERVIEW_ENTRIES_THIS_WEEK'); ?></h3></div>
+				<div class="section-header"><h3><?php echo Lang::txt('COM_TIME_OVERVIEW_DAILY_HOURS'); ?></h3></div>
 				<div class="week-overview"></div>
 			</div>
 		</div>

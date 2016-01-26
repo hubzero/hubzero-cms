@@ -637,7 +637,7 @@ class Timev1_0 extends ApiController
 		$response = [];
 		foreach ($records as $r)
 		{
-			$dayOfWeek = Date::of($r->date)->format('N') - 1;
+			$dayOfWeek = Date::of($r->date)->toLocal('N') - 1;
 			$response[$dayOfWeek][] = $r->time;
 		}
 
