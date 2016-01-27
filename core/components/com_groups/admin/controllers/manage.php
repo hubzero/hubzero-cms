@@ -372,7 +372,7 @@ class Manage extends AdminController
 		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->set('logo', $g['logo']);
 		$group->set('plugins', $g['plugins']);
-		$group->set('discussion_email_autosubscribe', $g['discussion_email_autosubscribe']);
+		$group->set('discussion_email_autosubscribe', isset($g['discussion_email_autosubscribe']) ? $g['discussion_email_autosubscribe'] : '');
 		$group->set('params', $params);
 		$group->update();
 
