@@ -12,11 +12,10 @@ if (!jq) {
 jQuery(document).ready(function( $ ) {
 	Hubzero.initApi(function() {
 		// Fancy select boxes
-		if (!!$.prototype.HUBfancyselect) {
-			$('.plg_time_summary select').HUBfancyselect({
-				'showSearch'          : true,
-				'searchPlaceholder'   : 'search...',
-				'maxHeightWithSearch' : 300
+		if (!!$.prototype.select2) {
+			$('.plg_time_summary select').select2({
+				placeholder : "search...",
+				width       : "100%"
 			});
 		}
 
@@ -162,13 +161,10 @@ jQuery(document).ready(function( $ ) {
 						options = '<option value="">No tasks for this hub</option>';
 					}
 					$("#task_id").html(options);
-
-					if (!!$.prototype.HUBfancyselect) {
-						$('#task_id').prev('.fs-dropdown').remove();
-						$('#task_id').HUBfancyselect({
-							'showSearch'          : true,
-							'searchPlaceholder'   : 'search...',
-							'maxHeightWithSearch' : 200
+					if (!!$.prototype.select2) {
+						$("#task_id").select2({
+							placeholder : "search...",
+							width       : "100%"
 						});
 					}
 				}

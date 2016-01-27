@@ -41,10 +41,10 @@ $this->css()
      ->css('fullcalendar')
      ->js('overview');
 
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
+\Hubzero\Document\Assets::addSystemStylesheet('select2.css');
 \Hubzero\Document\Assets::addSystemScript('flot/jquery.flot.min');
 \Hubzero\Document\Assets::addSystemScript('flot/jquery.flot.pie.min');
-\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
+\Hubzero\Document\Assets::addSystemScript('select2');
 \Hubzero\Document\Assets::addSystemScript('moment.min');
 \Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
 

@@ -36,9 +36,9 @@ use Components\Time\Models\Task;
 // No direct access
 defined('_HZEXEC_') or die();
 
-\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
+\Hubzero\Document\Assets::addSystemScript('select2');
 \Hubzero\Document\Assets::addSystemScript('jquery.flot.min', 'flot');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect');
+\Hubzero\Document\Assets::addSystemStylesheet('select2');
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.ui');
 
 $this->css()

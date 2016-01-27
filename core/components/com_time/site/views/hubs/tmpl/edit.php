@@ -33,8 +33,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->js('jquery.fancyselect', 'system')
-     ->css('jquery.fancyselect', 'system')
+$this->js('select2', 'system')
+     ->css('select2', 'system')
      ->css('jquery.ui.css', 'system');
 
 $this->css()
