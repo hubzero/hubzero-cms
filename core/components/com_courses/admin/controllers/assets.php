@@ -252,7 +252,7 @@ class Assets extends AdminController
 			}
 			else
 			{
-				$id = 0;
+				$id = ($ids ? $ids : 0);
 			}
 
 			$model = new Tables\Asset($this->database);
