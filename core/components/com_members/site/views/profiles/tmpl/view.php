@@ -221,7 +221,7 @@ if (!$no_html)
 							<?php echo $title; ?>
 						</a>
 					<?php else: ?>
-						<span id="profile-privacy">
+						<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>>
 							<?php echo $span_title; ?>
 						</span>
 					<?php endif; ?>
