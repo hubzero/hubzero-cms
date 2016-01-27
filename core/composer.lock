@@ -683,12 +683,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "e3756c3b12d6c3ee19d4289be2ba77546108803e"
+                "reference": "82870e946d43e676ebb75cb62ca32c4d5ce5f629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/e3756c3b12d6c3ee19d4289be2ba77546108803e",
-                "reference": "e3756c3b12d6c3ee19d4289be2ba77546108803e",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/82870e946d43e676ebb75cb62ca32c4d5ce5f629",
+                "reference": "82870e946d43e676ebb75cb62ca32c4d5ce5f629",
                 "shasum": ""
             },
             "require": {
@@ -698,7 +698,7 @@
             "require-dev": {
                 "hubzero/standards": "dev-master",
                 "jakub-onderka/php-parallel-lint": "0.9.*",
-                "mockery/mockery": "dev-master",
+                "mockery/mockery": "0.9.*",
                 "phpunit/dbunit": "1.4.*",
                 "phpunit/phpunit": "4.*",
                 "satooshi/php-coveralls": "1.0.*",
@@ -720,7 +720,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-01-08 14:53:01"
+            "time": "2016-01-27 16:26:48"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1888,7 +1888,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/1a9bde4985f4a125ed7287be7d9f4d3df25d5d10",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/cc22d9bcd9fe9b34fc73587ed9bf2895b228138b",
                 "reference": "ee88cd05073533b10678772fe954d042748393c3",
                 "shasum": ""
             },
