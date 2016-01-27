@@ -309,7 +309,9 @@ class Git extends Models\Adapter
 		}
 
 		// Sort
-		array_multisort($sorting, $sortdir, $items );
+		// Temporarily disabling sorting 
+		// PURR #922
+		//array_multisort($sorting, $sortdir, $items );
 
 		// Apply start and limit, get complete metadata and return
 		return $this->_list($items, $params, $topleveldirs);
