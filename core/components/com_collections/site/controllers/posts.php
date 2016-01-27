@@ -522,6 +522,31 @@ class Posts extends SiteController
 		// Incoming
 		$posts = Request::getVar('post', array());
 
+		// [!] Hack to work around Symfony's HttpFoundation Request
+		// apparently reordering incoming GET vars. The following:
+		//
+		// post[]=18&post[]=17&post[]=19&post[]=20&post[]=21&post[]=22
+		//
+		// ... would incorrectly result in this:
+		//
+		// Array
+		// (
+		//     [0] => 17  <- Wrong!
+		//     [1] => 18  <- Wrong!
+		//     [2] => 19
+		//     [3] => 20
+		//     [4] => 21
+		//     [5] => 22
+		// )
+		if (Request::method() == 'post')
+		{
+			$posts = isset($_POST['post']) ? $_POST['post'] : null;
+		}
+		else
+		{
+			$posts = isset($_GET['post']) ? $_GET['post'] : null;
+		}
+
 		if (is_array($posts))
 		{
 			$folder = null;
@@ -547,7 +572,7 @@ class Posts extends SiteController
 			}
 		}
 
-		if (!$no_html)
+		if (!Request::getInt('no_html', 0))
 		{
 			// Output messsage and redirect
 			App::redirect(
