@@ -192,6 +192,22 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 
 		$template = App::get('template')->template;
 
+		if (substr($file[2], 0, strlen('http')) == 'http'
+		 || substr($file[2], 0, strlen('://')) == '://'
+		 || substr($file[2], 0, strlen('//')) == '//')
+		{
+			if ($type[2] == 'script')
+			{
+				Document::addScript($file[2]);
+			}
+			else if ($type[2] == 'stylesheet')
+			{
+				Document::addStyleSheet($file[2], 'text/css', 'screen');
+			}
+
+			return '';
+		}
+
 		if ($file[2][0] == '/')
 		{
 			$filename = $file[2];
