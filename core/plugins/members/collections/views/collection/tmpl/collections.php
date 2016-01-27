@@ -105,7 +105,7 @@ $this->css()
 	<?php } ?>
 
 <?php if ($this->rows->total() > 0) { ?>
-	<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>">
+	<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
 	<?php if (!User::isGuest()) { ?>
 		<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 			<div class="post new-collection">
@@ -166,10 +166,10 @@ $this->css()
 								<?php } ?>
 							<?php } ?>
 						<?php } else { ?>
-							<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $row->get('alias') . '/collect', false, true)), false); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+							<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $row->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 								<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 							</a>
-							<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $row->get('alias') . '/follow', false, true)), false); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+							<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $row->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
 								<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?></span>
 							</a>
 						<?php } ?>

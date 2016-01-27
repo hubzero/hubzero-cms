@@ -114,7 +114,7 @@ if (!in_array($viewas, array('grid', 'list')))
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
-		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-update="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . JUtility::getToken() . '=1'); ?>" class="view-<?php echo $viewas; ?>">
+		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-update="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1'); ?>" class="view-<?php echo $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
 			<?php if ($this->params->get('access-create-item') && !Request::getInt('no_html', 0)) { ?>
 				<div class="post new-post" id="post_0">
 					<a class="icon-add add" href="<?php echo Route::url($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
@@ -186,13 +186,13 @@ if (!in_array($viewas, array('grid', 'list')))
 										</a>
 									<?php } ?>
 								<?php } else { ?>
-										<a class="btn vote like tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=post/' . $row->get('id') . '/vote', false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
+										<a class="btn vote like tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $this->collection->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
 										</a>
 										<a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
 										</a>
-										<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=post/' . $row->get('id') . '/collect', false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+										<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $this->collection->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
 										</a>
 								<?php } ?>
