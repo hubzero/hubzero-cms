@@ -744,10 +744,14 @@ class Sessions extends SiteController
 		$status = $this->middleware("stop $id", $output);
 		if ($status == 0)
 		{
-			$msg = '<p>Stopping ' . $id . '<br />';
-			foreach ($output as $line)
+			$msg = '<p>Stopping ' . $id;
+			if (is_array($output))
 			{
-				$msg .= $line . "\n";
+				$msg .= '<br />';
+				foreach ($output as $line)
+				{
+					$msg .= $line . "\n";
+				}
 			}
 			$msg .= '</p>'."\n";
 		}
