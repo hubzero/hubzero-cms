@@ -87,7 +87,16 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php echo Lang::txt('PLG_MEMBERS_PROFILE'); ?>
 	</h3>
 
-	<?php if (count($update_missing) > 0) : ?>
+	<?php if (count($invalid) > 0) : ?>
+		<div class="error member-update-missing">
+			<strong><?php echo Lang::txt('PLG_MEMBERS_PROFILE_USER_INVALID'); ?></strong>
+			<ul>
+				<?php foreach ($invalid as $i) : ?>
+					<li><?php echo $i; ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php elseif (count($update_missing) > 0) : ?>
 		<?php if (count($update_missing) == 1 && in_array("usageAgreement",array_keys($update_missing))) : ?>
 		<?php else: ?>
 			<div class="error member-update-missing">
@@ -99,17 +108,6 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</ul>
 			</div>
 		<?php endif; ?>
-	<?php endif; ?>
-
-	<?php if (count($invalid) > 0) : ?>
-		<div class="error member-update-missing">
-			<strong><?php echo Lang::txt('PLG_MEMBERS_PROFILE_USER_INVALID'); ?></strong>
-			<ul>
-				<?php foreach ($invalid as $i) : ?>
-					<li><?php echo $i; ?></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
 	<?php endif; ?>
 
 	<?php if ($isUser) : ?>
