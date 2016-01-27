@@ -342,6 +342,7 @@
 @media (min-width: 40em) {
 	#page_identity {
 		display: block;
+		background-color: #fff;
 	}
 	#page_identity a,
 	#page_identity img {
