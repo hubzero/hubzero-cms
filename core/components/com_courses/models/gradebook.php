@@ -919,7 +919,7 @@ class GradeBook extends Base
 				{
 					// Mark student as having earned badge
 					$badge = MemberBadge::loadByMemberId($m);
-					$sb    = SectionBadge::loadBySectionId($this->course->offering()->section()->get('id'));
+					$sb    = Section\Badge::loadBySectionId($this->course->offering()->section()->get('id'));
 					if (is_object($badge) && !$badge->hasEarned())
 					{
 						$badge->set('member_id', $m);
@@ -948,7 +948,7 @@ class GradeBook extends Base
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');
 
-						$data               = new stdClass();
+						$data               = new \stdClass();
 						$data->id           = $sb->get('provider_badge_id');
 						$data->evidenceUrl  = rtrim(\Request::root(), '/') . '/courses/badge/' . $sb->get('id') . '/validation/' . $badge->get('validation_token');
 						$users              = array();
