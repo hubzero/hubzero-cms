@@ -25,14 +25,26 @@
 	#page_main {
 	}
 
-	/*#page_options { 
-		list-style: none;
-		position: absolute;
-		top: 30px;
-		right: 30px;
-		margin: 0;
-		padding: 0;
-	}*/
+	#profile-privacy {
+		color: #f9f9f9;
+		color: rgba(255, 255, 255, 0.7);
+	}
+	a#profile-privacy:hover {
+		color: #fff;
+	}
+	#profile-privacy:before {
+		content: "\f0eb";
+		font-family: 'Fontcons';
+		color: #f9f9f9;
+		color: rgba(255, 255, 255, 0.7);
+		margin-right: 0.4em;
+	}
+	#profile-privacy.private:before {
+		content: "\f023";
+		color: #fff;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
 	#page_options + #page_header {
 		margin-right: 0;
 	}

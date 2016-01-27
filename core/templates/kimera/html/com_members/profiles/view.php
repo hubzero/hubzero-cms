@@ -95,7 +95,7 @@ if (!$no_html)
 		$title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_SET_PRIVATE_TITLE');
 		if ($this->profile->get('public') != 1)
 		{
-			$cls = "private";
+			$cls = 'private';
 			$span_title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_TITLE');
 			$title = Lang::txt('COM_MEMBERS_PRIVATE_PROFILE_SET_PUBLIC_TITLE');
 		}
@@ -105,7 +105,7 @@ if (!$no_html)
 				<?php echo $title; ?>
 			</a>
 		<?php else: ?>
-			<span id="profile-privacy">
+			<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>>
 				<?php echo $span_title; ?>
 			</span>
 		<?php endif; ?>
