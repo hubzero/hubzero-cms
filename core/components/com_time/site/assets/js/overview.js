@@ -15,15 +15,10 @@ jQuery(document).ready(function ( jq ) {
 			calendar = $('.calendar'),
 			explain  = $('.details-explanation'),
 			data     = $('.details-data'),
-			fancy    = function ( selector, removePrevious ) {
-				if (removePrevious) {
-					$(selector).prev('.fs-dropdown').remove();
-				}
-
-				$(selector).HUBfancyselect({
-					'showSearch'          : true,
-					'searchPlaceholder'   : 'search...',
-					'maxHeightWithSearch' : 250
+			fancy    = function ( selector ) {
+				$(selector).select2({
+					placeholder : "search...",
+					width       : "100%"
 				});
 			},
 			showDetails = function ( ) {
@@ -48,11 +43,11 @@ jQuery(document).ready(function ( jq ) {
 				}
 				if (event.task_id) {
 					$('#task_id').val(event.task_id);
-					fancy('#task_id', true);
+					fancy('#task_id');
 				}
 				if (event.hub_id) {
 					$('#hub_id').val(event.hub_id);
-					fancy('#hub_id', true);
+					fancy('#hub_id');
 				}
 				if (event.description) {
 					$('#description').val(event.description);
@@ -272,7 +267,7 @@ jQuery(document).ready(function ( jq ) {
 						options = '<option value="">No tasks for this hub</option>';
 					}
 					task.html(options);
-					fancy('#task_id', true);
+					fancy('#task_id');
 				}
 			});
 		});

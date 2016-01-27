@@ -444,10 +444,11 @@
 .com_time_content textarea,
 .com_time_content select:not(.wykiwyg-style) { 
 	margin: 0;
-	border-radius: 3px;
-	border: 1px solid #c5c3c3;
+	border: 1px solid #aaaaaa;
 	background: #FFF;
 	width: 100%;
+	padding: 0 20px 0 8px;
+	line-height: 28px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -571,4 +572,14 @@
 	.com_time_content .search-submit {
 		display: none;
 	}
+}
+
+/*-------------------------*/
+/*       Select box        */
+/*-------------------------*/
+.com_time_content .select2-container--default .select2-selection--single {
+	border-radius: 0;
+}
+.select2-container--open .select2-dropdown--below {
+	border-radius: 0;
 }

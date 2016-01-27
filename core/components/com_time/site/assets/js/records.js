@@ -76,12 +76,10 @@ HUB.Plugins.TimeRecords = {
 					}
 					$("#task_id").html(options);
 
-					if (!!$.prototype.HUBfancyselect) {
-						$('#task_id').prev('.fs-dropdown').remove();
-						$('#task_id').HUBfancyselect({
-							'showSearch'          : true,
-							'searchPlaceholder'   : 'search...',
-							'maxHeightWithSearch' : 200
+					if (!!$.prototype.select2) {
+						$('#task_id').select2({
+							placeholder : "search...",
+							width       : "100%"
 						});
 					}
 				}

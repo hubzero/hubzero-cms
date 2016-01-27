@@ -73,15 +73,15 @@ HUB.Time = {
 			dateFormat: 'yy-mm-dd'
 		});
 
-		if (!!$.prototype.HUBfancyselect) {
-			$('select').not('.no-search').HUBfancyselect({
-				'showSearch'          : true,
-				'searchPlaceholder'   : 'search...',
-				'maxHeightWithSearch' : 250
+		if (!!$.prototype.select2) {
+			$('select').not('.no-search').select2({
+				placeholder : "search...",
+				width       : "100%"
 			});
 
-			$('select.no-search').HUBfancyselect({
-				'showSearch' : false
+			$('select.no-search').select2({
+				minimumResultsForSearch: -1,
+				width       : "100%"
 			});
 		}
 	}
