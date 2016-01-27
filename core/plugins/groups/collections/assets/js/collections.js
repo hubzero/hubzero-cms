@@ -126,100 +126,102 @@ jQuery(document).ready(function(jq){
 				container.masonry('appended', $newElems, true);
 			}
 		);
-		
-		container
-			.find('a.vote')
-			.on('click', function(e){
-				e.preventDefault();
 
-				var el = $(this);
+		if (container.hasClass('loggedin')) {
+			container
+				.find('a.vote')
+				.on('click', function(e){
+					e.preventDefault();
 
-				$.get(el.attr('href').nohtml(), {}, function(data){
-					var like = el.attr('data-text-like'),
-						unlike = el.attr('data-text-unlike')
+					var el = $(this);
 
-					if (el.children('span').text() == like) {
-						el.removeClass('like')
-							.addClass('unlike')
-							.children('span')
-							.text(unlike);
-					} else {
-						el.removeClass('unlike')
-							.addClass('like')
-							.children('span')
-							.text(like);
-					}
+					$.get(el.attr('href').nohtml(), {}, function(data){
+						var like = el.attr('data-text-like'),
+							unlike = el.attr('data-text-unlike')
 
-					$('#b' + el.attr('data-id') + ' .likes').text(data);
+						if (el.children('span').text() == like) {
+							el.removeClass('like')
+								.addClass('unlike')
+								.children('span')
+								.text(unlike);
+						} else {
+							el.removeClass('unlike')
+								.addClass('like')
+								.children('span')
+								.text(like);
+						}
+
+						$('#b' + el.attr('data-id') + ' .likes').text(data);
+					});
 				});
-			});
-		
-		$('#page_content a.repost').fancybox({
-			type: 'ajax',
-			width: 500,
-			height: 'auto',
-			autoSize: false,
-			fitToView: false,
-			titleShow: false,
-			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-			},
-			beforeLoad: function() {
-				$(this).attr('href', $(this).attr('href').nohtml());
-			},
-			afterLoad: function(current, previous) {
-				scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
-				current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
-			},
-			beforeShow: function() {
-				if (scrp && scrp.length) {
-					scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
-					eval(scrp);
-				}
-			},
-			afterShow: function() {
-				var el = this.element;
-				if ($('#hubForm')) {
-					$('#hubForm').on('submit', function(e) {
-						e.preventDefault();
-						$.post($(this).attr('action'), $(this).serialize(), function(data) {
-							$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
-							$.fancybox.close();
-						});
-					});
-				}
-			}
-		});
 
-		container.find('a.delete').fancybox({
-			type: 'ajax',
-			width: 300,
-			height: 'auto',
-			autoSize: false,
-			fitToView: false,
-			titleShow: false,
-			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-			},
-			beforeLoad: function() {
-				$(this).attr('href', $(this).attr('href').nohtml());
-			},
-			afterShow: function() {
-				var el = this.element;
-				if ($('#hubForm').length) {
-					$('#hubForm').on('submit', function(e) {
-						e.preventDefault();
-						$.post($(this).attr('action'), $(this).serialize(), function(data) {
-							$.fancybox.close();
-							if (data)
-							{
-								window.location = data;
-							}
+			$('#page_content a.repost').fancybox({
+				type: 'ajax',
+				width: 500,
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,
+				titleShow: false,
+				tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+				},
+				beforeLoad: function() {
+					$(this).attr('href', $(this).attr('href').nohtml());
+				},
+				afterLoad: function(current, previous) {
+					scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
+					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
+				},
+				beforeShow: function() {
+					if (scrp && scrp.length) {
+						scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+						eval(scrp);
+					}
+				},
+				afterShow: function() {
+					var el = this.element;
+					if ($('#hubForm')) {
+						$('#hubForm').on('submit', function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'), $(this).serialize(), function(data) {
+								$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
+								$.fancybox.close();
+							});
 						});
-					});
+					}
 				}
-			}
-		});
+			});
+
+			container.find('a.delete').fancybox({
+				type: 'ajax',
+				width: 300,
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,
+				titleShow: false,
+				tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+				},
+				beforeLoad: function() {
+					$(this).attr('href', $(this).attr('href').nohtml());
+				},
+				afterShow: function() {
+					var el = this.element;
+					if ($('#hubForm').length) {
+						$('#hubForm').on('submit', function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'), $(this).serialize(), function(data) {
+								$.fancybox.close();
+								if (data)
+								{
+									window.location = data;
+								}
+							});
+						});
+					}
+				}
+			});
+		}
 
 		container.find('a.comment').fancybox({
 			type: 'ajax',
@@ -274,7 +276,7 @@ jQuery(document).ready(function(jq){
 			}
 		});
 	}
-	
+
 	$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
 		e.preventDefault();
 

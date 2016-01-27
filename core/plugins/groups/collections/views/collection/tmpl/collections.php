@@ -84,7 +84,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
-		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>">
+		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
 			<?php if (!User::isGuest()) { ?>
 				<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 					<div class="post new-collection">
@@ -103,6 +103,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							     ->set('collection', $row)
 							     ->display();
 						?>
+						<?php if ($tags = $row->item()->tags('cloud')) { ?>
+							<div class="tags-wrap">
+								<?php echo $tags; ?>
+							</div>
+						<?php } ?>
 						<div class="meta">
 							<p class="stats">
 								<span class="likes">
@@ -140,10 +145,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 											</a>
 									<?php } ?>
 								<?php } else { ?>
-									<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias') . '/collect', false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+									<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 										<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
 									</a>
-									<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias') . '/follow', false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+									<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
 										<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
 									</a>
 								<?php } ?>

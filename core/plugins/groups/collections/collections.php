@@ -1081,11 +1081,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-create-item'))
+		/*if (!$this->params->get('access-create-item'))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTHORIZED'));
 			return $this->_collections();
-		}
+		}*/
 
 		$no_html = Request::getInt('no_html', 0);
 

@@ -79,7 +79,7 @@ $this->css()
 
 	<section class="main section">
 		<?php if ($this->rows->total() > 0) { ?>
-			<div id="posts" data-base="<?php echo Request::base(true); ?>" class="view-as <?php echo $mode; ?>">
+			<div id="posts" data-base="<?php echo Request::base(true); ?>" class="view-as <?php echo $mode . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
 				<?php if (!User::isGuest() && !Request::getInt('no_html', 0)) { ?>
 					<div class="post new-post">
 						<a class="icon-add add" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=new'); ?>">
@@ -133,10 +133,10 @@ $this->css()
 											<?php } ?>
 										<?php } ?>
 									<?php } else { ?>
-										<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $row->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+										<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($row->link(), false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 											<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 										</a>
-										<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($row->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+										<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($row->link(), false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
 											<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
 										</a>
 									<?php } ?>
