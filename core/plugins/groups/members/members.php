@@ -35,6 +35,7 @@ defined('_HZEXEC_') or die();
 
 // include role lib
 require_once __DIR__ . DS . 'role.php';
+use Components\Groups\Tables\Reason;
 
 /**
  * Groups Plugin class for group members
@@ -868,7 +869,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$admchange .= (count($mbrs) > 1) ? "\r\n" : '';
 
 				// Remove record of reason wanting to join group
-				$reason = new GroupsReason($database);
+				$reason = new Reason($database);
 				$reason->deleteReason($targetuser->get('id'), $this->group->get('gidNumber'));
 
 				// Add them to the array of users to deny
