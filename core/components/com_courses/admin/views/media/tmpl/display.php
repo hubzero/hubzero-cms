@@ -32,6 +32,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Html::behavior('framework', true);
+
 if ($this->getError())
 {
 	echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
