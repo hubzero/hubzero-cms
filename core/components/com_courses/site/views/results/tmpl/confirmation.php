@@ -80,8 +80,8 @@ $dep  = $this->dep;
 
 			<?php if ($dep->getState() == 'active' && isset($nextAttempt)) : ?>
 				<p>
-					<a href="<?php echo Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
-						<button type="button" class="btn btn-warning">Take your next attempt!</button>
+					<a class="btn btn-warning" href="<?php echo Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
+						Take your next attempt!
 					</a>
 				</p>
 			<?php endif; ?>
