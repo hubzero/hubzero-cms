@@ -201,7 +201,7 @@ class Members extends AdminController
 		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
 		$name .= trim($p['surname']);
 
-		$user = User::getRoot();
+		$user = new \JUser();
 		$user->set('username', trim($p['username']));
 		$user->set('name', $name);
 		$user->set('email', trim($p['email']));
