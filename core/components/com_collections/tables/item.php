@@ -50,6 +50,8 @@ class Item extends \JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__collections_items', 'id', $db);
+
+		$this->access = 0;
 	}
 
 	/**
