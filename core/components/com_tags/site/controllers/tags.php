@@ -415,28 +415,14 @@ class Tags extends SiteController
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 
-		$areas = array();
-		$searchareas = Event::trigger('tags.onTagAreas');
-		foreach ($searchareas as $area)
-		{
-			$areas = array_merge($areas, $area);
-		}
+		$areas = Event::trigger('tags.onTagAreas');
 
 		// Get the active category
 		$area = Request::getVar('area', '');
 		$sort = Request::getVar('sort', '');
 
-		if ($area)
-		{
-			$activeareas = array($area);
-		}
-		else
-		{
-			$activeareas = $areas;
-		}
-
 		// Get the search results
-		if (count($activeareas) > 1)
+		if (!$area)
 		{
 			$sqls = Event::trigger('tags.onTagView',
 				array(
@@ -444,23 +430,38 @@ class Tags extends SiteController
 					$limit,
 					$limitstart,
 					$sort,
-					$activeareas
+					''
 				)
 			);
 			if ($sqls)
 			{
 				$s = array();
-				foreach ($sqls as $sql)
+				foreach ($sqls as $response)
 				{
-					if (!is_string($sql))
+					if (is_array($response['sql']))
 					{
 						continue;
 					}
-					if (trim($sql) != '')
+					if (trim($response['sql']) != '')
 					{
-						$s[] = $sql;
+						$s[] = $response['sql'];
+					}
+					if (isset($response['children']))
+					{
+						foreach ($response['children'] as $sresponse)
+						{
+							if (is_array($sresponse['sql']))
+							{
+								continue;
+							}
+							if (trim($sresponse['sql']) != '')
+							{
+								$s[] = $sresponse['sql'];
+							}
+						}
 					}
 				}
+
 				$query  = "(";
 				$query .= implode(") UNION (", $s);
 				$query .= ") ORDER BY ";
@@ -471,10 +472,14 @@ class Tags extends SiteController
 					case 'date':
 					default:      $query .= 'publish_up DESC, title'; break;
 				}
-				$query .= ($limit != 'all' && $limit > 0) ? " LIMIT $limitstart, $limit" : "";
+				if ($limit != 'all'
+				 && $limit > 0)
+				{
+					$query .= " LIMIT " . $limitstart . "," . $limit;
+				}
 			}
 			$this->database->setQuery($query);
-			$results = array($this->database->loadObjectList());
+			$rows = $this->database->loadObjectList();
 		}
 		else
 		{
@@ -484,21 +489,33 @@ class Tags extends SiteController
 					$limit,
 					$limitstart,
 					$sort,
-					$activeareas
+					$area
 				)
 			);
-		}
 
-		// Run through the array of arrays returned from plugins and find the one that returned results
-		$rows = array();
-		if ($results)
-		{
-			foreach ($results as $result)
+			// Run through the array of arrays returned from plugins and find the one that returned results
+			$rows = array();
+			if ($results)
 			{
-				if (is_array($result) && !empty($result))
+				foreach ($results as $result)
 				{
-					$rows = $result;
-					break;
+					if (is_array($result['results']))
+					{
+						$rows = $result['results'];
+						break;
+					}
+
+					if (isset($result['children']))
+					{
+						foreach ($result['children'] as $sresponse)
+						{
+							if (is_array($sresponse['results']))
+							{
+								$rows = $sresponse['results'];
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -539,7 +556,7 @@ class Tags extends SiteController
 				$title = html_entity_decode($title);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(String::truncate(Sanitize::stripAll(stripslashes($row->ftext)),300));
+				$description = html_entity_decode(String::truncate(strip_tags(stripslashes($row->ftext)),300));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
@@ -556,10 +573,10 @@ class Tags extends SiteController
 				// Load individual item creator class
 				$item = new \Hubzero\Document\Type\Feed\Item();
 				$item->title       = $title;
-				$item->link        = $row->href;
-				$item->description = $description;
+				$item->link        = \Route::url($row->href);
+				$item->description = '<![CDATA[' . $description . ']]>';
 				$item->date        = $date;
-				$item->category    = (isset($row->data1)) ? $row->data1 : '';
+				$item->category    = (isset($row->data1) && $row->data1) ? $row->data1 : $row->section;
 				$item->author      = $author;
 
 				// Loads item info into rss array
