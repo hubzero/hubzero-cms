@@ -56,6 +56,7 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 				'com_members.register.unconfirmed.profiles',
 				'com_members.register.change.profiles',
 				'com_members.register.resend.profiles',
+				'com_members.register.resend',
 				'com_members.register.confirm.profiles'
 			];
 
