@@ -72,8 +72,8 @@ class Component extends \JModelForm
 		// Set an alternative path for the configuration file.
 		if ($path = Request::getString('path'))
 		{
-			$path = Filesystem::cleanPath(PATH_ROOT . '/' . $path);
-			\Hubzero\Filesystem\Util::checkCheck($path);
+			$path = Filesystem::cleanPath($path);
+			\Hubzero\Filesystem\Util::checkPath(PATH_ROOT . DS . $path);
 			$this->setState('component.path', $path);
 		}
 	}
@@ -91,7 +91,7 @@ class Component extends \JModelForm
 		if ($path = $this->getState('component.path'))
 		{
 			// Add the search path for the admin component config.xml file.
-			\JForm::addFormPath($path);
+			\JForm::addFormPath(PATH_ROOT . DS . $path);
 		}
 		else
 		{

@@ -158,7 +158,7 @@ class Component extends AdminController
 
 			// Redirect back to the edit screen.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false)
+				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->getState('component.path'), false)
 			);
 			return false;
 		}
@@ -179,7 +179,7 @@ class Component extends AdminController
 
 			// Save failed, go back to the screen and display a notice.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false),
+				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->getState('component.path'), false),
 				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
 				'error'
 			);
@@ -191,7 +191,7 @@ class Component extends AdminController
 		{
 			case 'apply':
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&refresh=1', false),
+					Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->getState('component.path') . '&refresh=1', false),
 					Lang::txt('COM_CONFIG_SAVE_SUCCESS')
 				);
 				break;
@@ -199,7 +199,7 @@ class Component extends AdminController
 			case 'save':
 			default:
 				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component', false)
+					Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component&path=' . $model->getState('component.path'), false)
 				);
 				break;
 		}
