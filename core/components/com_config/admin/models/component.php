@@ -133,6 +133,12 @@ class Component extends \JModelForm
 		|| Lang::load($option, \Component::path($option) . "/admin", null, false, true)
 		|| Lang::load($option, \Component::path($option) . "/site", null, false, true);
 
+		if ($path = $this->getState('component.path'))
+		{
+			Lang::load($option, PATH_ROOT . dirname($path) . DS . 'Admin', null, false, true);
+			Lang::load($option, PATH_ROOT . dirname($path) . DS . 'Site', null, false, true);
+		}
+
 		return \Component::load($option);
 	}
 
