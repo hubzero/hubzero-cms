@@ -463,22 +463,16 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$this->view->filters = array(
-			//'authorized' => 1,
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => Request::getVar('q', ''),
 			'state'      => 1,
-			'access'     => 0
 		);
-		/*
-		 * Commented out, see ticket QUBES #311
-		 * Kevin Wojkovich - 8/12/2015
-		 *
-		 */
-		//if (!User::isGuest())
-		//{
-		//	$this->view->filters['access'] = array(0, 1, 3);
-		//}
+
+		if (!User::isGuest())
+		{
+			$this->view->filters['access'] = array(0, 1, 3);
+		}
 		if (in_array(User::get('id'), $this->members))
 		{
 			$this->view->filters['access'] = array(0, 1, 3, 4);
