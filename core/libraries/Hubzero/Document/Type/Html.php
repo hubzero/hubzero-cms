@@ -506,8 +506,8 @@ class Html extends Base
 		// Check
 		$directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
 
-		$template = preg_replace('/[^A-Z0-9_\.-]/i', '', $params['template']);
-		$file     = preg_replace('/[^A-Z0-9_\.-]/i', '', $params['file']);
+		$template = isset($params['template']) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['template']) : 'system';
+		$file     = isset($params['file'])     ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['file'])     : 'index.php';
 
 		if (!file_exists($directory . DS . $template . DS . $file))
 		{
@@ -525,8 +525,8 @@ class Html extends Base
 		$this->template = $template;
 		//$this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) . '/templates/' . $template;
 		//$this->baseurl  = rtrim(\Request::root(true), '/');
-		$this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/'));
-		$this->params   = isset($params['params']) ? $params['params'] : new Registry;
+		$this->baseurl  = isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/');
+		$this->params   = isset($params['params'])  ? $params['params']  : new Registry;
 
 		// Load
 		$this->_template = $this->_loadTemplate($directory . DS . $template, $file);

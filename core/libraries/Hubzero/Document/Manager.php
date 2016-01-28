@@ -48,7 +48,7 @@ class Manager
 	protected $types = array();
 
 	/**
-	 * The acurrent type.
+	 * The current type.
 	 *
 	 * @var  string
 	 */
@@ -82,7 +82,16 @@ class Manager
 		// already a type created by this name, we'll just return that instance.
 		if (!isset($this->types[$signature]))
 		{
-			$this->types[$signature] = $this->createType($type, $options);
+			try
+			{
+				$document = $this->createType($type, $options);
+			}
+			catch (\Exception $e)
+			{
+				$document = $this->createType('html', $options);
+			}
+
+			$this->types[$signature] = $document;
 		}
 
 		return $this->types[$signature];
