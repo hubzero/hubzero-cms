@@ -85,15 +85,15 @@ var UI = {
 		//    };
 
 		// Show mouse selector buttons on touch screen devices
-		if ('ontouchstart' in document.documentElement) {
+		if ('ontouchstart' in document.documentElement || window.navigator.msPointerEnabled) {
 			// Show mobile buttons
 			$D('noVNC_mobile_buttons').style.display = "inline";
 			UI.setMouseButton();
 
 			// Remove the address bar
 			setTimeout(function() { window.scrollTo(0, 1); }, 100);
-			UI.clipSetting = true;
-			UI.clipSettingLocked = true;
+			UI.clipSetting = false; //true;
+			//UI.clipSettingLocked = true;
 		} else {
 			UI.clipSetting = false;
 		}
