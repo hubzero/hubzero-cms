@@ -509,6 +509,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			{
 				$view->filters['access'] = array(0, 1, 4);
 			}
+			$filters['access'] = $view->filters['access'];
 			$count['access'] = $view->filters['access'];
 		}
 
