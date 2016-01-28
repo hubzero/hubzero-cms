@@ -52,7 +52,7 @@ class MenusModelMenutypes extends JModelLegacy
 		// Get the list of components.
 		$db = App::get('db');
 		$query = $db->getQuery(true);
-		$query->select('name, element AS ' . $db->qn('option'));
+		$query->select('name, protected, element AS ' . $db->qn('option'));
 		$query->from('#__extensions');
 		$query->where('type = ' . $db->q('component'));
 		$query->where('enabled = 1');
@@ -62,19 +62,21 @@ class MenusModelMenutypes extends JModelLegacy
 
 		foreach ($components as $component)
 		{
-			if ($options = $this->getTypeOptionsByComponent($component->option)) {
+			if ($options = $this->getTypeOptionsByComponent($component))
+			{
 				$list[$component->name] = $options;
 
 				// Create the reverse lookup for link-to-name.
 				foreach ($options as $option)
 				{
-					if (isset($option->request)) {
+					if (isset($option->request))
+					{
 						$this->rlu[MenusHelper::getLinkKey($option->request)] = $option->get('title');
 
 						if (isset($option->request['option']))
 						{
 								$lang->load($option->request['option'] . '.sys', PATH_APP, null, false, true)
-							||	$lang->load($option->request['option'] . '.sys', PATH_CORE. '/components/'.$option->request['option'].'/admin', null, false, true);
+							||	$lang->load($option->request['option'] . '.sys', ($component->protected ? PATH_CORE : PATH_APP). '/components/'.$option->request['option'].'/admin', null, false, true);
 						}
 					}
 				}
@@ -89,13 +91,15 @@ class MenusModelMenutypes extends JModelLegacy
 		// Initialise variables.
 		$options = array();
 
-		$mainXML = PATH_CORE.'/components/'.$component.'/metadata.xml';
+		$mainXML = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/metadata.xml';
 
-		if (is_file($mainXML)) {
+		if (is_file($mainXML))
+		{
 			$options = $this->getTypeOptionsFromXML($mainXML, $component);
 		}
 
-		if (empty($options)) {
+		if (empty($options))
+		{
 			$options = $this->getTypeOptionsFromMVC($component);
 		}
 
@@ -108,15 +112,18 @@ class MenusModelMenutypes extends JModelLegacy
 		$options = array();
 
 		// Attempt to load the xml file.
-		if (!$xml = simplexml_load_file($file)) {
+		if (!$xml = simplexml_load_file($file))
+		{
 			return false;
 		}
 
 		// Look for the first menu node off of the root node.
-		if (!$menu = $xml->xpath('menu[1]')) {
+		if (!$menu = $xml->xpath('menu[1]'))
+		{
 			return false;
 		}
-		else {
+		else
+		{
 			$menu = $menu[0];
 		}
 
@@ -135,22 +142,27 @@ class MenusModelMenutypes extends JModelLegacy
 		}
 
 		// Look for the first options node off of the menu node.
-		if (!$optionsNode = $menu->xpath('options[1]')) {
+		if (!$optionsNode = $menu->xpath('options[1]'))
+		{
 			return false;
 		}
-		else {
+		else
+		{
 			$optionsNode = $optionsNode[0];
 		}
 
 		// Make sure the options node has children.
-		if (!$children = $optionsNode->children()) {
+		if (!$children = $optionsNode->children())
+		{
 			return false;
 		}
-		else {
+		else
+		{
 			// Process each child as an option.
 			foreach ($children as $child)
 			{
-				if ($child->getName() == 'option') {
+				if ($child->getName() == 'option')
+				{
 					// Create the menu option for the component.
 					$o = new \Hubzero\Base\Object;
 					$o->title		= (string) $child['name'];
@@ -159,7 +171,8 @@ class MenusModelMenutypes extends JModelLegacy
 
 					$options[] = $o;
 				}
-				elseif ($child->getName() == 'default') {
+				elseif ($child->getName() == 'default')
+				{
 					// Create the menu option for the component.
 					$o = new \Hubzero\Base\Object;
 					$o->title		= (string) $child['name'];
@@ -180,16 +193,11 @@ class MenusModelMenutypes extends JModelLegacy
 		$options = array();
 
 		// Get the views for this component.
-		$path  = PATH_CORE.'/components/'.$component.'/views';
-		$path2 = PATH_CORE.'/components/'.$component.'/site/views';
+		$path = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/views';
 
 		if (Filesystem::exists($path))
 		{
 			$views = Filesystem::directories($path);
-		}
-		else if (Filesystem::exists($path2))
-		{
-			$views = Filesystem::directories($path2);
 		}
 		else
 		{
@@ -200,55 +208,72 @@ class MenusModelMenutypes extends JModelLegacy
 		{
 			$view = trim($view, '/');
 			// Ignore private views.
-			if (strpos($view, '_') !== 0) {
+			if (strpos($view, '_') !== 0)
+			{
 				// Determine if a metadata file exists for the view.
 				$file = $path.'/'.$view.'/metadata.xml';
 
-				if (is_file($file)) {
+				if (is_file($file))
+				{
 					// Attempt to load the xml file.
-					if ($xml = simplexml_load_file($file)) {
+					if ($xml = simplexml_load_file($file))
+					{
 						// Look for the first view node off of the root node.
-						if ($menu = $xml->xpath('view[1]')) {
+						if ($menu = $xml->xpath('view[1]'))
+						{
 							$menu = $menu[0];
 
 							// If the view is hidden from the menu, discard it and move on to the next view.
-							if (!empty($menu['hidden']) && $menu['hidden'] == 'true') {
+							if (!empty($menu['hidden']) && $menu['hidden'] == 'true')
+							{
 								unset($xml);
 								continue;
 							}
 
 							// Do we have an options node or should we process layouts?
 							// Look for the first options node off of the menu node.
-							if ($optionsNode = $menu->xpath('options[1]')) {
+							if ($optionsNode = $menu->xpath('options[1]'))
+							{
 								$optionsNode = $optionsNode[0];
 
 								// Make sure the options node has children.
-								if ($children = $optionsNode->children()) {
+								if ($children = $optionsNode->children())
+								{
 									// Process each child as an option.
 									foreach ($children as $child)
 									{
-										if ($child->getName() == 'option') {
+										if ($child->getName() == 'option')
+										{
 											// Create the menu option for the component.
 											$o = new \Hubzero\Base\Object;
 											$o->title		= (string) $child['name'];
 											$o->description	= (string) $child['msg'];
-											$o->request		= array('option' => $component, 'view' => $view, (string) $optionsNode['var'] => (string) $child['value']);
+											$o->request		= array(
+												'option' => $component->option,
+												'view' => $view,
+												(string) $optionsNode['var'] => (string) $child['value']
+											);
 
 											$options[] = $o;
 										}
-										elseif ($child->getName() == 'default') {
+										elseif ($child->getName() == 'default')
+										{
 											// Create the menu option for the component.
 											$o = new \Hubzero\Base\Object;
 											$o->title		= (string) $child['name'];
 											$o->description	= (string) $child['msg'];
-											$o->request		= array('option' => $component, 'view' => $view);
+											$o->request		= array(
+												'option' => $component->option,
+												'view' => $view
+											);
 
 											$options[] = $o;
 										}
 									}
 								}
 							}
-							else {
+							else
+							{
 								$options = array_merge($options, (array) $this->getTypeOptionsFromLayouts($component, $view));
 							}
 						}
@@ -256,7 +281,8 @@ class MenusModelMenutypes extends JModelLegacy
 					}
 
 				}
-				else {
+				else
+				{
 					$options = array_merge($options, (array) $this->getTypeOptionsFromLayouts($component, $view));
 				}
 			}
@@ -275,15 +301,10 @@ class MenusModelMenutypes extends JModelLegacy
 		$lang = Lang::getRoot();
 
 		// Get the layouts from the view folder.
-		$path  = PATH_CORE.'/components/'.$component.'/views/'.$view.'/tmpl';
-		$path2 = PATH_CORE.'/components/'.$component.'/site/views/'.$view.'/tmpl';
+		$path = ($component->protected ? PATH_CORE : PATH_APP) . '/components/' . $component->option . '/site/views/' . $view . '/tmpl';
 		if (Filesystem::exists($path))
 		{
 			$layouts = array_merge($layouts, Filesystem::files($path, '.xml$', false, true));
-		}
-		else if (Filesystem::exists($path2))
-		{
-			$layouts = array_merge($layouts, Filesystem::files($path2, '.xml$', false, true));
 		}
 		else
 		{
@@ -305,18 +326,19 @@ class MenusModelMenutypes extends JModelLegacy
 
 		// get the template layouts
 		// TODO: This should only search one template -- the current template for this item (default of specified)
-		$folders = Filesystem::directories(JPATH_SITE . '/templates', '', false, true);
+		$folders = Filesystem::directories(PATH_CORE . '/templates', '', false, true);
 		// Array to hold association between template file names and templates
 		$templateName = array();
 		foreach ($folders as $folder)
 		{
-			if (Filesystem::exists($folder . '/html/' . $component . '/' . $view))
+			if (Filesystem::exists($folder . '/html/' . $component->option . '/' . $view))
 			{
 				$template = basename($folder);
-					$lang->load('tpl_' . $template . '.sys', JPATH_SITE, null, false, true)
-				||	$lang->load('tpl_' . $template . '.sys', JPATH_SITE . '/templates/' . $template, null, false, true);
 
-				$templateLayouts = Filesystem::files($folder . '/html/' . $component . '/' . $view, '.xml$', false, true);
+					$lang->load('tpl_' . $template . '.sys', PATH_CORE, null, false, true)
+				||	$lang->load('tpl_' . $template . '.sys', PATH_CORE . '/templates/' . $template, null, false, true);
+
+				$templateLayouts = Filesystem::files($folder . '/html/' . $component->option . '/' . $view, '.xml$', false, true);
 
 				foreach ($templateLayouts as $layout)
 				{
@@ -338,7 +360,7 @@ class MenusModelMenutypes extends JModelLegacy
 		// Process the found layouts.
 		foreach ($layouts as $layout)
 		{
-			$layout = trim($layout, '/');
+			$layout = rtrim($layout, '/');
 			// Ignore private layouts.
 			if (strpos(basename($layout), '_') === false)
 			{
@@ -350,35 +372,45 @@ class MenusModelMenutypes extends JModelLegacy
 				$o = new \Hubzero\Base\Object;
 				$o->title		= ucfirst($layout);
 				$o->description	= '';
-				$o->request		= array('option' => $component, 'view' => $view);
+				$o->request		= array(
+					'option' => $component->option,
+					'view' => $view
+				);
 
 				// Only add the layout request argument if not the default layout.
-				if ($layout != 'default') {
+				if ($layout != 'default')
+				{
 					// If the template is set, add in format template:layout so we save the template name
 					$o->request['layout'] = (isset($templateName[$file])) ? $templateName[$file] . ':' . $layout : $layout;
 				}
 
 				// Load layout metadata if it exists.
-				if (is_file($file)) {
+				if (is_file($file))
+				{
 					// Attempt to load the xml file.
-					if ($xml = simplexml_load_file($file)) {
+					if ($xml = simplexml_load_file($file))
+					{
 						// Look for the first view node off of the root node.
-						if ($menu = $xml->xpath('layout[1]')) {
+						if ($menu = $xml->xpath('layout[1]'))
+						{
 							$menu = $menu[0];
 
 							// If the view is hidden from the menu, discard it and move on to the next view.
-							if (!empty($menu['hidden']) && $menu['hidden'] == 'true') {
+							if (!empty($menu['hidden']) && $menu['hidden'] == 'true')
+							{
 								unset($xml);
 								unset($o);
 								continue;
 							}
 
 							// Populate the title and description if they exist.
-							if (!empty($menu['title'])) {
+							if (!empty($menu['title']))
+							{
 								$o->title = trim((string) $menu['title']);
 							}
 
-							if (!empty($menu->message[0])) {
+							if (!empty($menu->message[0]))
+							{
 								$o->description = trim((string) $menu->message[0]);
 							}
 						}
