@@ -233,8 +233,15 @@ class Macro
 	{
 		if (!is_array($this->_arguments))
 		{
+			$arguments = str_replace(
+				array('&nbsp;', '&quot;'),
+				array(' ', '"'),
+				(string)$this->args
+			);
+			$arguments = html_entity_decode($arguments);
+
 			// get the args passed in
-			$arguments = explode(',', (string)$this->args);
+			$arguments = explode(',', $arguments);
 			$arguments = array_map('trim', (array)$arguments);
 
 			$this->_arguments = $arguments;
