@@ -70,7 +70,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// store our incoming data
 		$this->raw      = $raw;
 		$this->_options = $options;
-		$this->_mode    = $mode;
+		$this->_mode    = strtoupper($mode);
 
 		// Core objects
 		$this->_database = \App::get('db');
@@ -137,17 +137,30 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Check that required fields were filled in properly
 		if (!$xregistration->check('edit', $this->_profile->get('uidNumber'), array()))
 		{
+			$skip = array();
+
 			if (!empty($xregistration->_missing))
 			{
-				foreach ($xregistration->_missing as $missing)
+				foreach ($xregistration->_missing as $key => $missing)
 				{
+					if ($this->_mode == 'PATCH')
+					{
+						$skip[] = $key;
+						continue;
+					}
+
 					array_push($this->record->errors, $missing);
 				}
 			}
 			if (!empty($xregistration->_invalid))
 			{
-				foreach ($xregistration->_invalid as $invalid)
+				foreach ($xregistration->_invalid as $key => $invalid)
 				{
+					if (in_array($key, $skip))
+					{
+						continue;
+					}
+
 					array_push($this->record->errors, $invalid);
 				}
 			}
@@ -225,6 +238,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				continue;
 			}
 
+			// In PATCH mode, skip fields with no values
+			if ($this->_mode == 'PATCH' && !$val)
+			{
+				continue;
+			}
+
 			$this->record->entry->set($key, $val);
 		}
 
@@ -236,6 +255,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		{
 			if (isset($this->raw->$key))
 			{
+				// In PATCH mode, skip fields with no values
+				if ($this->_mode == 'PATCH' && !$this->raw->$key)
+				{
+					continue;
+				}
+
 				$this->record->$key = $this->_multiValueField($this->raw->$key);
 				$this->record->entry->set($key, $this->record->$key);
 			}
@@ -529,6 +554,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 */
 	private function _saveTagsData()
 	{
+		if ($this->_mode == 'PATCH' && !$this->record->tags)
+		{
+			return;
+		}
+
 		// save tags
 		$tags = new \Components\Members\Models\Tags($this->_profile->get('uidNumber'));
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
@@ -554,13 +584,28 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 */
 	private function _saveGroupsData()
 	{
-		if (!isset($this->record->groups) || !$this->record->groups)
+		if (!isset($this->record->groups))
+		{
+			return;
+		}
+
+		if ($this->_mode == 'PATCH' && !$this->record->groups)
 		{
 			return;
 		}
 
 		$id = $this->_profile->get('uidNumber');
 
+		// Get all the user's current groups
+		$existing = $this->_profile->getGroups();
+		$gids = array();
+		foreach ($existing as $e)
+		{
+			$gids[] = $existing->gidNumber;
+		}
+
+		// Add user to specified groups
+		$added = array();
 		foreach ($this->record->groups as $gid)
 		{
 			$group = \Hubzero\User\Group::getInstance($gid);
@@ -569,7 +614,37 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				array_push($this->record->errors, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
 			}
 
+			// Track groups added to
+			$added[] = $group->get('gidNumber');
+
+			// No need to add if already in the group
+			if (in_array($group->get('gidNumber'), $gids))
+			{
+				continue;
+			}
+
 			$group->add('members', array($id));
+			$group->update();
+		}
+
+		// Remove user from all old groups that weren't in the new list
+		foreach ($gids as $gid)
+		{
+			if (in_array($gid, $added))
+			{
+				continue;
+			}
+
+			$group = \Hubzero\User\Group::getInstance($gid);
+			if (!$group || !$group->get('gidNumber'))
+			{
+				continue;
+			}
+
+			$group->remove('members', array($id));
+			$group->remove('managers', array($id));
+			$group->remove('invitees', array($id));
+			$group->remove('applicants', array($id));
 			$group->update();
 		}
 	}
