@@ -263,7 +263,7 @@ class Import extends AdminController
 		}
 
 		// If we have a file
-		if (is_array($file) && $file['size'] > 0 && $file['error'] == 0)
+		if (is_array($file) && !empty($file) && $file['size'] > 0 && $file['error'] == 0)
 		{
 			move_uploaded_file($file['tmp_name'], $this->import->fileSpacePath() . DS . $file['name']);
 			$this->import->set('file', $file['name']);
