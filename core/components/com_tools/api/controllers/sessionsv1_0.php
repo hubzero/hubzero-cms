@@ -273,7 +273,7 @@ class Sessionsv1_0 extends ApiController
 	 */
 	public function screenshotTask()
 	{
-		$this->requiresAuthentication();
+		//$this->requiresAuthentication();
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php');
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php');
@@ -347,7 +347,8 @@ class Sessionsv1_0 extends ApiController
 		// Load image and serve up
 		$image = new \Hubzero\Image\Processor($screenshot);
 		$image->setImageType($image_type);
-		$this->send($image->inline(), 200);
+		$image->display();
+		exit();
 	}
 
 
