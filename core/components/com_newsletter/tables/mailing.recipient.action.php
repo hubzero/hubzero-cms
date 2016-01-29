@@ -97,6 +97,22 @@ class MailingRecipientAction extends \JTable
 	}
 
 	/**
+	 * Count mailing actions for mailing ID
+	 *
+	 * @param   integer  $mailingid  Mailing ID #
+	 * @param   string   $action     Mailing Action
+	 * @return 	integer
+	 */
+	public function countMailingActions($mailingid, $action = 'open')
+	{
+		$sql = "SELECT COUNT(*) FROM {$this->_tbl}
+				WHERE mailingid=" . $this->_db->quote($mailingid) . "
+				AND action=" . $this->_db->quote($action);
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
+	}
+
+	/**
 	 * Check to see if mailing action already exists for mailing ID and email
 	 *
 	 * @param   integer  $mailingid  Mailing ID #

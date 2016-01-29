@@ -64,10 +64,10 @@ $this->js()
 					<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENRATE'); ?>:</th>
 					<td>
 						<?php
-							if (count($this->recipients) > 0)
+							if ($this->recipients > 0)
 							{
-								echo number_format((count($this->opens) / count($this->recipients)) * 100) . '% ';
-								echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENED', count($this->opens), count($this->recipients));
+								echo number_format(($this->opens / $this->recipients) * 100) . '% ';
+								echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENED', $this->opens, $this->recipients);
 							}
 						?>
 					</td>
@@ -76,9 +76,9 @@ $this->js()
 					<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_BOUNCERATE'); ?>:</th>
 					<td>
 						<?php
-							if (count($this->recipients) > 0)
+							if ($this->recipients > 0)
 							{
-								echo (count($this->bounces) / count($this->recipients)) * 100 . '% ';
+								echo ($this->bounces / $this->recipients) * 100 . '% ';
 							}
 						?>
 					</td>
@@ -86,13 +86,13 @@ $this->js()
 				<tr>
 					<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FORWARDS'); ?>:</th>
 					<td>
-						<?php echo count($this->forwards); ?>
+						<?php echo $this->forwards; ?>
 					</td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_PRINTS'); ?>:</th>
 					<td>
-						<?php echo count($this->prints); ?>
+						<?php echo $this->prints; ?>
 					</td>
 				</tr>
 			</tbody>

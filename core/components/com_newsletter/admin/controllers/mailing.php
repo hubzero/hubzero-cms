@@ -94,7 +94,7 @@ class Mailing extends AdminController
 
 		//get mailing recipients
 		$newsletterMailingRecipient = new MailingRecipient($this->database);
-		$this->view->recipients = $newsletterMailingRecipient->getRecipients($id, 'sent');
+		$this->view->recipients = $newsletterMailingRecipient->countRecipients($id, 'sent');
 
 		//instantiate newsletter object
 		$newsletterNewsletter = new Newsletter($this->database);
@@ -109,20 +109,20 @@ class Mailing extends AdminController
 		}
 
 		//get bounces
-		$sql = "SELECT * FROM `#__email_bounces`
+		$sql = "SELECT COUNT(*) FROM `#__email_bounces`
 				WHERE component='com_newsletter'
 				AND object=" . $this->database->quote('Campaign Mailing') . "
 				AND object_id=" . $this->database->quote($id);
 		$this->database->setQuery($sql);
-		$this->view->bounces = $this->database->loadObjectList();
+		$this->view->bounces = $this->database->loadResult();
 
 		//new mailing recipient action object
 		$newsletterMailingRecipientAction = new MailingRecipientAction($this->database);
 
 		//get opens, clicks, forwards, and prints
-		$this->view->opens    = $newsletterMailingRecipientAction->getMailingActions($id, 'open');
-		$this->view->forwards = $newsletterMailingRecipientAction->getMailingActions($id, 'forward');
-		$this->view->prints   = $newsletterMailingRecipientAction->getMailingActions($id, 'print');
+		$this->view->opens    = $newsletterMailingRecipientAction->countMailingActions($id, 'open');
+		$this->view->forwards = $newsletterMailingRecipientAction->countMailingActions($id, 'forward');
+		$this->view->prints   = $newsletterMailingRecipientAction->countMailingActions($id, 'print');
 
 		//get opens geo
 		$this->view->opensGeo = $this->getOpensGeoTask($id);
