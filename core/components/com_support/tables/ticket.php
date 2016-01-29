@@ -274,7 +274,7 @@ class Ticket extends \JTable
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$from = "(
-						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.closed, f.login, f.name, f.email, f.type, f.section, f.group, u.name AS owner_name, u.id AS owner_id
+						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.closed, f.login, f.name, f.email, f.type, f.section, f.group, f.open, u.name AS owner_name, u.id AS owner_id, u.username AS username
 							FROM $this->_tbl AS f LEFT JOIN #__users AS u ON u.id=f.owner ";
 			if (isset($filters['tag']) && $filters['tag'] != '')
 			{
@@ -309,7 +309,7 @@ class Ticket extends \JTable
 				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $this->_db->quote($filters['tag']);
 			}
 			$from .= ") UNION (
-				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group, ug.name AS owner_name, ug.id AS owner_id
+				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group, g.open, ug.name AS owner_name, ug.id AS owner_id, ug.username AS username
 				FROM #__support_comments AS w, $this->_tbl AS g LEFT JOIN #__users AS ug ON ug.id=g.owner
 				WHERE w.ticket=g.id";
 			if (isset($filters['search']) && $filters['search'] != '')
@@ -536,11 +536,11 @@ class Ticket extends \JTable
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `closed`, `login`, `name`, `email`, `group`, owner_name, owner_id";
+			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `closed`, `login`, `name`, `email`, `group`, owner_name, owner_id, username";
 		}
 		else
 		{
-			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.closed, f.login, f.name, f.email, u.name AS owner_name, u.id AS owner_id";
+			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.closed, f.login, f.name, f.email, u.name AS owner_name, u.id AS owner_id, u.username AS username";
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'] . ' ' . $filters['sortdir'];
