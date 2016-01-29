@@ -335,12 +335,13 @@ class Ticketsv1_0 extends ApiController
 				$owner = $ticket->owner;
 
 				$response->tickets[$i]->owner = new stdClass;
-				$response->tickets[$i]->owner->username = $owner;
+				$response->tickets[$i]->owner->username = $ticket->username;
 				$response->tickets[$i]->owner->name     = $ticket->owner_name;
 				$response->tickets[$i]->owner->id       = $ticket->owner_id;
 
 				unset($response->tickets[$i]->owner_name);
 				unset($response->tickets[$i]->owner_id);
+				unset($response->tickets[$i]->username);
 
 				$response->tickets[$i]->reporter = new stdClass;
 				$response->tickets[$i]->reporter->name     = $ticket->name;
