@@ -65,4 +65,22 @@ class MailingRecipient extends \JTable
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Count newsletter mailing actions
+	 *
+	 * @param   integer  $mid     ID of mailing
+	 * @param   string   $status  Status
+	 * @return  integer
+	 */
+	public function countRecipients($mid, $status = 'all')
+	{
+		$sql = "SELECT COUNT(*) FROM {$this->_tbl} WHERE mid=" . $this->_db->quote($mid);
+		if ($status != 'all')
+		{
+			$sql .= " AND status=" . $this->_db->quote($status);
+		}
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
+	}
 }
