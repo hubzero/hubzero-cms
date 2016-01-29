@@ -101,7 +101,7 @@ function submitbutton(pressbutton)
 			</h3>
 
 			<div class="resource-data">
-				<div class="grid">
+				<div class="cols">
 					{{#if record.errors}}
 						<div class="col width-100">
 							<div class="errors">
