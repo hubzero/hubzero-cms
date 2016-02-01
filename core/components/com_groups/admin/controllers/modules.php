@@ -155,8 +155,11 @@ class Modules extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$ids = Request::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
+		$id = Request::getVar('id', array(0));
+		if (is_array($id) && !empty($id))
+		{
+			$id = $id[0];
+		}
 
 		// get the category object
 		$this->view->module = new Module($id);
