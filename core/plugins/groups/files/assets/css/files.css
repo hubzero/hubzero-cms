@@ -2,26 +2,31 @@
  	Group Media Browser
 ===========================================*/
 
-	#page_main {
+	.group_files .files-wrap {
 		position: relative;
+		min-height: 60em;
 	}
-	#page_content.group_files {
+	/*.group_files .files-container {
 		position: absolute;
 		top: 0;
 		left: 0;
 		height: 100%;
 		width: 100%;
-	}
+	}*/
 
 /* Within File Browser */
 	.upload-browser {
 	}
 	.upload-browser-col {
 		position: absolute;
-		top: 30px;
+		/*top: 30px;
 		left: 30px;
 		bottom: 30px;
-		right: 30px;
+		right: 30px;*/
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
 		border: 1px solid #CCC;
 		background: #FFF;
 	}
@@ -623,13 +628,16 @@
 }
 
 @media screen and (max-width: 690px), (max-height: 233px) {
-	#page_content.group_files {
+	/*#page_content.group_files {
 		position: relative;
 		top: auto;
 		left: auto;
 		height: auto;
 		width: auto;
 		min-height: 500px;
+	}*/
+	.group_files .files-wrap {
+		min-height: 40em;
 	}
 	.upload-filelist-toolbar {
 		display: none;
