@@ -1324,6 +1324,20 @@
 		margin-top: 1em;
 		text-align: center;
 	}
+	.icon-help {
+		display: inline-block;
+		width: 1em;
+		font-size: 1.2em;
+		overflow: hidden;
+		white-space: nowrap;
+		border: none;
+		text-decoration: none;
+		float: right;
+	}
+	.icon-help:hover {
+		border: none;
+		text-decoration: none;
+	}
 /* Thank you Message */
 	#ticket-number {
 		margin-top: 2em;

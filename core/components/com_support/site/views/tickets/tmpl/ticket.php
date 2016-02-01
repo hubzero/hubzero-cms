@@ -452,7 +452,7 @@ $cc = array();
 					<div class="grid">
 						<div class="col span6">
 							<label for="ticket-field-severity">
-								<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>:
+								<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>: <a class="icon-help tooltips popup" href="<?php echo Route::url('index.php?option=com_help&component=support&page=ticket#severity'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?>"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?></a>
 								<select name="ticket[severity]" id="ticket-field-severity">
 									<?php foreach ($this->lists['severities'] as $severity) { ?>
 										<option value="<?php echo $severity; ?>"<?php if ($severity == $this->row->get('severity')) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
