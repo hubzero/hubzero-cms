@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package	 hubzero-cms
- * @author		Kevin Wojkovic <kevinw@purdue.edu>
+ * @author		Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license	 http://opensource.org/licenses/MIT MIT
  */
@@ -182,7 +182,7 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 				$obj['scope'] = 'organization';
 				$obj['scope_id'] = $organization->id;;
 
-				array_push($markerEventIDs, $obj);
+				array_push($markerOrganizationIDs, $obj);
 			}
 		}
 
@@ -231,8 +231,10 @@ class plgCronGeosearch extends \Hubzero\Plugin\Plugin
 					$address = $object[0]->organization;
 				break;
 				case 'event':
-					$object = $objEvents->find($marker['scope_id']);
-					$address = $object[0]->adresse_info;
+					$db = App::get('db');
+					$object= new $objEvents($db);
+					$object->load($marker['scope_id']);
+					$address = $object->adresse_info;
 				break;
 				case 'organization':
 					$object = $objOrganizations->find('all');
