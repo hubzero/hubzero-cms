@@ -145,6 +145,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 
 			//user vars
+			$this->group_plugin_acl = $group_plugin_acl;
 			$this->authorized = $authorized;
 
 			//group vars
@@ -467,6 +468,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => Request::getVar('q', ''),
 			'state'      => 1,
+			'access'     => array(0)
 		);
 
 		if (!User::isGuest())
@@ -492,7 +494,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		 && $this->params->get('access-create-section')
 		 && Request::getWord('action') == 'populate')
 		{
-			if (!$this->model->setup())
+			switch ($this->group_plugin_acl)
+			{
+				case 'members':    $access = 4; break;
+				case 'registered': $access = 1; break;
+				case 'anyone':
+				default:           $access = 0; break;
+			}
+			if (!$this->model->setup($access))
 			{
 				$this->setError($this->model->getError());
 			}
