@@ -135,9 +135,10 @@ class Manager extends Base
 	/**
 	 * Populate the forum with defaulta section and category
 	 *
+	 * @param   integer  $access
 	 * @return  boolean
 	 */
-	public function setup()
+	public function setup($access = 0)
 	{
 		// Create a default section
 		$section = new Section(0, $this->get('scope'), $this->get('scope_id'));
@@ -145,7 +146,8 @@ class Manager extends Base
 			'title'    => Lang::txt('COM_FORUM_SECTION_DEFAULT'),
 			'scope'    => $this->get('scope'),
 			'scope_id' => $this->get('scope_id'),
-			'state'    => 1
+			'state'    => 1,
+			'access'   => $access
 		));
 		if (!$section->store(true))
 		{
@@ -161,7 +163,8 @@ class Manager extends Base
 			'section_id'  => $section->get('id'),
 			'scope'       => $this->get('scope'),
 			'scope_id'    => $this->get('scope_id'),
-			'state'       => 1
+			'state'       => 1,
+			'access'      => $access
 		));
 		if (!$category->store(true))
 		{
