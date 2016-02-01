@@ -77,7 +77,7 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$returnhtml = true;
-		$active = 'members';
+		$active = 'files';
 
 		// The output array we're returning
 		$arr = array(
