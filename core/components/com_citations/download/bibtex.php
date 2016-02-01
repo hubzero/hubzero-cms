@@ -105,6 +105,21 @@ class Bibtex extends Downloadable
 		}
 		$type = ($type != '') ? $type : 'Generic';
 
+		if (!$row->cite)
+		{
+			$au = new \Components\Citations\Tables\Author($db);
+			$authors = $au->getRecords(array('cid' => $row->id, 'start' => 0, 'limit' => 1));
+
+			foreach ($authors as $author)
+			{
+				$row->cite .= strtolower($author->surname);
+			}
+
+			$row->cite .= $row->year;
+			$t = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($row->title));
+			$row->cite .= (strlen($t) > 10 ? substr($t, 0, 10) : $t);
+		}
+
 		$addarray['type']    = $type;
 		$addarray['cite']    = $row->cite;
 		$addarray['title']   = $row->title;
