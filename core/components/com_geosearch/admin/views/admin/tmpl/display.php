@@ -26,6 +26,7 @@
  *
  * @package   hubzero-cms
  * @author    Brandon Beatty
+ * @author		Kevin Wojkovich <kevinw@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +35,88 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_GEOSEARCH'));
 Toolbar::preferences($this->option, 500);
+
+
+$this->js('https://maps.googleapis.com/maps/api/js?v=3.exp');
+
+$this->js();
+$this->css();
+
 ?>
+
+<div class="map-editor">
+	<!-- Menu bar -->
+	<div class="menu-bar">
+		<span id="exit-button">Close</span>
+	</div>
+
+	<div class="editor-container">
+		<span class="item-title">Name: </span>
+		<span class="location-title">Location: </span>
+		<!-- map container -->
+		<div id="map_container">
+			<div id="map_canvas"></div>
+		</div> <!-- / #map_container -->
+
+	</div>
+</div>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="item-form">
-	<p class="warning"><?php echo Lang::txt('COM_GEOSEARCH_NOTICE'); ?></p>
+
+<table class="adminform">
+<thead>
+	<th>
+		<input type="checkbox" name="selectall" />
+	</th>
+	<th>
+		<?php echo Lang::txt('ID'); ?>
+	</th>
+	<th>
+		<?php echo Lang::txt('SCOPE'); ?>
+	</th>
+	<th>
+		<?php echo Lang::txt('SCOPE_ID'); ?>
+	</th>
+	<th>
+		<?php echo Lang::txt('LONGITUDE'); ?>
+	</th>
+	<th>
+		<?php echo Lang::txt('LATITIUDE'); ?>
+	</th>
+	<th></th>
+</thead>
+<tbody>
+<?php foreach ($this->markers as $marker): ?>
+<tr data-scope="<?php echo $marker->scope; ?>" data-scopeID="<?php echo $marker->scope_id; ?>">
+	<td>
+		<input type="checkbox" name="selected[]" value="<?php echo $marker->id; ?>" />
+	</td>
+
+	<td>
+		<?php echo $marker->id; ?>
+	</td>
+
+	<td>
+		<?php echo $marker->scope; ?>
+	</td>
+
+	<td>
+		<?php echo $marker->scope_id; ?>
+	</td>
+
+	<td>
+		<?php echo $marker->addressLongitude; ?>
+	</td>
+
+	<td>
+		<?php echo $marker->addressLatitude; ?>
+	</td>
+
+	<td>
+		<button class="adjust" value="<?php echo $marker->id; ?>"><?php echo Lang::txt('ADJUST_POSITION'); ?></button>
+		<button class="remove danger" value="<?php echo $marker->id; ?>"><?php echo Lang::txt('REMOVE_MARKER'); ?></button>
+	</td>
+</tr>
+<?php endforeach; ?>	
+</tbody>
+</table>
 </form>

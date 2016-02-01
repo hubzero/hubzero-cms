@@ -33,6 +33,9 @@
 namespace Components\Geosearch\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Geosearch\Tables\GeosearchMarkers as Markers;
+
+require_once(PATH_CORE . DS . 'components' . DS  . 'com_geosearch' . DS . 'tables' . DS . 'geosearchmarkers.php');
 
 /**
  * Controller class for Libreviews admin
@@ -46,7 +49,15 @@ class Admin extends AdminController
 	 */
 	public function displayTask()
 	{
-		// show it
+		// Get the database object and load up the table of markers 
+		$db = App::get('db');
+		$obj = new Markers($db);
+		$filters = Request::getVar('filters', array());
+
+		// Pass markers to the view
+		$this->view->markers = $obj->getMarkers($filters, 'array');
+
+
 		$this->view->display();
 	}
 }

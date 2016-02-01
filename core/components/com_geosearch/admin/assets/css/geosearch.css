@@ -1,0 +1,60 @@
+/*******************
+ * Map editor modal 
+ *******************/
+.map-editor {
+	background-color: rgba(0, 0, 0, 0.36);
+	z-index: 999;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	height: 100%;
+	width: 100%;
+	display: none;
+	text-align:center;
+}
+
+#map_canvas {
+	margin-top: 20px;
+	min-height: 300px;
+	min-width: 300px;
+	width: auto;
+	height: auto;
+	
+}
+.editor-container {
+	background-color: white;
+	height: 40%;
+	width: 80%;
+	margin-right: auto;
+	margin-left: auto;
+}
+.menu-bar {
+	background-color: white;
+	height: 50px;
+	width: 80%;
+	margin-right: auto;
+	margin-left: auto;
+}
+#exit-button {
+	float: right;
+	font-size: 12pt;
+	height: 24px;
+	width: 60px;
+	padding: 5px;
+	border: 1px;
+	background-color: black;
+}
+#exit-button:before{
+	content: "\2716";
+	color: white;
+	font-family: "Fontcons";
+	margin-right: 5px;
+}
+.location-title {
+	font-size: 16pt;
+	display: block;
+}
+.item-title {
+	font-size: 16pt;
+	display: block;
+}
