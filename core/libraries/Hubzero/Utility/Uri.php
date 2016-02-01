@@ -621,6 +621,26 @@ class Uri extends Object
 	}
 
 	/**
+	 * Checks if the supplied URL is internal
+	 *
+	 * @param   string  $url  The URL to check
+	 * @return  boolean
+	 */
+	public static function isInternal($url)
+	{
+		$current = self::getInstance()->toString(['scheme', 'host']);
+		$given   = self::getInstance($url);
+		$base    = $given->toString(['scheme', 'host', 'path']);
+		$host    = $given->toString(['scheme', 'host']);
+
+		if (stripos($base, $current) !== 0 && !empty($host))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Resolves //, ../ and ./ from a path and returns
 	 * the result. Eg:
 	 *
