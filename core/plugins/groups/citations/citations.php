@@ -616,6 +616,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				'url' => Request::getVar('uri'),
 				'eprint' => Request::getVar('eprint'),
 				'abstract' => Request::getVar('abstract'),
+				'note' => Request::getVar('note'),
 				'keywords' => Request::getVar('keywords'),
 				'research_notes' => Request::getVar('research_notes'),
 				'language' => Request::getVar('language'),
