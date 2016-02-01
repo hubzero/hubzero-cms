@@ -437,6 +437,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Incoming - expecting an array id[]=4232
 		$id = Request::getInt('id', 0);
+		$id = ($id < 0 ? 0 : $id);
 
 		// Pub author
 		$pubAuthor = false;
@@ -631,8 +632,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!$citation->save())
 		{
 			$this->setError($citation->getError());
-			$this->_edit();
-			return;
+			return $this->_edit();
 		}
 
 		$authorCount = $citation->relatedAuthors()->count();
