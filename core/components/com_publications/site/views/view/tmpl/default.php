@@ -86,7 +86,7 @@ else
 			<?php echo \Components\Publications\Helpers\Html::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
 		</div>
 	<?php }	?>
-	<p class="ataglance"><?php echo $this->publication->describe('parsed') ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->describe('parsed')), 250) : ''; ?></p>
+	<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
 
 <?php
 	// Show published date and category
