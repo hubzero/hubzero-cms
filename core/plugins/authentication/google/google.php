@@ -121,7 +121,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		if ($return = Request::getVar('state', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
-			if (!JURI::isInternal($b64dreturn))
+			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
 			{
 				$b64dreturn = '';
 			}

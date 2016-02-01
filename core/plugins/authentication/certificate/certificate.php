@@ -87,7 +87,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
-			if (!JURI::isInternal($return))
+			if (!\Hubzero\Utility\Uri::isInternal($return))
 			{
 				$return = '';
 			}
