@@ -503,7 +503,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			if ($view->row->relatedAuthors->count())
 			{
-				$view->authors = $view->row->relatedAuthors;
+				$view->authors = $view->row->relatedAuthors()->order('ordering', 'asc');
 			}
 			elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
 			{
