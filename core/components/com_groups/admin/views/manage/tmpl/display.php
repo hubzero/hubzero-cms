@@ -149,6 +149,7 @@ function submitbutton(pressbutton)
 		<tbody>
 		<?php
 		$database = App::get('db');
+		$p = new \Components\Groups\Tables\Page($database);
 		$k = 0;
 		for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		{
@@ -264,7 +265,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&gid=' . $row->cn); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES'); ?></a>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&gid=' . $row->cn); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_COUNT', $pages); ?></a>
 					<?php } ?>
 				</td>
 			</tr>
