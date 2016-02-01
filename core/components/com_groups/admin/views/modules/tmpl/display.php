@@ -164,7 +164,9 @@ function submitbutton(pressbutton)
 					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<?php echo $this->escape($module->get('title')); ?><br />
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')); ?>">
+						<?php echo $this->escape($module->get('title')); ?>
+					</a><br />
 					<span class="hint">
 						<?php
 							$pages = array();
