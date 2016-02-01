@@ -115,7 +115,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
-			if (!JURI::isInternal($b64dreturn))
+			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
 			{
 				$b64dreturn = '';
 			}
