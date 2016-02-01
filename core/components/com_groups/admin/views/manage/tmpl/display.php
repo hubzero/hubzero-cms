@@ -150,6 +150,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $database = App::get('db');
+$p = new \Components\Groups\Tables\Page($database);
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -166,6 +167,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '3': $type = Lang::txt('COM_GROUPS_TYPE_SUPER');   break;
 		case '4': $type = Lang::txt('COM_GROUPS_TYPE_COURSE');  break;
 	}
+
+	$pages = $p->count(array('gidNumber' => $row->gidNumber));
 
 	//get group invite emails
 	$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
@@ -263,7 +266,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&gid=' . $row->cn); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES'); ?></a>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&gid=' . $row->cn); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_COUNT', $pages); ?></a>
 					<?php } ?>
 				</td>
 			</tr>
