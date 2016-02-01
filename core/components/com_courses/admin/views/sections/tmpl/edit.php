@@ -450,7 +450,7 @@ jQuery(document).ready(function($){
 
 				$nullDate = '0000-00-00 00:00:00';
 
-				$this->offering->section($this->row->get('alias', '__default'));
+				$this->offering->section($this->row->get('alias', '!!default!!'));
 
 					$i = 0;
 					foreach ($this->offering->units(array(), true) as $unit)
