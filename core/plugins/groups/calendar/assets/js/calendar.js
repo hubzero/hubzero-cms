@@ -229,30 +229,30 @@ HUB.Plugins.GroupCalendar = {
 	{
 		var $ = this.jQuery;
 		var value = $('#calendar-picker').val();
-		var count = $('#calendar-picker').children().length;
 
 		if (value == 0)
 		{
-			var x = 0;
-			for (x = 0; x <= count; x++)
+			$('.calendar-picker-option').each(function ( idx, item )
 			{
-				$('.calendar-' + x).show();
-			}
+				val = $(item).val();
+				$('.calendar-' + val).show();
+			});
 		}
 		else
 		{
-			var x = 0;
-			for (x = 0; x <= count; x++)
+			$('.calendar-picker-option').each(function ( idx, item )
 			{
-				if (x != value)
+				val = $(item).val();
+
+				if (val != value)
 				{
-					$('.calendar-' + x).hide();
+					$('.calendar-' + val).hide();
 				}
 				else
 				{
-					$('.calendar-' + x).show();
+					$('.calendar-' + val).show();
 				}
-			}
+			});
 		}
 	},
 
