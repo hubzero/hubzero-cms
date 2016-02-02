@@ -24,6 +24,13 @@ jQuery(function($) {
 			.focus();
 	});
 
+	$('#search-form').on('keypress', '.inline.search', function ( e ) {
+		if (e.keyCode == 13) {
+			e.preventDefault();
+		}
+	});
+
+
 	var autocompleter = function() {
 		if (xhr) {
 			xhr.abort();
