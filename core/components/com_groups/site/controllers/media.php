@@ -808,7 +808,8 @@ class Media extends Base
 		}
 
 		// add file name to destination for rename
-		$destination .= DS . array_pop(explode('/', $source));
+		$bits = explode('/', $source);
+		$destination .= DS . array_pop($bits);
 
 		// move file
 		Filesystem::move($source, $destination);
