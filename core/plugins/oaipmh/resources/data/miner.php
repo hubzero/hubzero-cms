@@ -248,18 +248,28 @@ class Miner extends Object implements Provider
 		{
 			$identifier = substr($identifier, strlen($resolver));
 		}
+		else
+		{
+			if ($shoulder = \Component::params('com_tools')->get('doi_shoulder'))
+			{
+				if (substr($identifier, 0, strlen($shoulder)) == $shoulder)
+				{
+					$identifier = substr($identifier, strlen($shoulder));
+				}
+			}
+		}
+		$identifier = trim($identifier, '/');
 
 		$this->database->setQuery(
-			"SELECT a.`rid`, v.`revision`
+			"SELECT a.*
 			FROM `#__doi_mapping` AS a
-			LEFT JOIN `#__tool_version` AS v ON v.`id`=a.`versionid`
 			WHERE a.`doi`=" . $this->database->quote($identifier) . "
 			LIMIT 1"
 		);
 		$doi = $this->database->loadObject();
 		if ($doi && $doi->rid)
 		{
-			return $doi->rid . ($doi->revision ? ':' . $doi->revision : '');
+			return $doi->rid . ($doi->local_revision ? ':' . $doi->local_revision : '');
 		}
 
 		return 0;
@@ -487,32 +497,35 @@ class Miner extends Object implements Provider
 			$record->creator = $this->database->loadColumn();
 		}
 
-		$this->database->setQuery(
-			"SELECT *
-			FROM `#__citations` AS a
-			INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
-			WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
-			ORDER BY `year` DESC"
-		);
-		$references = $this->database->loadObjectList();
-		if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
+		if ($this->get('citations', 1))
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-
-			$formatter = new \Components\Citations\Helpers\Format;
-			$formatter->setTemplate('apa');
-
-			foreach ($references as $reference)
+			$this->database->setQuery(
+				"SELECT *
+				FROM `#__citations` AS a
+				INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
+				WHERE n.`tbl`='resource' AND n.`oid`=" . $this->database->quote($id) . " AND a.`published`=1
+				ORDER BY `year` DESC"
+			);
+			$references = $this->database->loadObjectList();
+			if (count($references) && file_exists(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php'))
 			{
-				//<dcterms:isReferencedBy>uytruytry</dcterms:isReferencedBy>
-				//<dcterms:isVersionOf>jgkhfjf</dcterms:isVersionOf>
-				$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
-				$cite = str_replace('&quot;', '"', $cite);
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
-				$record->relation[] = array(
-					'type'  => 'references',
-					'value' => trim($cite)
-				);
+				$formatter = new \Components\Citations\Helpers\Format;
+				$formatter->setTemplate('apa');
+
+				foreach ($references as $reference)
+				{
+					//<dcterms:isReferencedBy>uytruytry</dcterms:isReferencedBy>
+					//<dcterms:isVersionOf>jgkhfjf</dcterms:isVersionOf>
+					$cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
+					$cite = str_replace('&quot;', '"', $cite);
+
+					$record->relation[] = array(
+						'type'  => 'references',
+						'value' => trim($cite)
+					);
+				}
 			}
 		}
 
