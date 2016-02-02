@@ -60,7 +60,9 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 		<?php if ($this->item->get('type') == 'file') { ?>
 		<a href="<?php echo Route::url($this->model->link('files')
 		. '&action=' . (($this->item->get('converted')) ? 'open' : 'download') . $subdirPath
-		. '&asset=' . urlencode($this->item->get('name'))); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?></a>
+		. '&asset=' . urlencode($this->item->get('name'))); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
+			<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
+		</a>
 		<?php } else { ?>
 			<a href="<?php echo Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
 		<?php } ?>
