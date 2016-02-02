@@ -735,10 +735,24 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if ($this->view->section->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->section->get('scope') != $this->model->get('scope'))
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
+			return;
+		}
+
 		$this->view->category = $this->view->section->category($this->view->filters['category']);
 		if (!$this->view->category->exists())
 		{
 			App::abort(404, Lang::txt('Category not found.'));
+			return;
+		}
+
+		if ($this->view->category->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->category->get('scope') != $this->model->get('scope'))
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
 			return;
 		}
 
@@ -1090,8 +1104,22 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if ($this->view->section->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->section->get('scope') != $this->model->get('scope'))
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
+			return;
+		}
+
 		$this->view->category = $this->view->section->category($this->view->filters['category']);
 		if (!$this->view->category->exists())
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
+			return;
+		}
+
+		if ($this->view->category->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->category->get('scope') != $this->model->get('scope'))
 		{
 			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
 			return;
@@ -1101,6 +1129,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Load the topic
 		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
+
+		// Make sure thread belongs to this group
+		if ($this->view->thread->get('scope_id') != $this->model->get('scope_id')
+		 || $this->view->thread->get('scope') != $this->model->get('scope'))
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_NOT_FOUND'));
+			return;
+		}
 
 		// Redirect if the thread is soft-deleted
 		if ($this->view->thread->get('state') == 2)
