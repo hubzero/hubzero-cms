@@ -1212,6 +1212,23 @@ class Resources extends SiteController
 		}
 
 		// Is the visitor authorized to view this resource?
+		if (User::isGuest() && ($this->model->resource->access == 1 || $this->resource->access == 4))
+		{
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . ($this->model->resource->alias ? '&alias=' . $this->model->resource->alias : '&id=' . $this->model->resource->id), false, true), 'server'));
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
+				'warning'
+			);
+			return;
+		}
+
+		if ($this->model->resource->group_owner && !$this->model->access('view'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
+			return;
+		}
+
 		if (!$this->model->access('view'))
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
