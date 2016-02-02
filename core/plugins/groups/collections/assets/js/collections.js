@@ -155,7 +155,7 @@ jQuery(document).ready(function(jq){
 					});
 				});
 
-			$('#page_content a.repost').fancybox({
+			$('#collections a.repost').fancybox({
 				type: 'ajax',
 				width: 500,
 				height: 'auto',
@@ -277,7 +277,7 @@ jQuery(document).ready(function(jq){
 		});
 	}
 
-	$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
+	$('#collections a.follow, #collections a.unfollow').on('click', function(e){
 		e.preventDefault();
 
 		var el = $(this);
