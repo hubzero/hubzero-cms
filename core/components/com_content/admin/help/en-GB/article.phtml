@@ -36,10 +36,13 @@
 			<li><b>Language.</b> Select the language for this item. If you are not using the multi-language feature, keep the default of 'All'.</li>
 			<li><b>ID</b>. This is a unique identification number for this item assigned automatically by the CMS. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
 		</ul>
+
 		<h3> <span class="mw-headline" id="Article_Text">Article Text</span></h3>
 		<p>This is where you enter the contents of the article. The editor you use depends on the settings for your site and your user. Hubzero core includes four editor options: CKEditor, TinyMCE (the default), Code Mirror, and None. Additional editors can be installed as extension plugins if desired (see the Extensions direction category of editors for a list).</p>
+
 		<h4> <span class="mw-headline" id="TinyMCE_Editor">TinyMCE Editor</span></h4>
 		<p>TinyMCE is the default editor for both front-end and back-end users. TinyMCE is a WYSIWYG (what you see is what you get) editor that allows users a familiar word-processing interface to use when editing Articles and other content. TinyMCE can be configured with three different sets of toolbar buttons: advanced, simple, and extended. This is set as an option in the <a href="<?php echo Route::url('index.php?option=com_help&component=com_plugins&article=plugins'); ?>">Plugin Manager</a> for the 'Editor - TinyMCE' plugin.</p>
+
 		<p><b>Advanced Toolbar</b></p>
 		<p>The advanced toolbar provides a three-row toolbar. This is the default setting. The 3-row toolbar below provides many standard editing commands, as follows:</p>
 		<ul>
@@ -72,6 +75,7 @@
 				</ul>
 			</li>
 		</ul>
+
 		<p><b>Simple Toolbar</b></p>
 		<p>The simple toolbar provides one row of buttons as shown below.</p>
 		<ul>
@@ -87,255 +91,197 @@
 		<p>The extended toolbar provides the most extensive editing options.</p>
 		<p>This option provides all of the same buttons as documented in the Advanced Toolbar above. In addition, the following options are available:</p>
 		<ul>
-		<li><b>First Row.</b>
-		<ul>
-		<li>Font Family. Select the desired font.</li>
-		<li>Font Size. Select the desired font size.</li>
+			<li><b>First Row.</b>
+				<ul>
+				<li>Font Family. Select the desired font.</li>
+				<li>Font Size. Select the desired font size.</li>
+				</ul>
+			</li>
+			<li><b>Second Row.</b>
+				<ul>
+				<li>Find and Find/Replace.</li>
+				<li>Insert Date or Time.</li>
+				<li>Select Text Color or Background Color.</li>
+				<li>Toggle Full Screen Mode.</li>
+				</ul>
+			</li>
+			<li><b>Third Row.</b>
+				<ul>
+				<li>Insert New Table, Table Row Properties, Table Cell Properties, Insert Row Before, Insert Row After, Delete Row, Insert Column Before, Insert Column After, Delete Column, Split Merged Table Cells, Merge Table Cells.</li>
+				<li>Insert Emotions.</li>
+				<li>Insert Embedded Media. To insert embedded media (such as Flash), place the cursor at the desired location and press this button. A popup dialog will display that allows you to enter the Type, File or URL, and other information about the media.</li>
+				<li>Insert horizontal line.</li>
+				<li>Direction Left to Right and Direction Right to Left. These buttons allow you to enter or change the text direction, for example for languages that read right to left.</li>
+				</ul>
+			</li>
+			<li><b>Fourth Row.</b>
+				<ul>
+				<li>Cut, Copy, Paste, Paste as Plain Text, Paste from Word. Often when copying and pasting text from other sources, such as PDF files, Word documents, or web pages, the selected text contains formatting information that is not needed or wanted. Using the Paste as Plain Text will strip out all formatting from the text. Paste as Word tries to preserve some of the formatting while stripping out unnecessary formatting.</li>
+				<li>Select All.</li>
+				<li>Insert New Layer, Move Forward, Move Backware, Toggle Absolute Position. For working with layered items.</li>
+				<li>Edit CSS Style. A popup dialog box displays that allows you to enter CSS style information for the selected text.</li>
+				<li>Citation, Abbreviation, Acronym, Insertion, Deletion, Insert/Edit Attributes.</li>
+				<li>Show/Hide Visual Control Characters (like paragraph endings).</li>
+				<li>Show/Hide Block Elements.</li>
+				<li>Insert Non-Breaking Space Character.</li>
+				<li>Block Quote.</li>
+				<li>Insert Predefined Template Content.</li>
+				</ul>
+			</li>
 		</ul>
-		</li>
-		</ul>
-		<ul>
-		<li><b>Second Row.</b>
-		<ul>
-		<li>Find and Find/Replace.</li>
-		<li>Insert Date or Time.</li>
-		<li>Select Text Color or Background Color.</li>
-		<li>Toggle Full Screen Mode.</li>
-		</ul>
-		</li>
-		</ul>
-		<ul>
-		<li><b>Third Row.</b>
-		<ul>
-		<li>Insert New Table, Table Row Properties, Table Cell Properties, Insert Row Before, Insert Row After, Delete Row, Insert Column Before, Insert Column After, Delete Column, Split Merged Table Cells, Merge Table Cells.</li>
-		<li>Insert Emotions.</li>
-		<li>Insert Embedded Media. To insert embedded media (such as Flash), place the cursor at the desired location and press this button. A popup dialog will display that allows you to enter the Type, File or URL, and other information about the media.</li>
-		<li>Insert horizontal line.</li>
-		<li>Direction Left to Right and Direction Right to Left. These buttons allow you to enter or change the text direction, for example for languages that read right to left.</li>
-		</ul>
-		</li>
-		</ul>
-		<ul>
-		<li><b>Fourth Row.</b>
-		<ul>
-		<li>Cut, Copy, Paste, Paste as Plain Text, Paste from Word. Often when copying and pasting text from other sources, such as PDF files, Word documents, or web pages, the selected text contains formatting information that is not needed or wanted. Using the Paste as Plain Text will strip out all formatting from the text. Paste as Word tries to preserve some of the formatting while stripping out unnecessary formatting.</li>
-		<li>Select All.</li>
-		<li>Insert New Layer, Move Forward, Move Backware, Toggle Absolute Position. For working with layered items.</li>
-		<li>Edit CSS Style. A popup dialog box displays that allows you to enter CSS style information for the selected text.</li>
-		<li>Citation, Abbreviation, Acronym, Insertion, Deletion, Insert/Edit Attributes.</li>
-		<li>Show/Hide Visual Control Characters (like paragraph endings).</li>
-		<li>Show/Hide Block Elements.</li>
-		<li>Insert Non-Breaking Space Character.</li>
-		<li>Block Quote.</li>
-		<li>Insert Predefined Template Content.</li>
-		</ul>
-		</li>
-		</ul>
+
 		<h4> <span class="mw-headline" id="Code_Mirror_Editor">Code Mirror Editor</span></h4>
 		<p>The CodeMirror editor is designed to make it easy to enter HTML code in an article or description. CodeMirror supports syntax highlighting and auto-completion, as shown in this screenshot.</p>
 		<p>CodeMirror offers some of the same advantages of using No Editor, but makes it somewhat easier to work with raw HTML code.</p>
+
 		<h4> <span class="mw-headline" id="No_Editor">No Editor</span></h4>
 		<p>If 'No editor' is selected for a User, then a simple text editor displays. This allows you to enter in raw, unformatted HTML. You can use the toolbar 'Preview' button to preview how the HTML will display.</p>
 		<p>Note that the 'No Editor' option can be useful if you are entering in 'boilerplate' or custom HTML, for example to create a PayPal link. TinyMCE automatically re-formats and strips some HTML when a file is saved. This can cause complex HTML to not work correctly.</p>
 		<p>If this happens, you can temporarily change the editor to 'No Editor' and create the desired content. Note that if you wish to edit this content in the future, you should be careful to change your editor to 'No Editor'. Otherwise, if you open and save the content with TinyMCE, you may lose your custom HTML.</p>
+
 		<h4> <span class="mw-headline" id="Editor_Buttons">Editor Buttons</span></h4>
 		<p>Five buttons are located just below the edit window, as shown below:</p>
 		<p><b>Article.</b> This button opens a modal window that allows you to easily create a link to any article on the current site. The link is created using the article's title as the link text. The modal window is the same as for selecting an article for a Single Article Menu Item. To create a link to the desired article:</p>
 		<ul>
-		<li>Place the cursor at the point in the article where you want the linked article title to be inserted.</li>
-		<li>Click on the Article button to open the modal window.</li>
-		<li>Click on the title to select the desired article in the modal window. You can use the filters and search to help find the desired article.</li>
-		<li>A link with the article's title will be inserted at the current cursor location.</li>
-		<li>If needed, you can edit the link text.</li>
+			<li>Place the cursor at the point in the article where you want the linked article title to be inserted.</li>
+			<li>Click on the Article button to open the modal window.</li>
+			<li>Click on the title to select the desired article in the modal window. You can use the filters and search to help find the desired article.</li>
+			<li>A link with the article's title will be inserted at the current cursor location.</li>
+			<li>If needed, you can edit the link text.</li>
 		</ul>
 		<p><b>Image.</b> This button provides an easy way to insert an image into an Article. Images may be inserted from the 'images' folder and may also be uploaded. When you click the Image button, a window pops up, as shown below:</p>
 		<ul>
-		<li><b>Directory.</b> The current directory on the host server. This is the 'images' directory under your hubzero home directory. Use the drop-down list box to select a subdirectory.</li>
-		<li><b>Up.</b> Navigate to the parent directory. Note that the top directory for this function is 'images/stories'. You can not navigate to a higher directory.</li>
-		<li><b>Insert.</b> Insert the selected image. The insert point will be the current cursor position. You will see the image display inside the edit window.</li>
-		<li><b>Cancel</b>. Cancel the operation and close the popup window. You can cancel also in clicking the X at right top corner.</li>
-		<li><b>Thumbnail Browse Area.</b> Click on an image thumbnail to select the image. Click on a folder icon to navigate to that subdirectory.</li>
-		<li><b>Image URL.</b> Click on one of the image thumbnails and the URL for the image will be entered for you.</li>
-		<li><b>Align.</b> Select the desired alignment (left or right) from the drop-down list box.</li>
-		<li><b>Image Description.</b> Enter a description for the image.</li>
-		<li><b>Image Title.</b> Enter a Title for this image. This displays when a User hovers the mouse on the image.</li>
-		<li><b>Caption.</b> If checked, image title will display as a caption below the image.</li>
-		<li><b>Choose Files.</b> Click this button to browse to an image file to upload from your local computer. A file dialog will open allowing you to select a file.</li>
-		<li><b>Start Upload.</b> Once you have selected a file, press this button to upload the file to your 'images' folder. The thumbnail for the new image will now show in the thumbnail area.</li>
+			<li><b>Directory.</b> The current directory on the host server. This is the 'images' directory under your hubzero home directory. Use the drop-down list box to select a subdirectory.</li>
+			<li><b>Up.</b> Navigate to the parent directory. Note that the top directory for this function is 'images/stories'. You can not navigate to a higher directory.</li>
+			<li><b>Insert.</b> Insert the selected image. The insert point will be the current cursor position. You will see the image display inside the edit window.</li>
+			<li><b>Cancel</b>. Cancel the operation and close the popup window. You can cancel also in clicking the X at right top corner.</li>
+			<li><b>Thumbnail Browse Area.</b> Click on an image thumbnail to select the image. Click on a folder icon to navigate to that subdirectory.</li>
+			<li><b>Image URL.</b> Click on one of the image thumbnails and the URL for the image will be entered for you.</li>
+			<li><b>Align.</b> Select the desired alignment (left or right) from the drop-down list box.</li>
+			<li><b>Image Description.</b> Enter a description for the image.</li>
+			<li><b>Image Title.</b> Enter a Title for this image. This displays when a User hovers the mouse on the image.</li>
+			<li><b>Caption.</b> If checked, image title will display as a caption below the image.</li>
+			<li><b>Choose Files.</b> Click this button to browse to an image file to upload from your local computer. A file dialog will open allowing you to select a file.</li>
+			<li><b>Start Upload.</b> Once you have selected a file, press this button to upload the file to your 'images' folder. The thumbnail for the new image will now show in the thumbnail area.</li>
 		</ul>
 		<p><b>Pagebreak.</b> This button allows you to insert a pagebreak inside an Article. A pagebreak allows for page navigation when the article is displayed on a layout. This is useful for long articles. When this button is pressed, a popup window is displayed as shown below:</p>
 		<ul>
-		<li><b>Page Title</b>. Enter the title to display for the new page (for example, 'Page 2').</li>
-		<li><b>Table of Contents Alias</b>. Optional field to display in the table of contents for this page. In a multi-page article, the CMS displays a 'table of contents' for the page that allows the user to select any page. If this field is blank, the Page Title will be used. If you want a different title in the table of contents, enter it here.</li>
-		<li><b>Insert Page Break.</b> Click this button to insert the pagebreak with the entered fields. The Pagebreak will display as a gray dashed line across the Article. Note that a pagebreak cannot be edited. If you need to change a field in the pagebreak, click on the Article just past the pagebreak, press Backspace until the pagebreak is deleted, then insert a new pagebreak with the desired information.</li>
-		<li><b>Read more...</b> This button inserts a 'Read more...' break in the Article. This shows as a red dotted line across the Article. If an Article has a 'Read more...' break, only the text before the break, called the Into Text, will initially display, along with a 'Read more...' link. If the User clicks this link, either the entire Article or just the part after the 'Read more...' link is displayed. This depends on the setting of the 'Intro Text' parameters for the Article and in the Global Configuration. The 'Read more...' break allows you to save space on pages by just showing the Intro Text. Note that the 'Read more...' break only shows in the Front Page, Section, and Category Blog layouts. If you want to insert breaks for an Article shown in an Article Layout, use the Page Break button.</li>
+			<li><b>Page Title</b>. Enter the title to display for the new page (for example, 'Page 2').</li>
+			<li><b>Table of Contents Alias</b>. Optional field to display in the table of contents for this page. In a multi-page article, the CMS displays a 'table of contents' for the page that allows the user to select any page. If this field is blank, the Page Title will be used. If you want a different title in the table of contents, enter it here.</li>
+			<li><b>Insert Page Break.</b> Click this button to insert the pagebreak with the entered fields. The Pagebreak will display as a gray dashed line across the Article. Note that a pagebreak cannot be edited. If you need to change a field in the pagebreak, click on the Article just past the pagebreak, press Backspace until the pagebreak is deleted, then insert a new pagebreak with the desired information.</li>
+			<li><b>Read more...</b> This button inserts a 'Read more...' break in the Article. This shows as a red dotted line across the Article. If an Article has a 'Read more...' break, only the text before the break, called the Into Text, will initially display, along with a 'Read more...' link. If the User clicks this link, either the entire Article or just the part after the 'Read more...' link is displayed. This depends on the setting of the 'Intro Text' parameters for the Article and in the Global Configuration. The 'Read more...' break allows you to save space on pages by just showing the Intro Text. Note that the 'Read more...' break only shows in the Front Page, Section, and Category Blog layouts. If you want to insert breaks for an Article shown in an Article Layout, use the Page Break button.</li>
 		</ul>
 		<p><b>Toggle Editor.</b> If you are using the TinyMCE editor, a Toggle Editor button will show. This button allows you to toggle between the TinyMCE editor and No Editor.</p>
+
 		<h3> <span class="mw-headline" id="Publishing_Options">Publishing Options</span></h3>
 		<p><b>Note: This slider can be hidden by users with Admin Permission for the article manager.</b></p>
 		<p>This section allows you to enter parameters for this Article, as shown below:</p>
 		<p>These entries are optional. The CMS automatically creates default entries for these values.</p>
 		<ul>
-		<li><b>Created by</b>. Name of the User who created this item. This will default to the currently logged-in user. If you want to change this to a different user, click the Select User button to select a different user.</li>
+			<li><b>Created by</b>. Name of the User who created this item. This will default to the currently logged-in user. If you want to change this to a different user, click the Select User button to select a different user.</li>
+			<li><b>Created By Alias.</b> This optional field allows you to enter in an alias for this Author for this Article. This allows you to display a different Author name for this Article.</li>
+			<li><b>Created Date.</b> This field defaults to the current time when the Article was created. You can enter in a different date and time or click on the calendar icon to find the desired date.</li>
+			<li><b>Start Publishing.</b> Date and time to start publishing. Use this field if you want to enter content ahead of time and then have it published automatically at a future time.</li>
+			<li><b>Finish Publishing.</b> Date and time to finish publishing. Use this field if you want to have content automatically changed to Unpublished state at a future time (for example, when it is no longer applicable).</li>
+			<li><b>Modified By.</b> Displays who last edited the article. Note this field is non-editable.</li>
+			<li><b>Modified Date.</b> Date and time the article was last modified on. Note this field is non-editable.</li>
+			<li><b>Revision.</b> How many times the article has been edited. Note this field is non-editable.</li>
+			<li><b>Hits.</b> The number of times an item has been viewed.</li>
 		</ul>
-		<ul>
-		<li><b>Created By Alias.</b> This optional field allows you to enter in an alias for this Author for this Article. This allows you to display a different Author name for this Article.</li>
-		</ul>
-		<ul>
-		<li><b>Created Date.</b> This field defaults to the current time when the Article was created. You can enter in a different date and time or click on the calendar icon to find the desired date.</li>
-		</ul>
-		<ul>
-		<li><b>Start Publishing.</b> Date and time to start publishing. Use this field if you want to enter content ahead of time and then have it published automatically at a future time.</li>
-		</ul>
-		<ul>
-		<li><b>Finish Publishing.</b> Date and time to finish publishing. Use this field if you want to have content automatically changed to Unpublished state at a future time (for example, when it is no longer applicable).</li>
-		</ul>
-		<ul>
-		<li><b>Modified By.</b> Displays who last edited the article. Note this field is non-editable.</li>
-		</ul>
-		<ul>
-		<li><b>Modified Date.</b> Date and time the article was last modified on. Note this field is non-editable.</li>
-		</ul>
-		<ul>
-		<li><b>Revision.</b> How many times the article has been edited. Note this field is non-editable.</li>
-		</ul>
-		<ul>
-		<li><b>Hits.</b> The number of times an item has been viewed.</li>
-		</ul>
+
 		<h3> <span class="mw-headline" id="Article_Options">Article Options</span></h3>
 		<p><b>Note: This slider can be hidden by users with Admin Permission for the article manager.</b></p>
 		<p>This is a set of options you can use to control how this article will show in the Featured or Category blog layout. The CMS allows you to set these options at the following levels:</p>
 		<ol>
-		<li>In <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Options'); ?>" title="Help25:Content Article Manager Options">Article Manager→Options</a></li>
-		<li>When you set up a <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Article_Category_Blog'); ?>" title="Help25:Menus Menu Item Article Category Blog">Category Blog</a> or <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Article_Featured'); ?>" title="Help25:Menus Menu Item Article Featured">Featured Articles</a> menu item.</li>
-		<li>When you create the article here.</li>
+			<li>In <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Options'); ?>" title="Help25:Content Article Manager Options">Article Manager→Options</a></li>
+			<li>When you set up a <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Article_Category_Blog'); ?>" title="Help25:Menus Menu Item Article Category Blog">Category Blog</a> or <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Article_Featured'); ?>" title="Help25:Menus Menu Item Article Featured">Featured Articles</a> menu item.</li>
+			<li>When you create the article here.</li>
 		</ol>
 		<p>When you create the blog menu item, you can set each of these options as follows:</p>
 		<ul>
-		<li><i>Use Global:</i> Uses the setting from <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Options'); ?>" title="Help25:Content Article Manager Options">Article Manager→Options</a></li>
-		<li><i>Yes/No or Hide/Show:</i> Use the setting in that menu item.</li>
-		<li><i>Use Article Settings:</i> Use the setting set here for the specific article. This allows you to show different articles with different options in the same blog page. For example, one article might show the author and a different article might not show the author.</li>
+			<li><i>Use Global:</i> Uses the setting from <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Content_Article_Manager_Options'); ?>" title="Help25:Content Article Manager Options">Article Manager→Options</a></li>
+			<li><i>Yes/No or Hide/Show:</i> Use the setting in that menu item.</li>
+			<li><i>Use Article Settings:</i> Use the setting set here for the specific article. This allows you to show different articles with different options in the same blog page. For example, one article might show the author and a different article might not show the author.</li>
 		</ul>
 		<p>The following Article Options can be set:</p>
 		<ul>
-		<li><b>Show Title.</b> (Use Global/Hide/Show). Whether or not to show the Article's Title.</li>
+			<li><b>Show Title.</b> (Use Global/Hide/Show). Whether or not to show the Article's Title.</li>
+			<li><b>Linked Titles.</b> (Use Global/No/Yes). If the Article's Title is shown, whether to show it as a link to the article.</li>
+			<li><b>Show Intro Text.</b> (Hide/Show) Hide or Show an Article's Intro Text when the 'Read more...' link is selected. Intro Text is the part of the Article before a 'Read more...' break. If this parameter is 'Show', when the User selects the 'Read more...' link, the entire article will display, including the Intro Text. If this parameter is 'Hide', when the User selects the 'Read more...' link, only the part of the Article after the 'Read more...' link will display.</li>
+			<li><b>Show Category.</b> (Use Global/Hide/Show). Whether or not to show the Article's Category.</li>
+			<li><b>Link Category.</b> (Use Global/No/Yes). If the Article's Category is shown, whether to show it as a link to a Category layout (list or blog) for that Category.</li>
+			<li><b>Show Parent.</b> (Use Global/Hide/Show). Whether or not to show the Article's Parent Category.</li>
+			<li><b>Link Parent.</b> (Use Global/No/Yes). If the Article's Parent Category is shown, whether to show it as a link to a Category layout (list or blog) for that Category.</li>
+			<li><b>Show Author.</b> (Use Global/Hide/Show) Whether to show the author of the Article.</li>
+			<li><b>Link Author.</b> (Use Global/No/Yes). If the Article's author is shown, whether to show it as a link to a Contact layout for that author. Note that the author must be set up as a Contact in <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Contacts_Contacts_Edit'); ?>" title="Help25:Components Contacts Contacts Edit">Contact Manager: Edit</a>.</li>
+			<li><b>Show Create Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's create date.</li>
+			<li><b>Show Modify Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's modify date.</li>
+			<li><b>Show Publish Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's start publishing date.</li>
+			<li><b>Show Navigation.</b> (Use Global/Hide/Show). Whether or not to show a navigation link (for example, Next or Previous article) when you drill down to the article.</li>
+			<li><b>Show Icons.</b> (Use Global/Hide/Show). If set to Show, Print and Email will use icons instead of text.</li>
+			<li><b>Show Print Icon.</b> (Use Global/Hide/Show). Show or Hide the Print Article button.</li>
+			<li><b>Show Email Icon.</b> (Use Global/Hide/Show). Show or Hide the Email Article button.</li>
+			<li><b>Show Voting.</b> (Use Global/Hide/Show). Whether or not to show the a voting icon for the article.</li>
+			<li><b>Show Hits.</b> (Use Global/Hide/Show). Show or Hide the number of times the article has been hit (displayed by a user).</li>
+			<li><b>Show Unauthorised Links.</b> (Use Global/No/Yes). If Yes, the Intro Text for restricted articles will show. Clicking on the "Read More" link will require users to log in to view the full article content.</li>
+			<li><b>Positioning of the Links.</b> (Use Global/Above/Below). If Above, links are shown above the content. Otherwise they are shown below the content.</li>
+			<li><b>Read More Text.</b> Optional field that allows you to customize the text that shows for a "read more" link. The default wording for English is "Read more".</li>
+			<li><b>Alternative Layout.</b> If you have defined one or more alternative layouts for the Single Article menu item, you can select the layout to use for this article. See <a href="<?php echo Route::url('index.php?option=com_help&component=com_templates&page=layout_overrides'); ?>" class="mw-redirect">Layout Overrides</a> for more information about alternative layouts.</li>
+			<li><b>Key Reference.</b> This is the reference that is used to pull the correct help information either from help files saved locally or on an online site like this page.</li>
 		</ul>
-		<ul>
-		<li><b>Linked Titles.</b> (Use Global/No/Yes). If the Article's Title is shown, whether to show it as a link to the article.</li>
-		</ul>
-		<ul>
-		<li><b>Show Intro Text.</b> (Hide/Show) Hide or Show an Article's Intro Text when the 'Read more...' link is selected. Intro Text is the part of the Article before a 'Read more...' break. If this parameter is 'Show', when the User selects the 'Read more...' link, the entire article will display, including the Intro Text. If this parameter is 'Hide', when the User selects the 'Read more...' link, only the part of the Article after the 'Read more...' link will display.</li>
-		</ul>
-		<ul>
-		<li><b>Show Category.</b> (Use Global/Hide/Show). Whether or not to show the Article's Category.</li>
-		</ul>
-		<ul>
-		<li><b>Link Category.</b> (Use Global/No/Yes). If the Article's Category is shown, whether to show it as a link to a Category layout (list or blog) for that Category.</li>
-		</ul>
-		<ul>
-		<li><b>Show Parent.</b> (Use Global/Hide/Show). Whether or not to show the Article's Parent Category.</li>
-		</ul>
-		<ul>
-		<li><b>Link Parent.</b> (Use Global/No/Yes). If the Article's Parent Category is shown, whether to show it as a link to a Category layout (list or blog) for that Category.</li>
-		</ul>
-		<ul>
-		<li><b>Show Author.</b> (Use Global/Hide/Show) Whether to show the author of the Article.</li>
-		</ul>
-		<ul>
-		<li><b>Link Author.</b> (Use Global/No/Yes). If the Article's author is shown, whether to show it as a link to a Contact layout for that author. Note that the author must be set up as a Contact in <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Help25:Components_Contacts_Contacts_Edit'); ?>" title="Help25:Components Contacts Contacts Edit">Contact Manager: Edit</a>.</li>
-		</ul>
-		<ul>
-		<li><b>Show Create Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's create date.</li>
-		</ul>
-		<ul>
-		<li><b>Show Modify Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's modify date.</li>
-		</ul>
-		<ul>
-		<li><b>Show Publish Date.</b> (Use Global/Hide/Show). Whether or not to show the Article's start publishing date.</li>
-		</ul>
-		<ul>
-		<li><b>Show Navigation.</b> (Use Global/Hide/Show). Whether or not to show a navigation link (for example, Next or Previous article) when you drill down to the article.</li>
-		</ul>
-		<ul>
-		<li><b>Show Icons.</b> (Use Global/Hide/Show). If set to Show, Print and Email will use icons instead of text.</li>
-		</ul>
-		<ul>
-		<li><b>Show Print Icon.</b> (Use Global/Hide/Show). Show or Hide the Print Article button.</li>
-		</ul>
-		<ul>
-		<li><b>Show Email Icon.</b> (Use Global/Hide/Show). Show or Hide the Email Article button.</li>
-		</ul>
-		<ul>
-		<li><b>Show Voting.</b> (Use Global/Hide/Show). Whether or not to show the a voting icon for the article.</li>
-		</ul>
-		<ul>
-		<li><b>Show Hits.</b> (Use Global/Hide/Show). Show or Hide the number of times the article has been hit (displayed by a user).</li>
-		</ul>
-		<ul>
-		<li><b>Show Unauthorised Links.</b> (Use Global/No/Yes). If Yes, the Intro Text for restricted articles will show. Clicking on the "Read More" link will require users to log in to view the full article content.</li>
-		</ul>
-		<ul>
-		<li><b>Positioning of the Links.</b> (Use Global/Above/Below). If Above, links are shown above the content. Otherwise they are shown below the content.</li>
-		<li><b>Read More Text.</b> Optional field that allows you to customize the text that shows for a "read more" link. The default wording for English is "Read more".</li>
-		</ul>
-		<ul>
-		<li><b>Alternative Layout.</b> If you have defined one or more alternative layouts for the Single Article menu item, you can select the layout to use for this article. See <a href="<?php echo Route::url('index.php?option=com_help&component=com_templates&page=layout_overrides'); ?>" class="mw-redirect">Layout Overrides</a> for more information about alternative layouts.</li>
-		</ul>
-		<ul>
-		<li><b>Key Reference.</b> This is the reference that is used to pull the correct help information either from help files saved locally or on an online site like this page.</li>
-		</ul>
+
 		<h3> <span class="mw-headline" id="Configure_Edit_Screen">Configure Edit Screen</span></h3>
 		<p><b>Note: This slider by default is only visible to those with Admin permissions for the Article Manager permissions.</b></p>
 		<p>On some installations you may need to save the Content Options in order for these options to work.</p>
 		<ul>
-		<li><b>Show Publishing Options.</b> (Use Global/No/Yes). If No, the Publishing Options slider in this screen (<strong class="selflink">Article Manager: Add/Edit Screen</strong>) will not show. This means that back-end users will not be able to edit the fields Created by, Created by alias, Created Date, Start Publishing, or Finish Publishing. These fields will always be set to their default values.</li>
-		<li><b>Show Article Options.</b> (Use Global/No/Yes). If No, the Article Options slider in this screen (<strong class="selflink">Article Manager: Add/Edit Screen</strong>) will not show. This means that back-end users will not be able to edit the fields in this slider. These fields will always be set to their default values.</li>
-		<li><b>Administrator Images and Links.</b> (Use Global/No/Yes). If Yes, the Images and Links slider will show in this screen (<strong class="selflink">Article Manager: Add/Edit Screen</strong>).</li>
-		<li><b>Frontend Images and Links.</b> (Use Global/No/Yes). If Yes, the Images and Links fields will show in the Front End article editor screen. These fields allow users to optionally enter two images and three links in an easy-to-use form in the front end. When used with a single-article override, this can allow the site administrator to create a simple form for users to create standard article layouts.</li>
+			<li><b>Show Publishing Options.</b> (Use Global/No/Yes). If No, the Publishing Options slider in this screen (<strong class="selflink">Article Manager: Add/Edit Screen</strong>) will not show. This means that back-end users will not be able to edit the fields Created by, Created by alias, Created Date, Start Publishing, or Finish Publishing. These fields will always be set to their default values.</li>
+			<li><b>Show Article Options.</b> (Use Global/No/Yes). If No, the Article Options slider in this screen (<strong class="selflink">Article Manager: Add/Edit Screen</strong>) will not show. This means that back-end users will not be able to edit the fields in this slider. These fields will always be set to their default values.</li>
+			<li><b>Administrator Images and Links.</b> (Use Global/No/Yes). If Yes, the Images and Links slider will show in this screen (<strong class="selflink">Article Manager: Add/Edit Screen</strong>).</li>
+			<li><b>Frontend Images and Links.</b> (Use Global/No/Yes). If Yes, the Images and Links fields will show in the Front End article editor screen. These fields allow users to optionally enter two images and three links in an easy-to-use form in the front end. When used with a single-article override, this can allow the site administrator to create a simple form for users to create standard article layouts.</li>
 		</ul>
+
 		<h3> <span class="mw-headline" id="Images_and_Links">Images and Links</span></h3>
 		<p><b>Note: This slider can be hidden by a user with Admin permissions for the article manager.</b> This section lets you display images and links in your articles using standardized layouts.</p>
 		<ul>
-		<li><b>Intro Image.</b> Click the Select button to select an image to be displayed in a fixed location in the Intro Text of an article. This will open a modal window that allows you to select an image from your images folder. See <a href="#Editor_Buttons">Editor Buttons</a> for more information on working with images. After you have selected an image, you can hover the mouse on the "Preview" text to see a preview of the image.</li>
-		<li><b>Image Float.</b> (Use Global/Right/Left/None). Set the float attribute for this image.</li>
-		<li><b>Alt Text.</b> Set the alt attribute for the this image.</li>
-		<li><b>Caption.</b> Create a caption for the this image.</li>
+			<li><b>Intro Image.</b> Click the Select button to select an image to be displayed in a fixed location in the Intro Text of an article. This will open a modal window that allows you to select an image from your images folder. See <a href="#Editor_Buttons">Editor Buttons</a> for more information on working with images. After you have selected an image, you can hover the mouse on the "Preview" text to see a preview of the image.</li>
+			<li><b>Image Float.</b> (Use Global/Right/Left/None). Set the float attribute for this image.</li>
+			<li><b>Alt Text.</b> Set the alt attribute for the this image.</li>
+			<li><b>Caption.</b> Create a caption for the this image.</li>
 		</ul>
 		<ul>
-		<li><b>Full Article Image.</b> Click the Select button to select an image to be displayed in a fixed location in the Intro Text of an article. This will open a modal window that allows you to select an image from your images folder. See <a href="#Editor_Buttons">Editor Buttons</a> for more information on working with images. After you have selected an image, you can hover the mouse on the "Preview" text to see a preview of the image.</li>
-		<li><b>Image Float.</b> (Use Global/Right/Left/None). Set the float attribute for this image.</li>
-		<li><b>Alt Text.</b> Enter optional alt attribute for the this image.</li>
-		<li><b>Caption.</b> Enter an optional caption for the this image.</li>
+			<li><b>Full Article Image.</b> Click the Select button to select an image to be displayed in a fixed location in the Intro Text of an article. This will open a modal window that allows you to select an image from your images folder. See <a href="#Editor_Buttons">Editor Buttons</a> for more information on working with images. After you have selected an image, you can hover the mouse on the "Preview" text to see a preview of the image.</li>
+			<li><b>Image Float.</b> (Use Global/Right/Left/None). Set the float attribute for this image.</li>
+			<li><b>Alt Text.</b> Enter optional alt attribute for the this image.</li>
+			<li><b>Caption.</b> Enter an optional caption for the this image.</li>
 		</ul>
 		<ul>
-		<li><b>Link A.</b> The URL for the first link to be displayed in a fixed location in the article text. This must be a full URL, not relative. For example, it normally would start with "http://".</li>
-		<li><b>Link A Text.</b> The text used for Link A. If blank, the URL will be displayed.</li>
-		<li><b>URL Target Window.</b> Sets the default value for the target for the first Link in the article. Choices are:
-		<ul>
-		<li><i>Open in parent window:</i> Opens the in the main browser window, replacing the current article.</li>
-		<li><i>Open in new window:</i> Opens the link in a new browser window.</li>
-		<li><i>Open in pop up:</i> Opens the link in a pop-up browser window (without full navigation controls).</li>
-		<li><i>Modal:</i> Opens the link in a modal pop-up window.</li>
-		</ul>
-		</li>
-		</ul>
-		<ul>
-		<li><b>Link B.</b> The URL for the second link to be displayed in a fixed location in the article text. This must be a full URL, not relative. For example, For example, it normally would start with "http://".</li>
-		<li><b>Link B Text.</b> The text used for Link B. If blank, the URL will be displayed.</li>
-		<li><b>URL Target Window.</b> The target for the URL. Same options as Link A.</li>
+			<li><b>Link A.</b> The URL for the first link to be displayed in a fixed location in the article text. This must be a full URL, not relative. For example, it normally would start with "http://".</li>
+			<li><b>Link A Text.</b> The text used for Link A. If blank, the URL will be displayed.</li>
+			<li><b>URL Target Window.</b> Sets the default value for the target for the first Link in the article. Choices are:
+				<ul>
+					<li><i>Open in parent window:</i> Opens the in the main browser window, replacing the current article.</li>
+					<li><i>Open in new window:</i> Opens the link in a new browser window.</li>
+					<li><i>Open in pop up:</i> Opens the link in a pop-up browser window (without full navigation controls).</li>
+					<li><i>Modal:</i> Opens the link in a modal pop-up window.</li>
+				</ul>
+			</li>
 		</ul>
 		<ul>
-		<li><b>Link C</b> The URL for the third link to be displayed in a fixed location in the article text. This must be a full URL, not relative. For example, For example, it normally would start with "http://".</li>
-		<li><b>Link C Text</b> The text used for Link C. If blank, the URL will be displayed.</li>
-		<li><b>URL Target Window.</b> The target for the URL. Same options as Link A.</li>
+			<li><b>Link B.</b> The URL for the second link to be displayed in a fixed location in the article text. This must be a full URL, not relative. For example, For example, it normally would start with "http://".</li>
+			<li><b>Link B Text.</b> The text used for Link B. If blank, the URL will be displayed.</li>
+			<li><b>URL Target Window.</b> The target for the URL. Same options as Link A.</li>
 		</ul>
+		<ul>
+			<li><b>Link C</b> The URL for the third link to be displayed in a fixed location in the article text. This must be a full URL, not relative. For example, For example, it normally would start with "http://".</li>
+			<li><b>Link C Text</b> The text used for Link C. If blank, the URL will be displayed.</li>
+			<li><b>URL Target Window.</b> The target for the URL. Same options as Link A.</li>
+		</ul>
+
 		<h3> <span class="mw-headline" id="Metadata_Options">Metadata Options</span></h3>
 		<p>This section allows you to enter Metadata Information for this Article. Metadata is information about the Article that is not displayed but is available to Search Engines and other systems to classify the Article. This gives you more control over how the content will be analyzed by these programs. All of these entries are optional. Metadata is shown inside HTML meta elements. The entry screen is shown below:</p>
 		<ul>
-		<li><b>Meta Description.</b> An optional paragraph to be used as the description of the page in the HTML output. This will generally display in the results of search engines. If entered, this creates an HTML meta element with a name attribute of "description" and a content attribute equal to the entered text.</li>
-		</ul>
-		<ul>
-		<li><b>Meta Keywords.</b> Optional entry for keywords. Must be entered separated by commas (for example, "cats, dogs, pets") and may be entered in upper or lower case. (For example, "CATS" will match "cats" or "Cats"). Keywords can be used in several ways:</li>
+			<li><b>Meta Description.</b> An optional paragraph to be used as the description of the page in the HTML output. This will generally display in the results of search engines. If entered, this creates an HTML meta element with a name attribute of "description" and a content attribute equal to the entered text.</li>
+			<li><b>Meta Keywords.</b> Optional entry for keywords. Must be entered separated by commas (for example, "cats, dogs, pets") and may be entered in upper or lower case. (For example, "CATS" will match "cats" or "Cats"). Keywords can be used in several ways:</li>
 		</ul>
 		<ol>
 			<li>To help Search Engines and other systems classify the content of the Article.</li>
@@ -351,17 +297,18 @@
 		<ul>
 			<li><b>Robots.</b> The instructions for web "robots" that browse to this page.
 				<ul>
-				<li><i>Use Global:</i> Use the value set in the Component→Options for this component.</li>
-				<li><i>Index, Follow:</i> Index this page and follow the links on this page.</li>
-				<li><i>No index, Follow:</i> Do not index this page, but still follow the links on the page. For example, you might do this for a site map page where you want the links to be indexed but you don't want this page to show in search engines.</li>
-				<li><i>Index, No follow:</i> Index this page, but do not follow any links on the page. For example, you might want to do this for an events calendar, where you want the page to show in search engines but you do not want to index each event.</li>
-				<li><i>No index, no follow:</i> Do not index this page or follow any links on the page.</li>
+					<li><i>Use Global:</i> Use the value set in the Component→Options for this component.</li>
+					<li><i>Index, Follow:</i> Index this page and follow the links on this page.</li>
+					<li><i>No index, Follow:</i> Do not index this page, but still follow the links on the page. For example, you might do this for a site map page where you want the links to be indexed but you don't want this page to show in search engines.</li>
+					<li><i>Index, No follow:</i> Index this page, but do not follow any links on the page. For example, you might want to do this for an events calendar, where you want the page to show in search engines but you do not want to index each event.</li>
+					<li><i>No index, no follow:</i> Do not index this page or follow any links on the page.</li>
 				</ul>
 			</li>
 			<li><b>Author.</b> Optional entry for an Author name within the metadata. If entered, this creates an HTML meta element with the name attribute of "author" and the content attribute as entered here.</li>
 			<li><b>Content Rights.</b> Optional entry that shows what rights others have to use the content in the article. If entered, this creates an HTML meta element with the name attribute of "rights" and the content attribute as entered here.</li>
 			<li><b>External Reference.</b> An optional reference used to link to external data sources. If entered, this creates an HTML meta element with a name attribute of "xreference" and a content attribute equal to the entered text.</li>
 		</ul>
+
 		<h3> <span class="mw-headline" id="Article_Permissions">Article Permissions</span></h3>
 		<p>The CMS lets you set permissions for articles at four levels, as follows.</p>
 		<ol>
