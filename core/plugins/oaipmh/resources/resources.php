@@ -51,6 +51,7 @@ class plgOaipmhResources extends \Hubzero\Plugin\Plugin
 
 		$provider = new \Plugins\Oaipmh\Resources\Data\Miner();
 		$provider->set('type', $this->params->get('type'));
+		$provider->set('citations', $this->params->get('citations', 1));
 
 		$service->register($provider->name(), $provider);
 	}

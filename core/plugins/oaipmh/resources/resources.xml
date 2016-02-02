@@ -45,6 +45,10 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/core/plugins/oaipmh/resources">
 				<field name="type" type="resourcetype" default="0" label="PLG_OAIPMH_RESOURCES_TYPE_LABEL" description="PLG_OAIPMH_RESOURCES_TYPE_DESC" />
+				<field name="citations" type="list" default="1" label="PLG_OAIPMH_RESOURCES_CITATIONS_LABEL" description="PLG_OAIPMH_RESOURCES_CITATIONS_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
