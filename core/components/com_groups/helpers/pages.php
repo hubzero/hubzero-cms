@@ -150,7 +150,7 @@ class Pages
 		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
 		$base = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
 
-		if (preg_match("/\/?groups\/(.*?)/i", Request::path()))
+		if (preg_match("/^\/?groups\/(.*?)/i", Request::path()))
 		{
 			// remove /groups/{group_cname} from path
 			$path = trim(str_replace($base, '', Request::path()), '/');
