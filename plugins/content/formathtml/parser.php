@@ -40,7 +40,7 @@ class Parser
 	 *
 	 * @var string
 	 */
-	private $_token = null;
+	private $_tokenPrefix = null;
 
 	/**
 	 * Configuration options
@@ -96,8 +96,8 @@ class Parser
 			}
 		}
 
-		// Set the unique token
-		$this->_token = "\x07UNIQ" . $this->_randomString();
+		// Set the unique token prefix
+		$this->_tokenPrefix = "\x07UNIQ";
 	}
 
 	/**
@@ -136,7 +136,7 @@ class Parser
 	 */
 	public function token()
 	{
-		return $this->_token;
+		return $this->_token . $this->_randomString();
 	}
 
 	/**
