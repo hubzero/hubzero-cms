@@ -437,7 +437,7 @@ class Html
 		}
 		else
 		{
-			$team .= Lang::txt('COM_TOOLS_N/A');
+			$team .= Lang::txt('COM_TOOLS_NA');
 		}
 		return $team;
 	}
