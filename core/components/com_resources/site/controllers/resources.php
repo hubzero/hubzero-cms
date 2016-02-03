@@ -1212,7 +1212,7 @@ class Resources extends SiteController
 		}
 
 		// Is the visitor authorized to view this resource?
-		if (User::isGuest() && ($this->model->resource->access == 1 || $this->resource->access == 4))
+		if (User::isGuest() && ($this->model->resource->access == 1 || $this->model->resource->access == 4))
 		{
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . ($this->model->resource->alias ? '&alias=' . $this->model->resource->alias : '&id=' . $this->model->resource->id), false, true), 'server'));
 			App::redirect(
