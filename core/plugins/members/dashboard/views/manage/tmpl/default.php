@@ -34,10 +34,10 @@ defined('_HZEXEC_') or die();
 ?>
 
 <div class="admin-header">
-	<a class="icon-add button push-module" href="<?php echo 'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard&task=push'; ?>">
+	<a class="icon-add button push-module" href="<?php echo Route::url('index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard&action=push'); ?>">
 		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_TITLE'); ?>
 	</a>
-	<a class="icon-add button add-module" href="<?php echo 'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard&task=add'; ?>">
+	<a class="icon-add button add-module" href="<?php echo Route::url('index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard&action=add'); ?>">
 		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
 	</a>
 	<h3>
