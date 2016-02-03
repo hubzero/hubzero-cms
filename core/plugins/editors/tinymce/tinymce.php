@@ -64,7 +64,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		}
 
 		$text_direction = 'ltr';
-		if ($language->isRTL())
+		if (Lang::isRTL())
 		{
 			$text_direction = 'rtl';
 		}
