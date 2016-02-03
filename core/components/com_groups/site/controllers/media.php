@@ -116,21 +116,31 @@ class Media extends Base
 			$this->view->activeFolder = '/uploads';
 		}
 
+		$this->view->activeFolder = '/' . trim($this->view->activeFolder, '/');
+
 		// regular groups can only access inside /uploads
-		if (!$this->group->isSuperGroup())
-		{
+		//if (!$this->group->isSuperGroup())
+		//{
 			$pathInfo = pathinfo($this->view->activeFolder);
 			if ($pathInfo['dirname'] != '/uploads')
 			{
 				$this->view->activeFolder = '/uploads';
 			}
-		}
+		//}
 
 		// make sure we have a path
 		$this->_createGroupFolder($this->path);
 
 		// get list of folders
 		$folders = Filesystem::directoryTree($this->path, '.', 10);
+		foreach ($folders as $i => $folder)
+		{
+			if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads'))
+			{
+				continue;
+			}
+			unset($folders[$i]);
+		}
 
 		// build recursive folder trees
 		$folderTree             = $this->_buildFolderTree($folders);
@@ -138,10 +148,10 @@ class Media extends Base
 		$this->view->folderList = $this->_buildFolderTreeSelect($folderTree);
 
 		// add base path if super group
-		if ($this->group->isSuperGroup())
+		/*if ($this->group->isSuperGroup())
 		{
 			$this->view->folderTree = '<ul><li><a class="tree-folder-toggle" href="javascript:void(0);"></a><a data-folder="/" href="javascript:void(0);" class="tree-folder">/ (root)</a>'.$this->view->folderTree.'</li></ul>';
-		}
+		}*/
 
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
