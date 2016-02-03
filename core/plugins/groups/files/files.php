@@ -182,23 +182,31 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 		$view->activeFolder = '/' . trim($view->activeFolder, '/');
 
 		// regular groups can only access inside /uploads
-		if (!$this->group->isSuperGroup())
-		{
+		//if (!$this->group->isSuperGroup())
+		//{
 			$pathInfo = pathinfo($view->activeFolder);
 			if ($pathInfo['dirname'] != '/uploads')
 			{
 				$view->activeFolder = '/uploads';
 			}
-		}
+		//}
 
 		// make sure we have a path
 		$this->_createGroupFolder($this->path);
 
 		// get list of folders
 		$folders = Filesystem::directoryTree($this->path, '.', 10);
+		foreach ($folders as $i => $folder)
+		{
+			if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads'))
+			{
+				continue;
+			}
+			unset($folders[$i]);
+		}
 
 		// build recursive folder trees
-		$folderTree             = $this->_buildFolderTree($folders);
+		$folderTree       = $this->_buildFolderTree($folders);
 		$view->folderTree = $this->_buildFolderTreeHtml($folderTree);
 		$view->folderList = $this->_buildFolderTreeSelect($folderTree);
 
