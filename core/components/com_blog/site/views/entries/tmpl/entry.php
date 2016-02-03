@@ -136,7 +136,7 @@ $first = $this->archive->entries(array(
 						</span>
 					</dd>
 				<?php } ?>
-				<?php if (User::get('id') == $this->row->get('created_by')) { ?>
+				<?php if (User::get('id') == $this->row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
 					<dd class="state <?php echo strtolower($this->row->visibility('text')); ?>">
 						<?php echo $this->row->visibility('text'); ?>
 					</dd>
