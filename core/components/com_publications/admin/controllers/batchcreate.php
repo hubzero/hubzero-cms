@@ -91,7 +91,7 @@ class Batchcreate extends AdminController
 			$server = new \Hubzero\Content\Server();
 			$server->filename($path);
 			$server->disposition('attachment');
-			$server->acceptranges(false); // @TODO fix byte range support
+			$server->acceptranges(true);
 			$server->saveas(basename($path));
 
 			if (!$server->serve())

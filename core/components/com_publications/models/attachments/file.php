@@ -710,7 +710,7 @@ class File extends Base
 				$server = new \Hubzero\Content\Server();
 				$server->filename($download);
 				$server->disposition('attachment');
-				$server->acceptranges(false); // @TODO fix byte range support
+				$server->acceptranges(true);
 				$server->saveas(basename($download));
 
 				if (!$server->serve())

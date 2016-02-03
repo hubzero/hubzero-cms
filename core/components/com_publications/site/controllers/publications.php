@@ -768,7 +768,7 @@ class Publications extends SiteController
 			$server = new \Hubzero\Content\Server();
 			$server->filename($this->model->path('data', true) . DS . trim($file));
 			$server->disposition($disp);
-			$server->acceptranges(false); // @TODO fix byte range support
+			$server->acceptranges(true);
 			$server->saveas(basename($file));
 
 			if (!$server->serve())
