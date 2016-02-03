@@ -437,6 +437,61 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				$update = true;
 			}
 
+			// Fix missing surname/given name as well
+			if ($xprofile->get('name') && (!$xprofile->get('surname') || !$xprofile->get('givenName')))
+			{
+				$firstname  = $xprofile->get('givenName');
+				$middlename = $xprofile->get('middleName');
+				$lastname   = $xprofile->get('surname');
+
+				$words = array_map('trim', explode(' ', $xprofile->get('name')));
+				$count = count($words);
+
+				if ($count == 1)
+				{
+					$firstname = $words[0];
+				}
+				else if ($count == 2)
+				{
+					$firstname = $words[0];
+					$lastname  = $words[1];
+				}
+				else if ($count == 3)
+				{
+					$firstname  = $words[0];
+					$middlename = $words[1];
+					$lastname   = $words[2];
+				}
+				else
+				{
+					$firstname  = $words[0];
+					$lastname   = $words[$count-1];
+					$middlename = $words[1];
+
+					for ($i = 2; $i < $count-1; $i++)
+					{
+						$middlename .= ' ' . $words[$i];
+					}
+				}
+
+				$firstname = trim($firstname);
+				if ($firstname)
+				{
+					$xprofile->set('givenName', $firstname);
+				}
+				$middlename = trim($middlename);
+				if ($middlename)
+				{
+					$xprofile->set('middleName', $middlename);
+				}
+				$lastname = trim($lastname);
+				if ($lastname)
+				{
+					$xprofile->set('surname', $lastname);
+				}
+				$update = true;
+			}
+
 			if ($xprofile->get('email') != $user['email'])
 			{
 				$xprofile->set('email', $user['email']);
