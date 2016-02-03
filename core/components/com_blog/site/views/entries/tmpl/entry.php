@@ -133,7 +133,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						</span>
 					</dd>
 				<?php } ?>
-				<?php if (User::get('id') == $this->row->get('created_by')) { ?>
+				<?php if (User::get('id') == $this->row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
 					<dd class="state">
 						<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 					</dd>

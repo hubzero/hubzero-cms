@@ -175,7 +175,7 @@ $rows = $this->model->entries('list', $this->filters);
 											</span>
 										</dd>
 									<?php } ?>
-									<?php if (User::get('id') == $row->get('created_by')) { ?>
+									<?php if (User::get('id') == $row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
 										<dd class="state <?php echo $row->state('text'); ?>">
 											<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
 										</dd>
