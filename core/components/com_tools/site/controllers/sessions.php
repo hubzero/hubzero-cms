@@ -618,7 +618,7 @@ class Sessions extends SiteController
 		}
 
 		// Get their disk space usage
-		$this->_getDiskUsage('hard');  // Check their hardspace limit instead of the softspace
+		$this->_getDiskUsage();
 		$this->_redirect = '';
 
 		$app->percent = 0;
@@ -1097,7 +1097,7 @@ class Sessions extends SiteController
 		$app->percent = 0;
 		if ($this->config->get('show_storage'))
 		{
-			$this->_getDiskUsage();
+			$this->_getDiskUsage('soft', false);
 			$app->percent = $this->percent;
 		}
 
@@ -1463,10 +1463,11 @@ class Sessions extends SiteController
 	 * Calculates the amount of disk space used
 	 * Redirects to storage exceeded view if amount is past limit
 	 *
-	 * @param      string $type Soft/Hard
-	 * @return     void
+	 * @param   string  $type      Soft/Hard
+	 * @param   bool    $redirect  Redirect if over quota?
+	 * @return  void
 	 */
-	private function _getDiskUsage($type='soft')
+	private function _getDiskUsage($type = 'soft', $redirect = true)
 	{
 		// Check that the user is logged in
 		if (User::isGuest())
@@ -1510,7 +1511,7 @@ class Sessions extends SiteController
 		$this->total = $total;
 
 		//if ($this->percent >= 100 && $this->remaining == 0) {
-		if ($this->percent >= 100)
+		if ($this->percent >= 100 && $redirect)
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
