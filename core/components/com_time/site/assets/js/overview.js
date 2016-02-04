@@ -239,6 +239,10 @@ jQuery(document).ready(function ( jq ) {
 			}
 		});
 
+		$('.details').on('focus', '.select2-container', function ( e ) {
+			$(this).prev().select2('open');
+		});
+
 		// Add change event to hub select box (filter tasks list by selected hub)
 		$('#hub_id').change(function ( event ) {
 			// First, grab the currently select task
@@ -274,8 +278,18 @@ jQuery(document).ready(function ( jq ) {
 					} else {
 						options = '<option value="">No tasks for this hub</option>';
 					}
+					var focused = false;
+
+					if (task.next().hasClass('select2-container--open')) {
+						focused = true;
+					}
+
 					task.html(options);
 					fancy('#task_id');
+
+					if (focused) {
+						task.select2('open');
+					}
 				}
 			});
 		});
