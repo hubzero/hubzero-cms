@@ -193,7 +193,8 @@ jQuery(document).ready(function ( jq ) {
 				// Set height of input box (minus margin and borders)
 				$('.details-inner').height(calendar.height() - 32);
 
-				var today = view.start;
+				// Be sure not to modify the actual start date moment
+				var today = view.start.clone();
 				graphs(today.format());
 
 				var dayOfWeek = parseInt(today.format('d'), 10) === 0 ? 6 : parseInt(today.format('d'), 10) - 1;
