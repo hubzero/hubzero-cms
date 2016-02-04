@@ -129,6 +129,14 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 
 		if (trim($content))
 		{
+			// Fix asset paths
+			$content = str_replace('src="/media/system/', 'src="/core/assets/', $content);
+			$content = str_replace('src="/site', 'src="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
+			$content = str_replace("src='/site", "src='" . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
+			$content = str_replace('href="/media/system/', 'href="/core/assets/', $content);
+			$content = str_replace('href="/site', 'href="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
+			$content = str_replace("href='/site", "href='" . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
+
 			include_once(__DIR__ . '/parser.php');
 
 			$parser = new \Plugins\Content\Formathtml\Parser($params);
