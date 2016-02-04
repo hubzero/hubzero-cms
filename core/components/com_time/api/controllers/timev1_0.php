@@ -626,12 +626,16 @@ class Timev1_0 extends ApiController
 		$this->authorizeOrFail();
 
 		// Get the day of the week
-		$today = Date::format('N') - 1;
+		$today       = Date::of(Request::get('today', time()));
+		$dateofToday = $today->toSql();
+		$dayOfWeek   = $today->format('N') - 1;
+		error_log(Date::of(strtotime("{$dateofToday} - {$dayOfWeek}days"))->toSql());
+		error_log(Date::of(strtotime("{$dateofToday} + " . (7-$dayOfWeek) . 'days'))->toSql());
 
 		// Create object and get records
 		$records = Record::whereEquals('user_id', App::get('authn')['user_id'])
-                         ->where('date', '>=',    Date::of(strtotime("today-{$today}days"))->toSql())
-                         ->where('date', '<',     Date::of(strtotime("today+" . (8-$today) . 'days'))->toSql());
+                         ->where('date', '>=',    Date::of(strtotime("{$dateofToday} - {$dayOfWeek}days"))->toSql())
+                         ->where('date', '<',     Date::of(strtotime("{$dateofToday} + " . (7-$dayOfWeek) . 'days'))->toSql());
 
 		// Restructure response into the format that the calendar plugin expects
 		$response = [];

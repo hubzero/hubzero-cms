@@ -56,6 +56,11 @@ $then  = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('g:00a'));
 $start = Date::of($utc)->toLocal(Lang::txt('G'));
 $end   = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('G'));
 
+
+// Get the day of the week
+$today = Date::format('N') - 1;
+$mon   = Date::of(strtotime("today-{$today}days"))->toLocal('n/j');
+$sun   = Date::of(strtotime("today+" . (6-$today) . 'days'))->toLocal('n/j');
 ?>
 
 <header id="content-header">
@@ -131,8 +136,13 @@ $end   = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('G'));
 		</div>
 		<div class="clear"></div>
 		<div class="plots-container">
+			<div class="section-header">
+				<h3>
+					<?php echo Lang::txt('COM_TIME_OVERVIEW_WEEKLY_TOTALS'); ?>
+					<span class="date-range">(<?php echo $mon; ?> - <?php echo $sun; ?>)</span>
+				</h3>
+			</div>
 			<div class="hourly-wrap">
-				<div class="section-header"><h3><?php echo Lang::txt('COM_TIME_OVERVIEW_HOURS_THIS_WEEK'); ?></h3></div>
 				<div class="hourly">
 					<div class="pie-half1">
 					<div class="pie-half2">
@@ -144,7 +154,6 @@ $end   = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('G'));
 				</div>
 			</div>
 			<div class="week-overview-wrap">
-				<div class="section-header"><h3><?php echo Lang::txt('COM_TIME_OVERVIEW_DAILY_HOURS'); ?></h3></div>
 				<div class="week-overview"></div>
 			</div>
 		</div>

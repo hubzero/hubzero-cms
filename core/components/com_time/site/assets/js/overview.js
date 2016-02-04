@@ -55,13 +55,14 @@ jQuery(document).ready(function ( jq ) {
 					$('#description').val('');
 				}
 			},
-			graphs = function ( ) {
+			graphs = function ( today ) {
 				var points = [[0,0], [1,0], [2,0], [3,0], [4,0], [5,0], [6,0]],
 					total  = 0;
 
 				$.ajax({
 					url: "/api/time/week",
 					dataType: "json",
+					data: "today=" + today,
 					cache: false,
 					success: function ( json ) {
 						$.each(json, function ( i, val ) {
@@ -192,7 +193,14 @@ jQuery(document).ready(function ( jq ) {
 				// Set height of input box (minus margin and borders)
 				$('.details-inner').height(calendar.height() - 32);
 
-				graphs();
+				var today = view.start;
+				graphs(today.format());
+
+				var dayOfWeek = parseInt(today.format('d'), 10) === 0 ? 6 : parseInt(today.format('d'), 10) - 1;
+				var monday    = today.subtract(dayOfWeek, 'days').format('M/D');
+				var sunday    = today.add(dayOfWeek, 'days').add((6-dayOfWeek), 'day').format('M/D');
+
+				$('.date-range').html('(' + monday + ' - ' + sunday + ')');
 			},
 			events : '/api/time/today'
 		});
