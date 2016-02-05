@@ -167,13 +167,13 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 						<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
-						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_FIELD_ANONYMOUS'); ?></span>
+						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_FIELD_ANONYMOUS'); ?>)</span>
 					<?php } ?>
 				</td>
 				<td class="priority-1">
-					<?php if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
+					<?php if ($row->get('rcount', 0) > 0) { //if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
 						<a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
-							<span><?php echo Lang::txt('COM_ANSWERS_NUM_RESPONSES', $row->comments('count')); ?></span>
+							<span><?php echo Lang::txt('COM_ANSWERS_NUM_RESPONSES', $row->get('rcount', 0)); //$row->comments('count')); ?></span>
 						</a>
 					<?php } else { ?>
 						<a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
