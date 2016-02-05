@@ -99,7 +99,7 @@ HUB.Geosearch = {
 						var thumb = data.profile.picture.full;
 
 						//contruct the popup view
-						html += '<div class="member-popup">'; // classes for styling, because CSS
+						html += '<div data-id="' + marker.id + '" class="popup member-popup">'; // classes for styling, because CSS
 						html += '<img src="' + thumb + '">';
 						html += '<h1>'+name+'</h1>';
 						html += '<p class="organization">'+organization+'</p>';
@@ -108,7 +108,6 @@ HUB.Geosearch = {
 
 					break;
 					case "event":
-						console.log(event);
 						// get the data for the popup view
 						var title = data.event.title;
 						var content = data.event.content;
@@ -118,7 +117,7 @@ HUB.Geosearch = {
 						var link = "/events/details/" + data.event.id;
 
 						//contruct the popup view
-						html += '<div class="event-popup">'; // classes for styling, because CSS
+						html += '<div data-id="' + marker.id + '" class="popup event-popup">'; // classes for styling, because CSS
 						html += '<h1>'+title+'</h1>';
 						html += '<p class="date">'+start+' - '+ end + '</p>';
 						html += '<p class="location">'+location+'</p>';
@@ -139,7 +138,7 @@ HUB.Geosearch = {
 						var link = "/jobs/job/" + data.job.code;
 
 						//contruct the popup view
-						html += '<div class="job-popup">'; // classes for styling, because CSS
+						html += '<div data-id="' + marker.id + '" class="popup job-popup">'; // classes for styling, because CSS
 						html += '<h1>'+title+'</h1>';
 						html += '<p class="type">'+type+'</p>';
 						html += '<a href="'+ website +'" class="company">' + company + '</a>';
@@ -162,7 +161,7 @@ HUB.Geosearch = {
 						});
 
 						//contruct the popup view
-						html += '<div class="org-popup">'; // classes for styling, because CSS
+						html += '<div data-id="' + marker.id + '" class="popup org-popup">'; // classes for styling, because CSS
 						html += '<h1>'+title+'</h1>';
 						html += '</div>';
 
@@ -226,7 +225,8 @@ HUB.Geosearch = {
 					map: map,
 					icon:icon,
 					scope: marker.scope,
-					scope_id: marker.scope_id
+					scope_id: marker.scope_id,
+					id: marker.id
 				});
 
 				// this adds the spidifier making clusters of markers easier to read.
@@ -256,6 +256,19 @@ HUB.Geosearch = {
 	createMarker: function(mlatlng, uid, type)
 	{
 
+	},
+
+	reportMarker: function()
+	{
+		var id = $('.popup').attr('data-id');
+		if (id > 0)
+		{
+			$.ajax({url:'/geosearch?task=reportMarker',
+				data:{markerID:id },
+				method: "POST"});
+
+				alert('This location will be reviewed.');
+		}
 	}
 };
 
@@ -270,5 +283,7 @@ jQuery(document).ready(function($){
 		HUB.Geosearch.displayCheckedMarkers();
 	});
 
-
+	$('#reportMarker').on('click', function(event) {
+		HUB.Geosearch.reportMarker();
+	});
 });

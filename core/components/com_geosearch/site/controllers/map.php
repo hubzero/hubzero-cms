@@ -80,4 +80,19 @@ class GeosearchControllerMap extends \Hubzero\Component\SiteController
 		echo $GM->getMarkers($filters);
 		exit();
 	}
+
+	public function reportMarkerTask()
+	{
+		$id = Request::get('markerID', 0);
+		$guest = User::isGuest();
+
+		if ($id > 0 && !$guest)
+		{
+			$db = App::get('db');
+			$query = "UPDATE #__geosearch_markers SET review = 1 WHERE id = {$id};";
+			$db->setQuery($query);
+			$db->query();
+		}
+		exit();
+	}
 }

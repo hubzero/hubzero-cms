@@ -9,7 +9,6 @@
 	top: 0px;
 	height: 100%;
 	width: 100%;
-	display: none;
 	text-align:center;
 }
 
@@ -17,8 +16,8 @@
 	margin-top: 20px;
 	min-height: 300px;
 	min-width: 300px;
-	width: auto;
-	height: auto;
+	width: 100%;
+	height: 300px;
 	
 }
 .editor-container {
@@ -27,6 +26,7 @@
 	width: 80%;
 	margin-right: auto;
 	margin-left: auto;
+	margin-top: 10px;
 }
 .menu-bar {
 	background-color: white;
@@ -51,10 +51,32 @@
 	margin-right: 5px;
 }
 .location-title {
+	margin: 5px;
 	font-size: 16pt;
 	display: block;
 }
 .item-title {
+	margin: 5px;
 	font-size: 16pt;
 	display: block;
 }
+#saveLocation {
+	margin: 5px;
+	background-color: #22A922;
+	color: #FFFFFF;
+	display: none;
+}
+.adminform {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+.remove {
+	background-color: #B01616;
+	color: #FFFFFF;
+}
+.remove:hover {
+	color: #B01616;
+}
+

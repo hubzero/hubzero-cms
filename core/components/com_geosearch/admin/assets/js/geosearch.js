@@ -28,59 +28,115 @@ var map;
 var bounds;
 var infoWindow;
 var oms;
-var markersCount = 0;
 var markerList = []; //keeps track of markers
+var originLat;
+var orignLng;
+var coordinate;
 var debug = true;
-
-var membersDisplayed = 0;
-var eventsDisplayed  = 0;
-var jobsDisplayed    = 0;
-var orgsDisplayed    = 0;
+// A bucket to collect new markers
+var newMarker; 
+var markerID = 0;
 
 var $ = jQuery;
 
+// Adds a marker to the map and push to the array.
+function addMarker(location) {
+  var marker = new google.maps.Marker({
+	position: location,
+  map: map
+  });
+  markerList.push(marker);
+}
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+  setMapOnAll(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+  setMapOnAll(map);
+}
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+  clearMarkers();
+  markerList = [];
+}
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+  for (var i = 0; i < markerList.length; i++) {
+    markerList[i].setMap(map);
+  }
+}
 
 $('document').ready(function(){
 
 		var latlng = new google.maps.LatLng(40.397, -86.900);
 		var mapOptions = {
-			scrollwheel: false,
-			zoom: 2,
+			zoom: 3,
 			center: latlng,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 
 	map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 
-	// Scroll the modal
-	$(window).on("scroll", function() {
-		var scrollTop = $(window).scrollTop();
-		$('.map-editor').css('top', scrollTop);
 
-		if (debug) {
-			console.log('scrolling: ' + scrollTop);
-		}
+	map.addListener('click', function(event) {
 
+				// Clear the map
+				deleteMarkers();
+
+				newMarker = event.latLng;
+				if (debug)
+				{
+					console.log('New Marker:');
+					console.log(newMarker);
+				}		
+
+				// Push markers to the map
+    		addMarker(event.latLng);
+				addMarker(coordinate);
+
+				// Show the save button 
+				$('#saveLocation').show();
 	});
+
 		
 	/*********************
 		Adjust the marker
 	*********************/
 	$('.adjust').click(function(e) {
 		e.preventDefault();
-			
+
+		// Get the lat and long 
+		originLat = $(this).attr('data-lat');
+		originLng = $(this).attr('data-long');
+
+		if (debug)
+		{
+			console.log('lat: ' + originLat);
+			console.log('lng: ' + originLng);
+		}
+
+		// Add marker original
+		coordinate = new google.maps.LatLng(originLat, originLng);
+		addMarker(coordinate);
+
+		// Pan & Zoom in to the point 
+		map.panTo(coordinate);
+		map.setZoom(5);
+		
 		// Get the ID
 		var identifier = $(this).closest('tr').attr('data-scopeID');
 		var scope = $(this).closest('tr').attr('data-scope');
+		markerID = $(this).closest('tr').attr('data-markerID');
 	
 		// Debugging statement
 		if (debug)
 		{
 			console.log('Adjust ' + scope + identifier);
 		}
-
-
-		$('.map-editor').show();
 
 		switch (scope)
 		{
@@ -102,6 +158,7 @@ $('document').ready(function(){
 			break;
 		} //end switch
 
+		// Go fetch information about this pin
 		$.ajax({
 				url:url,
 				data:data
@@ -142,25 +199,42 @@ $('document').ready(function(){
 				break;
 			} //end switch
 
-			$('.location-title').html('<b>Location:</b> ' + location);
-			$('.item-title').html('<b>Name:</b> ' + title);
+			$('.location-title').html('<b>Original Location:</b> ' + location);
+			$('.item-title').html('<b>Marker Name:</b> ' + title);
 		}); // end done()
 
 		if (debug) {
 			console.log('API request: ' + url);
 		}
-
 	}); // end .adjust click
 
-	// Escape the editor
-/*	$('.map-editor').click(function(){
-		$('.map-editor').hide();
-	});
-	*/
-	$('#exit-button').click(function(){
-		$('.map-editor').hide();
-	});
+	/*********************
+	 Save the new location
+	**********************/
+	$('#saveLocation').click(function(e){
+		e.preventDefault();
+		if (debug)
+		{
+			console.log(newMarker.G);
+			console.log(newMarker.K);
+		}
 
+		var lat = newMarker.G;
+		var lng = newMarker.K;
+
+		// Confirm location
+		var confirmation = confirm('Update the location to (' + lng + ' , ' + lat + ') ?');
+		if (confirmation)
+		{
+			$.ajax({url:'/administrator/index.php?option=com_geosearch&task=updateMarker',
+				data: {lat:lat, lng:lng, flag:0, markerID:markerID},
+				method: "POST"})
+			.done(function() {
+				location.reload();
+			});
+		}
+
+	}); // end #saveLocation click
 	/*********************
 		Remove the marker
 	*********************/

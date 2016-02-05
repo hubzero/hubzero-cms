@@ -84,6 +84,11 @@ $this->css('geosearch.css');
 							<input type="checkbox" name="resource[]" class="resck option" value="organization" id="resck-organization" checked="checked" /> <?php echo Lang::txt('COM_GEOSEARCH_ORGANIZATIONS'); ?>
 						</label>
 					</div>
+					<?php if (!User::isGuest()): ?>
+					<div class="key">
+					 <p><a id="reportMarker">Report the current marker as being in an incorrect location.</a></p>
+					</div>
+					<?php endif; ?>
 
 					<div class="clear-right"></div>
 				</fieldset>
