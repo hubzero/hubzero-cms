@@ -1,0 +1,140 @@
+/**
+ * @package     hubzero-cms
+ * @file        core/core/modules/mod_members/assets/css/mod_members.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+	/* CSS bar graph */
+	.test {
+		border: 1px solid #d6d6d6;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		border-radius: .25em;
+		margin: 0 0 2.236em 0;
+		background-color: #fff;
+	}
+	.test-overview {
+		padding: 1.61803399em;
+	}
+	.test-header {
+		font-size: 1em;
+		font-weight: normal;
+		margin: 0;
+		padding: 0;
+	}
+	.test-title,
+	.test-total strong {
+		font-weight: bold;
+	}
+	.test-total {
+		padding: 0.3em;
+		margin: 0 0 0 1em;
+		font-size: 0.85em;
+		color: #999;
+		display: inline-block;
+		line-height: 1;
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		border-radius: .25em;
+		background: #f1f1f1;
+		border: 1px solid #d6d6d6;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		/*background: #666;
+		color: #fff;
+		padding: 0.3em;*/
+	}
+	.bars {
+		position: relative;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		margin: 0.618em 0;
+		padding: 0;
+		height: 0.75em;
+	}
+	.bars .bar { 
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		background: #777;
+		text-align: center;
+		color: #333;
+		line-height: 1;
+		-webkit-border-radius: 0.25em 0 0 0.25em;
+		   -moz-border-radius: 0.25em 0 0 0.25em;
+		    -ms-border-radius: 0.25em 0 0 0.25em;
+		     -o-border-radius: 0.25em 0 0 0.25em;
+		        border-radius: 0.25em 0 0 0.25em;
+	}
+	.bars .skipped {
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+	}
+	.test-value {
+
+	}
+	.test-value {
+		display: block;
+		text-align: center;
+		border-left: 1px solid #eee;
+	}
+	.test-value span {
+		display: block;
+		overflow: hidden;
+		margin: 0.618em auto;
+		width: 0.75em;
+		height: 0.75em;
+		line-height: 1;
+		text-indent: 5em;
+		white-space: nowrap;
+		-webkit-border-radius: 50%;
+		   -moz-border-radius: 50%;
+		    -ms-border-radius: 50%;
+		     -o-border-radius: 50%;
+		        border-radius: 50%;
+	}
+	.test-status {
+		display: inline-block;
+		font-size: 0.85em;
+		text-transform: uppercase;
+		line-height: 1;
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		border-radius: .25em;
+		padding: 0.3em;
+	}
+	.test-key .skipped span,
+	.bars .skipped,
+	.test-status.skipped {
+		background-color: #eee;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.test-key .passed span,
+	.bars .passed,
+	.test-status.passed {
+		background-color: #b5c699;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		color: #fff;
+	}
+	.test-key .failed span,
+	.bars .failed,
+	.test-status.failed {
+		background-color: #c16769;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		color: #fff;
+	}
+	.test-data {
+		background-color: #fbfbfb;
+	}
+	.test-data thead {
+		background-color: #f3f3f3;
+	}

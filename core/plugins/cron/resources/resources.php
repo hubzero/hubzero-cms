@@ -55,6 +55,11 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				'name'   => 'issueResourceMasterDoi',
 				'label'  => Lang::txt('PLG_CRON_RESOURCES_MASTER_DOI'),
 				'params' => ''
+			),
+			array(
+				'name'   => 'auditResourceData',
+				'label'  => Lang::txt('PLG_CRON_RESOURCES_AUDIT'),
+				'params' => 'audit'
 			)/*,
 			array(
 				'name'   => 'updateResourceRanking',
@@ -157,7 +162,8 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 	{
 		$processed = array();
 
-		$params = $job->get('params');
+		$params = $job->params;
+
 		$limit  = $params->get('resource_limit', 100);
 
 		if (!is_numeric($limit) || $limit <= 0 || $limit > 1000)
@@ -260,6 +266,49 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			//}
 
 			$processed[] = $item->id;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Audit resource data
+	 *
+	 * @param   object   $job  \Components\Cron\Models\Job
+	 * @return  boolean
+	 */
+	public function auditResourceData(\Components\Cron\Models\Job $job)
+	{
+		$params = $job->params;
+
+		// Determine parameters
+		$limit    = intval($params->get('audit_limit', 500));
+		$interval = strtoupper($params->get('audit_frequency', '1 MONTH'));
+		$now      = Date::toSql();
+
+		// Get records needing to be processed
+		$db = App::get('db');
+		$db->setQuery(
+			"SELECT r.*
+			FROM `#__resources` AS r
+			LEFT JOIN `#__audit_results` AS a ON a.scope_id=r.id
+			WHERE (a.scope=" . $db->quote('resource') . " OR a.scope='' OR a.scope IS NULL)
+			AND (DATE_ADD(a.processed, INTERVAL " . $interval . ") < " . $db->quote($now) . " OR a.processed = '0000-00-00 00:00:00' OR a.processed IS NULL)
+			GROUP BY r.id
+			ORDER BY r.id ASC
+			LIMIT 0," . $limit
+		);
+		$data = $db->loadAssocList();
+
+		// Process records
+		if (count($data) > 0)
+		{
+			include_once(PATH_CORE . '/components/com_resources/helpers/tests/links.php');
+
+			$auditor = new \Hubzero\Content\Auditor('resource');
+			$auditor->registerTest(new \Components\Resources\Helpers\Tests\Links);
+
+			$auditor->check($data);
 		}
 
 		return true;
