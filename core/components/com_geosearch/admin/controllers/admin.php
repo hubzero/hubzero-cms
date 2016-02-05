@@ -33,6 +33,9 @@
 namespace Components\Geosearch\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Geosearch\Tables\GeosearchMarkers as Markers;
+
+require_once(PATH_CORE . DS . 'components' . DS  . 'com_geosearch' . DS . 'tables' . DS . 'geosearchmarkers.php');
 
 /**
  * Controller class for Libreviews admin
@@ -46,7 +49,42 @@ class Admin extends AdminController
 	 */
 	public function displayTask()
 	{
-		// show it
+		// Get the database object and load up the table of markers 
+		$db = App::get('db');
+		$obj = new Markers($db);
+
+		// Only get markers marked for review
+		$filters = array('review' => 1);
+
+		// Pass markers to the view
+		$this->view->markers = $obj->getMarkers($filters, 'array');
+
 		$this->view->display();
+	}
+
+	public function updateMarkerTask()
+	{
+		// Get POST data
+		$lat = Request::getVar('lat', null);
+		$lng = Request::getVar('lng', null);
+		$flag = Request::getVar('flag', true);
+		$markerID = Request::getInt('markerID', 0);
+
+		// Ensure all fields are set
+		if ($flag == false && !is_null($lat) && !is_null($lng) && $markerID > 0)
+		{
+			// Get the database object and load up the table of markers 
+			$db = App::get('db');
+
+			// Update the object
+			$sql = "UPDATE #__geosearch_markers SET addressLatitude = ".$db->quote($lat).", addressLongitude = ".$db->quote($lng).", review = ".$db->quote($flag)." WHERE id = {$markerID}";
+			$db->setQuery($sql);
+			$db->query();
+			return true;
+			exit();
+		}
+
+		return false;
+		exit();
 	}
 }

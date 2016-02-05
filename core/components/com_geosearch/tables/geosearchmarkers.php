@@ -112,6 +112,10 @@ class GeosearchMarkers extends \JTable
 				$x++; //next!
 			}
 		}
+		elseif (isset($filters['review']))
+		{
+			$query .= ' WHERE review = TRUE';
+		}
 
 		$this->_db->setQuery($query);
 
@@ -344,9 +348,10 @@ class GeosearchMarkers extends \JTable
 	 * @param      float lat
 	 * @param      float lng
 	 * @param      string scope
+	 * @param      boolean flag 
 	 * @return     null
 	 */
-	public function update($id=0,$lat='',$lng='',$scope='')
+	public function update($id=0,$lat='',$lng='',$scope='',$flag = false)
 	{
 		switch ($scope)
 		{
@@ -368,7 +373,7 @@ class GeosearchMarkers extends \JTable
 		}
 		else
 		{
-			$sql = "UPDATE $tbl SET addressLatitude = ".$this->_db->quote($lat).", addressLongitude = ".$this->_db->quote($lng)." WHERE $where";
+			$sql = "UPDATE $tbl SET addressLatitude = ".$this->_db->quote($lat).", addressLongitude = ".$this->_db->quote($lng).", flag = ".$this->_db_quote($flag)." WHERE $where";
 		}
 
 		$this->_db->setQuery($sql);
