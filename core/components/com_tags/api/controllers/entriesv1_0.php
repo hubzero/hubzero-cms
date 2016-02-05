@@ -132,12 +132,16 @@ class Entriesv1_0 extends ApiController
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
 			'search'     => Request::getVar('search', ''),
-			'tbl'        => Request::getword('scope', ''),
-			'objectid'   => Request::getInt('scope_id', 0),
+			'scope'      => Request::getWord('scope', ''),
+			'scope_id'   => Request::getInt('scope_id', 0),
 			'taggerid'   => Request::getVar('tagger', ''),
 			'sort'       => Request::getWord('sort', 'raw_tag'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
 		);
+		if ($filters['scope'] == 'members' || $filters['scope'] == 'member')
+		{
+			$filters['scope'] = 'xprofiles';
+		}
 
 		$response = new stdClass;
 		$response->tags  = array();
