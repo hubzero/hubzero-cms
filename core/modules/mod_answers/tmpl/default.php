@@ -53,13 +53,13 @@ $total = $this->closed + $this->open;
 			<?php } ?>
 			<tr>
 				<td class="closed">
-					<a href="<?php echo Route::url('index.php?option=com_answers&filterby=closed'); ?>" title="<?php echo Lang::txt('MOD_ANSWERS_CLOSED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_answers&state=1'); ?>" title="<?php echo Lang::txt('MOD_ANSWERS_CLOSED_TITLE'); ?>">
 						<?php echo $this->escape($this->closed); ?>
 						<span><?php echo Lang::txt('MOD_ANSWERS_CLOSED'); ?></span>
 					</a>
 				</td>
 				<td class="asked">
-					<a href="<?php echo Route::url('index.php?option=com_answers&filterby=open'); ?>" title="<?php echo Lang::txt('MOD_ANSWERS_ASKED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_answers&state=0'); ?>" title="<?php echo Lang::txt('MOD_ANSWERS_ASKED_TITLE'); ?>">
 						<?php echo $this->escape($this->open); ?>
 						<span><?php echo Lang::txt('MOD_ANSWERS_ASKED'); ?></span>
 					</a>
