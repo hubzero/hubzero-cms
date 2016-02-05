@@ -182,7 +182,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 		$course_id = 0;
 
-		$params = $job->get('params');
+		$params = $job->params;
 		if (isset($params) && is_object($params))
 		{
 			$course_id = $params->get('course');

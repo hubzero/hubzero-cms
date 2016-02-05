@@ -82,7 +82,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 		$processed = array();
 
 		// do we have a param defined limit
-		$params = $job->get('params');
+		$params = $job->params;
 		if (is_object($params) && $params->get('newsletter_queue_limit'))
 		{
 			$paramDefinedLimit = $params->get('newsletter_queue_limit');

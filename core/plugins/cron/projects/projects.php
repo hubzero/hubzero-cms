@@ -142,7 +142,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 			// Load project
 			$project = $obj->getProject($alias, 0);
 
-			$pparams   = new JParameter($project->params);
+			$pparams   = new \Hubzero\Config\Registry($project->params);
 			$connected = $pparams->get('google_dir_id');
 			$token     = $pparams->get('google_token');
 

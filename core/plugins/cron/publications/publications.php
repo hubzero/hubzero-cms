@@ -118,7 +118,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$query .= " AND A.user_id > 0 AND A.status=1 ";
 
 		// If we need to restrict to selected authors
-		$params = $job->get('params');
+		$params = $job->params;
 		if (is_object($params) && $params->get('userids'))
 		{
 			$apu    = explode(',', $params->get('userids'));

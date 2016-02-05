@@ -419,5 +419,15 @@ class Job extends Relational
 			'delta_mem'  => round($end->memory() - $start->memory(), 3)
 		);
 	}
+
+	/**
+	 * Get params as a Registry object
+	 *
+	 * @return  object
+	 */
+	public function transformParams()
+	{
+		return new \Hubzero\Config\Registry($this->get('params'));
+	}
 }
 

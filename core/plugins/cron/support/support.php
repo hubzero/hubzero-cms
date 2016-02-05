@@ -84,7 +84,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	 */
 	public function cleanTempUploads(\Components\Cron\Models\Job $job)
 	{
-		$params = $job->get('params');
+		$params = $job->params;
 
 		$sconfig = Component::params('com_support');
 		$path = PATH_APP . DS . trim($sconfig->get('webpath', '/site/tickets'), DS);
@@ -122,7 +122,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	 */
 	public function onClosePending(\Components\Cron\Models\Job $job)
 	{
-		$params = $job->get('params');
+		$params = $job->params;
 
 		$database = App::get('db');
 		$sconfig = Component::params('com_support');
@@ -470,7 +470,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	 */
 	public function sendTicketsReminder(\Components\Cron\Models\Job $job)
 	{
-		$params = $job->get('params');
+		$params = $job->params;
 
 		$database = App::get('db');
 
@@ -621,7 +621,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 	 */
 	public function sendTicketList(\Components\Cron\Models\Job $job)
 	{
-		$params = $job->get('params');
+		$params = $job->params;
 
 		$database = App::get('db');
 
