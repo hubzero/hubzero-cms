@@ -75,6 +75,11 @@ endforeach;
 <?php endif; ?>
 
 	<div class="hz_user">
+		<?php if ($errorText = Request::getString('errorText', false)) : ?>
+			<p class="error">
+				<?php echo $this->escape($errorText); ?>
+			</p>
+		<?php endif; ?>
 <?php if ($this->totalauths) : ?>
 	<?php if ($primary && $primary != 'hubzero') : ?>
 		<a class="primary" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $this->returnQueryString); ?>">
