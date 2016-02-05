@@ -167,6 +167,8 @@ function submitbutton(pressbutton)
 				case '4': $type = Lang::txt('COM_GROUPS_TYPE_COURSE');  break;
 			}
 
+			$pages = $p->count(array('gidNumber' => $row->gidNumber));
+
 			//get group invite emails
 			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
 			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
