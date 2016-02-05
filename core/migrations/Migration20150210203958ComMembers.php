@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for creating table jos_xprofiles_tokens for password reset tokens
+ * Migration script for creating table #__xprofiles_tokens for password reset tokens
  **/
 class Migration20150210203958ComMembers extends Base
 {

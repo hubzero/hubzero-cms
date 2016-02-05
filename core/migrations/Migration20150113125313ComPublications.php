@@ -17,7 +17,7 @@ class Migration20150113125313ComPublications extends Base
 	{
 		if (!$this->db->tableExists('#__publication_handler_assoc'))
 		{
-			$query = "CREATE TABLE `jos_publication_handler_assoc` (
+			$query = "CREATE TABLE `#__publication_handler_assoc` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `publication_version_id` int(11) NOT NULL,
 			  `element_id` int(11) NOT NULL,

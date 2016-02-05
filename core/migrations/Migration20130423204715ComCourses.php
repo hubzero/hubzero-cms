@@ -21,7 +21,7 @@ class Migration20130423204715ComCourses extends Base
 
 		if (!$this->db->loadResult())
 		{
-			$query = "INSERT INTO `jos_courses_roles` (`offering_id`, `alias`, `title`, `permissions`)
+			$query = "INSERT INTO `#__courses_roles` (`offering_id`, `alias`, `title`, `permissions`)
 						VALUES
 							(0, 'instructor', 'Instructor', ''),
 							(0, 'manager', 'Manager', ''),

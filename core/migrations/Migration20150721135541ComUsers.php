@@ -3,7 +3,7 @@
 use Hubzero\Content\Migration\Base;
 
 /**
- * Migration script for creating table jos_users_log_auth
+ * Migration script for creating table #__users_log_auth
  **/
 class Migration20150721135541ComUsers extends Base
 {

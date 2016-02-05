@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for extending password field length in jos_users table
+ * Migration script for extending password field length in #__users table
  **/
 class Migration20141119145715ComUsers extends Base
 {

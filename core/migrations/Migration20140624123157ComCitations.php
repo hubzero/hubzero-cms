@@ -15,7 +15,7 @@ class Migration20140624123157ComCitations extends Base
 	 **/
 	public function up()
 	{
-		$query = "describe jos_citations uid";
+		$query = "describe #__citations uid";
 		$this->db->setQuery($query);
 		$uidField = $this->db->loadObject();
 
@@ -26,7 +26,7 @@ class Migration20140624123157ComCitations extends Base
 		}
 
 		// load all citations
-		$query = "SELECT id, uid FROM `jos_citations`";
+		$query = "SELECT id, uid FROM `#__citations`";
 		$this->db->setQuery($query);
 		$citations = $this->db->loadObjectList();
 		foreach ($citations as $citation)
@@ -40,14 +40,14 @@ class Migration20140624123157ComCitations extends Base
 					$newId = $profile->get('uidNumber');
 				}
 
-				$query = "UPDATE `jos_citations` SET uid=" . $this->db->quote($newId) . " WHERE id=" . $this->db->quote($citation->id);
+				$query = "UPDATE `#__citations` SET uid=" . $this->db->quote($newId) . " WHERE id=" . $this->db->quote($citation->id);
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 		}
 
 		// change column name
-		$query = "ALTER TABLE `jos_citations` CHANGE uid uid INT(11);";
+		$query = "ALTER TABLE `#__citations` CHANGE uid uid INT(11);";
 		$this->db->setQuery($query);
 		$this->db->query();
 	}

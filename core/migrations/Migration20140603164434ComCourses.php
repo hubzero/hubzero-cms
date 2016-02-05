@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for creating table jos_courses_progress_factors
+ * Migration script for creating table #__courses_progress_factors
  **/
 class Migration20140603164434ComCourses extends Base
 {

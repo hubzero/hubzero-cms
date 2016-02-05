@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding 'delivered' and 'digest' columns to  table jos_item_watch
+ * Migration script for adding 'delivered' and 'digest' columns to  table #__item_watch
  **/
 class Migration20150722080000ComPublications extends Base
 {
@@ -15,18 +15,15 @@ class Migration20150722080000ComPublications extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('#__item_watch')
-			&& !$this->db->tableHasField('#__item_watch', 'digest')
-		)
+		if ($this->db->tableExists('#__item_watch') && !$this->db->tableHasField('#__item_watch', 'digest'))
 		{
 			$query = "ALTER TABLE `#__item_watch` ADD COLUMN `digest` INT(11) NOT NULL DEFAULT 0 AFTER `state`;";
-			 /* 0 = on-action delivery, 1 = daily digest, 2 = weekly digest, 3 = monthly digest */
+			/* 0 = on-action delivery, 1 = daily digest, 2 = weekly digest, 3 = monthly digest */
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		if ($this->db->tableExists('#__item_watch')
-			&& !$this->db->tableHasField('#__item_watch', 'delivered')
-		)
+
+		if ($this->db->tableExists('#__item_watch') && !$this->db->tableHasField('#__item_watch', 'delivered'))
 		{
 			$query = "ALTER TABLE `#__item_watch` ADD COLUMN `delivered` DATETIME NULL AFTER `digest`;";
 			$this->db->setQuery($query);
@@ -39,17 +36,14 @@ class Migration20150722080000ComPublications extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__item_watch')
-			&& $this->db->tableHasField('#__item_watch', 'digest')
-		)
+		if ($this->db->tableExists('#__item_watch') && $this->db->tableHasField('#__item_watch', 'digest'))
 		{
 			$query = "ALTER TABLE `#__item_watch` DROP COLUMN `digest`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		if ($this->db->tableExists('#__item_watch')
-			&& $this->db->tableHasField('#__item_watch', 'delivered')
-		)
+
+		if ($this->db->tableExists('#__item_watch') && $this->db->tableHasField('#__item_watch', 'delivered'))
 		{
 			$query = "ALTER TABLE `#__item_watch` DROP COLUMN `delivered`;";
 			$this->db->setQuery($query);

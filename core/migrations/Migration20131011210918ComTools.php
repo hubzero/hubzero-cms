@@ -15,7 +15,7 @@ class Migration20131011210918ComTools extends Base
 	 **/
 	public function up()
 	{
-		$query = "SHOW TABLE STATUS LIKE 'jos_tool_licenses'";
+		$query = "SHOW TABLE STATUS LIKE '#__tool_licenses'";
 		$this->db->setQuery($query);
 		$obj = $this->db->loadObject();
 

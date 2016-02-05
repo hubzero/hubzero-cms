@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to add group_owner field to jos_publications table
+ * Migration script to add group_owner field to #__publications table
  **/
 class Migration20140827100656ComPublications extends Base
 {

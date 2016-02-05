@@ -27,7 +27,7 @@ class Migration20130814185755ComNewsletter extends Base
 					PRIMARY KEY (`id`)
 				  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$query .= "UPDATE `jos_cron_jobs` SET `params`='' WHERE `plugin`='newsletter' AND `event`='processMailings' AND `params` LIKE '%newsletter_queue_limit=2\n%';";
+		$query .= "UPDATE `#__cron_jobs` SET `params`='' WHERE `plugin`='newsletter' AND `event`='processMailings' AND `params` LIKE '%newsletter_queue_limit=2\n%';";
 
 		if (!empty($query))
 		{
