@@ -296,7 +296,7 @@ class Profilesv1_0 extends ApiController
 		}
 
 		// Get any request vars
-		$format = Request::getVar('format', 'json');
+		$base = rtrim(Request::base(), '/');
 
 		$profile = array(
 			'id'                => $result->get('uidNumber'),
@@ -308,7 +308,7 @@ class Profilesv1_0 extends ApiController
 			'bio'               => $result->getBio('clean'),
 			'email'             => $result->get('email'),
 			'phone'             => $result->get('phone'),
-			'url'               => $result->get('url'),
+			'webpage'           => $result->get('url'),
 			'gender'            => $result->get('gender'),
 			'organization'      => $result->get('organization'),
 			'organization_type' => $result->get('orgtype'),
@@ -316,17 +316,34 @@ class Profilesv1_0 extends ApiController
 			'country_origin'    => $result->get('countryorigin'),
 			'member_since'      => $result->get('registerDate'),
 			'orcid'             => $result->get('orcid'),
-			'picture' => array(
+			'picture'   => array(
 				'thumb' => \Hubzero\User\Profile\Helper::getMemberPhoto($result, 0, true),
 				'full'  => \Hubzero\User\Profile\Helper::getMemberPhoto($result, 0, false)
-			)
+			),
+			'interests' => array(),
+			'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->getLink()), '/'))
 		);
 
-		/* Is this correct ? */
-		//corrects image path, API application breaks Route::url() in the Helper::getMemberPhoto() method.
-		$profile['picture']['thumb'] = str_replace('/api', '', $profile['picture']['thumb']);
-		$profile['picture']['full'] = str_replace('/api', '', $profile['picture']['full']);
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
+		$cloud = new \Components\Members\Models\Tags($userid);
 
+		foreach ($cloud->tags('list') as $i => $tag)
+		{
+			$obj = new stdClass;
+			$obj->id      = $tag->get('id');
+			$obj->raw_tag = $tag->get('raw_tag');
+			$obj->tag     = $tag->get('tag');
+			$obj->uri     = str_replace('/api', '', $base . '/' . ltrim(Route::url($tag->link()), '/'));
+
+			$obj->substitutes_count = $tag->get('substitutes');
+			$obj->objects_count = $tag->get('total');
+
+			$profile['interests'][] = $obj;
+		}
+
+		// Corrects image path, API application breaks Route::url() in the Helper::getMemberPhoto() method.
+		$profile['picture']['thumb'] = str_replace('/api', '', $base . '/' . $profile['picture']['thumb']);
+		$profile['picture']['full']  = str_replace('/api', '', $base . '/' . $profile['picture']['full']);
 
 		// Encode and return result
 		$object = new stdClass();
