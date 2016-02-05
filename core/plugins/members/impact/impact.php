@@ -214,7 +214,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		// Load contributions plugin parameters
 		$this->_cPlugin = Plugin::byType('members', 'contributions');
-		$this->_cParams = new JParameter($this->_cPlugin->params);
+		$this->_cParams = new \Hubzero\Config\Registry($this->_cPlugin->params);
 
 		if ($this->_cParams->get('include_publications', 0) == 1)
 		{
@@ -235,9 +235,9 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
 	{
-		$query = "SELECT COUNT(DISTINCT P.id) FROM #__publications AS P,
-				#__publication_versions as V,
-				#__publication_authors as A
+		$query = "SELECT COUNT(DISTINCT P.id) FROM `#__publications` AS P,
+				`#__publication_versions` as V,
+				`#__publication_authors` as A
 				WHERE V.publication_id=P.id AND A.publication_version_id = V.id
 				AND A.user_id=" . $user_id . " AND
 				V.state=1 AND A.status=1 AND A.role!='submitter'";

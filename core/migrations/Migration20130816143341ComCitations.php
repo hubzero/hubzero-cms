@@ -22,14 +22,11 @@ class Migration20130816143341ComCitations extends Base
 					`style` varchar(50) DEFAULT NULL,
 					`format` text,
 					PRIMARY KEY (`id`)
-				  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$this->db->setQuery($query);
 		$this->db->query();
 
-		//import jparameter
-		jimport('joomla.html.parameter');
-
-		//get citation params
+		// get citation params
 		if ($this->db->tableExists('#__extensions'))
 		{
 			$sql = "SELECT params FROM `#__extensions` WHERE `type`='component' AND `element`='com_citations';";
@@ -41,7 +38,7 @@ class Migration20130816143341ComCitations extends Base
 
 		$this->db->setQuery($sql);
 		$rawCitationParams = $this->db->loadResult();
-		$citationParams = new \JParameter( $rawCitationParams );
+		$citationParams = new \Hubzero\Config\Registry($rawCitationParams);
 
 		//insert default format
 		$query = "INSERT INTO `#__citations_format` (`typeid`, `style`, `format`)

@@ -129,7 +129,7 @@ class Members extends GroupMacro
 		$displaySystemUsers = $params->get('display_system_users', 'no');
 
 		//get this groups params
-		$gparams = new \JParameter($group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($group->get('params'));
 		$displaySystemUsers = $gparams->get('display_system_users', $displaySystemUsers);
 
 		// filter is system users

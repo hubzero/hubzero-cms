@@ -62,7 +62,7 @@ $ag = new \Components\Courses\Models\Assetgroup($this->scope_id);
 			$p = Plugin::byType('courses', $plugin['name']);
 			$default = new \Hubzero\Config\Registry($p->params);
 
-			$param = new JParameter(
+			$param = new \Hubzero\Html\Parameter(
 				(is_object($data) ? $data->toString() : $data),
 				PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 			);

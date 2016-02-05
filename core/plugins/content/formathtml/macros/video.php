@@ -42,21 +42,21 @@ class Video extends Macro
 	/**
 	 * Container for parsed attributes
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $attr = array();
 
 	/**
-	 * JParameter
+	 * Hubzero\Config\Registry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $config = null;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -86,7 +86,7 @@ class Video extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -287,8 +287,9 @@ class Video extends Macro
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
 	 *
-	 * @param      $file  Filename
-	 * @return     string
+	 * @param   string  $file  Filename
+	 * @param   bool    $alt
+	 * @return  string
 	 */
 	private function _path($file, $alt=false)
 	{
@@ -329,8 +330,8 @@ class Video extends Macro
 	 * Parse attribute=value pairs
 	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
 	 *
-	 * @param      array $matches Values matching attr=val pairs
-	 * @return     void
+	 * @param   array  $matches  Values matching attr=val pairs
+	 * @return  void
 	 */
 	public function parseAttributeValuePair($matches)
 	{
@@ -419,15 +420,14 @@ class Video extends Macro
 		{
 			$this->attr[$key] = $val;
 		}
-		return;
 	}
 
 	/**
 	 * Handle single attribute values
 	 * EX: [[Image(myimage.png, nolink, right)]]
 	 *
-	 * @param      array $matches Values matching the single attribute pattern
-	 * @return     void
+	 * @param   array  $matches  Values matching the single attribute pattern
+	 * @return  void
 	 */
 	public function parseSingleAttribute($matches)
 	{
@@ -480,15 +480,14 @@ class Video extends Macro
 				}
 			}
 		}
-		return;
 	}
 
 	/**
 	 * Generate a link to a file
 	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
 	 *
-	 * @param      $file  Filename
-	 * @return     string
+	 * @param   string  $file  Filename
+	 * @return  string
 	 */
 	private function _link($file)
 	{

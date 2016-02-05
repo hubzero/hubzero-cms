@@ -46,7 +46,7 @@ class VideoMacro extends WikiMacro
 	protected $attr = array();
 
 	/**
-	 * JParameter
+	 * Hubzero\Config\Registry
 	 *
 	 * @var object
 	 */
