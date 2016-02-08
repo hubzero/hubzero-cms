@@ -185,7 +185,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		// Attempt to save all data
 		// Wrap in try catch to avoid break mid import
-		//try
+		try
 		{
 			// Save profile
 			$this->_saveEntryData();
