@@ -222,13 +222,28 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->record->entry->loadByUsername($this->raw->username);
 		}
 
-		if (!$this->record->entry->get('uidNumber'))
+		$d = Date::of('now');
+
+		if ($this->raw->registerDate)
 		{
-			$this->raw->registerDate = Date::toSql();
+			try
+			{
+				$d = Date::of($this->raw->registerDate);
+			}
+			catch (Exception $e)
+			{
+				array_push($this->record->errors, $e->getMessage());
+			}
+			$this->raw->registerDate = $d->toSql();
+		}
+
+		if (!$this->record->entry->get('uidNumber') && !$this->raw->registerDate)
+		{
+			$this->raw->registerDate = $d->toSql();
 		}
 
 		// Set modified date/user
-		$this->raw->modifiedDate = Date::toSql();
+		$this->raw->modifiedDate = Date::of('now')->toSql();
 
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
@@ -412,16 +427,32 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				$newUsertype = $db->loadResult();
 			}
 
-			$user = User::getRoot();
+			$d = Date::of('now');
+			if ($this->raw->registerDate)
+			{
+				try
+				{
+					$d = Date::of($this->raw->registerDate);
+				}
+				catch (Exception $e)
+				{
+					array_push($this->record->errors, $e->getMessage());
+				}
+			}
+
+			$user = new \JUser();
 			$user->set('username', $this->_profile->get('username'));
 			$user->set('name', $this->_profile->get('name'));
 			$user->set('email', $this->_profile->get('email'));
 			$user->set('id', 0);
 			$user->set('groups', array($newUsertype));
-			$user->set('registerDate', Date::of('now')->toSql());
+			$user->set('registerDate', $d->toSql());
 			$user->set('password', $this->raw->password);
 			$user->set('password_clear', $this->raw->password);
-			$user->save();
+			if (!$user->save())
+			{
+				throw new Exception($user->getError());
+			}
 			$user->set('password_clear', '');
 
 			// Attempt to get the new user
@@ -462,7 +493,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			throw new Exception(Lang::txt('Unable to save the entry data.'));
 		}
 
-		if ($password = $this->raw->password)
+		if ($this->raw->password)
 		{
 			/*if ($isNew)
 			{
@@ -472,7 +503,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			}
 			else
 			{*/
-				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $password);
+				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $this->raw->password);
 			//}
 		}
 
