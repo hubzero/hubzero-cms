@@ -134,47 +134,46 @@ function submitbutton(pressbutton)
 					<div class="col width-40 fltrt">
 
 						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_DISABILITY'); ?></h4>
-						<table>
-							<tr>
-								<td>
-									{{#each record.entry.disability}}
-										{{{ this }}}<br />
-									{{else}}
-										<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
-									{{/each}}
-								</td>
-							</tr>
-						</table>
+						<ul>
+							{{#each record.entry.disability}}
+								<li>{{{ this }}}</li>
+							{{else}}
+								<li><span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span></li>
+							{{/each}}
+						</ul>
 
 						<hr />
 
 						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_RACE'); ?></h4>
-						<table>
-							<tr>
-								<td>
-									{{#each record.entry.race}}
-										{{{ this }}}<br />
-									{{else}}
-										<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
-									{{/each}}
-								</td>
-							</tr>
-						</table>
+						<ul>
+							{{#each record.entry.race}}
+								<li>{{{ this }}}</li>
+							{{else}}
+								<li><span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span></li>
+							{{/each}}
+						</ul>
 
 						<hr />
 
 						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_TAGS'); ?></h4>
-						<table>
-							<tr>
-								<td>
-									{{#each record.tags}}
-										{{{ this }}}<br />
-									{{else}}
-										<span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span>
-									{{/each}}
-								</td>
-							</tr>
-						</table>
+						<ul>
+							{{#each record.tags}}
+								<li>{{{ this }}}</li>
+							{{else}}
+								<li><span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span></li>
+							{{/each}}
+						</ul>
+
+						<hr />
+
+						<h4><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_GROUPS'); ?></h4>
+						<ul>
+							{{#each record.groups}}
+								<li>{{{ this }}}</li>
+							{{else}}
+								<li><span class="hint"><?php echo Lang::txt('COM_MEMBERS_NONE'); ?></span></li>
+							{{/each}}
+						</ul>
 
 					</div>
 					<br class="clr" />

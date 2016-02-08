@@ -233,7 +233,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
 			// These two need some extra loving and care, so we skip them for now...
-			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber')
+			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber' || $key == 'groups')
 			{
 				continue;
 			}
@@ -574,6 +574,20 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		if (isset($this->raw->groups))
 		{
 			$this->record->groups = $this->_multiValueField($this->raw->groups);
+
+			foreach ($this->record->groups as $i => $gid)
+			{
+				$gid = trim($gid, '"');
+				$gid = trim($gid, "'");
+
+				$this->record->groups[$i] = $gid;
+
+				$group = \Hubzero\User\Group::getInstance($gid);
+				if (!$group || !$group->get('gidNumber'))
+				{
+					array_push($this->record->errors, Lang::txt('COM_MEMBERS_IMPORT_ERROR_GROUP_NOT_FOUND', $gid));
+				}
+			}
 		}
 	}
 
