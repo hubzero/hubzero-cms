@@ -156,7 +156,7 @@ function submitbutton(pressbutton)
 				}
 			}
 
-			$tags = $row->tags('cloud');
+			//$tags = $row->tags('cloud');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -178,9 +178,9 @@ function submitbutton(pressbutton)
 							</span>
 						<?php } ?>
 					<?php } ?>
-					<?php if ($tags) { ?>
+					<?php /*if ($tags) { ?>
 						<br /><span><?php echo Lang::txt('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
-					<?php } ?>
+					<?php }*/ ?>
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
