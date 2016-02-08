@@ -185,7 +185,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		// Attempt to save all data
 		// Wrap in try catch to avoid break mid import
-		try
+		//try
 		{
 			// Save profile
 			$this->_saveEntryData();
@@ -573,7 +573,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	{
 		if (isset($this->raw->groups))
 		{
-			$this->record->groups = $this->_multiValueField($this->raw->groups);
+			$this->record->groups = (array)$this->_multiValueField($this->raw->groups);
 
 			foreach ($this->record->groups as $i => $gid)
 			{
@@ -613,9 +613,12 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		// Get all the user's current groups
 		$existing = $this->_profile->getGroups();
 		$gids = array();
-		foreach ($existing as $e)
+		if ($existing)
 		{
-			$gids[] = $existing->gidNumber;
+			foreach ($existing as $e)
+			{
+				$gids[] = $existing->gidNumber;
+			}
 		}
 
 		// Add user to specified groups
