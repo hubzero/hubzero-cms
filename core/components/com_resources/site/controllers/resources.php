@@ -970,6 +970,48 @@ class Resources extends SiteController
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
+		// Load the resource
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'resource.php');
+		$this->model = Models\Resource::getInstance($parent);
+
+		// Make sure we got a result from the database
+		if (!$this->model->exists() || $this->model->deleted())
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			return;
+		}
+
+		// Make sure the resource is published and standalone
+		if (!$this->model->resource->standalone) // || !$this->model->published())
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+			return;
+		}
+
+		// Is the visitor authorized to view this resource?
+		if (User::isGuest() && ($this->model->resource->access == 1 || $this->model->resource->access == 4))
+		{
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . ($this->model->resource->alias ? '&alias=' . $this->model->resource->alias : '&id=' . $this->model->resource->id), false, true), 'server'));
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
+				'warning'
+			);
+			return;
+		}
+
+		if ($this->model->resource->group_owner && !$this->model->access('view-all'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
+			return;
+		}
+
+		if (!$this->model->access('view'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+			return;
+		}
+
 		//load resource
 		$activechild = new Resource($this->database);
 		$activechild->load($child);
