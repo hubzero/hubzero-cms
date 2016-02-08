@@ -147,11 +147,8 @@ class Posts extends SiteController
 					$post->shortTitle = $post->title;
 				}
 
-				$epoch = $post->created;
-				// convert UNIX timestamp to PHP DateTime
-				$dt = new \DateTime("@$epoch");
 				// output = 2012-08-15 00:00:00
-				$post->created =  $dt->format('m-d-y h:i A');
+				$post->created = Date::of($post->created)->toLocal();
 
 				$post->description = wordwrap($post->description,100,"<br>\n");
 				$post->title = wordwrap($post->title, 65, "<br>\n");
@@ -310,11 +307,11 @@ class Posts extends SiteController
 
 								if (isset($item->published) == TRUE)
 								{
-									$post->set('created', strtotime($item->published));
+									$post->set('created', Date::of($item->published)->toSql());
 								}
 								else
 								{
-									$post->set('created', strtotime($item->updated));
+									$post->set('created', Date::of($item->updated)->toSql());
 								}
 
 								$post->set('description', (string) html_entity_decode(strip_tags($item->content, '<img>')));
@@ -329,7 +326,7 @@ class Posts extends SiteController
 								$post->set('title',  (string) html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
-								$post->set('created', strtotime($item->pubDate));
+								$post->set('created', Date::of($item->pubDate)->toSql());
 								$post->set('description', (string) html_entity_decode(strip_tags($item->description, '<img>')));
 								$post->set('url', (string) $item->link);
 
