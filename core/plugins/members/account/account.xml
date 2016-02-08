@@ -44,7 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="ssh_key_upload" type="list" default="0" label="Allow SSH Public Key Upload" description="Allow users to upload their public ssh key via the members account plugin.">
+				<field name="ssh_key_upload" type="list" default="0" label="Show local services details" description="Enabling this options allows users to upload their public ssh key via the members account plugin, and shows them their local services account details.">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
