@@ -1635,6 +1635,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupMemberAfter($group, $profile)
 	{
+		return;
 		$view = $this->view('default', 'member');
 		$view->group	= $group;
 		$view->option	= 'com_groups';
