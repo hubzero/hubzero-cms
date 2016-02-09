@@ -648,7 +648,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		{
 			foreach ($existing as $e)
 			{
-				$gids[] = $existing->gidNumber;
+				$gids[] = $e->gidNumber;
 			}
 		}
 
