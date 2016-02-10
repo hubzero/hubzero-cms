@@ -445,7 +445,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$profile = \Hubzero\User\Profile::getInstance($announcement->created_by);
 
 		//make sure we are the one who created it
-		if ($announcement->created_by != User::get('id'))
+		if ($announcement->created_by != User::get('id') && $this->authorized != 'manager')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $profile->get('name')));
 			return $this->_list();
