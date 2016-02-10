@@ -225,6 +225,7 @@
 	}
 
 /* Panes */
+	section.panes,
 	.panes {
 		display: table;
 		width: 100%;
