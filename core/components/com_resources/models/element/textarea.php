@@ -67,8 +67,8 @@ class Textarea extends Base
 		}
 		$cls[] = (\App::isAdmin() ? 'no-footer' : 'minimal no-footer');
 
-		// convert <br /> tags so they are not visible when editing
-		$value = str_replace('<br />', "\n", $value);
+		// convert tags so they are safe for wysiwyg and source editors
+		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
 		return '<span class="field-wrap">' . \App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
 	}
