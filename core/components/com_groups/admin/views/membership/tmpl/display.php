@@ -36,7 +36,9 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
-Toolbar::appendButton( 'Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170 );
+Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170);
+
+Toolbar::appendButton('Link', 'unblock', 'COM_GROUPS_ROLE_ASSIGN', 'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'], 570, 170);
 
 Toolbar::spacer();
 switch ($this->filters['status'])
@@ -83,6 +85,31 @@ $this->css('groups.css');
 Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
+jQuery(document).ready(function($){
+	$("#toolbar-unblock a").on('click', function(e){
+		e.preventDefault();
+
+		if (document.adminForm.boxchecked.value==0){
+			alert('Please first make a selection from the list');
+		}else{
+			var serialized = '';
+			$('input[type=checkbox]').each(function() {
+				if (this.checked) {
+					serialized += '&'+this.name+'='+this.value;
+				}
+			});
+			if (serialized) {
+				$.fancybox({
+					arrows: false,
+					type: 'iframe',
+					autoSize: false,
+					fitToView: true,
+					href: $(this).attr('href') + serialized
+				});
+			}
+		}
+	});
+});
 function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
@@ -97,19 +124,26 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
+		<div class="col width60 fltlft">
+			<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
 
-		<label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
-		<select name="status" id="filter-status">
-			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></option>
-			<!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
-			<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>>Manager</option>
-			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
-			<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>>Invitee</option>
-		</select>
+			<label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
+			<select name="status" id="filter-status">
+				<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></option>
+				<!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
+				<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>>Manager</option>
+				<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
+				<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>>Invitee</option>
+			</select>
 
-		<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
+			<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
+		</div>
+		<div class="col width60 fltrt">
+			<a class="button modal" href="<?php echo Route::url('index.php?option=com_groups&controller=roles&tmpl=component&gid=jla'); ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
+				<span class="icon-32-new"><?php echo Lang::txt('Roles'); ?></span>
+			</a>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
