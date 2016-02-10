@@ -290,7 +290,14 @@ class Local implements AdapterInterface
 		if (class_exists('Finfo') && $this->exists($path))
 		{
 			$finfo = new Finfo(FILEINFO_MIME_TYPE);
-			$mimeType = $finfo->file($path);
+			try
+			{
+				$mimeType = $finfo->file($path);
+			}
+			catch (\Exception $e)
+			{
+				// Gracefully ignore the filetype
+			}
 		}
 
 		if (empty($mimeType) || $mimeType === 'text/plain')
