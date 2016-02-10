@@ -98,7 +98,7 @@ class Question extends \JTable
 			}
 			else
 			{
-				$query .= ", #__tags_object AS RTA ";
+				$query .= " INNER JOIN #__tags_object AS RTA ";
 			}
 			$query .= "INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
 		}
