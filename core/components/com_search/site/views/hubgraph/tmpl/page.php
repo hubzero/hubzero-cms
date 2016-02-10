@@ -502,7 +502,7 @@ $end = $begin + count($results['results']) - 1;
 if (!defined('HG_AJAX')):
 	if ($req->anyCriteria()):
 	?>
-<section class="panes">
+<section class="main section panes">
 	<div class="pane-row">
 		<div class="pane pane-filters">
 			<div class="pane-inner">
