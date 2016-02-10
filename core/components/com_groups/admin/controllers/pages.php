@@ -37,6 +37,7 @@ use Hubzero\User\Group;
 use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Helpers;
+use stdClass;
 use Request;
 use Config;
 use Notify;
