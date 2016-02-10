@@ -124,7 +124,7 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width60 fltlft">
+		<div class="col width-60 fltlft">
 			<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
 
@@ -139,7 +139,7 @@ function submitbutton(pressbutton)
 
 			<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
 		</div>
-		<div class="col width60 fltrt">
+		<div class="col width-40 fltrt">
 			<a class="button modal" href="<?php echo Route::url('index.php?option=com_groups&controller=roles&tmpl=component&gid=jla'); ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
 				<span class="icon-32-new"><?php echo Lang::txt('Roles'); ?></span>
 			</a>
