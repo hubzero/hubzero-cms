@@ -721,6 +721,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '</thead>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
 
+		print (PATH_APP . $config->get('charts_path'));
 		$db->setQuery("SELECT id, label, plot FROM summary_user WHERE id IN (1,2,3,4,5) ORDER BY id");
 		$results = $db->loadObjectList();
 		if ($results)
@@ -746,7 +747,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-u' . $row->id;
 					if (is_file(PATH_APP . DS . $img . '.gif'))
 					{
-						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:users1' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users1' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
+						$html .= "\t\t\t" . '<td><a href="/app' . $img . '.gif" title="DOM:users1' . $i . '" class="fixedImgTip" rel="external"><img src="/app' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users1' . $i . '"><img src="/app' . $img . '.gif" alt="" /></div></td>' . "\n";
 					}
 					else if (isset($sparkline))
 					{
@@ -805,7 +806,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-s' . $row->id;
 					if (is_file(PATH_APP . DS . $img . '.gif'))
 					{
-						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:sim' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="sim' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
+						$html .= "\t\t\t" . '<td><a href="/app' . $img . '.gif" title="DOM:sim' . $i . '" class="fixedImgTip" rel="external"><img src="/app' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="sim' . $i . '"><img src="/app' . $img . '.gif" alt="" /></div></td>' . "\n";
 					//} else if (isset($sparkline)) {
 					//	$html .= "\t\t\t" . '<td>'.$sparkline.'</td>' . "\n";
 					}
@@ -1038,7 +1039,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-u' . $row->id;
 					if (is_file(PATH_APP . DS . $img . '.gif'))
 					{
-						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:users2' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users2' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
+						$html .= "\t\t\t" . '<td><a href="/app' . $img . '.gif" title="DOM:users2' . $i . '" class="fixedImgTip" rel="external"><img src="/app' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users2' . $i . '"><img src="/app' . $img . '.gif" alt="" /></div></td>' . "\n";
 					}
 					else if (isset($sparkline))
 					{
