@@ -50,7 +50,7 @@ class Permissions
 	public static function getActions($assetType='component', $assetId = 0)
 	{
 		$assetName  = self::$extension;
-		$assetName .= '.' . $assetType;
+//		$assetName .= '.' . $assetType;
 		if ($assetId)
 		{
 			$assetName .= '.' . (int) $assetId;
@@ -70,8 +70,10 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set('core.' . $action, $user->authorise($action, $assetName));
+			$result->set('core.' . $action, $user->authorise('core.' . $action, $assetName));
 		}
+		print ($assetName);
+		print_r ($result);
 
 		return $result;
 	}
