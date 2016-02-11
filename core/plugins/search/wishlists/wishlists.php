@@ -86,7 +86,7 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 			WHERE
 				NOT wli.private AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-			" ORDER BY $weight DESC"
+			" AND wli.status != 2 ORDER BY $weight DESC"
 		);
 		foreach ($rows->to_associative() as $row)
 		{
