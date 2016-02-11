@@ -721,7 +721,6 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '</thead>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
 
-		print (PATH_APP . $config->get('charts_path'));
 		$db->setQuery("SELECT id, label, plot FROM summary_user WHERE id IN (1,2,3,4,5) ORDER BY id");
 		$results = $db->loadObjectList();
 		if ($results)
