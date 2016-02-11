@@ -1,4 +1,4 @@
-if (!$this->db->tableExists('%=table_name=%'))
+		if (!$this->db->tableExists('%=table_name=%'))
 		{
 			$query = "%=create_table=%";
 			$this->db->setQuery($query);
