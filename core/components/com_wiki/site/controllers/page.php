@@ -226,6 +226,7 @@ class Page extends SiteController
 			throw new Exception(Lang::txt('COM_WIKI_WARNING_NOT_AUTH'), 403);
 		}
 
+		$parents = array();
 		if ($scope = $this->page->get('scope'))
 		{
 			$s = array();
@@ -251,6 +252,7 @@ class Page extends SiteController
 								$p->get('title'),
 								$p->link()
 							);
+							$parents[] = $p;
 						}
 						$s[] = $bit;
 					}
@@ -343,7 +345,9 @@ class Page extends SiteController
 			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->set('parents', $parents)
+			->display();
 	}
 
 	/**

@@ -33,6 +33,7 @@
 namespace Components\Wiki\Site\Controllers;
 
 use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Hubzero\Component\SiteController;
 use Exception;
@@ -169,6 +170,41 @@ class Comments extends SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
+
+		$parents = array();
+		if ($scope = $this->page->get('scope'))
+		{
+			$s = array();
+			if ($cn = $this->page->get('group_cn'))
+			{
+				$scope = substr($scope, strlen($cn . '/wiki'));
+				$s[] = $cn;
+				$s[] = 'wiki';
+			}
+			$scope = trim($scope, '/');
+			if ($scope)
+			{
+				$bits = explode('/', $scope);
+				foreach ($bits as $bit)
+				{
+					$bit = trim($bit);
+					if ($bit != '/' && $bit != '')
+					{
+						$p = Page::getInstance($bit, implode('/', $s));
+						if ($p->exists())
+						{
+							Pathway::append(
+								$p->get('title'),
+								$p->link()
+							);
+							$parents[] = $p;
+						}
+						$s[] = $bit;
+					}
+				}
+			}
+		}
+
 		Pathway::append(
 			$this->view->title,
 			$this->page->link()
@@ -187,6 +223,7 @@ class Comments extends SiteController
 		}
 
 		$this->view
+			->set('parents', $parents)
 			->setLayout('display')
 			->display();
 	}
