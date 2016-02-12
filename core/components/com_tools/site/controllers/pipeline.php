@@ -128,6 +128,7 @@ class Pipeline extends SiteController
 		// Paging vars
 		$this->view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 		$this->view->filters['start'] = Request::getInt('limitstart', 0);
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Create a Tool object
 		$obj = new \Components\Tools\Tables\Tool($this->database);
