@@ -84,7 +84,9 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="3"><a href="<?php echo Route::url('index.php?option='.$this->option); ?>"><?php echo Lang::txt('COM_GROUPS'); ?></a>  > (<?php echo $this->escape(stripslashes($this->group->get('cn'))); ?>) <?php echo $this->escape(stripslashes($this->group->get('description'))); ?></th>
+				<th colspan="3">
+					<?php if ($tmpl != 'component') { ?><a href="<?php echo Route::url('index.php?option='.$this->option); ?>"><?php } ?><?php echo Lang::txt('COM_GROUPS'); ?><?php if ($tmpl != 'component') { ?></a><?php } ?> > (<?php echo $this->escape(stripslashes($this->group->get('cn'))); ?>) <?php echo $this->escape(stripslashes($this->group->get('description'))); ?>
+				</th>
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>

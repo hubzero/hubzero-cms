@@ -38,7 +38,7 @@ Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
 Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170);
 
-Toolbar::appendButton('Link', 'unblock', 'COM_GROUPS_ROLE_ASSIGN', 'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'], 570, 170);
+Toolbar::appendButton('Link', 'unblock', 'COM_GROUPS_ROLE_ASSIGN', 'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'], 400, 400);
 
 Toolbar::spacer();
 switch ($this->filters['status'])
@@ -103,6 +103,8 @@ jQuery(document).ready(function($){
 					arrows: false,
 					type: 'iframe',
 					autoSize: false,
+					width: 400,
+					height: 400,
 					fitToView: true,
 					href: $(this).attr('href') + serialized
 				});
@@ -140,7 +142,7 @@ function submitbutton(pressbutton)
 			<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
 		</div>
 		<div class="col width-40 fltrt">
-			<a class="button modal" href="<?php echo Route::url('index.php?option=com_groups&controller=roles&tmpl=component&gid=jla'); ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
+			<a class="button modal" href="<?php echo Route::url('index.php?option=com_groups&controller=roles&tmpl=component&gid=' . $this->filters['gid']); ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
 				<span class="icon-32-new"><?php echo Lang::txt('Roles'); ?></span>
 			</a>
 		</div>
