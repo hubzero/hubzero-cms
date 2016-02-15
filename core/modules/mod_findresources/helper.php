@@ -33,7 +33,7 @@
 namespace Modules\FindResources;
 
 use Hubzero\Module\Module;
-use Components\Tags\Tables\Tag;
+use Components\Tags\Models\Tag;
 use Component;
 
 /**
@@ -48,14 +48,16 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(Component::path('com_tags') . DS . 'helpers' . DS . 'handler.php');
+		require_once(Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 		require_once(Component::path('com_resources') . DS . 'tables' . DS . 'type.php');
 
 		$database = \App::get('db');
 
-		$obj = new Tag($database);
-
-		$this->tags = $obj->getTopTags(intval($this->params->get('limit', 25)));
+		$this->tags = Tag::all()
+			->whereEquals('admin', 0)
+			->limit((int)$this->params->get('limit', 25))
+			->order('objects', 'desc')
+			->rows();
 
 		// Get major types
 		$t = new \Components\Resources\Tables\Type($database);

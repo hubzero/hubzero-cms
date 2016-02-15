@@ -71,8 +71,7 @@ $this->css('introduction.css', 'system')
 				'limit'    => 50,
 				'admin'    => 0,
 				'sort'     => 'taggedon',
-				'sort_Dir' => 'DESC',
-				'by'       => 'user'
+				'sort_Dir' => 'DESC'
 			);
 
 			if ($this->config->get('cache', 1))
@@ -101,9 +100,8 @@ $this->css('introduction.css', 'system')
 			$filters = array(
 				'limit'    => 50,
 				'admin'    => 0,
-				'sort'     => 'total',
-				'sort_Dir' => 'DESC',
-				'by'       => 'user'
+				'sort'     => 'objects',
+				'sort_Dir' => 'DESC'
 			);
 
 			if ($this->config->get('cache', 1))

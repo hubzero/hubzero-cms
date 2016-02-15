@@ -33,7 +33,6 @@
 namespace Components\Resources\Helpers;
 
 use Components\Tags\Models\Cloud;
-use Components\Tags\Tables\Tag;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
@@ -435,8 +434,7 @@ class Tags extends Cloud
 	 */
 	public function getTopTagCloud($limit, $tagstring='')
 	{
-		$t = new Tag($this->_db);
-		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
+		$tags = $this->getTopTags($limit);
 
 		return $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
 	}
@@ -451,8 +449,7 @@ class Tags extends Cloud
 	 */
 	public function getTopTags($limit)
 	{
-		$t = new Tag($this->_db);
-		return $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
+		return $this->tags('list', ['sort' => 'objects', 'sort_Dir' => 'desc']);
 	}
 
 	/**
@@ -465,16 +462,14 @@ class Tags extends Cloud
 	 */
 	public function getTopTagString($limit)
 	{
-		$t = new Tag($this->_db);
-
-		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
+		$tags = $this->getTopTags($limit);
 
 		if ($tags && count($tags) > 0)
 		{
 			$tagarray = array();
 			foreach ($tags as $tag)
 			{
-				$tagarray[] = $tag->raw_tag;
+				$tagarray[] = $tag->get('raw_tag');
 			}
 			$tags = implode(', ', $tagarray);
 		}

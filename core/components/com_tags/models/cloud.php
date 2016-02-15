@@ -32,10 +32,7 @@
 
 namespace Components\Tags\Models;
 
-use Components\Tags\Tables;
 use Hubzero\Component\View;
-use Hubzero\Base\Object;
-use Hubzero\Base\ItemList;
 use User;
 use Date;
 
@@ -44,7 +41,7 @@ require_once(__DIR__ . DS . 'tag.php');
 /**
  * Cloud model for Tags
  */
-class Cloud extends Object
+class Cloud extends \Hubzero\Base\Object
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -58,28 +55,14 @@ class Cloud extends Object
 	 *
 	 * @var integer
 	 */
-	protected $_scope_id = null;
+	protected $_scope_id = 0;
 
 	/**
-	 * Tag table
-	 *
-	 * @var object
-	 */
-	protected $_tbl = null;
-
-	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
 	protected $_db = NULL;
-
-	/**
-	 * Registry
-	 *
-	 * @var array
-	 */
-	protected $_config = null;
 
 	/**
 	 * Container for properties
@@ -97,35 +80,32 @@ class Cloud extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course ID or alias
-	 * @return     void
+	 * @param   integer  $scope_id
+	 * @param   string   $scope
+	 * @return  void
 	 */
 	public function __construct($scope_id=0, $scope='')
 	{
 		$this->_db = \App::get('db');
 
-		$this->_tbl = new Tables\Tag($this->_db);
-
 		if ($scope)
 		{
-			$this->_scope    = $scope;
+			$this->_scope    = (string)$scope;
 		}
 		if ($scope_id)
 		{
-			$this->_scope_id = $scope_id;
+			$this->_scope_id = (int)$scope_id;
 		}
-
-		$this->_config = \Component::params('com_tags');
 	}
 
 	/**
 	 * Returns a reference to a tag cloud model
 	 *
-	 * @param   string   $scope
 	 * @param   integer  $scope_id
+	 * @param   string   $scope
 	 * @return  object
 	 */
-	static function &getInstance($scope_id=0, $scope='')
+	static function getInstance($scope_id=0, $scope='')
 	{
 		static $instances;
 
@@ -147,9 +127,9 @@ class Cloud extends Object
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param	string  $property  The name of the property
-	 * @param	mixed   $default   The default value
-	 * @return	mixed   The value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $default   The default value
+	 * @return  mixed   The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -162,46 +142,30 @@ class Cloud extends Object
 			return $this->_scope_id;
 		}
 
-		if (isset($this->_tbl->$property))
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property}))
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
+		return parent::get($property, $default);
 	}
 
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param	string  $property  The name of the property
-	 * @param	mixed   $value     The value of the property to set
-	 * @return	mixed   Previous value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $value     The value of the property to set
+	 * @return  mixed   Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
 		if ($property == 'scope')
 		{
-			$previous = $this->_scope;
 			$this->_scope = $value;
-			return $previous;
+			return $this;
 		}
 		if ($property == 'scope_id')
 		{
-			$previous = $this->_scope_id;
 			$this->_scope_id = $value;
-			return $previous;
+			return $this;
 		}
 
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
+		return parent::set($property, $value);
 	}
 
 	/**
@@ -216,33 +180,11 @@ class Cloud extends Object
 		 || (
 				$id !== null
 			 && (int) $this->_cache['tags.one']->get('id') != $id
-			 && (string) $this->_cache['tags.one']->get('tag') != $this->_tbl->normalize($id)
+			 && (string) $this->_cache['tags.one']->get('tag') != $this->normalize($id)
 			)
 		 )
 		{
-			// Unset current tag
-			$this->_cache['tags.one'] = null;
-
-			// Is the tags list available?
-			// If so, this may save us a trip to the database
-			if ($this->_cache['tags.list'] instanceof ItemList)
-			{
-				// Loop through each tag looking one that matches
-				foreach ($this->_cache['tags.list'] as $key => $tag)
-				{
-					if ((int) $tag->get('id') == $id || (string) $tag->get('tag') == $this->_tbl->normalize($id))
-					{
-						$this->_cache['tags.one'] = $tag;
-						break;
-					}
-				}
-			}
-
-			// No tag found?
-			if (!$this->_cache['tags.one'])
-			{
-				$this->_cache['tags.one'] = Tag::getInstance($id);
-			}
+			$this->_cache['tags.one'] = is_numeric($id) ? Tag::oneOrNew($id) : Tag::oneByTag($id);
 		}
 
 		return $this->_cache['tags.one'];
@@ -267,12 +209,78 @@ class Cloud extends Object
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
+		$tbl = Object::blank()->getTableName();
+
+		$results = Tag::all();
+		$results
+			->select($results->getTableName() . '.*');
+
+		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
+		{
+			$results
+				->select($tbl . '.taggedon')
+				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id')
+				->group($results->getTableName() . '.id');
+		}
+
+		if (isset($filters['tagger_id'])
+		 || isset($filters['scope'])
+		 || isset($filters['scope_id'])
+		 || isset($filters['label']))
+		{
+			$results->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id');
+
+			if (isset($filters['tagger_id']) && $filters['tagger_id'])
+			{
+				$results->whereEquals($tbl . '.taggerid', (int) $filters['tagger_id']);
+			}
+			if (isset($filters['scope']) && $filters['scope'])
+			{
+				$results->whereEquals($tbl . '.tbl', (string) $filters['scope']);
+			}
+			if (isset($filters['scope_id']) && $filters['scope_id'])
+			{
+				$results->whereEquals($tbl . '.objectid', (int) $filters['scope_id']);
+			}
+			if (isset($filters['label']) && $filters['label'])
+			{
+				$results->whereEquals($tbl . '.label', (string) $filters['label']); // find labeled tags
+			}
+		}
+
+		if (isset($filters['admin']) && $filters['admin'] !== null)
+		{
+			$results->whereEquals('admin', (int) $filters['admin']);
+		}
+		if (isset($filters['created_by']) && $filters['created_by'] > 0)
+		{
+			$results->whereEquals('created_by', (int) $filters['created_by']);
+		}
+		if (isset($filters['modified_by']) && $filters['modified_by'] > 0)
+		{
+			$results->whereEquals('modified_by', $filters['modified_by']);
+		}
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$filters['search'] = strtolower((string)$filters['search']);
+
+			$tbl = Substitute::blank()->getTableName();
+
+			$results->select($results->getTableName() . '.*')
+				->join($tbl, $tbl . '.tag_id', $results->getTableName() . '.id', 'left');
+
+			$results->whereLike($results->getTableName() . '.raw_tag', $filters['search'], 1)
+				->orWhereLike($results->getTableName() . '.tag', $filters['search'], 1)
+				->orWhereLike($tbl . '.raw_tag', $filters['search'], 1)
+				->resetDepth();
+		}
+
 		switch (strtolower($rtrn))
 		{
 			case 'count':
 				if (!isset($this->_cache['tags.count']) || $clear)
 				{
-					$this->_cache['tags.count'] = (int) $this->_tbl->getCount($filters);
+					$this->_cache['tags.count'] = (int) $results->total();
 				}
 				return $this->_cache['tags.count'];
 			break;
@@ -283,20 +291,30 @@ class Cloud extends Object
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['tags.list'] instanceof ItemList) || $clear)
+				if (!$this->_cache['tags.list'] || $clear)
 				{
-					if ($results = $this->_tbl->getRecords($filters))
+					if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 					{
-						foreach ($results as $key => $result)
+						if (!isset($filters['start']))
 						{
-							$results[$key] = new Tag($result);
+							$filters['start'] = 0;
 						}
+
+						$results->limit($filters['limit']);
+						$results->start($filters['start']);
 					}
-					else
+					if (isset($filters['sort']) && $filters['sort'] != '')
 					{
-						$results = array();
+						if ($filters['sort'] == 'total')
+						{
+							$filters['sort'] = 'objects';
+						}
+
+						$filters['sort_Dir'] = (isset($filters['sort_Dir']) && $filters['sort_Dir']) ? $filters['sort_Dir'] : "ASC";
+						$results->order($filters['sort'], $filters['sort_Dir']);
 					}
-					$this->_cache['tags.list'] = new ItemList($results);
+
+					$this->_cache['tags.list'] = $results->rows();
 				}
 				return $this->_cache['tags.list'];
 			break;
@@ -329,10 +347,10 @@ class Cloud extends Object
 
 		foreach ($this->_parse($tags, 1) as $tg => $raw)
 		{
-			$tag = Tag::getInstance((string) $tg);
+			$tag = Tag::oneByTag((string) $tg);
 
 			// Does the tag already exist?
-			if (!$tag->exists())
+			if ($tag->isNew())
 			{
 				// Create it
 				$tag->set('admin', $admin);
@@ -340,7 +358,7 @@ class Cloud extends Object
 				$tag->set('raw_tag', $raw);
 				$tag->set('created', Date::toSql());
 				$tag->set('created_by', $tagger);
-				$tag->store();
+				$tag->save();
 			}
 
 			// Add the tag to the object
@@ -377,10 +395,10 @@ class Cloud extends Object
 
 		foreach ($this->_parse($tags) as $tg)
 		{
-			$tag = Tag::getInstance((string) $tg);
+			$tag = Tag::oneByTag((string) $tg);
 
 			// Does the tag exist?
-			if (!$tag->exists())
+			if (!$tag->get('id'))
 			{
 				// Tag doesn't exist, no point in going any further
 				continue;
@@ -411,12 +429,35 @@ class Cloud extends Object
 			return false;
 		}
 
-		$to = new Tables\Object($this->_db);
-		if (!$to->removeAllTags($this->_scope, $this->_scope_id, $tagger))
+		$to = Object::all()
+			->whereEquals('tbl', $this->_scope)
+			->whereEquals('objectid', $this->_scope_id);
+
+		if ($tagger)
 		{
-			$this->setError($to->getError());
-			return false;
+			$to->whereEquals('taggerid', $tagger);
 		}
+
+		$tags = array();
+
+		foreach ($to->rows() as $row)
+		{
+			$tags[] = $row->get('tagid');
+
+			if (!$row->destroy())
+			{
+				$this->setError($row->getError());
+				return false;
+			}
+		}
+
+		foreach ($tags as $tag_id)
+		{
+			$tag = Tag::oneOrFail($tag_id);
+			$tag->set('objects', $tag->objects()->total())
+				->save();
+		}
+
 		return true;
 	}
 
@@ -434,10 +475,9 @@ class Cloud extends Object
 			return false;
 		}
 
-		$t = new Tables\Tag($this->_db);
-		$t->loadTag($this->normalize($tag));
+		$t = Tag::oneByTag($tag);
 
-		return $t->id;
+		return $t->get('id');
 	}
 
 	/**
@@ -484,7 +524,7 @@ class Cloud extends Object
 						'name'      => 'tags',
 						'layout'    => '_cloud'
 					));
-					$view->set('config', $this->_config)
+					$view->set('config', \Component::params('com_tags'))
 					     ->set('tags', $this->tags('list', $filters, $clear));
 
 					$this->_cache['tags.cloud'] = $view->loadTemplate();
@@ -576,7 +616,7 @@ class Cloud extends Object
 	 */
 	public function normalize($tag)
 	{
-		return $this->_tbl->normalize($tag);
+		return Tag::blank()->normalize($tag);
 	}
 
 	/**
@@ -591,7 +631,6 @@ class Cloud extends Object
 		if (is_string($tags))
 		{
 			$tags = trim($tags);
-			//$tags = explode(',', $tags);
 			$tags = preg_split("/(,|;)/", $tags);
 		}
 

@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 						<?php
 						foreach ($this->tags as $tag)
 						{
-							echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects('count') . ')</li>' . "\n";
+							echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects()->total() . ')</li>' . "\n";
 						}
 						?>
 					</ul>

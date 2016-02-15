@@ -131,7 +131,7 @@ class Tags extends Cloud
 
 		if (!($tag instanceof Tag))
 		{
-			$tg = new Tag($tag);
+			$tg = Tag::oneByTag($tag);
 			$tg->set('raw_tag', $tag);
 
 			$tag = $tg;

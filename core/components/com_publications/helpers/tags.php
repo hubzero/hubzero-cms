@@ -32,13 +32,50 @@
 
 namespace Components\Publications\Helpers;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+use Components\Tags\Models\Cloud;
+
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Publication Tagging class
  */
-class Tags extends \TagsHandler
+class Tags extends \Hubzero\Base\Object
 {
+	/**
+	 * Database
+	 *
+	 * @var unknown
+	 */
+	public $_db  = NULL;
+
+	/**
+	 * Object type, used for linking objects (such as resources) to tags
+	 *
+	 * @var string
+	 */
+	public $_tbl = 'tags';
+
+	/**
+	 * The object to be tagged
+	 *
+	 * @var unknown
+	 */
+	public $_oid = NULL;  //
+
+	/**
+	 * The primary tag table
+	 *
+	 * @var string
+	 */
+	public $_tag_tbl = '#__tags';
+
+	/**
+	 * Tag/object mapping table
+	 *
+	 * @var string
+	 */
+	public $_obj_tbl = '#__tags_object';
+
 	/**
 	 * Constructor
 	 *
@@ -50,6 +87,51 @@ class Tags extends \TagsHandler
 	{
 		$this->_db  = $db;
 		$this->_tbl = 'publications';
+	}
+
+		/**
+	 * Get all the tags on an object
+	 *
+	 * @param      integer $object_id Object ID
+	 * @param      integer $offset    Record offset
+	 * @param      integer $limit     Record limit
+	 * @param      integer $tagger_id Tagger ID (set this if you want to restrict tags only added by a specific user)
+	 * @param      integer $strength  Tag strength (set this if you want to restrict tags by strength)
+	 * @param      integer $admin     Has admin access?
+	 * @return     array
+	 */
+	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0, $label='')
+	{
+		$cloud = new Cloud($object_id, $this->_tbl);
+		return $cloud->tags('list', [
+			'objectid' => $object_id,
+			'tbl' => $this->_tbl
+		]);
+	}
+
+	/**
+	 * Add a tag to an object
+	 * This will:
+	 * 1) First, check if the tag already exists
+	 *    a) if not, creates a database entry for the tag
+	 * 2) Adds a reference linking tag with object
+	 *
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $object_id Object ID
+	 * @param      string  $tag       Tag
+	 * @param      integer $strength  Tag strength
+	 * @return     boolean True on success, false if errors
+	 */
+	public function safe_tag($tagger_id, $object_id, $tag, $strength=1, $label='')
+	{
+		if (!isset($tagger_id) || !isset($object_id) || !isset($tag))
+		{
+			$this->setError('safe_tag argument missing');
+			return false;
+		}
+
+		$cloud = new Cloud($object_id, $this->_tbl);
+		return $cloud->add($tag, $tagger_id, 0, $strength, $label);
 	}
 
 	/**
@@ -169,6 +251,194 @@ class Tags extends \TagsHandler
 			}
 		}
 		return $rows;
+	}
+
+	/**
+	 * Tag an object
+	 * This will get a list of old tags on object and will
+	 * 1) add any new tags not in the old list
+	 * 2) remove any tags in the old list not found in the new list
+	 *
+	 * @param      integer $tagger_id  Tagger ID
+	 * @param      integer $object_id  Object ID
+	 * @param      string  $tag_string String of comma-separated tags
+	 * @param      integer $strength   Tag strength
+	 * @param      boolean $admin      Has admin access?
+	 * @return     boolean True on success, false if errors
+	 */
+	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false, $label='')
+	{
+		$cloud = new Cloud($object_id, $this->_tbl);
+		return $cloud->setTags($tag_string, $tagger_id, $admin, $strength, $label);
+	}
+
+	/**
+	 * Remove a tag on an object
+	 *
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $object_id Object ID
+	 * @param      string  $tag       Tag to remove
+	 * @param      integer $admin     Has admin access?
+	 * @return     boolean True on success, false if errors
+	 */
+	public function remove_tag($tagger_id, $object_id, $tag, $admin)
+	{
+		$cloud = new Cloud($object_id, $this->_tbl);
+		return $cloud->remove($tag, $tagger_id);
+	}
+
+	/**
+	 * Remove all tags on an object
+	 *
+	 * @param      integer $object_id Object ID
+	 * @return     boolean True on success, false if errors
+	 */
+	public function remove_all_tags($object_id)
+	{
+		$cloud = new Cloud($object_id, $this->_tbl);
+		return $cloud->removeAll();
+	}
+
+	/**
+	 * Normalize a tag
+	 * Strips spaces, punctuation, makes lowercase, and allows only alpha-numeric chars
+	 *
+	 * @param      string $tag Raw tag
+	 * @return     string Normalized tag
+	 */
+	public function normalize_tag($tag)
+	{
+		$t = \Components\Tags\Models\Tag::blank();
+		return $t->normalize($tag);
+	}
+
+	/**
+	 * Get the ID of a normalized tag
+	 *
+	 * @param      string $tag Normalized tag
+	 * @return     mixed False if errors, integer on success
+	 */
+	public function get_tag_id($tag)
+	{
+		if (!isset($tag))
+		{
+			$this->setError('get_tag_id argument missing');
+			return false;
+		}
+
+		$t = \Components\Tags\Models\Tag::oneByTag($tag);
+		return $t->get('id');
+	}
+
+	/**
+	 * Get the ID of a raw tag
+	 *
+	 * @param      string $tag Raw tag
+	 * @return     mixed False if errors, integer on success
+	 */
+	public function get_raw_tag_id($tag)
+	{
+		if (!isset($tag))
+		{
+			$this->setError('get_raw_tag_id argument missing');
+			return false;
+		}
+		return $this->get_tag_id($tag);
+	}
+
+	/**
+	 * Get a count of tags
+	 *
+	 * @param      integer $admin     Show admin tags?
+	 * @return     integer
+	 */
+	public function count_tags($admin=0)
+	{
+		$t = \Components\Tags\Models\Tag::all();
+		if (!$admin)
+		{
+			$t->whereEquals('admin', 0);
+		}
+		return $t->total();
+	}
+
+	/**
+	 * Get a tag cloud for an object
+	 *
+	 * @param      integer $showsizes Show tag size based on use?
+	 * @param      integer $admin     Show admin tags?
+	 * @param      integer $objectid  Object ID
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
+	{
+		$cloud = new Cloud($objectid, $this->_tbl);
+		return $cloud->render();
+	}
+
+	/**
+	 * Return a list of tags for an object as a comma-separated string
+	 *
+	 * @param      integer $oid       Object ID
+	 * @param      integer $offset    Record offset
+	 * @param      integer $limit     Number to return
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $strength  Tag strength
+	 * @param      integer $admin     Admin tags?
+	 * @return     string
+	 */
+	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0, $label='')
+	{
+		$cloud = new Cloud($oid, $this->_tbl);
+		return $cloud->render('string');
+	}
+
+	/**
+	 * Turn a comma-separated string of tags into an array of normalized tags
+	 *
+	 * @param      string  $tag_string Comma-separated string of tags
+	 * @param      integer $keep       Use normalized tag as array key
+	 * @return     array
+	 */
+	public function _parse_tags($tag_string, $keep=0)
+	{
+		$newwords = array();
+
+		if (is_string($tag_string))
+		{
+			// If the tag string is empty, return the empty set.
+			if ($tag_string == '')
+			{
+				return $newwords;
+			}
+
+			// Perform tag parsing
+			$tag_string = trim($tag_string);
+			$raw_tags = explode(',', $tag_string);
+		}
+		else if (is_array($tag_string))
+		{
+			$raw_tags = $tag_string;
+		}
+		else
+		{
+			throw new \InvalidArgumentException(Lang::txt('Tag lsit must be an array or string. Type of "%s" passed.', gettype($tag_string)));
+		}
+
+		foreach ($raw_tags as $raw_tag)
+		{
+			$raw_tag = trim($raw_tag);
+			$nrm_tag = $this->normalize_tag($raw_tag);
+			if ($keep != 0)
+			{
+				$newwords[$nrm_tag] = $raw_tag;
+			}
+			else
+			{
+				$newwords[] = $nrm_tag;
+			}
+		}
+		return $newwords;
 	}
 
 	/**
@@ -490,7 +760,7 @@ class Tags extends \TagsHandler
 	 */
 	public function getTopTags($limit)
 	{
-		$tj = new \Components\Tags\Tables\Object($this->_db);
+		$tj = \Components\Tags\Models\Object::blank();
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM #__tags AS t  ";

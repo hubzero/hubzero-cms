@@ -108,8 +108,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 
 	if ($supported)
 	{
-		$tag = new \Components\Tags\Tables\Tag( $database );
-		$tag->loadTag($this->config->get('supportedtag'));
+		$tag = \Components\Tags\Models\Tag::oneByTag($this->config->get('supportedtag'));
 
 		$sl = $this->config->get('supportedlink');
 		if ($sl)
@@ -118,10 +117,10 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 		}
 		else
 		{
-			$link = Route::url('index.php?option=com_tags&tag=' . $tag->tag);
+			$link = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
 		}
 
-		echo  '<p class="supported"><a href="' . $link . '">' . $tag->raw_tag . '</a></p>';
+		echo  '<p class="supported"><a href="' . $link . '">' . $tag->get('raw_tag') . '</a></p>';
 	}
 
 	// Show audience

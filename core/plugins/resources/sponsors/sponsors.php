@@ -305,16 +305,15 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			return $this->editTask($row);
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
-		$t = new \Components\Tags\Tables\Tag($this->database);
-		$t->loadTag($row->alias);
-		if (!$t->id)
+		$t = \Components\Tags\Models\Tag::oneByTag($row->alias);
+		if ($t->isNew())
 		{
 			// Add new tag!
-			$t->tag = $row->alias;
-			$t->raw_tag = addslashes($row->title);
-			if (!$t->store())
+			$t->set('tag', $row->alias);
+			$t->set('raw_tag', addslashes($row->title));
+			if (!$t->save())
 			{
 				$this->setError($t->getError());
 			}

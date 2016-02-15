@@ -128,8 +128,7 @@ $this->css()
 
 			include_once(Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 
-			$tag = new \Components\Tags\Tables\Tag($database);
-			$tag->loadTag($this->supportedtag);
+			$tag = \Components\Tags\Models\Tag::oneByTag($this->supportedtag);
 
 			if ($sl = $this->config->get('supportedlink'))
 			{
@@ -137,11 +136,11 @@ $this->css()
 			}
 			else
 			{
-				$link = Route::url('index.php?option=com_tags&tag=' . $tag->tag);
+				$link = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
 			}
 			?>
 			<p class="supported">
-				<?php echo Lang::txt('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->raw_tag); ?></a>
+				<?php echo Lang::txt('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag')); ?></a>
 			</p>
 			<?php
 		}

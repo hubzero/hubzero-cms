@@ -78,5 +78,4 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 // Initiate controller
 $controller = new $controllerName();
 $controller->execute();
-$controller->redirect();
 

@@ -239,18 +239,18 @@ switch ($this->level)
 			$xtra .= $view->loadTemplate();
 		}
 		if ($this->bits['supportedtag'] && $supported) {
-			include_once(PATH_CORE.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-			$tag = new \Components\Tags\Tables\Tag($database);
-			$tag->loadTag($config->get('supportedtag'));
+			include_once(PATH_CORE.DS.'components'.DS.'com_tags'.DS.'models'.DS.'cloud.php');
+
+			$tag = \Components\Tags\Models\Tag::oneByTag($config->get('supportedtag'));
 
 			$sl = $config->get('supportedlink');
 			if ($sl) {
 				$link = $sl;
 			} else {
-				$link = Route::url('index.php?option=com_tags&tag='.$tag->tag);
+				$link = Route::url('index.php?option=com_tags&tag='.$tag->get('tag'));
 			}
 
-			$xtra .= '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
+			$xtra .= '<p class="supported"><a href="'.$link.'">'.$tag->get('raw_tag').'</a></p>';
 		}
 
 		if ($params->get('show_metadata')) {

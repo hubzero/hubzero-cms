@@ -52,10 +52,10 @@
 /* Misc. */
 	.tag-description {
 		margin: 0;
-		padding: 0 1em;
+		padding: 1em 0;
 	}
-	.tag-description .clearfix {
-		border-color: #fff;
+	.tag-description>p:first-child {
+		padding-top: 0;
 	}
 	.entries tbody td.tag-deleted {
 		background: #c14d33;

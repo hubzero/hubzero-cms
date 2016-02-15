@@ -34,7 +34,7 @@
 namespace Modules\Toptags;
 
 use Hubzero\Module\Module;
-use Components\Tags\Tables\Tag;
+use Components\Tags\Models\Tag;
 
 /**
  * Module class for displaying a tag cloud of most used tags
@@ -50,11 +50,11 @@ class Helper extends Module
 	{
 		require_once(\Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
 
-		$database = \App::get('db');
-
-		$obj = new Tag($database);
-
-		$this->tags = $obj->getTopTags($this->params->get('numtags', 25));
+		$this->tags = Tag::all()
+			->whereEquals('admin', 0)
+			->limit((int)$this->params->get('numtags', 25))
+			->order('objects', 'desc')
+			->rows();
 
 		require $this->getLayoutPath();
 	}

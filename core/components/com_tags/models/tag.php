@@ -25,161 +25,191 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tags\Models;
 
-use Components\Tags\Tables;
+use Hubzero\Database\Relational;
 use Hubzero\User\Profile;
-use Hubzero\Base\Model;
-use Hubzero\Base\ItemList;
-use Date;
 use Lang;
+use Date;
+use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tag.php');
-require_once(__DIR__ . DS . 'log.php');
 require_once(__DIR__ . DS . 'object.php');
 require_once(__DIR__ . DS . 'substitute.php');
+require_once(__DIR__ . DS . 'log.php');
 
 /**
- * Model class for a tag
+ * Tag model
  */
-class Tag extends Model
+class Tag extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Tags\\Tables\\Tag';
+	protected $namespace = 'tags';
 
 	/**
-	 * Base URL to this tag
+	 * The table to which the class pertains
+	 *
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
+	 */
+	protected $table = '#__tags';
+
+	/**
+	 * Default order by for model
 	 *
 	 * @var string
 	 */
-	protected $_base = null;
+	public $orderBy = 'created';
 
 	/**
-	 * Containe for cached data
+	 * Default order direction for select queries
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	protected $_cache = array(
-		'logs.list'     => null,
-		'logs.count'    => null,
-		'subs.list'     => null,
-		'subs.count'    => null,
-		'objects.list'  => null,
-		'objects.count' => null
+	public $orderDir = 'desc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'raw_tag' => 'notempty'
 	);
 
 	/**
-	 * \Hubzero\User\Profile
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @var object
+	 * @var  array
 	 */
-	protected $_creator = NULL;
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
 
 	/**
-	 * Constructor
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * @param   integer  $id  Tag ID or raw tag
-	 * @return  void
+	 * @var  array
 	 */
-	public function __construct($oid)
+	public $always = array(
+		'tag',
+		'modified',
+		'modified_by'
+	);
+
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var array
+	 */
+	protected $parsed = array(
+		'description'
+	);
+
+	/**
+	 * Generates automatic modified field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticModified($data)
 	{
-		// Set the database object
-		$this->_db = \App::get('db');
-
-		// Set the table object
-		$tbl = $this->_tbl_name;
-		$this->_tbl = new $tbl($this->_db);
-
-		// Load record
-		if (is_string($oid))
-		{
-			$this->_tbl->loadTag($oid);
-		}
-		else if (is_int($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-
-		// Set the base path to this tag
-		$this->_base = 'index.php?option=com_tags&tag=' . $this->get('tag');
+		return Date::toSql();
 	}
 
 	/**
-	 * Returns a reference to a tag model
+	 * Generates automatic modified by field value
 	 *
-	 * @param   mixed   $oid  Tag ID or raw tag
-	 * @return  object
+	 * @param   array   $data  the data being saved
+	 * @return  integer
 	 */
-	static function &getInstance($oid=0)
+	public function automaticModifiedBy($data)
 	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new static($oid);
-		}
-
-		return $instances[$oid];
+		return User::get('id');
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Generates automatic tag field
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  Property to retrieve
-	 * @param   mixed   $default   Default value if property not set
-	 * @return  mixed
+	 * @param   array   $data  the data being saved
+	 * @return  string
 	 */
-	public function creator($property=null, $default=null)
+	public function automaticTag($data)
 	{
-		if (!($this->_creator instanceof Profile))
-		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
+		$tag = (isset($data['raw_tag']) && $data['raw_tag'] ? $data['raw_tag'] : $data['tag']);
+		return $this->normalize($tag);
+	}
+
+	/**
+	 * Normalize tag input
+	 *
+	 * @param   string  $tag
+	 * @return  string
+	 */
+	public function normalize($tag)
+	{
+		$transliterationTable = array(
+			'á' => 'a', 'Á' => 'A', 'à' => 'a', 'À' => 'A', 'ă' => 'a', 'Ă' => 'A', 'â' => 'a', 'Â' => 'A', 'å' => 'a', 'Å' => 'A', 'ã' => 'a', 'Ã' => 'A', 'ą' => 'a', 'Ą' => 'A', 'ā' => 'a', 'Ā' => 'A', 'ä' => 'ae', 'Ä' => 'AE', 'æ' => 'ae', 'Æ' => 'AE',
+			'ḃ' => 'b', 'Ḃ' => 'B',
+			'ć' => 'c', 'Ć' => 'C', 'ĉ' => 'c', 'Ĉ' => 'C', 'č' => 'c', 'Č' => 'C', 'ċ' => 'c', 'Ċ' => 'C', 'ç' => 'c', 'Ç' => 'C',
+			'ď' => 'd', 'Ď' => 'D', 'ḋ' => 'd', 'Ḋ' => 'D', 'đ' => 'd', 'Đ' => 'D', 'ð' => 'dh', 'Ð' => 'Dh',
+			'é' => 'e', 'É' => 'E', 'è' => 'e', 'È' => 'E', 'ĕ' => 'e', 'Ĕ' => 'E', 'ê' => 'e', 'Ê' => 'E', 'ě' => 'e', 'Ě' => 'E', 'ë' => 'e', 'Ë' => 'E', 'ė' => 'e', 'Ė' => 'E', 'ę' => 'e', 'Ę' => 'E', 'ē' => 'e', 'Ē' => 'E',
+			'ḟ' => 'f', 'Ḟ' => 'F', 'ƒ' => 'f', 'Ƒ' => 'F',
+			'ğ' => 'g', 'Ğ' => 'G', 'ĝ' => 'g', 'Ĝ' => 'G', 'ġ' => 'g', 'Ġ' => 'G', 'ģ' => 'g', 'Ģ' => 'G',
+			'ĥ' => 'h', 'Ĥ' => 'H', 'ħ' => 'h', 'Ħ' => 'H',
+			'í' => 'i', 'Í' => 'I', 'ì' => 'i', 'Ì' => 'I', 'î' => 'i', 'Î' => 'I', 'ï' => 'i', 'Ï' => 'I', 'ĩ' => 'i', 'Ĩ' => 'I', 'į' => 'i', 'Į' => 'I', 'ī' => 'i', 'Ī' => 'I',
+			'ĵ' => 'j', 'Ĵ' => 'J',
+			'ķ' => 'k', 'Ķ' => 'K',
+			'ĺ' => 'l', 'Ĺ' => 'L', 'ľ' => 'l', 'Ľ' => 'L', 'ļ' => 'l', 'Ļ' => 'L', 'ł' => 'l', 'Ł' => 'L',
+			'ṁ' => 'm', 'Ṁ' => 'M',
+			'ń' => 'n', 'Ń' => 'N', 'ň' => 'n', 'Ň' => 'N', 'ñ' => 'n', 'Ñ' => 'N', 'ņ' => 'n', 'Ņ' => 'N',
+			'ó' => 'o', 'Ó' => 'O', 'ò' => 'o', 'Ò' => 'O', 'ô' => 'o', 'Ô' => 'O', 'ő' => 'o', 'Ő' => 'O', 'õ' => 'o', 'Õ' => 'O', 'ø' => 'oe', 'Ø' => 'OE', 'ō' => 'o', 'Ō' => 'O', 'ơ' => 'o', 'Ơ' => 'O', 'ö' => 'oe', 'Ö' => 'OE',
+			'ṗ' => 'p', 'Ṗ' => 'P',
+			'ŕ' => 'r', 'Ŕ' => 'R', 'ř' => 'r', 'Ř' => 'R', 'ŗ' => 'r', 'Ŗ' => 'R',
+			'ś' => 's', 'Ś' => 'S', 'ŝ' => 's', 'Ŝ' => 'S', 'š' => 's', 'Š' => 'S', 'ṡ' => 's', 'Ṡ' => 'S', 'ş' => 's', 'Ş' => 'S', 'ș' => 's', 'Ș' => 'S', 'ß' => 'SS',
+			'ť' => 't', 'Ť' => 'T', 'ṫ' => 't', 'Ṫ' => 'T', 'ţ' => 't', 'Ţ' => 'T', 'ț' => 't', 'Ț' => 'T', 'ŧ' => 't', 'Ŧ' => 'T',
+			'ú' => 'u', 'Ú' => 'U', 'ù' => 'u', 'Ù' => 'U', 'ŭ' => 'u', 'Ŭ' => 'U', 'û' => 'u', 'Û' => 'U', 'ů' => 'u', 'Ů' => 'U', 'ű' => 'u', 'Ű' => 'U', 'ũ' => 'u', 'Ũ' => 'U', 'ų' => 'u', 'Ų' => 'U', 'ū' => 'u', 'Ū' => 'U', 'ư' => 'u', 'Ư' => 'U', 'ü' => 'ue', 'Ü' => 'UE',
+			'ẃ' => 'w', 'Ẃ' => 'W', 'ẁ' => 'w', 'Ẁ' => 'W', 'ŵ' => 'w', 'Ŵ' => 'W', 'ẅ' => 'w', 'Ẅ' => 'W',
+			'ý' => 'y', 'Ý' => 'Y', 'ỳ' => 'y', 'Ỳ' => 'Y', 'ŷ' => 'y', 'Ŷ' => 'Y', 'ÿ' => 'y', 'Ÿ' => 'Y',
+			'ź' => 'z', 'Ź' => 'Z', 'ž' => 'z', 'Ž' => 'Z', 'ż' => 'z', 'Ż' => 'Z',
+			'þ' => 'th', 'Þ' => 'Th', 'µ' => 'u',
+			'а' => 'a', 'А' => 'a', 'б' => 'b',
+			'Б' => 'b', 'в' => 'v', 'В' => 'v',
+			'г' => 'g', 'Г' => 'g', 'д' => 'd',
+			'Д' => 'd', 'е' => 'e', 'Е' => 'e',
+			'ё' => 'e', 'Ё' => 'e', 'ж' => 'zh',
+			'Ж' => 'zh', 'з' => 'z', 'З' => 'z',
+			'и' => 'i', 'И' => 'i', 'й' => 'j',
+			'Й' => 'j', 'к' => 'k', 'К' => 'k',
+			'л' => 'l', 'Л' => 'l', 'м' => 'm',
+			'М' => 'm', 'н' => 'n', 'Н' => 'n',
+			'о' => 'o', 'О' => 'o', 'п' => 'p',
+			'П' => 'p', 'р' => 'r', 'Р' => 'r',
+			'с' => 's', 'С' => 's', 'т' => 't',
+			'Т' => 't', 'у' => 'u', 'У' => 'u',
+			'ф' => 'f', 'Ф' => 'f', 'х' => 'h',
+			'Х' => 'h', 'ц' => 'c', 'Ц' => 'c',
+			'ч' => 'ch', 'Ч' => 'ch', 'ш' => 'sh',
+			'Ш' => 'sh', 'щ' => 'sch', 'Щ' => 'sch',
+			'ъ' => '', 'Ъ' => '', 'ы' => 'y',
+			'Ы' => 'y', 'ь' => '', 'Ь' => '',
+			'э' => 'e', 'Э' => 'e', 'ю' => 'ju',
+			'Ю' => 'ju', 'я' => 'ja', 'Я' => 'ja'
+		);
+
+		$tag = str_replace(array_keys($transliterationTable), array_values($transliterationTable), $tag);
+		return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
 	}
 
 	/**
@@ -247,269 +277,149 @@ class Tag extends Model
 	}
 
 	/**
-	 * Store changes to this tag
+	 * Creator profile
 	 *
-	 * @param   boolean  $check  Perform data validation check?
-	 * @return  boolean  False if error, True on success
+	 * @return  object
 	 */
-	public function store($check=true)
+	public function creator()
 	{
-		if (!parent::store($check))
+		if ($profile = Profile::getInstance($this->get('created_by')))
 		{
-			return false;
+			return $profile;
 		}
-
-		if (!$this->_tbl->saveSubstitutions($this->get('substitutions')))
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
+		return new Profile;
 	}
 
 	/**
-	 * Store changes to this record
+	 * Get a list of substitutes
 	 *
-	 * @return  boolean  False if error, True on success
+	 * @return  object
 	 */
-	public function delete()
+	public function substitutes()
 	{
-		// Can't delete what doesn't exist
-		if (!$this->exists())
-		{
-			return true;
-		}
-
-		// Remove associations
-		foreach ($this->objects() as $obj)
-		{
-			if (!$obj->delete())
-			{
-				$this->setError($obj->getError());
-				return false;
-			}
-		}
-
-		// Remove substitutes
-		foreach ($this->substitutes('list', array('limit' => 0)) as $substitute)
-		{
-			if (!$substitute->delete())
-			{
-				$this->setError($substitute->getError());
-				return false;
-			}
-		}
-
-		return parent::delete();
+		return $this->oneToMany('Substitute', 'tag_id');
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Get a comma-separated list of substitutes
 	 *
-	 * @param   string  $type  The type of link to return
 	 * @return  string
 	 */
-	public function link($type='')
+	public function transformSubstitutes()
 	{
-		$link  = $this->_base;
+		$subs = array();
 
-		switch (strtolower($type))
+		foreach ($this->substitutes()->rows() as $sub)
 		{
-			case 'edit':
-				$link .= '&task=edit';
-			break;
-
-			case 'delete':
-				$link .= '&task=delete';
-			break;
-
-			case 'permalink':
-			default:
-
-			break;
+			$subs[] = $sub->get('raw_tag');
 		}
 
-		return $link;
+		return implode(', ', $subs);
 	}
 
 	/**
-	 * Return a list or count of substitutions on this tag
+	 * Get a list of objects
 	 *
-	 * @param   string   $rtrn     What data to return (ex: 'list', 'count')
-	 * @param   array    $filters  Filters to apply for data retrieval
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function substitutes($rtrn='list', $filters=array(), $clear=false)
+	public function objects()
 	{
-		if (!isset($filters['tag_id']))
-		{
-			$filters['tag_id'] = (int) $this->get('id');
-		}
-		if (!isset($filters['start']))
-		{
-			$filters['start'] = 0;
-		}
-		if (!isset($filters['limit']))
-		{
-			$filters['limit'] = 100;
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (is_null($this->_cache['subs.count']) || $clear)
-				{
-					$tbl = new Tables\Substitute($this->_db);
-					$this->_cache['subs.count'] = (int) $tbl->getCount($filters);
-				}
-				return $this->_cache['subs.count'];
-			break;
-
-			case 'string':
-				$subs = array();
-				foreach ($this->substitutes('list', $filters) as $foo => $substitution)
-				{
-					$subs[] = $substitution->get('raw_tag');
-				}
-				return implode(', ', $subs);
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['subs.list'] instanceof ItemList) || $clear)
-				{
-					$results = array();
-
-					$tbl = new Tables\Substitute($this->_db);
-					if ($res = $tbl->getRecords($filters['tag_id'], $filters['start'], $filters['limit']))
-					{
-						foreach ($res as $key => $result)
-						{
-							$results[] = new Substitute($result);
-						}
-					}
-
-					$this->_cache['subs.list'] = new ItemList($results);
-				}
-				return $this->_cache['subs.list'];
-			break;
-		}
+		return $this->oneToMany('Object', 'tagid');
 	}
 
 	/**
-	 * Return a list or count of objects associated with this tag
+	 * Get a list of logs
 	 *
-	 * @param   string   $rtrn     What data to return (ex: 'list', 'count')
-	 * @param   array    $filters  Filters to apply for data retrieval
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function objects($rtrn='list', $filters=array(), $clear=false)
+	public function logs()
 	{
-		if (isset($filters['tag_id']))
-		{
-			$filters['tagid'] = $filters['tag_id'];
-		}
-		if (!isset($filters['tagid']))
-		{
-			$filters['tagid'] = (int) $this->get('id');
-		}
-		if (!isset($filters['start']))
-		{
-			$filters['start'] = 0;
-		}
-
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (is_null($this->_cache['objects.count']) || $clear)
-				{
-					$tbl = new Tables\Object($this->_db);
-					$this->_cache['objects.count'] = (int) $tbl->count($filters);
-				}
-				return $this->_cache['objects.count'];
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['objects.list'] instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Object($this->_db);
-					if ($results = $tbl->find($filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Object($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_cache['objects.list'] = new ItemList($results);
-				}
-				return $this->_cache['objects.list'];
-			break;
-		}
+		return $this->oneToMany('\Components\Tags\Models\Log', 'tag_id');
 	}
 
 	/**
-	 * Return a list or count of objects associated with this tag
+	 * Delete entry and associated data
 	 *
-	 * @param   string   $rtrn     What data to return (ex: 'list', 'count')
-	 * @param   array    $filters  Filters to apply for data retrieval
-	 * @param   boolean  $clear    Clear cached data?
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function logs($rtrn='list', $filters=array(), $clear=false)
+	public function destroy()
 	{
-		if (!isset($filters['tag_id']))
+		$tag_id = $this->get('id');
+
+		$comment = $this->toJson();
+
+		foreach ($this->substitutes()->rows() as $row)
 		{
-			$filters['tag_id'] = (int) $this->get('id');
-		}
-		if (!isset($filters['start']))
-		{
-			$filters['start'] = 0;
+			$row->destroy();
 		}
 
-		switch (strtolower($rtrn))
+		foreach ($this->objects()->rows() as $row)
 		{
-			case 'count':
-				if (is_null($this->_cache['logs.count']) || $clear)
-				{
-					$tbl = new Tables\Log($this->_db);
-					$this->_cache['logs.count'] = (int) $tbl->count($filters);
-				}
-				return $this->_cache['logs.count'];
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if (!($this->_cache['logs.list'] instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Log($this->_db);
-					if ($results = $tbl->find($filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Log($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_cache['logs.list'] = new ItemList($results);
-				}
-				return $this->_cache['logs.list'];
-			break;
+			$row->destroy();
 		}
+
+		$result = parent::destroy();
+
+		if ($result)
+		{
+			$log = Log::blank();
+			$log->set('tag_id', $tag_id);
+			$log->set('action', 'tag_deleted');
+			$log->set('comments', $comment);
+			$log->save();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Save entry
+	 *
+	 * @return  object
+	 */
+	public function save()
+	{
+		$action = $this->isNew() ? 'tag_created' : 'tag_edited';
+
+		$result = parent::save();
+
+		if ($result)
+		{
+			$log = Log::blank();
+			$log->set('tag_id', $this->get('id'));
+			$log->set('action', $action);
+			$log->set('comments', $this->toJson());
+			$log->save();
+		}
+
+		$this->purgeCache();
+
+		return $result;
+	}
+
+	/**
+	 * Retrieves one row loaded by a tag field
+	 *
+	 * @param   string  $tag  The tag to load by
+	 * @return  mixed
+	 **/
+	public static function oneByTag($tag)
+	{
+		$instance = self::blank();
+
+		$model = $instance->whereEquals('tag', $instance->normalize($tag))->row();
+
+		if (!$model->get('id'))
+		{
+			$sub = Substitute::blank()
+				->whereEquals('tag', $instance->normalize($tag))->row();
+			if ($tag_id = $sub->get('tag_id'))
+			{
+				$model = self::oneOrNew($tag_id);
+			}
+		}
+
+		return $model;
 	}
 
 	/**
@@ -526,18 +436,22 @@ class Tag extends Model
 	public function removeFrom($scope, $scope_id, $tagger=0)
 	{
 		// Check if the relationship exists
-		$to = new Object($scope, $scope_id, $this->get('id'), $tagger);
-		if (!$to->exists())
+		$to = Object::oneByScoped($scope, $scope_id, $this->get('id'), $tagger);
+
+		if (!$to->get('id'))
 		{
 			return true;
 		}
 
 		// Attempt to delete the record
-		if (!$to->delete())
+		if (!$to->destroy())
 		{
 			$this->setError($to->getError());
 			return false;
 		}
+
+		$this->set('objects', $this->objects()->total());
+		$this->save();
 
 		return true;
 	}
@@ -555,8 +469,9 @@ class Tag extends Model
 	public function addTo($scope, $scope_id, $tagger=0, $strength=1, $label='')
 	{
 		// Check if the relationship already exists
-		$to = new Object($scope, $scope_id, $this->get('id'), $tagger);
-		if ($to->exists())
+		$to = Object::oneByScoped($scope, $scope_id, $this->get('id'), $tagger);
+
+		if ($to->get('id'))
 		{
 			return true;
 		}
@@ -577,11 +492,14 @@ class Tag extends Model
 		}
 
 		// Attempt to store the new record
-		if (!$to->store(true))
+		if (!$to->save())
 		{
 			$this->setError($to->getError());
 			return false;
 		}
+
+		$this->set('objects', $this->objects()->total());
+		$this->save();
 
 		return true;
 	}
@@ -602,8 +520,7 @@ class Tag extends Model
 
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		$to = new Tables\Object($this->_db);
-		if (!$to->moveObjects($this->get('id'), $tag_id))
+		if (!Object::moveTo($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());
 			return false;
@@ -611,24 +528,30 @@ class Tag extends Model
 
 		// Get all the substitutions to this tag
 		// Loop through the records and link them to a different tag
-		$ts = new Tables\Substitute($this->_db);
-		if (!$ts->moveSubstitutes($this->get('id'), $tag_id))
+		if (!Substitute::moveTo($this->get('id'), $tag_id))
 		{
 			$this->setError($ts->getError());
 			return false;
 		}
 
 		// Make the current tag a substitute for the new tag
-		$sub = new Substitute(0);
+		$sub = Substitute::blank();
 		$sub->set('raw_tag', $this->get('raw_tag'));
 		$sub->set('tag_id', $tag_id);
-		if (!$sub->store(true))
+		if (!$sub->save())
 		{
 			$this->setError($sub->getError());
 			return false;
 		}
 
-		if (!$this->delete())
+		// Update new tag's counts
+		$tag = self::one($tag_id);
+		$tag->set('objects', $tag->objects()->total())
+			->set('substitutes', $tag->substitutes()->total())
+			->save();
+
+		// Destroy the old tag
+		if (!$this->destroy())
 		{
 			return false;
 		}
@@ -652,49 +575,104 @@ class Tag extends Model
 
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		$to = new Tables\Object($this->_db);
-		if (!$to->copyObjects($this->get('id'), $tag_id))
+		if (!Object::copyTo($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());
 			return false;
 		}
 
+		// Update new tag's counts
+		$tag = self::one($tag_id);
+		$tag->set('objects', $tag->objects()->total())
+			->save();
+
 		return true;
 	}
 
 	/**
-	 * Return model as simplified object
+	 * Save tag substitutions
 	 *
-	 * @return  object
+	 * @param   string   $tag_string
+	 * @return  boolean
 	 */
-	public function toObject()
+	public function saveSubstitutions($tag_string='')
 	{
-		$data = new \stdClass;
-
-		$properties = $this->_tbl->getProperties();
-		foreach ($properties as $key => $value)
+		// Get the old list of substitutions
+		$subs = array();
+		foreach ($this->substitutes()->rows() as $sub)
 		{
-			if ($key && substr($key, 0, 1) != '_')
+			$subs[$sub->get('tag')] = $sub;
+		}
+
+		// Add the specified tags as substitutes if not
+		// already a substitute
+		$raw_tags = trim($tag_string);
+		$raw_tags = preg_split("/(,|;)/", $raw_tags);
+
+		$tags = array();
+		foreach ($raw_tags as $raw_tag)
+		{
+			$nrm = $this->normalize($raw_tag);
+
+			$tags[] = $nrm;
+
+			if (isset($subs[$nrm]))
 			{
-				$data->$key = $this->get($key);
+				continue; // Substitution already exists
+			}
+
+			$sub = Substitute::blank();
+			$sub->set('raw_tag', trim($raw_tag));
+			$sub->set('tag', trim($nrm));
+			$sub->set('tag_id', $this->get('id'));
+			if (!$sub->save())
+			{
+				$this->setError($sub->getError());
 			}
 		}
 
-		$data->uri         = str_replace('/api', '', rtrim(\Request::base(), '/') . '/' . ltrim(\Route::url($this->link()), '/'));
-		$data->objects     = $this->objects('count');
-		$data->substitutes = array();
-
-		foreach ($this->substitutes('list') as $sub)
+		// Run through the old list of substitutions, finding any
+		// not in the new list and delete them
+		foreach ($subs as $key => $sub)
 		{
-			$obj = new stdClass;
-			$obj->id    = $sub->get('id');
-			$obj->tag   = $sub->get('tag');
-			$obj->title = $sub->get('raw_tag');
-
-			$data->substitutes[] = $obj;
+			if (!in_array($key, $tags))
+			{
+				if (!$sub->destroy())
+				{
+					$this->setError($sub->getError());
+					return false;
+				}
+			}
 		}
 
-		return $data;
+		// Get all possibly existing tags that are now aliases
+		$ids = self::all()
+			->whereIn('tag', $tags)
+			->rows();
+
+		// Move associations on tag and delete tag
+		foreach ($ids as $tag)
+		{
+			if ($tag->get('id') != $this->get('id'))
+			{
+				// Get all the associations to this tag
+				// Loop through the associations and link them to a different tag
+				Object::moveTo($tag->get('id'), $this->get('id'));
+
+				// Get all the substitutions to this tag
+				// Loop through the records and link them to a different tag
+				Substitute::moveTo($tag->get('id'), $this->get('id'));
+
+				// Delete the tag
+				$tag->destroy();
+			}
+		}
+
+		$this->set('objects', $this->objects()->total());
+		$this->set('substitutes', $this->substitutes()->total());
+		$this->save();
+
+		return true;
 	}
 }
 

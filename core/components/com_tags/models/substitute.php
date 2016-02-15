@@ -25,113 +25,115 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tags\Models;
 
-use Hubzero\User\Profile;
-use Hubzero\Base\Model;
-use Date;
-use Lang;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'substitute.php');
+use Hubzero\Database\Relational;
 
 /**
- * Courses model class for a forum
+ * Tag substitute
  */
-class Substitute extends Model
+class Substitute extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Tags\\Tables\\Substitute';
+	protected $namespace = 'tags';
 
 	/**
-	 * \Hubzero\User\Profile
+	 * The table to which the class pertains
 	 *
-	 * @var object
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
 	 */
-	protected $_creator = NULL;
+	protected $table = '#__tags_substitute';
 
 	/**
-	 * Returns a reference to a this model
+	 * Default order by for model
 	 *
-	 * @param   mixed   $oid  integer (ID), object, or array
-	 * @return  object
+	 * @var string
 	 */
-	static function &getInstance($oid=0)
+	public $orderBy = 'created';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'desc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'raw_tag'  => 'notempty',
+		'tag_id'   => 'positive|nonzero'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'tag'
+	);
+
+	/**
+	 * Generates automatic tag field
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticTag($data)
 	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new static($oid);
-		}
-
-		return $instances[$oid];
+		$tag = (isset($data['raw_tag']) && $data['raw_tag'] ? $data['raw_tag'] : $data['tag']);
+		return Tag::blank()->normalize($tag);
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Creator profile
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @return  object
 	 */
-	public function creator($property=null, $default=null)
+	public function creator()
 	{
-		if (!($this->_creator instanceof Profile))
+		if ($profile = Profile::getInstance($this->get('created_by')))
 		{
-			$this->_creator = Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
+			return $profile;
 		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
+		return new Profile;
 	}
 
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string  $as  What format to return
+	 * @param   string  $as  What data to return
 	 * @return  string
 	 */
-	public function created($rtrn='')
+	public function created($as='')
 	{
-		switch (strtolower($rtrn))
+		switch (strtolower($as))
 		{
 			case 'date':
 				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
@@ -145,6 +147,172 @@ class Substitute extends Model
 				return $this->get('created');
 			break;
 		}
+	}
+
+	/**
+	 * Save entry
+	 *
+	 * @return  object
+	 */
+	public function save()
+	{
+		$action = $this->isNew() ? 'substitute_created' : 'substitute_edited';
+
+		$result = parent::save();
+
+		if ($result)
+		{
+			$log = Log::blank();
+			$log->set('tag_id', $this->get('id'));
+			$log->set('action', $action);
+			$log->set('comments', $this->toJson());
+			$log->save();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get parent tag
+	 *
+	 * @return  object
+	 */
+	public function tag()
+	{
+		return $this->belongsToOne('Tag', 'tag_id');
+	}
+
+	/**
+	 * Move all references to one tag to another tag
+	 *
+	 * @param   integer  $oldtagid  ID of tag to be moved
+	 * @param   integer  $newtagid  ID of tag to move to
+	 * @return  boolean  True if records changed
+	 */
+	public static function moveTo($oldtagid=null, $newtagid=null)
+	{
+		if (!$oldtagid || !$newtagid)
+		{
+			return false;
+		}
+
+		$items = self::all()
+			->whereEquals('tag_id', $oldtagid)
+			->rows();
+
+		$entries = array();
+
+		foreach ($items as $item)
+		{
+			$item->set('tag_id', $newtagid);
+			$item->save();
+
+			$entries[] = $item->toArray();
+		}
+
+		$data = new \stdClass;
+		$data->old_id  = $oldtagid;
+		$data->new_id  = $newtagid;
+		$data->entries = $entries;
+
+		$log = Log::blank();
+		$log->set([
+			'tag_id'   => $newtagid,
+			'action'   => 'substitutes_moved',
+			'comments' => json_encode($data)
+		]);
+		$log->save();
+
+		return self::cleanUp($newtagid);
+	}
+
+	/**
+	 * Clean up duplicate references
+	 *
+	 * @param   integer  $tag_id  ID of tag to clean up
+	 * @return  boolean  True on success, false if errors
+	 */
+	public static function cleanUp($tag_id)
+	{
+		$subs = self::all()
+			->whereEquals('tag_id', (int)$tag_id)
+			->rows();
+
+		$tags = array();
+
+		foreach ($subs as $sub)
+		{
+			if (!isset($tags[$sub->get('tag')]))
+			{
+				// Item isn't in collection yet, so add it
+				$tags[$sub->get('tag')] = $sub->get('id');
+			}
+			else
+			{
+				// Item tag *is* in collection.
+				if ($tags[$sub->get('tag')] == $sub->get('id'))
+				{
+					// Really this shouldn't happen
+					continue;
+				}
+				else
+				{
+					// Duplcate tag with a different ID!
+					// We don't need duplicates.
+					$sub->destroy();
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Copy all substitutions for one tag to another
+	 *
+	 * @param   integer  $oldtagid  ID of tag to be copied
+	 * @param   integer  $newtagid  ID of tag to copy to
+	 * @return  boolean  True if records copied
+	 */
+	public static function copyTo($oldtagid=null, $newtagid=null)
+	{
+		if (!$oldtagid || !$newtagid)
+		{
+			return false;
+		}
+
+		$rows = self::all()
+			->whereEquals('tag_id', $oldtagid)
+			->rows();
+
+		if ($rows)
+		{
+			$entries = array();
+
+			foreach ($rows as $row)
+			{
+				$row->set('id', null)
+					->set('tag_id', $newtagid)
+					->save();
+
+				$entries[] = $row->get('id');
+			}
+
+			$data = new \stdClass;
+			$data->old_id  = $oldtagid;
+			$data->new_id  = $newtagid;
+			$data->entries = $entries;
+
+			$log = Log::blank();
+			$log->set([
+				'tag_id'   => $newtagid,
+				'action'   => 'substitutions_copied',
+				'comments' => json_encode($data)
+			]);
+			$log->save();
+		}
+
+		return true;
 	}
 }
 

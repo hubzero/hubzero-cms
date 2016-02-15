@@ -33,20 +33,18 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$tags = $this->tags;
-
 $exclude = explode(',', $this->params->get('exclude', ''));
 $exclude = array_map('trim', $exclude);
 
 $tl = array();
-if (count($tags) > 0)
+if ($this->tags->count() > 0)
 {
 	$html  = '<ol class="tags">' . "\n";
-	foreach ($tags as $tag)
+	foreach ($this->tags as $tag)
 	{
-		if (!in_array($tag->raw_tag, $exclude))
+		if (!in_array($tag->get('raw_tag'), $exclude))
 		{
-			$tl[$tag->tag] = "\t" . '<li><a class="tag" href="' . Route::url('index.php?option=com_tags&tag=' . $this->escape($tag->tag)) . '">' . $this->escape($tag->raw_tag) . '</a></li>';
+			$tl[$tag->get('tag')] = "\t" . '<li><a class="tag" href="' . Route::url('index.php?option=com_tags&tag=' . $this->escape($tag->get('tag'))) . '">' . $this->escape($tag->get('raw_tag')) . '</a></li>';
 		}
 	}
 	if ($this->params->get('sortby') == 'alphabeta')

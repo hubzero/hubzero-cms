@@ -25,191 +25,106 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tags\Models;
 
+use Hubzero\Database\Relational;
 use Hubzero\User\Profile;
-use Hubzero\Base\Model;
 use Date;
-use Lang;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
 
 /**
- * Model class for a tag
+ * Tag log
  */
-class Log extends Model
+class Log extends Relational
 {
 	/**
-	 * Table class name
+	 * The table namespace
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Tags\\Tables\\Log';
+	protected $namespace = 'tags';
 
 	/**
-	 * \Hubzero\User\Profile
+	 * The table to which the class pertains
 	 *
-	 * @var object
+	 * This will default to #__{namespace}_{modelName} unless otherwise
+	 * overwritten by a given subclass. Definition of this property likely
+	 * indicates some derivation from standard naming conventions.
+	 *
+	 * @var  string
 	 */
-	protected $_creator = NULL;
+	protected $table = '#__tags_log';
 
 	/**
-	 * \Hubzero\User\Profile
+	 * Default order by for model
 	 *
-	 * @var object
+	 * @var string
 	 */
-	protected $_actor = NULL;
+	public $orderBy = 'taggedon';
 
 	/**
-	 * Constructor
+	 * Default order direction for select queries
 	 *
-	 * @param   integer  $id  Tag ID or raw tag
-	 * @return  void
+	 * @var  string
 	 */
-	public function __construct($oid)
-	{
-		// Set the database object
-		$this->_db = \App::get('db');
-
-		// Set the table object
-		$tbl = $this->_tbl_name;
-		$this->_tbl = new $tbl($this->_db);
-
-		// Load record
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_string($oid))
-		{
-			$this->_tbl->loadTag($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-	}
+	public $orderDir = 'desc';
 
 	/**
-	 * Returns a reference to a tag model
+	 * Fields and their validation criteria
 	 *
-	 * @param   mixed   $oid  Tag ID or raw tag
-	 * @return  object
+	 * @var  array
 	 */
-	static function &getInstance($oid=0)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new static($oid);
-		}
-
-		return $instances[$oid];
-	}
+	protected $rules = array(
+		'action'  => 'notempty',
+		'tag_id'  => 'positive|nonzero',
+		'user_id' => 'positive|nonzero'
+	);
 
 	/**
-	 * Get the creator of this entry
+	 * Automatic fields to populate every time a row is created
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  Property to retrieve
-	 * @param   mixed   $default   Default value if property not set
-	 * @return  mixed
+	 * @var  array
 	 */
-	public function creator($property=null, $default=null)
-	{
-		if (!($this->_creator instanceof Profile))
-		{
-			$this->_creator = Profile::getInstance($this->get('user_id'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property, $default);
-		}
-		return $this->_creator;
-	}
+	public $initiate = array(
+		'timestamp'
+	);
 
 	/**
-	 * Return a formatted timestamp
+	 * Generates automatic modified field value
 	 *
-	 * @param   string  $as  What data to return
+	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function created($rtrn='')
+	public function automaticTimestamp($data)
 	{
-		switch (strtolower($rtrn))
-		{
-			case 'date':
-				return Date::of($this->get('timestamp'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return Date::of($this->get('timestamp'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('timestamp');
-			break;
-		}
+		return Date::toSql();
 	}
 
 	/**
-	 * Get the actor of this entry
+	 * Get parent tag
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire object
-	 *
-	 * @param   string  $property  Property to retrieve
-	 * @param   mixed   $default   Default value if property not set
-	 * @return  mixed
+	 * @return  object
 	 */
-	public function actor($property=null, $default=null)
+	public function tag()
 	{
-		if (!($this->_actor instanceof Profile))
+		return $this->belongsToOne('Tag', 'tag_id');
+	}
+
+	/**
+	 * Actor profile
+	 *
+	 * @return  object
+	 */
+	public function actor()
+	{
+		if ($profile = Profile::getInstance($this->get('actorid')))
 		{
-			$this->_actor = Profile::getInstance($this->get('actorid'));
-			if (!$this->_actor)
-			{
-				$this->_actor = new Profile();
-			}
+			return $profile;
 		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_actor->get($property, $default);
-		}
-		return $this->_actor;
+		return new Profile;
 	}
 }
+

@@ -65,7 +65,7 @@ class Tags extends SiteController
 		$this->registerTask('feed.rss', 'feed');
 		$this->registerTask('feedrss', 'feed');
 
-		if (($tagstring = urldecode(trim(Request::getVar('tag', '', 'request', 'none', 2)))))
+		if ($tagstring = urldecode(trim(Request::getVar('tag', '', 'request', 'none', 2))))
 		{
 			if (!Request::getVar('task', ''))
 			{
@@ -144,7 +144,7 @@ class Tags extends SiteController
 		foreach ($tgs as $tag)
 		{
 			// Load the tag
-			$tagobj = Tag::getInstance($tag);
+			$tagobj = Tag::oneByTag($tag);
 
 			if (in_array($tagobj->get('tag'), $added))
 			{
@@ -154,7 +154,7 @@ class Tags extends SiteController
 			$added[] = $tagobj->get('tag');
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->exists())
+			if ($tagobj->get('id'))
 			{
 				$tags[] = $tagobj;
 				$rt[]   = $tagobj->get('raw_tag');
@@ -308,16 +308,12 @@ class Tags extends SiteController
 			$this->view->setLayout('view_xml');
 		}
 
-		$this->view->tags   = $tags;
-		$this->view->active = $area;
-		$this->view->search = implode(', ', $rt);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('tags', $tags)
+			->set('active', $area)
+			->set('search', implode(', ', $rt))
+			->setError($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -395,7 +391,7 @@ class Tags extends SiteController
 		foreach ($tgs as $tag)
 		{
 			// Load the tag
-			$tagobj = Tag::getInstance($tag);
+			$tagobj = Tag::oneByTag($tag);
 
 			if (in_array($tagobj->get('tag'), $added))
 			{
@@ -405,7 +401,7 @@ class Tags extends SiteController
 			$added[] = $tagobj->get('tag');
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->exists())
+			if ($tagobj->get('id'))
 			{
 				$tags[] = $tagobj;
 			}
@@ -598,8 +594,14 @@ class Tags extends SiteController
 			$this->view->setLayout('browse_xml');
 		}
 
+		// Fallback support for deprecated sorting option
+		if ($sortby = Request::getVar('sortby'))
+		{
+			Request::setVar('sort', $sortby);
+		}
+
 		// Incoming
-		$this->view->filters = array(
+		$filters = array(
 			'admin' => 0,
 			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
@@ -607,74 +609,45 @@ class Tags extends SiteController
 				0,
 				'int'
 			),
+			'limit' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
+			)),
+			'sort' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'sort',
+				'raw_tag'
+			)),
+			'sort_Dir' => strtolower(Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort_Dir',
+				'sortdir',
+				'asc'
 			))
 		);
 
-		// Fallback support for deprecated sorting option
-		if ($sortby = Request::getVar('sortby'))
+		if (!in_array($filters['sort'], array('raw_tag', 'total')))
 		{
-			Request::setVar('sort', $sortby);
+			$filters['sort'] = 'raw_tag';
 		}
-		$this->view->filters['sort'] = urldecode(Request::getState(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'sort',
-			'raw_tag'
-		));
-		$this->view->filters['sort_Dir'] = strtolower(Request::getState(
-			$this->_option . '.' . $this->_controller . '.sort_Dir',
-			'sortdir',
-			'asc'
-		));
-		if (!in_array($this->view->filters['sort'], array('raw_tag', 'total')))
+		if (!in_array($filters['sort_Dir'], array('asc', 'desc')))
 		{
-			$this->view->filters['sort'] = 'raw_tag';
+			$filters['sort_Dir'] = 'asc';
 		}
-		if (!in_array($this->view->filters['sort_Dir'], array('asc', 'desc')))
-		{
-			$this->view->filters['sort_Dir'] = 'asc';
-		}
-
-		$this->view->total = 0;
 
 		$t = new Cloud();
 
-		$order = Request::getVar('order', '');
-		if ($order == 'usage')
-		{
-			$limit = Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			);
+		// Record count
+		$total = $t->tags('count', $filters);
 
-			$this->view->rows = $t->tags('list', array(
-				'limit'    => $limit,
-				'admin'    => 0,
-				'sort'     => 'total',
-				'sort_Dir' => 'DESC',
-				'by'       => 'user'
-			));
-		}
-		else
-		{
-			// Record count
-			$this->view->total = $t->tags('count', $this->view->filters);
-
-			$this->view->filters['limit'] = Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			);
-
-			// Get records
-			$this->view->rows = $t->tags('list', $this->view->filters);
-		}
+		// Get records
+		$rows = $t->tags('list', $filters);
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -682,15 +655,12 @@ class Tags extends SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		$this->view->config = $this->config;
-
-		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('rows', $rows)
+			->set('total', $total)
+			->set('filters', $filters)
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
@@ -721,12 +691,10 @@ class Tags extends SiteController
 		if (!is_object($tag))
 		{
 			// Incoming
-			$tag = new Tag(intval(Request::getInt('id', 0, 'request')));
+			$tag = Tag::oneOrNew(intval(Request::getInt('id', 0, 'request')));
 		}
 
-		$this->view->tag = $tag;
-
-		$this->view->filters = array(
+		$filters = array(
 			'limit'    => Request::getInt('limit', 0),
 			'start'    => Request::getInt('limitstart', 0),
 			'sort'     => Request::getVar('sort', ''),
@@ -740,13 +708,9 @@ class Tags extends SiteController
 		// Set the page title
 		$this->_buildTitle();
 
-		// Pass error messages to the view
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		$this->view
+			->set('tag', $tag)
+			->set('filters', $filters)
 			->setLayout('edit')
 			->display();
 	}
@@ -761,7 +725,7 @@ class Tags extends SiteController
 		$return = Request::getVar('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
 
 		App::redirect(
-			Route::url($return)
+			Route::url($return, false)
 		);
 	}
 
@@ -783,21 +747,27 @@ class Tags extends SiteController
 
 		$tag = Request::getVar('fields', array(), 'post');
 
-		// Bind incoming data
-		$row = new Tag(intval($tag['id']));
-		if (!$row->bind($tag))
+		$subs = '';
+		if (isset($tag['substitutions']))
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			$subs = $tag['substitutions'];
+			unset($tag['substitutions']);
 		}
 
+		// Bind incoming data
+		$row = Tag::oneOrFail(intval($tag['id']))->set($tag);
+
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
+		}
+
+		if (!$row->saveSubstitutions($subs))
+		{
+			$this->setError($row->getError());
+			return $this->editTask($row);
 		}
 
 		$limit  = Request::getInt('limit', 0);
@@ -848,8 +818,8 @@ class Tags extends SiteController
 			Event::trigger('tags.onTagDelete', array($id));
 
 			// Remove the tag
-			$tag = new Tag($id);
-			$tag->delete();
+			$tag = Tag::oneOrFail($id);
+			$tag->destroy();
 		}
 
 		$this->cleancacheTask(false);
@@ -883,7 +853,7 @@ class Tags extends SiteController
 		}
 
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&task=browse')
+			Route::url('index.php?option=' . $this->_option . '&task=browse', false)
 		);
 	}
 

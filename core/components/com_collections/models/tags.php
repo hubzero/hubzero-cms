@@ -34,8 +34,8 @@ namespace Components\Collections\Models;
 
 use Hubzero\Base\ItemList;
 use Components\Tags\Models\Cloud;
-use Components\Tags\Tables;
 use Components\Tags\Models\Tag;
+use Components\Tags\Models\Object;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
@@ -60,8 +60,8 @@ class Tags extends Cloud
 	 */
 	public function getTagsForIds($ids=array(), $admin=0)
 	{
-		$tt = new Tables\Tag($this->_db);
-		$tj = new Tables\Object($this->_db);
+		$tt = Tag::blank();
+		$tj = Object::blank();
 
 		if (!is_array($ids) || empty($ids))
 		{
@@ -86,10 +86,11 @@ class Tags extends Cloud
 			break;
 		}
 		$sql .= "ORDER BY raw_tag ASC";
-		$this->_db->setQuery($sql);
+		$db = \App::get('db');
+		$db->setQuery($sql);
 
 		$tags = array();
-		if ($items = $this->_db->loadObjectList())
+		if ($items = $db->loadObjectList())
 		{
 			foreach ($items as $item)
 			{
@@ -127,13 +128,14 @@ class Tags extends Cloud
 			{
 				foreach ($tag as $t)
 				{
-					$this->_cache['tags.list']->add(new Tag($t));
+					$t = is_object($t) ? $t->tag : $t;
+					$this->_cache['tags.list']->add(Tag::oneByTag($t));
 				}
 				return $this;
 			}
 			else
 			{
-				$tag = new Tag($tag);
+				$tag = Tag::oneByTag($tag);
 			}
 		}
 		$this->_cache['tags.list']->add($tag);

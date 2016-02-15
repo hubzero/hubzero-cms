@@ -159,10 +159,9 @@ foreach ($cats as $cat)
 				<?php if ($tagobj->get('description') != '') { ?>
 					<div class="container">
 						<div class="container-block">
-							<h4><?php echo Lang::txt('COM_TAGS_DESCRIPTION'); ?></h4>
+							<h3><?php echo Lang::txt('COM_TAGS_DESCRIPTION'); ?></h3>
 							<div class="tag-description">
 								<?php echo stripslashes($tagobj->get('description')); ?>
-								<div class="clearfix"></div>
 							</div>
 						</div>
 					</div><!-- / .container -->

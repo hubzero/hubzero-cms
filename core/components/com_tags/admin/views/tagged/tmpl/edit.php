@@ -118,7 +118,12 @@ if ($this->getError())
 						<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
-							echo $this->escape($this->row->creator('name', Lang::txt('COM_TAGS_UNKNOWN')));
+							$name = Lang::txt('COM_TAGS_UNKNOWN');
+							if ($this->row->creator()->get('id'))
+							{
+								$name = $this->row->creator()->get('name');
+							}
+							echo $this->escape($name);
 							?>
 							<input type="hidden" name="fields[taggerid]" id="field-taggerid" value="<?php echo $this->escape($this->row->get('taggerid')); ?>" />
 						</td>

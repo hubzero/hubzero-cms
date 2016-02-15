@@ -145,13 +145,13 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 			 . "\n WHERE C.id=r.publication_id ";
 		if ($tags)
 		{
-			$tquery = '';
+			$tquery = array(0);
 			foreach ($tags as $tagg)
 			{
-				$tquery .= "'" . $tagg['id'] . "',";
+				$tquery[] = $database->quote($tagg->get('id'));
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$sql2 .= " AND ( a.tagid IN (".$tquery.")";
+
+			$sql2 .= " AND ( a.tagid IN (".implode(',', $tquery).")";
 			$sql2 .= (count($authors) > 0) ? " OR " : "";
 		}
 		if (count($authors) > 0)

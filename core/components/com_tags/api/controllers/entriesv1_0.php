@@ -32,8 +32,9 @@
 
 namespace Components\Tags\Api\Controllers;
 
-use Components\Tags\Models\Tag;
 use Hubzero\Component\ApiController;
+use Components\Tags\Models\Tag;
+use Components\Tags\Models\Cloud;
 use Exception;
 use stdClass;
 use Request;
@@ -126,7 +127,7 @@ class Entriesv1_0 extends ApiController
 	 */
 	public function listTask()
 	{
-		$cloud = new \Components\Tags\Models\Cloud();
+		$cloud = new Cloud();
 
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
@@ -196,8 +197,9 @@ class Entriesv1_0 extends ApiController
 
 		$tag = ($tag ? $tag : $raw_tag);
 
-		$record = new Tag($tag);
-		if (!$record->exists())
+		$record = Tag::oneOrNew($tag);
+
+		if ($record->isNew())
 		{
 			$record->set('admin', ($admin ? 1 : 0));
 
@@ -213,7 +215,7 @@ class Entriesv1_0 extends ApiController
 			$record->set('label', $label);
 			$record->set('substitutions', $subs);
 
-			if (!$record->store(true))
+			if (!$record->save())
 			{
 				throw new Exception($record->getError(), 500);
 			}
@@ -233,8 +235,9 @@ class Entriesv1_0 extends ApiController
 		$id   = Request::getInt('id', 0);
 		$id   = ($id ? $id : $name);
 
-		$tag = new Tag($id);
-		if (!$tag->exists())
+		$tag = Tag::oneOrFail($id);
+
+		if (!$tag->get('id'))
 		{
 			throw new Exception(Lang::txt('Specified tag does not exist.'), 404);
 		}
@@ -263,8 +266,9 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_TAGS_ERROR_MISSING_DATA'), 500);
 		}
 
-		$record = new Tag($id);
-		if (!$record->exists())
+		$record = Tag::oneOrNew($id);
+
+		if ($record->isNew())
 		{
 			$record->set('admin', ($admin ? 1 : 0));
 
@@ -280,7 +284,7 @@ class Entriesv1_0 extends ApiController
 			$record->set('label', $label);
 			$record->set('substitutions', $subs);
 
-			if (!$record->store(true))
+			if (!$record->save())
 			{
 				throw new Exception($record->getError(), 500);
 			}
@@ -302,13 +306,14 @@ class Entriesv1_0 extends ApiController
 		$id   = Request::getInt('id', 0);
 		$id   = ($id ? $id : $tag);
 
-		$tag = new Tag($id);
-		if (!$tag->exists())
+		$tag = Tag::oneOrFail($id);
+
+		if (!$tag->get('id'))
 		{
 			throw new Exception(Lang::txt('Specified tag does not exist.'), 404);
 		}
 
-		if (!$tag->delete())
+		if (!$tag->destroy())
 		{
 			throw new Exception(Lang::txt('Failed to delete tag.'), 500);
 		}
@@ -327,10 +332,11 @@ class Entriesv1_0 extends ApiController
 
 		$name = Request::getWord('tag', '');
 		$id   = Request::getInt('id', 0);
-		$id   = ($id ? $id : $name);
+		//$id   = ($id ? $id : $name);
 
-		$tag = new Tag($id);
-		if (!$tag->exists())
+		$tag = ($id ? Tag::oneOrFail($id) : Tag::oneByTag($name));
+
+		if (!$tag->get('id'))
 		{
 			throw new Exception(Lang::txt('Specified tag does not exist.'), 404);
 		}
@@ -365,8 +371,10 @@ class Entriesv1_0 extends ApiController
 		$id   = Request::getInt('id', 0);
 		$id   = ($id ? $id : $name);
 
-		$tag = new Tag($id);
-		if (!$tag->exists())
+		//$tag = new Tag($id);
+		$tag = ($id ? Tag::oneOrFail($id) : Tag::oneByTag($name));
+
+		if (!$tag->get('id'))
 		{
 			throw new Exception(Lang::txt('Specified tag does not exist.'), 404);
 		}

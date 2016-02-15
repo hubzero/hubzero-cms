@@ -67,13 +67,6 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<?php
-if ($this->getError())
-{
-	echo '<p class="error">' . implode('<br />', $this->getError()) . '</p>';
-}
-?>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
@@ -97,7 +90,7 @@ if ($this->getError())
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-substitutions"><?php echo Lang::txt('COM_TAGS_FIELD_ALIAS'); ?>:</label><br />
-				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->tag->substitutes('string', array('limit' => 0)))); ?></textarea>
+				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape($this->tag->substitutes); ?></textarea>
 				<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
@@ -121,9 +114,9 @@ if ($this->getError())
 					<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						if (!$this->tag->get('created_by') && $this->tag->exists())
+						if (!$this->tag->get('created_by') && $this->tag->get('id'))
 						{
-							if ($logs = $this->tag->logs('list'))
+							if ($logs = $this->tag->logs()->rows())
 							{
 								foreach ($logs as $log)
 								{
@@ -136,7 +129,7 @@ if ($this->getError())
 								}
 							}
 						}
-						$name = $this->tag->creator('name');
+						$name = $this->tag->creator()->get('name');
 						echo $this->escape(($name ? $name : Lang::txt('COM_TAGS_UNKNOWN')));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->tag->get('created_by')); ?>" />
@@ -149,7 +142,7 @@ if ($this->getError())
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->tag->get('created')); ?>" />
 					</td>
 				</tr>
-				<?php if ($this->tag->exists() && $this->tag->wasModified()) { ?>
+				<?php if ($this->tag->get('id') && $this->tag->wasModified()) { ?>
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIER'); ?>:</th>
 						<td>
@@ -180,17 +173,15 @@ if ($this->getError())
 
 		<div class="data-wrap">
 			<?php
-			if ($this->tag->exists())
+			if (!$this->tag->isNew())
 			{
-				if ($logs = $this->tag->logs('list'))
-				{
 					?>
 					<h4><?php echo Lang::txt('COM_TAGS_LOG'); ?></h4>
 					<ul class="entry-log">
 						<?php
-						foreach ($logs as $log)
+						foreach ($this->tag->logs()->rows() as $log)
 						{
-							$actor = $this->escape(stripslashes($log->actor('name')));
+							$actor = $this->escape(stripslashes($log->actor()->get('name')));
 
 							$s = null;
 							$c = '';
@@ -278,7 +269,6 @@ if ($this->getError())
 						?>
 					</ul>
 					<?php
-				}
 			}
 			?>
 		</div>

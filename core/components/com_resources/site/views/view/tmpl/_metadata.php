@@ -109,13 +109,12 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 			$rt = new \Components\Resources\Helpers\Tags($this->model->resource->id);
 			if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->resource->id))
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
-				$tag = new \Components\Tags\Tables\Tag($database);
-				$tag->loadTag($this->model->params->get('supportedtag'));
+				$tag = \Components\Tags\Models\Tag::oneByTag($this->model->params->get('supportedtag'));
 			?>
 			<p class="supported">
-				<a href="<?php echo $this->model->params->get('supportedlink', Route::url('index.php?option=com_tags&tag=' . $tag->tag)); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a>
+				<a href="<?php echo $this->model->params->get('supportedlink', Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'))); ?>"><?php echo $this->escape(stripslashes($tag->get('raw_tag'))); ?></a>
 			</p>
 			<?php
 			}

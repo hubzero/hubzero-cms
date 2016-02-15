@@ -87,7 +87,7 @@ $this->css()
 				</nav>
 
 				<table class="entries" id="taglist">
-					<caption>
+					<!-- <caption>
 						<?php
 						if (!$this->filters['limit'])
 						{
@@ -103,7 +103,7 @@ $this->css()
 						}
 						?>
 						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
-					</caption>
+					</caption> -->
 					<thead>
 						<tr>
 							<th scope="col">
@@ -121,7 +121,7 @@ $this->css()
 					</thead>
 					<tbody>
 					<?php
-					if ($this->rows->total())
+					if ($this->rows->count())
 					{
 						$cls = 'even';
 						foreach ($this->rows as $row)
@@ -135,7 +135,11 @@ $this->css()
 									</a>
 								</td>
 								<td class="priority-3">
-									<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>'; ?>
+									<?php
+									$subs = $row->get('substitutes') ? $this->escape($row->substitutes) : '';
+
+									echo $subs ? \Hubzero\Utility\String::truncate($subs, 75) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
+									?>
 								</td>
 								<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 									<td>

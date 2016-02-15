@@ -32,7 +32,6 @@
 
 namespace Components\Tags\Admin\Controllers;
 
-use Components\Tags\Tables;
 use Components\Tags\Models\Object;
 use Hubzero\Component\AdminController;
 use Request;
@@ -67,19 +66,7 @@ class Tagged extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->filters = array(
-			'limit'  => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start'  => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
+		$filters = array(
 			'tagid' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tag',
 				'tag',
@@ -102,29 +89,38 @@ class Tagged extends AdminController
 				'ASC'
 			)
 		);
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$t = new Tables\Object($this->database);
+		$modelt = Object::all()
+			->select('DISTINCT(tbl)');
 
-		// Record count
-		$this->view->total = $t->count($this->view->filters);
+		$model = Object::all();
 
-		$this->view->filters['limit'] = ($this->view->filters['limit'] == 0) ? 'all' : $this->view->filters['limit'];
-
-		// Get records
-		$this->view->rows = $t->find($this->view->filters);
-
-		$this->view->types = $t->getTblsForTag($this->view->filters['tagid']);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
+		if ($filters['tagid'])
 		{
-			$this->view->setError($error);
+			$model->whereEquals('tagid', $filters['tagid']);
+			$modelt->whereEquals('tagid', $filters['tagid']);
 		}
 
+		if ($filters['tbl'])
+		{
+			$model->whereEquals('tbl', $filters['tbl']);
+		}
+
+		// Get records
+		$rows = $model
+			->ordered('filter_order', 'filter_order_Dir')
+			->paginated();
+
+		$types = $modelt
+			->ordered()
+			->rows();
+
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('filters', $filters)
+			->set('rows', $rows)
+			->set('types', $types)
+			->display();
 	}
 
 	/**
@@ -147,19 +143,12 @@ class Tagged extends AdminController
 				$id = $id[0];
 			}
 
-			$row = new Object(intval($id));
-		}
-
-		$this->view->row = $row;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
+			$row = Object::oneOrNew(intval($id));
 		}
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
@@ -176,22 +165,10 @@ class Tagged extends AdminController
 
 		$fields = Request::getVar('fields', array(), 'post');
 
-		$row = new Object();
-		if (!$row->bind($fields))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+		$row = Object::oneOrFail($fields['id'])->set($fields);
 
 		// Store content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			Notify::error($row->getError());
 			return $this->editTask($row);
@@ -200,7 +177,7 @@ class Tagged extends AdminController
 		Notify::success(Lang::txt('COM_TAGS_OBJECT_SAVED'));
 
 		// Redirect to main listing
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			return $this->editTask($row);
 		}
@@ -234,12 +211,11 @@ class Tagged extends AdminController
 			return;
 		}
 
-		$row = new Tables\Object($this->database);
-
 		foreach ($ids as $id)
 		{
 			// Remove entry
-			$row->delete(intval($id));
+			$row = Object::oneOrFail(intval($id));
+			$row->destroy();
 		}
 
 		App::redirect(
