@@ -109,6 +109,26 @@ class OneToMany extends Relationship
 	}
 
 	/**
+	 * Saves all of the given models
+	 *
+	 * @param   array  $models  An array of models being associated and saved
+	 * @return  array
+	 * @since   2.0.0
+	 **/
+	public function saveAll($models)
+	{
+		foreach ($models as $model)
+		{
+			if (!$this->associate($model)->save())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Deletes all rows attached to the current model
 	 *
 	 * @return  bool
