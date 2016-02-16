@@ -65,9 +65,9 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 			c.title,
 			concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
 			CASE
-				WHEN ca.alias != '' OR c.alias != '' THEN
+				WHEN ca.path != '' OR c.alias != '' THEN
 					concat(
-						CASE WHEN ca.alias != '' THEN concat('/', ca.alias) ELSE '' END,
+						CASE WHEN ca.path != '' THEN concat('/', ca.path) ELSE '' END,
 						CASE WHEN c.alias != '' THEN concat('/', c.alias) ELSE '' END
 					)
 				ELSE concat('index.php?option=com_content&view=article&id=', c.id)
