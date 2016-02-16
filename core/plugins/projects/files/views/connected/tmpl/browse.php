@@ -50,7 +50,9 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 				<?php echo Lang::txt('Connections'); ?>
 			</a>
 			&nbsp;&raquo;
-			<img src="/core/plugins/filesystem/<?php echo $this->connection->provider->alias; ?>/assets/img/icon.png" alt="" height="20" width="20" />
+			<?php $imgRel = '/plugins/filesystem/' . $this->connection->provider->alias . '/assets/img/icon.png'; ?>
+			<?php $img = (is_file('/app' . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
+			<img src="<?php echo $img; ?>" alt="" height="20" width="20" />
 			<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id); ?>">
 				<?php echo $this->connection->name; ?>
 			</a>
