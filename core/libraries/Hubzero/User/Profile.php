@@ -34,6 +34,7 @@ namespace Hubzero\User;
 
 use Hubzero\Base\Object;
 use Hubzero\User\Profile\Helper as ProfileHelper;
+use Hubzero\User\Password;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\String;
 use Event;
@@ -1177,7 +1178,7 @@ class Profile extends Object
 		{
 			if ($value != '')
 			{
-				$this->userPassword = "{MD5}" . base64_encode(pack('H*', md5($value)));
+				$this->userPassword = \Hubzero\User\Password::getPasshash($value);
 			}
 			else
 			{
