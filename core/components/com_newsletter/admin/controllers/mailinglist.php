@@ -94,6 +94,8 @@ class Mailinglist extends AdminController
 	 */
 	public function editTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// default object
 		$this->view->list = new stdClass;
 		$this->view->list->id          = null;

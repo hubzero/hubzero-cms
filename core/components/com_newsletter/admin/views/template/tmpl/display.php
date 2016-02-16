@@ -64,7 +64,10 @@ Toolbar::preferences($this->option, '550');
 				<?php foreach ($this->templates as $k => $template) : ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" onclick="isChecked(this.checked);" />
+							<?php if (!$template->editable) : ?>
+							<?php else: ?>
+								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" onclick="isChecked(this.checked);" />
+							<?php endif; ?>
 						</td>
 						<td>
 							<?php if (!$template->editable) : ?>

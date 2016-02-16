@@ -73,6 +73,11 @@ class Template extends \JTable
 		}
 
 		//check to make sure hex codes are formated
+		$this->primary_title_color   = strip_tags($this->primary_title_color);
+		$this->primary_text_color    = strip_tags($this->primary_text_color);
+		$this->secondary_title_color = strip_tags($this->secondary_title_color);
+		$this->secondary_text_color  = strip_tags($this->secondary_text_color);
+		/* Field changed to allow more styles
 		if ($this->primary_title_color != '' && !preg_match($hexcodeRegex, $this->primary_title_color))
 		{
 			$this->setError('Your primary title color code is not formatted correctly.');
@@ -98,7 +103,7 @@ class Template extends \JTable
 		{
 			$this->setError('Your secondary text color code is not formatted correctly.');
 			return false;
-		}
+		}*/
 
 		return true;
 	}
