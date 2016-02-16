@@ -100,14 +100,13 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 					);
 
 					// Assemble the email data...the sexy way!
-					$mail = JFactory::getMailer()
-						->setSender(
-							array(
-								$config->get('mailfrom'),
-								$config->get('fromname')
-							)
+					$mail = new \Hubzero\Mail\Message();
+					$mail
+						->addFrom(
+							$config->get('mailfrom'),
+							$config->get('fromname')
 						)
-						->addRecipient($user['email'])
+						->addTo($user['email'])
 						->setSubject($emailSubject)
 						->setBody($emailBody);
 
@@ -117,7 +116,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 						$lang->setLanguage($defaultLocale);
 					}
 
-					if (!$mail->Send())
+					if (!$mail->send())
 					{
 						// TODO: Probably should raise a plugin error but this event is not error checked.
 						throw new Exception(Lang::txt('ERROR_SENDING_EMAIL'), 500);
