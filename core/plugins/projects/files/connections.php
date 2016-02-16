@@ -799,6 +799,17 @@ class connections
 			'layout'  => 'annotate'
 		]);
 
+		// See if there is an edit interface that we should use
+		// in favor of the default one (this is slightly better
+		// than a view override in the sense that the view can 
+		// still be packaged with the plugin, rather than having
+		// to be overriden in the template on a per-hub basis)
+		$editors = Event::trigger('metadata.onMetadataEdit');
+		if ($editors && isset($editors[0]) > 0 && $editors[0] instanceof \Hubzero\Plugin\View)
+		{
+			$view = $editors[0];
+		}
+
 		// Get any existing metadata
 		$entity   = $items->first();
 		$metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
