@@ -726,7 +726,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			$view->setError($error);
 		}
-
 		return $view->loadTemplate();
 	}
 
@@ -788,8 +787,19 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$row->get('id'))
 		{
-			$item = $this->model->entry($row->get('alias'));
-			if ($item->get('id'))
+			// Fills in missing pieces, mainly generate the alias
+			if ($row->get('alias') == '')
+			{
+				$row->check();
+			}
+
+			// Instantiate a new model
+			$checkModel = new \Components\Blog\Models\Archive('group', $this->group->get('gidNumber'));
+
+			// Check for unique alias name
+			$item = $checkModel->entry($row->get('alias'));
+
+			if ($item->get('alias') == $row->get('alias'))
 			{
 				$this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_ALIAS_EXISTS'));
 				return $this->_edit($row);

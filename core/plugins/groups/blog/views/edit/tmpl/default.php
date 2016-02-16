@@ -54,6 +54,10 @@ $this->css()
 	</li>
 </ul>
 
+<?php foreach ($this->getErrors() as $error): ?>
+<div class="error"><?php echo $error; ?></div>
+<?php endforeach; ?>
+
 <form action="<?php echo Route::url($base); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
@@ -134,7 +138,6 @@ $this->css()
 
 	<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 	<input type="hidden" name="entry[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
-	<input type="hidden" name="entry[alias]" value="<?php echo $this->escape($this->entry->get('alias')); ?>" />
 	<input type="hidden" name="entry[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
 	<input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
 	<input type="hidden" name="entry[scope]" value="group" />
