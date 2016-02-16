@@ -231,7 +231,7 @@ class Newsletter extends \JTable
 
 			//get primary & secondary colors
 			$primaryTitleColor   = ($newsletterTemplate->primary_title_color) ? $newsletterTemplate->primary_title_color : '#000000';
-			if (strlen($primaryTitleColor) <= 7 && !strstr($primaryTextColor, ';'))
+			if (strlen($primaryTitleColor) <= 7 && !strstr($primaryTitleColor, ';'))
 			{
 				$primaryTitleColor = 'font-size:20px;font-weight:bold;color:'.$primaryTitleColor.';font-family:arial;line-height:100%;margin-bottom:10px;';
 			}
