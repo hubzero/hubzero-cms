@@ -22,6 +22,11 @@ jQuery(document).ready(function ( jq ) {
 				});
 			},
 			showDetails = function ( ) {
+				if ($('.details-id').val()) {
+					$('.details-delete').show();
+				} else {
+					$('.details-delete').hide();
+				}
 				explain.fadeOut();
 				data.fadeIn();
 			},
@@ -168,11 +173,11 @@ jQuery(document).ready(function ( jq ) {
 			unselectCancel : '.details-inner',
 			selectHelper   : true,
 			select : function ( start, end, jsEvent, view ) {
-				showDetails();
 				setData({
 					start : start,
 					end   : end
 				});
+				showDetails();
 			},
 			unselect : function ( view, jsEvent ) {
 				hideDetails();
@@ -242,6 +247,23 @@ jQuery(document).ready(function ( jq ) {
 
 		$('.details').on('focus', '.select2-container', function ( e ) {
 			$(this).prev().select2('open');
+		});
+
+		$('.details-delete').on('click', function ( e ) {
+			e.preventDefault();
+
+			$('.error-message').fadeOut();
+			$.ajax({
+				url      : '/api/time/records/' + $('.details-id').val(),
+				method   : 'DELETE',
+				dataType : "json",
+				cache    : false,
+				success  : function ( json ) {
+					calendar.fullCalendar( 'unselect' );
+					calendar.fullCalendar( 'refetchEvents' );
+					hideDetails();
+				}
+			});
 		});
 
 		// Add change event to hub select box (filter tasks list by selected hub)
