@@ -91,20 +91,20 @@ $this->css();
 				?>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
-						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
-					</a>
-					<?php } else if ($offering->student(User::get('id'))->get('student')) { ?>
-					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
-						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
-					</a>
-					<?php } else { ?>
-						<?php if ($offerings->total() > 1 && $offering->isAvailable()) { ?>
-						<a class="enroll btn" href="<?php echo Route::url($offering->link('enroll')); ?>">
-							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
+						<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 						</a>
+					<?php } else if ($offering->student(User::get('id'))->get('student')) { ?>
+						<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+						</a>
+					<?php } else { ?>
+						<?php if ($offering->isAvailable()) { //$offerings->total() > 1 && ?>
+							<a class="enroll btn" href="<?php echo Route::url($offering->link('enroll')); ?>">
+								<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
+							</a>
 						<?php } else { ?>
-						--
+							--
 						<?php } ?>
 					<?php } ?>
 				</td>
@@ -170,20 +170,20 @@ $this->css();
 				</th>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
-						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
-					</a>
-					<?php } else if ($section->isMember()) { ?>
-					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
-						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
-					</a>
-					<?php } else { ?>
-						<?php if ($offerings->total() > 1 && $offering->isAvailable()) { ?>
-						<a class="enroll btn" href="<?php echo Route::url($offering->link('enroll')); ?>">
-							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
+						<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 						</a>
+					<?php } else if ($section->isMember()) { ?>
+						<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+						</a>
+					<?php } else { ?>
+						<?php if ($offering->isAvailable()) { //$offerings->total() > 1 && ?>
+							<a class="enroll btn" href="<?php echo Route::url($offering->link('enroll')); ?>">
+								<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
+							</a>
 						<?php } else { ?>
-						--
+							--
 						<?php } ?>
 					<?php } ?>
 				</td>
