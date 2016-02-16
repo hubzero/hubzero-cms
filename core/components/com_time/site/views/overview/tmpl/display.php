@@ -129,6 +129,11 @@ $sun   = Date::of(strtotime("today+" . (6-$today) . 'days'))->toLocal('n/j');
 									<?php echo Lang::txt('COM_TIME_OVERVIEW_CANCEL'); ?>
 								</button>
 							</a>
+							<a href="#" class="details-delete">
+								<button type="button" class="btn btn-danger btn-secondary icon-trash">
+									<?php echo Lang::txt('COM_TIME_OVERVIEW_DELETE'); ?>
+								</button>
+							</a>
 						</p>
 					</form>
 				</div>

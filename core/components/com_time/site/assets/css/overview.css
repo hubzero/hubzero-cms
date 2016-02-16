@@ -100,6 +100,14 @@
 	text-align: center;
 	font-size: 16px;
 }
+.com_time_overview .details-delete {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.com_time_overview .details-delete:hover {
+	border-bottom: none;
+}
 .com_time_overview .details-explanation:before {
 	content: "\f022";
 	font-family: "fontcons";
