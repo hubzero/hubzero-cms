@@ -61,37 +61,37 @@ Toolbar::cancel();
 				<input type="text" name="template[name]" id="field-name" value="<?php echo $this->escape($this->template->name); ?>" />
 			</div>
 
-			<div class="col width-50 fltlft">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY'); ?></span></legend>
+
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
 					<label for="field-primary_title_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY_TITLE_COLOR'); ?>:</label><br />
 					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
 					<input type="text" name="template[primary_title_color]" id="field-primary_title_color" value="<?php echo $this->escape($this->template->primary_title_color); ?>" />
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
+
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
 					<label for="field-primary_text_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_PRIMARY_TEXT_COLOR'); ?>:</label><br />
 					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
 					<input type="text" name="template[primary_text_color]" id="field-primary_text_color" value="<?php echo $this->escape($this->template->primary_text_color); ?>" />
 				</div>
-			</div>
-			<div class="clr"></div>
+			</fieldset>
 
-			<div class="col width-50 fltlft">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY'); ?></span></legend>
+
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
 					<label for="field-secondary_title_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY_TITLE_COLOR'); ?>:</label><br />
 					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
 					<input type="text" name="template[secondary_title_color]" id="field-secondary_title_color" value="<?php echo $this->escape($this->template->secondary_title_color); ?>" />
 				</div>
-			</div>
-			<div class="col width-50 fltrt">
+
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?>">
 					<label for="field-secondary_text_color"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_SECONDARY_TEXT_COLOR'); ?>:</label><br />
 					<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_COLOR_HINT'); ?></span>
 					<input type="text" name="template[secondary_text_color]" id="field-secondary_text_color" value="<?php echo $this->escape($this->template->secondary_text_color); ?>" />
 				</div>
-			</div>
-			<div class="clr"></div>
+			</fieldset>
 
 			<div class="input-wrap">
 				<label for="field-template"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TEMPLATE') ?>:</label><br />

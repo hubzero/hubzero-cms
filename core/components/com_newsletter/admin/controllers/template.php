@@ -83,6 +83,8 @@ class Template extends AdminController
 	 */
 	public function editTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		//default object
 		$this->view->template = new stdClass;
 		$this->view->template->id = null;

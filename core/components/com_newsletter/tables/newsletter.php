@@ -231,19 +231,36 @@ class Newsletter extends \JTable
 
 			//get primary & secondary colors
 			$primaryTitleColor   = ($newsletterTemplate->primary_title_color) ? $newsletterTemplate->primary_title_color : '#000000';
-			$secondaryTitleColor = ($newsletterTemplate->secondary_title_color) ? $newsletterTemplate->secondary_title_color : '#666666';
+			if (strlen($primaryTitleColor) <= 7 && !strstr($primaryTextColor, ';'))
+			{
+				$primaryTitleColor = 'font-size:20px;font-weight:bold;color:'.$primaryTitleColor.';font-family:arial;line-height:100%;margin-bottom:10px;';
+			}
 			$primaryTextColor    = ($newsletterTemplate->primary_text_color) ? $newsletterTemplate->primary_text_color : '#444444';
+			if (strlen($primaryTextColor) <= 7 && !strstr($primaryTextColor, ';'))
+			{
+				$primaryTextColor = 'font-size:14px;font-weight:normal;color:'.$primaryTextColor.';font-family:arial;margin-bottom:50px;';
+			}
+
+			$secondaryTitleColor = ($newsletterTemplate->secondary_title_color) ? $newsletterTemplate->secondary_title_color : '#666666';
+			if (strlen($secondaryTitleColor) <= 7 && !strstr($secondaryTitleColor, ';'))
+			{
+				$secondaryTitleColor = 'font-size:15px;font-weight:bold;color:'.$secondaryTitleColor.';font-family:arial;line-height:150%;';
+			}
 			$secondaryTextColor  = ($newsletterTemplate->secondary_text_color) ? $newsletterTemplate->secondary_text_color : '#999999';
+			if (strlen($secondaryTextColor) <= 7 && !strstr($secondaryTextColor, ';'))
+			{
+				$secondaryTextColor = 'font-size:12px;color:'.$secondaryTextColor.';font-family:arial;';
+			}
 
 			//get and format primary stories
-			$campaignPrimaryStories = "";
+			$campaignPrimaryStories = '';
 			$primaryStories = $newsletterPrimaryStory->getStories($campaign->id);
 			foreach ($primaryStories as $pStory)
 			{
-				$campaignPrimaryStories .= "<span style=\"display:block;page-break-inside:avoid;font-size:20px;font-weight:bold;color:".$primaryTitleColor.";font-family:arial;line-height:100%;margin-bottom:10px;\">";
+				$campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;'.$primaryTitleColor.'">';
 				$campaignPrimaryStories .= $pStory->title;
-				$campaignPrimaryStories .= "</span>";
-				$campaignPrimaryStories .= "<span style=\"display:block;page-break-inside:avoid;font-size:14px;font-weight:normal;color:".$primaryTextColor.";font-family:arial;margin-bottom:50px;\">";
+				$campaignPrimaryStories .= '</span>';
+				$campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;'.$primaryTextColor.'">';
 				$campaignPrimaryStories .= $pStory->story;
 
 				//do we have a readmore link
@@ -253,18 +270,18 @@ class Newsletter extends \JTable
 					$campaignPrimaryStories .= "<br /><br /><a href=\"{$pStory->readmore_link}\" target=\"\">{$readmore_title}</a>";
 				}
 
-				$campaignPrimaryStories .= "</span>";
+				$campaignPrimaryStories .= '</span>';
 			}
 
 			//get secondary stories
-			$campaignSecondaryStories = "<br /><br />";
+			$campaignSecondaryStories = '<br /><br />';
 			$secondaryStories = $newsletterSecondaryStory->getStories($campaign->id);
 			foreach ($secondaryStories as $sStory)
 			{
-				$campaignSecondaryStories .= "<span style=\"display:block;page-break-inside:avoid;font-size:15px;font-weight:bold;color:".$secondaryTitleColor.";font-family:arial;line-height:150%;\">";
+				$campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;'.$secondaryTitleColor.'">';
 				$campaignSecondaryStories .= $sStory->title;
-				$campaignSecondaryStories .= "</span>";
-				$campaignSecondaryStories .= "<span style=\"display:block;page-break-inside:avoid;font-size:12px;color:".$secondaryTextColor.";\">";
+				$campaignSecondaryStories .= '</span>';
+				$campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;'.$secondaryTextColor.'">';
 				$campaignSecondaryStories .= $sStory->story;
 
 				//do we have a readmore link
@@ -274,8 +291,8 @@ class Newsletter extends \JTable
 					$campaignSecondaryStories .= "<br /><br /><a href=\"{$sStory->readmore_link}\" target=\"\">{$readmore_title}</a>";
 				}
 
-				$campaignSecondaryStories .= "</span>";
-				$campaignSecondaryStories .= "<br /><br />";
+				$campaignSecondaryStories .= '</span>';
+				$campaignSecondaryStories .= '<br /><br />';
 			}
 		}
 
