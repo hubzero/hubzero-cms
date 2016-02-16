@@ -132,8 +132,10 @@ function authorize($dd)
 	}
 
 	if (isset($dd['acl']['allowed_groups']) && (is_array($dd['acl']['allowed_groups']) || $dd['acl']['allowed_groups'] === false)) {
-		$dv_conf['acl']['allowed_groups'] = $dd['acl']['allowed_groups'];
+		$dd['acl']['allowed_groups'] = $dv_conf['acl']['allowed_groups'];
 	}
+
+
 
 	if ($dv_conf['acl']['allowed_users'] === false && $dv_conf['acl']['allowed_groups'] === false || isset($dd['acl']['public'])) {
 		return true;
