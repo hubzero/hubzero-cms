@@ -661,17 +661,17 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$entry->set('scope_id', $this->group->get('gidNumber'));
 		}
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
-
 		$view = $this->view('default', 'edit')
 			->set('option', $this->option)
 			->set('group', $this->group)
 			->set('task', $this->action)
 			->set('config', $this->params)
 			->set('entry', $entry);
+
+		foreach ($this->getErrors() as $error)
+		{
+			$view->setError($error);
+		}
 
 		return $view->loadTemplate();
 	}
@@ -724,14 +724,19 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		// Instantiate model
 		$row = \Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
+		if ($row->get('alias') == '')
+		{
+			$alias = $row->automaticAlias($row);
+		}
 
 		if ($row->isNew())
 		{
 			$item = \Components\Blog\Models\Entry::oneByScope(
-				$row->get('alias'),
+				$alias,
 				$this->model->get('scope'),
 				$this->model->get('scope_id')
 			);
+
 
 			if ($item->get('id'))
 			{
