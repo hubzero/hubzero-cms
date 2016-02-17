@@ -1,0 +1,42 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_resources/admin/assets/css/handlers.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+- - - - - - - - -
+    com_tools
+- - - - - - - - -
+*/
+.handlers .rule {
+	border: 1px solid rgba(0,0,0,0.1);
+	width: 200px;
+	float: left;
+	margin: 10px 0 20px 20px;
+	-webkit-border-radius: 0.27em;
+	-moz-border-radius: 0.27em;
+	border-radius: 0.27em;
+}
+.handlers .buttons {
+	border-top: 1px solid rgba(0,0,0,0.1);
+}
+.handlers .new-rule {
+	margin: 20px;
+}
+.handlers .delete-rule {
+	text-align: center;
+	display: block;
+	border-top: 1px solid rgba(0,0,0,0.1);
+	padding: 10px;
+	background: rgba(255, 0, 0, 0.1);
+}
+.handlers .delete-rule:hover {
+	cursor: pointer;
+	background: rgba(255, 0, 0, 0.3);
+	text-decoration: none;
+}
+.handlers .rule-sample {
+	display: none;
+}

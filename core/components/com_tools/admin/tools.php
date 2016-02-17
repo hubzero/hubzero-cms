@@ -81,6 +81,11 @@ if (\Component::params('com_tools')->get('zones'))
 	\Route::url('index.php?option=com_tools&controller=preferences'),
 	$controllerName == 'preferences'
 );
+\Submenu::addEntry(
+	\Lang::txt('COM_TOOLS_HANDLERS'),
+	\Route::url('index.php?option=com_tools&controller=handlers'),
+	$controllerName == 'handlers'
+);
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
