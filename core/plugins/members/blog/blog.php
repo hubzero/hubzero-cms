@@ -904,21 +904,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				// Mark all content as trashed
 				include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-				$db = App::get('db');
-
-				$model = new \Components\Blog\Tables\Entry($db);
-
-				$entries = $model->find('list', array(
-					'state'      => 'all',
-					'created_by' => $user['id']
-				));
+				$entries = \Components\Blog\Models\Entry::all()
+					->whereEquals('created_by', $user['id'])
+					->rows();
 
 				foreach ($entries as $entry)
 				{
-					$entry = new \Components\Blog\Models\Entry($entry);
-					$entry->set('state', -1);
+					$entry->set('state', 2);
 
-					if (!$entry->store(false))
+					if (!$entry->save())
 					{
 						throw new Exception($entry->getError());
 					}
@@ -957,19 +951,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			{
 				include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-				$db = App::get('db');
-
-				$model = new \Components\Blog\Tables\Entry($db);
-
-				$entries = $model->find('list', array(
-					'created_by' => $userId
-				));
+				$entries = \Components\Blog\Models\Entry::all()
+					->whereEquals('created_by', $user['id'])
+					->rows();
 
 				foreach ($entries as $entry)
 				{
-					$entry = new \Components\Blog\Models\Entry($entry);
-
-					if (!$entry->delete())
+					if (!$entry->destroy())
 					{
 						throw new Exception($entry->getError());
 					}
