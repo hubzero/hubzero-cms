@@ -629,8 +629,6 @@ class Timev1_0 extends ApiController
 		$today       = Date::of(Request::get('today', time()));
 		$dateofToday = $today->toSql();
 		$dayOfWeek   = $today->format('N') - 1;
-		error_log(Date::of(strtotime("{$dateofToday} - {$dayOfWeek}days"))->toSql());
-		error_log(Date::of(strtotime("{$dateofToday} + " . (7-$dayOfWeek) . 'days'))->toSql());
 
 		// Create object and get records
 		$records = Record::whereEquals('user_id', App::get('authn')['user_id'])
