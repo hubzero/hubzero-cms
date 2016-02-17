@@ -103,14 +103,14 @@ class Module extends Object
 	{
 		$content = '';
 
-		if (!App::has('cache.store'))
+		if (!App::has('cache.store') || !$this->params->get('cache'))
 		{
 			return $content;
 		}
 
 		$debug = App::get('config')->get('debug');
 		$key   = 'modules.' . $this->module->id;
-		$ttl   = intval($this->params->get('cache', 0));
+		$ttl   = intval($this->params->get('cache_time', 0));
 
 		if ($debug || !$ttl)
 		{
@@ -126,12 +126,12 @@ class Module extends Object
 
 			$content .= '<!-- cached ' . with(new Date('now'))->toSql() . ' -->';
 
-			// Module time is in seconds, setLifeTime() is in minutes
+			// Module time is in seconds, cache time is in minutes
 			// Some module times may have been set in minutes so we
 			// need to account for that.
-			$ttl = (!$ttl || $ttl == 15 ?: $ttl / 60);
+			$ttl = $ttl <= 120 ? $ttl : ($ttl / 60);
 
-			App::get('cache.store')->put($key, $content, $ttl);
+			$foo = App::get('cache.store')->put($key, $content, $ttl);
 		}
 
 		return $content;
