@@ -440,7 +440,7 @@ class Miner extends Object implements Provider
 			if ($revision)
 			{
 				$this->database->setQuery(
-					"SELECT n.uidNumber AS id,
+					"SELECT
 						CASE WHEN t.name!='' AND t.name IS NOT NULL THEN t.name
 						ELSE n.name
 						END AS `name`
