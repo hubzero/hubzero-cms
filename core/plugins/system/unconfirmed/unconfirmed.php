@@ -59,6 +59,10 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 				'com_members.register.resend',
 				'com_members.register.confirm.profiles',
 				'com_members.register.confirm',
+				'com_members.save.profiles',
+				'com_members.profiles.save',
+				'com_members.profiles.save.profiles',
+				'com_members.changepassword'
 			];
 
 			$current  = Request::getWord('option', '');
