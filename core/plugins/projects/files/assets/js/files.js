@@ -1025,6 +1025,7 @@ HUB.ProjectFiles = {
 		var keyupTimer2 = '';
 		var preview_open = 0;
 		var in_preview = 0;
+		var subtract = $('.main-content').offset();
 
 		if ($('#plg-content').length > 0 && div.length > 0)
 		{
@@ -1051,7 +1052,10 @@ HUB.ProjectFiles = {
 			$(item).on('mouseover', function(e)
 			{
 				e.preventDefault();
-				var coord = $(item).position();
+				var coord = $(item).offset();
+				coord.top -= subtract.top;
+				coord.left -= subtract.left;
+
 				if (keyupTimer2) {
 					clearTimeout(keyupTimer2);
 				}

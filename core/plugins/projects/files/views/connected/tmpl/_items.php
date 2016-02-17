@@ -30,39 +30,52 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'orm' . DS . 'handler.php';
+
+use \Components\Tools\Models\Orm\Handler;
+
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
 
 <?php foreach ($this->items as $item) : ?>
-	<tr class="mini faded mline">
+	<tr class="mini faded mline connections">
 		<?php if ($this->model->access('content')) : ?>
-			<td>
+			<td class="middle_valign">
 				<input type="checkbox" value="<?php echo urlencode($item->getName()); ?>" name="<?php echo $item->isFile() ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $item->isDir() ? ' dirr' : ''; ?>" />
 			</td>
 		<?php endif; ?>
 		<?php $subdirPath = $this->subdir ? '&subdir=' . urlencode($this->subdir) : ''; ?>
-		<td class="top_valign nobsp">
+		<td class="middle_valign nobsp is-relative">
 			<?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
 			<?php if ($item->isFile()) : ?>
-				<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
-					<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getName(), 60); ?>
-				</a>
+				<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($item->getPath())) ? ' hasMultiple' : ''; ?>">
+					<a href="<?php echo Route::url($this->model->link('files') . '&action=download&connection=' . $this->connection->id . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" class="preview file:<?php echo urlencode($item->getName()); ?>">
+						<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getName(), 60); ?>
+					</a>
+					<?php if ($handlers && count($handlers) > 0) : ?>
+						<?php foreach ($handlers as $handler) : ?>
+						<a href="<?php echo Route::url($handler['url']); ?>">
+							<?php echo $handler['prompt']; ?>
+						</a>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</div>
 			<?php else : ?>
 				<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . urlencode($item->getPath())); ?>" class="dir:<?php echo urlencode($item->getName()); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->getName(); ?>">
 					<?php echo \Components\Projects\Helpers\Html::shortenFileName($item->getName(), 60); ?>
 				</a>
 			<?php endif; ?>
 		</td>
-		<td class="shrinked"></td>
-		<td class="shrinked"><?php echo ($item->isFile()) ? $item->getSize() : ''; ?></td>
-		<td class="shrinked">
+		<td class="shrinked middle_valign"></td>
+		<td class="shrinked middle_valign"><?php echo ($item->isFile()) ? $item->getSize() : ''; ?></td>
+		<td class="shrinked middle_valign">
 			<?php echo $item->getTimestamp() ? \Components\Projects\Helpers\Html::formatTime(Date::of($item->getTimestamp())->toSql()) : 'N/A'; ?>
 		</td>
-		<td class="shrinked">
+		<td class="shrinked middle_valign">
 			<?php echo ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getRoot()->getInstance($item->getOwner())->get('name'); ?>
 		</td>
-		<td class="shrinked nojs">
+		<td class="shrinked middle_valign nojs">
 			<?php if ($this->model->access('content')) : ?>
 				<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
 				<a href="<?php echo Route::url($this->model->link('files') . '&action=move' . $subdirPath . '&asset=' . urlencode($item->getName())); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a>

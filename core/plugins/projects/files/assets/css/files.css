@@ -1338,8 +1338,67 @@
 		overflow: hidden;
 	}
 
+/* File action options
+--------------------------------------------- */
+	.is-relative {
+		position: relative;
+	}
+	.file-action-dropdown.hasMultiple {
+		position: absolute;
+		border: 1px solid transparent;
+		left: 24px;
+	}
+	.file-action-dropdown.hasMultiple a {
+		display: none;
+		padding: 0 4px;
+	}
+	.file-action-dropdown.hasMultiple a:first-child {
+		display: block;
+	}
+	.file-action-dropdown.hasMultiple a:first-child:after {
+		position: relative;
+		display: inline-block;
+		font-family: "Fontcons";
+		content: '\2303';
+		margin-left: 5px;
+		color: #CCCCCC;
+
+		-webkit-transition: 0.15s ease-in-out;
+		-o-transition: 0.15s ease-in-out;
+		transition: 0.15s ease-in-out;
+	}
+	.file-action-dropdown.hasMultiple:hover a:first-child:after {
+		-webkit-transform: rotate(180deg);
+		-moz-transform: rotate(180deg); 
+		-o-transform: rotate(180deg);
+		transform: rotate(180deg);
+	}
+	.file-action-dropdown.hasMultiple:hover {
+		border: 1px solid #DADADA;
+		background: #FFFFFF;
+		z-index: 1;
+	}
+	.file-action-dropdown.hasMultiple:hover a {
+		display: block;
+	}
+	.file-action-dropdown.hasMultiple a:hover {
+		background: #EFEFEF;
+	}
+
+/* Connections-specific
+--------------------------------------------- */
+	.connections .middle_valign {
+		vertical-align: middle;
+	}
+	.connections td {
+		padding: 1em;
+	}
+	table.listing tbody tr.connections.mline:hover {
+		border: none;
+	}
+
 /* Misc
---------------------------------------------- */	
+--------------------------------------------- */
 	.fancybox-title {
 		display: none;
 	}
