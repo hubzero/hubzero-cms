@@ -231,7 +231,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	public function onProjectPublicList($model)
 	{
-		if (!$model->exists() || !$model->access('content') || !$model->isPublic())
+		if (!$model->exists() || !$model->isPublic())
 		{
 			return false;
 		}

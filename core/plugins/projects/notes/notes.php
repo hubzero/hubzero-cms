@@ -805,10 +805,11 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function onProjectPublicList($model)
 	{
-		if (!$model->exists() || !$model->access('content') || !$model->isPublic())
+		if (!$model->exists() || !$model->isPublic())
 		{
 			return false;
 		}
+		ddie($model);
 		if (!$model->params->get('notes_public', 0))
 		{
 			return false;
