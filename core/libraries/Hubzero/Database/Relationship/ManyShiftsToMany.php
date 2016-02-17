@@ -86,23 +86,24 @@ class ManyShiftsToMany extends ManyToMany
 	/**
 	 * Gets the constrained count
 	 *
-	 * @param   int  $count  The count to limit by
+	 * @param   int     $count     The count to limit by
+	 * @param   string  $operator  The comparison operator used between the column and the count
 	 * @return  array
 	 * @since   2.0.0
 	 **/
-	public function getConstrainedKeysByCount($count)
+	public function getConstrainedKeysByCount($count, $operator = '>=')
 	{
 		$associativeTable = $this->associativeTable;
 		$associativeLocal = $this->associativeLocal;
 		$shifter          = $this->shifter;
 		$model            = $this->model;
 
-		return $this->getConstrainedKeys(function($related) use ($count, $associativeTable, $associativeLocal, $shifter, $model)
+		return $this->getConstrainedKeys(function($related) use ($count, $associativeTable, $associativeLocal, $shifter, $model, $operator)
 		{
 			$related->whereEquals($associativeTable . '.' . $shifter, strtolower($model->getModelName()))
 			        ->group($shifter)
 			        ->group($associativeLocal)
-			        ->having('COUNT(*)', '>=', $count);
+			        ->having('COUNT(*)', $operator, $count);
 		});
 	}
 

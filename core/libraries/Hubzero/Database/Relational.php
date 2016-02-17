@@ -1367,13 +1367,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * @param   string  $relationship  The relationship name to constrain against
 	 * @param   int     $count         The minimum number of rows required
 	 * @param   int     $depth         The depth level of the clause, for sub clauses
+	 * @param   string  $operator      The comparison operator used between the column and the count
 	 * @return  $this
 	 * @since   2.0.0
 	 **/
-	public function whereRelatedHasCount($relationship, $count = 1, $depth = 0)
+	public function whereRelatedHasCount($relationship, $count = 1, $depth = 0, $operator = '>=')
 	{
 		$rel  = $this->$relationship();
-		$keys = $rel->getConstrainedKeysByCount($count);
+		$keys = $rel->getConstrainedKeysByCount($count, $operator);
 
 		return $this->where($rel->getLocalKey(), 'IN', $keys, 'and', $depth);
 	}

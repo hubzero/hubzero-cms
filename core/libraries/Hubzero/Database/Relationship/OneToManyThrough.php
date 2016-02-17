@@ -116,17 +116,18 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Gets the constrained count
 	 *
-	 * @param   int  $count  The count to limit by
+	 * @param   int     $count     The count to limit by
+	 * @param   string  $operator  The comparison operator used between the column and the count
 	 * @return  array
 	 * @since   2.0.0
 	 **/
-	public function getConstrainedKeysByCount($count)
+	public function getConstrainedKeysByCount($count, $operator = '>=')
 	{
 		$associativeLocal = $this->associativeLocal;
 
-		return $this->getConstrainedKeys(function($related) use ($count, $associativeLocal)
+		return $this->getConstrainedKeys(function($related) use ($count, $associativeLocal, $operator)
 		{
-			$related->group($associativeLocal)->having('COUNT(*)', '>=', $count);
+			$related->group($associativeLocal)->having('COUNT(*)', $operator, $count);
 		});
 	}
 

@@ -176,17 +176,18 @@ class Relationship
 	/**
 	 * Gets the constrained count
 	 *
-	 * @param   int  $count  The count to limit by
+	 * @param   int     $count     The count to limit by
+	 * @param   string  $operator  The comparison operator used between the column and the count
 	 * @return  array
 	 * @since   2.0.0
 	 **/
-	public function getConstrainedKeysByCount($count)
+	public function getConstrainedKeysByCount($count, $operator = '>=')
 	{
 		$relatedKey = $this->relatedKey;
 
-		return $this->getConstrainedKeys(function($related) use ($count, $relatedKey)
+		return $this->getConstrainedKeys(function($related) use ($count, $relatedKey, $operator)
 		{
-			$related->group($relatedKey)->having('COUNT(*)', '>=', $count);
+			$related->group($relatedKey)->having('COUNT(*)', $operator, $count);
 		});
 	}
 
