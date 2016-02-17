@@ -1664,4 +1664,119 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 		}
 	}
+
+	/**
+	 * Utility method to act on a user after it has been saved.
+	 *
+	 * This method marks blog posts as "trashed" if an account has
+	 * been disabled and/or marked as spam.
+	 *
+	 * @param   array    $user     Holds the new user data.
+	 * @param   boolean  $isnew    True if a new user is stored.
+	 * @param   boolean  $success  True if user was succesfully stored in the database.
+	 * @param   string   $msg      Message.
+	 * @return  void
+	 */
+	public function onMemberAfterSave($user, $isnew, $success, $msg)
+	{
+		if (!$success)
+		{
+			return false;
+		}
+
+		// New user = shouldn't be anything to do here
+		if ($isnew)
+		{
+			return true;
+		}
+
+		// If the user was blocked and account not approved
+		// OR email address starts with SPAM_
+		if (($user['block'] && !$user['approved'])
+		 || substr($user['email'], 0, strlen('SPAM_')) == 'SPAM_')
+		{
+			try
+			{
+				// Mark all content as trashed
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+
+				$db = App::get('db');
+
+				$model = new \Components\Collections\Tables\Collection($db);
+
+				$entries = $model->find('list', array(
+					'created_by' => $user['id']
+				));
+
+				foreach ($entries as $entry)
+				{
+					$entry = new \Components\Collections\Models\Collection($entry);
+					$entry->set('state', 2);
+
+					if (!$entry->store(false))
+					{
+						throw new Exception($entry->getError());
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				//$this->_subject->setError($e->getMessage());
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * Remove all user blog entries for the given user ID
+	 *
+	 * Method is called after user data is deleted from the database
+	 *
+	 * @param   array    $user     Holds the user data
+	 * @param   boolean  $success  True if user was succesfully stored in the database
+	 * @param   string   $msg      Message
+	 * @return  boolean
+	 */
+	public function onMemberAfterDelete($user, $success, $msg)
+	{
+		if (!$success)
+		{
+			return false;
+		}
+
+		$userId = \Hubzero\Utility\Arr::getValue($user, 'id', 0, 'int');
+
+		if ($userId)
+		{
+			try
+			{
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+
+				$db = App::get('db');
+
+				$model = new \Components\Collections\Tables\Collection($db);
+
+				$entries = $model->find('list', array(
+					'created_by' => $userId
+				));
+
+				foreach ($entries as $entry)
+				{
+					$entry = new \Components\Collections\Models\Collection($entry);
+
+					if (!$entry->delete())
+					{
+						throw new Exception($entry->getError());
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				//$this->_subject->setError($e->getMessage());
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

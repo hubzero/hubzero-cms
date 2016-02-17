@@ -328,7 +328,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	 * @param   string   $msg      message
 	 * @return  void
 	 */
-	public function onAfterStoreUser($user, $isnew, $succes, $msg)
+	public function onAfterStoreUser($user, $isnew, $success, $msg)
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
 
@@ -567,6 +567,11 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
+
+		if ($success)
+		{
+			\Event::trigger('members.onMemberAfterSave', array($user, $isnew, $success, $msg));
+		}
 	}
 
 	/**
@@ -577,9 +582,9 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	 * @param   string   $msg      message
 	 * @return  boolean  True on success
 	 */
-	public function onUserAfterDelete($user, $succes, $msg)
+	public function onUserAfterDelete($user, $success, $msg)
 	{
-		return $this->onAfterDeleteUser($user, $succes, $msg);
+		return $this->onAfterDeleteUser($user, $success, $msg);
 	}
 
 	/**
@@ -590,7 +595,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	 * @param   string   $msg      message
 	 * @return  boolean  True on success
 	 */
-	public function onAfterDeleteUser($user, $succes, $msg)
+	public function onAfterDeleteUser($user, $success, $msg)
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
 
@@ -612,6 +617,11 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		if ($quota->id)
 		{
 			$quota->delete();
+		}
+
+		if ($success)
+		{
+			\Event::trigger('members.onMemberAfterDelete', array($user, $success, $msg));
 		}
 
 		return true;
