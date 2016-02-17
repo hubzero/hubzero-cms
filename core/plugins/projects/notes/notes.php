@@ -809,7 +809,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
-		ddie($model);
+
 		if (!$model->params->get('notes_public', 0))
 		{
 			return false;
