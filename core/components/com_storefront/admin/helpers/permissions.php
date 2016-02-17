@@ -70,7 +70,7 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set('core.' . $action, $user->authorise($action, $assetName));
+			$result->set('core.' . $action, $user->authorise('core.' . $action, $assetName));
 		}
 
 		return $result;
