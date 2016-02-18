@@ -72,6 +72,16 @@ class Records extends Base
 		{
 			foreach ($filters['q'] as $q)
 			{
+				if ($q['o'] == '=' && $q['column'] == 'date')
+				{
+					$q['o'] = 'LIKE';
+					$q['value'] .= '%';
+				}
+				if ($q['o'] == '!=' && $q['column'] == 'date')
+				{
+					$q['o'] = 'NOT LIKE';
+					$q['value'] .= '%';
+				}
 				$records->where($q['column'], $q['o'], $q['value']);
 			}
 		}
