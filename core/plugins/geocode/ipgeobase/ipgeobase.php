@@ -56,7 +56,7 @@ class plgGeocodeIpgeobase extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		return new \Geocoder\Provider\IpGeoBase(
+		return new \Geocoder\Provider\IpGeoBaseProvider(
 			$adapter
 		);
 	}
