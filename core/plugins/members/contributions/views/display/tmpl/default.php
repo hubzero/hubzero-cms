@@ -137,7 +137,7 @@ foreach ($this->results as $category)
 {
 	$amt = count($category);
 
-	if ($amt > 0)
+	if ($amt > 0 && isset($this->cats[$k]))
 	{
 		$foundresults = true;
 
