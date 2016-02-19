@@ -245,6 +245,65 @@ class Entity extends Object
 	}
 
 	/**
+	 * Checks to see if the entity is virus free
+	 *
+	 * @param   bool  $remote  Whether or not to scan remote files
+	 * @return  bool
+	 **/
+	public function isSafe($remote = false)
+	{
+		// Get the command
+		// -i says we only want to hear about infected files
+		// -r says scan recursively, this allows scanning a directory, rather than
+		//    making multiple calls to scan individual files
+		$command = App::get('config')->get('virus_scanner', 'clamscan -i -r --no-summary --block-encrypted');
+
+		// Always scan local, and only scan remote if explicitly requested
+		if ($this->isLocal() || (!$this->isLocal() && $remote))
+		{
+			if (!$this->isLocal())
+			{
+				// Copy to tmp
+				$temp = Manager::getTempPath(uniqid(true) . '.tmp');
+				$this->copy($temp);
+				$path = $temp->getAbsolutePath();
+			}
+			else
+			{
+				$path = $this->getAbsolutePath();
+			}
+
+			// Build the command
+			if (strstr($command, '%s'))
+			{
+				$command = sprintf($command, escapeshellarg($path));
+			}
+			else
+			{
+				$command .= ' ' . escapeshellarg($path);
+			}
+
+			// Execute the scan
+			exec($command, $output, $status);
+
+			// Get rid of the local copy if needed
+			if (!$this->isLocal())
+			{
+				$temp->delete();
+			}
+
+			// Check the status, 1 means virus found, 2 means there was an error
+			// (these definitions are for clamscan specifically)
+			if ($status >= 1)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Grabs the item name
 	 *
 	 * @return  string

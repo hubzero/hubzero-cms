@@ -231,16 +231,28 @@ class File extends Entity
 	/**
 	 * Saves the file contents that are already set on the object
 	 *
+	 * @param   bool  $scan  Whether or not to scan for viruses
 	 * @return  bool
 	 **/
-	public function save()
+	public function save($scan = true)
 	{
 		if (!isset($this->contents)) return false;
 
 		// We can save a stream or string...so see which it is
 		$method = (is_resource($this->contents) && get_resource_type($this->contents) == 'stream') ? 'putStream' : 'put';
 
-		return $this->$method($this->contents);
+		if (!$this->$method($this->contents))
+		{
+			return false;
+		}
+
+		if ($scan && !$this->isSafe())
+		{
+			$this->delete();
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
