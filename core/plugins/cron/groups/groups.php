@@ -109,31 +109,34 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 	 */
 	public function sendGroupAnnouncements(\Components\Cron\Models\Job $job)
 	{
-		$database = App::get('db');
+		// Get all announcements that are not yet sent but want to be mailed
+		$announcements = \Hubzero\Item\Announcement::all()
+			->whereEquals('email', 1)
+			->whereEquals('sent', 0)
+			->whereEquals('state', 1)
+			->whereEquals('scope', 'group')
+			->rows();
 
-		// get hubzero announcement object
-		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($database);
+		include_once(dirname(dirname(__DIR__)) . DS . 'groups' . DS . 'announcements' . DS . 'announcements.php');
 
-		// get all announcements that are not yet sent but want to be mailed
-		$announcements = $hubzeroAnnouncement->find(array('email' => 1,'sent' => 0));
-
-		// loop through each announcement
+		// Loop through each announcement
 		foreach ($announcements as $announcement)
 		{
-			// load the announcement object
-			$hubzeroAnnouncement->load($announcement->id);
-
 			// check to see if we can send
-			if ($hubzeroAnnouncement->announcementPublishedForDate())
+			if ($announcement->inPublishWindow())
 			{
-				// email announcement
-				$hubzeroAnnouncement->emailAnnouncement();
+				// get all group members
+				$group = \Hubzero\User\Group::getInstance($announcement->get('scope_id'));
 
-				// mark as sent
-				$hubzeroAnnouncement->sent = 1;
-				$hubzeroAnnouncement->save($hubzeroAnnouncement);
+				if (plgGroupsAnnouncements::send($announcement, $group))
+				{
+					// mark as sent
+					$announcement->set('sent', 1);
+					$announcement->save();
+				}
 			}
 		}
+
 		return true;
 	}
 }

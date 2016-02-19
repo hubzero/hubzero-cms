@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 ?>
-<?php if ($this->total > 0) : ?>
+<?php if ($this->rows->count() > 0) : ?>
 	<div class="scontainer">
 		<?php foreach ($this->rows as $row) : ?>
 			<?php
@@ -45,7 +45,7 @@ $this->css()
 				     ->set('option', $this->option)
 				     ->set('group', $this->group)
 				     ->set('authorized', $this->authorized)
-				     ->set('announcement', new GroupsModelAnnouncement($row))
+				     ->set('announcement', $row)
 				     ->set('showClose', true)
 				     ->display();
 			?>

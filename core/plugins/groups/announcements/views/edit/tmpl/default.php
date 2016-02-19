@@ -109,8 +109,8 @@ $this->js()
 			</fieldset>
 
 			<label for="field-email" id="email-label">
-				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->email == 1) { echo 'checked="checked"'; } ?> />
-				<?php if ($this->announcement->sent == 1) : ?>
+				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->get('email') == 1) { echo 'checked="checked"'; } ?> />
+				<?php if ($this->announcement->get('sent') == 1) : ?>
 					<span class="important"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_RESEND'); ?></span>
 				<?php else : ?>
 					<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_MEMBERS'); ?>

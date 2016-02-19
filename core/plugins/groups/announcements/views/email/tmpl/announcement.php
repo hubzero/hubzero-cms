@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // get the group
-$group = \Hubzero\User\Group::getInstance( $this->announcement->scope_id );
+$group = \Hubzero\User\Group::getInstance($this->announcement->get('scope_id'));
 $groupLink = rtrim(Request::base(), DS) . DS . 'groups' . DS . $group->get('cn');
 
 // define color
@@ -42,7 +42,7 @@ $bgcolor = '#FBF1BE';
 $bdcolor = '#E9E1BC';
 
 // if high priority
-if ($this->announcement->priority == 1)
+if ($this->announcement->get('priority') == 1)
 {
 	$bgcolor = '#ffd3d4';
 	$bdcolor = '#e9bcbc';

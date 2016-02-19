@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // get the group
-$group = \Hubzero\User\Group::getInstance($this->announcement->scope_id);
+$group = \Hubzero\User\Group::getInstance($this->announcement->get('scope_id'));
 $groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');
 
 echo Lang::txt('Group Announcement') . ' - ' . $group->get('description') . "\n";

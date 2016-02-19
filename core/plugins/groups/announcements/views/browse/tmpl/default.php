@@ -64,14 +64,14 @@ $this->js();
 		</div><!-- / .container -->
 
 		<div class="acontainer">
-			<?php if ($this->total > 0) : ?>
+			<?php if ($this->rows->count() > 0) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
 						$this->view('item')
 						     ->set('option', $this->option)
 						     ->set('group', $this->group)
 						     ->set('authorized', $this->authorized)
-						     ->set('announcement', new GroupsModelAnnouncement($row))
+						     ->set('announcement', $row)
 						     ->set('showClose', false)
 						     ->display();
 					?>
@@ -83,14 +83,10 @@ $this->js();
 			<?php endif; ?>
 
 			<?php
-				$pageNav = $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-				$pageNav->setAdditionalUrlParam('active', 'announcements');
-				echo $pageNav->render();
+			$pageNav = $this->rows->pagination;
+			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+			$pageNav->setAdditionalUrlParam('active', 'announcements');
+			echo $pageNav;
 			?>
 			<div class="clearfix"></div>
 		</div><!-- / .acontainer -->

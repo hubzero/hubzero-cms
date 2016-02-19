@@ -42,7 +42,7 @@ $class = 'unpublished';
 //   * published (not deleted)
 //   * publish up before now
 //   * publish down after now
-if ($this->announcement->isAvailable())
+if ($this->announcement->get('state') == 1 && $this->announcement->inPublishWindow())
 {
 	$class = 'published';
 }
@@ -72,7 +72,7 @@ if ($closed == 'closed' && $this->showClose == true)
 		<span class="unpublished-message"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_NOT_ACTIVE'); ?></span>
 	<?php endif; ?>
 	<div class="announcement">
-		<?php echo $this->announcement->content('parsed'); ?>
+		<?php echo $this->announcement->content; ?>
 		<dl class="entry-meta">
 			<dt class="entry-id">
 				<?php echo $this->announcement->get('id'); ?>
@@ -80,11 +80,8 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php if ($this->authorized == 'manager') : ?>
 			<dd class="entry-author">
 				<?php
-					$profile = $this->announcement->creator();
-					if (is_object($profile) && $profile->get('name') != '')
-					{
-						echo $this->escape($profile->get('name'));
-					}
+				$profile = $this->announcement->creator();
+				echo $this->escape($profile->get('name', Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_UNKNOWN')));
 				?>
 			</dd>
 		<?php endif; ?>
@@ -101,10 +98,10 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
 			<dd class="entry-options">
 				<?php if (User::get('id') == $this->announcement->get('created_by') || $this->authorized == 'manager') : ?>
-					<a class="icon-edit edit" href="<?php echo Route::url($this->announcement->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
+					<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=edit&id=' . $this->announcement->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
 						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 					</a>
-					<a class="icon-delete delete" href="<?php echo Route::url($this->announcement->link('delete')); ?>" data-confirm="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
+					<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=delete&id=' . $this->announcement->get('id')); ?>" data-confirm="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
 						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
 					</a>
 				<?php endif; ?>
@@ -112,7 +109,7 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php endif; ?>
 		</dl>
 	<?php if ($this->showClose) : ?>
-		<a class="close" href="<?php echo Route::url($this->announcement->link()); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
+		<a class="close" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
 			<span><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
 		</a>
 	<?php endif; ?>

@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // get the group
-$group = \Hubzero\User\Group::getInstance($this->announcement->scope_id);
+$group = \Hubzero\User\Group::getInstance($this->announcement->get('scope_id'));
 $groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');
 
 // define color
@@ -107,7 +107,7 @@ if ($this->announcement->priority == 1)
 			<tr>
 				<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
 					<strong><?php echo $group->get('description'); ?></strong>,
-					<a href="<?php echo $groupLink . DS . 'announcements'; ?>"><?php echo $groupLink . DS . 'announcements'; ?></a>
+					<a href="<?php echo $groupLink . '/announcements'; ?>"><?php echo $groupLink . '/announcements'; ?></a>
 				</th>
 			</tr>
 		</thead>
