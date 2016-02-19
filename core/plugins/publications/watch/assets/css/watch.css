@@ -15,18 +15,17 @@
 
 .watch {
 	background: #f8ffff;
-	background: -moz-linear-gradient(top, #f8ffff, #FFFFFF);
 	border: 2px solid #d4eeed;
-	padding: 0.5em 1em 0.5em 0;
-	margin: 0 0 2em 0;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	padding: 0.5em;
+	margin: 1em 0;
 	font-size: 90%;
-	line-height: 1.3em;
+}
+.watch p {
+	margin: 0;
+	padding: 0;
 }
 .watch.watching {
 	background: #ecffe8;
-	background: -moz-linear-gradient(top, #ecffe8, #FFFFFF);
 	border: 2px solid #cbe1c6;
 	color: green;
 }
@@ -34,9 +33,9 @@
 	border: none;
 }
 .watch:before {
-	width: 45px;
-	height: 45px;
-	font-size: 45px;
+	width: 1em;
+	height: 1em;
+	font-size: 4em;
 	font-family: 'Fontcons';
 	color: #c4d2d6;
 	content: "\f029";
@@ -47,20 +46,18 @@
 	color: #93c089;
 	content: "\2611";
 }
-/* Info tips
---------------------------------------------- */
 
+/* Info tips */
 .pub-info-pop:before {
 	content: "\f059";
-	width: 22px;
-	height: 22px;
-	font-size: 22px;
+	width: 1em;
+	height: 1em;
+	font-size: 2em;
 	font-family: 'Fontcons';
 	color: #333;
 	margin-right: 0.2em;
 	font-weight: normal;
 }
-
 .pub-info-pop {
 	padding: 0.2em 1em;
 	margin: 0;

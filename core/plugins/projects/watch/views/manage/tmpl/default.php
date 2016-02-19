@@ -38,7 +38,7 @@ $this->css();
 ?>
 
 <div id="abox-content">
-	<h3><?php echo $this->watch ? Lang::txt('PLG_PROJECTS_WATCH_MANAGE') : Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBE'); ?></h3>
+	<h3><?php echo $this->watch->get('id') ? Lang::txt('PLG_PROJECTS_WATCH_MANAGE') : Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBE'); ?></h3>
 	<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->project->link() . '&active=watch&action=save'); ?>">
 		<fieldset >
 			<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />

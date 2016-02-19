@@ -41,37 +41,37 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $publication 	Current publication
-	 * @return     array
+	 * @param   object  $publication  Current publication
+	 * @return  array
 	 */
-	public function &onPublicationSubAreas( $publication )
+	public function &onPublicationSubAreas($publication)
 	{
 		$areas = array();
+
 		if ($publication->category()->_params->get('plg_watch', 1) == 1)
 		{
-			$areas = array(
-				'watch' => Lang::txt('PLG_PUBLICATION_WATCH')
-			);
+			$areas['watch'] = Lang::txt('PLG_PUBLICATION_WATCH');
 		}
+
 		return $areas;
 	}
 
 	/**
 	 * Return data on a publication sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $publication 	Current publication
-	 * @param      string  $option    		Name of the component
-	 * @param      integer $miniview  		View style
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   integer  $miniview     View style
+	 * @return  array
 	 */
-	public function onPublicationSub( $publication, $option, $miniview=0 )
+	public function onPublicationSub($publication, $option, $miniview=0)
 	{
 		$arr = array(
 			'html'    => '',
@@ -81,8 +81,8 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 
 		// Check if our area is in the array of areas we want to return results for
 		$areas = array('watch');
-		if (!array_intersect( $areas, $this->onPublicationSubAreas( $publication ) )
-		&& !array_intersect( $areas, array_keys( $this->onPublicationSubAreas( $publication ) ) ))
+		if (!array_intersect($areas, $this->onPublicationSubAreas($publication))
+		 && !array_intersect($areas, array_keys($this->onPublicationSubAreas($publication))))
 		{
 			return false;
 		}
@@ -93,12 +93,8 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$this->database = App::get('db');
 		$this->publication = $publication;
-
-		// Item watch class
-		$this->watch   = new \Hubzero\Item\Watch($this->database);
-		$this->action  = strtolower(Request::getWord('action', ''));
+		$this->action = strtolower(Request::getWord('action', ''));
 
 		switch ($this->action)
 		{
@@ -118,27 +114,18 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show subscription status
 	 *
-	 * @return  HTML
+	 * @return  string  HTML
 	 */
 	private function _status()
 	{
 		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  =>'publications',
-				'element' =>'watch',
-				'name'    =>'index'
-			)
-		);
-
-		$view->publication = $this->publication;
-
-		// Is user watching item?
-		$view->watched = $this->watch->isWatching(
-			$this->publication->get('id'),
-			'publication',
-			User::get('id')
-		);
+		$view = $this->view('default', 'index')
+			->set('publication', $this->publication)
+			->set('watched', \Hubzero\Item\Watch::isWatching(
+				$this->publication->get('id'),
+				'publication',
+				User::get('id')
+			));
 
 		// Return the output
 		return $view->loadTemplate();
@@ -147,7 +134,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Subscribe
 	 *
-	 * @return  HTML
+	 * @return  string  HTML
 	 */
 	private function _subscribe()
 	{
@@ -166,13 +153,14 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		// Save subscription
 		if ($confirm)
 		{
-			$this->watch->loadRecord(
+			$watch = \Hubzero\Item\Watch::oneByScope(
 				$this->publication->get('id'),
 				'publication',
 				User::get('id'),
 				$email
 			);
-			if ($this->action == 'unsubscribe' && !$this->watch->id)
+
+			if ($this->action == 'unsubscribe' && !$watch->get('id'))
 			{
 				App::redirect(
 					Route::url($this->publication->link()),
@@ -180,20 +168,18 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 					'error'
 				);
 			}
-			$this->watch->item_id    = $this->publication->get('id');
-			$this->watch->item_type  = 'publication';
-			$this->watch->created_by = User::get('id');
-			$this->watch->state      = $this->action == 'subscribe' ? 1 : 2;
-			if ($this->watch->check())
-			{
-				$this->watch->store();
-			}
 
-			if ($this->watch->getError())
+			$watch->set('item_id', $this->publication->get('id'));
+			$watch->set('item_type', 'publication');
+			$watch->set('created_by', User::get('id'));
+			$watch->set('state', ($this->action == 'subscribe' ? 1 : 2));
+			$watch->save();
+
+			if ($err = $watch->getError())
 			{
 				App::redirect(
 					Route::url($this->publication->link()),
-					$this->watch->getError(),
+					$err,
 					'error'
 				);
 			}
@@ -214,25 +200,20 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Notify subscribers of new activity
 	 *
-	 * @param      object  $publication 	Publication model
-	 * @return     array
+	 * @param   object  $publication  Publication model
+	 * @param   string  $activity
+	 * @return  void
 	 */
-	public function onWatch( $publication, $activity = 'newversion')
+	public function onWatch($publication, $activity = 'newversion')
 	{
-		$database = App::get('db');
 		$this->publication = $publication;
 
-		// Item watch class
-		$watch   = new \Hubzero\Item\Watch($database);
-
-		$filters = array(
-			'item_type' => 'publication',
-			'item_id'   => $publication->get('id'),
-			'state'     => 1
-		);
-
 		// Get subscribers
-		$subscribers = $watch->getRecords($filters);
+		$subscribers = \Hubzero\Item\Watch::all()
+			->whereEquals('item_type', 'publication')
+			->whereEquals('item_id', $publication->get('id'))
+			->whereEquals('state', 1)
+			->rows();
 
 		// Determine message and url
 		switch ($activity)
@@ -266,8 +247,12 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	/**
 	 * Handles the actual sending of emails
 	 *
-	 * @return bool
-	 **/
+	 * @param   object  $subscriber
+	 * @param   string  $message
+	 * @param   string  $subject
+	 * @param   string  $url
+	 * @return  bool
+	 */
 	private function _sendEmail($subscriber, $message, $subject, $url)
 	{
 		$eview = new \Hubzero\Mail\View(array(
@@ -323,6 +308,10 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		if (!$message->send())
 		{
 			$this->setError('Failed to mail %s', $email);
+
+			return false;
 		}
+
+		return true;
 	}
 }

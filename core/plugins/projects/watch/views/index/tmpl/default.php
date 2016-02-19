@@ -38,13 +38,13 @@ $this->css();
 ?>
 
 <div class="watch">
-	<?php if ($this->watch) { ?>
+	<?php if ($this->watched) { ?>
 		<p>
 			<a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_WATCH_MANAGE'); ?></a>
 		</p>
 	<?php } else { ?>
 		<p>
-			<a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>" class="showinbox"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBE')); ?></a> <span class="new-item"></span>
+			<a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>" class="showinbox"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBE')); ?></a>
 		</p>
 	<?php } ?>
 </div>
