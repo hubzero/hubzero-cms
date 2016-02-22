@@ -308,7 +308,17 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			$auditor = new \Hubzero\Content\Auditor('resource');
 			$auditor->registerTest(new \Components\Resources\Helpers\Tests\Links);
 
-			$auditor->check($data);
+			$results = $auditor->check($data);
+
+			// Loop through each record
+			foreach ($results as $reportcard)
+			{
+				// Loop through each test result and save to the database
+				foreach ($reportcard['tests'] as $result)
+				{
+					$result->save();
+				}
+			}
 		}
 
 		return true;
