@@ -487,26 +487,21 @@ class Comment extends Model
 	/**
 	 * Vote this entry up or down
 	 *
-	 * @param   integer $how How to vote (up or down)
-	 * @return  boolean False if error, True on success
+	 * @param   integer  $how  How to vote (up or down)
+	 * @return  boolean  False if error, True on success
 	 */
 	public function vote($how)
 	{
-		$v = new Vote($this->_db);
-		$v->created_by = \User::get('id');
-		$v->item_type  = 'comment';
-		$v->vote       = $how;
-		$v->item_id    = $this->get('id');
-
-		// Check content
-		if (!$v->check())
-		{
-			$this->setError($v->getError());
-			return false;
-		}
+		$v = Vote::blank();
+		$v->set([
+			'created_by' => \User::get('id'),
+			'item_type'  => 'comment',
+			'vote'       => $how,
+			'item_id'    => $this->get('id')
+		]);
 
 		// Store new content
-		if (!$v->store())
+		if (!$v->save())
 		{
 			$this->setError($v->getError());
 			return false;

@@ -259,7 +259,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Vote on a comment
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	protected function _vote()
 	{
@@ -271,33 +271,28 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		$no_html = Request::getInt('no_html', 0);
 
-		// Get comments on this article
-		$v = new \Hubzero\Item\Vote($this->database);
-		$v->created_by = User::get('id');
-		$v->item_type  = 'comment';
-
+		// Record the vote
 		if ($item_id = Request::getInt('voteup', 0))
 		{
-			$v->vote    = 1;
+			$how = 1;
 		}
 		else if ($item_id = Request::getInt('votedown', 0))
 		{
-			$v->vote    = -1;
+			$how = -1;
 		}
-		$v->item_id    = $item_id;
 
-		// Check content
-		if (!$v->check())
+		$v = \Hubzero\Item\Vote::blank();
+		$v->set(array(
+			'created_by' => User::get('id'),
+			'item_type'  => 'comment',
+			'vote'       => $how,
+			'item_id'    => $item_id
+		));
+
+		// Store new content
+		if (!$v->save())
 		{
 			$this->setError($v->getError());
-		}
-		else
-		{
-			// Store new content
-			if (!$v->store())
-			{
-				$this->setError($v->getError());
-			}
 		}
 
 		if ($this->getError() && !$no_html)
@@ -314,7 +309,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		$this->view->item = new \Hubzero\Item\Comment($this->database);
 		$this->view->item->load($v->item_id);
-		if ($v->vote == 1)
+		if ($v->get('vote') == 1)
 		{
 			$this->view->item->positive++;
 		}
@@ -326,7 +321,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError($this->view->item->getError());
 		}
-		$this->view->item->vote = $v->vote;
+		$this->view->item->vote = $v->get('vote');
 
 		if (!$no_html)
 		{
