@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $base = Request::base();
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+if (Request::isSecure())
 {
 	$base = str_replace('http://', 'https://', $base);
 }
@@ -45,14 +45,20 @@ $this->css();
 ?>
 
 <div class="captcha-block">
-	<table>
-		<tbody>
-			<tr>
-				<td>
-					<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
-				</td>
-				<td>
-					<script type="text/javascript">
+	<div class="grid">
+		<div class="col span8">
+			<label for="imgCatchaTxt<?php echo $this->total; ?>">
+				<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_ENTER_CAPTCHA_VALUE'); ?>
+				<input type="text" name="imgCatchaTxt" id="imgCatchaTxt<?php echo $this->total; ?>" />
+			</label>
+
+			<input type="hidden" name="imgCatchaTxtInst" id="imgCatchaTxtInst" value="<?php echo $this->total; ?>" />
+		</div>
+		<div class="col span4 omega">
+			<div class="captcha-wrap">
+				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
+
+				<script type="text/javascript">
 					//<![CDATA[
 					function reloadCapthcha<?php echo $this->total; ?>(instanceNo)
 					{
@@ -60,18 +66,10 @@ $this->css();
 						document.getElementById('captchaCode'+instanceNo).src = captchaSrc;
 					}
 					//]]>
-					</script>
+				</script>
 
-					<a href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" ><?php echo Lang::txt('PLG_HUBZERO_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<label for="imgCatchaTxt<?php echo $this->total; ?>">
-		<?php echo Lang::txt('PLG_HUBZERO_IMAGECAPTCHA_ENTER_CAPTCHA_VALUE'); ?>
-		<input type="text" name="imgCatchaTxt" id="imgCatchaTxt<?php echo $this->total; ?>" />
-	</label>
-
-	<input type="hidden" name="imgCatchaTxtInst" id="imgCatchaTxtInst" value="<?php echo $this->total; ?>" />
-</div>
+				<a class="tooltips" href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" title="<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?>"><?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?></a>
+			</div><!-- /.captcha-wrap -->
+		</div>
+	</div><!-- / .grid -->
+</div><!-- /.captcha-block -->

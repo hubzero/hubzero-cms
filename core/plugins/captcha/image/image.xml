@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2015 HUBzero Foundation, LLC.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<extension version="1.5" type="plugin" group="captcha">
+	<name>PLG_CAPTCHA_IMAGE</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>PLG_CAPTCHA_IMAGE_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="image">image.php</filename>
+		<filename>assets/css/imagea.css</filename>
+		<filename>assets/js/image.js</filename>
+		<filename>assets/fonts/adlibBT.png</filename>
+		<filename>assets/fonts/adlibBT.TTF</filename>
+		<filename>views/display/tmpl/default.php</filename>
+		<filename>views/display/tmpl/default.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_captcha_image.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="bgColor" type="text" size="25" default="#ffffff" label="PLG_CAPTCHA_IMAGE_BACKGROUND_LABEL" description="PLG_CAPTCHA_IMAGE_BACKGROUND_DESC" />
+				<field name="textColor" type="text" size="25" default="#2c8007" label="PLG_CAPTCHA_IMAGE_TEXT_LABEL" description="PLG_CAPTCHA_IMAGE_TEXT_DESC" />
+				<field name="imageFunction" type="list" default="Adv" label="PLG_CAPTCHA_IMAGE_FUNCTION_LABEL" description="PLG_CAPTCHA_IMAGE_FUNCTION_DESC">
+					<option value="Plain">PLG_CAPTCHA_IMAGE_FUNCTION_PLAIN</option>
+					<option value="Adv">PLG_CAPTCHA_IMAGE_FUNCTION_DISTORTED</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

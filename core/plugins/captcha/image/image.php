@@ -25,7 +25,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
@@ -34,48 +33,64 @@
 defined('_HZEXEC_') or die();
 
 /**
- * HUBzero plugin class for displaying image CAPTCHAs
+ * Plugin class for displaying image CAPTCHAs
  */
-class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
+class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Image background color
-	 * @var	string
+	 *
+	 * @var  string
 	 */
 	private $_bgColor = '#000000';
 
 	/**
 	 * Text color
-	 * @var	string
+	 *
+	 * @var  string
 	 */
 	private $_textColor = '#ff0000';
 
 	/**
+	 * Initialise the captcha
+	 *
+	 * @param   string   $id  The id of the field.
+	 * @return  boolean  True on success, false otherwise
+	 */
+	public function onInit($id = 'image_captcha_1')
+	{
+		return true;
+	}
+
+	/**
 	 * Displays either a CAPTCHA image or form field
 	 *
-	 * @return string
+	 * @param   string  $name   The name of the field. Not Used.
+	 * @param   string  $id     The id of the field.
+	 * @param   string  $class  The class of the field. This should be passed as 'class="required"'.
+	 * @return  string
 	 */
-	public function onGetCaptcha()
+	public function onDisplay($name = null, $id = 'image_captcha_1', $class = '')
 	{
-		$showCaptcha = Request::getVar('showCaptcha', '');
-		if ($showCaptcha)
+		if (Request::getVar('showCaptcha', ''))
 		{
 			return $this->_display();
 		}
+
 		return $this->_getCapthcaHtml();
 	}
 
 	/**
 	 * Displays a CAPTCHA image
 	 *
-	 * @return boolean
+	 * @return  boolean
 	 */
 	private function _display()
 	{
@@ -91,13 +106,15 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Checks if a CAPTCHA response is valid
 	 *
-	 * @return boolean True if valid
+	 * @param   string   $word        Supplied CAPTCHA response to check
+	 * @param   string   $instanceNo  CAPTCHA instance number
+	 * @return  boolean  True if valid
 	 */
 	private function _confirm($word, $instanceNo='')
 	{
 		$securiy_code = App::get('session')->get('securiy_code' . $instanceNo);
 
-		if ($word == $securiy_code  &&  ($word != ''))
+		if ($word && $word == $securiy_code)
 		{
 			return true;
 		}
@@ -108,14 +125,15 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Checks for a CAPTCHA response and Calls the CAPTCHA validity check
 	 *
-	 * @return boolean True if valid CAPTCHA response
+	 * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
+	 * @return  boolean  True if valid CAPTCHA response
 	 */
-	public function onValidateCaptcha()
+	public function onCheckAnswer($code = null)
 	{
 		$imgCatchaTxt     = strtolower(Request::getVar('imgCatchaTxt', ''));
 		$imgCatchaTxtInst = Request::getVar('imgCatchaTxtInst', '');
 
-		$option = Request::getVar('option');
+		$option = Request::getCmd('option');
 		$task   = Request::getVar('task');
 
 		if ($imgCatchaTxtInst == '' || $imgCatchaTxt == '')
@@ -123,8 +141,8 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		if (isset($_REQUEST['task']) && $task != 'logout'
-		 && isset($_REQUEST['imgCatchaTxt'])
+		if ($task && $task != 'logout'
+		 && $imgCatchaTxt
 		 && !$this->_confirm($imgCatchaTxt, $imgCatchaTxtInst))
 		{
 			return false;
@@ -147,16 +165,10 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'display'
-			)
-		);
-		$view->task = Request::getVar('task', '');
-		$view->option = Request::getVar('option', '');
-		$view->total = $GLOBALS['totalCaptchas'];
+		$view = $this->view('default', 'display');
+		$view->set('task', Request::getVar('task', ''));
+		$view->set('option', Request::getVar('option', ''));
+		$view->set('total', $GLOBALS['totalCaptchas']);
 
 		return $view->loadTemplate();
 	}
@@ -164,7 +176,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Sets some internal variables
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _setColors()
 	{
@@ -175,7 +187,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Creates a distorted image
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _createImageAdv()
 	{
@@ -425,7 +437,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Creates a plain letter image
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _createImagePlain()
 	{
@@ -473,7 +485,8 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Converts HEX color to RGB
 	 *
-	 * @return string
+	 * @param   string  $hex  Hex value to convert
+	 * @return  string
 	 */
 	private function _hexToRgb($hex)
 	{
@@ -499,7 +512,10 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	/**
 	 * Converts RGB color to HEX
 	 *
-	 * @return string
+	 * @param   string  $r  R color to convert
+	 * @param   string  $g  G color to convert
+	 * @param   string  $b  B color to convert
+	 * @return  string
 	 */
 	private function _rgbToHex($r, $g, $b)
 	{

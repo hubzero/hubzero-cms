@@ -959,7 +959,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 			$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
 			$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>' : '';
 
-			$captchas = Event::trigger('hubzero.onGetCaptcha');
+			$captchas = Event::trigger('captcha.onDisplay');
 
 			if (count($captchas) > 0) { ?>
 				<fieldset>

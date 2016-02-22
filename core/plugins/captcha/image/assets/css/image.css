@@ -1,0 +1,49 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/captcha/image/image.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	image CAPTCHA plugin
+	-- -- -- -- -- -- --
+
+*/
+
+#hubForm .captcha-block label,
+.captcha-block label {
+	padding-top: 1em;
+}
+.captcha-block a {
+	display: block;
+	width: 1em;
+	height: 1em;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 2em;
+	line-height: 1;
+	border: none;
+	position: absolute;
+	top: 1em;
+	right: 1em;
+	color: #999;
+	text-decoration: none;
+	text-align: left;
+}
+.captcha-block a:hover {
+	color: #222;
+	border: none;
+	text-decoration: none;
+}
+.captcha-block a:before {
+	content: "\21BB";
+	font-family: "Fontcons", Helvetica;
+	margin-right: 5em;
+}
+.captcha-wrap {
+	padding-top: 1em;
+	position: relative;
+}

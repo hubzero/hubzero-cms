@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 HUBzero Foundation, LLC.
+ Copyright 2005-2015 HUBzero Foundation, LLC.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -18,13 +18,24 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<extension version="1.7" type="plugin" group="hubzero">
-	<name>HUBzero - Match CAPTCHA</name>
+<extension version="1.7" type="plugin" group="captcha">
+	<name>PLG_CAPTCHA_MATH</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Generates a math based CAPTCHA</description>
+	<description>PLG_CAPTCHA_MATH_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="matchcaptcha">mathcaptcha.php</filename>
+		<filename plugin="math">math.php</filename>
 	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_captcha_math.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="lower" type="text" size="25" default="0" label="PLG_CAPTCHA_MATH_LOWER_LABEL" description="PLG_CAPTCHA_MATH_LOWER_DESC" />
+				<field name="upper" type="text" size="25" default="10" label="PLG_CAPTCHA_MATH_UPPER_LABEL" description="PLG_CAPTCHA_MATH_UPPER_DESC" />
+			</fieldset>
+		</fields>
+	</config>
 </extension>

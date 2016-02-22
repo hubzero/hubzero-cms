@@ -34,37 +34,51 @@
 defined('_HZEXEC_') or die();
 
 /**
- * HUBzero plugin class for displaying math CAPTCHAs
+ * Plugin class for displaying math CAPTCHAs
  */
-class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
+class plgCaptchaMath extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return a CAPTCHA question
+	 * Displays either a CAPTCHA question
 	 *
-	 * @return     string HTML
+	 * @param   string  $name   The name of the field. Not Used.
+	 * @param   string  $id     The id of the field.
+	 * @param   string  $class  The class of the field. This should be passed as 'class="required"'.
+	 * @return  string
 	 */
-	public function onGetCaptcha()
+	public function onDisplay($name = null, $id = 'image_captcha_1', $class = '')
 	{
 		// Generate a CAPTCHA
-		$problem = array();
-		$problem['operand1'] = rand(0,10);
-		$problem['operand2'] = rand(0,10);
+		$lower = intval($this->params->get('lower'), 0);
+		$upper = intval($this->params->get('upper'), 10);
+		if ($lower > $upper)
+		{
+			$lower = 0;
+		}
+		if ($upper == $lower)
+		{
+			$upper = 10;
+		}
+
+		$problem = array(
+			'operand1' => rand($lower, $upper),
+			'operand2' => rand($lower, $upper)
+		);
 		$problem['sum'] = $problem['operand1'] + $problem['operand2'];
 		$problem['key'] = $this->_generateHash($problem['sum'], date('j'));
 
 		// Build the fields
-
-		$html  = '<label for="captcha_answer">' . "\n";
-		$html .= Lang::txt('PLG_HUBZERO_MATHCAPTCHA_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
-		$html .= "\t" . '<input type="text" name="captcha_answer" id="captcha_answer" value="" size="3" id="answer" class="option" /> <span class="required">' . Lang::txt('PLG_HUBZERO_MATHCAPTCHA_REQUIRED') . '</span>' . "\n";
-		$html .= "\t" . '<input type="hidden" name="captcha_krhash" id="captcha_krhash" value="' . $problem['key'] . '" />' . "\n";
+		$html  = '<label for="captcha-answer">' . "\n";
+		$html .= Lang::txt('PLG_CAPTCHA_MATH_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
+		$html .= "\t" . '<input type="text" name="captcha_answer" id="captcha-answer" value="" size="3" id="answer" class="option" /> <span class="required">' . Lang::txt('JREQUIRED') . '</span>' . "\n";
+		$html .= "\t" . '<input type="hidden" name="captcha_krhash" id="captcha-krhash" value="' . $problem['key'] . '" />' . "\n";
 		$html .= '</label>' . "\n";
 
 		// Return the HTML
@@ -72,13 +86,14 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Compare answer to key
+	 * Checks for a CAPTCHA response and Calls the CAPTCHA validity check
 	 *
-	 * @return     boolean True if answer is valid
+	 * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
+	 * @return  boolean  True if valid CAPTCHA response
 	 */
-	public function onValidateCaptcha()
+	public function onCheckAnswer($code = null)
 	{
-		$key = Request::getVar('captcha_krhash', 0);
+		$key    = Request::getVar('captcha_krhash', 0);
 		$answer = Request::getInt('captcha_answer', 0);
 		$answer = $this->_generateHash($answer, date('j'));
 
@@ -86,15 +101,16 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 		{
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
 	 * Generate an answer key
 	 *
-	 * @param      string $input CAPTCHA answer
-	 * @param      string $day   Current day
-	 * @return     string
+	 * @param   string  $input  CAPTCHA answer
+	 * @param   string  $day    Current day
+	 * @return  string
 	 */
 	private function _generateHash($input, $day)
 	{
