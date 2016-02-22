@@ -680,16 +680,9 @@ class Manage extends AdminController
 			return;
 		}
 
-		// Run as hubadmin
-		if (!isset($user))
-		{
-			$user = Component::params('com_update')->get('system_user', 'hubadmin');
-		}
-		$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
 		// build command to run via shell
 		// this will init the git repo, make the inital commit and push to the repo management machine
-		$cmd  = $sudo . 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
+		$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
 		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabProject['ssh_url_to_repo'] . ' 2>&1';
 
 		// execute command
@@ -807,15 +800,8 @@ class Manage extends AdminController
 					continue;
 				}
 
-				// Run as hubadmin
-				if (!isset($user))
-				{
-					$user = Component::params('com_update')->get('system_user', 'hubadmin');
-				}
-				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
 				// setup stage environment
-				$cmd  = $sudo . 'sh ' . dirname(dirname(__DIR__)). DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
+				$cmd  = 'sh ' . dirname(dirname(__DIR__)). DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
 				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $group->get('cn') . ' ' . $gitlabProject['ssh_url_to_repo'] . ' 2>&1';
 
 				// execute command
