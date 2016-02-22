@@ -234,6 +234,7 @@ class JUser extends JObject
 			$this->sendEmail = 0;
 			$this->aid = 0;
 			$this->guest = 1;
+			$this->usertype = 'deprecated';
 		}
 	}
 
@@ -504,12 +505,8 @@ class JUser extends JObject
 	/**
 	 * Method to get the user parameters
 	 *
-	 * This function tries to load an XML file based on the user's usertype. The filename of the xml
-	 * file is the same as the usertype. The functionals has a static variable to store the parameters
-	 * setup file base path. You can call this function statically to set the base path if needed.
-	 *
-	 * @param   boolean  $loadsetupfile  If true, loads the parameters setup file. Default is false.
-	 * @param   path     $path           Set the parameters setup file base path to be used to load the user parameters.
+	 * @param   boolean  $loadsetupfile  *deprecated*
+	 * @param   path     $path           *deprecated*
 	 *
 	 * @return  object   The user parameters object.
 	 *
@@ -517,33 +514,6 @@ class JUser extends JObject
 	 */
 	public function getParameters($loadsetupfile = false, $path = null)
 	{
-		static $parampath;
-
-		// Set a custom parampath if defined
-		if (isset($path))
-		{
-			$parampath = $path;
-		}
-
-		// Set the default parampath if not set already
-		if (!isset($parampath))
-		{
-			$parampath = JPATH_ADMINISTRATOR . 'components/com_users/models';
-		}
-
-		if ($loadsetupfile)
-		{
-			$type = str_replace(' ', '_', strtolower($this->usertype));
-
-			$file = $parampath . '/' . $type . '.xml';
-			if (!file_exists($file))
-			{
-				$file = $parampath . '/' . 'user.xml';
-			}
-
-			$this->_params->loadSetupFile($file);
-		}
-
 		return $this->_params;
 	}
 
@@ -908,6 +878,8 @@ class JUser extends JObject
 
 		// Assuming all is well at this point lets bind the data
 		$this->setProperties($table->getProperties());
+
+		$this->usertype = 'deprecated';
 
 		return true;
 	}
