@@ -182,6 +182,7 @@ if ($item->get('comments'))
 }
 	if (!User::isGuest())
 	{
+		$now = Date::of('now');
 		?>
 		<div class="commnts">
 			<div class="comment convo clearfix">
