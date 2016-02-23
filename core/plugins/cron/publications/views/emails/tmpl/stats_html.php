@@ -252,7 +252,7 @@ $more = count($this->pubstats) - $this->limit;
 													$sefManage = $baseManage . DS . $stat->publication_id;
 													$sefView   = $baseView . DS . $stat->publication_id;
 
-													$thumb = $baseView . DS . $stat->publication_id . DS . $stat->id . DS . 'Image:thumb';
+													$thumb = $baseView . DS . $stat->publication_id . DS . $stat->publication_version_id . DS . 'Image:thumb';
 													$link  = $base . DS . trim($sefView, DS) . $append;
 													$manageLink  = $base . DS . trim($sefManage, DS) . $append;
 											?>
