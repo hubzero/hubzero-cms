@@ -103,6 +103,7 @@ if (isset($this->results['js'])): ?>
 		<div class="bar">
 			<fieldset>
 				<input type="text" autocomplete="off" name="terms" class="terms" placeholder="<?php echo Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" value="<?php echo a($this->req->getTerms()) ?>" />
+				<input type="hidden" name="domain" value="<?php echo Request::getString('domain', ''); ?>" />
 				<a class="clear" href="<?php echo preg_replace('/[?&]+$/', '', $this->base . ($qs ? '?' . ltrim(preg_replace('/&?terms=[^&]*/', '', $qs), '&') : '')) ?>">&#x2716;</a>
 				<button class="submit btn" type="submit"><span><?php echo Lang::txt('COM_SEARCH_SEARCH'); ?></span></button>
 			</fieldset>
