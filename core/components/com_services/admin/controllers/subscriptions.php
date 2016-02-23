@@ -144,7 +144,7 @@ class Subscriptions extends AdminController
 		$this->view->customer = User::getInstance($this->view->subscription->uid);
 
 		// check available user funds
-		$BTL = new \Hubzero\Bank\Teller($this->database, $this->view->subscription->uid);
+		$BTL = new \Hubzero\Bank\Teller($this->view->subscription->uid);
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance;

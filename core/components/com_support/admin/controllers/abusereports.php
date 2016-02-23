@@ -406,14 +406,14 @@ class Abusereports extends AdminController
 		// Give some points to whoever reported abuse
 		if ($banking && $gratitude)
 		{
-			$BC = new \Hubzero\Bank\Config($this->database);
+			$BC = \Hubzero\Bank\Config::values();
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)
 			{
 				$ruser = User::getInstance($report->created_by);
 				if (is_object($ruser) && $ruser->get('id'))
 				{
-					$BTL = new \Hubzero\Bank\Teller($this->database, $ruser->get('id'));
+					$BTL = new \Hubzero\Bank\Teller($ruser->get('id'));
 					$BTL->deposit($ar, Lang::txt('COM_SUPPORT_ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
 				}
 			}

@@ -319,7 +319,7 @@ class Shop extends SiteController
 		}
 
 		// Check available user funds
-		$BTL = new Teller($this->database, User::get('id'));
+		$BTL = new Teller(User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -373,7 +373,7 @@ class Shop extends SiteController
 		$this->view->cost = $item->getCartItems(User::get('id'), 'cost');
 
 		// Check available user funds
-		$BTL = new Teller($this->database, User::get('id'));
+		$BTL = new Teller(User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -439,7 +439,7 @@ class Shop extends SiteController
 		$cost = $item->getCartItems(User::get('id'),'cost');
 
 		// Check available user funds
-		$BTL = new Teller($this->database, User::get('id'));
+		$BTL = new Teller(User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds = $balance - $credit;
@@ -515,7 +515,7 @@ class Shop extends SiteController
 			}
 
 			// Put the purchase amount on hold
-			$BTL = new Teller($this->database, User::get('id'));
+			$BTL = new Teller(User::get('id'));
 			$BTL->hold($order->total, Lang::txt('COM_STORE_BANKING_HOLD'), 'store', $orderid);
 
 			$message = new \Hubzero\Mail\Message();
@@ -608,7 +608,7 @@ class Shop extends SiteController
 		}
 
 		// Check available user funds
-		$BTL = new Teller($this->database, User::get('id'));
+		$BTL = new Teller(User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds = $balance - $credit;

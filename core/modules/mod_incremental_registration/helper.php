@@ -325,7 +325,7 @@ class Helper extends Module
 
 						if ($award)
 						{
-							$BTL = new \Hubzero\Bank\Teller($dbh, $uid);
+							$BTL = new \Hubzero\Bank\Teller($uid);
 							$BTL->deposit($award, Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'), 'registration', 0);
 						}
 

@@ -481,7 +481,7 @@ class Wishlists extends SiteController
 			// check available user funds
 			if ($action == 'addbonus' && $this->banking)
 			{
-				$BTL = new Teller($this->database, User::get('id'));
+				$BTL = new Teller(User::get('id'));
 				$balance = $BTL->summary();
 				$credit  = $BTL->credit_summary();
 				$funds   = $balance - $credit;
@@ -900,7 +900,7 @@ class Wishlists extends SiteController
 		$funds = 0;
 		if ($this->banking)
 		{
-			$BTL = new Teller($this->database, User::get('id'));
+			$BTL = new Teller(User::get('id'));
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$funds   = $balance - $credit;
@@ -1099,7 +1099,7 @@ class Wishlists extends SiteController
 		if ($reward && $this->banking)
 		{
 			// put the  amount on hold
-			$BTL = new Teller($this->database, User::get('id'));
+			$BTL = new Teller(User::get('id'));
 			$BTL->hold($reward, Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title, 'wish', $row->get('id'));
 		}
 
@@ -1543,7 +1543,7 @@ class Wishlists extends SiteController
 		}
 
 		// check available user funds
-		$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
+		$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -1564,7 +1564,7 @@ class Wishlists extends SiteController
 		}
 
 		// put the  amount on hold
-		$BTL = new Teller($this->database, User::get('id'));
+		$BTL = new Teller(User::get('id'));
 		$BTL->hold(
 			$amount,
 			Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),

@@ -74,18 +74,17 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
 
 		// What month/year is it now?
 		$curmonth = Date::format("F");
-		$curyear = Date::format("Y-m");
+		$curyear  = Date::format("Y-m");
 		$ref = strtotime($curyear);
 
 		$this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
-		$rmsg = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_REVIEWS', $curyear);
+		$rmsg   = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_REVIEWS', $curyear);
 		$resmsg = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_RESOURCES', $curyear);
 
 		// Make sure we distribute royalties only once/ month
-		$MH = new \Hubzero\Bank\MarketHistory($this->database);
-		$royaltyAnswers   = $MH->getRecord('', $action, 'answers', $curyear, $this->_message);
-		$royaltyReviews   = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
-		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
+		$royaltyAnswers   = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'answers', $curyear, $this->_message);
+		$royaltyReviews   = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'reviews', $curyear, $rmsg);
+		$royaltyResources = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'resources', $curyear, $resmsg);
 
 		// Include economy classes
 		if (is_file(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
@@ -117,20 +116,16 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
 				// make a record of royalty payment
 				if (intval($accumulated) > 0)
 				{
-					$MH = new \Hubzero\Bank\MarketHistory($this->database);
-					$data['itemid']       = $ref;
-					$data['date']         = Date::toSql();
-					$data['market_value'] = $accumulated;
-					$data['category']     = 'answers';
-					$data['action']       = $action;
-					$data['log']          = $this->_message;
+					$MH = \Hubzero\Bank\MarketHistory::blank()->set(array(
+						'itemid'       => $ref,
+						'date'         => Date::toSql(),
+						'market_value' => $accumulated,
+						'category'     => 'answers',
+						'action'       => $action,
+						'log'          => $this->_message
+					));
 
-					if (!$MH->bind($data))
-					{
-						$err = $MH->getError();
-					}
-
-					if (!$MH->store())
+					if (!$MH->save())
 					{
 						$err = $MH->getError();
 					}
@@ -177,20 +172,16 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
 			// make a record of royalty payment
 			if (intval($accumulated) > 0)
 			{
-				$MH = new \Hubzero\Bank\MarketHistory($this->database);
-				$data['itemid']       = $ref;
-				$data['date']         = Date::toSql();
-				$data['market_value'] = $accumulated;
-				$data['category']     = 'reviews';
-				$data['action']       = $action;
-				$data['log']          = $rmsg;
+				$MH = \Hubzero\Bank\MarketHistory::blank()->set(array(
+					'itemid'       => $ref,
+					'date'         => Date::toSql(),
+					'market_value' => $accumulated,
+					'category'     => 'reviews',
+					'action'       => $action,
+					'log'          => $rmsg
+				));
 
-				if (!$MH->bind($data))
-				{
-					$err = $MH->getError();
-				}
-
-				if (!$MH->store())
+				if (!$MH->save())
 				{
 					$err = $MH->getError();
 				}
@@ -227,20 +218,16 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
 			// make a record of royalty payment
 			if (intval($accumulated) > 0)
 			{
-				$MH = new \Hubzero\Bank\MarketHistory($this->database);
-				$data['itemid']       = $ref;
-				$data['date']         = Date::toSql();
-				$data['market_value'] = $accumulated;
-				$data['category']     = 'resources';
-				$data['action']       = $action;
-				$data['log']          = $resmsg;
+				$MH = \Hubzero\Bank\MarketHistory::blank()->set(array(
+					'itemid'       => $ref,
+					'date'         => Date::toSql(),
+					'market_value' => $accumulated,
+					'category'     => 'resources',
+					'action'       => $action,
+					'log'          => $resmsg
+				));
 
-				if (!$MH->bind($data))
-				{
-					$err = $MH->getError();
-				}
-
-				if (!$MH->store())
+				if (!$MH->save())
 				{
 					$err = $MH->getError();
 				}

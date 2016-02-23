@@ -102,7 +102,7 @@ class Economy extends Object
 		// Reward review author
 		if (is_object($user) && $user->get('id'))
 		{
-			$BTL = new Teller($this->_db , $user->get('id'));
+			$BTL = new Teller($user->get('id'));
 
 			if (intval($points) > 0)
 			{

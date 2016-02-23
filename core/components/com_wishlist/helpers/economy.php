@@ -123,7 +123,7 @@ class Economy extends Object
 			{
 				foreach ($payees as $p)
 				{
-					$BTL = new Teller($this->_db , $p->uid);
+					$BTL = new Teller($p->uid);
 					$hold = $this->getTotalPayment($wishid, $p->uid);
 					if ($hold)
 					{
@@ -133,9 +133,8 @@ class Economy extends Object
 					}
 				}
 			}
-			 // Delete holds
-			$BT = new Transaction($this->_db);
-			$BT->deleteRecords('wish', 'hold', $wishid);
+			// Delete holds
+			Transaction::deleteRecords('wish', 'hold', $wishid);
 		}
 	}
 
@@ -185,7 +184,7 @@ class Economy extends Object
 					{
 						continue;
 					}
-					$BTLO = new Teller($this->_db , $owner);
+					$BTLO = new Teller($owner);
 					if ($wish->assigned && $wish->assigned == $owner)
 					{
 						//$BTLO->deposit($mainshare, Lang::txt('Bonus for fulfilling assigned wish').' #'.$wishid.' '.Lang::txt('on list').' #'.$wish->wishlist, 'wish', $wishid);
@@ -208,7 +207,7 @@ class Economy extends Object
 				$o = User::getInstance($wish->assigned);
 				if (is_object($o) && $o->get('id'))
 				{
-					$BTLM = new Teller($this->_db , $wish->assigned);
+					$BTLM = new Teller($wish->assigned);
 					$BTLM->deposit($mainshare, Lang::txt('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 				}
 			}
@@ -225,7 +224,7 @@ class Economy extends Object
 						continue;
 					}
 
-					$BTL = new Teller($this->_db, $p->uid);
+					$BTL = new Teller($p->uid);
 					$hold = $this->getTotalPayment($wishid, $p->uid);
 					if ($hold)
 					{
@@ -242,8 +241,7 @@ class Economy extends Object
 			// Remove holds if exist
 			if ($wish->bonus)
 			{
-				$BT = new Transaction($this->_db);
-				$BT->deleteRecords('wish', 'hold', $wishid);
+				Transaction::deleteRecords('wish', 'hold', $wishid);
 			}
 		}
 
@@ -253,7 +251,7 @@ class Economy extends Object
 			$o = User::getInstance($wish->proposed_by);
 			if (is_object($o) && $o->get('id'))
 			{
-				$BTLA = new Teller($this->_db , $wish->proposed_by);
+				$BTLA = new Teller($wish->proposed_by);
 				$BTLA->deposit($wish->ranking, Lang::txt('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist), 'wish', $wishid);
 			}
 		}

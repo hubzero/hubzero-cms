@@ -68,7 +68,7 @@ class Helper extends Module
 		else
 		{
 			// Get the user's point summary and history
-			$BTL = new Teller($database, User::get('id'));
+			$BTL = new Teller(User::get('id'));
 			$this->summary = $BTL->summary();
 			$this->history = $BTL->history($this->limit);
 

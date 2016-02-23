@@ -313,16 +313,15 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 					break;
 
 					case 'question':
-						$BT = new \Hubzero\Bank\Transaction($database);
-						$reward = $BT->getAmount('answers', 'hold', $from_id, $author->get('id'));
+						$reward = \Hubzero\Bank\Transaction::getAmount('answers', 'hold', $from_id, $author->get('id'));
 
 						// Remove hold
 						if ($reward)
 						{
-							$BT->deleteRecords('answers', 'hold', $from_id);
+							\Hubzero\Bank\Transaction::deleteRecords('answers', 'hold', $from_id);
 
 							// Make credit adjustment
-							$BTL_Q = new \Hubzero\Bank\Teller($database, $author->get('id'));
+							$BTL_Q = new \Hubzero\Bank\Teller($author->get('id'));
 							$credit = $BTL_Q->credit_summary();
 							$adjusted = $credit - $reward;
 							$BTL_Q->credit_adjustment($adjusted);

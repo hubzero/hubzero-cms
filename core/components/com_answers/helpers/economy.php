@@ -103,7 +103,7 @@ class Economy extends Object
 		require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 
 		// Get point values for actions
-		$BC = new Config($this->_db);
+		$BC = Config::values();
 		$p_Q  = $BC->get('ask');
 		$p_A  = $BC->get('answer');
 		$p_R  = $BC->get('answervote');
@@ -178,8 +178,7 @@ class Economy extends Object
 
 		$points = $this->calculate_marketvalue($qid, $type);
 
-		$BT = new Transaction($this->_db);
-		$reward = $BT->getAmount($cat, 'hold', $qid);
+		$reward = Transaction::getAmount($cat, 'hold', $qid);
 		$reward = ($reward) ? $reward : '0';
 		$share = $points/3;
 
@@ -229,7 +228,7 @@ class Economy extends Object
 		$q_user = User::getInstance($Q_owner);
 		if (is_object($q_user) && $q_user->get('id'))
 		{
-			$BTL_Q = new Teller($this->_db , $q_user->get('id'));
+			$BTL_Q = new Teller($q_user->get('id'));
 			//$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
 			// Separate comission and reward payment
 			// Remove credit
@@ -262,7 +261,7 @@ class Economy extends Object
 					$auser = Profile::getInstance($e);
 					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id'))
 					{
-						$BTL_A = new Teller($this->_db , $auser->get('id'));
+						$BTL_A = new Teller($auser->get('id'));
 						if (intval($A_owner_share) > 0)
 						{
 							$A_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answered question #%s that was recently closed', $qid);
@@ -278,7 +277,7 @@ class Economy extends Object
 			}
 
 			// Reward best answer
-			$BTL_BA = new Teller($this->_db , $ba_user->get('id'));
+			$BTL_BA = new Teller($ba_user->get('id'));
 
 			if (isset($ba_extra))
 			{
@@ -295,8 +294,7 @@ class Economy extends Object
 		// Remove hold if exists
 		if ($reward)
 		{
-			$BT = new Transaction($this->_db);
-			$BT->deleteRecords('answers', 'hold', $qid);
+			$BT = Transaction::deleteRecords('answers', 'hold', $qid);
 		}
 	}
 }

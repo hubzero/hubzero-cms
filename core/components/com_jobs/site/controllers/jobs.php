@@ -612,7 +612,7 @@ class Jobs extends SiteController
 		}
 
 		// check available user funds (if paying with points)
-		$BTL = new \Hubzero\Bank\Teller($this->database, $subscription->uid);
+		$BTL = new \Hubzero\Bank\Teller($subscription->uid);
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance;

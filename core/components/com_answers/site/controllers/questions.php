@@ -571,7 +571,7 @@ class Questions extends SiteController
 		if ($this->config->get('banking'))
 		{
 			$db = App::get('db');
-			$BTL = new Teller($db, User::get('id'));
+			$BTL = new Teller(User::get('id'));
 
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$funds = ($funds > 0) ? $funds : 0;
@@ -678,7 +678,7 @@ class Questions extends SiteController
 		{
 			$db = App::get('db');
 
-			$BTL = new Teller($db, User::get('id'));
+			$BTL = new Teller(User::get('id'));
 			$BTL->hold(
 				$fields['reward'],
 				Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'),
@@ -826,8 +826,7 @@ class Questions extends SiteController
 		$reward = 0;
 		if ($this->config->get('banking'))
 		{
-			$transaction = new Transaction($db);
-			$reward = $transaction->getAmount('answers', 'hold', $id);
+			$reward = Transaction::getAmount('answers', 'hold', $id);
 		}
 
 		$question = Question::oneOrFail($id);
@@ -896,7 +895,7 @@ class Questions extends SiteController
 			$transaction->deleteRecords('answers', 'hold', $id);
 
 			// Make credit adjustment
-			$teller = new Teller($db, User::get('id'));
+			$teller = new Teller(User::get('id'));
 			$adjusted = $teller->credit_summary() - $reward;
 			$teller->credit_adjustment($adjusted);
 		}

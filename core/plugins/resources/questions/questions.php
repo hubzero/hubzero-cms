@@ -288,7 +288,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$view->funds = 0;
 		if ($view->banking)
 		{
-			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
+			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
@@ -361,7 +361,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking)
 		{
-			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
+			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 			$BTL->hold($reward, Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
 		}
 

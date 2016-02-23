@@ -512,8 +512,7 @@ class Question extends Relational
 		{
 			$db = \App::get('db');
 
-			$BT = new Transaction($db);
-			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
+			$this->set('reward', Transaction::getAmount('answers', 'hold', $this->get('id')));
 
 			$AE = new Economy($db);
 
@@ -622,14 +621,13 @@ class Question extends Relational
 			// Accepted answer is same person as question submitter?
 			if ($this->get('created_by') == $answer->get('created_by'))
 			{
-				$BT = new Transaction($db);
-				$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
+				$reward = Transaction::getAmount('answers', 'hold', $this->get('id'));
 
 				// Remove hold
-				$BT->deleteRecords('answers', 'hold', $this->get('id'));
+				Transaction::deleteRecords('answers', 'hold', $this->get('id'));
 
 				// Make credit adjustment
-				$BTL_Q = new Teller($db, User::get('id'));
+				$BTL_Q = new Teller(User::get('id'));
 				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
 			}
 			else
@@ -665,14 +663,13 @@ class Question extends Relational
 
 			// Adjust credits
 			// Remove hold
-			$BT = new Transaction($db);
-			$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
-			$BT->deleteRecords('answers', 'hold', $this->get('id'));
+			$reward = Transaction::getAmount('answers', 'hold', $this->get('id'));
+			Transaction::deleteRecords('answers', 'hold', $this->get('id'));
 
 			// Make credit adjustment
 			if (is_object($this->creator()))
 			{
-				$BTL = new Teller($db, $this->get('created_by'));
+				$BTL = new Teller($this->get('created_by'));
 				$credit = $BTL->credit_summary();
 				$adjusted = $credit - $reward;
 				$BTL->credit_adjustment($adjusted);

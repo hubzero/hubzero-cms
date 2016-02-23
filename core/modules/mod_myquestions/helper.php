@@ -189,7 +189,6 @@ class Helper extends Module
 			$database = \App::get('db');
 
 			$AE = new \Components\Answers\Helpers\Economy($database);
-			$BT = new \Hubzero\Bank\Transaction($database);
 
 			$awards = array();
 

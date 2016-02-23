@@ -34,6 +34,7 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Bank\MarketHistory;
+use Hubzero\Bank\Transaction;
 use Notify;
 use Request;
 use Config;
@@ -59,8 +60,6 @@ class Points extends AdminController
 		$this->database->setQuery("SELECT * FROM #__users_points ORDER BY earnings DESC, balance DESC LIMIT 15");
 		$this->view->rows = $this->database->loadObjectList();
 
-		$BT = new \Hubzero\Bank\Transaction($this->database);
-
 		$thismonth = Date::of('now')->format('Y-m');
 		$lastmonth = Date::of(time() - (32 * 24 * 60 * 60))->format('Y-m');
 
@@ -68,143 +67,143 @@ class Points extends AdminController
 		$this->view->stats[] = array(
 			'memo'          => 'Earnings - Total',
 			'class'         => 'earntotal',
-			'alltimepts'    => $BT->getTotals('', 'deposit', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('', 'deposit', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get overall earnings on Answers
 		$this->view->stats[] = array(
 			'memo'          => 'Earnings: Answers',
 			'class'         => 'earn',
-			'alltimepts'    => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get overall earnings on Wishes
 		$this->view->stats[] = array(
 			'memo'          => 'Earnings: Wish List',
 			'class'         => 'earn',
-			'alltimepts'    => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get overall spending
 		$this->view->stats[] = array(
 			'memo'          => 'Spending - Total',
 			'class'         => 'spendtotal',
-			'alltimepts'    => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get overall spending in Store
 		$this->view->stats[] = array(
 			'memo'          => 'Spending: Store',
 			'class'         => 'spend',
-			'alltimepts'    => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get overall spending on Answers
 		$this->view->stats[] = array(
 			'memo'          => 'Spending: Answers',
 			'class'         => 'spend',
-			'alltimepts'    => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get overall spending on Wishes
 		$this->view->stats[] = array(
 			'memo'          => 'Spending: Wish List',
 			'class'         => 'spend',
-			'alltimepts'    => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc=1))
 		);
 
 		// Get royalties
 		$this->view->stats[] = array(
 			'memo'          => 'Royalties - Total',
 			'class'         => 'royaltytotal',
-			'alltimepts'    => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
 		);
 
 		// Get royalties on answers
 		$this->view->stats[] = array(
 			'memo'          => 'Royalties: Answers',
 			'class'         => 'royalty',
-			'alltimepts'    => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('answers', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
 		);
 
 		// Get royalties on reviews
 		$this->view->stats[] = array(
 			'memo'          => 'Royalties: Reviews',
 			'class'         => 'royalty',
-			'alltimepts'    => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('review', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
 		);
 
 		// Get royalties on resource contributions
 		$this->view->stats[] = array(
 			'memo'          => 'Royalties: Resources',
 			'class'         => 'royalty',
-			'alltimepts'    => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, ''),
-			'thismonthpts'  => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
-			'lastmonthpts'  => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
-			'alltimetran'   => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
-			'thismonthtran' => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
-			'lastmonthtran' => $BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
-			'avg'           => round($BT->getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
+			'alltimepts'    => Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, ''),
+			'thismonthpts'  => Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $thismonth),
+			'lastmonthpts'  => Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $lastmonth),
+			'alltimetran'   => Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=2),
+			'thismonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $thismonth, $calc=2),
+			'lastmonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, $lastmonth, $calc=2),
+			'avg'           => round(Transaction::getTotals('resource', 'deposit', '', $royalty=1, '', '', 1, '', $calc=1))
 		);
 
 		// Set any errors
@@ -226,14 +225,13 @@ class Points extends AdminController
 	{
 		if ($uid = Request::getInt('uid', 0))
 		{
-			$this->view->row = new \Hubzero\Bank\Account($this->database);
-			$this->view->row->load_uid($uid);
+			$this->view->row = \Hubzero\Bank\Account::oneByUserId($uid);
 
-			if (!$this->view->row->balance)
+			if (!$this->view->row->get('balance'))
 			{
-				$this->view->row->uid = $uid;
-				$this->view->row->balance = 0;
-				$this->view->row->earnings = 0;
+				$this->view->row->set('uid', $uid);
+				$this->view->row->set('balance', 0);
+				$this->view->row->set('earnings', 0);
 			}
 
 			$this->database->setQuery("SELECT * FROM `#__users_transactions` WHERE uid=" . $uid . " ORDER BY created DESC, id DESC");
@@ -278,22 +276,17 @@ class Points extends AdminController
 
 		$account = Request::getVar('account', array(), 'post');
 
-		$row = new \Hubzero\Bank\Account($this->database);
-		if (!$row->bind($account))
-		{
-			App::abort(500, $row->getError());
-			return;
-		}
+		$row = \Hubzero\Bank\Account::blank()->set($account);
 
-		$row->uid      = intval($row->uid);
-		$row->balance  = intval($row->balance);
-		$row->earnings = intval($row->earnings);
+		$row->set('uid', intval($row->get('uid')));
+		$row->set('balance', intval($row->get('balance')));
+		$row->set('earnings', intval($row->get('earnings')));
 
 		$data = Request::getVar('transaction', array(), 'post');
 
 		if (isset($data['amount']) && intval($data['amount']) > 0)
 		{
-			$data['uid'] = $row->uid;
+			$data['uid'] = $row->get('uid');
 			$data['created'] = Date::toSql();
 			$data['amount'] = intval($data['amount']);
 			if (!isset($data['category']) || !$data['category'])
@@ -326,32 +319,16 @@ class Points extends AdminController
 
 			$data['balance'] = $row->balance;
 
-			$BT = new \Hubzero\Bank\Transaction($this->database);
+			$BT = Transaction::blank()->set($data);
 
-			if (!$BT->bind($data))
-			{
-				App::abort(500, $row->getError());
-				return;
-			}
-			if (!$BT->check())
-			{
-				App::abort(500, $row->getError());
-				return;
-			}
-			if (!$BT->store())
+			if (!Transaction::save())
 			{
 				App::abort(500, $row->getError());
 				return;
 			}
 		}
 
-		if (!$row->check())
-		{
-			App::abort(500, $row->getError());
-			return;
-		}
-
-		if (!$row->store())
+		if (!$row->save())
 		{
 			App::abort(500, $row->getError());
 			return;
@@ -460,8 +437,7 @@ class Points extends AdminController
 		$when = Date::toSql();
 
 		// make sure this function was not already run
-		$MH = new MarketHistory($this->database);
-		$duplicate = $MH->getRecord(intval($log['ref']), $log['action'], $log['category'], '', $data['description']);
+		$duplicate = MarketHistory::getRecord(intval($log['ref']), $log['action'], $log['category'], '', $data['description']);
 
 		if ($data['amount'] && $data['description'] && $data['users'])
 		{
@@ -477,7 +453,7 @@ class Points extends AdminController
 					$validuser = \Hubzero\User\Profile::getInstance($user);
 					if ($user && $validuser)
 					{
-						$BTL = new \Hubzero\Bank\Teller($this->database, $user);
+						$BTL = new \Hubzero\Bank\Teller($user);
 						switch ($data['type'])
 						{
 							case 'withdraw':
@@ -491,7 +467,7 @@ class Points extends AdminController
 				}
 
 				// Save log
-				$MH = new MarketHistory($this->database);
+				$MH = MarketHistory::blank();
 				$dat = array();
 				$dat['itemid']       = $log['ref'];
 				$dat['date']         = Date::toSql();
@@ -500,14 +476,14 @@ class Points extends AdminController
 				$dat['action']       = $log['action'];
 				$dat['log']          = $data['description'];
 
-				if (!$MH->bind($dat))
+				if (!$MH->set($dat))
 				{
 					$this->setError($MH->getError());
 				}
 
 				if (!$this->getError())
 				{
-					if (!$MH->store())
+					if (!$MH->save())
 					{
 						$this->setError($MH->getError());
 					}
@@ -566,10 +542,9 @@ class Points extends AdminController
 		$resmsg = 'Royalties on Resources for '.$curyear.' were distributed successfully.';
 
 		// Make sure we distribute royalties only once/ month
-		$MH = new MarketHistory($this->database);
-		$royaltyAnswers = $MH->getRecord('', $action, 'answers', $curyear, $this->_message);
-		$royaltyReviews = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
-		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
+		$royaltyAnswers = MarketHistory::getRecord('', $action, 'answers', $curyear, $this->_message);
+		$royaltyReviews = MarketHistory::getRecord('', $action, 'reviews', $curyear, $rmsg);
+		$royaltyResources = MarketHistory::getRecord('', $action, 'resources', $curyear, $resmsg);
 
 		// Include economy classes
 		if (is_file(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
@@ -600,7 +575,7 @@ class Points extends AdminController
 				// make a record of royalty payment
 				if (intval($accumulated) > 0)
 				{
-					$MH = new MarketHistory($this->database);
+					$MH = MarketHistory::blank();
 					$data['itemid']       = $ref;
 					$data['date']         = Date::toSql();
 					$data['market_value'] = $accumulated;
@@ -608,12 +583,12 @@ class Points extends AdminController
 					$data['action']       = $action;
 					$data['log']          = $this->_message;
 
-					if (!$MH->bind($data))
+					if (!$MH->set($data))
 					{
 						$err = $MH->getError();
 					}
 
-					if (!$MH->store())
+					if (!$MH->save())
 					{
 						$err = $MH->getError();
 					}
@@ -659,7 +634,7 @@ class Points extends AdminController
 			// make a record of royalty payment
 			if (intval($accumulated) > 0)
 			{
-				$MH = new MarketHistory($this->database);
+				$MH = MarketHistory::blank();
 				$data['itemid']       = $ref;
 				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
@@ -667,12 +642,12 @@ class Points extends AdminController
 				$data['action']       = $action;
 				$data['log']          = $rmsg;
 
-				if (!$MH->bind($data))
+				if (!$MH->set($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store())
+				if (!$MH->save())
 				{
 					$err = $MH->getError();
 				}
@@ -709,7 +684,7 @@ class Points extends AdminController
 			// make a record of royalty payment
 			if (intval($accumulated) > 0)
 			{
-				$MH = new MarketHistory($this->database);
+				$MH = MarketHistory::blank();
 				$data['itemid']       = $ref;
 				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
@@ -717,12 +692,12 @@ class Points extends AdminController
 				$data['action']       = $action;
 				$data['log']          = $resmsg;
 
-				if (!$MH->bind($data))
+				if (!$MH->set($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store())
+				if (!$MH->save())
 				{
 					$err = $MH->getError();
 				}

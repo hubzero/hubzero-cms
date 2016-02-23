@@ -107,7 +107,7 @@ class Reviews extends Object
 		}
 
 		// Get point values for actions
-		$BC = new Config($this->_db);
+		$BC = Config::values();
 
 		$p_R = $BC->get('reviewvote') ? $BC->get('reviewvote') : 2;
 
@@ -145,7 +145,7 @@ class Reviews extends Object
 		// Reward review author
 		if (is_object($user))
 		{
-			$BTL = new Teller($this->_db , $user->get('id'));
+			$BTL = new Teller($user->get('id'));
 
 			if (intval($points) > 0)
 			{

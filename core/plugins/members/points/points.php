@@ -106,7 +106,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$BTL = new \Hubzero\Bank\Teller($database, $member->get('uidNumber'));
+		$BTL = new \Hubzero\Bank\Teller($member->get('uidNumber'));
 
 		// Build the final HTML
 		if ($returnhtml)

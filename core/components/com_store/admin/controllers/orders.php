@@ -368,7 +368,7 @@ class Orders extends AdminController
 			$this->view->customer = User::getInstance($this->view->row->uid);
 
 			// Check available user funds
-			$BTL = new Teller($this->database, $this->view->row->uid);
+			$BTL = new Teller($this->view->row->uid);
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$this->view->funds = $balance;
@@ -412,7 +412,7 @@ class Orders extends AdminController
 
 			// get user bank account
 			$xprofile = User::getInstance($row->uid);
-			$BTL_Q = new Teller($this->database, $xprofile->get('id'));
+			$BTL_Q = new Teller($xprofile->get('id'));
 
 			switch ($action)
 			{
