@@ -96,7 +96,7 @@ class Newsletter extends \JTable
 		$this->load($id);
 
 		//remove the classes id so that it saves as a copy
-		unset($this->id);
+		$this->id = 0;
 
 		//add copy to the name
 		$this->name .= ' (copy)';
