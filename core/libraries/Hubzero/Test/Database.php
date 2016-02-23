@@ -125,10 +125,23 @@ class Database extends \PHPUnit_Extensions_Database_TestCase
 			            ->setMethods(null)
 			            ->getMock();
 
+			$this->getConnection();
+
 			$dbo->setConnection(self::$pdo)
 			    ->setPrefix('');
 		}
 
 		return $dbo;
+	}
+
+	/**
+	 * Resets the database handle to ensure it doesn't cause
+	 * problems for subsequent tests
+	 *
+	 * @return  void
+	 */
+	public static function tearDownAfterClass()
+	{
+		self::$pdo = null;
 	}
 }
