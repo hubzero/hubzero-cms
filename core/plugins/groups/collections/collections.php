@@ -178,8 +178,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->model = new \Components\Collections\Models\Archive('group', $this->group->get('gidNumber'));
 
 		//get the plugins params
-		//$p = new \Hubzero\Plugin\Params($this->database);
-		//$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
+		//$this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
 		$this->members = $group->get('members');
 		$this->authorized = $authorized;
 
@@ -1714,8 +1713,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->action      = $this->action;
 		$view->params      = $this->params;
 
-		$view->settings    = new \Hubzero\Plugin\Params($this->database);
-		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
+		$view->settings    = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
 
 		$view->authorized  = $this->authorized;
 		$view->message     = (isset($this->message)) ? $this->message : '';
@@ -1752,29 +1750,21 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$settings = Request::getVar('settings', array(), 'post');
 
-		$row = new \Hubzero\Plugin\Params($this->database);
-		$row->loadPlugin($this->group->get('gidNumber'), $this->_type, $this->_name);
+		$row = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), $this->_type, $this->_name);
 
-		$row->object_id = $this->group->get('gidNumber');
-		$row->folder    = $this->_type;
-		$row->element   = $this->_name;
+		$row->set('object_id', $this->group->get('gidNumber'));
+		$row->set('folder', $this->_type);
+		$row->set('element', $this->_name);
 
 		// Get parameters
 		$prms = Request::getVar('params', array(), 'post');
 
 		$params = new \Hubzero\Config\Registry($prms);
 
-		$row->params = $params->toString();
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->_settings();
-		}
+		$row->set('params', $params->toString());
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();
@@ -1797,9 +1787,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->_params)
 		{
-			$database = App::get('db');
-			$p = new \Hubzero\Plugin\Params($database);
-			$this->_params = $p->getCustomParams($group_id, 'groups', $this->_name);
+			$this->_params = \Hubzero\Plugin\Params::getCustomParams($group_id, 'groups', $this->_name);
 		}
 		return $this->_params;
 	}

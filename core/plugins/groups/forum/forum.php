@@ -151,8 +151,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			//group vars
 			//$this->members = $members;
 			//get the plugins params
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
+			$this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->_name);
 
 			$this->params->set('access-plugin', $group_plugin_acl);
 
@@ -1960,8 +1959,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$view->config     = $this->params;
 		$view->model      = $this->model;
 
-		$view->settings   = new \Hubzero\Plugin\Params($this->database);
-		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
+		$view->settings   = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
 
 		$view->authorized = $this->authorized;
 		$view->message    = (isset($this->message)) ? $this->message : '';
@@ -1998,27 +1996,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$settings = Request::getVar('settings', array(), 'post');
 
-		$row = new \Hubzero\Plugin\Params($this->database);
-		if (!$row->bind($settings))
-		{
-			$this->setError($row->getError());
-			return $this->settings();
-		}
+		$row = Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
 		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
 
-		$row->params = $p->toString();
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->_settings();
-		}
+		$row->set('params', $p->toString());
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();

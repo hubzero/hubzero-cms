@@ -124,8 +124,7 @@ class plgMembersTodo extends \Hubzero\Plugin\Plugin
 			$this->option  = $option;
 			$this->database = App::get('db');
 
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
+			$this->params = \Hubzero\Plugin\Params::getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
 			if ($user->get('id') == $member->get('uidNumber'))
 			{

@@ -154,8 +154,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$this->database   = App::get('db');
 
 			//get the plugins params
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
+			$this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
 
 			if ($authorized == 'manager' || $authorized == 'admin')
 			{
@@ -942,8 +941,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$view->config     = $this->params;
 		$view->model      = $this->model;
 
-		$view->settings   = new \Hubzero\Plugin\Params($this->database);
-		$view->settings->loadPlugin($this->group->gidNumber, $this->_type, $this->_name);
+		$view->settings   = \Hubzero\Plugin\Params::oneByPlugin($this->group->gidNumber, $this->_type, $this->_name);
 
 		$view->authorized = $this->authorized;
 		$view->message    = (isset($this->message)) ? $this->message : '';
@@ -977,27 +975,15 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		$settings = Request::getVar('settings', array(), 'post');
 
-		$row = new \Hubzero\Plugin\Params($this->database);
-		if (!$row->bind($settings))
-		{
-			$this->setError($row->getError());
-			return $this->_entry();
-		}
+		$row = \Hubzero\Plugin\Params::blank()->set($settings);
 
 		// Get parameters
 		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
-		$row->params = $p->toString();
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->_settings();
-		}
+		$row->set('params', $p->toString());
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();

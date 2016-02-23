@@ -64,7 +64,7 @@ $this->css()
 				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
 			</label>
 
-			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
+			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->get('id'); ?>" />
 			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 			<input type="hidden" name="settings[folder]" value="groups" />
 			<input type="hidden" name="settings[element]" value="forum" />

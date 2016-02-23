@@ -469,8 +469,7 @@ class Archive extends Object
 						{
 							if (!isset($usergroup->params) || !is_object($usergroup->params))
 							{
-								$p = new Params($this->_db);
-								$usergroup->params = $p->getCustomParams($usergroup->gidNumber, 'groups', 'collections');
+								$usergroup->params = Params::getCustomParams($usergroup->gidNumber, 'groups', 'collections');
 							}
 							foreach ($groups as $s)
 							{

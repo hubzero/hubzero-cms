@@ -100,8 +100,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			//$this->authorized = $authorized;
 			$this->database = App::get('db');
 
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
+			$this->params = \Hubzero\Plugin\Params::getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
 			if ($user->get('id') == $member->get('uidNumber'))
 			{
@@ -801,8 +800,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$view->task     = $this->task;
 		$view->config   = $this->params;
 
-		$view->settings = new \Hubzero\Plugin\Params($this->database);
-		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', $this->_name);
+		$view->settings = \Hubzero\Plugin\Params::oneByPlugin($this->member->get('uidNumber'), 'members', $this->_name);
 
 		$view->message  = (isset($this->message)) ? $this->message : '';
 
@@ -838,26 +836,14 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		$settings = Request::getVar('settings', array(), 'post');
 
-		$row = new \Hubzero\Plugin\Params($this->database);
-		if (!$row->bind($settings))
-		{
-			$this->setError($row->getError());
-			return $this->_entry();
-		}
+		$row = \Hubzero\Plugin\Params::blank()->set($settings);
 
 		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
-		$row->params = $p->toString();
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->_settings();
-		}
+		$row->set('params', $p->toString());
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();
