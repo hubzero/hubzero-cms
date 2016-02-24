@@ -230,7 +230,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 							<?php if ($slide->type == 'Image') : ?>
 								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 							<?php else : ?>
-								<video class="slidevideo">  
+								<video class="slidevideo" preload="metadata" muted>
 									<?php foreach ($slide->media as $source): ?>
 										<source src="<?php echo $content_folder.DS.$source->source; ?>" /> 
 									<?php endforeach; ?>
