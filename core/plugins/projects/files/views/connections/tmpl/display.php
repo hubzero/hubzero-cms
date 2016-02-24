@@ -57,7 +57,7 @@ $layout = Request::getCmd('layout', 'list');
 
 	<?php foreach ($this->connections as $connection) : ?>
 		<?php $imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png'; ?>
-		<?php $img = (is_file('/app' . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
+		<?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
 		<a class="connection <?php echo $layout; ?>" href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $connection->id); ?>">
 			<img src="<?php echo $img; ?>" alt="">
 			<div class="name"><?php echo $connection->name; ?></div>
