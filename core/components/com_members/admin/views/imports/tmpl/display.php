@@ -58,7 +58,7 @@ $this->css('import');
 <nav role="navigation" class="sub sub-navigation">
 	<ul>
 		<li>
-			<a<?php if ($this->controller == 'import') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=import'); ?>"><?php echo Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS'); ?></a>
+			<a<?php if ($this->controller == 'imports') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>"><?php echo Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS'); ?></a>
 		</li>
 		<li>
 			<a<?php if ($this->controller == 'importhooks') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>"><?php echo Lang::txt('COM_MEMBERS_IMPORT_HOOKS'); ?></a>
@@ -97,18 +97,16 @@ function submitbutton(pressbutton)
 				<td colspan="6">
 					<?php
 					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
+					echo $this->imports->pagination;
 					?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if ($this->imports->count() > 0) : ?>
-				<?php foreach ($this->imports as $i => $import) : ?>
+			<?php if ($this->imports->count() > 0) :
+				$i = 0;
+				?>
+				<?php foreach ($this->imports as $import) : ?>
 					<tr>
 						<td>
 							<?php if ($canDo->get('core.admin')) { ?>
@@ -144,13 +142,13 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<?php
-								$lastRun = $import->runs('list', array(
-									'import'  => $import->get('id'),
-									'dry_run' => 0,
-									''
-								))->first();
+								$lastRun = $import->runs()
+									->whereEquals('import_id', $import->get('id'))
+									->whereEquals('dry_run', 0)
+									->ordered()
+									->row();
 							?>
-							<?php if ($lastRun) : ?>
+							<?php if ($lastRun->get('id')) : ?>
 								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_ON'); ?></strong>
 								<time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo Date::of($lastRun->get('ran_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
 								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
@@ -166,15 +164,18 @@ function submitbutton(pressbutton)
 						</td>
 						<td class="priority-4">
 							<?php
-								$runs = $import->runs('list', array(
-									'import'  => $import->get('id'),
-									'dry_run' => 0
-								));
-								echo $runs->count();
+								$runs = $import->runs()
+									->whereEquals('import_id', $import->get('id'))
+									->whereEquals('dry_run', 0)
+									->total();
+
+								echo $runs;
 							?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+				<?php
+					$i++;
+				endforeach; ?>
 			<?php else : ?>
 				<tr>
 					<td colspan="6"><?php echo Lang::txt('COM_MEMBERS_IMPORT_NONE'); ?></td>

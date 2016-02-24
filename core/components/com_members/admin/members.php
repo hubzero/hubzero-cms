@@ -108,8 +108,8 @@ if ($canDo->get('core.admin'))
 {
 	\Submenu::addEntry(
 		\Lang::txt('COM_MEMBERS_MENU_IMPORT'),
-		\Route::url('index.php?option=com_members&controller=import'),
-		($controllerName == 'import' || $controllerName == 'importhooks')
+		\Route::url('index.php?option=com_members&controller=imports'),
+		($controllerName == 'imports' || $controllerName == 'importhooks')
 	);
 }
 

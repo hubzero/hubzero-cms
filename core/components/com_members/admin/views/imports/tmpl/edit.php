@@ -99,7 +99,7 @@ function submitbutton(pressbutton)
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_HOOKS'); ?></span></legend>
 
-				<?php if ($this->hooks->total()) { ?>
+				<?php if ($this->hooks->count()) { ?>
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
 						<label for="field-name">
 							<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_POSTPARSEHOOK'); ?>

@@ -211,9 +211,9 @@ hr {
 .results .resource-data .notices ol li {
 	list-style: decimal !important;
 }
-.results .resource-data .col:first-child {
+/*.results .resource-data .col:first-child {
 	border-right: 1px solid #efefef;
-}
+}*/
 .results .resource-data .col:first-child table {
 	padding-right: 50px;
 }

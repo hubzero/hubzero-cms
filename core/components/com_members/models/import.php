@@ -33,6 +33,7 @@
 namespace Components\Members\Models;
 
 use Components\Members\Models\Import\Record;
+use Hubzero\Content\Import\Model\Import as Base;
 use Hubzero\Content\Importer;
 use stdClass;
 
@@ -41,7 +42,7 @@ include_once(__DIR__ . DS . 'import' . DS . 'record.php');
 /**
  * Member importer
  */
-class Import extends \Hubzero\Content\Import\Model\Import
+class Import extends Base
 {
 	/**
 	 * Import column to field mapping
@@ -330,37 +331,15 @@ class Import extends \Hubzero\Content\Import\Model\Import
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @param   mixed  $oid  Accepts integer, object, or array
-	 * @return  void
-	 */
-	public function __construct($oid=null)
-	{
-		parent::__construct($oid);
-
-		if ($fields = $this->get('fields'))
-		{
-			$this->_fields = json_decode($fields, true);
-		}
-	}
-
-	/**
 	 * Store changes to this database entry
 	 *
-	 * @param   boolean  $check  Perform data validation check?
 	 * @return  boolean  False if error, True on success
 	 */
-	public function store($check=true)
+	public function save()
 	{
 		$this->set('type', 'members');
 
-		/*if ($this->_fields)
-		{
-			$this->set('field_map', json_encode($this->_fields));
-		}*/
-
-		return parent::store($check);
+		return parent::save();
 	}
 
 	/**
@@ -422,9 +401,16 @@ class Import extends \Hubzero\Content\Import\Model\Import
 		if (!$this->_fields)
 		{
 			$this->_fields = array();
+
+			if ($fields = $this->get('fields'))
+			{
+				$this->_fields = json_decode($fields, true);
+			}
+
 			if ($this->get('file'))
 			{
 				$headers = with(new Importer())->headers($this);
+
 				$this->_fields = $this->autoDetectFields($headers);
 			}
 		}

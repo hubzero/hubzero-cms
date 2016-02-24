@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if ($this->import->exists()) { ?>
+if ($this->import->get('id')) { ?>
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_MAPPING'); ?></span></legend>
 

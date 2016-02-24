@@ -33,7 +33,11 @@
 namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Helpers\Permissions;
+use Components\Members\Models\Import;
 use Hubzero\Component\AdminController;
+use Hubzero\Content\Import\Model\Hook;
+use Hubzero\Content\Importer;
+use Hubzero\Config\Registry;
 use Filesystem;
 use Request;
 use Config;
@@ -51,7 +55,7 @@ include_once (dirname(dirname(__DIR__)) . DS . 'models' . DS . 'import.php');
 /**
  * Member importer
  */
-class Import extends AdminController
+class Imports extends AdminController
 {
 	/**
 	 * Determine task and execute it
@@ -80,7 +84,7 @@ class Import extends AdminController
 	public function displayTask()
 	{
 		// Get filters
-		$this->view->filters = array(
+		$filters = array(
 			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
@@ -99,14 +103,32 @@ class Import extends AdminController
 			'type'     => 'members'
 		);
 
-		// get all imports from archive
-		$archive = \Hubzero\Content\Import\Model\Archive::getInstance();
+		$model = Import::all();
 
-		$this->view->total   = $archive->imports('count', $this->view->filters);
-		$this->view->imports = $archive->imports('list', $this->view->filters);
+		if (isset($filters['state']) && $filters['state'])
+		{
+			if (!is_array($filters['state']))
+			{
+				$filters['state'] = array($filters['state']);
+			}
+			$filters['state'] = array_map('intval', $filters['state']);
+
+			$model->whereIn('state', $filters['state']);
+		}
+
+		if (isset($filters['type']) && $filters['type'])
+		{
+			$model->whereEquals('type', $filters['type']);
+		}
+
+		$imports = $model->ordered()
+			->paginated()
+			->rows();
 
 		// Output the HTML
 		$this->view
+			->set('filters', $filters)
+			->set('imports', $imports)
 			->setLayout('display')
 			->display();
 	}
@@ -124,15 +146,15 @@ class Import extends AdminController
 	/**
 	 * Edit an Import
 	 *
-	 * @param   object  $row  \Members\Models\Import
+	 * @param   object  $import
 	 * @return  void
 	 */
-	public function editTask($row=null)
+	public function editTask($import = null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
 		// get the import object
-		if (!($row instanceof \Components\Members\Models\Import))
+		if (!($import instanceof Import))
 		{
 			// get request vars
 			$id = Request::getVar('id', array(0));
@@ -141,28 +163,27 @@ class Import extends AdminController
 				$id = (isset($id[0]) ? $id[0] : 0);
 			}
 
-			$row = new \Components\Members\Models\Import($id);
+			$import = Import::oneOrNew($id);
 		}
 
-		$this->view->import = $row;
-
 		// import params
-		$this->view->params = new \Hubzero\Config\Registry($this->view->import->get('params'));
+		$params = new Registry($import->get('params'));
 
 		// get all files in import filespace
-		if ($this->view->import->exists())
+		$files = array();
+
+		if ($import->get('id'))
 		{
-			if ($this->_createImportFilespace($this->view->import))
+			if ($this->_createImportFilespace($import))
 			{
-				$this->view->files = Filesystem::files($this->view->import->fileSpacePath(), '.');
+				$files = Filesystem::files($import->fileSpacePath(), '.');
 			}
 		}
 
-		// get all imports from archive
-		$hooksArchive = \Hubzero\Content\Import\Model\Hook\Archive::getInstance();
-		$this->view->hooks = $hooksArchive->hooks('list', array(
-			'state' => array(1)
-		));
+		// get all import hooks
+		$hooks = Hook::all()
+			->whereIn('state', array(1))
+			->rows();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -172,14 +193,17 @@ class Import extends AdminController
 
 		// Output the HTML
 		$this->view
-				->setLayout('edit')
-				->display();
+			->set('import', $import)
+			->set('params', $params)
+			->set('files', $files)
+			->set('hooks', $hooks)
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
-	 * Save an Import
+	 * Save an Import and display edit form
 	 *
-	 * @param   boolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
 	public function applyTask()
@@ -190,6 +214,7 @@ class Import extends AdminController
 	/**
 	 * Save an Import
 	 *
+	 * @param   boolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
 	public function saveTask($redirect=true)
@@ -205,59 +230,50 @@ class Import extends AdminController
 		$file   = Request::getVar('file', array(), 'FILES');
 
 		// Create import model object
-		$this->import = new \Components\Members\Models\Import(isset($import['id']) ? $import['id'] : null);
+		$model = Import::oneOrNew(isset($import['id']) ? $import['id'] : 0);
 
 		// Set our hooks
-		$this->import->set('hooks', json_encode($hooks));
+		$model->set('hooks', json_encode($hooks));
 
 		// Set our fields
-		$this->import->set('fields', json_encode($fields));
+		$model->set('fields', json_encode($fields));
 
 		// Load current params
-		$iparams = new \Hubzero\Config\Registry($this->import->get('params'));
+		$iparams = new Registry($model->get('params'));
 
 		// Bind incoming params
 		$iparams->parse($params);
 
 		// Set params on import object
-		$this->import->set('params', $iparams->toString());
+		$model->set('params', $iparams->toString());
 
 		// Bind input to model
-		if (!$this->import->bind($import))
+		if (!$model->set($import))
 		{
-			$this->setError($this->import->getError());
-			return $this->editTask($this->import);
+			$this->setError($model->getError());
+			return $this->editTask($model);
 		}
 
 		// Is this a new import?
 		$isNew = false;
-		if (!$this->import->exists())
+		if ($model->isNew())
 		{
 			$isNew = true;
 
 			// Set the created by/at
-			$this->import->set('created_by', User::get('id'));
-			$this->import->set('created_at', Date::toSql());
+			$model->set('created_by', User::get('id'));
+			$model->set('created_at', Date::toSql());
 		}
 
-		// Do we have a data file
-		/*if ($this->import->get('file'))
-		{
-			// Get record count
-			$importImporter = new \Hubzero\Content\Importer();
-			$count = $importImporter->count($this->import);
-			$this->import->set('count', $count);
-		}*/
-
 		// Attempt to save
-		if (!$this->import->store(true))
+		if (!$model->save())
 		{
-			$this->setError($this->import->getError());
+			$this->setError($model->getError());
 			return $this->editTask();
 		}
 
 		// create folder for files
-		if (!$this->_createImportFilespace($this->import))
+		if (!$this->_createImportFilespace($model))
 		{
 			return $this->editTask();
 		}
@@ -265,28 +281,27 @@ class Import extends AdminController
 		// If we have a file
 		if (is_array($file) && !empty($file) && $file['size'] > 0 && $file['error'] == 0)
 		{
-			move_uploaded_file($file['tmp_name'], $this->import->fileSpacePath() . DS . $file['name']);
-			$this->import->set('file', $file['name']);
-			$this->import->set('fields', '');
+			move_uploaded_file($file['tmp_name'], $model->fileSpacePath() . DS . $file['name']);
+			$model->set('file', $file['name']);
+			$model->set('fields', '');
 
 			// Force into the field map view
 			$isNew = true;
 		}
 
 		// Do we have a data file?
-		if ($this->import->get('file'))
+		if ($model->get('file'))
 		{
 			// get record count
-			$importImporter = new \Hubzero\Content\Importer();
-			$count = $importImporter->count($this->import);
-			$this->import->set('count', $count);
+			$importImporter = new Importer();
+			$model->set('count', $importImporter->count($model));
 		}
 
 		// Save again with import count
-		if (!$this->import->store(true))
+		if (!$model->save())
 		{
-			$this->setError($this->import->getError());
-			return $this->editTask($this->import);
+			$this->setError($model->getError());
+			return $this->editTask($model);
 		}
 
 		// Inform user & redirect
@@ -295,7 +310,7 @@ class Import extends AdminController
 			if ($isNew)
 			{
 				$this->view
-					->set('import', $this->import)
+					->set('import', $model)
 					->setLayout('fields')
 					->display();
 				return;
@@ -309,7 +324,7 @@ class Import extends AdminController
 			return;
 		}
 
-		$this->editTask($this->import);
+		$this->editTask($model);
 	}
 
 	/**
@@ -330,17 +345,19 @@ class Import extends AdminController
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
-			if (!$resourceImport = new \Components\Members\Models\Import($id))
+			$import = Import::oneOrFail($id);
+
+			if (!$import->get('id'))
 			{
 				continue;
 			}
 
 			// attempt to delete import
-			if (!$resourceImport->delete())
+			if (!$import->destroy())
 			{
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-					$resourceImport->getError(),
+					$import->getError(),
 					'error'
 				);
 				return;
@@ -377,13 +394,11 @@ class Import extends AdminController
 		$id = Request::getVar('id', array(0));
 		$id = (is_array($id) ? $id[0] : $id);
 
-		// Are we test mode
-		$this->view->dryRun = $dryRun;
 
 		// Create import model object
-		$this->view->import = new \Components\Members\Models\Import($id);
+		$import = Import::oneOrFail($id);
 
-		if (!$this->view->import->exists())
+		if (!$import->get('id'))
 		{
 			return $this->cancelTask();
 		}
@@ -396,6 +411,8 @@ class Import extends AdminController
 
 		// Output the HTML
 		$this->view
+			->set('dryRun', $dryRun)
+			->set('import', $import)
 			->setLayout('run')
 			->display();
 	}
@@ -420,10 +437,10 @@ class Import extends AdminController
 		$dryRun = Request::getBool('dryrun', 0);
 
 		// Create import model object
-		$import = new \Components\Members\Models\Import($id);
+		$import = Import::oneOrFail($id);
 
 		// Make import importer
-		$importImporter = \Hubzero\Content\Importer::getInstance();
+		$importImporter = Importer::getInstance();
 
 		// Run process task on importer
 		// passed the import model, array or callbacks, and test mode flag
@@ -468,15 +485,18 @@ class Import extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// create import model object
-		$import = new \Components\Members\Models\Import($id);
+		$import = Import::oneOrFail($id);
 
 		// get the lastest run
-		$run = $import->runs('current');
+		$run = $import->runs()
+			->whereEquals('import_id', $import->get('id'))
+			->ordered()
+			->row();
 
 		// build array of data to return
 		$data = array(
-			'processed' => $run->get('processed'),
-			'total'     => $run->get('count')
+			'processed' => $run->get('processed', 0),
+			'total'     => $run->get('count', 0)
 		);
 
 		// return progress update
@@ -509,10 +529,10 @@ class Import extends AdminController
 		foreach ($hooks->$event as $hook)
 		{
 			// Load hook object
-			$importHook = new \Hubzero\Content\Import\Model\Hook($hook);
+			$importHook = Hook::oneOrNew($hook);
 
 			// Make sure we have an object
-			if (!$importHook)
+			if (!$importHook->get('id'))
 			{
 				continue;
 			}
@@ -564,7 +584,7 @@ class Import extends AdminController
 	/**
 	 * Quote a value for a CSV file
 	 *
-	 * @param   string $val
+	 * @param   string  $val
 	 * @return  string
 	 */
 	public static function quoteCsv($val)
@@ -600,7 +620,9 @@ class Import extends AdminController
 	 */
 	public function sampleTask()
 	{
-		$profile = new \Components\Members\Tables\Profile($this->database);
+		$database = App::get('db');
+
+		$profile = new \Components\Members\Tables\Profile($database);
 
 		$skip = array('gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword', 'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber');
 
