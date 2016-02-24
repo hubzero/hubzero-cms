@@ -87,20 +87,36 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 			$from['email'] = Config::get('mailfrom');
 		}
 
+		$name = $user->get('name');
+		if (preg_match('/[А-Яа-яЁё]/u', $name))
+		{
+			$name = $user->get('email');
+		}
+
 		$message = new \Hubzero\Mail\Message();
 		$message->setSubject(Config::get('sitename') . ' ' . $xmessage->subject)
 		        ->addFrom($from['email'], $from['name'])
-		        ->addTo($user->get('email'), $user->get('name'));
+		        ->addTo($user->get('email'), $name);
 
 		// In case a different reply to email address is specified
 		if (array_key_exists('replytoemail', $from))
 		{
 			$replytoname = (isset($from['replytoname']) && $from['replytoname'] != '') ? $from['replytoname'] : $from['name'];
 
+			if (preg_match('/[А-Яа-яЁё]/u', $replytoname))
+			{
+				$replytoname = $from['replytoemail'];
+			}
+
 			$message->addReplyTo($from['replytoemail'], $replytoname);
 		}
 		else
 		{
+			if (preg_match('/[А-Яа-яЁё]/u', $from['name']))
+			{
+				$from['name'] = $from['email'];
+			}
+
 			$message->addReplyTo($from['email'], $from['name']);
 		}
 
