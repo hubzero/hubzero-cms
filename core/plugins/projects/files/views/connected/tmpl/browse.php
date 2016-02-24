@@ -51,7 +51,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 			</a>
 			&nbsp;&raquo;
 			<?php $imgRel = '/plugins/filesystem/' . $this->connection->provider->alias . '/assets/img/icon.png'; ?>
-			<?php $img = (is_file('/app' . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
+			<?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
 			<img src="<?php echo $img; ?>" alt="" height="20" width="20" />
 			<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id); ?>">
 				<?php echo $this->connection->name; ?>
