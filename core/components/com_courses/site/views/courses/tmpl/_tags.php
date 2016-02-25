@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-	if (!$this->tags->total())
+	if (!$this->tags->count())
 	{
 		echo '';
 		return;

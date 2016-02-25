@@ -80,12 +80,12 @@ switch ($this->comment->get('rating'))
 				<p class="comment-title">
 					<strong>
 					<?php if (!$this->comment->get('anonymous')) { ?>
-						<?php if ($this->comment->creator('public')) { ?>
+						<?php if ($this->comment->creator()->get('public')) { ?>
 							<a href="<?php echo Route::url($this->comment->creator()->getLink()); ?>">
-								<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
+								<?php echo $this->escape(stripslashes($this->comment->creator()->get('name'))); ?>
 							</a>
 						<?php } else { ?>
-							<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
+							<?php echo $this->escape(stripslashes($this->comment->creator()->get('name'))); ?>
 						<?php } ?>
 					<?php } else { ?>
 						<?php echo Lang::txt('PLG_COURSES_REVIEWS_ANONYMOUS'); ?>
@@ -96,7 +96,7 @@ switch ($this->comment->get('rating'))
 						<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
-						<?php if ($this->comment->modified() && $this->comment->modified() != '0000-00-00 00:00:00') { ?>
+						<?php if ($this->comment->wasModified()) { ?>
 							&mdash; <?php echo Lang::txt('Edited'); ?>
 							<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
 							<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
@@ -118,7 +118,7 @@ switch ($this->comment->get('rating'))
 					}
 					else
 					{
-						echo $this->comment->content('parsed');
+						echo $this->comment->content;
 					}
 					?>
 				</div><!-- / .comment-body -->
@@ -156,7 +156,7 @@ switch ($this->comment->get('rating'))
 				<div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
 					<form action="<?php echo Route::url($this->url); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
-							<legend><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator('name') : Lang::txt('PLG_COURSES_REVIEWS_ANONYMOUS'))); ?></span></legend>
+							<legend><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator()->get('name') : Lang::txt('PLG_COURSES_REVIEWS_ANONYMOUS'))); ?></span></legend>
 
 							<input type="hidden" name="comment[id]" value="0" />
 							<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
@@ -194,7 +194,7 @@ switch ($this->comment->get('rating'))
 			<?php
 			$this->view('list')
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies('list', array('state' => 1)))
+			     ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
 			     ->set('obj_type', $this->obj_type)
 			     ->set('obj', $this->obj)
 			     ->set('params', $this->params)

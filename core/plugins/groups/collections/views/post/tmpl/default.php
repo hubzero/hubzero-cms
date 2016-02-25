@@ -151,35 +151,36 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php
-if ($item->get('comments'))
-{
-	foreach ($item->comments() as $comment)
+	<?php
+	if ($item->get('comments'))
 	{
-		$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
-?>
-		<div class="commnts">
-			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
-				</a>
-				<p>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
-					<span class="entry-date">
-						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
-					</span>
-				</p>
-				<blockquote>
-					<p><?php echo stripslashes($comment->content); ?></p>
-				</blockquote>
+		foreach ($item->comments() as $comment)
+		{
+			$cuser = $comment->creator();
+			?>
+			<div class="commnts">
+				<div class="comment convo clearfix" id="c<?php echo $comment->get('id'); ?>">
+					<a href="<?php echo Route::url($cuser->getLink()); ?>" class="img-link">
+						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->get('anonymous')); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
+					</a>
+					<p>
+						<a href="<?php echo Route::url($cuser->getLink()); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
+						<span class="entry-date">
+							<span class="entry-date-at">@</span>
+							<span class="time"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('time'); ?></time></span>
+							<span class="entry-date-on">on</span>
+							<span class="date"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('date'); ?></time></span>
+						</span>
+					</p>
+					<blockquote>
+						<p><?php echo stripslashes($comment->content); ?></p>
+					</blockquote>
+				</div>
 			</div>
-		</div>
-<?php
+			<?php
+		}
 	}
-}
+
 	if (!User::isGuest())
 	{
 		$now = Date::of('now');

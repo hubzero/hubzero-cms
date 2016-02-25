@@ -281,18 +281,11 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$how = -1;
 		}
 
-		$v = \Hubzero\Item\Vote::blank();
-		$v->set(array(
-			'created_by' => User::get('id'),
-			'item_type'  => 'comment',
-			'vote'       => $how,
-			'item_id'    => $item_id
-		));
+		$item = \Plugins\Hubzero\Comments\Models\Comment::oneOrFail($item_id);
 
-		// Store new content
-		if (!$v->save())
+		if (!$item->vote($how))
 		{
-			$this->setError($v->getError());
+			$this->setError($item->getError());
 		}
 
 		if ($this->getError() && !$no_html)
@@ -305,23 +298,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view->setLayout('vote');
+		$item->set('vote', $how);
 
-		$this->view->item = new \Hubzero\Item\Comment($this->database);
-		$this->view->item->load($v->item_id);
-		if ($v->get('vote') == 1)
-		{
-			$this->view->item->positive++;
-		}
-		else
-		{
-			$this->view->item->negative++;
-		}
-		if (!$this->view->item->store())
-		{
-			$this->setError($this->view->item->getError());
-		}
-		$this->view->item->vote = $v->get('vote');
+		$this->view->setLayout('vote');
+		$this->view->set('item', $item);
 
 		if (!$no_html)
 		{
@@ -351,11 +331,14 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view()
 	{
-		$this->view->comments = $this->comment->replies('list', array(
-			'item_type' => $this->obj_type,
-			'item_id'   => $this->obj_id,
-			'limit'     => $this->params->get('comments_limit', 25)
-		));
+		$this->view->comments = \Plugins\Hubzero\Comments\Models\Comment::all()
+			->whereEquals('item_type', $this->obj_type)
+			->whereEquals('item_id', $this->obj_id)
+			->whereEquals('parent', 0)
+			->whereIn('state', array(1, 3))
+			->limit($this->params->get('display_limit', 25))
+			->ordered()
+			->paginated();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -383,22 +366,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object
-		$row = new \Plugins\Hubzero\Comments\Models\Comment($comment['id']);
+		$row = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($comment['id'])->set($comment);
 
-		// pass data to comment object
-		if (!$row->bind($comment))
-		{
-			App::redirect(
-				$this->url,
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
-		$row->set('uploadDir', $this->params->get('comments_uploadpath', '/site/comments'));
-		$row->set('created', Date::toSql());
-
-		if ($row->exists() && !$this->params->get('access-edit-comment'))
+		if ($row->get('id') && !$this->params->get('access-edit-comment'))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
@@ -409,11 +379,12 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Store new content
-		if (!$row->store(true))
+		if (!$row->save())
 		{
-			$key   = 'failed_comment';
-			$value = $row->content('raw');
-			User::setState($key, $value);
+			User::setState(
+				'failed_comment',
+				$row->get('content')
+			);
 
 			App::redirect(
 				$this->url,
@@ -421,6 +392,32 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				'error'
 			);
 			return;
+		}
+
+		$upload = Request::getVar('comment_file', '', 'files', 'array');
+
+		if (!empty($upload) && $upload['name'])
+		{
+			if ($upload['error'])
+			{
+				$this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_ERROR_UPLOADING_FILE'));
+			}
+
+			$file = new \Plugins\Hubzero\Comments\Models\File();
+			$file->set('comment_id', $row->get('id'));
+			$file->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
+
+			$fileName = $upload['name'];
+			$fileTemp = $upload['tmp_name'];
+
+			if (!$file->upload($fileName, $fileTemp))
+			{
+				$this->setError($file->getError());
+			}
+			else
+			{
+				$file->save();
+			}
 		}
 
 		App::redirect(
@@ -452,7 +449,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new \Plugins\Hubzero\Comments\Models\Comment($id);
+		$comment = \Plugins\Hubzero\Comments\Models\Comment::oneOrFail($id);
 
 		if (User::get('id') != $comment->get('created_by')
 		 && !$this->params->get('access-delete-comment'))
@@ -461,10 +458,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$comment->set('state', 2);
+		$comment->set('state', $comment::STATE_DELETED);
 
 		// Delete the entry itself
-		if (!$comment->store())
+		if (!$comment->save())
 		{
 			$this->setError($comment->getError());
 		}
@@ -493,14 +490,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// Set the mime encoding for the document
 		Document::setType('feed');
 
-		// Load the comments
-		$comment = new \Plugins\Hubzero\Comments\Models\Comment();
-		$filters = array(
-			'parent'    => 0,
-			'item_type' => $this->obj_type,
-			'item_id'   => $this->obj_id
-		);
-
 		if ($this->obj instanceof \Hubzero\Base\Model)
 		{
 			$title = $this->obj->get('title');
@@ -521,34 +510,80 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$doc->description = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION',Config::get('sitename'), stripslashes($title));
 		$doc->copyright   = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
+		$comments = \Plugins\Hubzero\Comments\Models\Comment::all()
+			->whereEquals('item_type', $this->obj_type)
+			->whereEquals('item_id', $this->obj_id)
+			->whereEquals('parent', 0)
+			->limit($this->params->get('display_limit', 25))
+			->ordered()
+			->paginated();
+
 		// Start outputing results if any found
-		if ($comment->replies('list', $filters)->total() > 0)
+		foreach ($comments as $row)
 		{
-			foreach ($comment->replies() as $row)
+			// URL link to article
+			$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
+
+			$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
+			if (!$row->get('anonymous'))
+			{
+				$author = $row->creator()->get('name');
+			}
+
+			// Prepare the title
+			$title = Lang::txt('PLG_HUBZERO_COMMENTS_COMMENT_BY', $author) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+
+			// Strip html from feed item description text
+			if ($row->isReported())
+			{
+				$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
+			}
+			else
+			{
+				$description = strip_tags($row->content);
+			}
+
+			@$date = ($row->created() ? date('r', strtotime($row->created())) : '');
+
+			// Load individual item creator class
+			$item = new \Hubzero\Document\Type\Feed\Item();
+			$item->title       = $title;
+			$item->link        = $link;
+			$item->description = $description;
+			$item->date        = $date;
+			$item->category    = '';
+			$item->author      = $author;
+
+			// Loads item info into rss array
+			$doc->addItem($item);
+
+			// Check for any replies
+			foreach ($row->replies() as $reply)
 			{
 				// URL link to article
-				$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
+				$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
 
 				$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
-				if (!$row->get('anonymous'))
+				if (!$reply->anonymous)
 				{
-					$author = $row->creator('name');
+					$author = $reply->creator()->get('name');
 				}
 
 				// Prepare the title
-				$title = Lang::txt('PLG_HUBZERO_COMMENTS_COMMENT_BY', $author) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+				$title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $row->id, $author) . ' @ ' . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 				// Strip html from feed item description text
-				if ($row->isReported())
+				if ($reply->reports)
 				{
 					$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
 				}
 				else
 				{
-					$description = $row->content('clean');
+					$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
 				}
+				$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 
-				@$date = ($row->created() ? date('r', strtotime($row->created())) : '');
+				@$date = ($reply->created ? gmdate('r', strtotime($reply->created)) : '');
 
 				// Load individual item creator class
 				$item = new \Hubzero\Document\Type\Feed\Item();
@@ -562,93 +597,44 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				// Loads item info into rss array
 				$doc->addItem($item);
 
-				// Check for any replies
-				if ($row->replies()->total())
+				foreach ($reply->replies() as $response)
 				{
-					foreach ($row->replies() as $reply)
+					// URL link to article
+					$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
+
+					$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
+					if (!$response->anonymous)
 					{
-						// URL link to article
-						$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
-
-						$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
-						if (!$reply->anonymous)
-						{
-							$cuser  = User::getInstance($reply->created_by);
-							$author = $cuser->get('name');
-						}
-
-						// Prepare the title
-						$title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $row->id, $author) . ' @ ' . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-
-						// Strip html from feed item description text
-						if ($reply->reports)
-						{
-							$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
-						}
-						else
-						{
-							$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
-						}
-						$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-
-						@$date = ($reply->created ? gmdate('r', strtotime($reply->created)) : '');
-
-						// Load individual item creator class
-						$item = new \Hubzero\Document\Type\Feed\Item();
-						$item->title       = $title;
-						$item->link        = $link;
-						$item->description = $description;
-						$item->date        = $date;
-						$item->category    = '';
-						$item->author      = $author;
-
-						// Loads item info into rss array
-						$doc->addItem($item);
-
-						if ($reply->replies)
-						{
-							foreach ($reply->replies as $response)
-							{
-								// URL link to article
-								$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
-
-								$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
-								if (!$response->anonymous)
-								{
-									$cuser  = User::getInstance($response->created_by);
-									$author = $cuser->get('name');
-								}
-
-								// Prepare the title
-								$title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-
-								// Strip html from feed item description text
-								if ($response->reports)
-								{
-									$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
-								}
-								else
-								{
-									$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
-								}
-								$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-
-								@$date = ($response->created ? gmdate('r', strtotime($response->created)) : '');
-
-								// Load individual item creator class
-								$item = new \Hubzero\Document\Type\Feed\Item();
-								$item->title       = $title;
-								$item->link        = $link;
-								$item->description = $description;
-								$item->date        = $date;
-								$item->category    = '';
-								$item->author      = $author;
-
-								// Loads item info into rss array
-								$doc->addItem($item);
-							}
-						}
+						$author = $response->creator()->get('name');
 					}
+
+					// Prepare the title
+					$title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+
+					// Strip html from feed item description text
+					if ($response->reports)
+					{
+						$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
+					}
+					else
+					{
+						$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
+					}
+					$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
+
+					@$date = ($response->created ? gmdate('r', strtotime($response->created)) : '');
+
+					// Load individual item creator class
+					$item = new \Hubzero\Document\Type\Feed\Item();
+					$item->title       = $title;
+					$item->link        = $link;
+					$item->description = $description;
+					$item->date        = $date;
+					$item->category    = '';
+					$item->author      = $author;
+
+					// Loads item info into rss array
+					$doc->addItem($item);
 				}
 			}
 		}

@@ -630,14 +630,14 @@ $this->css()
 				<?php echo Lang::txt('COM_WISHLIST_COMMENTS');?> (<?php echo $this->wish->comments('count'); ?>)
 			</h3>
 			<?php
-			if ($this->wish->comments('list')->total() > 0)
+			if ($this->wish->comments()->count() > 0)
 			{
 				$this->view('_list')
 				     ->set('parent', 0)
 				     ->set('cls', 'odd')
 				     ->set('depth', 0)
 				     ->set('option', $this->option)
-				     ->set('comments', $this->wish->comments('list'))
+				     ->set('comments', $this->wish->comments())
 				     ->set('wishlist', $this->wishlist)
 				     ->set('wish', $this->wish)
 				     ->display();
@@ -689,16 +689,16 @@ $this->css()
 						<input type="hidden" name="referenceid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 						<input type="hidden" name="cat" value="wish" />
 
-						<input type="hidden" name="item_id" value="<?php echo $this->wish->get('id'); ?>" />
-						<input type="hidden" name="item_type" value="wish" />
-						<input type="hidden" name="parent" value="" />
+						<input type="hidden" name="comment[item_id]" value="<?php echo $this->wish->get('id'); ?>" />
+						<input type="hidden" name="comment[item_type]" value="wish" />
+						<input type="hidden" name="comment[parent]" value="0" />
 
 						<?php echo Html::input('token'); ?>
 
 						<label for="comment<?php echo $this->wish->get('id'); ?>">
 							<?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
 							<?php
-							echo $this->editor('content', '', 35, 4, 'comment' . $this->wish->get('id'), array('class' => 'minimal no-footer'));
+							echo $this->editor('comment[content]', '', 35, 4, 'comment' . $this->wish->get('id'), array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
@@ -716,7 +716,7 @@ $this->css()
 						</fieldset>
 
 						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" />
+							<input class="option" type="checkbox" name="comment[anonymous]" value="1" id="comment-anonymous" />
 							<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 

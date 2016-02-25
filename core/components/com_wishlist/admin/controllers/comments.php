@@ -129,13 +129,8 @@ class Comments extends AdminController
 		$this->view->wishlist = new Wishlist($this->database);
 		$this->view->wishlist->load($this->view->wish->wishlist);
 
-		$obj = new Comment($this->database);
-
 		// Get records
-		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
-
-		// add the appropriate filters and apply them to the Item::Comment
-
+		// add the appropriate filters and apply them
 		$filters = array(
 			'item_type' => 'wish',
 			'parent'    => 0,
@@ -156,7 +151,7 @@ class Comments extends AdminController
 
 		if (isset($this->view->filters['limit']))
 		{
-			$filters['limit'] = $this->view->filters['limit'] ;
+			$filters['limit'] = $this->view->filters['limit'];
 		}
 		if (isset($this->view->filters['start']))
 		{
@@ -168,7 +163,13 @@ class Comments extends AdminController
 		 * This will result in a pagination limit break, but it provides
 		 * a clearer story of a wish
 		 */
-		$comments1 = $obj->find($filters, 1);
+		$comments1 = Comment::all()
+			->whereEquals('item_type', $filters['item_type'])
+			->whereEquals('parent', $filters['parent'])
+			->ordered()
+			->paginated()
+			->rows();
+
 		$comments = array();
 		if (count($comments1) > 0)
 		{
@@ -177,35 +178,29 @@ class Comments extends AdminController
 
 			foreach ($comments1 as $comment1)
 			{
-				$comment1->prfx = '';
-				$comment1->wish = $this->view->filters['wish'];
+				$comment1->set('prfx', '');
+				$comment1->set('wish', $this->view->filters['wish']);
 				$comments[] = $comment1;
 
-				$comments2 = $obj->find(array('item_id' => $comment1->item_id, 'item_type' => 'wish', 'parent' => $comment1->id), 1);
-				if (count($comments2) > 0)
+				foreach ($comment1->replies() as $comment2)
 				{
-					foreach ($comments2 as $comment2)
-					{
-						$comment2->prfx = $spacer . $pre;
-						$comment2->wish = $this->view->filters['wish'];
-						$comments[] = $comment2;
+					$comment2->set('prfx', $spacer . $pre);
+					$comment2->set('wish', $this->view->filters['wish']);
+					$comments[] = $comment2;
 
-						$comments3 = $obj->find(array('item_id' => $comment2->item_id, 'item_type' => 'wish', 'parent' => $comment2->id), 1);
-						if (count($comments3) > 0)
-						{
-							foreach ($comments3 as $comment3)
-							{
-								$comment3->prfx = $spacer . $spacer . $pre;
-								$comment3->wish = $this->view->filters['wish'];
-								$comments[] = $comment3;
-							}
-						}
+					foreach ($comment2->replies() as $comment3)
+					{
+						$comment3->set('prfx', $spacer . $spacer . $pre);
+						$comment3->set('wish', $this->view->filters['wish']);
+						$comments[] = $comment3;
 					}
 				}
 			}
 		}
 
-		$this->view->total = count($obj->find(array('item_type' => 'wish'), 1)); // for pagination
+		$this->view->total = Comment::all()
+			->whereEquals('item_type', $filters['item_type'])
+			->total();
 		$this->view->rows  = $comments;
 
 		// Output the HTML
@@ -222,7 +217,7 @@ class Comments extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->wish = Request::getInt('wish', 0);
+		$wish = Request::getInt('wish', 0);
 
 		if (!is_object($row))
 		{
@@ -235,18 +230,15 @@ class Comments extends AdminController
 			}
 
 			// Load category
-			$row = new Comment($this->database);
-			$row->load($id);
+			$row = Comment::oneOrNew($id);
 		}
 
-		$this->view->row = $row;
-
-		if (!$this->view->row->id)
+		if ($row->isNew())
 		{
-			$this->view->row->item_type  = 'wish';
-			$this->view->row->item_id    = $this->view->wish;
-			$this->view->row->created    = Date::toSql();
-			$this->view->row->created_by = User::get('id');
+			$row->set('item_type', 'wish');
+			$row->set('item_id', $wish);
+			$row->set('created', Date::toSql());
+			$row->set('created_by', User::get('id'));
 		}
 
 		// Set any errors
@@ -257,6 +249,8 @@ class Comments extends AdminController
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
+			->set('wish', $wish)
 			->setLayout('edit')
 			->display();
 	}
@@ -276,26 +270,12 @@ class Comments extends AdminController
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Comment($this->database);
-		if (!$row->bind($fields))
-		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$row = Comment::blank()->set($fields);
 
-		$row->anonymous = (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0;
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
+		$row->set('anonymous', (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -330,20 +310,14 @@ class Comments extends AdminController
 		$ids  = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have any IDs?
-		if (count($ids) > 0)
+		// Loop through each ID
+		foreach ($ids as $id)
 		{
-			$tbl = new Comment($this->database);
+			$comment = Comment::oneOrFail(intval($id));
 
-			// Loop through each ID
-			foreach ($ids as $id)
+			if (!$comment->destroy())
 			{
-				$id = intval($id);
-
-				if (!$tbl->delete($id))
-				{
-					throw new Exception($tbl->getError(), 500);
-				}
+				Notify::error($comment->getError());
 			}
 		}
 
@@ -386,10 +360,9 @@ class Comments extends AdminController
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new Comment($this->database);
-			$row->load($id);
-			$row->state = $state;
-			$row->store();
+			$row = Comment::oneOrFail($id);
+			$row->set('state', $state);
+			$row->save();
 		}
 
 		// Set message
@@ -443,10 +416,9 @@ class Comments extends AdminController
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new Comment($this->database);
-			$row->load($id);
-			$row->anonymous = $state;
-			$row->store();
+			$row = Comment::oneOrFail($id);
+			$row->set('anonymous', $state);
+			$row->save();
 		}
 
 		// Set the redirect

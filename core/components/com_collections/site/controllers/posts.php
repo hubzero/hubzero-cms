@@ -299,22 +299,10 @@ class Posts extends SiteController
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new Comment($this->database);
-		if (!$row->bind($comment))
-		{
-			$this->setError($row->getError());
-			return $this->displayTask();
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->displayTask();
-		}
+		$row = Comment::blank()->set($comment);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->displayTask();
@@ -344,12 +332,11 @@ class Posts extends SiteController
 		}
 
 		// Initiate a whiteboard comment object
-		$comment = new Comment($this->database);
-		$comment->load($id);
-		$comment->state = 2;
+		$comment = Comment::oneOrFail($id);
+		$comment->set('state', $comment::STATE_DELETED);
 
 		// Delete the entry itself
-		if (!$comment->store())
+		if (!$comment->save())
 		{
 			$this->setError($comment->getError());
 		}

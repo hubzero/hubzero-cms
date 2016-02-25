@@ -244,18 +244,19 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		$level++;
 
-		$hc = new \Hubzero\Item\Comment($database);
-		$comments = $hc->find(array(
-			'parent'    => ($level == 1 ? 0 : $item->id),
-			'item_id'   => $id,
-			'item_type' => $category
-		));
+		$comments = \Hubzero\Item\Comment::all()
+			->whereEquals('parent', ($level == 1 ? 0 : $item->id))
+			->whereEquals('item_id', $id)
+			->whereEquals('item_type', $category)
+			->ordered()
+			->rows();
 
 		if ($comments)
 		{
 			foreach ($comments as $comment)
 			{
-				$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
+				//$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
+
 				if ($abuse)
 				{
 					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');

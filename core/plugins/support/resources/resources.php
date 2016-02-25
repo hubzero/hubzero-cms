@@ -68,22 +68,23 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
+		$database = App::get('db');
+
 		if ($category == 'review')
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.user_id as author,
+			$query  = "SELECT rr.id, rr.comment as `text`, rr.created, rr.user_id as `author`,
 						NULL as subject, 'review' as parent_category, rr.anonymous as anon
-						FROM #__resource_ratings AS rr
-						WHERE rr.id=" . $refid;
+						FROM `#__resource_ratings` AS rr
+						WHERE rr.id=" . $database->quote($refid);
 		}
 		else if ($category == 'reviewcomment')
 		{
-			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author,
+			$query  = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`,
 						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon
-						FROM #__item_comments AS rr
-						WHERE rr.id=" . $refid;
+						FROM `#__item_comments` AS rr
+						WHERE rr.id=" . $database->quote($refid);
 		}
 
-		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)
@@ -115,7 +116,10 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 		if ($category == 'reviewcomment')
 		{
 			$pdata = $this->parent($parentid);
-			$category = $pdata->category;
+
+			$refid    = $pdata->get('item_id');
+			$category = 'review';
+			/*$category = $pdata->category;
 			$refid = $pdata->referenceid;
 
 			if ($pdata->category == 'reviewcomment')
@@ -132,7 +136,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 					$category = $pdata->category;
 					$refid = $pdata->referenceid;
 				}
-			}
+			}*/
 		}
 
 		if ($category == 'review')
@@ -150,12 +154,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = App::get('db');
-
-		$parent = new \Hubzero\Item\Comment($database);
-		$parent->load($parentid);
-
-		return $parent;
+		return \Hubzero\Item\Comment::oneOrFail($parentid);
 	}
 
 	/**
@@ -285,10 +284,10 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'reviewcomment':
-				$comment = new \Hubzero\Item\Comment($database);
-				$comment->load($referenceid);
-				$comment->state = 2;
-				if (!$comment->store())
+				$comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
+				$comment->set('state', $comment::STATE_DELETED);
+
+				if (!$comment->save())
 				{
 					$this->setError($comment->getError());
 					return false;

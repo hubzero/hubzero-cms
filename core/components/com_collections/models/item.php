@@ -291,8 +291,14 @@ class Item extends Base
 			case 'count':
 				if ($this->_cache['comments.count'] === null)
 				{
-					$tbl = new Comment($this->_db);
-					$this->_cache['comments.count'] = $tbl->count($filters);
+					$total = Comment::all()
+						->whereEquals('item_type', $filters['item_type'])
+						->whereEquals('item_id', $this->get('id'))
+						->whereIn('state', $filters['state'])
+						->ordered()
+						->total();
+
+					$this->_cache['comments.count'] = $total;
 				}
 				return $this->_cache['comments.count'];
 			break;
@@ -302,12 +308,12 @@ class Item extends Base
 			default:
 				if (!is_array($this->_cache['comments.list']))
 				{
-					$tbl = new Comment($this->_db);
-
-					if (!($results = $tbl->getComments('collection', $this->get('id'))))
-					{
-						$results = array();
-					}
+					$results = Comment::all()
+						->whereEquals('item_type', $filters['item_type'])
+						->whereEquals('item_id', $this->get('id'))
+						->whereIn('state', $filters['state'])
+						->ordered()
+						->rows();
 
 					$this->_cache['comments.list'] = $results;
 				}

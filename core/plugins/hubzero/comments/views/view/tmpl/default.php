@@ -56,15 +56,15 @@ $this->css()
 							}
 
 							// Load the comment
-							$comment = new \Plugins\Hubzero\Comments\Models\Comment($edit);
+							$comment = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($edit);
 							// If the comment exists and the editor is NOT the creator and the editor is NOT a manager...
-							if ($comment->exists() && $comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
+							if ($comment->get('id') && $comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
 							{
 								// Disallow editing
-								$comment = new \Plugins\Hubzero\Comments\Models\Comment(0);
+								$comment = \Plugins\Hubzero\Comments\Models\Comment::blank();
 							}
 
-							if (!$comment->exists())
+							if ($comment->isNew())
 							{
 								$comment->set('parent', Request::getInt('commentreply', 0));
 								$comment->set('created_by', (!User::isGuest() ? User::get('id') : 0));
@@ -79,12 +79,12 @@ $this->css()
 							{
 								if ($replyto = Request::getInt('commentreply', 0))
 								{
-									$reply = new \Plugins\Hubzero\Comments\Models\Comment($replyto);
+									$reply = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($replyto);
 
 									$name = Lang::txt('COM_KB_ANONYMOUS');
 									if (!$reply->get('anonymous'))
 									{
-										$name = ($reply->creator('public') ? '<a href="' . Route::url($reply->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($repy->creator('name'))) . ($reply->creator('public') ? '</a>' : '');
+										$name = ($reply->creator()->get('public') ? '<a href="' . Route::url($reply->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($repy->creator()->get('name'))) . ($reply->creator()->get('public') ? '</a>' : '');
 									}
 									?>
 									<blockquote cite="c<?php echo $reply->get('id'); ?>">

@@ -172,12 +172,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = App::get('db');
-
-		$parent = new \Hubzero\Item\Comment($database);
-		$parent->load($parentid);
-
-		return $parent;
+		return \Hubzero\Item\Comment::oneOrFail($parentid);
 	}
 
 	/**
@@ -425,10 +420,10 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'answercomment':
-				$comment = new \Hubzero\Item\Comment($database);
-				$comment->load($referenceid);
-				$comment->state = 2;
-				if (!$comment->store())
+				$comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
+				$comment->set('state', $comment::STATE_DELETED);
+
+				if (!$comment->save())
 				{
 					$this->setError($comment->getError());
 					return false;

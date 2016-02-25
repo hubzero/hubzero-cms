@@ -176,10 +176,10 @@ function submitbutton(pressbutton)
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $this->escape(stripslashes($row->name)); ?>
+					<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 				</td>
 				<td class="priority-3">
-					<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
+					<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>

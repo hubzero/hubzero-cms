@@ -53,22 +53,23 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
+		$database = App::get('db');
+
 		if ($category == 'pubreview')
 		{
 			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.created_by as author,
 						NULL as subject, 'pubreview' as parent_category, rr.anonymous as anon
-						FROM #__publication_ratings AS rr
-						WHERE rr.id=" . $refid;
+						FROM `#__publication_ratings` AS rr
+						WHERE rr.id=" . $database->quote($refid);
 		}
 		else if ($category == 'pubreviewcomment')
 		{
 			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author,
 						NULL as subject, 'pubreviewcomment' as parent_category, rr.anonymous as anon
-						FROM #__item_comments AS rr
-						WHERE rr.id=" . $refid;
+						FROM `#__item_comments` AS rr
+						WHERE rr.id=" . $database->quote($refid);
 		}
 
-		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		if ($rows)
@@ -100,10 +101,10 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 		if ($category == 'pubreviewcomment')
 		{
 			$pdata = $this->parent($parentid);
-			$category = $pdata->item_type;
-			$refid = $pdata->item_id;
+			$category = $pdata->get('item_type');
+			$refid    = $pdata->get('item_id');
 
-			if ($pdata->category == 'pubreviewcomment')
+			/*if ($pdata->category == 'pubreviewcomment')
 			{
 				// Yet another level?
 				$pdata = $this->parent($pdata->parent);
@@ -117,7 +118,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 					$category = $pdata->item_type;
 					$refid = $pdata->item_id;
 				}
-			}
+			}*/
 		}
 
 		if ($category == 'review')
@@ -135,12 +136,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = App::get('db');
-
-		$parent = new \Hubzero\Item\Comment($database);
-		$parent->load($parentid);
-
-		return $parent;
+		return \Hubzero\Item\Comment::oneOrFail($parentid);
 	}
 
 	/**
@@ -239,30 +235,29 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'reviewcomment':
-				$comment = new \Hubzero\Item\Comment($database);
-				$comment->load($referenceid);
-				//$comment->state = 2;
-				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->content, $matches))
+				$comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
+
+				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->get('content'), $matches))
 				{
 					$format = strtolower(trim($matches[1]));
 					switch ($format)
 					{
 						case 'html':
-							$comment->content = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
+							$comment->set('content', '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>');
 						break;
 
 						case 'wiki':
 						default:
-							$comment->content = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
+							$comment->set('content', '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]');
 						break;
 					}
 				}
 				else
 				{
-					$comment->content = '[[Span(' . $msg . ', class="warning")]]';
+					$comment->set('content', '[[Span(' . $msg . ', class="warning")]]');
 				}
 
-				if (!$comment->store())
+				if (!$comment->save())
 				{
 					$this->setError($comment->getError());
 					return false;

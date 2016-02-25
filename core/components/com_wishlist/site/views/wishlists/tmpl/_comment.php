@@ -42,8 +42,8 @@ defined('_HZEXEC_') or die();
 	$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
-		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
-		if ($this->comment->creator('public'))
+		$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+		if ($this->comment->creator()->get('public'))
 		{
 			$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
@@ -56,7 +56,7 @@ defined('_HZEXEC_') or die();
 	}
 	else
 	{
-		$comment = $this->comment->content('parsed');
+		$comment = $this->comment->content;
 	}
 
 	$this->comment->set('listcategory', $this->wishlist->get('category'));
@@ -129,9 +129,9 @@ defined('_HZEXEC_') or die();
 					<fieldset>
 						<legend><span><?php echo Lang::txt('COM_WISHLIST_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_WISHLIST_ANONYMOUS'))); ?></span></legend>
 
-						<input type="hidden" name="item_type" value="<?php echo $this->comment->get('item_type') ?>" />
-						<input type="hidden" name="item_id" value="<?php echo $this->comment->get('item_id'); ?>" />
-						<input type="hidden" name="parent" value="<?php echo $this->comment->get('id'); ?>" />
+						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type') ?>" />
+						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="listid" value="<?php echo $this->escape($this->wish->get('wishlist')); ?>" />
@@ -145,12 +145,12 @@ defined('_HZEXEC_') or die();
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?></span>
 							<?php
-							echo $this->editor('content', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
 						<label class="comment-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-							<input class="option" type="checkbox" name="anonymous" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
 							<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 
@@ -171,7 +171,7 @@ defined('_HZEXEC_') or die();
 			     ->set('cls', $cls)
 			     ->set('depth', $this->depth)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies('list'))
+			     ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
 			     ->set('wishlist', $this->wishlist)
 			     ->set('wish', $this->wish)
 			     ->display();

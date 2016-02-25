@@ -25,18 +25,20 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Answers\Models;
+namespace Plugins\Hubzero\Comments\Models;
 
-use Hubzero\Item\Comment as ItemComment;
+use Hubzero\Item\Comment\File as ItemFile;
+use Request;
 
 /**
- * Comment model
+ * Model class for a forum post attachment
  */
-class Comment extends ItemComment
+class File extends ItemFile
 {
 	/**
 	 * Generate and return various links to the entry
@@ -47,43 +49,32 @@ class Comment extends ItemComment
 	 */
 	public function link($type='')
 	{
-		if (!isset($this->base))
-		{
-			if (!$this->get('question_id'))
-			{
-				$answer = Response::oneOrNew($this->get('item_id'));
+		static $path;
 
-				$this->set('question_id', $answer->get('question_id'));
-			}
-			$this->base = 'index.php?option=com_answers&task=question&id=' . $this->get('question_id');
+		if (!$path)
+		{
+			$path = $this->getUploadDir();
 		}
-		$link = $this->base;
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
-			case 'edit':
-				$link .= '&action=edit&comment=' . $this->get('id');
+			case 'base':
+				$link = $path . DS . $this->get('comment_id');
 			break;
 
-			case 'delete':
-				$link .= '&action=delete&comment=' . $this->get('id');
-			break;
-
-			case 'reply':
-				$link .= '&reply=' . $this->get('id') . '#c' . $this->get('id');
-			break;
-
-			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
+			case 'path':
+			case 'filepath':
+				$link = $path . DS . $this->get('comment_id') . DS . $this->get('filename');
 			break;
 
 			case 'permalink':
 			default:
-				$link .= '#c' . $this->get('id');
+				$link = rtrim(Request::base(), '/') . substr($this->getUploadDir(), strlen(PATH_ROOT)) . '/' . $this->get('comment_id') . '/' . $this->get('filename');
 			break;
 		}
 
 		return $link;
 	}
 }
+

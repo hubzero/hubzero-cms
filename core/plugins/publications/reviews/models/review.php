@@ -196,6 +196,12 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
+		if (is_array($rtrn))
+		{
+			$filters = $rtrn;
+			$rtrn = 'list';
+		}
+
 		if (!isset($filters['item_id']))
 		{
 			$filters['item_id'] = $this->get('id');
@@ -218,27 +224,11 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 			case 'count':
 				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
 				{
-					$this->_comments_count = 0;
-
-					if (!$this->_comments)
-					{
-						$c = $this->comments('list', $filters);
-					}
-					foreach ($this->_comments as $com)
-					{
-						$this->_comments_count++;
-						if ($com->replies())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$this->_comments_count++;
-								if ($rep->replies())
-								{
-									$this->_comments_count += $rep->replies()->total();
-								}
-							}
-						}
-					}
+					$this->_comments_count = Components\Publications\Reviews\Models\Comment::all()
+						->whereEquals('item_id', $filters['item_id'])
+						->whereEquals('item_type', $filters['item_type'])
+						->whereIn('state', $filters['state'])
+						->total();
 				}
 				return $this->_comments_count;
 			break;
@@ -246,31 +236,17 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!$this->_comments || $clear)
 				{
-					$tbl = new \Hubzero\Item\Comment($this->_db);
+					$results = Components\Publications\Reviews\Models\Comment::all()
+						->whereEquals('parent', $filters['parent'])
+						->whereEquals('item_id', $filters['item_id'])
+						->whereEquals('item_type', $filters['item_type'])
+						->whereIn('state', $filters['state'])
+						->ordered()
+						->rows();
 
-					if ($this->get('replies', null) !== null)
-					{
-						$results = $this->get('replies');
-					}
-					else
-					{
-						$results = $tbl->find($filters);
-					}
-
-					if ($results)
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new PublicationsModelComment($result);
-						}
-					}
-					else
-					{
-						$results = array();
-					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = $results;
 				}
 				return $this->_comments;
 			break;

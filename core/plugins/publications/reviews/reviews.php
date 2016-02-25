@@ -240,18 +240,19 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 		$level++;
 
-		$hc = new \Hubzero\Item\Comment($database);
-		$comments = $hc->find(array(
-			'parent'    => ($level == 1 ? 0 : $item->id),
-			'item_id'   => $id,
-			'item_type' => $category
-		));
+		$comments = \Hubzero\Item\Comment::all()
+			->whereEquals('parent', ($level == 1 ? 0 : $item->id))
+			->whereEquals('item_id', $id)
+			->whereEquals('item_type', $category)
+			->ordered()
+			->rows();
 
 		if ($comments)
 		{
 			foreach ($comments as $comment)
 			{
-				$comment->replies = self::getComments($id, $comment, 'pubreview', $level, $abuse);
+				//$comment->replies = self::getComments($id, $comment, 'pubreview', $level, $abuse);
+
 				if ($abuse)
 				{
 					$comment->abuse_reports = self::getAbuseReports($comment->id, 'pubreview');
@@ -348,31 +349,17 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 
 		$database = App::get('db');
 
-		$row = new \Hubzero\Item\Comment($database);
-		if (!$row->bind($comment))
-		{
-			$this->setError($row->getError());
-			return;
-		}
+		$row = \Hubzero\Item\Comment::blank()->set($comment);
 
 		$message = $row->id ? Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED') : Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_POSTED');
 
 		// Perform some text cleaning, etc.
-		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
-		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = ($row->id ? $row->created : Date::toSql());
-		$row->state      = ($row->id ? $row->state : 0);
-		$row->created_by = ($row->id ? $row->created_by : User::get('id'));
-
-		// Check for missing (required) fields
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return;
-		}
+		$row->set('content', \Hubzero\Utility\Sanitize::clean($row->get('content')));
+		$row->set('anonymous', ($row->get('anonymous') ? $row->get('anonymous') : 0));
+		$row->set('state', ($row->get('id') ? $row->get('state') : 0));
 
 		// Save the data
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return;
@@ -389,11 +376,10 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	 */
 	public function deletereply()
 	{
-		$database = App::get('db');
 		$publication =& $this->publication;
 
 		// Incoming
-		$replyid = Request::getInt( 'comment', 0 );
+		$replyid = Request::getInt('comment', 0);
 
 		// Do we have a review ID?
 		if (!$replyid)
@@ -410,15 +396,15 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Delete the review
-		$reply = new \Hubzero\Item\Comment($database);
-		$reply->load($replyid);
+		$reply = \Hubzero\Item\Comment::oneOrFail($replyid);
 
 		// Permissions check
-		if ($reply->created_by != User::get('id'))
+		if ($reply->get('created_by') != User::get('id'))
 		{
 			return;
 		}
-		$reply->setState($replyid, 2);
+		$reply->set('state', $reply::STATE_DELETED);
+		$reply->save();
 
 		// Redirect
 		App::redirect(
@@ -464,7 +450,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		if ($vote)
 		{
 			require_once( PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
-			$v = new \Components\Answers\Tables\Vote( $database );
+			$v = new \Components\Answers\Tables\Vote($database);
 			if ($voted)
 			{
 				$v->load($voted);
@@ -719,19 +705,17 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 		$review->store();
 
 		// Delete the review's comments
-		$reply = new \Hubzero\Item\Comment($database);
+		$comments1 = \Hubzero\Item\Comment::all()
+			->whereEquals('parent', $reviewid)
+			->whereEquals('item_id', $publication->get('id'))
+			->whereEquals('item_type', 'pubreview')
+			->ordered()
+			->rows();
 
-		$comments1 = $reply->find(array(
-			'parent'    => $reviewid,
-			'item_type' => 'pubreview',
-			'item_id'   => $publication->get('id')
-		));
-		if (count($comments1) > 0)
+		foreach ($comments1 as $comment1)
 		{
-			foreach ($comments1 as $comment1)
-			{
-				$reply->setState($comment1->id, 2);
-			}
+			$comment1->set('state', $comment1::STATE_DELETED);
+			$comment1->save();
 		}
 
 		// Recalculate the average rating for the parent publication

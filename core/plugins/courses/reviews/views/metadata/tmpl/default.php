@@ -53,7 +53,13 @@ $distribution = array(
 	5 => 0
 );
 
-$ratings = $this->tbl->ratings($filters);
+//$ratings = $this->tbl->ratings($filters);
+$ratings = \Components\Courses\Models\Comment::all()
+	->whereEquals('item_id', $this->course->get('id'))
+	->whereEquals('item_type', 'courses')
+	->whereEquals('state', array(1))
+	->rows();
+
 if ($ratings)
 {
 	$sum = 0;

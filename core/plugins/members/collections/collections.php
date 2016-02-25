@@ -1337,22 +1337,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$comment = Request::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = new \Hubzero\Item\Comment($this->database);
-		if (!$row->bind($comment))
-		{
-			$this->setError($row->getError());
-			return $this->_post();
-		}
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->setError($row->getError());
-			return $this->_post();
-		}
+		$row = \Hubzero\Item\Comment::blank()->set($comment);
 
 		// Store new content
-		if (!$row->store())
+		if (!$row->save())
 		{
 			$this->setError($row->getError());
 			return $this->_post();
@@ -1382,12 +1370,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a whiteboard comment object
-		$comment = new \Hubzero\Item\Comment($this->database);
-		$comment->load($id);
-		$comment->state = 2;
+		$comment = \Hubzero\Item\Comment::oneOrFail($id);
+		$comment->set('state', $comment::STATE_DELETED);
 
 		// Delete the entry itself
-		if (!$comment->store())
+		if (!$comment->save())
 		{
 			$this->setError($comment->getError());
 		}

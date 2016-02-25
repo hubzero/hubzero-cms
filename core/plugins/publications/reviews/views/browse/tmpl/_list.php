@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 ?>
 <ol class="comments" id="t<?php echo (isset($this->parent) ? $this->parent : '0'); ?>">
 <?php
-if (isset($this->comments) && $this->comments instanceof \Hubzero\Base\ItemList)
+if (isset($this->comments) && $this->comments)
 {
 	$cls = 'odd';
 	if (isset($this->cls))

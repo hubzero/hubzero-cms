@@ -251,7 +251,7 @@ defined('_HZEXEC_') or die();
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('publication', $this->publication)
 			     ->set('option', $this->option)
-			     ->set('comments', $this->comment->replies('list'))
+			     ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
 			     ->set('cls', $cls)

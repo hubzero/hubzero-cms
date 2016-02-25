@@ -41,8 +41,8 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Is the category one this plugin handles?
 	 *
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     boolean
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  boolean
 	 */
 	private function _canHandle($category)
 	{
@@ -56,10 +56,10 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Retrieves a row from the database
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @param      string $parent   If the element has a parent element
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @param   string  $parent    If the element has a parent element
+	 * @return  array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -68,24 +68,24 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
+		$database = App::get('db');
+
 		if ($category == 'wish')
 		{
-			$query  = "SELECT ws.id, ws.about as text, ws.proposed AS created, ws.proposed_by as author, ws.subject as subject";
-			$query .= ", 'wish' as parent_category, ws.anonymous as anon";
-			$query .= " FROM #__wishlist_item AS ws";
-			$query .= " WHERE ws.id=" . $refid;
+			$query  = "SELECT ws.id, ws.about as `text`, ws.proposed AS created, ws.proposed_by as `author`, ws.subject as `subject`, 'wish' as parent_category, ws.anonymous as anon
+						FROM `#__wishlist_item` AS ws
+						WHERE ws.id=" . $database->quote($refid);
 		}
 		else if ($category == 'wishcomment')
 		{
-			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author, NULL as subject";
-			$query .= ", rr.category as parent_category, rr.anonymous as anon";
-			$query .= " FROM #__item_comments AS rr";
-			$query .= " WHERE rr.id=" . $refid;
+			$query  = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`, NULL as `subject`, rr.category as parent_category, rr.anonymous as anon
+						FROM `#__item_comments` AS rr
+						WHERE rr.id=" . $database->quote($refid);
 		}
 
-		$database = App::get('db');
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
+
 		if ($rows)
 		{
 			foreach ($rows as $key => $row)
@@ -101,6 +101,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
+
 		return $rows;
 	}
 
@@ -119,24 +120,27 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		if ($category == 'wishcomment')
 		{
 			$pdata = $this->parent($parentid);
-			$category = $pdata->category;
-			$refid = $pdata->referenceid;
 
-			if ($pdata->category == 'wishcomment')
+			$refid    = $pdata->get('item_id');
+			$category = 'wish';
+			/*$category = $pdata->get('category');
+			$refid    = $pdata->get('referenceid');
+
+			if ($pdata->get('category') == 'wishcomment')
 			{
 				// Yet another level?
 				$pdata = $this->parent($pdata->referenceid);
-				$category = $pdata->category;
-				$refid = $pdata->referenceid;
+				$category = $pdata->get('category');
+				$refid    = $pdata->get('referenceid');
 
-				if ($pdata->category == 'wishcomment')
+				if ($pdata->get('category') == 'wishcomment')
 				{
 					// Yet another level?
 					$pdata = $this->parent($pdata->referenceid);
-					$category = $pdata->category;
-					$refid = $pdata->referenceid;
+					$category = $pdata->get('category');
+					$refid    = $pdata->get('referenceid');
 				}
-			}
+			}*/
 		}
 
 		if ($category == 'wish')
@@ -154,20 +158,15 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
-		$database = App::get('db');
-
-		$parent = new \Hubzero\Item\Comment($database);
-		$parent->load($parentid);
-
-		return $parent;
+		return \Hubzero\Item\Comment::oneOrFail($parentid);
 	}
 
 	/**
 	 * Returns the appropriate text for category
 	 *
-	 * @param      string  $category Element type (determines text)
-	 * @param      integer $parentid ID of element to retrieve
-	 * @return     string
+	 * @param   string   $category  Element type (determines text)
+	 * @param   integer  $parentid  ID of element to retrieve
+	 * @return  string
 	 */
 	public function getTitle($category, $parentid)
 	{
@@ -193,9 +192,9 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark an item as flagged
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     string
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  string
 	 */
 	public function onReportItem($refid, $category)
 	{
@@ -218,10 +217,9 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'wishcomment':
-				$comment = new \Hubzero\Item\Comment($database);
-				$comment->load($refid);
-				$comment->state = 3;
-				$comment->store();
+				$comment = \Hubzero\Item\Comment::oneOrFail($refid);
+				$comment->set('state', 3);
+				$comment->save();
 			break;
 		}
 
@@ -231,10 +229,10 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Release a reported item
 	 *
-	 * @param      string $refid    ID of the database table row
-	 * @param      string $parent   If the element has a parent element
-	 * @param      string $category Element type (determines table to look in)
-	 * @return     array
+	 * @param   string  $refid     ID of the database table row
+	 * @param   string  $parent    If the element has a parent element
+	 * @param   string  $category  Element type (determines table to look in)
+	 * @return  array
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
@@ -257,10 +255,9 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'wishcomment':
-				$comment = new \Hubzero\Item\Comment($database);
-				$comment->load($refid);
-				$comment->state = 1;
-				$comment->store();
+				$comment = \Hubzero\Item\Comment::oneOrFail($refid);
+				$comment->set('state', $comment::STATE_PUBLISHED);
+				$comment->save();
 			break;
 		}
 
@@ -270,11 +267,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	/**
 	 * Removes an item reported as abusive
 	 *
-	 * @param      integer $referenceid ID of the database table row
-	 * @param      integer $parentid    If the element has a parent element
-	 * @param      string  $category    Element type (determines table to look in)
-	 * @param      string  $message     Message to user to append to
-	 * @return     string
+	 * @param   integer  $referenceid  ID of the database table row
+	 * @param   integer  $parentid     If the element has a parent element
+	 * @param   string   $category     Element type (determines table to look in)
+	 * @param   string   $message      Message to user to append to
+	 * @return  string
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
@@ -310,10 +307,10 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'wishcomment':
-				$comment = new \Hubzero\Item\Comment($database);
-				$comment->load($referenceid);
-				$comment->state = 2;
-				if (!$comment->store())
+				$comment = \Hubzero\Item\Comment::oneOrFail($referenceid);
+				$comment->set('state', $comment::STATE_DELETED);
+
+				if (!$comment->save())
 				{
 					$this->setError($comment->getError());
 					return false;

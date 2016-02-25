@@ -129,12 +129,9 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = App::get('db');
-
-		$comment = new \Hubzero\Item\Comment($database);
-		$comment->load($refid);
-		$comment->state = 3;
-		$comment->store();
+		$comment = \Hubzero\Item\Comment::oneOrFail($refid);
+		$comment->set('state', 3);
+		$comment->save();
 
 		return '';
 	}
@@ -154,13 +151,9 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = App::get('db');
-
-		$comment = new \Hubzero\Item\Comment($database);
-		$comment->load($refid);
-		//$comment->anonymous = 0;
-		$comment->state = 1;
-		$comment->store();
+		$comment = \Hubzero\Item\Comment::oneOrFail($refid);
+		$comment->set('state', $comment::STATE_PUBLISHED);
+		$comment->save();
 
 		return '';
 	}
@@ -181,35 +174,33 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		$database = App::get('db');
-
 		$this->loadLanguage();
 
 		$msg = Lang::txt('PLG_SUPPORT_COMMENTS_CONTENT_FOUND_OBJECTIONABLE');
 
-		$comment = new \Hubzero\Item\Comment($database);
-		$comment->load($refid);
-		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->content, $matches))
+		$comment = \Hubzero\Item\Comment::oneOrFail($refid);
+
+		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->get('content'), $matches))
 		{
 			$format = strtolower(trim($matches[1]));
 			switch ($format)
 			{
 				case 'html':
-					$comment->content = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
+					$comment->set('content', '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>');
 				break;
 
 				case 'wiki':
 				default:
-					$comment->content = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
+					$comment->set('content', '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]');
 				break;
 			}
 		}
 		else
 		{
-			$comment->content = '[[Span(' . $msg . ', class="warning")]]';
+			$comment->set('content', '[[Span(' . $msg . ', class="warning")]]');
 		}
-		$comment->state = 1;
-		$comment->store();
+		$comment->set('state', $comment::STATE_PUBLISHED);
+		$comment->save();
 
 		return '';
 	}

@@ -1829,11 +1829,9 @@ class Wishlists extends SiteController
 
 		if ($id && $category)
 		{
-			$row = new Comment();
-			if (!$row->bind($_POST))
-			{
-				throw new Exception($row->getError(), 500);
-			}
+			$fields = Request::getVar('comment', array(), 'post');
+
+			$row = Comment::blank()->set($fields);
 
 			// Perform some text cleaning, etc.
 			$row->set(
@@ -1851,20 +1849,18 @@ class Wishlists extends SiteController
 			}
 
 			$row->set('anonymous', ($row->get('anonymous') ? $row->get('anonymous') : 0));
-			$row->set('added', Date::toSql());
-			$row->set('state', 0);
-			$row->set('category', $category);
-			$row->set('added_by', User::get('id'));
+			$row->set('state', 1);
+			$row->set('item_type', $category);
 
 			// Save the data
-			if (!$row->store(true))
+			if (!$row->save())
 			{
 				throw new Exception($row->getError(), 500);
 			}
 
 			// Build e-mail components
-			$name  = $row->creator('name', Lang::txt('UNKNOWN'));
-			$login = $row->creator('username', Lang::txt('UNKNOWN'));
+			$name  = $row->creator()->get('name', Lang::txt('UNKNOWN'));
+			$login = $row->creator()->get('username', Lang::txt('UNKNOWN'));
 
 			if ($row->get('anonymous'))
 			{
@@ -1943,14 +1939,14 @@ class Wishlists extends SiteController
 			// get comment author if reply is posted to a comment
 			if ($category == 'wishcomment')
 			{
-				$parent = new Comment($id);
+				$parent = Comment::oneOrNew($id);
 
 				// send message to comment author
-				if ($parent->get('added_by') != $row->get('added_by')
-				 && !in_array($parent->get('added_by'), $contacted))
+				if ($parent->get('created_by') != $row->get('created_by')
+				 && !in_array($parent->get('created_by'), $contacted))
 				{
-					$contacted[] = $parent->get('added_by');
-					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->get('added_by')), $this->_option)))
+					$contacted[] = $parent->get('created_by');
+					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->get('created_by')), $this->_option)))
 					{
 						$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 					}
@@ -1983,18 +1979,18 @@ class Wishlists extends SiteController
 	public function deletereplyTask()
 	{
 		// Incoming
-		$row = new Comment(
+		$row = Comment::oneOrFail(
 			Request::getInt('replyid', 0)
 		);
 
 		// Do we have a reply ID?
-		if (!$row->exists())
+		if (!$row->get('id'))
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_REPLY_NOT_FOUND'));
 			return;
 		}
 
-		if ($row->get('added_by') != User::get('id'))
+		if ($row->get('created_by') != User::get('id'))
 		{
 			App::redirect(
 				Request::getVar('HTTP_REFERER', NULL, 'server'),
@@ -2005,9 +2001,9 @@ class Wishlists extends SiteController
 		}
 
 		// Delete the comment
-		$row->set('state', 4);
+		$row->set('state', $row::STATE_DELETED);
 
-		if (!$row->store())
+		if (!$row->save())
 		{
 			throw new Exception($row->getError(), 500);
 		}
