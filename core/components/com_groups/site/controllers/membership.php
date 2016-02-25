@@ -204,7 +204,7 @@ class Membership extends Base
 		$current_invitees = $this->view->group->get('invitees');
 
 		// Get invite emails
-		$group_inviteemails = new \Hubzero\User\Group\InviteEmail($this->database);
+		$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 		$current_inviteemails = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), true);
 
 		//vars needed
@@ -334,7 +334,7 @@ class Membership extends Base
 		// Add the inviteemails
 		foreach ($inviteemails as $ie)
 		{
-			$group_inviteemails = new \Hubzero\User\Group\InviteEmail($this->database);
+			$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 			$group_inviteemails->save($ie);
 		}
 
@@ -535,7 +535,7 @@ class Membership extends Base
 		$invitees = $this->view->group->get('invitees');
 
 		// Get invite emails
-		$group_inviteemails = new \Hubzero\User\Group\InviteEmail($this->database);
+		$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 		$inviteemails = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), true);
 		$inviteemails_with_token = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), false);
 

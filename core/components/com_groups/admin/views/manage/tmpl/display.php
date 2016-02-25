@@ -170,8 +170,9 @@ function submitbutton(pressbutton)
 			$pages = $p->count(array('gidNumber' => $row->gidNumber));
 
 			//get group invite emails
-			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
-			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
+			$inviteemails = \Hubzero\User\Group\InviteEmail::all()
+				->whereEquals('gidNumber', $group->get('gidNumber'))
+				->total();
 
 			//get group membership
 			$members    = $group->get('members');
@@ -187,7 +188,7 @@ function submitbutton(pressbutton)
 			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_MEMBERS') . '</th><td>' . count($true_members) . '</td></tr>';
 			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_MANAGERS') . '</th><td>' . count($managers) . '</td></tr>';
 			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_APPLICANTS') . '</th><td>' . count($applicants) . '</td></tr>';
-			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_INVITEES') . '</th><td>' . (count($invitees) + count($inviteemails)) . '</td></tr>';
+			$tip .= '<tr><th>' . Lang::txt('COM_GROUPS_INVITEES') . '</th><td>' . (count($invitees) + $inviteemails) . '</td></tr>';
 			$tip .= '</tbody></table>';
 			?>
 			<tr class="<?php echo "row$k"; ?>">
