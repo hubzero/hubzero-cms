@@ -273,7 +273,7 @@ class Ldap
 		if (is_numeric($user) && $user >= 0)
 		{
 			$dn = 'ou=users,' . $hubLDAPBaseDN;
-			$filter = '(uidNumber=' . $user . ')';
+			$filter = '(|(uidNumber=' . $user . ')(uid=' . $dbinfo['uid'] . '))';
 		}
 		else
 		{
@@ -286,8 +286,7 @@ class Ldap
 			'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host'
 		);
 
-		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
-
+		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
 		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
 		// If there was a database entry, but there was no ldap entry, create the ldap entry
@@ -1038,23 +1037,29 @@ class Ldap
 		foreach ($result as $row)
 		{
 			$dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
-			$result = ldap_delete($conn, $dn);
 
-			if ($result !== true)
+			// Added this search because the delete will error on a delete of a non existent object
+			$sr = ldap_search($conn, "ou=groups," . $hubLDAPBaseDN, "cn=$row", array('cn'), 0, 0, 0);
+			if (($sr !== false) and ldap_count_entries($conn, $sr) == 1)
 			{
-				// Don't report errors for "not such object" warnings
-				if (ldap_errno($conn) != 32)
+				$result = ldap_delete($conn, $dn);
+
+				if ($result !== true)
 				{
-					self::$errors['warning'][] = ldap_error($conn);
+					// Don't report errors for "not such object" warnings
+					if (ldap_errno($conn) != 32)
+					{
+						self::$errors['warning'][] = ldap_error($conn);
+					}
 				}
-			}
-			else
-			{
-				++self::$success['deleted'];
+				else
+				{
+					++self::$success['deleted'];
+				}
 			}
 		}
 
-		// delete any remaining items with gid > 1000
+		// Delete any remaining items with gid > 1000
 		$dn = "ou=groups," . $hubLDAPBaseDN;
 		$filter = '(&(objectclass=posixGroup)(gidNumber>=1000))';
 
@@ -1166,7 +1171,9 @@ class Ldap
 		// @TODO: chunk this to 1000 groups at a time
 		$db = \App::get('db');
 
-		$query = "SELECT username FROM #__users;";
+		// Negative numbers exist as usernames for placeholders, these aren't in ldap
+		// In fact we can't even search for them without causing an error
+		$query = "SELECT username FROM `#__users` where (username not REGEXP '^-?\d+$' and username REGEXP '^[a-zA-Z]')";
 
 		$db->setQuery($query);
 
@@ -1180,15 +1187,30 @@ class Ldap
 		foreach ($result as $row)
 		{
 			$dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
-			$result = ldap_delete($conn, $dn);
 
-			if ($result !== true)
+			// see if item to be deleted is there
+			$count = 0;
+			$sr = ldap_search($conn, "ou=users," . $hubLDAPBaseDN, "uid=$row");
+
+			if ($sr !== false)
 			{
-				self::$errors['warning'][] = ldap_error($conn);
+				if (ldap_count_entries($conn, $sr) !== false)
+				{
+					$count = ldap_count_entries($conn, $sr);
+				}
 			}
-			else
+
+			if ($count > 0)
 			{
-				++self::$success['deleted'];
+				$result = ldap_delete($conn, $dn);
+				if ($result !== true)
+				{
+					self::$errors['warning'][] = ldap_error($conn);
+				}
+				else
+				{
+					++self::$success['deleted'];
+				}
 			}
 		}
 
