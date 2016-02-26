@@ -369,7 +369,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Retrieve items
-		$view->files = $this->repo->filelist($view->params);
+		$view->files = $this->repo->filelistNew($view->params);
 		$view->model = $model;
 		return $view->loadTemplate();
 	}
@@ -435,15 +435,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			'sortby'               => Request::getVar('sortby', 'name'),
 			'sortdir'              => Request::getVar('sortdir', 'ASC'),
 			'showFullMetadata'     => true,
-			'getParents'           => true, // show folders
-			'getChildren'          => false, // do not recurse
 			'showUntracked'        => true,
 			'getPubConnections'    => false,
 			'remoteConnections'    => $remotes,
 		);
 
 		// Retrieve items
-		$view->items = $this->repo->filelist($view->params);
+		$view->items = $this->repo->filelistNew($view->params);
 
 		$view->publishing	= false; // do not show publishing info
 		$view->title		= $this->_area['title'];
@@ -1122,11 +1120,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				'subdir'               => NULL,
 				'sortby'               => 'localpath', // important for selector!
 				'showFullMetadata'     => false,
-				'getParents'           => true, // show folders
-				'getChildren'          => true, // look inside directories
+				'dirsOnly'             => true,
 			);
 
-			$view->list			= $this->repo->filelist($listParams);
+			$view->list			= $this->repo->filelistNew($listParams);
 			$view->path 		= $this->_path;
 			$view->items 		= array();
 			$view->database 	= $this->_database;

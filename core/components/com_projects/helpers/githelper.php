@@ -719,6 +719,68 @@ class Git extends Object
 	}
 
 	/**
+	 * Lists files in the repository
+	 *
+	 * @param   string  $subdir  Local directory path
+	 * @return  array
+	 */
+	public function getFilesNew($subdir = '')
+	{
+		// Make sure subdir has a trailing slash
+		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
+
+		// Get Git status
+		$out = $this->callGit('ls-tree --name-only master ' . escapeshellarg($subdir));
+
+		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
+	}
+
+	/**
+	 * Lists the directories in the repository
+	 *
+	 * @param   string  $subdir  Local directory path
+	 * @return  array
+	 */
+	public function getDirectories($subdir = '')
+	{
+		// Make sure subdir has a trailing slash
+		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
+
+		// Get Git status
+		$out = $this->callGit('ls-tree --name-only -dr master ' . escapeshellarg($subdir));
+
+		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
+	}
+
+	/**
+	 * Lists the untracked files from the repository
+	 *
+	 * @param   string  $subdir  The local/relative directory path to explore
+	 * @return  array
+	 **/
+	public function getUntrackedFiles($subdir = '')
+	{
+		$cmd  = 'cd ' . DS . trim($this->_path, DS) . DS . trim($subdir, DS) . ' && ';
+		$cmd .= $this->_gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
+
+		return $this->_exec($cmd);
+	}
+
+	/**
+	 * Lists the untracked directories from the repository (which really isn't a thing in git)
+	 *
+	 * @param   string  $subdir  The local/relative directory path to explore
+	 * @return  array
+	 **/
+	public function getUntrackedDirectories($subdir = '')
+	{
+		$cmd  = 'cd ' . DS . trim($this->_path, DS) . DS . trim($subdir, DS) . ' && ';
+		$cmd .= $this->_gitpath . ' clean -nd | grep ".' . DS . '$" | cut -c 14-';
+
+		return $this->_exec($cmd);
+	}
+
+	/**
 	 * List deleted files
 	 *
 	 * @return     array to be parsed

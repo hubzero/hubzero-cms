@@ -90,8 +90,10 @@ class Git extends Models\Adapter
 	 */
 	public function count ($params = array())
 	{
-		// Tracked + untracked
-		return (count($this->_git->getFiles()) + count($this->_git->getFiles('', true)));
+		$cmd  = 'cd ' . $this->_path . ' && ';
+		$cmd .='find . \( -path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
+
+		return shell_exec($cmd);
 	}
 
 	/**
@@ -315,6 +317,142 @@ class Git extends Models\Adapter
 
 		// Apply start and limit, get complete metadata and return
 		return $this->_list($items, $params, $topleveldirs);
+
+	}
+
+	/**
+	 * Get file list (retrieve and sort)
+	 *
+	 * @param   array  $params
+	 * @return  array
+	 */
+	public function filelistnew($params = [])
+	{
+		// Parse incoming params and establish defaults
+		$filter        = isset($params['filter']) ? $params['filter'] : NULL;
+		$dirPath       = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$showUntracked = isset($params['showUntracked']) ? $params['showUntracked'] : false;
+		$remotes       = isset($params['remoteConnections']) ? $params['remoteConnections'] : [];
+		$sortdir       = isset($params['sortdir']) && $params['sortdir'] == 'DESC' ? SORT_DESC : SORT_ASC;
+		$sortby        = isset($params['sortby']) ? $params['sortby'] : 'name';
+		$files         = isset($params['files']) && is_array($params['files']) ? $params['files'] : [];
+		$dirsOnly      = isset($params['dirsOnly']) ? $params['dirsOnly'] : false;
+
+		if (!$dirsOnly)
+		{
+			// Get a list of files from the git repository
+			$files = empty($files) ? $this->_git->getFilesNew($dirPath) : $files;
+
+			// Add untracked?
+			$untracked = $showUntracked ? $this->_git->getUntrackedFiles($dirPath) : [];
+			if (!empty($untracked))
+			{
+				$files = array_merge($files, $untracked);
+			}
+
+			// Include remote connections?
+			if (!empty($remotes))
+			{
+				foreach ($remotes as $name => $item)
+				{
+					$files[] = $name;
+				}
+			}
+		}
+		else
+		{
+			// This is recursive by default
+			$files = empty($files) ? $this->_git->getDirectories($dirPath) : $files;
+
+			// Add untracked?
+			$untracked = $showUntracked ? $this->_git->getUntrackedDirectories($dirPath) : [];
+			if (!empty($untracked))
+			{
+				$files = array_merge($files, $untracked);
+			}
+		}
+
+		// Output containers
+		$items 	 = [];
+		$sorting = [];
+
+		// Apply the filter early, reduces iterations through foreach()
+		if (isset($filter) && $filter != '')
+		{
+			$files = preg_grep("(".$filter.")", $files);
+		}
+
+		// Go through items and get what we need
+		foreach ($files as $item)
+		{
+			$item = urldecode($item);
+			if (trim($item) == '')
+			{
+				continue;
+			}
+
+			// Load basic file metadata
+			$file = new Models\File($item, $this->_path);
+
+			// Untracked?
+			if (in_array($file->get('localPath'), $untracked))
+			{
+				$file->set('untracked', true);
+			}
+
+			// Skip this
+			if ($file->get('name') == '.gitignore')
+			{
+				continue;
+			}
+
+			// Check for remote connections
+			$syncRecord = NULL;
+			if (isset($remotes[$file->get('localPath')]))
+			{
+				// Pick up data from sync record
+				$syncRecord = $remotes[$file->get('localPath')];
+				$file->set('remote', $syncRecord->service);
+				$file->set('author', $syncRecord->remote_author);
+				$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
+				$file->set('mimeType', $syncRecord->remote_format);
+				$file->set('converted', $syncRecord->remote_editing);
+			}
+
+			// Add to list
+			if (empty($items[$file->get('name')]))
+			{
+				$items[$file->get('localPath')] = $file;
+
+				// Collect info for sorting
+				switch ($sortby)
+				{
+					case 'size':
+						$sorting[] = $file->getSize();
+					break;
+
+					case 'modified':
+						// Need to get extra metadata (slower)
+						$sorting[] = $this->_file($file, $dirPath, 'date');
+					break;
+
+					case 'localpath':
+						$sorting[] = strtolower($file->get('localPath'));
+					break;
+
+					case 'name':
+					default:
+						$sorting[] = strtolower($file->get('name'));
+					break;
+				}
+			}
+		}
+
+		// Sort
+		array_multisort($sorting, $sortdir, $items);
+
+		// Apply start and limit, get complete metadata and return
+		return $this->_list($items, $params);
 
 	}
 
