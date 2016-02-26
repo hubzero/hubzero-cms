@@ -41,14 +41,16 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @param   object  $user
+	 * @param   object  $member
+	 * @return  array
 	 */
 	public function &onMembersAreas($user, $member)
 	{
@@ -62,11 +64,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Perform actions when viewing a member profile
 	 *
-	 * @param      object $user   Current user
-	 * @param      object $member Current member page
-	 * @param      string $option Start of records to pull
-	 * @param      array  $areas  Active area(s)
-	 * @return     array
+	 * @param   object  $user    Current user
+	 * @param   object  $member  Current member page
+	 * @param   string  $option  Start of records to pull
+	 * @param   array   $areas   Active area(s)
+	 * @return  array
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
@@ -298,12 +300,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			->set('task', $this->task)
 			->set('config', $this->params)
 			->set('archive', $this->model)
-			->set('filters', $filters);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+			->set('filters', $filters)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -311,14 +309,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display an RSS feed of latest entries
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _feed()
 	{
 		if (!$this->params->get('feeds_enabled', 1))
 		{
-			$this->_browse();
-			return;
+			return $this->_browse();
 		}
 
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
@@ -454,8 +451,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		if (User::get('id') != $this->member->get('uidNumber'))
 		{
-			$view->filters['state']  = 1;
-			$view->filters['access'] = User::getAuthorisedViewLevels();
+			$filters['state']  = 1;
+			$filters['access'] = User::getAuthorisedViewLevels();
 		}
 
 		$view = $this->view('default', 'entry')
@@ -465,12 +462,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			->set('config', $this->params)
 			->set('archive', $this->model)
 			->set('row', $row)
-			->set('filters', $filters);
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+			->set('filters', $filters)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -482,7 +475,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _login()
 	{
-		return '<p class="warning">' . Lang::txt('MEMBERS_LOGIN_NOTICE') . '</p>';
+		$return = base64_encode(Route::url($this->member->getLink() . '&active=' . $this->_name, false, true));
+
+		App::redirect(
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+			Lang::txt('MEMBERS_LOGIN_NOTICE')
+		);
 	}
 
 	/**
@@ -506,13 +504,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Login check
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
 		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
+
 			return $this->_browse();
 		}
 
@@ -533,19 +531,14 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$entry->set('created_by', $this->member->get('uidNumber'));
 		}
 
-		// Pass any errors on to the view
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
-
 		// Render view
 		$view = $this->view('default', 'edit')
 			->set('option', $this->option)
 			->set('member', $this->member)
 			->set('task', $this->task)
 			->set('config', $this->params)
-			->set('entry', $entry);
+			->set('entry', $entry)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -560,13 +553,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Login check
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
 		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
+
 			return $this->_browse();
 		}
 
@@ -595,6 +588,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		if (!$row->save())
 		{
 			$this->setError($row->getError());
+
 			return $this->_edit($row);
 		}
 
@@ -602,6 +596,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		if (!$row->tag(Request::getVar('tags', '')))
 		{
 			$this->setError($row->getError());
+
 			return $this->_edit($row);
 		}
 
@@ -617,8 +612,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	{
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
-			return;
+			return $this->_login();
 		}
 
 		if (User::get('id') != $this->member->get('uidNumber'))
@@ -655,12 +649,8 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				->set('task', $this->task)
 				->set('config', $this->params)
 				->set('entry', $entry)
-				->set('authorized', true);
-
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+				->set('authorized', true)
+				->setErrors($this->getErrors());
 
 			return $view->loadTemplate();
 		}
@@ -687,7 +677,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
@@ -707,33 +696,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_entry();
 		}
 
-		/*
-		if ($row->get('created_by') != $this->member->get('uidNumber))
-		{
-			$entry = \Components\Blog\Models\Entry::oneOrFail($row->get('entry_id'));
-
-			// Build the "from" data for the e-mail
-			$from = array(
-				'name'  => Config::get('sitename') . ' ' . Lang::txt('PLG_MEMBERS_BLOG'),
-				'email' => Config::get('mailfrom')
-			);
-
-			$subject = Lang::txt('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
-
-			// Message
-			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
-			$message .= stripslashes($row->content)."\r\n\r\n";
-			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= rtrim(Request::base(), '/') . '/' . ltrim(Route::url($entry->link() . '#comments), '/') . "\r\n";
-
-			// Send the message
-			if (!Event::trigger('xmessage.onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option)))
-			{
-				$this->setError(Lang::txt('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
-			}
-		}
-		*/
-
 		return $this->_entry();
 	}
 
@@ -747,12 +709,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
-			return;
+			return $this->_login();
 		}
 
 		// Incoming
 		$id = Request::getInt('comment', 0);
+
 		if (!$id)
 		{
 			return $this->_entry();
@@ -783,31 +745,30 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	{
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-			return;
+			return $this->_login();
 		}
 
 		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
+
 			return $this->_browse();
 		}
 
+		$settings = \Hubzero\Plugin\Params::oneByPlugin(
+			$this->member->get('uidNumber'),
+			'members',
+			$this->_name
+		);
+
 		// Output HTML
-		$view = $this->view('default', 'settings');
-		$view->option   = $this->option;
-		$view->member   = $this->member;
-		$view->task     = $this->task;
-		$view->config   = $this->params;
-
-		$view->settings = \Hubzero\Plugin\Params::oneByPlugin($this->member->get('uidNumber'), 'members', $this->_name);
-
-		$view->message  = (isset($this->message)) ? $this->message : '';
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view('default', 'settings')
+			->set('option', $this->option)
+			->set('member', $this->member)
+			->set('task', $this->task)
+			->set('config', $this->params)
+			->set('settings', $settings)
+			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -821,13 +782,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	{
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
-			return;
+			return $this->_login();
 		}
 
 		if (User::get('id') != $this->member->get("uidNumber"))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
+
 			return $this->_browse();
 		}
 
@@ -906,7 +867,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				//$this->_subject->setError($e->getMessage());
 				return false;
 			}
 		}
@@ -951,7 +911,6 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			}
 			catch (Exception $e)
 			{
-				//$this->_subject->setError($e->getMessage());
 				return false;
 			}
 		}
