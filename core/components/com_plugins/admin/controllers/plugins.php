@@ -134,6 +134,10 @@ class Plugins extends AdminController
 
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : Request::getInt($key));
+		if ($recordId)
+		{
+			Request::setVar('extension_id', $recordId);
+		}
 		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
