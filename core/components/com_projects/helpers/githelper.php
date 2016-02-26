@@ -763,7 +763,15 @@ class Git extends Object
 		$cmd  = 'cd ' . DS . trim($this->_path, DS) . DS . trim($subdir, DS) . ' && ';
 		$cmd .= $this->_gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
 
-		return $this->_exec($cmd);
+		$results = $this->_exec($cmd);
+		$return  = [];
+
+		foreach ($results as $result)
+		{
+			$return[] = trim($subdir, DS) . DS . $result;
+		}
+
+		return $return;
 	}
 
 	/**
@@ -777,7 +785,15 @@ class Git extends Object
 		$cmd  = 'cd ' . DS . trim($this->_path, DS) . DS . trim($subdir, DS) . ' && ';
 		$cmd .= $this->_gitpath . ' clean -nd | grep ".' . DS . '$" | cut -c 14-';
 
-		return $this->_exec($cmd);
+		$results = $this->_exec($cmd);
+		$return  = [];
+
+		foreach ($results as $result)
+		{
+			$return[] = trim($subdir, DS) . DS . $result;
+		}
+
+		return $return;
 	}
 
 	/**
