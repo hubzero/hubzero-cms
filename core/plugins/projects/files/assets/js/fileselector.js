@@ -91,10 +91,10 @@ HUB.ProjectFilesFileSelect = {
 
 		var url = $('#filterUrl').length ? $('#filterUrl').val() : '';
 
-		$(directorySelect).on('change', function()
+		$(directorySelect).off('change').on('change', function()
 		{
-				HUB.ProjectFilesFileSelect.refreshData(true);
-				return true;
+			HUB.ProjectFilesFileSelect.refreshData(true);
+			return true;
 		});
 
 		if (!searchbox.length || !output.length)
