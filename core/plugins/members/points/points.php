@@ -143,4 +143,53 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 		return $arr;
 	}
+
+	/**
+	 * Remove all user blog entries for the given user ID
+	 *
+	 * Method is called after user data is deleted from the database
+	 *
+	 * @param   array    $user     Holds the user data
+	 * @param   boolean  $success  True if user was succesfully stored in the database
+	 * @param   string   $msg      Message
+	 * @return  boolean
+	 */
+	public function onMemberAfterDelete($user, $success, $msg)
+	{
+		if (!$success)
+		{
+			return false;
+		}
+
+		$userId = \Hubzero\Utility\Arr::getValue($user, 'id', 0, 'int');
+
+		if ($userId)
+		{
+			try
+			{
+				$entry = \Hubzero\Bank\Account::oneByUserId($user['id']);
+
+				if (!$entry->destroy())
+				{
+					throw new Exception($entry->getError());
+				}
+
+				$transactions = \Hubzero\Bank\Transaction::all()->whereEquals('uid', $user['id']);
+
+				foreach ($transactions->rows() as $row)
+				{
+					if (!$row->destroy())
+					{
+						throw new Exception($row->getError());
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
