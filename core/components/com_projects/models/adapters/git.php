@@ -370,6 +370,9 @@ class Git extends Models\Adapter
 			}
 		}
 
+		// Duplicates can be introduced by the remotes
+		$files = array_unique($files);
+
 		// Output containers
 		$items 	 = [];
 		$sorting = [];
