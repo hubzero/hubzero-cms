@@ -186,6 +186,9 @@ jQuery(document).ready(function ( jq ) {
 				setData(event);
 				showDetails();
 			},
+			viewRender : function ( date, jsEvent, view ) {
+				$('.details-cancel').trigger('click');
+			},
 			eventDrop : function ( event, delta, revertFunc ) {
 				setData(event);
 				data.submit();
