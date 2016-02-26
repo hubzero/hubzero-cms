@@ -63,7 +63,7 @@ Toolbar::cancel();
 		<?php if ($this->story->id) : ?>
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER_HINT'); ?>">
 				<label for="field-order"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</label>
-				<input type="text" name="story[order]" id="field-order" disabled="disabled" value="<?php echo $this->story->order; ?>" />
+				<input type="text" name="story[order]" id="field-order" readonly value="<?php echo $this->story->order; ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER_HINT'); ?></span>
 			</div>
 		<?php endif; ?>
