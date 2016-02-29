@@ -36,8 +36,7 @@ defined('_HZEXEC_') or die();
 	<h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM'); ?></h3>
 </div>
 <div id="team-horiz" class="public-list-wrap">
-	<?php
-	if (count($this->team) > 0) { 	?>
+	<?php if (count($this->team) > 0) { ?>
 		<ul>
 			<?php foreach ($this->team as $owner)
 			{
@@ -48,13 +47,17 @@ defined('_HZEXEC_') or die();
 				// Get profile thumb image
 				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 				$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
+				if (!$actor)
+				{
+					$actor = new \Hubzero\User\Profile();
+				}
 				$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 			?>
 			<li>
-				<img width="50" height="50" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" />
-				<span class="block"><a href="/members/<?php echo $owner->userid; ?>"><?php echo $owner->fullname; ?></a></span>
+				<img width="50" height="50" src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($owner->fullname); ?>" />
+				<span class="block"><a href="<?php echo Route::url('index.php?option=com_members&id=' . $owner->userid); ?>"><?php echo $this->escape($owner->fullname); ?></a></span>
 			</li>
-			<?php }	?>
+			<?php } ?>
 			<li class="clear">&nbsp;</li>
 		</ul>
 	<?php } else { ?>
