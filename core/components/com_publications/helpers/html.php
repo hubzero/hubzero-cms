@@ -100,6 +100,14 @@ class Html
 		$default = $cat == 'tools'
 				? trim($config->get('toolpic', 'components/com_publications/site/assets/img/tool_thumb.gif'), DS)
 				: trim($config->get('defaultpic', 'components/com_publications/site/assets/img/resource_thumb.gif'), DS);
+		if ($default == 'components/com_publications/assets/img/resource_thumb.gif')
+		{
+			$default = 'components/com_publications/site/assets/img/resource_thumb.gif';
+		}
+		if ($default == 'components/com_publications/assets/img/tool_thumb.gif')
+		{
+			$default = 'components/com_publications/site/assets/img/tool_thumb.gif';
+		}
 
 		// Check for default image
 		if (is_file($path . DS . 'thumb.gif') && $force == false)

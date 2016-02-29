@@ -33,8 +33,8 @@ defined('_HZEXEC_') or die();
 
 $this->css()
      ->js()
-	 ->css('external')
-	 ->css('extended.css');
+     ->css('external')
+     ->css('extended.css');
 
 // Get project params
 $params = $this->model->params;
@@ -61,7 +61,9 @@ $this->css('theme' . $theme . '.css');
 			<p><?php echo Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
 		</div>
 	<?php } ?>
-	<?php // Draw top header
+
+	<?php
+	// Draw top header
 	$this->view('_topheader')
 	     ->set('model', $this->model)
 	     ->set('publicView', true)
@@ -70,7 +72,7 @@ $this->css('theme' . $theme . '.css');
 
 	// Draw top menu
 	$this->view('_topmenu', 'projects')
-		 ->set('model', $this->model)
+	     ->set('model', $this->model)
 	     ->set('active', $this->active)
 	     ->set('tabs', $this->tabs)
 	     ->set('option', $this->option)
@@ -79,29 +81,28 @@ $this->css('theme' . $theme . '.css');
 	     ->display();
 	?>
 
-	<div class="project-inner-wrap">
-		<section class="main section">
-				<?php if ($this->model->about('parsed')) { ?>
+	<section class="main section">
+		<div class="project-inner-wrap">
+			<?php if ($this->model->about('parsed')) { ?>
 				<div class="public-list-header">
 					<h3><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></h3>
 				</div>
 				<div class="public-list-wrap">
 					<?php echo $this->model->about('parsed'); ?>
 				</div>
-				<?php } ?>
-				<?php
-				// Side blocks from plugins?
-				$sections = Event::trigger( 'projects.onProjectPublicList', array($this->model));
+			<?php } ?>
+			<?php
+			// Side blocks from plugins?
+			$sections = Event::trigger('projects.onProjectPublicList', array($this->model));
 
-				if (!empty($sections))
+			if (!empty($sections))
+			{
+				foreach ($sections as $section)
 				{
-					foreach ($sections as $section)
-					{
-						echo !empty($section) ? $section : NULL;
-					}
+					echo !empty($section) ? $section : NULL;
 				}
-				?>
-
-		</section><!-- / .main section -->
-	</div>
+			}
+			?>
+		</div>
+	</section><!-- / .main section -->
 </div>
