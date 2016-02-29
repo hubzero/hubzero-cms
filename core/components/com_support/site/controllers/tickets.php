@@ -1056,7 +1056,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$group = Request::getVar('group', '');
+		$group = isset($problem['group']) ? $problem['group'] : '';
 
 		// Initiate class and bind data to database fields
 		$row = new Ticket();
