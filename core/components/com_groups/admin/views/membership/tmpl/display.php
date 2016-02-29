@@ -194,6 +194,8 @@ function submitbutton(pressbutton)
 			}
 
 			$status = $row->role;
+
+			$roles = Hubzero\User\Profile::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -210,6 +212,18 @@ function submitbutton(pressbutton)
 					<?php else : ?>
 						<span>
 							<?php echo $this->escape(stripslashes($row->name)); ?>
+						</span>
+					<?php endif; ?>
+					<?php if ($roles) : ?>
+						<br />
+						<span class="roles">
+							<?php
+							//echo Lang::txt('COM_GROUPS_ROLES') . ': ';
+							foreach ($roles as $role) :
+								$r[] = '<span class="role">' . $role['name'] . '</span>';
+							endforeach;
+							echo implode(', ', $r);
+							?>
 						</span>
 					<?php endif; ?>
 				</td>
