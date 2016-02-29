@@ -394,7 +394,6 @@ class Curation extends SiteController
 			if ($ajax)
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-				$this->view->option = $this->_option;
 				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
 				$this->view->title = $this->title;
 				$this->view->display();
