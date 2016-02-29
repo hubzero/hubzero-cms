@@ -41,15 +41,15 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesAreas($model)
 	{
@@ -66,11 +66,11 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @param   string  $option    Name of the component
+	 * @param   array   $areas     Active area(s)
+	 * @param   string  $rtrn      Data to be returned
+	 * @return  array
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
@@ -92,33 +92,19 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		$sharewith = Request::getVar('sharewith', '');
 		if ($sharewith && $sharewith != 'email')
 		{
-			$this->share($sharewith, $url, $model->resource);
-			return;
+			return $this->share($sharewith, $url, $model->resource);
 		}
 
 		// Email form
 		if ($sharewith == 'email')
 		{
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'options',
-					'layout'  => 'email'
-				)
-			);
-
-			// Pass the view some info
-			$view->option   = $option;
-			$view->resource = $model->resource;
-			$view->_params  = $this->params;
-			$view->url      = $url;
-
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view = $this->view('email', 'options')
+				->set('option', $option)
+				->set('resource', $model->resource)
+				->set('_params', $this->params)
+				->set('url', $url)
+				->setErrors($this->getErrors());
 
 			// Return the output
 			$view->display();
@@ -129,24 +115,12 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'options'
-				)
-			);
-
-			// Pass the view some info
-			$view->option   = $option;
-			$view->resource = $model->resource;
-			$view->_params  = $this->params;
-			$view->url      = $url;
-
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view = $this->view('default', 'options')
+				->set('option', $option)
+				->set('resource', $model->resource)
+				->set('_params', $this->params)
+				->set('url', $url)
+				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['metadata'] = $view->loadTemplate();
@@ -158,16 +132,17 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	/**
 	 * Redirect to social sharer
 	 *
-	 * @param      string $with     Social site to share with
-	 * @param      string $url      The URL to share
-	 * @param      object $resource Resource to share
-	 * @return     void
+	 * @param   string  $with      Social site to share with
+	 * @param   string  $url       The URL to share
+	 * @param   object  $resource  Resource to share
+	 * @return  void
 	 */
 	public function share($with, $url, $resource)
 	{
 		$link = '';
 		$description = $resource->introtext
-			? \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250) : '';
+			? \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250)
+			: '';
 		$description = urlencode($description);
 		$title = stripslashes($resource->title);
 		$title = urlencode($title);
@@ -179,9 +154,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_RESOURCES_SHARE_VIEWING',
-						Config::get('sitename'),
-						stripslashes($resource->title)) . ' ' . $url);
+				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_RESOURCES_SHARE_VIEWING', Config::get('sitename'), stripslashes($resource->title)) . ' ' . $url);
 				break;
 
 			case 'google':
@@ -197,8 +170,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'linkedin':
-				$link = 'https://www.linkedin.com/shareArticle?mini=true&url='.$url.'&title='
-				. $title . '&summary=' . $description;
+				$link = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&summary=' . $description;
 				break;
 		}
 
@@ -208,4 +180,3 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

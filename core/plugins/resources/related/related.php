@@ -48,8 +48,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object  $resource  Current resource
+	 * @return  array
 	 */
 	public function &onResourcesSubAreas($resource)
 	{
@@ -62,10 +62,10 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
 	 *
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      integer $miniview  View style
-	 * @return     array
+	 * @param   object   $resource  Current resource
+	 * @param   string   $option    Name of the component
+	 * @param   integer  $miniview  View style
+	 * @return  array
 	 */
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
@@ -100,12 +100,12 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($ugs as $ug)
 					{
-						$groups[] = $ug->cn;
+						$groups[] = $database->quote($ug->cn);
 					}
 				}
-				$g = "'" . implode("','", $groups) . "'";
+				$g = implode(",", $groups);
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='" . User::get('id') . "'))) ";
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
@@ -120,7 +120,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			 . " FROM #__resource_types AS rt, #__resources AS r"
 			 . " JOIN #__resource_assoc AS a ON r.id=a.parent_id"
 			 . " LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . " WHERE r.published=1 AND a.child_id=" . $resource->id . " AND r.type=rt.id AND r.type!=8 ";
+			 . " WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
 		if (!User::isGuest())
 		{
 			if (User::authorize('com_resources', 'manage')
@@ -130,7 +130,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by='" . User::get('id') . "'))) ";
+				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 		}
 		else
@@ -145,27 +145,12 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		// Execute the query
 		$database->setQuery($query);
 
-		$view = new \Hubzero\Plugin\View(array(
-			'folder'  => $this->_type,
-			'element' => $this->_name,
-			'name'    => 'browse'
-		));
-
 		// Instantiate a view
-		if ($miniview)
-		{
-			$view->setLayout('mini');
-		}
-
-		// Pass the view some info
-		$view->option   = $option;
-		$view->resource = $resource;
-		$view->related  = $database->loadObjectList();
-
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view = $this->view(($miniview ? 'mini' : 'default'), 'browse')
+			->set('option', $option)
+			->set('resource', $resource)
+			->set('related', $database->loadObjectList())
+			->setErrors($this->getErrors());
 
 		// Return the output
 		$arr['html'] = $view->loadTemplate();
@@ -174,4 +159,3 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 }
-
