@@ -77,7 +77,7 @@ class Post extends Relational
 
 	public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
 	{
-		$rows = Posts::all()->where('standalone', '=', '1')->order($dateField, $sort)->limit($limit);
+		$rows = Post::all()->where('status', '=', '2')->order($dateField, $sort)->limit($limit);
 
 		return $rows;
 	}
