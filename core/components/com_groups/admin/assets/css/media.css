@@ -1,0 +1,46 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/groups/admin/assets/css/media.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Groups plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.icon-folder:before {
+		content: "\f07b";
+		font-family: "Fontcons";
+		margin-right: 0.5em;
+	}
+	.icon-file:before {
+		content: "\f15c";
+		font-family: "Fontcons";
+		margin-right: 0.5em;
+	}
+	.icon-delete:before {
+		content: "\f014";
+		font-family: "Fontcons";
+		margin-right: 0.5em;
+	}
+	.delete {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		line-height: 1;
+		font-size: 1.2em;
+	}
+	.delete:hover {
+		color: red;
+	}
+	fieldset>p,
+	.input-wrap {
+		margin-bottom: 0;
+	}
