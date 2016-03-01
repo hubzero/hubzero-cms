@@ -385,7 +385,7 @@ class Mailinglist extends SiteController
 		{
 			$sql = "SELECT *
 					FROM #__xprofiles as p
-					WHERE p.email=" . $this->database->quote($mailing->email) . "
+					WHERE p.email=" . $this->database->quote($recipient->email) . "
 					AND p.mailPreferenceOption > " . $this->database->quote(0);
 			$this->database->setQuery($sql);
 			$profile = $this->database->loadObject();
