@@ -103,21 +103,183 @@ class Story extends AdminController
 			$this->view->setError($this->getError());
 		}
 
-		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		// If we are creating an auto-generated newsletter
+		if ($this->view->type == 'autogen')
+		{
+				// Load available sources
+				$this->view->enabledSources = Event::trigger('newsletter.onGetEnabledDigests');
+
+				/* It should be noted that these are not served via the CMS, per se. Rather they
+				 * JavaScript will manipulate the DOM and save the HTML as a string into the Primary
+				 * Story content field.
+				 */
+
+				// The path where the Story Template Layouts are.
+				$viewPath = dirname(__DIR__) . DS . 'views' . DS . 'storytemplates' . DS . 'tmpl';
+
+				// Get available layouts
+				$contents = Filesystem::listContents($viewPath);
+
+				// Empty bucket to hold layout names;
+				$this->view->layouts = array();
+
+				// Make sure we aren't including any cruft.
+				foreach ($contents as $file)
+				{
+					// Check for php extention
+					if (Filesystem::extension($viewPath . DS . $file['path']) == 'php' && $file['path'] != '/index.php')
+					{
+						// Some trimming of the leading / and the .php; push into bucket
+						array_push($this->view->layouts, rtrim(ltrim($file['path'], "//"), ".php"));
+					}
+				}
+
+				// Display the alternative layout
+				$this->view->setLayout('_autogen')->display();
+		}
+		else
+		{
+			// Output the HTML
+			$this->view->setLayout('edit')->display();
+		}
 	}
 
+	/**
+	 * Fetch AutoContent (from plugin) Task
+	 *
+	 * @return 	void
+	 */
+	public function fetchAutoContentTask()
+	{
+		// Prevent direct access
+		if (User::isGuest())
+		{
+			return false;
+		}
 
+		// Request the source variable
+		$source = Request::getVar('source', '');
+		$layout = Request::getVar('layout', '');
+		$itemCount = Request::getInt('itemCount', 5);
+
+		// Make sure we have something to work with
+		if ($source != '' && $layout != '')
+		{
+			// Get a list of enabled plugins
+			$enabledSources = Event::trigger('newsletter.onGetEnabledDigests');
+
+			// Get the matching source's ID, based on plugin ordering
+			$matches = array_keys($enabledSources, $source);
+			$key = $matches[0];
+
+			// Get the latest content
+			$obj = new stdClass;
+			$obj = Event::trigger('newsletter.onGetLatest', array($itemCount));
+
+			// Only get the portion we are working with
+			$obj = $obj[$key];
+
+			// Instantiate the desired Story Layout view
+			$view = new \Hubzero\Component\View(array(
+				'name' => 'storytemplates',
+				'layout' => $layout,
+				));
+
+			// Pass the data through to the view
+			$view->object = $obj;
+
+			$html = $view->display();
+			echo $html;
+			exit();
+		}
+		else
+		{
+		 // Output a warning
+		 echo json_encode(array('status'=>'nothing specified'));
+		 exit();
+		}
+	}
+
+	public function saveAutoTask()
+	{
+		// Story information
+		$title = Request::getVar('title');
+		$source = Request::getVar('contentSource');
+		$itemCount = Request::getInt('itemCount');
+		$template = Request::getVar('layout');
+
+		// Newsletter ID
+		$nid = Request::getInt('nid');
+
+		// Ensure that we have everything
+		if ($source != '' && $itemCount > 0 && $template != '')
+		{
+			// Enforce a 20 item maximum
+			if ($itemCount > 20)
+			{
+				$itemCount = 20;
+			}
+
+			// Create the string
+			$autogenString = "{{AUTOGEN_" . strtoupper($source) . "_" . $itemCount . "_" . strtoupper($template) . "}}";
+		}
+		else
+		{
+			// Redirect if the information is lacking
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&controller=story&task=add&type=autogen&id=' . $nid, false),
+				Lang::txt('COM_NEWSLETTER_STORY_MISSING_REQUIRED'), 'error'
+			);
+		}
+
+		$newsletterStory = new PrimaryStory($this->database);
+
+		// Check to make sure we have an order
+		if (!isset($story['order']) || $story['order'] == '' || $story['order'] == 0)
+		{
+			$currentHighestOrder = $newsletterStory->_getCurrentHighestOrder($nid);
+			$newOrder = $currentHighestOrder + 1;
+
+			$order = $newOrder;
+		}
+
+		$newsletterStory->title = $title;
+		$newsletterStory->story = $autogenString;
+		$newsletterStory->order = $order;
+		$newsletterStory->nid 	= $nid;
+
+		//save the story
+		if (!$newsletterStory->save($newsletterStory))
+		{
+			$this->setError($newsletterStory->getError());
+			$this->editTask($nid);
+			return;
+		}
+
+		//inform and redirect
+		App::redirect(
+			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $nid, false),
+			Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS')
+		);
+	}
 	/**
 	 * Save Newsletter Story Task
 	 *
 	 * @return 	void
 	 */
-	public function saveTask()
+	public function saveTask($nid = 0)
 	{
 		//get story
 		$story = Request::getVar("story", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
 		$type  = Request::getVar("type", "primary");
+
+		$id = !empty($story) && isset($story['nid']) ? $story['nid'] : $nid;
+
+		// If autogenerated, use its handler
+		if ($type == "autogen")
+		{
+			$this->saveAutoTask();
+		}
 
 		//are we working with a primary or secondary story
 		if ($type == "primary")
@@ -132,7 +294,7 @@ class Story extends AdminController
 		//check to make sure we have an order
 		if (!isset($story['order']) || $story['order'] == '' || $story['order'] == 0)
 		{
-			$currentHighestOrder = $newsletterStory->_getCurrentHighestOrder($story['nid']);
+			$currentHighestOrder = $newsletterStory->_getCurrentHighestOrder($id);
 			$newOrder = $currentHighestOrder + 1;
 
 			$story['order'] = $newOrder;
@@ -288,9 +450,12 @@ class Story extends AdminController
 	public function cancelTask()
 	{
 		$story = Request::getVar("story", array());
+		$nid = Request::getInt('nid', 0);
+
+		$id = !empty($story) ? $story['nid'] : $nid;
 
 		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $story['nid'], false)
+			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $id, false)
 		);
 	}
 }
