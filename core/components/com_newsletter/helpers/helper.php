@@ -356,7 +356,10 @@ class Helper
 					$clickTracker = $protocol . '://' . $_SERVER['SERVER_NAME'] . '/newsletter/track/click/?t=' . $emailToken . '&l=' . urlencode($url);
 
 					//replace normal links with tracking links
-					$emailMessage = str_replace($url, $clickTracker, $emailMessage);
+					// Make sure to only replace links wrapped in href="" otherwise
+					// a link inbetween the anchor tags will get replaced too. Ex:
+					//    <a href="http://ink?clicktracking">http://ink?clicktracking</a>
+					$emailMessage = str_replace('href="' . $url . '"', 'href="' . $clickTracker . '"', $emailMessage);
 				}
 			}
 		}
