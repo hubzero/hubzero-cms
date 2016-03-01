@@ -155,6 +155,28 @@ function submitbutton(pressbutton)
 					<?php echo $hint; ?>
 				</span>
 			</div>
+			<?php
+				$hint = "Auto-generated emails can be sent out on a daily, weekly, or monthly basis. Content for this type of newsletter comes from predefined content sources. If this option is selected, you will only be limited to predefined content.";
+			?>
+			<div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">
+				<label for="newsletter-autogen"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN'); ?>:</label>
+				<select name="newsletter[autogen]" id="newsletter-autogen">
+					<option value="0" <?php if ($this->newsletter->autogen == 0) : ?>selected="selected"<?php endif; ?>>
+						<?php echo Lang::txt('Disabled'); ?>
+					</option>
+					<option value="1" <?php if ($this->newsletter->autogen == 1) : ?>selected="selected"<?php endif; ?>>
+						<?php echo Lang::txt('DAILY'); ?>
+					</option>
+					<option value="2" <?php if ($this->newsletter->autogen == 2) : ?>selected="selected"<?php endif; ?>>
+						<?php echo Lang::txt('WEEKLY'); ?>
+					</option>
+					<option value="3" <?php if ($this->newsletter->autogen == 3) : ?>selected="selected"<?php endif; ?>>
+						<?php echo Lang::txt('MONTHLY'); ?>
+					</option>
+				</select>
+				<span class="hint">
+					<?php echo $hint; ?>
+				</span>
 		</fieldset>
 	</div>
 
@@ -278,10 +300,17 @@ function submitbutton(pressbutton)
 				<a name="primary-stories"></a>
 				<fieldset class="adminform">
 					<legend>
+						<?php if ($this->newsletter->autogen == 0): ?>
 						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES'); ?>
 						<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=primary'); ?>">
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES_ADD'); ?>
 						</a>
+						<?php else: ?>
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_AUTOGEN_STORIES'); ?>
+							<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=autogen'); ?>">
+								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_AUTOGEN_STORIES_ADD'); ?>
+							</a>
+						<?php endif; ?>
 					</legend>
 					<?php //echo $tabs->startPane("content-pane"); ?>
 					<?php echo Html::sliders('start', 'content-pane'); ?>
@@ -337,67 +366,72 @@ function submitbutton(pressbutton)
 					<?php echo Html::sliders('end'); ?>
 				</fieldset>
 				<hr />
-				<a name="secondary-stories"></a>
-				<fieldset class="adminform">
-					<legend>
-						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES'); ?>
-						<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=secondary'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES_ADD'); ?>
-						</a>
-					</legend>
-					<?php //echo $tabs->startPane("content-pane2"); ?>
-					<?php echo Html::sliders('start', 'content-pane2'); ?>
-						<?php for ($i=0,$n=count($secondary); $i<$n; $i++) : ?>
-							<?php //echo $tabs->startPanel(($i+1) . ". " . $secondary[$i]->title, "sstory-".($i+1)."") ; ?>
-							<?php echo Html::sliders('panel', ($i+1) . ". " . $secondary[$i]->title, "sstory-" . ($i+1)); ?>
-								<table class="admintable">
-									<tbody>
-										<tr>
-											<td colspan="2">
-												<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=edit&type=secondary&sid='.$secondary[$i]->id); ?>">
-													<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
-												</a> |
-												<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=delete&type=secondary&sid='.$secondary[$i]->id); ?>">
-													<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
-												</a>
-											</td>
-										</tr>
-										<tr>
-											<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
-											<td><?php echo $secondary[$i]->title; ?></td>
-										</tr>
-										<tr>
-											<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
-											<td>
-												<input type="text" readonly="readonly" value="<?php echo $secondary[$i]->order; ?>" style="width:30px;text-align:center;" />
-												<?php if ($secondary[$i]->order > 1) : ?>
-													<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary[$i]->id); ?>">
-														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
+				<?php
+					// Hide secondary story if AutoGen
+					if ($this->newsletter->autogen == 0):
+				?>
+					<a name="secondary-stories"></a>
+					<fieldset class="adminform">
+						<legend>
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES'); ?>
+							<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=secondary'); ?>">
+								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES_ADD'); ?>
+							</a>
+						</legend>
+						<?php //echo $tabs->startPane("content-pane2"); ?>
+						<?php echo Html::sliders('start', 'content-pane2'); ?>
+							<?php for ($i=0,$n=count($secondary); $i<$n; $i++) : ?>
+								<?php //echo $tabs->startPanel(($i+1) . ". " . $secondary[$i]->title, "sstory-".($i+1)."") ; ?>
+								<?php echo Html::sliders('panel', ($i+1) . ". " . $secondary[$i]->title, "sstory-" . ($i+1)); ?>
+									<table class="admintable">
+										<tbody>
+											<tr>
+												<td colspan="2">
+													<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=edit&type=secondary&sid='.$secondary[$i]->id); ?>">
+														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
+													</a> |
+													<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=delete&type=secondary&sid='.$secondary[$i]->id); ?>">
+														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
 													</a>
-												<?php endif; ?>
+												</td>
+											</tr>
+											<tr>
+												<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
+												<td><?php echo $secondary[$i]->title; ?></td>
+											</tr>
+											<tr>
+												<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
+												<td>
+													<input type="text" readonly="readonly" value="<?php echo $secondary[$i]->order; ?>" style="width:30px;text-align:center;" />
+													<?php if ($secondary[$i]->order > 1) : ?>
+														<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary[$i]->id); ?>">
+															<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
+														</a>
+													<?php endif; ?>
 
-												<?php if ($secondary[$i]->order < $this->newsletter_secondary_highest_order) : ?>
-													<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=down&type=secondary&sid='.$secondary[$i]->id); ?>">
-														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
-													</a>
-												<?php endif; ?>
-											</td>
-										</tr>
-										<tr>
-											<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</td>
-											<td><?php echo nl2br(stripslashes($secondary[$i]->story)); ?></td>
-										</tr>
-										<tr>
-											<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
-											<td><strong><?php echo $secondary[$i]->readmore_title; ?></strong> - <?php echo $secondary[$i]->readmore_link; ?></td>
-										</tr>
-									</tbody>
-								</table>
-							<?php //echo $tabs->endPanel(); ?>
-						<?php endfor; ?>
-					<?php //echo $tabs->endPane(); ?>
-					<?php echo Html::sliders('end'); ?>
-				</fieldset>
+													<?php if ($secondary[$i]->order < $this->newsletter_secondary_highest_order) : ?>
+														<a href="<?php echo Route::url('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=down&type=secondary&sid='.$secondary[$i]->id); ?>">
+															<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
+														</a>
+													<?php endif; ?>
+												</td>
+											</tr>
+											<tr>
+												<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</td>
+												<td><?php echo nl2br(stripslashes($secondary[$i]->story)); ?></td>
+											</tr>
+											<tr>
+												<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
+												<td><strong><?php echo $secondary[$i]->readmore_title; ?></strong> - <?php echo $secondary[$i]->readmore_link; ?></td>
+											</tr>
+										</tbody>
+									</table>
+								<?php //echo $tabs->endPanel(); ?>
+							<?php endfor; ?>
+						<?php //echo $tabs->endPane(); ?>
+						<?php echo Html::sliders('end'); ?>
+					</fieldset>
+				<?php endif; ?>
 			<?php endif; ?>
 		<?php endif; ?>
 	</div>
