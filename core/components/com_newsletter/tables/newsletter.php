@@ -307,6 +307,67 @@ class Newsletter extends \JTable
 		$campaignParsed = str_replace("{{ALIAS}}", $campaign->alias, $campaignParsed);
 		$campaignParsed = str_replace("{{TITLE}}", $campaign->name, $campaignParsed);
 		$campaignParsed = str_replace("{{ISSUE}}", $campaign->issue, $campaignParsed);
+
+		// Handle the AUTOGEN sections
+		if (preg_match_all("(\\{.*?\\}\\})", $campaignPrimaryStories, $matches) !== FALSE)
+		{
+			foreach ($matches[0] as &$match)
+			{
+				// A field to hold HTML content for the section
+				$html = '';
+
+				// Hold onto the original token
+				$originMatch = $match;
+
+				// Perform some cleanup, stripping
+				$match = ltrim($match, "{{");
+				$match = rtrim($match, "}}");
+
+				// Explode on the delimiter
+				$parts = explode("_", $match);
+
+				// Make sure we're doing "it" on the right token
+				if ($parts[0] == "AUTOGEN")
+				{
+					// Get the content
+					$enabledPlugins = Event::trigger('newsletter.onGetEnabledDigests');
+
+					// Ascertain the key, based on plugin ordering
+					$key = array_keys($enabledPlugins, strtolower($parts[1]))[0];
+
+					// Get the content for the desired plugin
+					$content = Event::trigger('newsletter.onGetLatest', array($parts[2]))[$key];
+
+					// Apply the view template
+					$view = new \Hubzero\Component\View(array());
+
+					// Written emphatically, set the paths and whatnot
+					$view->setName('storytemplates');
+					$view->setLayout(strtolower($parts[3]));
+					$view->setBasePath(PATH_CORE . DS .'components' . DS . 'com_newsletter' . DS . 'admin');
+
+					// Pass the object through to the view
+					$view->object = $content;
+					$view->addTemplatePath(PATH_CORE . DS .'components' . DS . 'com_newsletter' . DS . 'admin' . DS . 'views' . DS . 'storytemplates' . DS . 'tmpl');
+
+					// Oh, what's this a buffer hijack?
+					ob_start();
+
+					// Render the view within the buffer.
+					$view->display();
+
+					// Grab the buffer's content
+					$html = ob_get_contents();
+
+					// Clear and close the buffer
+					ob_end_clean();
+
+					// Do some string replacement on the original token.
+					$campaignPrimaryStories = str_replace($originMatch, $html, $campaignPrimaryStories);
+				}
+			}
+		}
+
 		$campaignParsed = str_replace("{{PRIMARY_STORIES}}", $campaignPrimaryStories, $campaignParsed);
 		$campaignParsed = str_replace("{{SECONDARY_STORIES}}", $campaignSecondaryStories, $campaignParsed);
 		$campaignParsed = str_replace("{{COPYRIGHT}}", date("Y"), $campaignParsed);
