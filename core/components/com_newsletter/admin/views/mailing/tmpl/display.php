@@ -71,6 +71,7 @@ Joomla.submitbutton = function(pressbutton)
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_DATE'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
+				<th scope="col"	class="priority-4"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_REOCCUR'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -98,6 +99,25 @@ Joomla.submitbutton = function(pressbutton)
 								}
 							 ?>
 							(<?php echo Lang::txt('COM_NEWSLETTER_NUM_OF_EMAILS_SENT', number_format($mailing->emails_sent), number_format($mailing->emails_total)); ?>)
+						</td>
+						<td class="priority-4">
+							<?php
+								switch ($mailing->autogen)
+								{
+									case 0:
+										echo Lang::txt("N/A");
+									break;
+									case 1:
+										echo Lang::txt("Daily");
+									break;
+									case 2:
+										echo Lang::txt("Weekly");
+									break;
+									case 3:
+										echo Lang::txt("Monthy");
+									break;
+								}
+							?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
