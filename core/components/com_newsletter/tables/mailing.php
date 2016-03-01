@@ -87,7 +87,7 @@ class Mailing extends \JTable
 	 */
 	public function getMailingNewsletters()
 	{
-		$sql = "SELECT nm.id AS mailing_id, n.name AS newsletter_name, n.tracking AS newsletter_tracking, nm.date AS mailing_date
+		$sql = "SELECT nm.id AS mailing_id, n.name AS newsletter_name, n.tracking AS newsletter_tracking, nm.date AS mailing_date, n.autogen AS autogen
 				FROM {$this->_tbl} AS nm, #__newsletters AS n
 				WHERE nm.deleted=0
 				AND nm.nid=n.id
