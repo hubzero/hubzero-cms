@@ -103,3 +103,31 @@
 .jvectormap-region:hover {
 	cursor: pointer;
 }
+#previewArea {
+	padding: 20px;
+}
+
+.autogen-title {
+font-size: larger;
+color: #000000;
+}
+
+.autogen-date {
+color: #000000;
+font-size: 9pt;
+}
+
+.autogen-body {
+color: #000000;
+font-size: 10pt;
+padding: 5px 0 5px 0;
+}
+
+.autogen-path {
+ padding: 0px 0 15px 0;
+}
+
+#previewArea ul
+{
+
+}

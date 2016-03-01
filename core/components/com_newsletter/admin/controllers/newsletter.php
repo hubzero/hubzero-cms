@@ -151,6 +151,14 @@ class Newsletter extends AdminController
 		$this->view->newsletter->modified_by = null;
 		$this->view->newsletter->params      = null;
 
+		/** This is used to determine frequency
+		 * 0 - regular/disabled
+		 * 1 - daily
+		 * 2 - weekly
+		 * 3 - monthly
+		 **/
+		$this->view->newsletter->autogen		 = 0;
+
 		// default primary and secondary stories to null
 		$this->view->newsletter_primary    = null;
 		$this->view->newsletter_secondary  = null;
