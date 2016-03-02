@@ -62,7 +62,8 @@ class RouterServiceProvider extends Middleware
 	 */
 	public function boot()
 	{
-		if ($this->app->isSite() && $this->app['config']->get('force_ssl') == 2)
+		if (($this->app->isSite() && $this->app['config']->get('force_ssl') == 2)
+			|| ($this->app->isAdmin() && $this->app['config']->get('force_ssl') >= 1))
 		{
 			if (!$this->app['request']->isSecure())
 			{
