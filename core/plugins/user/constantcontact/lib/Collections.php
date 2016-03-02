@@ -700,7 +700,7 @@ class EventsCollection extends Collection
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
 		foreach ($parsedResponse->entry as $entry) {
-			$eventsCollection['events'][] = new Event(Event::createStruct($entry));
+			$eventsCollection['events'][] = new CCEvent(CCEvent::createStruct($entry));
 		}
 		$eventsCollection['nextLink'] = Utility::findNextLink($parsedResponse);
 		return $eventsCollection;
@@ -715,7 +715,7 @@ class EventsCollection extends Collection
 	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
-		return new Event(Event::createStruct($parsedResponse));
+		return new CCEvent(CCEvent::createStruct($parsedResponse));
 	}
 
 	/**
