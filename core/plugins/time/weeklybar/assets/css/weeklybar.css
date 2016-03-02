@@ -1,0 +1,54 @@
+/**
+ * @package     hubzero-cms
+ * @file        core/plugins/time/weeklybar/weeklybar.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.plg_time_weeklybar .chart {
+	margin: 30px;
+}
+.plg_time_weeklybar .datepicker {
+	margin-top: 20px;
+	text-align: center;
+}
+.plg_time_weeklybar .datepicker div {
+	display: inline-block;
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+}
+.plg_time_weeklybar .datepicker .backweek:before {
+	font-family: "fontcons";
+	content: "\f0d9";
+}
+.plg_time_weeklybar .datepicker .forwardweek:before {
+	font-family: "fontcons";
+	content: "\f0da";
+}
+.plg_time_weeklybar .datepicker .backweek:hover,
+.plg_time_weeklybar .datepicker .forwardweek:hover {
+	cursor: pointer;
+	background: #EEEEEE;
+}
+.plg_time_weeklybar .legend {
+	width: 200px;
+	margin: 20px auto;
+	text-align: center;
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+}
+.plg_time_weeklybar .legend table {
+	border: none;
+}
+.plg_time_weeklybar .legend table td {
+	border-bottom: none;
+}
+.plg_time_weeklybar .legend table td:first-child {
+	width: 67px;
+}
+.plg_time_weeklybar .legend table .legendColorBox > div {
+	border: none !important;
+}
+.plg_time_weeklybar .legend table .legendColorBox > div > div {
+	float: right;
+}
