@@ -1159,7 +1159,7 @@ class EventLocation
 	}
 }
 
-class Event extends CCObject
+class CCEvent extends CCObject
 {
 	public $title;
 	public $link;
