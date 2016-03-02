@@ -252,12 +252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
-                "reference": "v4.5.0",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -296,12 +296,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebookarchive/facebook-php-sdk.git",
-                "reference": "v3.2.2"
+                "reference": "bf99924386be074da30a8e9d6bbcb49d3333da12"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/facebookarchive/facebook-php-sdk/zipball/bf99924386be074da30a8e9d6bbcb49d3333da12",
-                "reference": "v3.2.2",
+                "reference": "bf99924386be074da30a8e9d6bbcb49d3333da12",
                 "shasum": ""
             },
             "require": {
@@ -331,6 +331,7 @@
                 "facebook",
                 "sdk"
             ],
+            "abandoned": "facebook/php-sdk-v4",
             "time": "2013-01-15 21:37:15"
         },
         {
@@ -682,12 +683,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "33c97f557d6806c4d46b7bc401f2ce3019dd5c43"
+                "reference": "d869102b476bd3fbb7f3229c073fbde448cbfd70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/33c97f557d6806c4d46b7bc401f2ce3019dd5c43",
-                "reference": "33c97f557d6806c4d46b7bc401f2ce3019dd5c43",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/d869102b476bd3fbb7f3229c073fbde448cbfd70",
+                "reference": "d869102b476bd3fbb7f3229c073fbde448cbfd70",
                 "shasum": ""
             },
             "require": {
@@ -719,7 +720,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2016-02-25 21:06:50"
+            "time": "2016-03-02 16:29:06"
         },
         {
             "name": "hubzero/orcid-php",
@@ -1535,7 +1536,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -1712,7 +1715,7 @@
             "source": {
                 "type": "git",
                 "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "6.0.017"
+                "reference": "bb21d56f9416cb72e62f4dac2ed0f92b96e24b8d"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -1761,6 +1764,7 @@
                 "pdf417",
                 "qrcode"
             ],
+            "abandoned": "tecnickcom/tcpdf",
             "time": "2013-05-16 16:17:45"
         },
         {
@@ -1884,7 +1888,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/d173b9a3c6d3dcf52d7f8f70ac591ba11c475e8c",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/c00c2ff72c31b061e73967b8eb36ca2bd90b5748",
                 "reference": "ee88cd05073533b10678772fe954d042748393c3",
                 "shasum": ""
             },
